@@ -1,0 +1,25 @@
+html,
+body {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.8;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}

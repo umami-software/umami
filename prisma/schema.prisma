@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model event {
+  created_at  DateTime? @default(now())
+  event_id    Int       @default(autoincrement()) @id
+  event_type  String
+  event_value String
+  session_id  String?
+  url         String
+  session     session?  @relation(fields: [session_id], references: [session_id])
+}
+
+model pageview {
+  created_at DateTime? @default(now())
+  referrer   String?
+  session_id String?
+  url        String
+  view_id    Int       @default(autoincrement()) @id
+  session    session?  @relation(fields: [session_id], references: [session_id])
+}
+
+model session {
+  browser    String?
+  country    String?
+  created_at DateTime?  @default(now())
+  language   String?
+  os         String?
+  screen     String?
+  session_id String     @id
+  website_id String?
+  website    website?   @relation(fields: [website_id], references: [website_id])
+  event      event[]
+  pageview   pageview[]
+}
+
+model website {
+  created_at DateTime? @default(now())
+  hostname   String    @unique
+  website_id String    @id
+  session    session[]
+}

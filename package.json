@@ -1,0 +1,67 @@
+{
+  "name": "umami",
+  "version": "0.1.0",
+  "description": "Deliciously simple website analytics",
+  "main": "index.js",
+  "author": "Mike Cao",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev -p 8000",
+    "build": "next build",
+    "start": "next start",
+    "build-script": "rollup -c"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "prettier --write"
+    ],
+    "**/*.css": [
+      "stylelint --fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "dependencies": {
+    "@prisma/client": "2.2.2",
+    "classnames": "^2.2.6",
+    "date-fns": "^2.14.0",
+    "detect-browser": "^5.1.1",
+    "dotenv": "^8.2.0",
+    "next": "9.3.5",
+    "node-fetch": "^2.6.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "request-ip": "^2.1.3",
+    "uuid": "^8.2.0",
+    "whatwg-fetch": "^3.2.0"
+  },
+  "devDependencies": {
+    "@prisma/cli": "2.2.2",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@svgr/webpack": "^5.4.0",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "^4.0.4",
+    "husky": "^4.2.5",
+    "less": "^3.11.3",
+    "lint-staged": "^10.2.9",
+    "postcss-flexbugs-fixes": "^4.2.1",
+    "postcss-import": "^12.0.1",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.0.5",
+    "prettier-eslint": "^10.1.1",
+    "rollup": "^2.21.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^6.1.0",
+    "stylelint": "^13.6.0",
+    "stylelint-config-css-modules": "^2.2.0",
+    "stylelint-config-prettier": "^8.0.1",
+    "stylelint-config-recommended": "^3.0.0"
+  }
+}
