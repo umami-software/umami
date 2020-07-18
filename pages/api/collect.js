@@ -1,5 +1,5 @@
 import { parseCollectRequest } from 'lib/utils';
-import { savePageView } from '../../lib/db';
+import { savePageView } from 'lib/db';
 
 export default async (req, res) => {
   const values = parseCollectRequest(req);

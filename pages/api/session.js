@@ -3,9 +3,15 @@ import { hash, parseSessionRequest } from 'lib/utils';
 
 export default async (req, res) => {
   let result = { time: Date.now() };
-  const { website_id, session_id, browser, os, screen, language, country } = parseSessionRequest(
-    req,
-  );
+  const {
+    website_id,
+    session_id,
+    browser,
+    os,
+    screen,
+    language,
+    country,
+  } = await parseSessionRequest(req);
 
   const website = await getWebsite(website_id);
 

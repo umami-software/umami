@@ -19,8 +19,6 @@
 .DS_Store
 .idea
 *.iml
-.env
-.env*.local
 
 # debug
 npm-debug.log*
