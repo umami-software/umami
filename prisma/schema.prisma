@@ -34,6 +34,7 @@ model session {
   browser    String?
   country    String?
   created_at DateTime?  @default(now())
+  hostname   String?
   language   String?
   os         String?
   screen     String?

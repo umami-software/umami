@@ -1,6 +1,6 @@
 create table website (
     website_id uuid primary key,
-    hostname varchar(255) unique not null,
+    hostname varchar(100) unique not null,
     created_at timestamp with time zone default current_timestamp
 );
 
@@ -8,6 +8,7 @@ create table session (
     session_id uuid primary key,
     website_id uuid references website(website_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
+    hostname varchar(100),
     browser varchar(20),
     os varchar(20),
     screen varchar(11),

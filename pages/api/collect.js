@@ -1,18 +1,21 @@
 import { parseCollectRequest } from 'lib/utils';
 import { savePageView } from 'lib/db';
+import { allowPost } from 'lib/middleware';
 
 export default async (req, res) => {
+  await allowPost(req, res);
+
   const values = parseCollectRequest(req);
 
-  if (values.valid) {
+  if (values.success) {
     const { type, session_id, url, referrer } = values;
 
     if (type === 'pageview') {
-      await savePageView(session_id, url, referrer);
+      await savePageView(session_id, url, referrer).catch(() => {
+        values.success = 0;
+      });
     }
   }
 
-  res.setHeader('Access-Control-Allow-Origin', '*');
-
-  res.status(200).json({ status: values.valid });
+  res.status(200).json({ success: values.success });
 };

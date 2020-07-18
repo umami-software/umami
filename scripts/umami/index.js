@@ -11,16 +11,37 @@ const {
   document,
 } = window;
 
-function post(url, params) {
-  return fetch(url, {
+const post = (url, params) =>
+  fetch(url, {
     method: 'post',
     cache: 'no-cache',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: params,
+    body: JSON.stringify(params),
   }).then(res => res.json());
-}
+
+const createSession = data =>
+  post(`${HOST_URL}/api/session`, data).then(({ success, ...session }) => {
+    if (success) {
+      store.setItem(SESSION_VAR, JSON.stringify(session));
+      return success;
+    }
+  });
+
+const getSession = () => JSON.parse(store.getItem(SESSION_VAR));
+
+const pageView = (url, referrer) =>
+  post(`${HOST_URL}/api/collect`, {
+    type: 'pageview',
+    payload: { url, referrer, session: getSession() },
+  }).then(({ success }) => {
+    if (!success) {
+      store.removeItem(SESSION_VAR);
+    }
+    return success;
+  });
 
 const script = document.querySelector('script[data-website-id]');
 
@@ -31,26 +52,12 @@ if (script) {
     const referrer = document.referrer;
     const screen = `${width}x${height}`;
     const url = `${pathname}${search}`;
+    const data = { website_id, hostname, url, screen, language };
 
     if (!store.getItem(SESSION_VAR)) {
-      post(`${HOST_URL}/api/session`, {
-        website_id,
-        hostname,
-        url,
-        screen,
-        language,
-      }).then(session => {
-        store.setItem(SESSION_VAR, JSON.stringify(session));
-      });
+      createSession(data).then(success => success && pageView(url, referrer));
+    } else {
+      pageView(url, referrer).then(success => !success && createSession(data));
     }
-
-    post(`${HOST_URL}/api/collect`, {
-      type: 'pageview',
-      payload: { url, referrer, session: JSON.parse(store.getItem(SESSION_VAR)) },
-    }).then(response => {
-      if (!response.status) {
-        store.removeItem(SESSION_VAR);
-      }
-    });
   }
 }
