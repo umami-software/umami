@@ -1,1 +1,274 @@
-!function(){"use strict";var t="undefined"!=typeof self?self:window,e="URLSearchParams"in t,r="Symbol"in t&&"iterator"in Symbol,o="FileReader"in t&&"Blob"in t&&function(){try{return new Blob,!0}catch(t){return!1}}(),n="FormData"in t,i="ArrayBuffer"in t;if(i)var s=["[object Int8Array]","[object Uint8Array]","[object Uint8ClampedArray]","[object Int16Array]","[object Uint16Array]","[object Int32Array]","[object Uint32Array]","[object Float32Array]","[object Float64Array]"],a=ArrayBuffer.isView||function(t){return t&&s.indexOf(Object.prototype.toString.call(t))>-1};function h(t){if("string"!=typeof t&&(t=String(t)),/[^a-z0-9\-#$%&'*+.^_`|~!]/i.test(t)||""===t)throw new TypeError("Invalid character in header field name");return t.toLowerCase()}function u(t){return"string"!=typeof t&&(t=String(t)),t}function d(t){var e={next:function(){var e=t.shift();return{done:void 0===e,value:e}}};return r&&(e[Symbol.iterator]=function(){return e}),e}function c(t){this.map={},t instanceof c?t.forEach((function(t,e){this.append(e,t)}),this):Array.isArray(t)?t.forEach((function(t){this.append(t[0],t[1])}),this):t&&Object.getOwnPropertyNames(t).forEach((function(e){this.append(e,t[e])}),this)}function f(t){if(t.bodyUsed)return Promise.reject(new TypeError("Already read"));t.bodyUsed=!0}function l(t){return new Promise((function(e,r){t.onload=function(){e(t.result)},t.onerror=function(){r(t.error)}}))}function y(t){var e=new FileReader,r=l(e);return e.readAsArrayBuffer(t),r}function p(t){if(t.slice)return t.slice(0);var e=new Uint8Array(t.byteLength);return e.set(new Uint8Array(t)),e.buffer}function b(){return this.bodyUsed=!1,this._initBody=function(t){var r;this.bodyUsed=this.bodyUsed,this._bodyInit=t,t?"string"==typeof t?this._bodyText=t:o&&Blob.prototype.isPrototypeOf(t)?this._bodyBlob=t:n&&FormData.prototype.isPrototypeOf(t)?this._bodyFormData=t:e&&URLSearchParams.prototype.isPrototypeOf(t)?this._bodyText=t.toString():i&&o&&((r=t)&&DataView.prototype.isPrototypeOf(r))?(this._bodyArrayBuffer=p(t.buffer),this._bodyInit=new Blob([this._bodyArrayBuffer])):i&&(ArrayBuffer.prototype.isPrototypeOf(t)||a(t))?this._bodyArrayBuffer=p(t):this._bodyText=t=Object.prototype.toString.call(t):this._bodyText="",this.headers.get("content-type")||("string"==typeof t?this.headers.set("content-type","text/plain;charset=UTF-8"):this._bodyBlob&&this._bodyBlob.type?this.headers.set("content-type",this._bodyBlob.type):e&&URLSearchParams.prototype.isPrototypeOf(t)&&this.headers.set("content-type","application/x-www-form-urlencoded;charset=UTF-8"))},o&&(this.blob=function(){var t=f(this);if(t)return t;if(this._bodyBlob)return Promise.resolve(this._bodyBlob);if(this._bodyArrayBuffer)return Promise.resolve(new Blob([this._bodyArrayBuffer]));if(this._bodyFormData)throw new Error("could not read FormData body as blob");return Promise.resolve(new Blob([this._bodyText]))},this.arrayBuffer=function(){return this._bodyArrayBuffer?f(this)||Promise.resolve(this._bodyArrayBuffer):this.blob().then(y)}),this.text=function(){var t,e,r,o=f(this);if(o)return o;if(this._bodyBlob)return t=this._bodyBlob,e=new FileReader,r=l(e),e.readAsText(t),r;if(this._bodyArrayBuffer)return Promise.resolve(function(t){for(var e=new Uint8Array(t),r=new Array(e.length),o=0;o<e.length;o++)r[o]=String.fromCharCode(e[o]);return r.join("")}(this._bodyArrayBuffer));if(this._bodyFormData)throw new Error("could not read FormData body as text");return Promise.resolve(this._bodyText)},n&&(this.formData=function(){return this.text().then(g)}),this.json=function(){return this.text().then(JSON.parse)},this}c.prototype.append=function(t,e){t=h(t),e=u(e);var r=this.map[t];this.map[t]=r?r+", "+e:e},c.prototype.delete=function(t){delete this.map[h(t)]},c.prototype.get=function(t){return t=h(t),this.has(t)?this.map[t]:null},c.prototype.has=function(t){return this.map.hasOwnProperty(h(t))},c.prototype.set=function(t,e){this.map[h(t)]=u(e)},c.prototype.forEach=function(t,e){for(var r in this.map)this.map.hasOwnProperty(r)&&t.call(e,this.map[r],r,this)},c.prototype.keys=function(){var t=[];return this.forEach((function(e,r){t.push(r)})),d(t)},c.prototype.values=function(){var t=[];return this.forEach((function(e){t.push(e)})),d(t)},c.prototype.entries=function(){var t=[];return this.forEach((function(e,r){t.push([r,e])})),d(t)},r&&(c.prototype[Symbol.iterator]=c.prototype.entries);var m=["DELETE","GET","HEAD","OPTIONS","POST","PUT"];function w(t,e){var r,o,n=(e=e||{}).body;if(t instanceof w){if(t.bodyUsed)throw new TypeError("Already read");this.url=t.url,this.credentials=t.credentials,e.headers||(this.headers=new c(t.headers)),this.method=t.method,this.mode=t.mode,this.signal=t.signal,n||null==t._bodyInit||(n=t._bodyInit,t.bodyUsed=!0)}else this.url=String(t);if(this.credentials=e.credentials||this.credentials||"same-origin",!e.headers&&this.headers||(this.headers=new c(e.headers)),this.method=(r=e.method||this.method||"GET",o=r.toUpperCase(),m.indexOf(o)>-1?o:r),this.mode=e.mode||this.mode||null,this.signal=e.signal||this.signal,this.referrer=null,("GET"===this.method||"HEAD"===this.method)&&n)throw new TypeError("Body not allowed for GET or HEAD requests");if(this._initBody(n),!("GET"!==this.method&&"HEAD"!==this.method||"no-store"!==e.cache&&"no-cache"!==e.cache)){var i=/([?&])_=[^&]*/;if(i.test(this.url))this.url=this.url.replace(i,"$1_="+(new Date).getTime());else{this.url+=(/\?/.test(this.url)?"&":"?")+"_="+(new Date).getTime()}}}function g(t){var e=new FormData;return t.trim().split("&").forEach((function(t){if(t){var r=t.split("="),o=r.shift().replace(/\+/g," "),n=r.join("=").replace(/\+/g," ");e.append(decodeURIComponent(o),decodeURIComponent(n))}})),e}function v(t,e){e||(e={}),this.type="default",this.status=void 0===e.status?200:e.status,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in e?e.statusText:"",this.headers=new c(e.headers),this.url=e.url||"",this._initBody(t)}w.prototype.clone=function(){return new w(this,{body:this._bodyInit})},b.call(w.prototype),b.call(v.prototype),v.prototype.clone=function(){return new v(this._bodyInit,{status:this.status,statusText:this.statusText,headers:new c(this.headers),url:this.url})},v.error=function(){var t=new v(null,{status:0,statusText:""});return t.type="error",t};var T=[301,302,303,307,308];v.redirect=function(t,e){if(-1===T.indexOf(e))throw new RangeError("Invalid status code");return new v(null,{status:e,headers:{location:t}})};var A=t.DOMException;function _(e,r){return new Promise((function(n,s){var a=new w(e,r);if(a.signal&&a.signal.aborted)return s(new A("Aborted","AbortError"));var h=new XMLHttpRequest;function u(){h.abort()}h.onload=function(){var t,e,r={status:h.status,statusText:h.statusText,headers:(t=h.getAllResponseHeaders()||"",e=new c,t.replace(/\r?\n[\t ]+/g," ").split(/\r?\n/).forEach((function(t){var r=t.split(":"),o=r.shift().trim();if(o){var n=r.join(":").trim();e.append(o,n)}})),e)};r.url="responseURL"in h?h.responseURL:r.headers.get("X-Request-URL");var o="response"in h?h.response:h.responseText;setTimeout((function(){n(new v(o,r))}),0)},h.onerror=function(){setTimeout((function(){s(new TypeError("Network request failed"))}),0)},h.ontimeout=function(){setTimeout((function(){s(new TypeError("Network request failed"))}),0)},h.onabort=function(){setTimeout((function(){s(new A("Aborted","AbortError"))}),0)},h.open(a.method,function(e){try{return""===e&&t.location.href?t.location.href:e}catch(t){return e}}(a.url),!0),"include"===a.credentials?h.withCredentials=!0:"omit"===a.credentials&&(h.withCredentials=!1),"responseType"in h&&(o?h.responseType="blob":i&&a.headers.get("Content-Type")&&-1!==a.headers.get("Content-Type").indexOf("application/octet-stream")&&(h.responseType="arraybuffer")),a.headers.forEach((function(t,e){h.setRequestHeader(e,t)})),a.signal&&(a.signal.addEventListener("abort",u),h.onreadystatechange=function(){4===h.readyState&&a.signal.removeEventListener("abort",u)}),h.send(void 0===a._bodyInit?null:a._bodyInit)}))}function E(t,e){return fetch(t,{method:"post",body:JSON.stringify(e)}).then(t=>t.json())}"function"!=typeof A&&((A=function(t,e){this.message=t,this.name=e;var r=Error(t);this.stack=r.stack}).prototype=Object.create(Error.prototype),A.prototype.constructor=A),_.polyfill=!0,t.fetch||(t.fetch=_,t.Headers=c,t.Request=w,t.Response=v),(async()=>{const t=document.querySelector("script[data-website-id]").getAttribute("data-website-id");if(t){const{width:e,height:r}=window.screen,{language:o}=window.navigator,{hostname:n,pathname:i,search:s}=window.location,a=window.document.referrer,h=`${e}x${r}`,u=`${i}${s}`;if(!window.localStorage.getItem("umami.session")){const e=await E("http://localhost:8000/api/session",{website_id:t,hostname:n,url:u,screen:h,language:o});console.log(e),window.localStorage.setItem("umami.session",JSON.stringify(e))}await E("http://localhost:8000/api/collect",{type:"pageview",payload:{url:u,referrer:a,session:JSON.parse(window.localStorage.getItem("umami.session"))}})}})()}();
+!(function () {
+  'use strict';
+  function e(e) {
+    var t = this.constructor;
+    return this.then(
+      function (n) {
+        return t.resolve(e()).then(function () {
+          return n;
+        });
+      },
+      function (n) {
+        return t.resolve(e()).then(function () {
+          return t.reject(n);
+        });
+      },
+    );
+  }
+  var t = setTimeout;
+  function n(e) {
+    return Boolean(e && void 0 !== e.length);
+  }
+  function r() {}
+  function o(e) {
+    if (!(this instanceof o)) throw new TypeError('Promises must be constructed via new');
+    if ('function' != typeof e) throw new TypeError('not a function');
+    (this._state = 0),
+      (this._handled = !1),
+      (this._value = void 0),
+      (this._deferreds = []),
+      c(e, this);
+  }
+  function i(e, t) {
+    for (; 3 === e._state; ) e = e._value;
+    0 !== e._state
+      ? ((e._handled = !0),
+        o._immediateFn(function () {
+          var n = 1 === e._state ? t.onFulfilled : t.onRejected;
+          if (null !== n) {
+            var r;
+            try {
+              r = n(e._value);
+            } catch (e) {
+              return void u(t.promise, e);
+            }
+            s(t.promise, r);
+          } else (1 === e._state ? s : u)(t.promise, e._value);
+        }))
+      : e._deferreds.push(t);
+  }
+  function s(e, t) {
+    try {
+      if (t === e) throw new TypeError('A promise cannot be resolved with itself.');
+      if (t && ('object' == typeof t || 'function' == typeof t)) {
+        var n = t.then;
+        if (t instanceof o) return (e._state = 3), (e._value = t), void a(e);
+        if ('function' == typeof n)
+          return void c(
+            ((r = n),
+            (i = t),
+            function () {
+              r.apply(i, arguments);
+            }),
+            e,
+          );
+      }
+      (e._state = 1), (e._value = t), a(e);
+    } catch (t) {
+      u(e, t);
+    }
+    var r, i;
+  }
+  function u(e, t) {
+    (e._state = 2), (e._value = t), a(e);
+  }
+  function a(e) {
+    2 === e._state &&
+      0 === e._deferreds.length &&
+      o._immediateFn(function () {
+        e._handled || o._unhandledRejectionFn(e._value);
+      });
+    for (var t = 0, n = e._deferreds.length; t < n; t++) i(e, e._deferreds[t]);
+    e._deferreds = null;
+  }
+  function f(e, t, n) {
+    (this.onFulfilled = 'function' == typeof e ? e : null),
+      (this.onRejected = 'function' == typeof t ? t : null),
+      (this.promise = n);
+  }
+  function c(e, t) {
+    var n = !1;
+    try {
+      e(
+        function (e) {
+          n || ((n = !0), s(t, e));
+        },
+        function (e) {
+          n || ((n = !0), u(t, e));
+        },
+      );
+    } catch (e) {
+      if (n) return;
+      (n = !0), u(t, e);
+    }
+  }
+  (o.prototype['catch'] = function (e) {
+    return this.then(null, e);
+  }),
+    (o.prototype.then = function (e, t) {
+      var n = new this.constructor(r);
+      return i(this, new f(e, t, n)), n;
+    }),
+    (o.prototype['finally'] = e),
+    (o.all = function (e) {
+      return new o(function (t, r) {
+        if (!n(e)) return r(new TypeError('Promise.all accepts an array'));
+        var o = Array.prototype.slice.call(e);
+        if (0 === o.length) return t([]);
+        var i = o.length;
+        function s(e, n) {
+          try {
+            if (n && ('object' == typeof n || 'function' == typeof n)) {
+              var u = n.then;
+              if ('function' == typeof u)
+                return void u.call(
+                  n,
+                  function (t) {
+                    s(e, t);
+                  },
+                  r,
+                );
+            }
+            (o[e] = n), 0 == --i && t(o);
+          } catch (e) {
+            r(e);
+          }
+        }
+        for (var u = 0; u < o.length; u++) s(u, o[u]);
+      });
+    }),
+    (o.resolve = function (e) {
+      return e && 'object' == typeof e && e.constructor === o
+        ? e
+        : new o(function (t) {
+            t(e);
+          });
+    }),
+    (o.reject = function (e) {
+      return new o(function (t, n) {
+        n(e);
+      });
+    }),
+    (o.race = function (e) {
+      return new o(function (t, r) {
+        if (!n(e)) return r(new TypeError('Promise.race accepts an array'));
+        for (var i = 0, s = e.length; i < s; i++) o.resolve(e[i]).then(t, r);
+      });
+    }),
+    (o._immediateFn =
+      ('function' == typeof setImmediate &&
+        function (e) {
+          setImmediate(e);
+        }) ||
+      function (e) {
+        t(e, 0);
+      }),
+    (o._unhandledRejectionFn = function (e) {
+      'undefined' != typeof console &&
+        console &&
+        console.warn('Possible Unhandled Promise Rejection:', e);
+    });
+  var l = (function () {
+    if ('undefined' != typeof self) return self;
+    if ('undefined' != typeof window) return window;
+    if ('undefined' != typeof global) return global;
+    throw new Error('unable to locate global object');
+  })();
+  'Promise' in l
+    ? l.Promise.prototype['finally'] || (l.Promise.prototype['finally'] = e)
+    : (l['Promise'] = o),
+    self.fetch ||
+      (self.fetch = function (e, t) {
+        return (
+          (t = t || {}),
+          new Promise(function (n, r) {
+            var o = new XMLHttpRequest(),
+              i = [],
+              s = [],
+              u = {},
+              a = function () {
+                return {
+                  ok: 2 == ((o.status / 100) | 0),
+                  statusText: o.statusText,
+                  status: o.status,
+                  url: o.responseURL,
+                  text: function () {
+                    return Promise.resolve(o.responseText);
+                  },
+                  json: function () {
+                    return Promise.resolve(JSON.parse(o.responseText));
+                  },
+                  blob: function () {
+                    return Promise.resolve(new Blob([o.response]));
+                  },
+                  clone: a,
+                  headers: {
+                    keys: function () {
+                      return i;
+                    },
+                    entries: function () {
+                      return s;
+                    },
+                    get: function (e) {
+                      return u[e.toLowerCase()];
+                    },
+                    has: function (e) {
+                      return e.toLowerCase() in u;
+                    },
+                  },
+                };
+              };
+            for (var f in (o.open(t.method || 'get', e, !0),
+            (o.onload = function () {
+              o.getAllResponseHeaders().replace(/^(.*?):[^\S\n]*([\s\S]*?)$/gm, function (e, t, n) {
+                i.push((t = t.toLowerCase())), s.push([t, n]), (u[t] = u[t] ? u[t] + ',' + n : n);
+              }),
+                n(a());
+            }),
+            (o.onerror = r),
+            (o.withCredentials = 'include' == t.credentials),
+            t.headers))
+              o.setRequestHeader(f, t.headers[f]);
+            o.send(t.body || null);
+          })
+        );
+      });
+  var d = 'http://192.168.86.78:8000',
+    h = 'umami.session',
+    p = window.screen,
+    v = p.width,
+    w = p.height,
+    y = window.navigator.language,
+    m = window.location,
+    _ = m.hostname,
+    g = m.pathname,
+    b = m.search,
+    j = window.localStorage,
+    P = window.document;
+  function T(e, t) {
+    return fetch(e, { method: 'post', body: JSON.stringify(t) }).then(function (e) {
+      return e.json();
+    });
+  }
+  var R = P.querySelector('script[data-website-id]');
+  if (R) {
+    var S = R.getAttribute('data-website-id');
+    if (S) {
+      var F = P.referrer,
+        x = v + 'x' + w,
+        E = '' + g + b;
+      j.getItem(h) ||
+        T(d + '/api/session', { website_id: S, hostname: _, url: E, screen: x, language: y }).then(
+          function (e) {
+            j.setItem(h, JSON.stringify(e));
+          },
+        ),
+        T(d + '/api/collect', {
+          type: 'pageview',
+          payload: { url: E, referrer: F, session: JSON.parse(j.getItem(h)) },
+        }).then(function (e) {
+          e.status || j.removeItem(h);
+        });
+    }
+  }
+})();

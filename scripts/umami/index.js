@@ -1,4 +1,15 @@
-import 'whatwg-fetch';
+import 'promise-polyfill/src/polyfill';
+import 'unfetch/polyfill';
+
+const HOST_URL = process.env.UMAMI_URL;
+const SESSION_VAR = 'umami.session';
+const {
+  screen: { width, height },
+  navigator: { language },
+  location: { hostname, pathname, search },
+  localStorage: store,
+  document,
+} = window;
 
 function post(url, params) {
   return fetch(url, {
@@ -7,33 +18,35 @@ function post(url, params) {
   }).then(res => res.json());
 }
 
-(async () => {
-  const script = document.querySelector('script[data-website-id]');
+const script = document.querySelector('script[data-website-id]');
+
+if (script) {
   const website_id = script.getAttribute('data-website-id');
 
   if (website_id) {
-    const { width, height } = window.screen;
-    const { language } = window.navigator;
-    const { hostname, pathname, search } = window.location;
-    const referrer = window.document.referrer;
+    const referrer = document.referrer;
     const screen = `${width}x${height}`;
     const url = `${pathname}${search}`;
 
-    if (!window.localStorage.getItem('umami.session')) {
-      const session = await post(`${process.env.UMAMI_URL}/api/session`, {
+    if (!store.getItem(SESSION_VAR)) {
+      post(`${HOST_URL}/api/session`, {
         website_id,
         hostname,
         url,
         screen,
         language,
+      }).then(session => {
+        store.setItem(SESSION_VAR, JSON.stringify(session));
       });
-      console.log(session);
-      window.localStorage.setItem('umami.session', JSON.stringify(session));
     }
 
-    await post(`${process.env.UMAMI_URL}/api/collect`, {
+    post(`${HOST_URL}/api/collect`, {
       type: 'pageview',
-      payload: { url, referrer, session: JSON.parse(window.localStorage.getItem('umami.session')) },
+      payload: { url, referrer, session: JSON.parse(store.getItem(SESSION_VAR)) },
+    }).then(response => {
+      if (!response.status) {
+        store.removeItem(SESSION_VAR);
+      }
     });
   }
-})();
+}

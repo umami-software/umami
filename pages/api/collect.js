@@ -4,7 +4,7 @@ import { savePageView } from '../../lib/db';
 export default async (req, res) => {
   const values = parseCollectRequest(req);
 
-  if (values) {
+  if (values.valid) {
     const { type, session_id, url, referrer } = values;
 
     if (type === 'pageview') {
@@ -12,5 +12,5 @@ export default async (req, res) => {
     }
   }
 
-  res.status(200).json({ status: 'ok' });
+  res.status(200).json({ status: values.valid });
 };
