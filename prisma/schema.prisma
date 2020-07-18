@@ -15,6 +15,8 @@ model event {
   session_id  String?
   url         String
   session     session?  @relation(fields: [session_id], references: [session_id])
+
+  @@index([created_at], name: "event_created_at_idx")
 }
 
 model pageview {
@@ -24,6 +26,8 @@ model pageview {
   url        String
   view_id    Int       @default(autoincrement()) @id
   session    session?  @relation(fields: [session_id], references: [session_id])
+
+  @@index([created_at], name: "pageview_created_at_idx")
 }
 
 model session {
@@ -38,6 +42,8 @@ model session {
   website    website?   @relation(fields: [website_id], references: [website_id])
   event      event[]
   pageview   pageview[]
+
+  @@index([created_at], name: "session_created_at_idx")
 }
 
 model website {

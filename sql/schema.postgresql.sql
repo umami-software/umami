@@ -31,3 +31,7 @@ create table event (
     event_type varchar(50) not null,
     event_value varchar(255) not null
 );
+
+create index on session(created_at);
+create index on pageview(created_at);
+create index on event(created_at);
