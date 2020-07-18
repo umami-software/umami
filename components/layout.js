@@ -18,7 +18,7 @@ export default function Layout({ title, children }) {
             async
             defer
             data-website-id="865234ad-6a92-11e7-8846-b05adad3f099"
-            src="/umami.js"
+            src="http://umami.is/umami.js"
           />
         )}
       </Head>

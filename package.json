@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@prisma/client": "2.2.2",
+    "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "date-fns": "^2.14.0",
     "detect-browser": "^5.1.1",
