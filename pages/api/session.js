@@ -5,7 +5,7 @@ import { allowPost } from 'lib/middleware';
 export default async (req, res) => {
   await allowPost(req, res);
 
-  let result = { success: 0, time: Date.now() };
+  let result = { success: 0 };
 
   const {
     website_id,
@@ -23,6 +23,7 @@ export default async (req, res) => {
 
     if (website) {
       const session = await getSession(session_id);
+      const time = Date.now();
 
       if (!session) {
         await createSession(website_id, session_id, {
@@ -40,7 +41,8 @@ export default async (req, res) => {
         success: 1,
         session_id,
         website_id,
-        hash: hash(`${website_id}${session_id}${result.time}`),
+        time,
+        hash: hash(`${website_id}${session_id}${time}`),
       };
     }
   }
