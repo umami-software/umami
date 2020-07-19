@@ -23,6 +23,7 @@ if (script) {
     const screen = `${width}x${height}`;
     let currentUrl = `${pathname}${search}`;
     let currenrRef = document.referrer;
+    const listeners = [];
 
     /* Helper methods */
 
@@ -82,9 +83,11 @@ if (script) {
     /* Handle push state */
 
     const handlePush = (state, title, url) => {
+      removeEvents();
       currenrRef = currentUrl;
       currentUrl = url;
       execute(currentUrl, currenrRef);
+      setTimeout(loadEvents, 300);
     };
 
     const hook = (type, cb) => {
@@ -101,19 +104,32 @@ if (script) {
 
     /* Handle events */
 
-    document.querySelectorAll("[class*='umami--']").forEach(e => {
-      e.className.split(' ').forEach(c => {
-        if (/^umami--/.test(c)) {
-          const [, event, value] = c.split('--');
-          if (event && value) {
-            e.addEventListener(event, () => trackEvent(currentUrl, event, value), true);
-          }
-        }
+    const removeEvents = () => {
+      listeners.forEach(([element, type, listener]) => {
+        console.log('removed', element.tagName, type);
+        element.removeEventListener(type, listener, true);
       });
-    });
+      listeners.length = 0;
+    };
+
+    const loadEvents = () => {
+      document.querySelectorAll("[class*='umami--']").forEach(element => {
+        element.className.split(' ').forEach(className => {
+          if (/^umami--/.test(className)) {
+            const [, type, value] = className.split('--');
+            if (type && value) {
+              const listener = () => trackEvent(currentUrl, type, value);
+              listeners.push([element, type, listener]);
+              element.addEventListener(type, listener, true);
+            }
+          }
+        });
+      });
+    };
 
     /* Start */
 
     execute(currentUrl, currenrRef);
+    loadEvents();
   }
 }
