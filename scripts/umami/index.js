@@ -60,28 +60,11 @@ if (script) {
         return success;
       });
 
-    const trackEvent = (url, eventType, eventValue) =>
+    const trackEvent = (url, event_type, event_value) =>
       post(`${hostUrl}/api/collect`, {
         type: 'event',
-        payload: { url, eventType, eventValue, session: getSession() },
-      }).then(({ success }) => {
-        if (!success) {
-          store.removeItem(sessionKey);
-        }
-        return success;
+        payload: { url, event_type, event_value, session: getSession() },
       });
-
-    const elementToString = e => {
-      return JSON.stringify(
-        e.getAttributeNames().reduce(
-          (obj, val) => {
-            obj[val] = e.getAttribute(val);
-            return obj;
-          },
-          { tag: e.tagName.toLowerCase() },
-        ),
-      );
-    };
 
     const execute = (url, referrer) => {
       const data = getSessionData(url);
@@ -120,19 +103,13 @@ if (script) {
 
     document.querySelectorAll("[class*='umami--']").forEach(e => {
       e.className.split(' ').forEach(c => {
-        console.log('class', c);
         if (/^umami--/.test(c)) {
-          const [, event] = c.split('--');
-          console.log('event', event);
-          if (event) {
-            e.addEventListener(event, () => {
-              trackEvent(currentUrl, event, elementToString(e));
-              console.log('exec event', event, elementToString(e));
-            });
+          const [, event, value] = c.split('--');
+          if (event && value) {
+            e.addEventListener(event, () => trackEvent(currentUrl, event, value), true);
           }
         }
       });
-      console.log('match', e);
     });
 
     /* Start */

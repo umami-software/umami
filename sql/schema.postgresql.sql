@@ -34,7 +34,7 @@ create table event (
     created_at timestamp with time zone default current_timestamp,
     url varchar(500) not null,
     event_type varchar(50) not null,
-    event_value varchar(255) not null
+    event_value varchar(50) not null
 );
 
 create index on session(created_at);

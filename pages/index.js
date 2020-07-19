@@ -15,7 +15,7 @@ export default function Home() {
         <a>123</a>
       </Link>
       <br />
-      <button id="primary-button" className="otherClass umami--click" type="button">
+      <button id="primary-button" className="otherClass umami--click--primary-button" type="button">
         Button
       </button>
     </Layout>
