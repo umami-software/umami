@@ -14,6 +14,10 @@ export default function Home() {
       <Link href="/?q=123">
         <a>123</a>
       </Link>
+      <br />
+      <button id="primary-button" className="otherClass umami--click" type="button">
+        Button
+      </button>
     </Layout>
   );
 }

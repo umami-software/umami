@@ -10,6 +10,8 @@ const {
   history,
 } = window;
 
+/* Load script */
+
 const script = document.querySelector('script[data-website-id]');
 
 if (script) {
@@ -21,6 +23,8 @@ if (script) {
     const screen = `${width}x${height}`;
     let currentUrl = `${pathname}${search}`;
     let currenrRef = document.referrer;
+
+    /* Helper methods */
 
     const post = (url, params) =>
       fetch(url, {
@@ -56,6 +60,29 @@ if (script) {
         return success;
       });
 
+    const trackEvent = (url, eventType, eventValue) =>
+      post(`${hostUrl}/api/collect`, {
+        type: 'event',
+        payload: { url, eventType, eventValue, session: getSession() },
+      }).then(({ success }) => {
+        if (!success) {
+          store.removeItem(sessionKey);
+        }
+        return success;
+      });
+
+    const elementToString = e => {
+      return JSON.stringify(
+        e.getAttributeNames().reduce(
+          (obj, val) => {
+            obj[val] = e.getAttribute(val);
+            return obj;
+          },
+          { tag: e.tagName.toLowerCase() },
+        ),
+      );
+    };
+
     const execute = (url, referrer) => {
       const data = getSessionData(url);
 
@@ -68,6 +95,8 @@ if (script) {
         );
       }
     };
+
+    /* Handle push state */
 
     const handlePush = (state, title, url) => {
       currenrRef = currentUrl;
@@ -86,6 +115,27 @@ if (script) {
 
     history.pushState = hook('pushState', handlePush);
     history.replaceState = hook('replaceState', handlePush);
+
+    /* Handle events */
+
+    document.querySelectorAll("[class*='umami--']").forEach(e => {
+      e.className.split(' ').forEach(c => {
+        console.log('class', c);
+        if (/^umami--/.test(c)) {
+          const [, event] = c.split('--');
+          console.log('event', event);
+          if (event) {
+            e.addEventListener(event, () => {
+              trackEvent(currentUrl, event, elementToString(e));
+              console.log('exec event', event, elementToString(e));
+            });
+          }
+        }
+      });
+      console.log('match', e);
+    });
+
+    /* Start */
 
     execute(currentUrl, currenrRef);
   }
