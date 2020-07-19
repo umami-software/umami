@@ -62,7 +62,10 @@ if (script) {
       if (!store.getItem(sessionKey)) {
         createSession(data).then(success => success && pageView(url, referrer));
       } else {
-        pageView(url, referrer).then(success => !success && createSession(data));
+        pageView(url, referrer).then(
+          success =>
+            !success && createSession(data).then(success => success && pageView(url, referrer)),
+        );
       }
     };
 
