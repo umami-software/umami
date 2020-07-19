@@ -12,9 +12,11 @@ model event {
   event_id    Int       @default(autoincrement()) @id
   event_type  String
   event_value String
-  session_id  String?
+  session_id  Int
   url         String
-  session     session?  @relation(fields: [session_id], references: [session_id])
+  website_id  Int
+  session     session   @relation(fields: [session_id], references: [session_id])
+  website     website   @relation(fields: [website_id], references: [website_id])
 
   @@index([created_at], name: "event_created_at_idx")
 }
@@ -22,34 +24,40 @@ model event {
 model pageview {
   created_at DateTime? @default(now())
   referrer   String?
-  session_id String?
+  session_id Int
   url        String
   view_id    Int       @default(autoincrement()) @id
-  session    session?  @relation(fields: [session_id], references: [session_id])
+  website_id Int
+  session    session   @relation(fields: [session_id], references: [session_id])
+  website    website   @relation(fields: [website_id], references: [website_id])
 
   @@index([created_at], name: "pageview_created_at_idx")
 }
 
 model session {
-  browser    String?
-  country    String?
-  created_at DateTime?  @default(now())
-  hostname   String?
-  language   String?
-  os         String?
-  screen     String?
-  session_id String     @id
-  website_id String?
-  website    website?   @relation(fields: [website_id], references: [website_id])
-  event      event[]
-  pageview   pageview[]
+  browser      String?
+  country      String?
+  created_at   DateTime?  @default(now())
+  hostname     String?
+  language     String?
+  os           String?
+  screen       String?
+  session_id   Int        @default(autoincrement()) @id
+  session_uuid String     @unique
+  website_id   Int
+  website      website    @relation(fields: [website_id], references: [website_id])
+  event        event[]
+  pageview     pageview[]
 
   @@index([created_at], name: "session_created_at_idx")
 }
 
 model website {
-  created_at DateTime? @default(now())
-  hostname   String    @unique
-  website_id String    @id
-  session    session[]
+  created_at   DateTime?  @default(now())
+  hostname     String
+  website_id   Int        @default(autoincrement()) @id
+  website_uuid String     @unique
+  event        event[]
+  pageview     pageview[]
+  session      session[]
 }

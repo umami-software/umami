@@ -8,10 +8,10 @@ export default async (req, res) => {
   const values = parseCollectRequest(req);
 
   if (values.success) {
-    const { type, session_id, url, referrer } = values;
+    const { type, website_id, session_id, url, referrer } = values;
 
     if (type === 'pageview') {
-      await savePageView(session_id, url, referrer).catch(() => {
+      await savePageView(website_id, session_id, url, referrer).catch(() => {
         values.success = 0;
       });
     }

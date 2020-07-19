@@ -1,12 +1,14 @@
 create table website (
-    website_id uuid primary key,
-    hostname varchar(100) unique not null,
+    website_id serial primary key,
+    website_uuid uuid unique not null,
+    hostname varchar(100) not null,
     created_at timestamp with time zone default current_timestamp
 );
 
 create table session (
-    session_id uuid primary key,
-    website_id uuid references website(website_id) on delete cascade,
+    session_id serial primary key,
+    session_uuid uuid unique not null,
+    website_id int not null references website(website_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
     hostname varchar(100),
     browser varchar(20),
@@ -18,7 +20,8 @@ create table session (
 
 create table pageview (
     view_id serial primary key,
-    session_id uuid references session(session_id) on delete cascade,
+    website_id int not null references website(website_id),
+    session_id int not null references session(session_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
     url varchar(500) not null,
     referrer varchar(500)
@@ -26,7 +29,8 @@ create table pageview (
 
 create table event (
     event_id serial primary key,
-    session_id uuid references session(session_id) on delete cascade,
+    website_id int not null references website(website_id),
+    session_id int not null references session(session_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
     url varchar(500) not null,
     event_type varchar(50) not null,
