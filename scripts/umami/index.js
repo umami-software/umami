@@ -106,7 +106,6 @@ if (script) {
 
     const removeEvents = () => {
       listeners.forEach(([element, type, listener]) => {
-        console.log('removed', element.tagName, type);
         element.removeEventListener(type, listener, true);
       });
       listeners.length = 0;

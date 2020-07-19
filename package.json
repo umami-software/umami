@@ -9,7 +9,9 @@
     "dev": "next dev -p 8000",
     "build": "next build",
     "start": "next start",
-    "build-script": "rollup -c"
+    "build-script": "rollup -c",
+    "build-schema": "prisma introspect",
+    "build-client": "prisma generate"
   },
   "lint-staged": {
     "**/*.js": [
