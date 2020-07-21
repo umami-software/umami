@@ -73,7 +73,9 @@ import 'unfetch/polyfill';
     const orig = history[type];
     return (state, title, url) => {
       const args = [state, title, url];
+
       cb.apply(null, args);
+
       return orig.apply(history, args);
     };
   };
@@ -85,7 +87,7 @@ import 'unfetch/polyfill';
 
   const removeEvents = () => {
     listeners.forEach(([element, type, listener]) => {
-      element.removeEventListener(type, listener, true);
+      element && element.removeEventListener(type, listener, true);
     });
     listeners.length = 0;
   };
@@ -93,13 +95,12 @@ import 'unfetch/polyfill';
   const loadEvents = () => {
     document.querySelectorAll("[class*='umami--']").forEach(element => {
       element.className.split(' ').forEach(className => {
-        if (/^umami--/.test(className)) {
+        if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
-          if (type && value) {
-            const listener = () => pageEvent(type, value);
-            listeners.push([element, type, listener]);
-            element.addEventListener(type, listener, true);
-          }
+          const listener = () => pageEvent(type, value);
+
+          listeners.push([element, type, listener]);
+          element.addEventListener(type, listener, true);
         }
       });
     });

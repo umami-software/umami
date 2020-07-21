@@ -38,5 +38,12 @@ create table event (
 );
 
 create index on session(created_at);
+create index on session(website_id);
+
 create index on pageview(created_at);
+create index on pageview(website_id);
+create index on pageview(session_id);
+
 create index on event(created_at);
+create index on event(website_id);
+create index on event(session_id);
