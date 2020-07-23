@@ -1,5 +1,5 @@
 import { serialize } from 'cookie';
-import { checkPassword, createToken, secret } from 'lib/crypto';
+import { checkPassword, createSecureToken } from 'lib/crypto';
 import { getAccount } from 'lib/db';
 
 export default async (req, res) => {
@@ -9,7 +9,7 @@ export default async (req, res) => {
 
   if (account && (await checkPassword(password, account.password))) {
     const { user_id, username, is_admin } = account;
-    const token = await createToken({ user_id, username, is_admin });
+    const token = await createSecureToken({ user_id, username, is_admin });
     const expires = new Date(Date.now() + 31536000000);
     const cookie = serialize('umami.auth', token, { expires, httpOnly: true });
 
