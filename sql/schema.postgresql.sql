@@ -1,6 +1,16 @@
+create table account (
+    user_id serial primary key,
+    username varchar(255) unique not null,
+    password varchar(60) not null,
+    is_admin bool not null default false,
+    created_at timestamp with time zone default current_timestamp,
+    updated_at timestamp with time zone default current_timestamp
+);
+
 create table website (
     website_id serial primary key,
     website_uuid uuid unique not null,
+    user_id int not null references account(user_id) on delete cascade,
     hostname varchar(100) not null,
     created_at timestamp with time zone default current_timestamp
 );
@@ -36,6 +46,8 @@ create table event (
     event_type varchar(50) not null,
     event_value varchar(50) not null
 );
+
+create index on account(username);
 
 create index on session(created_at);
 create index on session(website_id);

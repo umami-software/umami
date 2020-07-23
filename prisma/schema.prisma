@@ -7,6 +7,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model account {
+  created_at DateTime? @default(now())
+  is_admin   Boolean   @default(false)
+  password   String
+  updated_at DateTime? @default(now())
+  user_id    Int       @default(autoincrement()) @id
+  username   String    @unique
+  website    website[]
+}
+
 model event {
   created_at  DateTime? @default(now())
   event_id    Int       @default(autoincrement()) @id
@@ -19,6 +29,8 @@ model event {
   website     website   @relation(fields: [website_id], references: [website_id])
 
   @@index([created_at], name: "event_created_at_idx")
+  @@index([session_id], name: "event_session_id_idx")
+  @@index([website_id], name: "event_website_id_idx")
 }
 
 model pageview {
@@ -32,6 +44,8 @@ model pageview {
   website    website   @relation(fields: [website_id], references: [website_id])
 
   @@index([created_at], name: "pageview_created_at_idx")
+  @@index([session_id], name: "pageview_session_id_idx")
+  @@index([website_id], name: "pageview_website_id_idx")
 }
 
 model session {
@@ -50,13 +64,16 @@ model session {
   pageview     pageview[]
 
   @@index([created_at], name: "session_created_at_idx")
+  @@index([website_id], name: "session_website_id_idx")
 }
 
 model website {
   created_at   DateTime?  @default(now())
   hostname     String
+  user_id      Int
   website_id   Int        @default(autoincrement()) @id
   website_uuid String     @unique
+  account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]
   session      session[]

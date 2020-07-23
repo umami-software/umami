@@ -1,14 +1,14 @@
-import { parseSession } from 'lib/utils';
 import { savePageView, saveEvent } from 'lib/db';
 import { allowPost } from 'lib/middleware';
 import checkSession from 'lib/session';
+import { createToken } from 'lib/crypto';
 
 export default async (req, res) => {
   await allowPost(req, res);
 
   const session = await checkSession(req);
 
-  const { website_id, session_id } = parseSession(session);
+  const { website_id, session_id } = session;
   const { type, payload } = req.body;
   let ok = 1;
 
@@ -26,5 +26,7 @@ export default async (req, res) => {
     });
   }
 
-  res.status(200).json({ ok, session });
+  const token = await createToken(session);
+
+  res.status(200).json({ ok, session: token });
 };

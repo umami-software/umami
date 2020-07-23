@@ -1,18 +1,21 @@
 import { serialize } from 'cookie';
-import { hash, random, encrypt } from 'lib/crypto';
+import { checkPassword, createToken, secret } from 'lib/crypto';
+import { getAccount } from 'lib/db';
 
-export default (req, res) => {
-  const { password } = req.body;
+export default async (req, res) => {
+  const { username, password } = req.body;
 
-  if (password === process.env.PASSWORD) {
+  const account = await getAccount(username);
+
+  if (account && (await checkPassword(password, account.password))) {
+    const { user_id, username, is_admin } = account;
+    const token = await createToken({ user_id, username, is_admin });
     const expires = new Date(Date.now() + 31536000000);
-    const id = random();
-    const value = encrypt(`${id}:${hash(id)}`);
-
-    const cookie = serialize('umami.auth', value, { expires, httpOnly: true });
+    const cookie = serialize('umami.auth', token, { expires, httpOnly: true });
 
     res.setHeader('Set-Cookie', [cookie]);
-    res.status(200).send('');
+
+    res.status(200).send({ token });
   } else {
     res.status(401).send('');
   }
