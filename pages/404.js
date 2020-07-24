@@ -1,10 +1,10 @@
 import React from 'react';
-import Layout from 'components/layout';
+import Layout from 'components/Layout';
 
 export default function Custom404() {
   return (
-    <Layout title="404 - Page Not Found">
-      <h1>oops</h1>
+    <Layout>
+      <h1>oops! not found</h1>
     </Layout>
   );
 }

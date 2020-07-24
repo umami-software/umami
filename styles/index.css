@@ -1,8 +1,8 @@
 html,
 body {
   font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 17px;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.8;
   padding: 0;
   margin: 0;
@@ -22,4 +22,18 @@ body {
   flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+header a {
+  color: #000;
+  text-decoration: none;
+}
+
+form label {
+  display: inline-block;
+  min-width: 100px;
+}
+
+form input {
+  margin-right: 10px;
 }

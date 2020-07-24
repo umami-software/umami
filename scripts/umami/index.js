@@ -1,5 +1,6 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
+import { post } from 'lib/web';
 
 ((window, sessionKey) => {
   const {
@@ -19,19 +20,6 @@ import 'unfetch/polyfill';
 
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
-
-  /* Helper methods */
-
-  const post = (url, params) =>
-    fetch(url, {
-      method: 'post',
-      cache: 'no-cache',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    }).then(res => res.json());
 
   const collect = (type, params) => {
     const payload = {
@@ -53,7 +41,7 @@ import 'unfetch/polyfill';
     return post(`${hostUrl}/api/collect`, {
       type,
       payload,
-    }).then(({ ok, session }) => ok && session && store.setItem(sessionKey, session));
+    }).then(({ session }) => session && store.setItem(sessionKey, session));
   };
 
   const pageView = () => collect('pageview').then(() => setTimeout(loadEvents, 300));

@@ -7,6 +7,6 @@ export default async (req, res) => {
     const payload = await verifySecureToken(token);
     res.status(200).send(payload);
   } catch {
-    res.status(400).send('');
+    res.status(400).end();
   }
 };
