@@ -4,7 +4,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'scripts/umami/index.js',
+  input: 'tracker/index.js',
   output: {
     file: 'public/umami.js',
     format: 'iife',

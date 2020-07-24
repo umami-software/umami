@@ -2,7 +2,7 @@ const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
 
-const exec = async () => {
+module.exports = async () => {
   const account = await prisma.account.findOne({
     where: {
       username: 'admin',
@@ -21,8 +21,4 @@ const exec = async () => {
   } else {
     console.log('Account already exists.');
   }
-
-  process.exit(0);
 };
-
-exec();

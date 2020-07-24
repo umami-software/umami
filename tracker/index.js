@@ -1,6 +1,6 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
-import { post } from 'lib/web';
+import { post, hook } from '../lib/web';
 
 ((window, sessionKey) => {
   const {
@@ -57,19 +57,8 @@ import { post } from 'lib/web';
     pageView();
   };
 
-  const hook = (type, cb) => {
-    const orig = history[type];
-    return (state, title, url) => {
-      const args = [state, title, url];
-
-      cb.apply(null, args);
-
-      return orig.apply(history, args);
-    };
-  };
-
-  history.pushState = hook('pushState', handlePush);
-  history.replaceState = hook('replaceState', handlePush);
+  history.pushState = hook(history, 'pushState', handlePush);
+  history.replaceState = hook(history, 'replaceState', handlePush);
 
   /* Handle events */
 
