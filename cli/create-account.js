@@ -1,8 +1,6 @@
-const { PrismaClient } = require('@prisma/client');
+import { prisma } from '../lib/db';
 
-const prisma = new PrismaClient();
-
-module.exports = async () => {
+export default async () => {
   const account = await prisma.account.findOne({
     where: {
       username: 'admin',

@@ -69,7 +69,7 @@ model session {
 
 model website {
   created_at   DateTime?  @default(now())
-  hostname     String
+  label        String
   user_id      Int
   website_id   Int        @default(autoincrement()) @id
   website_uuid String     @unique

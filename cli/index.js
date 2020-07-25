@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
-const yargs = require('yargs');
-const chalk = require('chalk');
-const createAccount = require('./create-account');
+import 'dotenv/config';
+import yargs from 'yargs';
+import chalk from 'chalk';
+import createAccount from './create-account';
 
 const cmd = yargs.usage('Usage: umami <command> [arguments]').help('h').alias('h', 'help');
 
@@ -19,7 +19,9 @@ const exec = async () => {
     cmd.showHelp();
   }
 
-  process.exit(0);
+  console.log(chalk.green('Finished.'));
 };
 
-exec();
+exec().then(() => {
+  process.exit(0);
+});

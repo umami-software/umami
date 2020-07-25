@@ -11,15 +11,16 @@
   },
   "main": "index.js",
   "bin": {
-    "umami": "cli/index.js"
+    "umami": "cli.js"
   },
   "scripts": {
-    "dev": "next dev -p 8000",
+    "dev": "cross-env LOG_QUERY=1 next dev -p 8000",
     "build": "next build",
     "start": "next start",
-    "build-tracker": "rollup -c",
-    "build-schema": "dotenv prisma introspect",
-    "build-client": "dotenv prisma generate",
+    "build-cli": "rollup -c rollup.cli.config.js",
+    "build-tracker": "rollup -c rollup.tracker.config.js",
+    "build-db-schema": "dotenv prisma introspect",
+    "build-db-client": "dotenv prisma generate",
     "create-account": "node cli/create-account.js"
   },
   "lint-staged": {
@@ -66,9 +67,11 @@
   "devDependencies": {
     "@prisma/cli": "2.2.2",
     "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-replace": "^2.3.3",
     "@svgr/webpack": "^5.4.0",
+    "cross-env": "^7.0.2",
     "dotenv-cli": "^3.2.0",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -84,6 +87,7 @@
     "prettier": "^2.0.5",
     "prettier-eslint": "^10.1.1",
     "rollup": "^2.21.0",
+    "rollup-plugin-hashbang": "^2.2.2",
     "rollup-plugin-terser": "^6.1.0",
     "stylelint": "^13.6.0",
     "stylelint-config-css-modules": "^2.2.0",
