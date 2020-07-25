@@ -1,11 +1,8 @@
 import { serialize } from 'cookie';
 import { checkPassword, createSecureToken } from 'lib/crypto';
 import { getAccount } from 'lib/db';
-import { allowPost } from 'lib/middleware';
 
 export default async (req, res) => {
-  await allowPost(req, res);
-
   const { username, password } = req.body;
 
   const account = await getAccount(username);
@@ -21,7 +18,7 @@ export default async (req, res) => {
 
     res.setHeader('Set-Cookie', [cookie]);
 
-    res.status(200).send({ token });
+    res.status(200).json({ token });
   } else {
     res.status(401).end();
   }

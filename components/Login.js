@@ -23,7 +23,7 @@ export default function Login() {
     const response = await post('/api/auth', { username, password });
 
     if (response?.token) {
-      await Router.push('/admin');
+      await Router.push('/');
     } else {
       setMessage('Incorrect username/password.');
     }

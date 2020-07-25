@@ -1,10 +1,10 @@
 import { savePageView, saveEvent } from 'lib/db';
-import { allowPost } from 'lib/middleware';
+import { useCors } from 'lib/middleware';
 import checkSession from 'lib/session';
 import { createToken } from 'lib/crypto';
 
 export default async (req, res) => {
-  await allowPost(req, res);
+  await useCors(req, res);
 
   const session = await checkSession(req);
 
