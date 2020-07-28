@@ -1,38 +1,28 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import ChartJS from 'chart.js';
-import { get } from 'lib/web';
-import { getTimezone, getLocalTime } from 'lib/date';
+import { getLocalTime } from 'lib/date';
 
-export default function Chart({ websiteId, startDate, endDate }) {
-  const [data, setData] = useState();
+export default function PageviewsChart({ data }) {
   const canvas = useRef();
   const chart = useRef();
-  const metrics = useMemo(() => {
+  const pageviews = useMemo(() => {
     if (data) {
       return data.pageviews.map(({ t, y }) => ({ t: getLocalTime(t), y }));
     }
+    return [];
   }, [data]);
-  console.log(metrics);
-
-  async function loadData() {
-    setData(
-      await get(`/api/website/${websiteId}/pageviews`, {
-        start_at: +startDate,
-        end_at: +endDate,
-        tz: getTimezone(),
-      }),
-    );
-  }
 
   function draw() {
-    if (!chart.current && canvas.current) {
+    if (!canvas.current) return;
+
+    if (!chart.current) {
       chart.current = new ChartJS(canvas.current, {
         type: 'bar',
         data: {
           datasets: [
             {
               label: 'page views',
-              data: Object.values(metrics),
+              data: pageviews,
               lineTension: 0,
               backgroundColor: 'rgb(38, 128, 235, 0.1)',
               borderColor: 'rgb(13, 102, 208, 0.2)',
@@ -74,18 +64,17 @@ export default function Chart({ websiteId, startDate, endDate }) {
           },
         },
       });
+    } else {
+      chart.current.data.datasets[0].data = pageviews;
+      chart.current.update();
     }
   }
 
   useEffect(() => {
-    loadData();
-  }, []);
-
-  useEffect(() => {
-    if (metrics) {
+    if (data) {
       draw();
     }
-  }, [metrics]);
+  }, [data]);
 
   return (
     <div>

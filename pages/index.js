@@ -2,9 +2,10 @@ import React from 'react';
 import Link from 'next/link';
 import { parse } from 'cookie';
 import Layout from 'components/Layout';
-import Chart from 'components/Chart';
+import PageviewsChart from 'components/PageviewsChart';
 import { verifySecureToken } from 'lib/crypto';
 import { subDays, endOfDay } from 'date-fns';
+import WebsiteList from '../components/WebsiteList';
 
 export default function HomePage({ username }) {
   return (
@@ -12,8 +13,9 @@ export default function HomePage({ username }) {
       <h2>
         You've successfully logged in as <b>{username}</b>.
       </h2>
+      <WebsiteList />
       <div>
-        <Chart
+        <PageviewsChart
           websiteId={3}
           startDate={subDays(endOfDay(new Date()), 6)}
           endDate={endOfDay(new Date())}
