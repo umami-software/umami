@@ -1,13 +1,12 @@
 import { savePageView, saveEvent } from 'lib/db';
-import { useCors } from 'lib/middleware';
-import checkSession from 'lib/session';
+import { useCors, useSession } from 'lib/middleware';
 import { createToken } from 'lib/crypto';
 
 export default async (req, res) => {
   await useCors(req, res);
+  await useSession(req, res);
 
-  const session = await checkSession(req);
-
+  const { session } = req;
   const token = await createToken(session);
   const { website_id, session_id } = session;
   const { type, payload } = req.body;

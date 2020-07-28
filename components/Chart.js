@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import ChartJS from 'chart.js';
-import { format, subDays, subHours, startOfHour } from 'date-fns';
 import { get } from 'lib/web';
+import { getTimezone, getLocalTime } from 'lib/date';
 
 export default function Chart({ websiteId, startDate, endDate }) {
   const [data, setData] = useState();
@@ -9,21 +9,7 @@ export default function Chart({ websiteId, startDate, endDate }) {
   const chart = useRef();
   const metrics = useMemo(() => {
     if (data) {
-      const points = {};
-      const now = startOfHour(new Date());
-
-      for (let i = 0; i <= 168; i++) {
-        const d = new Date(subHours(now, 168 - i));
-        const key = format(d, 'yyyy-MM-dd-HH');
-        points[key] = { t: startOfHour(d).toISOString(), y: 0 };
-      }
-
-      data.pageviews.forEach(e => {
-        const key = format(new Date(e.created_at), 'yyyy-MM-dd-HH');
-        points[key].y += 1;
-      });
-
-      return points;
+      return data.pageviews.map(({ t, y }) => ({ t: getLocalTime(t), y }));
     }
   }, [data]);
   console.log(metrics);
@@ -31,8 +17,9 @@ export default function Chart({ websiteId, startDate, endDate }) {
   async function loadData() {
     setData(
       await get(`/api/website/${websiteId}/pageviews`, {
-        start_at: startDate,
-        end_at: endDate,
+        start_at: +startDate,
+        end_at: +endDate,
+        tz: getTimezone(),
       }),
     );
   }
@@ -47,6 +34,9 @@ export default function Chart({ websiteId, startDate, endDate }) {
               label: 'page views',
               data: Object.values(metrics),
               lineTension: 0,
+              backgroundColor: 'rgb(38, 128, 235, 0.1)',
+              borderColor: 'rgb(13, 102, 208, 0.2)',
+              borderWidth: 1,
             },
           ],
         },
@@ -65,18 +55,12 @@ export default function Chart({ websiteId, startDate, endDate }) {
               {
                 type: 'time',
                 distribution: 'series',
+                offset: true,
                 time: {
-                  unit: 'hour',
                   displayFormats: {
-                    hour: 'ddd M/DD',
+                    day: 'ddd M/DD',
                   },
                   tooltipFormat: 'ddd M/DD hA',
-                },
-                ticks: {
-                  autoSkip: true,
-                  minRotation: 0,
-                  maxRotation: 0,
-                  maxTicksLimit: 7,
                 },
               },
             ],

@@ -1,10 +1,15 @@
-import { getPageviews } from 'lib/db';
+import { getPageviewData } from 'lib/db';
+import { useAuth } from 'lib/middleware';
 
 export default async (req, res) => {
-  console.log(req.query);
-  const { id, start_at, end_at } = req.query;
+  await useAuth(req, res);
 
-  const pageviews = await getPageviews(+id, new Date(+start_at), new Date(+end_at));
+  const { id, start_at, end_at, tz } = req.query;
 
-  res.status(200).json({ pageviews });
+  const [pageviews, uniques] = await Promise.all([
+    getPageviewData(+id, new Date(+start_at), new Date(+end_at), tz, 'day', '*'),
+    getPageviewData(+id, new Date(+start_at), new Date(+end_at), tz, 'day', 'distinct session_id'),
+  ]);
+
+  res.status(200).json({ pageviews, uniques });
 };

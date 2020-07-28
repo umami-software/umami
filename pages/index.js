@@ -1,9 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import cookies from 'next-cookies';
+import { parse } from 'cookie';
 import Layout from 'components/Layout';
 import Chart from 'components/Chart';
 import { verifySecureToken } from 'lib/crypto';
+import { subDays, endOfDay } from 'date-fns';
 
 export default function HomePage({ username }) {
   return (
@@ -14,8 +15,8 @@ export default function HomePage({ username }) {
       <div>
         <Chart
           websiteId={3}
-          startDate={Date.now() - 1000 * 60 * 60 * 24 * 7}
-          endDate={Date.now()}
+          startDate={subDays(endOfDay(new Date()), 6)}
+          endDate={endOfDay(new Date())}
         />
       </div>
       <Link href="/logout">
@@ -25,8 +26,8 @@ export default function HomePage({ username }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const token = cookies(context)['umami.auth'];
+export async function getServerSideProps({ req, res }) {
+  const token = parse(req.headers.cookie)['umami.auth'];
 
   try {
     const payload = await verifySecureToken(token);
@@ -37,8 +38,6 @@ export async function getServerSideProps(context) {
       },
     };
   } catch {
-    const { res } = context;
-
     res.statusCode = 303;
     res.setHeader('Location', '/login');
     res.end();
