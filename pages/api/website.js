@@ -8,5 +8,5 @@ export default async (req, res) => {
 
   const websites = await getWebsites(user_id);
 
-  res.status(200).json({ websites });
+  return res.status(200).json({ websites });
 };

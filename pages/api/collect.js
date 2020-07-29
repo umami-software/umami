@@ -26,5 +26,5 @@ export default async (req, res) => {
     ok = true;
   }
 
-  res.status(200).json({ ok, session: token });
+  return res.status(200).json({ ok, session: token });
 };

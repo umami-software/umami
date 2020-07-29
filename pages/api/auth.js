@@ -18,8 +18,8 @@ export default async (req, res) => {
 
     res.setHeader('Set-Cookie', [cookie]);
 
-    res.status(200).json({ token });
-  } else {
-    res.status(401).end();
+    return res.status(200).json({ token });
   }
+
+  return res.status(401).end();
 };

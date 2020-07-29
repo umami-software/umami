@@ -9,5 +9,5 @@ export default async (req, res) => {
 
   const pageviews = await getPageviews(+id, new Date(+start_at), new Date(+end_at));
 
-  res.status(200).json({ pageviews });
+  return res.status(200).json({ pageviews });
 };

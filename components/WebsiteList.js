@@ -26,7 +26,7 @@ export default function WebsiteList() {
       <DateFilter onChange={handleDateChange} />
       {data &&
         data.websites.map(({ website_id, label }) => (
-          <div>
+          <div key={website_id}>
             <h2>{label}</h2>
             <WebsiteStats
               websiteId={website_id}

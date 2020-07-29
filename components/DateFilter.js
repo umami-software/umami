@@ -15,7 +15,9 @@ export default function DateFilter({ onChange }) {
   return (
     <select value={selected} onChange={handleChange}>
       {filterOptions.map(option => (
-        <option name={option}>{option}</option>
+        <option key={option} name={option}>
+          {option}
+        </option>
       ))}
     </select>
   );

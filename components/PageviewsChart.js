@@ -1,16 +1,9 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useRef, useEffect } from 'react';
 import ChartJS from 'chart.js';
-import { getLocalTime } from 'lib/date';
 
 export default function PageviewsChart({ data }) {
   const canvas = useRef();
   const chart = useRef();
-  const pageviews = useMemo(() => {
-    if (data) {
-      return data.pageviews.map(({ t, y }) => ({ t: getLocalTime(t), y }));
-    }
-    return [];
-  }, [data]);
 
   function draw() {
     if (!canvas.current) return;
@@ -21,11 +14,19 @@ export default function PageviewsChart({ data }) {
         data: {
           datasets: [
             {
-              label: 'page views',
-              data: pageviews,
+              label: 'unique visitors',
+              data: data.uniques,
               lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.1)',
-              borderColor: 'rgb(13, 102, 208, 0.2)',
+              backgroundColor: 'rgb(146, 86, 217, 0.2)',
+              borderColor: 'rgb(122, 66, 191, 0.3)',
+              borderWidth: 1,
+            },
+            {
+              label: 'page views',
+              data: data.pageviews,
+              lineTension: 0,
+              backgroundColor: 'rgb(38, 128, 235, 0.2)',
+              borderColor: 'rgb(13, 102, 208, 0.3)',
               borderWidth: 1,
             },
           ],
@@ -52,6 +53,10 @@ export default function PageviewsChart({ data }) {
                   },
                   tooltipFormat: 'ddd M/DD hA',
                 },
+                gridLines: {
+                  display: false,
+                },
+                stacked: true,
               },
             ],
             yAxes: [
@@ -59,13 +64,15 @@ export default function PageviewsChart({ data }) {
                 ticks: {
                   beginAtZero: true,
                 },
+                stacked: true,
               },
             ],
           },
         },
       });
     } else {
-      chart.current.data.datasets[0].data = pageviews;
+      chart.current.data.datasets[0].data = data.uniques;
+      chart.current.data.datasets[1].data = data.pageviews;
       chart.current.update();
     }
   }
