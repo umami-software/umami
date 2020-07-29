@@ -1,0 +1,56 @@
+.chart {
+  position: relative;
+}
+
+.tooltip {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+  text-align: center;
+  width: 150px;
+  height: 50px;
+  transform: translate(-50%, -60px);
+}
+
+.content:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background: #000;
+  opacity: 0.05;
+  border-radius: 10px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.metric {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  border: 1px solid #fff;
+  margin-right: 10px;
+}
