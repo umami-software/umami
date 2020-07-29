@@ -29,7 +29,7 @@ export default function HomePage({ username }) {
 }
 
 export async function getServerSideProps({ req, res }) {
-  const token = parse(req.headers.cookie)['umami.auth'];
+  const token = parse(req.headers.cookie || '')['umami.auth'];
 
   try {
     const payload = await verifySecureToken(token);

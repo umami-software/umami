@@ -33,7 +33,7 @@ export default function WebsiteStats({ websiteId, startDate, endDate, unit }) {
 
   return (
     <div>
-      <WebsiteSummary data={{ pageviews, uniques }} />
+      <WebsiteSummary websiteId={websiteId} startDate={startDate} endDate={endDate} />
       <PageviewsChart data={{ pageviews, uniques }} unit={unit} />
     </div>
   );
