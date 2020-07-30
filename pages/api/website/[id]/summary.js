@@ -13,5 +13,10 @@ export default async (req, res) => {
     format(new Date(+end_at), 'yyyy-MM-dd hh:mm:ss'),
   );
 
-  return res.status(200).json(summary[0]);
+  const stats = Object.keys(summary[0]).reduce((obj, key) => {
+    obj[key] = +summary[0][key];
+    return obj;
+  }, {});
+
+  return res.status(200).json(stats);
 };
