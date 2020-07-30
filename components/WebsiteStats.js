@@ -3,8 +3,9 @@ import PageviewsChart from './PageviewsChart';
 import { get } from 'lib/web';
 import { getDateArray, getTimezone } from 'lib/date';
 import WebsiteSummary from './WebsiteSummary';
+import styles from './WebsiteStats.module.css';
 
-export default function WebsiteStats({ websiteId, startDate, endDate, unit }) {
+export default function WebsiteStats({ title, websiteId, startDate, endDate, unit }) {
   const [data, setData] = useState();
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -32,7 +33,8 @@ export default function WebsiteStats({ websiteId, startDate, endDate, unit }) {
   }, [websiteId, startDate, endDate, unit]);
 
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.title}>{title}</div>
       <WebsiteSummary websiteId={websiteId} startDate={startDate} endDate={endDate} />
       <PageviewsChart data={{ pageviews, uniques }} unit={unit} />
     </div>

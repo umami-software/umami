@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { getDateRange } from 'lib/date';
 
-const filterOptions = ['24h', '7d', '30d'];
+const filterOptions = ['24hour', '7day', '30day', '60day', '90day'];
 
 export default function DateFilter({ onChange }) {
-  const [selected, setSelected] = useState('7d');
+  const [selected, setSelected] = useState('7day');
 
   function handleChange(e) {
     const value = e.target.value;
@@ -15,7 +15,7 @@ export default function DateFilter({ onChange }) {
   return (
     <select value={selected} onChange={handleChange}>
       {filterOptions.map(option => (
-        <option key={option} name={option}>
+        <option key={option} value={option}>
           {option}
         </option>
       ))}

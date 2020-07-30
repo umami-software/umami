@@ -11,10 +11,11 @@ export default function PageviewsChart({ data, unit }) {
   const renderLabel = useCallback(
     (label, index, values) => {
       const d = new Date(values[index].value);
+      const n = data.pageviews.length;
       switch (unit) {
         case 'day':
-          if (data.pageviews.length > 7) {
-            return index % 2 !== 0 ? format(d, 'MMM d') : '';
+          if (n > 7) {
+            return index % (n / 15) === 0 ? format(d, 'MMM d') : '';
           }
           return format(d, 'EEE M/d');
         default:
