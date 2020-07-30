@@ -24,7 +24,11 @@ export default function WebsiteSummary({ websiteId, startDate, endDate }) {
     <div className={styles.container}>
       <MetricCard label="Views" value={pageviews} />
       <MetricCard label="Visitors" value={uniques} />
-      <MetricCard label="Bounce rate" value={`${~~((bounces / uniques) * 100)}%`} />
+      <MetricCard
+        label="Bounce rate"
+        value={uniques ? (bounces / uniques) * 100 : 0}
+        format={n => Number(n).toFixed(0) + '%'}
+      />
     </div>
   );
 }

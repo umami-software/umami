@@ -26,7 +26,6 @@ export default function PageviewsChart({ data, unit }) {
 
   const renderTooltip = model => {
     const { caretX, caretY, opacity, title, body, labelColors } = model;
-    console.log(model);
 
     if (!opacity) {
       setTooltip({ opacity });
