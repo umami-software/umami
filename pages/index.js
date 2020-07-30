@@ -10,9 +10,6 @@ import WebsiteList from '../components/WebsiteList';
 export default function HomePage({ username }) {
   return (
     <Layout>
-      <h2>
-        You've successfully logged in as <b>{username}</b>.
-      </h2>
       <WebsiteList />
       <div>
         <PageviewsChart

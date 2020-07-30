@@ -1,0 +1,20 @@
+.buttons {
+  display: flex;
+}
+
+.button {
+  font-size: 12px;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #eaeaea;
+}
+
+.active {
+  font-weight: 600;
+}

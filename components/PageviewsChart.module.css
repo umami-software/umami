@@ -19,6 +19,7 @@
   width: 150px;
   height: 50px;
   transform: translate(-50%, -60px);
+  backdrop-filter: blur(4px);
 }
 
 .content:after {
@@ -52,5 +53,5 @@
   height: 10px;
   border-radius: 100%;
   border: 1px solid #fff;
-  margin-right: 10px;
+  margin-right: 8px;
 }

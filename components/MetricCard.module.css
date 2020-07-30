@@ -8,6 +8,7 @@
 .value {
   font-size: 36px;
   line-height: 40px;
+  min-height: 40px;
   font-weight: 600;
 }
 

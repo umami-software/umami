@@ -8,3 +8,10 @@
   line-height: 60px;
   font-weight: 600;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
