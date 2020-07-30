@@ -46,6 +46,7 @@
     "cookie": "^0.4.1",
     "cors": "^2.8.5",
     "date-fns": "^2.14.0",
+    "date-fns-tz": "^1.0.10",
     "detect-browser": "^5.1.1",
     "dotenv": "^8.2.0",
     "formik": "^2.1.5",

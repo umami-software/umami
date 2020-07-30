@@ -15,7 +15,7 @@ export default function PageviewsChart({ data, unit }) {
       switch (unit) {
         case 'day':
           if (n > 7) {
-            return index % (n / 15) === 0 ? format(d, 'MMM d') : '';
+            return index % ~~(n / 15) === 0 ? format(d, 'MMM d') : '';
           }
           return format(d, 'EEE M/d');
         default:

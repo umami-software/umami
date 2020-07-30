@@ -11,9 +11,12 @@ export default async (req, res) => {
     return res.status(400).end();
   }
 
+  const start = new Date(+start_at);
+  const end = new Date(+end_at);
+
   const [pageviews, uniques] = await Promise.all([
-    getPageviewData(+id, new Date(+start_at), new Date(+end_at), tz, unit, '*'),
-    getPageviewData(+id, new Date(+start_at), new Date(+end_at), tz, unit, 'distinct session_id'),
+    getPageviewData(+id, start, end, tz, unit, '*'),
+    getPageviewData(+id, start, end, tz, unit, 'distinct session_id'),
   ]);
 
   return res.status(200).json({ pageviews, uniques });
