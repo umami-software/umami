@@ -12,12 +12,15 @@ export default function PageviewsChart({ data, unit, children }) {
     (label, index, values) => {
       const d = new Date(values[index].value);
       const n = data.pageviews.length;
+
       switch (unit) {
         case 'day':
           if (n >= 15) {
             return index % ~~(n / 15) === 0 ? format(d, 'MMM d') : '';
           }
           return format(d, 'EEE M/d');
+        case 'month':
+          return format(d, 'MMMM');
         default:
           return label;
       }

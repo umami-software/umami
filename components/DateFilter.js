@@ -10,6 +10,7 @@ const filterOptions = [
   { label: 'Today', value: '1day' },
   { label: 'This week', value: '1week' },
   { label: 'This month', value: '1month' },
+  { label: 'This year', value: '1year' },
 ];
 
 export default function DateFilter({ value, onChange }) {

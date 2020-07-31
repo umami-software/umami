@@ -7,7 +7,7 @@ export default async (req, res) => {
 
   const { id, start_at, end_at, unit, tz } = req.query;
 
-  if (!moment.tz.zone(tz) || !['hour', 'day'].includes(unit)) {
+  if (!moment.tz.zone(tz) || !['month', 'hour', 'day'].includes(unit)) {
     return res.status(400).end();
   }
 
