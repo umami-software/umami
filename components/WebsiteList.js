@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get } from 'lib/web';
 import WebsiteChart from './WebsiteChart';
-import DateFilter from './DateFilter';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList() {

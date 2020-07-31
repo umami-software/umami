@@ -9,13 +9,15 @@ export default function DropDown({ value, options = [], onChange }) {
     setShowMenu(state => !state);
   }
 
-  function handleSelect(value) {
+  function handleSelect(value, e) {
+    e.stopPropagation();
+    setShowMenu(false);
     onChange(value);
   }
 
   useEffect(() => {
     function hideMenu(e) {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (!ref.current.contains(e.target)) {
         setShowMenu(false);
       }
     }

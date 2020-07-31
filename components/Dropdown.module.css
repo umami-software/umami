@@ -18,13 +18,13 @@
   margin-top: 4px;
   border: 1px solid #b3b3b3;
   border-radius: 4px;
+  overflow: hidden;
   z-index: 1;
 }
 
 .option {
   background: #fff;
   padding: 4px 8px;
-  border-radius: 4px;
   cursor: pointer;
 }
 

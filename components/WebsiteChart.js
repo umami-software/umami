@@ -10,7 +10,7 @@ import DateFilter from './DateFilter';
 export default function WebsiteChart({ title, websiteId }) {
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange('7day'));
-  const { startDate, endDate, unit } = dateRange;
+  const { startDate, endDate, unit, value } = dateRange;
 
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -46,10 +46,10 @@ export default function WebsiteChart({ title, websiteId }) {
       <div className={styles.title}>{title}</div>
       <div className={styles.header}>
         <MetricsBar websiteId={websiteId} startDate={startDate} endDate={endDate} />
-        <DateFilter value={dateRange.value} onChange={handleDateChange} />
+        <DateFilter value={value} onChange={handleDateChange} />
       </div>
       <PageviewsChart data={{ pageviews, uniques }} unit={unit}>
-        <QuickButtons value={dateRange.value} onChange={handleDateChange} />
+        <QuickButtons value={value} onChange={handleDateChange} />
       </PageviewsChart>
     </div>
   );
