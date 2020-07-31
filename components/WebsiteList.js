@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { get } from 'lib/web';
-import WebsiteStats from './WebsiteStats';
+import WebsiteChart from './WebsiteChart';
 import DateFilter from './DateFilter';
 import styles from './WebsiteList.module.css';
 
@@ -19,7 +19,7 @@ export default function WebsiteList() {
     <div className={styles.container}>
       {data &&
         data.websites.map(({ website_id, label }) => (
-          <WebsiteStats key={website_id} title={label} websiteId={website_id} />
+          <WebsiteChart key={website_id} title={label} websiteId={website_id} />
         ))}
     </div>
   );

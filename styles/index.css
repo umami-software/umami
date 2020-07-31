@@ -37,3 +37,9 @@ form label {
 form input {
   margin-right: 10px;
 }
+
+select {
+  padding: 4px 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+}

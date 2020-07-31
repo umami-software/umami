@@ -1,0 +1,46 @@
+.dropdown {
+  position: relative;
+  font-size: 12px;
+  min-width: 140px;
+}
+
+.value {
+  padding: 4px 24px 4px 8px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.menu {
+  position: absolute;
+  min-width: 100px;
+  top: 100%;
+  margin-top: 4px;
+  border: 1px solid #b3b3b3;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.option {
+  background: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #eaeaea;
+}
+
+.caret {
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  border-right: 2px solid #8e8e8e;
+  border-bottom: 2px solid #8e8e8e;
+  transform: rotate(45deg);
+  top: -4px;
+  bottom: 0;
+  right: 8px;
+  margin: auto;
+}

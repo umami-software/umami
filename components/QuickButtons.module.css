@@ -1,5 +1,9 @@
 .buttons {
   display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: auto;
 }
 
 .button {
@@ -9,6 +13,10 @@
   border-radius: 4px;
   margin-right: 10px;
   cursor: pointer;
+}
+
+.button:last-child {
+  margin-right: 0;
 }
 
 .button:hover {

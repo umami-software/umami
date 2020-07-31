@@ -1,24 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getDateRange } from 'lib/date';
+import DropDown from './DropDown';
 
-const filterOptions = ['24hour', '7day', '30day', '60day', '90day'];
+const filterOptions = [
+  { label: 'Last 24 hours', value: '24hour' },
+  { label: 'Last 7 days', value: '7day' },
+  { label: 'Last 30 days', value: '30day' },
+  { label: 'Last 90 days', value: '90day' },
+];
 
-export default function DateFilter({ onChange }) {
-  const [selected, setSelected] = useState('7day');
-
-  function handleChange(e) {
-    const value = e.target.value;
-    setSelected(value);
+export default function DateFilter({ value, onChange }) {
+  function handleChange(value) {
     onChange(getDateRange(value));
   }
 
-  return (
-    <select value={selected} onChange={handleChange}>
-      {filterOptions.map(option => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
-  );
+  return <DropDown value={value} options={filterOptions} onChange={handleChange} />;
 }

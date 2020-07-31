@@ -3,7 +3,7 @@ import ChartJS from 'chart.js';
 import { format } from 'date-fns';
 import styles from './PageviewsChart.module.css';
 
-export default function PageviewsChart({ data, unit }) {
+export default function PageviewsChart({ data, unit, children }) {
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
@@ -138,6 +138,7 @@ export default function PageviewsChart({ data, unit }) {
     <div className={styles.chart}>
       <canvas ref={canvas} width={960} height={400} />
       <Tootip {...tooltip} />
+      {children}
     </div>
   );
 }

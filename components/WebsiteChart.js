@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PageviewsChart from './PageviewsChart';
 import { get } from 'lib/web';
 import { getDateArray, getDateRange, getTimezone } from 'lib/date';
-import WebsiteSummary from './WebsiteSummary';
+import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
-import styles from './WebsiteStats.module.css';
+import styles from './WebsiteChart.module.css';
+import DateFilter from './DateFilter';
 
-export default function WebsiteStats({ title, websiteId }) {
+export default function WebsiteChart({ title, websiteId }) {
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange('7day'));
   const { startDate, endDate, unit } = dateRange;
@@ -44,10 +45,12 @@ export default function WebsiteStats({ title, websiteId }) {
     <div className={styles.container}>
       <div className={styles.title}>{title}</div>
       <div className={styles.header}>
-        <WebsiteSummary websiteId={websiteId} startDate={startDate} endDate={endDate} />
-        <QuickButtons onChange={handleDateChange} />
+        <MetricsBar websiteId={websiteId} startDate={startDate} endDate={endDate} />
+        <DateFilter value={dateRange.value} onChange={handleDateChange} />
       </div>
-      <PageviewsChart data={{ pageviews, uniques }} unit={unit} />
+      <PageviewsChart data={{ pageviews, uniques }} unit={unit}>
+        <QuickButtons value={dateRange.value} onChange={handleDateChange} />
+      </PageviewsChart>
     </div>
   );
 }

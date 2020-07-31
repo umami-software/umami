@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import MetricCard from './MetricCard';
 import { get } from '../lib/web';
 import { formatShortTime } from 'lib/format';
-import styles from './WebsiteSummary.module.css';
+import styles from './MetricsBar.module.css';
 
-export default function WebsiteSummary({ websiteId, startDate, endDate }) {
+export default function MetricsBar({ websiteId, startDate, endDate }) {
   const [data, setData] = useState({});
   const { pageviews, uniques, bounces, totaltime } = data;
 
   async function loadData() {
     setData(
-      await get(`/api/website/${websiteId}/summary`, {
+      await get(`/api/website/${websiteId}/metrics`, {
         start_at: +startDate,
         end_at: +endDate,
       }),

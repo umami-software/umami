@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { getDateRange } from 'lib/date';
 import styles from './QuickButtons.module.css';
@@ -9,11 +9,8 @@ const options = {
   '30day': '30d',
 };
 
-export default function QuickButtons({ onChange }) {
-  const [active, setActive] = useState('7day');
-
+export default function QuickButtons({ value, onChange }) {
   function handleClick(value) {
-    setActive(value);
     onChange(getDateRange(value));
   }
 
@@ -22,7 +19,7 @@ export default function QuickButtons({ onChange }) {
       {Object.keys(options).map(key => (
         <div
           key={key}
-          className={classNames(styles.button, { [styles.active]: active === key })}
+          className={classNames(styles.button, { [styles.active]: value === key })}
           onClick={() => handleClick(key)}
         >
           {options[key]}
