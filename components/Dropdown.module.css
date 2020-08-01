@@ -5,7 +5,7 @@
 }
 
 .value {
-  padding: 4px 24px 4px 8px;
+  padding: 4px 32px 4px 16px;
   border: 1px solid #b3b3b3;
   border-radius: 4px;
   cursor: pointer;
@@ -24,12 +24,12 @@
 
 .option {
   background: #fff;
-  padding: 4px 8px;
+  padding: 4px 16px;
   cursor: pointer;
 }
 
 .option:hover {
-  background: #eaeaea;
+  background: #f5f5f5;
 }
 
 .caret {
@@ -41,6 +41,6 @@
   transform: rotate(45deg);
   top: -4px;
   bottom: 0;
-  right: 8px;
+  right: 12px;
   margin: auto;
 }

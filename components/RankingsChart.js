@@ -16,7 +16,12 @@ export default function RankingsChart({
 }) {
   const [data, setData] = useState();
 
-  const rankings = useMemo(() => (data && dataFilter ? dataFilter(data) : data), [data]);
+  const rankings = useMemo(() => {
+    if (data) {
+      return (dataFilter ? dataFilter(data) : data).filter((e, i) => i < 10);
+    }
+    return [];
+  }, [data]);
 
   const total = useMemo(() => rankings?.reduce((n, { y }) => n + y, 0) || 0, [rankings]);
 
@@ -46,13 +51,16 @@ export default function RankingsChart({
         <div className={styles.title}>{title}</div>
         <div className={styles.heading}>{heading}</div>
       </div>
-      {rankings.map(({ x, y }, i) => (i <= 10 ? <Row label={x} value={y} total={total} /> : null))}
+      {rankings.map(({ x, y }) => (
+        <Row key={x} label={x} value={y} total={total} />
+      ))}
     </div>
   );
 }
 
 const Row = ({ label, value, total }) => {
-  const props = useSpring({ width: (value / total) * 100, from: { width: 0 } });
+  const pct = total ? (value / total) * 100 : 0;
+  const props = useSpring({ width: pct, from: { width: 0 } });
   const valueProps = useSpring({ y: value, from: { y: 0 } });
 
   return (

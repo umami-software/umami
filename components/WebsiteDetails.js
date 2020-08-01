@@ -6,7 +6,8 @@ import RankingsChart from './RankingsChart';
 import { getDateRange } from '../lib/date';
 import styles from './WebsiteDetails.module.css';
 
-const osFilter = data => data.map(({ x, y }) => ({ x: !x ? 'Unknown' : x, y }));
+const pageviewClasses = 'col-md-12 col-lg-6';
+const sessionClasses = 'col-12 col-lg-4';
 
 const urlFilter = data => data.filter(({ x }) => x !== '' && !x.startsWith('#'));
 
@@ -48,7 +49,7 @@ const browsers = {
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
   phantomjs: 'PhantomJS',
-  crios: 'CriOS',
+  crios: 'Chrome (iOS)',
   firefox: 'Firefox',
   fxios: 'Firefox (iOS)',
   'opera-mini': 'Opera Mini',
@@ -92,7 +93,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   return (
     <>
       <div className="row">
-        <div className="col">
+        <div className={classNames(styles.chart, 'col')}>
           <h1>{data.label}</h1>
           <WebsiteChart websiteId={data.website_id} onDateChange={handleDateChange} />
         </div>
@@ -102,7 +103,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           title="Top URLs"
           type="url"
           heading="Views"
-          className="col-12 col-md-8 col-lg-6"
+          className={pageviewClasses}
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
@@ -112,7 +113,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           title="Top referrers"
           type="referrer"
           heading="Views"
-          className="col-12 col-md-8 col-lg-6"
+          className={pageviewClasses}
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
@@ -124,7 +125,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           title="Browsers"
           type="browser"
           heading="Visitors"
-          className="col-12 col-md-8 col-lg-4"
+          className={sessionClasses}
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
@@ -134,17 +135,16 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           title="Operating system"
           type="os"
           heading="Visitors"
-          className="col-12 col-md-8 col-lg-4"
+          className={sessionClasses}
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
-          dataFilter={osFilter}
         />
         <RankingsChart
           title="Devices"
           type="screen"
           heading="Visitors"
-          className="col-12 col-md-8 col-lg-4"
+          className={sessionClasses}
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}

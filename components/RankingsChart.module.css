@@ -1,7 +1,19 @@
 .container {
   position: relative;
-  min-height: 390px;
+  min-height: 430px;
   font-size: 14px;
+  border-left: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
+  padding: 20px;
+}
+
+.container:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.container:last-child {
+  padding-right: 0;
 }
 
 .header {
@@ -29,6 +41,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 5px;
+  overflow: hidden;
 }
 
 .label {
@@ -36,6 +49,14 @@
   text-overflow: ellipsis;
   overflow: hidden;
   flex: 2;
+}
+
+.label:empty {
+  color: #b3b3b3;
+}
+
+.label:empty:before {
+  content: 'Unknown';
 }
 
 .value {
@@ -49,7 +70,7 @@
   width: 50px;
   color: #6e6e6e;
   position: relative;
-  border-left: 1px solid #6e6e6e;
+  border-left: 1px solid #8e8e8e;
   padding-left: 10px;
 }
 
@@ -60,4 +81,5 @@
   height: 30px;
   opacity: 0.1;
   background: #2680eb;
+  z-index: -1;
 }
