@@ -2,12 +2,14 @@ import moment from 'moment-timezone';
 import { getPageviewData } from 'lib/db';
 import { useAuth } from 'lib/middleware';
 
+const unitTypes = ['month', 'hour', 'day'];
+
 export default async (req, res) => {
   await useAuth(req, res);
 
   const { id, start_at, end_at, unit, tz } = req.query;
 
-  if (!moment.tz.zone(tz) || !['month', 'hour', 'day'].includes(unit)) {
+  if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
     return res.status(400).end();
   }
 

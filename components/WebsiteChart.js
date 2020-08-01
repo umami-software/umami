@@ -7,9 +7,13 @@ import QuickButtons from './QuickButtons';
 import styles from './WebsiteChart.module.css';
 import DateFilter from './DateFilter';
 
-export default function WebsiteChart({ title, websiteId }) {
+export default function WebsiteChart({
+  websiteId,
+  defaultDateRange = '7day',
+  onDateChange = () => {},
+}) {
   const [data, setData] = useState();
-  const [dateRange, setDateRange] = useState(getDateRange('7day'));
+  const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
 
   const [pageviews, uniques] = useMemo(() => {
@@ -24,6 +28,7 @@ export default function WebsiteChart({ title, websiteId }) {
 
   function handleDateChange(values) {
     setDateRange(values);
+    onDateChange(values);
   }
 
   async function loadData() {
@@ -43,7 +48,6 @@ export default function WebsiteChart({ title, websiteId }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.title}>{title}</div>
       <div className={styles.header}>
         <MetricsBar websiteId={websiteId} startDate={startDate} endDate={endDate} />
         <DateFilter value={value} onChange={handleDateChange} />

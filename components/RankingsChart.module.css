@@ -1,0 +1,38 @@
+.container {
+  position: relative;
+  min-height: 390px;
+}
+
+.row {
+  position: relative;
+  height: 30px;
+  line-height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.title {
+  font-weight: 600;
+  line-height: 40px;
+}
+
+.label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  flex: 1;
+  z-index: 1;
+}
+
+.value {
+  text-align: right;
+}
+
+.bar {
+  position: absolute;
+  height: 30px;
+  opacity: 0.1;
+  background: #2680eb;
+}
