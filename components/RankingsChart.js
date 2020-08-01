@@ -10,12 +10,13 @@ export default function RankingsChart({
   startDate,
   endDate,
   type,
+  heading,
   className,
-  filterData,
+  dataFilter,
 }) {
   const [data, setData] = useState();
 
-  const rankings = useMemo(() => (data && filterData ? filterData(data) : data), [data]);
+  const rankings = useMemo(() => (data && dataFilter ? dataFilter(data) : data), [data]);
 
   const total = useMemo(() => rankings?.reduce((n, { y }) => n + y, 0) || 0, [rankings]);
 
@@ -41,14 +42,17 @@ export default function RankingsChart({
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.title}>{title}</div>
+      <div className={styles.header}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.heading}>{heading}</div>
+      </div>
       {rankings.map(({ x, y }, i) => (i <= 10 ? <Row label={x} value={y} total={total} /> : null))}
     </div>
   );
 }
 
 const Row = ({ label, value, total }) => {
-  const props = useSpring({ width: `${(value / total) * 100}%`, from: { width: '0%' } });
+  const props = useSpring({ width: (value / total) * 100, from: { width: 0 } });
   const valueProps = useSpring({ y: value, from: { y: 0 } });
 
   return (
@@ -57,7 +61,10 @@ const Row = ({ label, value, total }) => {
       <animated.div className={styles.value}>
         {valueProps.y.interpolate(y => y.toFixed(0))}
       </animated.div>
-      <animated.div className={styles.bar} style={{ ...props }} />
+      <div className={styles.percent}>
+        <animated.div>{props.width.interpolate(y => `${y.toFixed(0)}%`)}</animated.div>
+        <animated.div className={styles.bar} style={{ ...props }} />
+      </div>
     </div>
   );
 };

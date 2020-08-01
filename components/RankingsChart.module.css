@@ -1,6 +1,24 @@
 .container {
   position: relative;
   min-height: 390px;
+  font-size: 14px;
+}
+
+.header {
+  display: flex;
+  line-height: 40px;
+}
+
+.title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.heading {
+  font-size: 14px;
+  text-align: center;
+  width: 100px;
 }
 
 .row {
@@ -13,25 +31,32 @@
   margin-bottom: 5px;
 }
 
-.title {
-  font-weight: 600;
-  line-height: 40px;
-}
-
 .label {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  flex: 1;
-  z-index: 1;
+  flex: 2;
 }
 
 .value {
+  width: 50px;
   text-align: right;
+  margin-right: 10px;
+  font-weight: 600;
+}
+
+.percent {
+  width: 50px;
+  color: #6e6e6e;
+  position: relative;
+  border-left: 1px solid #6e6e6e;
+  padding-left: 10px;
 }
 
 .bar {
   position: absolute;
+  top: 0;
+  left: 0;
   height: 30px;
   opacity: 0.1;
   background: #2680eb;

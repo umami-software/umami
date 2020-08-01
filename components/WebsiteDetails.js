@@ -18,21 +18,53 @@ const deviceFilter = data => {
     (obj, { x, y }) => {
       const [width] = x.split('x');
       if (width >= 1920) {
-        obj.desktop += +y;
+        obj.Desktop += +y;
       } else if (width >= 1024) {
-        obj.laptop += +y;
+        obj.Laptop += +y;
       } else if (width >= 767) {
-        obj.tablet += +y;
+        obj.Tablet += +y;
       } else {
-        obj.mobile += +y;
+        obj.Mobile += +y;
       }
       return obj;
     },
-    { desktop: 0, laptop: 0, tablet: 0, mobile: 0 },
+    { Desktop: 0, Laptop: 0, Tablet: 0, Mobile: 0 },
   );
 
   return Object.keys(devices).map(key => ({ x: key, y: devices[key] }));
 };
+
+const browsers = {
+  aol: 'AOL',
+  edge: 'Edge',
+  'edge-ios': 'Edge (iOS)',
+  yandexbrowser: 'Yandex',
+  kakaotalk: 'KKaoTalk',
+  samsung: 'Samsung',
+  silk: 'Silk',
+  miui: 'MIUI',
+  beaker: 'Beaker',
+  'edge-chromium': 'Edge (Chromium)',
+  chrome: 'Chrome',
+  'chromium-webview': 'Chrome (webview)',
+  phantomjs: 'PhantomJS',
+  crios: 'CriOS',
+  firefox: 'Firefox',
+  fxios: 'Firefox (iOS)',
+  'opera-mini': 'Opera Mini',
+  opera: 'Opera',
+  ie: 'IE',
+  bb10: 'BlackBerry 10',
+  android: 'Android',
+  ios: 'iOS',
+  safari: 'Safari',
+  facebook: 'Facebook',
+  instagram: 'Instagram',
+  'ios-webview': 'iOS (webview)',
+  searchbot: 'Searchbot',
+};
+
+const browserFilter = data => data.map(({ x, y }) => ({ x: browsers[x] || x, y }));
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
@@ -69,48 +101,54 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
         <RankingsChart
           title="Top URLs"
           type="url"
+          heading="Views"
           className="col-12 col-md-8 col-lg-6"
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
-          filterData={urlFilter}
+          dataFilter={urlFilter}
         />
         <RankingsChart
           title="Top referrers"
           type="referrer"
+          heading="Views"
           className="col-12 col-md-8 col-lg-6"
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
-          filterData={refFilter}
+          dataFilter={refFilter}
         />
       </div>
       <div className={classNames(styles.row, 'row justify-content-between')}>
         <RankingsChart
           title="Browsers"
           type="browser"
+          heading="Visitors"
           className="col-12 col-md-8 col-lg-4"
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
+          dataFilter={browserFilter}
         />
         <RankingsChart
           title="Operating system"
           type="os"
+          heading="Visitors"
           className="col-12 col-md-8 col-lg-4"
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
-          filterData={osFilter}
+          dataFilter={osFilter}
         />
         <RankingsChart
           title="Devices"
           type="screen"
+          heading="Visitors"
           className="col-12 col-md-8 col-lg-4"
           websiteId={data.website_id}
           startDate={startDate}
           endDate={endDate}
-          filterData={deviceFilter}
+          dataFilter={deviceFilter}
         />
       </div>
     </>

@@ -1,6 +1,6 @@
 .dropdown {
   position: relative;
-  font-size: 12px;
+  font-size: 14px;
   min-width: 140px;
 }
 
@@ -19,7 +19,7 @@
   border: 1px solid #b3b3b3;
   border-radius: 4px;
   overflow: hidden;
-  z-index: 1;
+  z-index: 2;
 }
 
 .option {
