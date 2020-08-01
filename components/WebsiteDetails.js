@@ -1,74 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { get } from 'lib/web';
 import WebsiteChart from './WebsiteChart';
 import RankingsChart from './RankingsChart';
-import { getDateRange } from '../lib/date';
+import WorldMap from './WorldMap';
+import { getDateRange } from 'lib/date';
+import { get } from 'lib/web';
+import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
 import styles from './WebsiteDetails.module.css';
 
 const pageviewClasses = 'col-md-12 col-lg-6';
 const sessionClasses = 'col-12 col-lg-4';
 
-const urlFilter = data => data.filter(({ x }) => x !== '' && !x.startsWith('#'));
-
-const refFilter = data =>
-  data.filter(({ x }) => x !== '' && !x.startsWith('/') && !x.startsWith('#'));
-
-const deviceFilter = data => {
-  const devices = data.reduce(
-    (obj, { x, y }) => {
-      const [width] = x.split('x');
-      if (width >= 1920) {
-        obj.Desktop += +y;
-      } else if (width >= 1024) {
-        obj.Laptop += +y;
-      } else if (width >= 767) {
-        obj.Tablet += +y;
-      } else {
-        obj.Mobile += +y;
-      }
-      return obj;
-    },
-    { Desktop: 0, Laptop: 0, Tablet: 0, Mobile: 0 },
-  );
-
-  return Object.keys(devices).map(key => ({ x: key, y: devices[key] }));
-};
-
-const browsers = {
-  aol: 'AOL',
-  edge: 'Edge',
-  'edge-ios': 'Edge (iOS)',
-  yandexbrowser: 'Yandex',
-  kakaotalk: 'KKaoTalk',
-  samsung: 'Samsung',
-  silk: 'Silk',
-  miui: 'MIUI',
-  beaker: 'Beaker',
-  'edge-chromium': 'Edge (Chromium)',
-  chrome: 'Chrome',
-  'chromium-webview': 'Chrome (webview)',
-  phantomjs: 'PhantomJS',
-  crios: 'Chrome (iOS)',
-  firefox: 'Firefox',
-  fxios: 'Firefox (iOS)',
-  'opera-mini': 'Opera Mini',
-  opera: 'Opera',
-  ie: 'IE',
-  bb10: 'BlackBerry 10',
-  android: 'Android',
-  ios: 'iOS',
-  safari: 'Safari',
-  facebook: 'Facebook',
-  instagram: 'Instagram',
-  'ios-webview': 'iOS (webview)',
-  searchbot: 'Searchbot',
-};
-
-const browserFilter = data => data.map(({ x, y }) => ({ x: browsers[x] || x, y }));
-
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
+  const [countryData, setCountryData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate } = dateRange;
 
@@ -149,6 +94,20 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           startDate={startDate}
           endDate={endDate}
           dataFilter={deviceFilter}
+        />
+      </div>
+      <div className="row">
+        <WorldMap data={countryData} className="col-12 col-md-12 col-lg-8" />
+        <RankingsChart
+          title="Countries"
+          type="country"
+          heading="Visitors"
+          className="col-12 col-md-12 col-lg-4"
+          websiteId={data.website_id}
+          startDate={startDate}
+          endDate={endDate}
+          dataFilter={countryFilter}
+          onDataLoad={data => setCountryData(data)}
         />
       </div>
     </>

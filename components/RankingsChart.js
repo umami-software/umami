@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
 import classNames from 'classnames';
 import { get } from 'lib/web';
+import { percentFilter } from 'lib/filters';
 import styles from './RankingsChart.module.css';
 
 export default function RankingsChart({
@@ -13,6 +14,7 @@ export default function RankingsChart({
   heading,
   className,
   dataFilter,
+  onDataLoad = () => {},
 }) {
   const [data, setData] = useState();
 
@@ -23,16 +25,17 @@ export default function RankingsChart({
     return [];
   }, [data]);
 
-  const total = useMemo(() => rankings?.reduce((n, { y }) => n + y, 0) || 0, [rankings]);
-
   async function loadData() {
-    setData(
-      await get(`/api/website/${websiteId}/rankings`, {
-        start_at: +startDate,
-        end_at: +endDate,
-        type,
-      }),
-    );
+    const data = await get(`/api/website/${websiteId}/rankings`, {
+      start_at: +startDate,
+      end_at: +endDate,
+      type,
+    });
+
+    const updated = percentFilter(data);
+
+    setData(updated);
+    onDataLoad(updated);
   }
 
   useEffect(() => {
@@ -51,26 +54,25 @@ export default function RankingsChart({
         <div className={styles.title}>{title}</div>
         <div className={styles.heading}>{heading}</div>
       </div>
-      {rankings.map(({ x, y }) => (
-        <Row key={x} label={x} value={y} total={total} />
+      {rankings.map(({ x, y, z }) => (
+        <Row key={x} label={x} value={y} percent={z} />
       ))}
     </div>
   );
 }
 
-const Row = ({ label, value, total }) => {
-  const pct = total ? (value / total) * 100 : 0;
-  const props = useSpring({ width: pct, from: { width: 0 } });
+const Row = ({ label, value, percent }) => {
+  const props = useSpring({ width: percent, from: { width: 0 } });
   const valueProps = useSpring({ y: value, from: { y: 0 } });
 
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
       <animated.div className={styles.value}>
-        {valueProps.y.interpolate(y => y.toFixed(0))}
+        {valueProps.y.interpolate(n => n.toFixed(0))}
       </animated.div>
       <div className={styles.percent}>
-        <animated.div>{props.width.interpolate(y => `${y.toFixed(0)}%`)}</animated.div>
+        <animated.div>{props.width.interpolate(n => `${n.toFixed(0)}%`)}</animated.div>
         <animated.div className={styles.bar} style={{ ...props }} />
       </div>
     </div>

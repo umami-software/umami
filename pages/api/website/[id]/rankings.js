@@ -1,7 +1,7 @@
 import { getRankings } from 'lib/db';
 import { useAuth } from 'lib/middleware';
 
-const sessionColumns = ['browser', 'os', 'screen'];
+const sessionColumns = ['browser', 'os', 'screen', 'country'];
 const pageviewColumns = ['url', 'referrer'];
 
 export default async (req, res) => {
