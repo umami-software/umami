@@ -2,18 +2,7 @@
   position: relative;
   min-height: 430px;
   font-size: 14px;
-  border-left: 1px solid #e1e1e1;
-  border-top: 1px solid #e1e1e1;
-  padding: 20px;
-}
-
-.container:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.container:last-child {
-  padding-right: 0;
+  padding: 20px 0;
 }
 
 .header {

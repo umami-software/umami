@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import classNames from 'classnames';
 import MetricCard from './MetricCard';
-import { get } from '../lib/web';
+import { get } from 'lib/web';
 import { formatShortTime } from 'lib/format';
 import styles from './MetricsBar.module.css';
 
-export default function MetricsBar({ websiteId, startDate, endDate }) {
+export default function MetricsBar({ websiteId, startDate, endDate, className }) {
   const [data, setData] = useState({});
   const { pageviews, uniques, bounces, totaltime } = data;
 
@@ -19,10 +20,10 @@ export default function MetricsBar({ websiteId, startDate, endDate }) {
 
   useEffect(() => {
     loadData();
-  }, [startDate, endDate]);
+  }, [websiteId, startDate, endDate]);
 
   return (
-    <div className={styles.container}>
+    <div className={classNames(styles.container, className)}>
       <MetricCard label="Views" value={pageviews} />
       <MetricCard label="Visitors" value={uniques} />
       <MetricCard

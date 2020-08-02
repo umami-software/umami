@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import { get } from 'lib/web';
 import { getDateArray, getDateRange, getTimezone } from 'lib/date';
@@ -6,15 +7,19 @@ import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
 import styles from './WebsiteChart.module.css';
 import DateFilter from './DateFilter';
+import useSticky from './hooks/useSticky';
 
 export default function WebsiteChart({
   websiteId,
   defaultDateRange = '7day',
+  stickHeader = false,
   onDateChange = () => {},
 }) {
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
+  const [ref, sticky] = useSticky(stickHeader);
+  const width = useRef();
 
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -46,15 +51,34 @@ export default function WebsiteChart({
     loadData();
   }, [websiteId, startDate, endDate, unit]);
 
+  useEffect(() => {
+    width.current = document.querySelector('main').offsetWidth;
+  }, [sticky]);
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <MetricsBar websiteId={websiteId} startDate={startDate} endDate={endDate} />
-        <DateFilter value={value} onChange={handleDateChange} />
+    <>
+      <div
+        ref={ref}
+        className={classNames(styles.header, 'row', { [styles.sticky]: sticky })}
+        style={{ width: sticky ? width.current : 'auto' }}
+      >
+        <MetricsBar
+          className="col-12 col-md-9 col-lg-10"
+          websiteId={websiteId}
+          startDate={startDate}
+          endDate={endDate}
+        />
+        <DateFilter
+          className="col-12 col-md-3 col-lg-2"
+          value={value}
+          onChange={handleDateChange}
+        />
       </div>
-      <PageviewsChart data={{ pageviews, uniques }} unit={unit}>
-        <QuickButtons value={value} onChange={handleDateChange} />
-      </PageviewsChart>
-    </div>
+      <div className="row">
+        <PageviewsChart className="col" data={{ pageviews, uniques }} unit={unit}>
+          <QuickButtons value={value} onChange={handleDateChange} />
+        </PageviewsChart>
+      </div>
+    </>
   );
 }

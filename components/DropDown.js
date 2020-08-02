@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import styles from './Dropdown.module.css';
 
-export default function DropDown({ value, options = [], onChange }) {
+export default function DropDown({ value, options = [], onChange, className }) {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
 
@@ -30,7 +31,7 @@ export default function DropDown({ value, options = [], onChange }) {
   }, [ref]);
 
   return (
-    <div ref={ref} className={styles.dropdown} onClick={handleShowMenu}>
+    <div ref={ref} className={classNames(styles.dropdown, className)} onClick={handleShowMenu}>
       <div className={styles.value}>
         {options.find(e => e.value === value).label}
         <div className={styles.caret} />

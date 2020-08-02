@@ -1,3 +1,17 @@
 .chart {
   margin-bottom: 30px;
 }
+
+.row {
+  border-top: 1px solid #e1e1e1;
+}
+
+.row > [class*='col-'] {
+  border-left: 1px solid #e1e1e1;
+  padding: 0 20px;
+}
+
+.row > [class*='col-']:first-child {
+  border-left: 0;
+  padding-left: 0;
+}

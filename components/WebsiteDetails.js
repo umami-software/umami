@@ -40,75 +40,83 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
           <h1>{data.label}</h1>
-          <WebsiteChart websiteId={data.website_id} onDateChange={handleDateChange} />
+          <WebsiteChart websiteId={data.website_id} onDateChange={handleDateChange} stickHeader />
         </div>
       </div>
       <div className={classNames(styles.row, 'row justify-content-between')}>
-        <RankingsChart
-          title="Top URLs"
-          type="url"
-          heading="Views"
-          className={pageviewClasses}
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-          dataFilter={urlFilter}
-        />
-        <RankingsChart
-          title="Top referrers"
-          type="referrer"
-          heading="Views"
-          className={pageviewClasses}
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-          dataFilter={refFilter}
-        />
+        <div className={pageviewClasses}>
+          <RankingsChart
+            title="Top URLs"
+            type="url"
+            heading="Views"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={urlFilter}
+          />
+        </div>
+        <div className={pageviewClasses}>
+          <RankingsChart
+            title="Top referrers"
+            type="referrer"
+            heading="Views"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={refFilter}
+          />
+        </div>
       </div>
       <div className={classNames(styles.row, 'row justify-content-between')}>
-        <RankingsChart
-          title="Browsers"
-          type="browser"
-          heading="Visitors"
-          className={sessionClasses}
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-          dataFilter={browserFilter}
-        />
-        <RankingsChart
-          title="Operating system"
-          type="os"
-          heading="Visitors"
-          className={sessionClasses}
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-        />
-        <RankingsChart
-          title="Devices"
-          type="screen"
-          heading="Visitors"
-          className={sessionClasses}
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-          dataFilter={deviceFilter}
-        />
+        <div className={sessionClasses}>
+          <RankingsChart
+            title="Browsers"
+            type="browser"
+            heading="Visitors"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={browserFilter}
+          />
+        </div>
+        <div className={sessionClasses}>
+          <RankingsChart
+            title="Operating system"
+            type="os"
+            heading="Visitors"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+          />
+        </div>
+        <div className={sessionClasses}>
+          <RankingsChart
+            title="Devices"
+            type="screen"
+            heading="Visitors"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={deviceFilter}
+          />
+        </div>
       </div>
-      <div className="row">
-        <WorldMap data={countryData} className="col-12 col-md-12 col-lg-8" />
-        <RankingsChart
-          title="Countries"
-          type="country"
-          heading="Visitors"
-          className="col-12 col-md-12 col-lg-4"
-          websiteId={data.website_id}
-          startDate={startDate}
-          endDate={endDate}
-          dataFilter={countryFilter}
-          onDataLoad={data => setCountryData(data)}
-        />
+      <div className={classNames(styles.row, 'row justify-content-between')}>
+        <div className="col-12 col-md-12 col-lg-8">
+          <WorldMap data={countryData} />
+        </div>
+        <div className="col-12 col-md-12 col-lg-4">
+          <RankingsChart
+            title="Countries"
+            type="country"
+            heading="Visitors"
+            websiteId={data.website_id}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={countryFilter}
+            onDataLoad={data => setCountryData(data)}
+          />
+        </div>
       </div>
     </>
   );

@@ -62,18 +62,15 @@ export default function RankingsChart({
 }
 
 const Row = ({ label, value, percent }) => {
-  const props = useSpring({ width: percent, from: { width: 0 } });
-  const valueProps = useSpring({ y: value, from: { y: 0 } });
+  const props = useSpring({ width: percent, y: value, from: { width: 0, y: 0 } });
 
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
-      <animated.div className={styles.value}>
-        {valueProps.y.interpolate(n => n.toFixed(0))}
-      </animated.div>
+      <animated.div className={styles.value}>{props.y.interpolate(n => n.toFixed(0))}</animated.div>
       <div className={styles.percent}>
         <animated.div>{props.width.interpolate(n => `${n.toFixed(0)}%`)}</animated.div>
-        <animated.div className={styles.bar} style={{ ...props }} />
+        <animated.div className={styles.bar} style={{ width: props.width }} />
       </div>
     </div>
   );

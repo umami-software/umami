@@ -43,3 +43,13 @@ select {
   border: 1px solid #b3b3b3;
   border-radius: 4px;
 }
+
+.row {
+  margin-right: 0;
+  margin-left: 0;
+}
+.row > .col,
+.row > [class*='col-'] {
+  padding-right: 0;
+  padding-left: 0;
+}

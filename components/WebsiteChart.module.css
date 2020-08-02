@@ -15,3 +15,13 @@
   align-items: center;
   margin-bottom: 10px;
 }
+
+.sticky {
+  position: fixed;
+  top: 0;
+  margin: auto;
+  background: #fff;
+  padding: 10px 0;
+  border-bottom: 1px solid #e1e1e1;
+  z-index: 1;
+}

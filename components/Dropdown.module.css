@@ -5,6 +5,8 @@
 }
 
 .value {
+  white-space: nowrap;
+  position: relative;
   padding: 4px 32px 4px 16px;
   border: 1px solid #b3b3b3;
   border-radius: 4px;

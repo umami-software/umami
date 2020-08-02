@@ -13,10 +13,12 @@ const filterOptions = [
   { label: 'This year', value: '1year' },
 ];
 
-export default function DateFilter({ value, onChange }) {
+export default function DateFilter({ value, onChange, className }) {
   function handleChange(value) {
     onChange(getDateRange(value));
   }
 
-  return <DropDown value={value} options={filterOptions} onChange={handleChange} />;
+  return (
+    <DropDown className={className} value={value} options={filterOptions} onChange={handleChange} />
+  );
 }

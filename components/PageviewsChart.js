@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import { format } from 'date-fns';
 import styles from './PageviewsChart.module.css';
 
-export default function PageviewsChart({ data, unit, children }) {
+export default function PageviewsChart({ data, unit, className, children }) {
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
@@ -138,7 +139,7 @@ export default function PageviewsChart({ data, unit, children }) {
   }, [data]);
 
   return (
-    <div className={styles.chart}>
+    <div className={classNames(styles.chart, className)}>
       <canvas ref={canvas} width={960} height={400} />
       <Tootip {...tooltip} />
       {children}

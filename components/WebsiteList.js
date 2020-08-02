@@ -19,14 +19,14 @@ export default function WebsiteList() {
     <div className={styles.container}>
       {data &&
         data.websites.map(({ website_id, website_uuid, label }) => (
-          <>
+          <div key={website_id}>
             <h2>
               <Link href={`/${website_uuid}`}>
                 <a>{label}</a>
               </Link>
             </h2>
             <WebsiteChart key={website_id} title={label} websiteId={website_id} />
-          </>
+          </div>
         ))}
     </div>
   );
