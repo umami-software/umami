@@ -15,3 +15,7 @@
   border-left: 0;
   padding-left: 0;
 }
+
+.row > [class*='col-']:last-child {
+  padding-right: 0;
+}

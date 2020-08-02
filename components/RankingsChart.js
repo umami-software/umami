@@ -14,6 +14,7 @@ export default function RankingsChart({
   heading,
   className,
   dataFilter,
+  animate = true,
   onDataLoad = () => {},
 }) {
   const [data, setData] = useState();
@@ -45,7 +46,7 @@ export default function RankingsChart({
   }, [websiteId, startDate, endDate, type]);
 
   if (!data) {
-    return <h1>loading...</h1>;
+    return null;
   }
 
   return (
@@ -54,14 +55,29 @@ export default function RankingsChart({
         <div className={styles.title}>{title}</div>
         <div className={styles.heading}>{heading}</div>
       </div>
-      {rankings.map(({ x, y, z }) => (
-        <Row key={x} label={x} value={y} percent={z} />
-      ))}
+      {rankings.map(({ x, y, z }) =>
+        animate ? (
+          <AnimatedRow key={x} label={x} value={y} percent={z} />
+        ) : (
+          <Row key={x} label={x} value={y} percent={z} />
+        ),
+      )}
     </div>
   );
 }
 
-const Row = ({ label, value, percent }) => {
+const Row = ({ label, value, percent }) => (
+  <div className={styles.row}>
+    <div className={styles.label}>{label}</div>
+    <div className={styles.value}>{value.toFixed(0)}</div>
+    <div className={styles.percent}>
+      <div>{`${percent.toFixed(0)}%`}</div>
+      <div className={styles.bar} style={{ width: percent }} />
+    </div>
+  </div>
+);
+
+const AnimatedRow = ({ label, value, percent }) => {
   const props = useSpring({ width: percent, y: value, from: { width: 0, y: 0 } });
 
   return (

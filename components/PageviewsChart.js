@@ -5,7 +5,14 @@ import ChartJS from 'chart.js';
 import { format } from 'date-fns';
 import styles from './PageviewsChart.module.css';
 
-export default function PageviewsChart({ websiteId, data, unit, className, children }) {
+export default function PageviewsChart({
+  websiteId,
+  data,
+  unit,
+  animationDuration = 300,
+  className,
+  children,
+}) {
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
@@ -75,7 +82,7 @@ export default function PageviewsChart({ websiteId, data, unit, className, child
         },
         options: {
           animation: {
-            duration: 300,
+            duration: animationDuration,
           },
           tooltips: {
             enabled: false,
@@ -125,6 +132,7 @@ export default function PageviewsChart({ websiteId, data, unit, className, child
       datasets[1].data = data.pageviews;
       options.scales.xAxes[0].time.unit = unit;
       options.scales.xAxes[0].ticks.callback = renderLabel;
+      options.animation.duration = animationDuration;
 
       chart.current.update();
     }
@@ -133,6 +141,7 @@ export default function PageviewsChart({ websiteId, data, unit, className, child
   useEffect(() => {
     if (data) {
       draw();
+      setTooltip(null);
     }
   }, [data]);
 

@@ -13,6 +13,7 @@ export default function WebsiteChart({
   websiteId,
   defaultDateRange = '7day',
   stickHeader = false,
+  animate = true,
   onDateChange = () => {},
 }) {
   const [data, setData] = useState();
@@ -80,6 +81,7 @@ export default function WebsiteChart({
           websiteId={websiteId}
           data={{ pageviews, uniques }}
           unit={unit}
+          animationDuration={animate ? 300 : 0}
         >
           <QuickButtons value={value} onChange={handleDateChange} />
         </PageviewsChart>

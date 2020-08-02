@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import WebsiteChart from './WebsiteChart';
 import RankingsChart from './RankingsChart';
 import WorldMap from './WorldMap';
+import CheckVisible from './CheckVisible';
 import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
@@ -32,7 +33,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   }, [websiteId]);
 
   if (!data) {
-    return <h1>loading...</h1>;
+    return null;
   }
 
   return (
@@ -40,82 +41,121 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
           <h1>{data.label}</h1>
-          <WebsiteChart websiteId={data.website_id} onDateChange={handleDateChange} stickHeader />
+          <CheckVisible>
+            {visible => (
+              <WebsiteChart
+                websiteId={data.website_id}
+                onDateChange={handleDateChange}
+                animate={visible}
+                stickHeader
+              />
+            )}
+          </CheckVisible>
         </div>
       </div>
-      <div className={classNames(styles.row, 'row justify-content-between')}>
+      <div className={classNames(styles.row, 'row')}>
         <div className={pageviewClasses}>
-          <RankingsChart
-            title="Top URLs"
-            type="url"
-            heading="Views"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={urlFilter}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Top URLs"
+                type="url"
+                heading="Views"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                dataFilter={urlFilter}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
         <div className={pageviewClasses}>
-          <RankingsChart
-            title="Top referrers"
-            type="referrer"
-            heading="Views"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={refFilter}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Top referrers"
+                type="referrer"
+                heading="Views"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                dataFilter={refFilter}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
       </div>
-      <div className={classNames(styles.row, 'row justify-content-between')}>
+      <div className={classNames(styles.row, 'row')}>
         <div className={sessionClasses}>
-          <RankingsChart
-            title="Browsers"
-            type="browser"
-            heading="Visitors"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={browserFilter}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Browsers"
+                type="browser"
+                heading="Visitors"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                dataFilter={browserFilter}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
         <div className={sessionClasses}>
-          <RankingsChart
-            title="Operating system"
-            type="os"
-            heading="Visitors"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Operating system"
+                type="os"
+                heading="Visitors"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
         <div className={sessionClasses}>
-          <RankingsChart
-            title="Devices"
-            type="screen"
-            heading="Visitors"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={deviceFilter}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Devices"
+                type="screen"
+                heading="Visitors"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                dataFilter={deviceFilter}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
       </div>
-      <div className={classNames(styles.row, 'row justify-content-between')}>
+      <div className={classNames(styles.row, 'row')}>
         <div className="col-12 col-md-12 col-lg-8">
           <WorldMap data={countryData} />
         </div>
         <div className="col-12 col-md-12 col-lg-4">
-          <RankingsChart
-            title="Countries"
-            type="country"
-            heading="Visitors"
-            websiteId={data.website_id}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={countryFilter}
-            onDataLoad={data => setCountryData(data)}
-          />
+          <CheckVisible>
+            {visible => (
+              <RankingsChart
+                title="Countries"
+                type="country"
+                heading="Visitors"
+                websiteId={data.website_id}
+                startDate={startDate}
+                endDate={endDate}
+                dataFilter={countryFilter}
+                onDataLoad={data => setCountryData(data)}
+                animate={visible}
+              />
+            )}
+          </CheckVisible>
         </div>
       </div>
     </>
