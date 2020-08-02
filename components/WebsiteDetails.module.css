@@ -19,3 +19,15 @@
 .row > [class*='col-']:last-child {
   padding-right: 0;
 }
+
+@media only screen and (max-width: 1000px) {
+  .row {
+    border: 0;
+  }
+
+  .row > [class*='col-'] {
+    border-top: 1px solid #e1e1e1;
+    border-left: 0;
+    padding: 0;
+  }
+}

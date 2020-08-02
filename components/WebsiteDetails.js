@@ -23,7 +23,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   }
 
   function handleDateChange(values) {
-    setDateRange(values);
+    setTimeout(() => setDateRange(values), 300);
   }
 
   useEffect(() => {
@@ -58,7 +58,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           <CheckVisible>
             {visible => (
               <RankingsChart
-                title="Top URLs"
+                title="Pages"
                 type="url"
                 heading="Views"
                 websiteId={data.website_id}
@@ -74,7 +74,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           <CheckVisible>
             {visible => (
               <RankingsChart
-                title="Top referrers"
+                title="Referrers"
                 type="referrer"
                 heading="Views"
                 websiteId={data.website_id}
