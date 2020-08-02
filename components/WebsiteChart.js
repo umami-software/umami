@@ -75,7 +75,12 @@ export default function WebsiteChart({
         />
       </div>
       <div className="row">
-        <PageviewsChart className="col" data={{ pageviews, uniques }} unit={unit}>
+        <PageviewsChart
+          className="col"
+          websiteId={websiteId}
+          data={{ pageviews, uniques }}
+          unit={unit}
+        >
           <QuickButtons value={value} onChange={handleDateChange} />
         </PageviewsChart>
       </div>

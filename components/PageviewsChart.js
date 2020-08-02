@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import { format } from 'date-fns';
 import styles from './PageviewsChart.module.css';
 
-export default function PageviewsChart({ data, unit, className, children }) {
+export default function PageviewsChart({ websiteId, data, unit, className, children }) {
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
@@ -30,17 +31,14 @@ export default function PageviewsChart({ data, unit, className, children }) {
   );
 
   const renderTooltip = model => {
-    const { caretX, caretY, opacity, title, body, labelColors } = model;
+    const { opacity, title, body, labelColors } = model;
 
     if (!opacity) {
-      setTooltip({ opacity });
+      setTooltip(null);
     } else {
       const [label, value] = body[0].lines[0].split(':');
 
       setTooltip({
-        top: caretY,
-        left: caretX,
-        opacity,
         title: title[0],
         value,
         label,
@@ -139,16 +137,22 @@ export default function PageviewsChart({ data, unit, className, children }) {
   }, [data]);
 
   return (
-    <div className={classNames(styles.chart, className)}>
+    <div
+      data-tip=""
+      data-for={`${websiteId}-tooltip`}
+      className={classNames(styles.chart, className)}
+    >
       <canvas ref={canvas} width={960} height={400} />
-      <Tootip {...tooltip} />
+      <ReactTooltip id={`${websiteId}-tooltip`}>
+        {tooltip ? <Tooltip {...tooltip} /> : null}
+      </ReactTooltip>
       {children}
     </div>
   );
 }
 
-const Tootip = ({ top, left, opacity, title, value, label, labelColor }) => (
-  <div className={styles.tooltip} style={{ top, left, opacity }}>
+const Tooltip = ({ title, value, label, labelColor }) => (
+  <div className={styles.tooltip}>
     <div className={styles.content}>
       <div className={styles.title}>{title}</div>
       <div className={styles.metric}>

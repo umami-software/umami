@@ -3,8 +3,6 @@
 }
 
 .tooltip {
-  opacity: 0;
-  position: absolute;
   pointer-events: none;
   z-index: 1;
 }
@@ -14,26 +12,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #000;
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+  color: #fff;
   text-align: center;
-  width: 150px;
-  height: 50px;
-  transform: translate(-50%, -60px);
-  backdrop-filter: blur(4px);
-}
-
-.content:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  background: #000;
-  opacity: 0.05;
-  border-radius: 10px;
 }
 
 .title {
@@ -53,6 +33,6 @@
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  border: 1px solid #fff;
+  border: 1px solid #b3b3b3;
   margin-right: 8px;
 }
