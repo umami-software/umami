@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function isInViewport(node) {
-  return (
-    window.pageYOffset < node.offsetTop + node.clientHeight ||
-    window.pageXOffset < node.offsetLeft + node.clientWidth
+function isInViewport(element) {
+  const rect = element.getBoundingClientRect();
+  return !(
+    rect.bottom < 0 ||
+    rect.right < 0 ||
+    rect.left > window.innerWidth ||
+    rect.top > window.innerHeight
   );
 }
 
-export default function CheckVisible({ children }) {
+export default function CheckVisible({ className, children }) {
   const [visible, setVisible] = useState(false);
   const ref = useRef();
 
@@ -30,5 +33,9 @@ export default function CheckVisible({ children }) {
     };
   }, [visible]);
 
-  return <div ref={ref}>{typeof children === 'function' ? children(visible) : children}</div>;
+  return (
+    <div ref={ref} className={className} data-visible={visible}>
+      {typeof children === 'function' ? children(visible) : children}
+    </div>
+  );
 }

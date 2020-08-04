@@ -5,7 +5,7 @@ import CheckVisible from './CheckVisible';
 import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
 import DateFilter from './DateFilter';
-import useSticky from './hooks/useSticky';
+import StickyHeader from './StickyHeader';
 import { get } from 'lib/web';
 import { getDateArray, getDateRange, getTimezone } from 'lib/date';
 import styles from './WebsiteChart.module.css';
@@ -13,13 +13,13 @@ import styles from './WebsiteChart.module.css';
 export default function WebsiteChart({
   websiteId,
   defaultDateRange = '7day',
-  stickHeader = false,
+  stickyHeader = false,
+  onDataLoad = () => {},
   onDateChange = () => {},
 }) {
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
-  const [ref, sticky] = useSticky(stickHeader);
   const container = useRef();
 
   const [pageviews, uniques] = useMemo(() => {
@@ -38,14 +38,15 @@ export default function WebsiteChart({
   }
 
   async function loadData() {
-    setData(
-      await get(`/api/website/${websiteId}/pageviews`, {
-        start_at: +startDate,
-        end_at: +endDate,
-        unit,
-        tz: getTimezone(),
-      }),
-    );
+    const data = await get(`/api/website/${websiteId}/pageviews`, {
+      start_at: +startDate,
+      end_at: +endDate,
+      unit,
+      tz: getTimezone(),
+    });
+
+    setData(data);
+    onDataLoad(data);
   }
 
   useEffect(() => {
@@ -54,10 +55,11 @@ export default function WebsiteChart({
 
   return (
     <div ref={container}>
-      <div
-        ref={ref}
-        className={classNames(styles.header, 'row', { [styles.sticky]: sticky })}
-        style={{ width: sticky ? container.current.clientWidth : 'auto' }}
+      <StickyHeader
+        className={classNames(styles.header, 'row')}
+        stickyClassName={styles.sticky}
+        stickyStyle={{ width: container?.current?.clientWidth }}
+        enabled={stickyHeader}
       >
         <MetricsBar
           className="col-12 col-md-9 col-lg-10"
@@ -70,12 +72,11 @@ export default function WebsiteChart({
           value={value}
           onChange={handleDateChange}
         />
-      </div>
+      </StickyHeader>
       <div className="row">
-        <CheckVisible>
+        <CheckVisible className="col">
           {visible => (
             <PageviewsChart
-              className="col"
               websiteId={websiteId}
               data={{ pageviews, uniques }}
               unit={unit}

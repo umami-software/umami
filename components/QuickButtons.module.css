@@ -6,23 +6,16 @@
   margin: auto;
 }
 
-.button {
-  font-size: 12px;
-  background: #f5f5f5;
-  padding: 4px 8px;
-  border-radius: 4px;
-  margin-right: 10px;
-  cursor: pointer;
-}
-
-.button:last-child {
-  margin-right: 0;
-}
-
-.button:hover {
-  background: #eaeaea;
+.buttons button + button {
+  margin-left: 10px;
 }
 
 .active {
   font-weight: 600;
+}
+
+@media only screen and (max-width: 720px) {
+  .buttons button:last-child {
+    display: none;
+  }
 }

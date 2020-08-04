@@ -23,10 +23,10 @@ export default function DropDown({ value, options = [], onChange, className }) {
       }
     }
 
-    document.body.addEventListener('click', hideMenu);
+    document.addEventListener('click', hideMenu);
 
     return () => {
-      document.body.removeEventListener('click', hideMenu);
+      document.removeEventListener('click', hideMenu);
     };
   }, [ref]);
 

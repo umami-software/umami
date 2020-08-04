@@ -9,6 +9,7 @@ body {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  color: #2c2c2c;
   background: #fafafa;
 }
 
@@ -25,6 +26,12 @@ body {
   height: 100%;
 }
 
+button,
+input,
+select {
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 a,
 a:active,
 a:visited {
@@ -32,7 +39,7 @@ a:visited {
 }
 
 header a {
-  color: #000 !important;
+  color: #2c2c2c !important;
   text-decoration: none;
 }
 
@@ -52,6 +59,7 @@ select {
 }
 
 main {
+  flex: 1;
   background: #fff;
 }
 

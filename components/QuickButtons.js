@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import Button from './Button';
 import { getDateRange } from 'lib/date';
 import styles from './QuickButtons.module.css';
 
@@ -17,13 +18,13 @@ export default function QuickButtons({ value, onChange }) {
   return (
     <div className={styles.buttons}>
       {Object.keys(options).map(key => (
-        <div
+        <Button
           key={key}
-          className={classNames(styles.button, { [styles.active]: value === key })}
+          className={classNames({ [styles.active]: value === key })}
           onClick={() => handleClick(key)}
         >
           {options[key]}
-        </div>
+        </Button>
       ))}
     </div>
   );

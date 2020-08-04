@@ -1,0 +1,22 @@
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #eaeaea;
+}
+
+.button svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}

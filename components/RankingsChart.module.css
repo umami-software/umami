@@ -73,3 +73,15 @@
   background: #2680eb;
   z-index: -1;
 }
+
+.body {
+  position: relative;
+}
+
+.body:empty:before {
+  content: 'No data available';
+  display: block;
+  color: #b3b3b3;
+  text-align: center;
+  line-height: 50px;
+}

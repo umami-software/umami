@@ -1,0 +1,23 @@
+.link,
+.link:active,
+.link:visited {
+  position: relative;
+  color: #2c2c2c;
+  text-decoration: none;
+}
+
+.link:before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: #2680eb;
+  opacity: 0.5;
+  transition: width 100ms;
+}
+
+.link:hover:before {
+  width: 100%;
+  transition: width 100ms;
+}

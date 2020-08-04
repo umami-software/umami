@@ -4,6 +4,7 @@
 
 .row {
   border-top: 1px solid #e1e1e1;
+  min-height: 430px;
 }
 
 .row > [class*='col-'] {

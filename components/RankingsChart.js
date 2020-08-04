@@ -57,9 +57,11 @@ export default function RankingsChart({
             <div className={styles.title}>{title}</div>
             <div className={styles.heading}>{heading}</div>
           </div>
-          {rankings.map(({ x, y, z }) => (
-            <Row key={x} label={x} value={y} percent={z} animate={visible} />
-          ))}
+          <div className={styles.body}>
+            {rankings.map(({ x, y, z }) => (
+              <Row key={x} label={x} value={y} percent={z} animate={visible} />
+            ))}
+          </div>
         </div>
       )}
     </CheckVisible>
