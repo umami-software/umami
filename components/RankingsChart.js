@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
+import CheckVisible from './CheckVisible';
 import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import styles from './RankingsChart.module.css';
@@ -14,7 +15,6 @@ export default function RankingsChart({
   heading,
   className,
   dataFilter,
-  animate = true,
   onDataLoad = () => {},
 }) {
   const [data, setData] = useState();
@@ -50,43 +50,42 @@ export default function RankingsChart({
   }
 
   return (
-    <div className={classNames(styles.container, className)}>
-      <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.heading}>{heading}</div>
-      </div>
-      {rankings.map(({ x, y, z }) =>
-        animate ? (
-          <AnimatedRow key={x} label={x} value={y} percent={z} />
-        ) : (
-          <Row key={x} label={x} value={y} percent={z} />
-        ),
+    <CheckVisible>
+      {visible => (
+        <div className={classNames(styles.container, className)}>
+          <div className={styles.header}>
+            <div className={styles.title}>{title}</div>
+            <div className={styles.heading}>{heading}</div>
+          </div>
+          {rankings.map(({ x, y, z }) => (
+            <Row key={x} label={x} value={y} percent={z} animate={visible} />
+          ))}
+        </div>
       )}
-    </div>
+    </CheckVisible>
   );
 }
 
-const Row = ({ label, value, percent }) => (
-  <div className={styles.row}>
-    <div className={styles.label}>{label}</div>
-    <div className={styles.value}>{value.toFixed(0)}</div>
-    <div className={styles.percent}>
-      <div>{`${percent.toFixed(0)}%`}</div>
-      <div className={styles.bar} style={{ width: percent }} />
-    </div>
-  </div>
-);
-
-const AnimatedRow = ({ label, value, percent }) => {
-  const props = useSpring({ width: percent, y: value, from: { width: 0, y: 0 } });
+const Row = ({ label, value, percent, animate }) => {
+  const props = useSpring({
+    width: percent,
+    y: value,
+    from: { width: 0, y: 0 },
+    config: animate ? config.default : { duration: 0 },
+  });
 
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
       <animated.div className={styles.value}>{props.y.interpolate(n => n.toFixed(0))}</animated.div>
       <div className={styles.percent}>
-        <animated.div>{props.width.interpolate(n => `${n.toFixed(0)}%`)}</animated.div>
-        <animated.div className={styles.bar} style={{ width: props.width }} />
+        <animated.div
+          className={styles.bar}
+          style={{ width: props.width.interpolate(n => `${n}%`) }}
+        />
+        <animated.span className={styles.percentValue}>
+          {props.width.interpolate(n => `${n.toFixed(0)}%`)}
+        </animated.span>
       </div>
     </div>
   );

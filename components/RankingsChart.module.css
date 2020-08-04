@@ -56,11 +56,12 @@
 }
 
 .percent {
+  position: relative;
   width: 50px;
   color: #6e6e6e;
-  position: relative;
   border-left: 1px solid #8e8e8e;
   padding-left: 10px;
+  z-index: 1;
 }
 
 .bar {

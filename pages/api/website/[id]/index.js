@@ -6,7 +6,7 @@ export default async (req, res) => {
 
   const { id } = req.query;
 
-  const website = await getWebsite(id);
+  const website = await getWebsite({ website_id: +id });
 
   return res.status(200).json(website);
 };

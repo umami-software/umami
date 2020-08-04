@@ -1,3 +1,32 @@
 .container > div {
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e1e1e1;
   margin-bottom: 30px;
+}
+
+.container > div:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+}
+
+.container a {
+  position: relative;
+  color: #2c2c2c;
+  text-decoration: none;
+}
+
+.container a:before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: #2680eb;
+  opacity: 0.5;
+  transition: width 100ms;
+}
+
+.container a:hover:before {
+  width: 100%;
+  transition: width 100ms;
 }

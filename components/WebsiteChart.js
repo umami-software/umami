@@ -1,26 +1,26 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
-import { get } from 'lib/web';
-import { getDateArray, getDateRange, getTimezone } from 'lib/date';
+import CheckVisible from './CheckVisible';
 import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
-import styles from './WebsiteChart.module.css';
 import DateFilter from './DateFilter';
 import useSticky from './hooks/useSticky';
+import { get } from 'lib/web';
+import { getDateArray, getDateRange, getTimezone } from 'lib/date';
+import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
   websiteId,
   defaultDateRange = '7day',
   stickHeader = false,
-  animate = true,
   onDateChange = () => {},
 }) {
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
   const [ref, sticky] = useSticky(stickHeader);
-  const width = useRef();
+  const container = useRef();
 
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -52,16 +52,12 @@ export default function WebsiteChart({
     loadData();
   }, [websiteId, startDate, endDate, unit]);
 
-  useEffect(() => {
-    width.current = document.querySelector('main').offsetWidth;
-  }, [sticky]);
-
   return (
-    <>
+    <div ref={container}>
       <div
         ref={ref}
         className={classNames(styles.header, 'row', { [styles.sticky]: sticky })}
-        style={{ width: sticky ? width.current : 'auto' }}
+        style={{ width: sticky ? container.current.clientWidth : 'auto' }}
       >
         <MetricsBar
           className="col-12 col-md-9 col-lg-10"
@@ -76,16 +72,20 @@ export default function WebsiteChart({
         />
       </div>
       <div className="row">
-        <PageviewsChart
-          className="col"
-          websiteId={websiteId}
-          data={{ pageviews, uniques }}
-          unit={unit}
-          animationDuration={animate ? 300 : 0}
-        >
-          <QuickButtons value={value} onChange={handleDateChange} />
-        </PageviewsChart>
+        <CheckVisible>
+          {visible => (
+            <PageviewsChart
+              className="col"
+              websiteId={websiteId}
+              data={{ pageviews, uniques }}
+              unit={unit}
+              animationDuration={visible ? 300 : 0}
+            >
+              <QuickButtons value={value} onChange={handleDateChange} />
+            </PageviewsChart>
+          )}
+        </CheckVisible>
       </div>
-    </>
+    </div>
   );
 }

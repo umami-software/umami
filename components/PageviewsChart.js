@@ -66,16 +66,16 @@ export default function PageviewsChart({
               label: 'unique visitors',
               data: data.uniques,
               lineTension: 0,
-              backgroundColor: 'rgb(146, 86, 217, 0.4)',
-              borderColor: 'rgb(122, 66, 191, 0.4)',
+              backgroundColor: 'rgb(38, 128, 235, 0.4)',
+              borderColor: 'rgb(13, 102, 208, 0.4)',
               borderWidth: 1,
             },
             {
               label: 'page views',
               data: data.pageviews,
               lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.4)',
-              borderColor: 'rgb(13, 102, 208, 0.4)',
+              backgroundColor: 'rgb(38, 128, 235, 0.2)',
+              borderColor: 'rgb(13, 102, 208, 0.2)',
               borderWidth: 1,
             },
           ],
@@ -165,7 +165,9 @@ const Tooltip = ({ title, value, label, labelColor }) => (
     <div className={styles.content}>
       <div className={styles.title}>{title}</div>
       <div className={styles.metric}>
-        <div className={styles.dot} style={{ backgroundColor: labelColor }} />
+        <div className={styles.dot}>
+          <div className={styles.color} style={{ backgroundColor: labelColor }} />
+        </div>
         {value} {label}
       </div>
     </div>

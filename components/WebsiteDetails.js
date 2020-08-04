@@ -37,103 +37,69 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
-          <h1>{data.label}</h1>
-          <CheckVisible>
-            {visible => (
-              <WebsiteChart
-                websiteId={data.website_id}
-                onDateChange={handleDateChange}
-                animate={visible}
-                stickHeader
-              />
-            )}
-          </CheckVisible>
+          <h2>{data.label}</h2>
+          <WebsiteChart websiteId={websiteId} onDateChange={handleDateChange} stickHeader />
         </div>
       </div>
       <div className={classNames(styles.row, 'row')}>
         <div className={pageviewClasses}>
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Pages"
-                type="url"
-                heading="Views"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                dataFilter={urlFilter}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Pages"
+            type="url"
+            heading="Views"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={urlFilter}
+          />
         </div>
         <div className={pageviewClasses}>
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Referrers"
-                type="referrer"
-                heading="Views"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                dataFilter={refFilter}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Referrers"
+            type="referrer"
+            heading="Views"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={refFilter}
+          />
         </div>
       </div>
       <div className={classNames(styles.row, 'row')}>
         <div className={sessionClasses}>
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Browsers"
-                type="browser"
-                heading="Visitors"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                dataFilter={browserFilter}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Browsers"
+            type="browser"
+            heading="Visitors"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={browserFilter}
+          />
         </div>
         <div className={sessionClasses}>
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Operating system"
-                type="os"
-                heading="Visitors"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Operating system"
+            type="os"
+            heading="Visitors"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+          />
         </div>
         <div className={sessionClasses}>
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Devices"
-                type="screen"
-                heading="Visitors"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                dataFilter={deviceFilter}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Devices"
+            type="screen"
+            heading="Visitors"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={deviceFilter}
+          />
         </div>
       </div>
       <div className={classNames(styles.row, 'row')}>
@@ -141,23 +107,18 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           <WorldMap data={countryData} />
         </div>
         <div className="col-12 col-md-12 col-lg-4">
-          <CheckVisible>
-            {visible => (
-              <RankingsChart
-                title="Countries"
-                type="country"
-                heading="Visitors"
-                websiteId={data.website_id}
-                startDate={startDate}
-                endDate={endDate}
-                dataFilter={countryFilter}
-                onDataLoad={data => setCountryData(data)}
-                animate={visible}
-              />
-            )}
-          </CheckVisible>
+          <RankingsChart
+            title="Countries"
+            type="country"
+            heading="Visitors"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={countryFilter}
+            onDataLoad={data => setCountryData(data)}
+          />
         </div>
       </div>
-    </>
+    </div>
   );
 }

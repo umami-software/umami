@@ -30,9 +30,14 @@
 }
 
 .dot {
+  position: relative;
+  overflow: hidden;
+  border-radius: 100%;
+  margin-right: 8px;
+  background: #fff;
+}
+
+.color {
   width: 10px;
   height: 10px;
-  border-radius: 100%;
-  border: 1px solid #b3b3b3;
-  margin-right: 8px;
 }

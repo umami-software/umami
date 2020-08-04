@@ -18,10 +18,10 @@ export default function WebsiteList() {
   return (
     <div className={styles.container}>
       {data &&
-        data.websites.map(({ website_id, website_uuid, label }) => (
+        data.websites.map(({ website_id, label }) => (
           <div key={website_id}>
             <h2>
-              <Link href={`/${website_uuid}`}>
+              <Link href={`/website/${website_id}/${label}`}>
                 <a>{label}</a>
               </Link>
             </h2>

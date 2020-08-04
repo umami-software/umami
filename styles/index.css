@@ -9,6 +9,7 @@ body {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
+  background: #fafafa;
 }
 
 *,
@@ -24,8 +25,14 @@ body {
   height: 100%;
 }
 
+a,
+a:active,
+a:visited {
+  color: #2680eb;
+}
+
 header a {
-  color: #000;
+  color: #000 !important;
   text-decoration: none;
 }
 
@@ -42,6 +49,14 @@ select {
   padding: 4px 8px;
   border: 1px solid #b3b3b3;
   border-radius: 4px;
+}
+
+main {
+  background: #fff;
+}
+
+.container {
+  padding: 0 20px;
 }
 
 .row {

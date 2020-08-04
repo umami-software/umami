@@ -1,26 +1,13 @@
 import React from 'react';
-import Link from 'next/link';
 import { parse } from 'cookie';
 import Layout from 'components/Layout';
-import PageviewsChart from 'components/PageviewsChart';
 import { verifySecureToken } from 'lib/crypto';
-import { subDays, endOfDay } from 'date-fns';
 import WebsiteList from '../components/WebsiteList';
 
 export default function HomePage({ username }) {
   return (
     <Layout>
       <WebsiteList />
-      <div>
-        <PageviewsChart
-          websiteId={3}
-          startDate={subDays(endOfDay(new Date()), 6)}
-          endDate={endOfDay(new Date())}
-        />
-      </div>
-      <Link href="/logout">
-        <a>Logout 🡒</a>
-      </Link>
     </Layout>
   );
 }
