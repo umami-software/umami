@@ -20,7 +20,7 @@ export default function Login() {
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {
-    const response = await post('/api/auth', { username, password });
+    const response = await post('/api/auth/login', { username, password });
 
     if (response?.token) {
       await Router.push('/');

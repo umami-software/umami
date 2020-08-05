@@ -18,23 +18,31 @@ export default function WebsiteList() {
   }, []);
 
   return (
-    <>
+    <div className={styles.container}>
       {data &&
         data.websites.map(({ website_id, label }) => (
           <div key={website_id} className={styles.website}>
             <div className={styles.header}>
               <h2>
-                <Link href={`/website/${website_id}/${label}`} className={styles.title}>
+                <Link
+                  href="/website/[...id]"
+                  as={`/website/${website_id}/${label}`}
+                  className={styles.title}
+                >
                   {label}
                 </Link>
               </h2>
-              <Link href={`/website/${website_id}/${label}`} className={styles.details}>
+              <Link
+                href="/website/[...id]"
+                as={`/website/${website_id}/${label}`}
+                className={styles.details}
+              >
                 <Icon icon={<Arrow />} /> View details
               </Link>
             </div>
             <WebsiteChart key={website_id} title={label} websiteId={website_id} />
           </div>
         ))}
-    </>
+    </div>
   );
 }

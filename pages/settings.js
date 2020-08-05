@@ -1,9 +1,9 @@
 import React from 'react';
 import Layout from 'components/Layout';
-import WebsiteList from 'components/WebsiteList';
+import Settings from 'components/Settings';
 import useUser from 'hooks/useUser';
 
-export default function HomePage() {
+export default function SettingsPage() {
   const { loading } = useUser();
 
   if (loading) {
@@ -12,7 +12,7 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <WebsiteList />
+      <Settings />
     </Layout>
   );
 }

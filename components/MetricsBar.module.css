@@ -3,10 +3,6 @@
 }
 
 @media only screen and (max-width: 1000px) {
-  .container {
-    padding-bottom: 20px;
-  }
-
   .container > div:last-child {
     display: none;
   }

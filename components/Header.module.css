@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  height: 80px;
+}
+
+.header > div {
+  flex: 1;
+}
+
+.title {
+  font-size: 30px;
+}
+
+.nav {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav > * {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 40px;
+}

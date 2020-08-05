@@ -1,6 +1,7 @@
 import { serialize } from 'cookie';
 import { checkPassword, createSecureToken } from 'lib/crypto';
 import { getAccount } from 'lib/db';
+import { AUTH_COOKIE_NAME } from 'lib/constants';
 
 export default async (req, res) => {
   const { username, password } = req.body;
@@ -10,7 +11,7 @@ export default async (req, res) => {
   if (account && (await checkPassword(password, account.password))) {
     const { user_id, username, is_admin } = account;
     const token = await createSecureToken({ user_id, username, is_admin });
-    const cookie = serialize('umami.auth', token, {
+    const cookie = serialize(AUTH_COOKIE_NAME, token, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 365,
