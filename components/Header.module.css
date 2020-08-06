@@ -8,7 +8,7 @@
 }
 
 .title {
-  font-size: 30px;
+  font-size: var(--font-size-large);
 }
 
 .nav {
@@ -19,7 +19,7 @@
 }
 
 .nav > * {
-  font-size: 14px;
+  font-size: var(--font-size-normal);
   font-weight: 600;
   margin-left: 40px;
 }

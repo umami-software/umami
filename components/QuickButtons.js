@@ -20,7 +20,7 @@ export default function QuickButtons({ value, onChange }) {
       {Object.keys(options).map(key => (
         <Button
           key={key}
-          className={classNames({ [styles.active]: value === key })}
+          className={classNames(styles.button, { [styles.active]: value === key })}
           onClick={() => handleClick(key)}
         >
           {options[key]}

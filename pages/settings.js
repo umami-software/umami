@@ -1,10 +1,10 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import Settings from 'components/Settings';
-import useUser from 'hooks/useUser';
+import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function SettingsPage() {
-  const { loading } = useUser();
+  const { loading } = useRequireLogin();
 
   if (loading) {
     return null;

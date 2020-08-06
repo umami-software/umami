@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Router from 'next/router';
 import { post } from 'lib/web';
+import Button from './Button';
+import styles from './Login.module.css';
 
 const validate = ({ username, password }) => {
   const errors = {};
@@ -39,7 +41,7 @@ export default function Login() {
       onSubmit={handleSubmit}
     >
       {() => (
-        <Form>
+        <Form className={styles.form}>
           <h3>{message}</h3>
           <div>
             <label htmlFor="username">Username</label>
@@ -51,7 +53,7 @@ export default function Login() {
             <Field name="password" type="password" />
             <ErrorMessage name="password" />
           </div>
-          <button type="submit">Submit</button>
+          <Button type="submit">Submit</Button>
         </Form>
       )}
     </Formik>

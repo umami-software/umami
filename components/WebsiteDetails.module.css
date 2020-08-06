@@ -1,19 +1,14 @@
-.container {
-  background: #fff;
-  padding: 0 30px;
-}
-
 .chart {
   margin-bottom: 30px;
 }
 
 .row {
-  border-top: 1px solid #e1e1e1;
+  border-top: 1px solid var(--gray300);
   min-height: 430px;
 }
 
 .row > [class*='col-'] {
-  border-left: 1px solid #e1e1e1;
+  border-left: 1px solid var(--gray300);
   padding: 0 20px;
 }
 
@@ -26,13 +21,13 @@
   padding-right: 0;
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 992px) {
   .row {
     border: 0;
   }
 
   .row > [class*='col-'] {
-    border-top: 1px solid #e1e1e1;
+    border-top: 1px solid var(--gray300);
     border-left: 0;
     padding: 0;
   }

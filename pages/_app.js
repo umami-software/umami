@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { useStore } from 'redux/store';
+import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
 import 'styles/index.css';
 

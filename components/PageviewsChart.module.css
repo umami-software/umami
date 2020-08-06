@@ -12,12 +12,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: #fff;
+  color: var(--gray50);
   text-align: center;
 }
 
 .title {
-  font-size: 12px;
+  font-size: var(--font-size-xsmall);
   font-weight: 600;
 }
 
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--font-size-small);
   font-weight: 600;
 }
 
@@ -34,7 +34,7 @@
   overflow: hidden;
   border-radius: 100%;
   margin-right: 8px;
-  background: #fff;
+  background: var(--gray50);
 }
 
 .color {

@@ -2,10 +2,10 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/Layout';
 import WebsiteDetails from 'components/WebsiteDetails';
-import useUser from 'hooks/useUser';
+import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function DetailsPage() {
-  const { loading } = useUser();
+  const { loading } = useRequireLogin();
   const router = useRouter();
   const { id } = router.query;
 

@@ -1,9 +1,10 @@
 import React from 'react';
+import Page from './Page';
 
 export default function Settings() {
   return (
-    <div>
+    <Page>
       <h2>Settings</h2>
-    </div>
+    </Page>
   );
 }

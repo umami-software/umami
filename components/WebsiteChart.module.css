@@ -4,7 +4,7 @@
 }
 
 .title {
-  font-size: 24px;
+  font-size: var(--font-size-large);
   line-height: 60px;
   font-weight: 600;
 }
@@ -20,7 +20,7 @@
   position: fixed;
   top: 0;
   margin: auto;
-  background: #fff;
-  border-bottom: 1px solid #e1e1e1;
+  background: var(--gray50);
+  border-bottom: 1px solid var(--gray300);
   z-index: 2;
 }

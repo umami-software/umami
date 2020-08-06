@@ -6,12 +6,12 @@
 }
 
 .value {
-  font-size: 36px;
+  font-size: var(--font-size-xlarge);
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;
 }
 
 .label {
-  font-size: 16px;
+  font-size: var(--font-size-normal);
 }

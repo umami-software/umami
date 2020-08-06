@@ -1,11 +1,6 @@
-.container {
-  background: #fff;
-  padding: 0 30px;
-}
-
 .website {
   padding-bottom: 30px;
-  border-bottom: 1px solid #e1e1e1;
+  border-bottom: 1px solid var(--gray300);
   margin-bottom: 30px;
 }
 
@@ -21,7 +16,7 @@
 }
 
 .title {
-  color: #2c2c2c !important;
+  color: var(--gray900) !important;
 }
 
 .details {

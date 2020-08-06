@@ -10,6 +10,11 @@
   margin-left: 10px;
 }
 
+.button {
+  font-size: var(--font-size-xsmall);
+  padding: 4px 8px;
+}
+
 .active {
   font-weight: 600;
 }

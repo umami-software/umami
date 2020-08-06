@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import WebsiteChart from './WebsiteChart';
 import RankingsChart from './RankingsChart';
 import WorldMap from './WorldMap';
+import Page from './Page';
 import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
@@ -41,7 +42,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   }
 
   return (
-    <div className={styles.container}>
+    <Page>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
           <h2>{data.label}</h2>
@@ -132,6 +133,6 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           </div>
         </>
       )}
-    </div>
+    </Page>
   );
 }

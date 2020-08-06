@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from './Link';
 import WebsiteChart from './WebsiteChart';
+import Page from './Page';
 import Icon from './Icon';
 import { get } from 'lib/web';
 import Arrow from 'assets/arrow-right.svg';
@@ -18,7 +19,7 @@ export default function WebsiteList() {
   }, []);
 
   return (
-    <div className={styles.container}>
+    <Page>
       {data &&
         data.websites.map(({ website_id, label }) => (
           <div key={website_id} className={styles.website}>
@@ -43,6 +44,6 @@ export default function WebsiteList() {
             <WebsiteChart key={website_id} title={label} websiteId={website_id} />
           </div>
         ))}
-    </div>
+    </Page>
   );
 }

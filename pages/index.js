@@ -1,10 +1,10 @@
 import React from 'react';
 import Layout from 'components/Layout';
 import WebsiteList from 'components/WebsiteList';
-import useUser from 'hooks/useUser';
+import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function HomePage() {
-  const { loading } = useUser();
+  const { loading } = useRequireLogin();
 
   if (loading) {
     return null;

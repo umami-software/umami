@@ -12,11 +12,11 @@ export async function fetchUser() {
   return await res.json();
 }
 
-export default function useUser() {
+export default function useRequireLogin() {
   const dispatch = useDispatch();
   const storeUser = useSelector(state => state.user);
   const [loading, setLoading] = useState(!storeUser);
-  const [user, setUser] = useState(storeUser || null);
+  const [user, setUser] = useState(storeUser);
 
   useEffect(() => {
     if (!loading && user) {
@@ -31,7 +31,7 @@ export default function useUser() {
         return;
       }
 
-      await dispatch(updateUser({ user: user }));
+      await dispatch(updateUser({ user }));
 
       setUser(user);
       setLoading(false);

@@ -41,7 +41,7 @@ export default function StickyHeader({
       ref={ref}
       data-sticky={sticky}
       className={classNames(className, { [stickyClassName]: sticky })}
-      {...(sticky && { style: stickyStyle })}
+      style={sticky ? { ...stickyStyle, width: ref?.current?.clientWidth } : null}
     >
       {children}
     </div>

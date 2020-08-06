@@ -20,7 +20,6 @@ export default function WebsiteChart({
   const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
-  const container = useRef();
 
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -54,11 +53,10 @@ export default function WebsiteChart({
   }, [websiteId, startDate, endDate, unit]);
 
   return (
-    <div ref={container}>
+    <>
       <StickyHeader
         className={classNames(styles.header, 'row')}
         stickyClassName={styles.sticky}
-        stickyStyle={{ width: container?.current?.clientWidth }}
         enabled={stickyHeader}
       >
         <MetricsBar
@@ -87,6 +85,6 @@ export default function WebsiteChart({
           )}
         </CheckVisible>
       </div>
-    </div>
+    </>
   );
 }
