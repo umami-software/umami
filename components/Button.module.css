@@ -2,7 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f5f5;
+  font-size: var(--font-size-normal);
+  background: var(--gray100);
   padding: 8px 16px;
   border-radius: 4px;
   border: 0;

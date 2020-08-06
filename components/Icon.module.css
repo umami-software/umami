@@ -5,7 +5,21 @@
   vertical-align: middle;
 }
 
-.icon > svg {
+.icon svg {
+  fill: currentColor;
+}
+
+.large > svg {
+  width: 24px;
+  height: 24px;
+}
+
+.medium > svg {
   width: 16px;
   height: 16px;
+}
+
+.small > svg {
+  width: 12px;
+  height: 12px;
 }

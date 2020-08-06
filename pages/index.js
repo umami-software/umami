@@ -1,18 +1,12 @@
-import React from 'react';
-import Layout from 'components/Layout';
-import WebsiteList from 'components/WebsiteList';
-import useRequireLogin from 'hooks/useRequireLogin';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-export default function HomePage() {
-  const { loading } = useRequireLogin();
+export default function DefaultPage() {
+  const router = useRouter();
 
-  if (loading) {
-    return null;
-  }
+  useEffect(() => {
+    router.push('/dashboard');
+  }, []);
 
-  return (
-    <Layout>
-      <WebsiteList />
-    </Layout>
-  );
+  return null;
 }

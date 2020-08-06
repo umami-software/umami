@@ -47,11 +47,13 @@ form label {
   min-width: 100px;
 }
 
-form input,
-form textarea {
+input,
+textarea {
   padding: 4px 8px;
   margin-right: 10px;
   margin-bottom: 20px;
+  font-size: var(--font-size-normal);
+  line-height: 1.8;
   border: 1px solid var(--gray500);
   border-radius: 4px;
   outline: none;
@@ -59,7 +61,7 @@ form textarea {
 
 select {
   padding: 4px 8px;
-  border: 1px solid var(--gray500);
+  border: 1px solid var(--gray500) !important;
   border-radius: 4px;
 }
 

@@ -31,7 +31,7 @@ export default function useRequireLogin() {
         return;
       }
 
-      await dispatch(updateUser({ user }));
+      await dispatch(updateUser(user));
 
       setUser(user);
       setLoading(false);

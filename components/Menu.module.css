@@ -1,0 +1,31 @@
+.menu {
+  position: absolute;
+  min-width: 100px;
+  top: 100%;
+  margin-top: 4px;
+  border: 1px solid var(--gray500);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.option {
+  font-size: var(--font-size-small);
+  font-weight: normal;
+  background: #fff;
+  padding: 4px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.option:hover {
+  background: #f5f5f5;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}

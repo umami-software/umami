@@ -8,40 +8,14 @@
   white-space: nowrap;
   position: relative;
   padding: 4px 32px 4px 16px;
-  border: 1px solid #b3b3b3;
+  border: 1px solid var(--gray500);
   border-radius: 4px;
   cursor: pointer;
 }
 
-.menu {
+.icon {
   position: absolute;
-  min-width: 100px;
-  top: 100%;
-  margin-top: 4px;
-  border: 1px solid #b3b3b3;
-  border-radius: 4px;
-  overflow: hidden;
-  z-index: 2;
-}
-
-.option {
-  background: #fff;
-  padding: 4px 16px;
-  cursor: pointer;
-}
-
-.option:hover {
-  background: #f5f5f5;
-}
-
-.caret {
-  position: absolute;
-  height: 8px;
-  width: 8px;
-  border-right: 2px solid #8e8e8e;
-  border-bottom: 2px solid #8e8e8e;
-  transform: rotate(45deg);
-  top: -4px;
+  top: 0;
   bottom: 0;
   right: 12px;
   margin: auto;

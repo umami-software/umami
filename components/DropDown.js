@@ -1,8 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
+import Menu from './Menu';
+import useDocumentClick from 'hooks/useDocumentClick';
+import Chevron from 'assets/chevron-down.svg';
 import styles from './Dropdown.module.css';
+import Icon from './Icon';
 
-export default function DropDown({ value, options = [], onChange, className }) {
+export default function DropDown({
+  value,
+  className,
+  menuClassName,
+  options = [],
+  onChange = () => {},
+}) {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
 
@@ -16,35 +26,19 @@ export default function DropDown({ value, options = [], onChange, className }) {
     onChange(value);
   }
 
-  useEffect(() => {
-    function hideMenu(e) {
-      if (!ref.current.contains(e.target)) {
-        setShowMenu(false);
-      }
+  useDocumentClick(e => {
+    if (!ref.current.contains(e.target)) {
+      setShowMenu(false);
     }
-
-    document.addEventListener('click', hideMenu);
-
-    return () => {
-      document.removeEventListener('click', hideMenu);
-    };
-  }, [ref]);
+  });
 
   return (
     <div ref={ref} className={classNames(styles.dropdown, className)} onClick={handleShowMenu}>
       <div className={styles.value}>
-        {options.find(e => e.value === value).label}
-        <div className={styles.caret} />
+        {options.find(e => e.value === value)?.label}
+        <Icon icon={<Chevron />} size="S" className={styles.icon} />
       </div>
-      {showMenu && (
-        <div className={styles.menu}>
-          {options.map(({ label, value }) => (
-            <div key={value} className={styles.option} onClick={e => handleSelect(value, e)}>
-              {label}
-            </div>
-          ))}
-        </div>
-      )}
+      {showMenu && <Menu className={menuClassName} options={options} onSelect={handleSelect} />}
     </div>
   );
 }
