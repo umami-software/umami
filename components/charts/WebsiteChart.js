@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
-import CheckVisible from './CheckVisible';
+import CheckVisible from '../helpers/CheckVisible';
 import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
-import DateFilter from './DateFilter';
-import StickyHeader from './StickyHeader';
+import DateFilter from '../common/DateFilter';
+import StickyHeader from '../helpers/StickyHeader';
 import { get } from 'lib/web';
 import { getDateArray, getDateRange, getTimezone } from 'lib/date';
 import styles from './WebsiteChart.module.css';

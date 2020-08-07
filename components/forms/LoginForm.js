@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Router from 'next/router';
 import { post } from 'lib/web';
-import Button from './Button';
-import FormLayout, { FormButtons, FormError, FormMessage, FormRow } from './FormLayout';
-import styles from './Login.module.css';
+import Button from '../interface/Button';
+import FormLayout, { FormButtons, FormError, FormMessage, FormRow } from '../layout/FormLayout';
+import styles from './LoginForm.module.css';
 
 const validate = ({ username, password }) => {
   const errors = {};
@@ -19,7 +19,7 @@ const validate = ({ username, password }) => {
   return errors;
 };
 
-export default function Login() {
+export default function LoginForm() {
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {

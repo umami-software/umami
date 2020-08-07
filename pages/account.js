@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from 'components/Layout';
+import Layout from 'components/layout/Layout';
 import Account from 'components/Account';
 import useRequireLogin from 'hooks/useRequireLogin';
 

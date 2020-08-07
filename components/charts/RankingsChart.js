@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import CheckVisible from './CheckVisible';
+import CheckVisible from '../helpers/CheckVisible';
 import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import styles from './RankingsChart.module.css';

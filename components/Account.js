@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Page from './Page';
+import Page from './layout/Page';
 import styles from './Account.module.css';
 
 export default function Account() {

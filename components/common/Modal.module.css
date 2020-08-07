@@ -1,0 +1,45 @@
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.modal:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background: var(--gray900);
+  opacity: 0.1;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gray50);
+  min-width: 200px;
+  min-height: 100px;
+  z-index: 1;
+  border: 1px solid var(--gray300);
+  padding: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.header {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import Link from 'components/Link';
-import UserButton from './UserButton';
-import Icon from './Icon';
+import Link from 'components/interface/Link';
+import UserButton from '../interface/UserButton';
+import Icon from '../interface/Icon';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 

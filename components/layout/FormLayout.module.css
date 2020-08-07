@@ -33,9 +33,22 @@
   top: 0;
   left: 100%;
   bottom: 0;
-  margin-left: 10px;
-  padding: 4px 8px;
+  margin-left: 16px;
+  padding: 4px 10px;
   border-radius: 4px;
+}
+
+.error:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -5px;
+  bottom: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  background: var(--color-error);
+  transform: rotate(45deg);
 }
 
 .message {

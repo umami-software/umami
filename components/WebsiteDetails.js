@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import WebsiteChart from './WebsiteChart';
-import RankingsChart from './RankingsChart';
-import WorldMap from './WorldMap';
-import Page from './Page';
+import WebsiteChart from './charts/WebsiteChart';
+import RankingsChart from './charts/RankingsChart';
+import WorldMap from './common/WorldMap';
+import Page from './layout/Page';
 import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
 import styles from './WebsiteDetails.module.css';
-import PageHeader from './PageHeader';
+import PageHeader from './layout/PageHeader';
 
 const pageviewClasses = 'col-md-12 col-lg-6';
 const sessionClasses = 'col-12 col-lg-4';
