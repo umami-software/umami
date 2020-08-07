@@ -56,7 +56,9 @@ export default function Login() {
               <FormError name="password" />
             </FormRow>
             <FormButtons>
-              <Button type="submit">Login</Button>
+              <Button className={styles.button} type="submit">
+                Login
+              </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>
           </Form>

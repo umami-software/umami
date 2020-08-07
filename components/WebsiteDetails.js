@@ -8,6 +8,7 @@ import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
 import styles from './WebsiteDetails.module.css';
+import PageHeader from './PageHeader';
 
 const pageviewClasses = 'col-md-12 col-lg-6';
 const sessionClasses = 'col-12 col-lg-4';
@@ -45,7 +46,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     <Page>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
-          <h2>{data.name}</h2>
+          <PageHeader>{data.name}</PageHeader>
           <WebsiteChart
             websiteId={websiteId}
             onDataLoad={handleDataLoad}

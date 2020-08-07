@@ -2,3 +2,12 @@
   font-size: var(--font-size-xlarge);
   text-align: center;
 }
+
+.button {
+  color: var(--gray50);
+  background: var(--gray900);
+}
+
+.button:hover {
+  background: var(--gray800);
+}

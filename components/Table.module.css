@@ -1,7 +1,27 @@
 .table {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.table th {
-  text-align: left;
+.header {
+  display: flex;
+}
+
+.head {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  line-height: 40px;
+  flex: 1;
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--gray300);
+  padding: 10px 0;
+}
+
+.cell {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
 }

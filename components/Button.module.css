@@ -14,3 +14,15 @@
 .button:hover {
   background: #eaeaea;
 }
+
+.button + .button {
+  margin-left: 10px;
+}
+
+.small {
+  font-size: var(--font-size-small);
+}
+
+.large {
+  font-size: var(--font-size-large);
+}

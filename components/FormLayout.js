@@ -17,4 +17,5 @@ export const FormError = ({ name }) => (
 
 export const FormRow = ({ children }) => <div className={styles.row}>{children}</div>;
 
-export const FormMessage = ({ children }) => <div className={styles.message}>{children}</div>;
+export const FormMessage = ({ children }) =>
+  children ? <div className={styles.message}>{children}</div> : null;

@@ -9,21 +9,6 @@
   margin-bottom: 0;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  color: var(--gray900) !important;
-}
-
-.details {
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.details svg {
-  margin-right: 5px;
+.button {
+  font-size: var(--font-size-small);
 }

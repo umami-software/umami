@@ -5,6 +5,10 @@
   vertical-align: middle;
 }
 
+.icon + * {
+  margin-left: 10px;
+}
+
 .icon svg {
   fill: currentColor;
 }

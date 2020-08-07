@@ -3,10 +3,24 @@ import classNames from 'classnames';
 import Icon from './Icon';
 import styles from './Button.module.css';
 
-export default function Button({ icon, type = 'button', children, className, onClick = () => {} }) {
+export default function Button({
+  type = 'button',
+  icon,
+  size,
+  children,
+  className,
+  onClick = () => {},
+}) {
   return (
-    <button type={type} className={classNames(styles.button, className)} onClick={onClick}>
-      {icon && <Icon icon={icon} />}
+    <button
+      type={type}
+      className={classNames(styles.button, className, {
+        [styles.small]: size === 'S',
+        [styles.large]: size === 'L',
+      })}
+      onClick={onClick}
+    >
+      {icon && <Icon icon={icon} size={size} />}
       {children}
     </button>
   );
