@@ -1,9 +1,18 @@
 import React from 'react';
+import classNames from 'classnames';
 import Head from 'next/head';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
+import styles from './Layout.module.css';
 
-export default function Layout({ title, children }) {
+export default function Layout({
+  title,
+  children,
+  header = true,
+  footer = true,
+  center = false,
+  middle = false,
+}) {
   return (
     <>
       <Head>
@@ -14,9 +23,16 @@ export default function Layout({ title, children }) {
           rel="stylesheet"
         />
       </Head>
-      <Header />
-      <main className="container">{children}</main>
-      <Footer />
+      {header && <Header />}
+      <main
+        className={classNames(styles.layout, 'container', {
+          [styles.center]: center,
+          [styles.middle]: middle,
+        })}
+      >
+        {children}
+      </main>
+      {footer && <Footer />}
     </>
   );
 }

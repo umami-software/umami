@@ -7,7 +7,7 @@
   --gray400: #cacaca;
   --gray500: #b3b3b3;
   --gray600: #8e8e8e;
-  --gray6700: #6e6e6e;
+  --gray700: #6e6e6e;
   --gray800: #4b4b4b;
   --gray900: #2c2c2c;
 
@@ -26,4 +26,6 @@
   --grid-size-medium: 768px;
   --grid-size-large: 992px;
   --grid-size-xlarge: 1140px;
+
+  --color-error: #e34850;
 }

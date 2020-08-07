@@ -9,6 +9,11 @@
   fill: currentColor;
 }
 
+.xl > svg {
+  width: 48px;
+  height: 48px;
+}
+
 .large > svg {
   width: 24px;
   height: 24px;

@@ -19,7 +19,12 @@ body {
   box-sizing: inherit;
 }
 
-h2 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 400;
 }
 
@@ -42,16 +47,9 @@ a:visited {
   color: var(--primary400);
 }
 
-form label {
-  display: inline-block;
-  min-width: 100px;
-}
-
 input,
 textarea {
   padding: 4px 8px;
-  margin-right: 10px;
-  margin-bottom: 20px;
   font-size: var(--font-size-normal);
   line-height: 1.8;
   border: 1px solid var(--gray500);

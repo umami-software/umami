@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/Link';
 import UserButton from './UserButton';
+import Icon from './Icon';
+import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -12,7 +14,10 @@ export default function Header() {
     <header className={classNames(styles.header, 'container')}>
       <div className="row align-items-center">
         <div className="col">
-          <div className={styles.title}>{user ? <Link href="/">umami</Link> : 'umami'}</div>
+          <div className={styles.title}>
+            <Icon icon={<Logo />} size="L" className={styles.logo} />
+            {user ? <Link href="/">umami</Link> : 'umami'}
+          </div>
         </div>
         {user && (
           <div className="col">

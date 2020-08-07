@@ -1,0 +1,48 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form label {
+  display: inline-block;
+  min-width: 100px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  color: var(--gray50);
+  background: var(--color-error);
+  font-size: var(--font-size-small);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 100%;
+  bottom: 0;
+  margin-left: 10px;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.message {
+  text-align: center;
+  margin: 20px 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--gray50);
+  background: var(--gray800);
+}
