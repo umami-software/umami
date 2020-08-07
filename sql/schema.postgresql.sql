@@ -23,6 +23,7 @@ create table session (
     hostname varchar(100),
     browser varchar(20),
     os varchar(20),
+    device varchar(20),
     screen varchar(11),
     language varchar(35),
     country char(2)

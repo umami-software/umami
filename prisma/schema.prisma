@@ -8,23 +8,23 @@ datasource db {
 }
 
 model account {
-  created_at DateTime? @default(now())
-  is_admin   Boolean   @default(false)
-  password   String
-  updated_at DateTime? @default(now())
   user_id    Int       @default(autoincrement()) @id
   username   String    @unique
+  password   String
+  is_admin   Boolean   @default(false)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
   website    website[]
 }
 
 model event {
-  created_at  DateTime? @default(now())
   event_id    Int       @default(autoincrement()) @id
+  website_id  Int
+  session_id  Int
+  created_at  DateTime? @default(now())
+  url         String
   event_type  String
   event_value String
-  session_id  Int
-  url         String
-  website_id  Int
   session     session   @relation(fields: [session_id], references: [session_id])
   website     website   @relation(fields: [website_id], references: [website_id])
 
@@ -34,12 +34,12 @@ model event {
 }
 
 model pageview {
-  created_at DateTime? @default(now())
-  referrer   String?
-  session_id Int
-  url        String
   view_id    Int       @default(autoincrement()) @id
   website_id Int
+  session_id Int
+  created_at DateTime? @default(now())
+  url        String
+  referrer   String?
   session    session   @relation(fields: [session_id], references: [session_id])
   website    website   @relation(fields: [website_id], references: [website_id])
 
@@ -49,16 +49,17 @@ model pageview {
 }
 
 model session {
-  browser      String?
-  country      String?
-  created_at   DateTime?  @default(now())
-  hostname     String?
-  language     String?
-  os           String?
-  screen       String?
   session_id   Int        @default(autoincrement()) @id
   session_uuid String     @unique
   website_id   Int
+  created_at   DateTime?  @default(now())
+  hostname     String?
+  browser      String?
+  os           String?
+  screen       String?
+  language     String?
+  country      String?
+  device       String?
   website      website    @relation(fields: [website_id], references: [website_id])
   event        event[]
   pageview     pageview[]
@@ -68,11 +69,11 @@ model session {
 }
 
 model website {
-  created_at   DateTime?  @default(now())
-  label        String
-  user_id      Int
   website_id   Int        @default(autoincrement()) @id
   website_uuid String     @unique
+  label        String
+  created_at   DateTime?  @default(now())
+  user_id      Int
   account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]
