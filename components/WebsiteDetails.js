@@ -105,7 +105,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
             <div className={sessionClasses}>
               <RankingsChart
                 title="Devices"
-                type="screen"
+                type="device"
                 heading="Visitors"
                 websiteId={websiteId}
                 startDate={startDate}
