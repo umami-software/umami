@@ -21,27 +21,27 @@ export default function WebsiteList() {
   return (
     <Page>
       {data &&
-        data.websites.map(({ website_id, label }) => (
+        data.websites.map(({ website_id, name }) => (
           <div key={website_id} className={styles.website}>
             <div className={styles.header}>
               <h2>
                 <Link
                   href="/website/[...id]"
-                  as={`/website/${website_id}/${label}`}
+                  as={`/website/${website_id}/${name}`}
                   className={styles.title}
                 >
-                  {label}
+                  {name}
                 </Link>
               </h2>
               <Link
                 href="/website/[...id]"
-                as={`/website/${website_id}/${label}`}
+                as={`/website/${website_id}/${name}`}
                 className={styles.details}
               >
                 <Icon icon={<Arrow />} /> View details
               </Link>
             </div>
-            <WebsiteChart key={website_id} title={label} websiteId={website_id} />
+            <WebsiteChart key={website_id} title={name} websiteId={website_id} />
           </div>
         ))}
     </Page>

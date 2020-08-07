@@ -11,7 +11,8 @@ create table website (
     website_id serial primary key,
     website_uuid uuid unique not null,
     user_id int not null references account(user_id) on delete cascade,
-    label varchar(100) not null,
+    name varchar(100) not null,
+    domain varchar(500),
     created_at timestamp with time zone default current_timestamp
 );
 

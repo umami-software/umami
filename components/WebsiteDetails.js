@@ -45,7 +45,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     <Page>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
-          <h2>{data.label}</h2>
+          <h2>{data.name}</h2>
           <WebsiteChart
             websiteId={websiteId}
             onDataLoad={handleDataLoad}

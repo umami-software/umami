@@ -71,9 +71,10 @@ model session {
 model website {
   website_id   Int        @default(autoincrement()) @id
   website_uuid String     @unique
-  label        String
+  name         String
   created_at   DateTime?  @default(now())
   user_id      Int
+  domain       String?
   account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]
