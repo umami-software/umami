@@ -77,7 +77,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
-                dataFilter={refFilter}
+                dataFilter={refFilter(data.domain)}
               />
             </div>
           </div>

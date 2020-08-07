@@ -4,10 +4,6 @@
   cursor: pointer;
 }
 
-.icon {
-  margin-right: 8px;
-}
-
 .username {
   border-bottom: 1px solid var(--gray500);
 }

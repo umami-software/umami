@@ -47,7 +47,7 @@ export default function UserButton() {
   return (
     <div ref={ref} className={styles.container}>
       <div onClick={() => setShowMenu(state => !state)}>
-        <Icon icon={<User />} size="L" className={styles.icon} />
+        <Icon icon={<User />} size="L" />
         <Icon icon={<Chevron />} size="S" />
       </div>
       {showMenu && <Menu options={menuOptions} onSelect={handleSelect} align="right" />}
