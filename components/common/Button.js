@@ -10,7 +10,7 @@ export default function Button({
   variant,
   children,
   className,
-  onClick = () => {},
+  ...props
 }) {
   return (
     <button
@@ -21,7 +21,7 @@ export default function Button({
         [styles.action]: variant === 'action',
         [styles.danger]: variant === 'danger',
       })}
-      onClick={onClick}
+      {...props}
     >
       {icon && <Icon icon={icon} size={size} />}
       {children}

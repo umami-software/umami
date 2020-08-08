@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { del } from 'lib/web';
-import Button from 'components/interface/Button';
+import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
   FormError,
@@ -19,7 +19,7 @@ const validate = ({ confirmation }) => {
   return errors;
 };
 
-export default function WebsiteDeleteForm({ initialValues, onSave, onClose }) {
+export default function WebsiteDeleteForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ website_id }) => {
@@ -35,21 +35,20 @@ export default function WebsiteDeleteForm({ initialValues, onSave, onClose }) {
   return (
     <FormLayout>
       <Formik
-        initialValues={{ confirmation: '', ...initialValues }}
+        initialValues={{ confirmation: '', ...values }}
         validate={validate}
         onSubmit={handleSubmit}
       >
         {() => (
           <Form>
             <div>
-              Are your sure you want to delete <b>{initialValues.name}</b>?
+              Are your sure you want to delete <b>{values.name}</b>?
             </div>
             <div>All associated data will be deleted as well.</div>
             <p>
               Type <b>DELETE</b> in the box below to confirm.
             </p>
             <FormRow>
-              <label htmlFor="confirmation">Confirm</label>
               <Field name="confirmation" />
               <FormError name="confirmation" />
             </FormRow>

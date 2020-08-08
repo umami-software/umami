@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Router from 'next/router';
 import { post } from 'lib/web';
-import Button from '../interface/Button';
+import Button from '../common/Button';
 import FormLayout, { FormButtons, FormError, FormMessage, FormRow } from '../layout/FormLayout';
-import styles from './LoginForm.module.css';
 
 const validate = ({ username, password }) => {
   const errors = {};
@@ -44,7 +43,7 @@ export default function LoginForm() {
       >
         {() => (
           <Form>
-            <h1 className={styles.title}>umami</h1>
+            <h1 className="center">umami</h1>
             <FormRow>
               <label htmlFor="username">Username</label>
               <Field name="username" type="text" />

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Button from '../interface/Button';
+import Button from '../common/Button';
 import { getDateRange } from 'lib/date';
 import styles from './QuickButtons.module.css';
 

@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
 import classNames from 'classnames';
-import Menu from '../interface/Menu';
+import Menu from './Menu';
 import useDocumentClick from 'hooks/useDocumentClick';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './Dropdown.module.css';
-import Icon from '../interface/Icon';
+import Icon from './Icon';
 
 export default function DropDown({
   value,

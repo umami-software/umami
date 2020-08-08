@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { post } from 'lib/web';
-import Button from 'components/interface/Button';
+import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
   FormError,
@@ -22,7 +22,7 @@ const validate = ({ name, domain }) => {
   return errors;
 };
 
-export default function WebsiteEditForm({ initialValues, onSave, onClose }) {
+export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
@@ -37,7 +37,7 @@ export default function WebsiteEditForm({ initialValues, onSave, onClose }) {
 
   return (
     <FormLayout>
-      <Formik initialValues={initialValues} validate={validate} onSubmit={handleSubmit}>
+      <Formik initialValues={values} validate={validate} onSubmit={handleSubmit}>
         {() => (
           <Form>
             <FormRow>
