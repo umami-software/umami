@@ -1,5 +1,6 @@
 import { serialize } from 'cookie';
 import { AUTH_COOKIE_NAME } from 'lib/constants';
+import { redirect } from 'lib/response';
 
 export default async (req, res) => {
   const cookie = serialize(AUTH_COOKIE_NAME, '', {
@@ -8,9 +9,7 @@ export default async (req, res) => {
     maxAge: 0,
   });
 
-  res.statusCode = 303;
   res.setHeader('Set-Cookie', [cookie]);
-  res.setHeader('Location', '/login');
 
-  return res.end();
+  return redirect(res, '/login');
 };

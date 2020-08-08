@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 import { getPageviewData } from 'lib/db';
 import { useAuth } from 'lib/middleware';
+import { ok, badRequest } from 'lib/response';
 
 const unitTypes = ['month', 'hour', 'day'];
 
@@ -10,7 +11,7 @@ export default async (req, res) => {
   const { id, start_at, end_at, unit, tz } = req.query;
 
   if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
-    return res.status(400).end();
+    return badRequest(res);
   }
 
   const start = new Date(+start_at);
@@ -21,5 +22,5 @@ export default async (req, res) => {
     getPageviewData(+id, start, end, tz, unit, 'distinct session_id'),
   ]);
 
-  return res.status(200).json({ pageviews, uniques });
+  return ok(res, { pageviews, uniques });
 };

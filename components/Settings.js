@@ -8,13 +8,15 @@ import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import { get } from 'lib/web';
 import Modal from './common/Modal';
-import WebsiteForm from './forms/WebsiteForm';
+import WebsiteEditForm from './forms/WebsiteEditForm';
 import styles from './Settings.module.css';
+import WebsiteDeleteForm from './forms/WebsiteDeleteForm';
 
 export default function Settings() {
   const [data, setData] = useState();
   const [edit, setEdit] = useState();
   const [del, setDelete] = useState();
+  const [add, setAdd] = useState();
   const [saved, setSaved] = useState(0);
 
   const columns = [
@@ -44,6 +46,7 @@ export default function Settings() {
   }
 
   function handleClose() {
+    setAdd(null);
     setEdit(null);
     setDelete(null);
   }
@@ -64,14 +67,28 @@ export default function Settings() {
     <Page>
       <PageHeader>
         <div>Websites</div>
-        <Button icon={<Plus />} size="S">
+        <Button icon={<Plus />} size="S" onClick={() => setAdd(true)}>
           <div>Add website</div>
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} />
       {edit && (
         <Modal title="Edit website">
-          <WebsiteForm initialValues={edit} onSave={handleSave} onClose={handleClose} />
+          <WebsiteEditForm initialValues={edit} onSave={handleSave} onClose={handleClose} />
+        </Modal>
+      )}
+      {add && (
+        <Modal title="Add website">
+          <WebsiteEditForm
+            initialValues={{ name: '', domain: '' }}
+            onSave={handleSave}
+            onClose={handleClose}
+          />
+        </Modal>
+      )}
+      {del && (
+        <Modal title="Delete website">
+          <WebsiteDeleteForm initialValues={del} onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
     </Page>

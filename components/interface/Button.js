@@ -7,6 +7,7 @@ export default function Button({
   type = 'button',
   icon,
   size,
+  variant,
   children,
   className,
   onClick = () => {},
@@ -17,6 +18,8 @@ export default function Button({
       className={classNames(styles.button, className, {
         [styles.small]: size === 'S',
         [styles.large]: size === 'L',
+        [styles.action]: variant === 'action',
+        [styles.danger]: variant === 'danger',
       })}
       onClick={onClick}
     >

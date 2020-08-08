@@ -20,11 +20,12 @@
 .buttons {
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
 
 .error {
   color: var(--gray50);
-  background: var(--color-error);
+  background: var(--red400);
   font-size: var(--font-size-small);
   position: absolute;
   display: flex;
@@ -47,7 +48,7 @@
   margin: auto;
   width: 10px;
   height: 10px;
-  background: var(--color-error);
+  background: var(--red400);
   transform: rotate(45deg);
 }
 

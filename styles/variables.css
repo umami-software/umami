@@ -27,5 +27,8 @@
   --grid-size-large: 992px;
   --grid-size-xlarge: 1140px;
 
-  --color-error: #e34850;
+  --red400: #e34850;
+  --red500: #d7373f;
+  --red600: #c9252d;
+  --red700: #bb121a;
 }

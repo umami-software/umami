@@ -26,3 +26,21 @@
 .large {
   font-size: var(--font-size-large);
 }
+
+.action {
+  color: var(--gray50) !important;
+  background: var(--gray900) !important;
+}
+
+.action:hover {
+  background: var(--gray800) !important;
+}
+
+.danger {
+  color: var(--gray50) !important;
+  background: var(--red500) !important;
+}
+
+.danger:hover {
+  background: var(--red400) !important;
+}

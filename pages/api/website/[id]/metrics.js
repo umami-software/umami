@@ -1,5 +1,6 @@
 import { getMetrics } from 'lib/db';
 import { useAuth } from 'lib/middleware';
+import { ok } from 'lib/response';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -17,5 +18,5 @@ export default async (req, res) => {
     return obj;
   }, {});
 
-  return res.status(200).json(stats);
+  return ok(res, stats);
 };

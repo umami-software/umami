@@ -5,18 +5,12 @@
 }
 
 .value {
+  display: flex;
+  justify-content: space-between;
   white-space: nowrap;
   position: relative;
-  padding: 4px 32px 4px 16px;
+  padding: 4px 16px;
   border: 1px solid var(--gray500);
   border-radius: 4px;
   cursor: pointer;
-}
-
-.icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 12px;
-  margin: auto;
 }

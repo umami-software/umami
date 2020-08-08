@@ -32,7 +32,7 @@ create table session (
 
 create table pageview (
     view_id serial primary key,
-    website_id int not null references website(website_id),
+    website_id int not null references website(website_id) on delete cascade,
     session_id int not null references session(session_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
     url varchar(500) not null,
@@ -41,7 +41,7 @@ create table pageview (
 
 create table event (
     event_id serial primary key,
-    website_id int not null references website(website_id),
+    website_id int not null references website(website_id) on delete cascade,
     session_id int not null references session(session_id) on delete cascade,
     created_at timestamp with time zone default current_timestamp,
     url varchar(500) not null,

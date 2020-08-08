@@ -2,6 +2,7 @@ import { serialize } from 'cookie';
 import { checkPassword, createSecureToken } from 'lib/crypto';
 import { getAccount } from 'lib/db';
 import { AUTH_COOKIE_NAME } from 'lib/constants';
+import { ok, unauthorized } from 'lib/response';
 
 export default async (req, res) => {
   const { username, password } = req.body;
@@ -19,8 +20,8 @@ export default async (req, res) => {
 
     res.setHeader('Set-Cookie', [cookie]);
 
-    return res.status(200).json({ token });
+    return ok(res, { token });
   }
 
-  return res.status(401).end();
+  return unauthorized(res);
 };

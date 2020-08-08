@@ -1,12 +1,13 @@
-import { verifySecureToken } from 'lib/crypto';
+import { parseSecureToken } from 'lib/crypto';
+import { ok, badRequest } from 'lib/response';
 
 export default async (req, res) => {
   const { token } = req.body;
 
   try {
-    const payload = await verifySecureToken(token);
-    return res.status(200).json(payload);
+    const payload = await parseSecureToken(token);
+    return ok(res, payload);
   } catch {
-    return res.status(400).end();
+    return badRequest(res);
   }
 };

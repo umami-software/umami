@@ -31,7 +31,6 @@
   border: 1px solid var(--gray300);
   padding: 30px;
   border-radius: 4px;
-  overflow: hidden;
 }
 
 .header {

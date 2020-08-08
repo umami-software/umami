@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
-import Router from 'next/router';
 import { post } from 'lib/web';
 import Button from 'components/interface/Button';
 import FormLayout, {
@@ -23,7 +22,7 @@ const validate = ({ name, domain }) => {
   return errors;
 };
 
-export default function WebsiteForm({ initialValues, onSave, onClose }) {
+export default function WebsiteEditForm({ initialValues, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
@@ -52,7 +51,9 @@ export default function WebsiteForm({ initialValues, onSave, onClose }) {
               <FormError name="domain" />
             </FormRow>
             <FormButtons>
-              <Button type="submit">Save</Button>
+              <Button type="submit" variant="action">
+                Save
+              </Button>
               <Button onClick={onClose}>Cancel</Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>
