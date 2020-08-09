@@ -10,6 +10,19 @@
   font-size: var(--font-size-small);
 }
 
+.menu .option {
+  font-size: var(--font-size-small);
+}
+
+.backButton {
+  align-self: flex-start;
+  margin-bottom: 16px;
+}
+
+.backButton svg {
+  transform: rotate(180deg);
+}
+
 .row {
   border-top: 1px solid var(--gray300);
   min-height: 430px;

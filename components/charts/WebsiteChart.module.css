@@ -10,6 +10,11 @@
 }
 
 .header {
+  min-height: 90px;
+}
+
+.metrics {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,5 +27,5 @@
   margin: auto;
   background: var(--gray50);
   border-bottom: 1px solid var(--gray300);
-  z-index: 2;
+  z-index: 3;
 }

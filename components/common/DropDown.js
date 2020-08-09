@@ -38,7 +38,9 @@ export default function DropDown({
         {options.find(e => e.value === value)?.label}
         <Icon icon={<Chevron />} size="small" />
       </div>
-      {showMenu && <Menu className={menuClassName} options={options} onSelect={handleSelect} />}
+      {showMenu && (
+        <Menu className={menuClassName} options={options} onSelect={handleSelect} float="bottom" />
+      )}
     </div>
   );
 }

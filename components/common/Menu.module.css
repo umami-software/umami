@@ -1,8 +1,4 @@
 .menu {
-  position: absolute;
-  min-width: 100px;
-  top: 100%;
-  margin-top: 4px;
   border: 1px solid var(--gray500);
   border-radius: 4px;
   overflow: hidden;
@@ -20,6 +16,21 @@
 
 .option:hover {
   background: #f5f5f5;
+}
+
+.float {
+  position: absolute;
+  min-width: 100px;
+}
+
+.top {
+  bottom: 100%;
+  margin-bottom: 5px;
+}
+
+.bottom {
+  top: 100%;
+  margin-top: 5px;
 }
 
 .left {

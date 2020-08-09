@@ -54,23 +54,25 @@ export default function WebsiteChart({
 
   return (
     <>
-      <StickyHeader
-        className={classNames(styles.header, 'row')}
-        stickyClassName={styles.sticky}
-        enabled={stickyHeader}
-      >
-        <MetricsBar
-          className="col-12 col-md-9 col-lg-10"
-          websiteId={websiteId}
-          startDate={startDate}
-          endDate={endDate}
-        />
-        <DateFilter
-          className="col-12 col-md-3 col-lg-2"
-          value={value}
-          onChange={handleDateChange}
-        />
-      </StickyHeader>
+      <div className={classNames(styles.header, 'row')}>
+        <StickyHeader
+          className={classNames(styles.metrics, 'col row')}
+          stickyClassName={styles.sticky}
+          enabled={stickyHeader}
+        >
+          <MetricsBar
+            className="col-12 col-md-9 col-lg-10"
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+          />
+          <DateFilter
+            className="col-12 col-md-3 col-lg-2"
+            value={value}
+            onChange={handleDateChange}
+          />
+        </StickyHeader>
+      </div>
       <div className="row">
         <CheckVisible className="col">
           {visible => (

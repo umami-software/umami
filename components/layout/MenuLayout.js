@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
+import Menu from 'components/common/Menu';
 import styles from './MenuLayout.module.css';
 
 export default function MenuLayout({
@@ -9,26 +10,19 @@ export default function MenuLayout({
   className,
   menuClassName,
   contentClassName,
+  optionClassName,
   children,
 }) {
-  function handleMenuSelect(option) {
-    onMenuSelect(option);
-  }
-
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={classNames(styles.menu, menuClassName)}>
-        {menu.map(option =>
-          option ? (
-            <div
-              className={classNames(styles.option, { [styles.active]: option === selectedOption })}
-              onClick={() => handleMenuSelect(option)}
-            >
-              {option}
-            </div>
-          ) : null,
-        )}
-      </div>
+      <Menu
+        options={menu}
+        selectedOption={selectedOption}
+        className={classNames(styles.menu, menuClassName)}
+        selectedClassName={styles.selected}
+        optionClassName={classNames(styles.option, optionClassName)}
+        onSelect={onMenuSelect}
+      />
       <div className={classNames(styles.content, contentClassName)}>{children}</div>
     </div>
   );

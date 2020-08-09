@@ -3,6 +3,10 @@
   flex: 1;
 }
 
+.container .menu {
+  border: 0;
+}
+
 .menu {
   display: flex;
   flex-direction: column;
@@ -18,6 +22,7 @@
 }
 
 .option {
+  font-size: var(--font-size-normal);
   padding: 8px 16px;
   cursor: pointer;
   min-width: 160px;
@@ -29,6 +34,6 @@
   background: var(--gray75);
 }
 
-.active {
+.selected {
   font-weight: 600;
 }

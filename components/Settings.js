@@ -8,16 +8,20 @@ import { useSelector } from 'react-redux';
 
 export default function Settings() {
   const user = useSelector(state => state.user);
-  const [option, setOption] = useState('Websites');
+  const [option, setOption] = useState(1);
 
-  const menuOptions = ['Websites', user.is_admin && 'Accounts', 'Profile'];
+  const menuOptions = [
+    { label: 'Websites', value: 1 },
+    { label: 'Accounts', value: 2, hidden: !user.is_admin },
+    { label: 'Profile', value: 3 },
+  ];
 
   return (
     <Page>
       <MenuLayout menu={menuOptions} selectedOption={option} onMenuSelect={setOption}>
-        {option === 'Websites' && <WebsiteSettings />}
-        {option === 'Accounts' && <AccountSettings />}
-        {option === 'Profile' && <ProfileSettings />}
+        {option === 1 && <WebsiteSettings />}
+        {option === 2 && <AccountSettings />}
+        {option === 3 && <ProfileSettings />}
       </MenuLayout>
     </Page>
   );

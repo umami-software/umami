@@ -79,6 +79,7 @@
 .body {
   position: relative;
   flex: 1;
+  overflow: hidden;
 }
 
 .body:empty:before {

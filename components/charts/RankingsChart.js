@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
 import CheckVisible from 'components/helpers/CheckVisible';
@@ -17,6 +18,7 @@ export default function RankingsChart({
   heading,
   className,
   dataFilter,
+  limit,
   onDataLoad = () => {},
   onExpand = () => {},
 }) {
@@ -24,7 +26,11 @@ export default function RankingsChart({
 
   const rankings = useMemo(() => {
     if (data) {
-      return (dataFilter ? dataFilter(data) : data).filter((e, i) => i < 10);
+      const items = dataFilter ? dataFilter(data) : data;
+      if (limit) {
+        return items.filter((e, i) => i < limit);
+      }
+      return items;
     }
     return [];
   }, [data]);
@@ -52,31 +58,44 @@ export default function RankingsChart({
     return null;
   }
 
+  const Row = ({ index, style }) => {
+    const { x, y, z } = rankings[index];
+    return (
+      <div style={style}>
+        <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} />
+      </div>
+    );
+  };
+
   return (
-    <CheckVisible>
-      {visible => (
-        <div className={classNames(styles.container, className)}>
-          <div className={styles.header}>
-            <div className={styles.title}>{title}</div>
-            <div className={styles.heading}>{heading}</div>
-          </div>
-          <div className={styles.body}>
-            {rankings.map(({ x, y, z }) => (
-              <Row key={x} label={x} value={y} percent={z} animate={visible} />
-            ))}
-          </div>
-          <div className={styles.footer}>
-            <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(title)}>
-              <div>More</div>
-            </Button>
-          </div>
-        </div>
-      )}
-    </CheckVisible>
+    <div className={classNames(styles.container, className)}>
+      <div className={styles.header}>
+        <div className={styles.title}>{title}</div>
+        <div className={styles.heading}>{heading}</div>
+      </div>
+      <div className={styles.body}>
+        {limit ? (
+          rankings.map(({ x, y, z }) => (
+            <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} />
+          ))
+        ) : (
+          <FixedSizeList height={600} itemCount={rankings.length} itemSize={30}>
+            {Row}
+          </FixedSizeList>
+        )}
+      </div>
+      <div className={styles.footer}>
+        {limit && data.length > limit && (
+          <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
+            <div>More</div>
+          </Button>
+        )}
+      </div>
+    </div>
   );
 }
 
-const Row = ({ label, value, percent, animate }) => {
+const AnimatedRow = ({ label, value, percent, animate }) => {
   const props = useSpring({
     width: percent,
     y: value,

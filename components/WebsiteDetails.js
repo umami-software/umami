@@ -4,16 +4,17 @@ import WebsiteChart from './charts/WebsiteChart';
 import RankingsChart from './charts/RankingsChart';
 import WorldMap from './common/WorldMap';
 import Page from './layout/Page';
+import PageHeader from './layout/PageHeader';
+import MenuLayout from './layout/MenuLayout';
+import Button from './common/Button';
 import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
+import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
-import PageHeader from './layout/PageHeader';
-import MenuLayout from './layout/MenuLayout';
 
 const pageviewClasses = 'col-md-12 col-lg-6';
-const sessionClasses = 'col-12 col-lg-4';
-const menuOptions = ['Pages', 'Referrers', 'Browsers', 'Operating system', 'Devices', 'Countries'];
+const sessionClasses = 'col-md-12 col-lg-4';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
@@ -22,6 +23,32 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const [expand, setExpand] = useState();
   const { startDate, endDate } = dateRange;
+
+  const menuOptions = [
+    {
+      render: () => (
+        <Button
+          className={styles.backButton}
+          icon={<Arrow />}
+          size="xsmall"
+          onClick={() => setExpand(null)}
+        >
+          <div>Back</div>
+        </Button>
+      ),
+    },
+    { label: 'Pages', value: 'url', filter: urlFilter },
+    { label: 'Referrers', value: 'referrer', filter: refFilter(data?.domain) },
+    { label: 'Browsers', value: 'browser', filter: browserFilter },
+    { label: 'Operating system', value: 'os' },
+    { label: 'Devices', value: 'device', filter: deviceFilter },
+    {
+      label: 'Countries',
+      value: 'country',
+      filter: countryFilter,
+      onDataLoad: data => setCountryData(data),
+    },
+  ];
 
   async function loadData() {
     setData(await get(`/api/website/${websiteId}`));
@@ -35,12 +62,16 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     setTimeout(() => setDateRange(values), 300);
   }
 
-  function handleExpand(title) {
-    setExpand(title);
+  function handleExpand(value) {
+    setExpand(menuOptions.find(e => e.value === value));
   }
 
-  function handleMenuSelect(title) {
-    setExpand(title);
+  function handleMenuSelect(value) {
+    setExpand(menuOptions.find(e => e.value === value));
+  }
+
+  function getHeading(type) {
+    return type === 'url' || type === 'referrer' ? 'Views' : 'Visitors';
   }
 
   useEffect(() => {
@@ -77,6 +108,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 dataFilter={urlFilter}
                 onExpand={handleExpand}
               />
@@ -89,6 +121,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 dataFilter={refFilter(data.domain)}
                 onExpand={handleExpand}
               />
@@ -103,6 +136,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 dataFilter={browserFilter}
                 onExpand={handleExpand}
               />
@@ -115,6 +149,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 onExpand={handleExpand}
               />
             </div>
@@ -126,6 +161,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 dataFilter={deviceFilter}
                 onExpand={handleExpand}
               />
@@ -143,6 +179,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                limit={10}
                 dataFilter={countryFilter}
                 onDataLoad={data => setCountryData(data)}
                 onExpand={handleExpand}
@@ -155,10 +192,22 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
         <MenuLayout
           className={styles.expand}
           menuClassName={styles.menu}
+          optionClassName={styles.option}
           menu={menuOptions}
-          selectedOption={expand}
+          selectedOption={expand.value}
           onMenuSelect={handleMenuSelect}
-        />
+        >
+          <RankingsChart
+            title={expand.label}
+            type={expand.value}
+            heading={getHeading(expand.value)}
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+            dataFilter={expand.filter}
+            onDataLoad={expand.onDataLoad}
+          />
+        </MenuLayout>
       )}
     </Page>
   );
