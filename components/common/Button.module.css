@@ -20,12 +20,20 @@
   margin-left: 10px;
 }
 
+.large {
+  font-size: var(--font-size-large);
+}
+
+.medium {
+  font-size: var(--font-size-normal);
+}
+
 .small {
   font-size: var(--font-size-small);
 }
 
-.large {
-  font-size: var(--font-size-large);
+.xsmall {
+  font-size: var(--font-size-xsmall);
 }
 
 .action {

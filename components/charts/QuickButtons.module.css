@@ -1,5 +1,6 @@
 .buttons {
   display: flex;
+  align-content: center;
   position: absolute;
   top: 0;
   right: 0;
@@ -10,7 +11,7 @@
   margin-left: 10px;
 }
 
-.button {
+.buttons .button {
   font-size: var(--font-size-xsmall);
   padding: 4px 8px;
 }

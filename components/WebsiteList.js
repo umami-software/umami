@@ -27,13 +27,15 @@ export default function WebsiteList() {
       {data?.map(({ website_id, name }) => (
         <div key={website_id} className={styles.website}>
           <PageHeader>
-            <Link
-              href="/website/[...id]"
-              as={`/website/${website_id}/${name}`}
-              className={styles.title}
-            >
-              {name}
-            </Link>
+            <div>
+              <Link
+                href="/website/[...id]"
+                as={`/website/${website_id}/${name}`}
+                className={styles.title}
+              >
+                {name}
+              </Link>
+            </div>
             <Button
               icon={<Arrow />}
               onClick={() =>

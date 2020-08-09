@@ -9,15 +9,18 @@ import { get } from 'lib/web';
 import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
 import styles from './WebsiteDetails.module.css';
 import PageHeader from './layout/PageHeader';
+import MenuLayout from './layout/MenuLayout';
 
 const pageviewClasses = 'col-md-12 col-lg-6';
 const sessionClasses = 'col-12 col-lg-4';
+const menuOptions = ['Pages', 'Referrers', 'Browsers', 'Operating system', 'Devices', 'Countries'];
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
+  const [expand, setExpand] = useState();
   const { startDate, endDate } = dateRange;
 
   async function loadData() {
@@ -30,6 +33,14 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
 
   function handleDateChange(values) {
     setTimeout(() => setDateRange(values), 300);
+  }
+
+  function handleExpand(title) {
+    setExpand(title);
+  }
+
+  function handleMenuSelect(title) {
+    setExpand(title);
   }
 
   useEffect(() => {
@@ -55,7 +66,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           />
         </div>
       </div>
-      {chartLoaded && (
+      {chartLoaded && !expand && (
         <>
           <div className={classNames(styles.row, 'row')}>
             <div className={pageviewClasses}>
@@ -67,6 +78,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 startDate={startDate}
                 endDate={endDate}
                 dataFilter={urlFilter}
+                onExpand={handleExpand}
               />
             </div>
             <div className={pageviewClasses}>
@@ -78,6 +90,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 startDate={startDate}
                 endDate={endDate}
                 dataFilter={refFilter(data.domain)}
+                onExpand={handleExpand}
               />
             </div>
           </div>
@@ -91,6 +104,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 startDate={startDate}
                 endDate={endDate}
                 dataFilter={browserFilter}
+                onExpand={handleExpand}
               />
             </div>
             <div className={sessionClasses}>
@@ -101,6 +115,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 websiteId={websiteId}
                 startDate={startDate}
                 endDate={endDate}
+                onExpand={handleExpand}
               />
             </div>
             <div className={sessionClasses}>
@@ -112,6 +127,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 startDate={startDate}
                 endDate={endDate}
                 dataFilter={deviceFilter}
+                onExpand={handleExpand}
               />
             </div>
           </div>
@@ -129,10 +145,20 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
                 endDate={endDate}
                 dataFilter={countryFilter}
                 onDataLoad={data => setCountryData(data)}
+                onExpand={handleExpand}
               />
             </div>
           </div>
         </>
+      )}
+      {expand && (
+        <MenuLayout
+          className={styles.expand}
+          menuClassName={styles.menu}
+          menu={menuOptions}
+          selectedOption={expand}
+          onMenuSelect={handleMenuSelect}
+        />
       )}
     </Page>
   );

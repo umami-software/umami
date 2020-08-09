@@ -16,8 +16,9 @@ export default function Button({
     <button
       type={type}
       className={classNames(styles.button, className, {
-        [styles.small]: size === 'small',
         [styles.large]: size === 'large',
+        [styles.small]: size === 'small',
+        [styles.xsmall]: size === 'xsmall',
         [styles.action]: variant === 'action',
         [styles.danger]: variant === 'danger',
       })}

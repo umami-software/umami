@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  min-height: 430px;
+  min-height: 460px;
   font-size: var(--font-size-small);
   padding: 20px 0;
   display: flex;
@@ -88,6 +88,11 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
 }
 
 @media only screen and (max-width: 992px) {

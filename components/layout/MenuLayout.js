@@ -2,26 +2,34 @@ import React, { useState } from 'react';
 import classNames from 'classnames';
 import styles from './MenuLayout.module.css';
 
-export default function MenuLayout({ menu, selectedOption, onMenuSelect, children }) {
-  const [option, setOption] = useState(selectedOption);
+export default function MenuLayout({
+  menu,
+  selectedOption,
+  onMenuSelect,
+  className,
+  menuClassName,
+  contentClassName,
+  children,
+}) {
+  function handleMenuSelect(option) {
+    onMenuSelect(option);
+  }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.menu}>
-        {menu.map(item =>
-          item ? (
+    <div className={classNames(styles.container, className)}>
+      <div className={classNames(styles.menu, menuClassName)}>
+        {menu.map(option =>
+          option ? (
             <div
-              className={classNames(styles.option, { [styles.active]: option === item })}
-              onClick={() => setOption(item)}
+              className={classNames(styles.option, { [styles.active]: option === selectedOption })}
+              onClick={() => handleMenuSelect(option)}
             >
-              {item}
+              {option}
             </div>
           ) : null,
         )}
       </div>
-      <div className={styles.content}>
-        {typeof children === 'function' ? children(option) : children}
-      </div>
+      <div className={classNames(styles.content, contentClassName)}>{children}</div>
     </div>
   );
 }

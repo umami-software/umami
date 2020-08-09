@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import CheckVisible from '../helpers/CheckVisible';
+import CheckVisible from 'components/helpers/CheckVisible';
+import Button from 'components/common/Button';
+import Arrow from 'assets/arrow-right.svg';
 import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import styles from './RankingsChart.module.css';
@@ -16,6 +18,7 @@ export default function RankingsChart({
   className,
   dataFilter,
   onDataLoad = () => {},
+  onExpand = () => {},
 }) {
   const [data, setData] = useState();
 
@@ -61,6 +64,11 @@ export default function RankingsChart({
             {rankings.map(({ x, y, z }) => (
               <Row key={x} label={x} value={y} percent={z} animate={visible} />
             ))}
+          </div>
+          <div className={styles.footer}>
+            <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(title)}>
+              <div>More</div>
+            </Button>
           </div>
         </div>
       )}

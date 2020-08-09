@@ -2,6 +2,14 @@
   margin-bottom: 30px;
 }
 
+.expand {
+  border-top: 1px solid var(--gray300);
+}
+
+.menu {
+  font-size: var(--font-size-small);
+}
+
 .row {
   border-top: 1px solid var(--gray300);
   min-height: 430px;
