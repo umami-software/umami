@@ -1,4 +1,4 @@
-.label {
-  font-size: var(--font-size-normal);
-  font-weight: 600;
+.buttons {
+  display: flex;
+  justify-content: flex-end;
 }

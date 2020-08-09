@@ -14,13 +14,13 @@ const initialValues = {
   password: '',
 };
 
-const validate = ({ username, password }) => {
+const validate = ({ user_id, username, password }) => {
   const errors = {};
 
   if (!username) {
     errors.username = 'Required';
   }
-  if (!password) {
+  if (!user_id && !password) {
     errors.password = 'Required';
   }
 
@@ -33,10 +33,10 @@ export default function AccountEditForm({ values, onSave, onClose }) {
   const handleSubmit = async values => {
     const response = await post(`/api/account`, values);
 
-    if (response) {
+    if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage('Something went wrong.');
+      setMessage(response || 'Something went wrong');
     }
   };
 
@@ -56,7 +56,7 @@ export default function AccountEditForm({ values, onSave, onClose }) {
             </FormRow>
             <FormRow>
               <label htmlFor="password">Password</label>
-              <Field name="password" type="text" />
+              <Field name="password" type="password" />
               <FormError name="password" />
             </FormRow>
             <FormButtons>

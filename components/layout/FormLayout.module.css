@@ -24,9 +24,6 @@
 }
 
 .error {
-  color: var(--gray50);
-  background: var(--red400);
-  font-size: var(--font-size-small);
   position: absolute;
   display: flex;
   justify-content: center;
@@ -35,7 +32,13 @@
   left: 100%;
   bottom: 0;
   margin-left: 16px;
-  padding: 4px 10px;
+}
+
+.msg {
+  color: var(--gray50);
+  background: var(--red400);
+  font-size: var(--font-size-small);
+  padding: 4px 8px;
   border-radius: 4px;
   white-space: nowrap;
 }

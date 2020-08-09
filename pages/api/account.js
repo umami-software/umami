@@ -1,15 +1,15 @@
 import { getAccounts, getAccount, updateAccount, createAccount } from 'lib/db';
 import { useAuth } from 'lib/middleware';
 import { hashPassword, uuid } from 'lib/crypto';
-import { ok, unauthorized, methodNotAllowed } from 'lib/response';
+import { ok, unauthorized, methodNotAllowed, badRequest } from 'lib/response';
 
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: current_user_id, is_admin } = req.auth;
+  const { user_id: current_user_id, is_admin: current_user_is_admin } = req.auth;
 
   if (req.method === 'GET') {
-    if (is_admin) {
+    if (current_user_is_admin) {
       const accounts = await getAccounts();
 
       return ok(res, accounts);
@@ -19,28 +19,47 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { user_id, username, password } = req.body;
+    const { user_id, username, password, is_admin } = req.body;
 
     if (user_id) {
-      const account = getAccount({ user_id });
+      const account = await getAccount({ user_id });
 
-      if (account.user_id === current_user_id || is_admin) {
+      if (account.user_id === current_user_id || current_user_is_admin) {
         const data = { password: password ? await hashPassword(password) : undefined };
 
-        if (is_admin) {
-          data.username = username;
+        // Only admin can change these fields
+        if (current_user_is_admin) {
+          // Cannot change username of admin
+          if (username !== 'admin') {
+            data.username = username;
+          }
+          data.is_admin = is_admin;
         }
 
-        const updated = await updateAccount(user_id, { username, password });
+        if (data.username && account.username !== data.username) {
+          const accountByUsername = await getAccount({ username });
+
+          if (accountByUsername) {
+            return badRequest(res, 'Account already exists');
+          }
+        }
+
+        const updated = await updateAccount(user_id, data);
 
         return ok(res, updated);
       }
 
       return unauthorized(res);
     } else {
-      const account = await createAccount({ username, password: await hashPassword(password) });
+      const accountByUsername = await getAccount({ username });
 
-      return ok(res, account);
+      if (accountByUsername) {
+        return badRequest(res, 'Account already exists');
+      }
+
+      const created = await createAccount({ username, password: await hashPassword(password) });
+
+      return ok(res, created);
     }
   }
 

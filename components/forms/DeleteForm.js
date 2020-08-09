@@ -19,16 +19,16 @@ const validate = ({ confirmation }) => {
   return errors;
 };
 
-export default function WebsiteDeleteForm({ values, onSave, onClose }) {
+export default function DeleteForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
-  const handleSubmit = async ({ website_id }) => {
-    const response = await del(`/api/website/${website_id}`);
+  const handleSubmit = async ({ type, id }) => {
+    const response = await del(`/api/${type}/${id}`);
 
-    if (response) {
+    if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage('Something went wrong.');
+      setMessage('Something went wrong');
     }
   };
 

@@ -4,10 +4,13 @@ import MenuLayout from 'components/layout/MenuLayout';
 import WebsiteSettings from './WebsiteSettings';
 import AccountSettings from './AccountSettings';
 import ProfileSettings from './ProfileSettings';
-
-const menuOptions = ['Websites', 'Accounts', 'Profile'];
+import { useSelector } from 'react-redux';
 
 export default function Settings() {
+  const user = useSelector(state => state.user);
+
+  const menuOptions = ['Websites', user.is_admin && 'Accounts', 'Profile'];
+
   return (
     <Page>
       <MenuLayout menu={menuOptions} selectedOption="Websites">

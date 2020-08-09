@@ -9,7 +9,7 @@ import Code from 'assets/code.svg';
 import { get } from 'lib/web';
 import Modal from './common/Modal';
 import WebsiteEditForm from './forms/WebsiteEditForm';
-import WebsiteDeleteForm from './forms/WebsiteDeleteForm';
+import DeleteForm from './forms/DeleteForm';
 import WebsiteCodeForm from './forms/WebsiteCodeForm';
 import styles from './WebsiteSettings.module.css';
 
@@ -88,7 +88,11 @@ export default function WebsiteSettings() {
       )}
       {deleteWebsite && (
         <Modal title="Delete website">
-          <WebsiteDeleteForm values={deleteWebsite} onSave={handleSave} onClose={handleClose} />
+          <DeleteForm
+            values={{ type: 'website', id: deleteWebsite.website_id, name: deleteWebsite.name }}
+            onSave={handleSave}
+            onClose={handleClose}
+          />
         </Modal>
       )}
       {showCode && (

@@ -10,24 +10,24 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 
 const initialValues = {
-  password: '',
-  newPassword: '',
-  defaultPassword: '',
+  current_password: '',
+  new_password: '',
+  confirm_password: '',
 };
 
-const validate = ({ password, newPassword, confirmPassword }) => {
+const validate = ({ current_password, new_password, confirm_password }) => {
   const errors = {};
 
-  if (!password) {
-    errors.password = 'Required';
+  if (!current_password) {
+    errors.current_password = 'Required';
   }
-  if (!newPassword) {
-    errors.newPassword = 'Required';
+  if (!new_password) {
+    errors.new_password = 'Required';
   }
-  if (!confirmPassword) {
-    errors.confirmPassword = 'Required';
-  } else if (newPassword !== confirmPassword) {
-    errors.confirmPassword = `Passwords don't match`;
+  if (!confirm_password) {
+    errors.confirm_password = 'Required';
+  } else if (new_password !== confirm_password) {
+    errors.confirm_password = `Passwords don't match`;
   }
 
   return errors;
@@ -37,12 +37,12 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/website`, values);
+    const response = await post(`/api/account/password`, values);
 
-    if (response) {
+    if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage('Something went wrong.');
+      setMessage(response || 'Something went wrong');
     }
   };
 
@@ -56,19 +56,19 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
         {() => (
           <Form>
             <FormRow>
-              <label htmlFor="password">Current password</label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <label htmlFor="current_password">Current password</label>
+              <Field name="current_password" type="password" />
+              <FormError name="current_password" />
             </FormRow>
             <FormRow>
-              <label htmlFor="newPassword">New password</label>
-              <Field name="newPassword" type="password" />
-              <FormError name="newPassword" />
+              <label htmlFor="new_password">New password</label>
+              <Field name="new_password" type="password" />
+              <FormError name="new_password" />
             </FormRow>
             <FormRow>
-              <label htmlFor="confirmPassword">Confirm password</label>
-              <Field name="confirmPassword" type="password" />
-              <FormError name="confirmPassword" />
+              <label htmlFor="confirm_password">Confirm password</label>
+              <Field name="confirm_password" type="password" />
+              <FormError name="confirm_password" />
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">

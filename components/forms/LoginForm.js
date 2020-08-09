@@ -27,7 +27,7 @@ export default function LoginForm() {
     if (response?.token) {
       await Router.push('/');
     } else {
-      setMessage('Incorrect username/password.');
+      setMessage('Incorrect username/password');
     }
   };
 

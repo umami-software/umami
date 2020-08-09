@@ -21,7 +21,7 @@ const ErrorTag = ({ msg }) => {
 
   return (
     <animated.div className={styles.error} style={props}>
-      {msg}
+      <div className={styles.msg}>{msg}</div>
     </animated.div>
   );
 };

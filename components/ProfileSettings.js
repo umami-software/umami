@@ -8,6 +8,7 @@ import Modal from './common/Modal';
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);
   const [changePassword, setChangePassword] = useState(false);
+  const { user_id } = user;
 
   return (
     <>
@@ -17,11 +18,17 @@ export default function ProfileSettings() {
           Change password
         </Button>
       </PageHeader>
-      <dt>Username</dt>
-      <dd>{user.username}</dd>
+      <dl>
+        <dt>Username</dt>
+        <dd>{user.username}</dd>
+      </dl>
       {changePassword && (
         <Modal title="Change password">
-          <ChangePasswordForm values={user} onClose={() => setChangePassword(false)} />
+          <ChangePasswordForm
+            values={{ user_id }}
+            onSave={() => setChangePassword(false)}
+            onClose={() => setChangePassword(false)}
+          />
         </Modal>
       )}
     </>

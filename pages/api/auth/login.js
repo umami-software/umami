@@ -7,7 +7,7 @@ import { ok, unauthorized } from 'lib/response';
 export default async (req, res) => {
   const { username, password } = req.body;
 
-  const account = await getAccount(username);
+  const account = await getAccount({ username });
 
   if (account && (await checkPassword(password, account.password))) {
     const { user_id, username, is_admin } = account;

@@ -33,10 +33,10 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const handleSubmit = async values => {
     const response = await post(`/api/website`, values);
 
-    if (response) {
+    if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage('Something went wrong.');
+      setMessage('Something went wrong');
     }
   };
 
