@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  flex: 1;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  padding-top: 30px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--gray300);
+  padding-left: 30px;
+  flex: 1;
+}
+
+.option {
+  padding: 8px 20px;
+  cursor: pointer;
+  min-width: 140px;
+  margin-right: 30px;
+  border-radius: 4px;
+}
+
+.option:hover {
+  background: var(--gray75);
+}
+
+.active {
+  font-weight: 600;
+}

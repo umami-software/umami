@@ -24,16 +24,13 @@ export default function UserButton() {
       value: 'username',
       className: styles.username,
     },
-    { label: 'Account', value: 'account' },
     { label: 'Logout', value: 'logout' },
   ];
 
   function handleSelect(value) {
     setShowMenu(false);
 
-    if (value === 'account') {
-      router.push('/account');
-    } else if (value === 'logout') {
+    if (value === 'logout') {
       router.push('/logout');
     }
   }
@@ -47,8 +44,8 @@ export default function UserButton() {
   return (
     <div ref={ref} className={styles.container}>
       <div onClick={() => setShowMenu(state => !state)}>
-        <Icon icon={<User />} size="L" />
-        <Icon icon={<Chevron />} size="S" />
+        <Icon icon={<User />} size="large" />
+        <Icon icon={<Chevron />} size="small" />
       </div>
       {showMenu && <Menu options={menuOptions} onSelect={handleSelect} align="right" />}
     </div>

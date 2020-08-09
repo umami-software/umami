@@ -59,10 +59,12 @@ textarea {
   resize: none;
 }
 
-select {
-  padding: 4px 8px;
-  border: 1px solid var(--gray500) !important;
-  border-radius: 4px;
+dt {
+  font-weight: 600;
+}
+
+dd {
+  margin: 0 0 10px 0;
 }
 
 main {

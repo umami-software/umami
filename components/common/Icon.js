@@ -6,10 +6,10 @@ export default function Icon({ icon, className, size = 'M' }) {
   return (
     <div
       className={classNames(styles.icon, className, {
-        [styles.xl]: size === 'XL',
-        [styles.large]: size === 'L',
-        [styles.medium]: size === 'M',
-        [styles.small]: size === 'S',
+        [styles.xlarge]: size === 'xlarge',
+        [styles.large]: size === 'large',
+        [styles.medium]: size === 'medium',
+        [styles.small]: size === 'small',
       })}
     >
       {icon}

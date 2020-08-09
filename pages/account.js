@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/layout/Layout';
-import Account from 'components/Account';
+import AccountSettings from 'components/AccountSettings';
 import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function AccountPage() {
@@ -12,7 +12,7 @@ export default function AccountPage() {
 
   return (
     <Layout>
-      <Account />
+      <AccountSettings />
     </Layout>
   );
 }

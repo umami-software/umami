@@ -41,7 +41,7 @@ export default function WebsiteList() {
                   shallow: true,
                 })
               }
-              size="S"
+              size="small"
             >
               <div>View details</div>
             </Button>

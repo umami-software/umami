@@ -15,7 +15,7 @@ export default function Header() {
       <div className="row align-items-center">
         <div className="col">
           <div className={styles.title}>
-            <Icon icon={<Logo />} size="L" className={styles.logo} />
+            <Icon icon={<Logo />} size="large" className={styles.logo} />
             {user ? <Link href="/">umami</Link> : 'umami'}
           </div>
         </div>

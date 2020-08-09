@@ -10,28 +10,28 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 
 const initialValues = {
-  name: '',
-  domain: '',
+  username: '',
+  password: '',
 };
 
-const validate = ({ name, domain }) => {
+const validate = ({ username, password }) => {
   const errors = {};
 
-  if (!name) {
-    errors.name = 'Required';
+  if (!username) {
+    errors.username = 'Required';
   }
-  if (!domain) {
-    errors.domain = 'Required';
+  if (!password) {
+    errors.password = 'Required';
   }
 
   return errors;
 };
 
-export default function WebsiteEditForm({ values, onSave, onClose }) {
+export default function AccountEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/website`, values);
+    const response = await post(`/api/account`, values);
 
     if (response) {
       onSave();
@@ -50,14 +50,14 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
         {() => (
           <Form>
             <FormRow>
-              <label htmlFor="name">Name</label>
-              <Field name="name" type="text" />
-              <FormError name="name" />
+              <label htmlFor="username">Username</label>
+              <Field name="username" type="text" />
+              <FormError name="username" />
             </FormRow>
             <FormRow>
-              <label htmlFor="domain">Domain</label>
-              <Field name="domain" type="text" />
-              <FormError name="domain" />
+              <label htmlFor="password">Password</label>
+              <Field name="password" type="text" />
+              <FormError name="password" />
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">

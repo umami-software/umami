@@ -10,24 +10,30 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 
 const initialValues = {
-  name: '',
-  domain: '',
+  password: '',
+  newPassword: '',
+  defaultPassword: '',
 };
 
-const validate = ({ name, domain }) => {
+const validate = ({ password, newPassword, confirmPassword }) => {
   const errors = {};
 
-  if (!name) {
-    errors.name = 'Required';
+  if (!password) {
+    errors.password = 'Required';
   }
-  if (!domain) {
-    errors.domain = 'Required';
+  if (!newPassword) {
+    errors.newPassword = 'Required';
+  }
+  if (!confirmPassword) {
+    errors.confirmPassword = 'Required';
+  } else if (newPassword !== confirmPassword) {
+    errors.confirmPassword = `Passwords don't match`;
   }
 
   return errors;
 };
 
-export default function WebsiteEditForm({ values, onSave, onClose }) {
+export default function ChangePasswordForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
@@ -50,14 +56,19 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
         {() => (
           <Form>
             <FormRow>
-              <label htmlFor="name">Name</label>
-              <Field name="name" type="text" />
-              <FormError name="name" />
+              <label htmlFor="password">Current password</label>
+              <Field name="password" type="password" />
+              <FormError name="password" />
             </FormRow>
             <FormRow>
-              <label htmlFor="domain">Domain</label>
-              <Field name="domain" type="text" />
-              <FormError name="domain" />
+              <label htmlFor="newPassword">New password</label>
+              <Field name="newPassword" type="password" />
+              <FormError name="newPassword" />
+            </FormRow>
+            <FormRow>
+              <label htmlFor="confirmPassword">Confirm password</label>
+              <Field name="confirmPassword" type="password" />
+              <FormError name="confirmPassword" />
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">

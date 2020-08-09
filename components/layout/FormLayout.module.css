@@ -5,7 +5,7 @@
 }
 
 .form label {
-  display: inline-block;
+  display: block;
   min-width: 100px;
 }
 
@@ -37,6 +37,7 @@
   margin-left: 16px;
   padding: 4px 10px;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 .error:after {
