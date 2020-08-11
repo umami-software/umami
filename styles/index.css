@@ -54,9 +54,14 @@ textarea {
   line-height: 1.8;
   border: 1px solid var(--gray500);
   border-radius: 4px;
-  width: 100%;
   outline: none;
   resize: none;
+  flex: 1;
+}
+
+label {
+  flex: 1;
+  margin-right: 20px;
 }
 
 dt {

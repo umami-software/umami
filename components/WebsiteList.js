@@ -9,6 +9,7 @@ import Button from './common/Button';
 import PageHeader from './layout/PageHeader';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
+import EmptyPlaceholder from './common/EmptyPlaceholder';
 
 export default function WebsiteList() {
   const [data, setData] = useState();
@@ -21,6 +22,10 @@ export default function WebsiteList() {
   useEffect(() => {
     loadData();
   }, []);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <Page>
@@ -51,6 +56,13 @@ export default function WebsiteList() {
           <WebsiteChart key={website_id} title={name} websiteId={website_id} />
         </div>
       ))}
+      {data.length === 0 && (
+        <EmptyPlaceholder msg={"You don't have any websites configured."}>
+          <Button icon={<Arrow />} size="medium" onClick={() => router.push('/settings')}>
+            <div>Go to settings</div>
+          </Button>
+        </EmptyPlaceholder>
+      )}
     </Page>
   );
 }

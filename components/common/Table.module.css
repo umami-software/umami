@@ -1,6 +1,7 @@
 .table {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .header {
@@ -16,8 +17,19 @@
 }
 
 .body {
+  position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1;
+}
+
+.body:empty:before {
+  content: 'No data available';
+  color: var(--gray500);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .row {

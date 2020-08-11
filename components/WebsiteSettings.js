@@ -12,6 +12,8 @@ import WebsiteEditForm from './forms/WebsiteEditForm';
 import DeleteForm from './forms/DeleteForm';
 import WebsiteCodeForm from './forms/WebsiteCodeForm';
 import styles from './WebsiteSettings.module.css';
+import EmptyPlaceholder from './common/EmptyPlaceholder';
+import Arrow from '../assets/arrow-right.svg';
 
 export default function WebsiteSettings() {
   const [data, setData] = useState();
@@ -67,6 +69,14 @@ export default function WebsiteSettings() {
     return null;
   }
 
+  const empty = (
+    <EmptyPlaceholder msg={"You don't have any websites configured."}>
+      <Button icon={<Plus />} size="medium" onClick={() => setAddWebsite(true)}>
+        <div>Add website</div>
+      </Button>
+    </EmptyPlaceholder>
+  );
+
   return (
     <>
       <PageHeader>
@@ -75,7 +85,7 @@ export default function WebsiteSettings() {
           <div>Add website</div>
         </Button>
       </PageHeader>
-      <Table columns={columns} rows={data} />
+      <Table columns={columns} rows={data} empty={empty} />
       {editWebsite && (
         <Modal title="Edit website">
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />

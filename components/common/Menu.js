@@ -22,23 +22,25 @@ export default function Menu({
         [styles.right]: align === 'right',
       })}
     >
-      {options.map(option => {
-        const { label, value, className: customClassName, render } = option;
+      {options
+        .filter(({ hidden }) => !hidden)
+        .map(option => {
+          const { label, value, className: customClassName, render } = option;
 
-        return render ? (
-          render(option)
-        ) : (
-          <div
-            key={value}
-            className={classNames(styles.option, optionClassName, customClassName, {
-              [selectedClassName]: selectedOption === value,
-            })}
-            onClick={e => onSelect(value, e)}
-          >
-            {label}
-          </div>
-        );
-      })}
+          return render ? (
+            render(option)
+          ) : (
+            <div
+              key={value}
+              className={classNames(styles.option, optionClassName, customClassName, {
+                [selectedClassName]: selectedOption === value,
+              })}
+              onClick={e => onSelect(value, e)}
+            >
+              {label}
+            </div>
+          );
+        })}
     </div>
   );
 }

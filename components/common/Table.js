@@ -2,7 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './Table.module.css';
 
-export default function Table({ columns, rows }) {
+export default function Table({ columns, rows, empty }) {
+  if (empty && rows.length === 0) {
+    return empty;
+  }
+
   return (
     <div className={styles.table}>
       <div className={styles.header}>
