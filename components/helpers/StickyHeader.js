@@ -10,15 +10,15 @@ export default function StickyHeader({
 }) {
   const [sticky, setSticky] = useState(false);
   const ref = useRef();
-  const offsetTop = useRef(0);
+  const top = useRef(0);
 
   useEffect(() => {
     const checkPosition = () => {
       if (ref.current) {
-        if (!offsetTop.current) {
-          offsetTop.current = ref.current.offsetTop;
+        if (!top.current) {
+          top.current = ref.current.offsetTop + ref.current.offsetHeight;
         }
-        const state = window.pageYOffset > offsetTop.current;
+        const state = window.pageYOffset > top.current;
         if (sticky !== state) {
           setSticky(state);
         }
