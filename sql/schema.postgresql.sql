@@ -49,15 +49,15 @@ create table event (
     event_value varchar(50) not null
 );
 
-create index on account(username);
+create index session_created_at_idx on session(created_at);
+create index session_website_id_idx on session(website_id);
 
-create index on session(created_at);
-create index on session(website_id);
+create index pageview_created_at_idx on pageview(created_at);
+create index pageview_website_id_idx on pageview(website_id);
+create index pageview_session_id_idx on pageview(session_id);
 
-create index on pageview(created_at);
-create index on pageview(website_id);
-create index on pageview(session_id);
+create index event_created_at_idx on event(created_at);
+create index event_website_id_idx on event(website_id);
+create index event_session_id_idx on event(session_id);
 
-create index on event(created_at);
-create index on event(website_id);
-create index on event(session_id);
+insert into account (username, password, is_admin) values ('admin', '$2a$10$BXHPV7APlV1I6WrKJt1igeJAyVsvbhMTaTAi3nHkUJFGPsYmfZq3y', true);

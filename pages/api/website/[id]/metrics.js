@@ -7,11 +7,7 @@ export default async (req, res) => {
 
   const { id, start_at, end_at } = req.query;
 
-  const metrics = await getMetrics(
-    +id,
-    new Date(+start_at).toISOString(),
-    new Date(+end_at).toISOString(),
-  );
+  const metrics = await getMetrics(+id, new Date(+start_at), new Date(+end_at));
 
   const stats = Object.keys(metrics[0]).reduce((obj, key) => {
     obj[key] = +metrics[0][key];
