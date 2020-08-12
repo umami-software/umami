@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -56,10 +56,10 @@ model session {
   hostname     String?
   browser      String?
   os           String?
+  device       String?
   screen       String?
   language     String?
   country      String?
-  device       String?
   website      website    @relation(fields: [website_id], references: [website_id])
   event        event[]
   pageview     pageview[]
@@ -71,12 +71,14 @@ model session {
 model website {
   website_id   Int        @default(autoincrement()) @id
   website_uuid String     @unique
-  name         String
-  created_at   DateTime?  @default(now())
   user_id      Int
+  name         String
   domain       String?
+  created_at   DateTime?  @default(now())
   account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]
   session      session[]
+
+  @@index([user_id], name: "website_user_id_idx")
 }

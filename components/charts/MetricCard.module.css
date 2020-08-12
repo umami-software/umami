@@ -10,6 +10,7 @@
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .label {
