@@ -1,13 +1,13 @@
 import { serialize } from 'cookie';
 import { checkPassword, createSecureToken } from 'lib/crypto';
-import { getAccount } from 'lib/db';
+import { getAccountByUsername } from 'lib/queries';
 import { AUTH_COOKIE_NAME } from 'lib/constants';
 import { ok, unauthorized } from 'lib/response';
 
 export default async (req, res) => {
   const { username, password } = req.body;
 
-  const account = await getAccount({ username });
+  const account = await getAccountByUsername(username);
 
   if (account && (await checkPassword(password, account.password))) {
     const { user_id, username, is_admin } = account;

@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import Table from './common/Table';
-import Button from './common/Button';
-import PageHeader from './layout/PageHeader';
+import Table from 'components/common/Table';
+import Button from 'components/common/Button';
+import PageHeader from 'components/layout/PageHeader';
+import Modal from 'components/common/Modal';
+import WebsiteEditForm from './forms/WebsiteEditForm';
+import DeleteForm from './forms/DeleteForm';
+import WebsiteCodeForm from './forms/WebsiteCodeForm';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import { get } from 'lib/web';
-import Modal from './common/Modal';
-import WebsiteEditForm from './forms/WebsiteEditForm';
-import DeleteForm from './forms/DeleteForm';
-import WebsiteCodeForm from './forms/WebsiteCodeForm';
 import styles from './WebsiteSettings.module.css';
-import EmptyPlaceholder from './common/EmptyPlaceholder';
-import Arrow from '../assets/arrow-right.svg';
 
 export default function WebsiteSettings() {
   const [data, setData] = useState();
@@ -23,25 +22,27 @@ export default function WebsiteSettings() {
   const [showCode, setShowCode] = useState();
   const [saved, setSaved] = useState(0);
 
+  const Buttons = row => (
+    <>
+      <Button icon={<Code />} size="small" onClick={() => setShowCode(row)}>
+        <div>Get Code</div>
+      </Button>
+      <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
+        <div>Edit</div>
+      </Button>
+      <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
+        <div>Delete</div>
+      </Button>
+    </>
+  );
+
   const columns = [
     { key: 'name', label: 'Name', className: styles.col },
     { key: 'domain', label: 'Domain', className: styles.col },
     {
       key: 'action',
       className: styles.buttons,
-      render: row => (
-        <>
-          <Button icon={<Code />} size="small" onClick={() => setShowCode(row)}>
-            <div>Get Code</div>
-          </Button>
-          <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
-            <div>Edit</div>
-          </Button>
-          <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
-            <div>Delete</div>
-          </Button>
-        </>
-      ),
+      render: Buttons,
     },
   ];
 
@@ -58,7 +59,7 @@ export default function WebsiteSettings() {
   }
 
   async function loadData() {
-    setData(await get(`/api/website`));
+    setData(await get(`/api/websites`));
   }
 
   useEffect(() => {

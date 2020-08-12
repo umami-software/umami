@@ -1,4 +1,4 @@
-import { getAccount, deleteAccount } from 'lib/db';
+import { getAccountById, deleteAccount } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
 import { methodNotAllowed, ok, unauthorized } from 'lib/response';
 
@@ -11,7 +11,7 @@ export default async (req, res) => {
 
   if (req.method === 'GET') {
     if (is_admin) {
-      const account = await getAccount({ user_id });
+      const account = await getAccountById(user_id);
 
       return ok(res, account);
     }

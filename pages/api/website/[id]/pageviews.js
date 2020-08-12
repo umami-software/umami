@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { getPageviewData } from 'lib/db';
+import { getPageviews } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
 import { ok, badRequest } from 'lib/response';
 
@@ -18,8 +18,8 @@ export default async (req, res) => {
   const end = new Date(+end_at);
 
   const [pageviews, uniques] = await Promise.all([
-    getPageviewData(+id, start, end, tz, unit, '*'),
-    getPageviewData(+id, start, end, tz, unit, 'distinct session_id'),
+    getPageviews(+id, start, end, tz, unit, '*'),
+    getPageviews(+id, start, end, tz, unit, 'distinct session_id'),
   ]);
 
   return ok(res, { pageviews, uniques });

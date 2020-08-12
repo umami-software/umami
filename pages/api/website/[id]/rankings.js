@@ -1,4 +1,4 @@
-import { getRankings } from 'lib/db';
+import { getRankings } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
 import { ok, badRequest } from 'lib/response';
 

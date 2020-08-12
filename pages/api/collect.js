@@ -1,4 +1,4 @@
-import { savePageView, saveEvent } from 'lib/db';
+import { savePageView, saveEvent } from 'lib/queries';
 import { useCors, useSession } from 'lib/middleware';
 import { createToken } from 'lib/crypto';
 import { ok, badRequest } from 'lib/response';

@@ -1,4 +1,4 @@
-import { getMetrics } from 'lib/db';
+import { getMetrics } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
 import { ok } from 'lib/response';
 

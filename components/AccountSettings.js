@@ -5,7 +5,6 @@ import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
-import WebsiteEditForm from 'components/forms/WebsiteEditForm';
 import AccountEditForm from 'components/forms/AccountEditForm';
 import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
@@ -16,33 +15,36 @@ import styles from './AccountSettings.module.css';
 import DeleteForm from './forms/DeleteForm';
 
 export default function AccountSettings() {
-  const user = useSelector(state => state.user);
   const [data, setData] = useState();
   const [addAccount, setAddAccount] = useState();
   const [editAccount, setEditAccount] = useState();
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
 
+  const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
+
+  const Buttons = row =>
+    row.username !== 'admin' ? (
+      <>
+        <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
+          <div>Edit</div>
+        </Button>
+        <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
+          <div>Delete</div>
+        </Button>
+      </>
+    ) : null;
+
   const columns = [
     { key: 'username', label: 'Username' },
     {
       key: 'is_admin',
       label: 'Administrator',
-      render: ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null),
+      render: Checkmark,
     },
     {
       className: styles.buttons,
-      render: row =>
-        row.username !== 'admin' ? (
-          <>
-            <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-              <div>Edit</div>
-            </Button>
-            <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
-              <div>Delete</div>
-            </Button>
-          </>
-        ) : null,
+      render: Buttons,
     },
   ];
 
@@ -58,7 +60,7 @@ export default function AccountSettings() {
   }
 
   async function loadData() {
-    setData(await get(`/api/account`));
+    setData(await get(`/api/accounts`));
   }
 
   useEffect(() => {

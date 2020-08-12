@@ -1,6 +1,6 @@
-import { getAccounts, getAccount, updateAccount, createAccount } from 'lib/db';
+import { getAccountById, getAccountByUsername, updateAccount, createAccount } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
-import { hashPassword, uuid } from 'lib/crypto';
+import { hashPassword } from 'lib/crypto';
 import { ok, unauthorized, methodNotAllowed, badRequest } from 'lib/response';
 
 export default async (req, res) => {
@@ -8,24 +8,18 @@ export default async (req, res) => {
 
   const { user_id: current_user_id, is_admin: current_user_is_admin } = req.auth;
 
-  if (req.method === 'GET') {
-    if (current_user_is_admin) {
-      const accounts = await getAccounts();
-
-      return ok(res, accounts);
-    }
-
-    return unauthorized(res);
-  }
-
   if (req.method === 'POST') {
     const { user_id, username, password, is_admin } = req.body;
 
     if (user_id) {
-      const account = await getAccount({ user_id });
+      const account = await getAccountById(user_id);
 
       if (account.user_id === current_user_id || current_user_is_admin) {
-        const data = { password: password ? await hashPassword(password) : undefined };
+        const data = {};
+
+        if (password) {
+          data.password = await hashPassword(password);
+        }
 
         // Only admin can change these fields
         if (current_user_is_admin) {
@@ -37,7 +31,7 @@ export default async (req, res) => {
         }
 
         if (data.username && account.username !== data.username) {
-          const accountByUsername = await getAccount({ username });
+          const accountByUsername = await getAccountByUsername(username);
 
           if (accountByUsername) {
             return badRequest(res, 'Account already exists');
@@ -51,7 +45,7 @@ export default async (req, res) => {
 
       return unauthorized(res);
     } else {
-      const accountByUsername = await getAccount({ username });
+      const accountByUsername = await getAccountByUsername(username);
 
       if (accountByUsername) {
         return badRequest(res, 'Account already exists');

@@ -1,4 +1,4 @@
-import { getWebsites, updateWebsite, createWebsite, getWebsite } from 'lib/db';
+import { updateWebsite, createWebsite, getWebsiteById } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
 import { uuid } from 'lib/crypto';
 import { ok, unauthorized, methodNotAllowed } from 'lib/response';
@@ -9,17 +9,11 @@ export default async (req, res) => {
   const { user_id, is_admin } = req.auth;
   const { website_id } = req.body;
 
-  if (req.method === 'GET') {
-    const websites = await getWebsites(user_id);
-
-    return ok(res, websites);
-  }
-
   if (req.method === 'POST') {
     const { name, domain } = req.body;
 
     if (website_id) {
-      const website = getWebsite(website_id);
+      const website = getWebsiteById(website_id);
 
       if (website.user_id === user_id || is_admin) {
         await updateWebsite(website_id, { name, domain });

@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import Router from 'next/router';
 import { post } from 'lib/web';
-import Button from '../common/Button';
-import FormLayout, { FormButtons, FormError, FormMessage, FormRow } from '../layout/FormLayout';
+import Button from 'components/common/Button';
+import FormLayout, {
+  FormButtons,
+  FormError,
+  FormMessage,
+  FormRow,
+} from 'components/layout/FormLayout';
+import Icon from 'components/common/Icon';
+import Logo from 'assets/logo.svg';
+import styles from './LoginForm.module.css';
 
 const validate = ({ username, password }) => {
   const errors = {};
@@ -32,7 +40,7 @@ export default function LoginForm() {
   };
 
   return (
-    <FormLayout>
+    <FormLayout className={styles.login}>
       <Formik
         initialValues={{
           username: '',
@@ -43,6 +51,7 @@ export default function LoginForm() {
       >
         {() => (
           <Form>
+            <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
             <h1 className="center">umami</h1>
             <FormRow>
               <label htmlFor="username">Username</label>

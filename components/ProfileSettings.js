@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import PageHeader from './layout/PageHeader';
-import Button from './common/Button';
+import PageHeader from 'components/layout/PageHeader';
+import Button from 'components/common/Button';
 import ChangePasswordForm from './forms/ChangePasswordForm';
-import Modal from './common/Modal';
+import Modal from 'components/common/Modal';
 
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);

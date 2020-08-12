@@ -1,0 +1,11 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+}
+
+.icon {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
