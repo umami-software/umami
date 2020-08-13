@@ -1,7 +1,7 @@
 {
   "name": "umami",
   "version": "0.2.0",
-  "description": "Deliciously simple website stats",
+  "description": "Delicious web stats",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
   "homepage": "https://github.com/mikecao/umami",
@@ -9,19 +9,16 @@
     "type": "git",
     "url": "https://github.com/mikecao/umami.git"
   },
-  "main": "index.js",
-  "bin": {
-    "umami": "cli.js"
-  },
   "scripts": {
-    "dev": "cross-env LOG_QUERY=1 next dev -p 8000",
+    "dev": "next dev -p 8000",
     "build": "next build",
     "start": "next start",
     "build-cli": "rollup -c rollup.cli.config.js",
     "build-tracker": "rollup -c rollup.tracker.config.js",
-    "build-db-schema": "dotenv prisma introspect",
-    "build-db-client": "dotenv prisma generate",
-    "create-account": "node cli/create-account.js"
+    "build-mysql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.mysql.prisma",
+    "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
+    "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
+    "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma"
   },
   "lint-staged": {
     "**/*.js": [
@@ -41,7 +38,6 @@
     "@prisma/client": "2.4.1",
     "@reduxjs/toolkit": "^1.4.0",
     "bcrypt": "^5.0.0",
-    "chalk": "^4.1.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "cookie": "^0.4.1",
@@ -54,11 +50,10 @@
     "formik": "^2.1.5",
     "geolite2-redist": "^1.0.7",
     "is-localhost-ip": "^1.4.0",
-    "jose": "^1.27.3",
+    "jose": "^1.28.0",
     "maxmind": "^4.1.4",
     "moment-timezone": "^0.5.31",
-    "next": "9.5.1",
-    "node-fetch": "^2.6.0",
+    "next": "9.5.2",
     "promise-polyfill": "^8.1.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -72,13 +67,11 @@
     "request-ip": "^2.1.3",
     "tinycolor2": "^1.4.1",
     "unfetch": "^4.1.0",
-    "uuid": "^8.3.0",
-    "yargs": "^15.4.1"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@prisma/cli": "2.4.1",
     "@rollup/plugin-buble": "^0.21.3",
-    "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@rollup/plugin-replace": "^2.3.3",
     "@svgr/webpack": "^5.4.0",
@@ -90,7 +83,6 @@
     "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-hooks": "^4.0.4",
     "husky": "^4.2.5",
-    "less": "^3.12.2",
     "lint-staged": "^10.2.9",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-import": "^12.0.1",
@@ -99,7 +91,7 @@
     "prettier-eslint": "^11.0.0",
     "rollup": "^2.23.1",
     "rollup-plugin-hashbang": "^2.2.2",
-    "rollup-plugin-terser": "^6.1.0",
+    "rollup-plugin-terser": "^7.0.0",
     "stylelint": "^13.6.0",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-prettier": "^8.0.1",

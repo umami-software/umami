@@ -1,3 +1,9 @@
+drop table if exists event;
+drop table if exists pageview;
+drop table if exists session;
+drop table if exists website;
+drop table if exists account;
+
 create table account (
     user_id int unsigned not null auto_increment primary key,
     username varchar(255) unique not null,
@@ -54,6 +60,8 @@ create table event (
     foreign key (website_id) references website(website_id) on delete cascade,
     foreign key (session_id) references session(session_id) on delete cascade
 ) ENGINE=InnoDB;
+
+create index website_user_id_idx on website(user_id);
 
 create index session_created_at_idx on session(created_at);
 create index session_website_id_idx on session(website_id);

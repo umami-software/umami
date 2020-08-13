@@ -1,3 +1,9 @@
+drop table if exists event;
+drop table if exists pageview;
+drop table if exists session;
+drop table if exists website;
+drop table if exists account;
+
 create table account (
     user_id serial primary key,
     username varchar(255) unique not null,
@@ -48,6 +54,8 @@ create table event (
     event_type varchar(50) not null,
     event_value varchar(50) not null
 );
+
+create index website_user_id_idx on website(user_id);
 
 create index session_created_at_idx on session(created_at);
 create index session_website_id_idx on session(website_id);
