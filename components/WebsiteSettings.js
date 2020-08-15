@@ -5,12 +5,14 @@ import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
 import WebsiteEditForm from './forms/WebsiteEditForm';
 import DeleteForm from './forms/DeleteForm';
-import WebsiteCodeForm from './forms/WebsiteCodeForm';
+import TrackingCodeForm from './forms/TrackingCodeForm';
+import ShareUrlForm from './forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
+import Link from 'assets/link.svg';
 import { get } from 'lib/web';
 import styles from './WebsiteSettings.module.css';
 
@@ -20,13 +22,27 @@ export default function WebsiteSettings() {
   const [deleteWebsite, setDeleteWebsite] = useState();
   const [addWebsite, setAddWebsite] = useState();
   const [showCode, setShowCode] = useState();
+  const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
 
   const Buttons = row => (
     <>
-      <Button icon={<Code />} size="small" onClick={() => setShowCode(row)}>
-        <div>Get Code</div>
-      </Button>
+      {row.share_id && (
+        <Button
+          icon={<Link />}
+          size="small"
+          tooltip="Share URL"
+          tooltipId={`button-share-${row.website_id}`}
+          onClick={() => setShowUrl(row)}
+        />
+      )}
+      <Button
+        icon={<Code />}
+        size="small"
+        tooltip="Get tracking code"
+        tooltipId={`button-code-${row.website_id}`}
+        onClick={() => setShowCode(row)}
+      />
       <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
         <div>Edit</div>
       </Button>
@@ -56,6 +72,7 @@ export default function WebsiteSettings() {
     setEditWebsite(null);
     setDeleteWebsite(null);
     setShowCode(null);
+    setShowUrl(null);
   }
 
   async function loadData() {
@@ -108,7 +125,12 @@ export default function WebsiteSettings() {
       )}
       {showCode && (
         <Modal title="Tracking code">
-          <WebsiteCodeForm values={showCode} onClose={handleClose} />
+          <TrackingCodeForm values={showCode} onClose={handleClose} />
+        </Modal>
+      )}
+      {showUrl && (
+        <Modal title="Share URL">
+          <ShareUrlForm values={showUrl} onClose={handleClose} />
         </Modal>
       )}
     </>

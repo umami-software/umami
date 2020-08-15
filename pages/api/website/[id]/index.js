@@ -3,9 +3,6 @@ import { useAuth } from 'lib/middleware';
 import { methodNotAllowed, ok, unauthorized } from 'lib/response';
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
-  const { user_id, is_admin } = req.auth;
   const { id } = req.query;
   const website_id = +id;
 
@@ -16,6 +13,9 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
+    await useAuth(req, res);
+    const { user_id, is_admin } = req.auth;
+
     const website = await getWebsiteById(website_id);
 
     if (website.user_id === user_id || is_admin) {

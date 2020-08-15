@@ -1,13 +1,10 @@
 import { getRankings } from 'lib/queries';
-import { useAuth } from 'lib/middleware';
 import { ok, badRequest } from 'lib/response';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
 const pageviewColumns = ['url', 'referrer'];
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
   const { id, type, start_at, end_at } = req.query;
 
   if (!sessionColumns.includes(type) && !pageviewColumns.includes(type)) {

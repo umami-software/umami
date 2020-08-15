@@ -19,6 +19,7 @@ create table website (
     user_id int unsigned not null,
     name varchar(100) not null,
     domain varchar(500),
+    share_id varchar(8) unique,
     created_at timestamp default current_timestamp,
     foreign key (user_id) references account(user_id) on delete cascade
 ) ENGINE=InnoDB;
@@ -99,4 +100,4 @@ begin
   end if;
 end;
 
-insert into account (username, password, is_admin) values ('admin', '$2a$10$BXHPV7APlV1I6WrKJt1igeJAyVsvbhMTaTAi3nHkUJFGPsYmfZq3y', true);
+insert into account (username, password, is_admin) values ('admin', '$2a$10$jsVC1XMAIIQtL0On8twztOmAr20YTVcsd4.yJncKspEwsBkeq6VFW', true);

@@ -11,8 +11,8 @@ export default function Header() {
   const user = useSelector(state => state.user);
 
   return (
-    <header className={classNames(styles.header, 'container')}>
-      <div className="row align-items-center">
+    <header className="container">
+      <div className={classNames(styles.header, 'row align-items-center')}>
         <div className="col">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />

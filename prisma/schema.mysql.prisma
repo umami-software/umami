@@ -75,6 +75,7 @@ model website {
   name         String
   domain       String?
   created_at   DateTime?  @default(now())
+  share_id     String?    @unique
   account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]

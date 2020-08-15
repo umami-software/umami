@@ -13,9 +13,11 @@ export default function DetailsPage() {
     return null;
   }
 
+  const [websiteId] = id;
+
   return (
     <Layout>
-      <WebsiteDetails websiteId={+id[0]} />
+      <WebsiteDetails websiteId={websiteId} />
     </Layout>
   );
 }

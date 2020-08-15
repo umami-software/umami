@@ -8,10 +8,12 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
+import Checkbox from '../common/Checkbox';
 
 const initialValues = {
   name: '',
   domain: '',
+  public: false,
 };
 
 const validate = ({ name, domain }) => {
@@ -43,7 +45,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   return (
     <FormLayout>
       <Formik
-        initialValues={{ ...initialValues, ...values }}
+        initialValues={{ ...initialValues, ...values, make_public: !!values?.share_id }}
         validate={validate}
         onSubmit={handleSubmit}
       >
@@ -58,6 +60,12 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
               <label htmlFor="domain">Domain</label>
               <Field name="domain" type="text" />
               <FormError name="domain" />
+            </FormRow>
+            <FormRow>
+              <label></label>
+              <Field name="make_public">
+                {({ field }) => <Checkbox {...field} label="Make public" />}
+              </Field>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">

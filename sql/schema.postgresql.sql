@@ -19,6 +19,7 @@ create table website (
     user_id int not null references account(user_id) on delete cascade,
     name varchar(100) not null,
     domain varchar(500),
+    share_id varchar(8) unique,
     created_at timestamp with time zone default current_timestamp
 );
 
@@ -68,4 +69,4 @@ create index event_created_at_idx on event(created_at);
 create index event_website_id_idx on event(website_id);
 create index event_session_id_idx on event(session_id);
 
-insert into account (username, password, is_admin) values ('admin', '$2a$10$BXHPV7APlV1I6WrKJt1igeJAyVsvbhMTaTAi3nHkUJFGPsYmfZq3y', true);
+insert into account (username, password, is_admin) values ('admin', '$2a$10$jsVC1XMAIIQtL0On8twztOmAr20YTVcsd4.yJncKspEwsBkeq6VFW', true);

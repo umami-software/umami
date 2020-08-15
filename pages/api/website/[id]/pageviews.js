@@ -1,13 +1,10 @@
 import moment from 'moment-timezone';
 import { getPageviews } from 'lib/queries';
-import { useAuth } from 'lib/middleware';
 import { ok, badRequest } from 'lib/response';
 
 const unitTypes = ['month', 'hour', 'day'];
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
   const { id, start_at, end_at, unit, tz } = req.query;
 
   if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {

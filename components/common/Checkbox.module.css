@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--gray500);
+  border-radius: 4px;
+}
+
+.label {
+  margin-left: 10px;
+}
+
+.input {
+  position: absolute;
+  height: 0;
+  width: 0;
+  bottom: -1px;
+  right: -1px;
+}

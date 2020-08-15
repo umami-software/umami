@@ -49,7 +49,7 @@ export default function DeleteForm({ values, onSave, onClose }) {
               Type <b>DELETE</b> in the box below to confirm.
             </p>
             <FormRow>
-              <Field name="confirmation" />
+              <Field name="confirmation" type="text" />
               <FormError name="confirmation" />
             </FormRow>
             <FormButtons>

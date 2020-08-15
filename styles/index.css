@@ -47,7 +47,8 @@ a:visited {
   color: var(--primary400);
 }
 
-input,
+input[type='text'],
+input[type='password'],
 textarea {
   padding: 4px 8px;
   font-size: var(--font-size-normal);
@@ -59,9 +60,17 @@ textarea {
   flex: 1;
 }
 
+input[type='checkbox'] + label {
+  margin-left: 10px;
+}
+
 label {
   flex: 1;
   margin-right: 20px;
+}
+
+label:empty {
+  flex: 0;
 }
 
 dt {

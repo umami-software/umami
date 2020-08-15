@@ -4,6 +4,7 @@ import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
 import ChangePasswordForm from './forms/ChangePasswordForm';
 import Modal from 'components/common/Modal';
+import Dots from 'assets/ellipsis-h.svg';
 
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);
@@ -14,8 +15,8 @@ export default function ProfileSettings() {
     <>
       <PageHeader>
         <div>Profile</div>
-        <Button size="small" onClick={() => setChangePassword(true)}>
-          Change password
+        <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
+          <div>Change password</div>
         </Button>
       </PageHeader>
       <dl>

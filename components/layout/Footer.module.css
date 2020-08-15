@@ -1,3 +1,14 @@
 .footer {
+  display: flex;
+  align-items: center;
   font-size: var(--font-size-small);
+  padding: 40px 0;
+}
+
+.footer button {
+  margin-left: 10px;
+}
+
+.footer a {
+  text-decoration: none;
 }

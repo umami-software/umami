@@ -3,7 +3,7 @@ import Button from 'components/common/Button';
 import FormLayout, { FormButtons, FormRow } from 'components/layout/FormLayout';
 import CopyButton from '../common/CopyButton';
 
-export default function WebsiteCodeForm({ values, onClose }) {
+export default function TrackingCodeForm({ values, onClose }) {
   const ref = useRef();
 
   return (

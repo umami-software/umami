@@ -1,22 +1,31 @@
 import { updateWebsite, createWebsite, getWebsiteById } from 'lib/queries';
 import { useAuth } from 'lib/middleware';
-import { uuid } from 'lib/crypto';
+import { uuid, getRandomChars } from 'lib/crypto';
 import { ok, unauthorized, methodNotAllowed } from 'lib/response';
 
 export default async (req, res) => {
   await useAuth(req, res);
 
   const { user_id, is_admin } = req.auth;
-  const { website_id } = req.body;
+  const { website_id, make_public } = req.body;
 
   if (req.method === 'POST') {
     const { name, domain } = req.body;
 
     if (website_id) {
-      const website = getWebsiteById(website_id);
+      const website = await getWebsiteById(website_id);
 
       if (website.user_id === user_id || is_admin) {
-        await updateWebsite(website_id, { name, domain });
+        let { share_id } = website;
+        console.log('exising id', share_id, website);
+
+        if (make_public) {
+          share_id = share_id ? share_id : getRandomChars(8);
+        } else {
+          share_id = null;
+        }
+
+        await updateWebsite(website_id, { name, domain, share_id });
 
         return ok(res);
       }
@@ -24,7 +33,8 @@ export default async (req, res) => {
       return unauthorized(res);
     } else {
       const website_uuid = uuid();
-      const website = await createWebsite(user_id, { website_uuid, name, domain });
+      const share_id = make_public ? getRandomChars(8) : null;
+      const website = await createWebsite(user_id, { website_uuid, name, domain, share_id });
 
       return ok(res, website);
     }
