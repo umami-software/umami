@@ -1,6 +1,7 @@
 .container {
   display: flex;
   align-items: center;
+  position: relative;
   overflow: hidden;
 }
 
@@ -20,8 +21,9 @@
 
 .input {
   position: absolute;
+  visibility: hidden;
   height: 0;
   width: 0;
-  bottom: -1px;
-  right: -1px;
+  bottom: 100%;
+  right: 100%;
 }
