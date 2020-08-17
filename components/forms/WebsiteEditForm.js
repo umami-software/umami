@@ -45,7 +45,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   return (
     <FormLayout>
       <Formik
-        initialValues={{ ...initialValues, ...values, make_public: !!values?.share_id }}
+        initialValues={{ ...initialValues, ...values, enable_share_url: !!values?.share_id }}
         validate={validate}
         onSubmit={handleSubmit}
       >
@@ -63,8 +63,8 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
             </FormRow>
             <FormRow>
               <label></label>
-              <Field name="make_public">
-                {({ field }) => <Checkbox {...field} label="Make public" />}
+              <Field name="enable_share_url">
+                {({ field }) => <Checkbox {...field} label="Enable share URL" />}
               </Field>
             </FormRow>
             <FormButtons>

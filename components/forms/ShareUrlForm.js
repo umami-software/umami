@@ -10,14 +10,15 @@ export default function TrackingCodeForm({ values, onClose }) {
   return (
     <FormLayout>
       <p>
-        This is the public URL for <b>{values.name}</b>.
+        This is the publicly shared URL for <b>{values.name}</b>.
       </p>
       <FormRow>
         <textarea
           ref={ref}
           rows={3}
           cols={60}
-          defaultValue={`${document.location.origin}/share/${share_id}/${name}`}
+          spellCheck={false}
+          defaultValue={`${document.location.origin}/share/${share_id}/${encodeURIComponent(name)}`}
           readOnly
         />
       </FormRow>

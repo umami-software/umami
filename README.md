@@ -1,8 +1,8 @@
 # umami
 
-## Getting started
+## Installation
 
-### Install umami
+### Get the source code
 
 ```
 git clone https://github.com/mikecao/umami.git
@@ -14,10 +14,16 @@ git clone https://github.com/mikecao/umami.git
 cd umami
 ```
 
+### Install packages
+
+```
+npm install
+```
+
 ### Create database tables
 
-Umami supports MySQL and Postgresql. Create a database for your Umami
-installation and install the tables with the included scripts.
+Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/).
+Create a database for your Umami installation and install the tables with the included scripts.
 
 For MySQL:
 
@@ -47,10 +53,22 @@ postgresql://username:mypassword@localhost:5432/mydb
 mysql://username:mypassword@localhost:3306/mydb
 ```
 
-### Start the development server
+The `HASH_SALT` is used to generate unique session values for your installation.
+
+### Generate database client
+
+Depending on your database type, run the appropriate script.
+
+For MySQL:
 
 ```
-npm run develop
+npm run build-mysql-client
+```
+
+For Postgresql:
+
+```
+npm run build-postgresql-client
 ```
 
 ### Create a production build
@@ -58,3 +76,13 @@ npm run develop
 ```
 npm run build
 ```
+
+### Start the application
+
+```
+npm start
+```
+
+By default this will launch the application on `http://localhost:3000`. You will need to either 
+[proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
+or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.

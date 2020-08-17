@@ -19,7 +19,7 @@ create table website (
     user_id int not null references account(user_id) on delete cascade,
     name varchar(100) not null,
     domain varchar(500),
-    share_id varchar(8) unique,
+    share_id varchar(64) unique,
     created_at timestamp with time zone default current_timestamp
 );
 

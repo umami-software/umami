@@ -7,7 +7,7 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { user_id, is_admin } = req.auth;
-  const { website_id, make_public } = req.body;
+  const { website_id, enable_share_url } = req.body;
 
   if (req.method === 'POST') {
     const { name, domain } = req.body;
@@ -19,7 +19,7 @@ export default async (req, res) => {
         let { share_id } = website;
         console.log('exising id', share_id, website);
 
-        if (make_public) {
+        if (enable_share_url) {
           share_id = share_id ? share_id : getRandomChars(8);
         } else {
           share_id = null;
@@ -33,7 +33,7 @@ export default async (req, res) => {
       return unauthorized(res);
     } else {
       const website_uuid = uuid();
-      const share_id = make_public ? getRandomChars(8) : null;
+      const share_id = enable_share_url ? getRandomChars(8) : null;
       const website = await createWebsite(user_id, { website_uuid, name, domain, share_id });
 
       return ok(res, website);
