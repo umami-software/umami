@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   font-size: var(--font-size-small);
-  padding: 40px 0;
+  min-height: 100px;
 }
 
 .footer button {

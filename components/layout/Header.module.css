@@ -1,14 +1,14 @@
 .header {
   display: flex;
-  height: 80px;
-}
-
-.header > div {
-  flex: 1;
+  min-height: 100px;
 }
 
 .title {
   font-size: var(--font-size-large);
+}
+
+.logo {
+  margin-right: 12px;
 }
 
 .nav {
@@ -24,6 +24,13 @@
   margin-left: 40px;
 }
 
-.logo {
-  margin-right: 12px;
+@media only screen and (max-width: 768px) {
+  .title {
+    text-align: center;
+  }
+
+  .nav {
+    display: flex;
+    justify-content: space-evenly;
+  }
 }

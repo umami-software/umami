@@ -11,3 +11,7 @@
 .username:hover {
   background: var(--gray50);
 }
+
+.menu {
+  z-index: 100;
+}

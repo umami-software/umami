@@ -48,7 +48,13 @@ export default function UserButton() {
         <Icon icon={<Chevron />} size="small" />
       </div>
       {showMenu && (
-        <Menu options={menuOptions} onSelect={handleSelect} float="bottom" align="right" />
+        <Menu
+          className={styles.menu}
+          options={menuOptions}
+          onSelect={handleSelect}
+          float="bottom"
+          align="right"
+        />
       )}
     </div>
   );

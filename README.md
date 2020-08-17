@@ -8,7 +8,7 @@
 git clone https://github.com/mikecao/umami.git
 ```
 
-### Go into your repo folder
+### Go into the repo folder
 
 ```
 cd umami
@@ -53,7 +53,7 @@ postgresql://username:mypassword@localhost:5432/mydb
 mysql://username:mypassword@localhost:3306/mydb
 ```
 
-The `HASH_SALT` is used to generate unique session values for your installation.
+The `HASH_SALT` is used to generate unique values for your installation.
 
 ### Generate database client
 

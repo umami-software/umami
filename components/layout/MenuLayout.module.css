@@ -1,31 +1,27 @@
 .container {
   display: flex;
   flex: 1;
+  position: relative;
 }
 
 .container .menu {
+  display: flex;
+  flex-direction: column;
+  padding: 30px 0;
   border: 0;
 }
 
-.menu {
-  display: flex;
-  flex-direction: column;
-  padding-top: 30px;
-}
-
-.content {
+.container .content {
   display: flex;
   flex-direction: column;
   border-left: 1px solid var(--gray300);
   padding-left: 30px;
-  flex: 1;
 }
 
 .option {
   font-size: var(--font-size-normal);
   padding: 8px 16px;
   cursor: pointer;
-  min-width: 160px;
   margin-right: 30px;
   border-radius: 4px;
 }
@@ -36,4 +32,12 @@
 
 .selected {
   font-weight: 600;
+}
+
+@media only screen and (max-width: 992px) {
+  .container .content {
+    border-top: 1px solid var(--gray300);
+    border-left: 0;
+    padding-left: 0;
+  }
 }

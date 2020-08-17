@@ -13,14 +13,14 @@ export default function Header() {
   return (
     <header className="container">
       <div className={classNames(styles.header, 'row align-items-center')}>
-        <div className="col">
+        <div className="col-12 col-md-6">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />
             {user ? <Link href="/">umami</Link> : 'umami'}
           </div>
         </div>
         {user && (
-          <div className="col">
+          <div className="col-12 col-md-6">
             <div className={styles.nav}>
               <Link href="/dashboard">Dashboard</Link>
               <Link href="/settings">Settings</Link>
