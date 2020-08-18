@@ -44,7 +44,7 @@ export default function AccountSettings() {
       render: Checkmark,
     },
     {
-      className: classNames(styles.buttons, 'col-12 col-md-4'),
+      className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
       render: Buttons,
     },
   ];

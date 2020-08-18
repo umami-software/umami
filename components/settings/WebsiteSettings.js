@@ -58,7 +58,7 @@ export default function WebsiteSettings() {
     { key: 'domain', label: 'Domain', className: 'col-6 col-md-4' },
     {
       key: 'action',
-      className: classNames(styles.buttons, 'col-12 col-md-4 pt-1'),
+      className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
       render: Buttons,
     },
   ];

@@ -4,7 +4,7 @@ import WebsiteChart from 'components/charts/WebsiteChart';
 import RankingsChart from 'components/charts/RankingsChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
-import PageHeader from 'components/layout/PageHeader';
+import WebsiteHeader from 'components/charts/WebsiteHeader';
 import MenuLayout from 'components/layout/MenuLayout';
 import Button from 'components/common/Button';
 import { getDateRange } from 'lib/date';
@@ -88,7 +88,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     <Page>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
-          <PageHeader>{data.name}</PageHeader>
+          <WebsiteHeader websiteId={websiteId} name={data.name} showLink={false} />
           <WebsiteChart
             websiteId={websiteId}
             onDataLoad={handleDataLoad}

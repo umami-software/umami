@@ -3,6 +3,5 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  line-height: 80px;
-  font-size: var(--font-size-large);
+  min-height: 80px;
 }

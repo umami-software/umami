@@ -1,0 +1,15 @@
+.title {
+  color: var(--gray-900);
+  font-size: var(--font-size-large);
+  line-height: var(--font-size-large);
+}
+
+.button {
+  font-size: var(--font-size-small);
+}
+
+@media only screen and (max-width: 576px) {
+  .active {
+    display: none;
+  }
+}

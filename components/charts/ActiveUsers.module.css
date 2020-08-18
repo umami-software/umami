@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  display: flex;
+  font-size: var(--font-size-normal);
+}
+
+.value {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.dot {
+  background: var(--green400);
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
