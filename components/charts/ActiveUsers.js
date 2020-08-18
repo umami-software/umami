@@ -20,7 +20,7 @@ export default function ActiveUsers({ websiteId, className }) {
   useEffect(() => {
     loadData();
 
-    const id = setInterval(() => loadData(), 10000);
+    const id = setInterval(() => loadData(), 60000);
 
     return () => {
       clearInterval(id);
