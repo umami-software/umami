@@ -4,6 +4,11 @@
   margin-top: 80px;
 }
 
+.login form {
+  width: 300px;
+  margin: 0 auto;
+}
+
 .icon {
   display: flex;
   justify-content: center;
