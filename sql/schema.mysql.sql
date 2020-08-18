@@ -3,6 +3,7 @@ drop table if exists pageview;
 drop table if exists session;
 drop table if exists website;
 drop table if exists account;
+drop function if exists date_trunc;
 
 create table account (
     user_id int unsigned not null auto_increment primary key,
@@ -75,7 +76,8 @@ create index event_created_at_idx on event(created_at);
 create index event_website_id_idx on event(website_id);
 create index event_session_id_idx on event(session_id);
 
-drop function if exists date_trunc;
+delimiter $$
+
 create function date_trunc(
   in_granularity enum('minute', 'hour', 'day', 'month', 'year'),
   in_datetime datetime(6)
@@ -99,5 +101,7 @@ begin
     return DATE_FORMAT(in_datetime, '%Y-01-01 00:00:00.0000');
   end if;
 end;
+
+$$
 
 insert into account (username, password, is_admin) values ('admin', '$2a$10$jsVC1XMAIIQtL0On8twztOmAr20YTVcsd4.yJncKspEwsBkeq6VFW', true);
