@@ -9,7 +9,7 @@ export default function Table({ columns, rows, empty }) {
 
   return (
     <div className={styles.table}>
-      <div className={styles.header}>
+      <div className={classNames(styles.header, 'row')}>
         {columns.map(({ key, label, className, style, header }) => (
           <div
             key={key}
@@ -22,7 +22,7 @@ export default function Table({ columns, rows, empty }) {
       </div>
       <div className={styles.body}>
         {rows.map((row, rowIndex) => (
-          <div className={styles.row} key={rowIndex}>
+          <div className={classNames(styles.row, 'row')} key={rowIndex}>
             {columns.map(({ key, render, className, style, cell }) => (
               <div
                 key={`${rowIndex}${key}`}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
-import ChangePasswordForm from './forms/ChangePasswordForm';
+import ChangePasswordForm from '../forms/ChangePasswordForm';
 import Modal from 'components/common/Modal';
 import Dots from 'assets/ellipsis-h.svg';
 

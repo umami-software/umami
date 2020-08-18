@@ -3,7 +3,5 @@
 }
 
 .buttons {
-  flex: 3;
-  display: flex;
   justify-content: flex-end;
 }

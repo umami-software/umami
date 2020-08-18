@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import classNames from 'classnames';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
-import WebsiteEditForm from './forms/WebsiteEditForm';
-import DeleteForm from './forms/DeleteForm';
-import TrackingCodeForm from './forms/TrackingCodeForm';
-import ShareUrlForm from './forms/ShareUrlForm';
+import WebsiteEditForm from '../forms/WebsiteEditForm';
+import DeleteForm from '../forms/DeleteForm';
+import TrackingCodeForm from '../forms/TrackingCodeForm';
+import ShareUrlForm from '../forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
@@ -53,11 +54,11 @@ export default function WebsiteSettings() {
   );
 
   const columns = [
-    { key: 'name', label: 'Name', className: styles.col },
-    { key: 'domain', label: 'Domain', className: styles.col },
+    { key: 'name', label: 'Name', className: 'col-6 col-md-4' },
+    { key: 'domain', label: 'Domain', className: 'col-6 col-md-4' },
     {
       key: 'action',
-      className: styles.buttons,
+      className: classNames(styles.buttons, 'col-12 col-md-4 pt-1'),
       render: Buttons,
     },
   ];

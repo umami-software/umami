@@ -1,26 +1,22 @@
 .table {
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .header {
-  display: flex;
+  border-bottom: 1px solid var(--gray300);
 }
 
 .head {
   font-size: var(--font-size-small);
   font-weight: 600;
   line-height: 40px;
-  flex: 1;
-  border-bottom: 1px solid var(--gray300);
 }
 
 .body {
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1;
 }
 
 .body:empty:before {
@@ -33,7 +29,6 @@
 }
 
 .row {
-  display: flex;
   border-bottom: 1px solid var(--gray300);
   padding: 10px 0;
 }
@@ -41,5 +36,4 @@
 .cell {
   display: flex;
   align-items: flex-start;
-  flex: 1;
 }

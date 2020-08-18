@@ -2,6 +2,7 @@
   display: flex;
   flex: 1;
   position: relative;
+  height: 100%;
 }
 
 .container .menu {
@@ -35,6 +36,10 @@
 }
 
 @media only screen and (max-width: 992px) {
+  .container {
+    height: auto;
+  }
+
   .container .content {
     border-top: 1px solid var(--gray300);
     border-left: 0;
