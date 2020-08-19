@@ -16,7 +16,7 @@ export default function SharePage() {
 
     if (website) {
       setWebsiteId(website.website_id);
-    } else {
+    } else if (typeof window !== 'undefined') {
       setNotFound(true);
     }
   }
