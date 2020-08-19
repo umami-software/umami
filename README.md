@@ -87,6 +87,29 @@ By default this will launch the application on `http://localhost:3000`. You will
 [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
 or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 
+### Start the application with pm2 and custom port
+
+Add the custom port (here '-p 3010') at the start script:
+
+```json
+"scripts": {
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start -p 3010",
+  "build-tracker": "rollup -c rollup.tracker.config.js",
+  "build-mysql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.mysql.prisma",
+  "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
+  "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
+  "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma"
+},
+```
+
+Start the application with pm2:
+
+```
+pm2 start npm --name "unami" -- start
+```
+
 ## License
 
 MIT
