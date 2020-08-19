@@ -1,6 +1,17 @@
 # umami
 
+Umami is a simple, fast, website analytics alternative to Google Analytics.
+
+## Getting started
+
+A detailed getting started guide can be found at [https://umami.is/docs/](https://umami.is/docs/)
+
 ## Installation
+
+### Requirements
+
+- A server with Node.js 10.13 or newer
+- A database (MySQL or Postgresql)
 
 ### Get the source code
 

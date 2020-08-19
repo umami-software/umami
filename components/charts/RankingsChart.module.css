@@ -10,6 +10,7 @@
 .header {
   display: flex;
   line-height: 40px;
+  cursor: pointer;
 }
 
 .title {

@@ -1,12 +1,9 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
+import { formatNumber } from '../../lib/format';
 import styles from './MetricCard.module.css';
 
-function defaultFormat(n) {
-  return Number(n).toFixed(0);
-}
-
-const MetricCard = ({ value = 0, label, format = defaultFormat }) => {
+const MetricCard = ({ value = 0, label, format = formatNumber }) => {
   const props = useSpring({ x: value, from: { x: 0 } });
 
   return (

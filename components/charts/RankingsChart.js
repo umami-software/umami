@@ -2,11 +2,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import CheckVisible from 'components/helpers/CheckVisible';
 import Button from 'components/common/Button';
 import Arrow from 'assets/arrow-right.svg';
 import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
+import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './RankingsChart.module.css';
 
 export default function RankingsChart({
@@ -23,6 +23,8 @@ export default function RankingsChart({
   onExpand = () => {},
 }) {
   const [data, setData] = useState();
+  const [format, setFormat] = useState(true);
+  const formatFunc = format ? formatLongNumber : formatNumber;
 
   const rankings = useMemo(() => {
     if (data) {
@@ -48,14 +50,8 @@ export default function RankingsChart({
     onDataLoad(updated);
   }
 
-  useEffect(() => {
-    if (websiteId) {
-      loadData();
-    }
-  }, [websiteId, startDate, endDate, type]);
-
-  if (!data) {
-    return null;
+  function handleSetFormat() {
+    setFormat(state => !state);
   }
 
   const Row = ({ index, style }) => {
@@ -67,16 +63,33 @@ export default function RankingsChart({
     );
   };
 
+  useEffect(() => {
+    if (websiteId) {
+      loadData();
+    }
+  }, [websiteId, startDate, endDate, type]);
+
+  if (!data) {
+    return null;
+  }
+
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.header}>
+      <div className={styles.header} onClick={handleSetFormat}>
         <div className={styles.title}>{title}</div>
         <div className={styles.heading}>{heading}</div>
       </div>
       <div className={styles.body}>
         {limit ? (
           rankings.map(({ x, y, z }) => (
-            <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} />
+            <AnimatedRow
+              key={x}
+              label={x}
+              value={y}
+              percent={z}
+              animate={limit}
+              format={formatFunc}
+            />
           ))
         ) : (
           <FixedSizeList height={600} itemCount={rankings.length} itemSize={30}>
@@ -95,7 +108,7 @@ export default function RankingsChart({
   );
 }
 
-const AnimatedRow = ({ label, value, percent, animate }) => {
+const AnimatedRow = ({ label, value, percent, animate, format }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -106,7 +119,7 @@ const AnimatedRow = ({ label, value, percent, animate }) => {
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
-      <animated.div className={styles.value}>{props.y.interpolate(n => n.toFixed(0))}</animated.div>
+      <animated.div className={styles.value}>{props.y.interpolate(format)}</animated.div>
       <div className={styles.percent}>
         <animated.div
           className={styles.bar}
