@@ -1,6 +1,6 @@
 # umami
 
-## Installation
+## Installation from source
 
 ### Get the source code
 
@@ -86,6 +86,14 @@ npm start
 By default this will launch the application on `http://localhost:3000`. You will need to either 
 [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
 or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+
+## Installation with Docker
+
+To build the umami container and start up a Postgres database, run:
+
+```
+docker-compose up
+```
 
 ## License
 
