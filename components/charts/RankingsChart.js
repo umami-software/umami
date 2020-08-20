@@ -58,7 +58,7 @@ export default function RankingsChart({
     const { x, y, z } = rankings[index];
     return (
       <div style={style}>
-        <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} />
+        <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} format={formatFunc} />
       </div>
     );
   };
@@ -108,7 +108,7 @@ export default function RankingsChart({
   );
 }
 
-const AnimatedRow = ({ label, value, percent, animate, format }) => {
+const AnimatedRow = ({ label, value = 0, percent, animate, format }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -119,7 +119,7 @@ const AnimatedRow = ({ label, value, percent, animate, format }) => {
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
-      <animated.div className={styles.value}>{props.y.interpolate(format)}</animated.div>
+      <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
       <div className={styles.percent}>
         <animated.div
           className={styles.bar}
