@@ -48,6 +48,8 @@ For Postgresql:
 psql -h hostname -U username -d databasename -f sql/schema.postgresql.sql
 ```
 
+This will also create a login account with username **admin** and password **umami**.
+
 ### Configure umami
 
 Create an `.env` file with the following
