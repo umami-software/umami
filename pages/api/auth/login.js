@@ -15,6 +15,7 @@ export default async (req, res) => {
     const cookie = serialize(AUTH_COOKIE_NAME, token, {
       path: '/',
       httpOnly: true,
+      sameSite: true,
       maxAge: 60 * 60 * 24 * 365,
     });
 
