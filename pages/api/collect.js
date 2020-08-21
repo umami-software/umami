@@ -1,16 +1,15 @@
 import { savePageView, saveEvent } from 'lib/queries';
 import { useCors, useSession } from 'lib/middleware';
-import { createToken } from 'lib/crypto';
 import { ok, badRequest } from 'lib/response';
 
 export default async (req, res) => {
   await useCors(req, res);
   await useSession(req, res);
 
-  const { session } = req;
-  const token = await createToken(session);
-  const { website_id, session_id } = session;
   const { type, payload } = req.body;
+  const {
+    session: { website_id, session_id },
+  } = req;
 
   if (type === 'pageview') {
     const { url, referrer } = payload;
@@ -24,5 +23,5 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  return ok(res, { session: token });
+  return ok(res);
 };

@@ -2,18 +2,20 @@ import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
 import { post, hook } from '../lib/web';
 
-((window, sessionKey) => {
+(window => {
   const {
     screen: { width, height },
     navigator: { language },
     location: { hostname, pathname, search },
-    localStorage: store,
     document,
     history,
   } = window;
 
   const script = document.querySelector('script[data-website-id]');
-  const website = script && script.getAttribute('data-website-id');
+
+  if (!script) return;
+
+  const website = script.getAttribute('data-website-id');
   const hostUrl = new URL(script.src).origin;
   const screen = `${width}x${height}`;
   const listeners = [];
@@ -21,9 +23,10 @@ import { post, hook } from '../lib/web';
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
 
+  /* Collect metrics */
+
   const collect = (type, params) => {
     const payload = {
-      session: store.getItem(sessionKey),
       url: currentUrl,
       referrer: currentRef,
       website,
@@ -41,7 +44,7 @@ import { post, hook } from '../lib/web';
     return post(`${hostUrl}/api/collect`, {
       type,
       payload,
-    }).then(({ session }) => session && store.setItem(sessionKey, session));
+    });
   };
 
   const pageView = () => collect('pageview').then(() => setTimeout(loadEvents, 300));
@@ -86,4 +89,4 @@ import { post, hook } from '../lib/web';
   /* Start */
 
   pageView();
-})(window, 'umami.session');
+})(window);
