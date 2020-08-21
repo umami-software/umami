@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  umami:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@postgres:5432/umami
+      HASH_SALT: replace-me-with-a-random-string
+  postgres:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    volumes:
+      - type: bind
+        source: ./sql/schema.postgresql.sql
+        target: /docker-entrypoint-initdb.d/schema.postgresql.sql
+      - type: volume
+        source: postgres-data
+        target: /var/lib/postgresql/data
+volumes:
+  postgres-data:
