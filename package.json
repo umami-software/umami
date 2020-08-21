@@ -11,12 +11,13 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npm-run-all copy-db-schema build-db-client build-app",
     "start": "next start",
+    "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
-    "build-db-client": "node ./scripts/build-db-client.js",
-    "prisma-introspect": "dotenv prisma introspect",
-    "prisma-generate": "dotenv prisma generate"
+    "copy-db-schema": "node scripts/copy-db-schema.js",
+    "build-db-schema": "dotenv prisma introspect",
+    "build-db-client": "dotenv prisma generate"
   },
   "lint-staged": {
     "**/*.js": [
@@ -82,6 +83,7 @@
     "eslint-plugin-react-hooks": "^4.0.4",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.9",
+    "npm-run-all": "^4.1.5",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-import": "^12.0.1",
     "postcss-preset-env": "^6.7.0",
