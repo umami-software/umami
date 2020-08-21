@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import MetricCard from './MetricCard';
 import { get } from 'lib/web';
-import { formatShortTime } from 'lib/format';
+import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId, startDate, endDate, className }) {
   const [data, setData] = useState({});
+  const [format, setFormat] = useState(true);
   const { pageviews, uniques, bounces, totaltime } = data;
+
+  const formatFunc = format ? formatLongNumber : formatNumber;
 
   async function loadData() {
     setData(
@@ -18,14 +21,18 @@ export default function MetricsBar({ websiteId, startDate, endDate, className })
     );
   }
 
+  function handleSetFormat() {
+    setFormat(state => !state);
+  }
+
   useEffect(() => {
     loadData();
   }, [websiteId, startDate, endDate]);
 
   return (
-    <div className={classNames(styles.container, className)}>
-      <MetricCard label="Views" value={pageviews} />
-      <MetricCard label="Visitors" value={uniques} />
+    <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
+      <MetricCard label="Views" value={pageviews} format={formatFunc} />
+      <MetricCard label="Visitors" value={uniques} format={formatFunc} />
       <MetricCard
         label="Bounce rate"
         value={uniques ? (bounces / uniques) * 100 : 0}

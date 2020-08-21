@@ -32,10 +32,10 @@ export default function LoginForm() {
   const handleSubmit = async ({ username, password }) => {
     const response = await post('/api/auth/login', { username, password });
 
-    if (response?.token) {
+    if (typeof response !== 'string') {
       await Router.push('/');
     } else {
-      setMessage('Incorrect username/password');
+      setMessage(response.startsWith('401') ? 'Incorrect username/password' : response);
     }
   };
 

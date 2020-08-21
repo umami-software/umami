@@ -69,4 +69,4 @@ create index event_created_at_idx on event(created_at);
 create index event_website_id_idx on event(website_id);
 create index event_session_id_idx on event(session_id);
 
-insert into account (username, password, is_admin) values ('admin', '$2a$10$jsVC1XMAIIQtL0On8twztOmAr20YTVcsd4.yJncKspEwsBkeq6VFW', true);
+insert into account (username, password, is_admin) values ('admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa', true);

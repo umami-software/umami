@@ -1,20 +1,15 @@
 .container {
   display: flex;
   flex: 1;
-  position: relative;
   height: 100%;
 }
 
 .container .menu {
-  display: flex;
-  flex-direction: column;
   padding: 30px 0;
   border: 0;
 }
 
 .container .content {
-  display: flex;
-  flex-direction: column;
   border-left: 1px solid var(--gray300);
   padding-left: 30px;
 }
