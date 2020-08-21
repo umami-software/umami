@@ -13,7 +13,7 @@ import { post, hook } from '../lib/web';
 
   const script = document.querySelector('script[data-website-id]');
 
-  if (!script) return;
+  if (!script || navigator.doNotTrack === "1") return;
 
   const website = script.getAttribute('data-website-id');
   const hostUrl = new URL(script.src).origin;
