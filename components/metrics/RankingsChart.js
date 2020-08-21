@@ -25,6 +25,7 @@ export default function RankingsChart({
   const [data, setData] = useState();
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
+  const shouldAnimate = limit > 0;
 
   const rankings = useMemo(() => {
     if (data) {
@@ -54,13 +55,23 @@ export default function RankingsChart({
     setFormat(state => !state);
   }
 
+  function getRow(x, y, z) {
+    return (
+      <AnimatedRow
+        key={x}
+        label={x}
+        value={y}
+        percent={z}
+        animate={shouldAnimate}
+        format={formatFunc}
+        onClick={handleSetFormat}
+      />
+    );
+  }
+
   const Row = ({ index, style }) => {
     const { x, y, z } = rankings[index];
-    return (
-      <div style={style}>
-        <AnimatedRow key={x} label={x} value={y} percent={z} animate={limit} format={formatFunc} />
-      </div>
-    );
+    return <div style={style}>{getRow(x, y, z)}</div>;
   };
 
   useEffect(() => {
@@ -75,22 +86,15 @@ export default function RankingsChart({
 
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.header} onClick={handleSetFormat}>
+      <div className={styles.header}>
         <div className={styles.title}>{title}</div>
-        <div className={styles.heading}>{heading}</div>
+        <div className={styles.heading} onClick={handleSetFormat}>
+          {heading}
+        </div>
       </div>
       <div className={styles.body}>
         {limit ? (
-          rankings.map(({ x, y, z }) => (
-            <AnimatedRow
-              key={x}
-              label={x}
-              value={y}
-              percent={z}
-              animate={limit}
-              format={formatFunc}
-            />
-          ))
+          rankings.map(({ x, y, z }) => getRow(x, y, z))
         ) : (
           <FixedSizeList height={600} itemCount={rankings.length} itemSize={30}>
             {Row}
@@ -108,7 +112,7 @@ export default function RankingsChart({
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, animate, format }) => {
+const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -117,7 +121,7 @@ const AnimatedRow = ({ label, value = 0, percent, animate, format }) => {
   });
 
   return (
-    <div className={styles.row}>
+    <div className={styles.row} onClick={onClick}>
       <div className={styles.label}>{label}</div>
       <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
       <div className={styles.percent}>

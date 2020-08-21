@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import WebsiteHeader from 'components/charts/WebsiteHeader';
-import WebsiteChart from 'components/charts/WebsiteChart';
+import WebsiteHeader from 'components/metrics/WebsiteHeader';
+import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
 import Button from 'components/common/Button';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';

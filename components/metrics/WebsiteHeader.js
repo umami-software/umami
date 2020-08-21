@@ -13,8 +13,8 @@ export default function WebsiteHeader({ websiteId, name, showLink = false }) {
   return (
     <PageHeader>
       {showLink ? (
-        <Link href="/website/[...id]" as={`/website/${websiteId}/${name}`}>
-          <a className={styles.title}>{name}</a>
+        <Link href="/website/[...id]" as={`/website/${websiteId}/${name}`} className={styles.title}>
+          {name}
         </Link>
       ) : (
         <div className={styles.title}>{name}</div>

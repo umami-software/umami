@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
-import WebsiteChart from 'components/charts/WebsiteChart';
-import RankingsChart from 'components/charts/RankingsChart';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import RankingsChart from 'components/metrics/RankingsChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
-import WebsiteHeader from 'components/charts/WebsiteHeader';
+import WebsiteHeader from 'components/metrics/WebsiteHeader';
 import MenuLayout from 'components/layout/MenuLayout';
 import Button from 'components/common/Button';
 import { getDateRange } from 'lib/date';
