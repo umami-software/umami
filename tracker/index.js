@@ -53,10 +53,11 @@ import { post, hook, doNotTrack } from '../lib/web';
 
   /* Handle history */
 
-  const handlePush = (state, title, url) => {
+  const handlePush = (state, title, navaigatedUrl) => {
     removeEvents();
     currentRef = currentUrl;
-    currentUrl = url;
+    const url = new URL(navaigatedUrl);
+    currentUrl = `${url.pathname}${url.search}`;
     pageView();
   };
 
