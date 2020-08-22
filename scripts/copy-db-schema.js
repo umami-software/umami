@@ -2,15 +2,15 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const db = process.env.DATABASE_URL.split(':')[0];
+const databaseType = process.env.DATABASE_TYPE || process.env.DATABASE_URL.split(':')[0];
 
-if (!db) {
-  throw new Error('Database not specified');
+if (!databaseType) {
+  throw new Error('Database schema not specified');
 }
 
-console.log(`Database detected: ${db}`);
+console.log(`Database schema detected: ${databaseType}`);
 
-const src = path.resolve(__dirname, `../prisma/schema.${db}.prisma`);
+const src = path.resolve(__dirname, `../prisma/schema.${databaseType}.prisma`);
 const dest = path.resolve(__dirname, '../prisma/schema.prisma');
 
 fs.copyFileSync(src, dest);
