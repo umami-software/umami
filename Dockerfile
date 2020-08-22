@@ -1,5 +1,7 @@
 FROM node:12.18-alpine
 
+ENV DATABASE_URL "postgresql://umami:umami@db:5432/umami"
+
 COPY . /app
 WORKDIR /app
 
