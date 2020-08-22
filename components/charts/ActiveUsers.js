@@ -38,7 +38,7 @@ export default function ActiveUsers({ websiteId, className }) {
         <animated.div className={styles.value}>
           {props.x.interpolate(x => x.toFixed(0))}
         </animated.div>
-        <div>{`current vistor${count !== 1 ? 's' : ''}`}</div>
+        <div>{`current visitor${count !== 1 ? 's' : ''}`}</div>
       </div>
     </div>
   );
