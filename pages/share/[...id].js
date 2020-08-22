@@ -6,6 +6,7 @@ import NotFound from 'pages/404';
 import { get } from 'lib/web';
 
 export default function SharePage() {
+  const [loading, setLoading] = useState(true);
   const [websiteId, setWebsiteId] = useState();
   const [notFound, setNotFound] = useState(false);
   const router = useRouter();
@@ -23,9 +24,15 @@ export default function SharePage() {
 
   useEffect(() => {
     if (id) {
-      loadData();
+      loadData().finally(() => {
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
     }
   }, [id]);
+
+  if (loading) return null;
 
   if (!id || notFound) {
     return <NotFound />;
