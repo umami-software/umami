@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all copy-db-schema build-db-client build-app",
+    "build": "npm-run-all build-tracker copy-db-schema build-db-client build-app",
     "start": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
