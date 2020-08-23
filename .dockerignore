@@ -1,2 +1,6 @@
 .git
 docker-compose.yml
+Dockerfile
+.gitignore
+.DS_Store
+node_modules
