@@ -7,18 +7,20 @@ import Arrow from 'assets/arrow-right.svg';
 import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
-import styles from './RankingsChart.module.css';
+import styles from './MetricsTable.module.css';
 
-export default function RankingsChart({
+export default function MetricsTable({
   title,
+  metric,
   websiteId,
   startDate,
   endDate,
   type,
-  heading,
   className,
   dataFilter,
+  filterOptions,
   limit,
+  headerComponent,
   onDataLoad = () => {},
   onExpand = () => {},
 }) {
@@ -29,7 +31,7 @@ export default function RankingsChart({
 
   const rankings = useMemo(() => {
     if (data) {
-      const items = dataFilter ? dataFilter(data) : data;
+      const items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
       if (limit) {
         return items.filter((e, i) => i < limit);
       }
@@ -45,10 +47,8 @@ export default function RankingsChart({
       type,
     });
 
-    const updated = percentFilter(data);
-
-    setData(updated);
-    onDataLoad(updated);
+    setData(data);
+    onDataLoad(data);
   }
 
   function handleSetFormat() {
@@ -88,8 +88,9 @@ export default function RankingsChart({
     <div className={classNames(styles.container, className)}>
       <div className={styles.header}>
         <div className={styles.title}>{title}</div>
-        <div className={styles.heading} onClick={handleSetFormat}>
-          {heading}
+        {headerComponent}
+        <div className={styles.metric} onClick={handleSetFormat}>
+          {metric}
         </div>
       </div>
       <div className={styles.body}>
@@ -121,9 +122,11 @@ const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) =>
   });
 
   return (
-    <div className={styles.row} onClick={onClick}>
-      <div className={styles.label}>{label}</div>
-      <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
+    <div className={styles.row}>
+      <div className={styles.label}>{decodeURI(label)}</div>
+      <div className={styles.value} onClick={onClick}>
+        <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
+      </div>
       <div className={styles.percent}>
         <animated.div
           className={styles.bar}

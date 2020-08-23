@@ -6,6 +6,7 @@ import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
 import AccountEditForm from 'components/forms/AccountEditForm';
+import ButtonLayout from 'components/layout/ButtonLayout';
 import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
@@ -25,14 +26,14 @@ export default function AccountSettings() {
 
   const Buttons = row =>
     row.username !== 'admin' ? (
-      <>
+      <ButtonLayout>
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
           <div>Edit</div>
         </Button>
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
           <div>Delete</div>
         </Button>
-      </>
+      </ButtonLayout>
     ) : null;
 
   const columns = [

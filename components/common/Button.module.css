@@ -17,10 +17,6 @@
   background: #eaeaea;
 }
 
-.button + .button {
-  margin-left: 10px;
-}
-
 .large {
   font-size: var(--font-size-large);
 }

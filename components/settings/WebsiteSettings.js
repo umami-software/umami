@@ -9,6 +9,7 @@ import DeleteForm from '../forms/DeleteForm';
 import TrackingCodeForm from '../forms/TrackingCodeForm';
 import ShareUrlForm from '../forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import ButtonLayout from 'components/layout/ButtonLayout';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
@@ -27,7 +28,7 @@ export default function WebsiteSettings() {
   const [saved, setSaved] = useState(0);
 
   const Buttons = row => (
-    <>
+    <ButtonLayout>
       {row.share_id && (
         <Button
           icon={<Link />}
@@ -50,7 +51,7 @@ export default function WebsiteSettings() {
       <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
         <div>Delete</div>
       </Button>
-    </>
+    </ButtonLayout>
   );
 
   const columns = [

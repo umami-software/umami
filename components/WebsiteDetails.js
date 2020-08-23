@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
-import RankingsChart from 'components/metrics/RankingsChart';
+import MetricsTable from 'components/metrics/MetricsTable';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
 import WebsiteHeader from 'components/metrics/WebsiteHeader';
@@ -9,12 +9,14 @@ import MenuLayout from 'components/layout/MenuLayout';
 import Button from 'components/common/Button';
 import { getDateRange } from 'lib/date';
 import { get } from 'lib/web';
-import { browserFilter, urlFilter, refFilter, deviceFilter, countryFilter } from 'lib/filters';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
-
-const pageviewClasses = 'col-md-12 col-lg-6';
-const sessionClasses = 'col-md-12 col-lg-4';
+import PagesTable from './metrics/PagesTable';
+import ReferrersTable from './metrics/ReferrersTable';
+import BrowsersTable from './metrics/BrowsersTable';
+import OSTable from './metrics/OSTable';
+import DevicesTable from './metrics/DevicesTable';
+import CountriesTable from './metrics/CountriesTable';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
@@ -24,29 +26,30 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   const [expand, setExpand] = useState();
   const { startDate, endDate } = dateRange;
 
+  const BackButton = () => (
+    <Button
+      className={styles.backButton}
+      icon={<Arrow />}
+      size="xsmall"
+      onClick={() => setExpand(null)}
+    >
+      <div>Back</div>
+    </Button>
+  );
+
   const menuOptions = [
     {
-      render: () => (
-        <Button
-          className={styles.backButton}
-          icon={<Arrow />}
-          size="xsmall"
-          onClick={() => setExpand(null)}
-        >
-          <div>Back</div>
-        </Button>
-      ),
+      render: BackButton,
     },
-    { label: 'Pages', value: 'url', filter: urlFilter },
-    { label: 'Referrers', value: 'referrer', filter: refFilter(data?.domain) },
-    { label: 'Browsers', value: 'browser', filter: browserFilter },
-    { label: 'Operating system', value: 'os' },
-    { label: 'Devices', value: 'device', filter: deviceFilter },
+    { label: 'Pages', value: 'url', component: PagesTable },
+    { label: 'Referrers', value: 'referrer', component: ReferrersTable },
+    { label: 'Browsers', value: 'browser', component: BrowsersTable },
+    { label: 'Operating system', value: 'os', component: OSTable },
+    { label: 'Devices', value: 'device', component: DevicesTable },
     {
       label: 'Countries',
       value: 'country',
-      filter: countryFilter,
-      onDataLoad: data => setCountryData(data),
+      component: props => <CountriesTable {...props} onDataLoad={data => setCountryData(data)} />,
     },
   ];
 
@@ -70,7 +73,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     setExpand(menuOptions.find(e => e.value === value));
   }
 
-  function getHeading(type) {
+  function getMetricLabel(type) {
     return type === 'url' || type === 'referrer' ? 'Views' : 'Visitors';
   }
 
@@ -83,6 +86,15 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   if (!data) {
     return null;
   }
+
+  const tableProps = {
+    websiteId,
+    startDate,
+    endDate,
+    limit: 10,
+    onExpand: handleExpand,
+    websiteDomain: data?.domain,
+  };
 
   return (
     <Page>
@@ -100,71 +112,22 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
       {chartLoaded && !expand && (
         <>
           <div className={classNames(styles.row, 'row')}>
-            <div className={pageviewClasses}>
-              <RankingsChart
-                title="Pages"
-                type="url"
-                heading="Views"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                dataFilter={urlFilter}
-                onExpand={handleExpand}
-              />
+            <div className="col-md-12 col-lg-6">
+              <PagesTable {...tableProps} />
             </div>
-            <div className={pageviewClasses}>
-              <RankingsChart
-                title="Referrers"
-                type="referrer"
-                heading="Views"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                dataFilter={refFilter(data.domain)}
-                onExpand={handleExpand}
-              />
+            <div className="col-md-12 col-lg-6">
+              <ReferrersTable {...tableProps} />
             </div>
           </div>
           <div className={classNames(styles.row, 'row')}>
-            <div className={sessionClasses}>
-              <RankingsChart
-                title="Browsers"
-                type="browser"
-                heading="Visitors"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                dataFilter={browserFilter}
-                onExpand={handleExpand}
-              />
+            <div className="col-md-12 col-lg-4">
+              <BrowsersTable {...tableProps} />
             </div>
-            <div className={sessionClasses}>
-              <RankingsChart
-                title="Operating system"
-                type="os"
-                heading="Visitors"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                onExpand={handleExpand}
-              />
+            <div className="col-md-12 col-lg-4">
+              <OSTable {...tableProps} />
             </div>
-            <div className={sessionClasses}>
-              <RankingsChart
-                title="Devices"
-                type="device"
-                heading="Visitors"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                dataFilter={deviceFilter}
-                onExpand={handleExpand}
-              />
+            <div className="col-md-12 col-lg-4">
+              <DevicesTable {...tableProps} />
             </div>
           </div>
           <div className={classNames(styles.row, 'row')}>
@@ -172,18 +135,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
               <WorldMap data={countryData} />
             </div>
             <div className="col-12 col-md-12 col-lg-4">
-              <RankingsChart
-                title="Countries"
-                type="country"
-                heading="Visitors"
-                websiteId={websiteId}
-                startDate={startDate}
-                endDate={endDate}
-                limit={10}
-                dataFilter={countryFilter}
-                onDataLoad={data => setCountryData(data)}
-                onExpand={handleExpand}
-              />
+              <CountriesTable {...tableProps} onDataLoad={data => setCountryData(data)} />
             </div>
           </div>
         </>
@@ -197,16 +149,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           selectedOption={expand.value}
           onMenuSelect={handleMenuSelect}
         >
-          <RankingsChart
-            title={expand.label}
-            type={expand.value}
-            heading={getHeading(expand.value)}
-            websiteId={websiteId}
-            startDate={startDate}
-            endDate={endDate}
-            dataFilter={expand.filter}
-            onDataLoad={expand.onDataLoad}
-          />
+          {expand.component({ ...tableProps, limit: false })}
         </MenuLayout>
       )}
     </Page>

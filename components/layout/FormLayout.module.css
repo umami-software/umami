@@ -23,6 +23,10 @@
   margin-top: 20px;
 }
 
+.buttons button + button {
+  margin-left: 10px;
+}
+
 .error {
   position: absolute;
   display: flex;

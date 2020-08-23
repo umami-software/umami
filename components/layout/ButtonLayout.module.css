@@ -1,0 +1,7 @@
+.buttons {
+  display: flex;
+}
+
+.buttons button + button {
+  margin-left: 10px;
+}

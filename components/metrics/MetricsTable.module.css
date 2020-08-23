@@ -9,16 +9,18 @@
 
 .header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   line-height: 40px;
 }
 
 .title {
-  flex: 1;
+  display: flex;
   font-weight: 600;
   font-size: var(--font-size-normal);
 }
 
-.heading {
+.metric {
   font-size: var(--font-size-small);
   text-align: center;
   width: 100px;
