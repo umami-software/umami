@@ -1,6 +1,6 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
-import { post, hook } from '../lib/web';
+import { post, hook, doNotTrack } from '../lib/web';
 
 (window => {
   const {
@@ -13,7 +13,7 @@ import { post, hook } from '../lib/web';
 
   const script = document.querySelector('script[data-website-id]');
 
-  if (!script) return;
+  if (!script || doNotTrack()) return;
 
   const website = script.getAttribute('data-website-id');
   const hostUrl = new URL(script.src).origin;
@@ -53,10 +53,11 @@ import { post, hook } from '../lib/web';
 
   /* Handle history */
 
-  const handlePush = (state, title, url) => {
+  const handlePush = (state, title, navaigatedUrl) => {
     removeEvents();
     currentRef = currentUrl;
-    currentUrl = url;
+    const url = new URL(navaigatedUrl);
+    currentUrl = `${url.pathname}${url.search}`;
     pageView();
   };
 
