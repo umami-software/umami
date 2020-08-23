@@ -16,7 +16,7 @@ export default function Header() {
         <div className="col-12 col-md-6">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />
-            {user ? <Link href="/">umami</Link> : 'umami'}
+            <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
           </div>
         </div>
         {user && (

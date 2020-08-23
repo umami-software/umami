@@ -38,7 +38,7 @@ export default function MetricsTable({
       return items;
     }
     return [];
-  }, [data]);
+  }, [data, dataFilter, filterOptions]);
 
   async function loadData() {
     const data = await get(`/api/website/${websiteId}/rankings`, {

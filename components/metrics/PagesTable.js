@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MetricsTable from './MetricsTable';
 import { urlFilter } from 'lib/filters';
+import ButtonGroup from '../common/ButtonGroup';
 
 export default function PagesTable({
   websiteId,
@@ -10,19 +11,32 @@ export default function PagesTable({
   limit,
   onExpand,
 }) {
+  const [filter, setFilter] = useState('Combined');
+
   return (
     <MetricsTable
       title="Pages"
       type="url"
       metric="Views"
-      headerComponent={null}
+      headerComponent={limit ? null : <FilterButtons selected={filter} onClick={setFilter} />}
       websiteId={websiteId}
       startDate={startDate}
       endDate={endDate}
       limit={limit}
       dataFilter={urlFilter}
-      filterOptions={{ domain: websiteDomain }}
+      filterOptions={{ domain: websiteDomain, raw: filter === 'Raw' }}
       onExpand={onExpand}
     />
   );
 }
+
+const FilterButtons = ({ selected, onClick }) => {
+  return (
+    <ButtonGroup
+      size="xsmall"
+      items={['Combined', 'Raw']}
+      selectedItem={selected}
+      onClick={onClick}
+    />
+  );
+};

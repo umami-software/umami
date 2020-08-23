@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
-import MetricsTable from 'components/metrics/MetricsTable';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
 import WebsiteHeader from 'components/metrics/WebsiteHeader';
@@ -53,6 +52,17 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     },
   ];
 
+  const tableProps = {
+    websiteId,
+    startDate,
+    endDate,
+    limit: 10,
+    onExpand: handleExpand,
+    websiteDomain: data?.domain,
+  };
+
+  const DetailsComponent = expand?.component;
+
   async function loadData() {
     setData(await get(`/api/website/${websiteId}`));
   }
@@ -73,10 +83,6 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     setExpand(menuOptions.find(e => e.value === value));
   }
 
-  function getMetricLabel(type) {
-    return type === 'url' || type === 'referrer' ? 'Views' : 'Visitors';
-  }
-
   useEffect(() => {
     if (websiteId) {
       loadData();
@@ -86,15 +92,6 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   if (!data) {
     return null;
   }
-
-  const tableProps = {
-    websiteId,
-    startDate,
-    endDate,
-    limit: 10,
-    onExpand: handleExpand,
-    websiteDomain: data?.domain,
-  };
 
   return (
     <Page>
@@ -149,7 +146,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           selectedOption={expand.value}
           onMenuSelect={handleMenuSelect}
         >
-          {expand.component({ ...tableProps, limit: false })}
+          <DetailsComponent {...tableProps} limit={false} />
         </MenuLayout>
       )}
     </Page>

@@ -1,31 +1,28 @@
 import React from 'react';
-import classNames from 'classnames';
-import Button from '../common/Button';
+import ButtonGroup from 'components/common/ButtonGroup';
 import { getDateRange } from 'lib/date';
 import styles from './QuickButtons.module.css';
 
 const options = {
-  '24hour': '24h',
-  '7day': '7d',
-  '30day': '30d',
+  '24h': '24hour',
+  '7d': '7day',
+  '30d': '30day',
 };
 
 export default function QuickButtons({ value, onChange }) {
+  const selectedItem = Object.keys(options).find(key => options[key] === value);
+
   function handleClick(value) {
-    onChange(getDateRange(value));
+    onChange(getDateRange(options[value]));
   }
 
   return (
-    <div className={styles.buttons}>
-      {Object.keys(options).map(key => (
-        <Button
-          key={key}
-          className={classNames(styles.button, { [styles.active]: value === key })}
-          onClick={() => handleClick(key)}
-        >
-          {options[key]}
-        </Button>
-      ))}
-    </div>
+    <ButtonGroup
+      size="xsmall"
+      className={styles.buttons}
+      items={Object.keys(options)}
+      selectedItem={selectedItem}
+      onClick={handleClick}
+    />
   );
 }
