@@ -13,6 +13,16 @@ export default function Referrers({
 }) {
   const [filter, setFilter] = useState('Combined');
 
+  const renderLink = url => {
+    return url.startsWith('http') ? (
+      <a href={url} target="_blank" rel="noreferrer">
+        {url}
+      </a>
+    ) : (
+      url
+    );
+  };
+
   return (
     <MetricsTable
       title="Referrers"
@@ -30,6 +40,7 @@ export default function Referrers({
         raw: filter === 'Raw',
       }}
       onExpand={onExpand}
+      labelRenderer={renderLink}
     />
   );
 }

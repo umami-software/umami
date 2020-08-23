@@ -23,6 +23,7 @@ export default function MetricsTable({
   headerComponent,
   onDataLoad = () => {},
   onExpand = () => {},
+  labelRenderer = e => e,
 }) {
   const [data, setData] = useState();
   const [format, setFormat] = useState(true);
@@ -65,6 +66,7 @@ export default function MetricsTable({
         animate={shouldAnimate}
         format={formatFunc}
         onClick={handleSetFormat}
+        labelRenderer={labelRenderer}
       />
     );
   }
@@ -113,7 +115,7 @@ export default function MetricsTable({
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) => {
+const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick, labelRenderer }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -123,7 +125,7 @@ const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) =>
 
   return (
     <div className={styles.row}>
-      <div className={styles.label}>{decodeURI(label)}</div>
+      <div className={styles.label}>{labelRenderer(decodeURI(label))}</div>
       <div className={styles.value} onClick={onClick}>
         <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
       </div>

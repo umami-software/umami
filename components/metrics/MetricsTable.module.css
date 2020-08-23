@@ -45,6 +45,15 @@
   flex: 2;
 }
 
+.label a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.label a:hover {
+  color: var(--primary400);
+}
+
 .label:empty {
   color: #b3b3b3;
 }
