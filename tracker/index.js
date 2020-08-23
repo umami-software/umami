@@ -56,8 +56,14 @@ import { post, hook, doNotTrack } from '../lib/web';
   const handlePush = (state, title, navaigatedUrl) => {
     removeEvents();
     currentRef = currentUrl;
-    const url = new URL(navaigatedUrl);
-    currentUrl = `${url.pathname}${url.search}`;
+
+    if (navaigatedUrl.startsWith('http')) {
+      const url = new URL(navaigatedUrl);
+      currentUrl = `${url.pathname}${url.search}`;
+    } else {
+      currentUrl = navaigatedUrl;
+    }
+
     pageView();
   };
 
