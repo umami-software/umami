@@ -35,7 +35,7 @@ export default function MetricsBar({ websiteId, startDate, endDate, className })
       <MetricCard label="Visitors" value={uniques} format={formatFunc} />
       <MetricCard
         label="Bounce rate"
-        value={uniques ? (bounces / uniques) * 100 : 0}
+        value={pageviews ? (bounces / pageviews) * 100 : 0}
         format={n => Number(n).toFixed(0) + '%'}
       />
       <MetricCard
