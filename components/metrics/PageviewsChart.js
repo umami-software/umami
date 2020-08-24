@@ -116,7 +116,6 @@ export default function PageviewsChart({
                 ticks: {
                   beginAtZero: true,
                 },
-                stacked: true,
               },
             ],
           },
