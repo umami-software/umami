@@ -16,6 +16,7 @@ import BrowsersTable from './metrics/BrowsersTable';
 import OSTable from './metrics/OSTable';
 import DevicesTable from './metrics/DevicesTable';
 import CountriesTable from './metrics/CountriesTable';
+import EventsTable from './metrics/EventsTable';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
@@ -23,6 +24,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   const [countryData, setCountryData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const [expand, setExpand] = useState();
+  const [showEvents, setShowEvents] = useState(false);
   const { startDate, endDate } = dateRange;
 
   const BackButton = () => (
@@ -50,6 +52,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
       value: 'country',
       component: props => <CountriesTable {...props} onDataLoad={data => setCountryData(data)} />,
     },
+    { label: 'Events', value: 'event', component: EventsTable },
   ];
 
   const tableProps = {
@@ -134,6 +137,12 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
             <div className="col-12 col-md-12 col-lg-4">
               <CountriesTable {...tableProps} onDataLoad={data => setCountryData(data)} />
             </div>
+          </div>
+          <div className={classNames(styles.row, 'row', { [styles.hidden]: !showEvents })}>
+            <div className="col-12 col-md-12 col-lg-4">
+              <EventsTable {...tableProps} onDataLoad={data => setShowEvents(data.length > 0)} />
+            </div>
+            <div className="col-12 col-md-12 col-lg-8">events</div>
           </div>
         </>
       )}

@@ -42,6 +42,10 @@
   padding-right: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 @media only screen and (max-width: 992px) {
   .row {
     border: 0;
