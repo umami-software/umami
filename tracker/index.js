@@ -17,7 +17,7 @@ import { post, hook, doNotTrack } from '../lib/web';
   if (!script || (__DNT__ && doNotTrack())) return;
 
   const website = script.getAttribute('data-website-id');
-  const hostUrl = new URL(script.src).origin;
+  const hostUrl = new URL(script.src).href.replace(/\/umami\.js$/,'');
   const screen = `${width}x${height}`;
   const listeners = [];
 
