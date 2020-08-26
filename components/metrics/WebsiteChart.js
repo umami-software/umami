@@ -76,14 +76,15 @@ export default function WebsiteChart({
       <div className="row">
         <CheckVisible className="col">
           {visible => (
-            <PageviewsChart
-              websiteId={websiteId}
-              data={{ pageviews, uniques }}
-              unit={unit}
-              animationDuration={visible ? 300 : 0}
-            >
+            <>
+              <PageviewsChart
+                websiteId={websiteId}
+                data={{ pageviews, uniques }}
+                unit={unit}
+                animationDuration={visible ? 300 : 0}
+              />
               <QuickButtons value={value} onChange={handleDateChange} />
-            </PageviewsChart>
+            </>
           )}
         </CheckVisible>
       </div>
