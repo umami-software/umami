@@ -13,6 +13,7 @@ export default function BarChart({
   animationDuration = 300,
   className,
   stacked = false,
+  onCreate = () => {},
   onUpdate = () => {},
 }) {
   const canvas = useRef();
@@ -56,54 +57,58 @@ export default function BarChart({
   };
 
   const createChart = () => {
+    const options = {
+      animation: {
+        duration: animationDuration,
+      },
+      tooltips: {
+        enabled: false,
+        custom: renderTooltip,
+      },
+      hover: {
+        animationDuration: 0,
+      },
+      responsiveAnimationDuration: 0,
+      scales: {
+        xAxes: [
+          {
+            type: 'time',
+            distribution: 'series',
+            time: {
+              unit,
+              tooltipFormat: 'ddd MMMM DD YYYY',
+            },
+            ticks: {
+              callback: renderLabel,
+              minRotation: 0,
+              maxRotation: 0,
+            },
+            gridLines: {
+              display: false,
+            },
+            offset: true,
+            stacked: true,
+          },
+        ],
+        yAxes: [
+          {
+            ticks: {
+              beginAtZero: true,
+            },
+            stacked,
+          },
+        ],
+      },
+    };
+
+    onCreate(options);
+
     chart.current = new ChartJS(canvas.current, {
       type: 'bar',
       data: {
         datasets,
       },
-      options: {
-        animation: {
-          duration: animationDuration,
-        },
-        tooltips: {
-          enabled: false,
-          custom: renderTooltip,
-        },
-        hover: {
-          animationDuration: 0,
-        },
-        responsiveAnimationDuration: 0,
-        scales: {
-          xAxes: [
-            {
-              type: 'time',
-              distribution: 'series',
-              time: {
-                unit,
-                tooltipFormat: 'ddd MMMM DD YYYY',
-              },
-              ticks: {
-                callback: renderLabel,
-                minRotation: 0,
-                maxRotation: 0,
-              },
-              gridLines: {
-                display: false,
-              },
-              offset: true,
-              stacked: true,
-            },
-          ],
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true,
-              },
-              stacked,
-            },
-          ],
-        },
-      },
+      options,
     });
   };
 
