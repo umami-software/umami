@@ -12,6 +12,7 @@ export default function BarChart({
   records,
   animationDuration = 300,
   className,
+  stacked = false,
   onUpdate = () => {},
 }) {
   const canvas = useRef();
@@ -54,70 +55,75 @@ export default function BarChart({
     }
   };
 
-  function draw() {
-    if (!chart.current) {
-      chart.current = new ChartJS(canvas.current, {
-        type: 'bar',
-        data: {
-          datasets,
+  const createChart = () => {
+    chart.current = new ChartJS(canvas.current, {
+      type: 'bar',
+      data: {
+        datasets,
+      },
+      options: {
+        animation: {
+          duration: animationDuration,
         },
-        options: {
-          animation: {
-            duration: animationDuration,
-          },
-          tooltips: {
-            enabled: false,
-            custom: renderTooltip,
-          },
-          hover: {
-            animationDuration: 0,
-          },
-          responsiveAnimationDuration: 0,
-          scales: {
-            xAxes: [
-              {
-                type: 'time',
-                distribution: 'series',
-                time: {
-                  unit,
-                  tooltipFormat: 'ddd MMMM DD YYYY',
-                },
-                ticks: {
-                  callback: renderLabel,
-                  minRotation: 0,
-                  maxRotation: 0,
-                },
-                gridLines: {
-                  display: false,
-                },
-                offset: true,
-                stacked: true,
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
+        tooltips: {
+          enabled: false,
+          custom: renderTooltip,
         },
-      });
-    } else {
-      const { options } = chart.current;
+        hover: {
+          animationDuration: 0,
+        },
+        responsiveAnimationDuration: 0,
+        scales: {
+          xAxes: [
+            {
+              type: 'time',
+              distribution: 'series',
+              time: {
+                unit,
+                tooltipFormat: 'ddd MMMM DD YYYY',
+              },
+              ticks: {
+                callback: renderLabel,
+                minRotation: 0,
+                maxRotation: 0,
+              },
+              gridLines: {
+                display: false,
+              },
+              offset: true,
+              stacked: true,
+            },
+          ],
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+              stacked,
+            },
+          ],
+        },
+      },
+    });
+  };
 
-      options.scales.xAxes[0].time.unit = unit;
-      options.scales.xAxes[0].ticks.callback = renderLabel;
+  const updateChart = () => {
+    const { options } = chart.current;
 
-      onUpdate(chart.current);
-    }
-  }
+    options.scales.xAxes[0].time.unit = unit;
+    options.scales.xAxes[0].ticks.callback = renderLabel;
+
+    onUpdate(chart.current);
+  };
 
   useEffect(() => {
     if (datasets) {
-      draw();
-      setTooltip(null);
+      if (!chart.current) {
+        createChart();
+      } else {
+        setTooltip(null);
+        updateChart();
+      }
     }
   }, [datasets]);
 

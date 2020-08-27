@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { getPageviews } from 'lib/queries';
+import { getEvents } from 'lib/queries';
 import { ok, badRequest } from 'lib/response';
 
 const unitTypes = ['month', 'hour', 'day'];
@@ -15,10 +15,7 @@ export default async (req, res) => {
   const startDate = new Date(+start_at);
   const endDate = new Date(+end_at);
 
-  const [pageviews, uniques] = await Promise.all([
-    getPageviews(websiteId, startDate, endDate, tz, unit, '*'),
-    getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id'),
-  ]);
+  const events = await getEvents(websiteId, startDate, endDate, tz, unit);
 
-  return ok(res, { pageviews, uniques });
+  return ok(res, events);
 };

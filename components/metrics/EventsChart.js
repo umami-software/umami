@@ -1,174 +1,84 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import ReactTooltip from 'react-tooltip';
+import React, { useState, useEffect } from 'react';
 import classNames from 'classnames';
-import ChartJS from 'chart.js';
-import { format } from 'date-fns';
-import styles from './EventsChart.module.css';
+import BarChart from './BarChart';
+import { get } from 'lib/web';
+import { getTimezone, getDateArray } from 'lib/date';
+import styles from './PageviewsChart.module.css';
 
-export default function EventsChart({
-  websiteId,
-  data,
-  unit,
-  animationDuration = 300,
-  className,
-  children,
-}) {
-  const canvas = useRef();
-  const chart = useRef();
-  const [tooltip, setTooltip] = useState({});
+const COLORS = [
+  'rgba(38, 128, 235, 0.5)',
+  'rgba(227, 72, 80, 0.5)',
+  'rgba(45, 157, 120, 0.5)',
+  'rgba(103, 103, 236, 0.5)',
+  'rgba(68, 181, 86, 0.5)',
+  'rgba(146, 86, 217, 0.5)',
+];
 
-  const renderLabel = useCallback(
-    (label, index, values) => {
-      const d = new Date(values[index].value);
-      const n = data.pageviews.length;
+export default function EventsChart({ websiteId, startDate, endDate, unit, className }) {
+  const [data, setData] = useState();
 
-      switch (unit) {
-        case 'day':
-          if (n >= 15) {
-            return index % ~~(n / 15) === 0 ? format(d, 'MMM d') : '';
-          }
-          return format(d, 'EEE M/d');
-        case 'month':
-          return format(d, 'MMMM');
-        default:
-          return label;
+  async function loadData() {
+    const data = await get(`/api/website/${websiteId}/events`, {
+      start_at: +startDate,
+      end_at: +endDate,
+      unit,
+      tz: getTimezone(),
+    });
+    console.log({ data });
+    const map = data.reduce((obj, { x, t, y }) => {
+      if (!obj[x]) {
+        obj[x] = [];
       }
-    },
-    [unit, data],
-  );
 
-  const renderTooltip = model => {
-    const { opacity, title, body, labelColors } = model;
+      obj[x].push({ t, y });
 
-    if (!opacity) {
-      setTooltip(null);
-    } else {
-      const [label, value] = body[0].lines[0].split(':');
+      return obj;
+    }, {});
 
-      setTooltip({
-        title: title[0],
-        value,
-        label,
-        labelColor: labelColors[0].backgroundColor,
-      });
-    }
-  };
+    Object.keys(map).forEach(key => {
+      map[key] = getDateArray(map[key], startDate, endDate, unit);
+    });
 
-  function draw() {
-    if (!canvas.current) return;
+    setData(map);
+  }
 
-    if (!chart.current) {
-      chart.current = new ChartJS(canvas.current, {
-        type: 'bar',
-        data: {
-          datasets: [
-            {
-              label: 'unique visitors',
-              data: data.uniques,
-              lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.4)',
-              borderColor: 'rgb(13, 102, 208, 0.4)',
-              borderWidth: 1,
-            },
-            {
-              label: 'page views',
-              data: data.pageviews,
-              lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.2)',
-              borderColor: 'rgb(13, 102, 208, 0.2)',
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          animation: {
-            duration: animationDuration,
-          },
-          tooltips: {
-            enabled: false,
-            custom: renderTooltip,
-          },
-          hover: {
-            animationDuration: 0,
-          },
-          scales: {
-            xAxes: [
-              {
-                type: 'time',
-                distribution: 'series',
-                time: {
-                  unit,
-                  tooltipFormat: 'ddd MMMM DD YYYY',
-                },
-                ticks: {
-                  callback: renderLabel,
-                  maxRotation: 0,
-                },
-                gridLines: {
-                  display: false,
-                },
-                offset: true,
-                stacked: true,
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        },
-      });
-    } else {
-      const {
-        data: { datasets },
-        options,
-      } = chart.current;
+  function handleUpdate(chart) {
+    const {
+      data: { datasets },
+      options,
+    } = chart;
 
-      datasets[0].data = data.uniques;
-      datasets[1].data = data.pageviews;
-      options.scales.xAxes[0].time.unit = unit;
-      options.scales.xAxes[0].ticks.callback = renderLabel;
-      options.animation.duration = animationDuration;
+    datasets[0].data = data.uniques;
+    datasets[1].data = data.pageviews;
 
-      chart.current.update();
-    }
+    chart.update();
   }
 
   useEffect(() => {
-    if (data) {
-      draw();
-      setTooltip(null);
-    }
-  }, [data]);
+    loadData();
+  }, [websiteId, startDate, endDate]);
+
+  if (!data) {
+    return null;
+  }
 
   return (
-    <div
-      data-tip=""
-      data-for={`${websiteId}-tooltip`}
-      className={classNames(styles.chart, className)}
-    >
-      <canvas ref={canvas} width={960} height={400} />
-      <ReactTooltip id={`${websiteId}-tooltip`}>
-        {tooltip ? <Tooltip {...tooltip} /> : null}
-      </ReactTooltip>
-      {children}
+    <div className={classNames(styles.chart, className)}>
+      <BarChart
+        chartId={websiteId}
+        datasets={Object.keys(data).map((key, index) => ({
+          label: key,
+          data: data[key],
+          lineTension: 0,
+          backgroundColor: COLORS[index],
+          borderColor: COLORS[index],
+          borderWidth: 1,
+        }))}
+        unit={unit}
+        records={7}
+        onUpdate={handleUpdate}
+        stacked
+      />
     </div>
   );
 }
-
-const Tooltip = ({ title, value, label, labelColor }) => (
-  <div className={styles.tooltip}>
-    <div className={styles.content}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.metric}>
-        <div className={styles.dot}>
-          <div className={styles.color} style={{ backgroundColor: labelColor }} />
-        </div>
-        {value} {label}
-      </div>
-    </div>
-  </div>
-);

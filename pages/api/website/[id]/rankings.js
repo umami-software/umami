@@ -1,4 +1,4 @@
-import { getRankings, getEvents } from 'lib/queries';
+import { getRankings, getEventRankings } from 'lib/queries';
 import { ok, badRequest } from 'lib/response';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
@@ -15,7 +15,7 @@ export default async (req, res) => {
   }
 
   if (type === 'event') {
-    const events = await getEvents(websiteId, startDate, endDate);
+    const events = await getEventRankings(websiteId, startDate, endDate);
 
     return ok(res, events);
   }

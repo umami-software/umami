@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import BarChart from './BarChart';
-import { format } from 'date-fns';
 import styles from './PageviewsChart.module.css';
 
 export default function PageviewsChart({ websiteId, data, unit, className, animationDuration }) {

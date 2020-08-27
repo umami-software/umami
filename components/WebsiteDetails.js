@@ -17,6 +17,7 @@ import OSTable from './metrics/OSTable';
 import DevicesTable from './metrics/DevicesTable';
 import CountriesTable from './metrics/CountriesTable';
 import EventsTable from './metrics/EventsTable';
+import EventsChart from './metrics/EventsChart';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [data, setData] = useState();
@@ -25,7 +26,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const [expand, setExpand] = useState();
   const [showEvents, setShowEvents] = useState(false);
-  const { startDate, endDate } = dateRange;
+  const { startDate, endDate, unit } = dateRange;
 
   const BackButton = () => (
     <Button
@@ -55,16 +56,25 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     { label: 'Events', value: 'event', component: EventsTable },
   ];
 
-  const tableProps = {
+  const dataProps = {
     websiteId,
     startDate,
     endDate,
+    unit,
+  };
+
+  const tableProps = {
+    ...dataProps,
     limit: 10,
     onExpand: handleExpand,
     websiteDomain: data?.domain,
   };
 
   const DetailsComponent = expand?.component;
+
+  function getSelectedMenuOption(value) {
+    return menuOptions.find(e => e.value === value);
+  }
 
   async function loadData() {
     setData(await get(`/api/website/${websiteId}`));
@@ -79,11 +89,11 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   }
 
   function handleExpand(value) {
-    setExpand(menuOptions.find(e => e.value === value));
+    setExpand(getSelectedMenuOption(value));
   }
 
   function handleMenuSelect(value) {
-    setExpand(menuOptions.find(e => e.value === value));
+    setExpand(getSelectedMenuOption(value));
   }
 
   useEffect(() => {
@@ -142,7 +152,9 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
             <div className="col-12 col-md-12 col-lg-4">
               <EventsTable {...tableProps} onDataLoad={data => setShowEvents(data.length > 0)} />
             </div>
-            <div className="col-12 col-md-12 col-lg-8">events</div>
+            <div className="col-12 col-md-12 col-lg-8">
+              <EventsChart {...dataProps} />
+            </div>
           </div>
         </>
       )}
