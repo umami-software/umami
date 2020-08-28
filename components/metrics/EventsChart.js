@@ -42,7 +42,7 @@ export default function EventsChart({ websiteId, startDate, endDate, unit }) {
       unit,
       tz: getTimezone(),
     });
-    console.log({ data });
+
     const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
         obj[x] = [];

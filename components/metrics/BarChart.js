@@ -120,6 +120,7 @@ export default function BarChart({
 
     options.scales.xAxes[0].time.unit = unit;
     options.scales.xAxes[0].ticks.callback = renderLabel;
+    options.animation.duration = animationDuration;
 
     onUpdate(chart.current);
   };
@@ -133,7 +134,7 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets]);
+  }, [datasets, unit, animationDuration]);
 
   return (
     <>

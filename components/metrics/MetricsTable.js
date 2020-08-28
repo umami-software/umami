@@ -8,6 +8,7 @@ import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './MetricsTable.module.css';
+import Loading from '../common/Loading';
 
 export default function MetricsTable({
   title,
@@ -79,35 +80,37 @@ export default function MetricsTable({
     }
   }, [websiteId, startDate, endDate, type]);
 
-  if (!data) {
-    return null;
-  }
-
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
-        {headerComponent}
-        <div className={styles.metric} onClick={handleSetFormat}>
-          {metric}
-        </div>
-      </div>
-      <div className={styles.body}>
-        {limit
-          ? rankings.map(row => getRow(row))
-          : data?.length > 0 && (
-              <FixedSizeList height={500} itemCount={rankings.length} itemSize={30}>
-                {Row}
-              </FixedSizeList>
+      {data ? (
+        <>
+          <div className={styles.header}>
+            <div className={styles.title}>{title}</div>
+            {headerComponent}
+            <div className={styles.metric} onClick={handleSetFormat}>
+              {metric}
+            </div>
+          </div>
+          <div className={styles.body}>
+            {limit
+              ? rankings.map(row => getRow(row))
+              : data?.length > 0 && (
+                  <FixedSizeList height={500} itemCount={rankings.length} itemSize={30}>
+                    {Row}
+                  </FixedSizeList>
+                )}
+          </div>
+          <div className={styles.footer}>
+            {limit && data.length > limit && (
+              <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
+                <div>More</div>
+              </Button>
             )}
-      </div>
-      <div className={styles.footer}>
-        {limit && data.length > limit && (
-          <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
-            <div>More</div>
-          </Button>
-        )}
-      </div>
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }
