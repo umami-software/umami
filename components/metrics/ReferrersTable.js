@@ -13,13 +13,13 @@ export default function Referrers({
 }) {
   const [filter, setFilter] = useState('Combined');
 
-  const renderLink = url => {
+  const renderLink = ({ x: url }) => {
     return url.startsWith('http') ? (
       <a href={url} target="_blank" rel="noreferrer">
-        {url}
+        {decodeURI(url)}
       </a>
     ) : (
-      url
+      decodeURI(url)
     );
   };
 
@@ -40,7 +40,7 @@ export default function Referrers({
         raw: filter === 'Raw',
       }}
       onExpand={onExpand}
-      labelRenderer={renderLink}
+      renderLabel={renderLink}
     />
   );
 }

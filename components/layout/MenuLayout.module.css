@@ -10,6 +10,7 @@
 }
 
 .container .content {
+  position: relative;
   border-left: 1px solid var(--gray300);
   padding-left: 30px;
 }

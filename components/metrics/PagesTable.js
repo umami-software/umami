@@ -25,6 +25,7 @@ export default function PagesTable({
       limit={limit}
       dataFilter={urlFilter}
       filterOptions={{ domain: websiteDomain, raw: filter === 'Raw' }}
+      renderLabel={({ x }) => decodeURI(x)}
       onExpand={onExpand}
     />
   );

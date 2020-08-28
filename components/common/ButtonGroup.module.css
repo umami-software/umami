@@ -2,18 +2,22 @@
   display: inline-flex;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid var(--gray400);
+  border: 1px solid var(--gray500);
 }
 
 .group .button {
   border-radius: 0;
   background: var(--gray50);
-  border-left: 1px solid var(--gray400);
+  border-left: 1px solid var(--gray500);
   padding: 4px 8px;
 }
 
 .group .button:first-child {
   border: 0;
+}
+
+.group .button:hover {
+  background: var(--gray100);
 }
 
 .group .button + .button {

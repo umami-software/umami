@@ -8,6 +8,7 @@ import { get } from 'lib/web';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './MetricsTable.module.css';
+import Loading from '../common/Loading';
 
 export default function MetricsTable({
   title,
@@ -21,9 +22,9 @@ export default function MetricsTable({
   filterOptions,
   limit,
   headerComponent,
+  renderLabel,
   onDataLoad = () => {},
   onExpand = () => {},
-  labelRenderer = e => e,
 }) {
   const [data, setData] = useState();
   const [format, setFormat] = useState(true);
@@ -43,37 +44,34 @@ export default function MetricsTable({
 
   async function loadData() {
     const data = await get(`/api/website/${websiteId}/rankings`, {
+      type,
       start_at: +startDate,
       end_at: +endDate,
-      type,
     });
 
     setData(data);
     onDataLoad(data);
   }
 
-  function handleSetFormat() {
-    setFormat(state => !state);
-  }
+  const handleSetFormat = () => setFormat(state => !state);
 
-  function getRow(x, y, z) {
+  const getRow = row => {
+    const { x: label, y: value, z: percent } = row;
     return (
       <AnimatedRow
-        key={x}
-        label={x}
-        value={y}
-        percent={z}
+        key={label}
+        label={renderLabel ? renderLabel(row) : label}
+        value={value}
+        percent={percent}
         animate={shouldAnimate}
         format={formatFunc}
         onClick={handleSetFormat}
-        labelRenderer={labelRenderer}
       />
     );
-  }
+  };
 
   const Row = ({ index, style }) => {
-    const { x, y, z } = rankings[index];
-    return <div style={style}>{getRow(x, y, z)}</div>;
+    return <div style={style}>{getRow(rankings[index])}</div>;
   };
 
   useEffect(() => {
@@ -82,40 +80,42 @@ export default function MetricsTable({
     }
   }, [websiteId, startDate, endDate, type]);
 
-  if (!data) {
-    return null;
-  }
-
   return (
     <div className={classNames(styles.container, className)}>
-      <div className={styles.header}>
-        <div className={styles.title}>{title}</div>
-        {headerComponent}
-        <div className={styles.metric} onClick={handleSetFormat}>
-          {metric}
-        </div>
-      </div>
-      <div className={styles.body}>
-        {limit ? (
-          rankings.map(({ x, y, z }) => getRow(x, y, z))
-        ) : (
-          <FixedSizeList height={600} itemCount={rankings.length} itemSize={30}>
-            {Row}
-          </FixedSizeList>
-        )}
-      </div>
-      <div className={styles.footer}>
-        {limit && data.length > limit && (
-          <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
-            <div>More</div>
-          </Button>
-        )}
-      </div>
+      {data ? (
+        <>
+          <div className={styles.header}>
+            <div className={styles.title}>{title}</div>
+            {headerComponent}
+            <div className={styles.metric} onClick={handleSetFormat}>
+              {metric}
+            </div>
+          </div>
+          <div className={styles.body}>
+            {limit
+              ? rankings.map(row => getRow(row))
+              : data?.length > 0 && (
+                  <FixedSizeList height={500} itemCount={rankings.length} itemSize={30}>
+                    {Row}
+                  </FixedSizeList>
+                )}
+          </div>
+          <div className={styles.footer}>
+            {limit && data.length > limit && (
+              <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
+                <div>More</div>
+              </Button>
+            )}
+          </div>
+        </>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick, labelRenderer }) => {
+const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -125,7 +125,7 @@ const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick, labe
 
   return (
     <div className={styles.row}>
-      <div className={styles.label}>{labelRenderer(decodeURI(label))}</div>
+      <div className={styles.label}>{label}</div>
       <div className={styles.value} onClick={onClick}>
         <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
       </div>

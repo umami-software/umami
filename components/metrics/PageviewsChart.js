@@ -1,67 +1,30 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import ReactTooltip from 'react-tooltip';
-import classNames from 'classnames';
-import ChartJS from 'chart.js';
-import { format } from 'date-fns';
-import styles from './PageviewsChart.module.css';
+import React from 'react';
+import CheckVisible from 'components/helpers/CheckVisible';
+import BarChart from './BarChart';
 
-export default function PageviewsChart({
-  websiteId,
-  data,
-  unit,
-  animationDuration = 300,
-  className,
-  children,
-}) {
-  const canvas = useRef();
-  const chart = useRef();
-  const [tooltip, setTooltip] = useState({});
+export default function PageviewsChart({ websiteId, data, unit, className }) {
+  const handleUpdate = chart => {
+    const {
+      data: { datasets },
+    } = chart;
 
-  const renderLabel = useCallback(
-    (label, index, values) => {
-      const d = new Date(values[index].value);
-      const n = data.pageviews.length;
+    datasets[0].data = data.uniques;
+    datasets[1].data = data.pageviews;
 
-      switch (unit) {
-        case 'day':
-          if (n >= 15) {
-            return index % ~~(n / 15) === 0 ? format(d, 'MMM d') : '';
-          }
-          return format(d, 'EEE M/d');
-        case 'month':
-          return format(d, 'MMMM');
-        default:
-          return label;
-      }
-    },
-    [unit, data],
-  );
-
-  const renderTooltip = model => {
-    const { opacity, title, body, labelColors } = model;
-
-    if (!opacity) {
-      setTooltip(null);
-    } else {
-      const [label, value] = body[0].lines[0].split(':');
-
-      setTooltip({
-        title: title[0],
-        value,
-        label,
-        labelColor: labelColors[0].backgroundColor,
-      });
-    }
+    chart.update();
   };
 
-  function draw() {
-    if (!canvas.current) return;
+  if (!data) {
+    return null;
+  }
 
-    if (!chart.current) {
-      chart.current = new ChartJS(canvas.current, {
-        type: 'bar',
-        data: {
-          datasets: [
+  return (
+    <CheckVisible>
+      {visible => (
+        <BarChart
+          className={className}
+          chartId={websiteId}
+          datasets={[
             {
               label: 'unique visitors',
               data: data.uniques,
@@ -78,97 +41,13 @@ export default function PageviewsChart({
               borderColor: 'rgb(13, 102, 208, 0.2)',
               borderWidth: 1,
             },
-          ],
-        },
-        options: {
-          animation: {
-            duration: animationDuration,
-          },
-          tooltips: {
-            enabled: false,
-            custom: renderTooltip,
-          },
-          hover: {
-            animationDuration: 0,
-          },
-          scales: {
-            xAxes: [
-              {
-                type: 'time',
-                distribution: 'series',
-                time: {
-                  unit,
-                  tooltipFormat: 'ddd MMMM DD YYYY',
-                },
-                ticks: {
-                  callback: renderLabel,
-                  maxRotation: 0,
-                },
-                gridLines: {
-                  display: false,
-                },
-                offset: true,
-                stacked: true,
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                },
-              },
-            ],
-          },
-        },
-      });
-    } else {
-      const {
-        data: { datasets },
-        options,
-      } = chart.current;
-
-      datasets[0].data = data.uniques;
-      datasets[1].data = data.pageviews;
-      options.scales.xAxes[0].time.unit = unit;
-      options.scales.xAxes[0].ticks.callback = renderLabel;
-      options.animation.duration = animationDuration;
-
-      chart.current.update();
-    }
-  }
-
-  useEffect(() => {
-    if (data) {
-      draw();
-      setTooltip(null);
-    }
-  }, [data]);
-
-  return (
-    <div
-      data-tip=""
-      data-for={`${websiteId}-tooltip`}
-      className={classNames(styles.chart, className)}
-    >
-      <canvas ref={canvas} width={960} height={400} />
-      <ReactTooltip id={`${websiteId}-tooltip`}>
-        {tooltip ? <Tooltip {...tooltip} /> : null}
-      </ReactTooltip>
-      {children}
-    </div>
+          ]}
+          unit={unit}
+          records={data.pageviews.length}
+          animationDuration={visible ? 300 : 0}
+          onUpdate={handleUpdate}
+        />
+      )}
+    </CheckVisible>
   );
 }
-
-const Tooltip = ({ title, value, label, labelColor }) => (
-  <div className={styles.tooltip}>
-    <div className={styles.content}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.metric}>
-        <div className={styles.dot}>
-          <div className={styles.color} style={{ backgroundColor: labelColor }} />
-        </div>
-        {value} {label}
-      </div>
-    </div>
-  </div>
-);

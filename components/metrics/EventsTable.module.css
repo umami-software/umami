@@ -1,0 +1,7 @@
+.type {
+  font-size: var(--font-size-small);
+  padding: 2px 4px;
+  border: 1px solid var(--gray300);
+  border-radius: 4px;
+  margin-right: 10px;
+}

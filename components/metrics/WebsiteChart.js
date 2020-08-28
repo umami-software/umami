@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
-import CheckVisible from '../helpers/CheckVisible';
 import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
 import DateFilter from '../common/DateFilter';
@@ -74,18 +73,10 @@ export default function WebsiteChart({
         </StickyHeader>
       </div>
       <div className="row">
-        <CheckVisible className="col">
-          {visible => (
-            <PageviewsChart
-              websiteId={websiteId}
-              data={{ pageviews, uniques }}
-              unit={unit}
-              animationDuration={visible ? 300 : 0}
-            >
-              <QuickButtons value={value} onChange={handleDateChange} />
-            </PageviewsChart>
-          )}
-        </CheckVisible>
+        <div className="col">
+          <PageviewsChart websiteId={websiteId} data={{ pageviews, uniques }} unit={unit} />
+          <QuickButtons value={value} onChange={handleDateChange} />
+        </div>
       </div>
     </>
   );
