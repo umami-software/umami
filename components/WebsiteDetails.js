@@ -23,9 +23,9 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   const [data, setData] = useState();
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
+  const [eventsData, setEventsData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const [expand, setExpand] = useState();
-  const [showEvents, setShowEvents] = useState(false);
   const { startDate, endDate, unit } = dateRange;
 
   const BackButton = () => (
@@ -145,14 +145,16 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
               <WorldMap data={countryData} />
             </div>
             <div className="col-12 col-md-12 col-lg-4">
-              <CountriesTable {...tableProps} onDataLoad={data => setCountryData(data)} />
+              <CountriesTable {...tableProps} onDataLoad={setCountryData} />
             </div>
           </div>
-          <div className={classNames(styles.row, 'row', { [styles.hidden]: !showEvents })}>
+          <div
+            className={classNames(styles.row, 'row', { [styles.hidden]: !eventsData?.length > 0 })}
+          >
             <div className="col-12 col-md-12 col-lg-4">
-              <EventsTable {...tableProps} onDataLoad={data => setShowEvents(data.length > 0)} />
+              <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </div>
-            <div className="col-12 col-md-12 col-lg-8">
+            <div className="col-12 col-md-12 col-lg-8 pt-5 pb-5">
               <EventsChart {...dataProps} />
             </div>
           </div>

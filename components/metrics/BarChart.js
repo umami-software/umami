@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
-import styles from './PageviewsChart.module.css';
+import styles from './BarChart.module.css';
 import { format } from 'date-fns';
 
 export default function BarChart({
@@ -10,6 +10,7 @@ export default function BarChart({
   datasets,
   unit,
   records,
+  height = 400,
   animationDuration = 300,
   className,
   stacked = false,
@@ -68,7 +69,9 @@ export default function BarChart({
       hover: {
         animationDuration: 0,
       },
+      responsive: true,
       responsiveAnimationDuration: 0,
+      maintainAspectRatio: false,
       scales: {
         xAxes: [
           {
@@ -133,16 +136,19 @@ export default function BarChart({
   }, [datasets]);
 
   return (
-    <div
-      data-tip=""
-      data-for={`${chartId}-tooltip`}
-      className={classNames(styles.chart, className)}
-    >
-      <canvas ref={canvas} width={960} height={400} />
+    <>
+      <div
+        data-tip=""
+        data-for={`${chartId}-tooltip`}
+        className={classNames(styles.chart, className)}
+        style={{ height }}
+      >
+        <canvas ref={canvas} />
+      </div>
       <ReactTooltip id={`${chartId}-tooltip`}>
         {tooltip ? <Tooltip {...tooltip} /> : null}
       </ReactTooltip>
-    </div>
+    </>
   );
 }
 

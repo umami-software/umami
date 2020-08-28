@@ -1,8 +1,27 @@
-import { getRankings, getEventRankings } from 'lib/queries';
+import { getRankings } from 'lib/queries';
 import { ok, badRequest } from 'lib/response';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
 const pageviewColumns = ['url', 'referrer'];
+
+function getTable(type) {
+  if (type === 'event') {
+    return 'event';
+  }
+
+  if (sessionColumns.includes(type)) {
+    return 'session';
+  }
+
+  return 'pageview';
+}
+
+function getColumn(type) {
+  if (type === 'event') {
+    return `concat(event_type, ':', event_value)`;
+  }
+  return type;
+}
 
 export default async (req, res) => {
   const { id, type, start_at, end_at } = req.query;
@@ -14,15 +33,13 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  if (type === 'event') {
-    const events = await getEventRankings(websiteId, startDate, endDate);
-
-    return ok(res, events);
-  }
-
-  const table = sessionColumns.includes(type) ? 'session' : 'pageview';
-
-  const rankings = await getRankings(websiteId, startDate, endDate, type, table);
+  const rankings = await getRankings(
+    websiteId,
+    startDate,
+    endDate,
+    getColumn(type),
+    getTable(type),
+  );
 
   return ok(res, rankings);
 };
