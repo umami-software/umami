@@ -65,9 +65,9 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
 
   const tableProps = {
     ...dataProps,
+    websiteDomain: data?.domain,
     limit: 10,
     onExpand: handleExpand,
-    websiteDomain: data?.domain,
   };
 
   const DetailsComponent = expand?.component;

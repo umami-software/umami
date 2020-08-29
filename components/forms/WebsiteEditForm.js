@@ -8,7 +8,8 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
-import Checkbox from '../common/Checkbox';
+import Checkbox from 'components/common/Checkbox';
+import { DOMAIN_REGEX } from 'lib/constants';
 
 const initialValues = {
   name: '',
@@ -24,6 +25,8 @@ const validate = ({ name, domain }) => {
   }
   if (!domain) {
     errors.domain = 'Required';
+  } else if (!DOMAIN_REGEX.test(domain)) {
+    errors.domain = 'Invalid domain';
   }
 
   return errors;

@@ -30,6 +30,7 @@ export default function Referrers({
       metric="Views"
       headerComponent={limit ? null : <FilterButtons selected={filter} onClick={setFilter} />}
       websiteId={websiteId}
+      websiteDomain={websiteDomain}
       startDate={startDate}
       endDate={endDate}
       limit={limit}

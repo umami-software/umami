@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -25,11 +25,13 @@
   },
   "lint-staged": {
     "**/*.js": [
-      "prettier --write"
+      "prettier --write",
+      "eslint"
     ],
     "**/*.css": [
       "stylelint --fix",
-      "prettier --write"
+      "prettier --write",
+      "eslint"
     ]
   },
   "husky": {
