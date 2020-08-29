@@ -73,10 +73,6 @@ create index pageview_session_id_idx on pageview(session_id);
 create index pageview_website_id_created_at_idx on pageview(website_id, created_at);
 create index pageview_website_id_session_id_created_at_idx on pageview(website_id, session_id, created_at);
 
--- test
-create index pageview_created_at_session_id_website_id_idx on pageview(created_at, session_id, website_id);
-create index pageview_created_at_website_id_session_id_idx on pageview(created_at, website_id, session_id);
-
 create index event_created_at_idx on event(created_at);
 create index event_website_id_idx on event(website_id);
 create index event_session_id_idx on event(session_id);
