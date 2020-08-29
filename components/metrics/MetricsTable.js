@@ -14,6 +14,7 @@ export default function MetricsTable({
   title,
   metric,
   websiteId,
+  websiteDomain,
   startDate,
   endDate,
   type,
@@ -47,6 +48,7 @@ export default function MetricsTable({
       type,
       start_at: +startDate,
       end_at: +endDate,
+      domain: websiteDomain,
     });
 
     setData(data);
