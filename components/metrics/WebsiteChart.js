@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import QuickButtons from './QuickButtons';
-import DateFilter from '../common/DateFilter';
-import StickyHeader from '../helpers/StickyHeader';
-import { get } from 'lib/web';
+import DateFilter from 'components/common/DateFilter';
+import StickyHeader from 'components/helpers/StickyHeader';
+import useFetch from 'hooks/useFetch';
 import { getDateArray, getDateRange, getTimezone } from 'lib/date';
 import styles from './WebsiteChart.module.css';
 
@@ -16,9 +16,18 @@ export default function WebsiteChart({
   onDataLoad = () => {},
   onDateChange = () => {},
 }) {
-  const [data, setData] = useState();
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit, value } = dateRange;
+  const { data } = useFetch(
+    `/api/website/${websiteId}/pageviews`,
+    {
+      start_at: +startDate,
+      end_at: +endDate,
+      unit,
+      tz: getTimezone(),
+    },
+    { onDataLoad },
+  );
 
   const [pageviews, uniques] = useMemo(() => {
     if (data) {
@@ -34,22 +43,6 @@ export default function WebsiteChart({
     setDateRange(values);
     onDateChange(values);
   }
-
-  async function loadData() {
-    const data = await get(`/api/website/${websiteId}/pageviews`, {
-      start_at: +startDate,
-      end_at: +endDate,
-      unit,
-      tz: getTimezone(),
-    });
-
-    setData(data);
-    onDataLoad(data);
-  }
-
-  useEffect(() => {
-    loadData();
-  }, [websiteId, startDate, endDate, unit]);
 
   return (
     <>

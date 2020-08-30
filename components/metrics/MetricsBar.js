@@ -1,33 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import MetricCard from './MetricCard';
-import { get } from 'lib/web';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
+import useFetch from 'hooks/useFetch';
 import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId, startDate, endDate, className }) {
-  const [data, setData] = useState({});
+  const { data } = useFetch(`/api/website/${websiteId}/metrics`, {
+    start_at: +startDate,
+    end_at: +endDate,
+  });
   const [format, setFormat] = useState(true);
-  const { pageviews, uniques, bounces, totaltime } = data;
 
   const formatFunc = format ? formatLongNumber : formatNumber;
-
-  async function loadData() {
-    setData(
-      await get(`/api/website/${websiteId}/metrics`, {
-        start_at: +startDate,
-        end_at: +endDate,
-      }),
-    );
-  }
 
   function handleSetFormat() {
     setFormat(state => !state);
   }
 
-  useEffect(() => {
-    loadData();
-  }, [websiteId, startDate, endDate]);
+  if (!data) {
+    return null;
+  }
+
+  const { pageviews, uniques, bounces, totaltime } = data;
 
   return (
     <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>

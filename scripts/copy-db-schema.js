@@ -5,8 +5,8 @@ const path = require('path');
 const databaseType =
   process.env.DATABASE_TYPE || (process.env.DATABASE_URL && process.env.DATABASE_URL.split(':')[0]);
 
-if (!databaseType) {
-  throw new Error('Database schema not specified');
+if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
+  throw new Error('Missing or invalid database');
 }
 
 console.log(`Database schema detected: ${databaseType}`);

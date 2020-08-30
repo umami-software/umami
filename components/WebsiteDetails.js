@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -7,7 +7,6 @@ import WebsiteHeader from 'components/metrics/WebsiteHeader';
 import MenuLayout from 'components/layout/MenuLayout';
 import Button from 'components/common/Button';
 import { getDateRange } from 'lib/date';
-import { get } from 'lib/web';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
 import PagesTable from './metrics/PagesTable';
@@ -18,15 +17,16 @@ import DevicesTable from './metrics/DevicesTable';
 import CountriesTable from './metrics/CountriesTable';
 import EventsTable from './metrics/EventsTable';
 import EventsChart from './metrics/EventsChart';
+import useFetch from '../hooks/useFetch';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
-  const [data, setData] = useState();
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
-  const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const [expand, setExpand] = useState();
+  const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit } = dateRange;
+  const { data } = useFetch(`/api/website/${websiteId}`, { websiteId });
 
   const BackButton = () => (
     <Button
@@ -76,10 +76,6 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     return menuOptions.find(e => e.value === value);
   }
 
-  async function loadData() {
-    setData(await get(`/api/website/${websiteId}`));
-  }
-
   function handleDataLoad() {
     if (!chartLoaded) setTimeout(() => setChartLoaded(true), 300);
   }
@@ -95,12 +91,6 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
   function handleMenuSelect(value) {
     setExpand(getSelectedMenuOption(value));
   }
-
-  useEffect(() => {
-    if (websiteId) {
-      loadData();
-    }
-  }, [websiteId]);
 
   if (!data) {
     return null;

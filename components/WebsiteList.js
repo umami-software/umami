@@ -1,25 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import WebsiteHeader from 'components/metrics/WebsiteHeader';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
 import Button from 'components/common/Button';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
-import { get } from 'lib/web';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList() {
-  const [data, setData] = useState();
   const router = useRouter();
-
-  async function loadData() {
-    setData(await get(`/api/websites`));
-  }
-
-  useEffect(() => {
-    loadData();
-  }, []);
+  const { data } = useFetch('/api/websites');
 
   if (!data) {
     return null;

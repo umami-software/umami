@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
@@ -15,17 +15,17 @@ import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import Link from 'assets/link.svg';
-import { get } from 'lib/web';
 import styles from './WebsiteSettings.module.css';
+import useFetch from '../../hooks/useFetch';
 
 export default function WebsiteSettings() {
-  const [data, setData] = useState();
   const [editWebsite, setEditWebsite] = useState();
   const [deleteWebsite, setDeleteWebsite] = useState();
   const [addWebsite, setAddWebsite] = useState();
   const [showCode, setShowCode] = useState();
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
+  const { data } = useFetch(`/api/websites`, {}, { update: [saved] });
 
   const Buttons = row => (
     <ButtonLayout>
@@ -76,14 +76,6 @@ export default function WebsiteSettings() {
     setShowCode(null);
     setShowUrl(null);
   }
-
-  async function loadData() {
-    setData(await get(`/api/websites`));
-  }
-
-  useEffect(() => {
-    loadData();
-  }, [saved]);
 
   if (!data) {
     return null;
