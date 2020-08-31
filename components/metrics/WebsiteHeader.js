@@ -1,38 +1,36 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import PageHeader from 'components/layout/PageHeader';
-import Link from 'components/common/Link';
 import Button from 'components/common/Button';
 import ActiveUsers from './ActiveUsers';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
+import RefreshButton from '../common/RefreshButton';
+import ButtonLayout from '../layout/ButtonLayout';
 
-export default function WebsiteHeader({ websiteId, name, showLink = false }) {
+export default function WebsiteHeader({ websiteId, title, showLink = false, onRefresh }) {
   const router = useRouter();
 
   return (
     <PageHeader>
-      {showLink ? (
-        <Link href="/website/[...id]" as={`/website/${websiteId}/${name}`} className={styles.title}>
-          {name}
-        </Link>
-      ) : (
-        <div className={styles.title}>{name}</div>
-      )}
+      <div className={styles.title}>{title}</div>
       <ActiveUsers className={styles.active} websiteId={websiteId} />
-      {showLink && (
-        <Button
-          icon={<Arrow />}
-          onClick={() =>
-            router.push('/website/[...id]', `/website/${websiteId}/${name}`, {
-              shallow: true,
-            })
-          }
-          size="small"
-        >
-          <div>View details</div>
-        </Button>
-      )}
+      <ButtonLayout>
+        <RefreshButton onClick={onRefresh} />
+        {showLink && (
+          <Button
+            icon={<Arrow />}
+            onClick={() =>
+              router.push('/website/[...id]', `/website/${websiteId}/${name}`, {
+                shallow: true,
+              })
+            }
+            size="small"
+          >
+            <div>View details</div>
+          </Button>
+        )}
+      </ButtonLayout>
     </PageHeader>
   );
 }

@@ -19,10 +19,10 @@ export default function WebsiteList() {
 
   return (
     <Page>
-      {data?.map(({ website_id, name }) => (
+      {data.map(({ website_id, name }) => (
         <div key={website_id} className={styles.website}>
-          <WebsiteHeader websiteId={website_id} name={name} showLink />
-          <WebsiteChart key={website_id} title={name} websiteId={website_id} />
+          <WebsiteHeader websiteId={website_id} title={name} showLink />
+          <WebsiteChart websiteId={website_id} />
         </div>
       ))}
       {data.length === 0 && (

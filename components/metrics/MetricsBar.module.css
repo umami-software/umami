@@ -4,7 +4,7 @@
 }
 
 @media only screen and (max-width: 992px) {
-  .container > div:last-child {
+  .bar > div:last-child {
     display: none;
   }
 }

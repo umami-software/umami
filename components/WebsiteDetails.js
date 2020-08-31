@@ -17,16 +17,18 @@ import DevicesTable from './metrics/DevicesTable';
 import CountriesTable from './metrics/CountriesTable';
 import EventsTable from './metrics/EventsTable';
 import EventsChart from './metrics/EventsChart';
-import useFetch from '../hooks/useFetch';
+import useFetch from 'hooks/useFetch';
+import Loading from 'components/common/Loading';
 
 export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' }) {
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
   const [expand, setExpand] = useState();
+  const [refresh, setRefresh] = useState(0);
   const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
   const { startDate, endDate, unit } = dateRange;
-  const { data } = useFetch(`/api/website/${websiteId}`, { websiteId });
+  const { data } = useFetch(`/api/website/${websiteId}`);
 
   const BackButton = () => (
     <Button
@@ -92,6 +94,10 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     setExpand(getSelectedMenuOption(value));
   }
 
+  function handleRefresh() {
+    setRefresh(state => state + 1);
+  }
+
   if (!data) {
     return null;
   }
@@ -100,8 +106,14 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
     <Page>
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
-          <WebsiteHeader websiteId={websiteId} name={data.name} showLink={false} />
+          <WebsiteHeader
+            websiteId={websiteId}
+            title={data.name}
+            onRefresh={handleRefresh}
+            showLink={false}
+          />
           <WebsiteChart
+            key={refresh}
             websiteId={websiteId}
             onDataLoad={handleDataLoad}
             onDateChange={handleDateChange}
@@ -109,6 +121,7 @@ export default function WebsiteDetails({ websiteId, defaultDateRange = '7day' })
           />
         </div>
       </div>
+      {!chartLoaded && <Loading />}
       {chartLoaded && !expand && (
         <>
           <div className={classNames(styles.row, 'row')}>

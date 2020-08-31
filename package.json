@@ -30,8 +30,7 @@
     ],
     "**/*.css": [
       "stylelint --fix",
-      "prettier --write",
-      "eslint"
+      "prettier --write"
     ]
   },
   "husky": {
@@ -53,6 +52,7 @@
     "dotenv": "^8.2.0",
     "formik": "^2.1.5",
     "geolite2-redist": "^1.0.7",
+    "immer": "^7.0.8",
     "is-localhost-ip": "^1.4.0",
     "jose": "^1.28.0",
     "maxmind": "^4.1.4",
