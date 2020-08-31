@@ -14,12 +14,14 @@ import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
 import styles from './AccountSettings.module.css';
+import Toast from '../common/Toast';
 
 export default function AccountSettings() {
   const [addAccount, setAddAccount] = useState();
   const [editAccount, setEditAccount] = useState();
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
+  const [message, setMessage] = useState();
   const { data } = useFetch(`/api/accounts`, {}, { update: [saved] });
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
@@ -52,6 +54,7 @@ export default function AccountSettings() {
 
   function handleSave() {
     setSaved(state => state + 1);
+    setMessage('Saved successfully.');
     handleClose();
   }
 
@@ -97,6 +100,7 @@ export default function AccountSettings() {
           />
         </Modal>
       )}
+      {message && <Toast message={message} onClose={() => setMessage(null)} />}
     </>
   );
 }

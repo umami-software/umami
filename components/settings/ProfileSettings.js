@@ -5,11 +5,18 @@ import Button from 'components/common/Button';
 import ChangePasswordForm from '../forms/ChangePasswordForm';
 import Modal from 'components/common/Modal';
 import Dots from 'assets/ellipsis-h.svg';
+import Toast from '../common/Toast';
 
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);
   const [changePassword, setChangePassword] = useState(false);
+  const [message, setMessage] = useState();
   const { user_id } = user;
+
+  function handleSave() {
+    setChangePassword(false);
+    setMessage('Saved successfully.');
+  }
 
   return (
     <>
@@ -27,11 +34,12 @@ export default function ProfileSettings() {
         <Modal title="Change password">
           <ChangePasswordForm
             values={{ user_id }}
-            onSave={() => setChangePassword(false)}
+            onSave={handleSave}
             onClose={() => setChangePassword(false)}
           />
         </Modal>
       )}
+      {message && <Toast message={message} onClose={() => setMessage(null)} />}
     </>
   );
 }

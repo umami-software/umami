@@ -17,6 +17,7 @@ import Code from 'assets/code.svg';
 import Link from 'assets/link.svg';
 import styles from './WebsiteSettings.module.css';
 import useFetch from '../../hooks/useFetch';
+import Toast from '../common/Toast';
 
 export default function WebsiteSettings() {
   const [editWebsite, setEditWebsite] = useState();
@@ -25,6 +26,7 @@ export default function WebsiteSettings() {
   const [showCode, setShowCode] = useState();
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
+  const [message, setMessage] = useState();
   const { data } = useFetch(`/api/websites`, {}, { update: [saved] });
 
   const Buttons = row => (
@@ -66,6 +68,7 @@ export default function WebsiteSettings() {
 
   function handleSave() {
     setSaved(state => state + 1);
+    setMessage('Saved successfully.');
     handleClose();
   }
 
@@ -127,6 +130,7 @@ export default function WebsiteSettings() {
           <ShareUrlForm values={showUrl} onClose={handleClose} />
         </Modal>
       )}
+      {message && <Toast message={message} onClose={() => setMessage(null)} />}
     </>
   );
 }
