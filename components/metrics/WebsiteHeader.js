@@ -8,7 +8,7 @@ import styles from './WebsiteHeader.module.css';
 import RefreshButton from '../common/RefreshButton';
 import ButtonLayout from '../layout/ButtonLayout';
 
-export default function WebsiteHeader({ websiteId, title, showLink = false, onRefresh }) {
+export default function WebsiteHeader({ websiteId, title, showLink = false }) {
   const router = useRouter();
 
   return (
@@ -16,7 +16,7 @@ export default function WebsiteHeader({ websiteId, title, showLink = false, onRe
       <div className={styles.title}>{title}</div>
       <ActiveUsers className={styles.active} websiteId={websiteId} />
       <ButtonLayout>
-        <RefreshButton onClick={onRefresh} />
+        <RefreshButton websiteId={websiteId} />
         {showLink && (
           <Button
             icon={<Arrow />}

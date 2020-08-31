@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 import tinycolor from 'tinycolor2';
 import BarChart from './BarChart';
-import { getTimezone, getDateArray, getDateLength } from 'lib/date';
+import { getTimezone, getDateArray, getDateLength, getDateRange } from 'lib/date';
 import useFetch from 'hooks/useFetch';
+import { useSelector } from 'react-redux';
 
 const COLORS = [
   '#2680eb',
@@ -15,13 +16,19 @@ const COLORS = [
   '#85d044',
 ];
 
-export default function EventsChart({ websiteId, startDate, endDate, unit }) {
-  const { data } = useFetch(`/api/website/${websiteId}/events`, {
-    start_at: +startDate,
-    end_at: +endDate,
-    unit,
-    tz: getTimezone(),
-  });
+export default function EventsChart({ websiteId, defaultDateRange = '7day' }) {
+  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
+  const { startDate, endDate, unit, modified } = dateRange || getDateRange(defaultDateRange);
+  const { data } = useFetch(
+    `/api/website/${websiteId}/events`,
+    {
+      start_at: +startDate,
+      end_at: +endDate,
+      unit,
+      tz: getTimezone(),
+    },
+    { update: [modified] },
+  );
   const datasets = useMemo(() => {
     if (!data) return [];
 

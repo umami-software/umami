@@ -23,9 +23,9 @@ export default function useFetch(url, params = {}, options = {}) {
 
   useEffect(() => {
     if (url) {
-      const { interval } = options;
+      const { interval, delay = 0 } = options;
 
-      loadData();
+      setTimeout(() => loadData(), delay);
 
       const id = interval ? setInterval(() => loadData(), interval) : null;
 

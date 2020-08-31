@@ -1,16 +1,9 @@
 import React, { useState } from 'react';
 import MetricsTable from './MetricsTable';
 import { refFilter } from 'lib/filters';
-import ButtonGroup from '../common/ButtonGroup';
+import ButtonGroup from 'components/common/ButtonGroup';
 
-export default function Referrers({
-  websiteId,
-  websiteDomain,
-  startDate,
-  endDate,
-  limit,
-  onExpand = () => {},
-}) {
+export default function ReferrersTable({ websiteId, websiteDomain, limit, onExpand = () => {} }) {
   const [filter, setFilter] = useState('Combined');
 
   const renderLink = ({ x: url }) => {
@@ -31,8 +24,6 @@ export default function Referrers({
       headerComponent={limit ? null : <FilterButtons selected={filter} onClick={setFilter} />}
       websiteId={websiteId}
       websiteDomain={websiteDomain}
-      startDate={startDate}
-      endDate={endDate}
       limit={limit}
       dataFilter={refFilter}
       filterOptions={{

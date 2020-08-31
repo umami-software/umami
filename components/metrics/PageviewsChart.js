@@ -1,9 +1,8 @@
 import React from 'react';
 import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
-import { getDateLength } from '../../lib/date';
 
-export default function PageviewsChart({ websiteId, data, startDate, endDate, unit, className }) {
+export default function PageviewsChart({ websiteId, data, unit, records, className }) {
   const handleUpdate = chart => {
     const {
       data: { datasets },
@@ -44,7 +43,7 @@ export default function PageviewsChart({ websiteId, data, startDate, endDate, un
             },
           ]}
           unit={unit}
-          records={getDateLength(startDate, endDate, unit)}
+          records={records}
           animationDuration={visible ? 300 : 0}
           onUpdate={handleUpdate}
         />

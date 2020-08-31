@@ -12,8 +12,10 @@ const options = {
 export default function QuickButtons({ value, onChange }) {
   const selectedItem = Object.keys(options).find(key => options[key] === value);
 
-  function handleClick(value) {
-    onChange(getDateRange(options[value]));
+  function handleClick(selected) {
+    if (options[selected] !== value) {
+      onChange(getDateRange(options[selected]));
+    }
   }
 
   return (

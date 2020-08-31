@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
@@ -9,14 +10,13 @@ import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './MetricsTable.module.css';
+import { getDateRange } from '../../lib/date';
 
 export default function MetricsTable({
-  title,
-  metric,
   websiteId,
   websiteDomain,
-  startDate,
-  endDate,
+  title,
+  metric,
   type,
   className,
   dataFilter,
@@ -24,9 +24,12 @@ export default function MetricsTable({
   limit,
   headerComponent,
   renderLabel,
+  defaultDateRange = '7day',
   onDataLoad = () => {},
   onExpand = () => {},
 }) {
+  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
+  const { startDate, endDate, modified } = dateRange || getDateRange(defaultDateRange);
   const { data } = useFetch(
     `/api/website/${websiteId}/rankings`,
     {
@@ -35,7 +38,7 @@ export default function MetricsTable({
       end_at: +endDate,
       domain: websiteDomain,
     },
-    { onDataLoad },
+    { onDataLoad, delay: 300, update: [modified] },
   );
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;

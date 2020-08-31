@@ -1,6 +1,5 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import WebsiteHeader from 'components/metrics/WebsiteHeader';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
 import Button from 'components/common/Button';
@@ -21,8 +20,7 @@ export default function WebsiteList() {
     <Page>
       {data.map(({ website_id, name }) => (
         <div key={website_id} className={styles.website}>
-          <WebsiteHeader websiteId={website_id} title={name} showLink />
-          <WebsiteChart websiteId={website_id} />
+          <WebsiteChart websiteId={website_id} title={name} showLink />
         </div>
       ))}
       {data.length === 0 && (

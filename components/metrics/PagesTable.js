@@ -3,14 +3,7 @@ import MetricsTable from './MetricsTable';
 import { urlFilter } from 'lib/filters';
 import ButtonGroup from '../common/ButtonGroup';
 
-export default function PagesTable({
-  websiteId,
-  websiteDomain,
-  startDate,
-  endDate,
-  limit,
-  onExpand,
-}) {
+export default function PagesTable({ websiteId, websiteDomain, limit, onExpand }) {
   const [filter, setFilter] = useState('Combined');
 
   return (
@@ -20,8 +13,6 @@ export default function PagesTable({
       metric="Views"
       headerComponent={limit ? null : <FilterButtons selected={filter} onClick={setFilter} />}
       websiteId={websiteId}
-      startDate={startDate}
-      endDate={endDate}
       limit={limit}
       dataFilter={urlFilter}
       filterOptions={{ domain: websiteDomain, raw: filter === 'Raw' }}

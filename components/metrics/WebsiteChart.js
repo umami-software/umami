@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
@@ -6,18 +7,23 @@ import QuickButtons from './QuickButtons';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import useFetch from 'hooks/useFetch';
-import { getDateArray, getDateRange, getTimezone } from 'lib/date';
+import { getDateArray, getDateLength, getDateRange, getTimezone } from 'lib/date';
+import { setDateRange } from 'redux/actions/websites';
 import styles from './WebsiteChart.module.css';
+import WebsiteHeader from './WebsiteHeader';
 
 export default function WebsiteChart({
   websiteId,
+  title,
   defaultDateRange = '7day',
   stickyHeader = false,
+  showLink = false,
   onDataLoad = () => {},
-  onDateChange = () => {},
 }) {
-  const [dateRange, setDateRange] = useState(getDateRange(defaultDateRange));
-  const { startDate, endDate, unit, value } = dateRange;
+  const dispatch = useDispatch();
+  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
+  const { startDate, endDate, unit, value, modified } = dateRange || getDateRange(defaultDateRange);
+
   const { data } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {
@@ -26,7 +32,7 @@ export default function WebsiteChart({
       unit,
       tz: getTimezone(),
     },
-    { onDataLoad },
+    { onDataLoad, update: [modified] },
   );
 
   const [pageviews, uniques] = useMemo(() => {
@@ -40,24 +46,19 @@ export default function WebsiteChart({
   }, [data]);
 
   function handleDateChange(values) {
-    setDateRange(values);
-    onDateChange(values);
+    dispatch(setDateRange(websiteId, values));
   }
 
   return (
     <>
+      <WebsiteHeader websiteId={websiteId} title={title} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}
           stickyClassName={styles.sticky}
           enabled={stickyHeader}
         >
-          <MetricsBar
-            className="col-12 col-md-9 col-lg-10"
-            websiteId={websiteId}
-            startDate={startDate}
-            endDate={endDate}
-          />
+          <MetricsBar className="col-12 col-md-9 col-lg-10" websiteId={websiteId} />
           <DateFilter
             className="col-12 col-md-3 col-lg-2"
             value={value}
@@ -67,7 +68,12 @@ export default function WebsiteChart({
       </div>
       <div className="row">
         <div className="col">
-          <PageviewsChart websiteId={websiteId} data={{ pageviews, uniques }} unit={unit} />
+          <PageviewsChart
+            websiteId={websiteId}
+            data={{ pageviews, uniques }}
+            unit={unit}
+            records={getDateLength(startDate, endDate, unit)}
+          />
           <QuickButtons value={value} onChange={handleDateChange} />
         </div>
       </div>
