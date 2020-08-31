@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
@@ -7,22 +7,22 @@ import QuickButtons from './QuickButtons';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import useFetch from 'hooks/useFetch';
-import { getDateArray, getDateLength, getDateRange, getTimezone } from 'lib/date';
+import { getDateArray, getDateLength, getTimezone } from 'lib/date';
 import { setDateRange } from 'redux/actions/websites';
 import styles from './WebsiteChart.module.css';
 import WebsiteHeader from './WebsiteHeader';
+import { useDateRange } from '../../hooks/useDateRange';
 
 export default function WebsiteChart({
   websiteId,
   title,
-  defaultDateRange = '7day',
   stickyHeader = false,
   showLink = false,
   onDataLoad = () => {},
 }) {
   const dispatch = useDispatch();
-  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
-  const { startDate, endDate, unit, value, modified } = dateRange || getDateRange(defaultDateRange);
+  const dateRange = useDateRange(websiteId);
+  const { startDate, endDate, unit, value, modified } = dateRange;
 
   const { data } = useFetch(
     `/api/website/${websiteId}/pageviews`,

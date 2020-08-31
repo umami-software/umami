@@ -1,16 +1,17 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setDateRange } from 'redux/actions/websites';
 import Button from './Button';
 import Refresh from 'assets/redo.svg';
+import { useDateRange } from 'hooks/useDateRange';
 
 export default function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
-  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
+  const dateRange = useDateRange(websiteId);
 
   function handleClick() {
     if (dateRange) {
-      dispatch(setDateRange(websiteId, { ...dateRange }));
+      dispatch(setDateRange(websiteId, dateRange));
     }
   }
 

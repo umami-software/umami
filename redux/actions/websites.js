@@ -25,8 +25,7 @@ export function setDateRange(websiteId, dateRange) {
       if (!draft[websiteId]) {
         draft[websiteId] = {};
       }
-      dateRange.modified = Date.now();
-      draft[websiteId].dateRange = dateRange;
+      draft[websiteId].dateRange = { ...dateRange, modified: Date.now() };
     });
 
     return dispatch(updateWebsites(websites));

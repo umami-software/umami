@@ -5,12 +5,11 @@ import Loading from 'components/common/Loading';
 import useFetch from 'hooks/useFetch';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import styles from './MetricsBar.module.css';
-import { useSelector } from 'react-redux';
-import { getDateRange } from '../../lib/date';
+import { useDateRange } from '../../hooks/useDateRange';
 
-export default function MetricsBar({ websiteId, className, defaultDateRange = '7day' }) {
-  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
-  const { startDate, endDate, modified } = dateRange || getDateRange(defaultDateRange);
+export default function MetricsBar({ websiteId, className }) {
+  const dateRange = useDateRange(websiteId);
+  const { startDate, endDate, modified } = dateRange;
   const { data } = useFetch(
     `/api/website/${websiteId}/metrics`,
     {
