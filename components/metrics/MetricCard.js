@@ -4,7 +4,7 @@ import { formatNumber } from '../../lib/format';
 import styles from './MetricCard.module.css';
 
 const MetricCard = ({ value = 0, label, format = formatNumber }) => {
-  const props = useSpring({ x: value, from: { x: 0 } });
+  const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
 
   return (
     <div className={styles.card}>
