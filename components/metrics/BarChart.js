@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import styles from './BarChart.module.css';
 import { format } from 'date-fns';
+import { formatLongNumber } from '../../lib/format';
 
 export default function BarChart({
   chartId,
@@ -21,7 +22,7 @@ export default function BarChart({
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
 
-  const renderLabel = (label, index, values) => {
+  const renderXLabel = (label, index, values) => {
     const d = new Date(values[index].value);
     const n = records;
 
@@ -38,6 +39,10 @@ export default function BarChart({
       default:
         return label;
     }
+  };
+
+  const renderYLabel = label => {
+    return +label > 1 ? formatLongNumber(label) : label;
   };
 
   const renderTooltip = model => {
@@ -82,7 +87,7 @@ export default function BarChart({
               tooltipFormat: 'ddd MMMM DD YYYY',
             },
             ticks: {
-              callback: renderLabel,
+              callback: renderXLabel,
               minRotation: 0,
               maxRotation: 0,
             },
@@ -96,6 +101,7 @@ export default function BarChart({
         yAxes: [
           {
             ticks: {
+              callback: renderYLabel,
               beginAtZero: true,
             },
             stacked,
@@ -119,7 +125,7 @@ export default function BarChart({
     const { options } = chart.current;
 
     options.scales.xAxes[0].time.unit = unit;
-    options.scales.xAxes[0].ticks.callback = renderLabel;
+    options.scales.xAxes[0].ticks.callback = renderXLabel;
     options.animation.duration = animationDuration;
 
     onUpdate(chart.current);

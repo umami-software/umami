@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
+import React, { useMemo } from 'react';
 import tinycolor from 'tinycolor2';
 import BarChart from './BarChart';
-import { get } from 'lib/web';
 import { getTimezone, getDateArray, getDateLength } from 'lib/date';
-import styles from './BarChart.module.css';
+import useFetch from 'hooks/useFetch';
+import { useDateRange } from 'hooks/useDateRange';
 
 const COLORS = [
   '#2680eb',
@@ -17,31 +16,21 @@ const COLORS = [
   '#85d044',
 ];
 
-export default function EventsChart({ websiteId, startDate, endDate, unit }) {
-  const [data, setData] = useState();
-  const datasets = useMemo(() => {
-    if (!data) return [];
-
-    return Object.keys(data).map((key, index) => {
-      const color = tinycolor(COLORS[index]);
-      return {
-        label: key,
-        data: data[key],
-        lineTension: 0,
-        backgroundColor: color.setAlpha(0.4).toRgbString(),
-        borderColor: color.setAlpha(0.5).toRgbString(),
-        borderWidth: 1,
-      };
-    });
-  }, [data]);
-
-  async function loadData() {
-    const data = await get(`/api/website/${websiteId}/events`, {
+export default function EventsChart({ websiteId }) {
+  const dateRange = useDateRange(websiteId);
+  const { startDate, endDate, unit, modified } = dateRange;
+  const { data } = useFetch(
+    `/api/website/${websiteId}/events`,
+    {
       start_at: +startDate,
       end_at: +endDate,
       unit,
       tz: getTimezone(),
-    });
+    },
+    { update: [modified] },
+  );
+  const datasets = useMemo(() => {
+    if (!data) return [];
 
     const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
@@ -57,8 +46,18 @@ export default function EventsChart({ websiteId, startDate, endDate, unit }) {
       map[key] = getDateArray(map[key], startDate, endDate, unit);
     });
 
-    setData(map);
-  }
+    return Object.keys(map).map((key, index) => {
+      const color = tinycolor(COLORS[index]);
+      return {
+        label: key,
+        data: map[key],
+        lineTension: 0,
+        backgroundColor: color.setAlpha(0.4).toRgbString(),
+        borderColor: color.setAlpha(0.5).toRgbString(),
+        borderWidth: 1,
+      };
+    });
+  }, [data]);
 
   function handleCreate(options) {
     const legend = {
@@ -73,10 +72,6 @@ export default function EventsChart({ websiteId, startDate, endDate, unit }) {
 
     chart.update();
   }
-
-  useEffect(() => {
-    loadData();
-  }, [websiteId, startDate, endDate]);
 
   if (!data) {
     return null;

@@ -20,10 +20,12 @@ export default function DropDown({
     setShowMenu(state => !state);
   }
 
-  function handleSelect(value, e) {
+  function handleSelect(selected, e) {
     e.stopPropagation();
     setShowMenu(false);
-    onChange(value);
+    if (selected !== value) {
+      onChange(selected);
+    }
   }
 
   useDocumentClick(e => {

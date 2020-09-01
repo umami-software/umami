@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
@@ -7,20 +7,22 @@ import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
 import AccountEditForm from 'components/forms/AccountEditForm';
 import ButtonLayout from 'components/layout/ButtonLayout';
+import DeleteForm from 'components/forms/DeleteForm';
+import useFetch from 'hooks/useFetch';
 import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
-import { get } from 'lib/web';
 import styles from './AccountSettings.module.css';
-import DeleteForm from '../forms/DeleteForm';
+import Toast from '../common/Toast';
 
 export default function AccountSettings() {
-  const [data, setData] = useState();
   const [addAccount, setAddAccount] = useState();
   const [editAccount, setEditAccount] = useState();
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
+  const [message, setMessage] = useState();
+  const { data } = useFetch(`/api/accounts`, {}, { update: [saved] });
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
@@ -52,6 +54,7 @@ export default function AccountSettings() {
 
   function handleSave() {
     setSaved(state => state + 1);
+    setMessage('Saved successfully.');
     handleClose();
   }
 
@@ -60,14 +63,6 @@ export default function AccountSettings() {
     setAddAccount(null);
     setDeleteAccount(null);
   }
-
-  async function loadData() {
-    setData(await get(`/api/accounts`));
-  }
-
-  useEffect(() => {
-    loadData();
-  }, [saved]);
 
   if (!data) {
     return null;
@@ -105,6 +100,7 @@ export default function AccountSettings() {
           />
         </Modal>
       )}
+      {message && <Toast message={message} onClose={() => setMessage(null)} />}
     </>
   );
 }

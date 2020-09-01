@@ -1,6 +1,7 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
 import { post, hook, doNotTrack } from '../lib/web';
+import { removeTrailingSlash } from '../lib/url';
 
 (window => {
   const {
@@ -17,7 +18,10 @@ import { post, hook, doNotTrack } from '../lib/web';
   if (!script || (__DNT__ && doNotTrack())) return;
 
   const website = script.getAttribute('data-website-id');
-  const hostUrl = new URL(script.src).href.split('/').slice(0, -1).join('/');
+  const hostUrl = script.getAttribute('data-host-url');
+  const root = hostUrl
+    ? removeTrailingSlash(hostUrl)
+    : new URL(script.src).href.split('/').slice(0, -1).join('/');
   const screen = `${width}x${height}`;
   const listeners = [];
 
@@ -42,7 +46,7 @@ import { post, hook, doNotTrack } from '../lib/web';
       });
     }
 
-    return post(`${hostUrl}/api/collect`, {
+    return post(`${root}/api/collect`, {
       type,
       payload,
     });

@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useSpring, animated } from 'react-spring';
 import classNames from 'classnames';
-import { get } from 'lib/web';
+import useFetch from 'hooks/useFetch';
 import styles from './ActiveUsers.module.css';
 
 export default function ActiveUsers({ websiteId, className }) {
-  const [count, setCount] = useState(0);
-
-  async function loadData() {
-    const result = await get(`/api/website/${websiteId}/active`);
-    setCount(result?.[0]?.x);
-  }
+  const { data } = useFetch(`/api/website/${websiteId}/active`, {}, { interval: 60000 });
+  const count = useMemo(() => {
+    return data?.[0]?.x || 0;
+  }, [data]);
 
   const props = useSpring({
     x: count,
     from: { x: 0 },
   });
-
-  useEffect(() => {
-    loadData();
-
-    const id = setInterval(() => loadData(), 60000);
-
-    return () => {
-      clearInterval(id);
-    };
-  }, []);
 
   if (count === 0) {
     return null;
