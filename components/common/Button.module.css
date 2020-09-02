@@ -17,6 +17,10 @@
   background: #eaeaea;
 }
 
+.button:active {
+  color: initial;
+}
+
 .large {
   font-size: var(--font-size-large);
 }
