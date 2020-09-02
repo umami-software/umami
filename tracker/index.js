@@ -58,15 +58,15 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Handle history */
 
-  const handlePush = (state, title, navaigatedUrl) => {
+  const handlePush = (state, title, navigatedURL) => {
     removeEvents();
     currentRef = currentUrl;
 
-    if (navaigatedUrl.startsWith('http')) {
-      const url = new URL(navaigatedUrl);
+    if (navigatedURL.toString().startsWith('http')) {
+      const url = new URL(navigatedURL.toString());
       currentUrl = `${url.pathname}${url.search}`;
     } else {
-      currentUrl = navaigatedUrl;
+      currentUrl = navigatedURL.toString();
     }
 
     pageView();
