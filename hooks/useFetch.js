@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { get } from 'lib/web';
+import { updateQuery } from 'redux/actions/queries';
 
 export default function useFetch(url, params = {}, options = {}) {
+  const dispatch = useDispatch();
   const [data, setData] = useState();
   const [error, setError] = useState();
   const keys = Object.keys(params)
@@ -12,7 +15,11 @@ export default function useFetch(url, params = {}, options = {}) {
   async function loadData() {
     try {
       setError(null);
+      const time = performance.now();
       const data = await get(url, params);
+
+      dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
+
       setData(data);
       onDataLoad(data);
     } catch (e) {
