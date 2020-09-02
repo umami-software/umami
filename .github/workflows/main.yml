@@ -1,0 +1,29 @@
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  build:
+    name: Build, push, and deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout master
+      uses: actions/checkout@v2
+
+    - name: Build PostgresQL container image
+      run: docker build --build-arg DATABASE_TYPE=postgresql --tag docker.pkg.github.com/mikecao/umami/umami:postgresql-$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Build MySQL container image
+      run: docker build --build-arg DATABASE_TYPE=mysql --tag docker.pkg.github.com/mikecao/umami/umami:mysql-$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Docker login
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: docker login -u mikecao -p $GITHUB_TOKEN docker.pkg.github.com
+      
+    - name: Push image to GitHub
+      run: |
+        docker push docker.pkg.github.com/mikecao/umami/umami:postgresql-$(echo $GITHUB_SHA | head -c7)
+        docker push docker.pkg.github.com/mikecao/umami/umami:mysql-$(echo $GITHUB_SHA | head -c7)
