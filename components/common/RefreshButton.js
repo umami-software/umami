@@ -5,6 +5,7 @@ import Button from './Button';
 import Refresh from 'assets/redo.svg';
 import Dots from 'assets/ellipsis-h.svg';
 import { useDateRange } from 'hooks/useDateRange';
+import { getDateRange } from '../../lib/date';
 
 export default function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ export default function RefreshButton({ websiteId }) {
   function handleClick() {
     if (dateRange) {
       setLoading(true);
-      dispatch(setDateRange(websiteId, dateRange));
+      dispatch(setDateRange(websiteId, getDateRange(dateRange.value)));
     }
   }
 
