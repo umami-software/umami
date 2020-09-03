@@ -82,6 +82,16 @@ To build the umami container and start up a Postgres database, run:
 docker-compose up
 ```
 
+### Getting updates
+
+To get the latest features, simply do a pull, install any new dependencies, and rebuild:
+
+```
+git pull
+npm install
+npm run build
+```
+
 ## License
 
 MIT
