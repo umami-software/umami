@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import styles from './BarChart.module.css';
 import { format } from 'date-fns';
-import { formatLongNumber } from '../../lib/format';
+import { formatLongNumber } from 'lib/format';
 
 export default function BarChart({
   chartId,
@@ -22,30 +22,39 @@ export default function BarChart({
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
 
-  const renderXLabel = (label, index, values) => {
+  function renderXLabel(label, index, values) {
     const d = new Date(values[index].value);
-    const n = records;
+    const w = canvas.current.width;
 
     switch (unit) {
       case 'hour':
         return format(d, 'ha');
       case 'day':
-        if (n >= 15) {
-          return index % ~~(n / 15) === 0 ? format(d, 'MMM d') : '';
+        if (records > 31) {
+          if (w <= 500) {
+            return index % 10 === 0 ? format(d, 'M/d') : '';
+          }
+          return index % 5 === 0 ? format(d, 'M/d') : '';
+        }
+        if (w <= 500) {
+          return index % 2 === 0 ? format(d, 'MMM d') : '';
         }
         return format(d, 'EEE M/d');
       case 'month':
+        if (w <= 660) {
+          return format(d, 'MMM');
+        }
         return format(d, 'MMMM');
       default:
         return label;
     }
-  };
+  }
 
-  const renderYLabel = label => {
+  function renderYLabel(label) {
     return +label > 1 ? formatLongNumber(label) : label;
-  };
+  }
 
-  const renderTooltip = model => {
+  function renderTooltip(model) {
     const { opacity, title, body, labelColors } = model;
 
     if (!opacity) {
@@ -60,9 +69,9 @@ export default function BarChart({
         labelColor: labelColors[0].backgroundColor,
       });
     }
-  };
+  }
 
-  const createChart = () => {
+  function createChart() {
     const options = {
       animation: {
         duration: animationDuration,
@@ -119,9 +128,9 @@ export default function BarChart({
       },
       options,
     });
-  };
+  }
 
-  const updateChart = () => {
+  function updateChart() {
     const { options } = chart.current;
 
     options.scales.xAxes[0].time.unit = unit;
@@ -129,7 +138,7 @@ export default function BarChart({
     options.animation.duration = animationDuration;
 
     onUpdate(chart.current);
-  };
+  }
 
   useEffect(() => {
     if (datasets) {

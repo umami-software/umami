@@ -21,7 +21,7 @@ export default function WebsiteHeader({ websiteId, title, showLink = false }) {
           <Button
             icon={<Arrow />}
             onClick={() =>
-              router.push('/website/[...id]', `/website/${websiteId}/${name}`, {
+              router.push('/website/[...id]', `/website/${websiteId}/${title}`, {
                 shallow: true,
               })
             }

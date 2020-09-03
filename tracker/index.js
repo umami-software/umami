@@ -61,12 +61,13 @@ import { removeTrailingSlash } from '../lib/url';
   const handlePush = (state, title, navigatedURL) => {
     removeEvents();
     currentRef = currentUrl;
+    const newUrl = navigatedURL.toString();
 
-    if (navigatedURL.toString().startsWith('http')) {
-      const url = new URL(navigatedURL.toString());
+    if (newUrl.startsWith('http')) {
+      const url = new URL(newUrl);
       currentUrl = `${url.pathname}${url.search}`;
     } else {
-      currentUrl = navigatedURL.toString();
+      currentUrl = newUrl;
     }
 
     pageView();
@@ -101,4 +102,8 @@ import { removeTrailingSlash } from '../lib/url';
   /* Start */
 
   pageView();
+
+  if (!window.umami) {
+    window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+  }
 })(window);
