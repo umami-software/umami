@@ -39,7 +39,7 @@
     }
   },
   "dependencies": {
-    "@prisma/client": "2.6.0",
+    "@prisma/client": "2.6.1",
     "@reduxjs/toolkit": "^1.4.0",
     "bcrypt": "^5.0.0",
     "chart.js": "^2.9.3",
@@ -75,7 +75,7 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@prisma/cli": "2.6.0",
+    "@prisma/cli": "2.6.1",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.3.3",
@@ -88,7 +88,7 @@
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "husky": "^4.2.5",
-    "lint-staged": "^10.2.13",
+    "lint-staged": "^10.3.0",
     "npm-run-all": "^4.1.5",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-import": "^12.0.1",
