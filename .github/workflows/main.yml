@@ -12,7 +12,7 @@ jobs:
     - name: Checkout master
       uses: actions/checkout@v2
 
-    - name: Build PostgresQL container image
+    - name: Build PostgreSQL container image
       run: docker build --build-arg DATABASE_TYPE=postgresql --tag docker.pkg.github.com/mikecao/umami/umami:postgresql-$(echo $GITHUB_SHA | head -c7) .
 
     - name: Build MySQL container image
