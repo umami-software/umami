@@ -10,6 +10,7 @@ import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import { useDateRange } from 'hooks/useDateRange';
 import styles from './MetricsTable.module.css';
+import { FormattedMessage } from 'react-intl';
 
 export default function MetricsTable({
   websiteId,
@@ -97,7 +98,9 @@ export default function MetricsTable({
           <div className={styles.footer}>
             {limit && data.length > limit && (
               <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
-                <div>More</div>
+                <div>
+                  <FormattedMessage id="button.more" defaultMessage="More" />
+                </div>
               </Button>
             )}
           </div>

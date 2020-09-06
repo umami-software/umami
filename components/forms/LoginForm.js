@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
 import Router from 'next/router';
 import { post } from 'lib/web';
@@ -54,18 +55,22 @@ export default function LoginForm() {
             <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
             <h1 className="center">umami</h1>
             <FormRow>
-              <label htmlFor="username">Username</label>
+              <label htmlFor="username">
+                <FormattedMessage id="label.username" defaultMessage="Username" />
+              </label>
               <Field name="username" type="text" />
               <FormError name="username" />
             </FormRow>
             <FormRow>
-              <label htmlFor="password">Password</label>
+              <label htmlFor="password">
+                <FormattedMessage id="label.password" defaultMessage="Password" />
+              </label>
               <Field name="password" type="password" />
               <FormError name="password" />
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                Login
+                <FormattedMessage id="button.login" defaultMessage="Login" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

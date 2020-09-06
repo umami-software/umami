@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
@@ -21,12 +22,12 @@ const validate = ({ name, domain }) => {
   const errors = {};
 
   if (!name) {
-    errors.name = 'Required';
+    errors.name = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
   if (!domain) {
-    errors.domain = 'Required';
+    errors.domain = <FormattedMessage id="label.required" defaultMessage="Required" />;
   } else if (!DOMAIN_REGEX.test(domain)) {
-    errors.domain = 'Invalid domain';
+    errors.domain = <FormattedMessage id="label.invalid-domain" defaultMessage="Invalid domain" />;
   }
 
   return errors;
@@ -41,7 +42,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
     if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage('Something went wrong');
+      setMessage(<FormattedMessage id="message.failure" defaultMessage="Something went wrong." />);
     }
   };
 
@@ -55,26 +56,42 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
         {() => (
           <Form>
             <FormRow>
-              <label htmlFor="name">Name</label>
+              <label htmlFor="name">
+                <FormattedMessage id="label.name" defaultMessage="Name" />
+              </label>
               <Field name="name" type="text" />
               <FormError name="name" />
             </FormRow>
             <FormRow>
-              <label htmlFor="domain">Domain</label>
+              <label htmlFor="domain">
+                <FormattedMessage id="label.domain" defaultMessage="Domain" />
+              </label>
               <Field name="domain" type="text" />
               <FormError name="domain" />
             </FormRow>
             <FormRow>
               <label></label>
               <Field name="enable_share_url">
-                {({ field }) => <Checkbox {...field} label="Enable share URL" />}
+                {({ field }) => (
+                  <Checkbox
+                    {...field}
+                    label={
+                      <FormattedMessage
+                        id="label.enable-share-url"
+                        defaultMessage="Enable share URL"
+                      />
+                    }
+                  />
+                )}
               </Field>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                Save
+                <FormattedMessage id="button.save" defaultMessage="Save" />
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>
+                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+              </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>
           </Form>

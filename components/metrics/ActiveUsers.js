@@ -3,6 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import classNames from 'classnames';
 import useFetch from 'hooks/useFetch';
 import styles from './ActiveUsers.module.css';
+import { FormattedMessage } from 'react-intl';
 
 export default function ActiveUsers({ websiteId, className }) {
   const { data } = useFetch(`/api/website/${websiteId}/active`, {}, { interval: 60000 });
@@ -26,7 +27,13 @@ export default function ActiveUsers({ websiteId, className }) {
         <animated.div className={styles.value}>
           {props.x.interpolate(x => x.toFixed(0))}
         </animated.div>
-        <div>{`current visitor${count !== 1 ? 's' : ''}`}</div>
+        <div>
+          <FormattedMessage
+            id="active-users.message"
+            defaultMessage="current {count, plural, one {visitor} other {visitors}}"
+            values={{ count }}
+          />
+        </div>
       </div>
     </div>
   );

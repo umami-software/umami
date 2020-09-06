@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -22,8 +23,12 @@ export default function Header() {
         {user && (
           <div className="col-12 col-md-6">
             <div className={styles.nav}>
-              <Link href="/dashboard">Dashboard</Link>
-              <Link href="/settings">Settings</Link>
+              <Link href="/dashboard">
+                <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
+              </Link>
+              <Link href="/settings">
+                <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
+              </Link>
               <UserButton />
             </div>
           </div>

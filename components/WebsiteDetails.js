@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -32,7 +33,9 @@ export default function WebsiteDetails({ websiteId }) {
       size="xsmall"
       onClick={() => setExpand(null)}
     >
-      <div>Back</div>
+      <div>
+        <FormattedMessage id="button.back" defaultMessage="Back" />
+      </div>
     </Button>
   );
 

@@ -1,13 +1,14 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import styles from './EventsTable.module.css';
 
 export default function EventsTable({ websiteId, limit, onExpand, onDataLoad }) {
   return (
     <MetricsTable
-      title="Events"
+      title={<FormattedMessage id="metrics.events" defaultMessage="Events" />}
       type="event"
-      metric="Actions"
+      metric={<FormattedMessage id="metrics.actions" defaultMessage="Actions" />}
       websiteId={websiteId}
       limit={limit}
       renderLabel={({ x }) => <Label value={x} />}

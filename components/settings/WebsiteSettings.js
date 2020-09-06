@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
-import WebsiteEditForm from '../forms/WebsiteEditForm';
-import DeleteForm from '../forms/DeleteForm';
-import TrackingCodeForm from '../forms/TrackingCodeForm';
-import ShareUrlForm from '../forms/ShareUrlForm';
+import WebsiteEditForm from 'components/forms/WebsiteEditForm';
+import DeleteForm from 'components/forms/DeleteForm';
+import TrackingCodeForm from 'components/forms/TrackingCodeForm';
+import ShareUrlForm from 'components/forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import ButtonLayout from 'components/layout/ButtonLayout';
+import Toast from 'components/common/Toast';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import Link from 'assets/link.svg';
+import useFetch from 'hooks/useFetch';
 import styles from './WebsiteSettings.module.css';
-import useFetch from '../../hooks/useFetch';
-import Toast from '../common/Toast';
 
 export default function WebsiteSettings() {
   const [editWebsite, setEditWebsite] = useState();
@@ -35,7 +36,7 @@ export default function WebsiteSettings() {
         <Button
           icon={<Link />}
           size="small"
-          tooltip="Share URL"
+          tooltip={<FormattedMessage id="tooltip.get-share-url" defaultMessage="Get share URL" />}
           tooltipId={`button-share-${row.website_id}`}
           onClick={() => setShowUrl(row)}
         />
@@ -43,22 +44,36 @@ export default function WebsiteSettings() {
       <Button
         icon={<Code />}
         size="small"
-        tooltip="Get tracking code"
+        tooltip={
+          <FormattedMessage id="tooltip.get-tracking-code" defaultMessage="Get tracking code" />
+        }
         tooltipId={`button-code-${row.website_id}`}
         onClick={() => setShowCode(row)}
       />
       <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
-        <div>Edit</div>
+        <div>
+          <FormattedMessage id="button.edit" defaultMessage="Edit" />
+        </div>
       </Button>
       <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
-        <div>Delete</div>
+        <div>
+          <FormattedMessage id="button.delete" defaultMessage="Delete" />
+        </div>
       </Button>
     </ButtonLayout>
   );
 
   const columns = [
-    { key: 'name', label: 'Name', className: 'col-6 col-md-4' },
-    { key: 'domain', label: 'Domain', className: 'col-6 col-md-4' },
+    {
+      key: 'name',
+      label: <FormattedMessage id="label.name" defaultMessage="Name" />,
+      className: 'col-6 col-md-4',
+    },
+    {
+      key: 'domain',
+      label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
+      className: 'col-6 col-md-4',
+    },
     {
       key: 'action',
       className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
@@ -68,7 +83,7 @@ export default function WebsiteSettings() {
 
   function handleSave() {
     setSaved(state => state + 1);
-    setMessage('Saved successfully.');
+    setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
     handleClose();
   }
 
@@ -85,9 +100,18 @@ export default function WebsiteSettings() {
   }
 
   const empty = (
-    <EmptyPlaceholder msg={"You don't have any websites configured."}>
+    <EmptyPlaceholder
+      msg={
+        <FormattedMessage
+          id="placeholder.message.no-websites-configured"
+          defaultMessage="You don't have any websites configured."
+        />
+      }
+    >
       <Button icon={<Plus />} size="medium" onClick={() => setAddWebsite(true)}>
-        <div>Add website</div>
+        <div>
+          <FormattedMessage id="button.add-website" defaultMessage="Add website" />
+        </div>
       </Button>
     </EmptyPlaceholder>
   );
@@ -95,24 +119,30 @@ export default function WebsiteSettings() {
   return (
     <>
       <PageHeader>
-        <div>Websites</div>
+        <div>
+          <FormattedMessage id="settings.websites" defaultMessage="Websites" />
+        </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-          <div>Add website</div>
+          <div>
+            <FormattedMessage id="button.add-website" defaultMessage="Add website" />
+          </div>
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} empty={empty} />
       {editWebsite && (
-        <Modal title="Edit website">
+        <Modal title={<FormattedMessage id="title.edit-website" defaultMessage="Edit website" />}>
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {addWebsite && (
-        <Modal title="Add website">
+        <Modal title={<FormattedMessage id="title.add-website" defaultMessage="Add website" />}>
           <WebsiteEditForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {deleteWebsite && (
-        <Modal title="Delete website">
+        <Modal
+          title={<FormattedMessage id="title.delete-website" defaultMessage="Delete website" />}
+        >
           <DeleteForm
             values={{ type: 'website', id: deleteWebsite.website_id, name: deleteWebsite.name }}
             onSave={handleSave}
@@ -121,12 +151,12 @@ export default function WebsiteSettings() {
         </Modal>
       )}
       {showCode && (
-        <Modal title="Tracking code">
+        <Modal title={<FormattedMessage id="title.tracking-code" defaultMessage="Tracking code" />}>
           <TrackingCodeForm values={showCode} onClose={handleClose} />
         </Modal>
       )}
       {showUrl && (
-        <Modal title="Share URL">
+        <Modal title={<FormattedMessage id="title.share-url" defaultMessage="Share URL" />}>
           <ShareUrlForm values={showUrl} onClose={handleClose} />
         </Modal>
       )}

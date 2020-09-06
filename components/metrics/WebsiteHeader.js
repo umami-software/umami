@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useRouter } from 'next/router';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
@@ -27,7 +28,9 @@ export default function WebsiteHeader({ websiteId, title, showLink = false }) {
             }
             size="small"
           >
-            <div>View details</div>
+            <div>
+              <FormattedMessage id="button.view-details" defaultMessage="View details" />
+            </div>
           </Button>
         )}
       </ButtonLayout>

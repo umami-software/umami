@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
@@ -19,15 +20,17 @@ const validate = ({ current_password, new_password, confirm_password }) => {
   const errors = {};
 
   if (!current_password) {
-    errors.current_password = 'Required';
+    errors.current_password = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
   if (!new_password) {
-    errors.new_password = 'Required';
+    errors.new_password = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
   if (!confirm_password) {
-    errors.confirm_password = 'Required';
+    errors.confirm_password = <FormattedMessage id="label.required" defaultMessage="Required" />;
   } else if (new_password !== confirm_password) {
-    errors.confirm_password = `Passwords don't match`;
+    errors.confirm_password = (
+      <FormattedMessage id="label.passwords-dont-match" defaultMessage="Passwords don't match" />
+    );
   }
 
   return errors;
@@ -42,7 +45,11 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
     if (typeof response !== 'string') {
       onSave();
     } else {
-      setMessage(response || 'Something went wrong');
+      setMessage(
+        response || (
+          <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
+        ),
+      );
     }
   };
 
@@ -56,25 +63,33 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
         {() => (
           <Form>
             <FormRow>
-              <label htmlFor="current_password">Current password</label>
+              <label htmlFor="current_password">
+                <FormattedMessage id="label.current-password" defaultMessage="Current password" />
+              </label>
               <Field name="current_password" type="password" />
               <FormError name="current_password" />
             </FormRow>
             <FormRow>
-              <label htmlFor="new_password">New password</label>
+              <label htmlFor="new_password">
+                <FormattedMessage id="label.new-password" defaultMessage="New password" />
+              </label>
               <Field name="new_password" type="password" />
               <FormError name="new_password" />
             </FormRow>
             <FormRow>
-              <label htmlFor="confirm_password">Confirm password</label>
+              <label htmlFor="confirm_password">
+                <FormattedMessage id="label.confirm-password" defaultMessage="Confirm password" />
+              </label>
               <Field name="confirm_password" type="password" />
               <FormError name="confirm_password" />
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                Save
+                <FormattedMessage id="button.save" defaultMessage="Save" />
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>
+                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+              </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>
           </Form>

@@ -21,7 +21,8 @@
     "build-mysql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.mysql.prisma",
     "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
     "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
-    "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma"
+    "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
+    "extract": "formatjs extract --out-file lang/en.json components/**/*.js"
   },
   "lint-staged": {
     "**/*.js": [
@@ -61,6 +62,7 @@
     "promise-polyfill": "^8.1.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-intl": "^5.8.0",
     "react-redux": "^7.2.1",
     "react-simple-maps": "^2.1.2",
     "react-spring": "^8.0.27",
@@ -75,6 +77,7 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
+    "@formatjs/cli": "^2.9.0",
     "@prisma/cli": "2.6.2",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-node-resolve": "^9.0.0",
@@ -87,6 +90,7 @@
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
+    "extract-react-intl-messages": "^4.1.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.3.0",
     "npm-run-all": "^4.1.5",
