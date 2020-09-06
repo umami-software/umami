@@ -17,6 +17,16 @@ import { removeTrailingSlash } from '../lib/url';
   // eslint-disable-next-line no-undef
   if (!script || (__DNT__ && doNotTrack())) return;
 
+  const excludedDomains = script.getAttribute('excluded-domains')
+    ? script.getAttribute('excluded-domains').split(',')
+    : [];
+  const allowedDomains = script.getAttribute('included-domains')
+    ? script.getAttribute('included-domains').split(',')
+    : [];
+  const isExcludedDomain = excludedDomains.includes(window.location.hostname);
+  const isAllowedDomain = allowedDomains.includes(window.location.hostname);
+  if (isExcludedDomain || !isAllowedDomain) return;
+
   const website = script.getAttribute('data-website-id');
   const hostUrl = script.getAttribute('data-host-url');
   const root = hostUrl
