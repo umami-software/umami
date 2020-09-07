@@ -6,16 +6,10 @@
   min-height: 100px;
 }
 
-.footer .center button {
-  margin-left: 10px;
-}
-
 .footer a {
   text-decoration: none;
 }
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.button {
+  margin-left: 10px;
 }

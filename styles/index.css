@@ -13,6 +13,10 @@ body {
   background: var(--gray75);
 }
 
+.zh-CN {
+  font-family: 'Noto Sans SC', sans-serif !important;
+}
+
 *,
 *:before,
 *:after {

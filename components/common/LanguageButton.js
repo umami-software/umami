@@ -7,17 +7,21 @@ import Menu from './Menu';
 import styles from './LanguageButton.module.css';
 import Button from './Button';
 
+const supportedLanguages = {
+  en: 'EN',
+  'zh-CN': '中文',
+};
+
 const menuOptions = [
   { label: 'English', value: 'en' },
-  { label: '中文 (Chinese)', value: 'zh-CN' },
+  { label: '中文 (Chinese Simplified)', value: 'zh-CN' },
 ];
 
-export default function LanguageButton() {
+export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'left' }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const locale = useSelector(state => state.app.locale);
   const ref = useRef();
-  const selectedLocale = menuOptions.find(e => e.value === locale)?.label.split(' ')[0];
 
   function handleSelect(value) {
     dispatch(updateApp({ locale: value }));
@@ -34,9 +38,16 @@ export default function LanguageButton() {
   return (
     <div ref={ref} className={styles.container}>
       <Button icon={<Globe />} onClick={() => setShowMenu(true)} size="small">
-        <div>{selectedLocale}</div>
+        <div>{supportedLanguages[locale]}</div>
       </Button>
-      {showMenu && <Menu options={menuOptions} onSelect={handleSelect} float="top" />}
+      {showMenu && (
+        <Menu
+          options={menuOptions}
+          onSelect={handleSelect}
+          float={menuPosition}
+          align={menuAlign}
+        />
+      )}
     </div>
   );
 }

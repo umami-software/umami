@@ -1,233 +1,233 @@
 {
   "active-users.message": {
-    "defaultMessage": "xx {x} current {x, plural, one {visitor} other {visitors}}"
+    "defaultMessage": "当前在线 {x} 人"
   },
   "button.add-account": {
-    "defaultMessage": "xx Add account"
+    "defaultMessage": "添加账户"
   },
   "button.add-website": {
-    "defaultMessage": "xx Add website"
+    "defaultMessage": "添加网站"
   },
   "button.back": {
-    "defaultMessage": "xx Back"
+    "defaultMessage": "返回"
   },
   "button.cancel": {
-    "defaultMessage": "xx Cancel"
+    "defaultMessage": "取消"
   },
   "button.change-password": {
-    "defaultMessage": "xx Change password"
+    "defaultMessage": "更新密码"
   },
   "button.copy-to-clipboard": {
-    "defaultMessage": "xx Copy to clipboard"
+    "defaultMessage": "复制"
   },
   "button.delete": {
-    "defaultMessage": "xx Delete"
+    "defaultMessage": "删除"
   },
   "button.edit": {
-    "defaultMessage": "xx Edit"
+    "defaultMessage": "编辑"
   },
   "button.login": {
-    "defaultMessage": "xx Login"
+    "defaultMessage": "登录"
   },
   "button.more": {
-    "defaultMessage": "xx More"
+    "defaultMessage": "更多"
   },
   "button.save": {
-    "defaultMessage": "xx Save"
+    "defaultMessage": "保存"
   },
   "button.view-details": {
-    "defaultMessage": "xx View details"
+    "defaultMessage": "查看更多"
   },
   "footer.powered-by": {
-    "defaultMessage": "xx powered by"
+    "defaultMessage": "运行"
   },
   "header.nav.dashboard": {
-    "defaultMessage": "xx Dashboard"
+    "defaultMessage": "仪表板"
   },
   "header.nav.settings": {
-    "defaultMessage": "xx Settings"
+    "defaultMessage": "设置"
   },
   "label.adminsitrator": {
-    "defaultMessage": "xx Administrator"
+    "defaultMessage": "管理员"
   },
   "label.confirm-password": {
-    "defaultMessage": "xx Confirm password"
+    "defaultMessage": "确认密码"
   },
   "label.current-password": {
-    "defaultMessage": "xx Current password"
+    "defaultMessage": "目前密码"
   },
   "label.domain": {
-    "defaultMessage": "xx Domain"
+    "defaultMessage": "域名"
   },
   "label.enable-share-url": {
-    "defaultMessage": "xx Enable share URL"
+    "defaultMessage": "激活共享链接"
   },
   "label.invalid": {
-    "defaultMessage": "xx Invalid"
+    "defaultMessage": "输入无效"
   },
   "label.invalid-domain": {
-    "defaultMessage": "xx Invalid domain"
+    "defaultMessage": "无效域名"
   },
   "label.last-days": {
-    "defaultMessage": "xx Last {x} days"
+    "defaultMessage": "最近 {x} 天"
   },
   "label.last-hours": {
-    "defaultMessage": "xx Last {x} hours"
+    "defaultMessage": "最近 {x} 小时"
   },
   "label.logged-in-as": {
-    "defaultMessage": "xx Logged in as {username}"
+    "defaultMessage": "登录名: {username}"
   },
   "label.logout": {
-    "defaultMessage": "xx Logout"
+    "defaultMessage": "退出"
   },
   "label.name": {
-    "defaultMessage": "xx Name"
+    "defaultMessage": "名字"
   },
   "label.new-password": {
-    "defaultMessage": "xx New password"
+    "defaultMessage": "新密码"
   },
   "label.password": {
-    "defaultMessage": "xx Password"
+    "defaultMessage": "密码"
   },
   "label.passwords-dont-match": {
-    "defaultMessage": "xx Passwords don't match"
+    "defaultMessage": "密码不一致"
   },
   "label.required": {
-    "defaultMessage": "xx Required"
+    "defaultMessage": "必填"
   },
   "label.this-month": {
-    "defaultMessage": "xx This month"
+    "defaultMessage": "本月"
   },
   "label.this-week": {
-    "defaultMessage": "xx This week"
+    "defaultMessage": "本周"
   },
   "label.this-year": {
-    "defaultMessage": "xx This year"
+    "defaultMessage": "今年"
   },
   "label.today": {
-    "defaultMessage": "xx Today"
+    "defaultMessage": "今天"
   },
   "label.username": {
-    "defaultMessage": "xx Username"
+    "defaultMessage": "用户名"
   },
   "message.confirm-delete": {
-    "defaultMessage": "xx Are your sure you want to delete {target}?"
+    "defaultMessage": "你确定要删除{target}吗?"
   },
   "message.copied": {
-    "defaultMessage": "xx Copied!"
+    "defaultMessage": "复制成功!"
   },
   "message.delete-warning": {
-    "defaultMessage": "xx All associated data will be deleted as well."
+    "defaultMessage": "所有相关数据将会被删除."
   },
   "message.failure": {
-    "defaultMessage": "xx Something went wrong."
+    "defaultMessage": "出现错误."
   },
   "message.save-success": {
-    "defaultMessage": "xx Saved successfully."
+    "defaultMessage": "成功保存."
   },
   "message.share-url": {
-    "defaultMessage": "xx This is the publicly shared URL for {target}."
+    "defaultMessage": "这是 {target} 的共享链接."
   },
   "message.track-stats": {
-    "defaultMessage": "xx To track stats for {target}, place the following code in the {head} section of your website."
+    "defaultMessage": "把以下代码放到你的网站的{head}部分来收集{target}的数据."
   },
   "message.type-delete": {
-    "defaultMessage": "xx Type {delete} in the box below to confirm."
+    "defaultMessage": "在下面空格输入{delete}确认"
   },
   "metrics.actions": {
-    "defaultMessage": "xx Actions"
+    "defaultMessage": "用户行为"
   },
   "metrics.average-visit-time": {
-    "defaultMessage": "xx Average visit time"
+    "defaultMessage": "停留时间"
   },
   "metrics.bounce-rate": {
-    "defaultMessage": "xx Bounce rate"
+    "defaultMessage": "跳出率"
   },
   "metrics.browsers": {
-    "defaultMessage": "xx Browsers"
+    "defaultMessage": "浏览器"
   },
   "metrics.countries": {
-    "defaultMessage": "xx Countries"
+    "defaultMessage": "国家"
   },
   "metrics.devices": {
-    "defaultMessage": "xx Devices"
+    "defaultMessage": "设备"
   },
   "metrics.events": {
-    "defaultMessage": "xx Events"
+    "defaultMessage": "行为类别"
   },
   "metrics.filter.combined": {
-    "defaultMessage": "xx Combined"
+    "defaultMessage": "总和"
   },
   "metrics.filter.domain-only": {
-    "defaultMessage": "xx Domain only"
+    "defaultMessage": "只看域名"
   },
   "metrics.filter.raw": {
-    "defaultMessage": "xx Raw"
+    "defaultMessage": "原始"
   },
   "metrics.operating-system": {
-    "defaultMessage": "xx Operating System"
+    "defaultMessage": "操作系统"
   },
   "metrics.page-views": {
-    "defaultMessage": "xx Page views"
+    "defaultMessage": "访问量"
   },
   "metrics.pages": {
-    "defaultMessage": "xx Pages"
+    "defaultMessage": "网页"
   },
   "metrics.referrers": {
-    "defaultMessage": "xx Referrers"
+    "defaultMessage": "来源"
   },
   "metrics.unique-visitors": {
-    "defaultMessage": "xx Unique visitors"
+    "defaultMessage": "访问者"
   },
   "metrics.views": {
-    "defaultMessage": "xx Views"
+    "defaultMessage": "访问量"
   },
   "metrics.visitors": {
-    "defaultMessage": "xx Visitors"
+    "defaultMessage": "访问者"
   },
   "placeholder.message.go-to-settings": {
-    "defaultMessage": "xx Go to settings"
+    "defaultMessage": "去设置"
   },
   "placeholder.message.no-websites-configured": {
-    "defaultMessage": "xx You don't have any websites configured."
+    "defaultMessage": "你还没有设置任何网站."
   },
   "settings.accounts": {
-    "defaultMessage": "xx Accounts"
+    "defaultMessage": "账户"
   },
   "settings.profile": {
-    "defaultMessage": "xx Profile"
+    "defaultMessage": "个人资料"
   },
   "settings.websites": {
-    "defaultMessage": "xx Websites"
+    "defaultMessage": "网站"
   },
   "title.add-account": {
-    "defaultMessage": "xx Add account"
+    "defaultMessage": "添加账户"
   },
   "title.add-website": {
-    "defaultMessage": "xx Add website"
+    "defaultMessage": "A添加网站"
   },
   "title.delete-account": {
-    "defaultMessage": "xx Delete account"
+    "defaultMessage": "删除账户"
   },
   "title.delete-website": {
-    "defaultMessage": "xx Delete website"
+    "defaultMessage": "删除网站"
   },
   "title.edit-account": {
-    "defaultMessage": "xx Edit account"
+    "defaultMessage": "编辑账户"
   },
   "title.edit-website": {
-    "defaultMessage": "xx Edit website"
+    "defaultMessage": "编辑网站"
   },
   "title.share-url": {
-    "defaultMessage": "xx Share URL"
+    "defaultMessage": "共享链接"
   },
   "title.tracking-code": {
-    "defaultMessage": "xx Tracking code"
+    "defaultMessage": "跟踪代码"
   },
   "tooltip.get-share-url": {
-    "defaultMessage": "xx Get share URL"
+    "defaultMessage": "获得共享链接"
   },
   "tooltip.get-tracking-code": {
-    "defaultMessage": "xx Get tracking code"
+    "defaultMessage": "获得跟踪代码"
   }
 }

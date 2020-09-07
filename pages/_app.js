@@ -18,6 +18,8 @@ const Intl = ({ children }) => {
   const dispatch = useDispatch();
   const locale = useSelector(state => state.app.locale);
 
+  const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
+
   useEffect(() => {
     const saved = localStorage.getItem('locale');
     if (saved) {
@@ -26,7 +28,7 @@ const Intl = ({ children }) => {
   });
 
   return (
-    <IntlProvider locale={locale} messages={messages[locale]}>
+    <IntlProvider locale={locale} messages={messages[locale]} textComponent={Wrapper}>
       {children}
     </IntlProvider>
   );
