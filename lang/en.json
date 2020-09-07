@@ -1,6 +1,6 @@
 {
   "active-users.message": {
-    "defaultMessage": "current {count, plural, one {visitor} other {visitors}}"
+    "defaultMessage": "{x} current {x, plural, one {visitor} other {visitors}}"
   },
   "button.add-account": {
     "defaultMessage": "Add account"
@@ -73,6 +73,12 @@
   },
   "label.last-hours": {
     "defaultMessage": "Last {x} hours"
+  },
+  "label.logged-in-as": {
+    "defaultMessage": "Logged in as {username}"
+  },
+  "label.logout": {
+    "defaultMessage": "Logout"
   },
   "label.name": {
     "defaultMessage": "Name"

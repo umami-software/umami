@@ -1,14 +1,21 @@
 .footer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-small);
   min-height: 100px;
 }
 
-.footer button {
+.footer .center button {
   margin-left: 10px;
 }
 
 .footer a {
   text-decoration: none;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

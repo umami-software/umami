@@ -1,0 +1,233 @@
+{
+  "active-users.message": {
+    "defaultMessage": "xx {x} current {x, plural, one {visitor} other {visitors}}"
+  },
+  "button.add-account": {
+    "defaultMessage": "xx Add account"
+  },
+  "button.add-website": {
+    "defaultMessage": "xx Add website"
+  },
+  "button.back": {
+    "defaultMessage": "xx Back"
+  },
+  "button.cancel": {
+    "defaultMessage": "xx Cancel"
+  },
+  "button.change-password": {
+    "defaultMessage": "xx Change password"
+  },
+  "button.copy-to-clipboard": {
+    "defaultMessage": "xx Copy to clipboard"
+  },
+  "button.delete": {
+    "defaultMessage": "xx Delete"
+  },
+  "button.edit": {
+    "defaultMessage": "xx Edit"
+  },
+  "button.login": {
+    "defaultMessage": "xx Login"
+  },
+  "button.more": {
+    "defaultMessage": "xx More"
+  },
+  "button.save": {
+    "defaultMessage": "xx Save"
+  },
+  "button.view-details": {
+    "defaultMessage": "xx View details"
+  },
+  "footer.powered-by": {
+    "defaultMessage": "xx powered by"
+  },
+  "header.nav.dashboard": {
+    "defaultMessage": "xx Dashboard"
+  },
+  "header.nav.settings": {
+    "defaultMessage": "xx Settings"
+  },
+  "label.adminsitrator": {
+    "defaultMessage": "xx Administrator"
+  },
+  "label.confirm-password": {
+    "defaultMessage": "xx Confirm password"
+  },
+  "label.current-password": {
+    "defaultMessage": "xx Current password"
+  },
+  "label.domain": {
+    "defaultMessage": "xx Domain"
+  },
+  "label.enable-share-url": {
+    "defaultMessage": "xx Enable share URL"
+  },
+  "label.invalid": {
+    "defaultMessage": "xx Invalid"
+  },
+  "label.invalid-domain": {
+    "defaultMessage": "xx Invalid domain"
+  },
+  "label.last-days": {
+    "defaultMessage": "xx Last {x} days"
+  },
+  "label.last-hours": {
+    "defaultMessage": "xx Last {x} hours"
+  },
+  "label.logged-in-as": {
+    "defaultMessage": "xx Logged in as {username}"
+  },
+  "label.logout": {
+    "defaultMessage": "xx Logout"
+  },
+  "label.name": {
+    "defaultMessage": "xx Name"
+  },
+  "label.new-password": {
+    "defaultMessage": "xx New password"
+  },
+  "label.password": {
+    "defaultMessage": "xx Password"
+  },
+  "label.passwords-dont-match": {
+    "defaultMessage": "xx Passwords don't match"
+  },
+  "label.required": {
+    "defaultMessage": "xx Required"
+  },
+  "label.this-month": {
+    "defaultMessage": "xx This month"
+  },
+  "label.this-week": {
+    "defaultMessage": "xx This week"
+  },
+  "label.this-year": {
+    "defaultMessage": "xx This year"
+  },
+  "label.today": {
+    "defaultMessage": "xx Today"
+  },
+  "label.username": {
+    "defaultMessage": "xx Username"
+  },
+  "message.confirm-delete": {
+    "defaultMessage": "xx Are your sure you want to delete {target}?"
+  },
+  "message.copied": {
+    "defaultMessage": "xx Copied!"
+  },
+  "message.delete-warning": {
+    "defaultMessage": "xx All associated data will be deleted as well."
+  },
+  "message.failure": {
+    "defaultMessage": "xx Something went wrong."
+  },
+  "message.save-success": {
+    "defaultMessage": "xx Saved successfully."
+  },
+  "message.share-url": {
+    "defaultMessage": "xx This is the publicly shared URL for {target}."
+  },
+  "message.track-stats": {
+    "defaultMessage": "xx To track stats for {target}, place the following code in the {head} section of your website."
+  },
+  "message.type-delete": {
+    "defaultMessage": "xx Type {delete} in the box below to confirm."
+  },
+  "metrics.actions": {
+    "defaultMessage": "xx Actions"
+  },
+  "metrics.average-visit-time": {
+    "defaultMessage": "xx Average visit time"
+  },
+  "metrics.bounce-rate": {
+    "defaultMessage": "xx Bounce rate"
+  },
+  "metrics.browsers": {
+    "defaultMessage": "xx Browsers"
+  },
+  "metrics.countries": {
+    "defaultMessage": "xx Countries"
+  },
+  "metrics.devices": {
+    "defaultMessage": "xx Devices"
+  },
+  "metrics.events": {
+    "defaultMessage": "xx Events"
+  },
+  "metrics.filter.combined": {
+    "defaultMessage": "xx Combined"
+  },
+  "metrics.filter.domain-only": {
+    "defaultMessage": "xx Domain only"
+  },
+  "metrics.filter.raw": {
+    "defaultMessage": "xx Raw"
+  },
+  "metrics.operating-system": {
+    "defaultMessage": "xx Operating System"
+  },
+  "metrics.page-views": {
+    "defaultMessage": "xx Page views"
+  },
+  "metrics.pages": {
+    "defaultMessage": "xx Pages"
+  },
+  "metrics.referrers": {
+    "defaultMessage": "xx Referrers"
+  },
+  "metrics.unique-visitors": {
+    "defaultMessage": "xx Unique visitors"
+  },
+  "metrics.views": {
+    "defaultMessage": "xx Views"
+  },
+  "metrics.visitors": {
+    "defaultMessage": "xx Visitors"
+  },
+  "placeholder.message.go-to-settings": {
+    "defaultMessage": "xx Go to settings"
+  },
+  "placeholder.message.no-websites-configured": {
+    "defaultMessage": "xx You don't have any websites configured."
+  },
+  "settings.accounts": {
+    "defaultMessage": "xx Accounts"
+  },
+  "settings.profile": {
+    "defaultMessage": "xx Profile"
+  },
+  "settings.websites": {
+    "defaultMessage": "xx Websites"
+  },
+  "title.add-account": {
+    "defaultMessage": "xx Add account"
+  },
+  "title.add-website": {
+    "defaultMessage": "xx Add website"
+  },
+  "title.delete-account": {
+    "defaultMessage": "xx Delete account"
+  },
+  "title.delete-website": {
+    "defaultMessage": "xx Delete website"
+  },
+  "title.edit-account": {
+    "defaultMessage": "xx Edit account"
+  },
+  "title.edit-website": {
+    "defaultMessage": "xx Edit website"
+  },
+  "title.share-url": {
+    "defaultMessage": "xx Share URL"
+  },
+  "title.tracking-code": {
+    "defaultMessage": "xx Tracking code"
+  },
+  "tooltip.get-share-url": {
+    "defaultMessage": "xx Get share URL"
+  },
+  "tooltip.get-tracking-code": {
+    "defaultMessage": "xx Get tracking code"
+  }
+}

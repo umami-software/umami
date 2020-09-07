@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Menu from './Menu';
@@ -17,14 +18,16 @@ export default function UserButton() {
   const menuOptions = [
     {
       label: (
-        <>
-          Logged in as <b>{user.username}</b>
-        </>
+        <FormattedMessage
+          id="label.logged-in-as"
+          defaultMessage="Logged in as {username}"
+          values={{ username: <b>{user.username}</b> }}
+        />
       ),
       value: 'username',
       className: styles.username,
     },
-    { label: 'Logout', value: 'logout' },
+    { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];
 
   function handleSelect(value) {
