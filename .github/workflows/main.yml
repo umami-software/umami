@@ -1,6 +1,7 @@
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - master
 
 jobs:
 
@@ -13,17 +14,29 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build PostgreSQL container image
-      run: docker build --build-arg DATABASE_TYPE=postgresql --tag docker.pkg.github.com/mikecao/umami/umami:postgresql-$(echo $GITHUB_SHA | head -c7) .
+      run: | 
+        docker build --build-arg DATABASE_TYPE=postgresql \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:postgresql-$(echo $GITHUB_SHA | head -c7) \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:postgresql-latest \
+        .
 
     - name: Build MySQL container image
-      run: docker build --build-arg DATABASE_TYPE=mysql --tag docker.pkg.github.com/mikecao/umami/umami:mysql-$(echo $GITHUB_SHA | head -c7) .
+      run: |
+        docker build --build-arg DATABASE_TYPE=mysql \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:mysql-$(echo $GITHUB_SHA | head -c7) \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:mysql-latest \
+        .
 
     - name: Docker login
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: docker login -u mikecao -p $GITHUB_TOKEN docker.pkg.github.com
+        CR_PAT: ${{ secrets.CR_PAT }}
+      run: docker login -u $GITHUB_ACTOR -p $CR_PAT ghcr.io
       
     - name: Push image to GitHub
       run: |
-        docker push docker.pkg.github.com/mikecao/umami/umami:postgresql-$(echo $GITHUB_SHA | head -c7)
-        docker push docker.pkg.github.com/mikecao/umami/umami:mysql-$(echo $GITHUB_SHA | head -c7)
+        # Push each image individually, avoiding pushing to umami:latest
+        # as MySQL or PostgreSQL are required
+        docker push ghcr.io/$GITHUB_ACTOR/umami:postgresql-$(echo $GITHUB_SHA | head -c7)
+        docker push ghcr.io/$GITHUB_ACTOR/umami:postgresql-latest
+        docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-$(echo $GITHUB_SHA | head -c7)
+        docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-latest
