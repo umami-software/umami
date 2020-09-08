@@ -12,7 +12,15 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
     } = chart;
 
     datasets[0].data = data.uniques;
+    datasets[0].label = intl.formatMessage({
+      id: 'metrics.unique-visitors',
+      defaultMessage: 'Unique visitors',
+    });
     datasets[1].data = data.pageviews;
+    datasets[1].label = intl.formatMessage({
+      id: 'metrics.page-views',
+      defaultMessage: 'Page views',
+    });
 
     chart.update();
   };

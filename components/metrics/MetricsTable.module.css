@@ -95,8 +95,7 @@
   overflow: hidden;
 }
 
-.body:empty:before {
-  content: 'No data available';
+.empty {
   color: var(--gray500);
   position: absolute;
   top: 50%;

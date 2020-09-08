@@ -87,6 +87,14 @@ export default function MetricsTable({
             </div>
           </div>
           <div className={styles.body}>
+            {data?.length === 0 && (
+              <div className={styles.empty}>
+                <FormattedMessage
+                  id="message.no-data-available"
+                  defaultMessage="No data available."
+                />
+              </div>
+            )}
             {limit
               ? rankings.map(row => getRow(row))
               : data?.length > 0 && (
