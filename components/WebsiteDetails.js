@@ -49,12 +49,12 @@ export default function WebsiteDetails({ websiteId }) {
       component: PagesTable,
     },
     {
-      label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
+      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
       value: 'referrer',
       component: ReferrersTable,
     },
     {
-      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
+      label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
       value: 'browser',
       component: BrowsersTable,
     },
