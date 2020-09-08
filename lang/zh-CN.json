@@ -138,7 +138,7 @@
     "defaultMessage": "用户行为"
   },
   "metrics.average-visit-time": {
-    "defaultMessage": "停留时间"
+    "defaultMessage": "平均访问时间"
   },
   "metrics.bounce-rate": {
     "defaultMessage": "跳出率"
@@ -168,22 +168,22 @@
     "defaultMessage": "操作系统"
   },
   "metrics.page-views": {
-    "defaultMessage": "访问量"
+    "defaultMessage": "页面流量"
   },
   "metrics.pages": {
     "defaultMessage": "网页"
   },
   "metrics.referrers": {
-    "defaultMessage": "来源"
+    "defaultMessage": "指入域名"
   },
   "metrics.unique-visitors": {
-    "defaultMessage": "访问者"
+    "defaultMessage": "独立访客"
   },
   "metrics.views": {
-    "defaultMessage": "访问量"
+    "defaultMessage": "页面流量"
   },
   "metrics.visitors": {
-    "defaultMessage": "访问者"
+    "defaultMessage": "独立访客"
   },
   "placeholder.message.go-to-settings": {
     "defaultMessage": "去设置"
@@ -204,7 +204,7 @@
     "defaultMessage": "添加账户"
   },
   "title.add-website": {
-    "defaultMessage": "A添加网站"
+    "defaultMessage": "添加网站"
   },
   "title.delete-account": {
     "defaultMessage": "删除账户"

@@ -4,24 +4,16 @@ import Globe from 'assets/globe.svg';
 import useDocumentClick from 'hooks/useDocumentClick';
 import { updateApp } from 'redux/actions/app';
 import Menu from './Menu';
-import styles from './LanguageButton.module.css';
 import Button from './Button';
-
-const supportedLanguages = {
-  en: 'EN',
-  'zh-CN': '中文',
-};
-
-const menuOptions = [
-  { label: 'English', value: 'en' },
-  { label: '中文 (Chinese Simplified)', value: 'zh-CN' },
-];
+import { menuOptions } from 'lib/lang';
+import styles from './LanguageButton.module.css';
 
 export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'left' }) {
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const locale = useSelector(state => state.app.locale);
   const ref = useRef();
+  const selectedLocale = menuOptions.find(e => e.value === locale)?.display;
 
   function handleSelect(value) {
     dispatch(updateApp({ locale: value }));
@@ -38,7 +30,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
   return (
     <div ref={ref} className={styles.container}>
       <Button icon={<Globe />} onClick={() => setShowMenu(true)} size="small">
-        <div>{supportedLanguages[locale]}</div>
+        <div className={locale}>{selectedLocale}</div>
       </Button>
       {showMenu && (
         <Menu

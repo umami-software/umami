@@ -2,17 +2,11 @@ import React, { useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { useStore } from 'redux/store';
+import { updateApp } from 'redux/actions/app';
+import { messages } from 'lib/lang';
 import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
 import 'styles/index.css';
-import en from 'lang-compiled/en.json';
-import cn from 'lang-compiled/zh-CN.json';
-import { updateApp } from '../redux/actions/app';
-
-const messages = {
-  en,
-  'zh-CN': cn,
-};
 
 const Intl = ({ children }) => {
   const dispatch = useDispatch();
