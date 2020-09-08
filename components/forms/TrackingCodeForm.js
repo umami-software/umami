@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Button from 'components/common/Button';
 import FormLayout, { FormButtons, FormRow } from 'components/layout/FormLayout';
 import CopyButton from '../common/CopyButton';
@@ -9,8 +10,11 @@ export default function TrackingCodeForm({ values, onClose }) {
   return (
     <FormLayout>
       <p>
-        To track stats for <b>{values.name}</b>, place the following code in the &lt;head&gt;
-        section of your website.
+        <FormattedMessage
+          id="message.track-stats"
+          defaultMessage="To track stats for {target}, place the following code in the {head} section of your website."
+          values={{ head: '<head>', target: <b>{values.name}</b> }}
+        />
       </p>
       <FormRow>
         <textarea
@@ -24,7 +28,9 @@ export default function TrackingCodeForm({ values, onClose }) {
       </FormRow>
       <FormButtons>
         <CopyButton type="submit" variant="action" element={ref} />
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>
+          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+        </Button>
       </FormButtons>
     </FormLayout>
   );

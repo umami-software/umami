@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import Button from './Button';
+import { FormattedMessage } from 'react-intl';
 
-const defaultText = 'Copy to clipboard';
+const defaultText = (
+  <FormattedMessage id="button.copy-to-clipboard" defaultMessage="Copy to clipboard" />
+);
 
 export default function CopyButton({ element, ...props }) {
   const [text, setText] = useState(defaultText);
@@ -10,7 +13,7 @@ export default function CopyButton({ element, ...props }) {
     if (element?.current) {
       element.current.select();
       document.execCommand('copy');
-      setText('Copied!');
+      setText(<FormattedMessage id="message.copied" defaultMessage="Copied!" />);
       window.getSelection().removeAllRanges();
     }
   }

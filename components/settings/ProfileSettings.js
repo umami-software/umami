@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
-import ChangePasswordForm from '../forms/ChangePasswordForm';
 import Modal from 'components/common/Modal';
+import Toast from 'components/common/Toast';
+import ChangePasswordForm from 'components/forms/ChangePasswordForm';
 import Dots from 'assets/ellipsis-h.svg';
-import Toast from '../common/Toast';
 
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);
@@ -15,19 +16,25 @@ export default function ProfileSettings() {
 
   function handleSave() {
     setChangePassword(false);
-    setMessage('Saved successfully.');
+    setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
   }
 
   return (
     <>
       <PageHeader>
-        <div>Profile</div>
+        <div>
+          <FormattedMessage id="settings.profile" defaultMessage="Profile" />
+        </div>
         <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
-          <div>Change password</div>
+          <div>
+            <FormattedMessage id="button.change-password" defaultMessage="Change password" />
+          </div>
         </Button>
       </PageHeader>
       <dl>
-        <dt>Username</dt>
+        <dt>
+          <FormattedMessage id="label.username" defaultMessage="Username" />
+        </dt>
         <dd>{user.username}</dd>
       </dl>
       {changePassword && (

@@ -15,6 +15,7 @@ import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
 import styles from './AccountSettings.module.css';
 import Toast from '../common/Toast';
+import { FormattedMessage } from 'react-intl';
 
 export default function AccountSettings() {
   const [addAccount, setAddAccount] = useState();
@@ -30,19 +31,27 @@ export default function AccountSettings() {
     row.username !== 'admin' ? (
       <ButtonLayout>
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-          <div>Edit</div>
+          <div>
+            <FormattedMessage id="button.edit" defaultMessage="Edit" />
+          </div>
         </Button>
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
-          <div>Delete</div>
+          <div>
+            <FormattedMessage id="button.delete" defaultMessage="Delete" />
+          </div>
         </Button>
       </ButtonLayout>
     ) : null;
 
   const columns = [
-    { key: 'username', label: 'Username', className: 'col-6 col-md-4' },
+    {
+      key: 'username',
+      label: <FormattedMessage id="label.username" defaultMessage="Username" />,
+      className: 'col-6 col-md-4',
+    },
     {
       key: 'is_admin',
-      label: 'Administrator',
+      label: <FormattedMessage id="label.adminsitrator" defaultMessage="Administrator" />,
       className: 'col-6 col-md-4',
       render: Checkmark,
     },
@@ -54,7 +63,7 @@ export default function AccountSettings() {
 
   function handleSave() {
     setSaved(state => state + 1);
-    setMessage('Saved successfully.');
+    setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
     handleClose();
   }
 
@@ -73,12 +82,14 @@ export default function AccountSettings() {
       <PageHeader>
         <div>Accounts</div>
         <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
-          <div>Add account</div>
+          <div>
+            <FormattedMessage id="button.add-account" defaultMessage="Add account" />
+          </div>
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} />
       {editAccount && (
-        <Modal title="Edit account">
+        <Modal title={<FormattedMessage id="title.edit-account" defaultMessage="Edit account" />}>
           <AccountEditForm
             values={{ ...editAccount, password: '' }}
             onSave={handleSave}
@@ -87,12 +98,14 @@ export default function AccountSettings() {
         </Modal>
       )}
       {addAccount && (
-        <Modal title="Add account">
+        <Modal title={<FormattedMessage id="title.add-account" defaultMessage="Add account" />}>
           <AccountEditForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {deleteAccount && (
-        <Modal title="Delete account">
+        <Modal
+          title={<FormattedMessage id="title.delete-account" defaultMessage="Delete account" />}
+        >
           <DeleteForm
             values={{ type: 'account', id: deleteAccount.user_id, name: deleteAccount.username }}
             onSave={handleSave}

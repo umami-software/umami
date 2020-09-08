@@ -3,8 +3,9 @@ import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import styles from './BarChart.module.css';
-import { format } from 'date-fns';
 import { formatLongNumber } from 'lib/format';
+import { dateFormat } from 'lib/lang';
+import { useSelector } from 'react-redux';
 
 export default function BarChart({
   chartId,
@@ -21,6 +22,7 @@ export default function BarChart({
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
+  const locale = useSelector(state => state.app.locale);
 
   function renderXLabel(label, index, values) {
     const d = new Date(values[index].value);
@@ -28,23 +30,23 @@ export default function BarChart({
 
     switch (unit) {
       case 'hour':
-        return format(d, 'ha');
+        return dateFormat(d, 'ha', locale);
       case 'day':
         if (records > 31) {
           if (w <= 500) {
-            return index % 10 === 0 ? format(d, 'M/d') : '';
+            return index % 10 === 0 ? dateFormat(d, 'M/d', locale) : '';
           }
-          return index % 5 === 0 ? format(d, 'M/d') : '';
+          return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
         }
         if (w <= 500) {
-          return index % 2 === 0 ? format(d, 'MMM d') : '';
+          return index % 2 === 0 ? dateFormat(d, 'MMM d', locale) : '';
         }
-        return format(d, 'EEE M/d');
+        return dateFormat(d, 'EEE M/d', locale);
       case 'month':
         if (w <= 660) {
-          return format(d, 'MMM');
+          return dateFormat(d, 'MMM', locale);
         }
-        return format(d, 'MMMM');
+        return dateFormat(d, 'MMMM', locale);
       default:
         return label;
     }

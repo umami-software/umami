@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useRouter } from 'next/router';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
@@ -24,9 +25,21 @@ export default function WebsiteList() {
         </div>
       ))}
       {data.length === 0 && (
-        <EmptyPlaceholder msg={"You don't have any websites configured."}>
+        <EmptyPlaceholder
+          msg={
+            <FormattedMessage
+              id="placeholder.message.no-websites-configured"
+              defaultMessage="You don't have any websites configured."
+            />
+          }
+        >
           <Button icon={<Arrow />} size="medium" onClick={() => router.push('/settings')}>
-            <div>Go to settings</div>
+            <div>
+              <FormattedMessage
+                id="placeholder.message.go-to-settings"
+                defaultMessage="Go to settings"
+              />
+            </div>
           </Button>
         </EmptyPlaceholder>
       )}

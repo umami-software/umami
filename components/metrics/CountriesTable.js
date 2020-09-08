@@ -1,13 +1,14 @@
 import React from 'react';
 import MetricsTable from './MetricsTable';
 import { countryFilter, percentFilter } from 'lib/filters';
+import { FormattedMessage } from 'react-intl';
 
 export default function CountriesTable({ websiteId, limit, onDataLoad = () => {}, onExpand }) {
   return (
     <MetricsTable
-      title="Countries"
+      title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
       type="country"
-      metric="Visitors"
+      metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}
       limit={limit}
       dataFilter={countryFilter}

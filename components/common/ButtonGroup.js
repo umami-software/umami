@@ -13,17 +13,20 @@ export default function ButtonGroup({
 }) {
   return (
     <div className={classNames(styles.group, className)}>
-      {items.map(item => (
-        <Button
-          key={item}
-          className={classNames(styles.button, { [styles.selected]: selectedItem === item })}
-          size={size}
-          icon={icon}
-          onClick={() => onClick(item)}
-        >
-          {item}
-        </Button>
-      ))}
+      {items.map(item => {
+        const { label, value } = item;
+        return (
+          <Button
+            key={value}
+            className={classNames(styles.button, { [styles.selected]: selectedItem === value })}
+            size={size}
+            icon={icon}
+            onClick={() => onClick(value)}
+          >
+            {label}
+          </Button>
+        );
+      })}
     </div>
   );
 }

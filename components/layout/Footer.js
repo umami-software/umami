@@ -1,4 +1,5 @@
 import React from 'react';
+import { FormattedMessage } from 'react-intl';
 import Link from 'next/link';
 import classNames from 'classnames';
 import Button from 'components/common/Button';
@@ -9,10 +10,10 @@ export default function Footer() {
   return (
     <footer className="container">
       <div className={classNames(styles.footer, 'row justify-content-center')}>
-        <div>powered by</div>
+        <FormattedMessage id="footer.powered-by" defaultMessage="powered by" />
         <Link href="https://umami.is">
           <a>
-            <Button icon={<Logo />} size="small">
+            <Button className={styles.button} icon={<Logo />} size="small">
               <b>umami</b>
             </Button>
           </a>

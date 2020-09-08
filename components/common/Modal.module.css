@@ -26,7 +26,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--gray50);
-  min-width: 200px;
+  min-width: 400px;
   min-height: 100px;
   z-index: 1;
   border: 1px solid var(--gray300);

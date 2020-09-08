@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
+import { FormattedMessage } from 'react-intl';
 import Button from 'components/common/Button';
 import FormLayout, { FormButtons, FormRow } from 'components/layout/FormLayout';
-import CopyButton from '../common/CopyButton';
+import CopyButton from 'components/common/CopyButton';
 
 export default function TrackingCodeForm({ values, onClose }) {
   const ref = useRef();
@@ -10,7 +11,11 @@ export default function TrackingCodeForm({ values, onClose }) {
   return (
     <FormLayout>
       <p>
-        This is the publicly shared URL for <b>{values.name}</b>.
+        <FormattedMessage
+          id="message.share-url"
+          defaultMessage="This is the publicly shared URL for {target}."
+          values={{ target: <b>{values.name}</b> }}
+        />
       </p>
       <FormRow>
         <textarea
@@ -24,7 +29,9 @@ export default function TrackingCodeForm({ values, onClose }) {
       </FormRow>
       <FormButtons>
         <CopyButton type="submit" variant="action" element={ref} />
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>
+          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+        </Button>
       </FormButtons>
     </FormLayout>
   );

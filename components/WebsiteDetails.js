@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -32,7 +33,9 @@ export default function WebsiteDetails({ websiteId }) {
       size="xsmall"
       onClick={() => setExpand(null)}
     >
-      <div>Back</div>
+      <div>
+        <FormattedMessage id="button.back" defaultMessage="Back" />
+      </div>
     </Button>
   );
 
@@ -40,13 +43,41 @@ export default function WebsiteDetails({ websiteId }) {
     {
       render: BackButton,
     },
-    { label: 'Pages', value: 'url', component: PagesTable },
-    { label: 'Referrers', value: 'referrer', component: ReferrersTable },
-    { label: 'Browsers', value: 'browser', component: BrowsersTable },
-    { label: 'Operating system', value: 'os', component: OSTable },
-    { label: 'Devices', value: 'device', component: DevicesTable },
-    { label: 'Countries', value: 'country', component: CountriesTable },
-    { label: 'Events', value: 'event', component: EventsTable },
+    {
+      label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
+      value: 'url',
+      component: PagesTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
+      value: 'referrer',
+      component: ReferrersTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
+      value: 'browser',
+      component: BrowsersTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.operating-system" defaultMessage="Operating system" />,
+      value: 'os',
+      component: OSTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.devices" defaultMessage="Devices" />,
+      value: 'device',
+      component: DevicesTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
+      value: 'country',
+      component: CountriesTable,
+    },
+    {
+      label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
+      value: 'event',
+      component: EventsTable,
+    },
   ];
 
   const tableProps = {
