@@ -60,7 +60,7 @@
     "defaultMessage": "Domein"
   },
   "label.enable-share-url": {
-    "defaultMessage": "Delen via URL aanzetten"
+    "defaultMessage": "Sta delen via openbare URL toe"
   },
   "label.invalid": {
     "defaultMessage": "Ongeldig"
@@ -228,9 +228,9 @@
     "defaultMessage": "Tracking code"
   },
   "tooltip.get-share-url": {
-    "defaultMessage": "Maak openbare URL"
+    "defaultMessage": "Openbare URL"
   },
   "tooltip.get-tracking-code": {
-    "defaultMessage": "Maak tracking code"
+    "defaultMessage": "Tracking code"
   }
 }
