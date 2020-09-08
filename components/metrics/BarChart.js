@@ -151,7 +151,7 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets, unit, animationDuration]);
+  }, [datasets, unit, animationDuration, locale]);
 
   return (
     <>
