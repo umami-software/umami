@@ -125,6 +125,9 @@
   "message.incorrect-username-password": {
     "defaultMessage": "Incorrecte gebruikersnaam/wachtwoord."
   },
+  "message.no-data-available": {
+    "defaultMessage": "Geen gegevens beschikbaar."
+  },
   "message.save-success": {
     "defaultMessage": "Opslaan succesvol."
   },
@@ -168,7 +171,7 @@
     "defaultMessage": "Ruw"
   },
   "metrics.operating-system": {
-    "defaultMessage": "Besturingssystem"
+    "defaultMessage": "Besturingssysteem"
   },
   "metrics.page-views": {
     "defaultMessage": "Paginaweergaven"

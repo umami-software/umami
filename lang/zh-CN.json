@@ -125,6 +125,9 @@
   "message.incorrect-username-password": {
     "defaultMessage": "用户名密码不正确."
   },
+  "message.no-data-available": {
+    "defaultMessage": "无可用数据."
+  },
   "message.save-success": {
     "defaultMessage": "成功保存."
   },
