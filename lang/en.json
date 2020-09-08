@@ -47,7 +47,7 @@
   "header.nav.settings": {
     "defaultMessage": "Settings"
   },
-  "label.adminsitrator": {
+  "label.administrator": {
     "defaultMessage": "Administrator"
   },
   "label.confirm-password": {
@@ -124,6 +124,9 @@
   },
   "message.incorrect-username-password": {
     "defaultMessage": "Incorrect username/password."
+  },
+  "message.no-data-available": {
+    "defaultMessage": "No data available."
   },
   "message.save-success": {
     "defaultMessage": "Saved successfully."
