@@ -147,7 +147,7 @@
     "defaultMessage": "Ortalama ziyaret süresi"
   },
   "metrics.bounce-rate": {
-    "defaultMessage": "Hemen çıkma oranı"
+    "defaultMessage": "Çıkma oranı"
   },
   "metrics.browsers": {
     "defaultMessage": "Tarayıcılar"
