@@ -122,6 +122,9 @@
   "message.failure": {
     "defaultMessage": "出现错误."
   },
+  "message.incorrect-username-password": {
+    "defaultMessage": "用户名密码不正确."
+  },
   "message.save-success": {
     "defaultMessage": "成功保存."
   },

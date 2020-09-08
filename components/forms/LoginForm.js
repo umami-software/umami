@@ -18,10 +18,10 @@ const validate = ({ username, password }) => {
   const errors = {};
 
   if (!username) {
-    errors.username = 'Required';
+    errors.username = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
   if (!password) {
-    errors.password = 'Required';
+    errors.password = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
 
   return errors;
@@ -36,7 +36,16 @@ export default function LoginForm() {
     if (typeof response !== 'string') {
       await Router.push('/');
     } else {
-      setMessage(response.startsWith('401') ? 'Incorrect username/password' : response);
+      setMessage(
+        response.startsWith('401') ? (
+          <FormattedMessage
+            id="message.incorrect-username-password"
+            defaultMessage="Incorrect username/password."
+          />
+        ) : (
+          response
+        ),
+      );
     }
   };
 

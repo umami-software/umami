@@ -122,6 +122,9 @@
   "message.failure": {
     "defaultMessage": "Something went wrong."
   },
+  "message.incorrect-username-password": {
+    "defaultMessage": "Incorrect username/password."
+  },
   "message.save-success": {
     "defaultMessage": "Saved successfully."
   },
@@ -165,7 +168,7 @@
     "defaultMessage": "Raw"
   },
   "metrics.operating-system": {
-    "defaultMessage": "Operating System"
+    "defaultMessage": "Operating system"
   },
   "metrics.page-views": {
     "defaultMessage": "Page views"
