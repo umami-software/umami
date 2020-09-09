@@ -1,6 +1,6 @@
 {
     "active-users.message": {
-      "defaultMessage": "{x} derzeit {x, plural, one {Besucher} other {Besucher}}"
+    "defaultMessage": "{x} {x, plural, one {aktiver Besucher} other {aktive Besucher}}"
     },
     "button.add-account": {
       "defaultMessage": "Konto hinzufügen"
@@ -18,7 +18,7 @@
       "defaultMessage": "Passwort ändern"
     },
     "button.copy-to-clipboard": {
-      "defaultMessage": "In Zwischenablage kopieren"
+    "defaultMessage": "In die Zwischenablage kopieren"
     },
     "button.delete": {
       "defaultMessage": "Löschen"
@@ -27,7 +27,7 @@
       "defaultMessage": "Bearbeiten"
     },
     "button.login": {
-      "defaultMessage": "Einloggen"
+    "defaultMessage": "Anmelden"
     },
     "button.more": {
       "defaultMessage": "Mehr"
@@ -36,7 +36,7 @@
       "defaultMessage": "Speichern"
     },
     "button.view-details": {
-      "defaultMessage": "Zeige Details"
+    "defaultMessage": "Details anzeigen"
     },
     "footer.powered-by": {
       "defaultMessage": "powered by"
@@ -57,16 +57,16 @@
       "defaultMessage": "Derzeitiges Passwort"
     },
     "label.domain": {
-      "defaultMessage": "Adresse"
+    "defaultMessage": "Domain"
     },
     "label.enable-share-url": {
-      "defaultMessage": "Aktiviere Link zum Teilen"
+    "defaultMessage": "Freigabe-URL aktivieren"
     },
     "label.invalid": {
       "defaultMessage": "Ungültig"
     },
     "label.invalid-domain": {
-      "defaultMessage": "Ungültige Adresse"
+    "defaultMessage": "Ungültige Domain"
     },
     "label.last-days": {
       "defaultMessage": "Letzten {x} Tage"
@@ -75,10 +75,10 @@
       "defaultMessage": "Letzten {x} Stunden"
     },
     "label.logged-in-as": {
-      "defaultMessage": "Eingeloggt als {username}"
+    "defaultMessage": "Angemeldet als {username}"
     },
     "label.logout": {
-      "defaultMessage": "Ausloggen"
+      "defaultMessage": "Abmelden"
     },
     "label.name": {
       "defaultMessage": "Name"
@@ -117,37 +117,37 @@
       "defaultMessage": "In Zwischenablage kopiert!"
     },
     "message.delete-warning": {
-      "defaultMessage": "Sämtliche verknüpften Daten werden ebenfalls gelöscht."
+    "defaultMessage": "Alle zugehörigen Daten werden auch gelöscht."
     },
     "message.failure": {
-      "defaultMessage": "Es it ein Fehler passiert."
+      "defaultMessage": "Es it ein Fehler aufgetreten."
     },
     "message.incorrect-username-password": {
       "defaultMessage": "Falsches Passwort oder Benutzername."
     },
     "message.no-data-available": {
-      "defaultMessage": "Keine Daten verfügbar."
+    "defaultMessage": "Keine Daten vorhanden."
     },
     "message.save-success": {
       "defaultMessage": "Erfolgreich gespeichert."
     },
     "message.share-url": {
-      "defaultMessage": "Dies ist der öffentliche Link zum Teilen für {target}."
+      "defaultMessage": "Dies ist der öffentliche URL zum Teilen für {target}."
     },
     "message.track-stats": {
       "defaultMessage": "Um die Statistiken für {target} zu übermitteln, platzieren Sie bitte den folgenden Quelltext im {head} ihrer Homepage." 
     },
     "message.type-delete": {
-      "defaultMessage": "Bitte bestätigten Sie mit {delete} im Eingabefeld"
+    "defaultMessage": "Geben Sie {delete} in das Feld unten ein um zu bestätigen."
     },
     "metrics.actions": {
       "defaultMessage": "Aktionen"
     },
     "metrics.average-visit-time": {
-      "defaultMessage": "Durchschnittliche Besuchszeit"
+    "defaultMessage": "Durchschn. Besuchszeit"
     },
     "metrics.bounce-rate": {
-      "defaultMessage": "Bounce Quote"
+    "defaultMessage": "Absprungrate"
     },
     "metrics.browsers": {
       "defaultMessage": "Browsers"
@@ -168,7 +168,7 @@
       "defaultMessage": "Nur diese Domain"
     },
     "metrics.filter.raw": {
-      "defaultMessage": "Roh"
+    "defaultMessage": "Rohdaten"
     },
     "metrics.operating-system": {
       "defaultMessage": "Betriebssystem"
@@ -186,13 +186,13 @@
       "defaultMessage": "Eindeutige Besucher"
     },
     "metrics.views": {
-      "defaultMessage": "Ansichten"
+    "defaultMessage": "Aufrufe"
     },
     "metrics.visitors": {
       "defaultMessage": "Besucher"
     },
     "placeholder.message.go-to-settings": {
-      "defaultMessage": "Gehe zu den Einstellungen"
+    "defaultMessage": "Zu den Einstellungen"
     },
     "placeholder.message.no-websites-configured": {
       "defaultMessage": "Es ist keine Webseite vorhanden."
@@ -225,13 +225,13 @@
       "defaultMessage": "Webseite bearbeiten"
     },
     "title.share-url": {
-      "defaultMessage": "Link zum Teilen"
+    "defaultMessage": "Freigabe-URL"
     },
     "title.tracking-code": {
       "defaultMessage": "Tracking Kennung"
     },
     "tooltip.get-share-url": {
-      "defaultMessage": "Erstelle Link zum Teilen"
+    "defaultMessage": "Freigabe-URL abrufen"
     },
     "tooltip.get-tracking-code": {
       "defaultMessage": "Erstelle Tracking Kennung"
