@@ -1,0 +1,239 @@
+{
+  "active-users.message": {
+    "defaultMessage": "{x} текущих посетителей"
+  },
+  "button.add-account": {
+    "defaultMessage": "Добавить аккаунт"
+  },
+  "button.add-website": {
+    "defaultMessage": "Добавить сайт"
+  },
+  "button.back": {
+    "defaultMessage": "Назад"
+  },
+  "button.cancel": {
+    "defaultMessage": "Отменить"
+  },
+  "button.change-password": {
+    "defaultMessage": "Изменить пароль"
+  },
+  "button.copy-to-clipboard": {
+    "defaultMessage": "Скопировать в буфер обмена"
+  },
+  "button.delete": {
+    "defaultMessage": "Удалить"
+  },
+  "button.edit": {
+    "defaultMessage": "Редактировать"
+  },
+  "button.login": {
+    "defaultMessage": "Войти"
+  },
+  "button.more": {
+    "defaultMessage": "Больше"
+  },
+  "button.save": {
+    "defaultMessage": "Сохранить"
+  },
+  "button.view-details": {
+    "defaultMessage": "Посмотреть детали"
+  },
+  "footer.powered-by": {
+    "defaultMessage": "на движке"
+  },
+  "header.nav.dashboard": {
+    "defaultMessage": "Информационная панель"
+  },
+  "header.nav.settings": {
+    "defaultMessage": "Настройки"
+  },
+  "label.administrator": {
+    "defaultMessage": "Администратор"
+  },
+  "label.confirm-password": {
+    "defaultMessage": "Подтвердить пароль"
+  },
+  "label.current-password": {
+    "defaultMessage": "Текущий пароль"
+  },
+  "label.domain": {
+    "defaultMessage": "Домен"
+  },
+  "label.enable-share-url": {
+    "defaultMessage": "Разрешить делиться ссылкой"
+  },
+  "label.invalid": {
+    "defaultMessage": "Некорректный"
+  },
+  "label.invalid-domain": {
+    "defaultMessage": "Некорректный домен"
+  },
+  "label.last-days": {
+    "defaultMessage": "Последние {x} дней"
+  },
+  "label.last-hours": {
+    "defaultMessage": "Последние {x} часа"
+  },
+  "label.logged-in-as": {
+    "defaultMessage": "Вы вошли как {username}"
+  },
+  "label.logout": {
+    "defaultMessage": "Выйти"
+  },
+  "label.name": {
+    "defaultMessage": "Имя"
+  },
+  "label.new-password": {
+    "defaultMessage": "Новый пароль"
+  },
+  "label.password": {
+    "defaultMessage": "Пароль"
+  },
+  "label.passwords-dont-match": {
+    "defaultMessage": "Пароли не совпадают"
+  },
+  "label.required": {
+    "defaultMessage": "Обязательное"
+  },
+  "label.this-month": {
+    "defaultMessage": "Этот месяц"
+  },
+  "label.this-week": {
+    "defaultMessage": "Эта неделя"
+  },
+  "label.this-year": {
+    "defaultMessage": "Этот год"
+  },
+  "label.today": {
+    "defaultMessage": "Сегодня"
+  },
+  "label.username": {
+    "defaultMessage": "Имя пользователя"
+  },
+  "message.confirm-delete": {
+    "defaultMessage": "Вы уверены, что хотите удалить {target}?"
+  },
+  "message.copied": {
+    "defaultMessage": "Скопировано!"
+  },
+  "message.delete-warning": {
+    "defaultMessage": "Все связанные данные будут также удалены."
+  },
+  "message.failure": {
+    "defaultMessage": "Что-то пошло не так."
+  },
+  "message.incorrect-username-password": {
+    "defaultMessage": "Неверное имя пользователя/пароль."
+  },
+  "message.no-data-available": {
+    "defaultMessage": "Нет данных."
+  },
+  "message.save-success": {
+    "defaultMessage": "Успешно сохранено."
+  },
+  "message.share-url": {
+    "defaultMessage": "Это публичная ссылка для {target}."
+  },
+  "message.track-stats": {
+    "defaultMessage": "Чтобы отслеживать статистику для {target}, поместите следующий код в раздел {head} вашего сайта."
+  },
+  "message.type-delete": {
+    "defaultMessage": "Напишите {delete} в поле ниже, чтобы подтвердить."
+  },
+  "metrics.actions": {
+    "defaultMessage": "Действия"
+  },
+  "metrics.average-visit-time": {
+    "defaultMessage": "Среднее время посещения"
+  },
+  "metrics.bounce-rate": {
+    "defaultMessage": "Отказы"
+  },
+  "metrics.browsers": {
+    "defaultMessage": "Браузеры"
+  },
+  "metrics.countries": {
+    "defaultMessage": "Страны"
+  },
+  "metrics.devices": {
+    "defaultMessage": "Устройства"
+  },
+  "metrics.events": {
+    "defaultMessage": "События"
+  },
+  "metrics.filter.combined": {
+    "defaultMessage": "Объединенные"
+  },
+  "metrics.filter.domain-only": {
+    "defaultMessage": "Только домен"
+  },
+  "metrics.filter.raw": {
+    "defaultMessage": "Сырые данные"
+  },
+  "metrics.operating-system": {
+    "defaultMessage": "Операционная система"
+  },
+  "metrics.page-views": {
+    "defaultMessage": "Просмотры страниц"
+  },
+  "metrics.pages": {
+    "defaultMessage": "Страницы"
+  },
+  "metrics.referrers": {
+    "defaultMessage": "Источники"
+  },
+  "metrics.unique-visitors": {
+    "defaultMessage": "Уникальные посетители"
+  },
+  "metrics.views": {
+    "defaultMessage": "Просмотры"
+  },
+  "metrics.visitors": {
+    "defaultMessage": "Посетители"
+  },
+  "placeholder.message.go-to-settings": {
+    "defaultMessage": "Перейти к настройкам"
+  },
+  "placeholder.message.no-websites-configured": {
+    "defaultMessage": "У вас нет настроенных сайтов."
+  },
+  "settings.accounts": {
+    "defaultMessage": "Аккаунты"
+  },
+  "settings.profile": {
+    "defaultMessage": "Профиль"
+  },
+  "settings.websites": {
+    "defaultMessage": "Сайты"
+  },
+  "title.add-account": {
+    "defaultMessage": "Добавить аккаунт"
+  },
+  "title.add-website": {
+    "defaultMessage": "Добавить сайт"
+  },
+  "title.delete-account": {
+    "defaultMessage": "Удалить аккаунт"
+  },
+  "title.delete-website": {
+    "defaultMessage": "Удалить сайт"
+  },
+  "title.edit-account": {
+    "defaultMessage": "Редактировать аккаунт"
+  },
+  "title.edit-website": {
+    "defaultMessage": "Редактировать сайт"
+  },
+  "title.share-url": {
+    "defaultMessage": "Поделиться ссылкой"
+  },
+  "title.tracking-code": {
+    "defaultMessage": "Код отслеживания"
+  },
+  "tooltip.get-share-url": {
+    "defaultMessage": "Получить публичную ссылку"
+  },
+  "tooltip.get-tracking-code": {
+    "defaultMessage": "Получить код отслеживания"
+  }
+}
