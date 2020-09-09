@@ -1,0 +1,239 @@
+{
+  "active-users.message": {
+    "defaultMessage": "{x} {x, plural, one {aktiver Besucher} other {aktive Besucher}}"
+  },
+  "button.add-account": {
+    "defaultMessage": "Konto erstellen"
+  },
+  "button.add-website": {
+    "defaultMessage": "Webseite hinzufügen"
+  },
+  "button.back": {
+    "defaultMessage": "Zurück"
+  },
+  "button.cancel": {
+    "defaultMessage": "Abbrechen"
+  },
+  "button.change-password": {
+    "defaultMessage": "Passwort ändern"
+  },
+  "button.copy-to-clipboard": {
+    "defaultMessage": "In die Zwischenablage kopieren"
+  },
+  "button.delete": {
+    "defaultMessage": "Löschen"
+  },
+  "button.edit": {
+    "defaultMessage": "Bearbeiten"
+  },
+  "button.login": {
+    "defaultMessage": "Anmelden"
+  },
+  "button.more": {
+    "defaultMessage": "Mehr"
+  },
+  "button.save": {
+    "defaultMessage": "Speichern"
+  },
+  "button.view-details": {
+    "defaultMessage": "Details anzeigen"
+  },
+  "footer.powered-by": {
+    "defaultMessage": "bereitgestellt von"
+  },
+  "header.nav.dashboard": {
+    "defaultMessage": "Dashboard"
+  },
+  "header.nav.settings": {
+    "defaultMessage": "Einstellungen"
+  },
+  "label.administrator": {
+    "defaultMessage": "Administrator"
+  },
+  "label.confirm-password": {
+    "defaultMessage": "Passwort wiederholen"
+  },
+  "label.current-password": {
+    "defaultMessage": "Aktuelles Passwort"
+  },
+  "label.domain": {
+    "defaultMessage": "Domain"
+  },
+  "label.enable-share-url": {
+    "defaultMessage": "Freigabe-URL aktivieren"
+  },
+  "label.invalid": {
+    "defaultMessage": "Ungültig"
+  },
+  "label.invalid-domain": {
+    "defaultMessage": "Ungültige Domain"
+  },
+  "label.last-days": {
+    "defaultMessage": "Letzten {x} Tage"
+  },
+  "label.last-hours": {
+    "defaultMessage": "Letzten {x} Stunden"
+  },
+  "label.logged-in-as": {
+    "defaultMessage": "Angemeldet als {username}"
+  },
+  "label.logout": {
+    "defaultMessage": "Ausloggen"
+  },
+  "label.name": {
+    "defaultMessage": "Name"
+  },
+  "label.new-password": {
+    "defaultMessage": "Neues Passwort"
+  },
+  "label.password": {
+    "defaultMessage": "Passwort"
+  },
+  "label.passwords-dont-match": {
+    "defaultMessage": "Passwörter stimmen nicht überein"
+  },
+  "label.required": {
+    "defaultMessage": "Required"
+  },
+  "label.this-month": {
+    "defaultMessage": "Diesen Monat"
+  },
+  "label.this-week": {
+    "defaultMessage": "Dieser Woche"
+  },
+  "label.this-year": {
+    "defaultMessage": "Dieses Jahr"
+  },
+  "label.today": {
+    "defaultMessage": "Heute"
+  },
+  "label.username": {
+    "defaultMessage": "Nutzername"
+  },
+  "message.confirm-delete": {
+    "defaultMessage": "Sind Sie sicher, dass Sie {target} löschen möchten?"
+  },
+  "message.copied": {
+    "defaultMessage": "Kopiert!"
+  },
+  "message.delete-warning": {
+    "defaultMessage": "Alle zugehörigen Daten werden auch gelöscht."
+  },
+  "message.failure": {
+    "defaultMessage": "Etwas ist schief gelaufen."
+  },
+  "message.incorrect-username-password": {
+    "defaultMessage": "Benutzername oder Passwort ist falsch."
+  },
+  "message.no-data-available": {
+    "defaultMessage": "Keine Daten vorhanden."
+  },
+  "message.save-success": {
+    "defaultMessage": "Erfolgreich gespeichert."
+  },
+  "message.share-url": {
+    "defaultMessage": "Dies ist die öffentliche URL für {target}."
+  },
+  "message.track-stats": {
+    "defaultMessage": "Um Statistiken für {target} zu verfolgen, platzieren Sie den folgenden Code in der {head} Sektion Ihrer Website."
+  },
+  "message.type-delete": {
+    "defaultMessage": "Geben Sie {delete} in das Feld unten ein um zu bestätigen."
+  },
+  "metrics.actions": {
+    "defaultMessage": "Aktionen"
+  },
+  "metrics.average-visit-time": {
+    "defaultMessage": "Durchschn. Besuchszeit"
+  },
+  "metrics.bounce-rate": {
+    "defaultMessage": "Absprungrate"
+  },
+  "metrics.browsers": {
+    "defaultMessage": "Browsers"
+  },
+  "metrics.countries": {
+    "defaultMessage": "Länder"
+  },
+  "metrics.devices": {
+    "defaultMessage": "Geräte"
+  },
+  "metrics.events": {
+    "defaultMessage": "Events"
+  },
+  "metrics.filter.combined": {
+    "defaultMessage": "Kombiniert"
+  },
+  "metrics.filter.domain-only": {
+    "defaultMessage": "Nur Domain"
+  },
+  "metrics.filter.raw": {
+    "defaultMessage": "Rohdaten"
+  },
+  "metrics.operating-system": {
+    "defaultMessage": "Betriebssystem"
+  },
+  "metrics.page-views": {
+    "defaultMessage": "Seitenaufrufe"
+  },
+  "metrics.pages": {
+    "defaultMessage": "Seiten"
+  },
+  "metrics.referrers": {
+    "defaultMessage": "Verweise"
+  },
+  "metrics.unique-visitors": {
+    "defaultMessage": "Eindeutige Besucher"
+  },
+  "metrics.views": {
+    "defaultMessage": "Ansichten"
+  },
+  "metrics.visitors": {
+    "defaultMessage": "Besucher"
+  },
+  "placeholder.message.go-to-settings": {
+    "defaultMessage": "Zu den Einstellungen"
+  },
+  "placeholder.message.no-websites-configured": {
+    "defaultMessage": "Es gibt keine konfigurierten Websites."
+  },
+  "settings.accounts": {
+    "defaultMessage": "Konten"
+  },
+  "settings.profile": {
+    "defaultMessage": "Profil"
+  },
+  "settings.websites": {
+    "defaultMessage": "Webseiten"
+  },
+  "title.add-account": {
+    "defaultMessage": "Konto erstellen"
+  },
+  "title.add-website": {
+    "defaultMessage": "Webseite hinzufügen"
+  },
+  "title.delete-account": {
+    "defaultMessage": "Konto löschen"
+  },
+  "title.delete-website": {
+    "defaultMessage": "Webseite löschen"
+  },
+  "title.edit-account": {
+    "defaultMessage": "Konto ändern"
+  },
+  "title.edit-website": {
+    "defaultMessage": "Webseite ändern"
+  },
+  "title.share-url": {
+    "defaultMessage": "Freigabe-URL"
+  },
+  "title.tracking-code": {
+    "defaultMessage": "Verfolgungscode"
+  },
+  "tooltip.get-share-url": {
+    "defaultMessage": "Freigabe-URL abrufen"
+  },
+  "tooltip.get-tracking-code": {
+    "defaultMessage": "Verfolgungscode abrufen"
+  }
+}
