@@ -80,7 +80,9 @@ export default function AccountSettings() {
   return (
     <>
       <PageHeader>
-        <div>Accounts</div>
+        <div>
+          <FormattedMessage id="settings.accounts" defaultMessage="Accounts" />
+        </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
           <div>
             <FormattedMessage id="button.add-account" defaultMessage="Add account" />
