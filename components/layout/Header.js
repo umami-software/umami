@@ -22,20 +22,22 @@ export default function Header() {
           </div>
         </div>
         <div className="col-12 col-md-9">
-          {user ? (
-            <div className={styles.nav}>
-              <Link href="/dashboard">
-                <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
-              </Link>
-              <Link href="/settings">
-                <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
-              </Link>
+          <div className={styles.nav}>
+            {user ? (
+              <>
+                <Link href="/dashboard">
+                  <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
+                </Link>
+                <Link href="/settings">
+                  <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
+                </Link>
+                <LanguageButton menuAlign="right" />
+                <UserButton />
+              </>
+            ) : (
               <LanguageButton menuAlign="right" />
-              <UserButton />
-            </div>
-          ) : (
-            <LanguageButton menuAlign="right" />
-          )}
+            )}
+          </div>
         </div>
       </div>
     </header>
