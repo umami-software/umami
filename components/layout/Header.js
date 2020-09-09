@@ -15,29 +15,27 @@ export default function Header() {
   return (
     <header className="container">
       <div className={classNames(styles.header, 'row align-items-center')}>
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-3">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />
             <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
           </div>
         </div>
-        <div className="col-12 col-md-6">
-          <div className={styles.nav}>
-            {user ? (
-              <>
-                <Link href="/dashboard">
-                  <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
-                </Link>
-                <Link href="/settings">
-                  <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
-                </Link>
-                <LanguageButton menuAlign="right" />
-                <UserButton />
-              </>
-            ) : (
+        <div className="col-12 col-md-9">
+          {user ? (
+            <div className={styles.nav}>
+              <Link href="/dashboard">
+                <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
+              </Link>
+              <Link href="/settings">
+                <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
+              </Link>
               <LanguageButton menuAlign="right" />
-            )}
-          </div>
+              <UserButton />
+            </div>
+          ) : (
+            <LanguageButton menuAlign="right" />
+          )}
         </div>
       </div>
     </header>

@@ -32,6 +32,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
       </Button>
       {showMenu && (
         <Menu
+          className={styles.menu}
           options={menuOptions}
           onSelect={handleSelect}
           float={menuPosition}

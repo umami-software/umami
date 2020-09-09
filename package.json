@@ -33,6 +33,9 @@
     "**/*.css": [
       "stylelint --fix",
       "prettier --write"
+    ],
+    "**/*.json": [
+      "prettier --write"
     ]
   },
   "husky": {

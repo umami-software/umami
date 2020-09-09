@@ -67,16 +67,16 @@ export default function WebsiteSettings() {
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
-      className: 'col-6 col-md-4',
+      className: 'col-6 col-xl-4',
     },
     {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
-      className: 'col-6 col-md-4',
+      className: 'col-6 col-xl-4',
     },
     {
       key: 'action',
-      className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
+      className: classNames(styles.buttons, 'col-12 col-xl-4 pt-2 pt-xl-0'),
       render: Buttons,
     },
   ];
