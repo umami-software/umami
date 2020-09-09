@@ -2,10 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
-import styles from './BarChart.module.css';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
-import { useSelector } from 'react-redux';
+import useLocale from 'hooks/useLocale';
+import styles from './BarChart.module.css';
 
 export default function BarChart({
   chartId,
@@ -22,7 +22,7 @@ export default function BarChart({
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState({});
-  const locale = useSelector(state => state.app.locale);
+  const [locale] = useLocale();
 
   function renderXLabel(label, index, values) {
     const d = new Date(values[index].value);
