@@ -3,3 +3,7 @@
   position: relative;
   cursor: pointer;
 }
+
+.menu {
+  z-index: 100;
+}

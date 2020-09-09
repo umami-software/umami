@@ -4,6 +4,11 @@
   cursor: pointer;
 }
 
+.button {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
 .username {
   border-bottom: 1px solid var(--gray500);
 }
