@@ -15,4 +15,5 @@
 
 .label {
   font-size: var(--font-size-normal);
+  padding-right: 20px;
 }
