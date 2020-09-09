@@ -117,7 +117,7 @@
     "defaultMessage": "Panoya kopyalandı!"
   },
   "message.delete-warning": {
-    "defaultMessage": "All associated data will be deleted as well."
+    "defaultMessage": "İlişkili tüm veriler de  silinecektir."
   },
   "message.failure": {
     "defaultMessage": "Bir şeyler ters gitti!"
