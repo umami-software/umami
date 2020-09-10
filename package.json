@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all build-tracker compile-lang copy-db-schema build-db-client build-app",
-    "start": "next start",
+    "start": "next start -p ${PORT-3000}",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "copy-db-schema": "node scripts/copy-db-schema.js",
