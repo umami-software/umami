@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Head from 'next/head';
 import Globe from 'assets/globe.svg';
 import useDocumentClick from 'hooks/useDocumentClick';
 import Menu from './Menu';
@@ -26,19 +27,35 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
   });
 
   return (
-    <div ref={ref} className={styles.container}>
-      <Button icon={<Globe />} onClick={() => setShowMenu(true)} size="small">
-        <div className={locale}>{selectedLocale}</div>
-      </Button>
-      {showMenu && (
-        <Menu
-          className={styles.menu}
-          options={menuOptions}
-          onSelect={handleSelect}
-          float={menuPosition}
-          align={menuAlign}
-        />
-      )}
-    </div>
+    <>
+      <Head>
+        {locale === 'zh-CN' && (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
+        )}
+        {locale === 'jp-JP' && (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
+        )}
+      </Head>
+      <div ref={ref} className={styles.container}>
+        <Button icon={<Globe />} onClick={() => setShowMenu(true)} size="small">
+          <div className={locale}>{selectedLocale}</div>
+        </Button>
+        {showMenu && (
+          <Menu
+            className={styles.menu}
+            options={menuOptions}
+            onSelect={handleSelect}
+            float={menuPosition}
+            align={menuAlign}
+          />
+        )}
+      </div>
+    </>
   );
 }
