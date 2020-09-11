@@ -64,8 +64,14 @@ export default function BarChart({
     } else {
       const [label, value] = body[0].lines[0].split(':');
 
+      console.log(
+        +title[0],
+        new Date(+title[0]),
+        dateFormat(new Date(+title[0]), 'EEE MMMM d yyyy', locale),
+      );
+
       setTooltip({
-        title: title[0],
+        title: dateFormat(new Date(+title[0]), 'EEE MMMM d yyyy', locale),
         value,
         label,
         labelColor: labelColors[0].backgroundColor,
@@ -95,7 +101,7 @@ export default function BarChart({
             distribution: 'series',
             time: {
               unit,
-              tooltipFormat: 'ddd MMMM DD YYYY',
+              tooltipFormat: 'x',
             },
             ticks: {
               callback: renderXLabel,
@@ -138,6 +144,7 @@ export default function BarChart({
     options.scales.xAxes[0].time.unit = unit;
     options.scales.xAxes[0].ticks.callback = renderXLabel;
     options.animation.duration = animationDuration;
+    options.tooltips.custom = renderTooltip;
 
     onUpdate(chart.current);
   }
