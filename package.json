@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -59,6 +59,7 @@
     "geolite2-redist": "^1.0.7",
     "immer": "^7.0.8",
     "is-localhost-ip": "^1.4.0",
+    "isbot-fast": "^1.2.0",
     "jose": "^1.28.0",
     "maxmind": "^4.1.4",
     "moment-timezone": "^0.5.31",
