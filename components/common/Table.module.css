@@ -19,14 +19,6 @@
   flex-direction: column;
 }
 
-.empty {
-  color: var(--gray500);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .row {
   border-bottom: 1px solid var(--gray300);
   padding: 10px 0;
