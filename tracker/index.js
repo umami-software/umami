@@ -58,14 +58,14 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Handle history */
 
-  const handlePush = (state, title, navigatedURL) => {
+  const handlePush = (state, title, url) => {
     removeEvents();
     currentRef = currentUrl;
-    const newUrl = navigatedURL.toString();
+    const newUrl = url.toString();
 
-    if (newUrl.startsWith('http')) {
-      const url = new URL(newUrl);
-      currentUrl = `${url.pathname}${url.search}`;
+    if (newUrl.substring(0, 4) === 'http') {
+      const { pathname, search } = new URL(newUrl);
+      currentUrl = `${pathname}${search}`;
     } else {
       currentUrl = newUrl;
     }

@@ -87,7 +87,7 @@ export default function MetricsTable({
             </div>
           </div>
           <div className={styles.body}>
-            {data?.length === 0 && (
+            {rankings?.length === 0 && (
               <div className={styles.empty}>
                 <FormattedMessage
                   id="message.no-data-available"
@@ -97,14 +97,14 @@ export default function MetricsTable({
             )}
             {limit
               ? rankings.map(row => getRow(row))
-              : data?.length > 0 && (
+              : rankings.length > 0 && (
                   <FixedSizeList height={500} itemCount={rankings.length} itemSize={30}>
                     {Row}
                   </FixedSizeList>
                 )}
           </div>
           <div className={styles.footer}>
-            {limit && data.length > limit && (
+            {limit && rankings.length > limit && (
               <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
                 <div>
                   <FormattedMessage id="button.more" defaultMessage="More" />
