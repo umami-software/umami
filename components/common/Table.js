@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import NoData from 'components/common/NoData';
 import styles from './Table.module.css';
-import { FormattedMessage } from 'react-intl';
 
 export default function Table({ columns, rows, empty }) {
   if (empty && rows.length === 0) {
@@ -22,11 +22,7 @@ export default function Table({ columns, rows, empty }) {
         ))}
       </div>
       <div className={styles.body}>
-        {rows.length === 0 && (
-          <div className={styles.empty}>
-            <FormattedMessage id="message.no-data-available" defaultMessage="No data available." />
-          </div>
-        )}
+        {rows.length === 0 && <NoData />}
         {rows.map((row, rowIndex) => (
           <div className={classNames(styles.row, 'row')} key={rowIndex}>
             {columns.map(({ key, render, className, style, cell }) => (

@@ -1,16 +1,17 @@
 import React, { useState, useMemo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
 import Button from 'components/common/Button';
 import Loading from 'components/common/Loading';
+import NoData from 'components/common/NoData';
 import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import { useDateRange } from 'hooks/useDateRange';
 import styles from './MetricsTable.module.css';
-import { FormattedMessage } from 'react-intl';
 
 export default function MetricsTable({
   websiteId,
@@ -77,7 +78,8 @@ export default function MetricsTable({
 
   return (
     <div className={classNames(styles.container, className)}>
-      {data ? (
+      {!data && <Loading />}
+      {data && (
         <>
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
@@ -87,14 +89,7 @@ export default function MetricsTable({
             </div>
           </div>
           <div className={styles.body}>
-            {rankings?.length === 0 && (
-              <div className={styles.empty}>
-                <FormattedMessage
-                  id="message.no-data-available"
-                  defaultMessage="No data available."
-                />
-              </div>
-            )}
+            {rankings?.length === 0 && <NoData />}
             {limit
               ? rankings.map(row => getRow(row))
               : rankings.length > 0 && (
@@ -104,7 +99,7 @@ export default function MetricsTable({
                 )}
           </div>
           <div className={styles.footer}>
-            {limit && rankings.length > limit && (
+            {limit && data.length > limit && (
               <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
                 <div>
                   <FormattedMessage id="button.more" defaultMessage="More" />
@@ -113,8 +108,6 @@ export default function MetricsTable({
             )}
           </div>
         </>
-      ) : (
-        <Loading />
       )}
     </div>
   );
