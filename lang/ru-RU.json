@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "Посмотреть детали"
   },
+  "button.websites": {
+    "defaultMessage": "Сайты"
+  },
   "footer.powered-by": {
     "defaultMessage": "на движке"
   },

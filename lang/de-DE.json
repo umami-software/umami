@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "Details anzeigen"
   },
+  "button.websites": {
+    "defaultMessage": "Webseiten"
+  },
   "footer.powered-by": {
     "defaultMessage": "Powered by"
   },

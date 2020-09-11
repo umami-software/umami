@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "Meer details"
   },
+  "button.websites": {
+    "defaultMessage": "Websites"
+  },
   "footer.powered-by": {
     "defaultMessage": "mogelijk gemaakt door"
   },

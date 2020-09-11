@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "View details"
   },
+  "button.websites": {
+    "defaultMessage": "Websites"
+  },
   "footer.powered-by": {
     "defaultMessage": "Powered by"
   },
@@ -127,6 +130,9 @@
   },
   "message.no-data-available": {
     "defaultMessage": "No data available."
+  },
+  "message.page-not-found": {
+    "defaultMessage": "Page not found"
   },
   "message.save-success": {
     "defaultMessage": "Saved successfully."

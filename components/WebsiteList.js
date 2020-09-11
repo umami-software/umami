@@ -9,9 +9,9 @@ import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 
-export default function WebsiteList() {
+export default function WebsiteList({ userId }) {
   const router = useRouter();
-  const { data } = useFetch('/api/websites');
+  const { data } = useFetch('/api/websites', { userId });
 
   if (!data) {
     return null;

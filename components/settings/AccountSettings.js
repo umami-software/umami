@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
+import Toast from 'components/common/Toast';
 import AccountEditForm from 'components/forms/AccountEditForm';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import DeleteForm from 'components/forms/DeleteForm';
@@ -13,11 +16,11 @@ import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
+import List from 'assets/list-ul.svg';
 import styles from './AccountSettings.module.css';
-import Toast from '../common/Toast';
-import { FormattedMessage } from 'react-intl';
 
 export default function AccountSettings() {
+  const router = useRouter();
   const [addAccount, setAddAccount] = useState();
   const [editAccount, setEditAccount] = useState();
   const [deleteAccount, setDeleteAccount] = useState();
@@ -30,6 +33,13 @@ export default function AccountSettings() {
   const Buttons = row =>
     row.username !== 'admin' ? (
       <ButtonLayout>
+        <Button
+          icon={<List />}
+          size="small"
+          tooltip={<FormattedMessage id="button.websites" defaultMessage="Websites" />}
+          tooltipId={`button-websites-${row.username}`}
+          onClick={() => router.push(`/dashboard/${row.user_id}/${row.username}`)}
+        />
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
           <div>
             <FormattedMessage id="button.edit" defaultMessage="Edit" />
@@ -51,11 +61,12 @@ export default function AccountSettings() {
     },
     {
       key: 'is_admin',
-      label: <FormattedMessage id="label.adminsitrator" defaultMessage="Administrator" />,
+      label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
       className: 'col-6 col-md-4',
       render: Checkmark,
     },
     {
+      key: 'actions',
       className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
       render: Buttons,
     },

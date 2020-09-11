@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "查看更多"
   },
+  "button.websites": {
+    "defaultMessage": "网站"
+  },
   "footer.powered-by": {
     "defaultMessage": "运行"
   },

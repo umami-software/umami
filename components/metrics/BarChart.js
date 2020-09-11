@@ -64,12 +64,6 @@ export default function BarChart({
     } else {
       const [label, value] = body[0].lines[0].split(':');
 
-      console.log(
-        +title[0],
-        new Date(+title[0]),
-        dateFormat(new Date(+title[0]), 'EEE MMMM d yyyy', locale),
-      );
-
       setTooltip({
         title: dateFormat(new Date(+title[0]), 'EEE MMMM d yyyy', locale),
         value,

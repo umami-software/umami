@@ -38,6 +38,9 @@
   "button.view-details": {
     "defaultMessage": "Detayı incele"
   },
+  "button.websites": {
+    "defaultMessage": "Web siteleri"
+  },
   "footer.powered-by": {
     "defaultMessage": "Sağlayıcı:"
   },
