@@ -42,6 +42,7 @@
   "message.failure": "問題が発生しました。",
   "message.incorrect-username-password": "ユーザー名/パスワードが正しくありません。",
   "message.no-data-available": "データがありません。",
+  "message.page-not-found": "ページが見つかりません。",
   "message.save-success": "正常に保存されました。",
   "message.share-url": "これは {target} の共有リンクです。",
   "message.track-stats": "{target}のアクセス解析を開始するには、次のコードをWebサイトの{head}セクションへ追加してください。",

@@ -42,6 +42,7 @@
   "message.failure": "Bir şeyler ters gitti!",
   "message.incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
   "message.no-data-available": "Henüz hiç veri yok.",
+  "message.page-not-found": "Sayfa bulunamadı.",
   "message.save-success": "Başarıyla kaydedildi.",
   "message.share-url": "{target} için kullanılabilir anonim paylaşım adresidir.",
   "message.track-stats": "{target} alanı adı istatistiklerini takip etmek için, aşağıdaki kodu web sitenizin {head} bloğuna yerleştirin.",

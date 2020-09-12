@@ -42,6 +42,7 @@
   "message.failure": "Что-то пошло не так.",
   "message.incorrect-username-password": "Неверное имя пользователя/пароль.",
   "message.no-data-available": "Нет данных.",
+  "message.page-not-found": "Страница не найдена.",
   "message.save-success": "Успешно сохранено.",
   "message.share-url": "Это публичная ссылка для {target}.",
   "message.track-stats": "Чтобы отслеживать статистику для {target}, поместите следующий код в раздел {head} вашего сайта.",

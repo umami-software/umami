@@ -42,6 +42,7 @@
   "message.failure": "Es it ein Fehler aufgetreten.",
   "message.incorrect-username-password": "Falsches Passwort oder Benutzername.",
   "message.no-data-available": "Keine Daten vorhanden.",
+  "message.page-not-found": "Seite nicht gefunden.",
   "message.save-success": "Erfolgreich gespeichert.",
   "message.share-url": "Dies ist der öffentliche URL zum Teilen für {target}.",
   "message.track-stats": "Um die Statistiken für {target} zu übermitteln, platzieren Sie bitte den folgenden Quelltext im {head} ihrer Homepage.",

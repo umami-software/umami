@@ -92,7 +92,6 @@ Or with MySQL support:
 docker pull ghcr.io/mikecao/umami:mysql-latest
 ```
 
-
 ## Getting updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:

@@ -42,6 +42,7 @@
   "message.failure": "Er is iets misgegaan.",
   "message.incorrect-username-password": "Incorrecte gebruikersnaam/wachtwoord.",
   "message.no-data-available": "Geen gegevens beschikbaar.",
+  "message.page-not-found": "Pagina niet gevonden.",
   "message.save-success": "Opslaan succesvol.",
   "message.share-url": "Met deze URL kan {target} openbaar gedeeld worden.",
   "message.track-stats": "Om statistieken voor {target} bij te houden, plaats je de volgende code in het {head} gedeelte van je website.",

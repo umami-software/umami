@@ -42,6 +42,7 @@
   "message.failure": "出现错误.",
   "message.incorrect-username-password": "用户名密码不正确.",
   "message.no-data-available": "无可用数据.",
+  "message.page-not-found": "网页未找到.",
   "message.save-success": "成功保存.",
   "message.share-url": "这是 {target} 的共享链接.",
   "message.track-stats": "把以下代码放到你的网站的{head}部分来收集{target}的数据.",
