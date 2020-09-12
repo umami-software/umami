@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 export default function OSTable({ websiteId, limit, onExpand }) {
   return (
     <MetricsTable
-      title={<FormattedMessage id="metrics.operating-system" defaultMessage="Operating system" />}
+      title={<FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />}
       type="os"
       metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}

@@ -60,7 +60,7 @@ export default function WebsiteDetails({ websiteId }) {
       component: BrowsersTable,
     },
     {
-      label: <FormattedMessage id="metrics.operating-system" defaultMessage="Operating system" />,
+      label: <FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />,
       value: 'os',
       component: OSTable,
     },

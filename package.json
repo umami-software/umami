@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-tracker compile-lang copy-db-schema build-db-client build-app",
+    "build": "npm-run-all build-tracker build-lang copy-db-schema build-db-client build-app",
     "start": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
@@ -22,8 +22,11 @@
     "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
     "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
-    "extract-lang": "formatjs extract {pages,components}/**/*.js --out-file lang/en.json",
-    "compile-lang": "formatjs compile-folder --ast lang lang-compiled"
+    "build-lang": "npm-run-all format-lang compile-lang",
+    "extract-lang": "formatjs extract {pages,components}/**/*.js --out-file lang/en-US.json",
+    "merge-lang": "node scripts/merge-lang.js",
+    "format-lang": "node scripts/format-lang.js",
+    "compile-lang": "formatjs compile-folder --ast lang-formatted lang-compiled"
   },
   "lint-staged": {
     "**/*.js": [
