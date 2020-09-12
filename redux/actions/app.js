@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const app = createSlice({
   name: 'app',
-  initialState: { locale: 'en' },
+  initialState: { locale: 'en-US' },
   reducers: {
     updateApp(state, action) {
       state = action.payload;
