@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "Ham"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "İşletim sistemi"
   },
   "metrics.page-views": {

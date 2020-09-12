@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "Rohdaten"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "Betriebssystem"
   },
   "metrics.page-views": {

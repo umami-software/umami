@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "すべて表示"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "OS"
   },
   "metrics.page-views": {

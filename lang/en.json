@@ -170,8 +170,8 @@
   "metrics.filter.raw": {
     "defaultMessage": "Raw"
   },
-  "metrics.operating-system": {
-    "defaultMessage": "Operating system"
+  "metrics.operating-systems": {
+    "defaultMessage": "Operating systems"
   },
   "metrics.page-views": {
     "defaultMessage": "Page views"

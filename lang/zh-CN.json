@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "原始"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "操作系统"
   },
   "metrics.page-views": {

@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "Сырые данные"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "Операционная система"
   },
   "metrics.page-views": {

@@ -51,7 +51,7 @@ export default function AccountSettings() {
     },
     {
       key: 'is_admin',
-      label: <FormattedMessage id="label.adminsitrator" defaultMessage="Administrator" />,
+      label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
       className: 'col-6 col-md-4',
       render: Checkmark,
     },

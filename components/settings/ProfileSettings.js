@@ -38,7 +38,9 @@ export default function ProfileSettings() {
         <dd>{user.username}</dd>
       </dl>
       {changePassword && (
-        <Modal title="Change password">
+        <Modal
+          title={<FormattedMessage id="button.change-password" defaultMessage="Change password" />}
+        >
           <ChangePasswordForm
             values={{ user_id }}
             onSave={handleSave}

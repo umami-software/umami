@@ -170,7 +170,7 @@
   "metrics.filter.raw": {
     "defaultMessage": "Ruw"
   },
-  "metrics.operating-system": {
+  "metrics.operating-systems": {
     "defaultMessage": "Besturingssysteem"
   },
   "metrics.page-views": {
