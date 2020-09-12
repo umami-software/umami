@@ -3,10 +3,10 @@
     "defaultMessage": "{x}人が閲覧中です。"
   },
   "button.add-account": {
-    "defaultMessage": "アカウント追加"
+    "defaultMessage": "アカウントを追加する"
   },
   "button.add-website": {
-    "defaultMessage": "Webサイト追加"
+    "defaultMessage": "Webサイトを追加する"
   },
   "button.back": {
     "defaultMessage": "戻る"
@@ -174,7 +174,7 @@
     "defaultMessage": "OS"
   },
   "metrics.page-views": {
-    "defaultMessage": "閲覧人数"
+    "defaultMessage": "閲覧数"
   },
   "metrics.pages": {
     "defaultMessage": "ページ"
@@ -192,7 +192,7 @@
     "defaultMessage": "訪問者数"
   },
   "placeholder.message.go-to-settings": {
-    "defaultMessage": "設定に移動"
+    "defaultMessage": "設定する"
   },
   "placeholder.message.no-websites-configured": {
     "defaultMessage": "Webサイトが設定されていません。"
@@ -201,7 +201,7 @@
     "defaultMessage": "アカウント"
   },
   "settings.profile": {
-    "defaultMessage": "プロフィール"
+    "defaultMessage": "プロファイル"
   },
   "settings.websites": {
     "defaultMessage": "Webサイト"
