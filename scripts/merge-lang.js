@@ -18,7 +18,7 @@ files.forEach(file => {
     obj[key] = message || root[key];
 
     if (!message) {
-      console.log(`Added key ${key}`);
+      console.log(`* Added key ${key}`);
     }
 
     return obj;

@@ -39,7 +39,7 @@ export default function ProfileSettings() {
       </dl>
       {changePassword && (
         <Modal
-          title={<FormattedMessage id="button.change-password" defaultMessage="Change password" />}
+          title={<FormattedMessage id="title.change-password" defaultMessage="Change password" />}
         >
           <ChangePasswordForm
             values={{ user_id }}
