@@ -23,9 +23,8 @@ export default function DropDown({
   function handleSelect(selected, e) {
     e.stopPropagation();
     setShowMenu(false);
-    if (selected !== value) {
-      onChange(selected);
-    }
+
+    onChange(selected);
   }
 
   useDocumentClick(e => {
@@ -37,7 +36,7 @@ export default function DropDown({
   return (
     <div ref={ref} className={classNames(styles.dropdown, className)} onClick={handleShowMenu}>
       <div className={styles.value}>
-        {options.find(e => e.value === value)?.label}
+        <div>{options.find(e => e.value === value)?.label || value}</div>
         <Icon icon={<Chevron />} size="small" />
       </div>
       {showMenu && (

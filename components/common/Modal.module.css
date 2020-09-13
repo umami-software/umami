@@ -1,5 +1,5 @@
 .modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -28,6 +28,7 @@
   background: var(--gray50);
   min-width: 400px;
   min-height: 100px;
+  max-width: 100vw;
   z-index: 1;
   border: 1px solid var(--gray300);
   padding: 30px;

@@ -10,10 +10,12 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 import { FormattedMessage } from 'react-intl';
 
+const CONFIRMATION_WORD = 'DELETE';
+
 const validate = ({ confirmation }) => {
   const errors = {};
 
-  if (confirmation !== 'DELETE') {
+  if (confirmation !== CONFIRMATION_WORD) {
     errors.confirmation = !confirmation ? (
       <FormattedMessage id="label.required" defaultMessage="Required" />
     ) : (
@@ -44,7 +46,7 @@ export default function DeleteForm({ values, onSave, onClose }) {
         validate={validate}
         onSubmit={handleSubmit}
       >
-        {() => (
+        {props => (
           <Form>
             <div>
               <FormattedMessage
@@ -63,7 +65,7 @@ export default function DeleteForm({ values, onSave, onClose }) {
               <FormattedMessage
                 id="message.type-delete"
                 defaultMessage="Type {delete} in the box below to confirm."
-                values={{ delete: <b>DELETE</b> }}
+                values={{ delete: <b>{CONFIRMATION_WORD}</b> }}
               />
             </p>
             <FormRow>
@@ -71,7 +73,11 @@ export default function DeleteForm({ values, onSave, onClose }) {
               <FormError name="confirmation" />
             </FormRow>
             <FormButtons>
-              <Button type="submit" variant="danger">
+              <Button
+                type="submit"
+                variant="danger"
+                disabled={props.values.confirmation !== CONFIRMATION_WORD}
+              >
                 <FormattedMessage id="button.delete" defaultMessage="Delete" />
               </Button>
               <Button onClick={onClose}>

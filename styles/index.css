@@ -15,7 +15,10 @@ body {
 
 .zh-CN {
   font-family: 'Noto Sans SC', sans-serif !important;
-  font-size: 110%;
+}
+
+.ja-JP {
+  font-family: 'Noto Sans JP', sans-serif !important;
 }
 
 *,
@@ -38,6 +41,10 @@ h6 {
   flex-direction: column;
   width: 100%;
   height: 100%;
+}
+
+#__modals {
+  z-index: 10;
 }
 
 button,

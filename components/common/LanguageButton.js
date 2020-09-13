@@ -35,7 +35,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
             rel="stylesheet"
           />
         )}
-        {locale === 'jp-JP' && (
+        {locale === 'ja-JP' && (
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
             rel="stylesheet"

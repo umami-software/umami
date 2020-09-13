@@ -1,7 +1,12 @@
-import React from 'react';
-import { getDateRange } from 'lib/date';
-import DropDown from './DropDown';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { endOfYear } from 'date-fns';
+import Modal from './Modal';
+import DropDown from './DropDown';
+import DatePickerForm from 'components/forms/DatePickerForm';
+import useLocale from 'hooks/useLocale';
+import { getDateRange } from 'lib/date';
+import { dateFormat } from 'lib/lang';
 
 const filterOptions = [
   {
@@ -35,14 +40,53 @@ const filterOptions = [
     value: '1month',
   },
   { label: <FormattedMessage id="label.this-year" defaultMessage="This year" />, value: '1year' },
+  {
+    label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
+    value: 'custom',
+  },
 ];
 
-export default function DateFilter({ value, onChange, className }) {
+export default function DateFilter({ value, startDate, endDate, onChange, className }) {
+  const [locale] = useLocale();
+  const [showPicker, setShowPicker] = useState(false);
+  const displayValue =
+    value === 'custom'
+      ? `${dateFormat(startDate, 'd LLL y', locale)} — ${dateFormat(endDate, 'd LLL y', locale)}`
+      : value;
+
   function handleChange(value) {
+    if (value === 'custom') {
+      setShowPicker(true);
+      return;
+    }
     onChange(getDateRange(value));
   }
 
+  function handlePickerChange(value) {
+    setShowPicker(false);
+    onChange(value);
+  }
+
   return (
-    <DropDown className={className} value={value} options={filterOptions} onChange={handleChange} />
+    <>
+      <DropDown
+        className={className}
+        value={displayValue}
+        options={filterOptions}
+        onChange={handleChange}
+      />
+      {showPicker && (
+        <Modal>
+          <DatePickerForm
+            startDate={startDate}
+            endDate={endDate}
+            minDate={new Date(2000, 0, 1)}
+            maxDate={endOfYear(new Date())}
+            onChange={handlePickerChange}
+            onClose={() => setShowPicker(false)}
+          />
+        </Modal>
+      )}
+    </>
   );
 }
