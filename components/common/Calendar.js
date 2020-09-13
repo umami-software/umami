@@ -160,7 +160,7 @@ const MonthSelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   const start = startOfYear(date);
   const months = [];
   for (let i = 0; i < 12; i++) {
-    months.push(endOfMonth(addMonths(start, i)));
+    months.push(addMonths(start, i));
   }
 
   function handleSelect(value) {
@@ -173,7 +173,8 @@ const MonthSelector = ({ date, minDate, maxDate, locale, onSelect }) => {
         {chunk(months, 3).map((row, i) => (
           <tr key={i}>
             {row.map((month, j) => {
-              const disabled = isBefore(month, minDate) || isAfter(month, maxDate);
+              const disabled =
+                isBefore(endOfMonth(month), minDate) || isAfter(startOfMonth(month), maxDate);
               return (
                 <td
                   key={j}
@@ -221,10 +222,11 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
     <div className={styles.pager}>
       <Button
         icon={<Chevron />}
-        size="xsmall"
+        size="small"
         className={styles.left}
         onClick={handlePrevClick}
         disabled={years[0] <= minYear}
+        variant="light"
       />
       <table>
         <tbody>
@@ -248,10 +250,11 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
       </table>
       <Button
         icon={<Chevron />}
-        size="xsmall"
+        size="small"
         className={styles.right}
         onClick={handleNextClick}
         disabled={years[years.length - 1] > maxYear}
+        variant="light"
       />
     </div>
   );

@@ -29,6 +29,7 @@ export default function Button({
         [styles.xsmall]: size === 'xsmall',
         [styles.action]: variant === 'action',
         [styles.danger]: variant === 'danger',
+        [styles.light]: variant === 'light',
         [styles.disabled]: disabled,
       })}
       disabled={disabled}

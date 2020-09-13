@@ -20,6 +20,10 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
     setShowMenu(false);
   }
 
+  function toggleMenu() {
+    setShowMenu(state => !state);
+  }
+
   useDocumentClick(e => {
     if (!ref.current.contains(e.target)) {
       setShowMenu(false);
@@ -43,7 +47,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
         )}
       </Head>
       <div ref={ref} className={styles.container}>
-        <Button icon={<Globe />} onClick={() => setShowMenu(true)} size="small">
+        <Button icon={<Globe />} onClick={toggleMenu} size="small">
           <div className={locale}>{selectedLocale}</div>
         </Button>
         {showMenu && (

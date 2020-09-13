@@ -7,8 +7,11 @@ import DatePickerForm from 'components/forms/DatePickerForm';
 import useLocale from 'hooks/useLocale';
 import { getDateRange } from 'lib/date';
 import { dateFormat } from 'lib/lang';
+import Calendar from 'assets/calendar-alt.svg';
+import Icon from './Icon';
 
 const filterOptions = [
+  { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },
   {
     label: (
       <FormattedMessage id="label.last-hours" defaultMessage="Last {x} hours" values={{ x: 24 }} />
@@ -16,10 +19,20 @@ const filterOptions = [
     value: '24hour',
   },
   {
+    label: <FormattedMessage id="label.this-week" defaultMessage="This week" />,
+    value: '1week',
+    divider: true,
+  },
+  {
     label: (
       <FormattedMessage id="label.last-days" defaultMessage="Last {x} days" values={{ x: 7 }} />
     ),
     value: '7day',
+  },
+  {
+    label: <FormattedMessage id="label.this-month" defaultMessage="This month" />,
+    value: '1month',
+    divider: true,
   },
   {
     label: (
@@ -33,26 +46,22 @@ const filterOptions = [
     ),
     value: '90day',
   },
-  { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },
-  { label: <FormattedMessage id="label.this-week" defaultMessage="This week" />, value: '1week' },
-  {
-    label: <FormattedMessage id="label.this-month" defaultMessage="This month" />,
-    value: '1month',
-  },
   { label: <FormattedMessage id="label.this-year" defaultMessage="This year" />, value: '1year' },
   {
     label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
     value: 'custom',
+    divider: true,
   },
 ];
 
 export default function DateFilter({ value, startDate, endDate, onChange, className }) {
-  const [locale] = useLocale();
   const [showPicker, setShowPicker] = useState(false);
   const displayValue =
-    value === 'custom'
-      ? `${dateFormat(startDate, 'd LLL y', locale)} — ${dateFormat(endDate, 'd LLL y', locale)}`
-      : value;
+    value === 'custom' ? (
+      <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
+    ) : (
+      value
+    );
 
   function handleChange(value) {
     if (value === 'custom') {
@@ -90,3 +99,20 @@ export default function DateFilter({ value, startDate, endDate, onChange, classN
     </>
   );
 }
+
+const CustomRange = ({ startDate, endDate, onClick }) => {
+  const [locale] = useLocale();
+
+  function handleClick(e) {
+    e.stopPropagation();
+
+    onClick();
+  }
+
+  return (
+    <>
+      <Icon icon={<Calendar />} className="mr-2" onClick={handleClick} />
+      {`${dateFormat(startDate, 'd LLL y', locale)} — ${dateFormat(endDate, 'd LLL y', locale)}`}
+    </>
+  );
+};

@@ -36,8 +36,8 @@ export default function DropDown({
   return (
     <div ref={ref} className={classNames(styles.dropdown, className)} onClick={handleShowMenu}>
       <div className={styles.value}>
-        <div>{options.find(e => e.value === value)?.label || value}</div>
-        <Icon icon={<Chevron />} size="small" />
+        {options.find(e => e.value === value)?.label || value}
+        <Icon icon={<Chevron />} className={styles.icon} size="small" />
       </div>
       {showMenu && (
         <Menu className={menuClassName} options={options} onSelect={handleSelect} float="bottom" />

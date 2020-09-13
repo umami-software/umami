@@ -3,6 +3,7 @@
   flex-direction: column;
   font-size: var(--font-size-small);
   flex: 1;
+  min-height: 285px;
 }
 
 .calendar table {
@@ -37,7 +38,7 @@
 }
 
 .calendar td.disabled {
-  color: var(--gray300);
+  color: var(--gray400);
   background: var(--gray75);
 }
 
@@ -47,7 +48,7 @@
 }
 
 .calendar td.faded.disabled {
-  color: var(--gray200);
+  background: var(--gray100);
 }
 
 .header {

@@ -40,3 +40,7 @@
 .right {
   right: 0;
 }
+
+.divider {
+  border-top: 1px solid var(--gray300);
+}

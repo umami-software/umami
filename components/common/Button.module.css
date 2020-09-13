@@ -55,7 +55,16 @@
   background: var(--red400);
 }
 
+.light {
+  background: var(--gray50);
+}
+
+.light:hover {
+  background: var(--gray75);
+}
+
 .button:disabled {
+  cursor: default;
   color: var(--gray500);
   background: var(--gray75);
 }
@@ -66,4 +75,8 @@
 
 .button:disabled:hover {
   background: var(--gray75);
+}
+
+.button.light:disabled {
+  background: var(--gray50);
 }
