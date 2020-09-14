@@ -44,9 +44,9 @@ export default function BarChart({
         return dateFormat(d, 'EEE M/d', locale);
       case 'month':
         if (w <= 660) {
-          return dateFormat(d, 'MMM', locale);
+          return index % 2 === 0 ? dateFormat(d, 'MMM', locale) : '';
         }
-        return dateFormat(d, 'MMMM', locale);
+        return dateFormat(d, 'MMM', locale);
       default:
         return label;
     }
@@ -65,11 +65,20 @@ export default function BarChart({
       const [label, value] = body[0].lines[0].split(':');
 
       setTooltip({
-        title: dateFormat(new Date(+title[0]), 'EEE MMMM d yyyy', locale),
+        title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
         value,
         label,
         labelColor: labelColors[0].backgroundColor,
       });
+    }
+  }
+
+  function getTooltipFormat(unit) {
+    switch (unit) {
+      case 'hour':
+        return 'EEE ha — MMM d yyyy';
+      default:
+        return 'EEE MMMM d yyyy';
     }
   }
 
