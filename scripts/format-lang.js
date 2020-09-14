@@ -3,7 +3,7 @@ const path = require('path');
 const prettier = require('prettier');
 
 const src = path.resolve(__dirname, '../lang');
-const dest = path.resolve(__dirname, '../lang-formatted');
+const dest = path.resolve(__dirname, '../build');
 const files = fs.readdirSync(src);
 
 if (!fs.existsSync(dest)) {
