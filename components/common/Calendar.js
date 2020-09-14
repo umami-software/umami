@@ -105,7 +105,7 @@ export default function Calendar({ date, minDate, maxDate, onChange }) {
 const DaySelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   const startWeek = startOfWeek(date);
   const startMonth = startOfMonth(date);
-  const startDay = subDays(startMonth, startMonth.getDay() + 1);
+  const startDay = subDays(startMonth, startMonth.getDay());
   const month = date.getMonth();
   const year = date.getFullYear();
 
