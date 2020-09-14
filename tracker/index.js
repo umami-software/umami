@@ -1,6 +1,6 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
-import { post, hook, doNotTrack } from '../lib/web';
+import { doNotTrack, hook, post } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 
 (window => {
@@ -31,25 +31,7 @@ import { removeTrailingSlash } from '../lib/url';
   /* Collect metrics */
 
   const collect = (type, params) => {
-    const payload = {
-      url: currentUrl,
-      referrer: currentRef,
-      website,
-      hostname,
-      screen,
-      language,
-    };
-
-    if (params) {
-      Object.keys(params).forEach(key => {
-        payload[key] = params[key];
-      });
-    }
-
-    return post(`${root}/api/collect`, {
-      type,
-      payload,
-    });
+    return window.umamiTrack(website, type, params);
   };
 
   const pageView = () => collect('pageview').then(() => setTimeout(loadEvents, 300));
@@ -73,8 +55,8 @@ import { removeTrailingSlash } from '../lib/url';
     pageView();
   };
 
-  const pushStateUnhook = hook(history, 'pushState', handlePush);
-  const replaceStateUnhook = hook(history, 'replaceState', handlePush);
+  history.pushState = hook(history, 'pushState', handlePush);
+  history.replaceState = hook(history, 'replaceState', handlePush);
 
   /* Handle events */
 
@@ -86,7 +68,7 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const loadEvents = () => {
-    document.querySelectorAll("[class*='umami--']").forEach(element => {
+    document.querySelectorAll('[class*=\'umami--\']').forEach(element => {
       element.className.split(' ').forEach(className => {
         if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
@@ -99,19 +81,40 @@ import { removeTrailingSlash } from '../lib/url';
     });
   };
 
-  /* Start */
+  if (!window.umamiTrack) {
+    window.umamiTrack = (type, params, id) => {
+      if (!id) {
+        id = website
+      }
+      const payload = {
+        url: currentUrl,
+        referrer: currentRef,
+        website: id,
+        hostname,
+        screen,
+        language,
+      };
 
-  pageView();
+      if (params) {
+        Object.keys(params).forEach(key => {
+          payload[key] = params[key];
+        });
+      }
+
+      return post(`${root}/api/collect`, {
+        type,
+        payload,
+      });
+    };
+  }
+
+  /* Start */
+  const skipAuto = new URL(script.src).search.includes('auto=false');
+  if (!skipAuto) {
+    pageView();
+  }
 
   if (!window.umami) {
     window.umami = event_value => collect('event', { event_type: 'custom', event_value });
-  }
-
-  if (!window.umamiUnregister) {
-    window.umamiUnregister = () => {
-      pushStateUnhook();
-      replaceStateUnhook();
-      removeEvents();
-    };
   }
 })(window);

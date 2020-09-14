@@ -6,7 +6,7 @@ import useFetch from 'hooks/useFetch';
 
 export default function SharePage() {
   const router = useRouter();
-  const { id } = router.query;
+  const { id, frame } = router.query;
   const shareId = id?.[0];
   const { data } = useFetch(shareId ? `/api/share/${shareId}` : null);
 
@@ -15,7 +15,7 @@ export default function SharePage() {
   }
 
   return (
-    <Layout>
+    <Layout header={!frame} footer={!frame}>
       <WebsiteDetails websiteId={data.website_id} />
     </Layout>
   );
