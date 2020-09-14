@@ -8,6 +8,7 @@
 
 .calendar table {
   flex: 1;
+  border-spacing: 5px;
 }
 
 .calendar td {
@@ -18,10 +19,12 @@
   height: 40px;
   min-width: 40px;
   border-radius: 5px;
+  border: 1px solid transparent;
 }
 
 .calendar td:hover {
-  background: var(--gray100);
+  border: 1px solid var(--gray300);
+  background: var(--gray75);
 }
 
 .calendar td.faded {
@@ -45,6 +48,7 @@
 .calendar td.disabled:hover {
   cursor: default;
   background: var(--gray75);
+  border-color: transparent;
 }
 
 .calendar td.faded.disabled {
