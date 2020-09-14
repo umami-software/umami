@@ -1,7 +1,6 @@
 import { getRankings } from 'lib/queries';
 import { ok, badRequest, methodNotAllowed } from 'lib/response';
 import { DOMAIN_REGEX } from 'lib/constants';
-import { useAuth } from 'lib/middleware';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
 const pageviewColumns = ['url', 'referrer'];
@@ -26,8 +25,6 @@ function getColumn(type) {
 }
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
   if (req.method === 'GET') {
     const { id, type, start_at, end_at, domain } = req.query;
     const websiteId = +id;

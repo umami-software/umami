@@ -1,10 +1,7 @@
 import { getMetrics } from 'lib/queries';
 import { methodNotAllowed, ok } from 'lib/response';
-import { useAuth } from 'lib/middleware';
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
   if (req.method === 'GET') {
     const { id, start_at, end_at } = req.query;
     const websiteId = +id;

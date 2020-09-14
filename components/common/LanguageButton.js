@@ -48,7 +48,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
       </Head>
       <div ref={ref} className={styles.container}>
         <Button icon={<Globe />} onClick={toggleMenu} size="small">
-          <div className={locale}>{selectedLocale}</div>
+          <div>{selectedLocale}</div>
         </Button>
         {showMenu && (
           <Menu
