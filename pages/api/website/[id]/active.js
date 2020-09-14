@@ -1,11 +1,18 @@
 import { getActiveVisitors } from 'lib/queries';
-import { ok } from 'lib/response';
+import { methodNotAllowed, ok } from 'lib/response';
+import { useAuth } from 'lib/middleware';
 
 export default async (req, res) => {
-  const { id } = req.query;
-  const website_id = +id;
+  await useAuth(req, res);
 
-  const result = await getActiveVisitors(website_id);
+  if (req.method === 'GET') {
+    const { id } = req.query;
+    const website_id = +id;
 
-  return ok(res, result);
+    const result = await getActiveVisitors(website_id);
+
+    return ok(res, result);
+  }
+
+  return methodNotAllowed(res);
 };

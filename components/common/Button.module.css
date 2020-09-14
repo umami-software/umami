@@ -14,7 +14,7 @@
 }
 
 .button:hover {
-  background: #eaeaea;
+  background: var(--gray200);
 }
 
 .button:active {
@@ -38,19 +38,45 @@
 }
 
 .action {
-  color: var(--gray50) !important;
-  background: var(--gray900) !important;
+  color: var(--gray50);
+  background: var(--gray900);
 }
 
 .action:hover {
-  background: var(--gray800) !important;
+  background: var(--gray800);
 }
 
 .danger {
-  color: var(--gray50) !important;
-  background: var(--red500) !important;
+  color: var(--gray50);
+  background: var(--red500);
 }
 
 .danger:hover {
-  background: var(--red400) !important;
+  background: var(--red400);
+}
+
+.light {
+  background: var(--gray50);
+}
+
+.light:hover {
+  background: var(--gray75);
+}
+
+.button:disabled {
+  cursor: default;
+  color: var(--gray500);
+  background: var(--gray75);
+}
+
+.button:disabled:active {
+  color: var(--gray500);
+}
+
+.button:disabled:hover {
+  background: var(--gray75);
+}
+
+.button.light:disabled {
+  background: var(--gray50);
 }

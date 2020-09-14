@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const prettier = require('prettier');
-const root = require('../lang/en-US.json');
+const messages = require('../build/messages.json');
 
-const dir = path.resolve(__dirname, '../lang');
-const files = fs.readdirSync(dir);
-const keys = Object.keys(root).sort();
+const dest = path.resolve(__dirname, '../lang');
+const files = fs.readdirSync(dest);
+const keys = Object.keys(messages).sort();
 
 files.forEach(file => {
   const lang = require(`../lang/${file}`);
@@ -15,7 +15,7 @@ files.forEach(file => {
   const merged = keys.reduce((obj, key) => {
     const message = lang[key];
 
-    obj[key] = message || root[key];
+    obj[key] = message || messages[key].defaultMessage;
 
     if (!message) {
       console.log(`* Added key ${key}`);
@@ -26,5 +26,5 @@ files.forEach(file => {
 
   const json = prettier.format(JSON.stringify(merged), { parser: 'json' });
 
-  fs.writeFileSync(path.resolve(dir, file), json);
+  fs.writeFileSync(path.resolve(dest, file), json);
 });

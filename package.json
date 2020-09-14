@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.29.0",
+  "version": "0.32.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -23,10 +23,10 @@
     "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
     "build-lang": "npm-run-all format-lang compile-lang",
-    "extract-lang": "formatjs extract {pages,components}/**/*.js --out-file lang/en-US.json",
+    "extract-lang": "formatjs extract {pages,components}/**/*.js --out-file build/messages.json",
     "merge-lang": "node scripts/merge-lang.js",
     "format-lang": "node scripts/format-lang.js",
-    "compile-lang": "formatjs compile-folder --ast lang-formatted lang-compiled"
+    "compile-lang": "formatjs compile-folder --ast build lang-compiled"
   },
   "lint-staged": {
     "**/*.js": [

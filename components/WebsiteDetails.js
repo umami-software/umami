@@ -28,6 +28,7 @@ export default function WebsiteDetails({ websiteId }) {
 
   const BackButton = () => (
     <Button
+      key="back-button"
       className={styles.backButton}
       icon={<Arrow />}
       size="xsmall"

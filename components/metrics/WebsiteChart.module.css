@@ -29,3 +29,15 @@
   border-bottom: 1px solid var(--gray300);
   z-index: 3;
 }
+
+.filter {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+@media only screen and (max-width: 992px) {
+  .filter {
+    display: block;
+  }
+}

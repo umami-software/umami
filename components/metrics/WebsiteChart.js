@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
-import QuickButtons from './QuickButtons';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import useFetch from 'hooks/useFetch';
@@ -58,12 +57,17 @@ export default function WebsiteChart({
           stickyClassName={styles.sticky}
           enabled={stickyHeader}
         >
-          <MetricsBar className="col-12 col-md-9 col-lg-10" websiteId={websiteId} />
-          <DateFilter
-            className="col-12 col-md-3 col-lg-2"
-            value={value}
-            onChange={handleDateChange}
-          />
+          <div className="col-12 col-lg-9">
+            <MetricsBar websiteId={websiteId} />
+          </div>
+          <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
+            <DateFilter
+              value={value}
+              startDate={startDate}
+              endDate={endDate}
+              onChange={handleDateChange}
+            />
+          </div>
         </StickyHeader>
       </div>
       <div className="row">
@@ -74,7 +78,6 @@ export default function WebsiteChart({
             unit={unit}
             records={getDateLength(startDate, endDate, unit)}
           />
-          <QuickButtons value={value} onChange={handleDateChange} />
         </div>
       </div>
     </>
