@@ -55,9 +55,6 @@ import { removeTrailingSlash } from '../lib/url';
     pageView();
   };
 
-  history.pushState = hook(history, 'pushState', handlePush);
-  history.replaceState = hook(history, 'replaceState', handlePush);
-
   /* Handle events */
 
   const removeEvents = () => {
@@ -84,7 +81,7 @@ import { removeTrailingSlash } from '../lib/url';
   if (!window.umamiTrack) {
     window.umamiTrack = (type, params, id) => {
       if (!id) {
-        id = website
+        id = website;
       }
       const payload = {
         url: currentUrl,
@@ -111,6 +108,8 @@ import { removeTrailingSlash } from '../lib/url';
   /* Start */
   const skipAuto = new URL(script.src).search.includes('auto=false');
   if (!skipAuto) {
+    history.pushState = hook(history, 'pushState', handlePush);
+    history.replaceState = hook(history, 'replaceState', handlePush);
     pageView();
   }
 
