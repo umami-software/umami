@@ -73,8 +73,8 @@ import { removeTrailingSlash } from '../lib/url';
     pageView();
   };
 
-  history.pushState = hook(history, 'pushState', handlePush);
-  history.replaceState = hook(history, 'replaceState', handlePush);
+  const pushStateUnhook = hook(history, 'pushState', handlePush);
+  const replaceStateUnhook = hook(history, 'replaceState', handlePush);
 
   /* Handle events */
 
@@ -105,5 +105,13 @@ import { removeTrailingSlash } from '../lib/url';
 
   if (!window.umami) {
     window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+  }
+
+  if (!window.umamiUnregister) {
+    window.umamiUnregister = () => {
+      pushStateUnhook();
+      replaceStateUnhook();
+      removeEvents();
+    };
   }
 })(window);
