@@ -19,6 +19,7 @@ import { removeTrailingSlash } from '../lib/url';
 
   const website = script.getAttribute('data-website-id');
   const hostUrl = script.getAttribute('data-host-url');
+  const skipAuto = script.getAttribute('data-skip-auto');
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
     : new URL(script.src).href.split('/').slice(0, -1).join('/');
@@ -29,14 +30,7 @@ import { removeTrailingSlash } from '../lib/url';
   let currentRef = document.referrer;
 
   /* Collect metrics */
-
-  const collect = (type, params) => {
-    return window.umamiTrack(website, type, params);
-  };
-
-  const pageView = () => collect('pageview').then(() => setTimeout(loadEvents, 300));
-
-  const pageEvent = (event_type, event_value) => collect('event', { event_type, event_value });
+  const pageViewWithAutoEvents = (url, referrer) => window.umami.pageView(url, referrer).then(() => setTimeout(loadEvents, 300));
 
   /* Handle history */
 
@@ -52,7 +46,7 @@ import { removeTrailingSlash } from '../lib/url';
       currentUrl = newUrl;
     }
 
-    pageView();
+    pageViewWithAutoEvents(currentUrl, currentRef);
   };
 
   /* Handle events */
@@ -69,7 +63,7 @@ import { removeTrailingSlash } from '../lib/url';
       element.className.split(' ').forEach(className => {
         if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
-          const listener = () => pageEvent(type, value);
+          const listener = () => window.umami.event(type, value);
 
           listeners.push([element, type, listener]);
           element.addEventListener(type, listener, true);
@@ -78,14 +72,13 @@ import { removeTrailingSlash } from '../lib/url';
     });
   };
 
-  if (!window.umamiTrack) {
-    window.umamiTrack = (type, params, id) => {
+  if (!window.umami) {
+    window.umami = event_value => window.umami.event('custom', event_value, currentUrl);
+    window.umami.collect = (type, params, id) => {
       if (!id) {
         id = website;
       }
       const payload = {
-        url: currentUrl,
-        referrer: currentRef,
         website: id,
         hostname,
         screen,
@@ -103,17 +96,24 @@ import { removeTrailingSlash } from '../lib/url';
         payload,
       });
     };
+    window.umami.pageView = (url = currentUrl, referrer = currentRef) => window.umami.collect('pageview', {
+      url,
+      referrer,
+    });
+    window.umami.event = (event_type, event_value, url = currentUrl) => window.umami.collect('event', {
+      url,
+      event_type,
+      event_value,
+    });
+    window.umami.registerAutoEvents = () => {
+      history.pushState = hook(history, 'pushState', handlePush);
+      history.replaceState = hook(history, 'replaceState', handlePush);
+      return pageViewWithAutoEvents(currentUrl, currentRef);
+    };
   }
 
   /* Start */
-  const skipAuto = new URL(script.src).search.includes('auto=false');
   if (!skipAuto) {
-    history.pushState = hook(history, 'pushState', handlePush);
-    history.replaceState = hook(history, 'replaceState', handlePush);
-    pageView();
-  }
-
-  if (!window.umami) {
-    window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+    window.umami.registerAutoEvents().catch(e => console.error(e));
   }
 })(window);
