@@ -83,12 +83,9 @@ function log(isDebug, messageFn) {
 
   const scheduledCalls = window.umami.calls;
   window.umami = {};
-  window.umami.collect = (type, params, id) => {
-    if (!id) {
-      id = website;
-    }
+  window.umami.collect = (type, params, uuid) => {
     const payload = {
-      website: id,
+      website: uuid,
       hostname,
       screen,
       language,
@@ -106,15 +103,15 @@ function log(isDebug, messageFn) {
       payload,
     });
   };
-  window.umami.pageView = (url = currentUrl, referrer = currentRef) => window.umami.collect('pageview', {
+  window.umami.pageView = (url = currentUrl, referrer = currentRef, uuid = website) => window.umami.collect('pageview', {
     url,
     referrer,
-  });
-  window.umami.event = (event_type, event_value, url = currentUrl) => window.umami.collect('event', {
+  }, uuid);
+  window.umami.event = (event_type, event_value, url = currentUrl, uuid = website) => window.umami.collect('event', {
     url,
     event_type,
     event_value,
-  });
+  }, uuid);
   window.umami.registerAutoEvents = () => {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
@@ -122,8 +119,6 @@ function log(isDebug, messageFn) {
   };
 
   log(isDebug, () => 'Umami, calling scheduled invocations');
-  log(isDebug, () => scheduledCalls);
-
   scheduledCalls.forEach(([fnName, ...params]) => {
     log(isDebug, () => `Umami, calling ${fnName} fn with params: ${JSON.stringify(params)}`);
     window.umami[fnName].apply(window.umami, params);
