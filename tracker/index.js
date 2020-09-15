@@ -3,6 +3,13 @@ import 'unfetch/polyfill';
 import { doNotTrack, hook, post } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 
+function log(isDebug, messageFn) {
+  if (isDebug) {
+    return;
+  }
+  console.log(messageFn());
+}
+
 (window => {
   const {
     screen: { width, height },
@@ -20,6 +27,7 @@ import { removeTrailingSlash } from '../lib/url';
   const website = script.getAttribute('data-website-id');
   const hostUrl = script.getAttribute('data-host-url');
   const skipAuto = script.getAttribute('data-skip-auto');
+  const isDebug = script.getAttribute('data-debug');
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
     : new URL(script.src).href.split('/').slice(0, -1).join('/');
@@ -72,45 +80,54 @@ import { removeTrailingSlash } from '../lib/url';
     });
   };
 
-  if (!window.umami) {
-    window.umami = event_value => window.umami.event('custom', event_value, currentUrl);
-    window.umami.collect = (type, params, id) => {
-      if (!id) {
-        id = website;
-      }
-      const payload = {
-        website: id,
-        hostname,
-        screen,
-        language,
-      };
 
-      if (params) {
-        Object.keys(params).forEach(key => {
-          payload[key] = params[key];
-        });
-      }
+  const scheduledCalls = window.umami.calls;
+  window.umami = {};
+  window.umami.collect = (type, params, id) => {
+    if (!id) {
+      id = website;
+    }
+    const payload = {
+      website: id,
+      hostname,
+      screen,
+      language,
+    };
 
-      return post(`${root}/api/collect`, {
-        type,
-        payload,
+    if (params) {
+      Object.keys(params).forEach(key => {
+        payload[key] = params[key];
       });
-    };
-    window.umami.pageView = (url = currentUrl, referrer = currentRef) => window.umami.collect('pageview', {
-      url,
-      referrer,
+    }
+
+    log(isDebug, () => `Umami, collect ${type} with payload: ${JSON.stringify(payload, null, 2)}`);
+    return post(`${root}/api/collect`, {
+      type,
+      payload,
     });
-    window.umami.event = (event_type, event_value, url = currentUrl) => window.umami.collect('event', {
-      url,
-      event_type,
-      event_value,
-    });
-    window.umami.registerAutoEvents = () => {
-      history.pushState = hook(history, 'pushState', handlePush);
-      history.replaceState = hook(history, 'replaceState', handlePush);
-      return pageViewWithAutoEvents(currentUrl, currentRef);
-    };
-  }
+  };
+  window.umami.pageView = (url = currentUrl, referrer = currentRef) => window.umami.collect('pageview', {
+    url,
+    referrer,
+  });
+  window.umami.event = (event_type, event_value, url = currentUrl) => window.umami.collect('event', {
+    url,
+    event_type,
+    event_value,
+  });
+  window.umami.registerAutoEvents = () => {
+    history.pushState = hook(history, 'pushState', handlePush);
+    history.replaceState = hook(history, 'replaceState', handlePush);
+    return pageViewWithAutoEvents(currentUrl, currentRef);
+  };
+
+  log(isDebug, () => 'Umami, calling scheduled invocations');
+  log(isDebug, () => scheduledCalls);
+
+  scheduledCalls.forEach(([fnName, ...params]) => {
+    log(isDebug, () => `Umami, calling ${fnName} fn with params: ${JSON.stringify(params)}`);
+    window.umami[fnName].apply(window.umami, params);
+  });
 
   /* Start */
   if (!skipAuto) {
