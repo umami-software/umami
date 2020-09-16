@@ -13,7 +13,7 @@
   "button.save": "Speichern",
   "button.view-details": "Details anzeigen",
   "button.websites": "Webseiten",
-  "footer.powered-by": "Powered by",
+  "footer.powered-by": "Powered by {name}",
   "header.nav.dashboard": "Übersicht",
   "header.nav.settings": "Einstellungen",
   "label.administrator": "Administrator",

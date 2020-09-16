@@ -13,7 +13,7 @@
   "button.save": "Opslaan",
   "button.view-details": "Meer details",
   "button.websites": "Websites",
-  "footer.powered-by": "mogelijk gemaakt door",
+  "footer.powered-by": "mogelijk gemaakt door {name}",
   "header.nav.dashboard": "Dashboard",
   "header.nav.settings": "Instellingen",
   "label.administrator": "Administrator",

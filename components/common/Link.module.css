@@ -1,12 +1,12 @@
-.link,
-.link:active,
-.link:visited {
+a.link,
+a.link:active,
+a.link:visited {
   position: relative;
   color: #2c2c2c;
   text-decoration: none;
 }
 
-.link:before {
+a.link:before {
   content: '';
   position: absolute;
   bottom: -2px;
@@ -17,7 +17,7 @@
   transition: width 100ms;
 }
 
-.link:hover:before {
+a.link:hover:before {
   width: 100%;
   transition: width 100ms;
 }

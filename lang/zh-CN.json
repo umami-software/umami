@@ -13,7 +13,7 @@
   "button.save": "保存",
   "button.view-details": "查看更多",
   "button.websites": "网站",
-  "footer.powered-by": "运行",
+  "footer.powered-by": "运行 {name}",
   "header.nav.dashboard": "仪表板",
   "header.nav.settings": "设置",
   "label.administrator": "管理员",

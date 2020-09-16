@@ -13,7 +13,7 @@
   "button.save": "Guardar",
   "button.view-details": "Ver detalles",
   "button.websites": "Sitios",
-  "footer.powered-by": "Desarrollado con",
+  "footer.powered-by": "Desarrollado con {name}",
   "header.nav.dashboard": "Panel de control",
   "header.nav.settings": "Configuraciones",
   "label.administrator": "Administrador",

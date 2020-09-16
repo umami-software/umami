@@ -13,7 +13,7 @@
   "button.save": "Сохранить",
   "button.view-details": "Посмотреть детали",
   "button.websites": "Сайты",
-  "footer.powered-by": "на движке",
+  "footer.powered-by": "на движке {name}",
   "header.nav.dashboard": "Информационная панель",
   "header.nav.settings": "Настройки",
   "label.administrator": "Администратор",

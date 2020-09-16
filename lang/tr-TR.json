@@ -13,7 +13,7 @@
   "button.save": "Kaydet",
   "button.view-details": "Detayı incele",
   "button.websites": "Web siteleri",
-  "footer.powered-by": "Sağlayıcı:",
+  "footer.powered-by": "Sağlayıcı: {name}",
   "header.nav.dashboard": "Kontrol Paneli",
   "header.nav.settings": "Ayarlar",
   "label.administrator": "Yönetici",
