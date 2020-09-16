@@ -5,16 +5,16 @@ import { ok, unauthorized, methodNotAllowed } from 'lib/response';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { is_admin: current_user_is_admin } = req.auth;
+  const { is_admin } = req.auth;
+
+  if (!is_admin) {
+    return unauthorized(res);
+  }
 
   if (req.method === 'GET') {
-    if (current_user_is_admin) {
-      const accounts = await getAccounts();
+    const accounts = await getAccounts();
 
-      return ok(res, accounts);
-    }
-
-    return unauthorized(res);
+    return ok(res, accounts);
   }
 
   return methodNotAllowed(res);
