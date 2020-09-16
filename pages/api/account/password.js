@@ -6,10 +6,10 @@ import { checkPassword, hashPassword } from 'lib/crypto';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id, is_admin } = req.auth;
-  const { current_password, new_password } = req.body;
+  const { user_id: auth_user_id, is_admin } = req.auth;
+  const { user_id, current_password, new_password } = req.body;
 
-  if (is_admin) {
+  if (!is_admin || user_id !== auth_user_id) {
     return unauthorized(res);
   }
 
