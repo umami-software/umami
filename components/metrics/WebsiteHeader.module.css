@@ -6,6 +6,7 @@
 
 .link {
   font-size: var(--font-size-small);
+  font-weight: 600;
 }
 
 .link svg {

@@ -2,6 +2,7 @@ import React from 'react';
 import MetricsTable from './MetricsTable';
 import { deviceFilter } from 'lib/filters';
 import { FormattedMessage } from 'react-intl';
+import { getDeviceMessage } from 'components/messages';
 
 export default function DevicesTable({ websiteId, limit, onExpand }) {
   return (
@@ -12,6 +13,7 @@ export default function DevicesTable({ websiteId, limit, onExpand }) {
       websiteId={websiteId}
       limit={limit}
       dataFilter={deviceFilter}
+      renderLabel={({ x }) => getDeviceMessage(x)}
       onExpand={onExpand}
     />
   );

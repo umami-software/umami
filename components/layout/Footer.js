@@ -1,5 +1,6 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Link from 'components/common/Link';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -11,12 +12,12 @@ export default function Footer() {
         <div>
           <FormattedMessage
             id="footer.powered-by"
-            defaultMessage="Powered by {name} {version}"
+            defaultMessage="Powered by {name}"
             values={{
               name: (
-                <a href="https://umami.is">
+                <Link href="https://umami.is">
                   <b>umami</b>
-                </a>
+                </Link>
               ),
             }}
           />
