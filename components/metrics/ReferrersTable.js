@@ -20,9 +20,9 @@ export default function ReferrersTable({ websiteId, websiteDomain, limit, onExpa
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
-  const renderLink = ({ x: url }) => {
-    return url.startsWith('http') ? (
-      <a href={url} target="_blank" rel="noreferrer">
+  const renderLink = ({ w: href, x: url }) => {
+    return (href || url).startsWith('http') ? (
+      <a href={href || url} target="_blank" rel="noreferrer">
         {decodeURI(url)}
       </a>
     ) : (
