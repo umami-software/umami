@@ -3,13 +3,6 @@ import 'unfetch/polyfill';
 import { doNotTrack, hook, post } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 
-function log(isDebug, messageFn) {
-  if (isDebug) {
-    return;
-  }
-  console.log(messageFn());
-}
-
 (window => {
   const {
     screen: { width, height },
@@ -27,7 +20,6 @@ function log(isDebug, messageFn) {
   const website = script.getAttribute('data-website-id');
   const hostUrl = script.getAttribute('data-host-url');
   const skipAuto = script.getAttribute('data-skip-auto');
-  const isDebug = script.getAttribute('data-debug');
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
     : new URL(script.src).href.split('/').slice(0, -1).join('/');
@@ -36,26 +28,6 @@ function log(isDebug, messageFn) {
 
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
-
-  /* Collect metrics */
-  const pageViewWithAutoEvents = (url, referrer) => window.umami.pageView(url, referrer).then(() => setTimeout(loadEvents, 300));
-
-  /* Handle history */
-
-  const handlePush = (state, title, url) => {
-    removeEvents();
-    currentRef = currentUrl;
-    const newUrl = url.toString();
-
-    if (newUrl.substring(0, 4) === 'http') {
-      const { pathname, search } = new URL(newUrl);
-      currentUrl = `${pathname}${search}`;
-    } else {
-      currentUrl = newUrl;
-    }
-
-    pageViewWithAutoEvents(currentUrl, currentRef);
-  };
 
   /* Handle events */
 
@@ -71,7 +43,7 @@ function log(isDebug, messageFn) {
       element.className.split(' ').forEach(className => {
         if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
-          const listener = () => window.umami.event(type, value);
+          const listener = () => event(type, value);
 
           listeners.push([element, type, listener]);
           element.addEventListener(type, listener, true);
@@ -79,11 +51,7 @@ function log(isDebug, messageFn) {
       });
     });
   };
-
-
-  const scheduledCalls = window.umami.calls;
-  window.umami = {};
-  window.umami.collect = (type, params, uuid) => {
+  const collect = (type, params, uuid) => {
     const payload = {
       website: uuid,
       hostname,
@@ -97,35 +65,61 @@ function log(isDebug, messageFn) {
       });
     }
 
-    log(isDebug, () => `Umami, collect ${type} with payload: ${JSON.stringify(payload, null, 2)}`);
     return post(`${root}/api/collect`, {
       type,
       payload,
     });
   };
-  window.umami.pageView = (url = currentUrl, referrer = currentRef, uuid = website) => window.umami.collect('pageview', {
+  const pageView = (url = currentUrl, referrer = currentRef, uuid = website) => collect('pageview', {
     url,
     referrer,
   }, uuid);
-  window.umami.event = (event_type, event_value, url = currentUrl, uuid = website) => window.umami.collect('event', {
+
+  /* Collect metrics */
+  const pageViewWithAutoEvents = (url, referrer) => pageView(url, referrer).then(() => setTimeout(loadEvents, 300));
+
+  /* Handle history */
+  const handlePush = (state, title, url) => {
+    removeEvents();
+    currentRef = currentUrl;
+    const newUrl = url.toString();
+
+    if (newUrl.substring(0, 4) === 'http') {
+      const { pathname, search } = new URL(newUrl);
+      currentUrl = `${pathname}${search}`;
+    } else {
+      currentUrl = newUrl;
+    }
+
+    pageViewWithAutoEvents(currentUrl, currentRef);
+  };
+
+  const event = (event_type, event_value, url = currentUrl, uuid = website) => collect('event', {
     url,
     event_type,
     event_value,
   }, uuid);
-  window.umami.registerAutoEvents = () => {
+
+  const registerAutoEvents = () => {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
     return pageViewWithAutoEvents(currentUrl, currentRef);
   };
 
-  log(isDebug, () => 'Umami, calling scheduled invocations');
+
+  const scheduledCalls = window.umami.calls;
+  window.umami = {
+    collect,
+    pageView,
+    event,
+    registerAutoEvents
+  };
   scheduledCalls.forEach(([fnName, ...params]) => {
-    log(isDebug, () => `Umami, calling ${fnName} fn with params: ${JSON.stringify(params)}`);
     window.umami[fnName].apply(window.umami, params);
   });
 
   /* Start */
   if (!skipAuto) {
-    window.umami.registerAutoEvents().catch(e => console.error(e));
+    registerAutoEvents().catch(e => console.error(e));
   }
 })(window);

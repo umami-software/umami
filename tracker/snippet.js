@@ -19,7 +19,7 @@
         let e = umami.methods[t];
         umami[e] = umami.factory(e);
       }
-      umami.load = function(umamiScript, umamiUUID, skipAuto, isDebug) {
+      umami.load = function(umamiScript, umamiUUID, skipAuto) {
         const scriptElement = document.createElement('script');
         scriptElement.type = 'text/javascript';
         scriptElement.defer = true;
@@ -28,15 +28,12 @@
         if (skipAuto) {
           scriptElement.setAttribute('data-skip-auto', 'true');
         }
-        if (isDebug) {
-          scriptElement.setAttribute('data-debug', 'true');
-        }
         scriptElement.src = umamiScript;
         const otherScript = document.getElementsByTagName('script')[0];
         otherScript.parentNode.insertBefore(scriptElement, otherScript);
       };
 
-      umami.load('${document.location.origin}/umami.js', '${values.website_uuid}', false, false);
+      umami.load('${document.location.origin}/umami.js', '${values.website_uuid}', false);
     }
   }
 })(window);
