@@ -1,7 +1,8 @@
 .buttons {
   display: flex;
+  align-items: center;
 }
 
-.buttons button + button {
+.buttons button + * {
   margin-left: 10px;
 }
