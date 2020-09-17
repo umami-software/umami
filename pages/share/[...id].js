@@ -16,7 +16,7 @@ export default function SharePage() {
 
   return (
     <Layout>
-      <WebsiteDetails websiteId={data.website_id} />
+      <WebsiteDetails websiteId={data.website_id} shareId={shareId} />
     </Layout>
   );
 }

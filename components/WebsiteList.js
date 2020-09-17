@@ -11,7 +11,7 @@ import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
   const router = useRouter();
-  const { data } = useFetch('/api/websites', { userId });
+  const { data } = useFetch('/api/websites', { user_id: userId });
 
   if (!data) {
     return null;

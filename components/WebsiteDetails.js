@@ -30,9 +30,9 @@ const views = {
   event: EventsTable,
 };
 
-export default function WebsiteDetails({ websiteId }) {
+export default function WebsiteDetails({ websiteId, shareId }) {
   const router = useRouter();
-  const { data } = useFetch(`/api/website/${websiteId}`);
+  const { data } = useFetch(`/api/website/${websiteId}`, { share_id: shareId });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
