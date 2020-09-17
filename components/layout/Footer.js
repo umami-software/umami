@@ -11,7 +11,7 @@ export default function Footer() {
         <div />
         <div>
           <FormattedMessage
-            id="footer.powered-by"
+            id="message.powered-by"
             defaultMessage="Powered by {name}"
             values={{
               name: (

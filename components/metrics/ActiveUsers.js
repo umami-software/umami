@@ -20,7 +20,7 @@ export default function ActiveUsers({ websiteId, className }) {
       <div className={styles.text}>
         <div>
           <FormattedMessage
-            id="active-users.message"
+            id="message.active-users"
             defaultMessage="{x} current {x, plural, one {visitor} other {visitors}}"
             values={{ x: count }}
           />

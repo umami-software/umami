@@ -23,7 +23,7 @@ export default function ProfileSettings() {
     <>
       <PageHeader>
         <div>
-          <FormattedMessage id="settings.profile" defaultMessage="Profile" />
+          <FormattedMessage id="label.profile" defaultMessage="Profile" />
         </div>
         <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
           <div>

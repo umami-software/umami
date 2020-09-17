@@ -20,16 +20,16 @@ export default function Settings() {
 
   const menuOptions = [
     {
-      label: <FormattedMessage id="settings.websites" defaultMessage="Websites" />,
+      label: <FormattedMessage id="label.websites" defaultMessage="Websites" />,
       value: WEBSITES,
     },
     {
-      label: <FormattedMessage id="settings.accounts" defaultMessage="Accounts" />,
+      label: <FormattedMessage id="label.accounts" defaultMessage="Accounts" />,
       value: ACCOUNTS,
       hidden: !user.is_admin,
     },
     {
-      label: <FormattedMessage id="settings.profile" defaultMessage="Profile" />,
+      label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
       value: PROFILE,
     },
   ];

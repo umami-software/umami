@@ -28,17 +28,14 @@ export default function WebsiteList({ userId }) {
         <EmptyPlaceholder
           msg={
             <FormattedMessage
-              id="placeholder.message.no-websites-configured"
+              id="message.no-websites-configured"
               defaultMessage="You don't have any websites configured."
             />
           }
         >
           <Button icon={<Arrow />} size="medium" onClick={() => router.push('/settings')}>
             <div>
-              <FormattedMessage
-                id="placeholder.message.go-to-settings"
-                defaultMessage="Go to settings"
-              />
+              <FormattedMessage id="message.go-to-settings" defaultMessage="Go to settings" />
             </div>
           </Button>
         </EmptyPlaceholder>
