@@ -6,10 +6,10 @@ export const labels = defineMessages({
 });
 
 export const devices = defineMessages({
-  desktop: { id: 'device.desktop', defaultMessage: 'Desktop' },
-  laptop: { id: 'device.laptop', defaultMessage: 'Laptop' },
-  tablet: { id: 'device.tablet', defaultMessage: 'Tablet' },
-  mobile: { id: 'device.mobile', defaultMessage: 'Mobile' },
+  desktop: { id: 'metrics.device.desktop', defaultMessage: 'Desktop' },
+  laptop: { id: 'metrics.device.laptop', defaultMessage: 'Laptop' },
+  tablet: { id: 'metrics.device.tablet', defaultMessage: 'Tablet' },
+  mobile: { id: 'metrics.device.mobile', defaultMessage: 'Mobile' },
 });
 
 export function getDeviceMessage(device) {
