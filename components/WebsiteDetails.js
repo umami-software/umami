@@ -41,8 +41,6 @@ export default function WebsiteDetails({ websiteId }) {
   } = router;
   const path = `/website/${id.join('/')}`;
 
-  console.log({ router });
-
   const BackButton = () => (
     <Button
       key="back-button"

@@ -23,8 +23,6 @@ export default function WebsiteChart({
   const dateRange = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
 
-  console.log({ websiteId, dateRange });
-
   const { data } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {

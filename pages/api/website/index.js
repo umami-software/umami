@@ -17,7 +17,6 @@ export default async (req, res) => {
 
       if (website.user_id === user_id || is_admin) {
         let { share_id } = website;
-        console.log('exising id', share_id, website);
 
         if (enable_share_url) {
           share_id = share_id ? share_id : getRandomChars(8);
