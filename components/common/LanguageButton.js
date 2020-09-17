@@ -1,12 +1,13 @@
 import React, { useState, useRef } from 'react';
 import Head from 'next/head';
-import Globe from 'assets/globe.svg';
-import useDocumentClick from 'hooks/useDocumentClick';
 import Menu from './Menu';
 import Button from './Button';
 import { menuOptions } from 'lib/lang';
+import { setItem } from 'lib/web';
+import useLocale from 'hooks/useLocale';
+import useDocumentClick from 'hooks/useDocumentClick';
+import Globe from 'assets/globe.svg';
 import styles from './LanguageButton.module.css';
-import useLocale from '../../hooks/useLocale';
 
 export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'left' }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -16,7 +17,7 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
 
   function handleSelect(value) {
     setLocale(value);
-    window.localStorage.setItem('locale', value);
+    setItem('umami.locale', value);
     setShowMenu(false);
   }
 
