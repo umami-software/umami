@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
 import WebsiteSettings from './WebsiteSettings';
@@ -7,13 +8,15 @@ import ProfileSettings from './ProfileSettings';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
-const WEBSITES = 1;
-const ACCOUNTS = 2;
-const PROFILE = 3;
+const WEBSITES = '/settings';
+const ACCOUNTS = '/settings/accounts';
+const PROFILE = '/settings/profile';
 
 export default function Settings() {
   const user = useSelector(state => state.user);
   const [option, setOption] = useState(WEBSITES);
+  const router = useRouter();
+  const { pathname } = router;
 
   const menuOptions = [
     {
@@ -25,15 +28,18 @@ export default function Settings() {
       value: ACCOUNTS,
       hidden: !user.is_admin,
     },
-    { label: <FormattedMessage id="settings.profile" defaultMessage="Profile" />, value: PROFILE },
+    {
+      label: <FormattedMessage id="settings.profile" defaultMessage="Profile" />,
+      value: PROFILE,
+    },
   ];
 
   return (
     <Page>
       <MenuLayout menu={menuOptions} selectedOption={option} onMenuSelect={setOption}>
-        {option === WEBSITES && <WebsiteSettings />}
-        {option === ACCOUNTS && <AccountSettings />}
-        {option === PROFILE && <ProfileSettings />}
+        {pathname === WEBSITES && <WebsiteSettings />}
+        {pathname === ACCOUNTS && <AccountSettings />}
+        {pathname === PROFILE && <ProfileSettings />}
       </MenuLayout>
     </Page>
   );

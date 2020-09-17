@@ -1,0 +1,20 @@
+.menu {
+  border: 1px solid var(--gray500);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.option {
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.option:hover {
+  background: var(--gray75);
+}
+
+.selected {
+  font-weight: 600;
+}

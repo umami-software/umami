@@ -2,15 +2,11 @@
   margin-bottom: 30px;
 }
 
-.expand {
+.view {
   border-top: 1px solid var(--gray300);
 }
 
 .menu {
-  font-size: var(--font-size-small);
-}
-
-.menu .option {
   font-size: var(--font-size-small);
 }
 

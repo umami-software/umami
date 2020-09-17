@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -19,12 +20,28 @@ import EventsChart from './metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import Loading from 'components/common/Loading';
 
+const views = {
+  url: PagesTable,
+  referrer: ReferrersTable,
+  browser: BrowsersTable,
+  os: OSTable,
+  device: DevicesTable,
+  country: CountriesTable,
+  event: EventsTable,
+};
+
 export default function WebsiteDetails({ websiteId }) {
+  const router = useRouter();
   const { data } = useFetch(`/api/website/${websiteId}`);
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
-  const [expand, setExpand] = useState();
+  const {
+    query: { id, view },
+  } = router;
+  const path = `/website/${id.join('/')}`;
+
+  console.log({ router });
 
   const BackButton = () => (
     <Button
@@ -32,7 +49,7 @@ export default function WebsiteDetails({ websiteId }) {
       className={styles.backButton}
       icon={<Arrow />}
       size="xsmall"
-      onClick={() => setExpand(null)}
+      onClick={() => router.push(path)}
     >
       <div>
         <FormattedMessage id="button.back" defaultMessage="Back" />
@@ -46,38 +63,31 @@ export default function WebsiteDetails({ websiteId }) {
     },
     {
       label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
-      value: 'url',
-      component: PagesTable,
+      value: `${path}?view=url`,
     },
     {
       label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
-      value: 'referrer',
-      component: ReferrersTable,
+      value: `${path}?view=referrer`,
     },
     {
       label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
-      value: 'browser',
-      component: BrowsersTable,
+      value: `${path}?view=browser`,
     },
     {
       label: <FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />,
-      value: 'os',
-      component: OSTable,
+      value: `${path}?view=os`,
     },
     {
       label: <FormattedMessage id="metrics.devices" defaultMessage="Devices" />,
-      value: 'device',
-      component: DevicesTable,
+      value: `${path}?view=device`,
     },
     {
       label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
-      value: 'country',
-      component: CountriesTable,
+      value: `${path}?view=country`,
     },
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
-      value: 'event',
-      component: EventsTable,
+      value: `${path}?view=event`,
     },
   ];
 
@@ -88,11 +98,7 @@ export default function WebsiteDetails({ websiteId }) {
     onExpand: handleExpand,
   };
 
-  const DetailsComponent = expand?.component;
-
-  function getSelectedMenuOption(value) {
-    return menuOptions.find(e => e.value === value);
-  }
+  const DetailsComponent = views[view];
 
   function handleDataLoad() {
     if (!chartLoaded) {
@@ -101,11 +107,7 @@ export default function WebsiteDetails({ websiteId }) {
   }
 
   function handleExpand(value) {
-    setExpand(getSelectedMenuOption(value));
-  }
-
-  function handleMenuSelect(value) {
-    setExpand(getSelectedMenuOption(value));
+    router.push(`${path}?view=${value}`);
   }
 
   if (!data) {
@@ -126,7 +128,7 @@ export default function WebsiteDetails({ websiteId }) {
         </div>
       </div>
       {!chartLoaded && <Loading />}
-      {chartLoaded && !expand && (
+      {chartLoaded && !view && (
         <>
           <div className={classNames(styles.row, 'row')}>
             <div className="col-md-12 col-lg-6">
@@ -167,15 +169,8 @@ export default function WebsiteDetails({ websiteId }) {
           </div>
         </>
       )}
-      {expand && (
-        <MenuLayout
-          className={styles.expand}
-          menuClassName={styles.menu}
-          optionClassName={styles.option}
-          menu={menuOptions}
-          selectedOption={expand.value}
-          onMenuSelect={handleMenuSelect}
-        >
+      {view && (
+        <MenuLayout className={styles.view} menuClassName={styles.menu} menu={menuOptions}>
           <DetailsComponent {...tableProps} limit={false} />
         </MenuLayout>
       )}
