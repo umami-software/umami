@@ -16,6 +16,7 @@
 # production
 /build
 /public/umami.js
+/public/snippet.js
 /lang-compiled
 /lang-formatted
 

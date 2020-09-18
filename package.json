@@ -15,6 +15,7 @@
     "start": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
+    "build-snippet": "rollup -c rollup.snippet.config.js",
     "copy-db-schema": "node scripts/copy-db-schema.js",
     "build-db-schema": "dotenv prisma introspect",
     "build-db-client": "dotenv prisma generate",
