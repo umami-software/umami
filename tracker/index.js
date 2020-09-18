@@ -64,7 +64,7 @@ import { removeTrailingSlash } from '../lib/url';
     });
   };
 
-  const pageView = (url = currentUrl, referrer = currentRef, uuid = website) =>
+  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
     collect(
       'pageview',
       {
@@ -74,7 +74,7 @@ import { removeTrailingSlash } from '../lib/url';
       uuid,
     );
 
-  const pageEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) =>
+  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) =>
     collect(
       'event',
       {
@@ -87,12 +87,12 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Handle events */
 
-  const loadEvents = () => {
+  const addEvents = () => {
     document.querySelectorAll("[class*='umami--']").forEach(element => {
       element.className.split(' ').forEach(className => {
         if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
-          const listener = () => pageEvent(value, type);
+          const listener = () => trackEvent(value, type);
 
           listeners.push([element, type, listener]);
           element.addEventListener(type, listener, true);
@@ -123,17 +123,17 @@ import { removeTrailingSlash } from '../lib/url';
       currentUrl = newUrl;
     }
 
-    pageView(currentUrl, currentRef);
+    trackView(currentUrl, currentRef);
 
-    setTimeout(loadEvents, 300);
+    setTimeout(addEvents, 300);
   };
 
   /* Global */
 
   if (!window.umami) {
-    const umami = event_value => pageEvent(event_value);
-    umami.pageView = pageView;
-    umami.pageEvent = pageEvent;
+    const umami = event_value => trackEvent(event_value);
+    umami.trackView = trackView;
+    umami.trackEvent = trackEvent;
 
     window.umami = umami;
   }
@@ -144,8 +144,8 @@ import { removeTrailingSlash } from '../lib/url';
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
 
-    pageView(currentUrl, currentRef);
+    trackView(currentUrl, currentRef);
 
-    loadEvents();
+    addEvents();
   }
 })(window);

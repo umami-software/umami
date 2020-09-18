@@ -30,7 +30,8 @@ export default function ProfileSettings() {
   }
 
   function handleDateChange(values) {
-    setItem(`umami.date-range`, values);
+    const { value } = values;
+    setItem(`umami.date-range`, value === 'custom' ? values : value);
     dispatch(setDateRange(0, values));
   }
 
