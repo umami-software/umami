@@ -30,16 +30,19 @@ const views = {
   event: EventsTable,
 };
 
-export default function WebsiteDetails({ websiteId, shareId }) {
+export default function WebsiteDetails({ websiteId, token }) {
   const router = useRouter();
-  const { data } = useFetch(`/api/website/${websiteId}`, { share_id: shareId });
+  const { data } = useFetch(`/api/website/${websiteId}`, { token });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
   const {
     query: { id, view },
+    basePath,
+    asPath,
   } = router;
-  const path = `/website/${id.join('/')}`;
+
+  const path = `${basePath}/${asPath.split('/')[1]}/${id.join('/')}`;
 
   const BackButton = () => (
     <Button
@@ -91,6 +94,7 @@ export default function WebsiteDetails({ websiteId, shareId }) {
 
   const tableProps = {
     websiteId,
+    token,
     websiteDomain: data?.domain,
     limit: 10,
     onExpand: handleExpand,
@@ -118,6 +122,7 @@ export default function WebsiteDetails({ websiteId, shareId }) {
         <div className={classNames(styles.chart, 'col')}>
           <WebsiteChart
             websiteId={websiteId}
+            token={token}
             title={data.name}
             onDataLoad={handleDataLoad}
             showLink={false}
@@ -162,13 +167,18 @@ export default function WebsiteDetails({ websiteId, shareId }) {
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </div>
             <div className="col-12 col-md-12 col-lg-8 pt-5 pb-5">
-              <EventsChart websiteId={websiteId} />
+              <EventsChart websiteId={websiteId} token={token} />
             </div>
           </div>
         </>
       )}
       {view && (
-        <MenuLayout className={styles.view} menuClassName={styles.menu} menu={menuOptions}>
+        <MenuLayout
+          className={styles.view}
+          menuClassName={styles.menu}
+          contentClassName={styles.content}
+          menu={menuOptions}
+        >
           <DetailsComponent {...tableProps} limit={false} />
         </MenuLayout>
       )}

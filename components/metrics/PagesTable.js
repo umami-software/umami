@@ -5,7 +5,7 @@ import { urlFilter } from 'lib/filters';
 import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 import MetricsTable from './MetricsTable';
 
-export default function PagesTable({ websiteId, websiteDomain, limit, onExpand }) {
+export default function PagesTable({ websiteId, token, websiteDomain, limit, onExpand }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
 
   const buttons = [
@@ -25,6 +25,7 @@ export default function PagesTable({ websiteId, websiteDomain, limit, onExpand }
         limit ? null : <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />
       }
       websiteId={websiteId}
+      token={token}
       limit={limit}
       dataFilter={urlFilter}
       filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}

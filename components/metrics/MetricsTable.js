@@ -10,12 +10,13 @@ import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
-import { useDateRange } from 'hooks/useDateRange';
+import useDateRange from 'hooks/useDateRange';
 import styles from './MetricsTable.module.css';
 
 export default function MetricsTable({
   websiteId,
   websiteDomain,
+  token,
   title,
   metric,
   type,
@@ -37,6 +38,7 @@ export default function MetricsTable({
       start_at: +startDate,
       end_at: +endDate,
       domain: websiteDomain,
+      token,
     },
     { onDataLoad, delay: 300, update: [modified] },
   );

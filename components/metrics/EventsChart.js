@@ -3,7 +3,7 @@ import tinycolor from 'tinycolor2';
 import BarChart from './BarChart';
 import { getTimezone, getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
-import { useDateRange } from 'hooks/useDateRange';
+import useDateRange from 'hooks/useDateRange';
 
 const COLORS = [
   '#2680eb',
@@ -16,7 +16,7 @@ const COLORS = [
   '#85d044',
 ];
 
-export default function EventsChart({ websiteId }) {
+export default function EventsChart({ websiteId, token }) {
   const dateRange = useDateRange(websiteId);
   const { startDate, endDate, unit, modified } = dateRange;
   const { data } = useFetch(
@@ -26,6 +26,7 @@ export default function EventsChart({ websiteId }) {
       end_at: +endDate,
       unit,
       tz: getTimezone(),
+      token,
     },
     { update: [modified] },
   );

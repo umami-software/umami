@@ -10,6 +10,10 @@
   font-size: var(--font-size-small);
 }
 
+.content {
+  min-height: 600px;
+}
+
 .backButton {
   align-self: flex-start;
   margin-bottom: 16px;

@@ -10,7 +10,7 @@ import DateFilter from 'components/common/DateFilter';
 import Dots from 'assets/ellipsis-h.svg';
 import { getTimezone } from 'lib/date';
 import { setItem } from 'lib/web';
-import { useDateRange } from 'hooks/useDateRange';
+import useDateRange from 'hooks/useDateRange';
 import { setDateRange } from 'redux/actions/websites';
 import styles from './ProfileSettings.module.css';
 

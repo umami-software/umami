@@ -3,7 +3,7 @@ import { parseISO } from 'date-fns';
 import { getDateRange } from 'lib/date';
 import { getItem } from 'lib/web';
 
-export function useDateRange(websiteId, defaultDateRange = '7day') {
+export default function useDateRange(websiteId, defaultDateRange = '24hour') {
   const globalDefault = getItem('umami.date-range');
 
   if (globalDefault) {
