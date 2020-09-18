@@ -1,6 +1,4 @@
-import 'promise-polyfill/src/polyfill';
-import 'unfetch/polyfill';
-import { doNotTrack, hook, post } from '../lib/web';
+import { doNotTrack, hook } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 
 (window => {
@@ -31,6 +29,20 @@ import { removeTrailingSlash } from '../lib/url';
   let currentRef = document.referrer;
 
   /* Collect metrics */
+
+  const post = (url, data, callback) => {
+    const req = new XMLHttpRequest();
+    req.open('POST', url, true);
+    req.setRequestHeader('Content-Type', 'application/json');
+
+    req.onreadystatechange = () => {
+      if (req.readyState === 4) {
+        callback && callback();
+      }
+    };
+
+    req.send(JSON.stringify(data));
+  };
 
   const collect = (type, params, uuid) => {
     const payload = {
@@ -133,5 +145,7 @@ import { removeTrailingSlash } from '../lib/url';
     history.replaceState = hook(history, 'replaceState', handlePush);
 
     pageView(currentUrl, currentRef);
+
+    loadEvents();
   }
 })(window);
