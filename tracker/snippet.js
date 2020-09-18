@@ -33,7 +33,11 @@
         otherScript.parentNode.insertBefore(scriptElement, otherScript);
       };
 
-      umami.load('${document.location.origin}/umami.js', '${values.website_uuid}', false);
+      umami.load('[HOST]/umami.js', '[UMAMI_UUID]', false);
     }
   }
 })(window);
+// This snippet is for more advanced use case of Umami. If you want to track custom events,
+// and not worry about having blocking script in the header,
+// use this snippet (compiled version available in /public/snippet.js).
+// Just remember to replace [HOST] and [UMAMI_UUID] when pasting it.

@@ -43,7 +43,7 @@ import { removeTrailingSlash } from '../lib/url';
       element.className.split(' ').forEach(className => {
         if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
           const [, type, value] = className.split('--');
-          const listener = () => event(type, value);
+          const listener = () => collectEvent(type, value);
 
           listeners.push([element, type, listener]);
           element.addEventListener(type, listener, true);
@@ -94,7 +94,7 @@ import { removeTrailingSlash } from '../lib/url';
     pageViewWithAutoEvents(currentUrl, currentRef);
   };
 
-  const event = (event_type, event_value, url = currentUrl, uuid = website) => collect('event', {
+  const collectEvent = (event_type, event_value, url = currentUrl, uuid = website) => collect('event', {
     url,
     event_type,
     event_value,
@@ -107,16 +107,19 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
 
+  const umamiFunctions = { collect, pageView, collectEvent, registerAutoEvents };
   const scheduledCalls = window.umami.calls;
-  window.umami = {
-    collect,
-    pageView,
-    event,
-    registerAutoEvents
-  };
-  scheduledCalls.forEach(([fnName, ...params]) => {
-    window.umami[fnName].apply(window.umami, params);
+
+  window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+  Object.keys(umamiFunctions).forEach((key) => {
+    window.umami[key] = umamiFunctions[key];
   });
+
+  if (scheduledCalls) {
+    scheduledCalls.forEach(([fnName, ...params]) => {
+      window.umami[fnName].apply(window.umami, params);
+    });
+  }
 
   /* Start */
   if (!skipAuto) {
