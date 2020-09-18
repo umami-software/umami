@@ -5,14 +5,20 @@ import { getItem } from 'lib/web';
 
 export default function useDateRange(websiteId, defaultDateRange = '24hour') {
   const globalDefault = getItem('umami.date-range');
+  let globalDateRange;
 
-  if (globalDefault) {
-    globalDefault.startDate = parseISO(globalDefault.startDate);
-    globalDefault.endDate = parseISO(globalDefault.endDate);
+  if (typeof globalDefault === 'string') {
+    globalDateRange = getDateRange(globalDefault);
+  } else {
+    globalDateRange = {
+      ...globalDefault,
+      startDate: parseISO(globalDefault.startDate),
+      endDate: parseISO(globalDefault.endDate),
+    };
   }
 
   return useSelector(
     state =>
-      state.websites[websiteId]?.dateRange || globalDefault || getDateRange(defaultDateRange),
+      state.websites[websiteId]?.dateRange || globalDateRange || getDateRange(defaultDateRange),
   );
 }
