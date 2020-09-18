@@ -27,9 +27,9 @@ export default function TrackingCodeForm({ values, onClose }) {
         />
       </FormRow>
       <FormButtons>
-        <CopyButton type="submit" variant="action" element={ref} />
+        <CopyButton type="submit" variant="action" element={ref}/>
         <Button onClick={onClose}>
-          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+          <FormattedMessage id="button.cancel" defaultMessage="Cancel"/>
         </Button>
       </FormButtons>
     </FormLayout>

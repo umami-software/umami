@@ -1,6 +1,6 @@
 import 'promise-polyfill/src/polyfill';
 import 'unfetch/polyfill';
-import { post, hook, doNotTrack } from '../lib/web';
+import { doNotTrack, hook, post } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 
 (window => {
@@ -19,6 +19,7 @@ import { removeTrailingSlash } from '../lib/url';
 
   const website = script.getAttribute('data-website-id');
   const hostUrl = script.getAttribute('data-host-url');
+  const skipAuto = script.getAttribute('data-skip-auto');
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
     : new URL(script.src).href.split('/').slice(0, -1).join('/');
@@ -28,13 +29,31 @@ import { removeTrailingSlash } from '../lib/url';
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
 
-  /* Collect metrics */
+  /* Handle events */
 
-  const collect = (type, params) => {
+  const removeEvents = () => {
+    listeners.forEach(([element, type, listener]) => {
+      element && element.removeEventListener(type, listener, true);
+    });
+    listeners.length = 0;
+  };
+
+  const loadEvents = () => {
+    document.querySelectorAll('[class*=\'umami--\']').forEach(element => {
+      element.className.split(' ').forEach(className => {
+        if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
+          const [, type, value] = className.split('--');
+          const listener = () => collectEvent(type, value);
+
+          listeners.push([element, type, listener]);
+          element.addEventListener(type, listener, true);
+        }
+      });
+    });
+  };
+  const collect = (type, params, uuid) => {
     const payload = {
-      url: currentUrl,
-      referrer: currentRef,
-      website,
+      website: uuid,
       hostname,
       screen,
       language,
@@ -51,13 +70,15 @@ import { removeTrailingSlash } from '../lib/url';
       payload,
     });
   };
+  const pageView = (url = currentUrl, referrer = currentRef, uuid = website) => collect('pageview', {
+    url,
+    referrer,
+  }, uuid);
 
-  const pageView = () => collect('pageview').then(() => setTimeout(loadEvents, 300));
-
-  const pageEvent = (event_type, event_value) => collect('event', { event_type, event_value });
+  /* Collect metrics */
+  const pageViewWithAutoEvents = (url, referrer) => pageView(url, referrer).then(() => setTimeout(loadEvents, 300));
 
   /* Handle history */
-
   const handlePush = (state, title, url) => {
     removeEvents();
     currentRef = currentUrl;
@@ -70,40 +91,38 @@ import { removeTrailingSlash } from '../lib/url';
       currentUrl = newUrl;
     }
 
-    pageView();
+    pageViewWithAutoEvents(currentUrl, currentRef);
   };
 
-  history.pushState = hook(history, 'pushState', handlePush);
-  history.replaceState = hook(history, 'replaceState', handlePush);
+  const collectEvent = (event_type, event_value, url = currentUrl, uuid = website) => collect('event', {
+    url,
+    event_type,
+    event_value,
+  }, uuid);
 
-  /* Handle events */
+  const registerAutoEvents = () => {
+    history.pushState = hook(history, 'pushState', handlePush);
+    history.replaceState = hook(history, 'replaceState', handlePush);
+    return pageViewWithAutoEvents(currentUrl, currentRef);
+  };
 
-  const removeEvents = () => {
-    listeners.forEach(([element, type, listener]) => {
-      element && element.removeEventListener(type, listener, true);
+
+  const umamiFunctions = { collect, pageView, collectEvent, registerAutoEvents };
+  const scheduledCalls = window.umami.calls;
+
+  window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+  Object.keys(umamiFunctions).forEach((key) => {
+    window.umami[key] = umamiFunctions[key];
+  });
+
+  if (scheduledCalls) {
+    scheduledCalls.forEach(([fnName, ...params]) => {
+      window.umami[fnName].apply(window.umami, params);
     });
-    listeners.length = 0;
-  };
-
-  const loadEvents = () => {
-    document.querySelectorAll("[class*='umami--']").forEach(element => {
-      element.className.split(' ').forEach(className => {
-        if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
-          const [, type, value] = className.split('--');
-          const listener = () => pageEvent(type, value);
-
-          listeners.push([element, type, listener]);
-          element.addEventListener(type, listener, true);
-        }
-      });
-    });
-  };
+  }
 
   /* Start */
-
-  pageView();
-
-  if (!window.umami) {
-    window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+  if (!skipAuto) {
+    registerAutoEvents().catch(e => console.error(e));
   }
 })(window);
