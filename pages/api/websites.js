@@ -10,7 +10,7 @@ export default async (req, res) => {
   const userId = +user_id;
 
   if (req.method === 'GET') {
-    if (userId !== current_user_id && !is_admin) {
+    if (userId && userId !== current_user_id && !is_admin) {
       return unauthorized(res);
     }
 
