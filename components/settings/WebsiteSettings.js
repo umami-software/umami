@@ -37,7 +37,7 @@ export default function WebsiteSettings() {
         <Button
           icon={<LinkIcon />}
           size="small"
-          tooltip={<FormattedMessage id="tooltip.get-share-url" defaultMessage="Get share URL" />}
+          tooltip={<FormattedMessage id="message.get-share-url" defaultMessage="Get share URL" />}
           tooltipId={`button-share-${row.website_id}`}
           onClick={() => setShowUrl(row)}
         />
@@ -46,7 +46,7 @@ export default function WebsiteSettings() {
         icon={<Code />}
         size="small"
         tooltip={
-          <FormattedMessage id="tooltip.get-tracking-code" defaultMessage="Get tracking code" />
+          <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
         }
         tooltipId={`button-code-${row.website_id}`}
         onClick={() => setShowCode(row)}
@@ -111,7 +111,7 @@ export default function WebsiteSettings() {
     <EmptyPlaceholder
       msg={
         <FormattedMessage
-          id="placeholder.message.no-websites-configured"
+          id="message.no-websites-configured"
           defaultMessage="You don't have any websites configured."
         />
       }
@@ -128,7 +128,7 @@ export default function WebsiteSettings() {
     <>
       <PageHeader>
         <div>
-          <FormattedMessage id="settings.websites" defaultMessage="Websites" />
+          <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
           <div>

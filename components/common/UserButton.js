@@ -27,6 +27,7 @@ export default function UserButton() {
       value: 'username',
       className: styles.username,
     },
+    { label: <FormattedMessage id="label.profile" defaultMessage="Profile" />, value: 'profile' },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];
 
@@ -35,6 +36,8 @@ export default function UserButton() {
 
     if (value === 'logout') {
       router.push('/logout');
+    } else if (value === 'profile') {
+      router.push('/settings/profile');
     }
   }
 

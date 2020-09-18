@@ -70,34 +70,36 @@ export default function Calendar({ date, minDate, maxDate, onChange }) {
           <Icon className={styles.icon} icon={selectYear ? <Cross /> : <Chevron />} size="small" />
         </div>
       </div>
-      {!selectMonth && !selectYear && (
-        <DaySelector
-          date={date}
-          minDate={minDate}
-          maxDate={maxDate}
-          locale={locale}
-          onSelect={handleChange}
-        />
-      )}
-      {selectMonth && (
-        <MonthSelector
-          date={date}
-          minDate={minDate}
-          maxDate={maxDate}
-          locale={locale}
-          onSelect={handleChange}
-          onClose={toggleMonthSelect}
-        />
-      )}
-      {selectYear && (
-        <YearSelector
-          date={date}
-          minDate={minDate}
-          maxDate={maxDate}
-          onSelect={handleChange}
-          onClose={toggleYearSelect}
-        />
-      )}
+      <div className={styles.body}>
+        {!selectMonth && !selectYear && (
+          <DaySelector
+            date={date}
+            minDate={minDate}
+            maxDate={maxDate}
+            locale={locale}
+            onSelect={handleChange}
+          />
+        )}
+        {selectMonth && (
+          <MonthSelector
+            date={date}
+            minDate={minDate}
+            maxDate={maxDate}
+            locale={locale}
+            onSelect={handleChange}
+            onClose={toggleMonthSelect}
+          />
+        )}
+        {selectYear && (
+          <YearSelector
+            date={date}
+            minDate={minDate}
+            maxDate={maxDate}
+            onSelect={handleChange}
+            onClose={toggleYearSelect}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -220,42 +222,46 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
 
   return (
     <div className={styles.pager}>
-      <Button
-        icon={<Chevron />}
-        size="small"
-        className={styles.left}
-        onClick={handlePrevClick}
-        disabled={years[0] <= minYear}
-        variant="light"
-      />
-      <table>
-        <tbody>
-          {chunk(years, 5).map((row, i) => (
-            <tr key={i}>
-              {row.map((n, j) => (
-                <td
-                  key={j}
-                  className={classNames({
-                    [styles.selected]: n === year,
-                    [styles.disabled]: n < minYear || n > maxYear,
-                  })}
-                  onClick={() => (n < minYear || n > maxYear ? null : handleSelect(n))}
-                >
-                  {n}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Button
-        icon={<Chevron />}
-        size="small"
-        className={styles.right}
-        onClick={handleNextClick}
-        disabled={years[years.length - 1] > maxYear}
-        variant="light"
-      />
+      <div className={styles.left}>
+        <Button
+          icon={<Chevron />}
+          size="small"
+          onClick={handlePrevClick}
+          disabled={years[0] <= minYear}
+          variant="light"
+        />
+      </div>
+      <div className={styles.middle}>
+        <table>
+          <tbody>
+            {chunk(years, 5).map((row, i) => (
+              <tr key={i}>
+                {row.map((n, j) => (
+                  <td
+                    key={j}
+                    className={classNames({
+                      [styles.selected]: n === year,
+                      [styles.disabled]: n < minYear || n > maxYear,
+                    })}
+                    onClick={() => (n < minYear || n > maxYear ? null : handleSelect(n))}
+                  >
+                    {n}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className={styles.right}>
+        <Button
+          icon={<Chevron />}
+          size="small"
+          onClick={handleNextClick}
+          disabled={years[years.length - 1] > maxYear}
+          variant="light"
+        />
+      </div>
     </div>
   );
 };

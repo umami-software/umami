@@ -5,7 +5,7 @@ import { setDateRange } from 'redux/actions/websites';
 import Button from './Button';
 import Refresh from 'assets/redo.svg';
 import Dots from 'assets/ellipsis-h.svg';
-import { useDateRange } from 'hooks/useDateRange';
+import useDateRange from 'hooks/useDateRange';
 import { getDateRange } from '../../lib/date';
 
 export default function RefreshButton({ websiteId }) {

@@ -9,7 +9,7 @@ export default async (req, res) => {
   const { id } = req.query;
   const user_id = +id;
 
-  if (is_admin) {
+  if (!is_admin) {
     return unauthorized(res);
   }
 

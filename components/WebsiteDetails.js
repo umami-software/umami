@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -19,12 +20,29 @@ import EventsChart from './metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import Loading from 'components/common/Loading';
 
-export default function WebsiteDetails({ websiteId }) {
-  const { data } = useFetch(`/api/website/${websiteId}`);
+const views = {
+  url: PagesTable,
+  referrer: ReferrersTable,
+  browser: BrowsersTable,
+  os: OSTable,
+  device: DevicesTable,
+  country: CountriesTable,
+  event: EventsTable,
+};
+
+export default function WebsiteDetails({ websiteId, token }) {
+  const router = useRouter();
+  const { data } = useFetch(`/api/website/${websiteId}`, { token });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
-  const [expand, setExpand] = useState();
+  const {
+    query: { id, view },
+    basePath,
+    asPath,
+  } = router;
+
+  const path = `${basePath}/${asPath.split('/')[1]}/${id.join('/')}`;
 
   const BackButton = () => (
     <Button
@@ -32,7 +50,7 @@ export default function WebsiteDetails({ websiteId }) {
       className={styles.backButton}
       icon={<Arrow />}
       size="xsmall"
-      onClick={() => setExpand(null)}
+      onClick={() => router.push(path)}
     >
       <div>
         <FormattedMessage id="button.back" defaultMessage="Back" />
@@ -46,53 +64,43 @@ export default function WebsiteDetails({ websiteId }) {
     },
     {
       label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
-      value: 'url',
-      component: PagesTable,
+      value: `${path}?view=url`,
     },
     {
       label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
-      value: 'referrer',
-      component: ReferrersTable,
+      value: `${path}?view=referrer`,
     },
     {
       label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
-      value: 'browser',
-      component: BrowsersTable,
+      value: `${path}?view=browser`,
     },
     {
       label: <FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />,
-      value: 'os',
-      component: OSTable,
+      value: `${path}?view=os`,
     },
     {
       label: <FormattedMessage id="metrics.devices" defaultMessage="Devices" />,
-      value: 'device',
-      component: DevicesTable,
+      value: `${path}?view=device`,
     },
     {
       label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
-      value: 'country',
-      component: CountriesTable,
+      value: `${path}?view=country`,
     },
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
-      value: 'event',
-      component: EventsTable,
+      value: `${path}?view=event`,
     },
   ];
 
   const tableProps = {
     websiteId,
+    token,
     websiteDomain: data?.domain,
     limit: 10,
     onExpand: handleExpand,
   };
 
-  const DetailsComponent = expand?.component;
-
-  function getSelectedMenuOption(value) {
-    return menuOptions.find(e => e.value === value);
-  }
+  const DetailsComponent = views[view];
 
   function handleDataLoad() {
     if (!chartLoaded) {
@@ -101,11 +109,7 @@ export default function WebsiteDetails({ websiteId }) {
   }
 
   function handleExpand(value) {
-    setExpand(getSelectedMenuOption(value));
-  }
-
-  function handleMenuSelect(value) {
-    setExpand(getSelectedMenuOption(value));
+    router.push(`${path}?view=${value}`);
   }
 
   if (!data) {
@@ -118,6 +122,7 @@ export default function WebsiteDetails({ websiteId }) {
         <div className={classNames(styles.chart, 'col')}>
           <WebsiteChart
             websiteId={websiteId}
+            token={token}
             title={data.name}
             onDataLoad={handleDataLoad}
             showLink={false}
@@ -126,7 +131,7 @@ export default function WebsiteDetails({ websiteId }) {
         </div>
       </div>
       {!chartLoaded && <Loading />}
-      {chartLoaded && !expand && (
+      {chartLoaded && !view && (
         <>
           <div className={classNames(styles.row, 'row')}>
             <div className="col-md-12 col-lg-6">
@@ -162,19 +167,17 @@ export default function WebsiteDetails({ websiteId }) {
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </div>
             <div className="col-12 col-md-12 col-lg-8 pt-5 pb-5">
-              <EventsChart websiteId={websiteId} />
+              <EventsChart websiteId={websiteId} token={token} />
             </div>
           </div>
         </>
       )}
-      {expand && (
+      {view && (
         <MenuLayout
-          className={styles.expand}
+          className={styles.view}
           menuClassName={styles.menu}
-          optionClassName={styles.option}
+          contentClassName={styles.content}
           menu={menuOptions}
-          selectedOption={expand.value}
-          onMenuSelect={handleMenuSelect}
         >
           <DetailsComponent {...tableProps} limit={false} />
         </MenuLayout>
