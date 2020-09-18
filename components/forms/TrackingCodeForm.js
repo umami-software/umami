@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Button from 'components/common/Button';
 import FormLayout, { FormButtons, FormRow } from 'components/layout/FormLayout';
-import CopyButton from '../common/CopyButton';
+import CopyButton from 'components/common/CopyButton';
 
 export default function TrackingCodeForm({ values, onClose }) {
   const ref = useRef();
@@ -27,9 +27,9 @@ export default function TrackingCodeForm({ values, onClose }) {
         />
       </FormRow>
       <FormButtons>
-        <CopyButton type="submit" variant="action" element={ref}/>
+        <CopyButton type="submit" variant="action" element={ref} />
         <Button onClick={onClose}>
-          <FormattedMessage id="button.cancel" defaultMessage="Cancel"/>
+          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
         </Button>
       </FormButtons>
     </FormLayout>
