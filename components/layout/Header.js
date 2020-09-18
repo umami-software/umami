@@ -26,10 +26,10 @@ export default function Header() {
             {user ? (
               <>
                 <Link href="/dashboard">
-                  <FormattedMessage id="header.nav.dashboard" defaultMessage="Dashboard" />
+                  <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
                 </Link>
                 <Link href="/settings">
-                  <FormattedMessage id="header.nav.settings" defaultMessage="Settings" />
+                  <FormattedMessage id="label.settings" defaultMessage="Settings" />
                 </Link>
                 <LanguageButton menuAlign="right" />
                 <UserButton />

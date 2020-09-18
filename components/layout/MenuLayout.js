@@ -1,29 +1,37 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
-import Menu from 'components/common/Menu';
+import NavMenu from 'components/common/NavMenu';
 import styles from './MenuLayout.module.css';
 
 export default function MenuLayout({
   menu,
   selectedOption,
-  onMenuSelect,
   className,
   menuClassName,
   contentClassName,
-  optionClassName,
   children,
+  replace = false,
 }) {
+  const router = useRouter();
+
+  function handleSelect(url) {
+    if (replace) {
+      router.replace(url);
+    } else {
+      router.push(url);
+    }
+  }
+
   return (
     <div className={classNames(styles.container, className, 'row')}>
-      <Menu
+      <NavMenu
         options={menu}
         selectedOption={selectedOption}
-        className={classNames(styles.menu, menuClassName, 'col-12 col-lg-3')}
-        selectedClassName={styles.selected}
-        optionClassName={classNames(styles.option, optionClassName)}
-        onSelect={onMenuSelect}
+        className={classNames(styles.menu, menuClassName, 'col-12 col-lg-2')}
+        onSelect={handleSelect}
       />
-      <div className={classNames(styles.content, contentClassName, 'col-12 col-lg-9')}>
+      <div className={classNames(styles.content, contentClassName, 'col-12 col-lg-10')}>
         {children}
       </div>
     </div>

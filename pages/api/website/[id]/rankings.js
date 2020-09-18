@@ -1,6 +1,7 @@
 import { getRankings } from 'lib/queries';
-import { ok, badRequest, methodNotAllowed } from 'lib/response';
+import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
 import { DOMAIN_REGEX } from 'lib/constants';
+import { allowQuery } from 'lib/auth';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
 const pageviewColumns = ['url', 'referrer'];
@@ -26,7 +27,12 @@ function getColumn(type) {
 
 export default async (req, res) => {
   if (req.method === 'GET') {
+    if (!(await allowQuery(req))) {
+      return unauthorized(res);
+    }
+
     const { id, type, start_at, end_at, domain } = req.query;
+
     const websiteId = +id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);

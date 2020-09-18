@@ -2,7 +2,7 @@
   margin-bottom: 30px;
 }
 
-.expand {
+.view {
   border-top: 1px solid var(--gray300);
 }
 
@@ -10,8 +10,8 @@
   font-size: var(--font-size-small);
 }
 
-.menu .option {
-  font-size: var(--font-size-small);
+.content {
+  min-height: 600px;
 }
 
 .backButton {

@@ -3,17 +3,18 @@ import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
+import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import useFetch from 'hooks/useFetch';
+import useDateRange from 'hooks/useDateRange';
 import { getDateArray, getDateLength, getTimezone } from 'lib/date';
 import { setDateRange } from 'redux/actions/websites';
 import styles from './WebsiteChart.module.css';
-import WebsiteHeader from './WebsiteHeader';
-import { useDateRange } from '../../hooks/useDateRange';
 
 export default function WebsiteChart({
   websiteId,
+  token,
   title,
   stickyHeader = false,
   showLink = false,
@@ -30,6 +31,7 @@ export default function WebsiteChart({
       end_at: +endDate,
       unit,
       tz: getTimezone(),
+      token,
     },
     { onDataLoad, update: [modified] },
   );
@@ -50,7 +52,7 @@ export default function WebsiteChart({
 
   return (
     <>
-      <WebsiteHeader websiteId={websiteId} title={title} showLink={showLink} />
+      <WebsiteHeader websiteId={websiteId} token={token} title={title} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}
@@ -58,7 +60,7 @@ export default function WebsiteChart({
           enabled={stickyHeader}
         >
           <div className="col-12 col-lg-9">
-            <MetricsBar websiteId={websiteId} />
+            <MetricsBar websiteId={websiteId} token={token} />
           </div>
           <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
             <DateFilter

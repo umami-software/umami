@@ -5,7 +5,13 @@ import { refFilter } from 'lib/filters';
 import ButtonGroup from 'components/common/ButtonGroup';
 import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 
-export default function ReferrersTable({ websiteId, websiteDomain, limit, onExpand = () => {} }) {
+export default function ReferrersTable({
+  websiteId,
+  websiteDomain,
+  token,
+  limit,
+  onExpand = () => {},
+}) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
 
   const buttons = [
@@ -20,9 +26,9 @@ export default function ReferrersTable({ websiteId, websiteDomain, limit, onExpa
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
-  const renderLink = ({ x: url }) => {
-    return url.startsWith('http') ? (
-      <a href={url} target="_blank" rel="noreferrer">
+  const renderLink = ({ w: href, x: url }) => {
+    return (href || url).startsWith('http') ? (
+      <a href={href || url} target="_blank" rel="noreferrer">
         {decodeURI(url)}
       </a>
     ) : (
@@ -40,6 +46,7 @@ export default function ReferrersTable({ websiteId, websiteDomain, limit, onExpa
       }
       websiteId={websiteId}
       websiteDomain={websiteDomain}
+      token={token}
       limit={limit}
       dataFilter={refFilter}
       filterOptions={{

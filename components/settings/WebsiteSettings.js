@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import Link from 'components/common/Link';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
 import PageHeader from 'components/layout/PageHeader';
@@ -16,7 +17,7 @@ import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
-import Link from 'assets/link.svg';
+import LinkIcon from 'assets/link.svg';
 import useFetch from 'hooks/useFetch';
 import styles from './WebsiteSettings.module.css';
 
@@ -34,9 +35,9 @@ export default function WebsiteSettings() {
     <ButtonLayout>
       {row.share_id && (
         <Button
-          icon={<Link />}
+          icon={<LinkIcon />}
           size="small"
-          tooltip={<FormattedMessage id="tooltip.get-share-url" defaultMessage="Get share URL" />}
+          tooltip={<FormattedMessage id="message.get-share-url" defaultMessage="Get share URL" />}
           tooltipId={`button-share-${row.website_id}`}
           onClick={() => setShowUrl(row)}
         />
@@ -45,7 +46,7 @@ export default function WebsiteSettings() {
         icon={<Code />}
         size="small"
         tooltip={
-          <FormattedMessage id="tooltip.get-tracking-code" defaultMessage="Get tracking code" />
+          <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
         }
         tooltipId={`button-code-${row.website_id}`}
         onClick={() => setShowCode(row)}
@@ -63,11 +64,18 @@ export default function WebsiteSettings() {
     </ButtonLayout>
   );
 
+  const DetailsLink = ({ website_id, name }) => (
+    <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
+      {name}
+    </Link>
+  );
+
   const columns = [
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
       className: 'col-6 col-xl-4',
+      render: DetailsLink,
     },
     {
       key: 'domain',
@@ -103,7 +111,7 @@ export default function WebsiteSettings() {
     <EmptyPlaceholder
       msg={
         <FormattedMessage
-          id="placeholder.message.no-websites-configured"
+          id="message.no-websites-configured"
           defaultMessage="You don't have any websites configured."
         />
       }
@@ -120,7 +128,7 @@ export default function WebsiteSettings() {
     <>
       <PageHeader>
         <div>
-          <FormattedMessage id="settings.websites" defaultMessage="Websites" />
+          <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
           <div>

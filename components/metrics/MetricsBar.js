@@ -3,12 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Loading from 'components/common/Loading';
 import useFetch from 'hooks/useFetch';
-import { useDateRange } from 'hooks/useDateRange';
+import useDateRange from 'hooks/useDateRange';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import MetricCard from './MetricCard';
 import styles from './MetricsBar.module.css';
 
-export default function MetricsBar({ websiteId, className }) {
+export default function MetricsBar({ websiteId, token, className }) {
   const dateRange = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const { data } = useFetch(
@@ -16,6 +16,7 @@ export default function MetricsBar({ websiteId, className }) {
     {
       start_at: +startDate,
       end_at: +endDate,
+      token,
     },
     {
       update: [modified],
