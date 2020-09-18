@@ -104,6 +104,7 @@ import { removeTrailingSlash } from '../lib/url';
   pageView();
 
   if (!window.umami) {
-    window.umami = event_value => collect('event', { event_type: 'custom', event_value });
+    window.umami = (event_value, event_type = 'custom') =>
+      collect('event', { event_type, event_value });
   }
 })(window);
