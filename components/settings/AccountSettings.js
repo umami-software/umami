@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import classNames from 'classnames';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
@@ -16,11 +16,10 @@ import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
-import List from 'assets/list-ul.svg';
+import LinkIcon from 'assets/external-link.svg';
 import styles from './AccountSettings.module.css';
 
 export default function AccountSettings() {
-  const router = useRouter();
   const [addAccount, setAddAccount] = useState();
   const [editAccount, setEditAccount] = useState();
   const [deleteAccount, setDeleteAccount] = useState();
@@ -30,16 +29,18 @@ export default function AccountSettings() {
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
+  const DashboardLink = row =>
+    row.is_admin ? null : (
+      <Link href={`/dashboard/${row.user_id}/${row.username}`}>
+        <a>
+          <Icon icon={<LinkIcon />} />
+        </a>
+      </Link>
+    );
+
   const Buttons = row =>
     row.username !== 'admin' ? (
       <ButtonLayout>
-        <Button
-          icon={<List />}
-          size="small"
-          tooltip={<FormattedMessage id="button.websites" defaultMessage="Websites" />}
-          tooltipId={`button-websites-${row.username}`}
-          onClick={() => router.push(`/dashboard/${row.user_id}/${row.username}`)}
-        />
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
           <div>
             <FormattedMessage id="button.edit" defaultMessage="Edit" />
@@ -57,17 +58,23 @@ export default function AccountSettings() {
     {
       key: 'username',
       label: <FormattedMessage id="label.username" defaultMessage="Username" />,
-      className: 'col-6 col-md-4',
+      className: 'col-4 col-md-3',
     },
     {
       key: 'is_admin',
       label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
-      className: 'col-6 col-md-4',
+      className: 'col-4 col-md-3',
       render: Checkmark,
     },
     {
+      key: 'dashboard',
+      label: <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />,
+      className: 'col-4 col-md-3',
+      render: DashboardLink,
+    },
+    {
       key: 'actions',
-      className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
+      className: classNames(styles.buttons, 'col-12 col-md-3 pt-2 pt-md-0'),
       render: Buttons,
     },
   ];
