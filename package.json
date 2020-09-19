@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.40.0",
+  "version": "0.41.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -52,6 +52,7 @@
     "@prisma/client": "2.7.0",
     "@reduxjs/toolkit": "^1.4.0",
     "bcrypt": "^5.0.0",
+    "chalk": "^4.1.0",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
     "cookie": "^0.4.1",
@@ -94,6 +95,7 @@
     "@rollup/plugin-replace": "^2.3.3",
     "@svgr/webpack": "^5.4.0",
     "cross-env": "^7.0.2",
+    "del": "^5.1.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
