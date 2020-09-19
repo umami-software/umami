@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react';
 import tinycolor from 'tinycolor2';
 import BarChart from './BarChart';
-import { getTimezone, getDateArray, getDateLength } from 'lib/date';
+import { getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
+import useTimezone from 'hooks/useTimezone';
 
 const COLORS = [
   '#2680eb',
@@ -17,15 +18,17 @@ const COLORS = [
 ];
 
 export default function EventsChart({ websiteId, token }) {
-  const dateRange = useDateRange(websiteId);
+  const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, modified } = dateRange;
+  const [timezone] = useTimezone();
+
   const { data } = useFetch(
     `/api/website/${websiteId}/events`,
     {
       start_at: +startDate,
       end_at: +endDate,
       unit,
-      tz: getTimezone(),
+      tz: timezone,
       token,
     },
     { update: [modified] },

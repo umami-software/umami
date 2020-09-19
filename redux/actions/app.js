@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getItem } from 'lib/web';
+import { LOCALE_CONFIG } from 'lib/constants';
 
 const app = createSlice({
   name: 'app',
-  initialState: { locale: getItem('umami.locale') || 'en-US' },
+  initialState: { locale: getItem(LOCALE_CONFIG) || 'en-US' },
   reducers: {
     updateApp(state, action) {
       state = action.payload;

@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Menu from './Menu';
 import Button from './Button';
 import { menuOptions } from 'lib/lang';
-import { setItem } from 'lib/web';
 import useLocale from 'hooks/useLocale';
 import useDocumentClick from 'hooks/useDocumentClick';
 import Globe from 'assets/globe.svg';
@@ -17,7 +16,6 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
 
   function handleSelect(value) {
     setLocale(value);
-    setItem('umami.locale', value);
     setShowMenu(false);
   }
 

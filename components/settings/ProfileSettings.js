@@ -1,38 +1,25 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
 import Modal from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import ChangePasswordForm from 'components/forms/ChangePasswordForm';
-import DateFilter from 'components/common/DateFilter';
+import TimezoneSetting from 'components/settings/TimezoneSetting';
 import Dots from 'assets/ellipsis-h.svg';
-import { getTimezone } from 'lib/date';
-import { setItem } from 'lib/web';
-import useDateRange from 'hooks/useDateRange';
-import { setDateRange } from 'redux/actions/websites';
 import styles from './ProfileSettings.module.css';
+import DateRangeSetting from './DateRangeSetting';
 
 export default function ProfileSettings() {
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user);
   const [changePassword, setChangePassword] = useState(false);
   const [message, setMessage] = useState();
   const { user_id } = user;
-  const timezone = getTimezone();
-  const dateRange = useDateRange(0);
-  const { startDate, endDate, value } = dateRange;
 
   function handleSave() {
     setChangePassword(false);
     setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
-  }
-
-  function handleDateChange(values) {
-    const { value } = values;
-    setItem(`umami.date-range`, value === 'custom' ? values : value);
-    dispatch(setDateRange(0, values));
   }
 
   return (
@@ -47,7 +34,7 @@ export default function ProfileSettings() {
           </div>
         </Button>
       </PageHeader>
-      <dl>
+      <dl className={styles.list}>
         <dt>
           <FormattedMessage id="label.username" defaultMessage="Username" />
         </dt>
@@ -55,17 +42,14 @@ export default function ProfileSettings() {
         <dt>
           <FormattedMessage id="label.timezone" defaultMessage="Timezone" />
         </dt>
-        <dd>{timezone}</dd>
+        <dd>
+          <TimezoneSetting />
+        </dd>
         <dt>
           <FormattedMessage id="label.default-date-range" defaultMessage="Default date range" />
         </dt>
-        <dd className={styles.date}>
-          <DateFilter
-            value={value}
-            startDate={startDate}
-            endDate={endDate}
-            onChange={handleDateChange}
-          />
+        <dd>
+          <DateRangeSetting />
         </dd>
       </dl>
       {changePassword && (

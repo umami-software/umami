@@ -29,7 +29,7 @@ export default function MetricsTable({
   onDataLoad = () => {},
   onExpand = () => {},
 }) {
-  const dateRange = useDateRange(websiteId);
+  const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const { data } = useFetch(
     `/api/website/${websiteId}/rankings`,
