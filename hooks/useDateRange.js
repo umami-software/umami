@@ -15,7 +15,7 @@ export default function useDateRange(websiteId, defaultDateRange = '24hour') {
       startDate:
         globalDefault && globalDefault.startDate
           ? parseISO(globalDefault.startDate)
-          : new Date(Date.now() - 604800000),
+          : new Date(Date.now() - 604800000), // set 7 days agao as default start date if no globalDefault
       endDate:
         globalDefault && globalDefault.endDate ? parseISO(globalDefault.endDate) : new Date(),
     };
