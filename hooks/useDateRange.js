@@ -12,8 +12,12 @@ export default function useDateRange(websiteId, defaultDateRange = '24hour') {
   } else {
     globalDateRange = {
       ...globalDefault,
-      startDate: parseISO(globalDefault.startDate),
-      endDate: parseISO(globalDefault.endDate),
+      startDate:
+        globalDefault && globalDefault.startDate
+          ? parseISO(globalDefault.startDate)
+          : new Date(Date.now() - 604800000),
+      endDate:
+        globalDefault && globalDefault.endDate ? parseISO(globalDefault.endDate) : new Date(),
     };
   }
 
