@@ -9,7 +9,7 @@ export default function useDateRange(websiteId, defaultDateRange = '24hour') {
 
   if (typeof globalDefault === 'string') {
     globalDateRange = getDateRange(globalDefault);
-  } else if (typeof globalDateRange === 'object') {
+  } else if (typeof globalDefault === 'object') {
     globalDateRange = {
       ...globalDefault,
       startDate: parseISO(globalDefault.startDate),
