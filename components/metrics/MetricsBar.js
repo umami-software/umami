@@ -9,7 +9,7 @@ import MetricCard from './MetricCard';
 import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId, token, className }) {
-  const dateRange = useDateRange(websiteId);
+  const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const { data } = useFetch(
     `/api/website/${websiteId}/metrics`,
