@@ -2,7 +2,7 @@ a.link,
 a.link:active,
 a.link:visited {
   position: relative;
-  color: #2c2c2c;
+  color: var(--gray900);
   text-decoration: none;
 }
 
@@ -12,7 +12,7 @@ a.link:before {
   bottom: -2px;
   width: 0;
   height: 2px;
-  background: #2680eb;
+  background: var(--primary400);
   opacity: 0.5;
   transition: width 100ms;
 }

@@ -3,11 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
-import UserButton from '../common/UserButton';
-import Icon from '../common/Icon';
+import UserButton from 'components/common/UserButton';
+import Icon from 'components/common/Icon';
+import LanguageButton from 'components/settings/LanguageButton';
+import ThemeButton from 'components/settings/ThemeButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
-import LanguageButton from '../common/LanguageButton';
 
 export default function Header() {
   const user = useSelector(state => state.user);
@@ -32,10 +33,14 @@ export default function Header() {
                   <FormattedMessage id="label.settings" defaultMessage="Settings" />
                 </Link>
                 <LanguageButton menuAlign="right" />
+                <ThemeButton />
                 <UserButton />
               </>
             ) : (
-              <LanguageButton menuAlign="right" />
+              <>
+                <LanguageButton menuAlign="right" />
+                <ThemeButton />
+              </>
             )}
           </div>
         </div>

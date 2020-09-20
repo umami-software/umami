@@ -9,7 +9,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 16px;
-  color: var(--gray50);
+  color: var(--msgColor);
   background: var(--green400);
   margin: auto;
   z-index: 2;

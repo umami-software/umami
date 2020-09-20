@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Head from 'next/head';
-import Menu from './Menu';
-import Button from './Button';
+import Menu from 'components/common/Menu';
+import Button from 'components/common/Button';
 import { menuOptions } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import useDocumentClick from 'hooks/useDocumentClick';

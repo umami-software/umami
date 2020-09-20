@@ -16,8 +16,8 @@ export default function Layout({ title, children, header = true, footer = true }
       </Head>
       {header && <Header />}
       <main className="container">{children}</main>
-      <div id="__modals" />
       {footer && <Footer />}
+      <div id="__modals" />
     </>
   );
 }

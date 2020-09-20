@@ -6,7 +6,7 @@ import Button from 'components/common/Button';
 import { FormButtons } from 'components/layout/FormLayout';
 import { getDateRangeValues } from 'lib/date';
 import styles from './DatePickerForm.module.css';
-import ButtonGroup from '../common/ButtonGroup';
+import ButtonGroup from 'components/common/ButtonGroup';
 
 const FILTER_DAY = 0;
 const FILTER_RANGE = 1;
