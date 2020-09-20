@@ -7,6 +7,7 @@ export default function useFetch(url, params = {}, options = {}) {
   const dispatch = useDispatch();
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const [loading, setLoadiing] = useState(false);
   const keys = Object.keys(params)
     .sort()
     .map(key => params[key]);
@@ -14,6 +15,7 @@ export default function useFetch(url, params = {}, options = {}) {
 
   async function loadData() {
     try {
+      setLoadiing(true);
       setError(null);
       const time = performance.now();
       const data = await get(url, params);
@@ -25,6 +27,8 @@ export default function useFetch(url, params = {}, options = {}) {
     } catch (e) {
       console.error(e);
       setError(e);
+    } finally {
+      setLoadiing(false);
     }
   }
 
@@ -42,5 +46,5 @@ export default function useFetch(url, params = {}, options = {}) {
     }
   }, [url, ...keys, ...update]);
 
-  return { data, error, loadData };
+  return { data, error, loading, loadData };
 }

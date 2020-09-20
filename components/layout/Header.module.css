@@ -19,12 +19,8 @@
   font-weight: 600;
 }
 
-.nav > * {
-  margin-left: 30px;
-}
-
-.nav > *:first-child {
-  margin: 0;
+.nav a + a {
+  margin-left: 40px;
 }
 
 .buttons {

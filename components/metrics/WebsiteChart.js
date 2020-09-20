@@ -23,7 +23,7 @@ export default function WebsiteChart({
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
 
-  const { data } = useFetch(
+  const { data, loading } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {
       start_at: +startDate,
@@ -74,6 +74,7 @@ export default function WebsiteChart({
             data={{ pageviews, uniques }}
             unit={unit}
             records={getDateLength(startDate, endDate, unit)}
+            loading={loading}
           />
         </div>
       </div>

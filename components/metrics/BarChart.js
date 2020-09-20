@@ -18,6 +18,7 @@ export default function BarChart({
   animationDuration = 300,
   className,
   stacked = false,
+  loading = false,
   onCreate = () => {},
   onUpdate = () => {},
 }) {
@@ -33,6 +34,7 @@ export default function BarChart({
   };
 
   function renderXLabel(label, index, values) {
+    if (loading) return '';
     const d = new Date(values[index].value);
     const w = canvas.current.width;
 
