@@ -92,6 +92,10 @@ main {
   flex: 1;
 }
 
+svg {
+  shape-rendering: geometricPrecision;
+}
+
 #__next {
   display: flex;
   flex-direction: column;
