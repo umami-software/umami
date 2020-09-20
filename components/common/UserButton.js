@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import Menu from './Menu';
 import Icon from './Icon';
+import Button from './Button';
 import useDocumentClick from 'hooks/useDocumentClick';
 import User from 'assets/user.svg';
 import Chevron from 'assets/chevron-down.svg';
@@ -49,10 +50,15 @@ export default function UserButton() {
 
   return (
     <div ref={ref} className={styles.container}>
-      <div className={styles.button} onClick={() => setShowMenu(state => !state)}>
-        <Icon icon={<User />} size="large" />
+      <Button
+        icon={<User />}
+        className={styles.button}
+        onClick={() => setShowMenu(state => !state)}
+        size="large"
+        variant="light"
+      >
         <Icon icon={<Chevron />} size="small" />
-      </div>
+      </Button>
       {showMenu && (
         <Menu
           className={styles.menu}

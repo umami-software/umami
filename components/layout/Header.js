@@ -16,32 +16,29 @@ export default function Header() {
   return (
     <header className="container">
       <div className={classNames(styles.header, 'row align-items-center')}>
-        <div className="col-12 col-md-3">
+        <div className="col-12 col-md-12 col-lg-3">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />
             <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
           </div>
         </div>
-        <div className="col-12 col-md-9">
-          <div className={styles.nav}>
-            {user ? (
-              <>
-                <Link href="/dashboard">
-                  <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
-                </Link>
-                <Link href="/settings">
-                  <FormattedMessage id="label.settings" defaultMessage="Settings" />
-                </Link>
-                <LanguageButton menuAlign="right" />
-                <ThemeButton />
-                <UserButton />
-              </>
-            ) : (
-              <>
-                <LanguageButton menuAlign="right" />
-                <ThemeButton />
-              </>
-            )}
+        <div className="col-12 col-md-12 col-lg-6">
+          {user && (
+            <div className={styles.nav}>
+              <Link href="/dashboard">
+                <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
+              </Link>
+              <Link href="/settings">
+                <FormattedMessage id="label.settings" defaultMessage="Settings" />
+              </Link>
+            </div>
+          )}
+        </div>
+        <div className="col-12 col-md-12 col-lg-3">
+          <div className={styles.buttons}>
+            <LanguageButton menuAlign="right" />
+            <ThemeButton />
+            {user && <UserButton />}
           </div>
         </div>
       </div>
