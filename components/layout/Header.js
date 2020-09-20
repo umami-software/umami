@@ -36,8 +36,8 @@ export default function Header() {
         </div>
         <div className="col-12 col-md-12 col-lg-3">
           <div className={styles.buttons}>
-            <LanguageButton menuAlign="right" />
             <ThemeButton />
+            <LanguageButton menuAlign="right" />
             {user && <UserButton />}
           </div>
         </div>

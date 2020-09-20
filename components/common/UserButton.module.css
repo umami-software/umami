@@ -4,11 +4,6 @@
   cursor: pointer;
 }
 
-.button {
-  display: flex;
-  flex-wrap: nowrap;
-}
-
 .username {
   border-bottom: 1px solid var(--gray500);
 }
@@ -19,4 +14,12 @@
 
 .menu {
   z-index: 100;
+}
+
+.open {
+  background: var(--gray200);
+}
+
+.open:hover {
+  background: var(--gray200);
 }

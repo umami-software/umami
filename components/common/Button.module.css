@@ -61,7 +61,7 @@
 }
 
 .light:hover {
-  background: var(--gray75);
+  background: inherit;
 }
 
 .button:disabled {

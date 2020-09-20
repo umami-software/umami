@@ -11,3 +11,11 @@
 .text {
   font-size: var(--font-size-small);
 }
+
+.open {
+  background: var(--gray200);
+}
+
+.open:hover {
+  background: var(--gray200);
+}

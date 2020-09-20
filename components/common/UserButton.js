@@ -9,6 +9,7 @@ import useDocumentClick from 'hooks/useDocumentClick';
 import User from 'assets/user.svg';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
+import classNames from 'classnames';
 
 export default function UserButton() {
   const [showMenu, setShowMenu] = useState(false);
@@ -52,7 +53,7 @@ export default function UserButton() {
     <div ref={ref} className={styles.container}>
       <Button
         icon={<User />}
-        className={styles.button}
+        className={classNames({ [styles.open]: showMenu })}
         onClick={() => setShowMenu(state => !state)}
         size="large"
         variant="light"

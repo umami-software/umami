@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import classNames from 'classnames';
 import Head from 'next/head';
 import Menu from 'components/common/Menu';
 import Button from 'components/common/Button';
@@ -46,7 +47,12 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
         )}
       </Head>
       <div ref={ref} className={styles.container}>
-        <Button icon={<Globe />} onClick={toggleMenu} variant="light">
+        <Button
+          icon={<Globe />}
+          className={classNames({ [styles.open]: showMenu })}
+          onClick={toggleMenu}
+          variant="light"
+        >
           <div className={styles.text}>{selectedLocale}</div>
         </Button>
         {showMenu && (
