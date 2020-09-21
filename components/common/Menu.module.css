@@ -44,3 +44,7 @@
 .divider {
   border-top: 1px solid var(--gray300);
 }
+
+.selected {
+  font-weight: 600;
+}

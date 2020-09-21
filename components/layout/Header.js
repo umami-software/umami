@@ -3,10 +3,10 @@ import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
-import UserButton from 'components/common/UserButton';
 import Icon from 'components/common/Icon';
 import LanguageButton from 'components/settings/LanguageButton';
 import ThemeButton from 'components/settings/ThemeButton';
+import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 

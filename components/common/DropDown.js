@@ -15,6 +15,7 @@ export default function DropDown({
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
+  const selectedOption = options.find(e => e.value === value);
 
   function handleShowMenu() {
     setShowMenu(state => !state);
@@ -40,7 +41,13 @@ export default function DropDown({
         <Icon icon={<Chevron />} className={styles.icon} size="small" />
       </div>
       {showMenu && (
-        <Menu className={menuClassName} options={options} onSelect={handleSelect} float="bottom" />
+        <Menu
+          className={menuClassName}
+          options={options}
+          selectedOption={selectedOption}
+          onSelect={handleSelect}
+          float="bottom"
+        />
       )}
     </div>
   );

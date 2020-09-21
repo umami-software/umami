@@ -1,20 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Menu from './Menu';
-import Icon from './Icon';
-import Button from './Button';
-import useDocumentClick from 'hooks/useDocumentClick';
+import MenuButton from 'components/common/MenuButton';
+import Icon from 'components/common/Icon';
 import User from 'assets/user.svg';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
-import classNames from 'classnames';
 
 export default function UserButton() {
-  const [showMenu, setShowMenu] = useState(false);
   const user = useSelector(state => state.user);
-  const ref = useRef();
   const router = useRouter();
 
   const menuOptions = [
@@ -34,8 +29,6 @@ export default function UserButton() {
   ];
 
   function handleSelect(value) {
-    setShowMenu(false);
-
     if (value === 'logout') {
       router.push('/logout');
     } else if (value === 'profile') {
@@ -43,32 +36,12 @@ export default function UserButton() {
     }
   }
 
-  useDocumentClick(e => {
-    if (!ref.current.contains(e.target)) {
-      setShowMenu(false);
-    }
-  });
-
   return (
-    <div ref={ref} className={styles.container}>
-      <Button
-        icon={<User />}
-        className={classNames({ [styles.open]: showMenu })}
-        onClick={() => setShowMenu(state => !state)}
-        size="large"
-        variant="light"
-      >
-        <Icon icon={<Chevron />} size="small" />
-      </Button>
-      {showMenu && (
-        <Menu
-          className={styles.menu}
-          options={menuOptions}
-          onSelect={handleSelect}
-          float="bottom"
-          align="right"
-        />
-      )}
-    </div>
+    <MenuButton
+      icon={<Icon icon={<User />} size="large" />}
+      value={<Icon icon={<Chevron />} size="small" />}
+      options={menuOptions}
+      onSelect={handleSelect}
+    />
   );
 }

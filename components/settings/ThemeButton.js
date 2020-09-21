@@ -13,12 +13,12 @@ export default function ThemeButton() {
   const transitions = useTransition(theme, theme => theme, {
     from: {
       opacity: 0,
-      transform: `translateY(${theme === 'light' ? '-20px' : '20px'}) scale(0.5)`,
+      transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
     },
     enter: { opacity: 1, transform: 'translateY(0px) scale(1)' },
     leave: {
       opacity: 0,
-      transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
+      transform: `translateY(${theme === 'light' ? '-20px' : '20px'}) scale(0.5)`,
     },
   });
 

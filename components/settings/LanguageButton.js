@@ -1,34 +1,16 @@
-import React, { useState, useRef } from 'react';
-import classNames from 'classnames';
+import React from 'react';
 import Head from 'next/head';
-import Menu from 'components/common/Menu';
-import Button from 'components/common/Button';
 import { menuOptions } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
-import useDocumentClick from 'hooks/useDocumentClick';
+import MenuButton from 'components/common/MenuButton';
 import Globe from 'assets/globe.svg';
-import styles from './LanguageButton.module.css';
 
-export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'left' }) {
-  const [showMenu, setShowMenu] = useState(false);
+export default function LanguageButton() {
   const [locale, setLocale] = useLocale();
-  const ref = useRef();
-  const selectedLocale = menuOptions.find(e => e.value === locale)?.display;
 
   function handleSelect(value) {
     setLocale(value);
-    setShowMenu(false);
   }
-
-  function toggleMenu() {
-    setShowMenu(state => !state);
-  }
-
-  useDocumentClick(e => {
-    if (!ref.current.contains(e.target)) {
-      setShowMenu(false);
-    }
-  });
 
   return (
     <>
@@ -46,25 +28,13 @@ export default function LanguageButton({ menuPosition = 'bottom', menuAlign = 'l
           />
         )}
       </Head>
-      <div ref={ref} className={styles.container}>
-        <Button
-          icon={<Globe />}
-          className={classNames({ [styles.open]: showMenu })}
-          onClick={toggleMenu}
-          variant="light"
-        >
-          <div className={styles.text}>{selectedLocale}</div>
-        </Button>
-        {showMenu && (
-          <Menu
-            className={styles.menu}
-            options={menuOptions}
-            onSelect={handleSelect}
-            float={menuPosition}
-            align={menuAlign}
-          />
-        )}
-      </div>
+      <MenuButton
+        icon={<Globe />}
+        options={menuOptions}
+        value={locale}
+        renderValue={option => option?.display}
+        onSelect={handleSelect}
+      />
     </>
   );
 }
