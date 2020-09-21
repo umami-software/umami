@@ -1,5 +1,5 @@
 {
-    "button.add-account": "Προσθήκη νέου λογαριασμού",
+    "button.add-account": "Προσθήκη λογαριασμού",
     "button.add-website": "Προσθήκη ιστότοπου",
     "button.back": "Πίσω",
     "button.cancel": "Ακύρωση",
@@ -45,7 +45,7 @@
     "label.unknown": "Άγνωστο",
     "label.username": "Όνομα χρήστη",
     "label.websites": "Ιστότοποι",
-    "message.active-users": "{x} τρέχουσα {x, πληθυντικός, ένας {visitor} άλλοι {visitors}}",
+    "message.active-users": "{x} ενεργοί {x, πληθυντικός, ένας {επισκέπτης} άλλοι {επισκέπτες}}",
     "message.confirm-delete": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το {target};",
     "message.copied": "Αντιγράφηκε!",
     "message.delete-warning": "Όλα τα σχετικά δεδομένα θα διαγραφούν επίσης.",
