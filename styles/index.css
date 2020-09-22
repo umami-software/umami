@@ -1,14 +1,17 @@
 html,
 body {
   font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: var(--font-size-normal);
   font-weight: 400;
   line-height: 1.8;
   padding: 0;
   margin: 0;
-  width: 100%;
-  height: 100%;
   box-sizing: border-box;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
+  font-size: var(--font-size-normal);
   color: var(--gray900);
   background: var(--gray75);
 }
@@ -51,6 +54,8 @@ a:visited {
 input[type='text'],
 input[type='password'],
 textarea {
+  color: var(--gray900);
+  background: var(--gray50);
   padding: 4px 8px;
   font-size: var(--font-size-normal);
   line-height: 1.8;
@@ -85,6 +90,12 @@ dd {
 
 main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+svg {
+  shape-rendering: geometricPrecision;
 }
 
 #__next {
@@ -92,6 +103,7 @@ main {
   flex-direction: column;
   width: 100%;
   height: 100%;
+  flex: 1;
 }
 
 #__modals {

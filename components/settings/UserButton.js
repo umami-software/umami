@@ -1,18 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
-import Menu from './Menu';
-import Icon from './Icon';
-import useDocumentClick from 'hooks/useDocumentClick';
+import MenuButton from 'components/common/MenuButton';
+import Icon from 'components/common/Icon';
 import User from 'assets/user.svg';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
 
 export default function UserButton() {
-  const [showMenu, setShowMenu] = useState(false);
   const user = useSelector(state => state.user);
-  const ref = useRef();
   const router = useRouter();
 
   const menuOptions = [
@@ -32,8 +29,6 @@ export default function UserButton() {
   ];
 
   function handleSelect(value) {
-    setShowMenu(false);
-
     if (value === 'logout') {
       router.push('/logout');
     } else if (value === 'profile') {
@@ -41,27 +36,12 @@ export default function UserButton() {
     }
   }
 
-  useDocumentClick(e => {
-    if (!ref.current.contains(e.target)) {
-      setShowMenu(false);
-    }
-  });
-
   return (
-    <div ref={ref} className={styles.container}>
-      <div className={styles.button} onClick={() => setShowMenu(state => !state)}>
-        <Icon icon={<User />} size="large" />
-        <Icon icon={<Chevron />} size="small" />
-      </div>
-      {showMenu && (
-        <Menu
-          className={styles.menu}
-          options={menuOptions}
-          onSelect={handleSelect}
-          float="bottom"
-          align="right"
-        />
-      )}
-    </div>
+    <MenuButton
+      icon={<Icon icon={<User />} size="large" />}
+      value={<Icon icon={<Chevron />} size="small" />}
+      options={menuOptions}
+      onSelect={handleSelect}
+    />
   );
 }

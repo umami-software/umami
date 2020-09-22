@@ -5,17 +5,7 @@ import { getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
-
-const COLORS = [
-  '#2680eb',
-  '#9256d9',
-  '#44b556',
-  '#e68619',
-  '#e34850',
-  '#1b959a',
-  '#d83790',
-  '#85d044',
-];
+import { EVENT_COLORS } from 'lib/constants';
 
 export default function EventsChart({ websiteId, token }) {
   const [dateRange] = useDateRange(websiteId);
@@ -51,13 +41,13 @@ export default function EventsChart({ websiteId, token }) {
     });
 
     return Object.keys(map).map((key, index) => {
-      const color = tinycolor(COLORS[index]);
+      const color = tinycolor(EVENT_COLORS[index]);
       return {
         label: key,
         data: map[key],
         lineTension: 0,
-        backgroundColor: color.setAlpha(0.4).toRgbString(),
-        borderColor: color.setAlpha(0.5).toRgbString(),
+        backgroundColor: color.setAlpha(0.6).toRgbString(),
+        borderColor: color.setAlpha(0.7).toRgbString(),
         borderWidth: 1,
       };
     });

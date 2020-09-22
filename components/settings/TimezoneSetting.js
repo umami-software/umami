@@ -1,8 +1,8 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
-import DropDown from '../common/DropDown';
-import Button from '../common/Button';
+import DropDown from 'components/common/DropDown';
+import Button from 'components/common/Button';
 import useTimezone from 'hooks/useTimezone';
 import { getTimezone } from 'lib/date';
 import styles from './TimezoneSetting.module.css';

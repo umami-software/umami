@@ -16,8 +16,8 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  background: var(--gray900);
-  opacity: 0.1;
+  background: #000;
+  opacity: 0.5;
 }
 
 .content {

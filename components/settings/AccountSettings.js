@@ -40,7 +40,7 @@ export default function AccountSettings() {
 
   const Buttons = row =>
     row.username !== 'admin' ? (
-      <ButtonLayout>
+      <ButtonLayout align="right">
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
           <div>
             <FormattedMessage id="button.edit" defaultMessage="Edit" />

@@ -6,3 +6,15 @@
 .buttons button + * {
   margin-left: 10px;
 }
+
+.center {
+  justify-content: center;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
+}
