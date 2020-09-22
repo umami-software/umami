@@ -24,7 +24,7 @@ export default function BarChart({
 }) {
   const canvas = useRef();
   const chart = useRef();
-  const [tooltip, setTooltip] = useState({});
+  const [tooltip, setTooltip] = useState(null);
   const [locale] = useLocale();
   const [theme] = useTheme();
   const colors = {
@@ -69,18 +69,19 @@ export default function BarChart({
   function renderTooltip(model) {
     const { opacity, title, body, labelColors } = model;
 
-    if (!opacity) {
+    if (!opacity || !title) {
       setTooltip(null);
-    } else {
-      const [label, value] = body[0].lines[0].split(':');
-
-      setTooltip({
-        title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
-        value,
-        label,
-        labelColor: labelColors[0].backgroundColor,
-      });
+      return;
     }
+
+    const [label, value] = body[0].lines[0].split(':');
+
+    setTooltip({
+      title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
+      value,
+      label,
+      labelColor: labelColors[0].backgroundColor,
+    });
   }
 
   function getTooltipFormat(unit) {

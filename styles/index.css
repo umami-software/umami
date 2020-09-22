@@ -5,11 +5,11 @@ body {
   line-height: 1.8;
   padding: 0;
   margin: 0;
-  height: 100%;
-  overflow: auto;
   box-sizing: border-box;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
+  flex: 1;
 
   font-size: var(--font-size-normal);
   color: var(--gray900);
@@ -90,6 +90,8 @@ dd {
 
 main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 svg {

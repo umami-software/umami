@@ -37,7 +37,7 @@ export default function MenuButton({
     <div className={styles.container} ref={ref}>
       <Button
         icon={icon}
-        className={classNames({ [styles.open]: showMenu })}
+        className={classNames(styles.button, { [styles.open]: showMenu })}
         onClick={toggleMenu}
         variant="light"
       >

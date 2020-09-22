@@ -14,7 +14,7 @@ export default function WebsiteHeader({ websiteId, token, title, showLink = fals
     <PageHeader>
       <div className={styles.title}>{title}</div>
       <ActiveUsers className={styles.active} websiteId={websiteId} token={token} />
-      <ButtonLayout>
+      <ButtonLayout align="right">
         <RefreshButton websiteId={websiteId} />
         {showLink && (
           <Link

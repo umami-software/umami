@@ -4,6 +4,7 @@ import MetricsTable from './MetricsTable';
 import { refFilter } from 'lib/filters';
 import ButtonGroup from 'components/common/ButtonGroup';
 import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
+import ButtonLayout from '../layout/ButtonLayout';
 
 export default function ReferrersTable({
   websiteId,
@@ -37,29 +38,33 @@ export default function ReferrersTable({
   };
 
   return (
-    <MetricsTable
-      title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
-      type="referrer"
-      metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
-      headerComponent={
-        limit ? null : <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />
-      }
-      websiteId={websiteId}
-      websiteDomain={websiteDomain}
-      token={token}
-      limit={limit}
-      dataFilter={refFilter}
-      filterOptions={{
-        domain: websiteDomain,
-        domainOnly: filter === FILTER_DOMAIN_ONLY,
-        raw: filter === FILTER_RAW,
-      }}
-      onExpand={onExpand}
-      renderLabel={renderLink}
-    />
+    <>
+      {!limit && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      <MetricsTable
+        title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
+        type="referrer"
+        metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+        websiteId={websiteId}
+        websiteDomain={websiteDomain}
+        token={token}
+        limit={limit}
+        dataFilter={refFilter}
+        filterOptions={{
+          domain: websiteDomain,
+          domainOnly: filter === FILTER_DOMAIN_ONLY,
+          raw: filter === FILTER_RAW,
+        }}
+        onExpand={onExpand}
+        renderLabel={renderLink}
+      />
+    </>
   );
 }
 
 const FilterButtons = ({ buttons, selected, onClick }) => {
-  return <ButtonGroup size="xsmall" items={buttons} selectedItem={selected} onClick={onClick} />;
+  return (
+    <ButtonLayout>
+      <ButtonGroup size="xsmall" items={buttons} selectedItem={selected} onClick={onClick} />
+    </ButtonLayout>
+  );
 };

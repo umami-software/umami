@@ -4,6 +4,11 @@
   cursor: pointer;
 }
 
+.button {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
 .menu {
   z-index: 100;
 }
@@ -12,10 +17,8 @@
   font-size: var(--font-size-small);
 }
 
-.open {
-  background: var(--gray200);
-}
-
+.open,
 .open:hover {
-  background: var(--gray200);
+  background: var(--gray50);
+  border: 1px solid var(--gray500);
 }

@@ -17,7 +17,7 @@
   text-align: center;
   vertical-align: center;
   height: 40px;
-  min-width: 40px;
+  width: 40px;
   border-radius: 5px;
   border: 1px solid transparent;
 }
@@ -102,4 +102,10 @@
 
 .icon {
   margin-left: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+  .calendar table {
+    max-width: calc(100vw - 30px);
+  }
 }

@@ -32,7 +32,7 @@ export default function WebsiteSettings() {
   const { data } = useFetch(`/api/websites`, {}, { update: [saved] });
 
   const Buttons = row => (
-    <ButtonLayout>
+    <ButtonLayout align="right">
       {row.share_id && (
         <Button
           icon={<LinkIcon />}

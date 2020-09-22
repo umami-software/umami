@@ -19,7 +19,7 @@
 }
 
 .button:active {
-  color: var(--gray700);
+  color: var(--gray900);
 }
 
 .large {
