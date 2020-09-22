@@ -24,7 +24,6 @@ export default function MetricsTable({
   dataFilter,
   filterOptions,
   limit,
-  headerComponent,
   renderLabel,
   onDataLoad = () => {},
   onExpand = () => {},
@@ -85,7 +84,6 @@ export default function MetricsTable({
         <>
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>
-            {headerComponent}
             <div className={styles.metric} onClick={handleSetFormat}>
               {metric}
             </div>

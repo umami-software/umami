@@ -2,7 +2,6 @@
   position: relative;
   min-height: 460px;
   font-size: var(--font-size-small);
-  padding: 20px 0;
   display: flex;
   flex-direction: column;
 }
@@ -74,7 +73,7 @@
   position: relative;
   width: 50px;
   color: #6e6e6e;
-  border-left: 1px solid var(--gray600);
+  border-left: 1px solid var(--gray500);
   padding-left: 10px;
   z-index: 1;
 }

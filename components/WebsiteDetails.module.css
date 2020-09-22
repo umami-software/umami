@@ -12,6 +12,7 @@
 
 .content {
   min-height: 600px;
+  padding: 20px 0;
 }
 
 .backButton {
@@ -30,7 +31,7 @@
 
 .row > [class*='col-'] {
   border-left: 1px solid var(--gray300);
-  padding: 0 20px;
+  padding: 20px;
 }
 
 .row > [class*='col-']:first-child {
