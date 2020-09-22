@@ -39,7 +39,7 @@
 }
 
 .msg {
-  color: var(--gray50);
+  color: var(--msgColor);
   background: var(--red400);
   font-size: var(--font-size-small);
   padding: 4px 8px;

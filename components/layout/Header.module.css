@@ -13,18 +13,33 @@
 
 .nav {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   font-size: var(--font-size-normal);
   font-weight: 600;
 }
 
-.nav > * {
+.nav a + a {
   margin-left: 40px;
 }
 
-@media only screen and (max-width: 768px) {
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 992px) {
   .title {
     text-align: center;
+  }
+
+  .nav {
+    font-size: var(--font-size-large);
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .buttons {
+    justify-content: center;
   }
 }

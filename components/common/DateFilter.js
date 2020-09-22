@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { endOfYear } from 'date-fns';
+import { endOfYear, isSameDay } from 'date-fns';
 import Modal from './Modal';
 import DropDown from './DropDown';
 import DatePickerForm from 'components/forms/DatePickerForm';
@@ -112,7 +112,8 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
   return (
     <>
       <Icon icon={<Calendar />} className="mr-2" onClick={handleClick} />
-      {`${dateFormat(startDate, 'd LLL y', locale)} — ${dateFormat(endDate, 'd LLL y', locale)}`}
+      {dateFormat(startDate, 'd LLL y', locale)}
+      {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
     </>
   );
 };

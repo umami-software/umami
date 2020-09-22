@@ -4,8 +4,8 @@ import useFetch from 'hooks/useFetch';
 import styles from './ActiveUsers.module.css';
 import { FormattedMessage } from 'react-intl';
 
-export default function ActiveUsers({ websiteId, className }) {
-  const { data } = useFetch(`/api/website/${websiteId}/active`, {}, { interval: 60000 });
+export default function ActiveUsers({ websiteId, token, className }) {
+  const { data } = useFetch(`/api/website/${websiteId}/active`, { token }, { interval: 60000 });
   const count = useMemo(() => {
     return data?.[0]?.x || 0;
   }, [data]);
@@ -20,7 +20,7 @@ export default function ActiveUsers({ websiteId, className }) {
       <div className={styles.text}>
         <div>
           <FormattedMessage
-            id="active-users.message"
+            id="message.active-users"
             defaultMessage="{x} current {x, plural, one {visitor} other {visitors}}"
             values={{ x: count }}
           />

@@ -10,25 +10,11 @@
 }
 
 .container .content {
+  flex: 1;
   position: relative;
   border-left: 1px solid var(--gray300);
   padding-left: 30px;
-}
-
-.option {
-  font-size: var(--font-size-normal);
-  padding: 8px 16px;
-  cursor: pointer;
-  margin-right: 30px;
-  border-radius: 4px;
-}
-
-.option:hover {
-  background: var(--gray75);
-}
-
-.selected {
-  font-weight: 600;
+  margin-left: 30px;
 }
 
 @media only screen and (max-width: 992px) {
@@ -40,5 +26,6 @@
     border-top: 1px solid var(--gray300);
     border-left: 0;
     padding-left: 0;
+    margin-left: 0;
   }
 }

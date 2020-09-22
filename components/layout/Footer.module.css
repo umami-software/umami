@@ -5,11 +5,3 @@
   font-size: var(--font-size-small);
   min-height: 100px;
 }
-
-.footer a {
-  text-decoration: none;
-}
-
-.button {
-  margin: 0 5px;
-}

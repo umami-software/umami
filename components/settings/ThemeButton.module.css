@@ -1,0 +1,7 @@
+.button {
+  width: 50px;
+}
+
+.button svg {
+  position: absolute;
+}
