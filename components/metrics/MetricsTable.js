@@ -99,7 +99,7 @@ export default function MetricsTable({
                 )}
           </div>
           <div className={styles.footer}>
-            {limit && data.length > limit && (
+            {limit && (
               <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
                 <div>
                   <FormattedMessage id="button.more" defaultMessage="More" />
