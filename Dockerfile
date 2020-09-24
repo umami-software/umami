@@ -5,6 +5,7 @@ ENV DATABASE_URL "postgresql://umami:umami@db:5432/umami" \
     DATABASE_TYPE=$DATABASE_TYPE
 WORKDIR /build
 
+RUN yarn config set --home enableTelemetry 0
 COPY package.json yarn.lock /build/
 
 # Install only the production dependencies
@@ -17,6 +18,7 @@ RUN cp -R node_modules/ prod_node_modules/
 RUN yarn install --frozen-lockfile
 
 COPY . /build
+RUN yarn next telemetry disable
 RUN yarn build
 
 # Production image
