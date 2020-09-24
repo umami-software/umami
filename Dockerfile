@@ -8,7 +8,7 @@ WORKDIR /build
 COPY package.json yarn.lock /build/
 
 # Install only the production dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install --production --frozen-lockfile
 
 # Cache these modules for production
 RUN cp -R node_modules/ prod_node_modules/
