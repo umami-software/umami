@@ -1,16 +1,24 @@
 .dropdown {
   position: relative;
-  font-size: var(--font-size-small);
-  min-width: 140px;
-}
-
-.value {
   display: flex;
   justify-content: space-between;
-  white-space: nowrap;
-  position: relative;
-  padding: 4px 16px;
+  align-items: center;
   border: 1px solid var(--gray500);
   border-radius: 4px;
   cursor: pointer;
+}
+
+.value {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small);
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  padding: 4px 16px;
+  min-width: 160px;
+}
+
+.icon {
+  padding-left: 20px;
 }

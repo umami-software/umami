@@ -1,18 +1,28 @@
 import { getMetrics } from 'lib/queries';
-import { ok } from 'lib/response';
+import { methodNotAllowed, ok, unauthorized } from 'lib/response';
+import { allowQuery } from 'lib/auth';
 
 export default async (req, res) => {
-  const { id, start_at, end_at } = req.query;
-  const websiteId = +id;
-  const startDate = new Date(+start_at);
-  const endDate = new Date(+end_at);
+  if (req.method === 'GET') {
+    if (!(await allowQuery(req))) {
+      return unauthorized(res);
+    }
 
-  const metrics = await getMetrics(websiteId, startDate, endDate);
+    const { id, start_at, end_at } = req.query;
 
-  const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-    obj[key] = Number(metrics[0][key]) || 0;
-    return obj;
-  }, {});
+    const websiteId = +id;
+    const startDate = new Date(+start_at);
+    const endDate = new Date(+end_at);
 
-  return ok(res, stats);
+    const metrics = await getMetrics(websiteId, startDate, endDate);
+
+    const stats = Object.keys(metrics[0]).reduce((obj, key) => {
+      obj[key] = Number(metrics[0][key]) || 0;
+      return obj;
+    }, {});
+
+    return ok(res, stats);
+  }
+
+  return methodNotAllowed(res);
 };

@@ -1,11 +1,21 @@
 import { getActiveVisitors } from 'lib/queries';
-import { ok } from 'lib/response';
+import { methodNotAllowed, ok, unauthorized } from 'lib/response';
+import { allowQuery } from 'lib/auth';
 
 export default async (req, res) => {
-  const { id } = req.query;
-  const website_id = +id;
+  if (req.method === 'GET') {
+    if (!(await allowQuery(req))) {
+      return unauthorized(res);
+    }
 
-  const result = await getActiveVisitors(website_id);
+    const { id } = req.query;
 
-  return ok(res, result);
+    const websiteId = +id;
+
+    const result = await getActiveVisitors(websiteId);
+
+    return ok(res, result);
+  }
+
+  return methodNotAllowed(res);
 };

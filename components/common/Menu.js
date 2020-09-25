@@ -25,7 +25,7 @@ export default function Menu({
       {options
         .filter(({ hidden }) => !hidden)
         .map(option => {
-          const { label, value, className: customClassName, render } = option;
+          const { label, value, className: customClassName, render, divider } = option;
 
           return render ? (
             render(option)
@@ -33,7 +33,9 @@ export default function Menu({
             <div
               key={value}
               className={classNames(styles.option, optionClassName, customClassName, {
-                [selectedClassName]: selectedOption === value,
+                [selectedClassName]: selectedOption === option,
+                [styles.selected]: selectedOption === option,
+                [styles.divider]: divider,
               })}
               onClick={e => onSelect(value, e)}
             >

@@ -15,22 +15,21 @@ export default async (req, res) => {
     if (website_id) {
       const website = await getWebsiteById(website_id);
 
-      if (website.user_id === user_id || is_admin) {
-        let { share_id } = website;
-        console.log('exising id', share_id, website);
-
-        if (enable_share_url) {
-          share_id = share_id ? share_id : getRandomChars(8);
-        } else {
-          share_id = null;
-        }
-
-        await updateWebsite(website_id, { name, domain, share_id });
-
-        return ok(res);
+      if (website.user_id !== user_id && !is_admin) {
+        return unauthorized(res);
       }
 
-      return unauthorized(res);
+      let { share_id } = website;
+
+      if (enable_share_url) {
+        share_id = share_id ? share_id : getRandomChars(8);
+      } else {
+        share_id = null;
+      }
+
+      await updateWebsite(website_id, { name, domain, share_id });
+
+      return ok(res);
     } else {
       const website_uuid = uuid();
       const share_id = enable_share_url ? getRandomChars(8) : null;

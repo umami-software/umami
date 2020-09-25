@@ -1,24 +1,33 @@
 import moment from 'moment-timezone';
 import { getPageviews } from 'lib/queries';
-import { ok, badRequest } from 'lib/response';
+import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
+import { allowQuery } from 'lib/auth';
 
-const unitTypes = ['month', 'hour', 'day'];
+const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export default async (req, res) => {
-  const { id, start_at, end_at, unit, tz } = req.query;
+  if (req.method === 'GET') {
+    if (!(await allowQuery(req))) {
+      return unauthorized(res);
+    }
 
-  if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
-    return badRequest(res);
+    const { id, start_at, end_at, unit, tz } = req.query;
+
+    const websiteId = +id;
+    const startDate = new Date(+start_at);
+    const endDate = new Date(+end_at);
+
+    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+      return badRequest(res);
+    }
+
+    const [pageviews, uniques] = await Promise.all([
+      getPageviews(websiteId, startDate, endDate, tz, unit, '*'),
+      getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id'),
+    ]);
+
+    return ok(res, { pageviews, uniques });
   }
 
-  const websiteId = +id;
-  const startDate = new Date(+start_at);
-  const endDate = new Date(+end_at);
-
-  const [pageviews, uniques] = await Promise.all([
-    getPageviews(websiteId, startDate, endDate, tz, unit, '*'),
-    getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id'),
-  ]);
-
-  return ok(res, { pageviews, uniques });
+  return methodNotAllowed(res);
 };

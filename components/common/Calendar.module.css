@@ -1,0 +1,111 @@
+.calendar {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--font-size-small);
+  flex: 1;
+  min-height: 306px;
+}
+
+.calendar table {
+  width: 100%;
+  border-spacing: 5px;
+}
+
+.calendar td {
+  color: var(--gray800);
+  cursor: pointer;
+  text-align: center;
+  vertical-align: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 5px;
+  border: 1px solid transparent;
+}
+
+.calendar td:hover {
+  border: 1px solid var(--gray300);
+  background: var(--gray75);
+}
+
+.calendar td.faded {
+  color: var(--gray500);
+}
+
+.calendar td.selected {
+  font-weight: 600;
+  border: 1px solid var(--gray600);
+}
+
+.calendar td.selected:hover {
+  background: transparent;
+}
+
+.calendar td.disabled {
+  color: var(--gray400);
+  background: var(--gray75);
+}
+
+.calendar td.disabled:hover {
+  cursor: default;
+  background: var(--gray75);
+  border-color: transparent;
+}
+
+.calendar td.faded.disabled {
+  background: var(--gray100);
+}
+
+.header {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-weight: 700;
+  line-height: 40px;
+  font-size: var(--font-size-normal);
+}
+
+.body {
+  display: flex;
+}
+
+.selector {
+  cursor: pointer;
+}
+
+.pager {
+  display: flex;
+  flex: 1;
+}
+
+.pager button {
+  align-self: center;
+}
+
+.middle {
+  flex: 1;
+}
+
+.left,
+.right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left svg {
+  transform: rotate(90deg);
+}
+
+.right svg {
+  transform: rotate(-90deg);
+}
+
+.icon {
+  margin-left: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+  .calendar table {
+    max-width: calc(100vw - 30px);
+  }
+}

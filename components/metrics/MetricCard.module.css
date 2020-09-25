@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 120px;
-  margin-right: 20px;
+  min-width: 140px;
 }
 
 .value {
@@ -16,4 +15,5 @@
 
 .label {
   font-size: var(--font-size-normal);
+  white-space: nowrap;
 }

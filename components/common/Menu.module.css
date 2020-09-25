@@ -8,14 +8,14 @@
 .option {
   font-size: var(--font-size-small);
   font-weight: normal;
-  background: #fff;
+  background: var(--gray50);
   padding: 4px 16px;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .option:hover {
-  background: #f5f5f5;
+  background: var(--gray100);
 }
 
 .float {
@@ -39,4 +39,12 @@
 
 .right {
   right: 0;
+}
+
+.divider {
+  border-top: 1px solid var(--gray300);
+}
+
+.selected {
+  font-weight: 600;
 }

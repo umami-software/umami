@@ -3,6 +3,7 @@
 }
 
 .tooltip {
+  color: var(--msgColor);
   pointer-events: none;
   z-index: 1;
 }
@@ -12,7 +13,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--gray50);
   text-align: center;
 }
 

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
+import Link from 'next/link';
 import classNames from 'classnames';
 import PageHeader from 'components/layout/PageHeader';
 import Button from 'components/common/Button';
 import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
+import Toast from 'components/common/Toast';
 import AccountEditForm from 'components/forms/AccountEditForm';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import DeleteForm from 'components/forms/DeleteForm';
@@ -13,9 +16,8 @@ import Pen from 'assets/pen.svg';
 import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
+import LinkIcon from 'assets/external-link.svg';
 import styles from './AccountSettings.module.css';
-import Toast from '../common/Toast';
-import { FormattedMessage } from 'react-intl';
 
 export default function AccountSettings() {
   const [addAccount, setAddAccount] = useState();
@@ -27,9 +29,18 @@ export default function AccountSettings() {
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
+  const DashboardLink = row =>
+    row.is_admin ? null : (
+      <Link href={`/dashboard/${row.user_id}/${row.username}`}>
+        <a>
+          <Icon icon={<LinkIcon />} />
+        </a>
+      </Link>
+    );
+
   const Buttons = row =>
     row.username !== 'admin' ? (
-      <ButtonLayout>
+      <ButtonLayout align="right">
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
           <div>
             <FormattedMessage id="button.edit" defaultMessage="Edit" />
@@ -47,16 +58,23 @@ export default function AccountSettings() {
     {
       key: 'username',
       label: <FormattedMessage id="label.username" defaultMessage="Username" />,
-      className: 'col-6 col-md-4',
+      className: 'col-4 col-md-3',
     },
     {
       key: 'is_admin',
-      label: <FormattedMessage id="label.adminsitrator" defaultMessage="Administrator" />,
-      className: 'col-6 col-md-4',
+      label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
+      className: 'col-4 col-md-3',
       render: Checkmark,
     },
     {
-      className: classNames(styles.buttons, 'col-12 col-md-4 pt-2 pt-md-0'),
+      key: 'dashboard',
+      label: <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />,
+      className: 'col-4 col-md-3',
+      render: DashboardLink,
+    },
+    {
+      key: 'actions',
+      className: classNames(styles.buttons, 'col-12 col-md-3 pt-2 pt-md-0'),
       render: Buttons,
     },
   ];
@@ -81,7 +99,7 @@ export default function AccountSettings() {
     <>
       <PageHeader>
         <div>
-          <FormattedMessage id="settings.accounts" defaultMessage="Accounts" />
+          <FormattedMessage id="label.accounts" defaultMessage="Accounts" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
           <div>

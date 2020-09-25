@@ -1,6 +1,7 @@
 .page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   padding: 0 30px;
   background: var(--gray50);
-  height: 100%;
-  overflow: hidden;
 }

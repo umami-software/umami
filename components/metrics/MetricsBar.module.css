@@ -3,8 +3,15 @@
   cursor: pointer;
 }
 
+.bar > div + div {
+  padding-left: 20px;
+}
+
 @media only screen and (max-width: 992px) {
-  .bar > div:last-child {
+  .bar {
+    justify-content: space-between;
+  }
+  .bar > div:nth-child(n + 3) {
     display: none;
   }
 }

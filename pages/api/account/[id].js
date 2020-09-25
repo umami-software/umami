@@ -9,24 +9,20 @@ export default async (req, res) => {
   const { id } = req.query;
   const user_id = +id;
 
-  if (req.method === 'GET') {
-    if (is_admin) {
-      const account = await getAccountById(user_id);
-
-      return ok(res, account);
-    }
-
+  if (!is_admin) {
     return unauthorized(res);
   }
 
+  if (req.method === 'GET') {
+    const account = await getAccountById(user_id);
+
+    return ok(res, account);
+  }
+
   if (req.method === 'DELETE') {
-    if (is_admin) {
-      await deleteAccount(user_id);
+    await deleteAccount(user_id);
 
-      return ok(res);
-    }
-
-    return unauthorized(res);
+    return ok(res);
   }
 
   return methodNotAllowed(res);
