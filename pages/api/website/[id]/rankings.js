@@ -1,4 +1,4 @@
-import { getRankings } from 'lib/queries';
+import { getPageviewMetrics, getSessionMetrics } from 'lib/queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
 import { DOMAIN_REGEX } from 'lib/constants';
 import { allowQuery } from 'lib/auth';
@@ -33,30 +33,32 @@ export default async (req, res) => {
 
     const { id, type, start_at, end_at, domain } = req.query;
 
+    if (domain && !DOMAIN_REGEX.test(domain)) {
+      return badRequest(res);
+    }
+
     const websiteId = +id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    if (
-      type !== 'event' &&
-      !sessionColumns.includes(type) &&
-      !pageviewColumns.includes(type) &&
-      domain &&
-      DOMAIN_REGEX.test(domain)
-    ) {
-      return badRequest(res);
+    if (sessionColumns.includes(type)) {
+      const data = await getSessionMetrics(websiteId, startDate, endDate, type);
+
+      return ok(res, data);
     }
 
-    const rankings = await getRankings(
-      websiteId,
-      startDate,
-      endDate,
-      getColumn(type),
-      getTable(type),
-      domain,
-    );
+    if (type === 'event' || pageviewColumns.includes(type)) {
+      const data = await getPageviewMetrics(
+        websiteId,
+        startDate,
+        endDate,
+        getColumn(type),
+        getTable(type),
+        domain,
+      );
 
-    return ok(res, rankings);
+      return ok(res, data);
+    }
   }
 
   return methodNotAllowed(res);
