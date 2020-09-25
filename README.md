@@ -82,6 +82,8 @@ To build the umami container and start up a Postgres database, run:
 docker-compose up
 ```
 
+> If you only using the docker-compose file without cloning the directory, don't forget to copy the **sql/schema.postgresql.sql** folder and file in the same directory as your docker-compose file.
+
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 ```bash
 docker pull ghcr.io/mikecao/umami:postgresql-latest
