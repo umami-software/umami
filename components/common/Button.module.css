@@ -38,7 +38,8 @@
   font-size: var(--font-size-xsmall);
 }
 
-.action {
+.action,
+.action:active {
   color: var(--gray50);
   background: var(--gray900);
 }
@@ -62,6 +63,19 @@
 
 .light:hover {
   background: inherit;
+}
+
+.button .icon + div {
+  margin-left: 10px;
+}
+
+.button.iconRight .icon {
+  order: 1;
+  margin-left: 10px;
+}
+
+.button.iconRight .icon + div {
+  margin: 0;
 }
 
 .button:disabled {

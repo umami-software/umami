@@ -52,14 +52,10 @@ export default function WebsiteSettings() {
         onClick={() => setShowCode(row)}
       />
       <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
-        <div>
-          <FormattedMessage id="button.edit" defaultMessage="Edit" />
-        </div>
+        <FormattedMessage id="button.edit" defaultMessage="Edit" />
       </Button>
       <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
-        <div>
-          <FormattedMessage id="button.delete" defaultMessage="Delete" />
-        </div>
+        <FormattedMessage id="button.delete" defaultMessage="Delete" />
       </Button>
     </ButtonLayout>
   );
@@ -117,9 +113,7 @@ export default function WebsiteSettings() {
       }
     >
       <Button icon={<Plus />} size="medium" onClick={() => setAddWebsite(true)}>
-        <div>
-          <FormattedMessage id="button.add-website" defaultMessage="Add website" />
-        </div>
+        <FormattedMessage id="button.add-website" defaultMessage="Add website" />
       </Button>
     </EmptyPlaceholder>
   );
@@ -131,9 +125,7 @@ export default function WebsiteSettings() {
           <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-          <div>
-            <FormattedMessage id="button.add-website" defaultMessage="Add website" />
-          </div>
+          <FormattedMessage id="button.add-website" defaultMessage="Add website" />
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} empty={empty} />

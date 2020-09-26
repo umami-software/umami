@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import Link from 'next/link';
 import ButtonGroup from 'components/common/ButtonGroup';
+import ButtonLayout from 'components/layout/ButtonLayout';
 import { urlFilter } from 'lib/filters';
 import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
+import usePageQuery from 'hooks/usePageQuery';
 import MetricsTable from './MetricsTable';
-import ButtonLayout from '../layout/ButtonLayout';
 
-export default function PagesTable({ websiteId, token, websiteDomain, limit, onExpand }) {
+export default function PagesTable({
+  websiteId,
+  token,
+  websiteDomain,
+  limit,
+  showFilters,
+  onExpand,
+}) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
+  const { resolve } = usePageQuery();
 
   const buttons = [
     {
@@ -17,9 +27,17 @@ export default function PagesTable({ websiteId, token, websiteDomain, limit, onE
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
+  const renderLink = ({ x }) => {
+    return (
+      <Link href={resolve({ url: x })} replace={true}>
+        <a>{decodeURI(x)}</a>
+      </Link>
+    );
+  };
+
   return (
     <>
-      {!limit && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
       <MetricsTable
         title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
         type="url"
@@ -29,7 +47,7 @@ export default function PagesTable({ websiteId, token, websiteDomain, limit, onE
         limit={limit}
         dataFilter={urlFilter}
         filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
-        renderLabel={({ x }) => decodeURI(x)}
+        renderLabel={renderLink}
         onExpand={onExpand}
       />
     </>

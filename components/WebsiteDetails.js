@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -19,6 +18,7 @@ import EventsTable from './metrics/EventsTable';
 import EventsChart from './metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import Loading from 'components/common/Loading';
+import usePageQuery from '../hooks/usePageQuery';
 
 const views = {
   url: PagesTable,
@@ -31,18 +31,16 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId, token }) {
-  const router = useRouter();
   const { data } = useFetch(`/api/website/${websiteId}`, { token });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
   const {
-    query: { id, view },
-    basePath,
-    asPath,
-  } = router;
-
-  const path = `${basePath}/${asPath.split('/')[1]}/${id.join('/')}`;
+    pathname,
+    resolve,
+    router,
+    query: { view },
+  } = usePageQuery();
 
   const BackButton = () => (
     <Button
@@ -50,11 +48,9 @@ export default function WebsiteDetails({ websiteId, token }) {
       className={styles.backButton}
       icon={<Arrow />}
       size="xsmall"
-      onClick={() => router.push(path)}
+      onClick={() => router.push(pathname)}
     >
-      <div>
-        <FormattedMessage id="button.back" defaultMessage="Back" />
-      </div>
+      <FormattedMessage id="button.back" defaultMessage="Back" />
     </Button>
   );
 
@@ -64,31 +60,31 @@ export default function WebsiteDetails({ websiteId, token }) {
     },
     {
       label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
-      value: `${path}?view=url`,
+      value: resolve({ view: 'url' }),
     },
     {
       label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
-      value: `${path}?view=referrer`,
+      value: resolve({ view: 'referrer' }),
     },
     {
       label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
-      value: `${path}?view=browser`,
+      value: resolve({ view: 'browser' }),
     },
     {
       label: <FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />,
-      value: `${path}?view=os`,
+      value: resolve({ view: 'os' }),
     },
     {
       label: <FormattedMessage id="metrics.devices" defaultMessage="Devices" />,
-      value: `${path}?view=device`,
+      value: resolve({ view: 'device' }),
     },
     {
       label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
-      value: `${path}?view=country`,
+      value: resolve({ view: 'country' }),
     },
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
-      value: `${path}?view=event`,
+      value: resolve({ view: 'event' }),
     },
   ];
 
@@ -109,7 +105,7 @@ export default function WebsiteDetails({ websiteId, token }) {
   }
 
   function handleExpand(value) {
-    router.push(`${path}?view=${value}`);
+    router.push(resolve({ view: value }));
   }
 
   if (!data) {
@@ -179,7 +175,7 @@ export default function WebsiteDetails({ websiteId, token }) {
           contentClassName={styles.content}
           menu={menuOptions}
         >
-          <DetailsComponent {...tableProps} limit={false} />
+          <DetailsComponent {...tableProps} limit={false} showFilters={true} />
         </MenuLayout>
       )}
     </Page>

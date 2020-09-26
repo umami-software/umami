@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTransition, animated } from 'react-spring';
-import Button from 'components/common/Button';
 import useTheme from 'hooks/useTheme';
 import Sun from 'assets/sun.svg';
 import Moon from 'assets/moon.svg';
@@ -27,7 +26,7 @@ export default function ThemeButton() {
   }
 
   return (
-    <Button className={styles.button} variant="light" onClick={handleClick}>
+    <div className={styles.button} onClick={handleClick}>
       {transitions.map(({ item, key, props }) =>
         item === 'light' ? (
           <animated.div key={key} style={props}>
@@ -39,6 +38,6 @@ export default function ThemeButton() {
           </animated.div>
         ),
       )}
-    </Button>
+    </div>
   );
 }

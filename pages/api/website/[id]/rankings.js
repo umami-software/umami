@@ -31,7 +31,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, type, start_at, end_at, domain } = req.query;
+    const { id, type, start_at, end_at, domain, url } = req.query;
 
     if (domain && !DOMAIN_REGEX.test(domain)) {
       return badRequest(res);
@@ -42,7 +42,7 @@ export default async (req, res) => {
     const endDate = new Date(+end_at);
 
     if (sessionColumns.includes(type)) {
-      const data = await getSessionMetrics(websiteId, startDate, endDate, type);
+      const data = await getSessionMetrics(websiteId, startDate, endDate, type, url);
 
       return ok(res, data);
     }
@@ -55,6 +55,7 @@ export default async (req, res) => {
         getColumn(type),
         getTable(type),
         domain,
+        url,
       );
 
       return ok(res, data);

@@ -11,6 +11,7 @@ export default function ReferrersTable({
   websiteDomain,
   token,
   limit,
+  showFilters,
   onExpand = () => {},
 }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
@@ -39,7 +40,7 @@ export default function ReferrersTable({
 
   return (
     <>
-      {!limit && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
       <MetricsTable
         title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
         type="referrer"

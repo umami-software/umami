@@ -12,6 +12,7 @@ import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import useDateRange from 'hooks/useDateRange';
 import styles from './MetricsTable.module.css';
+import usePageQuery from '../../hooks/usePageQuery';
 
 export default function MetricsTable({
   websiteId,
@@ -30,6 +31,10 @@ export default function MetricsTable({
 }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
+  const {
+    query: { url },
+  } = usePageQuery();
+
   const { data } = useFetch(
     `/api/website/${websiteId}/rankings`,
     {
@@ -37,6 +42,7 @@ export default function MetricsTable({
       start_at: +startDate,
       end_at: +endDate,
       domain: websiteDomain,
+      url,
       token,
     },
     { onDataLoad, delay: 300, update: [modified] },
@@ -101,9 +107,7 @@ export default function MetricsTable({
           <div className={styles.footer}>
             {limit && (
               <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
-                <div>
-                  <FormattedMessage id="button.more" defaultMessage="More" />
-                </div>
+                <FormattedMessage id="button.more" defaultMessage="More" />
               </Button>
             )}
           </div>
