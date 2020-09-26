@@ -50,7 +50,8 @@
   background: var(--gray800);
 }
 
-.danger {
+.danger,
+.danger:active {
   color: var(--gray50);
   background: var(--red500);
 }
@@ -59,7 +60,9 @@
   background: var(--red400);
 }
 
-.light {
+.light,
+.light:active {
+  color: var(--gray900);
   background: transparent;
 }
 
