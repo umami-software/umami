@@ -5,12 +5,7 @@
 }
 
 .link {
-  font-size: var(--font-size-small);
   font-weight: 600;
-}
-
-.link svg {
-  margin-left: 10px;
 }
 
 @media only screen and (max-width: 576px) {

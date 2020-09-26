@@ -6,11 +6,13 @@ import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import { EVENT_COLORS } from 'lib/constants';
+import usePageQuery from '../../hooks/usePageQuery';
 
 export default function EventsChart({ websiteId, token }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, modified } = dateRange;
   const [timezone] = useTimezone();
+  const { query } = usePageQuery();
 
   const { data } = useFetch(
     `/api/website/${websiteId}/events`,
@@ -19,6 +21,7 @@ export default function EventsChart({ websiteId, token }) {
       end_at: +endDate,
       unit,
       tz: timezone,
+      url: query.url,
       token,
     },
     { update: [modified] },

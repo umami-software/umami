@@ -3,7 +3,7 @@ import MetricsTable from './MetricsTable';
 import { osFilter } from 'lib/filters';
 import { FormattedMessage } from 'react-intl';
 
-export default function OSTable({ websiteId, token, limit, onExpand }) {
+export default function OSTable({ websiteId, token, limit }) {
   return (
     <MetricsTable
       title={<FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />}
@@ -13,7 +13,6 @@ export default function OSTable({ websiteId, token, limit, onExpand }) {
       token={token}
       limit={limit}
       dataFilter={osFilter}
-      onExpand={onExpand}
     />
   );
 }

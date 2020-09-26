@@ -13,7 +13,8 @@ export default function Button({
   className,
   tooltip,
   tooltipId,
-  disabled = false,
+  disabled,
+  iconRight,
   onClick = () => {},
   ...props
 }) {
@@ -30,14 +31,14 @@ export default function Button({
         [styles.action]: variant === 'action',
         [styles.danger]: variant === 'danger',
         [styles.light]: variant === 'light',
-        [styles.disabled]: disabled,
+        [styles.iconRight]: iconRight,
       })}
       disabled={disabled}
       onClick={!disabled ? onClick : null}
       {...props}
     >
-      {icon && <Icon icon={icon} size={size} />}
-      {children}
+      {icon && <Icon className={styles.icon} icon={icon} size={size} />}
+      {children && <div className={styles.label}>{children}</div>}
       {tooltip && <ReactTooltip id={tooltipId}>{tooltip}</ReactTooltip>}
     </button>
   );
