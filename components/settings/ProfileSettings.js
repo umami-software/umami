@@ -29,9 +29,7 @@ export default function ProfileSettings() {
           <FormattedMessage id="label.profile" defaultMessage="Profile" />
         </div>
         <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
-          <div>
-            <FormattedMessage id="button.change-password" defaultMessage="Change password" />
-          </div>
+          <FormattedMessage id="button.change-password" defaultMessage="Change password" />
         </Button>
       </PageHeader>
       <dl className={styles.list}>

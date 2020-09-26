@@ -12,7 +12,7 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:alpine
+    image: postgres:12-alpine
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami

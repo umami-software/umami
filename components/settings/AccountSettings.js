@@ -42,14 +42,10 @@ export default function AccountSettings() {
     row.username !== 'admin' ? (
       <ButtonLayout align="right">
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-          <div>
-            <FormattedMessage id="button.edit" defaultMessage="Edit" />
-          </div>
+          <FormattedMessage id="button.edit" defaultMessage="Edit" />
         </Button>
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
-          <div>
-            <FormattedMessage id="button.delete" defaultMessage="Delete" />
-          </div>
+          <FormattedMessage id="button.delete" defaultMessage="Delete" />
         </Button>
       </ButtonLayout>
     ) : null;
@@ -102,9 +98,7 @@ export default function AccountSettings() {
           <FormattedMessage id="label.accounts" defaultMessage="Accounts" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
-          <div>
-            <FormattedMessage id="button.add-account" defaultMessage="Add account" />
-          </div>
+          <FormattedMessage id="button.add-account" defaultMessage="Add account" />
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} />
