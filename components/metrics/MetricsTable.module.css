@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  min-height: 460px;
+  min-height: 430px;
   font-size: var(--font-size-small);
   display: flex;
   flex-direction: column;
@@ -21,6 +21,7 @@
 
 .metric {
   font-size: var(--font-size-small);
+  font-weight: 600;
   text-align: center;
   width: 100px;
   cursor: pointer;
@@ -72,8 +73,8 @@
 .percent {
   position: relative;
   width: 50px;
-  color: #6e6e6e;
-  border-left: 1px solid var(--gray500);
+  color: var(--gray600);
+  border-left: 1px solid var(--gray600);
   padding-left: 10px;
   z-index: 1;
 }

@@ -38,7 +38,7 @@ export default function Button({
       {...props}
     >
       {icon && <Icon className={styles.icon} icon={icon} size={size} />}
-      {children && <div>{children}</div>}
+      {children && <div className={styles.label}>{children}</div>}
       {tooltip && <ReactTooltip id={tooltipId}>{tooltip}</ReactTooltip>}
     </button>
   );

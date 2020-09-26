@@ -55,7 +55,7 @@ export default async (req, res) => {
         getColumn(type),
         getTable(type),
         domain,
-        url,
+        type !== 'url' ? url : undefined,
       );
 
       return ok(res, data);

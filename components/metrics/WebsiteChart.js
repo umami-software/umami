@@ -99,7 +99,7 @@ export default function WebsiteChart({
 const PageFilter = ({ url, onClick }) => {
   return (
     <div className={classNames(styles.url, 'col-12')}>
-      <Button icon={<Times />} onClick={onClick} variant="action" iconRight={true}>
+      <Button icon={<Times />} onClick={onClick} variant="action" iconRight>
         {url}
       </Button>
     </div>

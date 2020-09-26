@@ -10,7 +10,6 @@
   border: 0;
   outline: none;
   cursor: pointer;
-  white-space: nowrap;
   position: relative;
 }
 
@@ -22,12 +21,15 @@
   color: var(--gray900);
 }
 
-.large {
-  font-size: var(--font-size-large);
+.label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 300px;
 }
 
-.medium {
-  font-size: var(--font-size-normal);
+.large {
+  font-size: var(--font-size-large);
 }
 
 .small {
@@ -65,7 +67,7 @@
   background: inherit;
 }
 
-.button .icon + div {
+.button .icon + * {
   margin-left: 10px;
 }
 
@@ -74,7 +76,7 @@
   margin-left: 10px;
 }
 
-.button.iconRight .icon + div {
+.button.iconRight .icon + * {
   margin: 0;
 }
 

@@ -5,7 +5,8 @@ import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
-import Button from 'components/common/Button';
+import Link from 'components/common/Link';
+import Loading from 'components/common/Loading';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
 import PagesTable from './metrics/PagesTable';
@@ -17,8 +18,7 @@ import CountriesTable from './metrics/CountriesTable';
 import EventsTable from './metrics/EventsTable';
 import EventsChart from './metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
-import Loading from 'components/common/Loading';
-import usePageQuery from '../hooks/usePageQuery';
+import usePageQuery from 'hooks/usePageQuery';
 
 const views = {
   url: PagesTable,
@@ -36,22 +36,21 @@ export default function WebsiteDetails({ websiteId, token }) {
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
   const {
-    pathname,
     resolve,
-    router,
     query: { view },
   } = usePageQuery();
 
   const BackButton = () => (
-    <Button
+    <Link
       key="back-button"
       className={styles.backButton}
+      href="/website/[...id]"
+      as={resolve({ view: undefined })}
       icon={<Arrow />}
-      size="xsmall"
-      onClick={() => router.push(pathname)}
+      size="small"
     >
       <FormattedMessage id="button.back" defaultMessage="Back" />
-    </Button>
+    </Link>
   );
 
   const menuOptions = [
@@ -93,7 +92,6 @@ export default function WebsiteDetails({ websiteId, token }) {
     token,
     websiteDomain: data?.domain,
     limit: 10,
-    onExpand: handleExpand,
   };
 
   const DetailsComponent = views[view];
@@ -102,10 +100,6 @@ export default function WebsiteDetails({ websiteId, token }) {
     if (!chartLoaded) {
       setTimeout(() => setChartLoaded(true), 300);
     }
-  }
-
-  function handleExpand(value) {
-    router.push(resolve({ view: value }));
   }
 
   if (!data) {

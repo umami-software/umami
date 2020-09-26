@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 import Link from 'next/link';
 import ButtonGroup from 'components/common/ButtonGroup';
 import ButtonLayout from 'components/layout/ButtonLayout';
@@ -7,17 +8,14 @@ import { urlFilter } from 'lib/filters';
 import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 import usePageQuery from 'hooks/usePageQuery';
 import MetricsTable from './MetricsTable';
+import styles from './PagesTable.module.css';
 
-export default function PagesTable({
-  websiteId,
-  token,
-  websiteDomain,
-  limit,
-  showFilters,
-  onExpand,
-}) {
+export default function PagesTable({ websiteId, token, websiteDomain, limit, showFilters }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
-  const { resolve } = usePageQuery();
+  const {
+    resolve,
+    query: { url },
+  } = usePageQuery();
 
   const buttons = [
     {
@@ -30,7 +28,14 @@ export default function PagesTable({
   const renderLink = ({ x }) => {
     return (
       <Link href={resolve({ url: x })} replace={true}>
-        <a>{decodeURI(x)}</a>
+        <a
+          className={classNames({
+            [styles.inactive]: url && x !== url,
+            [styles.active]: x === url,
+          })}
+        >
+          {decodeURI(x)}
+        </a>
       </Link>
     );
   };
@@ -48,7 +53,6 @@ export default function PagesTable({
         dataFilter={urlFilter}
         filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
         renderLabel={renderLink}
-        onExpand={onExpand}
       />
     </>
   );

@@ -6,14 +6,7 @@ import ButtonGroup from 'components/common/ButtonGroup';
 import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 import ButtonLayout from '../layout/ButtonLayout';
 
-export default function ReferrersTable({
-  websiteId,
-  websiteDomain,
-  token,
-  limit,
-  showFilters,
-  onExpand = () => {},
-}) {
+export default function ReferrersTable({ websiteId, websiteDomain, token, limit, showFilters }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
 
   const buttons = [
@@ -55,7 +48,6 @@ export default function ReferrersTable({
           domainOnly: filter === FILTER_DOMAIN_ONLY,
           raw: filter === FILTER_RAW,
         }}
-        onExpand={onExpand}
         renderLabel={renderLink}
       />
     </>

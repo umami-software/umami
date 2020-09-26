@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import styles from './EventsTable.module.css';
 
-export default function EventsTable({ websiteId, token, limit, onExpand, onDataLoad }) {
+export default function EventsTable({ websiteId, token, limit, onDataLoad }) {
   return (
     <MetricsTable
       title={<FormattedMessage id="metrics.events" defaultMessage="Events" />}
@@ -13,7 +13,6 @@ export default function EventsTable({ websiteId, token, limit, onExpand, onDataL
       token={token}
       limit={limit}
       renderLabel={({ x }) => <Label value={x} />}
-      onExpand={onExpand}
       onDataLoad={onDataLoad}
     />
   );

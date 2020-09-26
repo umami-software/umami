@@ -1,0 +1,8 @@
+body .inactive {
+  color: var(--gray500);
+}
+
+body .active {
+  color: var(--gray900);
+  font-weight: 600;
+}

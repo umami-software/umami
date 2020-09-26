@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import Button from 'components/common/Button';
+import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
 import NoData from 'components/common/NoData';
 import useFetch from 'hooks/useFetch';
@@ -11,8 +11,8 @@ import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import useDateRange from 'hooks/useDateRange';
+import usePageQuery from 'hooks/usePageQuery';
 import styles from './MetricsTable.module.css';
-import usePageQuery from '../../hooks/usePageQuery';
 
 export default function MetricsTable({
   websiteId,
@@ -27,11 +27,11 @@ export default function MetricsTable({
   limit,
   renderLabel,
   onDataLoad = () => {},
-  onExpand = () => {},
 }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const {
+    resolve,
     query: { url },
   } = usePageQuery();
 
@@ -106,9 +106,15 @@ export default function MetricsTable({
           </div>
           <div className={styles.footer}>
             {limit && (
-              <Button icon={<Arrow />} size="xsmall" onClick={() => onExpand(type)}>
+              <Link
+                icon={<Arrow />}
+                href="/website/[...id]"
+                as={resolve({ view: type })}
+                size="small"
+                iconRight
+              >
                 <FormattedMessage id="button.more" defaultMessage="More" />
-              </Button>
+              </Link>
             )}
           </div>
         </>
