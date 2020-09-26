@@ -32,6 +32,7 @@ export default function MetricsTable({
   const { startDate, endDate, modified } = dateRange;
   const {
     resolve,
+    router,
     query: { url },
   } = usePageQuery();
 
@@ -108,7 +109,7 @@ export default function MetricsTable({
             {limit && (
               <Link
                 icon={<Arrow />}
-                href="/website/[...id]"
+                href={router.pathname}
                 as={resolve({ view: type })}
                 size="small"
                 iconRight
