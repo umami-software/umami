@@ -37,6 +37,7 @@ export default function WebsiteDetails({ websiteId, token }) {
   const [eventsData, setEventsData] = useState();
   const {
     resolve,
+    router,
     query: { view },
   } = usePageQuery();
 
@@ -44,7 +45,7 @@ export default function WebsiteDetails({ websiteId, token }) {
     <Link
       key="back-button"
       className={styles.backButton}
-      href="/website/[...id]"
+      href={router.pathname}
       as={resolve({ view: undefined })}
       icon={<Arrow />}
       size="small"
