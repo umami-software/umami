@@ -31,9 +31,6 @@ COPY --from=build /build/prod_node_modules ./node_modules
 # Copy generated Prisma client
 COPY --from=build /build/node_modules/.prisma/ ./node_modules/.prisma/
 
-# Copy geo database
-COPY --from=build /build/geo ./geo
-
 COPY --from=build /build/yarn.lock /build/package.json ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
