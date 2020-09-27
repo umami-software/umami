@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
-import WebsiteSettings from './WebsiteSettings';
-import AccountSettings from './AccountSettings';
-import ProfileSettings from './ProfileSettings';
+import WebsiteSettings from '../settings/WebsiteSettings';
+import AccountSettings from '../settings/AccountSettings';
+import ProfileSettings from '../settings/ProfileSettings';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
