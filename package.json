@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -11,19 +11,20 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-tracker build-lang build-db build-app",
+    "build": "npm-run-all build-tracker build-lang build-geo build-db build-app",
     "start": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-db": "npm-run-all copy-db-schema build-db-client",
     "build-lang": "npm-run-all format-lang compile-lang",
-    "copy-db-schema": "node scripts/copy-db-schema.js",
+    "build-geo": "node scripts/build-geo.js",
     "build-db-schema": "dotenv prisma introspect",
     "build-db-client": "dotenv prisma generate",
     "build-mysql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.mysql.prisma",
     "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
     "build-postgresql-schema": "dotenv prisma introspect -- --schema=./prisma/schema.postgresql.prisma",
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
+    "copy-db-schema": "node scripts/copy-db-schema.js",
     "generate-lang": "npm-run-all extract-lang merge-lang",
     "extract-lang": "formatjs extract {pages,components}/**/*.js --out-file build/messages.json",
     "merge-lang": "node scripts/merge-lang.js",
@@ -60,9 +61,7 @@
     "date-fns": "^2.16.1",
     "date-fns-tz": "^1.0.10",
     "detect-browser": "^5.1.1",
-    "dotenv": "^8.2.0",
     "formik": "^2.1.5",
-    "geolite2-redist": "^1.0.7",
     "immer": "^7.0.9",
     "is-localhost-ip": "^1.4.0",
     "isbot-fast": "^1.2.0",
@@ -95,6 +94,7 @@
     "@svgr/webpack": "^5.4.0",
     "cross-env": "^7.0.2",
     "del": "^5.1.0",
+    "dotenv": "^8.2.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.9.0",
     "eslint-config-prettier": "^6.11.0",
@@ -116,6 +116,7 @@
     "stylelint": "^13.7.1",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-prettier": "^8.0.1",
-    "stylelint-config-recommended": "^3.0.0"
+    "stylelint-config-recommended": "^3.0.0",
+    "tar": "^6.0.5"
   }
 }
