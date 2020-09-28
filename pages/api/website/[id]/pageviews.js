@@ -11,7 +11,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, start_at, end_at, unit, tz } = req.query;
+    const { id, start_at, end_at, unit, tz, url } = req.query;
 
     const websiteId = +id;
     const startDate = new Date(+start_at);
@@ -22,8 +22,8 @@ export default async (req, res) => {
     }
 
     const [pageviews, uniques] = await Promise.all([
-      getPageviews(websiteId, startDate, endDate, tz, unit, '*'),
-      getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id'),
+      getPageviews(websiteId, startDate, endDate, tz, unit, '*', url),
+      getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id', url),
     ]);
 
     return ok(res, { pageviews, uniques });

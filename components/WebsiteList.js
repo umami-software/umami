@@ -34,9 +34,7 @@ export default function WebsiteList({ userId }) {
           }
         >
           <Button icon={<Arrow />} size="medium" onClick={() => router.push('/settings')}>
-            <div>
-              <FormattedMessage id="message.go-to-settings" defaultMessage="Go to settings" />
-            </div>
+            <FormattedMessage id="message.go-to-settings" defaultMessage="Go to settings" />
           </Button>
         </EmptyPlaceholder>
       )}
