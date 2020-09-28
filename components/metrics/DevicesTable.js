@@ -4,7 +4,7 @@ import { deviceFilter } from 'lib/filters';
 import { FormattedMessage } from 'react-intl';
 import { getDeviceMessage } from 'components/messages';
 
-export default function DevicesTable({ websiteId, token, limit, onExpand }) {
+export default function DevicesTable({ websiteId, token, limit }) {
   return (
     <MetricsTable
       title={<FormattedMessage id="metrics.devices" defaultMessage="Devices" />}
@@ -15,7 +15,6 @@ export default function DevicesTable({ websiteId, token, limit, onExpand }) {
       limit={limit}
       dataFilter={deviceFilter}
       renderLabel={({ x }) => getDeviceMessage(x)}
-      onExpand={onExpand}
     />
   );
 }
