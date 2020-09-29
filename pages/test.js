@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/layout/Layout';
-import Test from 'components/pages/Test';
+import TestConsole from 'components/pages/TestConsole';
 import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function TestPage() {
@@ -12,7 +12,7 @@ export default function TestPage() {
 
   return (
     <Layout>
-      <Test />
+      <TestConsole />
     </Layout>
   );
 }

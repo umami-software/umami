@@ -14,7 +14,7 @@ export default async (req, res) => {
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    const metrics = await getMetrics(websiteId, startDate, endDate, url);
+    const metrics = await getMetrics(websiteId, startDate, endDate, { url });
 
     const stats = Object.keys(metrics[0]).reduce((obj, key) => {
       obj[key] = Number(metrics[0][key]) || 0;

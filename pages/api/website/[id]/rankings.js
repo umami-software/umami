@@ -42,7 +42,7 @@ export default async (req, res) => {
     const endDate = new Date(+end_at);
 
     if (sessionColumns.includes(type)) {
-      const data = await getSessionMetrics(websiteId, startDate, endDate, type, url);
+      const data = await getSessionMetrics(websiteId, startDate, endDate, type, { url });
 
       return ok(res, data);
     }
@@ -54,8 +54,10 @@ export default async (req, res) => {
         endDate,
         getColumn(type),
         getTable(type),
-        domain,
-        type !== 'url' ? url : undefined,
+        {
+          domain,
+          url: type !== 'url' && url,
+        },
       );
 
       return ok(res, data);

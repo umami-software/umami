@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -12,11 +13,12 @@ import EventsChart from '../metrics/EventsChart';
 import Button from '../common/Button';
 import EmptyPlaceholder from '../common/EmptyPlaceholder';
 
-export default function Test() {
+export default function TestConsole() {
+  const user = useSelector(state => state.user);
   const [website, setWebsite] = useState();
   const { data } = useFetch('/api/websites');
 
-  if (!data) {
+  if (!data || !user?.is_admin) {
     return null;
   }
 
