@@ -42,16 +42,17 @@ export default function WebsiteDetails({ websiteId, token }) {
   } = usePageQuery();
 
   const BackButton = () => (
-    <Link
-      key="back-button"
-      className={styles.backButton}
-      href={router.pathname}
-      as={resolve({ view: undefined })}
-      icon={<Arrow />}
-      size="small"
-    >
-      <FormattedMessage id="button.back" defaultMessage="Back" />
-    </Link>
+    <div className={styles.backButton}>
+      <Link
+        key="back-button"
+        href={router.pathname}
+        as={resolve({ view: undefined })}
+        icon={<Arrow />}
+        size="small"
+      >
+        <FormattedMessage id="button.back" defaultMessage="Back" />
+      </Link>
+    </div>
   );
 
   const menuOptions = [
