@@ -1,0 +1,15 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: var(--font-size-xsmall);
+}
+.heading {
+  font-weight: 600;
+  margin: auto 10px;
+}
+.message,
+.heading {
+  display: inline-block;
+}
