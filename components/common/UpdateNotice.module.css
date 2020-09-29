@@ -1,15 +1,13 @@
-.wrapper {
-  width: 100%;
+.notice {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
-  font-size: var(--font-size-xsmall);
-}
-.heading {
+  align-items: center;
+  padding-top: 10px;
+  font-size: var(--font-size-small);
   font-weight: 600;
-  margin: auto 10px;
 }
-.message,
-.heading {
-  display: inline-block;
+
+.message {
+  text-align: center;
+  margin-right: 20px;
 }

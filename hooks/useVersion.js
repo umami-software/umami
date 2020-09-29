@@ -1,28 +1,20 @@
-import { useMemo } from 'react';
-import useFetch from 'hooks/useFetch';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getItem } from 'lib/web';
+import { checkVersion } from 'redux/actions/app';
+
+const CHECK_INTERVAL = 24 * 60 * 60 * 1000;
 
 export default function useVersion() {
-  const { data } = useMemo(() =>
-    useFetch('https://api.github.com/repos/mikecao/umami/releases/latest'),
-  );
+  const dispatch = useDispatch();
+  const versions = useSelector(state => state.app.versions);
 
-  if (!data || !data['tag_name']) return null;
+  useEffect(() => {
+    const lastCheck = getItem('umami.version-check');
+    if (!lastCheck || Date.now() - lastCheck > CHECK_INTERVAL) {
+      dispatch(checkVersion());
+    }
+  }, []);
 
-  const latest = data['tag_name'].startsWith('v') ? data['tag_name'].slice(1) : data['tag_name'];
-  const current = process.env.VERSION;
-
-  if (latest === current) return null;
-
-  const latestArray = latest.split('.');
-  const currentArray = current.split('.');
-
-  for (let i = 0; i < 3; i++) {
-    if (Number(latestArray[i]) > Number(currentArray[i]))
-      return {
-        current: current,
-        latest: latest,
-      };
-  }
-
-  return null;
+  return versions;
 }

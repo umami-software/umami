@@ -16,7 +16,7 @@ export default function Header() {
 
   return (
     <header className="container">
-      {user && <UpdateNotice />}
+      {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className="col-12 col-md-12 col-lg-3">
           <div className={styles.title}>
