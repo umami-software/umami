@@ -1,21 +1,27 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import semver from 'semver';
 import useVersion from 'hooks/useVersion';
 import styles from './UpdateNotice.module.css';
 import ButtonLayout from '../layout/ButtonLayout';
 import Button from './Button';
+import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function UpdateNotice() {
-  const versions = useVersion();
+  const forceUpdte = useForceUpdate();
+  const { hasUpdate, latest, updateCheck } = useVersion();
 
-  if (!versions) {
-    return null;
+  function handleViewClick() {
+    location.href = 'https://github.com/mikecao/umami/releases';
+    updateCheck();
+    forceUpdte();
   }
 
-  const { current, latest } = versions;
+  function handleDismissClick() {
+    updateCheck();
+    forceUpdte();
+  }
 
-  if (latest && semver.gte(current, latest)) {
+  if (!hasUpdate) {
     return null;
   }
 
@@ -29,10 +35,10 @@ export default function UpdateNotice() {
         />
       </div>
       <ButtonLayout>
-        <Button size="xsmall" variant="action">
+        <Button size="xsmall" variant="action" onClick={handleViewClick}>
           <FormattedMessage id="button.view-details" defaultMessage="View details" />
         </Button>
-        <Button size="xsmall">
+        <Button size="xsmall" onClick={handleDismissClick}>
           <FormattedMessage id="button.dismiss" defaultMessage="Dismiss" />
         </Button>
       </ButtonLayout>

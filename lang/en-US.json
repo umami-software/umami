@@ -55,7 +55,7 @@
   "message.get-tracking-code": "Get tracking code",
   "message.go-to-settings": "Go to settings",
   "message.incorrect-username-password": "Incorrect username/password.",
-  "message.new-version-available": "Version {latest} available! Current version: {current}",
+  "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "No data available.",
   "message.no-websites-configured": "You don't have any websites configured.",
   "message.page-not-found": "Page not found.",

@@ -1,20 +1,27 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getItem } from 'lib/web';
+import semver from 'semver';
+import { getItem, setItem } from 'lib/web';
 import { checkVersion } from 'redux/actions/app';
-
-const CHECK_INTERVAL = 24 * 60 * 60 * 1000;
+import { VERSION_CHECK } from 'lib/constants';
 
 export default function useVersion() {
   const dispatch = useDispatch();
   const versions = useSelector(state => state.app.versions);
+  const lastCheck = getItem(VERSION_CHECK);
+
+  const { current, latest } = versions;
+  const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
+
+  const updateCheck = useCallback(() => {
+    setItem(VERSION_CHECK, { version: latest, time: Date.now() });
+  }, [versions]);
 
   useEffect(() => {
-    const lastCheck = getItem('umami.version-check');
-    if (!lastCheck || Date.now() - lastCheck > CHECK_INTERVAL) {
+    if (!versions.latest) {
       dispatch(checkVersion());
     }
-  }, []);
+  }, [versions]);
 
-  return versions;
+  return { ...versions, hasUpdate, updateCheck };
 }

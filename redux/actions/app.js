@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { get, getItem } from 'lib/web';
+import { getItem } from 'lib/web';
 import { LOCALE_CONFIG, THEME_CONFIG } from 'lib/constants';
 
 const app = createSlice({
@@ -40,30 +40,32 @@ export function checkVersion() {
       },
     } = getState();
 
-    const data = await get('https://api.github.com/repos/mikecao/umami/releases/latest');
-
-    if (!data || !data['tag_name']) {
-      return;
-    }
-
-    const latest = data['tag_name'].startsWith('v') ? data['tag_name'].slice(1) : data['tag_name'];
-
-    if (latest === current) {
-      return;
-    }
-
-    const latestArray = latest.split('.');
-    const currentArray = current.split('.');
-
-    for (let i = 0; i < 3; i++) {
-      if (Number(latestArray[i]) > Number(currentArray[i])) {
-        return dispatch(
-          setVersions({
-            current,
-            latest: latest,
-          }),
-        );
+    const data = await fetch('https://api.github.com/repos/mikecao/umami/releases/latest', {
+      method: 'get',
+      headers: {
+        Accept: 'application/vnd.github.v3+json',
+      },
+    }).then(res => {
+      if (res.ok) {
+        return res.json();
       }
+
+      return null;
+    });
+
+    if (!data) {
+      return;
     }
+
+    const { tag_name } = data;
+
+    const latest = tag_name.startsWith('v') ? tag_name.slice(1) : tag_name;
+
+    return dispatch(
+      setVersions({
+        current,
+        latest,
+      }),
+    );
   };
 }
