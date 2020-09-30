@@ -1,9 +1,18 @@
 import React from 'react';
 import MetricsTable from './MetricsTable';
-import { countryFilter, percentFilter } from 'lib/filters';
+import { percentFilter } from 'lib/filters';
 import { FormattedMessage } from 'react-intl';
+import useCountryNames from 'hooks/useCountryNames';
+import useLocale from 'hooks/useLocale';
 
 export default function CountriesTable({ websiteId, token, limit, onDataLoad = () => {} }) {
+  const [locale] = useLocale();
+  const countryNames = useCountryNames(locale);
+
+  function renderLabel({ x }) {
+    return <div className={locale}>{countryNames[x]}</div>;
+  }
+
   return (
     <MetricsTable
       title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
@@ -12,8 +21,8 @@ export default function CountriesTable({ websiteId, token, limit, onDataLoad = (
       websiteId={websiteId}
       token={token}
       limit={limit}
-      dataFilter={countryFilter}
       onDataLoad={data => onDataLoad(percentFilter(data))}
+      renderLabel={renderLabel}
     />
   );
 }

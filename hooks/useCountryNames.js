@@ -1,0 +1,32 @@
+import { useState, useEffect } from 'react';
+import { get } from 'lib/web';
+import enUS from 'public/country/en-US.json';
+
+const countryNames = {
+  'en-US': enUS,
+};
+
+export default function useCountryNames(locale) {
+  const [list, setList] = useState(countryNames[locale] || enUS);
+
+  async function loadData(locale) {
+    const { ok, data } = await get(`/country/${locale}.json`);
+
+    if (ok) {
+      countryNames[locale] = data;
+      setList(countryNames[locale]);
+    } else {
+      setList(enUS);
+    }
+  }
+
+  useEffect(() => {
+    if (!countryNames[locale]) {
+      loadData(locale);
+    } else {
+      setList(countryNames[locale]);
+    }
+  }, [locale]);
+
+  return list;
+}
