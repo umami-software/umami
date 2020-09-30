@@ -19,6 +19,10 @@
   min-width: 160px;
 }
 
+.text {
+  flex: 1;
+}
+
 .icon {
   padding-left: 20px;
 }

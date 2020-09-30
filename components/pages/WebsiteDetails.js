@@ -9,14 +9,14 @@ import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
-import PagesTable from './metrics/PagesTable';
-import ReferrersTable from './metrics/ReferrersTable';
-import BrowsersTable from './metrics/BrowsersTable';
-import OSTable from './metrics/OSTable';
-import DevicesTable from './metrics/DevicesTable';
-import CountriesTable from './metrics/CountriesTable';
-import EventsTable from './metrics/EventsTable';
-import EventsChart from './metrics/EventsChart';
+import PagesTable from '../metrics/PagesTable';
+import ReferrersTable from '../metrics/ReferrersTable';
+import BrowsersTable from '../metrics/BrowsersTable';
+import OSTable from '../metrics/OSTable';
+import DevicesTable from '../metrics/DevicesTable';
+import CountriesTable from '../metrics/CountriesTable';
+import EventsTable from '../metrics/EventsTable';
+import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 
@@ -42,16 +42,17 @@ export default function WebsiteDetails({ websiteId, token }) {
   } = usePageQuery();
 
   const BackButton = () => (
-    <Link
-      key="back-button"
-      className={styles.backButton}
-      href={router.pathname}
-      as={resolve({ view: undefined })}
-      icon={<Arrow />}
-      size="small"
-    >
-      <FormattedMessage id="button.back" defaultMessage="Back" />
-    </Link>
+    <div className={styles.backButton}>
+      <Link
+        key="back-button"
+        href={router.pathname}
+        as={resolve({ view: undefined })}
+        icon={<Arrow />}
+        size="small"
+      >
+        <FormattedMessage id="button.back" defaultMessage="Back" />
+      </Link>
+    </div>
   );
 
   const menuOptions = [

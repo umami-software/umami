@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from 'components/layout/Layout';
-import Settings from 'components/settings/Settings';
+import Settings from 'components/pages/Settings';
 import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function SettingsPage() {

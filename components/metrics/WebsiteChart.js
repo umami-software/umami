@@ -59,7 +59,7 @@ export default function WebsiteChart({
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <WebsiteHeader websiteId={websiteId} token={token} title={title} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
@@ -92,7 +92,7 @@ export default function WebsiteChart({
           />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
