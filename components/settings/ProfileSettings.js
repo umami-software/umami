@@ -10,6 +10,7 @@ import TimezoneSetting from 'components/settings/TimezoneSetting';
 import Dots from 'assets/ellipsis-h.svg';
 import styles from './ProfileSettings.module.css';
 import DateRangeSetting from './DateRangeSetting';
+import useEscapeKey from 'hooks/useEscapeKey';
 
 export default function ProfileSettings() {
   const user = useSelector(state => state.user);
@@ -21,6 +22,10 @@ export default function ProfileSettings() {
     setChangePassword(false);
     setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
   }
+
+  useEscapeKey(() => {
+    setChangePassword(false);
+  });
 
   return (
     <>
