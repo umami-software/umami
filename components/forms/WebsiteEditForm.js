@@ -37,12 +37,14 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/website`, values);
+    const { ok, data } = await post(`/api/website`, values);
 
-    if (typeof response !== 'string') {
+    if (ok) {
       onSave();
     } else {
-      setMessage(<FormattedMessage id="message.failure" defaultMessage="Something went wrong." />);
+      setMessage(
+        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
+      );
     }
   };
 

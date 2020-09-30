@@ -31,19 +31,19 @@ export default function LoginForm() {
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {
-    const response = await post('/api/auth/login', { username, password });
+    const { ok, status, data } = await post('/api/auth/login', { username, password });
 
-    if (typeof response !== 'string') {
+    if (ok) {
       await Router.push('/');
     } else {
       setMessage(
-        response.startsWith('401') ? (
+        status === 401 ? (
           <FormattedMessage
             id="message.incorrect-username-password"
             defaultMessage="Incorrect username/password."
           />
         ) : (
-          response
+          data
         ),
       );
     }

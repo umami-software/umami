@@ -32,15 +32,13 @@ export default function AccountEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/account`, values);
+    const { ok, data } = await post(`/api/account`, values);
 
-    if (typeof response !== 'string') {
+    if (ok) {
       onSave();
     } else {
       setMessage(
-        response || (
-          <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
-        ),
+        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
       );
     }
   };

@@ -6,6 +6,7 @@ import { updateQuery } from 'redux/actions/queries';
 export default function useFetch(url, params = {}, options = {}) {
   const dispatch = useDispatch();
   const [data, setData] = useState();
+  const [status, setStatus] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
   const keys = Object.keys(params)
@@ -18,11 +19,12 @@ export default function useFetch(url, params = {}, options = {}) {
       setLoadiing(true);
       setError(null);
       const time = performance.now();
-      const data = await get(url, params);
+      const { data, status } = await get(url, params);
 
       dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
 
       setData(data);
+      setStatus(status);
       onDataLoad(data);
     } catch (e) {
       console.error(e);
@@ -46,5 +48,5 @@ export default function useFetch(url, params = {}, options = {}) {
     }
   }, [url, ...keys, ...update]);
 
-  return { data, error, loading, loadData };
+  return { data, status, error, loading };
 }
