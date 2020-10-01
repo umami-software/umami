@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
-import WebsiteSettings from './WebsiteSettings';
-import AccountSettings from './AccountSettings';
-import ProfileSettings from './ProfileSettings';
+import WebsiteSettings from '../settings/WebsiteSettings';
+import AccountSettings from '../settings/AccountSettings';
+import ProfileSettings from '../settings/ProfileSettings';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 
@@ -26,7 +26,7 @@ export default function Settings() {
     {
       label: <FormattedMessage id="label.accounts" defaultMessage="Accounts" />,
       value: ACCOUNTS,
-      hidden: !user.is_admin,
+      hidden: !user?.is_admin,
     },
     {
       label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
