@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { get } from 'lib/web';
 import enUS from 'public/country/en-US.json';
 
@@ -8,9 +9,10 @@ const countryNames = {
 
 export default function useCountryNames(locale) {
   const [list, setList] = useState(countryNames[locale] || enUS);
+  const { basePath } = useRouter();
 
   async function loadData(locale) {
-    const { ok, data } = await get(`/country/${locale}.json`);
+    const { ok, data } = await get(`${basePath}/country/${locale}.json`);
 
     if (ok) {
       countryNames[locale] = data;

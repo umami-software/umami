@@ -1,6 +1,6 @@
 import { serialize } from 'cookie';
 import { AUTH_COOKIE_NAME } from 'lib/constants';
-import { redirect } from 'lib/response';
+import { ok } from 'lib/response';
 
 export default async (req, res) => {
   const cookie = serialize(AUTH_COOKIE_NAME, '', {
@@ -11,5 +11,5 @@ export default async (req, res) => {
 
   res.setHeader('Set-Cookie', [cookie]);
 
-  return redirect(res, '/login');
+  return ok(res);
 };
