@@ -9,5 +9,5 @@ export default {
     file: 'public/umami.js',
     format: 'iife',
   },
-  plugins: [resolve(), buble(), terser({ compress: { evaluate: false } })],
+  plugins: [resolve(), buble({ objectAssign: true }), terser({ compress: { evaluate: false } })],
 };
