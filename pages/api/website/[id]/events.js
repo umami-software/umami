@@ -21,7 +21,7 @@ export default async (req, res) => {
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    const events = await getEvents(websiteId, startDate, endDate, tz, unit, url);
+    const events = await getEvents(websiteId, startDate, endDate, tz, unit, { url });
 
     return ok(res, events);
   }

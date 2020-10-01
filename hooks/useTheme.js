@@ -4,7 +4,7 @@ import { getItem, setItem } from 'lib/web';
 import { THEME_CONFIG } from 'lib/constants';
 import { useEffect } from 'react';
 
-export default function useLocale() {
+export default function useTheme() {
   const theme = useSelector(state => state.app.theme || getItem(THEME_CONFIG) || 'light');
   const dispatch = useDispatch();
 
