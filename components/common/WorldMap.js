@@ -6,6 +6,8 @@ import tinycolor from 'tinycolor2';
 import useTheme from 'hooks/useTheme';
 import { THEME_COLORS } from 'lib/constants';
 import styles from './WorldMap.module.css';
+import useCountryNames from 'hooks/useCountryNames';
+import useLocale from 'hooks/useLocale';
 
 const geoUrl = '/world-110m.json';
 
@@ -21,6 +23,8 @@ export default function WorldMap({ data, className }) {
     }),
     [theme],
   );
+  const [locale] = useLocale();
+  const countryNames = useCountryNames(locale);
 
   function getFillColor(code) {
     if (code === 'AQ') return;
@@ -39,10 +43,10 @@ export default function WorldMap({ data, className }) {
     return code === 'AQ' ? 0 : 1;
   }
 
-  function handleHover({ ISO_A2: code, NAME: name }) {
+  function handleHover(code) {
     if (code === 'AQ') return;
     const country = data?.find(({ x }) => x === code);
-    setTooltip(`${name}: ${country?.y || 0} visitors`);
+    setTooltip(`${countryNames[code]}: ${country?.y || 0} visitors`);
   }
 
   return (
@@ -70,7 +74,7 @@ export default function WorldMap({ data, className }) {
                       hover: { outline: 'none', fill: colors.hoverColor },
                       pressed: { outline: 'none' },
                     }}
-                    onMouseOver={() => handleHover(geo.properties)}
+                    onMouseOver={() => handleHover(code)}
                     onMouseOut={() => setTooltip(null)}
                   />
                 );

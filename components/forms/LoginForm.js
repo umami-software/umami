@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
@@ -28,22 +28,26 @@ const validate = ({ username, password }) => {
 };
 
 export default function LoginForm() {
+  const router = useRouter();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {
-    const response = await post('/api/auth/login', { username, password });
+    const { ok, status, data } = await post(`${router.basePath}/api/auth/login`, {
+      username,
+      password,
+    });
 
-    if (typeof response !== 'string') {
-      await Router.push('/');
+    if (ok) {
+      return router.push('/');
     } else {
       setMessage(
-        response.startsWith('401') ? (
+        status === 401 ? (
           <FormattedMessage
             id="message.incorrect-username-password"
             defaultMessage="Incorrect username/password."
           />
         ) : (
-          response
+          data
         ),
       );
     }
