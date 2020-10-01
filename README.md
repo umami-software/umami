@@ -72,7 +72,7 @@ npm start
 
 By default this will launch the application on `http://localhost:3000`. You will need to either 
 [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
-or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly, e.g. `npm start -- --port 8080`.
 
 ## Installing with Docker
 
@@ -97,9 +97,11 @@ docker pull ghcr.io/mikecao/umami:mysql-latest
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
 
 ```bash
+npm stop
 git pull
 npm install
 npm run build
+npm start
 ```
 
 ## License
