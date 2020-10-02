@@ -31,7 +31,10 @@
     "merge-lang": "node scripts/merge-lang.js",
     "format-lang": "node scripts/format-lang.js",
     "compile-lang": "formatjs compile-folder --ast build lang-compiled",
-    "check-lang": "node scripts/check-lang.js"
+    "check-lang": "node scripts/check-lang.js",
+    "loadtest": "node scripts/loadtest.js",
+    "loadtest:medium": "node scripts/loadtest.js --weight=medium",
+    "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose"
   },
   "lint-staged": {
     "**/*.js": [
@@ -107,6 +110,7 @@
     "extract-react-intl-messages": "^4.1.1",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
+    "loadtest": "5.1.0",
     "npm-run-all": "^4.1.5",
     "postcss-flexbugs-fixes": "^4.2.1",
     "postcss-import": "^12.0.1",
