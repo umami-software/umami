@@ -46,7 +46,7 @@
   "label.unknown": "Ukjent",
   "label.username": "Brukernavn",
   "label.websites": "Nettsteder",
-  "message.active-users": "{x} nåværende {x, flertall, en {besøkende} annen {besøkende}}",
+  "message.active-users": "{x} nåværende {x, plural, en {besøkende} andre {besøkende}}",
   "message.confirm-delete": "Er du sikker på at du vil slette {target}?",
   "message.copied": "Kopiert!",
   "message.delete-warning": "Alle tilknyttede data slettes også.",
