@@ -1,0 +1,12 @@
+.menu {
+  display: flex;
+  flex-flow: row wrap;
+  min-width: 500px;
+  max-width: 100vw;
+  padding: 10px;
+}
+
+.menu div {
+  border-radius: 5px;
+  min-width: 33%;
+}
