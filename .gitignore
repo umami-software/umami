@@ -23,6 +23,7 @@
 .DS_Store
 .idea
 *.iml
+.vscode/*
 
 # debug
 npm-debug.log*

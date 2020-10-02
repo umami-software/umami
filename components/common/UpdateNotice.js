@@ -7,21 +7,21 @@ import Button from './Button';
 import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function UpdateNotice() {
-  const forceUpdte = useForceUpdate();
-  const { hasUpdate, latest, updateCheck } = useVersion();
+  const forceUpdate = useForceUpdate();
+  const { hasUpdate, checked, latest, updateCheck } = useVersion(true);
 
   function handleViewClick() {
     location.href = 'https://github.com/mikecao/umami/releases';
     updateCheck();
-    forceUpdte();
+    forceUpdate();
   }
 
   function handleDismissClick() {
     updateCheck();
-    forceUpdte();
+    forceUpdate();
   }
 
-  if (!hasUpdate) {
+  if (!hasUpdate || checked) {
     return null;
   }
 
