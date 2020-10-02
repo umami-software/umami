@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getItem } from 'lib/web';
-import { LOCALE_CONFIG, THEME_CONFIG } from 'lib/constants';
+import { LOCALE_CONFIG, THEME_CONFIG, VERSION_CHECK } from 'lib/constants';
+import semver from 'semver';
 
 const app = createSlice({
   name: 'app',
@@ -10,6 +11,7 @@ const app = createSlice({
     versions: {
       current: process.env.VERSION,
       latest: null,
+      hasUpdate: false,
     },
   },
   reducers: {
@@ -60,11 +62,14 @@ export function checkVersion() {
     const { tag_name } = data;
 
     const latest = tag_name.startsWith('v') ? tag_name.slice(1) : tag_name;
+    const lastCheck = getItem(VERSION_CHECK);
+    const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
 
     return dispatch(
       setVersions({
         current,
         latest,
+        hasUpdate,
       }),
     );
   };

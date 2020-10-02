@@ -8,7 +8,7 @@ import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function UpdateNotice() {
   const forceUpdte = useForceUpdate();
-  const { hasUpdate, latest, updateCheck } = useVersion();
+  const { hasUpdate, latest, updateCheck } = useVersion(true);
 
   function handleViewClick() {
     location.href = 'https://github.com/mikecao/umami/releases';

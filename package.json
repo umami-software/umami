@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.69.0",
+  "version": "0.70.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -63,7 +63,8 @@
     "date-fns": "^2.16.1",
     "date-fns-tz": "^1.0.10",
     "detect-browser": "^5.1.1",
-    "formik": "^2.1.6",
+    "dotenv": "^8.2.0",
+    "formik": "^2.1.7",
     "immer": "^7.0.9",
     "is-localhost-ip": "^1.4.0",
     "isbot-fast": "^1.2.0",
@@ -73,7 +74,7 @@
     "next": "^9.5.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-intl": "^5.8.3",
+    "react-intl": "^5.8.4",
     "react-redux": "^7.2.1",
     "react-simple-maps": "^2.1.2",
     "react-spring": "^8.0.27",
@@ -89,7 +90,7 @@
     "uuid": "^8.3.0"
   },
   "devDependencies": {
-    "@formatjs/cli": "^2.12.0",
+    "@formatjs/cli": "^2.13.0",
     "@prisma/cli": "2.8.0",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-node-resolve": "^9.0.0",
@@ -97,7 +98,6 @@
     "@svgr/webpack": "^5.4.0",
     "cross-env": "^7.0.2",
     "del": "^6.0.0",
-    "dotenv": "^8.2.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^6.12.0",
