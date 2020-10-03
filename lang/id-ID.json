@@ -46,7 +46,7 @@
   "label.unknown": "Tidak diketahui",
   "label.username": "Nama pengguna",
   "label.websites": "Situs web",
-  "message.active-users": "{x} sekarang {x, plural, one {visitor} other {visitors}}",
+  "message.active-users": "{x} pengunjung saat ini",
   "message.confirm-delete": "Apakah kamu yakin ingin menghapus {target}?",
   "message.copied": "Tersalin!",
   "message.delete-warning": "Semua data terkait juga akan dihapus.",
