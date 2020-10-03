@@ -2,9 +2,10 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import styles from './Footer.module.css';
+import useVersion from 'hooks/useVersion';
 
 export default function Footer() {
-  const version = process.env.VERSION;
+  const { current } = useVersion();
   return (
     <footer className="container">
       <div className={styles.footer}>
@@ -22,7 +23,7 @@ export default function Footer() {
             }}
           />
         </div>
-        <div>{`v${version}`}</div>
+        <div>{`v${current}`}</div>
       </div>
     </footer>
   );

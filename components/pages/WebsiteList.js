@@ -1,16 +1,14 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
+import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
-import Button from 'components/common/Button';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
-  const router = useRouter();
   const { data } = useFetch('/api/websites', { user_id: userId });
 
   if (!data) {
@@ -33,9 +31,9 @@ export default function WebsiteList({ userId }) {
             />
           }
         >
-          <Button icon={<Arrow />} size="medium" onClick={() => router.push('/settings')}>
+          <Link href="/settings" icon={<Arrow />} iconRight>
             <FormattedMessage id="message.go-to-settings" defaultMessage="Go to settings" />
-          </Button>
+          </Link>
         </EmptyPlaceholder>
       )}
     </Page>
