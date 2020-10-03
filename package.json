@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.73.0",
+  "version": "0.74.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -32,6 +32,7 @@
     "format-lang": "node scripts/format-lang.js",
     "compile-lang": "formatjs compile-folder --ast build lang-compiled",
     "check-lang": "node scripts/check-lang.js",
+    "download-country-names": "node scripts/download-country-names.js",
     "loadtest": "node scripts/loadtest.js",
     "loadtest:medium": "node scripts/loadtest.js --weight=medium",
     "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose"
