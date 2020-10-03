@@ -1,6 +1,7 @@
 .bar {
   display: flex;
   cursor: pointer;
+  min-height: 80px;
 }
 
 .bar > div + div {

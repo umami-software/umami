@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import styles from './Footer.module.css';
@@ -8,9 +9,9 @@ export default function Footer() {
   const { current } = useVersion();
   return (
     <footer className="container">
-      <div className={styles.footer}>
-        <div />
-        <div>
+      <div className={classNames(styles.footer, 'row')}>
+        <div className="col-12 col-md-4" />
+        <div className="col-12 col-md-4">
           <FormattedMessage
             id="message.powered-by"
             defaultMessage="Powered by {name}"
@@ -23,7 +24,7 @@ export default function Footer() {
             }}
           />
         </div>
-        <div>{`v${current}`}</div>
+        <div className={classNames(styles.version, 'col-12 col-md-4')}>{`v${current}`}</div>
       </div>
     </footer>
   );
