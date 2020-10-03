@@ -9,10 +9,6 @@
   border-radius: 4px;
 }
 
-.menu {
-  z-index: 100;
-}
-
 .text {
   font-size: var(--font-size-small);
 }

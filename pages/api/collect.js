@@ -1,7 +1,8 @@
+import isBot from 'isbot-fast';
 import { savePageView, saveEvent } from 'lib/queries';
 import { useCors, useSession } from 'lib/middleware';
 import { ok, badRequest } from 'lib/response';
-import isBot from 'isbot-fast';
+import { createToken } from 'lib/crypto';
 
 export default async (req, res) => {
   if (isBot(req.headers['user-agent'])) {
@@ -28,5 +29,7 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  return ok(res);
+  const token = await createToken({ website_id, session_id });
+
+  return ok(res, token);
 };

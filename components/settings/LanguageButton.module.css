@@ -8,5 +8,18 @@
 
 .menu div {
   border-radius: 5px;
-  min-width: 33%;
+  min-width: calc(100% / 3);
+}
+
+@media only screen and (max-width: 992px) {
+  .menu {
+    min-width: 90vw;
+    transform: translateX(calc(40vw));
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .menu div {
+    min-width: 50%;
+  }
 }

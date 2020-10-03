@@ -46,7 +46,7 @@ export default function MenuButton({
       </Button>
       {showMenu && (
         <Menu
-          className={classNames(styles.menu, menuClassname)}
+          className={menuClassname}
           options={options}
           selectedOption={selectedOption}
           onSelect={handleSelect}
