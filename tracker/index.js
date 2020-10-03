@@ -6,6 +6,7 @@ import { removeTrailingSlash } from '../lib/url';
     screen: { width, height },
     navigator: { language },
     location: { hostname, pathname, search },
+    sessionStorage,
     document,
     history,
   } = window;
@@ -16,7 +17,8 @@ import { removeTrailingSlash } from '../lib/url';
   const website = attr('data-website-id');
   const hostUrl = attr('data-host-url');
   const autoTrack = attr('data-auto-track') !== 'false';
-  const dnt = attr('data-do-not-track') === 'true';
+  const dnt = attr('data-do-not-track');
+  const useCache = attr('data-cache');
 
   if (!script || (dnt && doNotTrack())) return;
 
@@ -37,7 +39,7 @@ import { removeTrailingSlash } from '../lib/url';
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
-        callback && callback();
+        callback && callback(req.response);
       }
     };
 
@@ -45,11 +47,14 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const collect = (type, params, uuid) => {
+    const key = 'umami.cache';
+
     const payload = {
       website: uuid,
       hostname,
       screen,
       language,
+      cache: useCache && sessionStorage.getItem(key),
     };
 
     if (params) {
@@ -58,10 +63,14 @@ import { removeTrailingSlash } from '../lib/url';
       });
     }
 
-    return post(`${root}/api/collect`, {
-      type,
-      payload,
-    });
+    return post(
+      `${root}/api/collect`,
+      {
+        type,
+        payload,
+      },
+      res => useCache && sessionStorage.setItem(key, res),
+    );
   };
 
   const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
