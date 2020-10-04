@@ -4,9 +4,7 @@ const pkg = require('./package.json');
 module.exports = {
   env: {
     VERSION: pkg.version,
-  },
-  serverRuntimeConfig: {
-    PROJECT_ROOT: __dirname,
+    FORCE_SSL: !!process.env.FORCE_SSL,
   },
   webpack(config) {
     config.module.rules.push({
