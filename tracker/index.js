@@ -19,8 +19,19 @@ import { removeTrailingSlash } from '../lib/url';
   const autoTrack = attr('data-auto-track') !== 'false';
   const dnt = attr('data-do-not-track');
   const useCache = attr('data-cache');
+  const domains = attr('data-domains');
 
-  if (!script || (dnt && doNotTrack())) return;
+  if (
+    !script ||
+    (dnt && doNotTrack()) ||
+    (domains &&
+      !domains
+        .split(',')
+        .map(n => n.trim())
+        .includes(hostname))
+  ) {
+    return;
+  }
 
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
