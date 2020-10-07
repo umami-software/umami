@@ -13,6 +13,7 @@ import { formatNumber, formatLongNumber } from 'lib/format';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import styles from './MetricsTable.module.css';
+import ErrorMessage from '../common/ErrorMessage';
 
 export default function MetricsTable({
   websiteId,
@@ -36,7 +37,7 @@ export default function MetricsTable({
     query: { url },
   } = usePageQuery();
 
-  const { data } = useFetch(
+  const { data, loading, error } = useFetch(
     `/api/website/${websiteId}/rankings`,
     {
       type,
@@ -61,7 +62,7 @@ export default function MetricsTable({
       return items;
     }
     return [];
-  }, [data, dataFilter, filterOptions]);
+  }, [data, error, dataFilter, filterOptions]);
 
   const handleSetFormat = () => setFormat(state => !state);
 
@@ -86,8 +87,9 @@ export default function MetricsTable({
 
   return (
     <div className={classNames(styles.container, className)}>
-      {!data && <Loading />}
-      {data && (
+      {!data && loading && <Loading />}
+      {error && <ErrorMessage />}
+      {data && !error && (
         <>
           <div className={styles.header}>
             <div className={styles.title}>{title}</div>

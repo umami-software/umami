@@ -13,6 +13,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
 import Times from 'assets/times.svg';
 import styles from './WebsiteChart.module.css';
+import ErrorMessage from '../common/ErrorMessage';
 
 export default function WebsiteChart({
   websiteId,
@@ -31,7 +32,7 @@ export default function WebsiteChart({
     query: { url },
   } = usePageQuery();
 
-  const { data, loading } = useFetch(
+  const { data, loading, error } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {
       start_at: +startDate,
@@ -83,6 +84,7 @@ export default function WebsiteChart({
       </div>
       <div className="row">
         <div className="col">
+          {error && <ErrorMessage />}
           <PageviewsChart
             websiteId={websiteId}
             data={{ pageviews, uniques }}
