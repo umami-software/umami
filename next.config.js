@@ -17,4 +17,17 @@ module.exports = {
 
     return config;
   },
+  async headers() {
+    return [
+      {
+        source: '/umami.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=2592000', // 30 days
+          },
+        ],
+      },
+    ]
+  },
 };
