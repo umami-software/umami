@@ -5,8 +5,8 @@ import { getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
+import usePageQuery from 'hooks/usePageQuery';
 import { EVENT_COLORS } from 'lib/constants';
-import usePageQuery from '../../hooks/usePageQuery';
 
 export default function EventsChart({ websiteId, token }) {
   const [dateRange] = useDateRange(websiteId);
@@ -44,7 +44,7 @@ export default function EventsChart({ websiteId, token }) {
     });
 
     return Object.keys(map).map((key, index) => {
-      const color = tinycolor(EVENT_COLORS[index]);
+      const color = tinycolor(EVENT_COLORS[index % EVENT_COLORS.length]);
       return {
         label: key,
         data: map[key],
