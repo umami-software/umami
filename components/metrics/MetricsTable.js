@@ -38,7 +38,7 @@ export default function MetricsTable({
   } = usePageQuery();
 
   const { data, loading, error } = useFetch(
-    `/api/website/${websiteId}/rankings`,
+    `/api/website/${websiteId}/metrics`,
     {
       type,
       start_at: +startDate,
