@@ -75,7 +75,7 @@
     "jose": "^2.0.2",
     "maxmind": "^4.2.0",
     "moment-timezone": "^0.5.31",
-    "next": "^9.5.3",
+    "next": "^9.5.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-intl": "^5.8.4",
