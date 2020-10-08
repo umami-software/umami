@@ -24,7 +24,11 @@ export default function Footer() {
             }}
           />
         </div>
-        <div className={classNames(styles.version, 'col-12 col-md-4')}>{`v${current}`}</div>
+        <div className={classNames(styles.version, 'col-12 col-md-4')}>
+          <Link href={`https://github.com/mikecao/umami/releases/tag/v${current}`}>
+            {`v${current}`}
+          </Link>
+        </div>
       </div>
     </footer>
   );
