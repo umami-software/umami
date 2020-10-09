@@ -11,20 +11,22 @@ import RealtimeLog from '../metrics/RealtimeLog';
 const REALTIME_RANGE = 30;
 const REALTIME_INTERVAL = 5000;
 
-function filterTime(data, time) {
-  return data.filter(({ created_at }) => new Date(created_at).getTime() >= time);
+function mergeData(state, data, time) {
+  const ids = state.map(({ __id }) => __id);
+  return state
+    .concat(data.filter(({ __id }) => !ids.includes(__id)))
+    .filter(({ created_at }) => new Date(created_at).getTime() >= time);
 }
 
 export default function RealtimeDashboard() {
   const [data, setData] = useState();
   const [website, setWebsite] = useState();
-  const [lastTime, setLastTime] = useState();
   const { data: init, loading } = useFetch('/api/realtime', { type: 'init' });
   const { data: updates } = useFetch(
     '/api/realtime',
-    { type: 'update', start_at: lastTime },
+    { type: 'update', start_at: data?.timestamp },
     {
-      disabled: !init?.token,
+      disabled: !init?.token || !data,
       interval: REALTIME_INTERVAL,
       headers: { 'x-umami-token': init?.token },
     },
@@ -34,15 +36,15 @@ export default function RealtimeDashboard() {
     if (init && !data) {
       setData(init.data);
     } else if (updates) {
-      const { pageviews, sessions, events } = updates;
+      const { pageviews, sessions, events, timestamp } = updates;
       const minTime = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
       setData(state => ({
-        pageviews: filterTime(state.pageviews.concat(pageviews), minTime),
-        sessions: filterTime(state.sessions.concat(sessions), minTime),
-        events: filterTime(state.events.concat(events), minTime),
+        pageviews: mergeData(state.pageviews, pageviews, minTime),
+        sessions: mergeData(state.sessions, sessions, minTime),
+        events: mergeData(state.events, events, minTime),
+        timestamp,
       }));
     }
-    setLastTime(Date.now());
   }, [init, updates]);
 
   if (!init || loading || !data) {

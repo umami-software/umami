@@ -6,6 +6,8 @@ import { createToken } from 'lib/crypto';
 import { getIpAddress } from '../../lib/request';
 
 export default async (req, res) => {
+  await useCors(req, res);
+
   if (isBot(req.headers['user-agent'])) {
     return ok(res);
   }
@@ -19,7 +21,6 @@ export default async (req, res) => {
     }
   }
 
-  await useCors(req, res);
   await useSession(req, res);
 
   const { type, payload } = req.body;

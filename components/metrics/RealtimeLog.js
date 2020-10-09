@@ -103,7 +103,7 @@ export default function RealtimeLog({ data, websites }) {
       return (
         <FormattedMessage
           id="message.log.visitor"
-          defaultMessage="A visitor from {country} using {browser} on {os} {device}"
+          defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{ country: countryNames[country], browser: BROWSERS[browser], os, device }}
         />
       );
