@@ -14,14 +14,14 @@ export default function useFetch(url, params = {}, options = {}) {
   const keys = Object.keys(params)
     .sort()
     .map(key => params[key]);
-  const { update = [], onDataLoad = () => {} } = options;
+  const { update = [], onDataLoad = () => {}, disabled, headers } = options;
 
   async function loadData() {
     try {
       setLoadiing(true);
       setError(null);
       const time = performance.now();
-      const { data, status } = await get(`${basePath}${url}`, params);
+      const { data, status } = await get(`${basePath}${url}`, params, headers);
 
       dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
 
@@ -43,7 +43,7 @@ export default function useFetch(url, params = {}, options = {}) {
   }
 
   useEffect(() => {
-    if (url) {
+    if (url && !disabled) {
       const { interval, delay = 0 } = options;
 
       setTimeout(() => loadData(), delay);
@@ -54,7 +54,7 @@ export default function useFetch(url, params = {}, options = {}) {
         clearInterval(id);
       };
     }
-  }, [url, ...keys, ...update]);
+  }, [url, disabled, ...keys, ...update]);
 
   return { data, status, error, loading };
 }

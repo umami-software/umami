@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { getEvents } from 'lib/queries';
+import { getEventMetrics } from 'lib/queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 
@@ -21,7 +21,7 @@ export default async (req, res) => {
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    const events = await getEvents(websiteId, startDate, endDate, tz, unit, { url });
+    const events = await getEventMetrics(websiteId, startDate, endDate, tz, unit, { url });
 
     return ok(res, events);
   }

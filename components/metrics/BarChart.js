@@ -39,6 +39,8 @@ export default function BarChart({
     const w = canvas.current.width;
 
     switch (unit) {
+      case 'minute':
+        return dateFormat(d, 'h:mm', locale);
       case 'hour':
         return dateFormat(d, 'ha', locale);
       case 'day':

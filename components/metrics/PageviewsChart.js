@@ -26,7 +26,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
       data: { datasets },
     } = chart;
 
-    datasets[0].data = data.uniques;
+    datasets[0].data = data.sessions;
     datasets[0].label = intl.formatMessage({
       id: 'metrics.unique-visitors',
       defaultMessage: 'Unique visitors',
@@ -56,7 +56,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
                 id: 'metrics.unique-visitors',
                 defaultMessage: 'Unique visitors',
               }),
-              data: data.uniques,
+              data: data.sessions,
               lineTension: 0,
               backgroundColor: colors.visitors.background,
               borderColor: colors.visitors.border,

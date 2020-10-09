@@ -45,14 +45,14 @@ export default function WebsiteChart({
     { onDataLoad, update: [modified] },
   );
 
-  const [pageviews, uniques] = useMemo(() => {
+  const chartData = useMemo(() => {
     if (data) {
-      return [
-        getDateArray(data.pageviews, startDate, endDate, unit),
-        getDateArray(data.uniques, startDate, endDate, unit),
-      ];
+      return {
+        pageviews: getDateArray(data.pageviews, startDate, endDate, unit),
+        sessions: getDateArray(data.sessions, startDate, endDate, unit),
+      };
     }
-    return [[], []];
+    return { pageviews: [], sessions: [] };
   }, [data]);
 
   function handleCloseFilter() {
@@ -87,7 +87,7 @@ export default function WebsiteChart({
           {error && <ErrorMessage />}
           <PageviewsChart
             websiteId={websiteId}
-            data={{ pageviews, uniques }}
+            data={chartData}
             unit={unit}
             records={getDateLength(startDate, endDate, unit)}
             loading={loading}

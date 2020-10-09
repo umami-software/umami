@@ -21,12 +21,12 @@ export default async (req, res) => {
       return badRequest(res);
     }
 
-    const [pageviews, uniques] = await Promise.all([
+    const [pageviews, sessions] = await Promise.all([
       getPageviewStats(websiteId, startDate, endDate, tz, unit, '*', url),
       getPageviewStats(websiteId, startDate, endDate, tz, unit, 'distinct session_id', url),
     ]);
 
-    return ok(res, { pageviews, uniques });
+    return ok(res, { pageviews, sessions });
   }
 
   return methodNotAllowed(res);

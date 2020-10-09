@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import useFetch from 'hooks/useFetch';
 import styles from './ActiveUsers.module.css';
-import { FormattedMessage } from 'react-intl';
 
 export default function ActiveUsers({ websiteId, token, className }) {
   const { data } = useFetch(`/api/website/${websiteId}/active`, { token }, { interval: 60000 });
