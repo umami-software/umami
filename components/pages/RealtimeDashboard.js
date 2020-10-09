@@ -9,7 +9,7 @@ import PageviewsChart from '../metrics/PageviewsChart';
 import { getDateArray } from '../../lib/date';
 
 function filterTime(data, time) {
-  return data.filter(({ created_at }) => new Date(created_at).getTime() > time);
+  return data.filter(({ created_at }) => new Date(created_at).getTime() >= time);
 }
 
 function mapData(data) {
@@ -66,11 +66,11 @@ export default function RealtimeDashboard() {
       setData(init.data);
     } else if (updates) {
       const { pageviews, sessions, events } = updates;
-      const time = subMinutes(startOfMinute(new Date()), 30).getTime();
+      const minTime = subMinutes(startOfMinute(new Date()), 30).getTime();
       setData(state => ({
-        pageviews: filterTime(state.pageviews, time).concat(pageviews),
-        sessions: filterTime(state.sessions, time).concat(sessions),
-        events: filterTime(state.events, time).concat(events),
+        pageviews: filterTime(state.pageviews, minTime).concat(filterTime(pageviews, lastTime)),
+        sessions: filterTime(state.sessions, minTime).concat(filterTime(sessions, lastTime)),
+        events: filterTime(state.events, minTime).concat(filterTime(events, lastTime)),
       }));
     }
     setLastTime(Date.now());
