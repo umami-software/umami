@@ -1,80 +1,42 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
-import tinycolor from 'tinycolor2';
-import BarChart from './BarChart';
-import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import React, { useMemo } from 'react';
+import { format, parseISO, startOfMinute, subMinutes } from 'date-fns';
+import PageviewsChart from './PageviewsChart';
+import { getDateArray } from 'lib/date';
 
-export default function RealtimeChart({ websiteId, data, unit, records, className, loading }) {
-  const intl = useIntl();
-  const [theme] = useTheme();
-  const primaryColor = tinycolor(THEME_COLORS[theme].primary);
-  const colors = {
-    views: {
-      background: primaryColor.setAlpha(0.4).toRgbString(),
-      border: primaryColor.setAlpha(0.5).toRgbString(),
-    },
-    visitors: {
-      background: primaryColor.setAlpha(0.6).toRgbString(),
-      border: primaryColor.setAlpha(0.7).toRgbString(),
-    },
-  };
+function mapData(data) {
+  let last = 0;
+  const arr = [];
 
-  const handleUpdate = chart => {
-    const {
-      data: { datasets },
-    } = chart;
+  data.reduce((obj, val) => {
+    const { created_at } = val;
+    const t = startOfMinute(parseISO(created_at));
+    if (t.getTime() > last) {
+      obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
+      arr.push(obj);
+      last = t;
+    } else {
+      obj.y += 1;
+    }
+    return obj;
+  }, {});
 
-    datasets[0].data = data.uniques;
-    datasets[0].label = intl.formatMessage({
-      id: 'metrics.unique-visitors',
-      defaultMessage: 'Unique visitors',
-    });
-    datasets[1].data = data.pageviews;
-    datasets[1].label = intl.formatMessage({
-      id: 'metrics.page-views',
-      defaultMessage: 'Page views',
-    });
+  return arr;
+}
 
-    chart.update();
-  };
+export default function RealtimeChart({ data, ...props }) {
+  const chartData = useMemo(() => {
+    if (data) {
+      const endDate = startOfMinute(new Date());
+      const startDate = subMinutes(endDate, 30);
+      const unit = 'minute';
 
-  if (!data) {
-    return null;
-  }
+      return {
+        pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
+        sessions: getDateArray(mapData(data.sessions), startDate, endDate, unit),
+      };
+    }
+    return { pageviews: [], sessions: [] };
+  }, [data]);
 
-  return (
-    <BarChart
-      className={className}
-      chartId={`realtime-${websiteId}`}
-      datasets={[
-        {
-          label: intl.formatMessage({
-            id: 'metrics.unique-visitors',
-            defaultMessage: 'Unique visitors',
-          }),
-          data: data.uniques,
-          lineTension: 0,
-          backgroundColor: colors.visitors.background,
-          borderColor: colors.visitors.border,
-          borderWidth: 1,
-        },
-        {
-          label: intl.formatMessage({
-            id: 'metrics.page-views',
-            defaultMessage: 'Page views',
-          }),
-          data: data.pageviews,
-          lineTension: 0,
-          backgroundColor: colors.views.background,
-          borderColor: colors.views.border,
-          borderWidth: 1,
-        },
-      ]}
-      unit={unit}
-      records={records}
-      onUpdate={handleUpdate}
-      loading={loading}
-    />
-  );
+  return <PageviewsChart {...props} data={chartData} />;
 }

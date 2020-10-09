@@ -1,35 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { subMinutes, startOfMinute, parseISO, format } from 'date-fns';
+import { subMinutes, startOfMinute } from 'date-fns';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import DropDown from 'components/common/DropDown';
 import useFetch from 'hooks/useFetch';
-import PageviewsChart from '../metrics/PageviewsChart';
-import { getDateArray } from '../../lib/date';
+import RealtimeChart from '../metrics/RealtimeChart';
+import RealtimeLog from '../metrics/RealtimeLog';
+
+const REALTIME_RANGE = 30;
+const REALTIME_INTERVAL = 5000;
 
 function filterTime(data, time) {
   return data.filter(({ created_at }) => new Date(created_at).getTime() >= time);
-}
-
-function mapData(data) {
-  let last = 0;
-  const arr = [];
-
-  data.reduce((obj, val) => {
-    const { created_at } = val;
-    const t = startOfMinute(parseISO(created_at));
-    if (t.getTime() > last) {
-      obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
-      arr.push(obj);
-      last = t;
-    } else {
-      obj.y += 1;
-    }
-    return obj;
-  }, {});
-
-  return arr;
 }
 
 export default function RealtimeDashboard() {
@@ -42,39 +25,25 @@ export default function RealtimeDashboard() {
     { type: 'update', start_at: lastTime },
     {
       disabled: !init?.token,
-      interval: 5000,
+      interval: REALTIME_INTERVAL,
       headers: { 'x-umami-token': init?.token },
     },
   );
-
-  const chartData = useMemo(() => {
-    if (data) {
-      const endDate = startOfMinute(new Date());
-      const startDate = subMinutes(endDate, 30);
-      const unit = 'minute';
-
-      return {
-        pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
-        sessions: getDateArray(mapData(data.sessions), startDate, endDate, unit),
-      };
-    }
-    return { pageviews: [], sessions: [] };
-  }, [data]);
 
   useEffect(() => {
     if (init && !data) {
       setData(init.data);
     } else if (updates) {
       const { pageviews, sessions, events } = updates;
-      const minTime = subMinutes(startOfMinute(new Date()), 30).getTime();
+      const minTime = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
       setData(state => ({
-        pageviews: filterTime(state.pageviews, minTime).concat(filterTime(pageviews, lastTime)),
-        sessions: filterTime(state.sessions, minTime).concat(filterTime(sessions, lastTime)),
-        events: filterTime(state.events, minTime).concat(filterTime(events, lastTime)),
+        pageviews: filterTime(state.pageviews.concat(pageviews), minTime),
+        sessions: filterTime(state.sessions.concat(sessions), minTime),
+        events: filterTime(state.events.concat(events), minTime),
       }));
     }
     setLastTime(Date.now());
-  }, [updates, init]);
+  }, [init, updates]);
 
   if (!init || loading || !data) {
     return null;
@@ -99,7 +68,12 @@ export default function RealtimeDashboard() {
         </div>
         <DropDown value={selectedValue} options={options} onChange={handleSelect} />
       </PageHeader>
-      <PageviewsChart websiteId={website?.website_id} data={chartData} unit="minute" records={30} />
+      <RealtimeChart websiteId={website?.website_id} data={data} unit="minute" records={30} />
+      <div className="row">
+        <div className="col-12">
+          <RealtimeLog data={data} websites={websites} />
+        </div>
+      </div>
     </Page>
   );
 }

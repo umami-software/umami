@@ -1,0 +1,8 @@
+.table {
+  font-size: var(--font-size-small);
+}
+
+.row {
+  display: flex;
+  border-bottom: 1px solid var(--gray300);
+}

@@ -3,13 +3,13 @@ import classNames from 'classnames';
 import NoData from 'components/common/NoData';
 import styles from './Table.module.css';
 
-export default function Table({ columns, rows, empty }) {
+export default function Table({ className, columns, rows, empty }) {
   if (empty && rows.length === 0) {
     return empty;
   }
 
   return (
-    <div className={styles.table}>
+    <div className={classNames(styles.table, className)}>
       <div className={classNames(styles.header, 'row')}>
         {columns.map(({ key, label, className, style, header }) => (
           <div
