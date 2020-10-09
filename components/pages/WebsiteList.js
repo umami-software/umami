@@ -9,7 +9,7 @@ import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
-  const { data } = useFetch('/api/websites', { user_id: userId });
+  const { data } = useFetch('/api/websites', { params: { user_id: userId } });
 
   if (!data) {
     return null;

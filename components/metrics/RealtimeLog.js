@@ -5,6 +5,7 @@ import firstBy from 'thenby';
 import { format } from 'date-fns';
 import Icon from 'components/common/Icon';
 import Table, { TableRow } from 'components/common/Table';
+import Tag from 'components/common/Tag';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -92,7 +93,7 @@ export default function RealtimeLog({ data, websites }) {
     if (event_type) {
       return (
         <div>
-          <span className={styles.event}>{event_type}</span> {event_value}
+          <Tag>{event_type}</Tag> {event_value}
         </div>
       );
     }

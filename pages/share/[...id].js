@@ -8,7 +8,7 @@ export default function SharePage() {
   const router = useRouter();
   const { id } = router.query;
   const shareId = id?.[0];
-  const { data } = useFetch(shareId ? `/api/share/${shareId}` : null);
+  const { data } = useFetch(`/api/share/${shareId}`, { disabled: !shareId });
 
   if (!data) {
     return null;

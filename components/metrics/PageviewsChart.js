@@ -4,7 +4,7 @@ import tinycolor from 'tinycolor2';
 import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 
 export default function PageviewsChart({
   websiteId,
@@ -13,7 +13,7 @@ export default function PageviewsChart({
   records,
   className,
   loading,
-  animationDuration = 300,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
 }) {
   const intl = useIntl();
   const [theme] = useTheme();

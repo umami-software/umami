@@ -4,14 +4,14 @@ import { get } from 'lib/web';
 import { updateQuery } from 'redux/actions/queries';
 import { useRouter } from 'next/router';
 
-export default function useFetch(url, params = {}, options = {}) {
+export default function useFetch(url, options = {}, update = []) {
   const dispatch = useDispatch();
   const [data, setData] = useState();
   const [status, setStatus] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
   const { basePath } = useRouter();
-  const { update = [], onDataLoad = () => {}, disabled, headers, interval, delay = 0 } = options;
+  const { params, disabled, headers, interval, delay = 0, onDataLoad } = options;
 
   async function loadData() {
     try {
@@ -30,7 +30,7 @@ export default function useFetch(url, params = {}, options = {}) {
       }
 
       setStatus(status);
-      onDataLoad(data);
+      onDataLoad?.(data);
     } catch (e) {
       console.error(e);
       setError(e);
@@ -41,17 +41,17 @@ export default function useFetch(url, params = {}, options = {}) {
 
   useEffect(() => {
     if (url && !disabled) {
-      if (!data) {
-        setTimeout(() => loadData(), delay);
-      }
-
-      const id = interval ? setInterval(() => loadData(), interval) : null;
-
-      return () => {
-        clearInterval(id);
-      };
+      setTimeout(() => loadData(), delay);
     }
-  }, [data, url, disabled, ...update]);
+  }, [url, disabled, ...update]);
+
+  useEffect(() => {
+    const id = interval ? setInterval(() => loadData(), interval) : null;
+
+    return () => {
+      clearInterval(id);
+    };
+  }, [interval, params]);
 
   return { data, status, error, loading };
 }

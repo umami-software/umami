@@ -40,14 +40,18 @@ export default function MetricsTable({
   const { data, loading, error } = useFetch(
     `/api/website/${websiteId}/metrics`,
     {
-      type,
-      start_at: +startDate,
-      end_at: +endDate,
-      domain: websiteDomain,
-      url,
-      token,
+      params: {
+        type,
+        start_at: +startDate,
+        end_at: +endDate,
+        domain: websiteDomain,
+        url,
+        token,
+      },
+      onDataLoad,
+      delay: 300,
     },
-    { onDataLoad, delay: 300, update: [modified] },
+    [modified],
   );
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;

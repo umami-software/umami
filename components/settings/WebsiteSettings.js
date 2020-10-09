@@ -29,7 +29,7 @@ export default function WebsiteSettings() {
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/websites`, {}, { update: [saved] });
+  const { data } = useFetch(`/api/websites`, {}, [saved]);
 
   const Buttons = row => (
     <ButtonLayout align="right">

@@ -18,17 +18,19 @@ export default function MetricsBar({ websiteId, token, className }) {
     query: { url },
   } = usePageQuery();
 
+  console.log({ modified });
+
   const { data, error, loading } = useFetch(
     `/api/website/${websiteId}/stats`,
     {
-      start_at: +startDate,
-      end_at: +endDate,
-      url,
-      token,
+      params: {
+        start_at: +startDate,
+        end_at: +endDate,
+        url,
+        token,
+      },
     },
-    {
-      update: [modified],
-    },
+    [modified],
   );
 
   const formatFunc = format ? formatLongNumber : formatNumber;

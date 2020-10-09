@@ -35,14 +35,17 @@ export default function WebsiteChart({
   const { data, loading, error } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {
-      start_at: +startDate,
-      end_at: +endDate,
-      unit,
-      tz: timezone,
-      url,
-      token,
+      params: {
+        start_at: +startDate,
+        end_at: +endDate,
+        unit,
+        tz: timezone,
+        url,
+        token,
+      },
+      onDataLoad,
     },
-    { onDataLoad, update: [modified] },
+    [modified],
   );
 
   const chartData = useMemo(() => {

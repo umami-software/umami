@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
-import styles from './EventsTable.module.css';
+import Tag from 'components/common/Tag';
 
 export default function EventsTable({ websiteId, token, limit, onDataLoad }) {
   return (
@@ -22,7 +22,7 @@ const Label = ({ value }) => {
   const [event, label] = value.split(':');
   return (
     <>
-      <span className={styles.type}>{event}</span>
+      <Tag>{event}</Tag>
       {label}
     </>
   );

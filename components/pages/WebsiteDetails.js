@@ -31,7 +31,7 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId, token }) {
-  const { data } = useFetch(`/api/website/${websiteId}`, { token });
+  const { data } = useFetch(`/api/website/${websiteId}`, { params: { token } });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();

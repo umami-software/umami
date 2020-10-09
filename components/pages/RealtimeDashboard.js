@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import Page from 'components/layout/Page';
@@ -18,19 +18,34 @@ function mergeData(state, data, time) {
     .filter(({ created_at }) => new Date(created_at).getTime() >= time);
 }
 
+function filterWebsite(data, id) {
+  return data.filter(({ website_id }) => website_id === id);
+}
+
 export default function RealtimeDashboard() {
   const [data, setData] = useState();
   const [website, setWebsite] = useState();
-  const { data: init, loading } = useFetch('/api/realtime', { type: 'init' });
-  const { data: updates } = useFetch(
-    '/api/realtime',
-    { type: 'update', start_at: data?.timestamp },
-    {
-      disabled: !init?.token || !data,
-      interval: REALTIME_INTERVAL,
-      headers: { 'x-umami-token': init?.token },
-    },
-  );
+  const { data: init, loading } = useFetch('/api/realtime', { params: { type: 'init' } });
+  const { data: updates } = useFetch('/api/realtime', {
+    params: { type: 'update', start_at: data?.timestamp },
+    disabled: !init?.token || !data,
+    interval: REALTIME_INTERVAL,
+    headers: { 'x-umami-token': init?.token },
+  });
+
+  const realtimeData = useMemo(() => {
+    if (website) {
+      const { website_id } = website;
+      const { pageviews, sessions, events, ...props } = data;
+      return {
+        pageviews: filterWebsite(pageviews, website_id),
+        sessions: filterWebsite(sessions, website_id),
+        events: filterWebsite(events, website_id),
+        ...props,
+      };
+    }
+    return data;
+  }, [data, website]);
 
   useEffect(() => {
     if (init && !data) {
@@ -70,10 +85,15 @@ export default function RealtimeDashboard() {
         </div>
         <DropDown value={selectedValue} options={options} onChange={handleSelect} />
       </PageHeader>
-      <RealtimeChart websiteId={website?.website_id} data={data} unit="minute" records={30} />
+      <RealtimeChart
+        websiteId={website?.website_id}
+        data={realtimeData}
+        unit="minute"
+        records={REALTIME_RANGE}
+      />
       <div className="row">
         <div className="col-12">
-          <RealtimeLog data={data} websites={websites} />
+          <RealtimeLog data={realtimeData} websites={websites} />
         </div>
       </div>
     </Page>

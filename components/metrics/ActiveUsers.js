@@ -5,7 +5,10 @@ import useFetch from 'hooks/useFetch';
 import styles from './ActiveUsers.module.css';
 
 export default function ActiveUsers({ websiteId, token, className }) {
-  const { data } = useFetch(`/api/website/${websiteId}/active`, { token }, { interval: 60000 });
+  const { data } = useFetch(`/api/website/${websiteId}/active`, {
+    params: { token },
+    interval: 60000,
+  });
   const count = useMemo(() => {
     return data?.[0]?.x || 0;
   }, [data]);

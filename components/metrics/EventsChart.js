@@ -17,14 +17,16 @@ export default function EventsChart({ websiteId, token }) {
   const { data } = useFetch(
     `/api/website/${websiteId}/events`,
     {
-      start_at: +startDate,
-      end_at: +endDate,
-      unit,
-      tz: timezone,
-      url: query.url,
-      token,
+      params: {
+        start_at: +startDate,
+        end_at: +endDate,
+        unit,
+        tz: timezone,
+        url: query.url,
+        token,
+      },
     },
-    { update: [modified] },
+    [modified],
   );
   const datasets = useMemo(() => {
     if (!data) return [];
