@@ -40,7 +40,6 @@ export default function useFetch(url, params = {}, options = {}) {
   }
 
   useEffect(() => {
-    console.log('effect', params);
     if (url && !disabled) {
       if (!data) {
         setTimeout(() => loadData(), delay);
