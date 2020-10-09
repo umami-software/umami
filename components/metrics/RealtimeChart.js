@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { format, parseISO, startOfMinute, subMinutes } from 'date-fns';
+import React, { useMemo, useRef } from 'react';
+import { format, parseISO, startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
 import { getDateArray } from 'lib/date';
 
@@ -23,13 +23,13 @@ function mapData(data) {
   return arr;
 }
 
-export default function RealtimeChart({ data, ...props }) {
+export default function RealtimeChart({ data, unit, ...props }) {
+  const endDate = startOfMinute(new Date());
+  const startDate = subMinutes(endDate, 30);
+  const prevEndDate = useRef(endDate);
+
   const chartData = useMemo(() => {
     if (data) {
-      const endDate = startOfMinute(new Date());
-      const startDate = subMinutes(endDate, 30);
-      const unit = 'minute';
-
       return {
         pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
         sessions: getDateArray(mapData(data.sessions), startDate, endDate, unit),
@@ -38,5 +38,16 @@ export default function RealtimeChart({ data, ...props }) {
     return { pageviews: [], sessions: [] };
   }, [data]);
 
-  return <PageviewsChart {...props} data={chartData} />;
+  // Don't animate the bars shifting over because it looks weird
+  const animationDuration = useMemo(() => {
+    if (isBefore(prevEndDate.current, endDate)) {
+      prevEndDate.current = endDate;
+      return 0;
+    }
+    return 300;
+  }, [data]);
+
+  return (
+    <PageviewsChart {...props} unit={unit} data={chartData} animationDuration={animationDuration} />
+  );
 }
