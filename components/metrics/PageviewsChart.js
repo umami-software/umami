@@ -6,7 +6,15 @@ import BarChart from './BarChart';
 import useTheme from 'hooks/useTheme';
 import { THEME_COLORS } from 'lib/constants';
 
-export default function PageviewsChart({ websiteId, data, unit, records, className, loading }) {
+export default function PageviewsChart({
+  websiteId,
+  data,
+  unit,
+  records,
+  className,
+  loading,
+  animationDuration = 300,
+}) {
   const intl = useIntl();
   const [theme] = useTheme();
   const primaryColor = tinycolor(THEME_COLORS[theme].primary);
@@ -76,7 +84,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
           ]}
           unit={unit}
           records={records}
-          animationDuration={visible ? 300 : 0}
+          animationDuration={visible ? animationDuration : 0}
           onUpdate={handleUpdate}
           loading={loading}
         />

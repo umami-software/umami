@@ -35,11 +35,16 @@ function mapData(data) {
 export default function RealtimeDashboard() {
   const [data, setData] = useState();
   const [website, setWebsite] = useState();
+  const [lastTime, setLastTime] = useState();
   const { data: init, loading } = useFetch('/api/realtime', { type: 'init' });
   const { data: updates } = useFetch(
     '/api/realtime',
-    { type: 'update' },
-    { disabled: !init?.token, interval: 5000, headers: { 'x-umami-token': init?.token } },
+    { type: 'update', start_at: lastTime },
+    {
+      disabled: !init?.token,
+      interval: 5000,
+      headers: { 'x-umami-token': init?.token },
+    },
   );
 
   const chartData = useMemo(() => {
@@ -47,8 +52,6 @@ export default function RealtimeDashboard() {
       const endDate = startOfMinute(new Date());
       const startDate = subMinutes(endDate, 30);
       const unit = 'minute';
-
-      console.log({ data });
 
       return {
         pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
@@ -70,6 +73,7 @@ export default function RealtimeDashboard() {
         events: filterTime(state.events, time).concat(events),
       }));
     }
+    setLastTime(Date.now());
   }, [updates, init]);
 
   if (!init || loading || !data) {

@@ -11,10 +11,7 @@ export default function useFetch(url, params = {}, options = {}) {
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
   const { basePath } = useRouter();
-  const keys = Object.keys(params)
-    .sort()
-    .map(key => params[key]);
-  const { update = [], onDataLoad = () => {}, disabled, headers } = options;
+  const { update = [], onDataLoad = () => {}, disabled, headers, interval, delay = 0 } = options;
 
   async function loadData() {
     try {
@@ -43,10 +40,11 @@ export default function useFetch(url, params = {}, options = {}) {
   }
 
   useEffect(() => {
+    console.log('effect', params);
     if (url && !disabled) {
-      const { interval, delay = 0 } = options;
-
-      setTimeout(() => loadData(), delay);
+      if (!data) {
+        setTimeout(() => loadData(), delay);
+      }
 
       const id = interval ? setInterval(() => loadData(), interval) : null;
 
@@ -54,7 +52,7 @@ export default function useFetch(url, params = {}, options = {}) {
         clearInterval(id);
       };
     }
-  }, [url, disabled, ...keys, ...update]);
+  }, [data, url, disabled, ...update]);
 
   return { data, status, error, loading };
 }

@@ -16,7 +16,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'GET') {
-    const { type } = req.query;
+    const { type, start_at } = req.query;
     const { user_id } = req.auth;
 
     if (type === 'init') {
@@ -37,7 +37,7 @@ export default async (req, res) => {
 
       const { websites } = await parseToken(token);
 
-      const [pageviews, sessions, events] = await getData(websites, new Date());
+      const [pageviews, sessions, events] = await getData(websites, new Date(+start_at));
 
       return ok(res, { pageviews, sessions, events });
     }
