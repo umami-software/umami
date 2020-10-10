@@ -9,6 +9,9 @@
     "type": "git",
     "url": "https://github.com/mikecao/umami.git"
   },
+  "engines": {
+    "node": "12.18.4"
+  },  
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all build-tracker build-lang build-geo build-db build-app",
