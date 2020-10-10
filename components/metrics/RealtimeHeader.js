@@ -10,17 +10,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
     { label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />, value: 0 },
   ].concat(websites.map(({ name, website_id }) => ({ label: name, value: website_id })));
 
-  const { pageviews, sessions, events } = data;
-  const countries = sessions.reduce((obj, { country }) => {
-    if (country) {
-      if (!obj[country]) {
-        obj[country] = 1;
-      } else {
-        obj[country] += 1;
-      }
-    }
-    return obj;
-  }, {});
+  const { pageviews, sessions, events, countries } = data;
 
   return (
     <>
@@ -45,7 +35,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
         />
         <MetricCard
           label={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
-          value={Object.keys(countries).length}
+          value={countries.length}
         />
       </div>
     </>

@@ -18,8 +18,6 @@ export default function MetricsBar({ websiteId, token, className }) {
     query: { url },
   } = usePageQuery();
 
-  console.log({ modified });
-
   const { data, error, loading } = useFetch(
     `/api/website/${websiteId}/stats`,
     {

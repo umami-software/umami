@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { subMinutes, startOfMinute } from 'date-fns';
+import firstBy from 'thenby';
+import { percentFilter } from 'lib/filters';
 import Page from 'components/layout/Page';
 import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import RealtimeChart from '../metrics/RealtimeChart';
@@ -7,6 +9,11 @@ import RealtimeLog from '../metrics/RealtimeLog';
 import styles from './RealtimeDashboard.module.css';
 import RealtimeHeader from '../metrics/RealtimeHeader';
 import useFetch from 'hooks/useFetch';
+import WorldMap from '../common/WorldMap';
+import DataTable from '../metrics/DataTable';
+import useLocale from 'hooks/useLocale';
+import useCountryNames from 'hooks/useCountryNames';
+import { FormattedMessage } from 'react-intl';
 
 const REALTIME_RANGE = 30;
 const REALTIME_INTERVAL = 5000;
@@ -23,6 +30,8 @@ function filterWebsite(data, id) {
 }
 
 export default function RealtimeDashboard() {
+  const [locale] = useLocale();
+  const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(0);
   const { data: init, loading } = useFetch('/api/realtime', { params: { type: 'init' } });
@@ -33,41 +42,84 @@ export default function RealtimeDashboard() {
     headers: { 'x-umami-token': init?.token },
   });
 
-  const realtimeData = useMemo(() => {
-    if (websiteId) {
-      const { pageviews, sessions, events, ...props } = data;
-      const countries = sessions.reduce((obj, { country }) => {
-        if (country) {
-          if (!obj[country]) {
-            obj[country] = 1;
-          } else {
-            obj[country] += 1;
-          }
-        }
-        return obj;
-      }, {});
+  const renderCountryName = useCallback(({ x }) => countryNames[x], []);
 
-      return {
-        pageviews: filterWebsite(pageviews, websiteId),
-        sessions: filterWebsite(sessions, websiteId),
-        events: filterWebsite(events, websiteId),
-        countries,
-        ...props,
-      };
+  const realtimeData = useMemo(() => {
+    if (data) {
+      const { pageviews, sessions, events } = data;
+
+      if (websiteId) {
+        return {
+          pageviews: filterWebsite(pageviews, websiteId),
+          sessions: filterWebsite(sessions, websiteId),
+          events: filterWebsite(events, websiteId),
+        };
+      }
     }
+
     return data;
   }, [data, websiteId]);
 
+  const countries = useMemo(() => {
+    if (realtimeData?.sessions) {
+      return percentFilter(
+        realtimeData.sessions
+          .reduce((arr, { country }) => {
+            if (country) {
+              const row = arr.find(({ x }) => x === country);
+
+              if (!row) {
+                arr.push({ x: country, y: 1 });
+              } else {
+                row.y += 1;
+              }
+            }
+            return arr;
+          }, [])
+          .sort(firstBy('y', -1)),
+      );
+    }
+    return [];
+  }, [realtimeData]);
+
+  const referrers = useMemo(() => {
+    if (realtimeData?.pageviews) {
+      return percentFilter(
+        realtimeData.pageviews
+          .reduce((arr, { referrer }) => {
+            if (referrer?.startsWith('http')) {
+              const { hostname } = new URL(referrer);
+              const row = arr.find(({ x }) => x === hostname);
+
+              if (!row) {
+                arr.push({ x: hostname, y: 1 });
+              } else {
+                row.y += 1;
+              }
+            }
+            return arr;
+          }, [])
+          .sort(firstBy('y', -1)),
+      );
+    }
+    return [];
+  }, [realtimeData]);
+
   useEffect(() => {
     if (init && !data) {
-      setData(init.data);
+      const { websites, data } = init;
+      const domains = init.websites.map(({ domain }) => domain);
+
+      setData({ websites, domains, ...data });
     } else if (updates) {
       const { pageviews, sessions, events, timestamp } = updates;
-      const minTime = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
+      const time = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
+
       setData(state => ({
-        pageviews: mergeData(state.pageviews, pageviews, minTime),
-        sessions: mergeData(state.sessions, sessions, minTime),
-        events: mergeData(state.events, events, minTime),
+        ...state,
+        pageviews: mergeData(state.pageviews, pageviews, time),
+        sessions: mergeData(state.sessions, sessions, time),
+        events: mergeData(state.events, events, time),
         timestamp,
       }));
     }
@@ -77,14 +129,16 @@ export default function RealtimeDashboard() {
     return null;
   }
 
-  const { websites } = init;
+  const { websites } = data;
+
+  //console.log({realtimeData, countries});
 
   return (
     <Page>
       <RealtimeHeader
         websites={websites}
         websiteId={websiteId}
-        data={realtimeData}
+        data={{ ...realtimeData, countries }}
         onSelect={setWebsiteId}
       />
       <div className={styles.chart}>
@@ -101,15 +155,26 @@ export default function RealtimeDashboard() {
             <RealtimeLog data={realtimeData} websites={websites} />
           </GridColumn>
           <GridColumn xs={12} lg={4}>
-            x
+            <DataTable
+              title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
+              metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+              data={referrers}
+              animate={false}
+            />
           </GridColumn>
         </GridRow>
         <GridRow>
           <GridColumn xs={12} lg={4}>
-            x
+            <DataTable
+              title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
+              metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+              data={countries}
+              renderLabel={renderCountryName}
+              animate={false}
+            />
           </GridColumn>
           <GridColumn xs={12} lg={8}>
-            x
+            <WorldMap data={countries} />
           </GridColumn>
         </GridRow>
       </GridLayout>

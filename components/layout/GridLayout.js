@@ -13,7 +13,7 @@ export const GridRow = ({ className, children }) => {
 export const GridColumn = ({ xs, sm, md, lg, xl, className, children }) => {
   const classes = [];
 
-  classes.push(xs ? `col-${xs}` : 'col');
+  classes.push(xs ? `col-${xs}` : 'col-12');
 
   if (sm) {
     classes.push(`col-sm-${sm}`);
