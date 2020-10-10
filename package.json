@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "0.91.0",
+  "version": "0.92.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -83,6 +83,7 @@
     "react-simple-maps": "^2.1.2",
     "react-spring": "^8.0.27",
     "react-tooltip": "^4.2.10",
+    "react-use-measure": "^2.0.2",
     "react-window": "^1.8.5",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

@@ -25,6 +25,7 @@ export default function MetricsTable({
   filterOptions,
   limit,
   renderLabel,
+  height,
   onDataLoad = () => {},
 }) {
   const [dateRange] = useDateRange(websiteId);
@@ -75,6 +76,7 @@ export default function MetricsTable({
           className={className}
           renderLabel={renderLabel}
           limit={limit}
+          height={height}
           animate={limit > 0}
         />
       )}

@@ -3228,6 +3228,11 @@ date-fns@^2.16.1:
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.16.1.tgz#05775792c3f3331da812af253e1a935851d3834b"
   integrity sha512-sAJVKx/FqrLYHAQeN7VpJrPhagZc9R4ImZIWYRFZaaohR3KzmuK88touwsSwSVT8Qcbd4zoDsnGfX4GFB4imyQ==
 
+debounce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
+  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
+
 debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.2.0.tgz#7f150f93920e94c58f5574c2fd01a3110effe7f1"
@@ -7336,6 +7341,13 @@ react-tooltip@^4.2.10:
   dependencies:
     prop-types "^15.7.2"
     uuid "^7.0.3"
+
+react-use-measure@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.0.2.tgz#06b4f99b887d5dfcd7b7167a2da063d97ec8f62f"
+  integrity sha512-/+eSmQiU2ePNTwFCXX4JPrQNMvyu3sWrSDi/n5F6IMXwboB46IvtU8VHvG7Nc+egvtM7sBJKwmUx/vx6KIRDog==
+  dependencies:
+    debounce "^1.2.0"
 
 react-window@^1.8.5:
   version "1.8.5"

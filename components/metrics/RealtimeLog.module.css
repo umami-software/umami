@@ -6,12 +6,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 16px;
   line-height: 40px;
   font-weight: 600;
 }
 
 .row {
   display: flex;
+  align-items: center;
+  height: 40px;
   border-bottom: 1px solid var(--gray300);
 }
 
@@ -20,17 +23,23 @@
 }
 
 .icon {
-  align-self: center;
-  margin-right: 20px;
+  margin-right: 10px;
+}
+
+.time {
+  min-width: 60px;
+  overflow: hidden;
 }
 
 .website {
+  min-width: 120px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
 .detail {
+  display: flex;
   flex: 1;
 }
 

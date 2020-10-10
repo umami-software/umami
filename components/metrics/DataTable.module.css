@@ -6,6 +6,11 @@
   flex: 1;
 }
 
+.body {
+  position: relative;
+  flex: 1;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -87,10 +92,4 @@
   opacity: 0.1;
   background: var(--primary400);
   z-index: -1;
-}
-
-.body {
-  position: relative;
-  flex: 1;
-  overflow: hidden;
 }

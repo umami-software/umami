@@ -16,7 +16,7 @@ import useCountryNames from 'hooks/useCountryNames';
 import { FormattedMessage } from 'react-intl';
 
 const REALTIME_RANGE = 30;
-const REALTIME_INTERVAL = 5000;
+const REALTIME_INTERVAL = 55000;
 
 function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
@@ -151,16 +151,17 @@ export default function RealtimeDashboard() {
       </div>
       <GridLayout>
         <GridRow>
-          <GridColumn xs={12} lg={8}>
-            <RealtimeLog data={realtimeData} websites={websites} />
-          </GridColumn>
           <GridColumn xs={12} lg={4}>
             <DataTable
               title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
               metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
               data={referrers}
+              height={400}
               animate={false}
             />
+          </GridColumn>
+          <GridColumn xs={12} lg={8}>
+            <RealtimeLog data={realtimeData} websites={websites} />
           </GridColumn>
         </GridRow>
         <GridRow>
@@ -170,6 +171,7 @@ export default function RealtimeDashboard() {
               metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
               data={countries}
               renderLabel={renderCountryName}
+              height={500}
               animate={false}
             />
           </GridColumn>
