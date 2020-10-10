@@ -119,6 +119,9 @@ export default function RealtimeLog({ data, websites }) {
 
   return (
     <div className={styles.log}>
+      <div className={styles.header}>
+        <FormattedMessage id="label.realtime-logs" defaultMessage="Realtime logs" />
+      </div>
       <Table
         className={styles.table}
         bodyClassName={styles.body}
@@ -126,7 +129,7 @@ export default function RealtimeLog({ data, websites }) {
         rows={logs}
         showHeader={false}
       >
-        <FixedSizeList height={300} itemCount={logs.length} itemSize={46}>
+        <FixedSizeList height={400} itemCount={logs.length} itemSize={46}>
           {Row}
         </FixedSizeList>
       </Table>

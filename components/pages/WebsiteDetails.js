@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
+import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
@@ -19,6 +20,7 @@ import EventsTable from '../metrics/EventsTable';
 import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
+import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 
 const views = {
   url: PagesTable,
@@ -100,7 +102,7 @@ export default function WebsiteDetails({ websiteId, token }) {
 
   function handleDataLoad() {
     if (!chartLoaded) {
-      setTimeout(() => setChartLoaded(true), 300);
+      setTimeout(() => setChartLoaded(true), DEFAULT_ANIMATION_DURATION);
     }
   }
 
@@ -124,45 +126,43 @@ export default function WebsiteDetails({ websiteId, token }) {
       </div>
       {!chartLoaded && <Loading />}
       {chartLoaded && !view && (
-        <>
-          <div className={classNames(styles.row, 'row')}>
-            <div className="col-md-12 col-lg-6">
+        <GridLayout>
+          <GridRow>
+            <GridColumn md={12} lg={6}>
               <PagesTable {...tableProps} />
-            </div>
-            <div className="col-md-12 col-lg-6">
+            </GridColumn>
+            <GridColumn md={12} lg={6}>
               <ReferrersTable {...tableProps} />
-            </div>
-          </div>
-          <div className={classNames(styles.row, 'row')}>
-            <div className="col-md-12 col-lg-4">
+            </GridColumn>
+          </GridRow>
+          <GridRow>
+            <GridColumn md={12} lg={4}>
               <BrowsersTable {...tableProps} />
-            </div>
-            <div className="col-md-12 col-lg-4">
+            </GridColumn>
+            <GridColumn md={12} lg={4}>
               <OSTable {...tableProps} />
-            </div>
-            <div className="col-md-12 col-lg-4">
+            </GridColumn>
+            <GridColumn md={12} lg={4}>
               <DevicesTable {...tableProps} />
-            </div>
-          </div>
-          <div className={classNames(styles.row, 'row')}>
-            <div className="col-12 col-md-12 col-lg-8">
+            </GridColumn>
+          </GridRow>
+          <GridRow>
+            <GridColumn xs={12} md={12} lg={8}>
               <WorldMap data={countryData} />
-            </div>
-            <div className="col-12 col-md-12 col-lg-4">
+            </GridColumn>
+            <GridColumn xs={12} md={12} lg={4}>
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
-            </div>
-          </div>
-          <div
-            className={classNames(styles.row, 'row', { [styles.hidden]: !eventsData?.length > 0 })}
-          >
-            <div className="col-12 col-md-12 col-lg-4">
+            </GridColumn>
+          </GridRow>
+          <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
+            <GridColumn xs={12} md={12} lg={4}>
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
-            </div>
-            <div className="col-12 col-md-12 col-lg-8 pt-5 pb-5">
-              <EventsChart websiteId={websiteId} token={token} />
-            </div>
-          </div>
-        </>
+            </GridColumn>
+            <GridColumn xs={12} md={12} lg={8}>
+              <EventsChart className={styles.eventschart} websiteId={websiteId} token={token} />
+            </GridColumn>
+          </GridRow>
+        </GridLayout>
       )}
       {view && (
         <MenuLayout

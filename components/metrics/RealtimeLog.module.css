@@ -2,13 +2,20 @@
   font-size: var(--font-size-xsmall);
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 40px;
+  font-weight: 600;
+}
+
 .row {
   display: flex;
   border-bottom: 1px solid var(--gray300);
 }
 
 .body {
-  height: 600px;
   overflow: auto;
 }
 

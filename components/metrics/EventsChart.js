@@ -8,7 +8,7 @@ import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { EVENT_COLORS } from 'lib/constants';
 
-export default function EventsChart({ websiteId, token }) {
+export default function EventsChart({ websiteId, className, token }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, modified } = dateRange;
   const [timezone] = useTimezone();
@@ -79,6 +79,7 @@ export default function EventsChart({ websiteId, token }) {
   return (
     <BarChart
       chartId={`events-${websiteId}`}
+      className={className}
       datasets={datasets}
       unit={unit}
       records={getDateLength(startDate, endDate, unit)}

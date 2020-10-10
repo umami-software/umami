@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
 import { subMinutes, startOfMinute } from 'date-fns';
 import Page from 'components/layout/Page';
-import useFetch from 'hooks/useFetch';
+import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import RealtimeChart from '../metrics/RealtimeChart';
 import RealtimeLog from '../metrics/RealtimeLog';
 import styles from './RealtimeDashboard.module.css';
 import RealtimeHeader from '../metrics/RealtimeHeader';
+import useFetch from 'hooks/useFetch';
 
 const REALTIME_RANGE = 30;
 const REALTIME_INTERVAL = 5000;
@@ -36,10 +36,22 @@ export default function RealtimeDashboard() {
   const realtimeData = useMemo(() => {
     if (websiteId) {
       const { pageviews, sessions, events, ...props } = data;
+      const countries = sessions.reduce((obj, { country }) => {
+        if (country) {
+          if (!obj[country]) {
+            obj[country] = 1;
+          } else {
+            obj[country] += 1;
+          }
+        }
+        return obj;
+      }, {});
+
       return {
         pageviews: filterWebsite(pageviews, websiteId),
         sessions: filterWebsite(sessions, websiteId),
         events: filterWebsite(events, websiteId),
+        countries,
         ...props,
       };
     }
@@ -83,12 +95,24 @@ export default function RealtimeDashboard() {
           records={REALTIME_RANGE}
         />
       </div>
-      <div className={classNames(styles.tables, 'row')}>
-        <div className="col-12 col-lg-8">
-          <RealtimeLog data={realtimeData} websites={websites} />
-        </div>
-        <div className="col-12 col-lg-4">hi.</div>
-      </div>
+      <GridLayout>
+        <GridRow>
+          <GridColumn xs={12} lg={8}>
+            <RealtimeLog data={realtimeData} websites={websites} />
+          </GridColumn>
+          <GridColumn xs={12} lg={4}>
+            x
+          </GridColumn>
+        </GridRow>
+        <GridRow>
+          <GridColumn xs={12} lg={4}>
+            x
+          </GridColumn>
+          <GridColumn xs={12} lg={8}>
+            x
+          </GridColumn>
+        </GridRow>
+      </GridLayout>
     </Page>
   );
 }
