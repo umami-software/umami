@@ -8,7 +8,13 @@ import styles from './RealtimeHeader.module.css';
 export default function RealtimeHeader({ websites, data, websiteId, onSelect }) {
   const options = [
     { label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />, value: 0 },
-  ].concat(websites.map(({ name, website_id }) => ({ label: name, value: website_id })));
+  ].concat(
+    websites.map(({ name, website_id }, index) => ({
+      label: name,
+      value: website_id,
+      divider: index === 0,
+    })),
+  );
 
   const { pageviews, sessions, events, countries } = data;
 

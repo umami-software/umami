@@ -16,7 +16,7 @@ import useCountryNames from 'hooks/useCountryNames';
 import { FormattedMessage } from 'react-intl';
 
 const REALTIME_RANGE = 30;
-const REALTIME_INTERVAL = 55000;
+const REALTIME_INTERVAL = 3000;
 
 function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
@@ -34,9 +34,9 @@ export default function RealtimeDashboard() {
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(0);
-  const { data: init, loading } = useFetch('/api/realtime', { params: { type: 'init' } });
-  const { data: updates } = useFetch('/api/realtime', {
-    params: { type: 'update', start_at: data?.timestamp },
+  const { data: init, loading } = useFetch('/api/realtime/init');
+  const { data: updates } = useFetch('/api/realtime/update', {
+    params: { start_at: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
     headers: { 'x-umami-token': init?.token },

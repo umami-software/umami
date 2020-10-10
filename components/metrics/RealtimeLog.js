@@ -11,7 +11,9 @@ import { BROWSERS } from 'lib/constants';
 import Bolt from 'assets/bolt.svg';
 import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
+import { stringToColor } from 'lib/format';
 import styles from './RealtimeLog.module.css';
+import Dot from '../common/Dot';
 
 const TYPE_PAGEVIEW = 0;
 const TYPE_SESSION = 1;
@@ -26,9 +28,17 @@ const TYPE_ICONS = {
 export default function RealtimeLog({ data, websites }) {
   const [locale] = useLocale();
   const countryNames = useCountryNames(locale);
+
   const logs = useMemo(() => {
     const { pageviews, sessions, events } = data;
     return [...pageviews, ...sessions, ...events].sort(firstBy('created_at', -1));
+  }, [data]);
+
+  const uuids = useMemo(() => {
+    return data.sessions.reduce((obj, { session_id, session_uuid }) => {
+      obj[session_id] = session_uuid;
+      return obj;
+    }, {});
   }, [data]);
 
   function getType({ view_id, session_id, event_id }) {
@@ -88,6 +98,9 @@ export default function RealtimeLog({ data, websites }) {
     const row = logs[index];
     return (
       <div className={styles.row} style={style}>
+        <div>
+          <Dot color={stringToColor(uuids[row.session_id] || `${row.session_id}`)} />
+        </div>
         <div className={styles.time}>{format(new Date(row.created_at), 'h:mm:ss')}</div>
         <div className={styles.detail}>
           <Icon className={styles.icon} icon={getIcon(row)} />
