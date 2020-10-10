@@ -5,17 +5,17 @@ import ChartJS from 'chart.js';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
-import styles from './BarChart.module.css';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
+import styles from './BarChart.module.css';
 
 export default function BarChart({
   chartId,
   datasets,
   unit,
   records,
-  height = 400,
-  animationDuration = 300,
+  height = DEFAUL_CHART_HEIGHT,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
   className,
   stacked = false,
   loading = false,

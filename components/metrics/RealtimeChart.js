@@ -49,6 +49,12 @@ export default function RealtimeChart({ data, unit, ...props }) {
   }, [data]);
 
   return (
-    <PageviewsChart {...props} unit={unit} data={chartData} animationDuration={animationDuration} />
+    <PageviewsChart
+      {...props}
+      height={300}
+      unit={unit}
+      data={chartData}
+      animationDuration={animationDuration}
+    />
   );
 }

@@ -14,6 +14,7 @@ export default function PageviewsChart({
   className,
   loading,
   animationDuration = DEFAULT_ANIMATION_DURATION,
+  ...props
 }) {
   const intl = useIntl();
   const [theme] = useTheme();
@@ -56,6 +57,7 @@ export default function PageviewsChart({
     <CheckVisible>
       {visible => (
         <BarChart
+          {...props}
           className={className}
           chartId={websiteId}
           datasets={[

@@ -1,5 +1,5 @@
 .table {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-xsmall);
 }
 
 .row {
@@ -15,4 +15,20 @@
 .icon {
   align-self: center;
   margin-right: 20px;
+}
+
+.website {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.detail {
+  flex: 1;
+}
+
+.detail span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

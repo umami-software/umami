@@ -10,6 +10,7 @@ export default function Table({
   className,
   bodyClassName,
   rowKey,
+  showHeader = true,
   children,
 }) {
   if (empty && rows.length === 0) {
@@ -18,17 +19,19 @@ export default function Table({
 
   return (
     <div className={classNames(styles.table, className)}>
-      <div className={classNames(styles.header, 'row')}>
-        {columns.map(({ key, label, className, style, header }) => (
-          <div
-            key={key}
-            className={classNames(styles.head, className, header?.className)}
-            style={{ ...style, ...header?.style }}
-          >
-            {label}
-          </div>
-        ))}
-      </div>
+      {showHeader && (
+        <div className={classNames(styles.header, 'row')}>
+          {columns.map(({ key, label, className, style, header }) => (
+            <div
+              key={key}
+              className={classNames(styles.head, className, header?.className)}
+              style={{ ...style, ...header?.style }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+      )}
       <div className={classNames(styles.body, bodyClassName)}>
         {rows.length === 0 && <NoData />}
         {!children &&

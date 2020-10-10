@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
+import classNames from 'classnames';
 import firstBy from 'thenby';
 import { format } from 'date-fns';
 import Icon from 'components/common/Icon';
@@ -14,8 +15,17 @@ import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
 import styles from './RealtimeLog.module.css';
 
+const TYPE_PAGEVIEW = 0;
+const TYPE_SESSION = 1;
+const TYPE_EVENT = 2;
+
+const TYPE_ICONS = {
+  [TYPE_PAGEVIEW]: <Eye />,
+  [TYPE_SESSION]: <Visitor />,
+  [TYPE_EVENT]: <Bolt />,
+};
+
 export default function RealtimeLog({ data, websites }) {
-  const intl = useIntl();
   const [locale] = useLocale();
   const countryNames = useCountryNames(locale);
   const logs = useMemo(() => {
@@ -26,24 +36,21 @@ export default function RealtimeLog({ data, websites }) {
   const columns = [
     {
       key: 'time',
-      label: <FormattedMessage id="label.time" defaultMessage="Time" />,
-      className: 'col-1',
-      render: ({ created_at }) => format(new Date(created_at), 'H:mm:ss'),
+      className: classNames(styles.time, 'col-3 col-lg-1'),
+      render: ({ created_at }) => format(new Date(created_at), 'h:mm:ss'),
     },
     {
       key: 'website',
-      label: <FormattedMessage id="label.website" defaultMessage="Website" />,
-      className: 'col-2',
+      className: classNames(styles.website, 'col-9 col-lg-2'),
       render: getWebsite,
     },
     {
-      key: 'type',
-      label: <FormattedMessage id="label.event" defaultMessage="Event" />,
-      className: 'col-9',
+      key: 'detail',
+      className: classNames(styles.detail, 'col-12 col-lg-9'),
       render: row => (
         <>
-          <Icon className={styles.icon} icon={getIcon(row)} title={getType(row)} />
-          {getDescription(row)}
+          <Icon className={styles.icon} icon={getIcon(row)} />
+          {getDetail(row)}
         </>
       ),
     },
@@ -51,35 +58,26 @@ export default function RealtimeLog({ data, websites }) {
 
   function getType({ view_id, session_id, event_id }) {
     if (event_id) {
-      return intl.formatMessage({ id: 'label.event', defaultMessage: 'Event' });
+      return TYPE_EVENT;
     }
     if (view_id) {
-      return intl.formatMessage({ id: 'label.pageview', defaultMessage: 'Pageview' });
+      return TYPE_PAGEVIEW;
     }
     if (session_id) {
-      return intl.formatMessage({ id: 'label.visitor', defaultMessage: 'Visitor' });
+      return TYPE_SESSION;
     }
     return null;
   }
 
-  function getIcon({ view_id, session_id, event_id }) {
-    if (event_id) {
-      return <Bolt />;
-    }
-    if (view_id) {
-      return <Eye />;
-    }
-    if (session_id) {
-      return <Visitor />;
-    }
-    return null;
+  function getIcon(row) {
+    return TYPE_ICONS[getType(row)];
   }
 
   function getWebsite({ website_id }) {
     return websites.find(n => n.website_id === website_id)?.name;
   }
 
-  function getDescription({
+  function getDetail({
     event_type,
     event_value,
     view_id,
@@ -121,8 +119,14 @@ export default function RealtimeLog({ data, websites }) {
 
   return (
     <div className={styles.log}>
-      <Table className={styles.table} bodyClassName={styles.body} columns={columns} rows={logs}>
-        <FixedSizeList height={600} itemCount={logs.length} itemSize={46}>
+      <Table
+        className={styles.table}
+        bodyClassName={styles.body}
+        columns={columns}
+        rows={logs}
+        showHeader={false}
+      >
+        <FixedSizeList height={300} itemCount={logs.length} itemSize={46}>
           {Row}
         </FixedSizeList>
       </Table>
