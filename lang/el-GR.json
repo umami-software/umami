@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Λήψη κώδικα παρακολούθησης",
   "message.go-to-settings": "Μεταβείτε στις ρυθμίσεις",
   "message.incorrect-username-password": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "Δεν υπάρχουν διαθέσιμα δεδομένα.",
   "message.no-websites-configured": "Δεν έχετε ρυθμίσει κανένα ιστότοπο.",

@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Dapatkan kode pelacakan",
   "message.go-to-settings": "Pergi ke pengaturan",
   "message.incorrect-username-password": "Nama pengguna/kata sandi salah.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "Versi terbaru umami {version} telah tersedia!",
   "message.no-data-available": "Tidak ada data.",
   "message.no-websites-configured": "Anda tidak memiliki situs web yang dikonfigurasi.",

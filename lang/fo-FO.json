@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Fá sporings kotu",
   "message.go-to-settings": "Far til stillingar",
   "message.incorrect-username-password": "Skeivt brúkaranavn/loyniorð.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "Einki data tøk.",
   "message.no-websites-configured": "Tú hevur ongar heimasíður stillaða til.",

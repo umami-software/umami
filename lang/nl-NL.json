@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Tracking code",
   "message.go-to-settings": "Naar instellingen",
   "message.incorrect-username-password": "Incorrecte gebruikersnaam/wachtwoord.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "Een nieuwe versie van umami {version} is beschikbaar!",
   "message.no-data-available": "Geen gegevens beschikbaar.",
   "message.no-websites-configured": "Je hebt geen websites ingesteld.",

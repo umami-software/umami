@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Obtener código de rastreo",
   "message.go-to-settings": "Ir a la configuración",
   "message.incorrect-username-password": "Nombre de usuario o contraseña incorrectos.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "Sin información disponible.",
   "message.no-websites-configured": "No tienes ningún sitio configurado.",

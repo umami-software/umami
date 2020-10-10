@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Få sporingskode",
   "message.go-to-settings": "Gå til innstillinger",
   "message.incorrect-username-password": "Ugyldig brukernavn/passord.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "En ny versjon av umami {version} er tilgjengelig!",
   "message.no-data-available": "Ingen data tilgjengelig.",
   "message.no-websites-configured": "Du har ikke satt opp noen nettsteder.",

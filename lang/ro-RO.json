@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Obține codul de urmărire",
   "message.go-to-settings": "Mergi la Setări",
   "message.incorrect-username-password": "Username/parolă incorecte.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "Este disponibilă o nouă versiune {version} de umami!",
   "message.no-data-available": "Nicio informație disponibilă.",
   "message.no-websites-configured": "Nu aveți niciun site web configurat.",

@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Visa spårningskod",
   "message.go-to-settings": "Gå till inställningar",
   "message.incorrect-username-password": "Felaktikt användarnamn/lösenord.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "Ingen data tillgänglig.",
   "message.no-websites-configured": "Du har inga webbsajter.",

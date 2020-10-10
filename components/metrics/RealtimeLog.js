@@ -89,11 +89,11 @@ export default function RealtimeLog({ data, websites }) {
     return (
       <div className={styles.row} style={style}>
         <div className={styles.time}>{format(new Date(row.created_at), 'h:mm:ss')}</div>
-        <div className={styles.website}>{getWebsite(row)}</div>
         <div className={styles.detail}>
           <Icon className={styles.icon} icon={getIcon(row)} />
           {getDetail(row)}
         </div>
+        <div className={styles.website}>{getWebsite(row)}</div>
       </div>
     );
   };

@@ -58,7 +58,7 @@
   "message.get-tracking-code": "Получить код отслеживания",
   "message.go-to-settings": "Перейти к настройкам",
   "message.incorrect-username-password": "Неверное имя пользователя/пароль.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "Доступна новая версия umami {version}",
   "message.no-data-available": "Нет данных.",
   "message.no-websites-configured": "У вас нет настроенных сайтов.",

@@ -1,5 +1,6 @@
 .table {
   font-size: var(--font-size-xsmall);
+  overflow: hidden;
 }
 
 .header {
@@ -32,10 +33,8 @@
 }
 
 .website {
-  min-width: 120px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  text-align: right;
+  padding-right: 20px;
 }
 
 .detail {

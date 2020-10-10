@@ -58,7 +58,7 @@
   "message.get-tracking-code": "İzleme kodunu al",
   "message.go-to-settings": "Ayarlara git",
   "message.incorrect-username-password": "Hatalı kullanıcı adı ya da parola.",
-  "message.log.visitor": "A visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
   "message.new-version-available": "A new version of umami {version} is available!",
   "message.no-data-available": "Henüz hiç veri yok.",
   "message.no-websites-configured": "Henüz hiç web sitesi tanımlamadınız",
