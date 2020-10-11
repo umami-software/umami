@@ -34,15 +34,12 @@
 
 .website {
   text-align: right;
-  padding-right: 20px;
+  padding: 0 20px;
 }
 
 .detail {
   display: flex;
   flex: 1;
-}
-
-.detail span {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

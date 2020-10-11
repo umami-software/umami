@@ -80,7 +80,7 @@ export default function RealtimeDashboard() {
       );
     }
     return [];
-  }, [realtimeData]);
+  }, [realtimeData?.sessions]);
 
   const referrers = useMemo(() => {
     if (realtimeData?.pageviews) {
@@ -89,12 +89,15 @@ export default function RealtimeDashboard() {
           .reduce((arr, { referrer }) => {
             if (referrer?.startsWith('http')) {
               const { hostname } = new URL(referrer);
-              const row = arr.find(({ x }) => x === hostname);
 
-              if (!row) {
-                arr.push({ x: hostname, y: 1 });
-              } else {
-                row.y += 1;
+              if (!data.domains.includes(hostname)) {
+                const row = arr.find(({ x }) => x === hostname);
+
+                if (!row) {
+                  arr.push({ x: hostname, y: 1 });
+                } else {
+                  row.y += 1;
+                }
               }
             }
             return arr;
@@ -103,7 +106,7 @@ export default function RealtimeDashboard() {
       );
     }
     return [];
-  }, [realtimeData]);
+  }, [realtimeData?.pageviews]);
 
   useEffect(() => {
     if (init && !data) {
@@ -111,7 +114,11 @@ export default function RealtimeDashboard() {
       const domains = init.websites.map(({ domain }) => domain);
 
       setData({ websites, domains, ...data });
-    } else if (updates) {
+    }
+  }, [init]);
+
+  useEffect(() => {
+    if (updates) {
       const { pageviews, sessions, events, timestamp } = updates;
       const time = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
 
@@ -123,15 +130,13 @@ export default function RealtimeDashboard() {
         timestamp,
       }));
     }
-  }, [init, updates]);
+  }, [updates]);
 
-  if (!init || loading || !data) {
+  if (!init || !data || loading) {
     return null;
   }
 
   const { websites } = data;
-
-  //console.log({realtimeData, countries});
 
   return (
     <Page>

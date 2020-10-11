@@ -1,13 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getItem } from 'lib/web';
-import { LOCALE_CONFIG, THEME_CONFIG, VERSION_CHECK } from 'lib/constants';
+import {
+  DEFAULT_LOCALE,
+  DEFAULT_THEME,
+  LOCALE_CONFIG,
+  THEME_CONFIG,
+  VERSION_CHECK,
+} from 'lib/constants';
 import semver from 'semver';
 
 const app = createSlice({
   name: 'app',
   initialState: {
-    locale: getItem(LOCALE_CONFIG) || 'en-US',
-    theme: getItem(THEME_CONFIG) || 'light',
+    locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
+    theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
     versions: {
       current: process.env.VERSION,
       latest: null,

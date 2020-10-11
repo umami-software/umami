@@ -10,10 +10,11 @@ export default function useFetch(url, options = {}, update = []) {
   const [status, setStatus] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
+  const [count, setCount] = useState(0);
   const { basePath } = useRouter();
-  const { params, disabled, headers, interval, delay = 0, onDataLoad } = options;
+  const { params = {}, disabled, headers, delay = 0, interval, onDataLoad } = options;
 
-  async function loadData() {
+  async function loadData(params) {
     try {
       setLoadiing(true);
       setError(null);
@@ -41,17 +42,23 @@ export default function useFetch(url, options = {}, update = []) {
 
   useEffect(() => {
     if (url && !disabled) {
-      setTimeout(() => loadData(), delay);
+      const id = setTimeout(() => loadData(params), delay);
+
+      return () => {
+        clearTimeout(id);
+      };
     }
-  }, [url, disabled, ...update]);
+  }, [url, !!disabled, count, ...update]);
 
   useEffect(() => {
-    const id = interval ? setInterval(() => loadData(), interval) : null;
+    if (interval && !disabled) {
+      const id = setInterval(() => setCount(state => state + 1), interval);
 
-    return () => {
-      clearInterval(id);
-    };
-  }, [interval, params]);
+      return () => {
+        clearInterval(id);
+      };
+    }
+  }, [interval, !!disabled]);
 
   return { data, status, error, loading };
 }
