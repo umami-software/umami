@@ -11,10 +11,10 @@ export default function DataTable({
   title,
   metric,
   className,
-  limit,
   renderLabel,
   height = 400,
   animate = true,
+  virtualize = false,
 }) {
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
@@ -30,7 +30,7 @@ export default function DataTable({
         label={renderLabel ? renderLabel(row) : label}
         value={value}
         percent={percent}
-        animate={animate}
+        animate={animate && !virtualize}
         format={formatFunc}
         onClick={handleSetFormat}
       />
@@ -51,13 +51,13 @@ export default function DataTable({
       </div>
       <div className={styles.body}>
         {data?.length === 0 && <NoData />}
-        {limit
-          ? data.map(row => getRow(row))
-          : data.length > 0 && (
-              <FixedSizeList height={height} itemCount={data.length} itemSize={30}>
-                {Row}
-              </FixedSizeList>
-            )}
+        {virtualize && data.length > 0 ? (
+          <FixedSizeList height={height} itemCount={data.length} itemSize={30}>
+            {Row}
+          </FixedSizeList>
+        ) : (
+          data.map(row => getRow(row))
+        )}
       </div>
     </div>
   );

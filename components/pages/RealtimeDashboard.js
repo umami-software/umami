@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import firstBy from 'thenby';
-import { percentFilter } from 'lib/filters';
 import Page from 'components/layout/Page';
 import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
-import RealtimeChart from '../metrics/RealtimeChart';
-import RealtimeLog from '../metrics/RealtimeLog';
-import styles from './RealtimeDashboard.module.css';
-import RealtimeHeader from '../metrics/RealtimeHeader';
+import RealtimeChart from 'components/metrics/RealtimeChart';
+import RealtimeLog from 'components/metrics/RealtimeLog';
+import RealtimeHeader from 'components/metrics/RealtimeHeader';
+import WorldMap from 'components/common/WorldMap';
+import DataTable from 'components/metrics/DataTable';
 import useFetch from 'hooks/useFetch';
-import WorldMap from '../common/WorldMap';
-import DataTable from '../metrics/DataTable';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
-import { FormattedMessage } from 'react-intl';
+import { percentFilter } from 'lib/filters';
+import styles from './RealtimeDashboard.module.css';
 
 const REALTIME_RANGE = 30;
 const REALTIME_INTERVAL = 3000;
@@ -162,7 +162,6 @@ export default function RealtimeDashboard() {
               metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
               data={referrers}
               height={400}
-              animate={false}
             />
           </GridColumn>
           <GridColumn xs={12} lg={8}>
@@ -177,7 +176,6 @@ export default function RealtimeDashboard() {
               data={countries}
               renderLabel={renderCountryName}
               height={500}
-              animate={false}
             />
           </GridColumn>
           <GridColumn xs={12} lg={8}>

@@ -55,7 +55,7 @@ export default async (req, res) => {
         getColumn(type),
         getTable(type),
         {
-          domain,
+          domain: type !== 'event' && domain,
           url: type !== 'url' && url,
         },
       );

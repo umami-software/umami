@@ -6,7 +6,7 @@ import ButtonGroup from 'components/common/ButtonGroup';
 import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 import ButtonLayout from '../layout/ButtonLayout';
 
-export default function ReferrersTable({ websiteId, websiteDomain, token, limit, showFilters }) {
+export default function ReferrersTable({ websiteId, websiteDomain, token, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
 
   const buttons = [
@@ -35,13 +35,13 @@ export default function ReferrersTable({ websiteId, websiteDomain, token, limit,
     <>
       {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
       <MetricsTable
+        {...props}
         title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
         type="referrer"
         metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
         websiteId={websiteId}
         websiteDomain={websiteDomain}
         token={token}
-        limit={limit}
         dataFilter={refFilter}
         filterOptions={{
           domain: websiteDomain,

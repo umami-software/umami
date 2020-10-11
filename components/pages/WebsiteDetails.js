@@ -164,14 +164,14 @@ export default function WebsiteDetails({ websiteId, token }) {
           </GridRow>
         </GridLayout>
       )}
-      {view && (
+      {view && chartLoaded && (
         <MenuLayout
           className={styles.view}
           menuClassName={styles.menu}
           contentClassName={styles.content}
           menu={menuOptions}
         >
-          <DetailsComponent {...tableProps} height={500} limit={false} showFilters={true} />
+          <DetailsComponent {...tableProps} height={500} limit={false} showFilters virtualize />
         </MenuLayout>
       )}
     </Page>

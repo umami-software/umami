@@ -24,9 +24,11 @@ export default function MetricsTable({
   dataFilter,
   filterOptions,
   limit,
+  virtualize,
   renderLabel,
   height,
-  onDataLoad = () => {},
+  onDataLoad,
+  ...props
 }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
@@ -70,14 +72,14 @@ export default function MetricsTable({
       {error && <ErrorMessage />}
       {data && !error && (
         <DataTable
+          {...props}
           title={title}
           data={filteredData}
           metric={metric}
           className={className}
           renderLabel={renderLabel}
-          limit={limit}
           height={height}
-          animate={limit > 0}
+          virtualize={virtualize}
         />
       )}
       <div className={styles.footer}>
