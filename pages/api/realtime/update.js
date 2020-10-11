@@ -2,6 +2,7 @@ import { useAuth } from 'lib/middleware';
 import { ok, methodNotAllowed, badRequest } from 'lib/response';
 import { getRealtimeData } from 'lib/queries';
 import { parseToken } from 'lib/crypto';
+import { TOKEN_HEADER } from 'lib/constants';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -9,7 +10,7 @@ export default async (req, res) => {
   if (req.method === 'GET') {
     const { start_at } = req.query;
 
-    const token = req.headers['x-umami-token'];
+    const token = req.headers[TOKEN_HEADER];
 
     if (!token) {
       return badRequest(res);

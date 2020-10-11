@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
-import { refFilter } from 'lib/filters';
 import ButtonGroup from 'components/common/ButtonGroup';
+import ButtonLayout from 'components/layout/ButtonLayout';
 import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
-import ButtonLayout from '../layout/ButtonLayout';
+import { refFilter } from 'lib/filters';
 
-export default function ReferrersTable({ websiteId, websiteDomain, token, showFilters, ...props }) {
+export default function ReferrersTable({ websiteId, websiteDomain, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
 
   const buttons = [
@@ -41,7 +41,6 @@ export default function ReferrersTable({ websiteId, websiteDomain, token, showFi
         metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
         websiteId={websiteId}
         websiteDomain={websiteDomain}
-        token={token}
         dataFilter={refFilter}
         filterOptions={{
           domain: websiteDomain,

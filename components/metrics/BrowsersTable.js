@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import { browserFilter } from 'lib/filters';
 
-export default function BrowsersTable({ websiteId, token, ...props }) {
+export default function BrowsersTable({ websiteId, ...props }) {
   return (
     <MetricsTable
       {...props}
@@ -11,7 +11,6 @@ export default function BrowsersTable({ websiteId, token, ...props }) {
       type="browser"
       metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}
-      token={token}
       dataFilter={browserFilter}
     />
   );

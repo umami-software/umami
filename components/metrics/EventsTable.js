@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import Tag from 'components/common/Tag';
 
-export default function EventsTable({ websiteId, token, ...props }) {
+export default function EventsTable({ websiteId, ...props }) {
   return (
     <MetricsTable
       {...props}
@@ -11,7 +11,6 @@ export default function EventsTable({ websiteId, token, ...props }) {
       type="event"
       metric={<FormattedMessage id="metrics.actions" defaultMessage="Actions" />}
       websiteId={websiteId}
-      token={token}
       renderLabel={({ x }) => <Label value={x} />}
     />
   );

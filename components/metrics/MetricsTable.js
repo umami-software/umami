@@ -8,15 +8,15 @@ import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
+import useShareToken from 'hooks/useShareToken';
 import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
-import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
 import styles from './MetricsTable.module.css';
 
 export default function MetricsTable({
   websiteId,
   websiteDomain,
-  token,
   title,
   metric,
   type,
@@ -30,6 +30,7 @@ export default function MetricsTable({
   onDataLoad,
   ...props
 }) {
+  const shareToken = useShareToken();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const {
@@ -47,10 +48,10 @@ export default function MetricsTable({
         end_at: +endDate,
         domain: websiteDomain,
         url,
-        token,
       },
       onDataLoad,
       delay: DEFAULT_ANIMATION_DURATION,
+      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
     [modified],
   );

@@ -20,7 +20,8 @@ import EventsTable from '../metrics/EventsTable';
 import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
-import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import useShareToken from 'hooks/useShareToken';
+import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
 
 const views = {
   url: PagesTable,
@@ -32,8 +33,11 @@ const views = {
   event: EventsTable,
 };
 
-export default function WebsiteDetails({ websiteId, token }) {
-  const { data } = useFetch(`/api/website/${websiteId}`, { params: { token } });
+export default function WebsiteDetails({ websiteId }) {
+  const shareToken = useShareToken();
+  const { data } = useFetch(`/api/website/${websiteId}`, {
+    headers: { [TOKEN_HEADER]: shareToken?.token },
+  });
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
@@ -93,7 +97,6 @@ export default function WebsiteDetails({ websiteId, token }) {
 
   const tableProps = {
     websiteId,
-    token,
     websiteDomain: data?.domain,
     limit: 10,
   };
@@ -116,7 +119,6 @@ export default function WebsiteDetails({ websiteId, token }) {
         <div className={classNames(styles.chart, 'col')}>
           <WebsiteChart
             websiteId={websiteId}
-            token={token}
             title={data.name}
             onDataLoad={handleDataLoad}
             showLink={false}
@@ -159,7 +161,7 @@ export default function WebsiteDetails({ websiteId, token }) {
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </GridColumn>
             <GridColumn xs={12} md={12} lg={8}>
-              <EventsChart className={styles.eventschart} websiteId={websiteId} token={token} />
+              <EventsChart className={styles.eventschart} websiteId={websiteId} />
             </GridColumn>
           </GridRow>
         </GridLayout>

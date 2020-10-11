@@ -19,6 +19,7 @@ const app = createSlice({
       latest: null,
       hasUpdate: false,
     },
+    shareToken: null,
   },
   reducers: {
     setLocale(state, action) {
@@ -33,10 +34,14 @@ const app = createSlice({
       state.versions = action.payload;
       return state;
     },
+    setShareToken(state, action) {
+      state.shareToken = action.payload;
+      return state;
+    },
   },
 });
 
-export const { setLocale, setTheme, setVersions } = app.actions;
+export const { setLocale, setTheme, setVersions, setShareToken } = app.actions;
 
 export default app.reducer;
 

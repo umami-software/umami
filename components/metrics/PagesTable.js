@@ -10,7 +10,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import MetricsTable from './MetricsTable';
 import styles from './PagesTable.module.css';
 
-export default function PagesTable({ websiteId, token, websiteDomain, showFilters, ...props }) {
+export default function PagesTable({ websiteId, websiteDomain, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const {
     resolve,
@@ -48,7 +48,6 @@ export default function PagesTable({ websiteId, token, websiteDomain, showFilter
         type="url"
         metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
         websiteId={websiteId}
-        token={token}
         dataFilter={urlFilter}
         filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
         renderLabel={renderLink}

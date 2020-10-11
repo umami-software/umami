@@ -13,6 +13,7 @@ import useFetch from 'hooks/useFetch';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
+import { TOKEN_HEADER } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
 const REALTIME_RANGE = 30;
@@ -39,7 +40,7 @@ export default function RealtimeDashboard() {
     params: { start_at: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
-    headers: { 'x-umami-token': init?.token },
+    headers: { [TOKEN_HEADER]: init?.token },
   });
 
   const renderCountryName = useCallback(({ x }) => countryNames[x], []);

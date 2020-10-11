@@ -65,7 +65,7 @@ export default function BarChart({
   }
 
   function renderYLabel(label) {
-    return +label > 1 ? formatLongNumber(label) : label;
+    return +label > 1000 ? formatLongNumber(label) : label;
   }
 
   function renderTooltip(model) {

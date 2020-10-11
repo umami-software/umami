@@ -8,11 +8,11 @@ import ActiveUsers from './ActiveUsers';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
 
-export default function WebsiteHeader({ websiteId, token, title, showLink = false }) {
+export default function WebsiteHeader({ websiteId, title, showLink = false }) {
   return (
     <PageHeader>
       <div className={styles.title}>{title}</div>
-      <ActiveUsers className={styles.active} websiteId={websiteId} token={token} />
+      <ActiveUsers className={styles.active} websiteId={websiteId} />
       <ButtonLayout align="right">
         <RefreshButton websiteId={websiteId} />
         {showLink && (
