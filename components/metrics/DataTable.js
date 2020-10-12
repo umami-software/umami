@@ -12,7 +12,7 @@ export default function DataTable({
   metric,
   className,
   renderLabel,
-  height = 400,
+  height,
   animate = true,
   virtualize = false,
 }) {
@@ -49,7 +49,7 @@ export default function DataTable({
           {metric}
         </div>
       </div>
-      <div className={styles.body}>
+      <div className={styles.body} style={{ height }}>
         {data?.length === 0 && <NoData />}
         {virtualize && data.length > 0 ? (
           <FixedSizeList height={height} itemCount={data.length} itemSize={30}>

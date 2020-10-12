@@ -9,15 +9,13 @@ import RealtimeLog from 'components/metrics/RealtimeLog';
 import RealtimeHeader from 'components/metrics/RealtimeHeader';
 import WorldMap from 'components/common/WorldMap';
 import DataTable from 'components/metrics/DataTable';
+import RealtimeViews from 'components/metrics/RealtimeViews';
 import useFetch from 'hooks/useFetch';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
-import { TOKEN_HEADER } from 'lib/constants';
+import { TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
-
-const REALTIME_RANGE = 30;
-const REALTIME_INTERVAL = 3000;
 
 function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
@@ -43,7 +41,10 @@ export default function RealtimeDashboard() {
     headers: { [TOKEN_HEADER]: init?.token },
   });
 
-  const renderCountryName = useCallback(({ x }) => countryNames[x], []);
+  const renderCountryName = useCallback(
+    ({ x }) => <span className={locale}>{countryNames[x]}</span>,
+    [countryNames],
+  );
 
   const realtimeData = useMemo(() => {
     if (data) {
@@ -83,38 +84,11 @@ export default function RealtimeDashboard() {
     return [];
   }, [realtimeData?.sessions]);
 
-  const referrers = useMemo(() => {
-    if (realtimeData?.pageviews) {
-      return percentFilter(
-        realtimeData.pageviews
-          .reduce((arr, { referrer }) => {
-            if (referrer?.startsWith('http')) {
-              const { hostname } = new URL(referrer);
-
-              if (!data.domains.includes(hostname)) {
-                const row = arr.find(({ x }) => x === hostname);
-
-                if (!row) {
-                  arr.push({ x: hostname, y: 1 });
-                } else {
-                  row.y += 1;
-                }
-              }
-            }
-            return arr;
-          }, [])
-          .sort(firstBy('y', -1)),
-      );
-    }
-    return [];
-  }, [realtimeData?.pageviews]);
-
   useEffect(() => {
     if (init && !data) {
       const { websites, data } = init;
-      const domains = init.websites.map(({ domain }) => domain);
 
-      setData({ websites, domains, ...data });
+      setData({ websites, ...data });
     }
   }, [init]);
 
@@ -158,12 +132,7 @@ export default function RealtimeDashboard() {
       <GridLayout>
         <GridRow>
           <GridColumn xs={12} lg={4}>
-            <DataTable
-              title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
-              metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
-              data={referrers}
-              height={400}
-            />
+            <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
           </GridColumn>
           <GridColumn xs={12} lg={8}>
             <RealtimeLog data={realtimeData} websites={websites} />

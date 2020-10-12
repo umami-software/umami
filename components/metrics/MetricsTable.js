@@ -17,16 +17,11 @@ import styles from './MetricsTable.module.css';
 export default function MetricsTable({
   websiteId,
   websiteDomain,
-  title,
-  metric,
   type,
   className,
   dataFilter,
   filterOptions,
   limit,
-  virtualize,
-  renderLabel,
-  height,
   onDataLoad,
   ...props
 }) {
@@ -71,20 +66,9 @@ export default function MetricsTable({
     <div className={classNames(styles.container, className)}>
       {!data && loading && <Loading />}
       {error && <ErrorMessage />}
-      {data && !error && (
-        <DataTable
-          {...props}
-          title={title}
-          data={filteredData}
-          metric={metric}
-          className={className}
-          renderLabel={renderLabel}
-          height={height}
-          virtualize={virtualize}
-        />
-      )}
+      {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
-        {limit && (
+        {data && !error && limit && (
           <Link
             icon={<Arrow />}
             href={router.pathname}

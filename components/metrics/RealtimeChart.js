@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from 'react';
 import { format, parseISO, startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
 import { getDateArray } from 'lib/date';
-import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from 'lib/constants';
 
 function mapData(data) {
   let last = 0;
@@ -26,7 +26,7 @@ function mapData(data) {
 
 export default function RealtimeChart({ data, unit, ...props }) {
   const endDate = startOfMinute(new Date());
-  const startDate = subMinutes(endDate, 30);
+  const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
 
   const chartData = useMemo(() => {
@@ -51,7 +51,7 @@ export default function RealtimeChart({ data, unit, ...props }) {
   return (
     <PageviewsChart
       {...props}
-      height={300}
+      height={200}
       unit={unit}
       data={chartData}
       animationDuration={animationDuration}

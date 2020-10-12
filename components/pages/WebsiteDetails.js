@@ -173,7 +173,14 @@ export default function WebsiteDetails({ websiteId }) {
           contentClassName={styles.content}
           menu={menuOptions}
         >
-          <DetailsComponent {...tableProps} height={500} limit={false} showFilters virtualize />
+          <DetailsComponent
+            {...tableProps}
+            height={500}
+            limit={false}
+            animte={false}
+            showFilters
+            virtualize
+          />
         </MenuLayout>
       )}
     </Page>

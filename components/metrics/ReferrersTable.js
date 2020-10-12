@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
-import ButtonGroup from 'components/common/ButtonGroup';
-import ButtonLayout from 'components/layout/ButtonLayout';
-import { FILTER_DOMAIN_ONLY, FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
+import FilterButtons from 'components/common/FilterButtons';
 import { refFilter } from 'lib/filters';
+
+export const FILTER_DOMAIN_ONLY = 0;
+export const FILTER_COMBINED = 1;
+export const FILTER_RAW = 2;
 
 export default function ReferrersTable({ websiteId, websiteDomain, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
@@ -52,11 +54,3 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
     </>
   );
 }
-
-const FilterButtons = ({ buttons, selected, onClick }) => {
-  return (
-    <ButtonLayout>
-      <ButtonGroup size="xsmall" items={buttons} selectedItem={selected} onClick={onClick} />
-    </ButtonLayout>
-  );
-};
