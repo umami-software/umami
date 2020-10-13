@@ -91,10 +91,10 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.save" defaultMessage="Save" />
+                <FormattedMessage id="label.save" defaultMessage="Save" />
               </Button>
               <Button onClick={onClose}>
-                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

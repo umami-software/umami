@@ -28,7 +28,7 @@ export default function RefreshButton({ websiteId }) {
   return (
     <Button
       icon={loading ? <Dots /> : <Refresh />}
-      tooltip={<FormattedMessage id="button.refresh" defaultMessage="Refresh" />}
+      tooltip={<FormattedMessage id="label.refresh" defaultMessage="Refresh" />}
       tooltipId="button-refresh"
       size="small"
       onClick={handleClick}

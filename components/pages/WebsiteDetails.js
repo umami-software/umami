@@ -56,7 +56,7 @@ export default function WebsiteDetails({ websiteId }) {
         icon={<Arrow />}
         size="small"
       >
-        <FormattedMessage id="button.back" defaultMessage="Back" />
+        <FormattedMessage id="label.back" defaultMessage="Back" />
       </Link>
     </div>
   );

@@ -24,7 +24,7 @@ export default function WebsiteHeader({ websiteId, title, showLink = false }) {
             size="small"
             iconRight
           >
-            <FormattedMessage id="button.view-details" defaultMessage="View details" />
+            <FormattedMessage id="label.view-details" defaultMessage="View details" />
           </Link>
         )}
       </ButtonLayout>

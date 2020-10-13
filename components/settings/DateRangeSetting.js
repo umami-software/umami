@@ -19,7 +19,7 @@ export default function DateRangeSetting() {
     <>
       <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={setDateRange} />
       <Button className={styles.button} size="small" onClick={handleReset}>
-        <FormattedMessage id="button.reset" defaultMessage="Reset" />
+        <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
     </>
   );

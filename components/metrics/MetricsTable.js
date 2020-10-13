@@ -76,7 +76,7 @@ export default function MetricsTable({
             size="small"
             iconRight
           >
-            <FormattedMessage id="button.more" defaultMessage="More" />
+            <FormattedMessage id="label.more" defaultMessage="More" />
           </Link>
         )}
       </div>
