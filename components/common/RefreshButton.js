@@ -12,7 +12,7 @@ export default function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
-  const completed = useSelector(state => state.queries[`/api/website/${websiteId}/metrics`]);
+  const completed = useSelector(state => state.queries[`/api/website/${websiteId}/stats`]);
 
   function handleClick() {
     if (dateRange) {
@@ -28,7 +28,7 @@ export default function RefreshButton({ websiteId }) {
   return (
     <Button
       icon={loading ? <Dots /> : <Refresh />}
-      tooltip={<FormattedMessage id="button.refresh" defaultMessage="Refresh" />}
+      tooltip={<FormattedMessage id="label.refresh" defaultMessage="Refresh" />}
       tooltipId="button-refresh"
       size="small"
       onClick={handleClick}

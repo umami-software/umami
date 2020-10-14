@@ -1,0 +1,10 @@
+{
+  "de-DE": [
+    "label.administrator",
+    "label.name",
+    "metrics.device.desktop",
+    "metrics.device.laptop",
+    "metrics.device.tablet",
+    "metrics.referrers"
+  ]
+}

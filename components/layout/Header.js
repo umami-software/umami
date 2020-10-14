@@ -30,6 +30,9 @@ export default function Header() {
               <Link href="/dashboard">
                 <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
               </Link>
+              <Link href="/realtime">
+                <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
+              </Link>
               <Link href="/settings">
                 <FormattedMessage id="label.settings" defaultMessage="Settings" />
               </Link>

@@ -14,15 +14,17 @@ import { getDateArray, getDateLength } from 'lib/date';
 import Times from 'assets/times.svg';
 import styles from './WebsiteChart.module.css';
 import ErrorMessage from '../common/ErrorMessage';
+import useShareToken from '../../hooks/useShareToken';
+import { TOKEN_HEADER } from '../../lib/constants';
 
 export default function WebsiteChart({
   websiteId,
-  token,
   title,
   stickyHeader = false,
   showLink = false,
   onDataLoad = () => {},
 }) {
+  const shareToken = useShareToken();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
@@ -35,24 +37,27 @@ export default function WebsiteChart({
   const { data, loading, error } = useFetch(
     `/api/website/${websiteId}/pageviews`,
     {
-      start_at: +startDate,
-      end_at: +endDate,
-      unit,
-      tz: timezone,
-      url,
-      token,
+      params: {
+        start_at: +startDate,
+        end_at: +endDate,
+        unit,
+        tz: timezone,
+        url,
+      },
+      onDataLoad,
+      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    { onDataLoad, update: [modified] },
+    [modified],
   );
 
-  const [pageviews, uniques] = useMemo(() => {
+  const chartData = useMemo(() => {
     if (data) {
-      return [
-        getDateArray(data.pageviews, startDate, endDate, unit),
-        getDateArray(data.uniques, startDate, endDate, unit),
-      ];
+      return {
+        pageviews: getDateArray(data.pageviews, startDate, endDate, unit),
+        sessions: getDateArray(data.sessions, startDate, endDate, unit),
+      };
     }
-    return [[], []];
+    return { pageviews: [], sessions: [] };
   }, [data]);
 
   function handleCloseFilter() {
@@ -61,7 +66,7 @@ export default function WebsiteChart({
 
   return (
     <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} token={token} title={title} showLink={showLink} />
+      <WebsiteHeader websiteId={websiteId} title={title} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}
@@ -70,7 +75,7 @@ export default function WebsiteChart({
         >
           {url && <PageFilter url={url} onClick={handleCloseFilter} />}
           <div className="col-12 col-lg-9">
-            <MetricsBar websiteId={websiteId} token={token} />
+            <MetricsBar websiteId={websiteId} />
           </div>
           <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
             <DateFilter
@@ -87,7 +92,7 @@ export default function WebsiteChart({
           {error && <ErrorMessage />}
           <PageviewsChart
             websiteId={websiteId}
-            data={{ pageviews, uniques }}
+            data={chartData}
             unit={unit}
             records={getDateLength(startDate, endDate, unit)}
             loading={loading}
