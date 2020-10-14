@@ -14,6 +14,7 @@ files.forEach(file => {
     const id = file.replace('.json', '');
 
     console.log(chalk.yellowBright(`\n## ${file}`));
+    let count = 0;
     keys.forEach(key => {
       const orig = messages[key];
       const check = lang[key];
@@ -21,7 +22,12 @@ files.forEach(file => {
 
       if (!ignored && (!check || check === orig)) {
         console.log(chalk.redBright('*'), chalk.greenBright(`${key}:`), orig);
+        count++;
       }
     });
+
+    if (count === 0) {
+      console.log('**👍 Complete!**');
+    }
   }
 });

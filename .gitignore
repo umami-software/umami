@@ -23,6 +23,7 @@
 .DS_Store
 .idea
 *.iml
+*.log
 .vscode/*
 
 # debug
