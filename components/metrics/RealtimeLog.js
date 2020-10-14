@@ -54,7 +54,7 @@ export default function RealtimeLog({ data, websites }) {
       value: TYPE_ALL,
     },
     {
-      label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
+      label: <FormattedMessage id="metrics.views" defaultMessage="Views" />,
       value: TYPE_PAGEVIEW,
     },
     {
