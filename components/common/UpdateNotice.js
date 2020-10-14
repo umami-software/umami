@@ -36,10 +36,10 @@ export default function UpdateNotice() {
       </div>
       <ButtonLayout>
         <Button size="xsmall" variant="action" onClick={handleViewClick}>
-          <FormattedMessage id="button.view-details" defaultMessage="View details" />
+          <FormattedMessage id="label.view-details" defaultMessage="View details" />
         </Button>
         <Button size="xsmall" onClick={handleDismissClick}>
-          <FormattedMessage id="button.dismiss" defaultMessage="Dismiss" />
+          <FormattedMessage id="label.dismiss" defaultMessage="Dismiss" />
         </Button>
       </ButtonLayout>
     </div>

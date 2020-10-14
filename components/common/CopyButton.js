@@ -3,7 +3,7 @@ import Button from './Button';
 import { FormattedMessage } from 'react-intl';
 
 const defaultText = (
-  <FormattedMessage id="button.copy-to-clipboard" defaultMessage="Copy to clipboard" />
+  <FormattedMessage id="label.copy-to-clipboard" defaultMessage="Copy to clipboard" />
 );
 
 export default function CopyButton({ element, ...props }) {

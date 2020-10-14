@@ -33,11 +33,11 @@ export default function DatePickerForm({
 
   const buttons = [
     {
-      label: <FormattedMessage id="button.single-day" defaultMessage="Single day" />,
+      label: <FormattedMessage id="label.single-day" defaultMessage="Single day" />,
       value: FILTER_DAY,
     },
     {
-      label: <FormattedMessage id="button.date-range" defaultMessage="Date range" />,
+      label: <FormattedMessage id="label.date-range" defaultMessage="Date range" />,
       value: FILTER_RANGE,
     },
   ];
@@ -72,10 +72,10 @@ export default function DatePickerForm({
       </div>
       <FormButtons>
         <Button variant="action" onClick={handleSave} disabled={disabled}>
-          <FormattedMessage id="button.save" defaultMessage="Save" />
+          <FormattedMessage id="label.save" defaultMessage="Save" />
         </Button>
         <Button onClick={onClose}>
-          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+          <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
         </Button>
       </FormButtons>
     </div>

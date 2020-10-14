@@ -5,17 +5,17 @@ import ChartJS from 'chart.js';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
-import styles from './BarChart.module.css';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
+import styles from './BarChart.module.css';
 
 export default function BarChart({
   chartId,
   datasets,
   unit,
   records,
-  height = 400,
-  animationDuration = 300,
+  height = DEFAUL_CHART_HEIGHT,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
   className,
   stacked = false,
   loading = false,
@@ -39,6 +39,8 @@ export default function BarChart({
     const w = canvas.current.width;
 
     switch (unit) {
+      case 'minute':
+        return index % 2 === 0 ? dateFormat(d, 'h:mm', locale) : '';
       case 'hour':
         return dateFormat(d, 'ha', locale);
       case 'day':
@@ -63,7 +65,7 @@ export default function BarChart({
   }
 
   function renderYLabel(label) {
-    return +label > 1 ? formatLongNumber(label) : label;
+    return +label > 1000 ? formatLongNumber(label) : label;
   }
 
   function renderTooltip(model) {
