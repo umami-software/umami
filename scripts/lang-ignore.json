@@ -6,5 +6,9 @@
     "metrics.device.laptop",
     "metrics.device.tablet",
     "metrics.referrers"
+  ],
+  "fr-FR": [    
+    "metrics.actions",
+    "metrics.pages"
   ]
 }
