@@ -45,8 +45,6 @@ export default function PageviewsChart({
       id: 'metrics.page-views',
       defaultMessage: 'Page views',
     });
-
-    chart.update();
   };
 
   if (!data) {

@@ -41,3 +41,20 @@
   width: 10px;
   height: 10px;
 }
+
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-xsmall);
+}
+
+.label + .label {
+  margin-left: 20px;
+}

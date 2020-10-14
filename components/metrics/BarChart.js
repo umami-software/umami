@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
+import Dot from 'components/common/Dot';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
@@ -24,6 +25,7 @@ export default function BarChart({
 }) {
   const canvas = useRef();
   const chart = useRef();
+  const [legend, setLegend] = useState();
   const [tooltip, setTooltip] = useState(null);
   const [locale] = useLocale();
   const [theme] = useTheme();
@@ -111,9 +113,7 @@ export default function BarChart({
       responsiveAnimationDuration: 0,
       maintainAspectRatio: false,
       legend: {
-        labels: {
-          fontColor: colors.text,
-        },
+        display: false,
       },
       scales: {
         xAxes: [
@@ -143,6 +143,7 @@ export default function BarChart({
               callback: renderYLabel,
               beginAtZero: true,
               fontColor: colors.text,
+              precision: 0,
             },
             gridLines: {
               color: colors.line,
@@ -163,6 +164,8 @@ export default function BarChart({
       },
       options,
     });
+
+    chart.current.generateLegend();
   }
 
   function updateChart() {
@@ -179,6 +182,10 @@ export default function BarChart({
     options.tooltips.custom = renderTooltip;
 
     onUpdate(chart.current);
+
+    chart.current.update();
+
+    chart.current.generateLegend();
   }
 
   useEffect(() => {
@@ -189,6 +196,7 @@ export default function BarChart({
         setTooltip(null);
         updateChart();
       }
+      setLegend({ ...chart.current.legend });
     }
   }, [datasets, unit, animationDuration, locale, theme]);
 
@@ -202,12 +210,24 @@ export default function BarChart({
       >
         <canvas ref={canvas} />
       </div>
+      <Legend items={legend?.legendItems} locale={locale} />
       <ReactTooltip id={`${chartId}-tooltip`}>
         {tooltip ? <Tooltip {...tooltip} /> : null}
       </ReactTooltip>
     </>
   );
 }
+
+const Legend = ({ items = [], locale }) => (
+  <div className={styles.legend}>
+    {items.map(({ text, fillStyle }) => (
+      <div key={text} className={styles.label}>
+        <Dot color={fillStyle} />
+        <span className={locale}>{text}</span>
+      </div>
+    ))}
+  </div>
+);
 
 const Tooltip = ({ title, value, label, labelColor }) => (
   <div className={styles.tooltip}>

@@ -61,14 +61,6 @@ export default function EventsChart({ websiteId, className, token }) {
     });
   }, [data]);
 
-  function handleCreate(options) {
-    const legend = {
-      position: 'bottom',
-    };
-
-    options.legend = legend;
-  }
-
   function handleUpdate(chart) {
     chart.data.datasets = datasets;
 
@@ -86,7 +78,6 @@ export default function EventsChart({ websiteId, className, token }) {
       datasets={datasets}
       unit={unit}
       records={getDateLength(startDate, endDate, unit)}
-      onCreate={handleCreate}
       onUpdate={handleUpdate}
       stacked
     />
