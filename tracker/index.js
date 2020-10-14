@@ -110,7 +110,7 @@ import { removeTrailingSlash } from '../lib/url';
   const addEvents = () => {
     document.querySelectorAll("[class*='umami--']").forEach(element => {
       element.className.split(' ').forEach(className => {
-        if (/^umami--([a-z]+)--([a-z0-9_]+[a-z0-9-_]+)$/.test(className)) {
+        if (/^umami--([a-z]+)--([\w]+[\w-]*)$/.test(className)) {
           const [, type, value] = className.split('--');
           const listener = () => trackEvent(value, type);
 
