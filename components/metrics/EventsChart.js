@@ -79,6 +79,7 @@ export default function EventsChart({ websiteId, className, token }) {
       className={className}
       datasets={datasets}
       unit={unit}
+      height={300}
       records={getDateLength(startDate, endDate, unit)}
       onUpdate={handleUpdate}
       loading={loading}

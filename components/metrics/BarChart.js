@@ -9,6 +9,7 @@ import useTheme from 'hooks/useTheme';
 import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
 import ChartTooltip from './ChartTooltip';
+import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function BarChart({
   chartId,
@@ -28,6 +29,8 @@ export default function BarChart({
   const [tooltip, setTooltip] = useState(null);
   const [locale] = useLocale();
   const [theme] = useTheme();
+  const forceUpdate = useForceUpdate();
+
   const colors = {
     text: THEME_COLORS[theme].gray700,
     line: THEME_COLORS[theme].gray200,
@@ -180,6 +183,8 @@ export default function BarChart({
     onUpdate(chart.current);
 
     chart.current.update();
+
+    forceUpdate();
   }
 
   useEffect(() => {
