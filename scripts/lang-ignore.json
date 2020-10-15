@@ -8,5 +8,6 @@
     "metrics.device.tablet",
     "metrics.referrers"
   ],
-  "fr-FR": ["metrics.actions", "metrics.pages"]
+  "fr-FR": ["metrics.actions", "metrics.pages"],
+  "tr-TR": ["metrics.device.tablet"]
 }

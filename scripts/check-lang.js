@@ -13,7 +13,7 @@ files.forEach(file => {
     const lang = require(`../lang/${file}`);
     const id = file.replace('.json', '');
 
-    console.log(chalk.yellowBright(`\n## ${file}`));
+    console.log(chalk.yellowBright(`\n## ${file.replace('.json', '')}`));
     let count = 0;
     keys.forEach(key => {
       const orig = messages[key];
