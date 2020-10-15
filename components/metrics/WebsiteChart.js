@@ -47,7 +47,7 @@ export default function WebsiteChart({
       onDataLoad,
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified],
+    [url, modified],
   );
 
   const chartData = useMemo(() => {

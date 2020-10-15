@@ -16,7 +16,7 @@ export default function EventsChart({ websiteId, className, token }) {
   const { query } = usePageQuery();
   const shareToken = useShareToken();
 
-  const { data } = useFetch(
+  const { data, loading } = useFetch(
     `/api/website/${websiteId}/events`,
     {
       params: {
@@ -31,8 +31,10 @@ export default function EventsChart({ websiteId, className, token }) {
     },
     [modified],
   );
+
   const datasets = useMemo(() => {
     if (!data) return [];
+    if (loading) return data;
 
     const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
@@ -59,7 +61,7 @@ export default function EventsChart({ websiteId, className, token }) {
         borderWidth: 1,
       };
     });
-  }, [data]);
+  }, [data, loading]);
 
   function handleUpdate(chart) {
     chart.data.datasets = datasets;
@@ -79,6 +81,7 @@ export default function EventsChart({ websiteId, className, token }) {
       unit={unit}
       records={getDateLength(startDate, endDate, unit)}
       onUpdate={handleUpdate}
+      loading={loading}
       stacked
     />
   );
