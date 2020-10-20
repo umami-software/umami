@@ -11,6 +11,7 @@
   "nb-NO": ["label.administrator", "label.dashboard"],
   "nl-NL": [
     "label.administrator",
+    "label.dashboard",
     "label.websites",
     "metrics.browsers",
     "metrics.device.desktop",
