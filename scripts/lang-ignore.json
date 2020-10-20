@@ -1,7 +1,6 @@
 {
   "de-DE": [
     "label.administrator",
-    "label.domain",
     "label.name",
     "metrics.device.desktop",
     "metrics.device.laptop",
@@ -9,5 +8,5 @@
     "metrics.referrers"
   ],
   "fr-FR": ["metrics.actions", "metrics.pages"],
-  "tr-TR": ["metrics.device.tablet"]
+  "nb-NO": ["label.administrator", "label.dashboard"]
 }
