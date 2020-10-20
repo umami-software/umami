@@ -65,7 +65,7 @@
   "message.get-tracking-code": "Отримати код для відслідковування",
   "message.go-to-settings": "Перейти до налаштувань",
   "message.incorrect-username-password": "Невірне ім'я користувача або пароль.",
-  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "Відвідувач з {country} використовуючи {browser} на {os} {device}",
   "message.new-version-available": "Нова версія umami {version} доступна!",
   "message.no-data-available": "Немає даних.",
   "message.no-websites-configured": "У вас немає налаштованих вебсайтів.",
