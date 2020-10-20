@@ -10,5 +10,9 @@
   "fr-FR": [    
     "metrics.actions",
     "metrics.pages"
+  ],
+  "nb-NO": [    
+    "label.administrator",
+    "label.dashboard"
   ]
 }
