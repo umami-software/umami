@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
+import firstBy from 'thenby';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
@@ -55,9 +56,9 @@ export default function MetricsTable({
     if (data) {
       const items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
       if (limit) {
-        return items.filter((e, i) => i < limit);
+        return items.filter((e, i) => i < limit).sort(firstBy('y', -1).thenBy('x'));
       }
-      return items;
+      return items.sort(firstBy('y', -1).thenBy('x'));
     }
     return [];
   }, [data, error, dataFilter, filterOptions]);
