@@ -22,6 +22,12 @@ export default function LanguageButton() {
             rel="stylesheet"
           />
         )}
+        {locale === 'zh-TW' && (
+          <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
+            rel="stylesheet"
+          />
+        )}
         {locale === 'ja-JP' && (
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
