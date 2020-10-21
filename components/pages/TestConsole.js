@@ -82,7 +82,12 @@ export default function TestConsole() {
           </div>
           <div className="row">
             <div className="col-12">
-              <WebsiteChart websiteId={website.website_id} title={website.name} showLink />
+              <WebsiteChart
+                websiteId={website.website_id}
+                title={website.name}
+                domain={website.domain}
+                showLink
+              />
               <PageHeader>Events</PageHeader>
               <EventsChart websiteId={website.website_id} />
             </div>
