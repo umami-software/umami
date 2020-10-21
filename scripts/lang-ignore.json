@@ -2,6 +2,7 @@
   "de-DE": [
     "label.administrator",
     "label.name",
+    "label.domain",
     "metrics.device.desktop",
     "metrics.device.laptop",
     "metrics.device.tablet",
