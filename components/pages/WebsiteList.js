@@ -17,9 +17,9 @@ export default function WebsiteList({ userId }) {
 
   return (
     <Page>
-      {data.map(({ website_id, name }) => (
+      {data.map(({ website_id, name, domain }) => (
         <div key={website_id} className={styles.website}>
-          <WebsiteChart websiteId={website_id} title={name} showLink />
+          <WebsiteChart websiteId={website_id} title={name} domain={domain} showLink />
         </div>
       ))}
       {data.length === 0 && (

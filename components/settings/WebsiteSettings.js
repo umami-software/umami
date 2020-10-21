@@ -13,6 +13,7 @@ import ShareUrlForm from 'components/forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import Toast from 'components/common/Toast';
+import Favicon from 'components/common/Favicon';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
@@ -60,8 +61,9 @@ export default function WebsiteSettings() {
     </ButtonLayout>
   );
 
-  const DetailsLink = ({ website_id, name }) => (
+  const DetailsLink = ({ website_id, name, domain }) => (
     <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
+      <Favicon domain={domain} />
       {name}
     </Link>
   );
