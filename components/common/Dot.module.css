@@ -1,9 +1,14 @@
+.wrapper {
+  background: var(--gray50);
+  margin-right: 10px;
+  border-radius: 100%;
+}
+
 .dot {
   background: var(--green400);
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  margin-right: 10px;
 }
 
 .dot.small {

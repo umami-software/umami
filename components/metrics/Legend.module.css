@@ -1,0 +1,21 @@
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-xsmall);
+  cursor: pointer;
+}
+
+.label + .label {
+  margin-left: 20px;
+}
+
+.hidden {
+  color: var(--gray400);
+}

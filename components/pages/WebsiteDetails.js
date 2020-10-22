@@ -120,6 +120,7 @@ export default function WebsiteDetails({ websiteId }) {
           <WebsiteChart
             websiteId={websiteId}
             title={data.name}
+            domain={data.domain}
             onDataLoad={handleDataLoad}
             showLink={false}
             stickyHeader
