@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
+import Legend from 'components/metrics/Legend';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
 import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
+import ChartTooltip from './ChartTooltip';
+import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function BarChart({
   chartId,
@@ -27,6 +29,8 @@ export default function BarChart({
   const [tooltip, setTooltip] = useState(null);
   const [locale] = useLocale();
   const [theme] = useTheme();
+  const forceUpdate = useForceUpdate();
+
   const colors = {
     text: THEME_COLORS[theme].gray700,
     line: THEME_COLORS[theme].gray200,
@@ -111,9 +115,7 @@ export default function BarChart({
       responsiveAnimationDuration: 0,
       maintainAspectRatio: false,
       legend: {
-        labels: {
-          fontColor: colors.text,
-        },
+        display: false,
       },
       scales: {
         xAxes: [
@@ -179,6 +181,10 @@ export default function BarChart({
     options.tooltips.custom = renderTooltip;
 
     onUpdate(chart.current);
+
+    chart.current.update();
+
+    forceUpdate();
   }
 
   useEffect(() => {
@@ -202,23 +208,8 @@ export default function BarChart({
       >
         <canvas ref={canvas} />
       </div>
-      <ReactTooltip id={`${chartId}-tooltip`}>
-        {tooltip ? <Tooltip {...tooltip} /> : null}
-      </ReactTooltip>
+      <Legend chart={chart.current} />
+      <ChartTooltip chartId={chartId} tooltip={tooltip} />
     </>
   );
 }
-
-const Tooltip = ({ title, value, label, labelColor }) => (
-  <div className={styles.tooltip}>
-    <div className={styles.content}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.metric}>
-        <div className={styles.dot}>
-          <div className={styles.color} style={{ backgroundColor: labelColor }} />
-        </div>
-        {value} {label}
-      </div>
-    </div>
-  </div>
-);

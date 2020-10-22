@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import { format } from 'date-fns';
@@ -7,6 +7,7 @@ import Icon from 'components/common/Icon';
 import Tag from 'components/common/Tag';
 import Dot from 'components/common/Dot';
 import FilterButtons from 'components/common/FilterButtons';
+import { devices } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -15,6 +16,7 @@ import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
 import { stringToColor } from 'lib/format';
 import styles from './RealtimeLog.module.css';
+import NoData from '../common/NoData';
 
 const TYPE_ALL = 0;
 const TYPE_PAGEVIEW = 1;
@@ -28,6 +30,7 @@ const TYPE_ICONS = {
 };
 
 export default function RealtimeLog({ data, websites }) {
+  const intl = useIntl();
   const [locale] = useLocale();
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
@@ -116,9 +119,9 @@ export default function RealtimeLog({ data, websites }) {
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{
             country: <b>{countryNames[country]}</b>,
-            browser: BROWSERS[browser],
-            os,
-            device,
+            browser: <b>{BROWSERS[browser]}</b>,
+            os: <b>{os}</b>,
+            device: <b>{intl.formatMessage(devices[device])?.toLowerCase()}</b>,
           }}
         />
       );
@@ -159,6 +162,7 @@ export default function RealtimeLog({ data, websites }) {
         <FormattedMessage id="label.realtime-logs" defaultMessage="Realtime logs" />
       </div>
       <div className={styles.body}>
+        {logs?.length === 0 && <NoData />}
         <FixedSizeList height={400} itemCount={logs.length} itemSize={40}>
           {Row}
         </FixedSizeList>

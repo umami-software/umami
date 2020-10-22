@@ -20,6 +20,7 @@ import { TOKEN_HEADER } from '../../lib/constants';
 export default function WebsiteChart({
   websiteId,
   title,
+  domain,
   stickyHeader = false,
   showLink = false,
   onDataLoad = () => {},
@@ -47,7 +48,7 @@ export default function WebsiteChart({
       onDataLoad,
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified],
+    [url, modified],
   );
 
   const chartData = useMemo(() => {
@@ -66,7 +67,7 @@ export default function WebsiteChart({
 
   return (
     <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} title={title} showLink={showLink} />
+      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}

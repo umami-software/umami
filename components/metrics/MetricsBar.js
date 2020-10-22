@@ -31,7 +31,7 @@ export default function MetricsBar({ websiteId, className }) {
       },
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified],
+    [url, modified],
   );
 
   const formatFunc = format ? formatLongNumber : formatNumber;
