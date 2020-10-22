@@ -73,8 +73,10 @@ export default function DeleteForm({ values, onSave, onClose }) {
               />
             </p>
             <FormRow>
-              <Field name="confirmation" type="text" />
-              <FormError name="confirmation" />
+              <div>
+                <Field name="confirmation" type="text" />
+                <FormError name="confirmation" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button
