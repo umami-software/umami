@@ -1,4 +1,5 @@
 {
+  "cs-CZ": ["label.reset", "metrics.device.tablet"],
   "de-DE": [
     "label.administrator",
     "label.name",
