@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
 const messages = require('../lang/en-US.json');
-const ignore = require('./lang-ignore.json');
+const ignore = require('../lang-ignore.json');
 
 const dir = path.resolve(__dirname, '../lang');
 const files = fs.readdirSync(dir);
