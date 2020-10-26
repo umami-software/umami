@@ -58,15 +58,19 @@ export default function AccountEditForm({ values, onSave, onClose }) {
               <label htmlFor="username">
                 <FormattedMessage id="label.username" defaultMessage="Username" />
               </label>
-              <Field name="username" type="text" />
-              <FormError name="username" />
+              <div>
+                <Field name="username" type="text" />
+                <FormError name="username" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="password">
                 <FormattedMessage id="label.password" defaultMessage="Password" />
               </label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <div>
+                <Field name="password" type="password" />
+                <FormError name="password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
