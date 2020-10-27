@@ -17,6 +17,10 @@
   line-height: 1.8;
 }
 
+.row > div {
+  position: relative;
+}
+
 .buttons {
   display: flex;
   justify-content: center;
@@ -33,9 +37,9 @@
   justify-content: center;
   align-items: center;
   top: 0;
-  left: 100%;
+  left: calc(100% + 16px);
   bottom: 0;
-  margin-left: 16px;
+  z-index: 1;
 }
 
 .msg {
@@ -67,4 +71,16 @@
   border-radius: 4px;
   color: var(--gray50);
   background: var(--gray800);
+}
+
+@media only screen and (max-width: 576px) {
+  .error {
+    align-items: flex-start;
+    top: calc(100% + 7px);
+    left: 0;
+  }
+
+  .error:after {
+    left: 10px;
+  }
 }
