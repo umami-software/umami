@@ -6,6 +6,7 @@ import { removeTrailingSlash } from '../lib/url';
     screen: { width, height },
     navigator: { language },
     location: { hostname, pathname, search },
+    localStorage,
     sessionStorage,
     document,
     history,
@@ -24,6 +25,7 @@ import { removeTrailingSlash } from '../lib/url';
   const domains = attr('data-domains');
 
   const disableTracking =
+    localStorage.getItem('umami.disabled') ||
     (dnt && doNotTrack()) ||
     (domains &&
       !domains

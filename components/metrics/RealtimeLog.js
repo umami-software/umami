@@ -101,6 +101,7 @@ export default function RealtimeLog({ data, websites }) {
     os,
     country,
     device,
+    website_id,
   }) {
     if (event_type) {
       return (
@@ -110,7 +111,17 @@ export default function RealtimeLog({ data, websites }) {
       );
     }
     if (view_id) {
-      return url;
+      const domain = getWebsite({ website_id });
+      return (
+        <a
+          className={styles.link}
+          href={`//${domain}${url}`}
+          target="_blank"
+          rel="noreferrer noopener"
+        >
+          {url}
+        </a>
+      );
     }
     if (session_id) {
       return (
