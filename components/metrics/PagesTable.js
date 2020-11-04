@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import ButtonGroup from 'components/common/ButtonGroup';
+import classNames from 'classnames';
+import Link from 'next/link';
+import FilterButtons from 'components/common/FilterButtons';
 import { urlFilter } from 'lib/filters';
-import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
+import usePageQuery from 'hooks/usePageQuery';
 import MetricsTable from './MetricsTable';
+import styles from './PagesTable.module.css';
 
-export default function PagesTable({ websiteId, token, websiteDomain, limit, onExpand }) {
+export const FILTER_COMBINED = 0;
+export const FILTER_RAW = 1;
+
+export default function PagesTable({ websiteId, websiteDomain, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
+  const {
+    resolve,
+    query: { url },
+  } = usePageQuery();
 
   const buttons = [
     {
@@ -16,25 +26,34 @@ export default function PagesTable({ websiteId, token, websiteDomain, limit, onE
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
+  const renderLink = ({ x }) => {
+    return (
+      <Link href={resolve({ url: x })} replace={true}>
+        <a
+          className={classNames({
+            [styles.inactive]: url && x !== url,
+            [styles.active]: x === url,
+          })}
+        >
+          {decodeURI(x)}
+        </a>
+      </Link>
+    );
+  };
+
   return (
-    <MetricsTable
-      title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
-      type="url"
-      metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
-      headerComponent={
-        limit ? null : <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />
-      }
-      websiteId={websiteId}
-      token={token}
-      limit={limit}
-      dataFilter={urlFilter}
-      filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
-      renderLabel={({ x }) => decodeURI(x)}
-      onExpand={onExpand}
-    />
+    <>
+      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      <MetricsTable
+        title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
+        type="url"
+        metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+        websiteId={websiteId}
+        dataFilter={urlFilter}
+        filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
+        renderLabel={renderLink}
+        {...props}
+      />
+    </>
   );
 }
-
-const FilterButtons = ({ buttons, selected, onClick }) => {
-  return <ButtonGroup size="xsmall" items={buttons} selectedItem={selected} onClick={onClick} />;
-};

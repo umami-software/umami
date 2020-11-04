@@ -6,7 +6,7 @@ import Button from 'components/common/Button';
 import { FormButtons } from 'components/layout/FormLayout';
 import { getDateRangeValues } from 'lib/date';
 import styles from './DatePickerForm.module.css';
-import ButtonGroup from '../common/ButtonGroup';
+import ButtonGroup from 'components/common/ButtonGroup';
 
 const FILTER_DAY = 0;
 const FILTER_RANGE = 1;
@@ -33,11 +33,11 @@ export default function DatePickerForm({
 
   const buttons = [
     {
-      label: <FormattedMessage id="button.single-day" defaultMessage="Single day" />,
+      label: <FormattedMessage id="label.single-day" defaultMessage="Single day" />,
       value: FILTER_DAY,
     },
     {
-      label: <FormattedMessage id="button.date-range" defaultMessage="Date range" />,
+      label: <FormattedMessage id="label.date-range" defaultMessage="Date range" />,
       value: FILTER_RANGE,
     },
   ];
@@ -72,10 +72,10 @@ export default function DatePickerForm({
       </div>
       <FormButtons>
         <Button variant="action" onClick={handleSave} disabled={disabled}>
-          <FormattedMessage id="button.save" defaultMessage="Save" />
+          <FormattedMessage id="label.save" defaultMessage="Save" />
         </Button>
         <Button onClick={onClose}>
-          <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+          <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
         </Button>
       </FormButtons>
     </div>

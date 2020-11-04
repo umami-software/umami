@@ -1,0 +1,20 @@
+.container {
+  display: flex;
+  position: relative;
+  cursor: pointer;
+}
+
+.button {
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.text {
+  font-size: var(--font-size-small);
+}
+
+.open,
+.open:hover {
+  background: var(--gray50);
+  border: 1px solid var(--gray500);
+}

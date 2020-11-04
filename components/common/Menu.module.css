@@ -1,21 +1,22 @@
 .menu {
+  background: var(--gray50);
   border: 1px solid var(--gray500);
   border-radius: 4px;
   overflow: hidden;
-  z-index: 2;
+  z-index: 100;
 }
 
 .option {
   font-size: var(--font-size-small);
   font-weight: normal;
-  background: #fff;
+  background: var(--gray50);
   padding: 4px 16px;
   cursor: pointer;
   white-space: nowrap;
 }
 
 .option:hover {
-  background: #f5f5f5;
+  background: var(--gray100);
 }
 
 .float {
@@ -43,4 +44,8 @@
 
 .divider {
   border-top: 1px solid var(--gray300);
+}
+
+.selected {
+  font-weight: 600;
 }

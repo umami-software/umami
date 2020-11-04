@@ -13,6 +13,7 @@ import ShareUrlForm from 'components/forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import Toast from 'components/common/Toast';
+import Favicon from 'components/common/Favicon';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
@@ -29,10 +30,10 @@ export default function WebsiteSettings() {
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/websites`, {}, { update: [saved] });
+  const { data } = useFetch(`/api/websites`, {}, [saved]);
 
   const Buttons = row => (
-    <ButtonLayout>
+    <ButtonLayout align="right">
       {row.share_id && (
         <Button
           icon={<LinkIcon />}
@@ -52,20 +53,17 @@ export default function WebsiteSettings() {
         onClick={() => setShowCode(row)}
       />
       <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
-        <div>
-          <FormattedMessage id="button.edit" defaultMessage="Edit" />
-        </div>
+        <FormattedMessage id="label.edit" defaultMessage="Edit" />
       </Button>
       <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
-        <div>
-          <FormattedMessage id="button.delete" defaultMessage="Delete" />
-        </div>
+        <FormattedMessage id="label.delete" defaultMessage="Delete" />
       </Button>
     </ButtonLayout>
   );
 
-  const DetailsLink = ({ website_id, name }) => (
+  const DetailsLink = ({ website_id, name, domain }) => (
     <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
+      <Favicon domain={domain} />
       {name}
     </Link>
   );
@@ -117,9 +115,7 @@ export default function WebsiteSettings() {
       }
     >
       <Button icon={<Plus />} size="medium" onClick={() => setAddWebsite(true)}>
-        <div>
-          <FormattedMessage id="button.add-website" defaultMessage="Add website" />
-        </div>
+        <FormattedMessage id="label.add-website" defaultMessage="Add website" />
       </Button>
     </EmptyPlaceholder>
   );
@@ -131,25 +127,23 @@ export default function WebsiteSettings() {
           <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-          <div>
-            <FormattedMessage id="button.add-website" defaultMessage="Add website" />
-          </div>
+          <FormattedMessage id="label.add-website" defaultMessage="Add website" />
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} empty={empty} />
       {editWebsite && (
-        <Modal title={<FormattedMessage id="title.edit-website" defaultMessage="Edit website" />}>
+        <Modal title={<FormattedMessage id="label.edit-website" defaultMessage="Edit website" />}>
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {addWebsite && (
-        <Modal title={<FormattedMessage id="title.add-website" defaultMessage="Add website" />}>
+        <Modal title={<FormattedMessage id="label.add-website" defaultMessage="Add website" />}>
           <WebsiteEditForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {deleteWebsite && (
         <Modal
-          title={<FormattedMessage id="title.delete-website" defaultMessage="Delete website" />}
+          title={<FormattedMessage id="label.delete-website" defaultMessage="Delete website" />}
         >
           <DeleteForm
             values={{ type: 'website', id: deleteWebsite.website_id, name: deleteWebsite.name }}
@@ -159,12 +153,12 @@ export default function WebsiteSettings() {
         </Modal>
       )}
       {showCode && (
-        <Modal title={<FormattedMessage id="title.tracking-code" defaultMessage="Tracking code" />}>
+        <Modal title={<FormattedMessage id="label.tracking-code" defaultMessage="Tracking code" />}>
           <TrackingCodeForm values={showCode} onClose={handleClose} />
         </Modal>
       )}
       {showUrl && (
-        <Modal title={<FormattedMessage id="title.share-url" defaultMessage="Share URL" />}>
+        <Modal title={<FormattedMessage id="label.share-url" defaultMessage="Share URL" />}>
           <ShareUrlForm values={showUrl} onClose={handleClose} />
         </Modal>
       )}

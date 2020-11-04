@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
@@ -37,18 +38,17 @@ const validate = ({ current_password, new_password, confirm_password }) => {
 };
 
 export default function ChangePasswordForm({ values, onSave, onClose }) {
+  const { basePath } = useRouter();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/account/password`, values);
+    const { ok, data } = await post(`${basePath}/api/account/password`, values);
 
-    if (typeof response !== 'string') {
+    if (ok) {
       onSave();
     } else {
       setMessage(
-        response || (
-          <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
-        ),
+        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
       );
     }
   };
@@ -66,29 +66,35 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
               <label htmlFor="current_password">
                 <FormattedMessage id="label.current-password" defaultMessage="Current password" />
               </label>
-              <Field name="current_password" type="password" />
-              <FormError name="current_password" />
+              <div>
+                <Field name="current_password" type="password" />
+                <FormError name="current_password" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="new_password">
                 <FormattedMessage id="label.new-password" defaultMessage="New password" />
               </label>
-              <Field name="new_password" type="password" />
-              <FormError name="new_password" />
+              <div>
+                <Field name="new_password" type="password" />
+                <FormError name="new_password" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="confirm_password">
                 <FormattedMessage id="label.confirm-password" defaultMessage="Confirm password" />
               </label>
-              <Field name="confirm_password" type="password" />
-              <FormError name="confirm_password" />
+              <div>
+                <Field name="confirm_password" type="password" />
+                <FormError name="confirm_password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.save" defaultMessage="Save" />
+                <FormattedMessage id="label.save" defaultMessage="Save" />
               </Button>
               <Button onClick={onClose}>
-                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

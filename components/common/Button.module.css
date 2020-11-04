@@ -3,13 +3,13 @@
   justify-content: center;
   align-items: center;
   font-size: var(--font-size-normal);
+  color: var(--gray900);
   background: var(--gray100);
   padding: 8px 16px;
   border-radius: 4px;
   border: 0;
   outline: none;
   cursor: pointer;
-  white-space: nowrap;
   position: relative;
 }
 
@@ -18,15 +18,18 @@
 }
 
 .button:active {
-  color: initial;
+  color: var(--gray900);
+}
+
+.label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 300px;
 }
 
 .large {
   font-size: var(--font-size-large);
-}
-
-.medium {
-  font-size: var(--font-size-normal);
 }
 
 .small {
@@ -37,7 +40,8 @@
   font-size: var(--font-size-xsmall);
 }
 
-.action {
+.action,
+.action:active {
   color: var(--gray50);
   background: var(--gray900);
 }
@@ -46,7 +50,8 @@
   background: var(--gray800);
 }
 
-.danger {
+.danger,
+.danger:active {
   color: var(--gray50);
   background: var(--red500);
 }
@@ -55,12 +60,27 @@
   background: var(--red400);
 }
 
-.light {
-  background: var(--gray50);
+.light,
+.light:active {
+  color: var(--gray900);
+  background: transparent;
 }
 
 .light:hover {
-  background: var(--gray75);
+  background: inherit;
+}
+
+.button .icon + * {
+  margin-left: 10px;
+}
+
+.button.iconRight .icon {
+  order: 1;
+  margin-left: 10px;
+}
+
+.button.iconRight .icon + * {
+  margin: 0;
 }
 
 .button:disabled {

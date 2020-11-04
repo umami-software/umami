@@ -1,34 +1,50 @@
 import React, { useState, useRef, useEffect } from 'react';
-import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
+import Legend from 'components/metrics/Legend';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
+import useTheme from 'hooks/useTheme';
+import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
+import ChartTooltip from './ChartTooltip';
+import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function BarChart({
   chartId,
   datasets,
   unit,
   records,
-  height = 400,
-  animationDuration = 300,
+  height = DEFAUL_CHART_HEIGHT,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
   className,
   stacked = false,
+  loading = false,
   onCreate = () => {},
   onUpdate = () => {},
 }) {
   const canvas = useRef();
   const chart = useRef();
-  const [tooltip, setTooltip] = useState({});
+  const [tooltip, setTooltip] = useState(null);
   const [locale] = useLocale();
+  const [theme] = useTheme();
+  const forceUpdate = useForceUpdate();
+
+  const colors = {
+    text: THEME_COLORS[theme].gray700,
+    line: THEME_COLORS[theme].gray200,
+    zeroLine: THEME_COLORS[theme].gray500,
+  };
 
   function renderXLabel(label, index, values) {
+    if (loading) return '';
     const d = new Date(values[index].value);
     const w = canvas.current.width;
 
     switch (unit) {
+      case 'minute':
+        return index % 2 === 0 ? dateFormat(d, 'h:mm', locale) : '';
       case 'hour':
         return dateFormat(d, 'ha', locale);
       case 'day':
@@ -53,24 +69,25 @@ export default function BarChart({
   }
 
   function renderYLabel(label) {
-    return +label > 1 ? formatLongNumber(label) : label;
+    return +label > 1000 ? formatLongNumber(label) : label;
   }
 
   function renderTooltip(model) {
     const { opacity, title, body, labelColors } = model;
 
-    if (!opacity) {
+    if (!opacity || !title) {
       setTooltip(null);
-    } else {
-      const [label, value] = body[0].lines[0].split(':');
-
-      setTooltip({
-        title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
-        value,
-        label,
-        labelColor: labelColors[0].backgroundColor,
-      });
+      return;
     }
+
+    const [label, value] = body[0].lines[0].split(':');
+
+    setTooltip({
+      title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
+      value,
+      label,
+      labelColor: labelColors[0].backgroundColor,
+    });
   }
 
   function getTooltipFormat(unit) {
@@ -97,6 +114,9 @@ export default function BarChart({
       responsive: true,
       responsiveAnimationDuration: 0,
       maintainAspectRatio: false,
+      legend: {
+        display: false,
+      },
       scales: {
         xAxes: [
           {
@@ -110,6 +130,7 @@ export default function BarChart({
               callback: renderXLabel,
               minRotation: 0,
               maxRotation: 0,
+              fontColor: colors.text,
             },
             gridLines: {
               display: false,
@@ -123,6 +144,11 @@ export default function BarChart({
             ticks: {
               callback: renderYLabel,
               beginAtZero: true,
+              fontColor: colors.text,
+            },
+            gridLines: {
+              color: colors.line,
+              zeroLineColor: colors.zeroLine,
             },
             stacked,
           },
@@ -144,12 +170,21 @@ export default function BarChart({
   function updateChart() {
     const { options } = chart.current;
 
+    options.legend.labels.fontColor = colors.text;
     options.scales.xAxes[0].time.unit = unit;
     options.scales.xAxes[0].ticks.callback = renderXLabel;
+    options.scales.xAxes[0].ticks.fontColor = colors.text;
+    options.scales.yAxes[0].ticks.fontColor = colors.text;
+    options.scales.yAxes[0].gridLines.color = colors.line;
+    options.scales.yAxes[0].gridLines.zeroLineColor = colors.zeroLine;
     options.animation.duration = animationDuration;
     options.tooltips.custom = renderTooltip;
 
     onUpdate(chart.current);
+
+    chart.current.update();
+
+    forceUpdate();
   }
 
   useEffect(() => {
@@ -161,7 +196,7 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets, unit, animationDuration, locale]);
+  }, [datasets, unit, animationDuration, locale, theme]);
 
   return (
     <>
@@ -173,23 +208,8 @@ export default function BarChart({
       >
         <canvas ref={canvas} />
       </div>
-      <ReactTooltip id={`${chartId}-tooltip`}>
-        {tooltip ? <Tooltip {...tooltip} /> : null}
-      </ReactTooltip>
+      <Legend chart={chart.current} />
+      <ChartTooltip chartId={chartId} tooltip={tooltip} />
     </>
   );
 }
-
-const Tooltip = ({ title, value, label, labelColor }) => (
-  <div className={styles.tooltip}>
-    <div className={styles.content}>
-      <div className={styles.title}>{title}</div>
-      <div className={styles.metric}>
-        <div className={styles.dot}>
-          <div className={styles.color} style={{ backgroundColor: labelColor }} />
-        </div>
-        {value} {label}
-      </div>
-    </div>
-  </div>
-);

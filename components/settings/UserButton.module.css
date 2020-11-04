@@ -1,0 +1,7 @@
+.username {
+  border-bottom: 1px solid var(--gray500);
+}
+
+.username:hover {
+  background: var(--gray50);
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
+import { useRouter } from 'next/router';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
@@ -29,18 +30,17 @@ const validate = ({ user_id, username, password }) => {
 };
 
 export default function AccountEditForm({ values, onSave, onClose }) {
+  const { basePath } = useRouter();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const response = await post(`/api/account`, values);
+    const { ok, data } = await post(`${basePath}/api/account`, values);
 
-    if (typeof response !== 'string') {
+    if (ok) {
       onSave();
     } else {
       setMessage(
-        response || (
-          <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
-        ),
+        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
       );
     }
   };
@@ -58,22 +58,26 @@ export default function AccountEditForm({ values, onSave, onClose }) {
               <label htmlFor="username">
                 <FormattedMessage id="label.username" defaultMessage="Username" />
               </label>
-              <Field name="username" type="text" />
-              <FormError name="username" />
+              <div>
+                <Field name="username" type="text" />
+                <FormError name="username" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="password">
                 <FormattedMessage id="label.password" defaultMessage="Password" />
               </label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <div>
+                <Field name="password" type="password" />
+                <FormError name="password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.save" defaultMessage="Save" />
+                <FormattedMessage id="label.save" defaultMessage="Save" />
               </Button>
               <Button onClick={onClose}>
-                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

@@ -1,0 +1,35 @@
+.chart {
+  margin-bottom: 30px;
+}
+
+.view {
+  border-top: 1px solid var(--gray300);
+}
+
+.menu {
+  font-size: var(--font-size-small);
+}
+
+.content {
+  min-height: 600px;
+  padding: 20px 0;
+}
+
+.backButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.backButton svg {
+  transform: rotate(180deg);
+}
+
+.hidden {
+  display: none;
+}
+
+.eventschart {
+  padding-top: 30px;
+}

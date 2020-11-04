@@ -1,17 +1,41 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
+import tinycolor from 'tinycolor2';
 import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
+import useTheme from 'hooks/useTheme';
+import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 
-export default function PageviewsChart({ websiteId, data, unit, records, className }) {
+export default function PageviewsChart({
+  websiteId,
+  data,
+  unit,
+  records,
+  className,
+  loading,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
+  ...props
+}) {
   const intl = useIntl();
+  const [theme] = useTheme();
+  const primaryColor = tinycolor(THEME_COLORS[theme].primary);
+  const colors = {
+    views: {
+      background: primaryColor.setAlpha(0.4).toRgbString(),
+      border: primaryColor.setAlpha(0.5).toRgbString(),
+    },
+    visitors: {
+      background: primaryColor.setAlpha(0.6).toRgbString(),
+      border: primaryColor.setAlpha(0.7).toRgbString(),
+    },
+  };
 
   const handleUpdate = chart => {
     const {
       data: { datasets },
     } = chart;
 
-    datasets[0].data = data.uniques;
+    datasets[0].data = data.sessions;
     datasets[0].label = intl.formatMessage({
       id: 'metrics.unique-visitors',
       defaultMessage: 'Unique visitors',
@@ -21,8 +45,6 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
       id: 'metrics.page-views',
       defaultMessage: 'Page views',
     });
-
-    chart.update();
   };
 
   if (!data) {
@@ -33,6 +55,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
     <CheckVisible>
       {visible => (
         <BarChart
+          {...props}
           className={className}
           chartId={websiteId}
           datasets={[
@@ -41,10 +64,10 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
                 id: 'metrics.unique-visitors',
                 defaultMessage: 'Unique visitors',
               }),
-              data: data.uniques,
+              data: data.sessions,
               lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.4)',
-              borderColor: 'rgb(13, 102, 208, 0.4)',
+              backgroundColor: colors.visitors.background,
+              borderColor: colors.visitors.border,
               borderWidth: 1,
             },
             {
@@ -54,15 +77,16 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
               }),
               data: data.pageviews,
               lineTension: 0,
-              backgroundColor: 'rgb(38, 128, 235, 0.2)',
-              borderColor: 'rgb(13, 102, 208, 0.2)',
+              backgroundColor: colors.views.background,
+              borderColor: colors.views.border,
               borderWidth: 1,
             },
           ]}
           unit={unit}
           records={records}
-          animationDuration={visible ? 300 : 0}
+          animationDuration={visible ? animationDuration : 0}
           onUpdate={handleUpdate}
+          loading={loading}
         />
       )}
     </CheckVisible>

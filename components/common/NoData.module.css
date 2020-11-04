@@ -1,5 +1,6 @@
 .container {
   color: var(--gray500);
+  font-size: var(--font-size-normal);
   position: absolute;
   top: 50%;
   left: 50%;

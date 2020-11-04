@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
@@ -28,22 +28,26 @@ const validate = ({ username, password }) => {
 };
 
 export default function LoginForm() {
+  const router = useRouter();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {
-    const response = await post('/api/auth/login', { username, password });
+    const { ok, status, data } = await post(`${router.basePath}/api/auth/login`, {
+      username,
+      password,
+    });
 
-    if (typeof response !== 'string') {
-      await Router.push('/');
+    if (ok) {
+      return router.push('/');
     } else {
       setMessage(
-        response.startsWith('401') ? (
+        status === 401 ? (
           <FormattedMessage
             id="message.incorrect-username-password"
             defaultMessage="Incorrect username/password."
           />
         ) : (
-          response
+          data
         ),
       );
     }
@@ -67,19 +71,23 @@ export default function LoginForm() {
               <label htmlFor="username">
                 <FormattedMessage id="label.username" defaultMessage="Username" />
               </label>
-              <Field name="username" type="text" />
-              <FormError name="username" />
+              <div>
+                <Field name="username" type="text" />
+                <FormError name="username" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="password">
                 <FormattedMessage id="label.password" defaultMessage="Password" />
               </label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <div>
+                <Field name="password" type="password" />
+                <FormError name="password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.login" defaultMessage="Login" />
+                <FormattedMessage id="label.login" defaultMessage="Login" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

@@ -36,4 +36,33 @@
   --green500: #268e6c;
   --green600: #12805c;
   --green700: #107154;
+
+  --msgColor: #ffffff;
+}
+
+[data-theme='dark'] {
+  /*
+  --gray50: #080808;
+  --gray75: #1a1a1a;
+  --gray100: #1e1e1e;
+  --gray200: #2c2c2c;
+  --gray300: #393939;
+  --gray400: #494949;
+  --gray500: #5c5c5c;
+  --gray600: #7c7c7c;
+  --gray700: #6e6e6e;
+  --gray800: #a2a2a2;
+  --gray900: #efefef;
+  */
+  --gray50: #252525;
+  --gray75: #2f2f2f;
+  --gray100: #323232;
+  --gray200: #3e3e3e;
+  --gray300: #4a4a4a;
+  --gray400: #5a5a5a;
+  --gray500: #6e6e6e;
+  --gray600: #909090;
+  --gray700: #b9b9b9;
+  --gray800: #e3e3e3;
+  --gray900: #ffffff;
 }
