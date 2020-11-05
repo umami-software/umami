@@ -7,7 +7,7 @@ import Page from '../layout/Page';
 import PageHeader from '../layout/PageHeader';
 import useFetch from '../../hooks/useFetch';
 import DropDown from '../common/DropDown';
-import styles from './Test.module.css';
+import styles from './TestConsole.module.css';
 import WebsiteChart from '../metrics/WebsiteChart';
 import EventsChart from '../metrics/EventsChart';
 import Button from '../common/Button';
@@ -82,7 +82,12 @@ export default function TestConsole() {
           </div>
           <div className="row">
             <div className="col-12">
-              <WebsiteChart websiteId={website.website_id} title={website.name} showLink />
+              <WebsiteChart
+                websiteId={website.website_id}
+                title={website.name}
+                domain={website.domain}
+                showLink
+              />
               <PageHeader>Events</PageHeader>
               <EventsChart websiteId={website.website_id} />
             </div>

@@ -73,8 +73,10 @@ export default function DeleteForm({ values, onSave, onClose }) {
               />
             </p>
             <FormRow>
-              <Field name="confirmation" type="text" />
-              <FormError name="confirmation" />
+              <div>
+                <Field name="confirmation" type="text" />
+                <FormError name="confirmation" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button
@@ -82,10 +84,10 @@ export default function DeleteForm({ values, onSave, onClose }) {
                 variant="danger"
                 disabled={props.values.confirmation !== CONFIRMATION_WORD}
               >
-                <FormattedMessage id="button.delete" defaultMessage="Delete" />
+                <FormattedMessage id="label.delete" defaultMessage="Delete" />
               </Button>
               <Button onClick={onClose}>
-                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

@@ -7,7 +7,7 @@ import { getIpAddress } from '../../lib/request';
 
 export default async (req, res) => {
   await useCors(req, res);
-  
+
   if (isBot(req.headers['user-agent'])) {
     return ok(res);
   }

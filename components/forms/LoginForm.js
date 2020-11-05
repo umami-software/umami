@@ -71,19 +71,23 @@ export default function LoginForm() {
               <label htmlFor="username">
                 <FormattedMessage id="label.username" defaultMessage="Username" />
               </label>
-              <Field name="username" type="text" />
-              <FormError name="username" />
+              <div>
+                <Field name="username" type="text" />
+                <FormError name="username" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="password">
                 <FormattedMessage id="label.password" defaultMessage="Password" />
               </label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <div>
+                <Field name="password" type="password" />
+                <FormError name="password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.login" defaultMessage="Login" />
+                <FormattedMessage id="label.login" defaultMessage="Login" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

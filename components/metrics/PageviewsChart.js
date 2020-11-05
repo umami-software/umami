@@ -4,9 +4,18 @@ import tinycolor from 'tinycolor2';
 import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 
-export default function PageviewsChart({ websiteId, data, unit, records, className, loading }) {
+export default function PageviewsChart({
+  websiteId,
+  data,
+  unit,
+  records,
+  className,
+  loading,
+  animationDuration = DEFAULT_ANIMATION_DURATION,
+  ...props
+}) {
   const intl = useIntl();
   const [theme] = useTheme();
   const primaryColor = tinycolor(THEME_COLORS[theme].primary);
@@ -26,7 +35,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
       data: { datasets },
     } = chart;
 
-    datasets[0].data = data.uniques;
+    datasets[0].data = data.sessions;
     datasets[0].label = intl.formatMessage({
       id: 'metrics.unique-visitors',
       defaultMessage: 'Unique visitors',
@@ -36,8 +45,6 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
       id: 'metrics.page-views',
       defaultMessage: 'Page views',
     });
-
-    chart.update();
   };
 
   if (!data) {
@@ -48,6 +55,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
     <CheckVisible>
       {visible => (
         <BarChart
+          {...props}
           className={className}
           chartId={websiteId}
           datasets={[
@@ -56,7 +64,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
                 id: 'metrics.unique-visitors',
                 defaultMessage: 'Unique visitors',
               }),
-              data: data.uniques,
+              data: data.sessions,
               lineTension: 0,
               backgroundColor: colors.visitors.background,
               borderColor: colors.visitors.border,
@@ -76,7 +84,7 @@ export default function PageviewsChart({ websiteId, data, unit, records, classNa
           ]}
           unit={unit}
           records={records}
-          animationDuration={visible ? 300 : 0}
+          animationDuration={visible ? animationDuration : 0}
           onUpdate={handleUpdate}
           loading={loading}
         />

@@ -63,15 +63,19 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
               <label htmlFor="name">
                 <FormattedMessage id="label.name" defaultMessage="Name" />
               </label>
-              <Field name="name" type="text" />
-              <FormError name="name" />
+              <div>
+                <Field name="name" type="text" />
+                <FormError name="name" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="domain">
                 <FormattedMessage id="label.domain" defaultMessage="Domain" />
               </label>
-              <Field name="domain" type="text" />
-              <FormError name="domain" />
+              <div>
+                <Field name="domain" type="text" />
+                <FormError name="domain" />
+              </div>
             </FormRow>
             <FormRow>
               <label></label>
@@ -91,10 +95,10 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.save" defaultMessage="Save" />
+                <FormattedMessage id="label.save" defaultMessage="Save" />
               </Button>
               <Button onClick={onClose}>
-                <FormattedMessage id="button.cancel" defaultMessage="Cancel" />
+                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

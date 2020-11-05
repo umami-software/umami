@@ -1,0 +1,22 @@
+{
+  "cs-CZ": ["label.reset", "metrics.device.tablet"],
+  "de-DE": [
+    "label.administrator",
+    "label.name",
+    "label.domain",
+    "metrics.device.desktop",
+    "metrics.device.laptop",
+    "metrics.device.tablet",
+    "metrics.referrers"
+  ],
+  "fr-FR": ["metrics.actions", "metrics.pages"],
+  "nb-NO": ["label.administrator", "label.dashboard"],
+  "nl-NL": [
+    "label.administrator",
+    "label.websites",
+    "metrics.browsers",
+    "metrics.device.desktop",
+    "metrics.device.laptop",
+    "metrics.device.tablet"
+  ]
+}

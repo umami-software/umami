@@ -5,29 +5,36 @@ import { getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
-import { EVENT_COLORS } from 'lib/constants';
-import usePageQuery from '../../hooks/usePageQuery';
+import usePageQuery from 'hooks/usePageQuery';
+import useShareToken from 'hooks/useShareToken';
+import { EVENT_COLORS, TOKEN_HEADER } from 'lib/constants';
 
-export default function EventsChart({ websiteId, token }) {
+export default function EventsChart({ websiteId, className, token }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, modified } = dateRange;
   const [timezone] = useTimezone();
   const { query } = usePageQuery();
+  const shareToken = useShareToken();
 
-  const { data } = useFetch(
+  const { data, loading } = useFetch(
     `/api/website/${websiteId}/events`,
     {
-      start_at: +startDate,
-      end_at: +endDate,
-      unit,
-      tz: timezone,
-      url: query.url,
-      token,
+      params: {
+        start_at: +startDate,
+        end_at: +endDate,
+        unit,
+        tz: timezone,
+        url: query.url,
+        token,
+      },
+      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    { update: [modified] },
+    [modified],
   );
+
   const datasets = useMemo(() => {
     if (!data) return [];
+    if (loading) return data;
 
     const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
@@ -44,7 +51,7 @@ export default function EventsChart({ websiteId, token }) {
     });
 
     return Object.keys(map).map((key, index) => {
-      const color = tinycolor(EVENT_COLORS[index]);
+      const color = tinycolor(EVENT_COLORS[index % EVENT_COLORS.length]);
       return {
         label: key,
         data: map[key],
@@ -54,15 +61,7 @@ export default function EventsChart({ websiteId, token }) {
         borderWidth: 1,
       };
     });
-  }, [data]);
-
-  function handleCreate(options) {
-    const legend = {
-      position: 'bottom',
-    };
-
-    options.legend = legend;
-  }
+  }, [data, loading]);
 
   function handleUpdate(chart) {
     chart.data.datasets = datasets;
@@ -77,11 +76,13 @@ export default function EventsChart({ websiteId, token }) {
   return (
     <BarChart
       chartId={`events-${websiteId}`}
+      className={className}
       datasets={datasets}
       unit={unit}
+      height={300}
       records={getDateLength(startDate, endDate, unit)}
-      onCreate={handleCreate}
       onUpdate={handleUpdate}
+      loading={loading}
       stacked
     />
   );

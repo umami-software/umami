@@ -9,7 +9,7 @@ import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
-  const { data } = useFetch('/api/websites', { user_id: userId });
+  const { data } = useFetch('/api/websites', { params: { user_id: userId } });
 
   if (!data) {
     return null;
@@ -17,9 +17,9 @@ export default function WebsiteList({ userId }) {
 
   return (
     <Page>
-      {data.map(({ website_id, name }) => (
+      {data.map(({ website_id, name, domain }) => (
         <div key={website_id} className={styles.website}>
-          <WebsiteChart websiteId={website_id} title={name} showLink />
+          <WebsiteChart websiteId={website_id} title={name} domain={domain} showLink />
         </div>
       ))}
       {data.length === 0 && (

@@ -16,7 +16,7 @@ export default function LanguageButton() {
   return (
     <>
       <Head>
-        {locale === 'zh-CN' && (
+        {(locale === 'zh-CN' || locale === 'zh-TW') && (
           <link
             href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
             rel="stylesheet"
