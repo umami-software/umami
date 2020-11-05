@@ -20,7 +20,7 @@ module.exports = {
   async headers() {
     return [
       {
-        source: '/umami.js',
+        source: '/track.js',
         headers: [
           {
             key: 'Cache-Control',
@@ -28,6 +28,6 @@ module.exports = {
           },
         ],
       },
-    ]
+    ];
   },
 };
