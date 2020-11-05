@@ -8,11 +8,13 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
-      HASH_SALT: replace-me-with-a-random-string
+      HASH_SALT: cMP9En7jrhD6uKKAMpuADybe32Ww7Cfu
     depends_on:
       - db
   db:
     image: postgres:12-alpine
+    ports:
+      - "127.0.0.1:5432:5432"
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami

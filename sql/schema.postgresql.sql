@@ -15,7 +15,7 @@ create table account (
 
 create table website (
     website_id serial primary key,
-    website_uuid uuid unique not null,
+    website_uuid varchar(128) unique not null,
     user_id int not null references account(user_id) on delete cascade,
     name varchar(100) not null,
     domain varchar(500),

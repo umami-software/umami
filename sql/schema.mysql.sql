@@ -15,7 +15,7 @@ create table account (
 
 create table website (
     website_id int unsigned not null auto_increment primary key,
-    website_uuid varchar(36) unique not null,
+    website_uuid varchar(128) unique not null,
     user_id int unsigned not null,
     name varchar(100) not null,
     domain varchar(500),
