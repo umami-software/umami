@@ -25,7 +25,7 @@ export default function AccountSettings() {
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/accounts`, {}, { update: [saved] });
+  const { data } = useFetch(`/api/accounts`, {}, [saved]);
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
@@ -42,10 +42,10 @@ export default function AccountSettings() {
     row.username !== 'admin' ? (
       <ButtonLayout align="right">
         <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-          <FormattedMessage id="button.edit" defaultMessage="Edit" />
+          <FormattedMessage id="label.edit" defaultMessage="Edit" />
         </Button>
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
-          <FormattedMessage id="button.delete" defaultMessage="Delete" />
+          <FormattedMessage id="label.delete" defaultMessage="Delete" />
         </Button>
       </ButtonLayout>
     ) : null;
@@ -98,12 +98,12 @@ export default function AccountSettings() {
           <FormattedMessage id="label.accounts" defaultMessage="Accounts" />
         </div>
         <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
-          <FormattedMessage id="button.add-account" defaultMessage="Add account" />
+          <FormattedMessage id="label.add-account" defaultMessage="Add account" />
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} />
       {editAccount && (
-        <Modal title={<FormattedMessage id="title.edit-account" defaultMessage="Edit account" />}>
+        <Modal title={<FormattedMessage id="label.edit-account" defaultMessage="Edit account" />}>
           <AccountEditForm
             values={{ ...editAccount, password: '' }}
             onSave={handleSave}
@@ -112,13 +112,13 @@ export default function AccountSettings() {
         </Modal>
       )}
       {addAccount && (
-        <Modal title={<FormattedMessage id="title.add-account" defaultMessage="Add account" />}>
+        <Modal title={<FormattedMessage id="label.add-account" defaultMessage="Add account" />}>
           <AccountEditForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
       {deleteAccount && (
         <Modal
-          title={<FormattedMessage id="title.delete-account" defaultMessage="Delete account" />}
+          title={<FormattedMessage id="label.delete-account" defaultMessage="Delete account" />}
         >
           <DeleteForm
             values={{ type: 'account', id: deleteAccount.user_id, name: deleteAccount.username }}

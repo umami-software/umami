@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { getPageviews } from 'lib/queries';
+import { getPageviewStats } from 'lib/queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 
@@ -21,12 +21,12 @@ export default async (req, res) => {
       return badRequest(res);
     }
 
-    const [pageviews, uniques] = await Promise.all([
-      getPageviews(websiteId, startDate, endDate, tz, unit, '*', url),
-      getPageviews(websiteId, startDate, endDate, tz, unit, 'distinct session_id', url),
+    const [pageviews, sessions] = await Promise.all([
+      getPageviewStats(websiteId, startDate, endDate, tz, unit, '*', url),
+      getPageviewStats(websiteId, startDate, endDate, tz, unit, 'distinct session_id', url),
     ]);
 
-    return ok(res, { pageviews, uniques });
+    return ok(res, { pageviews, sessions });
   }
 
   return methodNotAllowed(res);

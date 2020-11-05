@@ -4,4 +4,15 @@
   align-items: center;
   font-size: var(--font-size-small);
   min-height: 100px;
+  text-align: center;
+}
+
+.version {
+  text-align: right;
+}
+
+@media only screen and (max-width: 768px) {
+  .version {
+    text-align: center;
+  }
 }

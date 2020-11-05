@@ -83,7 +83,7 @@ export default function LoginForm() {
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">
-                <FormattedMessage id="button.login" defaultMessage="Login" />
+                <FormattedMessage id="label.login" defaultMessage="Login" />
               </Button>
             </FormButtons>
             <FormMessage>{message}</FormMessage>

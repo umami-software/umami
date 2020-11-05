@@ -1,27 +1,23 @@
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import semver from 'semver';
-import { getItem, setItem } from 'lib/web';
 import { checkVersion } from 'redux/actions/app';
 import { VERSION_CHECK } from 'lib/constants';
+import { getItem, setItem } from 'lib/web';
 
-export default function useVersion() {
+export default function useVersion(check) {
   const dispatch = useDispatch();
   const versions = useSelector(state => state.app.versions);
-  const lastCheck = getItem(VERSION_CHECK);
-
-  const { current, latest } = versions;
-  const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
+  const checked = versions.latest === getItem(VERSION_CHECK)?.version;
 
   const updateCheck = useCallback(() => {
-    setItem(VERSION_CHECK, { version: latest, time: Date.now() });
+    setItem(VERSION_CHECK, { version: versions.latest, time: Date.now() });
   }, [versions]);
 
   useEffect(() => {
-    if (!versions.latest) {
+    if (check && !versions.latest) {
       dispatch(checkVersion());
     }
-  }, [versions]);
+  }, [versions, check]);
 
-  return { ...versions, hasUpdate, updateCheck };
+  return { ...versions, checked, updateCheck };
 }

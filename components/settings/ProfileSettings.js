@@ -34,7 +34,7 @@ export default function ProfileSettings() {
           <FormattedMessage id="label.profile" defaultMessage="Profile" />
         </div>
         <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
-          <FormattedMessage id="button.change-password" defaultMessage="Change password" />
+          <FormattedMessage id="label.change-password" defaultMessage="Change password" />
         </Button>
       </PageHeader>
       <dl className={styles.list}>
@@ -57,7 +57,7 @@ export default function ProfileSettings() {
       </dl>
       {changePassword && (
         <Modal
-          title={<FormattedMessage id="title.change-password" defaultMessage="Change password" />}
+          title={<FormattedMessage id="label.change-password" defaultMessage="Change password" />}
         >
           <ChangePasswordForm
             values={{ user_id }}

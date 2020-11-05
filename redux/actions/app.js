@@ -1,16 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { getItem } from 'lib/web';
-import { LOCALE_CONFIG, THEME_CONFIG } from 'lib/constants';
+import {
+  DEFAULT_LOCALE,
+  DEFAULT_THEME,
+  LOCALE_CONFIG,
+  THEME_CONFIG,
+  VERSION_CHECK,
+} from 'lib/constants';
+import semver from 'semver';
 
 const app = createSlice({
   name: 'app',
   initialState: {
-    locale: getItem(LOCALE_CONFIG) || 'en-US',
-    theme: getItem(THEME_CONFIG) || 'light',
+    locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
+    theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
     versions: {
       current: process.env.VERSION,
       latest: null,
+      hasUpdate: false,
     },
+    shareToken: null,
   },
   reducers: {
     setLocale(state, action) {
@@ -25,10 +34,14 @@ const app = createSlice({
       state.versions = action.payload;
       return state;
     },
+    setShareToken(state, action) {
+      state.shareToken = action.payload;
+      return state;
+    },
   },
 });
 
-export const { setLocale, setTheme, setVersions } = app.actions;
+export const { setLocale, setTheme, setVersions, setShareToken } = app.actions;
 
 export default app.reducer;
 
@@ -60,11 +73,14 @@ export function checkVersion() {
     const { tag_name } = data;
 
     const latest = tag_name.startsWith('v') ? tag_name.slice(1) : tag_name;
+    const lastCheck = getItem(VERSION_CHECK);
+    const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
 
     return dispatch(
       setVersions({
         current,
         latest,
+        hasUpdate,
       }),
     );
   };

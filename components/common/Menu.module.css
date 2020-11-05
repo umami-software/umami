@@ -1,8 +1,9 @@
 .menu {
+  background: var(--gray50);
   border: 1px solid var(--gray500);
   border-radius: 4px;
   overflow: hidden;
-  z-index: 2;
+  z-index: 100;
 }
 
 .option {

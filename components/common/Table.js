@@ -3,40 +3,58 @@ import classNames from 'classnames';
 import NoData from 'components/common/NoData';
 import styles from './Table.module.css';
 
-export default function Table({ columns, rows, empty }) {
+export default function Table({
+  columns,
+  rows,
+  empty,
+  className,
+  bodyClassName,
+  rowKey,
+  showHeader = true,
+  children,
+}) {
   if (empty && rows.length === 0) {
     return empty;
   }
 
   return (
-    <div className={styles.table}>
-      <div className={classNames(styles.header, 'row')}>
-        {columns.map(({ key, label, className, style, header }) => (
-          <div
-            key={key}
-            className={classNames(styles.head, className, header?.className)}
-            style={{ ...style, ...header?.style }}
-          >
-            {label}
-          </div>
-        ))}
-      </div>
-      <div className={styles.body}>
+    <div className={classNames(styles.table, className)}>
+      {showHeader && (
+        <div className={classNames(styles.header, 'row')}>
+          {columns.map(({ key, label, className, style, header }) => (
+            <div
+              key={key}
+              className={classNames(styles.head, className, header?.className)}
+              style={{ ...style, ...header?.style }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+      )}
+      <div className={classNames(styles.body, bodyClassName)}>
         {rows.length === 0 && <NoData />}
-        {rows.map((row, rowIndex) => (
-          <div className={classNames(styles.row, 'row')} key={rowIndex}>
-            {columns.map(({ key, render, className, style, cell }) => (
-              <div
-                key={`${rowIndex}${key}`}
-                className={classNames(styles.cell, className, cell?.className)}
-                style={{ ...style, ...cell?.style }}
-              >
-                {render ? render(row) : row[key]}
-              </div>
-            ))}
-          </div>
-        ))}
+        {!children &&
+          rows.map((row, index) => {
+            const id = rowKey ? rowKey(row) : index;
+            return <TableRow key={id} columns={columns} row={row} />;
+          })}
+        {children}
       </div>
     </div>
   );
 }
+
+export const TableRow = ({ columns, row }) => (
+  <div className={classNames(styles.row, 'row')}>
+    {columns.map(({ key, render, className, style, cell }, index) => (
+      <div
+        key={`${key}-${index}`}
+        className={classNames(styles.cell, className, cell?.className)}
+        style={{ ...style, ...cell?.style }}
+      >
+        {render ? render(row) : row[key]}
+      </div>
+    ))}
+  </div>
+);
