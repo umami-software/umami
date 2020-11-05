@@ -1,7 +1,5 @@
 {
   "name": "umami",
   "script": "npm",
-  "args": "start",
-  "instances": "max",
-  "exec_mode": "cluster"
+  "args": "start"
 }
