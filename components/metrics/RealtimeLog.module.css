@@ -44,3 +44,12 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.row .link {
+  color: var(--gray900);
+  text-decoration: none;
+}
+
+.row .link:hover {
+  color: var(--primary400);
+}
