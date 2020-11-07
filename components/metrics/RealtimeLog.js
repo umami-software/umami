@@ -29,7 +29,7 @@ const TYPE_ICONS = {
   [TYPE_EVENT]: <Bolt />,
 };
 
-export default function RealtimeLog({ data, websites }) {
+export default function RealtimeLog({ data, websites, websiteId }) {
   const intl = useIntl();
   const [locale] = useLocale();
   const countryNames = useCountryNames(locale);
@@ -88,7 +88,7 @@ export default function RealtimeLog({ data, websites }) {
   }
 
   function getWebsite({ website_id }) {
-    return websites.find(n => n.website_id === website_id)?.name;
+    return websites.find(n => n.website_id === website_id);
   }
 
   function getDetail({
@@ -111,7 +111,7 @@ export default function RealtimeLog({ data, websites }) {
       );
     }
     if (view_id) {
-      const domain = getWebsite({ website_id });
+      const domain = getWebsite({ website_id })?.domain;
       return (
         <a
           className={styles.link}
@@ -161,7 +161,9 @@ export default function RealtimeLog({ data, websites }) {
           <Icon className={styles.icon} icon={getIcon(row)} />
           {getDetail(row)}
         </div>
-        <div className={styles.website}>{getWebsite(row)}</div>
+        {!websiteId && websites.length > 1 && (
+          <div className={styles.website}>{getWebsite(row)?.domain}</div>
+        )}
       </div>
     );
   };
