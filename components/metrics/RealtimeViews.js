@@ -55,7 +55,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
         pageviews
           .reduce((arr, { url, website_id }) => {
             if (url?.startsWith('/')) {
-              if (!websiteId) {
+              if (!websiteId && websites.length > 0) {
                 url = `${getDomain(website_id)}${url}`;
               }
               const row = arr.find(({ x }) => x === url);
