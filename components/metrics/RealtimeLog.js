@@ -29,7 +29,7 @@ const TYPE_ICONS = {
   [TYPE_EVENT]: <Bolt />,
 };
 
-export default function RealtimeLog({ data, websites }) {
+export default function RealtimeLog({ data, websites, websiteId }) {
   const intl = useIntl();
   const [locale] = useLocale();
   const countryNames = useCountryNames(locale);
@@ -161,7 +161,9 @@ export default function RealtimeLog({ data, websites }) {
           <Icon className={styles.icon} icon={getIcon(row)} />
           {getDetail(row)}
         </div>
-        {websites.length > 0 && <div className={styles.website}>{getWebsite(row)?.domain}</div>}
+        {!websiteId && websites.length > 1 && (
+          <div className={styles.website}>{getWebsite(row)?.domain}</div>
+        )}
       </div>
     );
   };
