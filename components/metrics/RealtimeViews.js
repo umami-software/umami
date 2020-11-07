@@ -28,6 +28,15 @@ export default function RealtimeViews({ websiteId, data, websites }) {
     },
   ];
 
+  const renderLink = ({ x }) => {
+    const domain = x.startsWith('/') ? getDomain(websiteId) : '';
+    return (
+      <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
+        {x}
+      </a>
+    );
+  };
+
   const [referrers, pages] = useMemo(() => {
     if (pageviews) {
       const referrers = percentFilter(
@@ -91,6 +100,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
         <DataTable
           title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
           metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          renderLabel={renderLink}
           data={pages}
           height={400}
         />
