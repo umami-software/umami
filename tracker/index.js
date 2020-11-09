@@ -1,3 +1,4 @@
+import '../lib/ie';
 import { doNotTrack, hook } from '../lib/web';
 import { removeTrailingSlash } from '../lib/url';
 

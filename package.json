@@ -96,9 +96,14 @@
     "uuid": "^8.3.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "@formatjs/cli": "^2.13.5",
     "@prisma/cli": "2.10.1",
+    "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^16.0.0",
     "@rollup/plugin-node-resolve": "^10.0.0",
     "@rollup/plugin-replace": "^2.3.4",
     "@svgr/webpack": "^5.4.0",
