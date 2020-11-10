@@ -2,17 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from 'redux/actions/user';
 import { useRouter } from 'next/router';
-import { get } from '../lib/web';
-
-export async function fetchUser() {
-  const res = await fetch('/api/auth/verify');
-
-  if (!res.ok) {
-    return null;
-  }
-
-  return await res.json();
-}
+import { get } from 'lib/web';
 
 export default function useRequireLogin() {
   const router = useRouter();
