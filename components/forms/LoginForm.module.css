@@ -13,3 +13,11 @@
   justify-content: center;
   margin: 0 auto;
 }
+
+.header {
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  margin: 12px 0;
+}

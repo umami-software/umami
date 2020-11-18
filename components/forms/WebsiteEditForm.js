@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
-import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
@@ -11,7 +10,7 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 import Checkbox from 'components/common/Checkbox';
 import { DOMAIN_REGEX } from 'lib/constants';
-import { useRouter } from 'next/router';
+import usePost from 'hooks/usePost';
 
 const initialValues = {
   name: '',
@@ -35,11 +34,11 @@ const validate = ({ name, domain }) => {
 };
 
 export default function WebsiteEditForm({ values, onSave, onClose }) {
-  const { basePath } = useRouter();
+  const post = usePost();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post(`${basePath}/api/website`, values);
+    const { ok, data } = await post('/api/website', values);
 
     if (ok) {
       onSave();

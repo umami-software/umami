@@ -6,8 +6,7 @@ import { useRouter } from 'next/router';
 
 export default function useFetch(url, options = {}, update = []) {
   const dispatch = useDispatch();
-  const [data, setData] = useState();
-  const [status, setStatus] = useState();
+  const [response, setResponse] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
   const [count, setCount] = useState(0);
@@ -19,18 +18,17 @@ export default function useFetch(url, options = {}, update = []) {
       setLoadiing(true);
       setError(null);
       const time = performance.now();
-      const { data, status } = await get(`${basePath}${url}`, params, headers);
+      const { data, status, ok } = await get(`${basePath}${url}`, params, headers);
 
       dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
 
       if (status >= 400) {
         setError(data);
-        setData(null);
+        setResponse({ data: null, status, ok });
       } else {
-        setData(data);
+        setResponse({ data, status, ok });
       }
 
-      setStatus(status);
       onDataLoad?.(data);
     } catch (e) {
       console.error(e);
@@ -60,5 +58,5 @@ export default function useFetch(url, options = {}, update = []) {
     }
   }, [interval, !!disabled]);
 
-  return { data, status, error, loading };
+  return { ...response, error, loading };
 }
