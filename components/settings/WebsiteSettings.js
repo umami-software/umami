@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import Link from 'components/common/Link';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
+import DetailsLink from 'components/common/DetailsLink';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
 import WebsiteEditForm from 'components/forms/WebsiteEditForm';
@@ -13,7 +13,6 @@ import ShareUrlForm from 'components/forms/ShareUrlForm';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import Toast from 'components/common/Toast';
-import Favicon from 'components/common/Favicon';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
 import Plus from 'assets/plus.svg';
@@ -59,13 +58,6 @@ export default function WebsiteSettings() {
         <FormattedMessage id="label.delete" defaultMessage="Delete" />
       </Button>
     </ButtonLayout>
-  );
-
-  const DetailsLink = ({ website_id, name, domain }) => (
-    <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
-      <Favicon domain={domain} />
-      {name}
-    </Link>
   );
 
   const columns = [
