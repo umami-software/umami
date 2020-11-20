@@ -107,6 +107,48 @@ import { removeTrailingSlash } from '../lib/url';
       uuid,
     );
 
+  /* Impression Event */
+
+  const ableToObserveIntersection =
+    'IntersectionObserver' in window &&
+    'IntersectionObserverEntry' in window &&
+    'intersectionRatio' in window.IntersectionObserverEntry.prototype;
+
+  let impressionObserver, observeImpressions;
+  if (ableToObserveIntersection) {
+    const intersectionConfig = { threshold: 0.5 };
+
+    const intersectionCallback = (entries, self) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const impression = new Event('impression');
+          entry.target.dispatchEvent(impression);
+          self.unobserve(entry.target);
+        }
+      });
+    };
+
+    impressionObserver = new IntersectionObserver(intersectionCallback, intersectionConfig);
+
+    observeImpressions = () => {
+      const elements = document.querySelectorAll("[class*='umami--impression--']");
+
+      elements.forEach(element => {
+        impressionObserver.observe(element);
+      });
+    };
+  }
+
+  const installImpressionObserver = () => {
+    if (ableToObserveIntersection) {
+      if (document.readyState != 'loading') {
+        observeImpressions();
+      } else {
+        document.addEventListener('DOMContentLoaded', observeImpressions);
+      }
+    }
+  };
+
   /* Handle events */
 
   const addEvents = () => {
@@ -169,5 +211,6 @@ import { removeTrailingSlash } from '../lib/url';
     trackView(currentUrl, currentRef);
 
     addEvents();
+    installImpressionObserver();
   }
 })(window);
