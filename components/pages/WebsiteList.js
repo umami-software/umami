@@ -1,7 +1,10 @@
-import React, { useLayoutEffect, useMemo, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import DateFilter from 'components/common/DateFilter';
+import TableNew from 'components/common/TableNew';
+import Pagination from 'components/common/Pagination';
 import Page from 'components/layout/Page';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useFetch from 'hooks/useFetch';
@@ -12,13 +15,18 @@ import { get } from 'lib/web';
 import { TOKEN_HEADER } from 'lib/constants';
 import { useRouter } from 'next/router';
 import { useTable, usePagination } from 'react-table';
+import { setWebsitesData } from 'redux/actions/websites';
 import find from 'lodash.find';
+import Loader from 'react-loader-spinner';
+import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
   const [stats, setStats] = useState([]);
+  const dispatch = useDispatch();
   const fetchedData = useFetch('/api/websites', { params: { user_id: userId } });
   const { basePath } = useRouter();
   const shareToken = useShareToken();
+  const websites = useSelector(state => state.websites);
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 
@@ -26,17 +34,6 @@ export default function WebsiteList({ userId }) {
     if (!fetchedData.data) return [];
     return fetchedData.data.map(site => site.website_id);
   }, [fetchedData.data]);
-
-  const tableData = useMemo(() => {
-    if (!fetchedData.data || !stats.length) return [];
-
-    const _data = [];
-    fetchedData.data.forEach(i => {
-      const stat = find(stats, { id: i.website_id }) || {};
-      _data.push({ ...i, ...stat.data });
-    });
-    return _data;
-  }, [fetchedData.data, stats.length]);
 
   const getStats = async () => {
     const websitesData = [];
@@ -62,6 +59,18 @@ export default function WebsiteList({ userId }) {
 
   useLayoutEffect(() => {
     getStats();
+  }, [fetchedData.data, stats.length]);
+
+  useEffect(() => {
+    if (!fetchedData.data || !stats.length) return [];
+
+    const _data = [];
+    fetchedData.data.forEach(i => {
+      const stat = find(stats, { id: i.website_id }) || {};
+      _data.push({ ...i, ...stat.data });
+    });
+
+    dispatch(setWebsitesData(_data));
   }, [fetchedData.data, stats.length]);
 
   const tableColumns = useMemo(
@@ -123,95 +132,43 @@ export default function WebsiteList({ userId }) {
   } = useTable(
     {
       columns: tableColumns,
-      data: tableData,
-      initialState: { pageIndex: 0, pageSize: 10 },
+      data: websites,
+      initialState: { pageIndex: 0, pageSize: 50 },
     },
     usePagination,
   );
 
   return (
-    <Page>
-      <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={setDateRange} />
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map(headerGroup => (
-            <tr key={headerGroup} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th key={column} {...column.getHeaderProps()}>
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page.map(row => {
-            prepareRow(row);
-            return (
-              <tr key={row} {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return (
-                    <td key={cell} {...cell.getCellProps()}>
-                      {cell.render('Cell', { ...row.original })}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div className="pagination">
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0;
-              gotoPage(page);
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '}
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value));
-          }}
-        >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
+    <Page className={styles.root}>
+      <div className={styles.range}>
+        <b className={styles.rangeText}>Range:</b>
+        <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={setDateRange} />
       </div>
-      {/* <Table columns={columns} rows={data} empty={empty} /> */}
-      {/* {data.map(({ website_id, name, domain }) => (
-        <div key={website_id} className={styles.website}>
-          <WebsiteChart websiteId={website_id} title={name} domain={domain} showLink />
+      <TableNew
+        getTableProps={getTableProps}
+        getTableBodyProps={getTableBodyProps}
+        headerGroups={headerGroups}
+        prepareRow={prepareRow}
+        page={page}
+      />
+      {stats.length === 0 && (
+        <div className={styles.loader}>
+          <Loader type="ThreeDots" color="#ccc" height={80} width={80} />
         </div>
-      ))} */}
-      {fetchedData.data?.length === 0 && (
+      )}
+      <Pagination
+        gotoPage={gotoPage}
+        canPreviousPage={canPreviousPage}
+        previousPage={previousPage}
+        canNextPage={canNextPage}
+        nextPage={nextPage}
+        pageCount={pageCount}
+        pageIndex={pageIndex}
+        pageOptions={pageOptions}
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+      />
+      {fetchedData.status === 200 && fetchedData.data.length === 0 && stats.length === 0 && (
         <EmptyPlaceholder
           msg={
             <FormattedMessage

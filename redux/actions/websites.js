@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const websites = createSlice({
   name: 'websites',
-  initialState: {},
+  initialState: [],
   reducers: {
     updateWebsites(state, action) {
       state = action.payload;
@@ -25,5 +25,11 @@ export function setDateRange(websiteId, dateRange) {
     return dispatch(
       updateWebsite({ websiteId, dateRange: { ...dateRange, modified: Date.now() } }),
     );
+  };
+}
+
+export function setWebsitesData(data) {
+  return dispatch => {
+    return dispatch(updateWebsites([...data]));
   };
 }

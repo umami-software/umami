@@ -81,6 +81,7 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-intl": "^5.8.8",
+    "react-loader-spinner": "^3.1.14",
     "react-redux": "^7.2.2",
     "react-simple-maps": "^2.3.0",
     "react-spring": "^8.0.27",

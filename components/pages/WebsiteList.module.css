@@ -9,3 +9,26 @@
   border-bottom: 0;
   margin-bottom: 0;
 }
+
+.root {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.range {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.rangeText {
+  margin-right: 8px;
+}
+
+.loader {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
