@@ -43,19 +43,12 @@ export default function WebsiteDetails({ websiteId }) {
   const [eventsData, setEventsData] = useState();
   const {
     resolve,
-    router,
     query: { view },
   } = usePageQuery();
 
   const BackButton = () => (
     <div key="back-button" className={styles.backButton}>
-      <Link
-        key="back-button"
-        href={router.pathname}
-        as={resolve({ view: undefined })}
-        icon={<Arrow />}
-        size="small"
-      >
+      <Link key="back-button" href={resolve({ view: undefined })} icon={<Arrow />} size="small">
         <FormattedMessage id="label.back" defaultMessage="Back" />
       </Link>
     </div>

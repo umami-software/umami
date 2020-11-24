@@ -65,7 +65,7 @@
   "message.get-tracking-code": "トラッキングコードを取得",
   "message.go-to-settings": "設定する",
   "message.incorrect-username-password": "ユーザー名/パスワードが正しくありません。",
-  "message.log.visitor": "Visitor from {country} using {browser} on {os} {device}",
+  "message.log.visitor": "{os}（{device}）で{browser}を使用している{country}からの訪問者",
   "message.new-version-available": "新しいバージョン（{version}）が利用可能です！",
   "message.no-data-available": "データがありません。",
   "message.no-websites-configured": "Webサイトが設定されていません。",

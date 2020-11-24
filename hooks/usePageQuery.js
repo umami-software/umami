@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { getQueryString } from '../lib/url';
+import { getQueryString } from 'lib/url';
 
 export default function usePageQuery() {
   const router = useRouter();
@@ -25,7 +25,9 @@ export default function usePageQuery() {
   function resolve(params) {
     const search = getQueryString({ ...query, ...params });
 
-    return `${pathname}${search}`;
+    const { asPath } = router;
+
+    return `${asPath.split('?')[0]}${search}`;
   }
 
   return { pathname, query, resolve, router };

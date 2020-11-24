@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
-import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
@@ -10,6 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
+import usePost from 'hooks/usePost';
 
 const initialValues = {
   current_password: '',
@@ -38,11 +37,11 @@ const validate = ({ current_password, new_password, confirm_password }) => {
 };
 
 export default function ChangePasswordForm({ values, onSave, onClose }) {
-  const { basePath } = useRouter();
+  const post = usePost();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post(`${basePath}/api/account/password`, values);
+    const { ok, data } = await post('/api/account/password', values);
 
     if (ok) {
       onSave();
