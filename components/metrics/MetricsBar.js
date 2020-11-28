@@ -41,6 +41,7 @@ export default function MetricsBar({ websiteId, className }) {
   }
 
   const { pageviews, uniques, bounces, totaltime } = data || {};
+  const num = Math.min(uniques, bounces);
 
   return (
     <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
@@ -60,7 +61,7 @@ export default function MetricsBar({ websiteId, className }) {
           />
           <MetricCard
             label={<FormattedMessage id="metrics.bounce-rate" defaultMessage="Bounce rate" />}
-            value={uniques ? (bounces / uniques) * 100 : 0}
+            value={uniques ? (num / uniques) * 100 : 0}
             format={n => Number(n).toFixed(0) + '%'}
           />
           <MetricCard
