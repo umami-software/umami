@@ -9,7 +9,7 @@ export default async (req, res) => {
   const { user_id: auth_user_id, is_admin } = req.auth;
   const { user_id, current_password, new_password } = req.body;
 
-  if (!is_admin || user_id !== auth_user_id) {
+  if (!is_admin && user_id !== auth_user_id) {
     return unauthorized(res);
   }
 
