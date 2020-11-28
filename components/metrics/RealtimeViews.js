@@ -13,7 +13,10 @@ export default function RealtimeViews({ websiteId, data, websites }) {
   const [filter, setFilter] = useState(FILTER_REFERRERS);
   const domains = useMemo(() => websites.map(({ domain }) => domain), [websites]);
   const getDomain = useCallback(
-    id => websites.find(({ website_id }) => website_id === id)?.domain,
+    id =>
+      websites.length === 1
+        ? websites[0]?.domain
+        : websites.find(({ website_id }) => website_id === id)?.domain,
     [websites],
   );
 
