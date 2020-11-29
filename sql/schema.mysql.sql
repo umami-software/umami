@@ -11,7 +11,7 @@ create table account (
     is_admin bool not null default false,
     created_at timestamp default current_timestamp,
     updated_at timestamp default current_timestamp
-) ENGINE=InnoDB;
+) ENGINE=InnoDB COLLATE=utf8_general_ci;
 
 create table website (
     website_id int unsigned not null auto_increment primary key,
@@ -22,7 +22,7 @@ create table website (
     share_id varchar(64) unique,
     created_at timestamp default current_timestamp,
     foreign key (user_id) references account(user_id) on delete cascade
-) ENGINE=InnoDB;
+) ENGINE=InnoDB COLLATE=utf8_general_ci;
 
 create table session (
     session_id int unsigned not null auto_increment primary key,
@@ -37,7 +37,7 @@ create table session (
     language varchar(35),
     country char(2),
     foreign key (website_id) references website(website_id) on delete cascade
-) ENGINE=InnoDB;
+) ENGINE=InnoDB COLLATE=utf8_general_ci;
 
 create table pageview (
     view_id int unsigned not null auto_increment primary key,
@@ -48,7 +48,7 @@ create table pageview (
     referrer varchar(500),
     foreign key (website_id) references website(website_id) on delete cascade,
     foreign key (session_id) references session(session_id) on delete cascade
-) ENGINE=InnoDB;
+) ENGINE=InnoDB COLLATE=utf8_general_ci;
 
 create table event (
     event_id int unsigned not null auto_increment primary key,
@@ -60,7 +60,7 @@ create table event (
     event_value varchar(50) not null,
     foreign key (website_id) references website(website_id) on delete cascade,
     foreign key (session_id) references session(session_id) on delete cascade
-) ENGINE=InnoDB;
+) ENGINE=InnoDB COLLATE=utf8_general_ci;
 
 create index website_user_id_idx on website(user_id);
 
