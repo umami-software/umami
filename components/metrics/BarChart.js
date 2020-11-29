@@ -175,6 +175,7 @@ export default function BarChart({
     options.scales.xAxes[0].ticks.callback = renderXLabel;
     options.scales.xAxes[0].ticks.fontColor = colors.text;
     options.scales.yAxes[0].ticks.fontColor = colors.text;
+    options.scales.yAxes[0].ticks.precision = 0;
     options.scales.yAxes[0].gridLines.color = colors.line;
     options.scales.yAxes[0].gridLines.zeroLineColor = colors.zeroLine;
     options.animation.duration = animationDuration;
