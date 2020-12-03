@@ -156,6 +156,8 @@ import { removeTrailingSlash } from '../lib/url';
     const umami = event_value => trackEvent(event_value);
     umami.trackView = trackView;
     umami.trackEvent = trackEvent;
+    umami.addEvents = addEvents;
+    umami.removeEvents = removeEvents;
 
     window.umami = umami;
   }
