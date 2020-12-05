@@ -35,7 +35,7 @@ import { removeTrailingSlash } from '../lib/url';
 
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
-    : new URL(script.src).href.split('/').slice(0, -1).join('/');
+    : script.src.split('/').slice(0, -1).join('/');
   const screen = `${width}x${height}`;
   const listeners = [];
   let currentUrl = `${pathname}${search}`;
@@ -139,8 +139,7 @@ import { removeTrailingSlash } from '../lib/url';
     const newUrl = url.toString();
 
     if (newUrl.substring(0, 4) === 'http') {
-      const { pathname, search } = new URL(newUrl);
-      currentUrl = `${pathname}${search}`;
+      currentUrl = '/' + newUrl.split('/').splice(3).join('/');
     } else {
       currentUrl = newUrl;
     }
@@ -156,6 +155,8 @@ import { removeTrailingSlash } from '../lib/url';
     const umami = event_value => trackEvent(event_value);
     umami.trackView = trackView;
     umami.trackEvent = trackEvent;
+    umami.addEvents = addEvents;
+    umami.removeEvents = removeEvents;
 
     window.umami = umami;
   }
