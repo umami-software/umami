@@ -17,7 +17,7 @@ export default function EventsTable({ websiteId, ...props }) {
 }
 
 const Label = ({ value }) => {
-  const [event, label] = value.split(':');
+  const [event, label] = value.split('\t');
   return (
     <>
       <Tag>{event}</Tag>
