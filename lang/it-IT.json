@@ -77,7 +77,7 @@
   "message.type-delete": "Digita {delete} nel box qui sotto per confermare.",
   "metrics.actions": "Azioni",
   "metrics.average-visit-time": "Tempo medio di visita",
-  "metrics.bounce-rate": "Tasso di rimbalzo",
+  "metrics.bounce-rate": "Frequenza di rimbalzo",
   "metrics.browsers": "Browser",
   "metrics.countries": "Nazioni",
   "metrics.device.desktop": "Desktop",
