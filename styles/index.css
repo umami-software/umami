@@ -28,6 +28,11 @@ body {
   font-family: 'Noto Sans JP', sans-serif !important;
 }
 
+.he-IL {
+  display: inline-block;
+  direction: rtl;
+}
+
 *,
 *:before,
 *:after {
