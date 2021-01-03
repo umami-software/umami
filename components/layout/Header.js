@@ -18,13 +18,13 @@ export default function Header() {
     <header className="container">
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
-        <div className="col-12 col-md-12 col-lg-3">
+        <div className="col-6 col-lg-3 order-1 order-lg-1">
           <div className={styles.title}>
             <Icon icon={<Logo />} size="large" className={styles.logo} />
             <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
           </div>
         </div>
-        <div className="col-12 col-md-12 col-lg-6">
+        <div className="col-12 col-lg-6 order-3 order-lg-2">
           {user && (
             <div className={styles.nav}>
               <Link href="/dashboard">
@@ -39,7 +39,7 @@ export default function Header() {
             </div>
           )}
         </div>
-        <div className="col-12 col-md-12 col-lg-3">
+        <div className="col-6 col-lg-3 order-2 order-lg-3">
           <div className={styles.buttons}>
             <ThemeButton />
             <LanguageButton menuAlign="right" />
