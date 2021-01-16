@@ -23,12 +23,25 @@ import { removeTrailingSlash } from '../lib/url';
   const dnt = attr('data-do-not-track');
   const useCache = attr('data-cache');
   const domains = attr('data-domains');
+  const domainBlacklist = attr('data-domains-blacklist');
 
+  /**
+   * blacklist has higher importance than whitelist,
+   * 
+   * i.e., if an item is both whitelisted and blacklisted,
+   * it will be blacklisted.
+   * 
+   */
   const disableTracking =
     localStorage.getItem('umami.disabled') ||
     (dnt && doNotTrack()) ||
     (domains &&
       !domains
+        .split(',')
+        .map(n => n.trim())
+        .includes(hostname)) ||
+    (domainBlacklist &&
+      domainBlacklist
         .split(',')
         .map(n => n.trim())
         .includes(hostname));
