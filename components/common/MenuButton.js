@@ -30,7 +30,7 @@ export default function MenuButton({
   }
 
   useDocumentClick(e => {
-    if (!ref.current.contains(e.target)) {
+    if (!ref.current?.contains(e.target)) {
       setShowMenu(false);
     }
   });
