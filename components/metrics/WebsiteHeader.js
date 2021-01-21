@@ -10,12 +10,21 @@ import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
 
 export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {
+  let TitleHeader = showLink ? (
+    <Link href="/website/[...id]" as={`/website/${websiteId}/${title}`}>
+      <Favicon domain={domain} />
+      {title}
+    </Link>
+  ) : (
+    <div>
+      <Favicon domain={domain} />
+      {title}
+    </div>
+  );
+
   return (
     <PageHeader>
-      <div className={styles.title}>
-        <Favicon domain={domain} />
-        {title}
-      </div>
+      <div className={styles.title}>{TitleHeader}</div>
       <ActiveUsers className={styles.active} websiteId={websiteId} />
       <ButtonLayout align="right">
         <RefreshButton websiteId={websiteId} />
