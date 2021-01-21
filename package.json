@@ -69,7 +69,7 @@
     "detect-browser": "^5.2.0",
     "dotenv": "^8.2.0",
     "formik": "^2.2.6",
-    "immer": "^8.0.0",
+    "immer": "^8.0.1",
     "is-localhost-ip": "^1.4.0",
     "isbot-fast": "^1.2.0",
     "jose": "2.0.3",
