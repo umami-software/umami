@@ -25,7 +25,7 @@ const commandlineOptions = {
     maxRequests: 1,
   },
   // Heavy can saturate CPU which leads to requests stalling depending on machine
-  // Keep an eye  if --verbose logs pause, or if node CPU in top is > 100.
+  // Keep an eye if --verbose logs pause, or if node CPU in top is > 100.
   // https://github.com/alexfernandez/loadtest#usage-donts
   heavy: {
     concurrency: 10,
@@ -51,7 +51,6 @@ const options = {
     const message = JSON.stringify(mockPageView());
     options.headers['Content-Length'] = message.length;
     options.headers['Content-Type'] = 'application/json';
-    options.headers['user-agent'] = 'User-Agent: Mozilla/5.0 LoadTest';
     options.body = message;
     options.path = '/api/collect';
     const request = client(options, callback);
@@ -95,15 +94,14 @@ loadtest.loadTest(options, (error, results) => {
   if (results.errorCodes && Object.keys(results.errorCodes).length) {
     console.log(chalk.redBright('*'), chalk.red('Error Codes:'), results.errorCodes);
   }
-  // console.log(results);
 });
 
 /**
- * Create a new  object for each request.  Note, we could randomize values here if desired.
+ * Create a new object for each request. Note, we could randomize values here if desired.
  *
- * TODO: Need a better way of passing in  websiteId, hostname, URL.
+ * TODO: Need a better way of passing in websiteId, hostname, URL.
  *
- * @param {object} payload pageview payload same as sent  via tracker
+ * @param {object} payload pageview payload same as sent via tracker
  */
 function mockPageView(
   payload = {
@@ -121,6 +119,9 @@ function mockPageView(
 
 // If you pass in --verbose, this function is called
 function statusCallback(error, result, latency) {
+  if (error) {
+    return console.error(chalk.redBright(error));
+  }
   console.log(
     chalk.yellowBright(`\n## req #${result.requestIndex + 1} of ${latency.totalRequests}`),
   );
