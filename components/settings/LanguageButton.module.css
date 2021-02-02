@@ -8,7 +8,7 @@
 
 .menu div {
   border-radius: 5px;
-  min-width: calc(100% / 3);
+  min-width: calc(100% / 3 - 8px);
 }
 
 @media only screen and (max-width: 992px) {
