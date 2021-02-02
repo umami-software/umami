@@ -133,26 +133,24 @@ import { removeTrailingSlash } from '../lib/url';
   /* Handle history changes */
 
   const handlePush = (state, title, url) => {
-    removeEvents();
-    // url is not guaranteed
-    // thus calling `url.toString()` might causes exception, then break the pjax update
-    // track only if url is validate
-    if (url) {
-      currentRef = currentUrl;
-      const newUrl = url.toString();
+    if (!url) return;
 
-      if (newUrl.substring(0, 4) === 'http') {
-        currentUrl = '/' + newUrl.split('/').splice(3).join('/');
-      } else {
-        currentUrl = newUrl;
-      }
-      // this function under some framework might be called multiple times
-      // thus only track if currentUrl and currentRef are not same
-      if (currentUrl !== currentRef) {
-        trackView(currentUrl, currentRef);
-        setTimeout(addEvents, 300);
-      }
+    removeEvents();
+
+    currentRef = currentUrl;
+    const newUrl = url.toString();
+
+    if (newUrl.substring(0, 4) === 'http') {
+      currentUrl = '/' + newUrl.split('/').splice(3).join('/');
+    } else {
+      currentUrl = newUrl;
     }
+
+    if (currentUrl !== currentRef) {
+      trackView(currentUrl, currentRef);
+    }
+
+    setTimeout(addEvents, 300);
   };
 
   /* Global */
