@@ -29,14 +29,13 @@ export default function AccountSettings() {
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
-  const DashboardLink = row =>
-    row.is_admin ? null : (
-      <Link href={`/dashboard/${row.user_id}/${row.username}`}>
-        <a>
-          <Icon icon={<LinkIcon />} />
-        </a>
-      </Link>
-    );
+  const DashboardLink = row => (
+    <Link href={`/dashboard/${row.user_id}/${row.username}`}>
+      <a>
+        <Icon icon={<LinkIcon />} />
+      </a>
+    </Link>
+  );
 
   const Buttons = row =>
     row.username !== 'admin' ? (

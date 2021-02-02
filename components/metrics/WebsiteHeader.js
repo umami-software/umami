@@ -11,10 +11,12 @@ import styles from './WebsiteHeader.module.css';
 
 export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {
   const header = showLink ? (
-    <Link href="/website/[...id]" as={`/website/${websiteId}/${title}`}>
+    <>
       <Favicon domain={domain} />
-      {title}
-    </Link>
+      <Link href="/website/[...id]" as={`/website/${websiteId}/${title}`}>
+        {title}
+      </Link>
+    </>
   ) : (
     <div>
       <Favicon domain={domain} />
