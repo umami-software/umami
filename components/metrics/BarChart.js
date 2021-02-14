@@ -44,7 +44,7 @@ export default function BarChart({
 
     switch (unit) {
       case 'minute':
-        return index % 2 === 0 ? dateFormat(d, 'h:mm', locale) : '';
+        return index % 2 === 0 ? dateFormat(d, 'H:mm', locale) : '';
       case 'hour':
         return dateFormat(d, 'ha', locale);
       case 'day':
