@@ -13,7 +13,7 @@ import styles from './EventsTable.module.css';
 
 const EVENT_FILTER_DEFAULT = {
   value: 'EVENT_FILTER_DEFAULT',
-  label: 'All Events',
+  label: <FormattedMessage id="label.all-events" defaultMessage="All events" />,
 };
 
 export default function EventsTable({ websiteId, ...props }) {
