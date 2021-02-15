@@ -9,6 +9,7 @@ import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
 import { TOKEN_HEADER } from 'lib/constants';
+import styles from './EventsTable.module.css';
 
 const EVENT_FILTER_DEFAULT = {
   value: 'EVENT_FILTER_DEFAULT',
@@ -45,7 +46,7 @@ export default function EventsTable({ websiteId, ...props }) {
   return (
     <>
       {!loading && !error && eventTypes.length > 1 && (
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={styles.filter}>
           <DropDown value={eventType} options={dropDownOptions} onChange={setEventType} />
         </div>
       )}
