@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -10,43 +10,67 @@ import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
+import Sun from 'assets/sun.svg';
+import Moon from 'assets/moon.svg';
 
 export default function Header() {
   const user = useSelector(state => state.user);
+  const [active, setActive] = useState(false);
+
+  function handleClick() {
+    setActive(state => !state);
+  }
 
   return (
-    <header className="container">
+    <nav className="container">
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
-        <div className="col-6 col-lg-3 order-1 order-lg-1">
-          <div className={styles.title}>
-            <Icon icon={<Logo />} size="large" className={styles.logo} />
-            <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
+        <div className={styles.nav}>
+          <div className="">
+            <div className={styles.title}>
+              <Icon icon={<Logo />} size="large" className={styles.logo} />
+              <Link href={user ? '/' : 'https://umami.is'}>umami</Link>
+            </div>
           </div>
-        </div>
-        <div className="col-12 col-lg-6 order-3 order-lg-2">
+          <button
+            onClick={handleClick}
+            role="button"
+            className={styles.burger}
+            aria-label="menu"
+            aria-expanded="false"
+          >
+            {active ? (
+              <Icon icon={<Sun />} size="large" className={styles.logo} />
+            ) : (
+              <Icon icon={<Moon />} size="large" className={styles.logo} />
+            )}
+          </button>
           {user && (
-            <div className={styles.nav}>
-              <Link href="/dashboard">
-                <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
-              </Link>
-              <Link href="/realtime">
-                <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
-              </Link>
-              <Link href="/settings">
-                <FormattedMessage id="label.settings" defaultMessage="Settings" />
-              </Link>
+            <div className={styles.items}>
+              <div className={active ? classNames(styles.active) : ''}>
+                <Link href="/dashboard">
+                  <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
+                </Link>
+                <Link href="/realtime">
+                  <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
+                </Link>
+                <Link href="/settings">
+                  <FormattedMessage id="label.settings" defaultMessage="Settings" />
+                </Link>
+              </div>
             </div>
           )}
-        </div>
-        <div className="col-6 col-lg-3 order-2 order-lg-3">
-          <div className={styles.buttons}>
-            <ThemeButton />
-            <LanguageButton menuAlign="right" />
-            {user && <UserButton />}
+          <div className={styles.items}>
+            <div className={active ? classNames(styles.active) : ''}>
+              <div className={styles.buttons}>
+                <ThemeButton />
+                <LanguageButton menuAlign="right" />
+                {user && <UserButton />}
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </header>
+    </nav>
   );
 }
