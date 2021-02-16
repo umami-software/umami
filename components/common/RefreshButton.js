@@ -38,7 +38,7 @@ function RefreshButton({ websiteId }) {
 }
 
 RefreshButton.propTypes = {
-  websiteId: PropTypes.number,
+  websiteId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default RefreshButton;
