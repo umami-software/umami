@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import classNames from 'classnames';
 import Icon from './Icon';
 import styles from './Button.module.css';
 
-export default function Button({
+function Button({
   type = 'button',
   icon,
   size,
@@ -43,3 +44,19 @@ export default function Button({
     </button>
   );
 }
+
+Button.propTypes = {
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  icon: PropTypes.node,
+  size: PropTypes.oneOf(['xlarge', 'large', 'medium', 'small', 'xsmall']),
+  variant: PropTypes.oneOf(['action', 'danger', 'light']),
+  children: PropTypes.node,
+  className: PropTypes.string,
+  tooltip: PropTypes.node,
+  tooltipId: PropTypes.string,
+  disabled: PropTypes.bool,
+  iconRight: PropTypes.bool,
+  onClick: PropTypes.func,
+};
+
+export default Button;

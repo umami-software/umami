@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import styles from './Modal.module.css';
 
-export default function Modal({ title, children }) {
+function Modal({ title, children }) {
   const props = useSpring({ opacity: 1, from: { opacity: 0 } });
 
   return ReactDOM.createPortal(
@@ -16,3 +17,10 @@ export default function Modal({ title, children }) {
     document.getElementById('__modals'),
   );
 }
+
+Modal.propTypes = {
+  title: PropTypes.node,
+  children: PropTypes.node,
+};
+
+export default Modal;
