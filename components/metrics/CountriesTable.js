@@ -10,7 +10,7 @@ export default function CountriesTable({ websiteId, onDataLoad, ...props }) {
   const countryNames = useCountryNames(locale);
 
   function renderLabel({ x }) {
-    return <div className={locale}>{countryNames[x]}</div>;
+    return <div className={locale}>{countryNames[x] ?? 'Unknown'}</div>;
   }
 
   return (
