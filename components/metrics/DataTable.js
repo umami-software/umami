@@ -27,7 +27,7 @@ export default function DataTable({
     return (
       <AnimatedRow
         key={label}
-        label={renderLabel ? renderLabel(row) : label}
+        label={renderLabel ? renderLabel(row) : label ?? 'Unknown'}
         value={value}
         percent={percent}
         animate={animate && !virtualize}
