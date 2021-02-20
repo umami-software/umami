@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { endOfYear, isSameDay } from 'date-fns';
 import Modal from './Modal';
@@ -54,7 +55,7 @@ const filterOptions = [
   },
 ];
 
-export default function DateFilter({ value, startDate, endDate, onChange, className }) {
+function DateFilter({ value, startDate, endDate, onChange, className }) {
   const [showPicker, setShowPicker] = useState(false);
   const displayValue =
     value === 'custom' ? (
@@ -117,3 +118,13 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
     </>
   );
 };
+
+DateFilter.propTypes = {
+  value: PropTypes.string,
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
+  className: PropTypes.string,
+};
+
+export default DateFilter;
