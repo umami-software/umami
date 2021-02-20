@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import Legend from 'components/metrics/Legend';
 import { formatLongNumber } from 'lib/format';
-import { dateFormat } from 'lib/lang';
+import { dateFormat, timeFormat } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
 import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
@@ -46,7 +46,7 @@ export default function BarChart({
       case 'minute':
         return index % 2 === 0 ? dateFormat(d, 'H:mm', locale) : '';
       case 'hour':
-        return dateFormat(d, 'ha', locale);
+        return timeFormat(d, locale);
       case 'day':
         if (records > 31) {
           if (w <= 500) {
@@ -131,6 +131,7 @@ export default function BarChart({
               minRotation: 0,
               maxRotation: 0,
               fontColor: colors.text,
+              autoSkipPadding: 1,
             },
             gridLines: {
               display: false,
