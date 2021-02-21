@@ -44,4 +44,7 @@
   .header {
     padding: 0 15px;
   }
+  .nav {
+    font-size: var(--font-size-normal);
+  }
 }
