@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './Menu.module.css';
 
-export default function Menu({
+function Menu({
   options = [],
   selectedOption,
   className,
@@ -46,3 +47,24 @@ export default function Menu({
     </div>
   );
 }
+
+Menu.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.node,
+      value: PropTypes.any,
+      className: PropTypes.string,
+      render: PropTypes.func,
+      divider: PropTypes.bool,
+    }),
+  ),
+  selectedOption: PropTypes.any,
+  className: PropTypes.string,
+  float: PropTypes.oneOf(['top', 'bottom']),
+  align: PropTypes.oneOf(['left', 'right']),
+  optionClassName: PropTypes.string,
+  selectedClassName: PropTypes.string,
+  onSelect: PropTypes.func,
+};
+
+export default Menu;

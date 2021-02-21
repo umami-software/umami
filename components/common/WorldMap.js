@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
@@ -12,7 +13,7 @@ import { useRouter } from 'next/router';
 
 const geoUrl = '/world-110m.json';
 
-export default function WorldMap({ data, className }) {
+function WorldMap({ data, className }) {
   const { basePath } = useRouter();
   const [tooltip, setTooltip] = useState();
   const [theme] = useTheme();
@@ -89,3 +90,16 @@ export default function WorldMap({ data, className }) {
     </div>
   );
 }
+
+WorldMap.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.string,
+      y: PropTypes.number,
+      z: PropTypes.number,
+    }),
+  ),
+  className: PropTypes.string,
+};
+
+export default WorldMap;
