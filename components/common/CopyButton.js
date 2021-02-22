@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Button from './Button';
 import { FormattedMessage } from 'react-intl';
 
@@ -6,7 +7,7 @@ const defaultText = (
   <FormattedMessage id="label.copy-to-clipboard" defaultMessage="Copy to clipboard" />
 );
 
-export default function CopyButton({ element, ...props }) {
+function CopyButton({ element, ...props }) {
   const [text, setText] = useState(defaultText);
 
   function handleClick() {
@@ -24,3 +25,13 @@ export default function CopyButton({ element, ...props }) {
     </Button>
   );
 }
+
+CopyButton.propTypes = {
+  element: PropTypes.shape({
+    current: PropTypes.shape({
+      select: PropTypes.func.isRequired,
+    }),
+  }),
+};
+
+export default CopyButton;

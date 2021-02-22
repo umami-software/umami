@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import styles from './Icon.module.css';
 
-export default function Icon({ icon, className, size = 'medium', ...props }) {
+function Icon({ icon, className, size = 'medium', ...props }) {
   return (
     <div
       className={classNames(styles.icon, className, {
@@ -18,3 +19,11 @@ export default function Icon({ icon, className, size = 'medium', ...props }) {
     </div>
   );
 }
+
+Icon.propTypes = {
+  className: PropTypes.string,
+  icon: PropTypes.node.isRequired,
+  size: PropTypes.oneOf(['xlarge', 'large', 'medium', 'small', 'xsmall']),
+};
+
+export default Icon;

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import styles from './Toast.module.css';
 import Icon from 'components/common/Icon';
 import Close from 'assets/times.svg';
 
-export default function Toast({ message, timeout = 3000, onClose }) {
+function Toast({ message, timeout = 3000, onClose }) {
   const props = useSpring({
     opacity: 1,
     transform: 'translate3d(0,0px,0)',
@@ -24,3 +25,11 @@ export default function Toast({ message, timeout = 3000, onClose }) {
     document.getElementById('__modals'),
   );
 }
+
+Toast.propTypes = {
+  message: PropTypes.node,
+  timeout: PropTypes.number,
+  onClose: PropTypes.func,
+};
+
+export default Toast;

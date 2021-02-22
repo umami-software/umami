@@ -1,7 +1,7 @@
 .menu {
   display: flex;
   flex-flow: row wrap;
-  min-width: 500px;
+  min-width: 560px;
   max-width: 100vw;
   padding: 10px;
 }

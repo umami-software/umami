@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from './Menu';
 import useDocumentClick from 'hooks/useDocumentClick';
@@ -6,13 +7,7 @@ import Chevron from 'assets/chevron-down.svg';
 import styles from './Dropdown.module.css';
 import Icon from './Icon';
 
-export default function DropDown({
-  value,
-  className,
-  menuClassName,
-  options = [],
-  onChange = () => {},
-}) {
+function DropDown({ value, className, menuClassName, options = [], onChange = () => {} }) {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
   const selectedOption = options.find(e => e.value === value);
@@ -29,7 +24,7 @@ export default function DropDown({
   }
 
   useDocumentClick(e => {
-    if (!ref.current.contains(e.target)) {
+    if (!ref.current?.contains(e.target)) {
       setShowMenu(false);
     }
   });
@@ -52,3 +47,18 @@ export default function DropDown({
     </div>
   );
 }
+
+DropDown.propTypes = {
+  value: PropTypes.any,
+  className: PropTypes.string,
+  menuClassName: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.any.isRequired,
+      label: PropTypes.node,
+    }),
+  ),
+  onChange: PropTypes.func,
+};
+
+export default DropDown;
