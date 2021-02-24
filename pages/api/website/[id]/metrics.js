@@ -34,7 +34,7 @@ export default async (req, res) => {
     const { id, type, start_at, end_at, domain, url } = req.query;
 
     if (domain && !DOMAIN_REGEX.test(domain)) {
-      return badRequest(res, 'error.bad-domain\tInvalid domain name - please check settings');
+      return badRequest(res, 'error.bad-domain\tInvalid domain name. Please check settings.');
     }
 
     const websiteId = +id;
