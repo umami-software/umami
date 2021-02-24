@@ -1,4 +1,5 @@
 {
+  "error.bad-domain": "Invalid domain name. Please check settings.",
   "label.accounts": "Accounts",
   "label.add-account": "Add account",
   "label.add-website": "Add website",

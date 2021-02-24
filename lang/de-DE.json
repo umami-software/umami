@@ -1,4 +1,5 @@
 {
+  "error.bad-domain": "Ungültige Domain. Bitte Einstellungen überprüfen.",
   "label.accounts": "Konten",
   "label.add-account": "Konto hinzugfügen",
   "label.add-website": "Webseite hinzufügen",

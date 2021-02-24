@@ -1,4 +1,5 @@
 {
+  "error.bad-domain": "Dominio inválido. Por favor revisar configuraciones.",
   "label.accounts": "Usuarios",
   "label.add-account": "Agregar usuario",
   "label.add-website": "Agregar sitio",
