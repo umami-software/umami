@@ -66,7 +66,7 @@ export default function MetricsTable({
   return (
     <div className={classNames(styles.container, className)}>
       {!data && loading && <Loading />}
-      {error && <ErrorMessage />}
+      {error && <ErrorMessage error={error} />}
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
