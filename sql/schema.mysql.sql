@@ -45,7 +45,7 @@ create table pageview (
     session_id int unsigned not null,
     created_at timestamp default current_timestamp,
     url varchar(500) not null,
-    referrer varchar(500),
+    referrer varchar(1500),
     foreign key (website_id) references website(website_id) on delete cascade,
     foreign key (session_id) references session(session_id) on delete cascade
 ) ENGINE=InnoDB COLLATE=utf8_general_ci;
