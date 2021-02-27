@@ -129,7 +129,12 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           id="message.log.visitor"
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{
-            country: <b>{countryNames[country]}</b>,
+            country: (
+              <b>
+                {countryNames[country] ||
+                  intl.formatMessage({ id: 'label.unknown', defaultMessage: 'Unknown' })}
+              </b>
+            ),
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
             device: <b>{intl.formatMessage(devices[device])?.toLowerCase()}</b>,
