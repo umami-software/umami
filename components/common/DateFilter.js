@@ -6,8 +6,7 @@ import Modal from './Modal';
 import DropDown from './DropDown';
 import DatePickerForm from 'components/forms/DatePickerForm';
 import useLocale from 'hooks/useLocale';
-import { getDateRange } from 'lib/date';
-import { dateFormat } from 'lib/lang';
+import { getDateRange, dateFormat } from 'lib/date';
 import Calendar from 'assets/calendar-alt.svg';
 import Icon from './Icon';
 

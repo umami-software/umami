@@ -42,7 +42,6 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
         type="referrer"
         metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
         websiteId={websiteId}
-        websiteDomain={websiteDomain}
         dataFilter={refFilter}
         filterOptions={{
           domain: websiteDomain,

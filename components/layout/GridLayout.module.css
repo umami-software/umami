@@ -35,6 +35,6 @@
   .row > .col {
     border-top: 1px solid var(--gray300);
     border-left: 0;
-    padding: 0;
+    padding: 20px 0;
   }
 }
