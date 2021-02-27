@@ -19,7 +19,7 @@ export default function EventsTable({ websiteId, ...props }) {
 
   function handleDataLoad(data) {
     setEventTypes([...new Set(data.map(({ x }) => x.split('\t')[0]))]);
-    props.onDataLoad(data);
+    props.onDataLoad?.(data);
   }
 
   return (
