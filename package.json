@@ -1,10 +1,10 @@
 {
   "name": "umami",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
-  "homepage": "https://github.com/mikecao/umami",
+  "homepage": "https://umami.is",
   "repository": {
     "type": "git",
     "url": "https://github.com/mikecao/umami.git"
@@ -77,6 +77,7 @@
     "moment-timezone": "^0.5.32",
     "next": "^10.0.7",
     "prompts": "2.4.0",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-intl": "^5.12.3",
