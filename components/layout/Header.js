@@ -10,8 +10,6 @@ import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
-import Sun from 'assets/sun.svg';
-import Moon from 'assets/moon.svg';
 
 export default function Header() {
   const user = useSelector(state => state.user);
@@ -40,9 +38,13 @@ export default function Header() {
             aria-expanded="false"
           >
             {active ? (
-              <Icon icon={<Sun />} size="large" className={styles.logo} />
+              <div> X </div>
             ) : (
-              <Icon icon={<Moon />} size="large" className={styles.logo} />
+              <>
+                <span></span>
+                <span></span>
+                <span></span>
+              </>
             )}
           </button>
           {user && (

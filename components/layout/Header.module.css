@@ -29,11 +29,11 @@
 
 .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-normal);
   font-weight: 600;
   width: 100%;
+  justify-content: space-between;
 }
 
 .items {
@@ -57,12 +57,15 @@
 @media only screen and (max-width: 992px) {
   .nav {
     font-size: var(--font-size-large);
-    justify-content: center;
-    padding: 20px 0;
+    justify-content: space-between;
+    margin: 20px 0;
+  }
+  .items {
+    flex-wrap: wrap;
   }
 }
 
-@media only screen and (max-width: 576px) {
+@media only screen and (max-width: 768px) {
   .header {
     padding: 0 15px;
   }
@@ -70,6 +73,9 @@
   .nav {
     font-size: var(--font-size-normal);
     flex-wrap: wrap;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
   }
 
   .items {
@@ -95,11 +101,31 @@
 
   .burger {
     display: block;
-    color: #4a4a4a;
+    /* color: #4a4a4a; */
     cursor: pointer;
     height: 3.25rem;
-    position: relative;
     width: 3.25rem;
     margin-left: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .burger span {
+    transform: translateX(-50%);
+    padding: 1px 0px;
+    margin: 6px 0;
+    width: 20px;
+    display: block;
+    background-color: white;
+  }
+
+  .burger div {
+    height: 100%;
+    color: white;
+    text-align: center;
+    margin: auto;
+    font-size: 1.5rem;
+    transform: translateX(-50%);
   }
 }
