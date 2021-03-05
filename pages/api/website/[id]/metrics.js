@@ -1,6 +1,5 @@
-import { getPageviewMetrics, getSessionMetrics } from 'lib/queries';
-import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
-import { DOMAIN_REGEX } from 'lib/constants';
+import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'lib/queries';
+import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 
 const sessionColumns = ['browser', 'os', 'device', 'country'];
@@ -31,11 +30,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, type, start_at, end_at, domain, url } = req.query;
-
-    if (domain && !DOMAIN_REGEX.test(domain)) {
-      return badRequest(res);
-    }
+    const { id, type, start_at, end_at, url } = req.query;
 
     const websiteId = +id;
     const startDate = new Date(+start_at);
@@ -47,7 +42,18 @@ export default async (req, res) => {
       return ok(res, data);
     }
 
-    if (type === 'event' || pageviewColumns.includes(type)) {
+    if (pageviewColumns.includes(type) || type === 'event') {
+      let domain;
+      if (type === 'referrer') {
+        const website = getWebsiteById(websiteId);
+
+        if (!website) {
+          return badRequest(res);
+        }
+
+        domain = website.domain;
+      }
+
       const data = await getPageviewMetrics(
         websiteId,
         startDate,
@@ -55,7 +61,7 @@ export default async (req, res) => {
         getColumn(type),
         getTable(type),
         {
-          domain: type !== 'event' && domain,
+          domain,
           url: type !== 'url' && url,
         },
       );

@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
 import Check from 'assets/check.svg';
 import styles from './Checkbox.module.css';
 
-export default function Checkbox({ name, value, label, onChange }) {
+function Checkbox({ name, value, label, onChange }) {
   const ref = useRef();
 
   return (
@@ -25,3 +26,12 @@ export default function Checkbox({ name, value, label, onChange }) {
     </div>
   );
 }
+
+Checkbox.propTypes = {
+  name: PropTypes.string,
+  value: PropTypes.any,
+  label: PropTypes.node,
+  onChange: PropTypes.func,
+};
+
+export default Checkbox;

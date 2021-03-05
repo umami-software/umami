@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { setDateRange } from 'redux/actions/websites';
@@ -8,7 +9,7 @@ import Dots from 'assets/ellipsis-h.svg';
 import useDateRange from 'hooks/useDateRange';
 import { getDateRange } from '../../lib/date';
 
-export default function RefreshButton({ websiteId }) {
+function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
@@ -35,3 +36,9 @@ export default function RefreshButton({ websiteId }) {
     />
   );
 }
+
+RefreshButton.propTypes = {
+  websiteId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+export default RefreshButton;
