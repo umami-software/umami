@@ -16,6 +16,7 @@
   position: relative;
   margin-bottom: 20px;
   line-height: 1.8;
+  padding: 0 6px;
 }
 
 .row > div {
@@ -25,7 +26,7 @@
 
 .row > div > input {
   width: 100%;
-  min-width: 200px;
+  min-width: 240px;
 }
 
 .buttons {
