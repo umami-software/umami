@@ -11,6 +11,7 @@
 
 .row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   position: relative;
   margin-bottom: 20px;
@@ -19,6 +20,12 @@
 
 .row > div {
   position: relative;
+  flex: 1 1;
+}
+
+.row > div > input {
+  width: 100%;
+  min-width: 200px;
 }
 
 .buttons {
