@@ -19,6 +19,6 @@ services:
       POSTGRES_PASSWORD: umami
     volumes:
       - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
-      - umami-db-data:/var/lib/postgresql/data
+      - ./umami-db-data:/var/lib/postgresql/data
 volumes:
   umami-db-data:
