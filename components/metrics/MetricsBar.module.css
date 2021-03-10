@@ -11,8 +11,6 @@
 @media only screen and (max-width: 992px) {
   .bar {
     justify-content: space-between;
-  }
-  .bar > div:nth-child(n + 3) {
-    display: none;
+    overflow: auto;
   }
 }

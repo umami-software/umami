@@ -1,14 +1,15 @@
 .table {
   position: relative;
+  height: 100%;
   font-size: var(--font-size-small);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+  display: grid;
+  grid-template-rows: fit-content(100%) auto;
   overflow: hidden;
 }
 
 .body {
   position: relative;
+  height: 100%;
   overflow: auto;
 }
 

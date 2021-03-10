@@ -133,6 +133,8 @@ import { removeTrailingSlash } from '../lib/url';
   /* Handle history changes */
 
   const handlePush = (state, title, url) => {
+    if (!url) return;
+
     removeEvents();
 
     currentRef = currentUrl;
@@ -144,7 +146,9 @@ import { removeTrailingSlash } from '../lib/url';
       currentUrl = newUrl;
     }
 
-    trackView(currentUrl, currentRef);
+    if (currentUrl !== currentRef) {
+      trackView(currentUrl, currentRef);
+    }
 
     setTimeout(addEvents, 300);
   };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
+import { FormattedMessage } from 'react-intl';
 import NoData from 'components/common/NoData';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './DataTable.module.css';
@@ -27,7 +28,11 @@ export default function DataTable({
     return (
       <AnimatedRow
         key={label}
-        label={renderLabel ? renderLabel(row) : label}
+        label={
+          renderLabel
+            ? renderLabel(row)
+            : label ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />
+        }
         value={value}
         percent={percent}
         animate={animate && !virtualize}
