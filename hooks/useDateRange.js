@@ -5,9 +5,11 @@ import { getItem, setItem } from 'lib/web';
 import { setDateRange } from '../redux/actions/websites';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useForceUpdate from './useForceUpdate';
+import useLocale from './useLocale';
 
 export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE) {
   const dispatch = useDispatch();
+  const [locale] = useLocale();
   const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
   const forceUpdate = useForceUpdate();
 
@@ -16,7 +18,7 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
 
   if (globalDefault) {
     if (typeof globalDefault === 'string') {
-      globalDateRange = getDateRange(globalDefault);
+      globalDateRange = getDateRange(globalDefault, locale);
     } else if (typeof globalDefault === 'object') {
       globalDateRange = {
         ...globalDefault,
@@ -37,5 +39,5 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
     }
   }
 
-  return [dateRange || globalDateRange || getDateRange(defaultDateRange), saveDateRange];
+  return [dateRange || globalDateRange || getDateRange(defaultDateRange, locale), saveDateRange];
 }
