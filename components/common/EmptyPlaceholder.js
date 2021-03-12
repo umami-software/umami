@@ -8,7 +8,7 @@ function EmptyPlaceholder({ msg, children }) {
   return (
     <div className={styles.placeholder}>
       <Icon className={styles.icon} icon={<Logo />} size="xlarge" />
-      <h2>{msg}</h2>
+      <h2 className={styles.msg}>{msg}</h2>
       {children}
     </div>
   );
