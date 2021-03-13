@@ -71,7 +71,7 @@
     "formik": "^2.2.6",
     "immer": "^8.0.1",
     "is-localhost-ip": "^1.4.0",
-    "isbot-fast": "^1.2.0",
+    "isbot": "^3.0.25",
     "jose": "2.0.3",
     "maxmind": "^4.3.1",
     "moment-timezone": "^0.5.32",
