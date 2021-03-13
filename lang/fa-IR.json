@@ -57,7 +57,7 @@
   "label.username": "نام کاربری",
   "label.view-details": "مشاهده جزئیات",
   "label.websites": "وب سایت ها",
-  "message.active-users": "{x} هم اکنون {x, plural, یک {visitor} از میان {visitors}}",
+  "message.active-users": "{x} هم اکنون {x, plural, one {یک} other {از میان}}",
   "message.confirm-delete": "آیا مطمئن هستید می خواهید {target} را حذف کنید?",
   "message.copied": "کپی شد!",
   "message.delete-warning": "همه داده های مرتبط هم حذف خواهد شد.",
