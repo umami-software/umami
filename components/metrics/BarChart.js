@@ -54,8 +54,11 @@ export default function BarChart({
           }
           return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
         }
-        if (w <= 500) {
+        if (w <= 750) {
           return index % 2 === 0 ? dateFormat(d, 'MMM d', locale) : '';
+        }
+        if (w <= 850) {
+          return dateFormat(d, 'MMM d', locale);
         }
         return dateFormat(d, 'EEE M/d', locale);
       case 'month':
