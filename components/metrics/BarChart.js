@@ -48,11 +48,17 @@ export default function BarChart({
       case 'hour':
         return dateFormat(d, 'p', locale);
       case 'day':
-        if (records > 31) {
-          if (sw <= 250) {
+        if (records > 25) {
+          if (sw <= 275) {
             return index % 10 === 0 ? dateFormat(d, 'M/d', locale) : '';
           }
-          return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          if (sw <= 550) {
+            return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          if (sw <= 700) {
+            return index % 2 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          return dateFormat(d, 'MMM d', locale);
         }
         if (sw <= 375) {
           return index % 2 === 0 ? dateFormat(d, 'MMM d', locale) : '';
