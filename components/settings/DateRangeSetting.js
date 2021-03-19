@@ -6,13 +6,15 @@ import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
 import { getDateRange } from 'lib/date';
 import styles from './DateRangeSetting.module.css';
+import useLocale from 'hooks/useLocale';
 
 export default function DateRangeSetting() {
+  const [locale] = useLocale();
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 
   function handleReset() {
-    setDateRange(getDateRange(DEFAULT_DATE_RANGE));
+    setDateRange(getDateRange(DEFAULT_DATE_RANGE, locale));
   }
 
   return (

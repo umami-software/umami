@@ -2,11 +2,11 @@ import React, { useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
-import { format } from 'date-fns';
 import Icon from 'components/common/Icon';
 import Tag from 'components/common/Tag';
 import Dot from 'components/common/Dot';
 import FilterButtons from 'components/common/FilterButtons';
+import NoData from 'components/common/NoData';
 import { devices } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
@@ -15,8 +15,8 @@ import Bolt from 'assets/bolt.svg';
 import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
 import { stringToColor } from 'lib/format';
+import { dateFormat } from 'lib/date';
 import styles from './RealtimeLog.module.css';
-import NoData from '../common/NoData';
 
 const TYPE_ALL = 0;
 const TYPE_PAGEVIEW = 1;
@@ -129,7 +129,12 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           id="message.log.visitor"
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{
-            country: <b>{countryNames[country]}</b>,
+            country: (
+              <b>
+                {countryNames[country] ||
+                  intl.formatMessage({ id: 'label.unknown', defaultMessage: 'Unknown' })}
+              </b>
+            ),
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
             device: <b>{intl.formatMessage(devices[device])?.toLowerCase()}</b>,
@@ -140,7 +145,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   }
 
   function getTime({ created_at }) {
-    return format(new Date(created_at), 'h:mm:ss');
+    return dateFormat(new Date(created_at), 'pp', locale);
   }
 
   function getColor(row) {
@@ -176,9 +181,11 @@ export default function RealtimeLog({ data, websites, websiteId }) {
       </div>
       <div className={styles.body}>
         {logs?.length === 0 && <NoData />}
-        <FixedSizeList height={400} itemCount={logs.length} itemSize={40}>
-          {Row}
-        </FixedSizeList>
+        {logs?.length > 0 && (
+          <FixedSizeList height={400} itemCount={logs.length} itemSize={40}>
+            {Row}
+          </FixedSizeList>
+        )}
       </div>
     </div>
   );

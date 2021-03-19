@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { setDateRange } from 'redux/actions/websites';
@@ -7,9 +8,11 @@ import Refresh from 'assets/redo.svg';
 import Dots from 'assets/ellipsis-h.svg';
 import useDateRange from 'hooks/useDateRange';
 import { getDateRange } from '../../lib/date';
+import useLocale from 'hooks/useLocale';
 
-export default function RefreshButton({ websiteId }) {
+function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
+  const [locale] = useLocale();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
   const completed = useSelector(state => state.queries[`/api/website/${websiteId}/stats`]);
@@ -17,7 +20,7 @@ export default function RefreshButton({ websiteId }) {
   function handleClick() {
     if (dateRange) {
       setLoading(true);
-      dispatch(setDateRange(websiteId, getDateRange(dateRange.value)));
+      dispatch(setDateRange(websiteId, getDateRange(dateRange.value, locale)));
     }
   }
 
@@ -35,3 +38,9 @@ export default function RefreshButton({ websiteId }) {
     />
   );
 }
+
+RefreshButton.propTypes = {
+  websiteId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};
+
+export default RefreshButton;
