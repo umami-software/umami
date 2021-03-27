@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import tinycolor from 'tinycolor2';
 import Datamap from 'datamaps';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { ISO_COUNTRIES, THEME_COLORS } from 'lib/constants';
 import styles from './WorldMap.module.css';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
@@ -60,7 +60,7 @@ function WorldMap({ data, className }) {
           <Geographies geography={Datamap.prototype.worldTopo}>
             {({ geographies }) => {
               return geographies.map(geo => {
-                const code = geo.properties.ISO_A2;
+                const code = ISO_COUNTRIES[geo.id];
 
                 return (
                   <Geography
