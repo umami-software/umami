@@ -72,7 +72,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                 <FormattedMessage id="label.domain" defaultMessage="Domain" />
               </label>
               <div>
-                <Field name="domain" type="text" />
+                <Field name="domain" type="text" placeholder="example.com" />
                 <FormError name="domain" />
               </div>
             </FormRow>

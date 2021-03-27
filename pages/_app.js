@@ -31,12 +31,17 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <Head>
+        <link rel="icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
         <link rel="icon" type="image/png" sizes="32x32" href={`${basePath}/favicon-32x32.png`} />
         <link rel="icon" type="image/png" sizes="16x16" href={`${basePath}/favicon-16x16.png`} />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <link rel="mask-icon" href={`${basePath}/safari-pinned-tab.svg`} color="#5bbad5" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+          rel="stylesheet"
+        />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
