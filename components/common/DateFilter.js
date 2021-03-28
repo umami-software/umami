@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { endOfYear, isSameDay } from 'date-fns';
 import Modal from './Modal';
 import DropDown from './DropDown';
 import DatePickerForm from 'components/forms/DatePickerForm';
 import useLocale from 'hooks/useLocale';
-import { getDateRange } from 'lib/date';
-import { dateFormat } from 'lib/lang';
+import { getDateRange, dateFormat } from 'lib/date';
 import Calendar from 'assets/calendar-alt.svg';
 import Icon from './Icon';
 
@@ -54,7 +54,8 @@ const filterOptions = [
   },
 ];
 
-export default function DateFilter({ value, startDate, endDate, onChange, className }) {
+function DateFilter({ value, startDate, endDate, onChange, className }) {
+  const [locale] = useLocale();
   const [showPicker, setShowPicker] = useState(false);
   const displayValue =
     value === 'custom' ? (
@@ -68,7 +69,7 @@ export default function DateFilter({ value, startDate, endDate, onChange, classN
       setShowPicker(true);
       return;
     }
-    onChange(getDateRange(value));
+    onChange(getDateRange(value, locale));
   }
 
   function handlePickerChange(value) {
@@ -117,3 +118,13 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
     </>
   );
 };
+
+DateFilter.propTypes = {
+  value: PropTypes.string,
+  startDate: PropTypes.instanceOf(Date),
+  endDate: PropTypes.instanceOf(Date),
+  onChange: PropTypes.func,
+  className: PropTypes.string,
+};
+
+export default DateFilter;

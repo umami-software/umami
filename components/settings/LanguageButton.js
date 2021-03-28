@@ -24,7 +24,7 @@ export default function LanguageButton() {
         )}
         {locale === 'zh-TW' && (
           <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
             rel="stylesheet"
           />
         )}

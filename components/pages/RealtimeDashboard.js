@@ -135,7 +135,7 @@ export default function RealtimeDashboard() {
             <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
           </GridColumn>
           <GridColumn xs={12} lg={8}>
-            <RealtimeLog data={realtimeData} websites={websites} />
+            <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
           </GridColumn>
         </GridRow>
         <GridRow>

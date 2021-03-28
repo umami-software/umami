@@ -1,17 +1,18 @@
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import tinycolor from 'tinycolor2';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS } from 'lib/constants';
+import { ISO_COUNTRIES, THEME_COLORS, MAP_FILE } from 'lib/constants';
 import styles from './WorldMap.module.css';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 
-const geoUrl = '/world-110m.json';
-
-export default function WorldMap({ data, className }) {
+function WorldMap({ data, className }) {
+  const { basePath } = useRouter();
   const [tooltip, setTooltip] = useState();
   const [theme] = useTheme();
   const colors = useMemo(
@@ -57,10 +58,10 @@ export default function WorldMap({ data, className }) {
     >
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
-          <Geographies geography={geoUrl}>
+          <Geographies geography={`${basePath}${MAP_FILE}`}>
             {({ geographies }) => {
               return geographies.map(geo => {
-                const code = geo.properties.ISO_A2;
+                const code = ISO_COUNTRIES[geo.id];
 
                 return (
                   <Geography
@@ -87,3 +88,16 @@ export default function WorldMap({ data, className }) {
     </div>
   );
 }
+
+WorldMap.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      x: PropTypes.string,
+      y: PropTypes.number,
+      z: PropTypes.number,
+    }),
+  ),
+  className: PropTypes.string,
+};
+
+export default WorldMap;

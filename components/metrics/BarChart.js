@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import Legend from 'components/metrics/Legend';
 import { formatLongNumber } from 'lib/format';
-import { dateFormat } from 'lib/lang';
+import { dateFormat } from 'lib/date';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
 import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
@@ -40,26 +40,35 @@ export default function BarChart({
   function renderXLabel(label, index, values) {
     if (loading) return '';
     const d = new Date(values[index].value);
-    const w = canvas.current.width;
+    const sw = canvas.current.width / window.devicePixelRatio;
 
     switch (unit) {
       case 'minute':
-        return index % 2 === 0 ? dateFormat(d, 'h:mm', locale) : '';
+        return index % 2 === 0 ? dateFormat(d, 'H:mm', locale) : '';
       case 'hour':
-        return dateFormat(d, 'ha', locale);
+        return dateFormat(d, 'p', locale);
       case 'day':
-        if (records > 31) {
-          if (w <= 500) {
+        if (records > 25) {
+          if (sw <= 275) {
             return index % 10 === 0 ? dateFormat(d, 'M/d', locale) : '';
           }
-          return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          if (sw <= 550) {
+            return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          if (sw <= 700) {
+            return index % 2 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          return dateFormat(d, 'MMM d', locale);
         }
-        if (w <= 500) {
+        if (sw <= 375) {
           return index % 2 === 0 ? dateFormat(d, 'MMM d', locale) : '';
+        }
+        if (sw <= 425) {
+          return dateFormat(d, 'MMM d', locale);
         }
         return dateFormat(d, 'EEE M/d', locale);
       case 'month':
-        if (w <= 660) {
+        if (sw <= 330) {
           return index % 2 === 0 ? dateFormat(d, 'MMM', locale) : '';
         }
         return dateFormat(d, 'MMM', locale);
@@ -93,9 +102,9 @@ export default function BarChart({
   function getTooltipFormat(unit) {
     switch (unit) {
       case 'hour':
-        return 'EEE ha — MMM d yyyy';
+        return 'EEE p — PPP';
       default:
-        return 'EEE MMMM d yyyy';
+        return 'PPPP';
     }
   }
 
@@ -131,6 +140,7 @@ export default function BarChart({
               minRotation: 0,
               maxRotation: 0,
               fontColor: colors.text,
+              autoSkipPadding: 1,
             },
             gridLines: {
               display: false,
@@ -175,6 +185,7 @@ export default function BarChart({
     options.scales.xAxes[0].ticks.callback = renderXLabel;
     options.scales.xAxes[0].ticks.fontColor = colors.text;
     options.scales.yAxes[0].ticks.fontColor = colors.text;
+    options.scales.yAxes[0].ticks.precision = 0;
     options.scales.yAxes[0].gridLines.color = colors.line;
     options.scales.yAxes[0].gridLines.zeroLineColor = colors.zeroLine;
     options.animation.duration = animationDuration;

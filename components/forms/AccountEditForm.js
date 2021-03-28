@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
-import { useRouter } from 'next/router';
-import { post } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
@@ -10,6 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
+import usePost from 'hooks/usePost';
 
 const initialValues = {
   username: '',
@@ -30,11 +29,11 @@ const validate = ({ user_id, username, password }) => {
 };
 
 export default function AccountEditForm({ values, onSave, onClose }) {
-  const { basePath } = useRouter();
+  const post = usePost();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post(`${basePath}/api/account`, values);
+    const { ok, data } = await post('/api/account', values);
 
     if (ok) {
       onSave();
@@ -58,15 +57,19 @@ export default function AccountEditForm({ values, onSave, onClose }) {
               <label htmlFor="username">
                 <FormattedMessage id="label.username" defaultMessage="Username" />
               </label>
-              <Field name="username" type="text" />
-              <FormError name="username" />
+              <div>
+                <Field name="username" type="text" />
+                <FormError name="username" />
+              </div>
             </FormRow>
             <FormRow>
               <label htmlFor="password">
                 <FormattedMessage id="label.password" defaultMessage="Password" />
               </label>
-              <Field name="password" type="password" />
-              <FormError name="password" />
+              <div>
+                <Field name="password" type="password" />
+                <FormError name="password" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button type="submit" variant="action">

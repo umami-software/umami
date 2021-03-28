@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
 import { Formik, Form, Field } from 'formik';
-import { del } from 'lib/web';
 import Button from 'components/common/Button';
 import FormLayout, {
   FormButtons,
@@ -10,6 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
+import useDelete from 'hooks/useDelete';
 
 const CONFIRMATION_WORD = 'DELETE';
 
@@ -28,11 +27,11 @@ const validate = ({ confirmation }) => {
 };
 
 export default function DeleteForm({ values, onSave, onClose }) {
-  const { basePath } = useRouter();
+  const del = useDelete();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ type, id }) => {
-    const { ok, data } = await del(`${basePath}/api/${type}/${id}`);
+    const { ok, data } = await del(`/api/${type}/${id}`);
 
     if (ok) {
       onSave();
@@ -73,8 +72,10 @@ export default function DeleteForm({ values, onSave, onClose }) {
               />
             </p>
             <FormRow>
-              <Field name="confirmation" type="text" />
-              <FormError name="confirmation" />
+              <div>
+                <Field name="confirmation" type="text" />
+                <FormError name="confirmation" />
+              </div>
             </FormRow>
             <FormButtons>
               <Button

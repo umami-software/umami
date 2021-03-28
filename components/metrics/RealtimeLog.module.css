@@ -1,6 +1,9 @@
 .table {
   font-size: var(--font-size-xsmall);
   overflow: hidden;
+  height: 100%;
+  display: grid;
+  grid-template-rows: fit-content(100%) fit-content(100%) auto;
 }
 
 .header {
@@ -21,6 +24,7 @@
 
 .body {
   overflow: auto;
+  height: 100%;
 }
 
 .icon {
@@ -43,4 +47,13 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.row .link {
+  color: var(--gray900);
+  text-decoration: none;
+}
+
+.row .link:hover {
+  color: var(--primary400);
 }

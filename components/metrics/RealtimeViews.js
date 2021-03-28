@@ -13,7 +13,10 @@ export default function RealtimeViews({ websiteId, data, websites }) {
   const [filter, setFilter] = useState(FILTER_REFERRERS);
   const domains = useMemo(() => websites.map(({ domain }) => domain), [websites]);
   const getDomain = useCallback(
-    id => websites.find(({ website_id }) => website_id === id)?.domain,
+    id =>
+      websites.length === 1
+        ? websites[0]?.domain
+        : websites.find(({ website_id }) => website_id === id)?.domain,
     [websites],
   );
 
@@ -27,6 +30,15 @@ export default function RealtimeViews({ websiteId, data, websites }) {
       value: FILTER_PAGES,
     },
   ];
+
+  const renderLink = ({ x }) => {
+    const domain = x.startsWith('/') ? getDomain(websiteId) : '';
+    return (
+      <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
+        {x}
+      </a>
+    );
+  };
 
   const [referrers, pages] = useMemo(() => {
     if (pageviews) {
@@ -55,7 +67,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
         pageviews
           .reduce((arr, { url, website_id }) => {
             if (url?.startsWith('/')) {
-              if (!websiteId) {
+              if (!websiteId && websites.length > 1) {
                 url = `${getDomain(website_id)}${url}`;
               }
               const row = arr.find(({ x }) => x === url);
@@ -91,6 +103,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
         <DataTable
           title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
           metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          renderLabel={renderLink}
           data={pages}
           height={400}
         />
