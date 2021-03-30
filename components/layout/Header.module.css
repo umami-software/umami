@@ -70,6 +70,11 @@
     padding: 0 15px;
   }
 
+  .title {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
   .nav {
     font-size: var(--font-size-normal);
     flex-wrap: wrap;
