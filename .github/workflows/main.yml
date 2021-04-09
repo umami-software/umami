@@ -28,10 +28,9 @@ jobs:
         .
 
     - name: Docker login
-      env:
-        DOCKER_USERNAME: ${{ github.actor }}
-        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-      run: docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" ghcr.io
+      run: >-
+        echo "${{ secrets.GITHUB_TOKEN }}"
+        | docker login -u "${{ github.actor }}" --password-stdin ghcr.io
       
     - name: Push image to GitHub
       run: |
