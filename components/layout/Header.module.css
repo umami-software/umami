@@ -70,6 +70,11 @@
     padding: 0 15px;
   }
 
+  .title {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
   .nav {
     font-size: var(--font-size-normal);
     flex-wrap: wrap;
@@ -102,6 +107,9 @@
   .burger {
     display: block;
     /* color: #4a4a4a; */
+    background: none;
+    border: 1px solid var(--gray900);
+    border-radius: 4px;
     cursor: pointer;
     height: 3.25rem;
     width: 3.25rem;
@@ -112,20 +120,20 @@
   }
 
   .burger span {
-    transform: translateX(-50%);
+    transform: translateX(25%);
     padding: 1px 0px;
     margin: 6px 0;
-    width: 20px;
+    width: 65%;
     display: block;
-    background-color: white;
+    background-color: var(--gray900);
   }
 
   .burger div {
-    height: 100%;
-    color: white;
+    /* height: 100%; */
+    color: var(--gray900);
     text-align: center;
     margin: auto;
     font-size: 1.5rem;
-    transform: translateX(-50%);
+    /* transform: translateX(-50%); */
   }
 }
