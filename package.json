@@ -72,7 +72,7 @@
     "immer": "^8.0.1",
     "is-localhost-ip": "^1.4.0",
     "isbot": "^3.0.25",
-    "jose": "2.0.3",
+    "jose": "2.0.5",
     "maxmind": "^4.3.1",
     "moment-timezone": "^0.5.32",
     "next": "^10.0.9",
