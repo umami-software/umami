@@ -22,7 +22,7 @@ function Checkbox({ name, value, label, onChange }) {
         className={styles.input}
         type="checkbox"
         name={name}
-        value={value}
+        defaultChecked={value}
         onChange={onChange}
       />
     </div>

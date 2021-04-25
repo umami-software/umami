@@ -77,7 +77,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
               </div>
             </FormRow>
             <FormRow>
-              <label></label>
+              <label />
               <Field name="enable_share_url">
                 {({ field }) => (
                   <Checkbox
