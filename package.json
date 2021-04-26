@@ -70,6 +70,7 @@
     "dotenv": "^8.2.0",
     "formik": "^2.2.6",
     "immer": "^8.0.1",
+    "ipaddr.js": "^2.0.0",
     "is-localhost-ip": "^1.4.0",
     "isbot": "^3.0.26",
     "jose": "2.0.5",
