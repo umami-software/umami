@@ -5,7 +5,8 @@ import { THEME_CONFIG } from 'lib/constants';
 import { useEffect } from 'react';
 
 export default function useTheme() {
-  const theme = useSelector(state => state.app.theme || getItem(THEME_CONFIG) || 'light');
+  const defaultTheme = window?.matchMedia('prefers-color-scheme: dark')?.matches ? 'dark' : 'light';
+  const theme = useSelector(state => state.app.theme || getItem(THEME_CONFIG) || defaultTheme);
   const dispatch = useDispatch();
 
   function saveTheme(value) {
