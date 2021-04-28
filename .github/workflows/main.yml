@@ -28,9 +28,9 @@ jobs:
         .
 
     - name: Docker login
-      env:
-        CR_PAT: ${{ secrets.CR_PAT }}
-      run: docker login -u $GITHUB_ACTOR -p $CR_PAT ghcr.io
+      run: >-
+        echo "${{ secrets.GITHUB_TOKEN }}"
+        | docker login -u "${{ github.actor }}" --password-stdin ghcr.io
       
     - name: Push image to GitHub
       run: |
