@@ -23,6 +23,7 @@ export default function WebsiteChart({
   domain,
   stickyHeader = false,
   showLink = false,
+  hideChart = false,
   onDataLoad = () => {},
 }) {
   const shareToken = useShareToken();
@@ -91,13 +92,15 @@ export default function WebsiteChart({
       <div className="row">
         <div className="col">
           {error && <ErrorMessage />}
-          <PageviewsChart
-            websiteId={websiteId}
-            data={chartData}
-            unit={unit}
-            records={getDateLength(startDate, endDate, unit)}
-            loading={loading}
-          />
+          {!hideChart && (
+            <PageviewsChart
+              websiteId={websiteId}
+              data={chartData}
+              unit={unit}
+              records={getDateLength(startDate, endDate, unit)}
+              loading={loading}
+            />
+          )}
         </div>
       </div>
     </div>
