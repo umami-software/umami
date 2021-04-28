@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 export default function useTheme() {
   const defaultTheme =
-    typeof window !== undefined
+    typeof window !== 'undefined'
       ? window?.matchMedia('prefers-color-scheme: dark')?.matches
         ? 'dark'
         : 'light'
