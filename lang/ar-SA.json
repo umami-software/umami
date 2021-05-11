@@ -57,7 +57,7 @@
   "label.username": "اسم المستخدم",
   "label.view-details": "عرض التفاصيل",
   "label.websites": "المواقع",
-  "message.active-users": "{x} حاليا {x, plural, one {زائر واحد} other {زوار}}",
+  "message.active-users": "{x} حاليا {x, plural, زائر واحد {visitor} زوار {visitors}}",
   "message.confirm-delete": "هل أنت متأكد من حذف {target}?",
   "message.copied": "تم النسخ!",
   "message.delete-warning": "كافة البيانات المرتبطة سيم حذفها ايضا.",
