@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -14,13 +14,17 @@ import styles from './Header.module.css';
 export default function Header() {
   const user = useSelector(state => state.user);
   const [active, setActive] = useState(false);
+  const intl = useIntl();
 
   function handleClick() {
     setActive(state => !state);
   }
 
   return (
-    <nav className="container">
+    <nav
+      className="container"
+      dir={intl.formatMessage({ id: 'metrics.dir', defaultMessage: 'ltr' })}
+    >
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className={styles.nav}>

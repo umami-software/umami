@@ -96,5 +96,6 @@
   "metrics.referrers": "التحويلات",
   "metrics.unique-visitors": "زائرون فريدون",
   "metrics.views": "مشاهدات",
-  "metrics.visitors": "زوار"
+  "metrics.visitors": "زوار",
+  "metrics.dir": "rtl"
 }
