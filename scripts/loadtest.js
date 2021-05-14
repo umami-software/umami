@@ -109,6 +109,7 @@ function mockPageView(
     hostname: 'localhost',
     screen: '1680x1050',
     url: '/LOADTESTING',
+    referrer: '/REFERRER',
   },
 ) {
   return {

@@ -17,6 +17,7 @@
 
 .label {
   margin-left: 10px;
+  user-select: none; /* disable text selection when clicking to toggle the checkbox */
 }
 
 .input {

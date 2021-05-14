@@ -40,7 +40,7 @@ export default function BarChart({
   function renderXLabel(label, index, values) {
     if (loading) return '';
     const d = new Date(values[index].value);
-    const w = canvas.current.width;
+    const sw = canvas.current.width / window.devicePixelRatio;
 
     switch (unit) {
       case 'minute':
@@ -48,18 +48,27 @@ export default function BarChart({
       case 'hour':
         return dateFormat(d, 'p', locale);
       case 'day':
-        if (records > 31) {
-          if (w <= 500) {
+        if (records > 25) {
+          if (sw <= 275) {
             return index % 10 === 0 ? dateFormat(d, 'M/d', locale) : '';
           }
-          return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          if (sw <= 550) {
+            return index % 5 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          if (sw <= 700) {
+            return index % 2 === 0 ? dateFormat(d, 'M/d', locale) : '';
+          }
+          return dateFormat(d, 'MMM d', locale);
         }
-        if (w <= 500) {
+        if (sw <= 375) {
           return index % 2 === 0 ? dateFormat(d, 'MMM d', locale) : '';
+        }
+        if (sw <= 425) {
+          return dateFormat(d, 'MMM d', locale);
         }
         return dateFormat(d, 'EEE M/d', locale);
       case 'month':
-        if (w <= 660) {
+        if (sw <= 330) {
           return index % 2 === 0 ? dateFormat(d, 'MMM', locale) : '';
         }
         return dateFormat(d, 'MMM', locale);
