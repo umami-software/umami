@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -10,21 +10,19 @@ import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
+import useLocale from 'hooks/useLocale';
 
 export default function Header() {
   const user = useSelector(state => state.user);
   const [active, setActive] = useState(false);
-  const intl = useIntl();
+  const [locale] = useLocale();
 
   function handleClick() {
     setActive(state => !state);
   }
 
   return (
-    <nav
-      className="container"
-      dir={intl.formatMessage({ id: 'metrics.dir', defaultMessage: 'ltr' })}
-    >
+    <nav className="container" dir={locale === 'ar-SA' ? 'rtl' : 'ltr'}>
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className={styles.nav}>
