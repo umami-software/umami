@@ -11,6 +11,7 @@ import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 import useLocale from 'hooks/useLocale';
+import { rtlLocales } from 'lib/lang';
 
 export default function Header() {
   const user = useSelector(state => state.user);
@@ -22,7 +23,7 @@ export default function Header() {
   }
 
   return (
-    <nav className="container" dir={locale === 'ar-SA' ? 'rtl' : 'ltr'}>
+    <nav className="container" dir={rtlLocales.includes(locale) ? 'rtl' : 'ltr'}>
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className={styles.nav}>
