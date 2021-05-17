@@ -64,7 +64,7 @@
     "classnames": "^2.3.1",
     "cookie": "^0.4.1",
     "cors": "^2.8.5",
-    "date-fns": "^2.16.1",
+    "date-fns": "^2.21.3",
     "date-fns-tz": "^1.0.12",
     "detect-browser": "^5.2.0",
     "dotenv": "^8.2.0",
