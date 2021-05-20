@@ -59,13 +59,25 @@ export default function MetricsBar({ websiteId, className }) {
       {data && !error && (
         <>
           <MetricCard
-            label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+            label={
+              <FormattedMessage
+                id="metrics.views"
+                defaultMessage="Views"
+                values={{ x: pageviews.value }}
+              />
+            }
             value={pageviews.value}
             change={pageviews.change}
             format={formatFunc}
           />
           <MetricCard
-            label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+            label={
+              <FormattedMessage
+                id="metrics.visitors"
+                defaultMessage="Visitors"
+                values={{ x: uniques.value }}
+              />
+            }
             value={uniques.value}
             change={uniques.change}
             format={formatFunc}
