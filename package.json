@@ -119,6 +119,7 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^13.0.0",
     "postcss-preset-env": "^6.7.0",
+    "postcss-rtlcss": "^3.3.2",
     "prettier": "^2.3.0",
     "prettier-eslint": "^12.0.0",
     "prisma": "2.23.0",
