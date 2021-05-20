@@ -56,6 +56,10 @@
     }
   },
   "dependencies": {
+    "@fontsource/inter": "^4.3.0",
+    "@fontsource/noto-sans-jp": "^4.3.0",
+    "@fontsource/noto-sans-sc": "^4.3.0",
+    "@fontsource/noto-sans-tc": "^4.3.0",
     "@prisma/client": "2.21.2",
     "@reduxjs/toolkit": "^1.5.1",
     "bcryptjs": "^2.4.3",

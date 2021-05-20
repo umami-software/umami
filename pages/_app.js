@@ -10,6 +10,8 @@ import { messages } from 'lib/lang';
 import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
 import 'styles/index.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/600.css';
 
 const Intl = ({ children }) => {
   const [locale] = useLocale();
@@ -38,10 +40,6 @@ export default function App({ Component, pageProps }) {
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
         <link rel="mask-icon" href={`${basePath}/safari-pinned-tab.svg`} color="#5bbad5" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
-          rel="stylesheet"
-        />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

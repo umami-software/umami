@@ -1135,6 +1135,26 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fontsource/inter@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/inter/-/inter-4.3.0.tgz#deb5c5d5d2ce0d8d16173a68ba1e961741ef6d30"
+  integrity sha512-qtUF+Fn9vH4O7V/13kOeemEJpQfhTMxtnOJzJw3kY7SOwl1cbs4fnd9QnQOczU3AVBJEPF1ik639uvaOg7g43A==
+
+"@fontsource/noto-sans-jp@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-jp/-/noto-sans-jp-4.3.0.tgz#e1a715f24e199d9bd8a9e14e7fffea24cbd228b2"
+  integrity sha512-EbPYK7/08Qll9SR+BvX23y4+v/uH+wJmblIQKRT76f7OZotIIbX3Sx7QGImhEidhPh4LpRdpQYJPnCw6UxtD6A==
+
+"@fontsource/noto-sans-sc@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-sc/-/noto-sans-sc-4.3.0.tgz#fa720aef0cc9396ae37dc6c488d2301ae6719455"
+  integrity sha512-AqtGDzgX5mFEe3eLMvawqHOOcr3HKg2ExXip5h7PTnKUP7pJynIhRtpDjJgNeWNocamX8fQhiXtf1EW1IqIgDQ==
+
+"@fontsource/noto-sans-tc@^4.3.0":
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/@fontsource/noto-sans-tc/-/noto-sans-tc-4.3.0.tgz#68037d03f4de203f6ed8246562301b12b06fe665"
+  integrity sha512-WjCk+II1TPcd749w+o1as4DQXtg/mOXA3y9/cIE+iU6f8Knt1eOlvH7akfMwtjN0PmtaUcMHWe2HqI6gZNDjeQ==
+
 "@formatjs/cli@^2.13.16":
   version "2.13.16"
   resolved "https://registry.yarnpkg.com/@formatjs/cli/-/cli-2.13.16.tgz#1664e17d0671623ffbbd1bcdcbf4a84f2de429fd"
