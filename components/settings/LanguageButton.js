@@ -14,19 +14,19 @@ export default function LanguageButton() {
 
   switch (locale) {
     case 'zh-CN':
-      import('@fontsource/noto-sans-sc/400.css');
-      import('@fontsource/noto-sans-sc/500.css');
-      import('@fontsource/noto-sans-sc/700.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/700.css');
       break;
     case 'zh-TW':
-      import('@fontsource/noto-sans-tc/400.css');
-      import('@fontsource/noto-sans-tc/500.css');
-      import('@fontsource/noto-sans-tc/700.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/700.css');
       break;
     case 'ja-JP':
-      import('@fontsource/noto-sans-jp/400.css');
-      import('@fontsource/noto-sans-jp/500.css');
-      import('@fontsource/noto-sans-jp/700.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/700.css');
       break;
   }
 
