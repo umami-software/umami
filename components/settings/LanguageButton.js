@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import { menuOptions } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';
@@ -13,36 +12,32 @@ export default function LanguageButton() {
     setLocale(value);
   }
 
+  switch (locale) {
+    case 'zn-CN':
+      import('@fontsource/noto-sans-sc/400.css');
+      import('@fontsource/noto-sans-sc/500.css');
+      import('@fontsource/noto-sans-sc/700.css');
+      break;
+    case 'zh-TW':
+      import('@fontsource/noto-sans-tc/400.css');
+      import('@fontsource/noto-sans-tc/500.css');
+      import('@fontsource/noto-sans-tc/700.css');
+      break;
+    case 'ja-JP':
+      import('@fontsource/noto-sans-jp/400.css');
+      import('@fontsource/noto-sans-jp/500.css');
+      import('@fontsource/noto-sans-jp/700.css');
+      break;
+  }
+
   return (
-    <>
-      <Head>
-        {locale === 'zh-CN' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-        {locale === 'zh-TW' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-        {locale === 'ja-JP' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-      </Head>
-      <MenuButton
-        icon={<Globe />}
-        options={menuOptions}
-        value={locale}
-        menuClassName={styles.menu}
-        renderValue={option => option?.display}
-        onSelect={handleSelect}
-      />
-    </>
+    <MenuButton
+      icon={<Globe />}
+      options={menuOptions}
+      value={locale}
+      menuClassName={styles.menu}
+      renderValue={option => option?.display}
+      onSelect={handleSelect}
+    />
   );
 }
