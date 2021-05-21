@@ -10,17 +10,20 @@ import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
+import useLocale from 'hooks/useLocale';
+import { rtlLocales } from 'lib/lang';
 
 export default function Header() {
   const user = useSelector(state => state.user);
   const [active, setActive] = useState(false);
+  const [locale] = useLocale();
 
   function handleClick() {
     setActive(state => !state);
   }
 
   return (
-    <nav className="container">
+    <nav className="container" dir={rtlLocales.includes(locale) ? 'rtl' : 'ltr'}>
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className={styles.nav}>
