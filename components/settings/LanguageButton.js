@@ -13,7 +13,7 @@ export default function LanguageButton() {
   }
 
   switch (locale) {
-    case 'zn-CN':
+    case 'zh-CN':
       import('@fontsource/noto-sans-sc/400.css');
       import('@fontsource/noto-sans-sc/500.css');
       import('@fontsource/noto-sans-sc/700.css');
