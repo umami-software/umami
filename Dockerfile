@@ -5,5 +5,5 @@ COPY package.json /build/
 RUN yarn
 COPY . /build
 RUN yarn build
-RUN yarn prisma migrate dev
+# RUN yarn prisma migrate dev
 CMD ["yarn", "start"]

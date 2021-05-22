@@ -1,9 +1,9 @@
-# umami-sqlite
+# 🧭 umami-sqlite
 Modded version of [Umami Analytics](https://umami.is) backed by a local SQLite database
+> simple, fast, open source website analytics
 
-Umami is a simple, fast, website analytics alternative to Google Analytics.
-
-## Getting started
+## Quick Start
+### Requirements
 - Node.js >= 14.17.0
 
 ### Install Dependencies
@@ -12,31 +12,29 @@ Umami is a simple, fast, website analytics alternative to Google Analytics.
 yarn
 ```
 
-### Run db migration
+### (seemingly optional?) Run db migration
 ```
 yarn prisma migrate dev
 ```
 
-### Configure umami
+### Configure env
 
 Create an `.env` file with the following
 
 ```
-HASH_SALT=(any random string)
+HASH_SALT=anyrandomstring
 ```
 
 ### Build the application
 
 ```bash
-npm run build
+yarn build
 ```
 
 ### Start the application
 
 ```bash
-npm start
+yarn start
 ```
 
-By default this will launch the application on `http://localhost:3000`. You will need to either 
-[proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
-or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+The application will be available on `http://localhost:3000`.
