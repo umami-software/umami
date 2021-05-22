@@ -1,16 +1,13 @@
----
 version: '3'
 services:
   umami:
     build: .
     ports:
-      - "3000:3000"
+      - 50001:3000
     environment:
-      DATABASE_URL: sqlite://umami:umami@db:5432/umami
-      DATABASE_TYPE: sqlite
       HASH_SALT: xSSHW4A2w0e3vxLUp46XL9OzCGKvxEnA
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
   # db:
   #   image: postgres:13.3-alpine
   #   environment:
@@ -20,5 +17,5 @@ services:
   #   volumes:
   #     - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
   #     - umami-db-data:/var/lib/postgresql/data
-volumes:
-  umami-db-data:
+# volumes:
+#   umami-db-data:

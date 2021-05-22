@@ -1,22 +1,12 @@
-# Build image
 FROM node:16.2.0-alpine3.13 AS build
-ARG DATABASE_TYPE
-ENV DATABASE_URL "postgresql://umami:umami@db:5432/umami" \
-    DATABASE_TYPE=$DATABASE_TYPE
 WORKDIR /build
-
 RUN yarn config set --home enableTelemetry 0
 COPY package.json yarn.lock /build/
-
-# Install only the production dependencies
 RUN yarn --production --frozen-lockfile
-
 # Cache these modules for production
 RUN cp -R node_modules/ prod_node_modules/
-
 # Install development dependencies
 RUN yarn --frozen-lockfile
-
 COPY . /build
 RUN yarn next telemetry disable
 RUN yarn build
@@ -35,7 +25,4 @@ COPY --from=build /build/yarn.lock /build/package.json ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
 
-USER node
-
-EXPOSE 3000
 CMD ["yarn", "start"]
