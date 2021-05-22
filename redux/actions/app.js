@@ -7,7 +7,6 @@ import {
   THEME_CONFIG,
   VERSION_CHECK,
 } from 'lib/constants';
-import semver from 'semver';
 
 const app = createSlice({
   name: 'app',
@@ -17,7 +16,6 @@ const app = createSlice({
     versions: {
       current: process.env.VERSION,
       latest: null,
-      hasUpdate: false,
     },
     shareToken: null,
   },
@@ -74,13 +72,11 @@ export function checkVersion() {
 
     const latest = tag_name.startsWith('v') ? tag_name.slice(1) : tag_name;
     const lastCheck = getItem(VERSION_CHECK);
-    const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
 
     return dispatch(
       setVersions({
         current,
         latest,
-        hasUpdate,
       }),
     );
   };
