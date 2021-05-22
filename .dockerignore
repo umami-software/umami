@@ -4,3 +4,5 @@ Dockerfile
 .gitignore
 .DS_Store
 node_modules
+prisma/db
+yarn.lock
