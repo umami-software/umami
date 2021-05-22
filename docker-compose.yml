@@ -6,5 +6,5 @@ services:
       - 50001:3000
     environment:
       HASH_SALT: xSSHW4A2w0e3vxLUp46XL9OzCGKvxEnA
-    # volumes: 
-    #   - ./db:/app/prisma/db
+    volumes: 
+      - ./db:/build/prisma/db
