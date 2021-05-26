@@ -7,6 +7,7 @@ import { rtlLocales } from 'lib/lang';
 
 export default function Layout({ title, children, header = true, footer = true }) {
   const [locale] = useLocale();
+  const dir = rtlLocales.includes(locale) ? 'rtl' : 'ltr';
 
   return (
     <>
@@ -15,11 +16,11 @@ export default function Layout({ title, children, header = true, footer = true }
       </Head>
 
       {header && <Header />}
-      <main className="container" dir={rtlLocales.includes(locale) ? 'rtl' : 'ltr'}>
+      <main className="container" dir={dir}>
         {children}
       </main>
       {footer && <Footer />}
-      <div id="__modals" />
+      <div id="__modals" dir={dir} />
     </>
   );
 }
