@@ -86,7 +86,6 @@
   .items {
     display: flex;
     justify-content: unset;
-    align-items: left;
     font-size: var(--font-size-normal);
     font-weight: 600;
   }
@@ -106,34 +105,12 @@
 
   .burger {
     display: block;
-    /* color: #4a4a4a; */
     background: none;
     border: 1px solid var(--gray900);
     border-radius: 4px;
     cursor: pointer;
-    height: 3.25rem;
-    width: 3.25rem;
-    margin-left: auto;
     position: absolute;
-    right: 0;
     top: 0;
-  }
-
-  .burger span {
-    transform: translateX(25%);
-    padding: 1px 0px;
-    margin: 6px 0;
-    width: 65%;
-    display: block;
-    background-color: var(--gray900);
-  }
-
-  .burger div {
-    /* height: 100%; */
-    color: var(--gray900);
-    text-align: center;
-    margin: auto;
-    font-size: 1.5rem;
-    /* transform: translateX(-50%); */
+    right: 0;
   }
 }
