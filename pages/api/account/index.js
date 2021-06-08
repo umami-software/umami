@@ -18,7 +18,7 @@ export default async (req, res) => {
         const data = {};
 
         if (password) {
-          data.password = await hashPassword(password);
+          data.password = hashPassword(password);
         }
 
         // Only admin can change these fields
@@ -51,7 +51,7 @@ export default async (req, res) => {
         return badRequest(res, 'Account already exists');
       }
 
-      const created = await createAccount({ username, password: await hashPassword(password) });
+      const created = await createAccount({ username, password: hashPassword(password) });
 
       return ok(res, created);
     }

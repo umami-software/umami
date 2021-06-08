@@ -1,5 +1,5 @@
 require('dotenv').config();
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const chalk = require('chalk');
 const prompts = require('prompts');
 const { PrismaClient } = require('@prisma/client');
@@ -25,11 +25,11 @@ const updateAccountByUsername = (username, data) => {
 };
 
 const hashPassword = password => {
-  return bcrypt.hash(password, SALT_ROUNDS);
+  return bcrypt.hashSync(password, SALT_ROUNDS);
 };
 
 const changePassword = async (username, newPassword) => {
-  const password = await hashPassword(newPassword);
+  const password = hashPassword(newPassword);
   return updateAccountByUsername(username, { password });
 };
 

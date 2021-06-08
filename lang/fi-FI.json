@@ -56,7 +56,7 @@
   "label.username": "Käyttäjänimi",
   "label.view-details": "Katso tiedot",
   "label.websites": "Verkkosivut",
-  "message.active-users": "{x} nykyinen {x, plural, yksi {visitor} muut {visitors}}",
+  "message.active-users": "{x} nykyinen {x, plural, one {yksi} other {muut}}",
   "message.confirm-delete": "Haluatko varmasti poistaa {target}?",
   "message.copied": "Kopioitu!",
   "message.delete-warning": "Kaikki siihen liittyvät tiedot poistetaan.",
