@@ -1,5 +1,4 @@
 import React from 'react';
-import Head from 'next/head';
 import { menuOptions } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';
@@ -13,36 +12,32 @@ export default function LanguageButton() {
     setLocale(value);
   }
 
+  switch (locale) {
+    case 'zh-CN':
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/chinese-simplified-400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/chinese-simplified-500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-sc/chinese-simplified-700.css');
+      break;
+    case 'zh-TW':
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/chinese-traditional-400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/chinese-traditional-500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-tc/chinese-traditional-700.css');
+      break;
+    case 'ja-JP':
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/japanese-400.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/japanese-500.css');
+      import(/* webpackMode: "eager" */ '@fontsource/noto-sans-jp/japanese-700.css');
+      break;
+  }
+
   return (
-    <>
-      <Head>
-        {locale === 'zh-CN' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-        {locale === 'zh-TW' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-        {locale === 'ja-JP' && (
-          <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
-            rel="stylesheet"
-          />
-        )}
-      </Head>
-      <MenuButton
-        icon={<Globe />}
-        options={menuOptions}
-        value={locale}
-        menuClassName={styles.menu}
-        renderValue={option => option?.display}
-        onSelect={handleSelect}
-      />
-    </>
+    <MenuButton
+      icon={<Globe />}
+      options={menuOptions}
+      value={locale}
+      menuClassName={styles.menu}
+      renderValue={option => option?.display}
+      onSelect={handleSelect}
+    />
   );
 }
