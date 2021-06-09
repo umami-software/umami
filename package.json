@@ -108,6 +108,7 @@
     "@rollup/plugin-replace": "^2.3.4",
     "@svgr/webpack": "^5.5.0",
     "cross-env": "^7.0.3",
+    "d3-array": "2.12.1",
     "del": "^6.0.0",
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.26.0",
