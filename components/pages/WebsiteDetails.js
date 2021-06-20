@@ -108,7 +108,7 @@ export default function WebsiteDetails({ websiteId }) {
 
   return (
     <Page>
-      <div className="row">
+      <div className={classNames('row', {[styles.hidden]: !!view })}>
         <div className={classNames(styles.chart, 'col')}>
           <WebsiteChart
             websiteId={websiteId}
