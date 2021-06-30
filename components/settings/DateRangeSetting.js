@@ -9,7 +9,7 @@ import styles from './DateRangeSetting.module.css';
 import useLocale from 'hooks/useLocale';
 
 export default function DateRangeSetting() {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 

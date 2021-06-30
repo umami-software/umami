@@ -55,7 +55,7 @@ const filterOptions = [
 ];
 
 function DateFilter({ value, startDate, endDate, onChange, className }) {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const [showPicker, setShowPicker] = useState(false);
   const displayValue =
     value === 'custom' ? (
@@ -102,7 +102,7 @@ function DateFilter({ value, startDate, endDate, onChange, className }) {
 }
 
 const CustomRange = ({ startDate, endDate, onClick }) => {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
 
   function handleClick(e) {
     e.stopPropagation();

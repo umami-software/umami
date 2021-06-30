@@ -27,7 +27,7 @@ export default function BarChart({
   const canvas = useRef();
   const chart = useRef();
   const [tooltip, setTooltip] = useState(null);
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const [theme] = useTheme();
   const forceUpdate = useForceUpdate();
 
