@@ -6,7 +6,7 @@ import useLocale from 'hooks/useLocale';
 import { rtlLocales } from 'lib/lang';
 
 export default function Layout({ title, children, header = true, footer = true }) {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const dir = rtlLocales.includes(locale) ? 'rtl' : 'ltr';
 
   return (

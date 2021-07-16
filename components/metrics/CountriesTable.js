@@ -6,7 +6,7 @@ import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 
 export default function CountriesTable({ websiteId, onDataLoad, ...props }) {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 
   function renderLabel({ x }) {

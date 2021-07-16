@@ -12,7 +12,7 @@ import useLocale from 'hooks/useLocale';
 
 function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
   const completed = useSelector(state => state.queries[`/api/website/${websiteId}/stats`]);

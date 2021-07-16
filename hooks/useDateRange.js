@@ -9,7 +9,7 @@ import useLocale from './useLocale';
 
 export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE) {
   const dispatch = useDispatch();
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
   const forceUpdate = useForceUpdate();
 

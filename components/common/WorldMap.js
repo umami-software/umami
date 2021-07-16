@@ -24,7 +24,7 @@ function WorldMap({ data, className }) {
     }),
     [theme],
   );
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 
   function getFillColor(code) {
