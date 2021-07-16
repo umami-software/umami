@@ -11,6 +11,7 @@ services:
       HASH_SALT: replace-me-with-a-random-string
     depends_on:
       - db
+    restart: always
   db:
     image: postgres:12-alpine
     environment:
@@ -20,5 +21,6 @@ services:
     volumes:
       - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
       - umami-db-data:/var/lib/postgresql/data
+    restart: always
 volumes:
   umami-db-data:
