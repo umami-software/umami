@@ -31,7 +31,7 @@ const TYPE_ICONS = {
 
 export default function RealtimeLog({ data, websites, websiteId }) {
   const intl = useIntl();
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 

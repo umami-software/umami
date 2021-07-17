@@ -1,15 +1,16 @@
 import React from 'react';
-import { menuOptions } from 'lib/lang';
+import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';
 import Globe from 'assets/globe.svg';
 import styles from './LanguageButton.module.css';
 
 export default function LanguageButton() {
-  const [locale, setLocale] = useLocale();
+  const { locale, saveLocale } = useLocale();
+  const menuOptions = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
   function handleSelect(value) {
-    setLocale(value);
+    saveLocale(value);
   }
 
   switch (locale) {

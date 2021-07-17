@@ -9,7 +9,7 @@ import { rtlLocales } from 'lib/lang';
 
 export default function Footer() {
   const { current } = useVersion();
-  const [locale] = useLocale();
+  const { locale } = useLocale();
 
   return (
     <footer className="container" dir={rtlLocales.includes(locale) ? 'rtl' : 'ltr'}>
