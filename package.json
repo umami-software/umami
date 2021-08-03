@@ -136,6 +136,6 @@
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-recommended": "^5.0.0",
-    "tar": "^6.1.1"
+    "tar": "^6.1.2"
   }
 }
