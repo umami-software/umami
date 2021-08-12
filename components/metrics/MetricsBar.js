@@ -34,14 +34,22 @@ export default function MetricsBar({ websiteId, className }) {
     [url, modified],
   );
 
-  const formatFunc = format ? formatLongNumber : formatNumber;
+  const formatFunc = format
+    ? n => (n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`)
+    : formatNumber;
 
   function handleSetFormat() {
     setFormat(state => !state);
   }
 
   const { pageviews, uniques, bounces, totaltime } = data || {};
-  const num = Math.min(uniques, bounces);
+  const num = Math.min(data && uniques.value, data && bounces.value);
+  const diffs = data && {
+    pageviews: pageviews.value - pageviews.change,
+    uniques: uniques.value - uniques.change,
+    bounces: bounces.value - bounces.change,
+    totaltime: totaltime.value - totaltime.change,
+  };
 
   return (
     <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
@@ -51,18 +59,27 @@ export default function MetricsBar({ websiteId, className }) {
         <>
           <MetricCard
             label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
-            value={pageviews}
+            value={pageviews.value}
+            change={pageviews.change}
             format={formatFunc}
           />
           <MetricCard
             label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
-            value={uniques}
+            value={uniques.value}
+            change={uniques.change}
             format={formatFunc}
           />
           <MetricCard
             label={<FormattedMessage id="metrics.bounce-rate" defaultMessage="Bounce rate" />}
-            value={uniques ? (num / uniques) * 100 : 0}
+            value={uniques.value ? (num / uniques.value) * 100 : 0}
+            change={
+              uniques.value && uniques.change
+                ? (num / uniques.value) * 100 -
+                    (Math.min(diffs.uniques, diffs.bounces) / diffs.uniques) * 100 || 0
+                : 0
+            }
             format={n => Number(n).toFixed(0) + '%'}
+            reverseColors
           />
           <MetricCard
             label={
@@ -71,8 +88,19 @@ export default function MetricsBar({ websiteId, className }) {
                 defaultMessage="Average visit time"
               />
             }
-            value={totaltime && pageviews ? totaltime / (pageviews - bounces) : 0}
-            format={n => formatShortTime(n, ['m', 's'], ' ')}
+            value={
+              totaltime.value && pageviews.value
+                ? totaltime.value / (pageviews.value - bounces.value)
+                : 0
+            }
+            change={
+              totaltime.value && pageviews.value
+                ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
+                    totaltime.value / (pageviews.value - bounces.value)) *
+                    -1 || 0
+                : 0
+            }
+            format={n => `${n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
           />
         </>
       )}

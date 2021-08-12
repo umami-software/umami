@@ -14,10 +14,18 @@ export default async (req, res) => {
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
+    const distance = end_at - start_at;
+    const prevStartDate = new Date(+start_at - distance);
+    const prevEndDate = new Date(+end_at - distance);
+
     const metrics = await getWebsiteStats(websiteId, startDate, endDate, { url });
+    const prevPeriod = await getWebsiteStats(websiteId, prevStartDate, prevEndDate, { url });
 
     const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-      obj[key] = Number(metrics[0][key]) || 0;
+      obj[key] = {
+        value: Number(metrics[0][key]) || 0,
+        change: Number(metrics[0][key] - prevPeriod[0][key]) || 0,
+      };
       return obj;
     }, {});
 
