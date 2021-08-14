@@ -24,7 +24,7 @@ export default async (req, res) => {
         const addr = ipaddr.parse(ip);
         const range = ipaddr.parseCIDR(i);
 
-        if (addr.match(range)) return true;
+        if (addr.kind() === range[0].kind() && addr.match(range)) return true;
       }
 
       return false;
