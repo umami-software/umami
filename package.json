@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "1.20.0",
+  "version": "1.22.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -60,7 +60,7 @@
     "@fontsource/noto-sans-jp": "^4.5.0",
     "@fontsource/noto-sans-sc": "^4.5.0",
     "@fontsource/noto-sans-tc": "^4.5.0",
-    "@prisma/client": "2.27.0",
+    "@prisma/client": "2.29.1",
     "@reduxjs/toolkit": "^1.6.1",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.1",
@@ -128,7 +128,7 @@
     "postcss-rtlcss": "^3.3.2",
     "prettier": "^2.3.2",
     "prettier-eslint": "^12.0.0",
-    "prisma": "2.27.0",
+    "prisma": "2.29.1",
     "rollup": "^2.48.0",
     "rollup-plugin-hashbang": "^2.2.2",
     "rollup-plugin-terser": "^7.0.2",
@@ -136,6 +136,6 @@
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-recommended": "^5.0.0",
-    "tar": "^6.1.1"
+    "tar": "^6.1.2"
   }
 }
