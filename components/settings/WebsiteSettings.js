@@ -7,6 +7,7 @@ import Button from 'components/common/Button';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
 import WebsiteEditForm from 'components/forms/WebsiteEditForm';
+import ResetForm from 'components/forms/ResetForm';
 import DeleteForm from 'components/forms/DeleteForm';
 import TrackingCodeForm from 'components/forms/TrackingCodeForm';
 import ShareUrlForm from 'components/forms/ShareUrlForm';
@@ -16,6 +17,7 @@ import Toast from 'components/common/Toast';
 import Favicon from 'components/common/Favicon';
 import Pen from 'assets/pen.svg';
 import Trash from 'assets/trash.svg';
+import Reset from 'assets/redo.svg';
 import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import LinkIcon from 'assets/link.svg';
@@ -24,6 +26,7 @@ import styles from './WebsiteSettings.module.css';
 
 export default function WebsiteSettings() {
   const [editWebsite, setEditWebsite] = useState();
+  const [resetWebsite, setResetWebsite] = useState();
   const [deleteWebsite, setDeleteWebsite] = useState();
   const [addWebsite, setAddWebsite] = useState();
   const [showCode, setShowCode] = useState();
@@ -54,6 +57,9 @@ export default function WebsiteSettings() {
       />
       <Button icon={<Pen />} size="small" onClick={() => setEditWebsite(row)}>
         <FormattedMessage id="label.edit" defaultMessage="Edit" />
+      </Button>
+      <Button icon={<Reset />} size="small" onClick={() => setResetWebsite(row)}>
+        <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
       <Button icon={<Trash />} size="small" onClick={() => setDeleteWebsite(row)}>
         <FormattedMessage id="label.delete" defaultMessage="Delete" />
@@ -96,6 +102,7 @@ export default function WebsiteSettings() {
   function handleClose() {
     setAddWebsite(null);
     setEditWebsite(null);
+    setResetWebsite(null);
     setDeleteWebsite(null);
     setShowCode(null);
     setShowUrl(null);
@@ -139,6 +146,17 @@ export default function WebsiteSettings() {
       {addWebsite && (
         <Modal title={<FormattedMessage id="label.add-website" defaultMessage="Add website" />}>
           <WebsiteEditForm onSave={handleSave} onClose={handleClose} />
+        </Modal>
+      )}
+      {resetWebsite && (
+        <Modal
+          title={<FormattedMessage id="label.reset-website" defaultMessage="Reset statistics" />}
+        >
+          <ResetForm
+            values={{ type: 'website', id: resetWebsite.website_id, name: resetWebsite.name }}
+            onSave={handleSave}
+            onClose={handleClose}
+          />
         </Modal>
       )}
       {deleteWebsite && (
