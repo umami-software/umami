@@ -80,7 +80,7 @@
     "jose": "2.0.5",
     "maxmind": "^4.3.2",
     "moment-timezone": "^0.5.33",
-    "next": "10.2.2",
+    "next": "11.1.0",
     "prompts": "2.4.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
