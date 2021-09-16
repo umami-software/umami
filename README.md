@@ -11,7 +11,7 @@ A detailed getting started guide can be found at [https://umami.is/docs/](https:
 ### Requirements
 
 - A server with Node.js 12 or newer
-- A database (MySQL or Postgresql)
+- A database (MySQL/ Postgresql/ SQLite)
 
 ### Get the source code and install packages
 
@@ -23,7 +23,7 @@ npm install
 
 ### Create database tables
 
-Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/).
+Umami supports [MySQL](https://www.mysql.com/), [Postgresql](https://www.postgresql.org/) and [SQLite](https://sqlite.org/).
 Create a database for your Umami installation and install the tables with the included scripts.
 
 For MySQL:
@@ -57,6 +57,8 @@ mysql://username:mypassword@localhost:3306/mydb
 ```
 
 The `HASH_SALT` is used to generate unique values for your installation.
+
+`DATABASE_URL` will be ignored if database type is sqlite.
 
 ### Build the application
 
