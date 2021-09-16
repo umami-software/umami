@@ -40,4 +40,4 @@ COPY --from=build /build/public ./public
 USER node
 
 EXPOSE 3000
-CMD ["yarn", "start"]
+CMD ["yarn prisma migrate dev && yarn start"]
