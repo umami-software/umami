@@ -1,0 +1,10 @@
+version: '3'
+services:
+  umami:
+    image: ghcr.io/mikecao/umami:sqlite-latest
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_TYPE: sqlite
+      HASH_SALT: replace-me-with-a-random-string
+    restart: always

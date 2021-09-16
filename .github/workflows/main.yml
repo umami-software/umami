@@ -40,3 +40,22 @@ jobs:
         docker push ghcr.io/$GITHUB_ACTOR/umami:postgresql-latest
         docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-$(echo $GITHUB_SHA | head -c7)
         docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-latest
+    # 
+    - name: Build sqlite container image
+      run: |
+        docker build --build-arg DATABASE_TYPE=sqlite \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:sqlite-$(echo $GITHUB_SHA | head -c7) \
+        --tag ghcr.io/$GITHUB_ACTOR/umami:sqlite-latest \
+        .
+
+    - name: Docker login
+      run: >-
+        echo "${{ secrets.GITHUB_TOKEN }}"
+        | docker login -u "${{ github.actor }}" --password-stdin ghcr.io
+      
+    - name: Push image to GitHub
+      run: |
+        docker push ghcr.io/$GITHUB_ACTOR/umami:sqlite-$(echo $GITHUB_SHA | head -c7)
+        docker push ghcr.io/$GITHUB_ACTOR/umami:sqlite-latest
+        docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-$(echo $GITHUB_SHA | head -c7)
+        docker push ghcr.io/$GITHUB_ACTOR/umami:mysql-latest
