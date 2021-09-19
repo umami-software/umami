@@ -65,37 +65,37 @@ CREATE TABLE "website" (
 CREATE UNIQUE INDEX "account.username_unique" ON "account"("username");
 
 -- CreateIndex
-CREATE INDEX "event_created_at_idx" ON "event"("created_at");
+CREATE INDEX "event_website_id_idx" ON "event"("website_id");
 
 -- CreateIndex
 CREATE INDEX "event_session_id_idx" ON "event"("session_id");
 
 -- CreateIndex
-CREATE INDEX "event_website_id_idx" ON "event"("website_id");
-
--- CreateIndex
-CREATE INDEX "pageview_created_at_idx" ON "pageview"("created_at");
-
--- CreateIndex
-CREATE INDEX "pageview_session_id_idx" ON "pageview"("session_id");
-
--- CreateIndex
-CREATE INDEX "pageview_website_id_created_at_idx" ON "pageview"("website_id", "created_at");
-
--- CreateIndex
-CREATE INDEX "pageview_website_id_idx" ON "pageview"("website_id");
+CREATE INDEX "event_created_at_idx" ON "event"("created_at");
 
 -- CreateIndex
 CREATE INDEX "pageview_website_id_session_id_created_at_idx" ON "pageview"("website_id", "session_id", "created_at");
 
 -- CreateIndex
+CREATE INDEX "pageview_website_id_idx" ON "pageview"("website_id");
+
+-- CreateIndex
+CREATE INDEX "pageview_website_id_created_at_idx" ON "pageview"("website_id", "created_at");
+
+-- CreateIndex
+CREATE INDEX "pageview_session_id_idx" ON "pageview"("session_id");
+
+-- CreateIndex
+CREATE INDEX "pageview_created_at_idx" ON "pageview"("created_at");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "session.session_uuid_unique" ON "session"("session_uuid");
 
 -- CreateIndex
-CREATE INDEX "session_created_at_idx" ON "session"("created_at");
+CREATE INDEX "session_website_id_idx" ON "session"("website_id");
 
 -- CreateIndex
-CREATE INDEX "session_website_id_idx" ON "session"("website_id");
+CREATE INDEX "session_created_at_idx" ON "session"("created_at");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "website.website_uuid_unique" ON "website"("website_uuid");
@@ -105,6 +105,3 @@ CREATE UNIQUE INDEX "website.share_id_unique" ON "website"("share_id");
 
 -- CreateIndex
 CREATE INDEX "website_user_id_idx" ON "website"("user_id");
-
--- TODO: move this insert into seeder
-insert into account (username, password, is_admin) values ('admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa', true);
