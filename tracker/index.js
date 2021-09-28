@@ -28,10 +28,14 @@ import { removeTrailingSlash } from '../lib/url';
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
   }
 
+  if (getURLParameter('setlsdnt')) {
+    localStorage.setItem('umami.disabled', 'true');
+  }
+
   const disableTracking =
     localStorage.getItem('umami.disabled') ||
     (dnt && doNotTrack()) ||
-    getURLParameter("dnt") != null
+    getURLParameter('dnt') != null
     (domains &&
       !domains
         .split(',')
