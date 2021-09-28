@@ -24,9 +24,14 @@ import { removeTrailingSlash } from '../lib/url';
   const useCache = attr('data-cache');
   const domains = attr('data-domains');
 
+  const getURLParameter = (name) => {
+    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+  }
+
   const disableTracking =
     localStorage.getItem('umami.disabled') ||
     (dnt && doNotTrack()) ||
+    getURLParameter("dnt") != null
     (domains &&
       !domains
         .split(',')
