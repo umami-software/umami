@@ -1,14 +1,14 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const SALT_ROUNDS = 10;
 
 const hashPassword = password => {
-  return bcrypt.hash(password, SALT_ROUNDS);
+  return bcrypt.hashSync(password, SALT_ROUNDS);
 };
 
 async function main() {
-  const password = await hashPassword(process.env.ADMIN_PASSWORD || 'umami');
+  const password = hashPassword(process.env.ADMIN_PASSWORD || 'umami');
   await prisma.account.upsert({
     where: { username: 'admin' },
     update: {},

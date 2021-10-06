@@ -29,7 +29,7 @@ function filterWebsite(data, id) {
 }
 
 export default function RealtimeDashboard() {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(0);

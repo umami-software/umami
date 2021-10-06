@@ -79,7 +79,7 @@
   "metrics.average-visit-time": "平均访问时间",
   "metrics.bounce-rate": "跳出率",
   "metrics.browsers": "浏览器",
-  "metrics.countries": "国家",
+  "metrics.countries": "国家/地区",
   "metrics.device.desktop": "桌面电脑",
   "metrics.device.laptop": "笔记本",
   "metrics.device.mobile": "手机",

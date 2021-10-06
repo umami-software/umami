@@ -6,7 +6,7 @@ import styles from './Legend.module.css';
 import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function Legend({ chart }) {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
 
   function handleClick(index) {

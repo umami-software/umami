@@ -12,9 +12,12 @@ body {
   flex: 1;
 
   font-size: var(--font-size-normal);
+  overflow-y: overlay;
+}
+
+body {
   color: var(--gray900);
   background: var(--gray75);
-  overflow-y: overlay;
 }
 
 .zh-CN {
