@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -56,10 +56,10 @@
     }
   },
   "dependencies": {
-    "@fontsource/inter": "^4.5.0",
-    "@fontsource/noto-sans-jp": "^4.5.0",
-    "@fontsource/noto-sans-sc": "^4.5.0",
-    "@fontsource/noto-sans-tc": "^4.5.0",
+    "@fontsource/inter": "4.5.0",
+    "@fontsource/noto-sans-jp": "4.5.0",
+    "@fontsource/noto-sans-sc": "4.5.0",
+    "@fontsource/noto-sans-tc": "4.5.0",
     "@prisma/client": "2.29.1",
     "@reduxjs/toolkit": "^1.6.1",
     "bcryptjs": "^2.4.3",
@@ -73,7 +73,7 @@
     "detect-browser": "^5.2.0",
     "dotenv": "^8.2.0",
     "formik": "^2.2.9",
-    "immer": "^9.0.5",
+    "immer": "^9.0.6",
     "ipaddr.js": "^2.0.1",
     "is-localhost-ip": "^1.4.0",
     "isbot": "^3.2.2",

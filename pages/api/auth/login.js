@@ -2,10 +2,14 @@ import { serialize } from 'cookie';
 import { checkPassword, createSecureToken } from 'lib/crypto';
 import { getAccountByUsername } from 'lib/queries';
 import { AUTH_COOKIE_NAME } from 'lib/constants';
-import { ok, unauthorized } from 'lib/response';
+import { ok, unauthorized, badRequest } from 'lib/response';
 
 export default async (req, res) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return badRequest(res);
+  }
 
   const account = await getAccountByUsername(username);
 
