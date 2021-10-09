@@ -27,24 +27,10 @@ const validate = ({ username, password }) => {
   return errors;
 };
 
-export default function LoginForm({ hash = null }) {
+export default function LoginForm() {
   const post = usePost();
   const router = useRouter();
   const [message, setMessage] = useState();
-
-  const handleAutologin = async ({ hash }) => {
-    const autologin = await post('/api/auth/hash', {
-      hash,
-    });
-
-    if (autologin.ok) {
-      return router.push('/');
-    }
-  };
-
-  if (hash) {
-    handleAutologin({ hash });
-  }
 
   const handleSubmit = async ({ username, password }) => {
     const { ok, status, data } = await post('/api/auth/login', {
