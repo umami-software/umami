@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import Link from 'components/common/Link';
-import WebsiteChart from 'components/metrics/WebsiteChart';
-import Page from 'components/layout/Page';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import Button from 'components/common/Button';
-import useFetch from 'hooks/useFetch';
 import Arrow from 'assets/arrow-right.svg';
 import Chart from 'assets/chart-bar.svg';
+import Button from 'components/common/Button';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import Link from 'components/common/Link';
+import Page from 'components/layout/Page';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import useFetch from 'hooks/useFetch';
+import { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
@@ -42,13 +42,14 @@ export default function WebsiteList({ userId }) {
       <div className={styles.menubar}>
         <Button icon={<Chart />} onClick={() => setHideCharts(!hideCharts)} />
       </div>
-      {data.map(({ website_id, name, domain }) => (
+      {data?.map(({ website_id, name, domain, created_at }) => (
         <div key={website_id} className={styles.website}>
           <WebsiteChart
             websiteId={website_id}
             title={name}
             domain={domain}
             hideChart={hideCharts}
+            createdAt={created_at}
             showLink
           />
         </div>
