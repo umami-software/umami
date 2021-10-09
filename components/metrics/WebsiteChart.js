@@ -70,7 +70,13 @@ export default function WebsiteChart({
 
   return (
     <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
+      <WebsiteHeader
+        websiteId={websiteId}
+        title={title}
+        domain={domain}
+        showLink={showLink}
+        createdAt={createdAt}
+      />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}
