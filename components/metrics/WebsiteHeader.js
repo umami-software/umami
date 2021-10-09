@@ -1,15 +1,14 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import Arrow from 'assets/arrow-right.svg';
+import Favicon from 'components/common/Favicon';
 import Link from 'components/common/Link';
-import PageHeader from 'components/layout/PageHeader';
 import RefreshButton from 'components/common/RefreshButton';
 import ButtonLayout from 'components/layout/ButtonLayout';
-import Favicon from 'components/common/Favicon';
+import PageHeader from 'components/layout/PageHeader';
+import { FormattedMessage } from 'react-intl';
 import ActiveUsers from './ActiveUsers';
-import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
 
-export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {
+export default function WebsiteHeader({ websiteId, title, domain, showLink = false, createdAt }) {
   const header = showLink ? (
     <>
       <Favicon domain={domain} />
@@ -29,7 +28,7 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
       <div className={styles.title}>{header}</div>
       <ActiveUsers className={styles.active} websiteId={websiteId} />
       <ButtonLayout align="right">
-        <RefreshButton websiteId={websiteId} />
+        <RefreshButton websiteId={websiteId} createdAt={createdAt} />
         {showLink && (
           <Link
             href="/website/[...id]"
