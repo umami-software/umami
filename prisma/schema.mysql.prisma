@@ -11,6 +11,7 @@ model account {
   user_id    Int       @id @default(autoincrement()) @db.UnsignedInt
   username   String    @unique @db.VarChar(255)
   password   String    @db.VarChar(60)
+  hash       String    @unique @db.VarChar(512)
   is_admin   Boolean   @default(false)
   created_at DateTime? @default(now()) @db.Timestamp(0)
   updated_at DateTime? @default(now()) @db.Timestamp(0)

@@ -16,7 +16,7 @@ export default function DetailsPage() {
   const [websiteId] = id;
 
   return (
-    <Layout>
+    <Layout header={false} footer={false}>
       <WebsiteDetails websiteId={websiteId} />
     </Layout>
   );

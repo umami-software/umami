@@ -15,7 +15,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout>
+    <Layout header={false} footer={false}>
       <WebsiteList userId={userId} />
     </Layout>
   );
