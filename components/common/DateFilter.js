@@ -48,13 +48,13 @@ const filterOptions = [
   },
   { label: <FormattedMessage id="label.this-year" defaultMessage="This year" />, value: '1year' },
   {
-    label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
-    value: 'custom',
+    label: <FormattedMessage id="label.all-time" defaultMessage="All Time" />,
+    value: '0all',
     divider: true,
   },
   {
-    label: <FormattedMessage id="label.all-time" defaultMessage="All Time" />,
-    value: '0all',
+    label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
+    value: 'custom',
     divider: true,
   },
 ];
