@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { parseISO } from 'date-fns';
+import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import { getDateRange } from 'lib/date';
 import { getItem, setItem } from 'lib/web';
+import { useDispatch, useSelector } from 'react-redux';
 import { setDateRange } from '../redux/actions/websites';
-import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';
 
-export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE) {
+export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE, createdAt) {
   const dispatch = useDispatch();
   const { locale } = useLocale();
   const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
@@ -18,7 +18,7 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
 
   if (globalDefault) {
     if (typeof globalDefault === 'string') {
-      globalDateRange = getDateRange(globalDefault, locale);
+      globalDateRange = getDateRange(globalDefault, locale, createdAt);
     } else if (typeof globalDefault === 'object') {
       globalDateRange = {
         ...globalDefault,
@@ -39,5 +39,8 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
     }
   }
 
-  return [dateRange || globalDateRange || getDateRange(defaultDateRange, locale), saveDateRange];
+  return [
+    dateRange || globalDateRange || getDateRange(defaultDateRange, locale, createdAt),
+    saveDateRange,
+  ];
 }

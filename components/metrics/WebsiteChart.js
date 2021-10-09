@@ -1,21 +1,22 @@
-import React, { useMemo } from 'react';
+import Times from 'assets/times.svg';
 import classNames from 'classnames';
-import PageviewsChart from './PageviewsChart';
-import MetricsBar from './MetricsBar';
-import WebsiteHeader from './WebsiteHeader';
+import Button from 'components/common/Button';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
-import Button from 'components/common/Button';
-import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
-import useTimezone from 'hooks/useTimezone';
+import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
+import useTimezone from 'hooks/useTimezone';
+import { DEFAULT_DATE_RANGE } from 'lib/constants';
 import { getDateArray, getDateLength } from 'lib/date';
-import Times from 'assets/times.svg';
-import styles from './WebsiteChart.module.css';
-import ErrorMessage from '../common/ErrorMessage';
+import { useMemo } from 'react';
 import useShareToken from '../../hooks/useShareToken';
 import { TOKEN_HEADER } from '../../lib/constants';
+import ErrorMessage from '../common/ErrorMessage';
+import MetricsBar from './MetricsBar';
+import PageviewsChart from './PageviewsChart';
+import styles from './WebsiteChart.module.css';
+import WebsiteHeader from './WebsiteHeader';
 
 export default function WebsiteChart({
   websiteId,
@@ -24,10 +25,11 @@ export default function WebsiteChart({
   stickyHeader = false,
   showLink = false,
   hideChart = false,
+  createdAt,
   onDataLoad = () => {},
 }) {
   const shareToken = useShareToken();
-  const [dateRange, setDateRange] = useDateRange(websiteId);
+  const [dateRange, setDateRange] = useDateRange(websiteId, DEFAULT_DATE_RANGE, createdAt);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
   const {
@@ -77,7 +79,7 @@ export default function WebsiteChart({
         >
           {url && <PageFilter url={url} onClick={handleCloseFilter} />}
           <div className="col-12 col-lg-9">
-            <MetricsBar websiteId={websiteId} />
+            <MetricsBar websiteId={websiteId} createdAt={createdAt} />
           </div>
           <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
             <DateFilter
@@ -85,6 +87,7 @@ export default function WebsiteChart({
               startDate={startDate}
               endDate={endDate}
               onChange={setDateRange}
+              createdAt={createdAt}
             />
           </div>
         </StickyHeader>
