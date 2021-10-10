@@ -11,7 +11,7 @@ import styles from './PagesTable.module.css';
 export const FILTER_COMBINED = 0;
 export const FILTER_RAW = 1;
 
-export default function PagesTable({ websiteId, websiteDomain, showFilters, ...props }) {
+export default function PagesTable({ websiteId, websiteDomain, showFilters, createdAt, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const {
     resolve,
@@ -52,6 +52,7 @@ export default function PagesTable({ websiteId, websiteDomain, showFilters, ...p
         dataFilter={urlFilter}
         filterOptions={{ domain: websiteDomain, raw: filter === FILTER_RAW }}
         renderLabel={renderLink}
+        createdAt={createdAt}
         {...props}
       />
     </>

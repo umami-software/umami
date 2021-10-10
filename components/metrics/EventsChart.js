@@ -7,10 +7,10 @@ import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
-import { EVENT_COLORS, TOKEN_HEADER } from 'lib/constants';
+import { EVENT_COLORS, TOKEN_HEADER, DEFAULT_DATE_RANGE } from 'lib/constants';
 
-export default function EventsChart({ websiteId, className, token }) {
-  const [dateRange] = useDateRange(websiteId);
+export default function EventsChart({ websiteId, className, token, createdAt }) {
+  const [dateRange] = useDateRange(websiteId, DEFAULT_DATE_RANGE, createdAt);
   const { startDate, endDate, unit, modified } = dateRange;
   const [timezone] = useTimezone();
   const { query } = usePageQuery();

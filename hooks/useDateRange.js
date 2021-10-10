@@ -1,9 +1,9 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { parseISO } from 'date-fns';
-import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import { getDateRange } from 'lib/date';
 import { getItem, setItem } from 'lib/web';
-import { useDispatch, useSelector } from 'react-redux';
 import { setDateRange } from '../redux/actions/websites';
+import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';
 

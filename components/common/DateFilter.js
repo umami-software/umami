@@ -1,14 +1,14 @@
-import Calendar from 'assets/calendar-alt.svg';
-import DatePickerForm from 'components/forms/DatePickerForm';
-import { endOfYear, isSameDay } from 'date-fns';
-import useLocale from 'hooks/useLocale';
-import { dateFormat, getDateRange } from 'lib/date';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import DropDown from './DropDown';
-import Icon from './Icon';
+import { endOfYear, isSameDay } from 'date-fns';
 import Modal from './Modal';
+import DropDown from './DropDown';
+import DatePickerForm from 'components/forms/DatePickerForm';
+import useLocale from 'hooks/useLocale';
+import { getDateRange, dateFormat } from 'lib/date';
+import Calendar from 'assets/calendar-alt.svg';
+import Icon from './Icon';
 
 const filterOptions = [
   { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },

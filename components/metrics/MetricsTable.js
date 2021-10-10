@@ -12,7 +12,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
 import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
-import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
+import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER, DEFAULT_DATE_RANGE } from 'lib/constants';
 import styles from './MetricsTable.module.css';
 
 export default function MetricsTable({
@@ -23,10 +23,11 @@ export default function MetricsTable({
   filterOptions,
   limit,
   onDataLoad,
+  createdAt,
   ...props
 }) {
   const shareToken = useShareToken();
-  const [dateRange] = useDateRange(websiteId);
+  const [dateRange] = useDateRange(websiteId, DEFAULT_DATE_RANGE, createdAt);
   const { startDate, endDate, modified } = dateRange;
   const {
     resolve,

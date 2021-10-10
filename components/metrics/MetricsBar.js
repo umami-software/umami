@@ -1,14 +1,14 @@
+import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import ErrorMessage from 'components/common/ErrorMessage';
 import Loading from 'components/common/Loading';
-import useDateRange from 'hooks/useDateRange';
+import ErrorMessage from 'components/common/ErrorMessage';
 import useFetch from 'hooks/useFetch';
+import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
+import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import { DEFAULT_DATE_RANGE, TOKEN_HEADER } from 'lib/constants';
-import { formatLongNumber, formatNumber, formatShortTime } from 'lib/format';
-import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import MetricCard from './MetricCard';
 import styles from './MetricsBar.module.css';
 

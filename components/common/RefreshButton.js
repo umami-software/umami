@@ -1,15 +1,15 @@
-import Dots from 'assets/ellipsis-h.svg';
-import Refresh from 'assets/redo.svg';
-import useDateRange from 'hooks/useDateRange';
-import useLocale from 'hooks/useLocale';
-import { DEFAULT_DATE_RANGE } from 'lib/constants';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import { setDateRange } from 'redux/actions/websites';
-import { getDateRange } from '../../lib/date';
 import Button from './Button';
+import Refresh from 'assets/redo.svg';
+import Dots from 'assets/ellipsis-h.svg';
+import useDateRange from 'hooks/useDateRange';
+import { getDateRange } from '../../lib/date';
+import useLocale from 'hooks/useLocale';
+import { DEFAULT_DATE_RANGE } from '../../lib/constants';
 
 function RefreshButton({ websiteId, createdAt }) {
   const dispatch = useDispatch();

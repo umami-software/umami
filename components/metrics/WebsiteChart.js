@@ -1,22 +1,21 @@
-import Times from 'assets/times.svg';
+import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import Button from 'components/common/Button';
+import PageviewsChart from './PageviewsChart';
+import MetricsBar from './MetricsBar';
+import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
-import useDateRange from 'hooks/useDateRange';
+import Button from 'components/common/Button';
 import useFetch from 'hooks/useFetch';
-import usePageQuery from 'hooks/usePageQuery';
+import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
-import { DEFAULT_DATE_RANGE } from 'lib/constants';
+import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
-import { useMemo } from 'react';
-import useShareToken from '../../hooks/useShareToken';
-import { TOKEN_HEADER } from '../../lib/constants';
-import ErrorMessage from '../common/ErrorMessage';
-import MetricsBar from './MetricsBar';
-import PageviewsChart from './PageviewsChart';
+import Times from 'assets/times.svg';
 import styles from './WebsiteChart.module.css';
-import WebsiteHeader from './WebsiteHeader';
+import ErrorMessage from '../common/ErrorMessage';
+import useShareToken from '../../hooks/useShareToken';
+import { TOKEN_HEADER, DEFAULT_DATE_RANGE } from '../../lib/constants';
 
 export default function WebsiteChart({
   websiteId,

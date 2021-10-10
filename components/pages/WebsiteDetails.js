@@ -1,27 +1,27 @@
-import Arrow from 'assets/arrow-right.svg';
+import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import WorldMap from 'components/common/WorldMap';
+import Page from 'components/layout/Page';
+import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
+import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
-import WorldMap from 'components/common/WorldMap';
-import GridLayout, { GridColumn, GridRow } from 'components/layout/GridLayout';
-import MenuLayout from 'components/layout/MenuLayout';
-import Page from 'components/layout/Page';
-import WebsiteChart from 'components/metrics/WebsiteChart';
+import Arrow from 'assets/arrow-right.svg';
+import styles from './WebsiteDetails.module.css';
+import PagesTable from '../metrics/PagesTable';
+import ReferrersTable from '../metrics/ReferrersTable';
+import BrowsersTable from '../metrics/BrowsersTable';
+import OSTable from '../metrics/OSTable';
+import DevicesTable from '../metrics/DevicesTable';
+import CountriesTable from '../metrics/CountriesTable';
+import EventsTable from '../metrics/EventsTable';
+import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
 import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
-import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import BrowsersTable from '../metrics/BrowsersTable';
-import CountriesTable from '../metrics/CountriesTable';
-import DevicesTable from '../metrics/DevicesTable';
-import EventsChart from '../metrics/EventsChart';
-import EventsTable from '../metrics/EventsTable';
-import OSTable from '../metrics/OSTable';
-import PagesTable from '../metrics/PagesTable';
-import ReferrersTable from '../metrics/ReferrersTable';
-import styles from './WebsiteDetails.module.css';
 
 const views = {
   url: PagesTable,
@@ -88,12 +88,6 @@ export default function WebsiteDetails({ websiteId }) {
     },
   ];
 
-  const tableProps = {
-    websiteId,
-    websiteDomain: data?.domain,
-    limit: 10,
-  };
-
   const DetailsComponent = views[view];
 
   function handleDataLoad() {
@@ -105,6 +99,13 @@ export default function WebsiteDetails({ websiteId }) {
   if (!data) {
     return null;
   }
+
+  const tableProps = {
+    websiteId,
+    websiteDomain: data?.domain,
+    limit: 10,
+    createdAt: data?.created_at,
+  };
 
   return (
     <Page>
@@ -156,7 +157,11 @@ export default function WebsiteDetails({ websiteId }) {
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </GridColumn>
             <GridColumn xs={12} md={12} lg={8}>
-              <EventsChart className={styles.eventschart} websiteId={websiteId} />
+              <EventsChart
+                className={styles.eventschart}
+                websiteId={websiteId}
+                createdAt={data.created_at}
+              />
             </GridColumn>
           </GridRow>
         </GridLayout>
