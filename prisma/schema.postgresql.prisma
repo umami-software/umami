@@ -63,7 +63,7 @@ model session {
   language     String?    @db.VarChar(35)
   country      String?    @db.Char(2)
   region       String?    @db.VarChar(35)
-  city       String?      @db.VarChar(100)
+  city         String?    @db.VarChar(100)
   website      website    @relation(fields: [website_id], references: [website_id])
   event        event[]
   pageview     pageview[]
