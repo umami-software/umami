@@ -72,7 +72,6 @@
     "date-fns-tz": "^1.1.4",
     "detect-browser": "^5.2.0",
     "dotenv": "^8.2.0",
-    "fast-geoip": "^1.1.40",
     "formik": "^2.2.9",
     "immer": "^9.0.6",
     "ipaddr.js": "^2.0.1",
