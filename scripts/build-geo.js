@@ -6,7 +6,7 @@ const zlib = require('zlib');
 const tar = require('tar');
 
 let url =
-  'https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/GeoLite2-Country.tar.gz';
+  'https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/GeoLite2-City.tar.gz';
 
 if (process.env.MAXMIND_LICENSE_KEY) {
   url =
