@@ -25,7 +25,7 @@ import { removeTrailingSlash } from '../lib/url';
   const domains = attr('data-domains');
 
   const disableTracking =
-    localStorage.getItem('umami.disabled') ||
+    localStorage.getItem('cappuccino.disabled') ||
     (dnt && doNotTrack()) ||
     (domains &&
       !domains
@@ -39,7 +39,7 @@ import { removeTrailingSlash } from '../lib/url';
   const screen = `${width}x${height}`;
   const listeners = [];
   let currentUrl = `${pathname}${search}`;
-  let currentRef = document.referrer;
+  let currentRef = document.referrer || new URLSearchParams(window.location.search).get('r');
 
   /* Collect metrics */
 
@@ -60,7 +60,7 @@ import { removeTrailingSlash } from '../lib/url';
   const collect = (type, params, uuid) => {
     if (disableTracking) return;
 
-    const key = 'umami.cache';
+    const key = 'cappuccino.cache';
 
     const payload = {
       website: uuid,
@@ -110,9 +110,9 @@ import { removeTrailingSlash } from '../lib/url';
   /* Handle events */
 
   const addEvents = () => {
-    document.querySelectorAll("[class*='umami--']").forEach(element => {
+    document.querySelectorAll("[class*='cappuccino--']").forEach(element => {
       element.className.split(' ').forEach(className => {
-        if (/^umami--([a-z]+)--([\w]+[\w-]*)$/.test(className)) {
+        if (/^cappuccino--([a-z]+)--([\w]+[\w-]*)$/.test(className)) {
           const [, type, value] = className.split('--');
           const listener = () => trackEvent(value, type);
 
@@ -155,14 +155,14 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Global */
 
-  if (!window.umami) {
-    const umami = event_value => trackEvent(event_value);
-    umami.trackView = trackView;
-    umami.trackEvent = trackEvent;
-    umami.addEvents = addEvents;
-    umami.removeEvents = removeEvents;
+  if (!window.cappuccino) {
+    const cappuccino = event_value => trackEvent(event_value);
+    cappuccino.trackView = trackView;
+    cappuccino.trackEvent = trackEvent;
+    cappuccino.addEvents = addEvents;
+    cappuccino.removeEvents = removeEvents;
 
-    window.umami = umami;
+    window.cappuccino = cappuccino;
   }
 
   /* Start */

@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser';
 export default {
   input: 'tracker/index.js',
   output: {
-    file: 'public/umami.js',
+    file: 'public/barista.js',
     format: 'iife',
   },
   plugins: [resolve(), buble({ objectAssign: true }), terser({ compress: { evaluate: false } })],

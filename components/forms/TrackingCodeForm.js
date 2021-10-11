@@ -24,7 +24,7 @@ export default function TrackingCodeForm({ values, onClose }) {
           rows={3}
           cols={60}
           spellCheck={false}
-          defaultValue={`<script async defer data-website-id="${values.website_uuid}" src="${document.location.origin}${basePath}/umami.js"></script>`}
+          defaultValue={`<script async defer data-website-id="${values.website_uuid}" src="${document.location.origin}${basePath}/barista.js"></script>`}
           readOnly
         />
       </FormRow>
