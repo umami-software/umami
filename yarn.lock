@@ -3834,6 +3834,11 @@ fast-diff@^1.1.2:
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
+fast-geoip@^1.1.40:
+  version "1.1.40"
+  resolved "https://registry.yarnpkg.com/fast-geoip/-/fast-geoip-1.1.40.tgz#ed6a9247f61cee53d9cb0284547b77cceba281bf"
+  integrity sha512-AQsC/SomRC4o/lnTRKoBd8jr0YN7YgT2oJhvQDyC9Wx1xpydF9O4+Zbdq6pC0OI4euXRrEFboCxghEYLR1rjFw==
+
 fast-glob@^3.1.1, fast-glob@^3.2.7:
   version "3.2.7"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
