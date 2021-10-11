@@ -16,6 +16,8 @@ import BrowsersTable from '../metrics/BrowsersTable';
 import OSTable from '../metrics/OSTable';
 import DevicesTable from '../metrics/DevicesTable';
 import CountriesTable from '../metrics/CountriesTable';
+import RegionTable from '../metrics/RegionTable';
+import CityTable from '../metrics/CityTable';
 import EventsTable from '../metrics/EventsTable';
 import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
@@ -151,11 +153,19 @@ export default function WebsiteDetails({ websiteId }) {
             </GridColumn>
           </GridRow>
           <GridRow>
-            <GridColumn xs={12} md={12} lg={8}>
-              <WorldMap data={countryData} />
-            </GridColumn>
-            <GridColumn xs={12} md={12} lg={4}>
+            <GridColumn md={12} lg={4}>
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
+            </GridColumn>
+            <GridColumn md={12} lg={4}>
+              <RegionTable {...tableProps} />
+            </GridColumn>
+            <GridColumn md={12} lg={4}>
+              <CityTable {...tableProps} />
+            </GridColumn>
+          </GridRow>
+          <GridRow>
+            <GridColumn xs={12} md={12} lg={12}>
+              <WorldMap data={countryData} />
             </GridColumn>
           </GridRow>
           <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
