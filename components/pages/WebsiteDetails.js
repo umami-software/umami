@@ -83,6 +83,14 @@ export default function WebsiteDetails({ websiteId }) {
       value: resolve({ view: 'country' }),
     },
     {
+      label: <FormattedMessage id="metrics.region" defaultMessage="Region" />,
+      value: resolve({ view: 'region' }),
+    },
+    {
+      label: <FormattedMessage id="metrics.city" defaultMessage="City" />,
+      value: resolve({ view: 'city' }),
+    },
+    {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
       value: resolve({ view: 'event' }),
     },
