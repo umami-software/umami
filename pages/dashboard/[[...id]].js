@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
 import WebsiteList from 'components/pages/WebsiteList';
 import useRequireLogin from 'hooks/useRequireLogin';
+import { SHOW_HEADER, SHOW_FOOTER } from 'lib/constants';
 
 export default function DashboardPage() {
   const { loading } = useRequireLogin();
@@ -15,7 +16,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout header={false} footer={false}>
+    <Layout header={SHOW_HEADER} footer={SHOW_FOOTER}>
       <WebsiteList userId={userId} />
     </Layout>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from 'components/layout/Layout';
 import Settings from 'components/pages/Settings';
 import useRequireLogin from 'hooks/useRequireLogin';
+import { SHOW_HEADER, SHOW_FOOTER } from 'lib/constants';
 
 export default function SettingsPage() {
   const { loading } = useRequireLogin();
@@ -11,7 +12,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <Layout>
+    <Layout header={SHOW_HEADER} footer={SHOW_FOOTER}>
       <Settings />
     </Layout>
   );

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
 import WebsiteDetails from 'components/pages/WebsiteDetails';
 import useRequireLogin from 'hooks/useRequireLogin';
+import { SHOW_HEADER, SHOW_FOOTER } from 'lib/constants';
 
 export default function DetailsPage() {
   const { loading } = useRequireLogin();
@@ -16,7 +17,7 @@ export default function DetailsPage() {
   const [websiteId] = id;
 
   return (
-    <Layout header={false} footer={false}>
+    <Layout header={SHOW_HEADER} footer={SHOW_FOOTER}>
       <WebsiteDetails websiteId={websiteId} />
     </Layout>
   );
