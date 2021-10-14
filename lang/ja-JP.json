@@ -72,7 +72,7 @@
   "message.page-not-found": "ページが見つかりません。",
   "message.powered-by": "このシステムは {name} で実行されています。",
   "message.save-success": "正常に保存されました。",
-  "message.share-url": "これは {target} の共有リンクです。",
+  "message.share-url": "これは{target}の共有リンクです。",
   "message.track-stats": "{target}のアクセス解析を開始するには、次のコードをWebサイトの{head}セクションへ追加してください。",
   "message.type-delete": "確認のため、下のフォームに{delete}と入力してください。",
   "metrics.actions": "アクション",
