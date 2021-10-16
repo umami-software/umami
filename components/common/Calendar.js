@@ -27,7 +27,7 @@ import styles from './Calendar.module.css';
 import Icon from './Icon';
 
 export default function Calendar({ date, minDate, maxDate, onChange }) {
-  const [locale] = useLocale();
+  const { locale } = useLocale();
   const [selectMonth, setSelectMonth] = useState(false);
   const [selectYear, setSelectYear] = useState(false);
 

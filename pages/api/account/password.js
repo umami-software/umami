@@ -15,13 +15,13 @@ export default async (req, res) => {
 
   if (req.method === 'POST') {
     const account = await getAccountById(user_id);
-    const valid = await checkPassword(current_password, account.password);
+    const valid = checkPassword(current_password, account.password);
 
     if (!valid) {
       return badRequest(res, 'Current password is incorrect');
     }
 
-    const password = await hashPassword(new_password);
+    const password = hashPassword(new_password);
 
     const updated = await updateAccount(user_id, { password });
 

@@ -7,12 +7,14 @@ import styles from './Checkbox.module.css';
 function Checkbox({ name, value, label, onChange }) {
   const ref = useRef();
 
+  const onClick = () => ref.current.click();
+
   return (
     <div className={styles.container}>
-      <div className={styles.checkbox} onClick={() => ref.current.click()}>
+      <div className={styles.checkbox} onClick={onClick}>
         {value && <Icon icon={<Check />} size="small" />}
       </div>
-      <label className={styles.label} htmlFor={name}>
+      <label className={styles.label} htmlFor={name} onClick={onClick}>
         {label}
       </label>
       <input
@@ -20,7 +22,7 @@ function Checkbox({ name, value, label, onChange }) {
         className={styles.input}
         type="checkbox"
         name={name}
-        value={value}
+        defaultChecked={value}
         onChange={onChange}
       />
     </div>
