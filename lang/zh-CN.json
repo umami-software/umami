@@ -65,7 +65,7 @@
   "message.get-tracking-code": "获取跟踪代码",
   "message.go-to-settings": "去设置",
   "message.incorrect-username-password": "用户名或密码不正确。",
-  "message.log.visitor": "来自 {country} 的访客在搭载 {os} 的 {device} 上使用 {browser} 浏览器进行访问。",
+  "message.log.visitor": "来自{country}的访客在搭载 {os} 的{device}上使用 {browser} 浏览器进行访问。",
   "message.new-version-available": "umami 有新版本 {version} 发布啦！",
   "message.no-data-available": "无可用数据。",
   "message.no-websites-configured": "你还没有设置任何网站。",
