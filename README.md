@@ -78,7 +78,6 @@ or change the [port](https://nextjs.org/docs/api-reference/cli#production) to se
 
 This section have moved to [here](https://github.com/mikecao/umami/blob/master/Docker%20Install.mdhttp:// "here")
 
-docker pull ghcr.io/mikecao/umami:mysql-latest
 ```
 
 ## Getting updates
