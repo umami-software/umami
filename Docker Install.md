@@ -9,7 +9,7 @@ First clone the repo
 cd into the directory
 `cd umami`
 
-Start a Docker container
+To build the umami container and start up a Postgres database, run:
 `docker-compose up`
 
 Then navigate to `localhost:5432` in your browser!
