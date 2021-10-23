@@ -76,19 +76,8 @@ or change the [port](https://nextjs.org/docs/api-reference/cli#production) to se
 
 ## Installing with Docker
 
-To build the umami container and start up a Postgres database, run:
+This section have moved to [here](https://github.com/mikecao/umami/blob/master/Docker%20Install.mdhttp:// "here")
 
-```bash
-docker-compose up
-```
-
-Alternatively, to pull just the Umami Docker image with PostgreSQL support:
-```bash
-docker pull ghcr.io/mikecao/umami:postgresql-latest
-```
-
-Or with MySQL support:
-```bash
 docker pull ghcr.io/mikecao/umami:mysql-latest
 ```
 
