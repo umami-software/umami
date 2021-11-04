@@ -37,8 +37,8 @@ export default function LanguageButton() {
       options={menuOptions}
       value={locale}
       menuClassName={styles.menu}
-      renderValue={option => option?.display}
       onSelect={handleSelect}
+      hideLabel
     />
   );
 }
