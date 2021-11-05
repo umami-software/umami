@@ -12,21 +12,20 @@ import Button from 'components/common/Button';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 import useLocale from 'hooks/useLocale';
-import { rtlLocales } from 'lib/lang';
 import XMark from 'assets/xmark.svg';
 import Bars from 'assets/bars.svg';
 
 export default function Header() {
   const user = useSelector(state => state.user);
   const [active, setActive] = useState(false);
-  const { locale } = useLocale();
+  const { locale, dir } = useLocale();
 
   function handleClick() {
     setActive(state => !state);
   }
 
   return (
-    <nav className="container" dir={rtlLocales.includes(locale) ? 'rtl' : 'ltr'}>
+    <nav className="container" dir={dir}>
       {user?.is_admin && <UpdateNotice />}
       <div className={classNames(styles.header, 'row align-items-center')}>
         <div className={styles.nav}>
