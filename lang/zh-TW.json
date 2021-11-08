@@ -65,7 +65,7 @@
     "message.get-tracking-code": "獲得追蹤代碼",
     "message.go-to-settings": "去設定",
     "message.incorrect-username-password": "用户名或密碼不正確。",
-    "message.log.visitor": "自 {country} 的訪客在搭載 {os} 的 {device} 上使用 {browser} 進行訪問。",
+    "message.log.visitor": "自{country}的訪客在搭載 {os} 的{device}上使用 {browser} 進行訪問。",
     "message.new-version-available": "umami 有新版本 {version} 發佈啦！",
     "message.no-data-available": "無可用數據。",
     "message.no-websites-configured": "目前無任何網站設定。",

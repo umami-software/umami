@@ -3,11 +3,9 @@ import Head from 'next/head';
 import Header from 'components/layout/Header';
 import Footer from 'components/layout/Footer';
 import useLocale from 'hooks/useLocale';
-import { rtlLocales } from 'lib/lang';
 
 export default function Layout({ title, children, header = true, footer = true }) {
-  const { locale } = useLocale();
-  const dir = rtlLocales.includes(locale) ? 'rtl' : 'ltr';
+  const { dir } = useLocale();
 
   return (
     <>
