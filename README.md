@@ -23,7 +23,7 @@ npm install
 
 ### Create database tables
 
-Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/).
+Umami supports [MySQL](https://www.mysql.com/), [TiDB](https://github.com/pingcap/tidb) and [Postgresql](https://www.postgresql.org/).
 Create a database for your Umami installation and install the tables with the included scripts.
 
 For MySQL:
