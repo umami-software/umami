@@ -22,4 +22,6 @@ services:
       virtual.port: "3000"
       virtual.tls-email: "me@nisarg.io"
   
-  
+volumes:
+    caddy-certificates:
+        driver: local
