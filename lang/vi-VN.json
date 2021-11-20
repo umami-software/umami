@@ -58,7 +58,7 @@
     "label.username": "Tên đăng nhập",
     "label.view-details": "Xem chi tiết",
     "label.websites": "Websites",
-    "message.active-users": "{x} hiện tại {x, plural, một {visitor} trên {visitors}}",
+    "message.active-users": "{x} hiện tại {x, plural, one {một} other {trên}}",
     "message.confirm-reset": "Bạn có chắc chắn muốn tái thiết lập thống kê {target}?",
     "message.confirm-delete": "Bạn có chắc chắn muốn xoá {target}?",
     "message.copied": "Đã copy!",
@@ -101,4 +101,3 @@
     "metrics.views": "Xem",
     "metrics.visitors": "Khách"
   }
-  
