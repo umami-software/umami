@@ -27,7 +27,7 @@
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
     "copy-db-schema": "node scripts/copy-db-schema.js",
     "generate-lang": "npm-run-all extract-lang merge-lang",
-    "extract-lang": "formatjs extract '{pages,components}/**/*.js' --out-file build/messages.json",
+    "extract-lang": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",
     "merge-lang": "node scripts/merge-lang.js",
     "format-lang": "node scripts/format-lang.js",
     "compile-lang": "formatjs compile-folder --ast build public/lang",

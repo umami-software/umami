@@ -41,7 +41,7 @@ export default function WebsiteList({ userId }) {
     <Page>
       <div className={styles.menubar}>
         <Button
-          tooltip={<FormattedMessage id="message.toggle-charts" defaultMessage="Toggle Charts" />}
+          tooltip={<FormattedMessage id="message.toggle-charts" defaultMessage="Toggle charts" />}
           icon={<Chart />}
           onClick={() => setHideCharts(!hideCharts)}
         />
