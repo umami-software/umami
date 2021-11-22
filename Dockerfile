@@ -1,5 +1,5 @@
 # Build image
-FROM node:12.18-alpine AS build
+FROM node:12.22-alpine AS build
 ARG BASE_PATH
 ARG DATABASE_TYPE
 ENV BASE_PATH=$BASE_PATH
@@ -24,7 +24,7 @@ RUN yarn next telemetry disable
 RUN yarn build
 
 # Production image
-FROM node:12.18-alpine AS production
+FROM node:12.22-alpine AS production
 WORKDIR /app
 
 # Copy cached dependencies
