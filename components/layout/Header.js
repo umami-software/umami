@@ -18,7 +18,7 @@ import Bars from 'assets/bars.svg';
 export default function Header() {
   const user = useSelector(state => state.user);
   const [active, setActive] = useState(false);
-  const { locale, dir } = useLocale();
+  const { dir } = useLocale();
 
   function handleClick() {
     setActive(state => !state);

@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "1.24.0",
+  "version": "1.24.1",
   "description": "A simple, fast, website analytics alternative to Google Analytics. ",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -35,7 +35,9 @@
     "download-country-names": "node scripts/download-country-names.js",
     "loadtest": "node scripts/loadtest.js",
     "loadtest:medium": "node scripts/loadtest.js --weight=medium",
-    "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose"
+    "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose",
+    "lint": "next lint --quiet",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "**/*.js": [
@@ -49,11 +51,6 @@
     "**/*.json": [
       "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "dependencies": {
     "@fontsource/inter": "4.5.0",
@@ -107,14 +104,14 @@
     "cross-env": "^7.0.3",
     "del": "^6.0.0",
     "dotenv-cli": "^4.0.0",
-    "eslint": "^8.1.0",
+    "eslint": "^7.32.0",
     "eslint-config-next": "^12.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "extract-react-intl-messages": "^4.1.1",
-    "husky": "^7.0.4",
+    "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
     "loadtest": "5.1.2",
     "npm-run-all": "^4.1.5",
@@ -129,7 +126,7 @@
     "rollup": "^2.48.0",
     "rollup-plugin-hashbang": "^2.2.2",
     "rollup-plugin-terser": "^7.0.2",
-    "stylelint": "^14.0.1",
+    "stylelint": "^13.13.0",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^5.0.0",

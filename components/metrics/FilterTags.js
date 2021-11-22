@@ -15,7 +15,7 @@ export default function FilterTags({ params, onClick }) {
           return null;
         }
         return (
-          <div className={styles.tag}>
+          <div key={key} className={styles.tag}>
             <Button icon={<Times />} onClick={() => onClick(key)} variant="action" iconRight>
               {`${key}: ${params[key]}`}
             </Button>
