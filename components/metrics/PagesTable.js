@@ -16,7 +16,7 @@ export default function PagesTable({ websiteId, websiteDomain, showFilters, ...p
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const {
     resolve,
-    query: { url },
+    query: { url: currentUrl },
   } = usePageQuery();
 
   const buttons = [
@@ -27,16 +27,16 @@ export default function PagesTable({ websiteId, websiteDomain, showFilters, ...p
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
-  const renderLink = ({ x }) => {
+  const renderLink = ({ x: url }) => {
     return (
-      <Link href={resolve({ url: x })} replace={true}>
+      <Link href={resolve({ url })} replace={true}>
         <a
           className={classNames({
-            [styles.inactive]: url && x !== url,
-            [styles.active]: x === url,
+            [styles.inactive]: currentUrl && url !== currentUrl,
+            [styles.active]: url === currentUrl,
           })}
         >
-          {safeDecodeURI(x)}
+          {safeDecodeURI(url)}
         </a>
       </Link>
     );

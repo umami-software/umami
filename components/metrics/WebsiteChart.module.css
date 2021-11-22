@@ -1,7 +1,12 @@
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-self: stretch;
+}
+
+.chart {
+  position: relative;
 }
 
 .title {
@@ -35,11 +40,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
-
-.url {
-  text-align: center;
-  margin-bottom: 10px;
 }
 
 @media only screen and (max-width: 992px) {

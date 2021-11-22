@@ -6,6 +6,8 @@
   margin: auto;
   display: flex;
   z-index: 1;
+  background-color: var(--gray50);
+  padding: 10px;
 }
 
 .icon {
