@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import FilterButtons from 'components/common/FilterButtons';
 import { urlFilter } from 'lib/filters';
+import { safeDecodeURI } from 'lib/url';
 import usePageQuery from 'hooks/usePageQuery';
 import MetricsTable from './MetricsTable';
 import styles from './PagesTable.module.css';
@@ -35,7 +36,7 @@ export default function PagesTable({ websiteId, websiteDomain, showFilters, ...p
             [styles.active]: x === url,
           })}
         >
-          {decodeURI(x)}
+          {safeDecodeURI(x)}
         </a>
       </Link>
     );

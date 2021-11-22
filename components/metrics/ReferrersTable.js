@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import FilterButtons from 'components/common/FilterButtons';
 import { refFilter } from 'lib/filters';
+import { safeDecodeURI } from 'lib/url';
 
 export const FILTER_DOMAIN_ONLY = 0;
 export const FILTER_COMBINED = 1;
@@ -26,10 +27,10 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
   const renderLink = ({ w: href, x: url }) => {
     return (href || url).startsWith('http') ? (
       <a href={href || url} target="_blank" rel="noreferrer">
-        {decodeURI(url)}
+        {safeDecodeURI(url)}
       </a>
     ) : (
-      decodeURI(url)
+      safeDecodeURI(url)
     );
   };
 
