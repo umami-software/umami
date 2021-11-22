@@ -4,6 +4,7 @@ import { setLocale } from 'redux/actions/app';
 import { useRouter } from 'next/router';
 import { get, setItem } from 'lib/web';
 import { LOCALE_CONFIG } from 'lib/constants';
+import { getDateLocale, getTextDirection } from 'lib/lang';
 import useForceUpdate from 'hooks/useForceUpdate';
 import enUS from 'public/lang/en-US.json';
 
@@ -16,6 +17,8 @@ export default function useLocale() {
   const dispatch = useDispatch();
   const { basePath } = useRouter();
   const forceUpdate = useForceUpdate();
+  const dir = getTextDirection(locale);
+  const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale) {
     const { ok, data } = await get(`${basePath}/lang/${locale}.json`);
@@ -45,5 +48,5 @@ export default function useLocale() {
     }
   }, [locale]);
 
-  return { locale, saveLocale, messages };
+  return { locale, saveLocale, messages, dir, dateLocale };
 }

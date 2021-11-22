@@ -1,0 +1,31 @@
+body .inactive {
+  color: var(--gray500);
+}
+
+body .active {
+  color: var(--gray900);
+  font-weight: 600;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row .link {
+  display: none;
+}
+
+.row .label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row:hover .link {
+  display: block;
+}
+
+.icon {
+  cursor: pointer;
+}

@@ -5,17 +5,16 @@ import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
-import Button from 'components/common/Button';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
-import Times from 'assets/times.svg';
+import ErrorMessage from 'components/common/ErrorMessage';
+import FilterTags from 'components/metrics/FilterTags';
+import useShareToken from 'hooks/useShareToken';
+import { TOKEN_HEADER } from 'lib/constants';
 import styles from './WebsiteChart.module.css';
-import ErrorMessage from '../common/ErrorMessage';
-import useShareToken from '../../hooks/useShareToken';
-import { TOKEN_HEADER } from '../../lib/constants';
 
 export default function WebsiteChart({
   websiteId,
@@ -33,7 +32,7 @@ export default function WebsiteChart({
   const {
     router,
     resolve,
-    query: { url },
+    query: { url, ref },
   } = usePageQuery();
 
   const { data, loading, error } = useFetch(
@@ -45,11 +44,12 @@ export default function WebsiteChart({
         unit,
         tz: timezone,
         url,
+        ref,
       },
       onDataLoad,
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [url, modified],
+    [modified, url, ref],
   );
 
   const chartData = useMemo(() => {
@@ -62,8 +62,8 @@ export default function WebsiteChart({
     return { pageviews: [], sessions: [] };
   }, [data]);
 
-  function handleCloseFilter() {
-    router.push(resolve({ url: undefined }));
+  function handleCloseFilter(param) {
+    router.push(resolve({ [param]: undefined }));
   }
 
   return (
@@ -75,7 +75,7 @@ export default function WebsiteChart({
           stickyClassName={styles.sticky}
           enabled={stickyHeader}
         >
-          {url && <PageFilter url={url} onClick={handleCloseFilter} />}
+          <FilterTags params={{ url, ref }} onClick={handleCloseFilter} />
           <div className="col-12 col-lg-9">
             <MetricsBar websiteId={websiteId} />
           </div>
@@ -90,7 +90,7 @@ export default function WebsiteChart({
         </StickyHeader>
       </div>
       <div className="row">
-        <div className="col">
+        <div className={classNames(styles.chart, 'col')}>
           {error && <ErrorMessage />}
           {!hideChart && (
             <PageviewsChart
@@ -106,13 +106,3 @@ export default function WebsiteChart({
     </div>
   );
 }
-
-const PageFilter = ({ url, onClick }) => {
-  return (
-    <div className={classNames(styles.url, 'col-12')}>
-      <Button icon={<Times />} onClick={onClick} variant="action" iconRight>
-        {url}
-      </Button>
-    </div>
-  );
-};

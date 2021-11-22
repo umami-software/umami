@@ -16,6 +16,7 @@ function MenuButton({
   menuAlign = 'right',
   onSelect,
   renderValue,
+  hideLabel,
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const ref = useRef();
@@ -44,7 +45,9 @@ function MenuButton({
         onClick={toggleMenu}
         variant="light"
       >
-        <div className={styles.text}>{renderValue ? renderValue(selectedOption) : value}</div>
+        {!hideLabel && (
+          <div className={styles.text}>{renderValue ? renderValue(selectedOption) : value}</div>
+        )}
       </Button>
       {showMenu && (
         <Menu

@@ -118,9 +118,9 @@ export default function WebsiteDetails({ websiteId }) {
             showLink={false}
             stickyHeader
           />
+          {!chartLoaded && <Loading />}
         </div>
       </div>
-      {!chartLoaded && <Loading />}
       {chartLoaded && !view && (
         <GridLayout>
           <GridRow>

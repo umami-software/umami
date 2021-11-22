@@ -16,28 +16,29 @@ import { removeTrailingSlash } from '../lib/url';
 
   if (!script) return;
 
-  const attr = key => script && script.getAttribute(key);
+  const attr = script.getAttribute.bind(script);
   const website = attr('data-website-id');
   const hostUrl = attr('data-host-url');
   const autoTrack = attr('data-auto-track') !== 'false';
   const dnt = attr('data-do-not-track');
   const useCache = attr('data-cache');
-  const domains = attr('data-domains');
+  const domain = attr('data-domains') || '';
+  const domains = domain.split(',').map(n => n.trim());
 
-  const disableTracking =
-    localStorage.getItem('umami.disabled') ||
+  const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
+  const eventSelect = "[class*='umami--']";
+  const cacheKey = 'umami.cache';
+
+  const disableTracking = () =>
+    (localStorage && localStorage.getItem('umami.disabled')) ||
     (dnt && doNotTrack()) ||
-    (domains &&
-      !domains
-        .split(',')
-        .map(n => n.trim())
-        .includes(hostname));
+    (domain && !domains.includes(hostname));
 
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
     : script.src.split('/').slice(0, -1).join('/');
   const screen = `${width}x${height}`;
-  const listeners = [];
+  const listeners = {};
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
 
@@ -50,7 +51,7 @@ import { removeTrailingSlash } from '../lib/url';
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
-        callback && callback(req.response);
+        callback(req.response);
       }
     };
 
@@ -58,23 +59,19 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const collect = (type, params, uuid) => {
-    if (disableTracking) return;
-
-    const key = 'umami.cache';
+    if (disableTracking()) return;
 
     const payload = {
       website: uuid,
       hostname,
       screen,
       language,
-      cache: useCache && sessionStorage.getItem(key),
+      cache: useCache && sessionStorage.getItem(cacheKey),
     };
 
-    if (params) {
-      Object.keys(params).forEach(key => {
-        payload[key] = params[key];
-      });
-    }
+    Object.keys(params).forEach(key => {
+      payload[key] = params[key];
+    });
 
     post(
       `${root}/api/collect`,
@@ -82,11 +79,11 @@ import { removeTrailingSlash } from '../lib/url';
         type,
         payload,
       },
-      res => useCache && sessionStorage.setItem(key, res),
+      res => useCache && sessionStorage.setItem(cacheKey, res),
     );
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
+  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
     collect(
       'pageview',
       {
@@ -95,8 +92,9 @@ import { removeTrailingSlash } from '../lib/url';
       },
       uuid,
     );
+  };
 
-  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) =>
+  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
     collect(
       'event',
       {
@@ -106,36 +104,35 @@ import { removeTrailingSlash } from '../lib/url';
       },
       uuid,
     );
+  };
 
   /* Handle events */
 
-  const addEvents = () => {
-    document.querySelectorAll("[class*='umami--']").forEach(element => {
-      element.className.split(' ').forEach(className => {
-        if (/^umami--([a-z]+)--([\w]+[\w-]*)$/.test(className)) {
-          const [, type, value] = className.split('--');
-          const listener = () => trackEvent(value, type);
+  const addEvent = element => {
+    element.className.split(' ').forEach(className => {
+      if (!eventClass.test(className)) return;
 
-          listeners.push([element, type, listener]);
-          element.addEventListener(type, listener, true);
-        }
-      });
+      const [, type, value] = className.split('--');
+      const listener = listeners[className]
+        ? listeners[className]
+        : (listeners[className] = () => trackEvent(value, type));
+
+      element.addEventListener(type, listener, true);
     });
   };
 
-  const removeEvents = () => {
-    listeners.forEach(([element, type, listener]) => {
-      element && element.removeEventListener(type, listener, true);
+  const monitorMutate = mutations => {
+    mutations.forEach(mutation => {
+      const element = mutation.target;
+      addEvent(element);
+      element.querySelectorAll(eventSelect).forEach(addEvent);
     });
-    listeners.length = 0;
   };
 
   /* Handle history changes */
 
   const handlePush = (state, title, url) => {
     if (!url) return;
-
-    removeEvents();
 
     currentRef = currentUrl;
     const newUrl = url.toString();
@@ -147,32 +144,42 @@ import { removeTrailingSlash } from '../lib/url';
     }
 
     if (currentUrl !== currentRef) {
-      trackView(currentUrl, currentRef);
+      trackView();
     }
-
-    setTimeout(addEvents, 300);
   };
 
   /* Global */
 
   if (!window.umami) {
-    const umami = event_value => trackEvent(event_value);
+    const umami = eventValue => trackEvent(eventValue);
     umami.trackView = trackView;
     umami.trackEvent = trackEvent;
-    umami.addEvents = addEvents;
-    umami.removeEvents = removeEvents;
 
     window.umami = umami;
   }
 
   /* Start */
 
-  if (autoTrack && !disableTracking) {
+  if (autoTrack && !disableTracking()) {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
 
-    trackView(currentUrl, currentRef);
-
-    addEvents();
+    const update = () => {
+      switch (document.readyState) {
+        /* DOM rendered, add event listeners */
+        case 'interactive': {
+          document.querySelectorAll(eventSelect).forEach(addEvent);
+          const observer = new MutationObserver(monitorMutate);
+          observer.observe(document, { childList: true, subtree: true });
+          break;
+        }
+        /* Page loaded, track our view */
+        case 'complete':
+          trackView();
+          break;
+      }
+    };
+    document.addEventListener('readystatechange', update, true);
+    update();
   }
 })(window);

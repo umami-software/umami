@@ -40,7 +40,11 @@ export default function WebsiteList({ userId }) {
   return (
     <Page>
       <div className={styles.menubar}>
-        <Button icon={<Chart />} onClick={() => setHideCharts(!hideCharts)} />
+        <Button
+          tooltip={<FormattedMessage id="message.toggle-charts" defaultMessage="Toggle charts" />}
+          icon={<Chart />}
+          onClick={() => setHideCharts(!hideCharts)}
+        />
       </div>
       {data.map(({ website_id, name, domain }) => (
         <div key={website_id} className={styles.website}>

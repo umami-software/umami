@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Page from '../layout/Page';
 import PageHeader from '../layout/PageHeader';
 import useFetch from '../../hooks/useFetch';
@@ -16,6 +17,7 @@ import EmptyPlaceholder from '../common/EmptyPlaceholder';
 export default function TestConsole() {
   const user = useSelector(state => state.user);
   const [website, setWebsite] = useState();
+  const { basePath } = useRouter();
   const { data } = useFetch('/api/websites');
 
   if (!data || !user?.is_admin) {
@@ -39,7 +41,7 @@ export default function TestConsole() {
     <Page>
       <Head>
         {typeof window !== 'undefined' && website && (
-          <script async defer data-website-id={website.website_uuid} src="/umami.js" />
+          <script async defer data-website-id={website.website_uuid} src={`${basePath}/umami.js`} />
         )}
       </Head>
       <PageHeader>
