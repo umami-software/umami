@@ -16,6 +16,7 @@ import BrowsersTable from '../metrics/BrowsersTable';
 import OSTable from '../metrics/OSTable';
 import DevicesTable from '../metrics/DevicesTable';
 import CountriesTable from '../metrics/CountriesTable';
+import LanguagesTable from '../metrics/LanguagesTable';
 import EventsTable from '../metrics/EventsTable';
 import EventsChart from '../metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
@@ -30,6 +31,7 @@ const views = {
   os: OSTable,
   device: DevicesTable,
   country: CountriesTable,
+  language: LanguagesTable,
   event: EventsTable,
 };
 
@@ -81,6 +83,10 @@ export default function WebsiteDetails({ websiteId }) {
     {
       label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
       value: resolve({ view: 'country' }),
+    },
+    {
+      label: <FormattedMessage id="metrics.languages" defaultMessage="Languages" />,
+      value: resolve({ view: 'language' }),
     },
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
@@ -147,7 +153,8 @@ export default function WebsiteDetails({ websiteId }) {
               <WorldMap data={countryData} />
             </GridColumn>
             <GridColumn xs={12} md={12} lg={4}>
-              <CountriesTable {...tableProps} onDataLoad={setCountryData} />
+              <CountriesTable maxHeight={265} {...tableProps} onDataLoad={setCountryData} />
+              <LanguagesTable maxHeight={265} {...tableProps} />
             </GridColumn>
           </GridRow>
           <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
