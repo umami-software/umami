@@ -15,7 +15,7 @@ import styles from './MetricsBar.module.css';
 export default function MetricsBar({ websiteId, className }) {
   const shareToken = useShareToken();
   const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, modified } = dateRange;
+  const { startDate, endDate, modified, value } = dateRange;
   const [format, setFormat] = useState(true);
   const {
     query: { url, ref },
@@ -63,12 +63,14 @@ export default function MetricsBar({ websiteId, className }) {
             value={pageviews.value}
             change={pageviews.change}
             format={formatFunc}
+            hideComparison={value === 'all'}
           />
           <MetricCard
             label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
             value={uniques.value}
             change={uniques.change}
             format={formatFunc}
+            hideComparison={value === 'all'}
           />
           <MetricCard
             label={<FormattedMessage id="metrics.bounce-rate" defaultMessage="Bounce rate" />}
@@ -80,6 +82,7 @@ export default function MetricsBar({ websiteId, className }) {
                 : 0
             }
             format={n => Number(n).toFixed(0) + '%'}
+            hideComparison={value === 'all'}
             reverseColors
           />
           <MetricCard
@@ -102,6 +105,7 @@ export default function MetricsBar({ websiteId, className }) {
                 : 0
             }
             format={n => `${n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
+            hideComparison={value === 'all'}
           />
         </>
       )}
