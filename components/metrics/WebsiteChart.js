@@ -85,6 +85,7 @@ export default function WebsiteChart({
               startDate={startDate}
               endDate={endDate}
               onChange={setDateRange}
+              websiteId={websiteId}
             />
           </div>
         </StickyHeader>

@@ -16,11 +16,12 @@ function RefreshButton({ websiteId }) {
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
   const completed = useSelector(state => state.queries[`/api/website/${websiteId}/stats`]);
+  const createdAt = useSelector(state => state.websites[websiteId]?.createdAt);
 
   function handleClick() {
     if (dateRange) {
       setLoading(true);
-      dispatch(setDateRange(websiteId, getDateRange(dateRange.value, locale)));
+      dispatch(setDateRange(websiteId, getDateRange(dateRange.value, locale, createdAt)));
     }
   }
 
