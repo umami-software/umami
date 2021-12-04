@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setWebsiteCreated } from 'redux/actions/websites';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
@@ -34,6 +36,7 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId }) {
+  const dispatch = useDispatch();
   const shareToken = useShareToken();
   const { data } = useFetch(`/api/website/${websiteId}`, {
     headers: { [TOKEN_HEADER]: shareToken?.token },
@@ -45,6 +48,10 @@ export default function WebsiteDetails({ websiteId }) {
     resolve,
     query: { view },
   } = usePageQuery();
+
+  useEffect(() => {
+    if (data) dispatch(setWebsiteCreated(websiteId, data.created_at));
+  }, [data]);
 
   const BackButton = () => (
     <div key="back-button" className={styles.backButton}>

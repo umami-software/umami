@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setWebsiteCreated } from 'redux/actions/websites';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
@@ -11,8 +13,13 @@ import Chart from 'assets/chart-bar.svg';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
+  const dispatch = useDispatch();
   const { data } = useFetch('/api/websites', { params: { user_id: userId } });
   const [hideCharts, setHideCharts] = useState(false);
+
+  useEffect(() => {
+    if (data) data.map(i => dispatch(setWebsiteCreated(i.website_id, i.created_at)));
+  }, [data]);
 
   if (!data) {
     return null;
