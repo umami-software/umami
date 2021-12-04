@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { endOfYear, isSameDay } from 'date-fns';
 import Modal from './Modal';
@@ -48,15 +49,21 @@ const filterOptions = [
   },
   { label: <FormattedMessage id="label.this-year" defaultMessage="This year" />, value: '1year' },
   {
+    label: <FormattedMessage id="label.all-time" defaultMessage="All Time" />,
+    value: 'all',
+    divider: true,
+  },
+  {
     label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
     value: 'custom',
     divider: true,
   },
 ];
 
-function DateFilter({ value, startDate, endDate, onChange, className }) {
+function DateFilter({ value, startDate, endDate, onChange, className, websiteId = null }) {
   const { locale } = useLocale();
   const [showPicker, setShowPicker] = useState(false);
+  const createdAt = useSelector(state => state.websites[websiteId]?.createdAt);
   const displayValue =
     value === 'custom' ? (
       <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
@@ -69,7 +76,7 @@ function DateFilter({ value, startDate, endDate, onChange, className }) {
       setShowPicker(true);
       return;
     }
-    onChange(getDateRange(value, locale));
+    onChange(getDateRange(value, locale, createdAt));
   }
 
   function handlePickerChange(value) {
