@@ -19,7 +19,13 @@ export default function DateRangeSetting() {
 
   return (
     <>
-      <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={setDateRange} />
+      <DateFilter
+        value={value}
+        startDate={startDate}
+        endDate={endDate}
+        onChange={setDateRange}
+        disableOptions={['all']}
+      />
       <Button className={styles.button} size="small" onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>

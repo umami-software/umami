@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
@@ -60,7 +60,15 @@ const filterOptions = [
   },
 ];
 
-function DateFilter({ value, startDate, endDate, onChange, className, websiteId = null }) {
+function DateFilter({
+  value,
+  startDate,
+  endDate,
+  onChange,
+  className,
+  websiteId = null,
+  disableOptions = [],
+}) {
   const { locale } = useLocale();
   const [showPicker, setShowPicker] = useState(false);
   const createdAt = useSelector(state => state.websites[websiteId]?.createdAt);
@@ -70,6 +78,15 @@ function DateFilter({ value, startDate, endDate, onChange, className, websiteId 
     ) : (
       value
     );
+
+  const filteredOptions = useMemo(() => {
+    const clone = [...filterOptions];
+    for (const option of disableOptions) {
+      const index = clone.findIndex(a => a.value == option);
+      if (index >= 0) clone.splice(index, 1);
+    }
+    return clone;
+  }, [disableOptions]);
 
   function handleChange(value) {
     if (value === 'custom') {
@@ -89,7 +106,7 @@ function DateFilter({ value, startDate, endDate, onChange, className, websiteId 
       <DropDown
         className={className}
         value={displayValue}
-        options={filterOptions}
+        options={filteredOptions}
         onChange={handleChange}
       />
       {showPicker && (
