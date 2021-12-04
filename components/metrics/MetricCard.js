@@ -9,6 +9,7 @@ const MetricCard = ({
   label,
   reverseColors = false,
   format = formatNumber,
+  hideComparison = false,
 }) => {
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(change) || 0, from: { x: 0 } });
@@ -18,8 +19,8 @@ const MetricCard = ({
       <animated.div className={styles.value}>{props.x.interpolate(x => format(x))}</animated.div>
       <div className={styles.label}>
         {label}
-        {~~change === 0 && <span className={styles.change}>{format(0)}</span>}
-        {~~change !== 0 && (
+        {~~change === 0 && !hideComparison && <span className={styles.change}>{format(0)}</span>}
+        {~~change !== 0 && !hideComparison && (
           <animated.span
             className={`${styles.change} ${
               change >= 0

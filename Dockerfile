@@ -24,7 +24,7 @@ RUN yarn next telemetry disable
 RUN yarn build
 
 # Production image
-FROM node:12.18-alpine AS production
+FROM node:12.22-alpine AS production
 WORKDIR /app
 
 # Copy cached dependencies

@@ -30,18 +30,22 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
         <MetricCard
           label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
           value={pageviews.length}
+          hideComparison
         />
         <MetricCard
           label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
           value={sessions.length}
+          hideComparison
         />
         <MetricCard
           label={<FormattedMessage id="metrics.events" defaultMessage="Events" />}
           value={events.length}
+          hideComparison
         />
         <MetricCard
           label={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
           value={countries.length}
+          hideComparison
         />
       </div>
     </>
