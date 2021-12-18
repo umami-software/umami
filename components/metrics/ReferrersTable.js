@@ -35,7 +35,6 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
   ];
 
   const renderLink = ({ w: link, x: label }) => {
-    console.log({ link, label });
     return (
       <div className={styles.row}>
         <Link href={resolve({ ref: label })} replace={true}>
