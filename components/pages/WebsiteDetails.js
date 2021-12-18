@@ -153,8 +153,7 @@ export default function WebsiteDetails({ websiteId }) {
               <WorldMap data={countryData} />
             </GridColumn>
             <GridColumn xs={12} md={12} lg={4}>
-              <CountriesTable maxHeight={265} {...tableProps} onDataLoad={setCountryData} />
-              <LanguagesTable maxHeight={265} {...tableProps} />
+              <CountriesTable {...tableProps} onDataLoad={setCountryData} />
             </GridColumn>
           </GridRow>
           <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>

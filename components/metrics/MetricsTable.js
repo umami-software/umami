@@ -23,7 +23,6 @@ export default function MetricsTable({
   filterOptions,
   limit,
   onDataLoad,
-  maxHeight = null,
   ...props
 }) {
   const shareToken = useShareToken();
@@ -63,10 +62,7 @@ export default function MetricsTable({
   }, [data, error, dataFilter, filterOptions]);
 
   return (
-    <div
-      className={classNames(styles.container, className)}
-      style={maxHeight ? { minHeight: 0, maxHeight } : {}}
-    >
+    <div className={classNames(styles.container, className)}>
       {!data && loading && <Loading />}
       {error && <ErrorMessage />}
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
