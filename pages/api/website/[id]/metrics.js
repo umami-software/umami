@@ -2,7 +2,7 @@ import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'lib/queri
 import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 
-const sessionColumns = ['browser', 'os', 'device', 'country'];
+const sessionColumns = ['browser', 'os', 'device', 'country', 'language'];
 const pageviewColumns = ['url', 'referrer'];
 
 function getTable(type) {
@@ -37,7 +37,19 @@ export default async (req, res) => {
     const endDate = new Date(+end_at);
 
     if (sessionColumns.includes(type)) {
-      const data = await getSessionMetrics(websiteId, startDate, endDate, type, { url });
+      let data = await getSessionMetrics(websiteId, startDate, endDate, type, { url });
+
+      if (type === 'language') {
+        let combined = {};
+
+        for (let { x, y } of data) {
+          x = String(x).toLowerCase().split('-')[0];
+          if (!combined[x]) combined[x] = { x, y };
+          else combined[x].y += y;
+        }
+
+        data = Object.values(combined);
+      }
 
       return ok(res, data);
     }
