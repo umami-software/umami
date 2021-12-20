@@ -117,8 +117,6 @@ const DaySelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   const month = date.getMonth();
   const year = date.getFullYear();
 
-  console.log({ dateLocale, startDay, startWeek, startMonth, month, year });
-
   const daysOfWeek = [];
   for (let i = 0; i < 7; i++) {
     daysOfWeek.push(addDays(startWeek, i));
