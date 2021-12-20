@@ -33,6 +33,7 @@
     "compile-lang": "formatjs compile-folder --ast build public/lang",
     "check-lang": "node scripts/check-lang.js",
     "download-country-names": "node scripts/download-country-names.js",
+    "download-language-names": "node scripts/download-language-names.js",
     "loadtest": "node scripts/loadtest.js",
     "loadtest:medium": "node scripts/loadtest.js --weight=medium",
     "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose",
