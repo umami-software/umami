@@ -64,13 +64,13 @@ The `HASH_SALT` is used to generate unique values for your installation.
 For development purpose, you need to build first that is because the application need to prepare language and geo setting.
 
 ```bash
-npm run build
+yarn build
 ```
 
 ### Start the application
 
 ```bash
-npm start
+yarn start
 ```
 
 By default this will launch the application on `http://localhost:3000`. You will need to either
@@ -103,8 +103,8 @@ To get the latest features, simply do a pull, install any new dependencies, and 
 
 ```bash
 git pull
-npm install
-npm run build
+yarn
+yarn build
 ```
 
 ## License
