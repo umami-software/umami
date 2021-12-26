@@ -61,6 +61,8 @@ The `HASH_SALT` is used to generate unique values for your installation.
 
 ### Build the application
 
+For development purpose, you need to build first that is because the application need to prepare language and geo setting.
+
 ```bash
 npm run build
 ```
