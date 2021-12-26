@@ -2,6 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import PageHeader from '../layout/PageHeader';
 import DropDown from '../common/DropDown';
+import ActiveUsers from './ActiveUsers';
 import MetricCard from './MetricCard';
 import styles from './RealtimeHeader.module.css';
 
@@ -23,6 +24,9 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
       <PageHeader>
         <div>
           <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
+        </div>
+        <div>
+          <ActiveUsers className={styles.active} websiteId={websiteId} />
         </div>
         <DropDown value={websiteId} options={options} onChange={onSelect} />
       </PageHeader>

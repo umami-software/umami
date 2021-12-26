@@ -18,7 +18,7 @@ A detailed getting started guide can be found at [https://umami.is/docs/](https:
 ```
 git clone https://github.com/mikecao/umami.git
 cd umami
-npm install
+yarn
 ```
 
 ### Create database tables
@@ -50,6 +50,7 @@ HASH_SALT=(any random string)
 ```
 
 The connection url is in the following format:
+
 ```
 postgresql://username:mypassword@localhost:5432/mydb
 
@@ -70,7 +71,7 @@ npm run build
 npm start
 ```
 
-By default this will launch the application on `http://localhost:3000`. You will need to either 
+By default this will launch the application on `http://localhost:3000`. You will need to either
 [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
 or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 
@@ -83,11 +84,13 @@ docker-compose up
 ```
 
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
+
 ```bash
 docker pull ghcr.io/mikecao/umami:postgresql-latest
 ```
 
 Or with MySQL support:
+
 ```bash
 docker pull ghcr.io/mikecao/umami:mysql-latest
 ```
