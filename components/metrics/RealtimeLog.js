@@ -137,7 +137,11 @@ export default function RealtimeLog({ data, websites, websiteId }) {
             ),
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
-            device: <b>{intl.formatMessage(devices[device])?.toLowerCase()}</b>,
+            device: <b>
+                {devices[device]
+                  ? intl.formatMessage(devices[device]).toLowerCase()
+                  : intl.formatMessage({ id: 'label.unknown', defaultMessage: 'Unknown' })}
+              </b>,
           }}
         />
       );
