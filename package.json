@@ -34,6 +34,7 @@
     "check-lang": "node scripts/check-lang.js",
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
+    "change-password": "node scripts/change-password.js",
     "loadtest": "node scripts/loadtest.js",
     "loadtest:medium": "node scripts/loadtest.js --weight=medium",
     "loadtest:heavy": "node scripts/loadtest.js --weight=heavy --verbose",
