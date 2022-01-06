@@ -1,9 +1,10 @@
 import React from 'react';
+import tinycolor from 'tinycolor2';
 import classNames from 'classnames';
 import Dot from 'components/common/Dot';
 import useLocale from 'hooks/useLocale';
+import useForceUpdate from 'hooks/useForceUpdate';
 import styles from './Legend.module.css';
-import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function Legend({ chart }) {
   const { locale } = useLocale();
@@ -25,16 +26,20 @@ export default function Legend({ chart }) {
 
   return (
     <div className={styles.legend}>
-      {chart.legend.legendItems.map(({ text, fillStyle, datasetIndex, hidden }) => (
-        <div
-          key={text}
-          className={classNames(styles.label, { [styles.hidden]: hidden })}
-          onClick={() => handleClick(datasetIndex)}
-        >
-          <Dot color={fillStyle} />
-          <span className={locale}>{text}</span>
-        </div>
-      ))}
+      {chart.legend.legendItems.map(({ text, fillStyle, datasetIndex, hidden }) => {
+        const color = tinycolor(fillStyle);
+
+        return (
+          <div
+            key={text}
+            className={classNames(styles.label, { [styles.hidden]: hidden })}
+            onClick={() => handleClick(datasetIndex)}
+          >
+            <Dot color={color.setAlpha(color.getAlpha() + 0.2)} />
+            <span className={locale}>{text}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }

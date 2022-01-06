@@ -6,10 +6,10 @@ import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/date';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
+import useForceUpdate from 'hooks/useForceUpdate';
 import { DEFAUL_CHART_HEIGHT, DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
 import ChartTooltip from './ChartTooltip';
-import useForceUpdate from '../../hooks/useForceUpdate';
 
 export default function BarChart({
   chartId,
