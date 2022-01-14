@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { get } from 'lib/web';
 import { updateQuery } from 'redux/actions/queries';
-import { useRouter } from 'next/router';
 
 export default function useFetch(url, options = {}, update = []) {
   const dispatch = useDispatch();

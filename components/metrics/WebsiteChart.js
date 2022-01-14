@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
+import ErrorMessage from 'components/common/ErrorMessage';
+import FilterTags from 'components/metrics/FilterTags';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
-import { getDateArray, getDateLength } from 'lib/date';
-import ErrorMessage from 'components/common/ErrorMessage';
-import FilterTags from 'components/metrics/FilterTags';
+import useLocale from 'hooks/useLocale';
+import { getDateArray, getDateLength, getDateRange, getDateRangeValues } from 'lib/date';
 import useShareToken from 'hooks/useShareToken';
 import { TOKEN_HEADER } from 'lib/constants';
+import { get } from 'lib/web';
 import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
@@ -22,13 +25,15 @@ export default function WebsiteChart({
   domain,
   stickyHeader = false,
   showLink = false,
-  hideChart = false,
+  showChart = true,
   onDataLoad = () => {},
 }) {
   const shareToken = useShareToken();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
+  const { locale } = useLocale();
   const [timezone] = useTimezone();
+  const { basePath } = useRouter();
   const {
     router,
     resolve,
@@ -66,6 +71,17 @@ export default function WebsiteChart({
     router.push(resolve({ [param]: undefined }));
   }
 
+  async function handleDateChange(value) {
+    if (value === 'all') {
+      const { data, ok } = await get(`${basePath}/api/website/${websiteId}`);
+      if (ok) {
+        setDateRange({ value, ...getDateRangeValues(new Date(data.created_at), Date.now()) });
+      }
+    } else {
+      setDateRange(getDateRange(value, locale));
+    }
+  }
+
   return (
     <div className={styles.container}>
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
@@ -84,7 +100,7 @@ export default function WebsiteChart({
               value={value}
               startDate={startDate}
               endDate={endDate}
-              onChange={setDateRange}
+              onChange={handleDateChange}
             />
           </div>
         </StickyHeader>
@@ -92,7 +108,7 @@ export default function WebsiteChart({
       <div className="row">
         <div className={classNames(styles.chart, 'col')}>
           {error && <ErrorMessage />}
-          {!hideChart && (
+          {showChart && (
             <PageviewsChart
               websiteId={websiteId}
               data={chartData}
