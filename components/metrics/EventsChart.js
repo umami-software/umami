@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import tinycolor from 'tinycolor2';
+import { colord } from 'colord';
 import BarChart from './BarChart';
 import { getDateArray, getDateLength } from 'lib/date';
 import useFetch from 'hooks/useFetch';
@@ -51,13 +51,13 @@ export default function EventsChart({ websiteId, className, token }) {
     });
 
     return Object.keys(map).map((key, index) => {
-      const color = tinycolor(EVENT_COLORS[index % EVENT_COLORS.length]);
+      const color = colord(EVENT_COLORS[index % EVENT_COLORS.length]);
       return {
         label: key,
         data: map[key],
         lineTension: 0,
-        backgroundColor: color.setAlpha(0.6).toRgbString(),
-        borderColor: color.setAlpha(0.7).toRgbString(),
+        backgroundColor: color.alpha(0.6).toRgbString(),
+        borderColor: color.alpha(0.7).toRgbString(),
         borderWidth: 1,
       };
     });

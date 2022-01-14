@@ -1,5 +1,5 @@
 import React from 'react';
-import tinycolor from 'tinycolor2';
+import { colord } from 'colord';
 import classNames from 'classnames';
 import Dot from 'components/common/Dot';
 import useLocale from 'hooks/useLocale';
@@ -27,7 +27,7 @@ export default function Legend({ chart }) {
   return (
     <div className={styles.legend}>
       {chart.legend.legendItems.map(({ text, fillStyle, datasetIndex, hidden }) => {
-        const color = tinycolor(fillStyle);
+        const color = colord(fillStyle);
 
         return (
           <div
@@ -35,7 +35,7 @@ export default function Legend({ chart }) {
             className={classNames(styles.label, { [styles.hidden]: hidden })}
             onClick={() => handleClick(datasetIndex)}
           >
-            <Dot color={color.setAlpha(color.getAlpha() + 0.2).toHexString()} />
+            <Dot color={color.alpha(color.alpha() + 0.2).toHex()} />
             <span className={locale}>{text}</span>
           </div>
         );

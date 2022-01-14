@@ -1,6 +1,6 @@
 import React from 'react';
 import { useIntl } from 'react-intl';
-import tinycolor from 'tinycolor2';
+import { colord } from 'colord';
 import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
 import useTheme from 'hooks/useTheme';
@@ -18,15 +18,15 @@ export default function PageviewsChart({
 }) {
   const intl = useIntl();
   const [theme] = useTheme();
-  const primaryColor = tinycolor(THEME_COLORS[theme].primary);
+  const primaryColor = colord(THEME_COLORS[theme].primary);
   const colors = {
     views: {
-      background: primaryColor.setAlpha(0.4).toRgbString(),
-      border: primaryColor.setAlpha(0.5).toRgbString(),
+      background: primaryColor.alpha(0.4).toRgbString(),
+      border: primaryColor.alpha(0.5).toRgbString(),
     },
     visitors: {
-      background: primaryColor.setAlpha(0.6).toRgbString(),
-      border: primaryColor.setAlpha(0.7).toRgbString(),
+      background: primaryColor.alpha(0.6).toRgbString(),
+      border: primaryColor.alpha(0.7).toRgbString(),
     },
   };
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
-import tinycolor from 'tinycolor2';
+import { colord } from 'colord';
 import useTheme from 'hooks/useTheme';
 import { ISO_COUNTRIES, THEME_COLORS, MAP_FILE } from 'lib/constants';
 import styles from './WorldMap.module.css';
@@ -35,9 +35,9 @@ function WorldMap({ data, className }) {
       return colors.fillColor;
     }
 
-    return tinycolor(colors.baseColor)[theme === 'light' ? 'lighten' : 'darken'](
-      40 * (1.0 - country.z / 100),
-    );
+    return colord(colors.baseColor)
+      [theme === 'light' ? 'lighten' : 'darken'](0.4 * (1.0 - country.z / 100))
+      .toHex();
   }
 
   function getOpacity(code) {
