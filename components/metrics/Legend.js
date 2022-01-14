@@ -35,7 +35,7 @@ export default function Legend({ chart }) {
             className={classNames(styles.label, { [styles.hidden]: hidden })}
             onClick={() => handleClick(datasetIndex)}
           >
-            <Dot color={color.setAlpha(color.getAlpha() + 0.2)} />
+            <Dot color={color.setAlpha(color.getAlpha() + 0.2).toHexString()} />
             <span className={locale}>{text}</span>
           </div>
         );
