@@ -125,7 +125,8 @@ import { removeTrailingSlash } from '../lib/url';
     mutations.forEach(mutation => {
       const element = mutation.target;
       addEvent(element);
-      element.querySelectorAll(eventSelect).forEach(addEvent);
+      const elements = element.querySelectorAll(eventSelect);
+      Array.prototype.forEach.call(elements, addEvent);
     });
   };
 
@@ -168,7 +169,8 @@ import { removeTrailingSlash } from '../lib/url';
       switch (document.readyState) {
         /* DOM rendered, add event listeners */
         case 'interactive': {
-          document.querySelectorAll(eventSelect).forEach(addEvent);
+          const events = document.querySelectorAll(eventSelect);
+          Array.prototype.forEach.call(events, addEvent);
           const observer = new MutationObserver(monitorMutate);
           observer.observe(document, { childList: true, subtree: true });
           break;
