@@ -9,8 +9,6 @@ import { createToken } from 'lib/crypto';
 export default async (req, res) => {
   await useCors(req, res);
 
-  console.log('hi!');
-
   if (isbot(req.headers['user-agent'])) {
     return ok(res);
   }
