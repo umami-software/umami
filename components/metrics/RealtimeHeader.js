@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { differenceInMinutes } from 'date-fns';
-import PageHeader from '../layout/PageHeader';
-import DropDown from '../common/DropDown';
+import PageHeader from 'components/layout/PageHeader';
+import DropDown from 'components/common/DropDown';
 import ActiveUsers from './ActiveUsers';
 import MetricCard from './MetricCard';
 import styles from './RealtimeHeader.module.css';
@@ -22,7 +22,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
 
   const count = useMemo(() => {
     return sessions.filter(
-      ({ created_at }) => differenceInMinutes(new Date(), new Date(created_at)) < 5,
+      ({ created_at }) => differenceInMinutes(new Date(), new Date(created_at)) <= 5,
     ).length;
   }, [sessions]);
 
