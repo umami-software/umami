@@ -87,7 +87,7 @@ const getUsernameAndPassword = async () => {
     await changePassword(username, password);
     console.log('Password changed for user', chalk.greenBright(username));
   } catch (error) {
-    if (error.message.includes('RecordNotFound')) {
+    if (error.meta.cause.includes('Record to update not found')) {
       console.log('Account not found:', chalk.redBright(username));
     } else {
       throw error;

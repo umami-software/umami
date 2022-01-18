@@ -7,12 +7,9 @@ import Button from './Button';
 import Refresh from 'assets/redo.svg';
 import Dots from 'assets/ellipsis-h.svg';
 import useDateRange from 'hooks/useDateRange';
-import { getDateRange } from '../../lib/date';
-import useLocale from 'hooks/useLocale';
 
 function RefreshButton({ websiteId }) {
   const dispatch = useDispatch();
-  const { locale } = useLocale();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
   const completed = useSelector(state => state.queries[`/api/website/${websiteId}/stats`]);
@@ -20,7 +17,7 @@ function RefreshButton({ websiteId }) {
   function handleClick() {
     if (dateRange) {
       setLoading(true);
-      dispatch(setDateRange(websiteId, getDateRange(dateRange.value, locale)));
+      dispatch(setDateRange(websiteId, dateRange));
     }
   }
 

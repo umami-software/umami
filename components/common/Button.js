@@ -24,6 +24,7 @@ function Button({
       data-tip={tooltip}
       data-effect="solid"
       data-for={tooltipId}
+      data-offset={JSON.stringify({ left: 10 })}
       type={type}
       className={classNames(styles.button, className, {
         [styles.large]: size === 'large',

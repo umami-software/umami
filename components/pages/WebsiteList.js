@@ -12,7 +12,7 @@ import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
   const { data } = useFetch('/api/websites', { params: { user_id: userId } });
-  const [hideCharts, setHideCharts] = useState(false);
+  const [showCharts, setShowCharts] = useState(true);
 
   if (!data) {
     return null;
@@ -43,7 +43,7 @@ export default function WebsiteList({ userId }) {
         <Button
           tooltip={<FormattedMessage id="message.toggle-charts" defaultMessage="Toggle charts" />}
           icon={<Chart />}
-          onClick={() => setHideCharts(!hideCharts)}
+          onClick={() => setShowCharts(!showCharts)}
         />
       </div>
       {data.map(({ website_id, name, domain }) => (
@@ -52,7 +52,7 @@ export default function WebsiteList({ userId }) {
             websiteId={website_id}
             title={name}
             domain={domain}
-            hideChart={hideCharts}
+            showChart={showCharts}
             showLink
           />
         </div>
