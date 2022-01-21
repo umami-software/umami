@@ -10,7 +10,7 @@ import { dateFormat } from 'lib/date';
 import Calendar from 'assets/calendar-alt.svg';
 import Icon from './Icon';
 
-const filterOptions = [
+export const filterOptions = [
   { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },
   {
     label: (
@@ -59,7 +59,7 @@ const filterOptions = [
   },
 ];
 
-function DateFilter({ value, startDate, endDate, onChange, className }) {
+function DateFilter({ value, startDate, endDate, onChange, className, options }) {
   const [showPicker, setShowPicker] = useState(false);
   const displayValue =
     value === 'custom' ? (
@@ -86,7 +86,7 @@ function DateFilter({ value, startDate, endDate, onChange, className }) {
       <DropDown
         className={className}
         value={displayValue}
-        options={filterOptions}
+        options={options || filterOptions}
         onChange={handleChange}
       />
       {showPicker && (
