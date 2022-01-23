@@ -7,6 +7,8 @@ import Icon from 'components/common/Icon';
 import User from 'assets/user.svg';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
+import { removeItem } from 'lib/web';
+import { AUTH_TOKEN } from 'lib/constants';
 
 export default function UserButton() {
   const user = useSelector(state => state.user);
@@ -30,7 +32,8 @@ export default function UserButton() {
 
   function handleSelect(value) {
     if (value === 'logout') {
-      router.push('/logout');
+      removeItem(AUTH_TOKEN);
+      router.push('/login');
     } else if (value === 'profile') {
       router.push('/settings/profile');
     }
