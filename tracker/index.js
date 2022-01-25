@@ -114,17 +114,16 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const addEvent = element => {
-    element.className &&
-      element.className.split(' ').forEach(className => {
-        if (!eventClass.test(className)) return;
+    (element.getAttribute('class') || '').split(' ').forEach(className => {
+      if (!eventClass.test(className)) return;
 
-        const [, type, value] = className.split('--');
-        const listener = listeners[className]
-          ? listeners[className]
-          : (listeners[className] = () => trackEvent(value, type));
+      const [, type, value] = className.split('--');
+      const listener = listeners[className]
+        ? listeners[className]
+        : (listeners[className] = () => trackEvent(value, type));
 
-        element.addEventListener(type, listener, true);
-      });
+      element.addEventListener(type, listener, true);
+    });
   };
 
   const monitorMutate = mutations => {
