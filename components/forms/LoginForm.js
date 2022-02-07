@@ -68,7 +68,7 @@ export default function LoginForm() {
           <Form>
             <div className={styles.header}>
               <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
-              <h1 className="center">umami</h1>
+              <h1 className="center">alpineUX</h1>
             </div>
             <FormRow>
               <label htmlFor="username">

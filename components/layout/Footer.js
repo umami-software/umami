@@ -17,11 +17,11 @@ export default function Footer() {
         <div className="col-12 col-md-4">
           <FormattedMessage
             id="message.powered-by"
-            defaultMessage="Powered by {name}"
+            defaultMessage="Powered by alpineUX analytics"
             values={{
               name: (
-                <Link href="https://umami.is">
-                  <b>umami</b>
+                <Link href="https://alpineux.com">
+                  <b>alpineUX</b>
                 </Link>
               ),
             }}
