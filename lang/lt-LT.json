@@ -87,13 +87,13 @@
   "metrics.average-visit-time": "Vidutinė vizito trukmė",
   "metrics.bounce-rate": "Atmetimo rodiklis",
   "metrics.browsers": "Naršyklės",
-  "metrics.countries": "{x, plural, =0 {Šalių} zero {Šalių} one {Šalis} other {Šalys}}",
+  "metrics.countries": "Šalys",
   "metrics.device.desktop": "Desktop",
   "metrics.device.laptop": "Laptop",
   "metrics.device.mobile": "Mobilusis",
   "metrics.device.tablet": "Planšetė",
   "metrics.devices": "Įrenginiai",
-  "metrics.events": "{x, plural, =0 {Įvykių} zero {Įvykių} one {Įvykis} other {Įvykiai}}",
+  "metrics.events": "Įvykiai",
   "metrics.filter.combined": "Kombinuoti",
   "metrics.filter.domain-only": "Tik domenas",
   "metrics.filter.raw": "Neapdoroti",
@@ -103,6 +103,6 @@
   "metrics.pages": "Puslapiai",
   "metrics.referrers": "Referrers",
   "metrics.unique-visitors": "Unikalūs lankytojai",
-  "metrics.views": "{x, plural, =0 {Peržiūrų} zero {Peržiūrų} one {Peržiūra} other {Peržiūros}}",
-  "metrics.visitors": "{x, plural, =0 {Lankytojų} zero {Lankytojų} one {Lankytojas} other {Lankytojai}}"
+  "metrics.views": "Peržiūros",
+  "metrics.visitors": "Lankytojai"
 }
