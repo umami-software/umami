@@ -10,6 +10,12 @@
     "metrics.referrers"
   ],
   "fr-FR": ["metrics.actions", "metrics.pages"],
+  "lt-LT": [
+    "metrics.device.desktop",
+    "metrics.device.laptop",
+    "metrics.referrers",
+    "message.powered-by"
+  ],
   "nb-NO": ["label.administrator", "label.dashboard"],
   "nl-NL": [
     "label.administrator",
