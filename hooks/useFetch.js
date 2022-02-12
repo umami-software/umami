@@ -11,13 +11,14 @@ export default function useFetch(url, options = {}, update = []) {
   const [loading, setLoadiing] = useState(false);
   const [count, setCount] = useState(0);
   const { basePath } = useRouter();
-  const { params = {}, disabled, headers, delay = 0, interval, onDataLoad } = options;
+  const { params = {}, headers = {}, disabled, delay = 0, interval, onDataLoad } = options;
 
   async function loadData(params) {
     try {
       setLoadiing(true);
       setError(null);
       const time = performance.now();
+
       const { data, status, ok } = await get(`${basePath}${url}`, params, headers);
 
       dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
