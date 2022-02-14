@@ -104,5 +104,7 @@
   "metrics.referrers": "Referrers",
   "metrics.unique-visitors": "Unique visitors",
   "metrics.views": "Views",
-  "metrics.visitors": "Visitors"
+  "metrics.visitors": "Visitors",
+  "metrics.screens": "Screens"
+  
 }

@@ -2,7 +2,7 @@ import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'lib/queri
 import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 
-const sessionColumns = ['browser', 'os', 'device', 'country', 'language'];
+const sessionColumns = ['browser', 'os', 'device', 'country', 'screen', 'language'];
 const pageviewColumns = ['url', 'referrer'];
 
 function getTable(type) {

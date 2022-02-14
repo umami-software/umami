@@ -23,6 +23,7 @@ import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
 import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
+import ScreenTable from 'components/metrics/ScreenTable';
 
 const views = {
   url: PagesTable,
@@ -67,6 +68,10 @@ export default function WebsiteDetails({ websiteId }) {
     {
       label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
       value: resolve({ view: 'referrer' }),
+    },
+    {
+      label: <FormattedMessage id="metrics.screens" defaultMessage="Screens" />,
+      value: resolve({ view: 'screen' }),
     },
     {
       label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
@@ -130,11 +135,14 @@ export default function WebsiteDetails({ websiteId }) {
       {chartLoaded && !view && (
         <GridLayout>
           <GridRow>
-            <GridColumn md={12} lg={6}>
+            <GridColumn md={12} lg={4}>
               <PagesTable {...tableProps} />
             </GridColumn>
-            <GridColumn md={12} lg={6}>
+            <GridColumn md={12} lg={4}>
               <ReferrersTable {...tableProps} />
+            </GridColumn>
+            <GridColumn md={12} lg={4}>
+              <ScreenTable {...tableProps} />
             </GridColumn>
           </GridRow>
           <GridRow>
