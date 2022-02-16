@@ -122,7 +122,7 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "删除網站"
+      "value": "刪除網站"
     }
   ],
   "label.dismiss": [
@@ -274,7 +274,7 @@
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "實時日志"
+      "value": "實時日誌"
     }
   ],
   "label.refresh": [
@@ -388,7 +388,7 @@
   "message.active-users": [
     {
       "type": 0,
-      "value": "当前線上 "
+      "value": "當前線上 "
     },
     {
       "type": 1,
@@ -402,7 +402,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "你確定要删除 "
+      "value": "你確定要刪除 "
     },
     {
       "type": 1,
@@ -436,7 +436,7 @@
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "所有相關數據將會被删除。"
+      "value": "所有相關數據將會被刪除。"
     }
   ],
   "message.failure": [
@@ -472,7 +472,7 @@
   "message.log.visitor": [
     {
       "type": 0,
-      "value": "自"
+      "value": "來自"
     },
     {
       "type": 1,
@@ -592,7 +592,7 @@
     },
     {
       "type": 0,
-      "value": " 部分来收集 "
+      "value": " 部分來收集 "
     },
     {
       "type": 1,

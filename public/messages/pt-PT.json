@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "Todos os eventos"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Todo o tempo"
     }
   ],
   "label.all-websites": [
@@ -92,7 +92,7 @@
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Dashboard"
+      "value": "Painel"
     }
   ],
   "label.date-range": [
@@ -244,7 +244,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Proprietário"
     }
   ],
   "label.password": [
@@ -298,7 +298,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Repor estatísticas"
     }
   ],
   "label.save": [
@@ -426,7 +426,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Tens a certeza que queres eliminar "
+      "value": "Tem a certeza que pretende eliminar "
     },
     {
       "type": 1,
@@ -440,7 +440,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Tem a certeza que pretende restaurar as estatísticas de "
     },
     {
       "type": 1,
@@ -448,7 +448,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -478,7 +478,7 @@
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "Obter código de tracking"
+      "value": "Obter código de rastreamento"
     }
   ],
   "message.go-to-settings": [
@@ -572,7 +572,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Todas as estatísticas deste site serão eliminadas, mas o seu código de rastreamento permanecerá intacto."
     }
   ],
   "message.save-success": [
@@ -634,13 +634,13 @@
     },
     {
       "type": 0,
-      "value": " abaixo para confirmares."
+      "value": " em baixo para confirmar."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Escreve "
     },
     {
       "type": 1,
@@ -648,7 +648,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " em baixo para confirmar."
     }
   ],
   "metrics.actions": [
@@ -738,7 +738,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Línguas"
     }
   ],
   "metrics.operating-systems": [
@@ -762,7 +762,7 @@
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Referrers"
+      "value": "Referenciadores"
     }
   ],
   "metrics.unique-visitors": [
