@@ -1,0 +1,782 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Konten"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Konto hinzufügen"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Webseite hinzufügen"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administrator"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Alle"
+    }
+  ],
+  "label.all-events": [
+    {
+      "type": 0,
+      "value": "Alle Ereignisse"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Gesamter Zeitraum"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Alle Webseiten"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Zurück"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Abbrechen"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Passwort ändern"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Passwort wiederholen"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "In die Zwischenablage kopieren"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Derzeitiges Passwort"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Benutzerdefinierter Bereich"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Übersicht"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Datumsbereich"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Voreingestellter Datumsbereich"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Löschen"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Konto löschen"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Webseite löschen"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Verwerfen"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domain"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Bearbeiten"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Konto bearbeiten"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Webseite bearbeiten"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Freigabe-URL aktivieren"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Ungültig"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Ungültige Domain"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Letzten "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " Tage"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Letzten "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " Stunden"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Angemeldet als "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Anmelden"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Abmelden"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Mehr"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Name"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Neues Passwort"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Besitzer"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Passwort"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Passwörter stimmen nicht überein"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Echtzeit"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Echtzeit-Protokoll"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Aktualisieren"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Erforderlich"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Zurücksetzen"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Statistik zurücksetzen"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Speichern"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Einstellungen"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Freigabe-URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Ein Tag"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Diesen Monat"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Diese Woche"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Dieses Jahr"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Zeitzone"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Heute"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Tracking Kennung"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Unbekannt"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Benutzername"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Details anzeigen"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Webseiten"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "aktiver Besucher"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "aktive Besucher"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Sind Sie sich sicher, "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " zu löschen?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Sind Sie sicher, dass Sie die Statistiken von "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " zurücksetzen wollen?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "In Zwischenablage kopiert!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Alle zugehörigen Daten werden ebenfalls gelöscht."
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Es ist ein Fehler aufgetreten."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Freigabe-URL abrufen"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Erstelle Tracking Kennung"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Zu den Einstellungen"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Falsches Passwort oder Benutzername."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Besucher aus "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " benutzt "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " auf "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Eine neue Version von umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " ist verfügbar!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Keine Daten vorhanden."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Es ist keine Webseite vorhanden."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Seite nicht gefunden."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Betrieben durch "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der tracking code bestehen."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Erfolgreich gespeichert."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Dies ist die öffentliche URL zum Teilen für "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Schaubilder umschalten"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Um die Statistiken für "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " zu übermitteln, platzieren Sie bitte den folgenden Quelltext im "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " ihrer Webseite."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Geben Sie "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " in das Feld unten ein um zu bestätigen."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Geben Sie "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " in das Feld unten ein um zu bestätigen."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Aktionen"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Durchschn. Besuchszeit"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Absprungrate"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Browser"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Länder"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Desktop"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobiltelefon"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tablet"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Geräte"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Ereignisse"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Kombiniert"
+    }
+  ],
+  "metrics.filter.domain-only": [
+    {
+      "type": 0,
+      "value": "Nur diese Domain"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Rohdaten"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Sprachen"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Betriebssysteme"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Seitenaufrufe"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Seiten"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Referrer"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Eindeutige Besucher"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Aufrufe"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Besucher"
+    }
+  ]
+}

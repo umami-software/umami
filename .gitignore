@@ -17,8 +17,6 @@
 /build
 /public/umami.js
 /public/geo
-/public/lang
-/lang-compiled
 
 # misc
 .DS_Store

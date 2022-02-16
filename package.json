@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-tracker build-lang build-geo build-db build-app",
+    "build": "npm-run-all build-tracker build-geo build-db build-app",
     "start": "next start",
     "start-env": "node -r dotenv/config scripts/start-env.js",
     "build-app": "next build",
@@ -30,7 +30,7 @@
     "extract-lang": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",
     "merge-lang": "node scripts/merge-lang.js",
     "format-lang": "node scripts/format-lang.js",
-    "compile-lang": "formatjs compile-folder --ast build public/lang",
+    "compile-lang": "formatjs compile-folder --ast build public/messages",
     "check-lang": "node scripts/check-lang.js",
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",

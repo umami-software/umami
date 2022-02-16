@@ -1,0 +1,782 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Tilit"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Lisää tili"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Lisää verkkosivu"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Järjestelmänvalvoja"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Kaikki"
+    }
+  ],
+  "label.all-events": [
+    {
+      "type": 0,
+      "value": "All events"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Kaikki verkkosivut"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Takaisin"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Peruuta"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Vaihda salasana"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Vahvista salasana"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopioi leikepöydälle"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Nykyinen salasana"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Mukautettu jakso"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Ohjauspaneeli"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Ajanjakso"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Oletusajanjakso"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Poista"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Poista tili"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Poista verkkosivu"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Hylkää"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Verkkotunnus"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Muokkaa"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Muokkaa tiliä"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Muokkaa verkkosivua"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Ota jakamisen URL-osoite käyttöön"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Virheellinen"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Virheellinen verkkotunnus"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Viimeisimmät "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " päivät"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Viimeisimmät "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " tunnit"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Kirjautuneena sisään nimellä "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Kirjaudu sisään"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Kirjaudu ulos"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Lisää"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Nimi"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Uusi salasana"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Salasana"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Salasanat eivät täsmää"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profiili"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Reaaliaikainen"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Reaaliaikaiset lokit"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Päivitä"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Vaaditaan"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Nollaa"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Tallenna"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Asetukset"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Jaa URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Yksi päivä"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Tämä kuukausi"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Tämä viikko"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Tämä vuosi"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Aikavyöhyke"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Tänään"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Seurantakoodi"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Tuntematon"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Käyttäjänimi"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Katso tiedot"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Verkkosivut"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " nykyinen "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "yksi"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "muut"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Haluatko varmasti poistaa "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Kopioitu!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Kaikki siihen liittyvät tiedot poistetaan."
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Jotain meni väärin."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Hanki jakamisen URL-osoite"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Hanki seurantakoodi"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Mene asetuksiin"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Väärä käyttäjänimi/salasana."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Vierailija maasta "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " käyttäen selainta "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": "-laitteella: "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Uusi versio umamista "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " on käytettävissä!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Tietoja ei ole käytettävissä."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Sinulla ei ole määritettyjä verkkosivustoja."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Sivua ei löydetty."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Voimanlähteenä "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Tallennettu onnistuneesti."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Tämä on julkisesti jaettu URL-osoitteelle "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Jos haluat seurata kohteen "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " tilastoja, aseta seuraava koodi verkkosivustosi "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " osioon."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Kirjoita "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " alla olevaan ruutuun vahvistaaksesi."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Type "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Toiminnat"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Keskimääräinen vierailuaika"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Välitön poistuminen"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Selaimet"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Maat"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Pöytäkone"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Kannettava tietokone"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobiili"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tabletti"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Laitteet"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Tapahtumat"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Yhdistetty"
+    }
+  ],
+  "metrics.filter.domain-only": [
+    {
+      "type": 0,
+      "value": "Vain verkkotunnus"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Käsittelemätön"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Käyttöjärjestelmät"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Sivun näyttökertoja"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Sivut"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Viittaajat"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Uniikit vierailijat"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Näyttökertoja"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Vierailijat"
+    }
+  ]
+}
