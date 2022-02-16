@@ -5,6 +5,7 @@ module.exports = {
   env: {
     VERSION: pkg.version,
     FORCE_SSL: !!process.env.FORCE_SSL,
+    DISABLE_LOGIN: !!process.env.DISABLE_LOGIN,
   },
   basePath: process.env.BASE_PATH,
   eslint: {
