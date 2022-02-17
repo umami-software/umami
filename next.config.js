@@ -6,6 +6,7 @@ module.exports = {
     VERSION: pkg.version,
     FORCE_SSL: !!process.env.FORCE_SSL,
     DISABLE_LOGIN: !!process.env.DISABLE_LOGIN,
+    TRACKER_SCRIPT_NAME: process.env.TRACKER_SCRIPT_NAME,
   },
   basePath: process.env.BASE_PATH,
   eslint: {
