@@ -19,7 +19,14 @@
 
 @media only screen and (max-width: 992px) {
   .container {
+    flex-direction: column;
     height: auto;
+  }
+
+  .container .menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
   }
 
   .container .content {
