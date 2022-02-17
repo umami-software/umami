@@ -76,7 +76,7 @@
   "message.no-websites-configured": "Es ist keine Webseite vorhanden.",
   "message.page-not-found": "Seite nicht gefunden.",
   "message.powered-by": "Betrieben durch {name}",
-  "message.reset-warning": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der tracking code bestehen.",
+  "message.reset-warning": "Alle Daten für diese Webseite werden gelöscht, jedoch bleibt der Tracking Code bestehen.",
   "message.save-success": "Erfolgreich gespeichert.",
   "message.share-url": "Dies ist die öffentliche URL zum Teilen für {target}.",
   "message.toggle-charts": "Schaubilder umschalten",
