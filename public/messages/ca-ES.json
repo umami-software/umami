@@ -38,7 +38,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Sempre"
     }
   ],
   "label.all-websites": [
@@ -244,7 +244,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Propietari"
     }
   ],
   "label.password": [
@@ -298,7 +298,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Restableix estadístiques"
     }
   ],
   "label.save": [
@@ -436,7 +436,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Segur que vols restablir les estadístiques de "
     },
     {
       "type": 1,
@@ -444,7 +444,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -568,7 +568,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
     }
   ],
   "message.save-success": [
@@ -594,7 +594,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Mostra/amaga gràfics"
     }
   ],
   "message.track-stats": [
@@ -630,13 +630,13 @@
     },
     {
       "type": 0,
-      "value": " al quadre següent per confirmar."
+      "value": " al quadre de sota per confirmar."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Escriu "
     },
     {
       "type": 1,
@@ -644,7 +644,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " al quadre de sota per confirmar."
     }
   ],
   "metrics.actions": [
@@ -734,7 +734,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Llengües"
     }
   ],
   "metrics.operating-systems": [
