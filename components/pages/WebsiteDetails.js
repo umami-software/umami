@@ -49,7 +49,7 @@ export default function WebsiteDetails({ websiteId }) {
   } = usePageQuery();
 
   const BackButton = () => (
-    <div key="back-button" className={styles.backButton}>
+    <div key="back-button" className={classNames(styles.backButton, 'col-12')}>
       <Link key="back-button" href={resolve({ view: undefined })} icon={<Arrow />} size="small">
         <FormattedMessage id="label.back" defaultMessage="Back" />
       </Link>

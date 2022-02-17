@@ -65,7 +65,7 @@ export default function WebsiteChart({
       };
     }
     return { pageviews: [], sessions: [] };
-  }, [data]);
+  }, [data, startDate, endDate, unit]);
 
   function handleCloseFilter(param) {
     router.push(resolve({ [param]: undefined }));
@@ -77,8 +77,10 @@ export default function WebsiteChart({
       if (ok) {
         setDateRange({ value, ...getDateRangeValues(new Date(data.created_at), Date.now()) });
       }
-    } else {
+    } else if (typeof value === 'string') {
       setDateRange(getDateRange(value, locale));
+    } else {
+      setDateRange(value);
     }
   }
 
