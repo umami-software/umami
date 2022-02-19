@@ -1,16 +1,16 @@
 require('dotenv').config();
 const pkg = require('./package.json');
 
-const { BASE_PATH, FORCE_SSL, DISABLE_LOGIN, TRACKER_SCRIPT_NAME } = process.env;
+const scriptName = process.env.TRACKER_SCRIPT_NAME;
 
 module.exports = {
   env: {
     VERSION: pkg.version,
-    FORCE_SSL: Boolean(FORCE_SSL),
-    DISABLE_LOGIN: Boolean(DISABLE_LOGIN),
-    TRACKER_SCRIPT_NAME,
+    FORCE_SSL: Boolean(process.env.FORCE_SSL),
+    DISABLE_LOGIN: Boolean(process.env.DISABLE_LOGIN),
+    TRACKER_SCRIPT_NAME: scriptName,
   },
-  basePath: BASE_PATH,
+  basePath: process.env.BASE_PATH,
   eslint: {
     ignoreDuringBuilds: true,
   },
@@ -24,14 +24,12 @@ module.exports = {
     return config;
   },
   async rewrites() {
-    return TRACKER_SCRIPT_NAME
-      ? [{ source: `/${TRACKER_SCRIPT_NAME}.js`, destination: '/umami.js' }]
-      : [];
+    return scriptName ? [{ source: `/${scriptName}.js`, destination: '/umami.js' }] : [];
   },
   async headers() {
     return [
       {
-        source: `/${TRACKER_SCRIPT_NAME || 'umami'}.js`,
+        source: `/${scriptName || 'umami'}.js`,
         headers: [
           {
             key: 'Cache-Control',
