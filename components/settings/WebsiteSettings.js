@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
+import OverflowText from 'components/common/OverflowText';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
 import WebsiteEditForm from 'components/forms/WebsiteEditForm';
@@ -84,10 +85,18 @@ export default function WebsiteSettings() {
   );
 
   const DetailsLink = ({ website_id, name, domain }) => (
-    <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
+    <Link
+      className={styles.detailLink}
+      href="/website/[...id]"
+      as={`/website/${website_id}/${name}`}
+    >
       <Favicon domain={domain} />
-      {name}
+      <OverflowText tooltipId={`${website_id}-name`}>{name}</OverflowText>
     </Link>
+  );
+
+  const Domain = ({ domain, website_id }) => (
+    <OverflowText tooltipId={`${website_id}-domain`}>{domain}</OverflowText>
   );
 
   const adminColumns = [
@@ -101,6 +110,7 @@ export default function WebsiteSettings() {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
       className: 'col-4 col-xl-3',
+      render: Domain,
     },
     {
       key: 'account',
@@ -125,6 +135,7 @@ export default function WebsiteSettings() {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
       className: 'col-6 col-xl-4',
+      render: Domain,
     },
     {
       key: 'action',
