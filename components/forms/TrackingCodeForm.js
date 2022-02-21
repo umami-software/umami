@@ -5,8 +5,6 @@ import Button from 'components/common/Button';
 import FormLayout, { FormButtons, FormRow } from 'components/layout/FormLayout';
 import CopyButton from 'components/common/CopyButton';
 
-const scriptName = process.env.TRACKER_SCRIPT_NAME || 'umami';
-
 export default function TrackingCodeForm({ values, onClose }) {
   const ref = useRef();
   const { basePath } = useRouter();
@@ -26,7 +24,7 @@ export default function TrackingCodeForm({ values, onClose }) {
           rows={3}
           cols={60}
           spellCheck={false}
-          defaultValue={`<script async defer data-website-id="${values.website_uuid}" src="${document.location.origin}${basePath}/${scriptName}.js"></script>`}
+          defaultValue={`<script async defer data-website-id="${values.website_uuid}" src="${document.location.origin}${basePath}/umami.js"></script>`}
           readOnly
         />
       </FormRow>
