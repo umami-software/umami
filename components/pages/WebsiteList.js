@@ -11,7 +11,7 @@ import Chart from 'assets/chart-bar.svg';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ userId }) {
-  const { data } = useFetch('/api/websites', { params: { user_id: userId } });
+  const { data } = useFetch('/websites', { params: { user_id: userId } });
   const [showCharts, setShowCharts] = useState(true);
 
   if (!data) {

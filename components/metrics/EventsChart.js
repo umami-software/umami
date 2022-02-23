@@ -17,7 +17,7 @@ export default function EventsChart({ websiteId, className, token }) {
   const shareToken = useShareToken();
 
   const { data, loading } = useFetch(
-    `/api/website/${websiteId}/events`,
+    `/website/${websiteId}/events`,
     {
       params: {
         start_at: +startDate,

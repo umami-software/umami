@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { get } from 'lib/web';
 import { saveQuery } from 'store/queries';
+import useApi from './useApi';
 
 export default function useFetch(url, options = {}, update = []) {
   const [response, setResponse] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
   const [count, setCount] = useState(0);
-  const { basePath } = useRouter();
+  const { get } = useApi();
   const { params = {}, headers = {}, disabled, delay = 0, interval, onDataLoad } = options;
 
   async function loadData(params) {
@@ -17,7 +16,7 @@ export default function useFetch(url, options = {}, update = []) {
       setError(null);
       const time = performance.now();
 
-      const { data, status, ok } = await get(`${basePath}${url}`, params, headers);
+      const { data, status, ok } = await get(url, params, headers);
 
       await saveQuery(url, { time: performance.now() - time, completed: Date.now() });
 

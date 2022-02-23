@@ -36,9 +36,7 @@ export default function WebsiteSettings() {
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/websites` + (user.is_admin ? '?include_all=true' : ''), {}, [
-    saved,
-  ]);
+  const { data } = useFetch(`/websites` + (user?.is_admin ? '?include_all=true' : ''), {}, [saved]);
 
   const Buttons = row => (
     <ButtonLayout align="right">

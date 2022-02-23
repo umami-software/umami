@@ -25,7 +25,7 @@ export default function AccountSettings() {
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/accounts`, {}, [saved]);
+  const { data } = useFetch(`/accounts`, {}, [saved]);
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 

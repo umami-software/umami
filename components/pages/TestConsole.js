@@ -21,7 +21,7 @@ export default function TestConsole() {
   const [website, setWebsite] = useState();
   const [show, setShow] = useState(true);
   const { basePath } = useRouter();
-  const { data } = useFetch('/api/websites');
+  const { data } = useFetch('/websites');
 
   if (!data || !user?.is_admin) {
     return null;

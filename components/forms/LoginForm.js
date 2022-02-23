@@ -10,7 +10,7 @@ import FormLayout, {
   FormRow,
 } from 'components/layout/FormLayout';
 import Icon from 'components/common/Icon';
-import usePost from 'hooks/usePost';
+import useApi from 'hooks/useApi';
 import { setItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';
 import { setUser } from 'store/app';
@@ -31,12 +31,12 @@ const validate = ({ username, password }) => {
 };
 
 export default function LoginForm() {
-  const post = usePost();
+  const { post } = useApi();
   const router = useRouter();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ username, password }) => {
-    const { ok, status, data } = await post('/api/auth/login', {
+    const { ok, status, data } = await post('/auth/login', {
       username,
       password,
     });

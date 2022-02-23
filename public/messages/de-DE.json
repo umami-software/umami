@@ -568,7 +568,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der tracking code bestehen."
+      "value": "Alle Daten für diese Webseite werden gelöscht, jedoch bleibt der Tracking Code bestehen."
     }
   ],
   "message.save-success": [

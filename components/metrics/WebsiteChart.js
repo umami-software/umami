@@ -41,7 +41,7 @@ export default function WebsiteChart({
   } = usePageQuery();
 
   const { data, loading, error } = useFetch(
-    `/api/website/${websiteId}/pageviews`,
+    `/website/${websiteId}/pageviews`,
     {
       params: {
         start_at: +startDate,

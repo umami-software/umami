@@ -37,7 +37,7 @@ const views = {
 
 export default function WebsiteDetails({ websiteId }) {
   const shareToken = useShareToken();
-  const { data } = useFetch(`/api/website/${websiteId}`, {
+  const { data } = useFetch(`/website/${websiteId}`, {
     headers: { [TOKEN_HEADER]: shareToken?.token },
   });
   const [chartLoaded, setChartLoaded] = useState(false);
