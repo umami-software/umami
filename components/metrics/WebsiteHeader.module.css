@@ -2,6 +2,14 @@
   color: var(--gray900);
   font-size: var(--font-size-large);
   line-height: var(--font-size-large);
+  align-items: center;
+  display: flex;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.titleLink {
+  max-width: 100%;
 }
 
 .link {
