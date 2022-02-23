@@ -5,3 +5,7 @@
 .buttons {
   justify-content: flex-end;
 }
+
+.detailLink {
+  width: 100%;
+}
