@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateUser } from 'redux/actions/user';
 import { useRouter } from 'next/router';
+import useUser from 'hooks/useUser';
 import { get } from 'lib/web';
 
 export default function useRequireLogin() {
   const router = useRouter();
-  const dispatch = useDispatch();
-  const storeUser = useSelector(state => state.user);
-  const [loading, setLoading] = useState(!storeUser);
-  const [user, setUser] = useState(storeUser);
+  const { user, setUser } = useUser();
+  const [loading, setLoading] = useState(false);
 
   async function loadUser() {
     setLoading(true);
@@ -20,9 +17,8 @@ export default function useRequireLogin() {
       return router.push('/login');
     }
 
-    await dispatch(updateUser(data));
+    setUser(data);
 
-    setUser(user);
     setLoading(false);
   }
 

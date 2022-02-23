@@ -67,7 +67,7 @@
     "detect-browser": "^5.2.0",
     "dotenv": "^10.0.0",
     "formik": "^2.2.9",
-    "immer": "^9.0.6",
+    "immer": "^9.0.12",
     "ipaddr.js": "^2.0.1",
     "is-localhost-ip": "^1.4.0",
     "isbot": "^3.2.2",
@@ -92,7 +92,8 @@
     "semver": "^7.3.5",
     "thenby": "^1.3.4",
     "timezone-support": "^2.0.2",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "zustand": "^3.7.0"
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",

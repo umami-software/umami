@@ -13,9 +13,10 @@ export default async (req, res) => {
 
   if (account && (await checkPassword(password, account.password))) {
     const { user_id, username, is_admin } = account;
-    const token = await createSecureToken({ user_id, username, is_admin });
+    const user = { user_id, username, is_admin };
+    const token = await createSecureToken(user);
 
-    return ok(res, { token });
+    return ok(res, { token, user });
   }
 
   return unauthorized(res);

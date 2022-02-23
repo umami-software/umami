@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { get } from 'lib/web';
-import { updateQuery } from 'redux/actions/queries';
+import { saveQuery } from 'store/queries';
 
 export default function useFetch(url, options = {}, update = []) {
-  const dispatch = useDispatch();
   const [response, setResponse] = useState();
   const [error, setError] = useState();
   const [loading, setLoadiing] = useState(false);
@@ -21,7 +19,7 @@ export default function useFetch(url, options = {}, update = []) {
 
       const { data, status, ok } = await get(`${basePath}${url}`, params, headers);
 
-      dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
+      await saveQuery(url, { time: performance.now() - time, completed: Date.now() });
 
       if (status >= 400) {
         setError(data);

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Table from 'components/common/Table';
@@ -23,10 +22,11 @@ import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import LinkIcon from 'assets/link.svg';
 import useFetch from 'hooks/useFetch';
+import useUser from 'hooks/useUser';
 import styles from './WebsiteSettings.module.css';
 
 export default function WebsiteSettings() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const [editWebsite, setEditWebsite] = useState();
   const [resetWebsite, setResetWebsite] = useState();
   const [deleteWebsite, setDeleteWebsite] = useState();

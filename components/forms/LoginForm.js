@@ -10,11 +10,12 @@ import FormLayout, {
   FormRow,
 } from 'components/layout/FormLayout';
 import Icon from 'components/common/Icon';
-import Logo from 'assets/logo.svg';
-import styles from './LoginForm.module.css';
 import usePost from 'hooks/usePost';
 import { setItem } from 'lib/web';
-import { AUTH_TOKEN } from '../../lib/constants';
+import { AUTH_TOKEN } from 'lib/constants';
+import { setUser } from 'store/app';
+import Logo from 'assets/logo.svg';
+import styles from './LoginForm.module.css';
 
 const validate = ({ username, password }) => {
   const errors = {};
@@ -42,6 +43,8 @@ export default function LoginForm() {
 
     if (ok) {
       setItem(AUTH_TOKEN, data.token);
+
+      setUser(data.user);
 
       return router.push('/');
     } else {

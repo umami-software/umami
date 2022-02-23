@@ -14,6 +14,14 @@ export default function DateRangeSetting() {
   const { startDate, endDate, value } = dateRange;
   const options = filterOptions.filter(e => e.value !== 'all');
 
+  function handleChange(value) {
+    if (typeof value === 'string') {
+      setDateRange(getDateRange(value, locale));
+    } else {
+      setDateRange(value);
+    }
+  }
+
   function handleReset() {
     setDateRange(getDateRange(DEFAULT_DATE_RANGE, locale));
   }
@@ -25,7 +33,7 @@ export default function DateRangeSetting() {
         value={value}
         startDate={startDate}
         endDate={endDate}
-        onChange={setDateRange}
+        onChange={handleChange}
       />
       <Button className={styles.button} size="small" onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />

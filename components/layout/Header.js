@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Icon from 'components/common/Icon';
@@ -14,9 +13,10 @@ import styles from './Header.module.css';
 import useLocale from 'hooks/useLocale';
 import XMark from 'assets/xmark.svg';
 import Bars from 'assets/bars.svg';
+import useUser from 'hooks/useUser';
 
 export default function Header() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const [active, setActive] = useState(false);
   const { dir } = useLocale();
 

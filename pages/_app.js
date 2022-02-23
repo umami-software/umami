@@ -2,8 +2,6 @@ import React from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { IntlProvider } from 'react-intl';
-import { Provider } from 'react-redux';
-import { useStore } from 'redux/store';
 import useLocale from 'hooks/useLocale';
 import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
@@ -24,11 +22,10 @@ const Intl = ({ children }) => {
 };
 
 export default function App({ Component, pageProps }) {
-  const store = useStore();
   const { basePath } = useRouter();
 
   return (
-    <Provider store={store}>
+    <Intl>
       <Head>
         <link rel="icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
@@ -41,9 +38,7 @@ export default function App({ Component, pageProps }) {
         <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Intl>
-        <Component {...pageProps} />
-      </Intl>
-    </Provider>
+      <Component {...pageProps} />
+    </Intl>
   );
 }

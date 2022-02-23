@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
 import { parseISO } from 'date-fns';
 import { getDateRange } from 'lib/date';
 import { getItem, setItem } from 'lib/web';
-import { setDateRange } from '../redux/actions/websites';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';
+import useStore, { setDateRange } from 'store/websites';
 
 export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE) {
-  const dispatch = useDispatch();
   const { locale } = useLocale();
-  const dateRange = useSelector(state => state.websites[websiteId]?.dateRange);
+  const selector = useCallback(state => state?.[websiteId]?.dateRange, [websiteId]);
+  const dateRange = useStore(selector);
   const forceUpdate = useForceUpdate();
 
   const globalDefault = getItem(DATE_RANGE_CONFIG);
@@ -28,13 +28,12 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
     }
   }
 
-  function saveDateRange(values) {
-    const { value } = values;
-
+  function saveDateRange(dateRange) {
     if (websiteId) {
-      dispatch(setDateRange(websiteId, values));
+      setDateRange(websiteId, dateRange);
     } else {
-      setItem(DATE_RANGE_CONFIG, value === 'custom' ? values : value);
+      const { value } = dateRange;
+      setItem(DATE_RANGE_CONFIG, value === 'custom' ? dateRange : value);
       forceUpdate();
     }
   }
