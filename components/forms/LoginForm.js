@@ -46,7 +46,9 @@ export default function LoginForm() {
 
       setUser(data.user);
 
-      return router.push('/');
+      await router.push('/');
+
+      return null;
     } else {
       setMessage(
         status === 401 ? (

@@ -9,10 +9,11 @@
 
 .version {
   text-align: right;
+  padding-right: 10px;
 }
 
 @media only screen and (max-width: 768px) {
-  .version {
+  .footer .version {
     text-align: center;
   }
 }

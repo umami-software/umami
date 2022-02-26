@@ -18,6 +18,10 @@ export default function Settings() {
   const router = useRouter();
   const { pathname } = router;
 
+  if (!user) {
+    return null;
+  }
+
   const menuOptions = [
     {
       label: <FormattedMessage id="label.websites" defaultMessage="Websites" />,
