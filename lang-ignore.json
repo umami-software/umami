@@ -24,5 +24,13 @@
     "metrics.device.desktop",
     "metrics.device.laptop",
     "metrics.device.tablet"
-  ]
+  ],
+  "it-IT": [
+    "label.password",
+    "label.reset",
+    "message.powered-by",
+    "metrics.device.desktop",
+    "metrics.device.tablet",
+    "metrics.filter.raw",
+  ],
 }
