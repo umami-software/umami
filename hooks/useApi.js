@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { get, post, put, del, getItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';
 
-function includeAuthToken(headers) {
+function includeAuthToken(headers = {}) {
   const authToken = getItem(AUTH_TOKEN);
 
   if (authToken) {
@@ -18,29 +18,29 @@ export default function useApi() {
 
   return {
     get: useCallback(
-      async (url, params, headers = {}) => {
-        return get(`${basePath}/api/${url}`, params, includeAuthToken(headers));
+      async (url, params, headers) => {
+        return get(`${basePath}/api${url}`, params, includeAuthToken(headers));
       },
       [get],
     ),
 
     post: useCallback(
       async (url, params, headers) => {
-        return post(`${basePath}/api/${url}`, params, includeAuthToken(headers));
+        return post(`${basePath}/api${url}`, params, includeAuthToken(headers));
       },
       [post],
     ),
 
     put: useCallback(
       async (url, params, headers) => {
-        return put(`${basePath}/api/${url}`, params, includeAuthToken(headers));
+        return put(`${basePath}/api${url}`, params, includeAuthToken(headers));
       },
       [put],
     ),
 
     del: useCallback(
       async (url, params, headers) => {
-        return del(`${basePath}/api/${url}`, params, includeAuthToken(headers));
+        return del(`${basePath}/api${url}`, params, includeAuthToken(headers));
       },
       [del],
     ),
