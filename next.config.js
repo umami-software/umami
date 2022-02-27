@@ -21,7 +21,7 @@ module.exports = {
   async headers() {
     return [
       {
-        source: `/umami.js`,
+        source: `/(.*\\.js)`,
         headers: [
           {
             key: 'Cache-Control',
