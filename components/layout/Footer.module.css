@@ -3,8 +3,8 @@
   justify-content: space-between;
   align-items: center;
   font-size: var(--font-size-small);
-  min-height: 100px;
   text-align: center;
+  margin: 20px 0;
 }
 
 .version {

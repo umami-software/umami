@@ -23,6 +23,7 @@ const Intl = ({ children }) => {
 
 export default function App({ Component, pageProps }) {
   const { basePath } = useRouter();
+  const { dir } = useLocale();
 
   return (
     <Intl>
@@ -38,7 +39,9 @@ export default function App({ Component, pageProps }) {
         <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Component {...pageProps} />
+      <div className="container" dir={dir}>
+        <Component {...pageProps} />
+      </div>
     </Intl>
   );
 }
