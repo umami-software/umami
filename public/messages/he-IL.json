@@ -173,6 +173,12 @@
       "value": "דומיין לא תקין"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 1,
@@ -315,6 +321,12 @@
     {
       "type": 0,
       "value": "יום בודד"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

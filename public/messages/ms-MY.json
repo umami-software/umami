@@ -173,6 +173,12 @@
       "value": "Domain tidak sah"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 1,
@@ -315,6 +321,12 @@
     {
       "type": 0,
       "value": "Satu hari"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

@@ -173,6 +173,12 @@
       "value": "Некорректный домен"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 0,
@@ -323,6 +329,12 @@
     {
       "type": 0,
       "value": "Один день"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

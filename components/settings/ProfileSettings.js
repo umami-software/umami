@@ -11,11 +11,13 @@ import styles from './ProfileSettings.module.css';
 import DateRangeSetting from './DateRangeSetting';
 import useEscapeKey from 'hooks/useEscapeKey';
 import useUser from 'hooks/useUser';
+import LanguageSetting from './LanguageSetting';
+import ThemeSetting from './ThemeSetting';
 
 export default function ProfileSettings() {
   const { user } = useUser();
   const [changePassword, setChangePassword] = useState(false);
-  const [message, setMessage] = useState();
+  const [message, setMessage] = useState(null);
 
   function handleSave() {
     setChangePassword(false);
@@ -58,6 +60,18 @@ export default function ProfileSettings() {
         </dt>
         <dd>
           <DateRangeSetting />
+        </dd>
+        <dt>
+          <FormattedMessage id="label.language" defaultMessage="Language" />
+        </dt>
+        <dd>
+          <LanguageSetting />
+        </dd>
+        <dt>
+          <FormattedMessage id="label.theme" defaultMessage="Theme" />
+        </dt>
+        <dd>
+          <ThemeSetting />
         </dd>
       </dl>
       {changePassword && (
