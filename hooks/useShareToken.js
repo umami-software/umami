@@ -1,16 +1,15 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { get } from 'lib/web';
 import useStore, { setShareToken } from 'store/app';
+import useApi from './useApi';
 
 const selector = state => state.shareToken;
 
 export default function useShareToken(shareId) {
-  const { basePath } = useRouter();
   const shareToken = useStore(selector);
+  const { get } = useApi();
 
   async function loadToken(id) {
-    const { data } = await get(`${basePath}/api/share/${id}`);
+    const { data } = await get(`/share/${id}`);
 
     if (data) {
       setShareToken(data);

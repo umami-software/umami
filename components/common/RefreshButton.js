@@ -11,13 +11,17 @@ import useDateRange from 'hooks/useDateRange';
 function RefreshButton({ websiteId }) {
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
-  const selector = useCallback(state => state[`/api/website/${websiteId}/stats`], [websiteId]);
+  const selector = useCallback(state => state[`/website/${websiteId}/stats`], [websiteId]);
   const completed = useStore(selector);
 
   function handleClick() {
-    if (dateRange) {
+    if (!loading && dateRange) {
       setLoading(true);
-      setDateRange(websiteId, dateRange);
+      if (/^[\d]+/.test(dateRange.value)) {
+        setDateRange(websiteId, dateRange.value);
+      } else {
+        setDateRange(websiteId, dateRange);
+      }
     }
   }
 
