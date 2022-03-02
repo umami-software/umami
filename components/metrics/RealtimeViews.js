@@ -95,6 +95,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
         <DataTable
           title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
           metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          renderLabel={renderLink}
           data={referrers}
         />
       )}
