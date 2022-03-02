@@ -16,3 +16,8 @@
   justify-content: flex-end;
   padding-top: 10px;
 }
+
+.button {
+  align-self: center;
+  margin-bottom: 40px;
+}

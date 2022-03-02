@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { parseISO } from 'date-fns';
 import { getDateRange } from 'lib/date';
 import { getItem, setItem } from 'lib/web';
@@ -9,10 +9,10 @@ import useStore, { setDateRange } from 'store/websites';
 
 export default function useDateRange(websiteId) {
   const { locale } = useLocale();
+  const forceUpdate = useForceUpdate();
   const selector = useCallback(state => state?.[websiteId]?.dateRange, [websiteId]);
   const websiteDateRange = useStore(selector);
-  const forceUpdate = useForceUpdate();
-  const defaultDateRange = getDateRange(DEFAULT_DATE_RANGE, locale);
+  const defaultDateRange = useMemo(() => getDateRange(DEFAULT_DATE_RANGE, locale), [locale]);
 
   const globalDefault = getItem(DATE_RANGE_CONFIG);
   let globalDateRange;
