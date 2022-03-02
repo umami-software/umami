@@ -16,8 +16,12 @@
   font-weight: 600;
 }
 
-@media only screen and (max-width: 576px) {
+.active {
+  justify-content: center;
+}
+
+@media only screen and (max-width: 992px) {
   .active {
-    display: none;
+    justify-content: flex-start;
   }
 }

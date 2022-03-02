@@ -76,12 +76,13 @@ export default Table;
 
 export const TableRow = ({ columns, row }) => (
   <div className={classNames(styles.row, 'row')}>
-    {columns.map(({ key, render, className, style, cell }, index) => (
+    {columns.map(({ key, label, render, className, style, cell }, index) => (
       <div
         key={`${key}-${index}`}
         className={classNames(styles.cell, className, cell?.className)}
         style={{ ...style, ...cell?.style }}
       >
+        {label && <label>{label}</label>}
         {render ? render(row) : row[key]}
       </div>
     ))}

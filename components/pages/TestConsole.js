@@ -68,7 +68,7 @@ export default function TestConsole() {
           {show && (
             <div className={classNames(styles.test, 'row')}>
               <div className="col-4">
-                <PageHeader>Page links</PageHeader>
+                <PageHeader>Page links</PageHeader>Nmo
                 <div>
                   <Link href={`?page=1`}>
                     <a>page one</a>
@@ -77,6 +77,11 @@ export default function TestConsole() {
                 <div>
                   <Link href={`?page=2`}>
                     <a>page two</a>
+                  </Link>
+                </div>
+                <div>
+                  <Link href={`https://www.google.com`}>
+                    <a className="umami--click--external-link">external link</a>
                   </Link>
                 </div>
               </div>

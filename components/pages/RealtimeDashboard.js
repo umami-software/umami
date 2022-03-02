@@ -145,7 +145,6 @@ export default function RealtimeDashboard() {
               metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
               data={countries}
               renderLabel={renderCountryName}
-              height={500}
             />
           </GridColumn>
           <GridColumn xs={12} lg={8}>

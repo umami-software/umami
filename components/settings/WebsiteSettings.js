@@ -101,19 +101,19 @@ export default function WebsiteSettings() {
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
-      className: 'col-4 col-xl-3',
+      className: 'col-12 col-lg-4 col-xl-3',
       render: DetailsLink,
     },
     {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
-      className: 'col-4 col-xl-3',
+      className: 'col-12 col-lg-4 col-xl-3',
       render: Domain,
     },
     {
       key: 'account',
       label: <FormattedMessage id="label.owner" defaultMessage="Owner" />,
-      className: 'col-4 col-xl-1',
+      className: 'col-12 col-lg-4 col-xl-1',
     },
     {
       key: 'action',
@@ -126,13 +126,13 @@ export default function WebsiteSettings() {
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
-      className: 'col-6 col-xl-4',
+      className: 'col-12 col-lg-6 col-xl-4',
       render: DetailsLink,
     },
     {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
-      className: 'col-6 col-xl-4',
+      className: 'col-12 col-lg-6 col-xl-4',
       render: Domain,
     },
     {

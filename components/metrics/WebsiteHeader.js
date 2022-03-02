@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import OverflowText from 'components/common/OverflowText';
@@ -30,24 +31,28 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
   );
 
   return (
-    <PageHeader>
-      <div className={styles.title}>{header}</div>
-      <ActiveUsers className={styles.active} websiteId={websiteId} />
-      <ButtonLayout align="right">
-        <RefreshButton websiteId={websiteId} />
-        {showLink && (
-          <Link
-            href="/website/[...id]"
-            as={`/website/${websiteId}/${title}`}
-            className={styles.link}
-            icon={<Arrow />}
-            size="small"
-            iconRight
-          >
-            <FormattedMessage id="label.view-details" defaultMessage="View details" />
-          </Link>
-        )}
-      </ButtonLayout>
+    <PageHeader className="row">
+      <div className={classNames(styles.title, 'col-12 col-lg-4')}>{header}</div>
+      <div className={classNames(styles.active, 'col-6 col-lg-4')}>
+        <ActiveUsers websiteId={websiteId} />
+      </div>
+      <div className="col-6 col-lg-4">
+        <ButtonLayout align="right">
+          <RefreshButton websiteId={websiteId} />
+          {showLink && (
+            <Link
+              href="/website/[...id]"
+              as={`/website/${websiteId}/${title}`}
+              className={styles.link}
+              icon={<Arrow />}
+              size="small"
+              iconRight
+            >
+              <FormattedMessage id="label.view-details" defaultMessage="View details" />
+            </Link>
+          )}
+        </ButtonLayout>
+      </div>
     </PageHeader>
   );
 }

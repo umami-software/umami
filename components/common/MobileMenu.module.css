@@ -28,6 +28,10 @@
   margin-top: 20px;
 }
 
+.item:last-child {
+  margin-top: 60px;
+}
+
 .button {
   margin-right: 15px;
 }
