@@ -19,8 +19,6 @@ export function setDateRange(websiteId, value) {
         dateRange = getDateRange(value, locale);
       }
 
-      console.log({ websiteId, value, dateRange });
-
       state[websiteId].dateRange = { ...dateRange, modified: Date.now() };
 
       return state;

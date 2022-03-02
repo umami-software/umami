@@ -7,11 +7,12 @@ import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';
 import useStore, { setDateRange } from 'store/websites';
 
-export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_RANGE) {
+export default function useDateRange(websiteId) {
   const { locale } = useLocale();
   const selector = useCallback(state => state?.[websiteId]?.dateRange, [websiteId]);
-  const dateRange = useStore(selector);
+  const websiteDateRange = useStore(selector);
   const forceUpdate = useForceUpdate();
+  const defaultDateRange = getDateRange(DEFAULT_DATE_RANGE, locale);
 
   const globalDefault = getItem(DATE_RANGE_CONFIG);
   let globalDateRange;
@@ -32,11 +33,10 @@ export default function useDateRange(websiteId, defaultDateRange = DEFAULT_DATE_
     if (websiteId) {
       setDateRange(websiteId, dateRange);
     } else {
-      const { value } = dateRange;
-      setItem(DATE_RANGE_CONFIG, value === 'custom' ? dateRange : value);
+      setItem(DATE_RANGE_CONFIG, dateRange);
       forceUpdate();
     }
   }
 
-  return [dateRange || globalDateRange || getDateRange(defaultDateRange, locale), saveDateRange];
+  return [websiteDateRange || globalDateRange || defaultDateRange, saveDateRange];
 }
