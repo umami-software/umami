@@ -80,7 +80,7 @@
   "message.powered-by": "Drivs av {name}",
   "message.reset-warning": "All statistik för webbsajten tas bort men spårningskoden förblir oförändrad.",
   "message.save-success": "Sparades!",
-  "message.share-url": "Det här är den offentliga delnings-URL:en {target}.",
+  "message.share-url": "Det här är den offentliga delnings-URL:en för {target}.",
   "message.toggle-charts": "Visa/göm grafer",
   "message.track-stats": "För att spåra statistik för {target}, placera följande kod i {head}-avsnittet på din webbsajt.",
   "message.type-delete": "Skriv {delete} i rutan nedan för att radera.",
