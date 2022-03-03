@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
@@ -12,11 +11,10 @@ import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
-import useLocale from 'hooks/useLocale';
-import { getDateArray, getDateLength, getDateRange, getDateRangeValues } from 'lib/date';
+import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
 import useShareToken from 'hooks/useShareToken';
+import useApi from 'hooks/useApi';
 import { TOKEN_HEADER } from 'lib/constants';
-import { get } from 'lib/web';
 import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
@@ -31,17 +29,16 @@ export default function WebsiteChart({
   const shareToken = useShareToken();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
-  const { locale } = useLocale();
   const [timezone] = useTimezone();
-  const { basePath } = useRouter();
   const {
     router,
     resolve,
     query: { url, ref },
   } = usePageQuery();
+  const { get } = useApi();
 
   const { data, loading, error } = useFetch(
-    `/api/website/${websiteId}/pageviews`,
+    `/website/${websiteId}/pageviews`,
     {
       params: {
         start_at: +startDate,
@@ -73,12 +70,10 @@ export default function WebsiteChart({
 
   async function handleDateChange(value) {
     if (value === 'all') {
-      const { data, ok } = await get(`${basePath}/api/website/${websiteId}`);
+      const { data, ok } = await get(`/website/${websiteId}`);
       if (ok) {
         setDateRange({ value, ...getDateRangeValues(new Date(data.created_at), Date.now()) });
       }
-    } else if (typeof value === 'string') {
-      setDateRange(getDateRange(value, locale));
     } else {
       setDateRange(value);
     }

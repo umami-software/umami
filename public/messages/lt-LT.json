@@ -173,6 +173,12 @@
       "value": "Klaidingas domenas"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "offset": 0,
@@ -428,6 +434,12 @@
     {
       "type": 0,
       "value": "Viena diena"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

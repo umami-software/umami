@@ -173,6 +173,12 @@
       "value": "Tên miền không hợp lệ"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 1,
@@ -315,6 +321,12 @@
     {
       "type": 0,
       "value": "Trong ngày"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

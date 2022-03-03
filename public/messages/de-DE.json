@@ -173,6 +173,12 @@
       "value": "Ungültige Domain"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 0,
@@ -323,6 +329,12 @@
     {
       "type": 0,
       "value": "Ein Tag"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [
@@ -568,7 +580,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der tracking code bestehen."
+      "value": "Alle Daten für diese Webseite werden gelöscht, jedoch bleibt der Tracking Code bestehen."
     }
   ],
   "message.save-success": [

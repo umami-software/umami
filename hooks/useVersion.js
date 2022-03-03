@@ -1,12 +1,10 @@
 import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkVersion } from 'redux/actions/app';
+import useStore, { checkVersion } from 'store/version';
 import { VERSION_CHECK } from 'lib/constants';
 import { getItem, setItem } from 'lib/web';
 
 export default function useVersion(check) {
-  const dispatch = useDispatch();
-  const versions = useSelector(state => state.app.versions);
+  const versions = useStore();
   const checked = versions.latest === getItem(VERSION_CHECK)?.version;
 
   const updateCheck = useCallback(() => {
@@ -15,7 +13,7 @@ export default function useVersion(check) {
 
   useEffect(() => {
     if (check && !versions.latest) {
-      dispatch(checkVersion());
+      checkVersion();
     }
   }, [versions, check]);
 

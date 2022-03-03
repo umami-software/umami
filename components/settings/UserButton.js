@@ -1,6 +1,5 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import MenuButton from 'components/common/MenuButton';
 import Icon from 'components/common/Icon';
@@ -9,9 +8,10 @@ import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
 import { removeItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';
+import useUser from 'hooks/useUser';
 
 export default function UserButton() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const router = useRouter();
 
   const menuOptions = [

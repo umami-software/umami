@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
+import OverflowText from 'components/common/OverflowText';
 import PageHeader from 'components/layout/PageHeader';
 import Modal from 'components/common/Modal';
 import WebsiteEditForm from 'components/forms/WebsiteEditForm';
@@ -23,10 +23,11 @@ import Plus from 'assets/plus.svg';
 import Code from 'assets/code.svg';
 import LinkIcon from 'assets/link.svg';
 import useFetch from 'hooks/useFetch';
+import useUser from 'hooks/useUser';
 import styles from './WebsiteSettings.module.css';
 
 export default function WebsiteSettings() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const [editWebsite, setEditWebsite] = useState();
   const [resetWebsite, setResetWebsite] = useState();
   const [deleteWebsite, setDeleteWebsite] = useState();
@@ -35,9 +36,7 @@ export default function WebsiteSettings() {
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/websites` + (user.is_admin ? '?include_all=true' : ''), {}, [
-    saved,
-  ]);
+  const { data } = useFetch('/websites', { params: { include_all: !!user?.is_admin } }, [saved]);
 
   const Buttons = row => (
     <ButtonLayout align="right">
@@ -84,28 +83,37 @@ export default function WebsiteSettings() {
   );
 
   const DetailsLink = ({ website_id, name, domain }) => (
-    <Link href="/website/[...id]" as={`/website/${website_id}/${name}`}>
+    <Link
+      className={styles.detailLink}
+      href="/website/[...id]"
+      as={`/website/${website_id}/${name}`}
+    >
       <Favicon domain={domain} />
-      {name}
+      <OverflowText tooltipId={`${website_id}-name`}>{name}</OverflowText>
     </Link>
+  );
+
+  const Domain = ({ domain, website_id }) => (
+    <OverflowText tooltipId={`${website_id}-domain`}>{domain}</OverflowText>
   );
 
   const adminColumns = [
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
-      className: 'col-4 col-xl-3',
+      className: 'col-12 col-lg-4 col-xl-3',
       render: DetailsLink,
     },
     {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
-      className: 'col-4 col-xl-3',
+      className: 'col-12 col-lg-4 col-xl-3',
+      render: Domain,
     },
     {
       key: 'account',
       label: <FormattedMessage id="label.owner" defaultMessage="Owner" />,
-      className: 'col-4 col-xl-1',
+      className: 'col-12 col-lg-4 col-xl-1',
     },
     {
       key: 'action',
@@ -118,13 +126,14 @@ export default function WebsiteSettings() {
     {
       key: 'name',
       label: <FormattedMessage id="label.name" defaultMessage="Name" />,
-      className: 'col-6 col-xl-4',
+      className: 'col-12 col-lg-6 col-xl-4',
       render: DetailsLink,
     },
     {
       key: 'domain',
       label: <FormattedMessage id="label.domain" defaultMessage="Domain" />,
-      className: 'col-6 col-xl-4',
+      className: 'col-12 col-lg-6 col-xl-4',
+      render: Domain,
     },
     {
       key: 'action',

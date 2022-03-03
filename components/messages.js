@@ -1,5 +1,4 @@
-import React from 'react';
-import { defineMessages, FormattedMessage } from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export const labels = defineMessages({
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
@@ -13,5 +12,5 @@ export const devices = defineMessages({
 });
 
 export function getDeviceMessage(device) {
-  return <FormattedMessage {...(devices[device] || labels.unknown)} />;
+  return devices[device] || labels.unknown;
 }

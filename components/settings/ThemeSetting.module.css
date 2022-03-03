@@ -1,0 +1,11 @@
+.buttons {
+  display: flex;
+}
+
+.buttons button {
+  margin-right: 20px;
+}
+
+.active {
+  border: 1px solid var(--primary400);
+}

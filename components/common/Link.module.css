@@ -8,20 +8,12 @@ a.link:visited {
   align-items: center;
 }
 
-a.link:before {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  width: 0;
-  height: 2px;
-  background: var(--primary400);
-  opacity: 0.5;
-  transition: width 100ms;
+a.link span {
+  border-bottom: 2px solid transparent;
 }
 
-a.link:hover:before {
-  width: 100%;
-  transition: width 100ms;
+a.link:hover span {
+  border-bottom: 2px solid var(--primary400);
 }
 
 a.link.large {

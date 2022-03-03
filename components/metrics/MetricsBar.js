@@ -22,7 +22,7 @@ export default function MetricsBar({ websiteId, className }) {
   } = usePageQuery();
 
   const { data, error, loading } = useFetch(
-    `/api/website/${websiteId}/stats`,
+    `/website/${websiteId}/stats`,
     {
       params: {
         start_at: +startDate,

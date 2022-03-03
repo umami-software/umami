@@ -25,9 +25,8 @@ export default function StickyHeader({
       }
     };
 
-    checkPosition();
-
     if (enabled) {
+      checkPosition();
       window.addEventListener('scroll', checkPosition);
     }
 

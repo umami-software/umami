@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
-import WebsiteSettings from '../settings/WebsiteSettings';
-import AccountSettings from '../settings/AccountSettings';
-import ProfileSettings from '../settings/ProfileSettings';
-import { useSelector } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
+import WebsiteSettings from 'components/settings/WebsiteSettings';
+import AccountSettings from 'components/settings/AccountSettings';
+import ProfileSettings from 'components/settings/ProfileSettings';
+import useUser from 'hooks/useUser';
 
 const WEBSITES = '/settings';
 const ACCOUNTS = '/settings/accounts';
 const PROFILE = '/settings/profile';
 
 export default function Settings() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const [option, setOption] = useState(WEBSITES);
   const router = useRouter();
   const { pathname } = router;
+
+  if (!user) {
+    return null;
+  }
 
   const menuOptions = [
     {

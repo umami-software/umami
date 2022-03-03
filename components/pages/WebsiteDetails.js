@@ -9,20 +9,20 @@ import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
 import Arrow from 'assets/arrow-right.svg';
-import styles from './WebsiteDetails.module.css';
-import PagesTable from '../metrics/PagesTable';
-import ReferrersTable from '../metrics/ReferrersTable';
-import BrowsersTable from '../metrics/BrowsersTable';
-import OSTable from '../metrics/OSTable';
-import DevicesTable from '../metrics/DevicesTable';
-import CountriesTable from '../metrics/CountriesTable';
-import LanguagesTable from '../metrics/LanguagesTable';
-import EventsTable from '../metrics/EventsTable';
-import EventsChart from '../metrics/EventsChart';
+import PagesTable from 'components/metrics/PagesTable';
+import ReferrersTable from 'components/metrics/ReferrersTable';
+import BrowsersTable from 'components/metrics/BrowsersTable';
+import OSTable from 'components/metrics/OSTable';
+import DevicesTable from 'components/metrics/DevicesTable';
+import CountriesTable from 'components/metrics/CountriesTable';
+import LanguagesTable from 'components/metrics/LanguagesTable';
+import EventsTable from 'components/metrics/EventsTable';
+import EventsChart from 'components/metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import useShareToken from 'hooks/useShareToken';
 import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
+import styles from './WebsiteDetails.module.css';
 
 const views = {
   url: PagesTable,
@@ -37,7 +37,7 @@ const views = {
 
 export default function WebsiteDetails({ websiteId }) {
   const shareToken = useShareToken();
-  const { data } = useFetch(`/api/website/${websiteId}`, {
+  const { data } = useFetch(`/website/${websiteId}`, {
     headers: { [TOKEN_HEADER]: shareToken?.token },
   });
   const [chartLoaded, setChartLoaded] = useState(false);

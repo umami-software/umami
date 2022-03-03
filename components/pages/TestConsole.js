@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -13,15 +12,16 @@ import Button from 'components/common/Button';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Icon from 'components/common/Icon';
 import useFetch from 'hooks/useFetch';
+import useUser from 'hooks/useUser';
 import ChevronDown from 'assets/chevron-down.svg';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
-  const user = useSelector(state => state.user);
+  const { user } = useUser();
   const [website, setWebsite] = useState();
   const [show, setShow] = useState(true);
   const { basePath } = useRouter();
-  const { data } = useFetch('/api/websites');
+  const { data } = useFetch('/websites');
 
   if (!data || !user?.is_admin) {
     return null;
@@ -68,7 +68,7 @@ export default function TestConsole() {
           {show && (
             <div className={classNames(styles.test, 'row')}>
               <div className="col-4">
-                <PageHeader>Page links</PageHeader>
+                <PageHeader>Page links</PageHeader>Nmo
                 <div>
                   <Link href={`?page=1`}>
                     <a>page one</a>
@@ -77,6 +77,11 @@ export default function TestConsole() {
                 <div>
                   <Link href={`?page=2`}>
                     <a>page two</a>
+                  </Link>
+                </div>
+                <div>
+                  <Link href={`https://www.google.com`}>
+                    <a className="umami--click--external-link">external link</a>
                   </Link>
                 </div>
               </div>

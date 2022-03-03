@@ -4,32 +4,29 @@ import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import styles from './Footer.module.css';
 import useVersion from 'hooks/useVersion';
-import useLocale from 'hooks/useLocale';
+import { HOMEPAGE_URL, VERSION_URL } from 'lib/constants';
 
 export default function Footer() {
   const { current } = useVersion();
-  const { dir } = useLocale();
 
   return (
-    <footer className="container" dir={dir}>
-      <div className={classNames(styles.footer, 'row')}>
-        <div className="col-12 col-md-4" />
-        <div className="col-12 col-md-4">
-          <FormattedMessage
-            id="message.powered-by"
-            defaultMessage="Powered by {name}"
-            values={{
-              name: (
-                <Link href="https://umami.is">
-                  <b>umami</b>
-                </Link>
-              ),
-            }}
-          />
-        </div>
-        <div className={classNames(styles.version, 'col-12 col-md-4')}>
-          <Link href={`https://github.com/mikecao/umami/releases`}>{`v${current}`}</Link>
-        </div>
+    <footer className={classNames(styles.footer, 'row')}>
+      <div className="col-12 col-md-4" />
+      <div className="col-12 col-md-4">
+        <FormattedMessage
+          id="message.powered-by"
+          defaultMessage="Powered by {name}"
+          values={{
+            name: (
+              <Link href={HOMEPAGE_URL}>
+                <b>umami</b>
+              </Link>
+            ),
+          }}
+        />
+      </div>
+      <div className={classNames(styles.version, 'col-12 col-md-4')}>
+        <Link href={VERSION_URL}>{`v${current}`}</Link>
       </div>
     </footer>
   );

@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "Tutti gli eventi"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Sempre"
     }
   ],
   "label.all-websites": [
@@ -92,7 +92,7 @@
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Dashboard"
+      "value": "Pannello di Controllo"
     }
   ],
   "label.date-range": [
@@ -173,6 +173,12 @@
       "value": "Dominio non valido"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 0,
@@ -214,13 +220,13 @@
   "label.login": [
     {
       "type": 0,
-      "value": "Login"
+      "value": "Accedi"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Logout"
+      "value": "Esci"
     }
   ],
   "label.more": [
@@ -244,7 +250,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Proprietario"
     }
   ],
   "label.password": [
@@ -268,13 +274,13 @@
   "label.realtime": [
     {
       "type": 0,
-      "value": "Realtime"
+      "value": "Tempo reale"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Log in realtime"
+      "value": "Log in tempo reale"
     }
   ],
   "label.refresh": [
@@ -298,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Resetta le statistiche"
     }
   ],
   "label.save": [
@@ -316,13 +322,19 @@
   "label.share-url": [
     {
       "type": 0,
-      "value": "Share URL"
+      "value": "Condividi link"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
       "value": "Singolo giorno"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [
@@ -370,7 +382,7 @@
   "label.username": [
     {
       "type": 0,
-      "value": "Username"
+      "value": "Nome utente"
     }
   ],
   "label.view-details": [
@@ -572,7 +584,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Tutte le statistiche verranno cancellate per questo sito, ma il tuo codice di tracciamento rimarrà invariato."
     }
   ],
   "message.save-success": [
@@ -598,7 +610,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Apri/Chiudi i grafici"
     }
   ],
   "message.track-stats": [
@@ -640,7 +652,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Digita "
     },
     {
       "type": 1,
@@ -648,7 +660,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " nel box qui sotto per confermare."
     }
   ],
   "metrics.actions": [
@@ -690,13 +702,13 @@
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "Laptop"
+      "value": "Portatile"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Mobile"
+      "value": "Cellulare"
     }
   ],
   "metrics.device.tablet": [
@@ -738,7 +750,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Lingue"
     }
   ],
   "metrics.operating-systems": [

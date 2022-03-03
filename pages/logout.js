@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
-import { get } from 'lib/web';
-import { updateUser } from 'redux/actions/user';
+import { removeItem } from 'lib/web';
+import { AUTH_TOKEN } from 'lib/constants';
+import { setUser } from 'store/app';
 
 export default function LogoutPage() {
-  const dispatch = useDispatch();
   const router = useRouter();
-  const { basePath } = router;
 
   useEffect(() => {
-    dispatch(updateUser(null));
-    get(`${basePath}/api/auth/logout`).then(() => router.push('/login'));
+    removeItem(AUTH_TOKEN);
+    router.push('/login');
+
+    return () => setUser(null);
   }, []);
 
   return null;

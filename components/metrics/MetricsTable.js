@@ -26,8 +26,7 @@ export default function MetricsTable({
   ...props
 }) {
   const shareToken = useShareToken();
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, modified } = dateRange;
+  const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
     resolve,
     router,
@@ -35,7 +34,7 @@ export default function MetricsTable({
   } = usePageQuery();
 
   const { data, loading, error } = useFetch(
-    `/api/website/${websiteId}/metrics`,
+    `/website/${websiteId}/metrics`,
     {
       params: {
         type,

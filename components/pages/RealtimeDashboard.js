@@ -33,8 +33,8 @@ export default function RealtimeDashboard() {
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(0);
-  const { data: init, loading } = useFetch('/api/realtime/init');
-  const { data: updates } = useFetch('/api/realtime/update', {
+  const { data: init, loading } = useFetch('/realtime/init');
+  const { data: updates } = useFetch('/realtime/update', {
     params: { start_at: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
@@ -145,7 +145,6 @@ export default function RealtimeDashboard() {
               metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
               data={countries}
               renderLabel={renderCountryName}
-              height={500}
             />
           </GridColumn>
           <GridColumn xs={12} lg={8}>

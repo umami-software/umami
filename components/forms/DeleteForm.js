@@ -8,7 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
-import useDelete from 'hooks/useDelete';
+import useApi from 'hooks/useApi';
 
 const CONFIRMATION_WORD = 'DELETE';
 
@@ -27,11 +27,11 @@ const validate = ({ confirmation }) => {
 };
 
 export default function DeleteForm({ values, onSave, onClose }) {
-  const del = useDelete();
+  const { del } = useApi();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ type, id }) => {
-    const { ok, data } = await del(`/api/${type}/${id}`);
+    const { ok, data } = await del(`/${type}/${id}`);
 
     if (ok) {
       onSave();

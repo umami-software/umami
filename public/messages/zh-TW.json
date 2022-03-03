@@ -173,6 +173,12 @@
       "value": "無效域名"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 0,
@@ -323,6 +329,12 @@
     {
       "type": 0,
       "value": "單日"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [

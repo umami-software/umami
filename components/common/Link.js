@@ -5,7 +5,7 @@ import NextLink from 'next/link';
 import Icon from './Icon';
 import styles from './Link.module.css';
 
-function Link({ className, icon, children, size, iconRight, ...props }) {
+function Link({ className, icon, children, size, iconRight, onClick, ...props }) {
   return (
     <NextLink {...props}>
       <a
@@ -15,6 +15,7 @@ function Link({ className, icon, children, size, iconRight, ...props }) {
           [styles.xsmall]: size === 'xsmall',
           [styles.iconRight]: iconRight,
         })}
+        onClick={onClick}
       >
         {icon && <Icon className={styles.icon} icon={icon} size={size} />}
         {children}

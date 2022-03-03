@@ -3,5 +3,11 @@
 }
 
 .buttons {
+  display: flex;
   justify-content: flex-end;
+  width: 100%;
+}
+
+.detailLink {
+  width: 100%;
 }

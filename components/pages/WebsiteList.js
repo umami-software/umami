@@ -4,15 +4,23 @@ import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import Button from 'components/common/Button';
 import useFetch from 'hooks/useFetch';
+import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
+import Button from 'components/common/Button';
+import useStore from 'store/app';
 import Arrow from 'assets/arrow-right.svg';
-import Chart from 'assets/chart-bar.svg';
 import styles from './WebsiteList.module.css';
 
+const selector = state => state.dashboard;
+
 export default function WebsiteList({ userId }) {
-  const { data } = useFetch('/api/websites', { params: { user_id: userId } });
-  const [showCharts, setShowCharts] = useState(true);
+  const { data } = useFetch('/websites', { params: { user_id: userId } });
+  const { showCharts, limit } = useStore(selector);
+  const [max, setMax] = useState(limit);
+
+  function handleMore() {
+    setMax(max + limit);
+  }
 
   if (!data) {
     return null;
@@ -40,23 +48,26 @@ export default function WebsiteList({ userId }) {
   return (
     <Page>
       <div className={styles.menubar}>
-        <Button
-          tooltip={<FormattedMessage id="message.toggle-charts" defaultMessage="Toggle charts" />}
-          icon={<Chart />}
-          onClick={() => setShowCharts(!showCharts)}
-        />
+        <DashboardSettingsButton />
       </div>
-      {data.map(({ website_id, name, domain }) => (
-        <div key={website_id} className={styles.website}>
-          <WebsiteChart
-            websiteId={website_id}
-            title={name}
-            domain={domain}
-            showChart={showCharts}
-            showLink
-          />
-        </div>
-      ))}
+      {data.map(({ website_id, name, domain }, index) =>
+        index < max ? (
+          <div key={website_id} className={styles.website}>
+            <WebsiteChart
+              websiteId={website_id}
+              title={name}
+              domain={domain}
+              showChart={showCharts}
+              showLink
+            />
+          </div>
+        ) : null,
+      )}
+      {max < data.length && (
+        <Button className={styles.button} onClick={handleMore}>
+          <FormattedMessage id="label.more" defaultMessage="More" />
+        </Button>
+      )}
     </Page>
   );
 }

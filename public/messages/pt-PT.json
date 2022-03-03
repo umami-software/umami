@@ -62,13 +62,13 @@
   "label.change-password": [
     {
       "type": 0,
-      "value": "Alterar palavra-passe"
+      "value": "Alterar senha"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirmar palavra-passe"
+      "value": "Confirmar senha"
     }
   ],
   "label.copy-to-clipboard": [
@@ -80,7 +80,7 @@
   "label.current-password": [
     {
       "type": 0,
-      "value": "Palavra-passe atual"
+      "value": "Senha atual"
     }
   ],
   "label.custom-range": [
@@ -173,6 +173,12 @@
       "value": "Domínio inválido"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 0,
@@ -238,7 +244,7 @@
   "label.new-password": [
     {
       "type": 0,
-      "value": "Nova palavra-passe"
+      "value": "Nova senha"
     }
   ],
   "label.owner": [
@@ -250,13 +256,13 @@
   "label.password": [
     {
       "type": 0,
-      "value": "Palavra-passe"
+      "value": "Senha"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "Palavra-passes não correspondem"
+      "value": "As senhas não coincidem"
     }
   ],
   "label.profile": [
@@ -325,6 +331,12 @@
       "value": "Dia único"
     }
   ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
   "label.this-month": [
     {
       "type": 0,
@@ -358,7 +370,7 @@
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Código de tracking"
+      "value": "Código de rastreamento"
     }
   ],
   "label.unknown": [
@@ -490,7 +502,7 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nome de utilizador/palavra-passe incorretos."
+      "value": "Nome de utilizador/senha incorretos."
     }
   ],
   "message.log.visitor": [
@@ -598,13 +610,13 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Alternar gráficos"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "Para recolheres estatísticas para "
+      "value": "Para recolher estatísticas para "
     },
     {
       "type": 1,
@@ -612,7 +624,7 @@
     },
     {
       "type": 0,
-      "value": ", coloca o seguinte código na secção "
+      "value": ", coloque o seguinte código na secção "
     },
     {
       "type": 1,
@@ -620,13 +632,13 @@
     },
     {
       "type": 0,
-      "value": " do teu website."
+      "value": " do seu website."
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "Escreve "
+      "value": "Escreva "
     },
     {
       "type": 1,
@@ -640,7 +652,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Escreve "
+      "value": "Escreva "
     },
     {
       "type": 1,

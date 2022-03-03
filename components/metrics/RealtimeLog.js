@@ -7,7 +7,7 @@ import Tag from 'components/common/Tag';
 import Dot from 'components/common/Dot';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
-import { getDeviceMessage } from 'components/messages';
+import { getDeviceMessage, labels } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -129,15 +129,10 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           id="message.log.visitor"
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{
-            country: (
-              <b>
-                {countryNames[country] ||
-                  intl.formatMessage({ id: 'label.unknown', defaultMessage: 'Unknown' })}
-              </b>
-            ),
+            country: <b>{countryNames[country] || intl.formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
-            device: <b>{getDeviceMessage(device)}</b>,
+            device: <b>{intl.formatMessage(getDeviceMessage(device))}</b>,
           }}
         />
       );

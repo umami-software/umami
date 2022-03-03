@@ -38,7 +38,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Toutes périodes"
     }
   ],
   "label.all-websites": [
@@ -173,6 +173,12 @@
       "value": "Domaine invalide"
     }
   ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
   "label.last-days": [
     {
       "type": 1,
@@ -236,7 +242,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Propriétaire"
     }
   ],
   "label.password": [
@@ -290,7 +296,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Réinitialiser les statistiques"
     }
   ],
   "label.save": [
@@ -315,6 +321,12 @@
     {
       "type": 0,
       "value": "Journée"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
     }
   ],
   "label.this-month": [
@@ -432,7 +444,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Êtes-vous sûr de vouloir réinistialiser les statistiques de "
     },
     {
       "type": 1,
@@ -440,7 +452,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": " ?"
     }
   ],
   "message.copied": [
@@ -564,7 +576,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Toutes les statistiques pour ce site seront supprimés, mais votre code de suivi restera intact."
     }
   ],
   "message.save-success": [
@@ -590,7 +602,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Changer les graphiques"
     }
   ],
   "message.track-stats": [
@@ -632,7 +644,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Tapez "
     },
     {
       "type": 1,
@@ -640,7 +652,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " dans la case ci-dessous pour confirmer."
     }
   ],
   "metrics.actions": [
@@ -730,7 +742,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Langages"
     }
   ],
   "metrics.operating-systems": [

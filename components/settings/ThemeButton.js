@@ -9,7 +9,8 @@ import Icon from '../common/Icon';
 export default function ThemeButton() {
   const [theme, setTheme] = useTheme();
 
-  const transitions = useTransition(theme, theme => theme, {
+  const transitions = useTransition(theme, {
+    initial: { opacity: 1 },
     from: {
       opacity: 0,
       transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
@@ -27,17 +28,11 @@ export default function ThemeButton() {
 
   return (
     <div className={styles.button} onClick={handleClick}>
-      {transitions.map(({ item, key, props }) =>
-        item === 'light' ? (
-          <animated.div key={key} style={props}>
-            <Icon icon={<Sun />} />
-          </animated.div>
-        ) : (
-          <animated.div key={key} style={props}>
-            <Icon icon={<Moon />} />
-          </animated.div>
-        ),
-      )}
+      {transitions((styles, item) => (
+        <animated.div key={item} style={styles}>
+          <Icon icon={item === 'light' ? <Sun /> : <Moon />} />
+        </animated.div>
+      ))}
     </div>
   );
 }

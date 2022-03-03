@@ -11,7 +11,7 @@ export default function DevicesTable({ websiteId, ...props }) {
       type="device"
       metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}
-      renderLabel={({ x }) => getDeviceMessage(x)}
+      renderLabel={({ x }) => <FormattedMessage {...getDeviceMessage(x)} />}
     />
   );
 }
