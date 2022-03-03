@@ -2,12 +2,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 10px;
-  font-size: var(--font-size-small);
-  font-weight: 600;
+  padding-top: 20px;
 }
 
 .message {
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  flex: 1;
   text-align: center;
   margin-right: 20px;
+}
+
+.buttons {
+  flex: 0;
 }
