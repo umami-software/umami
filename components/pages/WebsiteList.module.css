@@ -7,17 +7,5 @@
 
 .website:last-child {
   border-bottom: 0;
-  margin-bottom: 0;
-}
-
-.menubar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-top: 10px;
-}
-
-.button {
-  align-self: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }

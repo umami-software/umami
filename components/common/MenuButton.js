@@ -11,6 +11,7 @@ function MenuButton({
   value,
   options,
   buttonClassName,
+  buttonVariant,
   menuClassName,
   menuPosition = 'bottom',
   menuAlign = 'right',
@@ -43,7 +44,7 @@ function MenuButton({
         icon={icon}
         className={classNames(styles.button, buttonClassName, { [styles.open]: showMenu })}
         onClick={toggleMenu}
-        variant="light"
+        variant={buttonVariant}
       >
         {!hideLabel && (
           <div className={styles.text}>{renderValue ? renderValue(selectedOption) : value}</div>

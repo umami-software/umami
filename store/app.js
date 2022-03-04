@@ -9,7 +9,7 @@ import {
 } from 'lib/constants';
 import { getItem } from 'lib/web';
 
-const defaultDashboardConfig = {
+export const defaultDashboardConfig = {
   showCharts: true,
   limit: DEFAULT_WEBSITE_LIMIT,
 };

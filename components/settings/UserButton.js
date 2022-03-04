@@ -43,6 +43,7 @@ export default function UserButton() {
     <MenuButton
       icon={<Icon icon={<User />} size="large" />}
       value={<Icon icon={<Chevron />} size="small" />}
+      buttonVariant="light"
       options={menuOptions}
       onSelect={handleSelect}
     />

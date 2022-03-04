@@ -19,6 +19,7 @@ export default function LanguageButton() {
       options={menuOptions}
       value={locale}
       menuClassName={styles.menu}
+      buttonVariant="light"
       onSelect={handleSelect}
       hideLabel
     />
