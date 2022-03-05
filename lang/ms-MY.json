@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Untuk menjejak statistik bagi {target}, letakkan kod berikut di bahagian {head} laman web anda.",
   "message.type-delete": "Taip {delete} di dalam kotak di bawah untuk pengesahan.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Taip {reset} di dalam kotak di bawah untuk pengesahan.",
   "metrics.actions": "Aksi",
   "metrics.average-visit-time": "Purata tempoh masa lawatan",
   "metrics.bounce-rate": "Kadar lantunan",

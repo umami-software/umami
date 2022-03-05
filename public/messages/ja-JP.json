@@ -620,7 +620,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "確認のため、下のフォームに"
     },
     {
       "type": 1,
@@ -628,7 +628,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": "と入力してください。"
     }
   ],
   "metrics.actions": [

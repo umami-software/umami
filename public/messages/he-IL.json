@@ -628,7 +628,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "הקלידו "
     },
     {
       "type": 1,
@@ -636,7 +636,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " בתיבה על מנת לאשר"
     }
   ],
   "metrics.actions": [

@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "把以下代码放到你的网站的 {head} 部分来收集 {target} 的数据。",
   "message.type-delete": "在下方输入框输入 {delete} 以确认删除。",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "在下方输入框输入 {reset} 以确认删除。",
   "metrics.actions": "用户行为",
   "metrics.average-visit-time": "平均访问时间",
   "metrics.bounce-rate": "跳出率",

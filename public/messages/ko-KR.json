@@ -620,7 +620,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "확인을 위해 아래 박스에 "
     },
     {
       "type": 1,
@@ -628,7 +628,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": "값을 입력하십시오."
     }
   ],
   "metrics.actions": [

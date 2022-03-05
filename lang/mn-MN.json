@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target} вебийн статистикийг бүртгэхийн тулд доорх кодыг вебийнхээ {head} хэсэгт байрлуулна уу.",
   "message.type-delete": "Доорх хэсэгт {delete} гэж бичиж баталгаажуулна уу.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Доорх хэсэгт {reset} гэж бичиж баталгаажуулна уу.",
   "metrics.actions": "Үйлдлүүд",
   "metrics.average-visit-time": "Зочилсон дундаж хугацаа",
   "metrics.bounce-rate": "Нэг хуудас үзээд гарсан",

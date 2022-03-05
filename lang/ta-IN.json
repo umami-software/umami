@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target}க்கான புள்ளிவிவரங்களைக் கண்காணிக்க, {head}ல் பின்வரும் குறியீட்டை வைக்கவும்.",
   "message.type-delete": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் {delete} என தட்டச்சு செய்க.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் {reset} என தட்டச்சு செய்க.",
   "metrics.actions": "செயல்கள்",
   "metrics.average-visit-time": "சராசரி வருகை நேரம்",
   "metrics.bounce-rate": "துள்ளல் விகிதம்",

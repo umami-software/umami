@@ -640,15 +640,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
+      "value": "جهت اطمینان {reset} را در کادر زیر بنویسید."
     }
   ],
   "metrics.actions": [

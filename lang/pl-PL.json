@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Aby śledzić statystyki dla {target}, umieść poniższy kod w sekcji {head} swojej witryny.",
   "message.type-delete": "Wpisz {delete} w polu poniżej, aby potwierdzić.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Wpisz {reset} w polu poniżej, aby potwierdzić.",
   "metrics.actions": "Działania",
   "metrics.average-visit-time": "Średni czas wizyty",
   "metrics.bounce-rate": "Współczynnik odrzuceń",

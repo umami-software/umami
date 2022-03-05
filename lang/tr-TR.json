@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target} alanı adı istatistiklerini takip etmek için, aşağıdaki kodu web sitenizin {head} bloğuna yerleştirin.",
   "message.type-delete": "Onaylamak için kutuya {delete} yazın.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Onaylamak için kutuya {reset} yazın.",
   "metrics.actions": "Hareketler",
   "metrics.average-visit-time": "Ortalama ziyaret süresi",
   "metrics.bounce-rate": "Çıkma oranı",

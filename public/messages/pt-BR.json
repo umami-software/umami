@@ -652,7 +652,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Escreva "
     },
     {
       "type": 1,
@@ -660,7 +660,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " abaixo para continuar."
     }
   ],
   "metrics.actions": [

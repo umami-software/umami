@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Fyri at spora hagtøl fyri {target}, koyr kotuna í {head} partin á tínari heimasíðu.",
   "message.type-delete": "Skriva {delete} í feltið fyri at vátta",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Skriva {reset} í feltið fyri at vátta",
   "metrics.actions": "Gerðir",
   "metrics.average-visit-time": "Miðal vitjurnartíð ",
   "metrics.bounce-rate": "Bounce prosenttal",

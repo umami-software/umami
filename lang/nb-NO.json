@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "For å spore statistikk for {target}, plasser følgende kode i {head}-delen av nettstedet ditt.",
   "message.type-delete": "Skriv inn {delete} i boksen nedenfor for å bekrefte.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Skriv inn {reset} i boksen nedenfor for å bekrefte.",
   "metrics.actions": "Handlinger",
   "metrics.average-visit-time": "Gjennomsnittlig besøkelsestid",
   "metrics.bounce-rate": "Avvisningsfrekvens",

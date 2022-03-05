@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "Kaikki tapahtumat"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Alusta lähtien"
     }
   ],
   "label.all-websites": [
@@ -86,7 +86,7 @@
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Mukautettu jakso"
+      "value": "Mukautettu ajanjakso"
     }
   ],
   "label.dashboard": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Kieli"
     }
   ],
   "label.last-days": [
@@ -190,7 +190,7 @@
     },
     {
       "type": 0,
-      "value": " päivät"
+      "value": " päivää"
     }
   ],
   "label.last-hours": [
@@ -204,7 +204,7 @@
     },
     {
       "type": 0,
-      "value": " tunnit"
+      "value": " tuntia"
     }
   ],
   "label.logged-in-as": [
@@ -250,7 +250,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Omistaja"
     }
   ],
   "label.password": [
@@ -274,7 +274,7 @@
   "label.realtime": [
     {
       "type": 0,
-      "value": "Reaaliaikainen"
+      "value": "Juuri nyt"
     }
   ],
   "label.realtime-logs": [
@@ -304,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Nollaa tilastot"
     }
   ],
   "label.save": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Teema"
     }
   ],
   "label.this-month": [
@@ -404,7 +404,7 @@
     },
     {
       "type": 0,
-      "value": " nykyinen "
+      "value": " "
     },
     {
       "offset": 0,
@@ -413,7 +413,7 @@
           "value": [
             {
               "type": 0,
-              "value": "yksi"
+              "value": "vierailija"
             }
           ]
         },
@@ -421,7 +421,7 @@
           "value": [
             {
               "type": 0,
-              "value": "muut"
+              "value": "vierailijaa"
             }
           ]
         }
@@ -434,7 +434,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Haluatko varmasti poistaa "
+      "value": "Haluatko varmasti poistaa sivuston "
     },
     {
       "type": 1,
@@ -448,7 +448,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Haluatko varmasti poistaa sivuston "
     },
     {
       "type": 1,
@@ -456,7 +456,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": " tilastot?"
     }
   ],
   "message.copied": [
@@ -474,7 +474,7 @@
   "message.failure": [
     {
       "type": 0,
-      "value": "Jotain meni väärin."
+      "value": "Jotain meni pieleen."
     }
   ],
   "message.get-share-url": [
@@ -512,7 +512,7 @@
     },
     {
       "type": 0,
-      "value": " käyttäen selainta "
+      "value": " selaimella "
     },
     {
       "type": 1,
@@ -520,7 +520,7 @@
     },
     {
       "type": 0,
-      "value": " "
+      "value": " laitteella "
     },
     {
       "type": 1,
@@ -528,7 +528,7 @@
     },
     {
       "type": 0,
-      "value": "-laitteella: "
+      "value": " "
     },
     {
       "type": 1,
@@ -580,7 +580,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana."
     }
   ],
   "message.save-success": [
@@ -592,7 +592,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Tämä on julkisesti jaettu URL-osoitteelle "
+      "value": "Tämä on julkisesti jaettu URL sivustolle "
     },
     {
       "type": 1,
@@ -606,13 +606,13 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Kytke kaaviot päälle/pois"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "Jos haluat seurata kohteen "
+      "value": "Jos haluat seurata sivuston "
     },
     {
       "type": 1,
@@ -628,7 +628,7 @@
     },
     {
       "type": 0,
-      "value": " osioon."
+      "value": "-osioon."
     }
   ],
   "message.type-delete": [
@@ -642,13 +642,13 @@
     },
     {
       "type": 0,
-      "value": " alla olevaan ruutuun vahvistaaksesi."
+      "value": " alla olevaan kenttään vahvistaaksesi."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Kirjoita "
     },
     {
       "type": 1,
@@ -656,7 +656,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " alla olevaan kenttään vahvistaaksesi."
     }
   ],
   "metrics.actions": [
@@ -704,7 +704,7 @@
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Mobiili"
+      "value": "Puhelin"
     }
   ],
   "metrics.device.tablet": [
@@ -746,7 +746,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Kielet"
     }
   ],
   "metrics.operating-systems": [
@@ -758,7 +758,7 @@
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "Sivun näyttökertoja"
+      "value": "Sivun näyttökerrat"
     }
   ],
   "metrics.pages": [
@@ -776,13 +776,13 @@
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Uniikit vierailijat"
+      "value": "Yksittäiset kävijät"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "Näyttökertoja"
+      "value": "Näyttökerrat"
     }
   ],
   "metrics.visitors": [

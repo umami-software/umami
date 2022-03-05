@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Om statistieken voor {target} bij te houden, plaats je de volgende code in het {head} gedeelte van je website.",
   "message.type-delete": "Type {delete} in onderstaande veld om dit te bevestigen.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Type {reset} in onderstaande veld om dit te bevestigen.",
   "metrics.actions": "Acties",
   "metrics.average-visit-time": "Gemiddelde bezoektijd",
   "metrics.bounce-rate": "Bouncepercentage",

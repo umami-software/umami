@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Če želite spremljati statistične podatke za {target}, v {head} del vašega spletnega mesta namestite naslednjo kodo.",
   "message.type-delete": "V spodnje polje vnesite {delete} za potrditev.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "V spodnje polje vnesite {reset} za potrditev.",
   "metrics.actions": "Dejanja",
   "metrics.average-visit-time": "Povprečni čas obiska",
   "metrics.bounce-rate": "Zapustna stopnja",
