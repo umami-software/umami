@@ -10,8 +10,7 @@ import useShareToken from 'hooks/useShareToken';
 import { EVENT_COLORS, TOKEN_HEADER } from 'lib/constants';
 
 export default function EventsChart({ websiteId, className, token }) {
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit, modified } = dateRange;
+  const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
   const [timezone] = useTimezone();
   const { query } = usePageQuery();
   const shareToken = useShareToken();

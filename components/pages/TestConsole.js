@@ -68,7 +68,7 @@ export default function TestConsole() {
           {show && (
             <div className={classNames(styles.test, 'row')}>
               <div className="col-4">
-                <PageHeader>Page links</PageHeader>Nmo
+                <PageHeader>Page links</PageHeader>
                 <div>
                   <Link href={`?page=1`}>
                     <a>page one</a>

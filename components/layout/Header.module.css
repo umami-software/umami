@@ -6,6 +6,7 @@
 }
 
 .title {
+  flex: 1;
   font-size: var(--font-size-large);
   display: flex;
   align-items: center;
@@ -17,7 +18,7 @@
 }
 
 .links {
-  flex: 1;
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +31,7 @@
 }
 
 .buttons {
+  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
