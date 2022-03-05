@@ -58,20 +58,24 @@ import { removeTrailingSlash } from '../lib/url';
     req.send(JSON.stringify(data));
   };
 
-  const collect = (type, params, uuid) => {
-    if (disableTracking()) return;
+  const getPayload = () => ({
+    website,
+    hostname,
+    screen,
+    language,
+    cache: useCache && sessionStorage.getItem(cacheKey),
+    url: currentUrl,
+  });
 
-    const payload = {
-      website: uuid,
-      hostname,
-      screen,
-      language,
-      cache: useCache && sessionStorage.getItem(cacheKey),
-    };
-
-    Object.keys(params).forEach(key => {
-      payload[key] = params[key];
+  const assign = (a, b) => {
+    Object.keys(b).forEach(key => {
+      a[key] = b[key];
     });
+    return a;
+  };
+
+  const collect = (type, payload) => {
+    if (disableTracking()) return;
 
     post(
       `${root}/api/collect`,
@@ -86,27 +90,45 @@ import { removeTrailingSlash } from '../lib/url';
   const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
     collect(
       'pageview',
-      {
+      assign(getPayload(), {
+        website: uuid,
         url,
         referrer,
-      },
-      uuid,
+      }),
     );
   };
 
   const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
     collect(
       'event',
-      {
+      assign(getPayload(), {
+        website: uuid,
+        url,
         event_type,
         event_value,
-        url,
-      },
-      uuid,
+      }),
     );
   };
 
   /* Handle events */
+
+  const sendEvent = (value, type) => {
+    const payload = getPayload();
+    payload.event_type = type;
+    payload.event_value = value;
+
+    const blob = new Blob(
+      [
+        JSON.stringify({
+          type: 'event',
+          payload,
+        }),
+      ],
+      { type: 'application/json' },
+    );
+
+    navigator.sendBeacon(`${root}/api/collect`, blob);
+  };
 
   const addEvents = node => {
     const elements = node.querySelectorAll(eventSelect);
@@ -120,7 +142,13 @@ import { removeTrailingSlash } from '../lib/url';
       const [, type, value] = className.split('--');
       const listener = listeners[className]
         ? listeners[className]
-        : (listeners[className] = () => trackEvent(value, type));
+        : (listeners[className] = () => {
+            if (element.tagName === 'A') {
+              sendEvent(value, type);
+            } else {
+              trackEvent(value, type);
+            }
+          });
 
       element.addEventListener(type, listener, true);
     });
@@ -178,7 +206,9 @@ import { removeTrailingSlash } from '../lib/url';
         observer.observe(document, { childList: true, subtree: true });
       }
     };
+
     document.addEventListener('readystatechange', update, true);
+
     update();
   }
 })(window);
