@@ -3,7 +3,7 @@ import ipaddr from 'ipaddr.js';
 import { savePageView, saveEvent } from 'lib/queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
-import { ok, badRequest } from 'lib/response';
+import { ok, send, badRequest } from 'lib/response';
 import { createToken } from 'lib/crypto';
 import { removeTrailingSlash } from 'lib/url';
 
@@ -60,5 +60,5 @@ export default async (req, res) => {
 
   const token = await createToken({ website_id, session_id });
 
-  return ok(res, token);
+  return send(res, token);
 };
