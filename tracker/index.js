@@ -22,6 +22,7 @@ import { removeTrailingSlash } from '../lib/url';
   const autoTrack = attr('data-auto-track') !== 'false';
   const dnt = attr('data-do-not-track');
   const useCache = attr('data-cache');
+  const cssEvents = attr('data-css-events') !== 'false';
   const domain = attr('data-domains') || '';
   const domains = domain.split(',').map(n => n.trim());
 
@@ -29,7 +30,7 @@ import { removeTrailingSlash } from '../lib/url';
   const eventSelect = "[class*='umami--']";
   const cacheKey = 'umami.cache';
 
-  const disableTracking = () =>
+  const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
@@ -75,7 +76,7 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const collect = (type, payload) => {
-    if (disableTracking()) return;
+    if (trackingDisabled()) return;
 
     post(
       `${root}/api/collect`,
@@ -150,14 +151,6 @@ import { removeTrailingSlash } from '../lib/url';
     });
   };
 
-  const monitorMutate = mutations => {
-    mutations.forEach(mutation => {
-      const element = mutation.target;
-      addEvent(element);
-      addEvents(element);
-    });
-  };
-
   /* Handle history changes */
 
   const handlePush = (state, title, url) => {
@@ -177,6 +170,19 @@ import { removeTrailingSlash } from '../lib/url';
     }
   };
 
+  const observeDocument = () => {
+    const monitorMutate = mutations => {
+      mutations.forEach(mutation => {
+        const element = mutation.target;
+        addEvent(element);
+        addEvents(element);
+      });
+    };
+
+    const observer = new MutationObserver(monitorMutate);
+    observer.observe(document, { childList: true, subtree: true });
+  };
+
   /* Global */
 
   if (!window.umami) {
@@ -189,17 +195,18 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Start */
 
-  if (autoTrack && !disableTracking()) {
+  if (autoTrack && !trackingDisabled()) {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
 
     const update = () => {
       if (document.readyState === 'complete') {
-        addEvents(document);
         trackView();
 
-        const observer = new MutationObserver(monitorMutate);
-        observer.observe(document, { childList: true, subtree: true });
+        if (cssEvents) {
+          addEvents(document);
+          observeDocument();
+        }
       }
     };
 
