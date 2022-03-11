@@ -47,7 +47,7 @@ import { removeTrailingSlash } from '../lib/url';
   const post = (url, data, callback) => {
     const req = new XMLHttpRequest();
     req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
+    req.setRequestHeader('Content-Type', 'text/plain');
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
@@ -114,20 +114,16 @@ import { removeTrailingSlash } from '../lib/url';
 
   const sendEvent = (value, type) => {
     const payload = getPayload();
+
     payload.event_type = type;
     payload.event_value = value;
 
-    const blob = new Blob(
-      [
-        JSON.stringify({
-          type: 'event',
-          payload,
-        }),
-      ],
-      { type: 'application/json' },
-    );
+    const data = JSON.stringify({
+      type: 'event',
+      payload,
+    });
 
-    navigator.sendBeacon(`${root}/api/collect`, blob);
+    navigator.sendBeacon(`${root}/api/collect`, data);
   };
 
   const addEvents = node => {
