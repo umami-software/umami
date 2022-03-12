@@ -41,6 +41,7 @@
   .header .buttons {
     flex: 1;
   }
+
   .links {
     order: 2;
     margin: 20px 0;
@@ -50,7 +51,7 @@
 
 @media only screen and (max-width: 768px) {
   .header {
-    padding: 0 15px;
+    padding: 0 30px;
   }
 
   .buttons,
