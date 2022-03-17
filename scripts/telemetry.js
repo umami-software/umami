@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
@@ -9,7 +8,7 @@ const pkg = require('../package.json');
 const dest = path.resolve(__dirname, '../.next/cache/umami.json');
 const url = 'https://telemetry.umami.is/api/collect';
 
-async function run() {
+async function sendTelemetry() {
   await fs.ensureFile(dest);
 
   let json = {};
@@ -52,6 +51,4 @@ async function run() {
   }
 }
 
-if (!process.env.TELEMETRY_DISABLED) {
-  run();
-}
+module.exports = sendTelemetry;

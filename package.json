@@ -25,7 +25,7 @@
     "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
     "build-postgresql-schema": "dotenv prisma db pull -- --schema=./prisma/schema.postgresql.prisma",
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
-    "postbuild": "node scripts/telemetry.js",
+    "postbuild": "node scripts/postbuild.js",
     "copy-db-schema": "node scripts/copy-db-schema.js",
     "generate-lang": "npm-run-all extract-lang merge-lang",
     "extract-lang": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",
