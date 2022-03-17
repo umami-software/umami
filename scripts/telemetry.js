@@ -31,14 +31,14 @@ async function run() {
       node: process.version,
       platform: os.platform(),
       arch: os.arch(),
-      os: os.version(),
+      os: `${os.type()} (${os.version()})`,
       isDocker: isDocker(),
       isCI,
     };
 
     await retry(
       async () => {
-        const res = await fetch(url, {
+        await fetch(url, {
           method: 'post',
           cache: 'no-cache',
           headers: {
@@ -46,8 +46,6 @@ async function run() {
           },
           body: JSON.stringify(payload),
         });
-
-        console.log(res);
       },
       { minTimeout: 500, retries: 1, factor: 1 },
     ).catch(() => {});
