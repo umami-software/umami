@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -14,6 +15,7 @@ import { HOMEPAGE_URL } from 'lib/constants';
 
 export default function Header() {
   const { user } = useUser();
+  const { pathname } = useRouter();
 
   return (
     <>
@@ -21,7 +23,7 @@ export default function Header() {
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <Icon icon={<Logo />} size="large" className={styles.logo} />
-          <Link href={user ? '/' : HOMEPAGE_URL}>umami</Link>
+          <Link href={pathname.includes('/share') ? HOMEPAGE_URL : '/'}>umami</Link>
         </div>
         <HamburgerButton />
         {user && (
