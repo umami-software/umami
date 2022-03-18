@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target} statisztikáinak nyomon követéséhez, helyezd el az alábbi kódot a weboldalad {head} részébe.",
   "message.type-delete": "Megerősítéshez írd be az alábbi mezőbe azt, hogy {delete}.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Megerősítéshez írd be az alábbi mezőbe azt, hogy {reset}.",
   "metrics.actions": "Műveletek",
   "metrics.average-visit-time": "Átlagos látogatási idő",
   "metrics.bounce-rate": "Visszafordulási arány",

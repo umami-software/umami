@@ -34,7 +34,7 @@ export default function UpdateNotice() {
           values={{ version: `v${latest}` }}
         />
       </div>
-      <ButtonLayout>
+      <ButtonLayout className={styles.buttons}>
         <Button size="xsmall" variant="action" onClick={handleViewClick}>
           <FormattedMessage id="label.view-details" defaultMessage="View details" />
         </Button>

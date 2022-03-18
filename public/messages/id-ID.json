@@ -616,7 +616,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Ketikkan "
     },
     {
       "type": 1,
@@ -624,7 +624,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " pada kotak di bawah untuk konfirmasi."
     }
   ],
   "metrics.actions": [

@@ -10,10 +10,11 @@ import useShareToken from 'hooks/useShareToken';
 import { EVENT_COLORS, TOKEN_HEADER } from 'lib/constants';
 
 export default function EventsChart({ websiteId, className, token }) {
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit, modified } = dateRange;
+  const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
   const [timezone] = useTimezone();
-  const { query } = usePageQuery();
+  const {
+    query: { url, eventType },
+  } = usePageQuery();
   const shareToken = useShareToken();
 
   const { data, loading } = useFetch(
@@ -24,12 +25,13 @@ export default function EventsChart({ websiteId, className, token }) {
         end_at: +endDate,
         unit,
         tz: timezone,
-        url: query.url,
+        url,
+        event_type: eventType,
         token,
       },
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified],
+    [modified, eventType],
   );
 
   const datasets = useMemo(() => {

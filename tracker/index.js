@@ -22,6 +22,7 @@ import { removeTrailingSlash } from '../lib/url';
   const autoTrack = attr('data-auto-track') !== 'false';
   const dnt = attr('data-do-not-track');
   const useCache = attr('data-cache');
+  const cssEvents = attr('data-css-events') !== 'false';
   const domain = attr('data-domains') || '';
   const domains = domain.split(',').map(n => n.trim());
 
@@ -29,7 +30,7 @@ import { removeTrailingSlash } from '../lib/url';
   const eventSelect = "[class*='umami--']";
   const cacheKey = 'umami.cache';
 
-  const disableTracking = () =>
+  const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
@@ -47,7 +48,7 @@ import { removeTrailingSlash } from '../lib/url';
   const post = (url, data, callback) => {
     const req = new XMLHttpRequest();
     req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
+    req.setRequestHeader('Content-Type', 'text/plain');
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
@@ -58,20 +59,24 @@ import { removeTrailingSlash } from '../lib/url';
     req.send(JSON.stringify(data));
   };
 
-  const collect = (type, params, uuid) => {
-    if (disableTracking()) return;
+  const getPayload = () => ({
+    website,
+    hostname,
+    screen,
+    language,
+    cache: useCache && sessionStorage.getItem(cacheKey),
+    url: currentUrl,
+  });
 
-    const payload = {
-      website: uuid,
-      hostname,
-      screen,
-      language,
-      cache: useCache && sessionStorage.getItem(cacheKey),
-    };
-
-    Object.keys(params).forEach(key => {
-      payload[key] = params[key];
+  const assign = (a, b) => {
+    Object.keys(b).forEach(key => {
+      a[key] = b[key];
     });
+    return a;
+  };
+
+  const collect = (type, payload) => {
+    if (trackingDisabled()) return;
 
     post(
       `${root}/api/collect`,
@@ -86,27 +91,41 @@ import { removeTrailingSlash } from '../lib/url';
   const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
     collect(
       'pageview',
-      {
+      assign(getPayload(), {
+        website: uuid,
         url,
         referrer,
-      },
-      uuid,
+      }),
     );
   };
 
   const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
     collect(
       'event',
-      {
+      assign(getPayload(), {
+        website: uuid,
+        url,
         event_type,
         event_value,
-        url,
-      },
-      uuid,
+      }),
     );
   };
 
   /* Handle events */
+
+  const sendEvent = (value, type) => {
+    const payload = getPayload();
+
+    payload.event_type = type;
+    payload.event_value = value;
+
+    const data = JSON.stringify({
+      type: 'event',
+      payload,
+    });
+
+    navigator.sendBeacon(`${root}/api/collect`, data);
+  };
 
   const addEvents = node => {
     const elements = node.querySelectorAll(eventSelect);
@@ -120,17 +139,15 @@ import { removeTrailingSlash } from '../lib/url';
       const [, type, value] = className.split('--');
       const listener = listeners[className]
         ? listeners[className]
-        : (listeners[className] = () => trackEvent(value, type));
+        : (listeners[className] = () => {
+            if (element.tagName === 'A') {
+              sendEvent(value, type);
+            } else {
+              trackEvent(value, type);
+            }
+          });
 
       element.addEventListener(type, listener, true);
-    });
-  };
-
-  const monitorMutate = mutations => {
-    mutations.forEach(mutation => {
-      const element = mutation.target;
-      addEvent(element);
-      addEvents(element);
     });
   };
 
@@ -153,6 +170,19 @@ import { removeTrailingSlash } from '../lib/url';
     }
   };
 
+  const observeDocument = () => {
+    const monitorMutate = mutations => {
+      mutations.forEach(mutation => {
+        const element = mutation.target;
+        addEvent(element);
+        addEvents(element);
+      });
+    };
+
+    const observer = new MutationObserver(monitorMutate);
+    observer.observe(document, { childList: true, subtree: true });
+  };
+
   /* Global */
 
   if (!window.umami) {
@@ -165,20 +195,23 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Start */
 
-  if (autoTrack && !disableTracking()) {
+  if (autoTrack && !trackingDisabled()) {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
 
     const update = () => {
       if (document.readyState === 'complete') {
-        addEvents(document);
         trackView();
 
-        const observer = new MutationObserver(monitorMutate);
-        observer.observe(document, { childList: true, subtree: true });
+        if (cssEvents) {
+          addEvents(document);
+          observeDocument();
+        }
       }
     };
+
     document.addEventListener('readystatechange', update, true);
+
     update();
   }
 })(window);

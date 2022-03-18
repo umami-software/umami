@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "יש להוסיף את הקוד הבא לאזור ה-{head} של האתר",
   "message.type-delete": "הקלידו {delete} בתיבה על מנת לאשר",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "הקלידו {reset} בתיבה על מנת לאשר",
   "metrics.actions": "פעולות",
   "metrics.average-visit-time": "זמן ביקור ממוצע",
   "metrics.bounce-rate": "Bounce rate",

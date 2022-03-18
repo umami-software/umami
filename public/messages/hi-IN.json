@@ -636,7 +636,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "ुष्टि करने के लिए नीचे दिए गए बॉक्स में "
     },
     {
       "type": 1,
@@ -644,7 +644,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " टाइप करें।"
     }
   ],
   "metrics.actions": [

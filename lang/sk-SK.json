@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Pre sledovanie návštev na {target}, pridajte následujúci kód do {head} časti vašeho webu.",
   "message.type-delete": "Napíšte {delete} pre potvrdenie.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Napíšte {reset} pre potvrdenie.",
   "metrics.actions": "Akcie",
   "metrics.average-visit-time": "Priemerný čas návštevy",
   "metrics.bounce-rate": "Okamžité opustenie",

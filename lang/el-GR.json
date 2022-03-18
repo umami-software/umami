@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Για να παρακολουθείτε στατιστικά στοιχεία για {target}, τοποθετήστε τον ακόλουθο κώδικα στην ενότητα {head} του ιστότοπού σας.",
   "message.type-delete": "Πληκτρολογήστε {delete} στο παρακάτω πλαίσιο για επιβεβαίωση.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Πληκτρολογήστε {reset} στο παρακάτω πλαίσιο για επιβεβαίωση.",
   "metrics.actions": "Ενέργειες",
   "metrics.average-visit-time": "Μέσος χρόνος επίσκεψης",
   "metrics.bounce-rate": "Ποσοστό αναπήδησης",

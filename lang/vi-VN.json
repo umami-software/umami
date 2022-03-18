@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Để theo dõi {target}, dán mã theo dõi vào {head} của website bạn.",
   "message.type-delete": "Nhập {delete} bên dưới để xác nhận.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Nhập {reset} bên dưới để xác nhận.",
   "metrics.actions": "Hành động",
   "metrics.average-visit-time": "Thời gian truy cập trung bình",
   "metrics.bounce-rate": "Tỷ lệ thoát trang",

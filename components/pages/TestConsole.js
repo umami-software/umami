@@ -44,7 +44,13 @@ export default function TestConsole() {
     <Page>
       <Head>
         {typeof window !== 'undefined' && website && (
-          <script async defer data-website-id={website.website_uuid} src={`${basePath}/umami.js`} />
+          <script
+            async
+            defer
+            data-website-id={website.website_uuid}
+            src={`${basePath}/umami.js`}
+            data-cache="true"
+          />
         )}
       </Head>
       <PageHeader>
@@ -68,7 +74,7 @@ export default function TestConsole() {
           {show && (
             <div className={classNames(styles.test, 'row')}>
               <div className="col-4">
-                <PageHeader>Page links</PageHeader>Nmo
+                <PageHeader>Page links</PageHeader>
                 <div>
                   <Link href={`?page=1`}>
                     <a>page one</a>

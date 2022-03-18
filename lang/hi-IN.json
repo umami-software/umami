@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target} के आँकड़ों को ट्रैक करने के लिए, अपनी वेबसाइट के {head} अनुभाग में निम्नलिखित कोड रखें।",
   "message.type-delete": "पुष्टि करने के लिए नीचे दिए गए बॉक्स में {delete} टाइप करें।",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "ुष्टि करने के लिए नीचे दिए गए बॉक्स में {reset} टाइप करें।",
   "metrics.actions": "कार्य",
   "metrics.average-visit-time": "औसत दृश्य समय",
   "metrics.bounce-rate": "उछाल दर",

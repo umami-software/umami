@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "Para gerar estatística para {target}, coloque o seguinte código no {head} do html do seu site.",
   "message.type-delete": "Escreva {delete} abaixo para continuar.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "Escreva {reset} abaixo para continuar.",
   "metrics.actions": "Ações",
   "metrics.average-visit-time": "Tempo médio da visita",
   "metrics.bounce-rate": "Taxa de rejeição",

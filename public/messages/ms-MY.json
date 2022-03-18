@@ -640,7 +640,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Taip "
     },
     {
       "type": 1,
@@ -648,7 +648,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " di dalam kotak di bawah untuk pengesahan."
     }
   ],
   "metrics.actions": [

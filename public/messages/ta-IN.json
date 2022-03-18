@@ -640,7 +640,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "உறுதிப்படுத்த கீழே உள்ள பெட்டியில் "
     },
     {
       "type": 1,
@@ -648,7 +648,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " என தட்டச்சு செய்க."
     }
   ],
   "metrics.actions": [

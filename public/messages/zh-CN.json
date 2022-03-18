@@ -636,7 +636,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "在下方输入框输入 "
     },
     {
       "type": 1,
@@ -644,7 +644,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " 以确认删除。"
     }
   ],
   "metrics.actions": [

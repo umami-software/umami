@@ -612,7 +612,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Onaylamak için kutuya "
     },
     {
       "type": 1,
@@ -620,7 +620,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " yazın."
     }
   ],
   "metrics.actions": [

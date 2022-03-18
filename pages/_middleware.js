@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 
 function redirectHTTPS(req) {
+  const host = req.headers.get('host');
   if (
     process.env.FORCE_SSL &&
-    !req.headers.get('host').includes('localhost') &&
-    req.nextUrl.protocol !== 'https'
+    process.env.NODE_ENV === 'production' &&
+    req.nextUrl.protocol === 'http:'
   ) {
-    return NextResponse.redirect(`https://${req.headers.get('host')}${req.nextUrl.pathname}`, 301);
+    return NextResponse.redirect(`https://${host}${req.nextUrl.pathname}`, 301);
   }
 }
 

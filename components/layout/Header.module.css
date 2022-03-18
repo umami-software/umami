@@ -6,6 +6,7 @@
 }
 
 .title {
+  flex: 1;
   font-size: var(--font-size-large);
   display: flex;
   align-items: center;
@@ -17,7 +18,7 @@
 }
 
 .links {
-  flex: 1;
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +31,7 @@
 }
 
 .buttons {
+  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -39,6 +41,7 @@
   .header .buttons {
     flex: 1;
   }
+
   .links {
     order: 2;
     margin: 20px 0;
@@ -48,7 +51,7 @@
 
 @media only screen and (max-width: 768px) {
   .header {
-    padding: 0 15px;
+    padding: 0 30px;
   }
 
   .buttons,

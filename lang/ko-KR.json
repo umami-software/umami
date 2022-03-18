@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target}에 대한 통계를 추적하려면 웹사이트의 {head} 섹션에 다음 코드를 입력하십시오.",
   "message.type-delete": "확인을 위해 아래 박스에 {delete}값을 입력하십시오.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "확인을 위해 아래 박스에 {reset}값을 입력하십시오.",
   "metrics.actions": "액션",
   "metrics.average-visit-time": "평균 방문 시간",
   "metrics.bounce-rate": "이탈률",

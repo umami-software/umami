@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import MenuButton from 'components/common/MenuButton';
 import Gear from 'assets/gear.svg';
-import useStore, { setDashboard } from 'store/app';
+import useStore, { setDashboard, defaultDashboardConfig } from 'store/app';
 
 const selector = state => state.dashboard;
 
@@ -18,7 +18,7 @@ export default function DashboardSettingsButton() {
 
   function handleSelect(value) {
     if (value === 'charts') {
-      setDashboard({ showCharts: !settings.showCharts });
+      setDashboard({ ...defaultDashboardConfig, showCharts: !settings.showCharts });
     }
     //setDashboard(value);
   }

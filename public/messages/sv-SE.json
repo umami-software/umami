@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "Alla händelser"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Sedan början"
     }
   ],
   "label.all-websites": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Språk"
     }
   ],
   "label.last-days": [
@@ -250,7 +250,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Ägare"
     }
   ],
   "label.password": [
@@ -304,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Återställ statistik"
     }
   ],
   "label.save": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Tema"
     }
   ],
   "label.this-month": [
@@ -452,7 +452,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Är du säker på att du vill återställa statistiken för "
     },
     {
       "type": 1,
@@ -460,7 +460,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -502,7 +502,7 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Felaktikt användarnamn/lösenord."
+      "value": "Felaktigt användarnamn/lösenord."
     }
   ],
   "message.log.visitor": [
@@ -584,7 +584,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "All statistik för webbsajten tas bort men spårningskoden förblir oförändrad."
     }
   ],
   "message.save-success": [
@@ -596,7 +596,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Det här är den offentliga delnings-URL:en "
+      "value": "Det här är den offentliga delnings-URL:en för "
     },
     {
       "type": 1,
@@ -610,7 +610,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Visa/göm grafer"
     }
   ],
   "message.track-stats": [
@@ -652,7 +652,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Skriv "
     },
     {
       "type": 1,
@@ -660,7 +660,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " i rutan nedan för att bekräfta."
     }
   ],
   "metrics.actions": [
@@ -750,7 +750,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Språk"
     }
   ],
   "metrics.operating-systems": [

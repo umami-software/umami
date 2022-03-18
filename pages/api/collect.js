@@ -2,8 +2,8 @@ import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
 import { savePageView, saveEvent } from 'lib/queries';
 import { useCors, useSession } from 'lib/middleware';
-import { getIpAddress } from 'lib/request';
-import { ok, badRequest } from 'lib/response';
+import { getJsonBody, getIpAddress } from 'lib/request';
+import { ok, send, badRequest } from 'lib/response';
 import { createToken } from 'lib/crypto';
 import { removeTrailingSlash } from 'lib/url';
 
@@ -39,9 +39,10 @@ export default async (req, res) => {
   await useSession(req, res);
 
   const {
-    body: { type, payload },
     session: { website_id, session_id },
   } = req;
+
+  const { type, payload } = getJsonBody(req);
 
   let { url, referrer, event_type, event_value } = payload;
 
@@ -59,5 +60,5 @@ export default async (req, res) => {
 
   const token = await createToken({ website_id, session_id });
 
-  return ok(res, token);
+  return send(res, token);
 };

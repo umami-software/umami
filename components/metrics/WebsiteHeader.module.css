@@ -25,4 +25,8 @@
   .active {
     justify-content: flex-start;
   }
+
+  a.link {
+    display: none;
+  }
 }

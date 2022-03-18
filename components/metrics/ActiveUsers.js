@@ -9,7 +9,8 @@ import styles from './ActiveUsers.module.css';
 
 export default function ActiveUsers({ websiteId, className, value, interval = 60000 }) {
   const shareToken = useShareToken();
-  const { data } = useFetch(!value && `/website/${websiteId}/active`, {
+  const url = value !== undefined && websiteId ? `/website/${websiteId}/active` : null;
+  const { data } = useFetch(url, {
     interval,
     headers: { [TOKEN_HEADER]: shareToken?.token },
   });

@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "لتتبع الاحصاىيات لـ {target}, ضع الكود التالي في منطقة {head} في موقعك.",
   "message.type-delete": "اكتب {delete} في الحقل التالي لتأكيد الحذف.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "اكتب {reset} في الحقل التالي لتأكيد الحذف.",
   "metrics.actions": "اجراءات",
   "metrics.average-visit-time": "متوسط وقت الزيارة",
   "metrics.bounce-rate": "معدل الارتداد",

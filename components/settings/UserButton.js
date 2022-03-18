@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import MenuButton from 'components/common/MenuButton';
 import Icon from 'components/common/Icon';
 import User from 'assets/user.svg';
-import Chevron from 'assets/chevron-down.svg';
 import styles from './UserButton.module.css';
 import { removeItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';
@@ -42,9 +41,10 @@ export default function UserButton() {
   return (
     <MenuButton
       icon={<Icon icon={<User />} size="large" />}
-      value={<Icon icon={<Chevron />} size="small" />}
+      buttonVariant="light"
       options={menuOptions}
       onSelect={handleSelect}
+      hideLabel
     />
   );
 }

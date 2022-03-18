@@ -632,7 +632,7 @@
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "在下方空格輸入 "
     },
     {
       "type": 1,
@@ -640,7 +640,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " 確認"
     }
   ],
   "metrics.actions": [

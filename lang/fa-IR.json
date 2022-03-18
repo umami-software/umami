@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "برای ردیابی آمار {target}, کد روبرو را در قسمت {head} وب‌سایت قرار دهید.",
   "message.type-delete": "جهت اطمینان '{delete}' را در کادر زیر بنویسید.",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "جهت اطمینان '{reset}' را در کادر زیر بنویسید.",
   "metrics.actions": "اقدامات",
   "metrics.average-visit-time": "میانگین زمان بازدید",
   "metrics.bounce-rate": "نرخ Bounce",

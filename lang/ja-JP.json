@@ -84,7 +84,7 @@
   "message.toggle-charts": "Toggle charts",
   "message.track-stats": "{target}のアクセス解析を開始するには、次のコードをWebサイトの{head}セクションへ追加してください。",
   "message.type-delete": "確認のため、下のフォームに{delete}と入力してください。",
-  "message.type-reset": "Type {reset} in the box below to confirm.",
+  "message.type-reset": "確認のため、下のフォームに{reset}と入力してください。",
   "metrics.actions": "アクション",
   "metrics.average-visit-time": "平均滞在時間",
   "metrics.bounce-rate": "直帰率",

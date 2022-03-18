@@ -32,13 +32,10 @@
   margin-top: 60px;
 }
 
-.button {
-  margin-right: 15px;
-}
-
 .header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   height: 100px;
+  padding: 0 30px;
 }

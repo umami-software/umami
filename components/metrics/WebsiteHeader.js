@@ -32,11 +32,11 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
 
   return (
     <PageHeader className="row">
-      <div className={classNames(styles.title, 'col-12 col-lg-4')}>{header}</div>
-      <div className={classNames(styles.active, 'col-6 col-lg-4')}>
+      <div className={classNames(styles.title, 'col-10 col-lg-4 order-1 order-lg-1')}>{header}</div>
+      <div className={classNames(styles.active, 'col-12 col-lg-4 order-3 order-lg-2')}>
         <ActiveUsers websiteId={websiteId} />
       </div>
-      <div className="col-6 col-lg-4">
+      <div className="col-2 col-lg-4 order-2 order-lg-3">
         <ButtonLayout align="right">
           <RefreshButton websiteId={websiteId} />
           {showLink && (

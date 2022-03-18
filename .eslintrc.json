@@ -16,7 +16,8 @@
   "rules": {
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off"
+    "react/prop-types": "off",
+    "import/no-anonymous-default-export": "off"
   },
   "globals": {
     "React": "writable"
