@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all build-tracker build-geo build-db build-app",
-    "start": "npm-run-all telemetry start-app",
+    "start": "npm-run-all init start-app",
     "start-app": "next start",
     "start-env": "node -r dotenv/config scripts/start-env.js",
     "build-app": "next build",
@@ -26,7 +26,6 @@
     "build-mysql-client": "dotenv prisma generate -- --schema=./prisma/schema.mysql.prisma",
     "build-postgresql-schema": "dotenv prisma db pull -- --schema=./prisma/schema.postgresql.prisma",
     "build-postgresql-client": "dotenv prisma generate -- --schema=./prisma/schema.postgresql.prisma",
-    "init": "node scripts/init.js",
     "copy-db-schema": "node scripts/copy-db-schema.js",
     "generate-lang": "npm-run-all extract-lang merge-lang",
     "extract-lang": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",
@@ -37,9 +36,10 @@
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
     "change-password": "node scripts/change-password.js",
-    "telemetry": "node scripts/telemetry.js",
     "lint": "next lint --quiet",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postbuild": "node scripts/postbuild.js",
+    "init": "node scripts/prestart.js"
   },
   "lint-staged": {
     "**/*.js": [

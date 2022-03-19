@@ -1,4 +1,3 @@
-require('dotenv').config();
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
@@ -53,10 +52,6 @@ async function sendTelemetry() {
   }
 }
 
-async function run() {
-  if (!process.env.DISABLE_TELEMETRY) {
-    await sendTelemetry();
-  }
-}
-
-run();
+module.exports = {
+  sendTelemetry,
+};
