@@ -33,7 +33,7 @@ async function sendTelemetry(action) {
     os: `${os.type()} (${os.version()})`,
     docker: isDocker(),
     ci: isCI,
-    upgrade: json.version || false,
+    upgrade: json.version !== undefined && json.version !== pkg.version,
   };
 
   await retry(
