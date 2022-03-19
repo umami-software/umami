@@ -1,3 +1,4 @@
+require('dotenv').config();
 const fs = require('fs-extra');
 const path = require('path');
 const os = require('os');
@@ -26,13 +27,14 @@ async function sendTelemetry() {
     await fs.writeJSON(dest, { version: pkg.version });
 
     const payload = {
-      umami: pkg.version,
+      version: pkg.version,
       node: process.version,
       platform: os.platform(),
       arch: os.arch(),
       os: `${os.type()} (${os.version()})`,
-      isDocker: isDocker(),
-      isCI,
+      docker: isDocker(),
+      ci: isCI,
+      upgrade: json.version || false,
     };
 
     await retry(
@@ -51,4 +53,10 @@ async function sendTelemetry() {
   }
 }
 
-module.exports = sendTelemetry;
+async function run() {
+  if (!process.env.DISABLE_TELEMETRY) {
+    await sendTelemetry();
+  }
+}
+
+run();
