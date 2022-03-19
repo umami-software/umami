@@ -23,6 +23,7 @@ async function sendTelemetry(action) {
 
   const { default: isDocker } = await import('is-docker');
   const { default: fetch } = await import('node-fetch');
+  const upgrade = json.version !== undefined && json.version !== pkg.version;
 
   const payload = {
     action,
@@ -33,7 +34,8 @@ async function sendTelemetry(action) {
     os: `${os.type()} (${os.version()})`,
     docker: isDocker(),
     ci: isCI,
-    upgrade: json.version !== undefined && json.version !== pkg.version,
+    prev: json.version,
+    upgrade,
   };
 
   await retry(
