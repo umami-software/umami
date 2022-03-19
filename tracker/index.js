@@ -48,7 +48,7 @@ import { removeTrailingSlash } from '../lib/url';
   const post = (url, data, callback) => {
     const req = new XMLHttpRequest();
     req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'text/plain');
+    req.setRequestHeader('Content-Type', 'application/json');
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
