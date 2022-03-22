@@ -14,8 +14,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        include:
+        - node-version: 12.x
+          db-type: postgresql
+        - node-version: 12.x
+          db-type: mysql
+        - node-version: 14.x
+          db-type: postgresql
+        - node-version: 14.x
+          db-type: mysql
+        - node-version: 16.x
+          db-type: postgresql
+        - node-version: 16.x
+          db-type: mysql
 
     steps:
     - uses: actions/checkout@v2
@@ -24,5 +35,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      env:
+        DATABASE_TYPE: ${{ matrix.db-type }}
     - run: npm install
     - run: npm run build --if-present
