@@ -75,7 +75,7 @@ export default async (req, res) => {
         {
           domain,
           url: type !== 'url' && url,
-          referrer: referrer,
+          referrer,
         },
       );
 
