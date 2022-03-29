@@ -8,7 +8,7 @@ const pkg = require('../package.json');
 const dest = path.resolve(__dirname, '../.next/cache/umami.json');
 const url = 'https://telemetry.umami.is/api/collect';
 
-async function sendTelemetry() {
+async function sendTelemetry(action) {
   await fs.ensureFile(dest);
 
   let json = {};
@@ -19,36 +19,40 @@ async function sendTelemetry() {
     // Ignore
   }
 
-  if (json.version !== pkg.version) {
-    const { default: isDocker } = await import('is-docker');
-    const { default: fetch } = await import('node-fetch');
+  await fs.writeJSON(dest, { version: pkg.version });
 
-    await fs.writeJSON(dest, { version: pkg.version });
+  const { default: isDocker } = await import('is-docker');
+  const { default: fetch } = await import('node-fetch');
+  const upgrade = json.version !== undefined && json.version !== pkg.version;
 
-    const payload = {
-      umami: pkg.version,
-      node: process.version,
-      platform: os.platform(),
-      arch: os.arch(),
-      os: `${os.type()} (${os.version()})`,
-      isDocker: isDocker(),
-      isCI,
-    };
+  const payload = {
+    action,
+    version: pkg.version,
+    node: process.version,
+    platform: os.platform(),
+    arch: os.arch(),
+    os: `${os.type()} (${os.version()})`,
+    docker: isDocker(),
+    ci: isCI,
+    prev: json.version,
+    upgrade,
+  };
 
-    await retry(
-      async () => {
-        await fetch(url, {
-          method: 'post',
-          cache: 'no-cache',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
-      },
-      { minTimeout: 500, retries: 1, factor: 1 },
-    ).catch(() => {});
-  }
+  await retry(
+    async () => {
+      await fetch(url, {
+        method: 'post',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+    },
+    { minTimeout: 500, retries: 1, factor: 1 },
+  ).catch(() => {});
 }
 
-module.exports = sendTelemetry;
+module.exports = {
+  sendTelemetry,
+};

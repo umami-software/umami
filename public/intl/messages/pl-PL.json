@@ -38,7 +38,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Cały czas"
     }
   ],
   "label.all-websites": [
@@ -92,7 +92,7 @@
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Dashboard"
+      "value": "Panel"
     }
   ],
   "label.date-range": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Język"
     }
   ],
   "label.last-days": [
@@ -250,7 +250,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Właściciel"
     }
   ],
   "label.password": [
@@ -304,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Zresetuj statystyki"
     }
   ],
   "label.save": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Motyw"
     }
   ],
   "label.this-month": [
@@ -448,7 +448,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Czy na pewno chcesz zresetować statystyki "
     },
     {
       "type": 1,
@@ -456,7 +456,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -580,7 +580,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Wszystkie statystyki tej witryny zostaną usunięte, ale kod śledzenia pozostanie nienaruszony."
     }
   ],
   "message.save-success": [
@@ -606,7 +606,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Przełącz wykresy"
     }
   ],
   "message.track-stats": [
@@ -746,7 +746,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Języki"
     }
   ],
   "metrics.operating-systems": [

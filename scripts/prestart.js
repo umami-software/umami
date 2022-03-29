@@ -3,7 +3,7 @@ const { sendTelemetry } = require('./telemetry');
 
 async function run() {
   if (!process.env.DISABLE_TELEMETRY) {
-    await sendTelemetry('build');
+    await sendTelemetry('start');
   }
 }
 
