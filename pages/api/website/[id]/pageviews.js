@@ -11,7 +11,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, start_at, end_at, unit, tz, url, ref } = req.query;
+    const { id, start_at, end_at, unit, tz, url, referrer } = req.query;
 
     const websiteId = +id;
     const startDate = new Date(+start_at);
@@ -22,10 +22,10 @@ export default async (req, res) => {
     }
 
     const [pageviews, sessions] = await Promise.all([
-      getPageviewStats(websiteId, startDate, endDate, tz, unit, '*', { url, ref }),
+      getPageviewStats(websiteId, startDate, endDate, tz, unit, '*', { url, referrer }),
       getPageviewStats(websiteId, startDate, endDate, tz, unit, 'distinct session_id', {
         url,
-        ref,
+        referrer,
       }),
     ]);
 

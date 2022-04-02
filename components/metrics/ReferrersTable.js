@@ -19,7 +19,7 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const {
     resolve,
-    query: { ref: currentRef },
+    query: { referrer: currentRef },
   } = usePageQuery();
 
   const buttons = [
@@ -37,7 +37,7 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
   const renderLink = ({ w: link, x: label }) => {
     return (
       <div className={styles.row}>
-        <Link href={resolve({ ref: label })} replace={true}>
+        <Link href={resolve({ referrer: label })} replace={true}>
           <a
             className={classNames(styles.label, {
               [styles.inactive]: currentRef && label !== currentRef,

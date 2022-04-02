@@ -30,7 +30,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, type, start_at, end_at, url } = req.query;
+    const { id, type, start_at, end_at, url, referrer } = req.query;
 
     const websiteId = +id;
     const startDate = new Date(+start_at);
@@ -75,6 +75,7 @@ export default async (req, res) => {
         {
           domain,
           url: type !== 'url' && url,
+          referrer,
         },
       );
 
