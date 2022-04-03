@@ -41,19 +41,6 @@
 }
 
 [data-theme='dark'] {
-  /*
-  --gray50: #080808;
-  --gray75: #1a1a1a;
-  --gray100: #1e1e1e;
-  --gray200: #2c2c2c;
-  --gray300: #393939;
-  --gray400: #494949;
-  --gray500: #5c5c5c;
-  --gray600: #7c7c7c;
-  --gray700: #6e6e6e;
-  --gray800: #a2a2a2;
-  --gray900: #efefef;
-  */
   --gray50: #252525;
   --gray75: #2f2f2f;
   --gray100: #323232;
