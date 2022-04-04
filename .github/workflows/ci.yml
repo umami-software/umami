@@ -37,5 +37,6 @@ jobs:
         cache: 'npm'
       env:
         DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install
-    - run: npm run build --if-present
+    - run: npm install --global yarn
+    - run: yarn install
+    - run: yarn build
