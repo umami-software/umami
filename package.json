@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all build-tracker build-geo build-db build-app",
-    "start": "npm-run-all init start-app",
+    "start": "next start",
     "start-app": "next start",
     "start-env": "node -r dotenv/config scripts/start-env.js",
     "build-app": "next build",
