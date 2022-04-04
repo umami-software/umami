@@ -38,6 +38,7 @@ COPY --from=build /build/node_modules/.prisma/ ./node_modules/.prisma/
 COPY --from=build /build/yarn.lock /build/package.json ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
+COPY --from=build /build/scripts ./scripts
 
 USER node
 
