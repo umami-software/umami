@@ -1,6 +1,7 @@
 import { deleteWebsite, getWebsiteById } from 'lib/queries';
 import { methodNotAllowed, ok, unauthorized } from 'lib/response';
 import { allowQuery } from 'lib/auth';
+import { useCors } from 'lib/middleware';
 
 export default async (req, res) => {
   const { id } = req.query;
@@ -8,6 +9,8 @@ export default async (req, res) => {
   const websiteId = +id;
 
   if (req.method === 'GET') {
+    await useCors(req, res);
+
     if (!(await allowQuery(req))) {
       return unauthorized(res);
     }
