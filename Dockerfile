@@ -1,5 +1,10 @@
+# Build-time variables
+ARG NODE_VERSION=16
+ARG ALPINE_VERSION=3.15
+
+
 # Build image
-FROM node:12.22-alpine AS build
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS build
 ARG BASE_PATH
 ARG DATABASE_TYPE
 
@@ -25,8 +30,9 @@ COPY . /build
 RUN yarn next telemetry disable
 RUN yarn build
 
+
 # Production image
-FROM node:12.22-alpine AS production
+FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS production
 WORKDIR /app
 
 # Copy cached dependencies
