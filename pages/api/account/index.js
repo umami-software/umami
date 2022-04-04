@@ -34,7 +34,7 @@ export default async (req, res) => {
             return badRequest(res, 'Account already exists');
           }
         }
-        console.log('------------------\n', data);
+
         const updated = await updateAccount(user_id, data);
 
         return ok(res, updated);
