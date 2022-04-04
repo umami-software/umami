@@ -37,17 +37,18 @@ export default function AccountSettings() {
     </Link>
   );
 
-  const Buttons = row =>
-    row.username !== 'admin' ? (
-      <ButtonLayout align="right">
-        <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-          <FormattedMessage id="label.edit" defaultMessage="Edit" />
-        </Button>
+  const Buttons = row => (
+    <ButtonLayout align="right">
+      <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
+        <FormattedMessage id="label.edit" defaultMessage="Edit" />
+      </Button>
+      {!row.is_admin && (
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
           <FormattedMessage id="label.delete" defaultMessage="Delete" />
         </Button>
-      </ButtonLayout>
-    ) : null;
+      )}
+    </ButtonLayout>
+  );
 
   const columns = [
     {
