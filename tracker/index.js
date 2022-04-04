@@ -7,7 +7,6 @@ import { removeTrailingSlash } from '../lib/url';
     navigator: { language },
     location: { hostname, pathname, search },
     localStorage,
-    sessionStorage,
     document,
     history,
   } = window;
@@ -21,14 +20,12 @@ import { removeTrailingSlash } from '../lib/url';
   const hostUrl = attr('data-host-url');
   const autoTrack = attr('data-auto-track') !== 'false';
   const dnt = attr('data-do-not-track');
-  const useCache = attr('data-cache');
   const cssEvents = attr('data-css-events') !== 'false';
   const domain = attr('data-domains') || '';
   const domains = domain.split(',').map(n => n.trim());
 
   const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
   const eventSelect = "[class*='umami--']";
-  const cacheKey = 'umami.cache';
 
   const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
@@ -42,13 +39,15 @@ import { removeTrailingSlash } from '../lib/url';
   const listeners = {};
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
+  let cache;
 
   /* Collect metrics */
 
   const post = (url, data, callback) => {
     const req = new XMLHttpRequest();
     req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'text/plain');
+    req.setRequestHeader('Content-Type', 'application/json');
+    if (cache) req.setRequestHeader('x-umami-cache', cache);
 
     req.onreadystatechange = () => {
       if (req.readyState === 4) {
@@ -64,7 +63,6 @@ import { removeTrailingSlash } from '../lib/url';
     hostname,
     screen,
     language,
-    cache: useCache && sessionStorage.getItem(cacheKey),
     url: currentUrl,
   });
 
@@ -84,7 +82,7 @@ import { removeTrailingSlash } from '../lib/url';
         type,
         payload,
       },
-      res => useCache && sessionStorage.setItem(cacheKey, res),
+      res => (cache = res),
     );
   };
 

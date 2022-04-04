@@ -23,10 +23,7 @@ export default async (req, res) => {
 
         // Only admin can change these fields
         if (current_user_is_admin) {
-          // Cannot change username of admin
-          if (username !== 'admin') {
-            data.username = username;
-          }
+          data.username = username;
           data.is_admin = is_admin;
         }
 
@@ -37,7 +34,7 @@ export default async (req, res) => {
             return badRequest(res, 'Account already exists');
           }
         }
-
+        console.log('------------------\n', data);
         const updated = await updateAccount(user_id, data);
 
         return ok(res, updated);

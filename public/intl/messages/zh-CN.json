@@ -2,187 +2,187 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "Konta"
+      "value": "账户"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "Dodaj konto"
+      "value": "添加账户"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Dodaj witrynę"
+      "value": "添加网站"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrator"
+      "value": "管理员"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Wszystkie"
+      "value": "所有"
     }
   ],
   "label.all-events": [
     {
       "type": 0,
-      "value": "Wszystkie wydarzenia"
+      "value": "所有事件"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "所有时间段"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Wszystkie witryny"
+      "value": "全部网站"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Powrót"
+      "value": "返回"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Anuluj"
+      "value": "取消"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Zmień hasło"
+      "value": "更新密码"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Potwierdź hasło"
+      "value": "确认密码"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "Skopiuj do schowka"
+      "value": "复制"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Aktualne hasło"
+      "value": "目前密码"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Zakres niestandardowy"
+      "value": "自定义时间段"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Dashboard"
+      "value": "仪表板"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Zakres dat"
+      "value": "时间段"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Domyślny zakres dat"
+      "value": "默认时间段"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Usuń"
+      "value": "删除"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "Usuń konto"
+      "value": "删除账户"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Usuń witrynę"
+      "value": "删除网站"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Odrzuć"
+      "value": "关闭"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domena"
+      "value": "域名"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Edytuj"
+      "value": "编辑"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "Edytuj konto"
+      "value": "编辑账户"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "Edytuj witrynę"
+      "value": "编辑网站"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Włącz udostępnianie adresu URL"
+      "value": "启用共享链接"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "Nieprawidłowy"
+      "value": "输入无效"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "Nieprawidłowa witryna"
+      "value": "无效域名"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "语言"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "Ostatnie "
+      "value": "最近 "
     },
     {
       "type": 1,
@@ -190,13 +190,13 @@
     },
     {
       "type": 0,
-      "value": " dni"
+      "value": " 天"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "Ostatnie "
+      "value": "最近 "
     },
     {
       "type": 1,
@@ -204,13 +204,13 @@
     },
     {
       "type": 0,
-      "value": " godzin"
+      "value": " 小时"
     }
   ],
   "label.logged-in-as": [
     {
       "type": 0,
-      "value": "Zalogowano jako "
+      "value": "登录名: "
     },
     {
       "type": 1,
@@ -220,221 +220,201 @@
   "label.login": [
     {
       "type": 0,
-      "value": "Zaloguj się"
+      "value": "登录"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Wyloguj"
+      "value": "退出"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Więcej"
+      "value": "更多"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nazwa"
+      "value": "名字"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Nowe hasło"
+      "value": "新密码"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "所有者"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Hasło"
+      "value": "密码"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "Hasła się nie zgadzają"
+      "value": "密码不一致"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "Profil"
+      "value": "个人资料"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Czas rzeczywisty"
+      "value": "实时"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Logi w czasie rzeczywistym"
+      "value": "实时日志"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Odśwież"
+      "value": "刷新"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Wymagany"
+      "value": "必填"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Zresetuj"
+      "value": "重置"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "重置统计数据"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "Zapisz"
+      "value": "保存"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "Ustawienia"
+      "value": "设置"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Udostępnij adres URL"
+      "value": "共享链接"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "W tym dniu"
+      "value": "单日"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "主题"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "W tym miesiącu"
+      "value": "本月"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "W tym tygodniu"
+      "value": "本周"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "W tym roku"
+      "value": "今年"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Strefa czasowa"
+      "value": "时区"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "Dzisiaj"
+      "value": "今天"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Kod śledzenia"
+      "value": "跟踪代码"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Nieznany"
+      "value": "未知"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "Nazwa użytkownika"
+      "value": "用户名"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "Pokaż szczegóły"
+      "value": "查看更多"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Witryny"
+      "value": "网站"
     }
   ],
   "message.active-users": [
+    {
+      "type": 0,
+      "value": "当前在线 "
+    },
     {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " aktualnie "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "odwiedzający"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "odwiedzających"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
+      "value": " 人"
     }
   ],
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Czy na pewno chcesz usunąć "
+      "value": "你确定要删除 "
     },
     {
       "type": 1,
@@ -442,13 +422,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " 吗？"
     }
   ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "您确定要重置 "
     },
     {
       "type": 1,
@@ -456,55 +436,55 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": " 的数据吗?"
     }
   ],
   "message.copied": [
     {
       "type": 0,
-      "value": "Skopiowano!"
+      "value": "复制成功！"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "Wszystkie powiązane dane również zostaną usunięte."
+      "value": "所有相关数据将会被删除。"
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "Coś poszło nie tak."
+      "value": "出现错误。"
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "Uzyskaj adres URL udostępniania"
+      "value": "获取共享链接"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "Pobierz kod śledzenia"
+      "value": "获取跟踪代码"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Przejdź do ustawień"
+      "value": "去设置"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nieprawidłowa nazwa użytkownika/hasło."
+      "value": "用户名或密码不正确。"
     }
   ],
   "message.log.visitor": [
     {
       "type": 0,
-      "value": "Odwiedzający z "
+      "value": "来自"
     },
     {
       "type": 1,
@@ -512,15 +492,7 @@
     },
     {
       "type": 0,
-      "value": " używa "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " na "
+      "value": "的访客在搭载 "
     },
     {
       "type": 1,
@@ -528,17 +500,29 @@
     },
     {
       "type": 0,
-      "value": " "
+      "value": " 的"
     },
     {
       "type": 1,
       "value": "device"
+    },
+    {
+      "type": 0,
+      "value": "上使用 "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " 浏览器进行访问。"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Nowa wersja umami "
+      "value": "umami 有新版本 "
     },
     {
       "type": 1,
@@ -546,53 +530,57 @@
     },
     {
       "type": 0,
-      "value": " jest dostępna!"
+      "value": " 发布啦！"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "Brak dostępnych danych."
+      "value": "无可用数据。"
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Nie masz skonfigurowanych żadnych witryn internetowych."
+      "value": "你还没有设置任何网站。"
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Strona nie znaleziona."
+      "value": "网页未找到。"
     }
   ],
   "message.powered-by": [
     {
       "type": 0,
-      "value": "Obsługiwane przez "
+      "value": "由 "
     },
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " 提供支持"
     }
   ],
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "本网站的所有统计数据将被删除，但您的跟踪代码将保持不变。"
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "Zapisano pomyślnie."
+      "value": "保存成功。"
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "To jest publicznie udostępniany adres URL dla "
+      "value": "这是 "
     },
     {
       "type": 1,
@@ -600,27 +588,19 @@
     },
     {
       "type": 0,
-      "value": "."
+      "value": " 的共享链接。"
     }
   ],
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "切换图表"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "Aby śledzić statystyki dla "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": ", umieść poniższy kod w sekcji "
+      "value": "把以下代码放到你的网站的 "
     },
     {
       "type": 1,
@@ -628,13 +608,21 @@
     },
     {
       "type": 0,
-      "value": " swojej witryny."
+      "value": " 部分来收集 "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " 的数据。"
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "Wpisz "
+      "value": "在下方输入框输入 "
     },
     {
       "type": 1,
@@ -642,13 +630,13 @@
     },
     {
       "type": 0,
-      "value": " w polu poniżej, aby potwierdzić."
+      "value": " 以确认删除。"
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Wpisz "
+      "value": "在下方输入框输入 "
     },
     {
       "type": 1,
@@ -656,139 +644,139 @@
     },
     {
       "type": 0,
-      "value": " w polu poniżej, aby potwierdzić."
+      "value": " 以确认删除。"
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "Działania"
+      "value": "用户行为"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "Średni czas wizyty"
+      "value": "平均访问时间"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "Współczynnik odrzuceń"
+      "value": "跳出率"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "Przeglądarki"
+      "value": "浏览器"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "Kraje"
+      "value": "国家/地区"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "Komputer"
+      "value": "桌面电脑"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "Laptop"
+      "value": "笔记本"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Smartfon"
+      "value": "手机"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "Tablet"
+      "value": "平板"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "Urządzenia"
+      "value": "设备"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "Zdarzenia"
+      "value": "行为类别"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Połączone"
+      "value": "总和"
     }
   ],
   "metrics.filter.domain-only": [
     {
       "type": 0,
-      "value": "Tylko domena"
+      "value": "只看域名"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "Surowe dane"
+      "value": "原始"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "语言"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "System operacyjny"
+      "value": "操作系统"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "Wyświetlenia strony"
+      "value": "页面浏览量"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "Strony"
+      "value": "网页"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Źródła odsyłające"
+      "value": "来源域名"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Unikalni odwiedzający"
+      "value": "独立访客"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "Wyświetlenia"
+      "value": "浏览量"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "Odwiedzający"
+      "value": "访客"
     }
   ]
 }
