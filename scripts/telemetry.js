@@ -39,14 +39,18 @@ async function sendTelemetry(action) {
     upgrade,
   };
 
-  await fetch(url, {
-    method: 'post',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
+  try {
+    await fetch(url, {
+      method: 'post',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    // Ignore
+  }
 }
 
 module.exports = {
