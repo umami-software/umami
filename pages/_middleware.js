@@ -1,15 +1,5 @@
 import { NextResponse } from 'next/server';
 
-function forceSSL(req) {
-  if (process.env.FORCE_SSL && req.nextUrl.protocol === 'http:') {
-    const response = NextResponse.next();
-
-    response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
-
-    return response;
-  }
-}
-
 function customScriptName(req) {
   const scriptName = process.env.TRACKER_SCRIPT_NAME;
 
@@ -30,8 +20,16 @@ function disableLogin(req) {
   }
 }
 
+function forceSSL(req, res) {
+  if (process.env.FORCE_SSL && req.nextUrl.protocol === 'http:') {
+    res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  return res;
+}
+
 export function middleware(req) {
-  const fns = [customScriptName, disableLogin, forceSSL];
+  const fns = [customScriptName, disableLogin];
 
   for (const fn of fns) {
     const res = fn(req);
@@ -40,5 +38,5 @@ export function middleware(req) {
     }
   }
 
-  return NextResponse.next();
+  return forceSSL(req, NextResponse.next());
 }
