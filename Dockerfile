@@ -1,10 +1,5 @@
-# Build-time variables
-ARG NODE_VERSION=16
-ARG ALPINE_VERSION=3.15
-
-
 # Build image
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS build
+FROM node:12.22-alpine AS build
 ARG BASE_PATH
 ARG DATABASE_TYPE
 
@@ -30,9 +25,8 @@ COPY . /build
 RUN yarn next telemetry disable
 RUN yarn build
 
-
 # Production image
-FROM node:${NODE_VERSION}-alpine${ALPINE_VERSION} AS production
+FROM node:12.22-alpine AS production
 WORKDIR /app
 
 # Copy cached dependencies
@@ -44,7 +38,6 @@ COPY --from=build /build/node_modules/.prisma/ ./node_modules/.prisma/
 COPY --from=build /build/yarn.lock /build/package.json ./
 COPY --from=build /build/.next ./.next
 COPY --from=build /build/public ./public
-COPY --from=build /build/scripts ./scripts
 
 USER node
 
