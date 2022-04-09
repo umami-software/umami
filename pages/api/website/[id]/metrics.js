@@ -40,7 +40,7 @@ export default async (req, res) => {
     const endDate = new Date(+end_at);
 
     if (sessionColumns.includes(type)) {
-      let data = await getSessionMetrics(websiteId, startDate, endDate, type, { url });
+      let data = await getSessionMetrics(websiteId, startDate, endDate, type, { url, referrer });
 
       if (type === 'language') {
         let combined = {};
