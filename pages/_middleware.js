@@ -4,15 +4,11 @@ function customScriptName(req) {
   const scriptName = process.env.TRACKER_SCRIPT_NAME;
 
   if (scriptName) {
-    const names = scriptName.split(',').map(name => name + '.js');
-
     const url = req.nextUrl.clone();
     const { pathname } = url;
+    const names = scriptName.split(',').map(name => (name + '.js').trim());
 
-    const pathNameParts = pathname.split('/');
-    const lastPathName = pathNameParts[pathNameParts.length - 1];
-
-    if (names.indexOf(lastPathName) !== -1) {
+    if (names.find(name => pathname.endsWith(name))) {
       url.pathname = '/umami.js';
       return NextResponse.rewrite(url);
     }

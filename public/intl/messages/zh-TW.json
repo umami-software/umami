@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "所有事件"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "所有時間段"
     }
   ],
   "label.all-websites": [
@@ -304,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "重置統計數據"
     }
   ],
   "label.save": [
@@ -428,7 +428,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "您確定要重置 "
     },
     {
       "type": 1,
@@ -436,7 +436,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": " 的數據嗎?"
     }
   ],
   "message.copied": [
@@ -564,7 +564,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "本網站的所有統計數據將被刪除，但您的跟蹤代碼將保持不變。"
     }
   ],
   "message.save-success": [
@@ -626,7 +626,7 @@
     },
     {
       "type": 0,
-      "value": " 確認"
+      "value": " 確認删除"
     }
   ],
   "message.type-reset": [
@@ -640,7 +640,7 @@
     },
     {
       "type": 0,
-      "value": " 確認"
+      "value": " 確認删除"
     }
   ],
   "metrics.actions": [
