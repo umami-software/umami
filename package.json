@@ -1,7 +1,7 @@
 {
   "name": "umami",
-  "version": "1.29.0",
-  "description": "A simple, fast, website analytics alternative to Google Analytics.",
+  "version": "1.30.0",
+  "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
   "homepage": "https://umami.is",

@@ -37,7 +37,7 @@ export default function App({ Component, pageProps }) {
         <link rel="mask-icon" href={`${basePath}/safari-pinned-tab.svg`} color="#5bbad5" />
         <link
           rel="preload"
-          href={`https://i.umami.is/umami.png?v=${version}`}
+          href={`https://i.umami.is/icon.png?v=${version}`}
           as="image"
           type="image/png"
         />

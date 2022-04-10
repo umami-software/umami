@@ -14,8 +14,9 @@ export default async (req, res) => {
     return ok(res);
   }
 
-  if (process.env.IGNORE_IP) {
-    const ips = process.env.IGNORE_IP.split(',').map(n => n.trim());
+  const ignoreIps = process.env.IGNORE_IP;
+  if (ignoreIps) {
+    const ips = ignoreIps.split(',').map(n => n.trim());
     const ip = getIpAddress(req);
     const blocked = ips.find(i => {
       if (i === ip) return true;

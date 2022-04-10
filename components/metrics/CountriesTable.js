@@ -2,6 +2,7 @@ import React from 'react';
 import MetricsTable from './MetricsTable';
 import { percentFilter } from 'lib/filters';
 import { FormattedMessage } from 'react-intl';
+import FilterLink from 'components/common/FilterLink';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 
@@ -9,10 +10,16 @@ export default function CountriesTable({ websiteId, onDataLoad, ...props }) {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 
-  function renderLabel({ x }) {
+  function renderLink({ x: code }) {
     return (
       <div className={locale}>
-        {countryNames[x] ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />}
+        <FilterLink
+          id="country"
+          value={code}
+          label={
+            countryNames[code] ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />
+          }
+        />
       </div>
     );
   }
@@ -25,7 +32,7 @@ export default function CountriesTable({ websiteId, onDataLoad, ...props }) {
       metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}
       onDataLoad={data => onDataLoad?.(percentFilter(data))}
-      renderLabel={renderLabel}
+      renderLabel={renderLink}
     />
   );
 }

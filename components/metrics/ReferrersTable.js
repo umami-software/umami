@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import FilterButtons from 'components/common/FilterButtons';
+import FilterLink from 'components/common/FilterLink';
 import { refFilter } from 'lib/filters';
-import { safeDecodeURI } from 'lib/url';
-import Link from 'next/link';
-import classNames from 'classnames';
-import usePageQuery from 'hooks/usePageQuery';
-import External from 'assets/arrow-up-right-from-square.svg';
-import Icon from '../common/Icon';
-import styles from './ReferrersTable.module.css';
 
 export const FILTER_DOMAIN_ONLY = 0;
 export const FILTER_COMBINED = 1;
@@ -17,10 +11,6 @@ export const FILTER_RAW = 2;
 
 export default function ReferrersTable({ websiteId, websiteDomain, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
-  const {
-    resolve,
-    query: { referrer: currentRef },
-  } = usePageQuery();
 
   const buttons = [
     {
@@ -34,24 +24,8 @@ export default function ReferrersTable({ websiteId, websiteDomain, showFilters, 
     { label: <FormattedMessage id="metrics.filter.raw" defaultMessage="Raw" />, value: FILTER_RAW },
   ];
 
-  const renderLink = ({ w: link, x: label }) => {
-    return (
-      <div className={styles.row}>
-        <Link href={resolve({ referrer: label })} replace={true}>
-          <a
-            className={classNames(styles.label, {
-              [styles.inactive]: currentRef && label !== currentRef,
-              [styles.active]: label === currentRef,
-            })}
-          >
-            {safeDecodeURI(label)}
-          </a>
-        </Link>
-        <a href={link || label} target="_blank" rel="noreferrer noopener" className={styles.link}>
-          <Icon icon={<External />} className={styles.icon} />
-        </a>
-      </div>
-    );
+  const renderLink = ({ w: link, x: referrer }) => {
+    return <FilterLink id="referrer" value={referrer} externalUrl={link} />;
   };
 
   return (

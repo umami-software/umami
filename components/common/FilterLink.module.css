@@ -1,19 +1,20 @@
-body .inactive {
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.row .inactive {
   color: var(--gray500);
 }
 
-body .active {
+.row .active {
   color: var(--gray900);
   font-weight: 600;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-}
-
 .row .link {
   display: none;
+  margin-left: 20px;
 }
 
 .row .label {

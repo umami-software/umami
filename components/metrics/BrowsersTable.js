@@ -2,8 +2,13 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import { browserFilter } from 'lib/filters';
+import FilterLink from '../common/FilterLink';
 
 export default function BrowsersTable({ websiteId, ...props }) {
+  function renderLink({ x: browser }) {
+    return <FilterLink id="browser" value={browser} />;
+  }
+
   return (
     <MetricsTable
       {...props}
@@ -12,6 +17,7 @@ export default function BrowsersTable({ websiteId, ...props }) {
       metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
       websiteId={websiteId}
       dataFilter={browserFilter}
+      renderLabel={renderLink}
     />
   );
 }
