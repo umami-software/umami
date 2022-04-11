@@ -4929,10 +4929,10 @@ postcss-resolve-nested-selector@^0.1.1:
   resolved "https://registry.yarnpkg.com/postcss-resolve-nested-selector/-/postcss-resolve-nested-selector-0.1.1.tgz#29ccbc7c37dedfac304e9fff0bf1596b3f6a0e4e"
   integrity sha1-Kcy8fDfe36wwTp//C/FZaz9qDk4=
 
-postcss-rtlcss@^3.5.3:
-  version "3.5.4"
-  resolved "https://registry.yarnpkg.com/postcss-rtlcss/-/postcss-rtlcss-3.5.4.tgz#b0aac0641cbba1fc566cbdc044239b3da7d8f9f0"
-  integrity sha512-5GpWTmBqeM10rRcFBwaKYCg7M6jiytfSS6pwrphTZnNSioxYNUMZH+88xh1oO4AF7Ix9y2qC76/gQq1HIuUf+g==
+postcss-rtlcss@^3.6.1:
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/postcss-rtlcss/-/postcss-rtlcss-3.6.1.tgz#e530e08bfe36b01a49167e015e5f047a632ca9b4"
+  integrity sha512-eliUNvupb9AYn3JpW+L3aaOWeAPh8n6NPVynAoju2mimhO1dz5PTPQAlnhnzYwpqSusTxgZxYjr+RviE5MmSLg==
   dependencies:
     rtlcss "^3.5.0"
 
@@ -4999,10 +4999,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.6.0:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.1.tgz#d472797e0d7461605c1609808e27b80c0f9cfe17"
-  integrity sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==
+prettier@^2.6.2:
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.6.2.tgz#e26d71a18a74c3d0f0597f55f01fb6c06c206032"
+  integrity sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==
 
 prisma@3.12.0:
   version "3.12.0"
