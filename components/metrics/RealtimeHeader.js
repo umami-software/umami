@@ -24,7 +24,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
     return sessions.filter(
       ({ created_at }) => differenceInMinutes(new Date(), new Date(created_at)) <= 5,
     ).length;
-  }, [sessions]);
+  }, [sessions, websiteId]);
 
   return (
     <>
@@ -33,7 +33,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
           <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
         </div>
         <div>
-          <ActiveUsers className={styles.active} value={count} websiteId={websiteId} />
+          <ActiveUsers className={styles.active} value={count} />
         </div>
         <DropDown value={websiteId} options={options} onChange={onSelect} />
       </PageHeader>
