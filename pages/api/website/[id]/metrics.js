@@ -78,22 +78,18 @@ export default async (req, res) => {
         domain = website.domain;
       }
 
-      const data = await getPageviewMetrics(
-        websiteId,
-        startDate,
-        endDate,
-        getColumn(type),
-        getTable(type),
-        {
-          domain,
-          url: type !== 'url' ? url : undefined,
-          referrer: type !== 'referrer' ? referrer : undefined,
-          os: type !== 'os' ? os : undefined,
-          browser: type !== 'browser' ? browser : undefined,
-          device: type !== 'device' ? device : undefined,
-          country: type !== 'country' ? country : undefined,
-        },
-      );
+      const column = getColumn(type);
+      const table = getTable(type);
+
+      const data = await getPageviewMetrics(websiteId, startDate, endDate, column, table, {
+        domain,
+        url: type !== 'url' ? url : undefined,
+        referrer: type !== 'referrer' ? referrer : undefined,
+        os: type !== 'os' ? os : undefined,
+        browser: type !== 'browser' ? browser : undefined,
+        device: type !== 'device' ? device : undefined,
+        country: type !== 'country' ? country : undefined,
+      });
 
       return ok(res, data);
     }
