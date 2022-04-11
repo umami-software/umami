@@ -1,24 +1,14 @@
 import { NextResponse } from 'next/server';
 
-function redirectHTTPS(req) {
-  const host = req.headers.get('host');
-  if (
-    process.env.FORCE_SSL &&
-    process.env.NODE_ENV === 'production' &&
-    req.nextUrl.protocol === 'http:'
-  ) {
-    return NextResponse.redirect(`https://${host}${req.nextUrl.pathname}`, 301);
-  }
-}
-
 function customScriptName(req) {
   const scriptName = process.env.TRACKER_SCRIPT_NAME;
 
   if (scriptName) {
     const url = req.nextUrl.clone();
     const { pathname } = url;
+    const names = scriptName.split(',').map(name => (name + '.js').trim());
 
-    if (pathname.endsWith(`/${scriptName}.js`)) {
+    if (names.find(name => pathname.endsWith(name))) {
       url.pathname = '/umami.js';
       return NextResponse.rewrite(url);
     }
@@ -31,8 +21,16 @@ function disableLogin(req) {
   }
 }
 
+function forceSSL(req, res) {
+  if (process.env.FORCE_SSL && req.nextUrl.protocol === 'http:') {
+    res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+
+  return res;
+}
+
 export function middleware(req) {
-  const fns = [redirectHTTPS, customScriptName, disableLogin];
+  const fns = [customScriptName, disableLogin];
 
   for (const fn of fns) {
     const res = fn(req);
@@ -41,5 +39,5 @@ export function middleware(req) {
     }
   }
 
-  return NextResponse.next();
+  return forceSSL(req, NextResponse.next());
 }

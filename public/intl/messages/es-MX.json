@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Idioma"
     }
   ],
   "label.last-days": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Tema"
     }
   ],
   "label.this-month": [
@@ -448,7 +448,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "¿Seguro que deseas restablecer las estadisticas de "
+      "value": "¿Seguro que deseas restablecer las estadísticas de "
     },
     {
       "type": 1,
@@ -538,7 +538,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "¡Una nueva versíon de umami "
+      "value": "¡Una nueva versión de umami "
     },
     {
       "type": 1,

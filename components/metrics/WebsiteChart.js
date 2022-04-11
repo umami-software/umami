@@ -33,7 +33,7 @@ export default function WebsiteChart({
   const {
     router,
     resolve,
-    query: { url, referrer },
+    query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { get } = useApi();
 
@@ -47,11 +47,15 @@ export default function WebsiteChart({
         tz: timezone,
         url,
         referrer,
+        os,
+        browser,
+        device,
+        country,
       },
       onDataLoad,
       headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified, url, referrer],
+    [modified, url, referrer, os, browser, device, country],
   );
 
   const chartData = useMemo(() => {
@@ -88,7 +92,10 @@ export default function WebsiteChart({
           stickyClassName={styles.sticky}
           enabled={stickyHeader}
         >
-          <FilterTags params={{ url, referrer }} onClick={handleCloseFilter} />
+          <FilterTags
+            params={{ url, referrer, os, browser, device, country }}
+            onClick={handleCloseFilter}
+          />
           <div className="col-12 col-lg-9">
             <MetricsBar websiteId={websiteId} />
           </div>
