@@ -33,7 +33,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
           <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
         </div>
         <div>
-          <ActiveUsers className={styles.active} value={count} />
+          <ActiveUsers className={styles.active} value={count} websiteId={websiteId} />
         </div>
         <DropDown value={websiteId} options={options} onChange={onSelect} />
       </PageHeader>
