@@ -41,6 +41,8 @@ export default async (req, res) => {
 
     if (sessionColumns.includes(type)) {
       let data = await getSessionMetrics(websiteId, startDate, endDate, type, {
+        url,
+        referrer,
         os,
         browser,
         device,
