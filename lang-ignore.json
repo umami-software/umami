@@ -4,6 +4,7 @@
     "label.administrator",
     "label.name",
     "label.domain",
+    "label.theme",
     "metrics.device.desktop",
     "metrics.device.laptop",
     "metrics.device.tablet",
