@@ -36,6 +36,7 @@ export default async (req, res) => {
       }),
       getPageviewStats(websiteId, startDate, endDate, tz, unit, 'distinct pageview.session_id', {
         url,
+        referrer,
         os,
         browser,
         device,
