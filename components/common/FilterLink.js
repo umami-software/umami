@@ -21,7 +21,9 @@ export default function FilterLink({ id, value, label, externalUrl }) {
             [styles.active]: active && selected,
           })}
         >
-          {safeDecodeURI(label || value)}
+          {(label && typeof label === 'string') ?? value
+            ? safeDecodeURI(label || value)
+            : label || value}
         </a>
       </Link>
       {externalUrl && (
