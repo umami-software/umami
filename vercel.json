@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/collect",
-      "destination": "/api/coll3ct"
+      "source": "/api/coll3ct",
+      "destination": "/api/collect"
     }
   ]
 }
