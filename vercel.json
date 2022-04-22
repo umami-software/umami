@@ -1,5 +1,8 @@
 {
-    "rewrites": [
-      { "source": "/stats.js", "destination": "/umami.js" }
-    ]
-  }
+  "rewrites": [
+    {
+      "source": "/stats.js",
+      "destination": "/umami.js"
+    }
+  ]
+}
