@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/stats.js",
-      "destination": "/umami.js"
+      "source": "/api/collect",
+      "destination": "/api/coll3ct"
     }
   ]
 }
