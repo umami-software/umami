@@ -45,6 +45,7 @@ This will also create a login account with username **admin** and password **uma
 Create an `.env` file with the following
 
 ```
+DATABASE_TYPE=mysql or postgres
 DATABASE_URL=(connection url)
 HASH_SALT=(any random string)
 ```
