@@ -80,7 +80,7 @@
   "label.current-password": [
     {
       "type": 0,
-      "value": "Password corrente"
+      "value": "Password attuale"
     }
   ],
   "label.custom-range": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Lingua"
     }
   ],
   "label.last-days": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Tema"
     }
   ],
   "label.this-month": [
@@ -452,7 +452,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Sei sicuro di voler azzerare le statistiche di "
     },
     {
       "type": 1,
@@ -460,7 +460,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -542,7 +542,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Una nuova versione umami "
+      "value": "Una nuova versione "
     },
     {
       "type": 1,
@@ -550,7 +550,7 @@
     },
     {
       "type": 0,
-      "value": " è disponibile!"
+      "value": " di umami è disponibile!"
     }
   ],
   "message.no-data-available": [
@@ -774,7 +774,7 @@
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Referr"
+      "value": "Referrers"
     }
   ],
   "metrics.unique-visitors": [
