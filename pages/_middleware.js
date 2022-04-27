@@ -6,7 +6,7 @@ function customScriptName(req) {
   if (scriptName) {
     const url = req.nextUrl.clone();
     const { pathname } = url;
-    const names = scriptName.split(',').map(name => (name + '.js').trim());
+    const names = scriptName.split(',').map(name => name.trim() + '.js');
 
     if (names.find(name => pathname.endsWith(name))) {
       url.pathname = '/umami.js';
