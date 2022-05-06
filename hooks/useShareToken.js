@@ -6,6 +6,7 @@ const selector = state => state.shareToken;
 
 export default function useShareToken(shareId) {
   const shareToken = useStore(selector);
+  console.log({ shareToken });
   const { get } = useApi();
 
   async function loadToken(id) {
