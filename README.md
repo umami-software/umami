@@ -6,6 +6,12 @@ Umami is a simple, fast, privacy-focused alternative to Google Analytics.
 
 A detailed getting started guide can be found at [https://umami.is/docs/](https://umami.is/docs/)
 
+A fast way to get up and running is to use Railway
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/umami)
+
+See [Running on Railway](https://umami.is/docs/running-on-railway) to get started.
+
 ## Installing from source
 
 ### Requirements
