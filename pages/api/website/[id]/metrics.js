@@ -83,12 +83,13 @@ export default async (req, res) => {
 
       const data = await getPageviewMetrics(websiteId, startDate, endDate, column, table, {
         domain,
-        url: type !== 'url' ? url : undefined,
+        url: type !== 'url' && table !== 'event' ? url : undefined,
         referrer: type !== 'referrer' ? referrer : undefined,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
+        event_url: type !== 'url' && table === 'event' ? url : undefined,
       });
 
       return ok(res, data);

@@ -12,9 +12,7 @@ import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
-import useShareToken from 'hooks/useShareToken';
 import useApi from 'hooks/useApi';
-import { TOKEN_HEADER } from 'lib/constants';
 import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
@@ -26,7 +24,6 @@ export default function WebsiteChart({
   showChart = true,
   onDataLoad = () => {},
 }) {
-  const shareToken = useShareToken();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
@@ -53,7 +50,6 @@ export default function WebsiteChart({
         country,
       },
       onDataLoad,
-      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
     [modified, url, referrer, os, browser, device, country],
   );

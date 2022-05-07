@@ -20,8 +20,7 @@ import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
-import useShareToken from 'hooks/useShareToken';
-import { DEFAULT_ANIMATION_DURATION, TOKEN_HEADER } from 'lib/constants';
+import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './WebsiteDetails.module.css';
 
 const views = {
@@ -36,10 +35,7 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId }) {
-  const shareToken = useShareToken();
-  const { data } = useFetch(`/website/${websiteId}`, {
-    headers: { [TOKEN_HEADER]: shareToken?.token },
-  });
+  const { data } = useFetch(`/website/${websiteId}`);
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();

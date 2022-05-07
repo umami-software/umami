@@ -6,8 +6,7 @@ import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
-import useShareToken from 'hooks/useShareToken';
-import { EVENT_COLORS, TOKEN_HEADER } from 'lib/constants';
+import { EVENT_COLORS } from 'lib/constants';
 
 export default function EventsChart({ websiteId, className, token }) {
   const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
@@ -15,7 +14,6 @@ export default function EventsChart({ websiteId, className, token }) {
   const {
     query: { url, eventType },
   } = usePageQuery();
-  const shareToken = useShareToken();
 
   const { data, loading } = useFetch(
     `/website/${websiteId}/events`,
@@ -29,7 +27,6 @@ export default function EventsChart({ websiteId, className, token }) {
         event_type: eventType,
         token,
       },
-      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
     [modified, eventType],
   );
