@@ -17,6 +17,7 @@ See [Running on Railway](https://umami.is/docs/running-on-railway) to get starte
 ### Requirements
 
 - A server with Node.js 12 or newer
+- Yarn package manager
 - A database (MySQL or Postgresql)
 
 ### Get the source code and install packages
@@ -24,7 +25,7 @@ See [Running on Railway](https://umami.is/docs/running-on-railway) to get starte
 ```
 git clone https://github.com/mikecao/umami.git
 cd umami
-npm install
+yarn install
 ```
 
 ### Create database tables
