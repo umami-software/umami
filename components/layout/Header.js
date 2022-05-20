@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
-import Icon from 'components/common/Icon';
 import LanguageButton from 'components/settings/LanguageButton';
 import ThemeButton from 'components/settings/ThemeButton';
 import HamburgerButton from 'components/common/HamburgerButton';
@@ -11,7 +10,6 @@ import UserButton from 'components/settings/UserButton';
 import { HOMEPAGE_URL } from 'lib/constants';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
-import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 
 export default function Header() {
@@ -26,7 +24,10 @@ export default function Header() {
       {allowUpdate && <UpdateNotice />}
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
-          <Icon icon={<Logo />} size="large" className={styles.logo} />
+          <img
+          src="https://uploads-ssl.webflow.com/5ea18b09bf3bfd55814199f9/5ea18b09bf3bfda137419a00_petri_square_03.gif"
+          className={styles.logo}
+        />
           <Link href={isSharePage ? HOMEPAGE_URL : '/'}>Headless Analytics</Link>
         </div>
         <HamburgerButton />
