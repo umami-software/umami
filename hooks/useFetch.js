@@ -5,14 +5,14 @@ import useApi from './useApi';
 export default function useFetch(url, options = {}, update = []) {
   const [response, setResponse] = useState();
   const [error, setError] = useState();
-  const [loading, setLoadiing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const { get } = useApi();
   const { params = {}, headers = {}, disabled, delay = 0, interval, onDataLoad } = options;
 
   async function loadData(params) {
     try {
-      setLoadiing(true);
+      setLoading(true);
       setError(null);
       const time = performance.now();
 
@@ -32,7 +32,7 @@ export default function useFetch(url, options = {}, update = []) {
       console.error(e);
       setError(e);
     } finally {
-      setLoadiing(false);
+      setLoading(false);
     }
   }
 
