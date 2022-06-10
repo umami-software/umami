@@ -112,7 +112,7 @@
     "postcss": "^8.4.12",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^14.0.2",
-    "postcss-preset-env": "^7.4.2",
+    "postcss-preset-env": "7.4.3",
     "postcss-rtlcss": "^3.6.1",
     "prettier": "^2.6.2",
     "prisma": "3.14.0",
