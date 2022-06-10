@@ -4,7 +4,7 @@ import semver from 'semver';
 import { VERSION_CHECK } from 'lib/constants';
 import { getItem } from 'lib/web';
 
-const REPO_URL = 'https://api.github.com/repos/mikecao/umami/releases/latest';
+const REPO_URL = 'https://api.umami.is/v1/updates';
 
 const initialState = {
   current: process.env.VERSION,
@@ -20,7 +20,7 @@ export async function checkVersion() {
   const data = await fetch(REPO_URL, {
     method: 'get',
     headers: {
-      Accept: 'application/vnd.github.v3+json',
+      Accept: 'application/json',
     },
   }).then(res => {
     if (res.ok) {
@@ -36,9 +36,7 @@ export async function checkVersion() {
 
   store.setState(
     produce(state => {
-      const { tag_name } = data;
-
-      const latest = tag_name.startsWith('v') ? tag_name.slice(1) : tag_name;
+      const { latest } = data;
       const lastCheck = getItem(VERSION_CHECK);
       const hasUpdate = latest && semver.gt(latest, current) && lastCheck?.version !== latest;
 

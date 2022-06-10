@@ -122,7 +122,11 @@ import { removeTrailingSlash } from '../lib/url';
       payload,
     });
 
-    navigator.sendBeacon(`${root}/api/collect`, data);
+    fetch(`${root}/api/collect`, {
+      method: 'POST',
+      body: data,
+      keepalive: true,
+    });
   };
 
   const addEvents = node => {

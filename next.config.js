@@ -6,6 +6,9 @@ module.exports = {
     VERSION: pkg.version,
   },
   basePath: process.env.BASE_PATH,
+  experimental: {
+    outputStandalone: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

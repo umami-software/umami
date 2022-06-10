@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Thema"
     }
   ],
   "label.this-month": [
@@ -704,7 +704,7 @@
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Mobiltelefon"
+      "value": "Handy"
     }
   ],
   "metrics.device.tablet": [

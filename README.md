@@ -19,12 +19,18 @@ See [Running on Railway](https://umami.is/docs/running-on-railway) to get starte
 - A server with Node.js 12 or newer
 - A database (MySQL or Postgresql)
 
+### Install Yarn (if needed)
+
+```
+npm install -g yarn
+```
+
 ### Get the source code and install packages
 
 ```
 git clone https://github.com/mikecao/umami.git
 cd umami
-npm install
+yarn install
 ```
 
 ### Create database tables
@@ -67,13 +73,13 @@ The `HASH_SALT` is used to generate unique values for your installation.
 ### Build the application
 
 ```bash
-npm run build
+yarn build
 ```
 
 ### Start the application
 
 ```bash
-npm start
+yarn start
 ```
 
 By default this will launch the application on `http://localhost:3000`. You will need to either 
@@ -104,8 +110,8 @@ To get the latest features, simply do a pull, install any new dependencies, and 
 
 ```bash
 git pull
-npm install
-npm run build
+yarn install
+yarn build
 ```
 
 To update the Docker image, simply pull the new images and rebuild:
