@@ -1,9 +1,6 @@
 name: Create docker images
 
-on:
-  push:
-    branches:
-      - master
+on: [create]
 
 jobs:
 
