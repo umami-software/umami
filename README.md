@@ -33,23 +33,10 @@ cd umami
 yarn install
 ```
 
-### Create database tables
+### Database
 
 Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/).
-Create a database for your Umami installation and install the tables with the included scripts.
-
-For MySQL:
-
-```
-mysql -u username -p databasename < sql/schema.mysql.sql
-```
-
-For Postgresql:
-
-```
-psql -h hostname -U username -d databasename -f sql/schema.postgresql.sql
-```
-
+The database structure will automatically be applied on the first start of Umami.
 This will also create a login account with username **admin** and password **umami**.
 
 ### Configure umami
@@ -82,7 +69,7 @@ yarn build
 yarn start
 ```
 
-By default this will launch the application on `http://localhost:3000`. You will need to either 
+By default this will launch the application on `http://localhost:3000`. You will need to either
 [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
 or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 

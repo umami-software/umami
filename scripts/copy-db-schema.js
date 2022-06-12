@@ -1,5 +1,5 @@
 require('dotenv').config();
-const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
 
 function getDatabase() {
@@ -25,6 +25,13 @@ console.log(`Database type detected: ${databaseType}`);
 const src = path.resolve(__dirname, `../prisma/schema.${databaseType}.prisma`);
 const dest = path.resolve(__dirname, '../prisma/schema.prisma');
 
-fs.copyFileSync(src, dest);
+fse.copyFileSync(src, dest);
 
 console.log(`Copied ${src} to ${dest}`);
+
+const srcMigrations = path.resolve(__dirname, `../prisma/${databaseType}/migrations`);
+const destMigrations = path.resolve(__dirname, `../prisma/migrations`);
+
+fse.copySync(srcMigrations, destMigrations);
+
+console.log(`Copied ${srcMigrations} to ${destMigrations}`);
