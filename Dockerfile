@@ -8,6 +8,8 @@ RUN yarn install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder
+ARG BASE_PATH
+ARG DATABASE_TYPE
 ENV BASE_PATH=$BASE_PATH
 ENV DATABASE_URL "postgresql://umami:umami@db:5432/umami"
 ENV DATABASE_TYPE=$DATABASE_TYPE
@@ -38,7 +40,7 @@ COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
-# Automatically leverage output traces to reduce image size 
+# Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
