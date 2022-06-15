@@ -14,6 +14,7 @@
     "build": "npm-run-all build-tracker build-geo build-db build-app",
     "start": "next start",
     "start-env": "node -r dotenv/config scripts/start-env.js",
+    "production": "prisma migrate deploy && node server.js",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-db": "npm-run-all copy-db-schema build-db-client",

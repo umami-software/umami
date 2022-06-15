@@ -97,3 +97,6 @@ ALTER TABLE `session` ADD FOREIGN KEY (`website_id`) REFERENCES `website`(`websi
 
 -- AddForeignKey
 ALTER TABLE `website` ADD FOREIGN KEY (`user_id`) REFERENCES `account`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- CreateAdminUser
+INSERT INTO account (username, password, is_admin) values ('admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa', true);
