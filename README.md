@@ -16,10 +16,10 @@ See [Running on Railway](https://umami.is/docs/running-on-railway) to get starte
 
 ### Requirements
 
-- A server with Node.js 12 or newer
-- A database (MySQL or Postgresql)
+- A server with Node.js version 12 or newer
+- A database. Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/) databases.
 
-### Install Yarn (if needed)
+### Install Yarn
 
 ```
 npm install -g yarn
@@ -32,12 +32,6 @@ git clone https://github.com/mikecao/umami.git
 cd umami
 yarn install
 ```
-
-### Database
-
-Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/).
-The database structure will automatically be applied on the first start of Umami.
-This will also create a login account with username **admin** and password **umami**.
 
 ### Configure umami
 
@@ -56,6 +50,15 @@ mysql://username:mypassword@localhost:3306/mydb
 ```
 
 The `HASH_SALT` is used to generate unique values for your installation.
+
+### Check database
+
+```bash
+yarn check-db
+```
+
+The database structure will automatically be applied on the first start of Umami.
+This will also create a login account with username **admin** and password **umami**.
 
 ### Build the application
 

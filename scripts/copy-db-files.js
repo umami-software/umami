@@ -22,16 +22,9 @@ if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
 
 console.log(`Database type detected: ${databaseType}`);
 
-const src = path.resolve(__dirname, `../prisma/schema.${databaseType}.prisma`);
-const dest = path.resolve(__dirname, '../prisma/schema.prisma');
+const src = path.resolve(__dirname, `../db/${databaseType}`);
+const dest = path.resolve(__dirname, '../prisma');
 
-fse.copyFileSync(src, dest);
+fse.copySync(src, dest);
 
 console.log(`Copied ${src} to ${dest}`);
-
-const srcMigrations = path.resolve(__dirname, `../prisma/${databaseType}/migrations`);
-const destMigrations = path.resolve(__dirname, `../prisma/migrations`);
-
-fse.copySync(srcMigrations, destMigrations);
-
-console.log(`Copied ${srcMigrations} to ${destMigrations}`);
