@@ -53,16 +53,16 @@ The `HASH_SALT` is used to generate unique values for your installation.
 
 This will also create a login account with username **admin** and password **umami**.
 
-### Create database tables
-
-```bash
-yarn update-db
-```
-
 ### Build the application
 
 ```bash
 yarn build
+```
+
+### Create database tables
+
+```bash
+yarn update-db
 ```
 
 ### Start the application
