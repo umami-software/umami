@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fse = require('fs-extra');
 const path = require('path');
+const del = require('del');
 
 function getDatabaseType() {
   const type =
@@ -24,6 +25,8 @@ console.log(`Database type detected: ${databaseType}`);
 
 const src = path.resolve(__dirname, `../db/${databaseType}`);
 const dest = path.resolve(__dirname, '../prisma');
+
+del.sync(dest);
 
 fse.copySync(src, dest);
 
