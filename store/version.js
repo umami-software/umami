@@ -7,7 +7,7 @@ import { getItem } from 'lib/web';
 const REPO_URL = 'https://api.umami.is/v1/updates';
 
 const initialState = {
-  current: process.env.VERSION,
+  current: process.env.version,
   latest: null,
   hasUpdate: false,
 };

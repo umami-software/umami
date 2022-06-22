@@ -3,7 +3,8 @@ const pkg = require('./package.json');
 
 module.exports = {
   env: {
-    VERSION: pkg.version,
+    version: pkg.version,
+    loginDisabled: process.env.DISABLE_LOGIN,
   },
   basePath: process.env.BASE_PATH,
   experimental: {
