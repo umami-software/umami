@@ -3,7 +3,7 @@ import Layout from 'components/layout/Layout';
 import LoginForm from 'components/forms/LoginForm';
 
 export default function LoginPage() {
-  if (process.env.DISABLE_LOGIN) {
+  if (process.env.loginDisabled) {
     return null;
   }
 
