@@ -39,7 +39,6 @@ Create an `.env` file with the following
 
 ```
 DATABASE_URL=(connection url)
-HASH_SALT=(any random string)
 ```
 
 The connection url is in the following format:
@@ -48,8 +47,6 @@ postgresql://username:mypassword@localhost:5432/mydb
 
 mysql://username:mypassword@localhost:3306/mydb
 ```
-
-The `HASH_SALT` is used to generate unique values for your installation.
 
 This will also create a login account with username **admin** and password **umami**.
 
