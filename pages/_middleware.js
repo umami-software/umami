@@ -16,6 +16,7 @@ function customScriptName(req) {
 }
 
 function disableLogin(req) {
+  console.log(process.env, process.env.DISABLE_LOGIN);
   if (process.env.DISABLE_LOGIN && req.nextUrl.pathname.endsWith('/login')) {
     return new Response('Login is disabled', { status: 403 });
   }
