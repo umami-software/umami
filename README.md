@@ -51,14 +51,13 @@ mysql://username:mypassword@localhost:3306/mydb
 
 The `HASH_SALT` is used to generate unique values for your installation.
 
-### Check database
+This will also create a login account with username **admin** and password **umami**.
+
+### Create database tables
 
 ```bash
-yarn check-db
+yarn update-db
 ```
-
-The database structure will automatically be applied on the first start of Umami.
-This will also create a login account with username **admin** and password **umami**.
 
 ### Build the application
 
@@ -102,6 +101,7 @@ To get the latest features, simply do a pull, install any new dependencies, and 
 git pull
 yarn install
 yarn build
+yarn update-db
 ```
 
 To update the Docker image, simply pull the new images and rebuild:
