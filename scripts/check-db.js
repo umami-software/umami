@@ -5,6 +5,11 @@ const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
 let message = '';
+const updateMessage = `To update your database, you need to run:\n${chalk.bold.whiteBright(
+  'yarn update-db',
+)}`;
+const baselineMessage = cmd =>
+  `You need to update your database by running:\n${chalk.bold.whiteBright(cmd)}`;
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
@@ -34,9 +39,8 @@ async function checkTables() {
 
     success('Database tables found.');
   } catch (e) {
-    message = `To update your database, you need to run:\n${chalk.bold.whiteBright(
-      'yarn update-db',
-    )}`;
+    message = updateMessage;
+
     throw new Error('Database tables not found.');
   }
 }
@@ -65,10 +69,12 @@ async function checkMigrations() {
   if (notManaged) {
     const cmd = output.match(/yarn prisma migrate resolve --applied ".*"/g);
 
-    message = `You need to update your database by running:\n${chalk.bold.whiteBright(cmd[0])}`;
+    message = baselineMessage(cmd[0]);
+
     throw new Error('Database is out of date.');
   } else if (missingMigrations) {
-    message = output;
+    message = updateMessage;
+
     throw new Error('Database is out of date.');
   }
 
