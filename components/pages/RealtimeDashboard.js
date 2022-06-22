@@ -58,7 +58,6 @@ export default function RealtimeDashboard() {
         };
       }
     }
-
     return data;
   }, [data, websiteId]);
 
