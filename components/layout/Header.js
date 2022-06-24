@@ -17,9 +17,11 @@ export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
 
+  console.log('wat', process.env.updatesDisabled);
+
   return (
     <>
-      {user?.is_admin && <UpdateNotice />}
+      {user?.is_admin && !process.env.updatesDisabled && <UpdateNotice />}
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <Icon icon={<Logo />} size="large" className={styles.logo} />

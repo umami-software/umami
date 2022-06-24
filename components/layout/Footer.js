@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import Link from 'components/common/Link';
 import styles from './Footer.module.css';
-import useVersion from 'hooks/useVersion';
+import useStore from 'store/version';
 import { HOMEPAGE_URL, VERSION_URL } from 'lib/constants';
 
 export default function Footer() {
-  const { current } = useVersion();
+  const { current } = useStore();
 
   return (
     <footer className={classNames(styles.footer, 'row')}>
