@@ -7,6 +7,10 @@ on:
         type: string
         description: Version
         required: true
+      add-latest:
+        type: boolean
+        description: Add latest tag
+        required: false
 
 jobs:
   build:
@@ -25,6 +29,7 @@ jobs:
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ inputs.version }}
+          addLatest: ${{ inputs.add-latest }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io/${{ github.actor }}
           username: ${{ github.actor }}
