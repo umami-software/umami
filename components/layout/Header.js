@@ -17,8 +17,6 @@ export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
 
-  console.log('wat', process.env.updatesDisabled);
-
   return (
     <>
       {user?.is_admin && !process.env.updatesDisabled && <UpdateNotice />}
