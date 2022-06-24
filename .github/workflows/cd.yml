@@ -24,7 +24,7 @@ jobs:
         name: Build & push Docker image for ${{ matrix.db-type }}
         with:
           image: umami
-          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
+          tags: ${{ matrix.db-type }}-${{ inputs.version }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io/${{ github.actor }}
           username: ${{ github.actor }}
