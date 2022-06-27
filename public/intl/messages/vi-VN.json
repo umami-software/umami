@@ -116,19 +116,19 @@
   "label.delete-account": [
     {
       "type": 0,
-      "value": "Xoá tài khoản"
+      "value": "Xóa tài khoản"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Xáo website"
+      "value": "Xóa website"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Laoị trừ"
+      "value": "Loại trừ"
     }
   ],
   "label.domain": [
@@ -242,7 +242,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Chủ nhân"
+      "value": "Chủ sở hữu"
     }
   ],
   "label.password": [
@@ -326,7 +326,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Giao diện"
     }
   ],
   "label.this-month": [
@@ -454,7 +454,7 @@
   "message.copied": [
     {
       "type": 0,
-      "value": "Đã copy!"
+      "value": "Đã sao chép!"
     }
   ],
   "message.delete-warning": [
@@ -484,7 +484,7 @@
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Đến cài đặt"
+      "value": "Chuyển tới cài đặt"
     }
   ],
   "message.incorrect-username-password": [
@@ -554,7 +554,7 @@
   "message.powered-by": [
     {
       "type": 0,
-      "value": "Bản quyền bởi "
+      "value": "Bản quyền thuộc về "
     },
     {
       "type": 1,
@@ -730,7 +730,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Ngôn ngũ"
+      "value": "Ngôn ngữ"
     }
   ],
   "metrics.operating-systems": [
