@@ -5,11 +5,11 @@ const chalk = require('chalk');
 const spawn = require('cross-spawn');
 
 let message = '';
-const updateMessage = `To update your database, you need to run:\n${chalk.bold.whiteBright(
+const updateMessage = `To update your database, you need to run:\n${chalk.bold.yellow(
   'yarn update-db',
 )}`;
 const baselineMessage = cmd =>
-  `You need to update your database by running:\n${chalk.bold.whiteBright(cmd)}`;
+  `You need to update your database by running:\n${chalk.bold.yellow(cmd)}`;
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
