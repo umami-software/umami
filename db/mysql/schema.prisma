@@ -9,7 +9,7 @@ datasource db {
 
 model account {
   user_id    Int       @id @default(autoincrement()) @db.UnsignedInt
-  username   String    @unique @db.VarChar(255)
+  username   String    @unique(map: "username") @db.VarChar(255)
   password   String    @db.VarChar(60)
   is_admin   Boolean   @default(false)
   created_at DateTime? @default(now()) @db.Timestamp(0)
@@ -25,12 +25,12 @@ model event {
   url         String    @db.VarChar(500)
   event_type  String    @db.VarChar(50)
   event_value String    @db.VarChar(50)
-  session     session   @relation(fields: [session_id], references: [session_id])
-  website     website   @relation(fields: [website_id], references: [website_id])
+  session     session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade, onUpdate: NoAction, map: "event_ibfk_2")
+  website     website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction, map: "event_ibfk_1")
 
-  @@index([created_at], name: "event_created_at_idx")
-  @@index([session_id], name: "event_session_id_idx")
-  @@index([website_id], name: "event_website_id_idx")
+  @@index([created_at])
+  @@index([session_id])
+  @@index([website_id])
 }
 
 model pageview {
@@ -40,19 +40,19 @@ model pageview {
   created_at DateTime? @default(now()) @db.Timestamp(0)
   url        String    @db.VarChar(500)
   referrer   String?   @db.VarChar(500)
-  session    session   @relation(fields: [session_id], references: [session_id])
-  website    website   @relation(fields: [website_id], references: [website_id])
+  session    session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade, onUpdate: NoAction, map: "pageview_ibfk_2")
+  website    website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction, map: "pageview_ibfk_1")
 
-  @@index([created_at], name: "pageview_created_at_idx")
-  @@index([session_id], name: "pageview_session_id_idx")
-  @@index([website_id, created_at], name: "pageview_website_id_created_at_idx")
-  @@index([website_id], name: "pageview_website_id_idx")
-  @@index([website_id, session_id, created_at], name: "pageview_website_id_session_id_created_at_idx")
+  @@index([created_at])
+  @@index([session_id])
+  @@index([website_id, created_at])
+  @@index([website_id])
+  @@index([website_id, session_id, created_at])
 }
 
 model session {
   session_id   Int        @id @default(autoincrement()) @db.UnsignedInt
-  session_uuid String     @unique @db.VarChar(36)
+  session_uuid String     @unique(map: "session_uuid") @db.VarChar(36)
   website_id   Int        @db.UnsignedInt
   created_at   DateTime?  @default(now()) @db.Timestamp(0)
   hostname     String?    @db.VarChar(100)
@@ -62,26 +62,26 @@ model session {
   screen       String?    @db.VarChar(11)
   language     String?    @db.VarChar(35)
   country      String?    @db.Char(2)
-  website      website    @relation(fields: [website_id], references: [website_id])
+  website      website    @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction, map: "session_ibfk_1")
   event        event[]
   pageview     pageview[]
 
-  @@index([created_at], name: "session_created_at_idx")
-  @@index([website_id], name: "session_website_id_idx")
+  @@index([created_at])
+  @@index([website_id])
 }
 
 model website {
   website_id   Int        @id @default(autoincrement()) @db.UnsignedInt
-  website_uuid String     @unique @db.VarChar(36)
+  website_uuid String     @unique(map: "website_uuid") @db.VarChar(36)
   user_id      Int        @db.UnsignedInt
   name         String     @db.VarChar(100)
   domain       String?    @db.VarChar(500)
-  share_id     String?    @unique @db.VarChar(64)
+  share_id     String?    @unique(map: "share_id") @db.VarChar(64)
   created_at   DateTime?  @default(now()) @db.Timestamp(0)
-  account      account    @relation(fields: [user_id], references: [user_id])
+  account      account    @relation(fields: [user_id], references: [user_id], onDelete: Cascade, onUpdate: NoAction, map: "website_ibfk_1")
   event        event[]
   pageview     pageview[]
   session      session[]
 
-  @@index([user_id], name: "website_user_id_idx")
+  @@index([user_id])
 }
