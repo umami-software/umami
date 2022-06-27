@@ -8,8 +8,8 @@ import useLocale from 'hooks/useLocale';
 
 const messages = defineMessages({
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
-  countries: { id: 'label.countries', defaultMessage: 'Countries' },
-  visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
+  countries: { id: 'metrics.countries', defaultMessage: 'Countries' },
+  visitors: { id: 'metrics.visitors', defaultMessage: 'Visitors' },
 });
 
 export default function CountriesTable({ websiteId, onDataLoad, ...props }) {

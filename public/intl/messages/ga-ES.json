@@ -2,207 +2,215 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "Tài khoản"
+      "value": "Contas"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "Thêm tài khoản"
+      "value": "Engadir conta"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Thêm website"
+      "value": "Engadir sitio web"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Quản trị"
+      "value": "Administradora"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Tất cả"
+      "value": "Todo"
     }
   ],
   "label.all-events": [
     {
       "type": 0,
-      "value": "Tất cả sự kiện"
+      "value": "Tódolos eventos"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Toàn thời gian"
+      "value": "Sempre"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Tất cả website"
+      "value": "Tódolos sitios web"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Quay về"
+      "value": "Atrás"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Huỷ bỏ"
+      "value": "Cancelar"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Đổi mật khẩu"
+      "value": "Mudar contrasinal"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Xác nhận mật khẩu"
+      "value": "Confirmar contrasinal"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "Lưu vào bộ nhớ tạm"
+      "value": "Copiar ao portapapeis"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Mật khẩu hiện tại"
+      "value": "Contrasinal actual"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Phạm vi ngày tuỳ chọn"
+      "value": "Rango personalizado"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Bảng điều khiển"
+      "value": "Taboleiro"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Phạm vi ngày"
+      "value": "Rango temporal"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Khoảng thời gian mặc định"
+      "value": "Rango temporal por defecto"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Xoá"
+      "value": "Eliminar"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "Xoá tài khoản"
+      "value": "Eliminar conta"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Xáo website"
+      "value": "Eliminar sitio web"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Laoị trừ"
+      "value": "Desbotar"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Tên miền"
+      "value": "Dominio"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Chỉnh sửa"
+      "value": "Editar"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "Chỉnh sửa tài khoản"
+      "value": "Editar conta"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "Chỉnh sửa website"
+      "value": "Editar sitio web"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Bật khả năng chia sẻ URL"
+      "value": "Activar URL de compartición"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "Không hợp lệ"
+      "value": "Non válido"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "Tên miền không hợp lệ"
+      "value": "Dominio non válido"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Idioma"
     }
   ],
   "label.last-days": [
     {
+      "type": 0,
+      "value": "Últimos "
+    },
+    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " ngày gần nhất"
+      "value": " días"
     }
   ],
   "label.last-hours": [
     {
+      "type": 0,
+      "value": "Últimas "
+    },
+    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " giờ gần nhất"
+      "value": " horas"
     }
   ],
   "label.logged-in-as": [
     {
       "type": 0,
-      "value": "Đăng nhập như "
+      "value": "Sesión de "
     },
     {
       "type": 1,
@@ -212,181 +220,181 @@
   "label.login": [
     {
       "type": 0,
-      "value": "Đăng nhập"
+      "value": "Acceder"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Đăng xuất"
+      "value": "Pechar sesión"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Thêm"
+      "value": "Máis"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Tên"
+      "value": "Nome"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Mật khẩu mới"
+      "value": "Novo contrasinal"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Chủ nhân"
+      "value": "Dona"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Mật khẩu"
+      "value": "Contrasinal"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "Mật khẩu không đồng nhất"
+      "value": "Non concordan os contrasinais"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "Hồ sơ"
+      "value": "Perfil"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Thời gian thực"
+      "value": "Agora mesmo"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Nhật ký thời gian thực"
+      "value": "Rexistro neste intre"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Làm mới"
+      "value": "Actualizar"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Yêu cầu"
+      "value": "Requerido"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Tái thiết lập"
+      "value": "Restablecer"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Tái thiết lập thống kê"
+      "value": "Restablecer estatísticas"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "Lưu"
+      "value": "Gardar"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "Cài đặt"
+      "value": "Axustes"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Chia sẻ URL"
+      "value": "Compartir URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Trong ngày"
+      "value": "Un só día"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Decorado"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Tháng này"
+      "value": "Este mes"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Tuần này"
+      "value": "Esta semana"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Năm nay"
+      "value": "Este ano"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Múi giờ"
+      "value": "Zona horaria"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "Hôm nay"
+      "value": "Hoxe"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Mã theo dõi"
+      "value": "Código de seguimento"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Không rõ"
+      "value": "Descoñecido"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "Tên đăng nhập"
+      "value": "Identificador"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "Xem chi tiết"
+      "value": "Ver detalles"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Websites"
+      "value": "Sitios web"
     }
   ],
   "message.active-users": [
@@ -396,7 +404,7 @@
     },
     {
       "type": 0,
-      "value": " hiện tại "
+      "value": " actual "
     },
     {
       "offset": 0,
@@ -405,7 +413,7 @@
           "value": [
             {
               "type": 0,
-              "value": "một"
+              "value": "visitante"
             }
           ]
         },
@@ -413,7 +421,7 @@
           "value": [
             {
               "type": 0,
-              "value": "trên"
+              "value": "visitantes"
             }
           ]
         }
@@ -426,7 +434,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Bạn có chắc chắn muốn xoá "
+      "value": "Tes a certeza de querer eliminar "
     },
     {
       "type": 1,
@@ -440,7 +448,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Bạn có chắc chắn muốn tái thiết lập thống kê "
+      "value": "Tes a certeza de querer restablecer as estatísticas de "
     },
     {
       "type": 1,
@@ -454,49 +462,49 @@
   "message.copied": [
     {
       "type": 0,
-      "value": "Đã copy!"
+      "value": "Copiado!"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "Tất cả các dữ liệu liên quan cũng sẽ bị xoá."
+      "value": "Tamén serán borrados tódolos datos asociados."
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "Đã xảy ra lỗi."
+      "value": "Houbo un fallo."
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "Lấy URL chia sẻ"
+      "value": "Obter URL de compartición"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "Lấy mã theo dõi"
+      "value": "Obter código de seguimento"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Đến cài đặt"
+      "value": "Ir aos axustes"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Sai tên đăng nhập/mật khẩu."
+      "value": "Credenciais incorrectas."
     }
   ],
   "message.log.visitor": [
     {
       "type": 0,
-      "value": "Khách từ "
+      "value": "Visitante desde "
     },
     {
       "type": 1,
@@ -504,7 +512,7 @@
     },
     {
       "type": 0,
-      "value": " đang dùng "
+      "value": " usando "
     },
     {
       "type": 1,
@@ -512,7 +520,7 @@
     },
     {
       "type": 0,
-      "value": " trên "
+      "value": " en "
     },
     {
       "type": 1,
@@ -530,31 +538,39 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Có một phiên bản mới của umami!"
+      "value": "A nova versión "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " de umami está dispoñible!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "Không có dữ liệu."
+      "value": "Sen datos dispoñibles."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Bạn chưa có bất cứ website nào."
+      "value": "Non tes sitios web configurados."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Trang không tìm thấy."
+      "value": "Páxina non atopada."
     }
   ],
   "message.powered-by": [
     {
       "type": 0,
-      "value": "Bản quyền bởi "
+      "value": "Funciona grazas a "
     },
     {
       "type": 1,
@@ -564,19 +580,19 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Tất cả số liệu thống kê của website này sẽ bị xoá, nhưng mã theo dõi sẽ vẫn giữ nguyên."
+      "value": "Vanse eliminar tódalas estatísticas deste sitio web, pero o código de seguimento permanecerá sen cambios."
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "Đã lưu thành công."
+      "value": "Gardouse correctamente."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Đây là đường dẫn URL cho "
+      "value": "Este é o URL da compartición pública de "
     },
     {
       "type": 1,
@@ -590,13 +606,13 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Bật/tắt biểu đồ"
+      "value": "Activación das gráficas"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "Để theo dõi "
+      "value": "Para crear estatísticas de "
     },
     {
       "type": 1,
@@ -604,7 +620,7 @@
     },
     {
       "type": 0,
-      "value": ", dán mã theo dõi vào "
+      "value": ", pon este código na sección "
     },
     {
       "type": 1,
@@ -612,13 +628,13 @@
     },
     {
       "type": 0,
-      "value": " của website bạn."
+      "value": " do teu sitio web."
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "Nhập "
+      "value": "Escribe "
     },
     {
       "type": 1,
@@ -626,13 +642,13 @@
     },
     {
       "type": 0,
-      "value": " bên dưới để xác nhận."
+      "value": " na caixa inferior para confirmar."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Nhập "
+      "value": "Escribe "
     },
     {
       "type": 1,
@@ -640,139 +656,139 @@
     },
     {
       "type": 0,
-      "value": " bên dưới để xác nhận."
+      "value": " na caixa inferior para confirmar."
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "Hành động"
+      "value": "Accións"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "Thời gian truy cập trung bình"
+      "value": "Tempo medio de visita"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "Tỷ lệ thoát trang"
+      "value": "Proporción de rebote"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "Trình duyệt"
+      "value": "Navegadores"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "Quốc gia"
+      "value": "Países"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "Máy bàn"
+      "value": "Escritorio"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "Laptop"
+      "value": "Portátil"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Di động"
+      "value": "Móbil"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "Máy tính bảng"
+      "value": "Tableta"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "Thiết bị"
+      "value": "Dispositivos"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "Sự kiện"
+      "value": "Eventos"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Kết hợp"
+      "value": "Combinado"
     }
   ],
   "metrics.filter.domain-only": [
     {
       "type": 0,
-      "value": "Chỉ tên miền"
+      "value": "Só dominio"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "Gốc"
+      "value": "Raw"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Ngôn ngũ"
+      "value": "Idiomas"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "Hệ điều hành"
+      "value": "Sistemas operativos"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "Lượt xem"
+      "value": "Vistas de páxinas"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "Trang"
+      "value": "Páxinas"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Liên kết giới thiệu"
+      "value": "Orixes"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Khách truy cập một lần"
+      "value": "Visitas únicas"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "Xem"
+      "value": "Visualizacións"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "Khách"
+      "value": "Visitantes"
     }
   ]
 }
