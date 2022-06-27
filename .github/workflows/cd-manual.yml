@@ -1,4 +1,4 @@
-name: Create docker images
+name: Create docker images (manual)
 
 on:
   workflow_dispatch:
@@ -7,10 +7,6 @@ on:
         type: string
         description: Version
         required: true
-      add-latest:
-        type: boolean
-        description: Add latest tag
-        required: false
 
 jobs:
   build:
@@ -28,8 +24,7 @@ jobs:
         name: Build & push Docker image for ${{ matrix.db-type }}
         with:
           image: umami
-          tags: ${{ matrix.db-type }}-${{ inputs.version }}
-          addLatest: ${{ inputs.add-latest }}
+          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io/${{ github.actor }}
           username: ${{ github.actor }}
