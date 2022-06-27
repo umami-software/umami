@@ -14,7 +14,7 @@ import useFetch from 'hooks/useFetch';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
-import { TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
+import { SHARE_TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
 function mergeData(state, data, time) {
@@ -38,7 +38,7 @@ export default function RealtimeDashboard() {
     params: { start_at: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
-    headers: { [TOKEN_HEADER]: init?.token },
+    headers: { [SHARE_TOKEN_HEADER]: init?.token },
   });
 
   const renderCountryName = useCallback(

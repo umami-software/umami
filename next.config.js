@@ -3,9 +3,14 @@ const pkg = require('./package.json');
 
 module.exports = {
   env: {
-    VERSION: pkg.version,
+    currentVersion: pkg.version,
+    loginDisabled: process.env.DISABLE_LOGIN,
+    updatesDisabled: process.env.DISABLE_UPDATES,
   },
   basePath: process.env.BASE_PATH,
+  experimental: {
+    outputStandalone: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

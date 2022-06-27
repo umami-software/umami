@@ -32,7 +32,9 @@ export default function Dashboard() {
   return (
     <Page>
       <PageHeader>
-        <div>Dashboard</div>
+        <div>
+          <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
+        </div>
         <DashboardSettingsButton />
       </PageHeader>
       <WebsiteList websites={data} showCharts={showCharts} limit={max} />

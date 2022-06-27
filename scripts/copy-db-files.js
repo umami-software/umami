@@ -1,8 +1,9 @@
 require('dotenv').config();
-const fs = require('fs');
+const fse = require('fs-extra');
 const path = require('path');
+const del = require('del');
 
-function getDatabase() {
+function getDatabaseType() {
   const type =
     process.env.DATABASE_TYPE ||
     (process.env.DATABASE_URL && process.env.DATABASE_URL.split(':')[0]);
@@ -14,7 +15,7 @@ function getDatabase() {
   return type;
 }
 
-const databaseType = getDatabase();
+const databaseType = getDatabaseType();
 
 if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
   throw new Error('Missing or invalid database');
@@ -22,9 +23,11 @@ if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
 
 console.log(`Database type detected: ${databaseType}`);
 
-const src = path.resolve(__dirname, `../prisma/schema.${databaseType}.prisma`);
-const dest = path.resolve(__dirname, '../prisma/schema.prisma');
+const src = path.resolve(__dirname, `../db/${databaseType}`);
+const dest = path.resolve(__dirname, '../prisma');
 
-fs.copyFileSync(src, dest);
+del.sync(dest);
+
+fse.copySync(src, dest);
 
 console.log(`Copied ${src} to ${dest}`);
