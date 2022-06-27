@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 import usePageQuery from 'hooks/usePageQuery';
+import { safeDecodeURI } from 'lib/url';
 import Icon from './Icon';
 import External from 'assets/arrow-up-right-from-square.svg';
 import styles from './FilterLink.module.css';
@@ -20,7 +21,7 @@ export default function FilterLink({ id, value, label, externalUrl }) {
             [styles.active]: active && selected,
           })}
         >
-          {label || value}
+          {safeDecodeURI(label || value)}
         </a>
       </Link>
       {externalUrl && (

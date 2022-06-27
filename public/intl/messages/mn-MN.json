@@ -38,7 +38,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Бүх цаг үеийн"
     }
   ],
   "label.all-websites": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Хэл"
     }
   ],
   "label.last-days": [
@@ -250,7 +250,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Эзэмшигч"
     }
   ],
   "label.password": [
@@ -304,7 +304,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Тоон үзүүлэлтийг дахин эхлүүлэх"
     }
   ],
   "label.save": [
@@ -334,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Загвар"
     }
   ],
   "label.this-month": [
@@ -588,7 +588,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Энэ вебийн бүх тоон үзүүлэлтүүдийг устгах болно. Гэхдээ мөрдөх код хэвэндээ үлдэнэ."
     }
   ],
   "message.save-success": [
@@ -610,7 +610,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Графикийг харуулах/нуух"
     }
   ],
   "message.track-stats": [
@@ -746,7 +746,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Хэл"
     }
   ],
   "metrics.operating-systems": [

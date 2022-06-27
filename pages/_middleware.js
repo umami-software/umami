@@ -15,12 +15,6 @@ function customScriptName(req) {
   }
 }
 
-function disableLogin(req) {
-  if (process.env.DISABLE_LOGIN && req.nextUrl.pathname.endsWith('/login')) {
-    return new Response('Login is disabled', { status: 403 });
-  }
-}
-
 function forceSSL(req, res) {
   if (process.env.FORCE_SSL && req.nextUrl.protocol === 'http:') {
     res.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
@@ -30,7 +24,7 @@ function forceSSL(req, res) {
 }
 
 export function middleware(req) {
-  const fns = [customScriptName, disableLogin];
+  const fns = [customScriptName];
 
   for (const fn of fns) {
     const res = fn(req);

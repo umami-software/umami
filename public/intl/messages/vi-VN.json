@@ -20,7 +20,7 @@
   "label.administrator": [
     {
       "type": 0,
-      "value": "Quản Trị"
+      "value": "Quản trị"
     }
   ],
   "label.all": [
@@ -32,19 +32,19 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "Tất cả events"
+      "value": "Tất cả sự kiện"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Toàn thời gian"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Tất cả websites"
+      "value": "Tất cả website"
     }
   ],
   "label.back": [
@@ -104,7 +104,7 @@
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Phạm vi ngày mặc định"
+      "value": "Khoảng thời gian mặc định"
     }
   ],
   "label.delete": [
@@ -242,7 +242,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Chủ nhân"
     }
   ],
   "label.password": [
@@ -590,7 +590,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Bật/tắt biểu đồ"
     }
   ],
   "message.track-stats": [
@@ -730,7 +730,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Ngôn ngũ"
     }
   ],
   "metrics.operating-systems": [
@@ -760,7 +760,7 @@
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Khách truy cập duy nhất"
+      "value": "Khách truy cập một lần"
     }
   ],
   "metrics.views": [
