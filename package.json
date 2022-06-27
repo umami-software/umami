@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-tracker build-geo build-db build-app",
+    "build": "npm-run-all build-tracker build-checkdb build-geo build-db build-app",
     "start": "npm-run-all check-db start-next",
     "start-docker": "npm-run-all check-db start-server",
     "start-env": "node -r dotenv/config scripts/start-env.js",
@@ -19,6 +19,7 @@
     "start-next": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
+    "build-checkdb": "rollup -c rollup.checkdb.config.js",
     "build-db": "npm-run-all copy-db-files build-db-client",
     "build-lang": "npm-run-all format-lang compile-lang",
     "build-geo": "node scripts/build-geo.js",
@@ -102,6 +103,8 @@
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
     "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-commonjs": "^22.0.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "@svgr/webpack": "^6.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",

@@ -1,8 +1,9 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
+dotenv.config();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const chalk = require('chalk');
-const spawn = require('cross-spawn');
+import chalk from 'chalk';
+import spawn from 'cross-spawn';
 
 let message = '';
 const updateMessage = `To update your database, you need to run:\n${chalk.bold.whiteBright(

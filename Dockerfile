@@ -25,7 +25,6 @@ ENV DISABLE_LOGIN $DISABLE_LOGIN
 ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN yarn build
-
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner
 WORKDIR /app
@@ -36,8 +35,10 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-RUN yarn global add prisma
+RUN yarn global add prisma @prisma/client npm-run-all
 
+# Copy Scripts to the production
+COPY --from=builder /app/scripts/check-db-bundle.js ./scripts/check-db.js
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
