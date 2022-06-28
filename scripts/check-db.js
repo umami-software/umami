@@ -59,7 +59,7 @@ async function run(cmd, args) {
 async function checkMigrations() {
   const output = await run('prisma', ['migrate', 'status']);
 
-  const missingMigrations = output.includes('Following migration have not yet been applied');
+  const missingMigrations = output.includes('have not yet been applied');
   const notManaged = output.includes('The current database is not managed');
 
   if (notManaged || missingMigrations) {
