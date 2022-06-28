@@ -3,13 +3,9 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
+const { execSync } = require('child_process');
 
 let message = '';
-const updateMessage = `To update your database, you need to run:\n${chalk.bold.whiteBright(
-  'yarn update-db',
-)}`;
-const baselineMessage = cmd =>
-  `You need to update your database by running:\n${chalk.bold.whiteBright(cmd)}`;
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
@@ -39,9 +35,9 @@ async function checkTables() {
 
     success('Database tables found.');
   } catch (e) {
-    message = updateMessage;
+    console.log('Adding tables...');
 
-    throw new Error('Database tables not found.');
+    console.log(execSync('prisma migrate deploy').toString());
   }
 }
 
@@ -66,16 +62,10 @@ async function checkMigrations() {
   const missingMigrations = output.includes('Following migration have not yet been applied');
   const notManaged = output.includes('The current database is not managed');
 
-  if (notManaged) {
-    const cmd = output.match(/yarn prisma migrate resolve --applied ".*"/g);
+  if (notManaged || missingMigrations) {
+    console.log('Running update...');
 
-    message = baselineMessage(cmd[0]);
-
-    throw new Error('Database is out of date.');
-  } else if (missingMigrations) {
-    message = updateMessage;
-
-    throw new Error('Database is out of date.');
+    console.log(execSync('prisma migrate resolve --applied "01_init"').toString());
   }
 
   success('Database is up to date.');
