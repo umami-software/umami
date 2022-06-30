@@ -26,6 +26,6 @@ jobs:
           image: umami
           tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
-          registry: ghcr.io
-          username: ${{ secrets.GHCR_USERNAME }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          registry: ghcr.io/${{ github.repository_owner }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
