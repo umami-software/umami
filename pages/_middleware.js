@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 function customCollectEndpoint(req) {
-  const collectEndpoint = process.env.API_COLLECT_ENDPOINT;
+  const collectEndpoint = process.env.COLLECT_API_ENDPOINT;
 
   if (collectEndpoint) {
     const url = req.nextUrl.clone();

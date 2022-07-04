@@ -10,7 +10,7 @@ export default {
   },
   plugins: [
     replace({
-      '/api/collect': process.env.API_COLLECT_ENDPOINT || '/api/collect',
+      '/api/collect': process.env.COLLECT_API_ENDPOINT || '/api/collect',
       delimiters: ['', ''],
     }),
     buble({ objectAssign: true }),
