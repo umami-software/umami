@@ -8,7 +8,7 @@ import RefreshButton from 'components/common/RefreshButton';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import Favicon from 'components/common/Favicon';
 import ActiveUsers from './ActiveUsers';
-import Arrow from 'assets/arrow-right.svg';
+import Arrow from 'assets/arrow-right';
 import styles from './WebsiteHeader.module.css';
 
 export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {

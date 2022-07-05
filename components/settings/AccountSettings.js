@@ -12,11 +12,11 @@ import AccountEditForm from 'components/forms/AccountEditForm';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import DeleteForm from 'components/forms/DeleteForm';
 import useFetch from 'hooks/useFetch';
-import Pen from 'assets/pen.svg';
-import Plus from 'assets/plus.svg';
-import Trash from 'assets/trash.svg';
-import Check from 'assets/check.svg';
-import LinkIcon from 'assets/external-link.svg';
+import Pen from 'assets/pen';
+import Plus from 'assets/plus';
+import Trash from 'assets/trash';
+import Check from 'assets/check';
+import LinkIcon from 'assets/external-link';
 import styles from './AccountSettings.module.css';
 
 export default function AccountSettings() {

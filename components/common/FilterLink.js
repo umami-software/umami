@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import usePageQuery from 'hooks/usePageQuery';
 import { safeDecodeURI } from 'lib/url';
 import Icon from './Icon';
-import External from 'assets/arrow-up-right-from-square.svg';
+import External from 'assets/arrow-up-right-from-square';
 import styles from './FilterLink.module.css';
 
 export default function FilterLink({ id, value, label, externalUrl }) {

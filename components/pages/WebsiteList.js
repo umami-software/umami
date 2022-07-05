@@ -3,7 +3,7 @@ import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import Arrow from 'assets/arrow-right.svg';
+import Arrow from 'assets/arrow-right';
 import styles from './WebsiteList.module.css';
 
 export default function WebsiteList({ websites, showCharts, limit }) {

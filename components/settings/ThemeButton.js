@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTransition, animated } from 'react-spring';
 import useTheme from 'hooks/useTheme';
-import Sun from 'assets/sun.svg';
-import Moon from 'assets/moon.svg';
+import Sun from 'assets/sun';
+import Moon from 'assets/moon';
 import styles from './ThemeButton.module.css';
 import Icon from '../common/Icon';
 

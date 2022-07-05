@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { useRouter } from 'next/router';
 import MenuButton from 'components/common/MenuButton';
 import Icon from 'components/common/Icon';
-import User from 'assets/user.svg';
+import User from 'assets/user';
 import styles from './UserButton.module.css';
 import { removeItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';

@@ -1,6 +1,6 @@
 import Button from 'components/common/Button';
-import XMark from 'assets/xmark.svg';
-import Bars from 'assets/bars.svg';
+import XMark from 'assets/xmark';
+import Bars from 'assets/bars';
 import { useState } from 'react';
 import styles from './HamburgerButton.module.css';
 import MobileMenu from './MobileMenu';

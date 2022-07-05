@@ -13,7 +13,7 @@ import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Icon from 'components/common/Icon';
 import useFetch from 'hooks/useFetch';
 import useUser from 'hooks/useUser';
-import ChevronDown from 'assets/chevron-down.svg';
+import ChevronDown from 'assets/chevron-down';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import Button from 'components/common/Button';
-import Times from 'assets/times.svg';
+import Times from 'assets/times';
 import styles from './FilterTags.module.css';
 
 export default function FilterTags({ params, onClick }) {

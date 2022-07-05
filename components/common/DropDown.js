@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from './Menu';
 import useDocumentClick from 'hooks/useDocumentClick';
-import Chevron from 'assets/chevron-down.svg';
+import Chevron from 'assets/chevron-down';
 import styles from './Dropdown.module.css';
 import Icon from './Icon';
 

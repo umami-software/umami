@@ -8,7 +8,7 @@ import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
-import Arrow from 'assets/arrow-right.svg';
+import Arrow from 'assets/arrow-right';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';

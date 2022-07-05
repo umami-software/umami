@@ -6,7 +6,7 @@ import Modal from 'components/common/Modal';
 import Toast from 'components/common/Toast';
 import ChangePasswordForm from 'components/forms/ChangePasswordForm';
 import TimezoneSetting from 'components/settings/TimezoneSetting';
-import Dots from 'assets/ellipsis-h.svg';
+import Dots from 'assets/ellipsis-h';
 import styles from './ProfileSettings.module.css';
 import DateRangeSetting from './DateRangeSetting';
 import useEscapeKey from 'hooks/useEscapeKey';

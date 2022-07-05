@@ -2,7 +2,7 @@ import React from 'react';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';
-import Globe from 'assets/globe.svg';
+import Globe from 'assets/globe';
 import styles from './LanguageButton.module.css';
 
 export default function LanguageButton() {

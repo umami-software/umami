@@ -21,8 +21,8 @@ import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
 import { chunk } from 'lib/array';
 import { getDateLocale } from 'lib/lang';
-import Chevron from 'assets/chevron-down.svg';
-import Cross from 'assets/times.svg';
+import Chevron from 'assets/chevron-down';
+import Cross from 'assets/times';
 import styles from './Calendar.module.css';
 import Icon from './Icon';
 

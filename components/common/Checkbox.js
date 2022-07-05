@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Icon from 'components/common/Icon';
-import Check from 'assets/check.svg';
+import Check from 'assets/check';
 import styles from './Checkbox.module.css';
 
 function Checkbox({ name, value, label, onChange }) {

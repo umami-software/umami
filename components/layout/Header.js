@@ -8,7 +8,7 @@ import ThemeButton from 'components/settings/ThemeButton';
 import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
-import Logo from 'assets/logo.svg';
+import Logo from 'assets/logo';
 import styles from './Header.module.css';
 import useUser from 'hooks/useUser';
 import { HOMEPAGE_URL } from 'lib/constants';

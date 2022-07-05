@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import { useSpring, animated } from 'react-spring';
 import Icon from 'components/common/Icon';
-import Close from 'assets/times.svg';
+import Close from 'assets/times';
 import styles from './Toast.module.css';
 
 function Toast({ message, timeout = 3000, onClose }) {

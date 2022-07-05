@@ -7,7 +7,7 @@ import DropDown from './DropDown';
 import DatePickerForm from 'components/forms/DatePickerForm';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
-import Calendar from 'assets/calendar-alt.svg';
+import Calendar from 'assets/calendar-alt';
 import Icon from './Icon';
 
 export const filterOptions = [

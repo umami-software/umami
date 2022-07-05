@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import Button from 'components/common/Button';
 import useTheme from 'hooks/useTheme';
-import Sun from 'assets/sun.svg';
-import Moon from 'assets/moon.svg';
+import Sun from 'assets/sun';
+import Moon from 'assets/moon';
 import styles from './ThemeSetting.module.css';
 
 export default function ThemeSetting() {

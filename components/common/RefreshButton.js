@@ -4,8 +4,8 @@ import { FormattedMessage } from 'react-intl';
 import useStore from 'store/queries';
 import { setDateRange } from 'store/websites';
 import Button from './Button';
-import Refresh from 'assets/redo.svg';
-import Dots from 'assets/ellipsis-h.svg';
+import Refresh from 'assets/redo';
+import Dots from 'assets/ellipsis-h';
 import useDateRange from 'hooks/useDateRange';
 
 function RefreshButton({ websiteId }) {

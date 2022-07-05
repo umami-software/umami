@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Link from './Link';
 import Button from './Button';
-import XMark from 'assets/xmark.svg';
+import XMark from 'assets/xmark';
 import styles from './MobileMenu.module.css';
 
 export default function MobileMenu({ items = [], onClose }) {

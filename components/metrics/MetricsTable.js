@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
 import useFetch from 'hooks/useFetch';
-import Arrow from 'assets/arrow-right.svg';
+import Arrow from 'assets/arrow-right';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
