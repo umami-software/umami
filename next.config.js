@@ -1,3 +1,5 @@
+process.title = 'Umami (NextJS)';
+
 require('dotenv').config();
 const pkg = require('./package.json');
 
