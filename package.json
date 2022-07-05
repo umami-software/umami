@@ -101,6 +101,7 @@
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
     "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-replace": "^4.0.0",
     "@svgr/webpack": "^6.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
