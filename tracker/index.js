@@ -43,21 +43,6 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Collect metrics */
 
-  const post = (url, data, callback) => {
-    const req = new XMLHttpRequest();
-    req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
-    if (cache) req.setRequestHeader('x-umami-cache', cache);
-
-    req.onreadystatechange = () => {
-      if (req.readyState === 4) {
-        callback(req.response);
-      }
-    };
-
-    req.send(JSON.stringify(data));
-  };
-
   const getPayload = () => ({
     website,
     hostname,
@@ -73,17 +58,22 @@ import { removeTrailingSlash } from '../lib/url';
     return a;
   };
 
-  const collect = (type, payload) => {
+  const collect = (type, payload, persist = false) => {
     if (trackingDisabled()) return;
-
-    post(
-      `${root}/api/collect`,
-      {
-        type,
-        payload,
-      },
-      res => (cache = res),
-    );
+    const endpoint = `${root}/api/collect`;
+    let headers = { 'Content-Type': 'application/json' };
+    if (cache) headers['x-umami-cache'] = cache;
+    let options = {
+      method: 'POST',
+      body: JSON.stringify({type, payload}),
+      headers
+    };
+    if (!persist) {
+      fetch(endpoint, options).then(res => res.text()).then(resText => { cache = resText });
+    } else {
+      options['keepalive'] = true;
+      fetch(endpoint, options);
+    }
   };
 
   const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
@@ -93,7 +83,7 @@ import { removeTrailingSlash } from '../lib/url';
         website: uuid,
         url,
         referrer,
-      }),
+      })
     );
   };
 
@@ -105,28 +95,21 @@ import { removeTrailingSlash } from '../lib/url';
         url,
         event_type,
         event_value,
-      }),
+      })
     );
   };
 
   /* Handle events */
 
-  const sendEvent = (value, type) => {
-    const payload = getPayload();
-
-    payload.event_type = type;
-    payload.event_value = value;
-
-    const data = JSON.stringify({
-      type: 'event',
-      payload,
-    });
-
-    fetch(`${root}/api/collect`, {
-      method: 'POST',
-      body: data,
-      keepalive: true,
-    });
+  const sendEvent = (event_value, event_type) => {
+    collect(
+      'event',
+      assign(getPayload(), {
+        event_type,
+        event_value,
+      }),
+      true
+    );
   };
 
   const addEvents = node => {
