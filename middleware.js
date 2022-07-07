@@ -1,5 +1,9 @@
 import { NextResponse } from 'next/server';
 
+export const config = {
+  matcher: '/:path*',
+};
+
 function customCollectEndpoint(req) {
   const collectEndpoint = process.env.COLLECT_API_ENDPOINT;
 
@@ -37,7 +41,7 @@ function forceSSL(req, res) {
   return res;
 }
 
-export function middleware(req) {
+export default function middleware(req) {
   const fns = [customCollectEndpoint, customScriptName];
 
   for (const fn of fns) {
