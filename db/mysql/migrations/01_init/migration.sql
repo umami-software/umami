@@ -9,7 +9,7 @@ CREATE TABLE `account` (
 
     UNIQUE INDEX `username`(`username`),
     PRIMARY KEY (`user_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `event` (
@@ -25,7 +25,7 @@ CREATE TABLE `event` (
     INDEX `event_session_id_idx`(`session_id`),
     INDEX `event_website_id_idx`(`website_id`),
     PRIMARY KEY (`event_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `pageview` (
@@ -42,7 +42,7 @@ CREATE TABLE `pageview` (
     INDEX `pageview_website_id_idx`(`website_id`),
     INDEX `pageview_website_id_session_id_created_at_idx`(`website_id`, `session_id`, `created_at`),
     PRIMARY KEY (`view_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `session` (
@@ -62,7 +62,7 @@ CREATE TABLE `session` (
     INDEX `session_created_at_idx`(`created_at`),
     INDEX `session_website_id_idx`(`website_id`),
     PRIMARY KEY (`session_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `website` (
@@ -78,7 +78,7 @@ CREATE TABLE `website` (
     UNIQUE INDEX `share_id`(`share_id`),
     INDEX `website_user_id_idx`(`user_id`),
     PRIMARY KEY (`website_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
 ALTER TABLE `event` ADD CONSTRAINT `event_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `session`(`session_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
