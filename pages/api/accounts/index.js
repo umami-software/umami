@@ -1,4 +1,4 @@
-import { getAccounts } from 'lib/queries';
+import { getAccounts } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { ok, unauthorized, methodNotAllowed } from 'lib/response';
 

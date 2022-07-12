@@ -1,4 +1,4 @@
-import { updateWebsite, createWebsite, getWebsiteById } from 'lib/queries';
+import { updateWebsite, createWebsite, getWebsiteById } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { uuid, getRandomChars } from 'lib/crypto';
 import { ok, unauthorized, methodNotAllowed } from 'lib/response';
