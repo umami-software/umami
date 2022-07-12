@@ -1,4 +1,4 @@
-import { getDateQuery, getFilterQuery, rawQuery } from 'queries';
+import { getDateQuery, getFilterQuery, rawQuery } from 'lib/queries';
 
 export function getEventMetrics(
   website_id,

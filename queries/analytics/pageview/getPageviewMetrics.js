@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery } from 'queries';
+import { parseFilters, rawQuery } from 'lib/queries';
 
 export function getPageviewMetrics(website_id, start_at, end_at, field, table, filters = {}) {
   const params = [website_id, start_at, end_at];

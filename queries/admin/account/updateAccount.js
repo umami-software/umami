@@ -1,4 +1,4 @@
-import { runQuery } from 'queries';
+import { runQuery } from 'lib/queries';
 import prisma from 'lib/db';
 
 export async function updateAccount(user_id, data) {

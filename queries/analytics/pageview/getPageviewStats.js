@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery, getDateQuery } from 'queries';
+import { parseFilters, rawQuery, getDateQuery } from 'lib/queries';
 
 export function getPageviewStats(
   website_id,

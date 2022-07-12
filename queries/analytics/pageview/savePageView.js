@@ -1,4 +1,4 @@
-import { runQuery } from 'queries';
+import { runQuery } from 'lib/queries';
 import prisma from 'lib/db';
 import { URL_LENGTH } from 'lib/constants';
 
