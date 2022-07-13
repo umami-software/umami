@@ -8,9 +8,7 @@ module.exports = {
     updatesDisabled: process.env.DISABLE_UPDATES,
   },
   basePath: process.env.BASE_PATH,
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },

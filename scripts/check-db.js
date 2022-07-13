@@ -1,11 +1,10 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
 const chalk = require('chalk');
 const spawn = require('cross-spawn');
 const { execSync } = require('child_process');
 
-let message = '';
+const prisma = new PrismaClient();
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
@@ -59,7 +58,7 @@ async function run(cmd, args) {
 async function checkMigrations() {
   const output = await run('prisma', ['migrate', 'status']);
 
-  const missingMigrations = output.includes('Following migration have not yet been applied');
+  const missingMigrations = output.includes('have not yet been applied');
   const notManaged = output.includes('The current database is not managed');
 
   if (notManaged || missingMigrations) {
@@ -82,7 +81,6 @@ async function checkMigrations() {
     } finally {
       await prisma.$disconnect();
       if (err) {
-        console.log(message);
         process.exit(1);
       }
     }
