@@ -1,7 +1,7 @@
 const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
-import { savePageView, saveEvent } from 'lib/queries';
+import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
 import { ok, send, badRequest, forbidden } from 'lib/response';
