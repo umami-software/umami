@@ -1,4 +1,4 @@
-import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'lib/queries';
+import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'queries';
 import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';

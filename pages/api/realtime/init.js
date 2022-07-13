@@ -1,7 +1,7 @@
 import { subMinutes } from 'date-fns';
 import { useAuth } from 'lib/middleware';
 import { ok, methodNotAllowed } from 'lib/response';
-import { getUserWebsites, getRealtimeData } from 'lib/queries';
+import { getUserWebsites, getRealtimeData } from 'queries';
 import { createToken } from 'lib/crypto';
 
 export default async (req, res) => {

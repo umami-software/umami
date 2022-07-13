@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import { getEventMetrics } from 'lib/queries';
+import { getEventMetrics } from 'queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
