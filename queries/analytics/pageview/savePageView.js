@@ -1,5 +1,5 @@
-import { runQuery } from 'lib/queries';
-import prisma from 'lib/db';
+import { prisma, runQuery } from 'lib/db';
+
 import { URL_LENGTH } from 'lib/constants';
 
 export async function savePageView(website_id, session_id, url, referrer) {

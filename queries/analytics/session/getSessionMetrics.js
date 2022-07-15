@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery } from 'lib/queries';
+import { parseFilters, rawQuery } from 'lib/db';
 
 export function getSessionMetrics(website_id, start_at, end_at, field, filters = {}) {
   const params = [website_id, start_at, end_at];

@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery, getDateQuery, getTimestampInterval } from 'lib/queries';
+import { parseFilters, rawQuery, getDateQuery, getTimestampInterval } from 'lib/db';
 
 export function getWebsiteStats(website_id, start_at, end_at, filters = {}) {
   const params = [website_id, start_at, end_at];

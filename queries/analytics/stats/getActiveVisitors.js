@@ -1,4 +1,4 @@
-import { rawQuery } from 'lib/queries';
+import { rawQuery } from 'lib/db';
 import { subMinutes } from 'date-fns';
 
 export function getActiveVisitors(website_id) {
