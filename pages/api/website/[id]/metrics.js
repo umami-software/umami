@@ -3,7 +3,7 @@ import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
 
-const sessionColumns = ['browser', 'os', 'device', 'country', 'language'];
+const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
 const pageviewColumns = ['url', 'referrer'];
 
 function getTable(type) {
