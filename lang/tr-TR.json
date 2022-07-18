@@ -106,5 +106,6 @@
   "metrics.referrers": "Yönlendirenler",
   "metrics.unique-visitors": "Tekil kullanıcı",
   "metrics.views": "Görüntüleme",
-  "metrics.visitors": "Ziyaretçi"
+  "metrics.visitors": "Ziyaretçi",
+  "metrics.screens": "Ekranlar"
 }
