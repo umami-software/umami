@@ -773,6 +773,12 @@
       "value": "Referrer"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Bildschirmauflösungen"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,

@@ -106,5 +106,6 @@
   "metrics.referrers": "Referrer",
   "metrics.unique-visitors": "Eindeutige Besucher",
   "metrics.views": "Aufrufe",
-  "metrics.visitors": "Besucher"
+  "metrics.visitors": "Besucher",
+  "metrics.screens": "Bildschirmauflösungen"
 }

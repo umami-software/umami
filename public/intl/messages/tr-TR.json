@@ -737,6 +737,12 @@
       "value": "Yönlendirenler"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Ekranlar"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,
