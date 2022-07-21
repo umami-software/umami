@@ -1,4 +1,4 @@
-import { getAccountById, updateAccount } from 'lib/queries';
+import { getAccountById, updateAccount } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'lib/response';
 import { checkPassword, hashPassword } from 'lib/crypto';

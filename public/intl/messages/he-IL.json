@@ -239,6 +239,12 @@
       "value": "סיסמה חדשה"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -708,13 +714,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "משותף"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "דומיין בלבד"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -751,6 +751,12 @@
     {
       "type": 0,
       "value": "מפנים"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

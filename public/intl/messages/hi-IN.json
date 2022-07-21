@@ -247,6 +247,12 @@
       "value": "नया पासवर्ड"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -716,13 +722,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "संयुक्त"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "केवल डोमेन"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -759,6 +759,12 @@
     {
       "type": 0,
       "value": "सन्दर्भदाता"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

@@ -247,6 +247,12 @@
       "value": "Yeni parola"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -692,13 +698,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Birleşik"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Yalnızca alan adı"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -735,6 +735,12 @@
     {
       "type": 0,
       "value": "Yönlendirenler"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Ekranlar"
     }
   ],
   "metrics.unique-visitors": [

@@ -3,12 +3,12 @@ import { FormattedMessage } from 'react-intl';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import useStore, { checkVersion } from 'store/version';
 import { setItem } from 'lib/web';
-import { VERSION_CHECK, VERSION_URL } from 'lib/constants';
+import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import Button from './Button';
 import styles from './UpdateNotice.module.css';
 
 export default function UpdateNotice() {
-  const { latest, checked, hasUpdate } = useStore();
+  const { latest, checked, hasUpdate, releaseUrl } = useStore();
   const [dismissed, setDismissed] = useState(false);
 
   const updateCheck = useCallback(() => {
@@ -18,7 +18,7 @@ export default function UpdateNotice() {
   function handleViewClick() {
     updateCheck();
     setDismissed(true);
-    location.href = VERSION_URL;
+    location.href = releaseUrl || REPO_URL;
   }
 
   function handleDismissClick() {

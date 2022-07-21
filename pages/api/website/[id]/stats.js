@@ -1,4 +1,4 @@
-import { getWebsiteStats } from 'lib/queries';
+import { getWebsiteStats } from 'queries';
 import { methodNotAllowed, ok, unauthorized } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
@@ -41,7 +41,7 @@ export default async (req, res) => {
     const stats = Object.keys(metrics[0]).reduce((obj, key) => {
       obj[key] = {
         value: Number(metrics[0][key]) || 0,
-        change: Number(metrics[0][key] - prevPeriod[0][key]) || 0,
+        change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
       };
       return obj;
     }, {});

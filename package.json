@@ -1,13 +1,13 @@
 {
   "name": "umami",
-  "version": "1.33.1",
+  "version": "1.34.0",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
   "homepage": "https://umami.is",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mikecao/umami.git"
+    "url": "https://github.com/umami-software/umami.git"
   },
   "scripts": {
     "dev": "next dev",
@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@fontsource/inter": "4.5.7",
-    "@prisma/client": "3.15.2",
+    "@prisma/client": "4.1.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.1",
     "chart.js": "^2.9.4",
@@ -79,8 +79,8 @@
     "jose": "2.0.5",
     "maxmind": "^4.3.6",
     "moment-timezone": "^0.5.33",
-    "next": "12.1.0",
-    "node-fetch": "^3.2.3",
+    "next": "^12.2.0",
+    "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.0",
@@ -101,10 +101,11 @@
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
     "@rollup/plugin-buble": "^0.21.3",
+    "@rollup/plugin-replace": "^4.0.0",
     "@svgr/webpack": "^6.2.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
-    "eslint-config-next": "^12.0.1",
+    "eslint-config-next": "^12.2.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "extract-react-intl-messages": "^4.1.1",
@@ -116,7 +117,7 @@
     "postcss-preset-env": "7.4.3",
     "postcss-rtlcss": "^3.6.1",
     "prettier": "^2.6.2",
-    "prisma": "3.15.2",
+    "prisma": "4.1.0",
     "prompts": "2.4.2",
     "rollup": "^2.70.1",
     "rollup-plugin-terser": "^7.0.2",

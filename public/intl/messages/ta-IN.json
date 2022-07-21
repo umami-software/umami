@@ -247,6 +247,12 @@
       "value": "புதிய கடவுச்சொல்"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -720,13 +726,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "ஒருங்கிணைந்த"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "கள முகவரி மட்டும்"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -763,6 +763,12 @@
     {
       "type": 0,
       "value": "குறிப்பிடுவோர்"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

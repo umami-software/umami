@@ -1,9 +1,9 @@
-import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'lib/queries';
+import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'queries';
 import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
 
-const sessionColumns = ['browser', 'os', 'device', 'country', 'language'];
+const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
 const pageviewColumns = ['url', 'referrer'];
 
 function getTable(type) {
@@ -69,7 +69,7 @@ export default async (req, res) => {
     if (pageviewColumns.includes(type) || type === 'event') {
       let domain;
       if (type === 'referrer') {
-        const website = getWebsiteById(websiteId);
+        const website = await getWebsiteById(websiteId);
 
         if (!website) {
           return badRequest(res);
@@ -80,17 +80,18 @@ export default async (req, res) => {
 
       const column = getColumn(type);
       const table = getTable(type);
-
-      const data = await getPageviewMetrics(websiteId, startDate, endDate, column, table, {
+      const filters = {
         domain,
         url: type !== 'url' && table !== 'event' ? url : undefined,
-        referrer: type !== 'referrer' ? referrer : undefined,
+        referrer: type !== 'referrer' ? referrer : true,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
         event_url: type !== 'url' && table === 'event' ? url : undefined,
-      });
+      };
+
+      const data = await getPageviewMetrics(websiteId, startDate, endDate, column, table, filters);
 
       return ok(res, data);
     }

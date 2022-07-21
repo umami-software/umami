@@ -251,6 +251,12 @@
       "value": "نیا پاس ورڈ"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -728,13 +734,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "مشترکہ"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "صرف ڈومین"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -771,6 +771,12 @@
     {
       "type": 0,
       "value": "بھیجنے والے"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

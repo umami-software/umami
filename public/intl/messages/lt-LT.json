@@ -352,6 +352,12 @@
       "value": "Naujas slaptažodis"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -853,13 +859,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Kombinuoti"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Tik domenas"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -896,6 +896,12 @@
     {
       "type": 0,
       "value": "Referrers"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

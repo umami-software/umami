@@ -1,6 +1,6 @@
 import { useAuth } from 'lib/middleware';
 import { ok, methodNotAllowed, badRequest } from 'lib/response';
-import { getRealtimeData } from 'lib/queries';
+import { getRealtimeData } from 'queries';
 import { parseToken } from 'lib/crypto';
 import { SHARE_TOKEN_HEADER } from 'lib/constants';
 

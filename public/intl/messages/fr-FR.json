@@ -239,6 +239,12 @@
       "value": "Nouveau mot de passe"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -724,13 +730,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combiné"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Domaine uniquement"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -767,6 +767,12 @@
     {
       "type": 0,
       "value": "Sources"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

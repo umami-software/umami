@@ -1,4 +1,4 @@
-import { getAllWebsites, getUserWebsites } from 'lib/queries';
+import { getAllWebsites, getUserWebsites } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { ok, methodNotAllowed, unauthorized } from 'lib/response';
 
