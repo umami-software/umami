@@ -19,18 +19,18 @@ export function getPageviewParams(
 
   return rawQuery(
     `select * from (
-        select
-            url, split_part(split_part(url, concat($1, '='), 2), '&', 1) param
-        from
-            pageview
-            ${joinSession}
-            ${pageviewQuery}
-            ${joinSession && sessionQuery}
-            ${eventQuery}
-        where
-            ${table}.website_id=$2 and ${table}.created_at between $3 and $4
-        group by 1, 2
-        order by 2 desc
+      select
+        url, split_part(split_part(url, concat($1, '='), 2), '&', 1) param
+      from
+        pageview
+        ${joinSession}
+      where
+        ${table}.website_id=$2 and ${table}.created_at between $3 and $4
+        ${pageviewQuery}
+        ${joinSession && sessionQuery}
+        ${eventQuery}
+      group by 1, 2
+      order by 2 desc
     ) q
     where q.param <> ''`,
     params,
