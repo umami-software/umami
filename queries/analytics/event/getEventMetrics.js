@@ -1,17 +1,23 @@
+import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import {
+  rawQueryClickhouse,
+  getBetweenDatesClickhouse,
   getDateQuery,
+  getDateQueryClickhouse,
   getDateStringQuery,
   getFilterQuery,
   rawQuery,
   runAnalyticsQuery,
-  clickhouse,
 } from 'lib/db';
 
-export function getEventMetrics(...args) {
-  return runAnalyticsQuery(relationalQuery(...args), clickhouseQuery(...args));
+export async function getEventMetrics(...args) {
+  return runAnalyticsQuery({
+    [`${RELATIONAL}`]: () => relationalQuery(...args),
+    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+  });
 }
 
-function relationalQuery(
+async function relationalQuery(
   website_id,
   start_at,
   end_at,
@@ -38,28 +44,28 @@ function relationalQuery(
   );
 }
 
-function clickhouseQuery(
+async function clickhouseQuery(
   website_id,
   start_at,
   end_at,
-  timezone = 'utc',
+  timezone = 'UTC',
   unit = 'day',
   filters = {},
 ) {
-  const params = [website_id, start_at, end_at];
+  const params = [website_id];
 
-  return clickhouse.query(
+  return rawQueryClickhouse(
     `
     select
       event_value x,
-      ${getDateStringQuery(getDateQuery('created_at', unit, timezone), unit)} t,
+      ${getDateQueryClickhouse('created_at', unit, timezone)} t,
       count(*) y
     from event
-    where website_id=$1
-    and created_at between $2 and $3
-    ${getFilterQuery('event', filters, params)}
-    group by 1, 2
-    order by 2
+    where website_id= $1
+      and ${getBetweenDatesClickhouse('created_at', start_at, end_at)}
+      ${getFilterQuery('event', filters, params)}
+    group by x, t
+    order by t
     `,
     params,
   );
