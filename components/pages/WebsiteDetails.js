@@ -23,6 +23,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './WebsiteDetails.module.css';
 import ScreenTable from 'components/metrics/ScreenTable';
+import UTMTable from 'components/metrics/UTMTable';
 
 const views = {
   url: PagesTable,
@@ -34,6 +35,7 @@ const views = {
   country: CountriesTable,
   language: LanguagesTable,
   event: EventsTable,
+  utm: UTMTable,
 };
 
 export default function WebsiteDetails({ websiteId }) {
@@ -93,6 +95,10 @@ export default function WebsiteDetails({ websiteId }) {
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
       value: resolve({ view: 'event' }),
+    },
+    {
+      label: <FormattedMessage id="metrics.utm" defaultMessage="UTM" />,
+      value: resolve({ view: 'utm' }),
     },
   ];
 
