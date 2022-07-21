@@ -1,16 +1,17 @@
 import { parseFilters, rawQuery } from 'lib/queries';
 
-export function getPageviewMetrics(website_id, start_at, end_at, field, table, filters = {}) {
+export function getPageviewMetrics(website_id, start_at, end_at, column, table, filters = {}) {
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
+    column,
     filters,
     params,
   );
 
   return rawQuery(
     `
-    select ${field} x, count(*) y
+    select ${column} x, count(*) y
     from ${table}
       ${joinSession}
     where ${table}.website_id=$1

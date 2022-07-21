@@ -2,7 +2,12 @@ import { parseFilters, rawQuery, getDateQuery, getTimestampInterval } from 'lib/
 
 export function getWebsiteStats(website_id, start_at, end_at, filters = {}) {
   const params = [website_id, start_at, end_at];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+    'pageview',
+    null,
+    filters,
+    params,
+  );
 
   return rawQuery(
     `

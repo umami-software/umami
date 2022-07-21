@@ -247,6 +247,12 @@
       "value": "New password"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -729,12 +735,6 @@
     {
       "type": 0,
       "value": "Combined"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Domain only"
     }
   ],
   "metrics.filter.raw": [

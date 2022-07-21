@@ -247,6 +247,12 @@
       "value": "Новий пароль"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -704,13 +710,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Об'єднані"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Лише домен"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -747,6 +747,12 @@
     {
       "type": 0,
       "value": "Джерела"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

@@ -239,6 +239,12 @@
       "value": "Kata laluan baru"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -720,13 +726,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Digabungkan"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Domain sahaja"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -763,6 +763,12 @@
     {
       "type": 0,
       "value": "Perujuk"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

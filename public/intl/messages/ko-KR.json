@@ -247,6 +247,12 @@
       "value": "새 비밀번호"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -700,13 +706,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "합쳐서 보기"
-    }
-  ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "도메인만"
+      "value": "Combined"
     }
   ],
   "metrics.filter.raw": [
@@ -743,6 +743,12 @@
     {
       "type": 0,
       "value": "리퍼러"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

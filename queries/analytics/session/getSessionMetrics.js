@@ -2,7 +2,12 @@ import { parseFilters, rawQuery } from 'lib/queries';
 
 export function getSessionMetrics(website_id, start_at, end_at, field, filters = {}) {
   const params = [website_id, start_at, end_at];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+    'pageview',
+    null,
+    filters,
+    params,
+  );
 
   return rawQuery(
     `
