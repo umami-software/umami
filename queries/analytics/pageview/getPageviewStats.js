@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery, getDateQuery, getDateStringQuery } from 'lib/queries';
+import { parseFilters, rawQuery, getDateQuery } from 'lib/queries';
 
 export function getPageviewStats(
   website_id,
@@ -20,7 +20,7 @@ export function getPageviewStats(
   return rawQuery(
     `
     select
-      ${getDateStringQuery('g.t', unit)} as t, 
+      g.t as t, 
       g.y as y
     from
       (select ${getDateQuery('pageview.created_at', unit, timezone)} t,

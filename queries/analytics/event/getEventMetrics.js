@@ -1,4 +1,4 @@
-import { getDateQuery, getDateStringQuery, getFilterQuery, rawQuery } from 'lib/queries';
+import { getDateQuery, getFilterQuery, rawQuery } from 'lib/queries';
 
 export function getEventMetrics(
   website_id,
@@ -14,7 +14,7 @@ export function getEventMetrics(
     `
     select
       event_value x,
-      ${getDateStringQuery(getDateQuery('created_at', unit, timezone), unit)} t,
+      ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
     where website_id=$1
