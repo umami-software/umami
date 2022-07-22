@@ -37,7 +37,7 @@
   "label.more": "Plus",
   "label.name": "Nom",
   "label.new-password": "Nouveau mot de passe",
-  "label.none": "None",
+  "label.none": "Aucun·e",
   "label.owner": "Propriétaire",
   "label.password": "Mot de passe",
   "label.passwords-dont-match": "Les mots de passe ne correspondent pas",
@@ -104,7 +104,7 @@
   "metrics.page-views": "Pages vues",
   "metrics.pages": "Pages",
   "metrics.referrers": "Sources",
-  "metrics.screens": "Screens",
+  "metrics.screens": "Tailles d'écran",
   "metrics.unique-visitors": "Visiteurs uniques",
   "metrics.views": "Vues",
   "metrics.visitors": "Visiteurs"
