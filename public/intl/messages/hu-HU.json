@@ -734,7 +734,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combined"
+      "value": "Összevont"
     }
   ],
   "metrics.filter.raw": [
