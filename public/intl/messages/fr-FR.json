@@ -242,7 +242,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Aucun·e"
     }
   ],
   "label.owner": [
@@ -730,7 +730,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combined"
+      "value": "Combiné"
     }
   ],
   "metrics.filter.raw": [
@@ -772,7 +772,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Tailles d'écran"
     }
   ],
   "metrics.unique-visitors": [

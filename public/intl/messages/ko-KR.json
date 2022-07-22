@@ -706,7 +706,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combined"
+      "value": "합쳐서 보기"
     }
   ],
   "metrics.filter.raw": [

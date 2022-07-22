@@ -722,7 +722,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combined"
+      "value": "总和"
     }
   ],
   "metrics.filter.raw": [

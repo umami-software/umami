@@ -250,7 +250,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Geen"
     }
   ],
   "label.owner": [
@@ -586,7 +586,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Alle bijhorende statistieken van deze website worden verwijderd, maar jouw volgcode blijft gelden."
     }
   ],
   "message.save-success": [
@@ -734,7 +734,7 @@
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combined"
+      "value": "Gecombineerd"
     }
   ],
   "metrics.filter.raw": [
@@ -776,7 +776,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Schermen"
     }
   ],
   "metrics.unique-visitors": [
