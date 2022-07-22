@@ -1,4 +1,5 @@
-import { parseFilters, rawQuery } from 'lib/queries';
+import { getDatabase, parseFilters, rawQuery } from 'lib/queries';
+import { MYSQL, POSTGRESQL } from 'lib/constants';
 
 export function getPageviewParams(
   param,
@@ -17,10 +18,16 @@ export function getPageviewParams(
     params,
   );
 
+  let splitFn;
+  let db = getDatabase();
+  if (db === MYSQL) splitFn = 'substring_index';
+  if (db === POSTGRESQL) splitFn = 'split_part';
+  if (!splitFn) return Promise.reject(new Error('Unknown database.'));
+
   return rawQuery(
     `select * from (
       select
-        url, split_part(split_part(url, concat($1, '='), 2), '&', 1) param
+        url, ${splitFn}(${splitFn}(url, concat($1, '='), 2), '&', 1) param
       from
         pageview
         ${joinSession}
