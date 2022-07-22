@@ -40,7 +40,6 @@ export default function UTMTable({ websiteId, showFilters, ...props }) {
         type={type}
         metric={formatMessage(messages.views)}
         websiteId={websiteId}
-        updateOnTypeChange
         delay={0}
       />
     </>
