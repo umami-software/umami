@@ -40,14 +40,19 @@ async function relationalQuery(website_id, start_at, end_at, field, filters = {}
 
 async function clickhouseQuery(website_id, start_at, end_at, field, filters = {}) {
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+    'pageview',
+    filters,
+    params,
+    'session_uuid',
+  );
 
   return rawQueryClickhouse(
     `
     select ${field} x, count(*) y
     from session as x
-    where x.session_id in (
-      select pageview.session_id
+    where x.session_uuid in (
+      select pageview.session_uuid
       from pageview
         ${joinSession}
       where pageview.website_id=$1

@@ -26,6 +26,7 @@ async function relationalQuery(
   unit = 'day',
   count = '*',
   filters = {},
+  sessionKey = 'session_id',
 ) {
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
@@ -37,7 +38,7 @@ async function relationalQuery(
       g.y as y
     from
       (select ${getDateQuery('pageview.created_at', unit, timezone)} t,
-        count(${count}) y
+        count(${count != '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
       where pageview.website_id=$1
@@ -59,9 +60,15 @@ async function clickhouseQuery(
   unit = 'day',
   count = '*',
   filters = {},
+  sessionKey = 'session_uuid',
 ) {
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+    'pageview',
+    filters,
+    params,
+    sessionKey,
+  );
 
   return rawQueryClickhouse(
     `
@@ -71,7 +78,7 @@ async function clickhouseQuery(
     from
       (select 
         ${getDateQueryClickhouse('created_at', unit, timezone)} t,
-        count(${count}) y
+        count(${count != '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
       where pageview.website_id= $1

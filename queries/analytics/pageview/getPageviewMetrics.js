@@ -45,6 +45,7 @@ async function clickhouseQuery(website_id, start_at, end_at, field, table, filte
     table,
     filters,
     params,
+    'session_uuid',
   );
 
   return rawQueryClickhouse(

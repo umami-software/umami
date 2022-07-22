@@ -24,7 +24,6 @@ async function clickhouseQuery(session_uuid) {
   return rawQueryClickhouse(
     `
     select 
-      session_id, 
       session_uuid, 
       website_id, 
       created_at, 
@@ -36,7 +35,7 @@ async function clickhouseQuery(session_uuid) {
       "language", 
       country 
     from session
-    where session_id = $1
+    where session_uuid = $1
     `,
     params,
   );
