@@ -106,6 +106,12 @@
   "metrics.referrers": "来源域名",
   "metrics.screens": "屏幕尺寸",
   "metrics.unique-visitors": "独立访客",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "浏览量",
   "metrics.visitors": "访客"
 }

@@ -106,6 +106,12 @@
   "metrics.referrers": "सन्दर्भदाता",
   "metrics.screens": "Screens",
   "metrics.unique-visitors": "अद्वितीय आगंतुकों",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "दृश्य",
   "metrics.visitors": "आगंतुकों"
 }
