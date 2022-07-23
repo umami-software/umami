@@ -1,5 +1,4 @@
-import { runQuery } from 'lib/queries';
-import prisma from 'lib/db';
+import { prisma, runQuery } from 'lib/db';
 
 export async function updateWebsite(website_id, data) {
   return runQuery(
