@@ -31,24 +31,19 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
       select sum(t.c) as "pageviews",
         count(distinct t.session_id) as "uniques",
         sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-        sum(case when m2 < m1 + interval '1 hour' then ${getTimestampInterval(
-          'm2',
-          'm1',
-        )} else 0 end) as "totaltime"
+        sum(t.time) as "totaltime"
       from (
-        select 
-          pageview.session_id,
-          ${getDateQuery('pageview.created_at', 'hour')},
-          count(*) c,
-          min(created_at) m1,
-          max(created_at) m2
-        from pageview
-            ${joinSession}
-        where pageview.website_id=$1
-          and pageview.created_at between $2 and $3
-          ${pageviewQuery}
-          ${sessionQuery}
-        group by 1, 2
+         select pageview.session_id,
+           ${getDateQuery('pageview.created_at', 'hour')},
+           count(*) c,
+           ${getTimestampInterval('pageview.created_at')} as "time"
+         from pageview
+           ${joinSession}
+         where pageview.website_id=$1
+         and pageview.created_at between $2 and $3
+         ${pageviewQuery}
+         ${sessionQuery}
+         group by 1, 2
      ) t
     `,
     params,

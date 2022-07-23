@@ -38,7 +38,7 @@ async function relationalQuery(
   return rawQuery(
     `
       select ${getDateQuery('pageview.created_at', unit, timezone)} t,
-        count(${count != '*' ? `${count}${sessionKey}` : count}) y
+        count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
       where pageview.website_id=$1
@@ -78,7 +78,7 @@ async function clickhouseQuery(
     from
       (select 
         ${getDateQueryClickhouse('created_at', unit, timezone)} t,
-        count(${count != '*' ? `${count}${sessionKey}` : count}) y
+        count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
       where pageview.website_id= $1
