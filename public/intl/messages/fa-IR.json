@@ -247,6 +247,12 @@
       "value": "رمز جدید"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -715,12 +721,6 @@
       "value": "ترکیب شده"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "فقط دامنه"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -755,6 +755,12 @@
     {
       "type": 0,
       "value": "ارجاع دهندگان"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

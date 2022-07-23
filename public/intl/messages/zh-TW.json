@@ -247,6 +247,12 @@
       "value": "新密碼"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -715,12 +721,6 @@
       "value": "總和"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "僅域名"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -755,6 +755,12 @@
     {
       "type": 0,
       "value": "指入域名"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

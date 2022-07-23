@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Button from 'components/common/Button';
 import Times from 'assets/times.svg';
+import { safeDecodeURI } from 'lib/url';
 import styles from './FilterTags.module.css';
 
 export default function FilterTags({ params, onClick }) {
@@ -17,7 +18,7 @@ export default function FilterTags({ params, onClick }) {
         return (
           <div key={key} className={styles.tag}>
             <Button icon={<Times />} onClick={() => onClick(key)} variant="action" iconRight>
-              {`${key}: ${params[key]}`}
+              {`${key}: ${safeDecodeURI(params[key])}`}
             </Button>
           </div>
         );

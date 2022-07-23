@@ -16,7 +16,12 @@ export async function getSessionMetrics(...args) {
 
 async function relationalQuery(website_id, start_at, end_at, field, filters = {}) {
   const params = [website_id, start_at, end_at];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+    'pageview',
+    null,
+    filters,
+    params,
+  );
 
   return rawQuery(
     `

@@ -1,12 +1,11 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import {
-  rawQueryClickhouse,
   getBetweenDatesClickhouse,
   getDateQuery,
   getDateQueryClickhouse,
-  getDateStringQuery,
   getFilterQuery,
   rawQuery,
+  rawQueryClickhouse,
   runAnalyticsQuery,
 } from 'lib/db';
 
@@ -31,7 +30,7 @@ async function relationalQuery(
     `
     select
       event_value x,
-      ${getDateStringQuery(getDateQuery('created_at', unit, timezone), unit)} t,
+      ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
     where website_id=$1

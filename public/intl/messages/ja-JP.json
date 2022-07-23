@@ -247,6 +247,12 @@
       "value": "新しいパスワード"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -703,12 +709,6 @@
       "value": "パスまで"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "ドメインのみ"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -743,6 +743,12 @@
     {
       "type": 0,
       "value": "リファラー"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

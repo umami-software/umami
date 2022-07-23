@@ -247,6 +247,12 @@
       "value": "Новый пароль"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -703,12 +709,6 @@
       "value": "Объединенные"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Только домен"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -743,6 +743,12 @@
     {
       "type": 0,
       "value": "Источники"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

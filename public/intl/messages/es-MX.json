@@ -247,6 +247,12 @@
       "value": "Nueva contraseña"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -731,12 +737,6 @@
       "value": "Combinado"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Únicamente dominio"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -771,6 +771,12 @@
     {
       "type": 0,
       "value": "Referentes"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

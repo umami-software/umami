@@ -14,24 +14,25 @@ export async function getPageviewMetrics(...args) {
   });
 }
 
-async function relationalQuery(website_id, start_at, end_at, field, table, filters = {}) {
+async function relationalQuery(website_id, start_at, end_at, column, table, filters = {}) {
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
+    column,
     filters,
     params,
   );
 
   return rawQuery(
     `
-    select ${field} x, count(*) y
+    select ${column} x, count(*) y
     from ${table}
       ${joinSession}
     where ${table}.website_id=$1
-    and ${table}.created_at between $2 and $3
-    ${pageviewQuery}
-    ${joinSession && sessionQuery}
-    ${eventQuery}
+      and ${table}.created_at between $2 and $3
+      ${pageviewQuery}
+      ${joinSession && sessionQuery}
+      ${eventQuery}
     group by 1
     order by 2 desc
     `,
@@ -39,10 +40,11 @@ async function relationalQuery(website_id, start_at, end_at, field, table, filte
   );
 }
 
-async function clickhouseQuery(website_id, start_at, end_at, field, table, filters = {}) {
+async function clickhouseQuery(website_id, start_at, end_at, column, table, filters = {}) {
   const params = [website_id];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
+    column,
     filters,
     params,
     'session_uuid',
@@ -50,7 +52,7 @@ async function clickhouseQuery(website_id, start_at, end_at, field, table, filte
 
   return rawQueryClickhouse(
     `
-    select ${field} x, count(*) y
+    select ${column} x, count(*) y
     from ${table}
       ${joinSession}
     where ${table}.website_id= $1

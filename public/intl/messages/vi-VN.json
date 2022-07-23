@@ -239,6 +239,12 @@
       "value": "Mật khẩu mới"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -715,12 +721,6 @@
       "value": "Kết hợp"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Chỉ tên miền"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -755,6 +755,12 @@
     {
       "type": 0,
       "value": "Liên kết giới thiệu"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [

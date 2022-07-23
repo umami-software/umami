@@ -247,6 +247,12 @@
       "value": "Nieuw wachtwoord"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "Geen"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -580,7 +586,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "Alle bijhorende statistieken van deze website worden verwijderd, maar jouw volgcode blijft gelden."
     }
   ],
   "message.save-success": [
@@ -731,12 +737,6 @@
       "value": "Gecombineerd"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Alleen domein"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -771,6 +771,12 @@
     {
       "type": 0,
       "value": "Verwijzers"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Schermen"
     }
   ],
   "metrics.unique-visitors": [

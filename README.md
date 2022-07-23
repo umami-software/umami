@@ -22,7 +22,7 @@ npm install -g yarn
 ### Get the source code and install packages
 
 ```
-git clone https://github.com/mikecao/umami.git
+git clone https://github.com/umami-software/umami.git
 cd umami
 yarn install
 ```
@@ -32,7 +32,7 @@ yarn install
 Create an `.env` file with the following
 
 ```
-DATABASE_URL=(connection url)
+DATABASE_URL=connection-url
 ```
 
 The connection url is in the following format:
@@ -76,12 +76,12 @@ docker-compose up
 
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 ```bash
-docker pull ghcr.io/mikecao/umami:postgresql-latest
+docker pull docker.umami.is/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 ```bash
-docker pull ghcr.io/mikecao/umami:mysql-latest
+docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates

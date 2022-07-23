@@ -1,16 +1,15 @@
 import create from 'zustand';
 import produce from 'immer';
 import semver from 'semver';
-import { VERSION_CHECK } from 'lib/constants';
+import { VERSION_CHECK, UPDATES_URL } from 'lib/constants';
 import { getItem } from 'lib/web';
-
-const UPDATES_URL = 'https://api.umami.is/v1/updates';
 
 const initialState = {
   current: process.env.currentVersion,
   latest: null,
   hasUpdate: false,
   checked: false,
+  releaseUrl: null,
 };
 
 const store = create(() => ({ ...initialState }));
@@ -37,7 +36,7 @@ export async function checkVersion() {
 
   store.setState(
     produce(state => {
-      const { latest } = data;
+      const { latest, url } = data;
       const lastCheck = getItem(VERSION_CHECK);
 
       const hasUpdate = !!(latest && lastCheck?.version !== latest && semver.gt(latest, current));
@@ -46,6 +45,7 @@ export async function checkVersion() {
       state.latest = latest;
       state.hasUpdate = hasUpdate;
       state.checked = true;
+      state.releaseUrl = url;
 
       return state;
     }),

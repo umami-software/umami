@@ -247,6 +247,12 @@
       "value": "新密码"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -719,12 +725,6 @@
       "value": "总和"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "只看域名"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -734,7 +734,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "语言"
     }
   ],
   "metrics.operating-systems": [
@@ -759,6 +759,12 @@
     {
       "type": 0,
       "value": "来源域名"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [
