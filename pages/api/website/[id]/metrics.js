@@ -2,6 +2,7 @@ import { getPageviewMetrics, getSessionMetrics, getWebsiteById, getPageviewParam
 import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
+import { FILTER_IGNORED } from 'lib/constants';
 
 const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
 const pageviewColumns = ['url', 'referrer'];
@@ -130,7 +131,7 @@ export default async (req, res) => {
       const filters = {
         domain,
         url: type !== 'url' && table !== 'event' ? url : undefined,
-        referrer: type !== 'referrer' ? referrer : true,
+        referrer: type !== 'referrer' && table !== 'event' ? referrer : FILTER_IGNORED,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
