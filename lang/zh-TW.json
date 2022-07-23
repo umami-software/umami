@@ -106,6 +106,12 @@
   "metrics.referrers": "指入域名",
   "metrics.screens": "Screens",
   "metrics.unique-visitors": "獨立訪客",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "頁面流量",
   "metrics.visitors": "獨立訪客"
 }

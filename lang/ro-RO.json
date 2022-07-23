@@ -106,6 +106,12 @@
   "metrics.referrers": "Site-uri de proveniență",
   "metrics.screens": "Screens",
   "metrics.unique-visitors": "Vizitatori unici",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "Vizualizări",
   "metrics.visitors": "Vizitatori"
 }

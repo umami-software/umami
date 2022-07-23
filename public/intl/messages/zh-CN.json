@@ -250,7 +250,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "无"
     }
   ],
   "label.owner": [
@@ -764,13 +764,49 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "屏幕尺寸"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "独立访客"
+    }
+  ],
+  "metrics.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "metrics.utm_campaign": [
+    {
+      "type": 0,
+      "value": "UTM Campaign"
+    }
+  ],
+  "metrics.utm_content": [
+    {
+      "type": 0,
+      "value": "UTM Content"
+    }
+  ],
+  "metrics.utm_medium": [
+    {
+      "type": 0,
+      "value": "UTM Medium"
+    }
+  ],
+  "metrics.utm_source": [
+    {
+      "type": 0,
+      "value": "UTM Source"
+    }
+  ],
+  "metrics.utm_term": [
+    {
+      "type": 0,
+      "value": "UTM Term"
     }
   ],
   "metrics.views": [
