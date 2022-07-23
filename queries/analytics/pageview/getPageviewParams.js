@@ -1,15 +1,14 @@
-import { getDatabase, parseFilters, rawQuery } from 'lib/db';
-import { MYSQL, POSTGRESQL } from 'lib/constants';
+import { getDatabase, parseFilters, rawQuery, runAnalyticsQuery } from 'lib/db';
+import { MYSQL, POSTGRESQL, CLICKHOUSE, RELATIONAL } from 'lib/constants';
 
-export function getPageviewParams(
-  param,
-  website_id,
-  start_at,
-  end_at,
-  column,
-  table,
-  filters = {},
-) {
+export async function getPageviewParams(...args) {
+  return runAnalyticsQuery({
+    [`${RELATIONAL}`]: () => relationalQuery(...args),
+    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+  });
+}
+
+function relationalQuery(param, website_id, start_at, end_at, column, table, filters = {}) {
   const params = [param, website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
@@ -42,4 +41,8 @@ export function getPageviewParams(
     where q.param <> ''`,
     params,
   );
+}
+
+function clickhouseQuery() {
+  return Promise.reject(new Error('Not implemented.'));
 }
