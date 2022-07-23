@@ -19,11 +19,7 @@ export function getPageviewStats(
 
   return rawQuery(
     `
-    select
-      g.t as t, 
-      g.y as y
-    from
-      (select ${getDateQuery('pageview.created_at', unit, timezone)} t,
+      select ${getDateQuery('pageview.created_at', unit, timezone)} t,
         count(${count}) y
       from pageview
         ${joinSession}
@@ -31,8 +27,8 @@ export function getPageviewStats(
       and pageview.created_at between $2 and $3
       ${pageviewQuery}
       ${sessionQuery}
-      group by 1) g
-    order by 1
+      group by 1
+      order by 1
     `,
     params,
   );
