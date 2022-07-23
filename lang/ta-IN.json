@@ -106,6 +106,12 @@
   "metrics.referrers": "குறிப்பிடுவோர்",
   "metrics.screens": "Screens",
   "metrics.unique-visitors": "தனிப்பட்ட பார்வையாளர்கள்",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "பார்வைகள்",
   "metrics.visitors": "பார்வையாளர்கள்"
 }

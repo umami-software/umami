@@ -106,6 +106,12 @@
   "metrics.referrers": "Liên kết giới thiệu",
   "metrics.screens": "Screens",
   "metrics.unique-visitors": "Khách truy cập một lần",
+  "metrics.utm": "UTM",
+  "metrics.utm_campaign": "UTM Campaign",
+  "metrics.utm_content": "UTM Content",
+  "metrics.utm_medium": "UTM Medium",
+  "metrics.utm_source": "UTM Source",
+  "metrics.utm_term": "UTM Term",
   "metrics.views": "Xem",
   "metrics.visitors": "Khách"
 }

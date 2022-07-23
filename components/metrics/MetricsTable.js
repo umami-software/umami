@@ -22,6 +22,7 @@ export default function MetricsTable({
   filterOptions,
   limit,
   onDataLoad,
+  delay = null,
   ...props
 }) {
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
@@ -46,9 +47,9 @@ export default function MetricsTable({
         country,
       },
       onDataLoad,
-      delay: DEFAULT_ANIMATION_DURATION,
+      delay: delay || DEFAULT_ANIMATION_DURATION,
     },
-    [modified, url, referrer, os, browser, device, country],
+    [type, modified, url, referrer, os, browser, device, country],
   );
 
   const filteredData = useMemo(() => {
