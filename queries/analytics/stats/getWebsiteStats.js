@@ -35,7 +35,6 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
           'm2',
           'm1',
         )} else 0 end) as "totaltime"
-        sum(t.time) as "totaltime"
       from (
         select 
           pageview.session_id,
