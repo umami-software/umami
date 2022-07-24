@@ -12,6 +12,7 @@ import { getItem, setItem } from 'lib/web';
 export const defaultDashboardConfig = {
   showCharts: true,
   limit: DEFAULT_WEBSITE_LIMIT,
+  websiteOrdering: {},
 };
 
 const initialState = {
