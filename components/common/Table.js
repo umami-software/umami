@@ -1,3 +1,4 @@
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -13,6 +14,9 @@ function Table({
   rowKey,
   showHeader = true,
   children,
+  isDraggable = false,
+  dragId,
+  onDragEnd,
 }) {
   if (empty && rows.length === 0) {
     return empty;
@@ -36,10 +40,37 @@ function Table({
       <div className={classNames(styles.body, bodyClassName)}>
         {rows.length === 0 && <NoData />}
         {!children &&
-          rows.map((row, index) => {
-            const id = rowKey ? rowKey(row) : index;
-            return <TableRow key={id} columns={columns} row={row} />;
-          })}
+          (isDraggable ? (
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId={dragId}>
+                {provided => (
+                  <div {...provided.droppableProps} ref={provided.innerRef}>
+                    {rows.map((row, index) => {
+                      const id = rowKey ? rowKey(row) : index;
+                      return (
+                        <Draggable key={id} draggableId={`${dragId}-${id}`} index={index}>
+                          {provided => (
+                            <div
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <TableRow columns={columns} row={row} />
+                            </div>
+                          )}
+                        </Draggable>
+                      );
+                    })}
+                  </div>
+                )}
+              </Droppable>
+            </DragDropContext>
+          ) : (
+            rows.map((row, index) => {
+              const id = rowKey ? rowKey(row) : index;
+              return <TableRow key={id} columns={columns} row={row} />;
+            })
+          ))}
         {children}
       </div>
     </div>
