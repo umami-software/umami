@@ -182,6 +182,13 @@ export default function WebsiteSettings() {
     });
   }
 
+  function resetWebsiteOrder() {
+    setDashboard({
+      ...store,
+      websiteOrdering: {},
+    });
+  }
+
   if (!data) {
     return null;
   }
@@ -207,9 +214,14 @@ export default function WebsiteSettings() {
         <div>
           <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
-        <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-          <FormattedMessage id="label.add-website" defaultMessage="Add website" />
-        </Button>
+        <div className={styles.headerButtons}>
+          <Button size="small" onClick={() => resetWebsiteOrder()}>
+            <FormattedMessage id="label.reset-order" defaultMessage="Reset order" />
+          </Button>
+          <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
+            <FormattedMessage id="label.add-website" defaultMessage="Add website" />
+          </Button>
+        </div>
       </PageHeader>
       <Table
         columns={user.is_admin ? adminColumns : columns}
