@@ -5,8 +5,21 @@ import Page from 'components/layout/Page';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
+import { orderByWebsiteMap } from 'lib/format';
+import { useMemo } from 'react';
+import useStore from 'store/app';
+
+const selector = state => state.dashboard;
 
 export default function WebsiteList({ websites, showCharts, limit }) {
+  const store = useStore(selector);
+  const { websiteOrdering } = store;
+
+  const ordered = useMemo(
+    () => orderByWebsiteMap(websites, websiteOrdering),
+    [websites, websiteOrdering],
+  );
+
   if (websites.length === 0) {
     return (
       <Page>
@@ -28,7 +41,7 @@ export default function WebsiteList({ websites, showCharts, limit }) {
 
   return (
     <div>
-      {websites.map(({ website_id, name, domain }, index) =>
+      {ordered.map(({ website_id, name, domain }, index) =>
         index < limit ? (
           <div key={website_id} className={styles.website}>
             <WebsiteChart
