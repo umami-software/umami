@@ -25,7 +25,7 @@ import LinkIcon from 'assets/link.svg';
 import useFetch from 'hooks/useFetch';
 import useUser from 'hooks/useUser';
 import { orderByWebsiteMap } from 'lib/format';
-import useStore, { setDashboard } from 'store/app';
+import useStore from 'store/app';
 import styles from './WebsiteSettings.module.css';
 
 const selector = state => state.dashboard;
@@ -167,28 +167,6 @@ export default function WebsiteSettings() {
     setShowUrl(null);
   }
 
-  function handleWebsiteDrag({ destination, source }) {
-    if (!destination || destination.index === source.index) return;
-
-    const orderedWebsites = [...ordered];
-    const [removed] = orderedWebsites.splice(source.index, 1);
-    orderedWebsites.splice(destination.index, 0, removed);
-
-    setDashboard({
-      ...store,
-      websiteOrdering: orderedWebsites
-        .map((i, k) => ({ [i.website_uuid]: k }))
-        .reduce((a, b) => ({ ...a, ...b })),
-    });
-  }
-
-  function resetWebsiteOrder() {
-    setDashboard({
-      ...store,
-      websiteOrdering: {},
-    });
-  }
-
   if (!data) {
     return null;
   }
@@ -214,23 +192,11 @@ export default function WebsiteSettings() {
         <div>
           <FormattedMessage id="label.websites" defaultMessage="Websites" />
         </div>
-        <div className={styles.headerButtons}>
-          <Button size="small" onClick={() => resetWebsiteOrder()}>
-            <FormattedMessage id="label.reset-order" defaultMessage="Reset order" />
-          </Button>
-          <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-            <FormattedMessage id="label.add-website" defaultMessage="Add website" />
-          </Button>
-        </div>
+        <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
+          <FormattedMessage id="label.add-website" defaultMessage="Add website" />
+        </Button>
       </PageHeader>
-      <Table
-        columns={user.is_admin ? adminColumns : columns}
-        rows={ordered}
-        empty={empty}
-        isDraggable
-        onDragEnd={handleWebsiteDrag}
-        dragId={'website-settings-list'}
-      />
+      <Table columns={user.is_admin ? adminColumns : columns} rows={ordered} empty={empty} />
       {editWebsite && (
         <Modal title={<FormattedMessage id="label.edit-website" defaultMessage="Edit website" />}>
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />

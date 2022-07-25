@@ -11,9 +11,3 @@
 .detailLink {
   width: 100%;
 }
-
-.headerButtons {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
