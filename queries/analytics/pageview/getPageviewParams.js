@@ -3,8 +3,8 @@ import { MYSQL, POSTGRESQL, CLICKHOUSE, RELATIONAL } from 'lib/constants';
 
 export async function getPageviewParams(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
