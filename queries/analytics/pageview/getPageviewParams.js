@@ -9,7 +9,7 @@ export async function getPageviewParams(...args) {
 }
 
 function relationalQuery(param, website_id, start_at, end_at, column, table, filters = {}) {
-  const params = [param, website_id, start_at, end_at];
+  const params = [param, param, website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
     column,
@@ -26,12 +26,13 @@ function relationalQuery(param, website_id, start_at, end_at, column, table, fil
   return rawQuery(
     `select * from (
       select
-        url, ${splitFn}(${splitFn}(url, concat($1, '='), 2), '&', 1) param
+        url,
+        IF( LENGTH(url) - LENGTH(${splitFn}(url, concat($1, '='), -1)) > 1, ${splitFn}(${splitFn}(url, concat($2, '='), -1), '&', 1), null ) param
       from
         pageview
         ${joinSession}
       where
-        ${table}.website_id=$2 and ${table}.created_at between $3 and $4
+        ${table}.website_id=$3 and ${table}.created_at between $4 and $5
         ${pageviewQuery}
         ${joinSession && sessionQuery}
         ${eventQuery}
