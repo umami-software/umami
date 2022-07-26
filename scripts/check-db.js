@@ -59,12 +59,17 @@ async function checkMigrations() {
   const output = await run('prisma', ['migrate', 'status']);
 
   const missingMigrations = output.includes('have not yet been applied');
+  const missingInitialMigration = output.includes('01_init');
   const notManaged = output.includes('The current database is not managed');
 
   if (notManaged || missingMigrations) {
     console.log('Running update...');
 
-    console.log(execSync('prisma migrate resolve --applied "01_init"').toString());
+    if (missingInitialMigration) {
+      console.log(execSync('prisma migrate resolve --applied "01_init"').toString());
+    }
+
+    console.log(execSync('prisma migrate deploy').toString());
   }
 
   success('Database is up to date.');
