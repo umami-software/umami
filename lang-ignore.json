@@ -34,5 +34,10 @@
     "metrics.device.desktop",
     "metrics.device.tablet",
     "metrics.filter.raw"
+  ],
+  "pt-PT": [
+    "label.websites",
+    "metrics.device.desktop",
+    "metrics.device.tablet"
   ]
 }
