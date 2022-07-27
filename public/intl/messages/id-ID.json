@@ -239,6 +239,12 @@
       "value": "Kata sandi baru"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -699,12 +705,6 @@
       "value": "Gabungan"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Hanya domain"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -741,10 +741,52 @@
       "value": "Perujuk"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "Pengunjung unik"
+    }
+  ],
+  "metrics.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "metrics.utm_campaign": [
+    {
+      "type": 0,
+      "value": "UTM Campaign"
+    }
+  ],
+  "metrics.utm_content": [
+    {
+      "type": 0,
+      "value": "UTM Content"
+    }
+  ],
+  "metrics.utm_medium": [
+    {
+      "type": 0,
+      "value": "UTM Medium"
+    }
+  ],
+  "metrics.utm_source": [
+    {
+      "type": 0,
+      "value": "UTM Source"
+    }
+  ],
+  "metrics.utm_term": [
+    {
+      "type": 0,
+      "value": "UTM Term"
     }
   ],
   "metrics.views": [

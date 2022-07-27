@@ -247,6 +247,12 @@
       "value": "新密码"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "无"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -719,12 +725,6 @@
       "value": "总和"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "只看域名"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -734,7 +734,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "语言"
     }
   ],
   "metrics.operating-systems": [
@@ -761,10 +761,52 @@
       "value": "来源域名"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "屏幕尺寸"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "独立访客"
+    }
+  ],
+  "metrics.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "metrics.utm_campaign": [
+    {
+      "type": 0,
+      "value": "UTM Campaign"
+    }
+  ],
+  "metrics.utm_content": [
+    {
+      "type": 0,
+      "value": "UTM Content"
+    }
+  ],
+  "metrics.utm_medium": [
+    {
+      "type": 0,
+      "value": "UTM Medium"
+    }
+  ],
+  "metrics.utm_source": [
+    {
+      "type": 0,
+      "value": "UTM Source"
+    }
+  ],
+  "metrics.utm_term": [
+    {
+      "type": 0,
+      "value": "UTM Term"
     }
   ],
   "metrics.views": [

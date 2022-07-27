@@ -1,4 +1,4 @@
-import { getAccountById, deleteAccount } from 'lib/queries';
+import { getAccountById, deleteAccount } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { methodNotAllowed, ok, unauthorized } from 'lib/response';
 

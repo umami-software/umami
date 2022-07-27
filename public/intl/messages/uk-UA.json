@@ -247,6 +247,12 @@
       "value": "Новий пароль"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
@@ -707,12 +713,6 @@
       "value": "Об'єднані"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Лише домен"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -749,10 +749,52 @@
       "value": "Джерела"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "Унікальні відвідувачі"
+    }
+  ],
+  "metrics.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "metrics.utm_campaign": [
+    {
+      "type": 0,
+      "value": "UTM Campaign"
+    }
+  ],
+  "metrics.utm_content": [
+    {
+      "type": 0,
+      "value": "UTM Content"
+    }
+  ],
+  "metrics.utm_medium": [
+    {
+      "type": 0,
+      "value": "UTM Medium"
+    }
+  ],
+  "metrics.utm_source": [
+    {
+      "type": 0,
+      "value": "UTM Source"
+    }
+  ],
+  "metrics.utm_term": [
+    {
+      "type": 0,
+      "value": "UTM Term"
     }
   ],
   "metrics.views": [

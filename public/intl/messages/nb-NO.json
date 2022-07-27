@@ -32,13 +32,13 @@
   "label.all-events": [
     {
       "type": 0,
-      "value": "All events"
+      "value": "Alle hendelser"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Noensinne"
     }
   ],
   "label.all-websites": [
@@ -92,7 +92,7 @@
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Dashboard"
+      "value": "Dashbord"
     }
   ],
   "label.date-range": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Språk"
     }
   ],
   "label.last-days": [
@@ -214,7 +214,7 @@
     },
     {
       "type": 1,
-      "value": "brukernavn"
+      "value": "username"
     }
   ],
   "label.login": [
@@ -247,10 +247,16 @@
       "value": "Nytt passord"
     }
   ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Eier"
     }
   ],
   "label.password": [
@@ -304,7 +310,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Nullstill statistikk"
     }
   ],
   "label.save": [
@@ -452,7 +458,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Er du sikker på at du vil nullstille "
     },
     {
       "type": 1,
@@ -460,7 +466,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "'s statistikk?"
     }
   ],
   "message.copied": [
@@ -584,7 +590,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "All statistikk for denne nettsiden vil bli slettet, men sporingskoden din vil forbli uberørt."
     }
   ],
   "message.save-success": [
@@ -610,7 +616,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Veksle grafer"
     }
   ],
   "message.track-stats": [
@@ -672,7 +678,7 @@
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "Gjennomsnittlig besøkelsestid"
+      "value": "Gjennomsnittlig besøkstid"
     }
   ],
   "metrics.bounce-rate": [
@@ -735,12 +741,6 @@
       "value": "Kombinert"
     }
   ],
-  "metrics.filter.domain-only": [
-    {
-      "type": 0,
-      "value": "Bare domene"
-    }
-  ],
   "metrics.filter.raw": [
     {
       "type": 0,
@@ -750,7 +750,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Språk"
     }
   ],
   "metrics.operating-systems": [
@@ -777,10 +777,52 @@
       "value": "Referanser"
     }
   ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "Unike besøkende"
+    }
+  ],
+  "metrics.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "metrics.utm_campaign": [
+    {
+      "type": 0,
+      "value": "UTM Campaign"
+    }
+  ],
+  "metrics.utm_content": [
+    {
+      "type": 0,
+      "value": "UTM Content"
+    }
+  ],
+  "metrics.utm_medium": [
+    {
+      "type": 0,
+      "value": "UTM Medium"
+    }
+  ],
+  "metrics.utm_source": [
+    {
+      "type": 0,
+      "value": "UTM Source"
+    }
+  ],
+  "metrics.utm_term": [
+    {
+      "type": 0,
+      "value": "UTM Term"
     }
   ],
   "metrics.views": [

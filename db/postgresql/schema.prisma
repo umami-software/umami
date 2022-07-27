@@ -9,7 +9,7 @@ datasource db {
 
 model account {
   user_id    Int       @id @default(autoincrement())
-  username   String    @unique(map: "account.username_unique") @db.VarChar(255)
+  username   String    @unique @db.VarChar(255)
   password   String    @db.VarChar(60)
   is_admin   Boolean   @default(false)
   created_at DateTime? @default(now()) @db.Timestamptz(6)
@@ -25,8 +25,8 @@ model event {
   url         String    @db.VarChar(500)
   event_type  String    @db.VarChar(50)
   event_value String    @db.VarChar(50)
-  session     session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
-  website     website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  session     session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade, onUpdate: NoAction)
+  website     website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([created_at])
   @@index([session_id])
@@ -40,8 +40,8 @@ model pageview {
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   url        String    @db.VarChar(500)
   referrer   String?   @db.VarChar(500)
-  session    session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
-  website    website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  session    session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade, onUpdate: NoAction)
+  website    website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([created_at])
   @@index([session_id])
@@ -52,17 +52,17 @@ model pageview {
 
 model session {
   session_id   Int        @id @default(autoincrement())
-  session_uuid String     @unique(map: "session.session_uuid_unique") @db.Uuid
+  session_uuid String     @unique @db.Uuid
   website_id   Int
   created_at   DateTime?  @default(now()) @db.Timestamptz(6)
   hostname     String?    @db.VarChar(100)
   browser      String?    @db.VarChar(20)
   os           String?    @db.VarChar(20)
-  device       String?    @db.VarChar(20)
   screen       String?    @db.VarChar(11)
   language     String?    @db.VarChar(35)
   country      String?    @db.Char(2)
-  website      website    @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  device       String?    @db.VarChar(20)
+  website      website    @relation(fields: [website_id], references: [website_id], onDelete: Cascade, onUpdate: NoAction)
   event        event[]
   pageview     pageview[]
 
@@ -72,13 +72,13 @@ model session {
 
 model website {
   website_id   Int        @id @default(autoincrement())
-  website_uuid String     @unique(map: "website.website_uuid_unique") @db.Uuid
-  user_id      Int
+  website_uuid String     @unique @db.Uuid
   name         String     @db.VarChar(100)
-  domain       String?    @db.VarChar(500)
-  share_id     String?    @unique(map: "website.share_id_unique") @db.VarChar(64)
   created_at   DateTime?  @default(now()) @db.Timestamptz(6)
-  account      account    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  user_id      Int
+  domain       String?    @db.VarChar(500)
+  share_id     String?    @unique(map: "website_share_id_idx") @db.VarChar(64)
+  account      account    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   event        event[]
   pageview     pageview[]
   session      session[]

@@ -1,7 +1,7 @@
 const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
-import { savePageView, saveEvent } from 'lib/queries';
+import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
 import { ok, send, badRequest, forbidden } from 'lib/response';
@@ -60,7 +60,7 @@ export default async (req, res) => {
   await useSession(req, res);
 
   const {
-    session: { website_id, session_id },
+    session: { website_id, session_id, session_uuid },
   } = req;
 
   const { type, payload } = getJsonBody(req);
@@ -72,9 +72,9 @@ export default async (req, res) => {
   }
 
   if (type === 'pageview') {
-    await savePageView(website_id, session_id, url, referrer);
+    await savePageView(website_id, { session_id, session_uuid, url, referrer });
   } else if (type === 'event') {
-    await saveEvent(website_id, session_id, url, event_type, event_value);
+    await saveEvent(website_id, { session_id, session_uuid, url, event_type, event_value });
   } else {
     return badRequest(res);
   }
