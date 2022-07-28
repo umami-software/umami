@@ -39,7 +39,7 @@ ALTER INDEX "website.website_uuid_unique" RENAME TO "website_website_uuid_key";
 update event
 set "event_name" = event.event_value || '-' || event.event_type;
 
---Set event_name not null
+-- Set event_name not null
 ALTER TABLE "event" ALTER COLUMN "event_name" SET NOT NULL;
 
 -- Drop old columns
