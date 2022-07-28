@@ -18,7 +18,7 @@ export default function DashboardSettingsButton() {
       value: 'charts',
     },
     {
-      label: <FormattedMessage id="message.change-order" defaultMessage="Change order" />,
+      label: <FormattedMessage id="message.edit-dashboard" defaultMessage="Edit dashboard" />,
       value: 'order',
     },
   ];
