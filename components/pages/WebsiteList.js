@@ -62,33 +62,36 @@ export default function WebsiteList({ websites, showCharts, limit }) {
       {changeOrderMode ? (
         <DragDropContext onDragEnd={handleWebsiteDrag}>
           <Droppable droppableId={dragId}>
-            {provided => (
-              <div {...provided.droppableProps} ref={provided.innerRef}>
+            {(provided, snapshot) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                style={{ marginBottom: snapshot.isDraggingOver ? 260 : null }}
+              >
                 {ordered.map(({ website_id, name, domain }, index) =>
                   index < limit ? (
-                    <div key={website_id} className={styles.website}>
-                      <Draggable
-                        key={website_id}
-                        draggableId={`${dragId}-${website_id}`}
-                        index={index}
-                      >
-                        {provided => (
-                          <div
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <WebsiteChart
-                              websiteId={website_id}
-                              title={name}
-                              domain={domain}
-                              showChart={showCharts}
-                              showLink
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    </div>
+                    <Draggable
+                      key={website_id}
+                      draggableId={`${dragId}-${website_id}`}
+                      index={index}
+                    >
+                      {provided => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={styles.website}
+                        >
+                          <WebsiteChart
+                            websiteId={website_id}
+                            title={name}
+                            domain={domain}
+                            showChart={changeOrderMode ? false : showCharts}
+                            showLink
+                          />
+                        </div>
+                      )}
+                    </Draggable>
                   ) : null,
                 )}
               </div>
