@@ -36,8 +36,7 @@ ALTER TABLE `website` RENAME INDEX `website_uuid` TO `website_website_uuid_key`;
 */
 -- Populate event_name
 update `event`
-set event_name = concat(event_value, "-", event_type)
-where 1 = 1;
+set event_name = event_value;
 
 -- Set event_name not null
 ALTER TABLE `event` 

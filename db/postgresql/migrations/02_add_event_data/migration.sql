@@ -1,5 +1,5 @@
 -- AlterTable
-ALTER TABLE "event" ADD COLUMN "event_name" VARCHAR(50);
+ALTER TABLE event RENAME TO event_old;
 
 -- CreateTable
 CREATE TABLE "event_data" (
@@ -37,7 +37,7 @@ ALTER INDEX "website.website_uuid_unique" RENAME TO "website_website_uuid_key";
 */
 -- Populate event_name
 update event
-set "event_name" = event.event_value || '-' || event.event_type;
+set "event_name" = event.event_value;
 
 -- Set event_name not null
 ALTER TABLE "event" ALTER COLUMN "event_name" SET NOT NULL;
