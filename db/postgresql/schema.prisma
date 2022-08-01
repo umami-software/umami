@@ -33,20 +33,6 @@ model event {
   @@index([website_id])
 }
 
-model event_old {
-  event_id    Int       @id @default(autoincrement())
-  website_id  Int
-  session_id  Int
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  url         String    @db.VarChar(500)
-  event_type  String    @db.VarChar(50)
-  event_value String    @db.VarChar(50)
-
-  @@index([created_at])
-  @@index([session_id])
-  @@index([website_id])
-}
-
 model event_data {
   id         Int   @id @default(autoincrement())
   event_id   Int   @unique
