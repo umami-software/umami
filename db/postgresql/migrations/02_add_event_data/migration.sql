@@ -1,5 +1,42 @@
--- AlterTable
-ALTER TABLE event RENAME TO event_old;
+-- DropForeignKey
+ALTER TABLE "event" DROP CONSTRAINT "event_session_id_fkey";
+ALTER TABLE "event" DROP CONSTRAINT "event_website_id_fkey";
+
+-- RenameIndex
+ALTER INDEX "event_pkey" RENAME TO "event_old_pkey";
+ALTER INDEX "event_created_at_idx" RENAME TO "event_old_created_at_idx";
+ALTER INDEX "event_session_id_idx" RENAME TO "event_old_session_id_idx";
+ALTER INDEX "event_website_id_idx" RENAME TO "event_old_website_id_idx";
+
+-- RenameTable
+ALTER TABLE "event" RENAME TO "_event_old";
+
+-- CreateTable
+CREATE TABLE "event" (
+    "event_id" SERIAL NOT NULL,
+    "website_id" INTEGER NOT NULL,
+    "session_id" INTEGER NOT NULL,
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "url" VARCHAR(500) NOT NULL,
+    "event_name" VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY ("event_id")
+);
+
+-- CreateIndex
+CREATE INDEX "event_created_at_idx" ON "event"("created_at");
+
+-- CreateIndex
+CREATE INDEX "event_session_id_idx" ON "event"("session_id");
+
+-- CreateIndex
+CREATE INDEX "event_website_id_idx" ON "event"("website_id");
+
+-- AddForeignKey
+ALTER TABLE "event" ADD CONSTRAINT "event_session_id_fkey" FOREIGN KEY ("session_id") REFERENCES "session"("session_id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "event" ADD CONSTRAINT "event_website_id_fkey" FOREIGN KEY ("website_id") REFERENCES "website"("website_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- CreateTable
 CREATE TABLE "event_data" (
@@ -27,21 +64,3 @@ ALTER INDEX "website.share_id_unique" RENAME TO "website_share_id_key";
 
 -- RenameIndex
 ALTER INDEX "website.website_uuid_unique" RENAME TO "website_website_uuid_key";
-
-/*
-  Warnings:
-
-  - You are about to drop the column `event_type` on the `event` table. All the data in the column will be lost.
-  - You are about to drop the column `event_value` on the `event` table. All the data in the column will be lost.
-
-*/
--- Populate event_name
-update event
-set "event_name" = event.event_value;
-
--- Set event_name not null
-ALTER TABLE "event" ALTER COLUMN "event_name" SET NOT NULL;
-
--- Drop old columns
-ALTER TABLE "event" DROP COLUMN "event_type",
-DROP COLUMN "event_value";
