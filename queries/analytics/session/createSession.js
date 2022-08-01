@@ -5,6 +5,7 @@ import {
   rawQueryClickhouse,
   runAnalyticsQuery,
   runQuery,
+  kafkaProducer,
 } from 'lib/db';
 import { getSessionByUuid } from 'queries';
 
@@ -33,23 +34,29 @@ async function clickhouseQuery(
   website_id,
   { session_uuid, hostname, browser, os, screen, language, country, device },
 ) {
-  const params = [
-    session_uuid,
-    website_id,
-    hostname,
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    country ? country : null,
-  ];
+  const params = {
+    session_uuid: session_uuid,
+    website_id: website_id,
+    hostname: hostname,
+    browser: browser,
+    os: os,
+    device: device,
+    screen: screen,
+    language: language,
+    country: country ? country : null,
+  };
 
-  await rawQueryClickhouse(
-    `insert into umami_dev.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
-      values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-    params,
-  );
+  if (process.env.KAFKA_URL) {
+    await kafkaProducer(params, 'session');
+  } else {
+    const paramsValue = Object.keys(params);
+
+    await rawQueryClickhouse(
+      `insert into umami_dev.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
+        values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+      paramsValue,
+    );
+  }
 
   return getSessionByUuid(session_uuid);
 }
