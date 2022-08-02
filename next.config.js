@@ -56,14 +56,13 @@ module.exports = {
         source: '/:path*',
         headers,
       },
+    ];
+  },
+  async rewrites() {
+    return [
       {
-        source: `/(.*\\.js)`,
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=2592000', // 30 days
-          },
-        ],
+        source: '/telemetry.js',
+        destination: '/api/scripts/telemetry',
       },
     ];
   },
