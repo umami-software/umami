@@ -2,187 +2,187 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "Contas"
+      "value": "অ্যাকাউন্ট"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "Adicionar conta"
+      "value": "অ্যাকাউন্ট যুক্ত করুন"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Adicionar website"
+      "value": "ওয়েবসাইট যুক্ত করুন"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrador"
+      "value": "অ্যাডমিন"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Todos"
+      "value": "সবগুলো"
     }
   ],
   "label.all-events": [
     {
       "type": 0,
-      "value": "Todos os eventos"
+      "value": "সবগুলো ঘটনা"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Todo o tempo"
+      "value": "সব সময়"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Todos os websites"
+      "value": "সবগুলো ওয়েবসাইট"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Voltar"
+      "value": "পেছনে"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Cancelar"
+      "value": "বাতিল"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Alterar senha"
+      "value": "পাসওয়ার্ড পরিবর্তন করুন"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirmar senha"
+      "value": "পাসওয়ার্ড নিশ্চিত করুন"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "Copiar para a área de transferência"
+      "value": "কপি করুন"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Senha atual"
+      "value": "বর্তমান পাসওয়ার্ড"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Intervalo personalizado"
+      "value": "কাস্টম রেঞ্জ"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Painel"
+      "value": "ড্যাশবোর্ড"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Intervalo de datas"
+      "value": "তারিখের পরিসীমা"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Intervalo de datas predefinido"
+      "value": "ডিফল্ট তারিখের পরিসীমা"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Eliminar"
+      "value": "মুছে ফেলুন"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "Eliminar conta"
+      "value": "অ্যাকাউন্ট মুছুন"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Eliminar website"
+      "value": "ওয়েবসাইট মুছুন"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Ignorar"
+      "value": "বাতিল"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domínio"
+      "value": "ডোমেইন"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Editar"
+      "value": "সম্পাদনা করুন"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "Editar conta"
+      "value": "অ্যাকাউন্ট সম্পাদনা করুন"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "Editar website"
+      "value": "ওয়েবসাইট সম্পাদনা করুন"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Ativar link de partilha"
+      "value": "শেয়ার ইউআরএল শেয়ার করুন"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "Inválido"
+      "value": "ভুল"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "Domínio inválido"
+      "value": "ভুল ডোমেন"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Língua"
+      "value": "ভাষা"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "Últimos "
+      "value": "শেষ "
     },
     {
       "type": 1,
@@ -190,13 +190,13 @@
     },
     {
       "type": 0,
-      "value": " dias"
+      "value": " দিন"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "Últimas "
+      "value": "শেষ "
     },
     {
       "type": 1,
@@ -204,203 +204,203 @@
     },
     {
       "type": 0,
-      "value": " horas"
+      "value": " ঘন্টা"
     }
   ],
   "label.logged-in-as": [
     {
-      "type": 0,
-      "value": "Sessão iniciada como "
-    },
-    {
       "type": 1,
       "value": "username"
+    },
+    {
+      "type": 0,
+      "value": " অ্যাকাউন্টে লগ ইন"
     }
   ],
   "label.login": [
     {
       "type": 0,
-      "value": "Iniciar sessão"
+      "value": "লগিন"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Sair"
+      "value": "লগ আউট"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Mais"
+      "value": "আরও"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nome"
+      "value": "নাম"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Nova senha"
+      "value": "নতুন পাসওয়ার্ড"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "কিছুই না"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Proprietário"
+      "value": "মালিক"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Senha"
+      "value": "পাসওয়ার্ড"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "As senhas não coincidem"
+      "value": "পাসওয়ার্ড মেলে না"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "Perfil"
+      "value": "প্রোফাইল"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Tempo real"
+      "value": "সরাসরি"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Relatório em tempo real"
+      "value": "সরাসরি লগ"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Atualizar"
+      "value": "রিফ্রেশ"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Obrigatório"
+      "value": "প্রয়োজনীয়"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Repor"
+      "value": "রিসেট"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Repor estatísticas"
+      "value": "ওয়েবসাইট রিসেট করুন"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "Guardar"
+      "value": "সংরক্ষণ"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "Definições"
+      "value": "সেটিংস"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Partilhar link"
+      "value": "ইউআরএল শেয়ার করুন"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Dia único"
+      "value": "একদিন"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Tema"
+      "value": "থিম"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Este mês"
+      "value": "এই মাস"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Esta semana"
+      "value": "এই সপ্তাহ"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Este ano"
+      "value": "এই বছর"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Fuso horário"
+      "value": "সময়স্থান"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "Hoje"
+      "value": "আজ"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Código de rastreamento"
+      "value": "ট্র্যাকিং কোড"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Desconhecido"
+      "value": "অজানা"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "Nome de utilizador"
+      "value": "ব্যবহারকারীর নাম"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "Ver detalhes"
+      "value": "বিস্তারিত দেখুন"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Websites"
+      "value": "সবগুলো ওয়েবসাইট"
     }
   ],
   "message.active-users": [
@@ -410,7 +410,7 @@
     },
     {
       "type": 0,
-      "value": " "
+      "value": " বর্তমান  "
     },
     {
       "offset": 0,
@@ -419,7 +419,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitante"
+              "value": "visitor"
             }
           ]
         },
@@ -427,7 +427,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitantes"
+              "value": "visitors"
             }
           ]
         }
@@ -435,16 +435,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " neste momento"
     }
   ],
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Tem a certeza que pretende eliminar "
+      "value": "আপনি কি নিশ্চিত যে আপনি "
     },
     {
       "type": 1,
@@ -452,13 +448,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " মুছতে চান?"
     }
   ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Tem a certeza que pretende restaurar as estatísticas de "
+      "value": "আপনি কি নিশ্চিত যে আপনি "
     },
     {
       "type": 1,
@@ -466,75 +462,71 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " এর পরিসংখ্যান পুনরায় সেট করতে চান?"
     }
   ],
   "message.copied": [
     {
       "type": 0,
-      "value": "Copiado!"
+      "value": "কপি হয়েছে"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "Todos os dados associados também serão eliminados."
+      "value": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।"
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "Ocorreu um erro."
+      "value": "কিছু ভুল হয়েছে।"
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "Obter link de partilha"
+      "value": "শেয়ার ইউআরএল"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "Obter código de rastreamento"
+      "value": "ট্র্যাকিং কোড পান"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Ir para as definições"
+      "value": "সেটিংস এ যান"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nome de utilizador/senha incorretos."
+      "value": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।"
     }
   ],
   "message.log.visitor": [
-    {
-      "type": 0,
-      "value": "Visitante de "
-    },
     {
       "type": 1,
       "value": "country"
     },
     {
       "type": 0,
-      "value": " a usar "
+      "value": " থেকে একজন ভিসিটর "
     },
     {
       "type": 1,
-      "value": "browser"
+      "value": "ব্রাউজার"
     },
     {
       "type": 0,
-      "value": " no "
+      "value": ", ব্যবহার করছেন "
     },
     {
       "type": 1,
-      "value": "device"
+      "value": "os"
     },
     {
       "type": 0,
@@ -542,13 +534,17 @@
     },
     {
       "type": 1,
-      "value": "os"
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": " এর মধ্যে।"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Uma nova versão de umami "
+      "value": "নতুন সংস্করণ "
     },
     {
       "type": 1,
@@ -556,53 +552,53 @@
     },
     {
       "type": 0,
-      "value": " está disponível!"
+      "value": " পাওয়া গিয়েছে।"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "Sem dados disponíveis."
+      "value": "কোন তথ্য নেই।"
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Não tens nenhum website configurado."
+      "value": "কোনও ওয়েবসাইট কনফিগার করা নেই।"
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Página não encontrada."
+      "value": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।"
     }
   ],
   "message.powered-by": [
     {
-      "type": 0,
-      "value": "Distribuído por "
-    },
-    {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " দ্বারা চালিত"
     }
   ],
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Todas as estatísticas deste site serão eliminadas, mas o seu código de rastreamento permanecerá intacto."
+      "value": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।"
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "Guardado com sucesso."
+      "value": "সংরক্ষিত হয়েছে।"
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Este é o link de partilha público para "
+      "value": "এটি "
     },
     {
       "type": 1,
@@ -610,27 +606,23 @@
     },
     {
       "type": 0,
-      "value": "."
+      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
     }
   ],
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Alternar gráficos"
+      "value": "চার্ট পরিবর্তন করুন"
     }
   ],
   "message.track-stats": [
-    {
-      "type": 0,
-      "value": "Para recolher estatísticas para "
-    },
     {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": ", coloque o seguinte código na secção "
+      "value": " এর জন্য পরিসংখ্যানগুলি ট্র্যাক করতে, আপনার ওয়েবসাইটের "
     },
     {
       "type": 1,
@@ -638,13 +630,13 @@
     },
     {
       "type": 0,
-      "value": " do seu website."
+      "value": " বিভাগে নিম্নলিখিত কোডটি রাখুন।"
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "Escreva "
+      "value": "নিশ্চিত করতে নীচের বাক্সে "
     },
     {
       "type": 1,
@@ -652,13 +644,13 @@
     },
     {
       "type": 0,
-      "value": " em baixo para confirmar."
+      "value": " টাইপ করুন।"
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Escreva "
+      "value": "নিশ্চিত করতে নীচের বাক্সে "
     },
     {
       "type": 1,
@@ -666,127 +658,127 @@
     },
     {
       "type": 0,
-      "value": " em baixo para confirmar."
+      "value": " টাইপ করুন।"
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "Ações"
+      "value": "অ্যাকশনস"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "Tempo médio de visita"
+      "value": "গড় পরিদর্শনের সময়"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "Taxa de rejeição"
+      "value": "বহিষ্কারের হার"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "Navegadores"
+      "value": "ব্রাউজার"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "Países"
+      "value": "দেশ"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "Desktop"
+      "value": "ডেস্কটপ"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "Portátil"
+      "value": "ল্যাপটপ"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Telemóvel"
+      "value": "মুঠোফোন"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "Tablet"
+      "value": "ট্যাবলেট"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "Dispositivos"
+      "value": "ডিভাইস গুলো"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "Eventos"
+      "value": "ঘটনা"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combinado"
+      "value": "সম্মিলিত"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "Dados brutos"
+      "value": "অপরিশোধিত"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Línguas"
+      "value": "ভাষা"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "Sistemas operativos"
+      "value": "অপারেটিং সিস্টেম গুলো"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "Visualizações da página"
+      "value": "পৃষ্ঠা পরিদর্শন গুলো"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "Páginas"
+      "value": "পৃষ্ঠাগুলি"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Referenciadores"
+      "value": "রেফারার্স"
     }
   ],
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "স্ক্রিনগুলি"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Visitantes únicos"
+      "value": "অনন্য ভিজিটর"
     }
   ],
   "metrics.utm": [
@@ -798,43 +790,43 @@
   "metrics.utm_campaign": [
     {
       "type": 0,
-      "value": "UTM Campaign"
+      "value": "UTM প্রচার"
     }
   ],
   "metrics.utm_content": [
     {
       "type": 0,
-      "value": "UTM Content"
+      "value": "UTM সামগ্রী"
     }
   ],
   "metrics.utm_medium": [
     {
       "type": 0,
-      "value": "UTM Medium"
+      "value": "UTM মিডিয়াম"
     }
   ],
   "metrics.utm_source": [
     {
       "type": 0,
-      "value": "UTM Source"
+      "value": "UTM উৎস"
     }
   ],
   "metrics.utm_term": [
     {
       "type": 0,
-      "value": "UTM Term"
+      "value": "UTM শব্দ"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "Visualizações"
+      "value": "ভিউস"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "Visitantes"
+      "value": "পরিদর্শনার্থী"
     }
   ]
 }

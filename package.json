@@ -20,7 +20,7 @@
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-db": "npm-run-all copy-db-files build-db-client",
-    "build-lang": "npm-run-all format-lang compile-lang",
+    "build-lang": "npm-run-all format-lang compile-lang download-country-names download-language-names",
     "build-geo": "node scripts/build-geo.js",
     "build-db-schema": "prisma db pull",
     "build-db-client": "prisma generate",

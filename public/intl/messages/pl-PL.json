@@ -776,7 +776,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Ekrany"
     }
   ],
   "metrics.unique-visitors": [
@@ -788,37 +788,37 @@
   "metrics.utm": [
     {
       "type": 0,
-      "value": "UTM"
+      "value": "Kampanie UTM"
     }
   ],
   "metrics.utm_campaign": [
     {
       "type": 0,
-      "value": "UTM Campaign"
+      "value": "Kampania"
     }
   ],
   "metrics.utm_content": [
     {
       "type": 0,
-      "value": "UTM Content"
+      "value": "Treść"
     }
   ],
   "metrics.utm_medium": [
     {
       "type": 0,
-      "value": "UTM Medium"
+      "value": "Medium"
     }
   ],
   "metrics.utm_source": [
     {
       "type": 0,
-      "value": "UTM Source"
+      "value": "Źródło"
     }
   ],
   "metrics.utm_term": [
     {
       "type": 0,
-      "value": "UTM Term"
+      "value": "Słowa kluczowe"
     }
   ],
   "metrics.views": [

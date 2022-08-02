@@ -2,215 +2,207 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "Contas"
+      "value": "บัญชี"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "Adicionar conta"
+      "value": "เพิ่มบัญชี"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Adicionar website"
+      "value": "เพิ่มเว็บไซต์"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrador"
+      "value": "ผู้ดูแลระบบ"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Todos"
+      "value": "ทั้งหมด"
     }
   ],
   "label.all-events": [
     {
       "type": 0,
-      "value": "Todos os eventos"
+      "value": "เหตุการณ์ทั้งหมด"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Todo o tempo"
+      "value": "ทุกช่วงเวลา"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Todos os websites"
+      "value": "เว็บไซต์ทั้งหมด"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Voltar"
+      "value": "ย้อนกลับ"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Cancelar"
+      "value": "ยกเลิก"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Alterar senha"
+      "value": "เปลี่ยนรหัสผ่าน"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirmar senha"
+      "value": "ยืนยันรหัสผ่าน"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "Copiar para a área de transferência"
+      "value": "คัดลอกไปยังคลิปบอร์ด"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Senha atual"
+      "value": "รหัสผ่านปัจจุบัน"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Intervalo personalizado"
+      "value": "กำหนดช่วงเวลา"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Painel"
+      "value": "แดชบอร์ด"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Intervalo de datas"
+      "value": "ตั้งแต่วันที่"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Intervalo de datas predefinido"
+      "value": "ช่วงเวลา"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Eliminar"
+      "value": "ลบ"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "Eliminar conta"
+      "value": "ลบบัญชี"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Eliminar website"
+      "value": "ลบเว็บไซต์"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Ignorar"
+      "value": "ยกเลิก"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domínio"
+      "value": "โดเมน"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Editar"
+      "value": "แก้ไข"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "Editar conta"
+      "value": "แก้ไขบัญชี"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "Editar website"
+      "value": "แก้ไขเว็บไซต์"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Ativar link de partilha"
+      "value": "เปิดใช้งานการแชร์ลิงก์"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "Inválido"
+      "value": "ไม่ถูกต้อง"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "Domínio inválido"
+      "value": "โดเมนไม่ถูกต้อง"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Língua"
+      "value": "ภาษา"
     }
   ],
   "label.last-days": [
     {
-      "type": 0,
-      "value": "Últimos "
-    },
-    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " dias"
+      "value": " วันที่ผ่านมา"
     }
   ],
   "label.last-hours": [
     {
-      "type": 0,
-      "value": "Últimas "
-    },
-    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " horas"
+      "value": " ชั่วโมงที่ผ่านมา"
     }
   ],
   "label.logged-in-as": [
     {
       "type": 0,
-      "value": "Sessão iniciada como "
+      "value": "เข้าสู่ระบบโดย "
     },
     {
       "type": 1,
@@ -220,190 +212,194 @@
   "label.login": [
     {
       "type": 0,
-      "value": "Iniciar sessão"
+      "value": "เข้าสู่ระบบ"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Sair"
+      "value": "ออกจากระบบ"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Mais"
+      "value": "เพิ่มเติม"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nome"
+      "value": "ชื่อ"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Nova senha"
+      "value": "รหัสผ่านใหม่"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "ไม่ได้กำหนด"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Proprietário"
+      "value": "เจ้าของ"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Senha"
+      "value": "รหัสผ่าน"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "As senhas não coincidem"
+      "value": "รหัสผ่านไม่ตรงกัน"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "Perfil"
+      "value": "โปรไฟล์"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Tempo real"
+      "value": "เรียลไทม์"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Relatório em tempo real"
+      "value": "Log แบบเรียลไทม์"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Atualizar"
+      "value": "รีเฟรช"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "Obrigatório"
+      "value": "ต้องการ"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Repor"
+      "value": "รีเซต"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Repor estatísticas"
+      "value": "รีเซตข้อมูลสถิติ"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "Guardar"
+      "value": "บันทึก"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "Definições"
+      "value": "ตั้งค่า"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Partilhar link"
+      "value": "แชร์ลิงก์"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Dia único"
+      "value": "วันที่"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Tema"
+      "value": "ธีม"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Este mês"
+      "value": "เดือนปัจจุบัน"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Esta semana"
+      "value": "สัปดาห์ปัจจุบัน"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Este ano"
+      "value": "ปีปัจจุบัน"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Fuso horário"
+      "value": "เขตเวลา"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "Hoje"
+      "value": "วันนี้"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Código de rastreamento"
+      "value": "โค้ดสำหรับใช้ติดตาม"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Desconhecido"
+      "value": "ไม่รู้จัก"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "Nome de utilizador"
+      "value": "ชื่อผู้ใช้"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "Ver detalhes"
+      "value": "แสดงรายละเอียด"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Websites"
+      "value": "เว็บไซต์"
     }
   ],
   "message.active-users": [
+    {
+      "type": 0,
+      "value": "มีผู้ใช้งาน "
+    },
     {
       "type": 1,
       "value": "x"
@@ -419,7 +415,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitante"
+              "value": "คนในขณะนี้"
             }
           ]
         },
@@ -427,7 +423,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitantes"
+              "value": "คนในขณะนี้"
             }
           ]
         }
@@ -435,16 +431,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "x"
-    },
-    {
-      "type": 0,
-      "value": " neste momento"
     }
   ],
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Tem a certeza que pretende eliminar "
+      "value": "คุณแน่ใจหรือไม่ว่าต้องการลบ "
     },
     {
       "type": 1,
@@ -452,13 +444,13 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ?"
     }
   ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Tem a certeza que pretende restaurar as estatísticas de "
+      "value": "คุณแน่ใจหรือไม่ว่าต้องการรีเซตข้อมูลสถิติของ "
     },
     {
       "type": 1,
@@ -466,55 +458,55 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ?"
     }
   ],
   "message.copied": [
     {
       "type": 0,
-      "value": "Copiado!"
+      "value": "คัดลอกแล้ว!"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "Todos os dados associados também serão eliminados."
+      "value": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ."
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "Ocorreu um erro."
+      "value": "เกิดข้อผิดพลาด."
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "Obter link de partilha"
+      "value": "รับลิงก์สำหรับแชร์"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "Obter código de rastreamento"
+      "value": "รับโค้ดสำหรับใช้ติดตาม"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Ir para as definições"
+      "value": "ไปที่การตั้งค่า"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nome de utilizador/senha incorretos."
+      "value": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง."
     }
   ],
   "message.log.visitor": [
     {
       "type": 0,
-      "value": "Visitante de "
+      "value": "ผู้เข้าชมจาก "
     },
     {
       "type": 1,
@@ -522,7 +514,7 @@
     },
     {
       "type": 0,
-      "value": " a usar "
+      "value": " กำลังใช้งานผ่าน "
     },
     {
       "type": 1,
@@ -530,11 +522,11 @@
     },
     {
       "type": 0,
-      "value": " no "
+      "value": " บน "
     },
     {
       "type": 1,
-      "value": "device"
+      "value": "os"
     },
     {
       "type": 0,
@@ -542,13 +534,13 @@
     },
     {
       "type": 1,
-      "value": "os"
+      "value": "device"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Uma nova versão de umami "
+      "value": "umami เวอร์ชันใหม่ ("
     },
     {
       "type": 1,
@@ -556,31 +548,31 @@
     },
     {
       "type": 0,
-      "value": " está disponível!"
+      "value": ") มาแล้ว!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "Sem dados disponíveis."
+      "value": "ไม่มีข้อมูล."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Não tens nenhum website configurado."
+      "value": "คุณยังไม่ได้ตั้งค่าเว็บไซต์ใด ๆ ไว้."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Página não encontrada."
+      "value": "ไม่พบหน้านี้."
     }
   ],
   "message.powered-by": [
     {
       "type": 0,
-      "value": "Distribuído por "
+      "value": "ขับเคลื่อนโดย "
     },
     {
       "type": 1,
@@ -590,19 +582,19 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Todas as estatísticas deste site serão eliminadas, mas o seu código de rastreamento permanecerá intacto."
+      "value": "สถิติทั้งหมดสำหรับเว็บไซต์นี้จะถูกลบออก แต่โค้ดสำหรับใช้ติดตามของคุณจะยังคงอยู่เหมือนเดิม."
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "Guardado com sucesso."
+      "value": "บันทึกข้อมูลเรียบร้อย."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Este é o link de partilha público para "
+      "value": "นี่คือลิงก์ที่แชร์แบบสาธารณะสำหรับ "
     },
     {
       "type": 1,
@@ -616,13 +608,13 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Alternar gráficos"
+      "value": "เปิด/ปิดแผนภูมิ"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "Para recolher estatísticas para "
+      "value": "หากต้องการติดตามสถิติสำหรับ "
     },
     {
       "type": 1,
@@ -630,7 +622,7 @@
     },
     {
       "type": 0,
-      "value": ", coloque o seguinte código na secção "
+      "value": " ให้วางโค้ดต่อไปนี้ในส่วน "
     },
     {
       "type": 1,
@@ -638,13 +630,13 @@
     },
     {
       "type": 0,
-      "value": " do seu website."
+      "value": " ของเว็บไซต์ของคุณ."
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "Escreva "
+      "value": "พิมพ์ข้อความ "
     },
     {
       "type": 1,
@@ -652,13 +644,13 @@
     },
     {
       "type": 0,
-      "value": " em baixo para confirmar."
+      "value": " ในช่องด้านล่างเพื่อยืนยัน."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "Escreva "
+      "value": "พิมพ์ข้อความ "
     },
     {
       "type": 1,
@@ -666,127 +658,127 @@
     },
     {
       "type": 0,
-      "value": " em baixo para confirmar."
+      "value": " ในช่องด้านล่างเพื่อยืนยัน."
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "Ações"
+      "value": "การกระทำ"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "Tempo médio de visita"
+      "value": "ระยะเวลาเข้าชมเฉลี่ย"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "Taxa de rejeição"
+      "value": "อัตราตีกลับ"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "Navegadores"
+      "value": "เบราว์เซอร์"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "Países"
+      "value": "ประเทศ"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "Desktop"
+      "value": "เดสก์ท็อป"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "Portátil"
+      "value": "แล็ปท็อป"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "Telemóvel"
+      "value": "โทรศัพท์มือถือ"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "Tablet"
+      "value": "แท็บเล็ต"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "Dispositivos"
+      "value": "อุปกรณ์"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "Eventos"
+      "value": "เหตุการณ์"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "Combinado"
+      "value": "ข้อมูลรวม"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "Dados brutos"
+      "value": "ข้อมูลดิบ"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Línguas"
+      "value": "ภาษา"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "Sistemas operativos"
+      "value": "ระบบปฏิบัติการ"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "Visualizações da página"
+      "value": "การเข้าชม"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "Páginas"
+      "value": "หน้าเพจ"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "Referenciadores"
+      "value": "แหล่งที่มา"
     }
   ],
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "ขนาดหน้าจอ"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "Visitantes únicos"
+      "value": "ผู้เข้าชม"
     }
   ],
   "metrics.utm": [
@@ -828,13 +820,13 @@
   "metrics.views": [
     {
       "type": 0,
-      "value": "Visualizações"
+      "value": "การเข้าชม"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "Visitantes"
+      "value": "ผู้เข้าชม"
     }
   ]
 }

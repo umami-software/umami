@@ -38,7 +38,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Semua waktu"
     }
   ],
   "label.all-websites": [
@@ -176,7 +176,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Bahasa"
     }
   ],
   "label.last-days": [
@@ -248,7 +248,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Pemilik"
     }
   ],
   "label.password": [
@@ -332,7 +332,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Tema"
     }
   ],
   "label.this-month": [
@@ -422,7 +422,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Anda yakin ingin mengatur ulang statistik "
     },
     {
       "type": 1,
@@ -430,7 +430,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.copied": [
@@ -580,7 +580,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Buka grafik"
     }
   ],
   "message.track-stats": [
@@ -602,7 +602,7 @@
     },
     {
       "type": 0,
-      "value": " situs web anda."
+      "value": " situs web nda."
     }
   ],
   "message.type-delete": [
@@ -714,7 +714,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Bahasa"
     }
   ],
   "metrics.operating-systems": [
@@ -744,7 +744,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Layar"
     }
   ],
   "metrics.unique-visitors": [
@@ -762,31 +762,31 @@
   "metrics.utm_campaign": [
     {
       "type": 0,
-      "value": "UTM Campaign"
+      "value": "Kampanye UTM"
     }
   ],
   "metrics.utm_content": [
     {
       "type": 0,
-      "value": "UTM Content"
+      "value": "Konten UTM"
     }
   ],
   "metrics.utm_medium": [
     {
       "type": 0,
-      "value": "UTM Medium"
+      "value": "Media UTM"
     }
   ],
   "metrics.utm_source": [
     {
       "type": 0,
-      "value": "UTM Source"
+      "value": "Sumber UTM"
     }
   ],
   "metrics.utm_term": [
     {
       "type": 0,
-      "value": "UTM Term"
+      "value": "Tampilan UTM"
     }
   ],
   "metrics.views": [
