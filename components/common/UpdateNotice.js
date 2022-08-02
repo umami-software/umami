@@ -6,10 +6,15 @@ import { setItem } from 'lib/web';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import Button from './Button';
 import styles from './UpdateNotice.module.css';
+import useUser from 'hooks/useUser';
+import useConfig from 'hooks/useConfig';
 
 export default function UpdateNotice() {
+  const { user } = useUser();
+  const { updatesDisabled } = useConfig();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
   const [dismissed, setDismissed] = useState(false);
+  const allowCheck = user?.is_admin && !updatesDisabled;
 
   const updateCheck = useCallback(() => {
     setItem(VERSION_CHECK, { version: latest, time: Date.now() });
@@ -27,12 +32,12 @@ export default function UpdateNotice() {
   }
 
   useEffect(() => {
-    if (!checked) {
+    if (!checked && allowCheck) {
       checkVersion();
     }
-  }, []);
+  }, [checked]);
 
-  if (!hasUpdate || dismissed) {
+  if (!hasUpdate || dismissed || !allowCheck) {
     return null;
   }
 

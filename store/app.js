@@ -20,6 +20,7 @@ const initialState = {
   dashboard: getItem(DASHBOARD_CONFIG) || defaultDashboardConfig,
   shareToken: null,
   user: null,
+  config: null,
 };
 
 const store = create(() => ({ ...initialState }));
@@ -43,6 +44,10 @@ export function setUser(user) {
 export function setDashboard(dashboard) {
   store.setState({ dashboard });
   setItem(DASHBOARD_CONFIG, dashboard);
+}
+
+export function setConfig(config) {
+  store.setState({ config });
 }
 
 export default store;

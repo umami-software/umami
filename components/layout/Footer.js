@@ -5,9 +5,11 @@ import Link from 'components/common/Link';
 import styles from './Footer.module.css';
 import useStore from 'store/version';
 import { HOMEPAGE_URL, REPO_URL } from 'lib/constants';
+import useConfig from 'hooks/useConfig';
 
 export default function Footer() {
   const { current } = useStore();
+  const { telemetryDisabled } = useConfig();
 
   return (
     <footer className={classNames(styles.footer, 'row')}>
@@ -28,9 +30,7 @@ export default function Footer() {
       <div className={classNames(styles.version, 'col-12 col-md-4')}>
         <Link href={REPO_URL}>{`v${current}`}</Link>
       </div>
-      {!process.env.telemetryDisabled && (
-        <img src={`https://i.umami.is/a.png?v=${current}`} alt="" />
-      )}
+      {telemetryDisabled && <img src={`https://i.umami.is/a.png?v=${current}`} alt="" />}
     </footer>
   );
 }
