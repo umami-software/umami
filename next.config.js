@@ -35,9 +35,6 @@ if (process.env.FORCE_SSL) {
 module.exports = {
   env: {
     currentVersion: pkg.version,
-    loginDisabled: process.env.DISABLE_LOGIN,
-    updatesDisabled: process.env.DISABLE_UPDATES,
-    telemetryDisabled: process.env.DISABLE_TELEMETRY,
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
