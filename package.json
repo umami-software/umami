@@ -127,5 +127,8 @@
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^7.0.0",
     "tar": "^6.1.2"
-  }
+  },
+  "cacheDirectories": [
+    ".next/cache"
+  ]
 }
