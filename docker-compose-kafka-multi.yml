@@ -71,3 +71,24 @@ services:
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "true"
     depends_on:
       - zoo1
+
+  init-kafka:
+    image: confluentinc/cp-kafka:7.2.0
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka1:19092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka1:19092 --create --if-not-exists --topic pageview --replication-factor 3 --partitions 3
+      kafka-topics --bootstrap-server kafka2:19093 --create --if-not-exists --topic event --replication-factor 3 --partitions 3
+      kafka-topics --bootstrap-server kafka3:19094 --create --if-not-exists --topic session --replication-factor 3 --partitions 3
+
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka1:19092 --list
+      "
