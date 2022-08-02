@@ -23,9 +23,9 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
   };
 
   if (event_data) {
-    data.eventData = {
+    data.event_data = {
       create: {
-        eventData: event_data,
+        event_data: event_data,
       },
     };
   }
