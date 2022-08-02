@@ -97,25 +97,24 @@ import { removeTrailingSlash } from '../lib/url';
     );
   };
 
-  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
+  const trackEvent = (event_name = 'custom', event_data, url = currentUrl, uuid = website) => {
     collect(
       'event',
       assign(getPayload(), {
         website: uuid,
         url,
-        event_type,
-        event_value,
+        event_name,
+        event_data,
       }),
     );
   };
 
   /* Handle events */
 
-  const sendEvent = (value, type) => {
+  const sendEvent = name => {
     const payload = getPayload();
 
-    payload.event_type = type;
-    payload.event_value = value;
+    payload.event_name = name;
 
     const data = JSON.stringify({
       type: 'event',
@@ -138,14 +137,15 @@ import { removeTrailingSlash } from '../lib/url';
     (element.getAttribute('class') || '').split(' ').forEach(className => {
       if (!eventClass.test(className)) return;
 
-      const [, type, value] = className.split('--');
+      const [, type, name] = className.split('--');
+
       const listener = listeners[className]
         ? listeners[className]
         : (listeners[className] = () => {
             if (element.tagName === 'A') {
-              sendEvent(value, type);
+              sendEvent(name);
             } else {
-              trackEvent(value, type);
+              trackEvent(name);
             }
           });
 
