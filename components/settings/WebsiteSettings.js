@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -24,7 +24,11 @@ import Code from 'assets/code.svg';
 import LinkIcon from 'assets/link.svg';
 import useFetch from 'hooks/useFetch';
 import useUser from 'hooks/useUser';
+import { orderByWebsiteMap } from 'lib/format';
+import useStore from 'store/app';
 import styles from './WebsiteSettings.module.css';
+
+const selector = state => state.dashboard;
 
 export default function WebsiteSettings() {
   const { user } = useUser();
@@ -36,7 +40,13 @@ export default function WebsiteSettings() {
   const [showUrl, setShowUrl] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
+
+  const store = useStore(selector);
+  const { websiteOrdering } = store;
+
   const { data } = useFetch('/websites', { params: { include_all: !!user?.is_admin } }, [saved]);
+
+  const ordered = useMemo(() => orderByWebsiteMap(data, websiteOrdering), [data, websiteOrdering]);
 
   const Buttons = row => (
     <ButtonLayout align="right">
@@ -186,7 +196,7 @@ export default function WebsiteSettings() {
           <FormattedMessage id="label.add-website" defaultMessage="Add website" />
         </Button>
       </PageHeader>
-      <Table columns={user.is_admin ? adminColumns : columns} rows={data} empty={empty} />
+      <Table columns={user.is_admin ? adminColumns : columns} rows={ordered} empty={empty} />
       {editWebsite && (
         <Modal title={<FormattedMessage id="label.edit-website" defaultMessage="Edit website" />}>
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />
