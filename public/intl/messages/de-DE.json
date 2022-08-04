@@ -250,7 +250,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Keine"
     }
   ],
   "label.owner": [
@@ -794,13 +794,13 @@
   "metrics.utm_campaign": [
     {
       "type": 0,
-      "value": "UTM Campaign"
+      "value": "UTM Kampagne"
     }
   ],
   "metrics.utm_content": [
     {
       "type": 0,
-      "value": "UTM Content"
+      "value": "UTM Inhalt"
     }
   ],
   "metrics.utm_medium": [
@@ -812,13 +812,13 @@
   "metrics.utm_source": [
     {
       "type": 0,
-      "value": "UTM Source"
+      "value": "UTM Quelle"
     }
   ],
   "metrics.utm_term": [
     {
       "type": 0,
-      "value": "UTM Term"
+      "value": "UTM Begriff"
     }
   ],
   "metrics.views": [
