@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Avrita!",
   "message.delete-warning": "Øll data ið er knýtt at verður eisini strika.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Okkurt bleiv gali.",
   "message.get-share-url": "Fá leinku sum tú kanst deila",
   "message.get-tracking-code": "Fá sporings kotu",

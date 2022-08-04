@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Kopirano!",
   "message.delete-warning": "Izbrisani bodo tudi vsi povezani podatki.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Prišlo je do napake.",
   "message.get-share-url": "Pridobi URL za skupno rabo",
   "message.get-tracking-code": "Pridobi kodo za sledenje",

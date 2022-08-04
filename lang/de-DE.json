@@ -68,6 +68,7 @@
   "message.confirm-reset": "Sind Sie sicher, dass Sie die Statistiken von {target} zurücksetzen wollen?",
   "message.copied": "In Zwischenablage kopiert!",
   "message.delete-warning": "Alle zugehörigen Daten werden ebenfalls gelöscht.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Es ist ein Fehler aufgetreten.",
   "message.get-share-url": "Freigabe-URL abrufen",
   "message.get-tracking-code": "Erstelle Tracking Kennung",

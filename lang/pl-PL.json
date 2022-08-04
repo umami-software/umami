@@ -68,6 +68,7 @@
   "message.confirm-reset": "Czy na pewno chcesz zresetować statystyki {target}?",
   "message.copied": "Skopiowano!",
   "message.delete-warning": "Wszystkie powiązane dane również zostaną usunięte.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Coś poszło nie tak.",
   "message.get-share-url": "Uzyskaj adres URL udostępniania",
   "message.get-tracking-code": "Pobierz kod śledzenia",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Disalin!",
   "message.delete-warning": "Semua data yang berkaitan juga akan dihapuskan.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Ada yang tidak kena.",
   "message.get-share-url": "Dapatkan URL berkongsi",
   "message.get-tracking-code": "Dapatkan kod penjejakan",

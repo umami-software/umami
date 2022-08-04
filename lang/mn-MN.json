@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Хуулсан!",
   "message.delete-warning": "Үүнтэй холбоотой бүх өгөгдөл устах болно.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Ямар нэг зүйл буруу боллоо.",
   "message.get-share-url": "Хуваалцах холбоос авах",
   "message.get-tracking-code": "Мөрдөх код авах",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "कॉपी हो गया!",
   "message.delete-warning": "सभी संबद्ध डेटा को भी हटा दिया जाएगा।",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "कुछ गलत हो गया।",
   "message.get-share-url": "शेयर URL प्राप्त करें",
   "message.get-tracking-code": "ट्रैकिंग कोड प्राप्त करें",

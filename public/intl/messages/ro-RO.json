@@ -477,6 +477,12 @@
       "value": "Toate datele asociate vor fi șterse, de asemenea."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

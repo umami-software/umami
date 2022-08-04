@@ -477,6 +477,12 @@
       "value": "همه‌ی داده‌های مرتبط هم حذف خواهد شد."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

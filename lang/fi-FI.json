@@ -68,6 +68,7 @@
   "message.confirm-reset": "Haluatko varmasti poistaa sivuston {target} tilastot?",
   "message.copied": "Kopioitu!",
   "message.delete-warning": "Kaikki siihen liittyvät tiedot poistetaan.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Jotain meni pieleen.",
   "message.get-share-url": "Hanki jakamisen URL-osoite",
   "message.get-tracking-code": "Hanki seurantakoodi",

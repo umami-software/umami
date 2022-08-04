@@ -68,6 +68,7 @@
   "message.confirm-reset": "Sunteți sigur că doriți să resetați statisticile pentru {target}?",
   "message.copied": "Copiat!",
   "message.delete-warning": "Toate datele asociate vor fi șterse, de asemenea.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Ceva n-a mers bine.",
   "message.get-share-url": "Obține adresa URL de partajare",
   "message.get-tracking-code": "Obține codul de urmărire",

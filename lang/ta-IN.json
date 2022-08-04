@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "நகலெடுக்கப்பட்டது!",
   "message.delete-warning": "தொடர்புடைய எல்லா தரவும் நீக்கப்படும்.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "ஏதோ தவறு நடந்துவிட்டது.",
   "message.get-share-url": "கள முகவரியை ஐப் பெறுக",
   "message.get-tracking-code": "கண்காணிப்பு குறியீட்டைப் பெறுக",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "הועתק!",
   "message.delete-warning": "כל המידע המקושר יימחק",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "משהו השתבש",
   "message.get-share-url": "קבלת URL שיתוף",
   "message.get-tracking-code": "קבלת קוד מעקב",

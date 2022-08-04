@@ -9,12 +9,3 @@
   border-bottom: 0;
   margin-bottom: 20px;
 }
-
-.websiteDragActive {
-  opacity: 0.6;
-  cursor: grab;
-}
-
-.websiteDragActive:active {
-  cursor: grabbing;
-}

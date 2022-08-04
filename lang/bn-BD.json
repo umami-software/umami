@@ -68,6 +68,7 @@
   "message.confirm-reset": "আপনি কি নিশ্চিত যে আপনি {target} এর পরিসংখ্যান পুনরায় সেট করতে চান?",
   "message.copied": "কপি হয়েছে",
   "message.delete-warning": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "কিছু ভুল হয়েছে।",
   "message.get-share-url": "শেয়ার ইউআরএল",
   "message.get-tracking-code": "ট্র্যাকিং কোড পান",

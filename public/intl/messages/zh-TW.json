@@ -457,6 +457,12 @@
       "value": "所有相關數據將會被刪除。"
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

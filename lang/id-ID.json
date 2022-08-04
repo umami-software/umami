@@ -68,6 +68,7 @@
   "message.confirm-reset": "Anda yakin ingin mengatur ulang statistik {target}?",
   "message.copied": "Tersalin!",
   "message.delete-warning": "Semua data terkait juga akan dihapus.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Ada yang salah.",
   "message.get-share-url": "Dapatkan URL berbagi",
   "message.get-tracking-code": "Dapatkan kode pelacakan",

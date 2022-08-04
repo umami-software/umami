@@ -477,6 +477,12 @@
       "value": "Tamén serán borrados tódolos datos asociados."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
