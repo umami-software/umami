@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import Page from 'components/layout/Page';
@@ -9,24 +9,29 @@ import useDashboard from 'store/dashboard';
 import { orderByWebsiteMap } from 'lib/format';
 import { useMemo } from 'react';
 
+const messages = defineMessages({
+  noWebsites: {
+    id: 'message.no-websites-configured',
+    defaultMessage: "You don't have any websites configured.",
+  },
+  goToSettngs: {
+    id: 'message.go-to-settings',
+    defaultMessage: 'Go to settings',
+  },
+});
+
 export default function WebsiteList({ data, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
+  const { formatMessage } = useIntl();
 
   const websites = useMemo(() => orderByWebsiteMap(data, websiteOrder), [data, websiteOrder]);
 
   if (websites.length === 0) {
     return (
       <Page>
-        <EmptyPlaceholder
-          msg={
-            <FormattedMessage
-              id="message.no-websites-configured"
-              defaultMessage="You don't have any websites configured."
-            />
-          }
-        >
+        <EmptyPlaceholder msg={formatMessage(messages.noWebsites)}>
           <Link href="/settings" icon={<Arrow />} iconRight>
-            <FormattedMessage id="message.go-to-settings" defaultMessage="Go to settings" />
+            {formatMessage(messages.goToSettngs)}
           </Link>
         </EmptyPlaceholder>
       </Page>

@@ -6,6 +6,7 @@ import Button from 'components/common/Button';
 import { useMemo } from 'react';
 import { orderByWebsiteMap } from 'lib/format';
 import styles from './DashboardEdit.module.css';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   save: { id: 'label.save', defaultMessage: 'Save' },
@@ -45,18 +46,17 @@ export default function DashboardEdit({ data: websites }) {
   }
 
   function handleCancel() {
-    saveDashboard({ editing: false });
+    saveDashboard({ editing: false, websiteOrder });
   }
 
   function handleReset() {
     setOrder({});
-    saveDashboard({ websiteOrder: {} });
   }
 
   return (
     <>
       <div className={styles.buttons}>
-        <Button onClick={handleSave} size="small">
+        <Button onClick={handleSave} variant="action" size="small">
           {formatMessage(messages.save)}
         </Button>
         <Button onClick={handleCancel} size="small">
@@ -77,15 +77,19 @@ export default function DashboardEdit({ data: websites }) {
               >
                 {ordered.map(({ website_id, name, domain }, index) => (
                   <Draggable key={website_id} draggableId={`${dragId}-${website_id}`} index={index}>
-                    {provided => (
+                    {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
+                        className={classNames(styles.item, {
+                          [styles.active]: snapshot.isDragging,
+                        })}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        className={styles.item}
                       >
-                        <h1>{name}</h1>
-                        <h2>{domain}</h2>
+                        <div className={styles.text}>
+                          <h1>{name}</h1>
+                          <h2>{domain}</h2>
+                        </div>
                       </div>
                     )}
                   </Draggable>

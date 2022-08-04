@@ -6,13 +6,7 @@
 }
 
 .item {
-  padding: 20px;
-  border-radius: 5px;
-  border: 1px solid var(--gray300);
-}
-
-.item + .item {
-  margin-top: 10px;
+  padding: 5px 0;
 }
 
 .item h1 {
@@ -23,6 +17,18 @@
 .item h2 {
   font-size: 14px;
   color: var(--gray700);
+}
+
+.text {
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid var(--gray400);
+  background: var(--gray50);
+}
+
+.active .text {
+  border-color: var(--gray600);
+  box-shadow: 4px 4px 4px var(--gray100);
 }
 
 .dragActive {
