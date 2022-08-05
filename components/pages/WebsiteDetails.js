@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
@@ -18,12 +18,25 @@ import CountriesTable from 'components/metrics/CountriesTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
+import ScreenTable from 'components/metrics/ScreenTable';
+import UTMTable from 'components/metrics/UTMTable';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './WebsiteDetails.module.css';
-import ScreenTable from 'components/metrics/ScreenTable';
-import UTMTable from 'components/metrics/UTMTable';
+
+const messages = defineMessages({
+  pages: { id: 'pages', defaultMessage: 'Pages' },
+  referrers: { id: 'metrics.referrers', defaultMessage: 'Referrers' },
+  screens: { id: 'metrics.screens', defaultMessage: 'Screens' },
+  browsers: { id: 'metrics.browsers', defaultMessage: 'Browsers' },
+  os: { id: 'metrics.os', defaultMessage: 'Operating system' },
+  devices: { id: 'metrics.device', defaultMessage: 'Devices' },
+  countries: { id: 'metrics.screens', defaultMessage: 'Screens' },
+  languages: { id: 'metrics.languages', defaultMessage: 'Languages' },
+  events: { id: 'metrics.screens', defaultMessage: 'Screens' },
+  utm: { id: 'metrics.utm', defaultMessage: 'UTM' },
+});
 
 const views = {
   url: PagesTable,
@@ -47,6 +60,7 @@ export default function WebsiteDetails({ websiteId }) {
     resolve,
     query: { view },
   } = usePageQuery();
+  const { formatMessage } = useIntl();
 
   const BackButton = () => (
     <div key="back-button" className={classNames(styles.backButton, 'col-12')}>
@@ -61,43 +75,43 @@ export default function WebsiteDetails({ websiteId }) {
       render: BackButton,
     },
     {
-      label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
+      label: formatMessage(messages.pages),
       value: resolve({ view: 'url' }),
     },
     {
-      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
+      label: formatMessage(messages.referrers),
       value: resolve({ view: 'referrer' }),
     },
     {
-      label: <FormattedMessage id="metrics.screens" defaultMessage="Screens" />,
+      label: formatMessage(messages.screens),
       value: resolve({ view: 'screen' }),
     },
     {
-      label: <FormattedMessage id="metrics.browsers" defaultMessage="Browsers" />,
+      label: formatMessage(messages.browsers),
       value: resolve({ view: 'browser' }),
     },
     {
-      label: <FormattedMessage id="metrics.operating-systems" defaultMessage="Operating system" />,
+      label: formatMessage(messages.os),
       value: resolve({ view: 'os' }),
     },
     {
-      label: <FormattedMessage id="metrics.devices" defaultMessage="Devices" />,
+      label: formatMessage(messages.devices),
       value: resolve({ view: 'device' }),
     },
     {
-      label: <FormattedMessage id="metrics.countries" defaultMessage="Countries" />,
+      label: formatMessage(messages.countries),
       value: resolve({ view: 'country' }),
     },
     {
-      label: <FormattedMessage id="metrics.languages" defaultMessage="Languages" />,
+      label: formatMessage(messages.languages),
       value: resolve({ view: 'language' }),
     },
     {
-      label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
+      label: formatMessage(messages.events),
       value: resolve({ view: 'event' }),
     },
     {
-      label: <FormattedMessage id="metrics.utm" defaultMessage="UTM" />,
+      label: formatMessage(messages.utm),
       value: resolve({ view: 'utm' }),
     },
   ];

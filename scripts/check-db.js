@@ -10,6 +10,10 @@ function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
 }
 
+function error(msg) {
+  console.log(chalk.redBright(`✗ ${msg}`));
+}
+
 async function checkEnv() {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL is not defined.');
@@ -34,6 +38,7 @@ async function checkTables() {
 
     success('Database tables found.');
   } catch (e) {
+    error('Database tables not found.');
     console.log('Adding tables...');
 
     console.log(execSync('prisma migrate deploy').toString());
