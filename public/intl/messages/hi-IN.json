@@ -477,6 +477,12 @@
       "value": "सभी संबद्ध डेटा को भी हटा दिया जाएगा।"
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

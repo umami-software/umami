@@ -92,8 +92,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   }
 
   function getDetail({
-    event_type,
-    event_value,
+    event_name,
     view_id,
     session_id,
     url,
@@ -103,10 +102,10 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     device,
     website_id,
   }) {
-    if (event_type) {
+    if (event_name) {
       return (
         <div>
-          <Tag>{event_type}</Tag> {event_value}
+          <Tag>{event_name}</Tag>
         </div>
       );
     }

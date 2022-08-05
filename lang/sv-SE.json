@@ -68,6 +68,7 @@
   "message.confirm-reset": "Är du säker på att du vill återställa statistiken för {target}?",
   "message.copied": "Kopierad!",
   "message.delete-warning": "All tillhörande data kommer också raderas.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Något gick fel.",
   "message.get-share-url": "Visa delnings-URL",
   "message.get-tracking-code": "Visa spårningskod",

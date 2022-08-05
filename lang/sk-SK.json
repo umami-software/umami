@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Skopírované!",
   "message.delete-warning": "Všetky príbuzné data budu tiež zmazané.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Niečo sa pokazilo.",
   "message.get-share-url": "Získať zdielané URL",
   "message.get-tracking-code": "Získať tracking kód",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "您确定要重置 {target} 的数据吗?",
   "message.copied": "复制成功！",
   "message.delete-warning": "所有相关数据将会被删除。",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "出现错误。",
   "message.get-share-url": "获取共享链接",
   "message.get-tracking-code": "获取跟踪代码",

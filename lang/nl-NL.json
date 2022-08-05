@@ -68,6 +68,7 @@
   "message.confirm-reset": "Weet je zeker dat je de statistieken van {target} opnieuw wilt instellen?",
   "message.copied": "Gekopiëerd!",
   "message.delete-warning": "Alle verwante gegezens zullen ook verwijderd worden.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Er is iets misgegaan.",
   "message.get-share-url": "Openbare URL",
   "message.get-tracking-code": "Tracking code",

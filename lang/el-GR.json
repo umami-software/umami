@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Αντιγράφηκε!",
   "message.delete-warning": "Όλα τα σχετικά δεδομένα θα διαγραφούν επίσης.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Κάτι πήγε στραβά.",
   "message.get-share-url": "Λήψη URL κοινής χρήσης",
   "message.get-tracking-code": "Λήψη κώδικα παρακολούθησης",

@@ -37,7 +37,8 @@ export default function TestConsole() {
   function handleClick() {
     window.umami('event (default)');
     window.umami.trackView('/page-view', 'https://www.google.com');
-    window.umami.trackEvent('event (custom)', 'custom-type');
+    window.umami.trackEvent('event (custom)', null, 'custom-type');
+    window.umami.trackEvent('event (custom)', { test: 'test-data' }, 'custom-data-type');
   }
 
   return (

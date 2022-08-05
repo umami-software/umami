@@ -457,6 +457,12 @@
       "value": "所有相关数据将会被删除。"
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
@@ -776,37 +782,37 @@
   "metrics.utm": [
     {
       "type": 0,
-      "value": "UTM"
+      "value": "流量渠道标记（UTM）"
     }
   ],
   "metrics.utm_campaign": [
     {
       "type": 0,
-      "value": "UTM Campaign"
+      "value": "流量标识"
     }
   ],
   "metrics.utm_content": [
     {
       "type": 0,
-      "value": "UTM Content"
+      "value": "搜索关键字"
     }
   ],
   "metrics.utm_medium": [
     {
       "type": 0,
-      "value": "UTM Medium"
+      "value": "流量来源类型"
     }
   ],
   "metrics.utm_source": [
     {
       "type": 0,
-      "value": "UTM Source"
+      "value": "流量来源"
     }
   ],
   "metrics.utm_term": [
     {
       "type": 0,
-      "value": "UTM Term"
+      "value": "流量搜索关键字"
     }
   ],
   "metrics.views": [

@@ -29,7 +29,7 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      event_value x,
+      event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event

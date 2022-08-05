@@ -14,7 +14,7 @@ if (process.env.MAXMIND_LICENSE_KEY) {
     `?edition_id=GeoLite2-Country&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
 }
 
-const dest = path.resolve(__dirname, '../public/geo');
+const dest = path.resolve(__dirname, '../node_modules/.geo');
 
 if (!fs.existsSync(dest)) {
   fs.mkdirSync(dest);

@@ -473,6 +473,12 @@
       "value": "Toutes les données associées seront également supprimées."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

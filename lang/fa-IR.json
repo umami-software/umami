@@ -68,6 +68,7 @@
   "message.confirm-reset": "آیا از بازنشانی آمار {target} مطمئن هستید?",
   "message.copied": "کپی شد!",
   "message.delete-warning": "همه‌ی داده‌های مرتبط هم حذف خواهد شد.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "مشکلی پیش آمده است.",
   "message.get-share-url": "دریافت URL برای اشتراک گذاری",
   "message.get-tracking-code": "گرفتن کد رهگیری",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "コピーしました！",
   "message.delete-warning": "関連するすべてのデータも削除されます。",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "問題が発生しました。",
   "message.get-share-url": "共有リンクを取得",
   "message.get-tracking-code": "トラッキングコードを取得",

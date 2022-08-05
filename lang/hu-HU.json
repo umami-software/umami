@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Kimásolva!",
   "message.delete-warning": "Minden társított adat törlésre kerül.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Valami baj történt.",
   "message.get-share-url": "Megosztási URL kimásolása",
   "message.get-tracking-code": "Követési kód kimásolása",

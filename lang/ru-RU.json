@@ -68,6 +68,7 @@
   "message.confirm-reset": "Вы уверены, что хотите сбросить статистику {target}?",
   "message.copied": "Скопировано!",
   "message.delete-warning": "Все связанные данные будут также удалены.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Что-то пошло не так.",
   "message.get-share-url": "Получить публичную ссылку",
   "message.get-tracking-code": "Получить код отслеживания",

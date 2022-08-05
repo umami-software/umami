@@ -477,6 +477,12 @@
       "value": "Všechna související data budou také smazána."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are you sure you want to reset {target}'s statistics?",
   "message.copied": "Copied!",
   "message.delete-warning": "All associated data will be deleted as well.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Something went wrong.",
   "message.get-share-url": "Get share URL",
   "message.get-tracking-code": "Get tracking code",

@@ -68,6 +68,7 @@
   "message.confirm-reset": "Er du sikker på at du ville nulstille {target}'s statistikker?",
   "message.copied": "Kopieret!",
   "message.delete-warning": "Alle tilknyttede data slettes også.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Noget gik galt.",
   "message.get-share-url": "Få delings-URL",
   "message.get-tracking-code": "Få sporingskode",

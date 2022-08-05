@@ -68,6 +68,7 @@
   "message.confirm-reset": "هل أنت متأكد من اعادة تعيين الإحصائيات لـ {target}؟",
   "message.copied": "تم النسخ!",
   "message.delete-warning": "كافة البيانات المرتبطة سيم حذفها ايضا.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "حدث خطأ ما.",
   "message.get-share-url": "احصل على رابط المشاركة",
   "message.get-tracking-code": "احصل على كود التتبع",

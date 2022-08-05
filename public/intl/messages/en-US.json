@@ -477,6 +477,12 @@
       "value": "All associated data will be deleted as well."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,

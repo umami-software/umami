@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are your sure you want to reset {target}'s statistics?",
   "message.copied": "Panoya kopyalandı!",
   "message.delete-warning": "İlişkili tüm veriler de  silinecektir.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Bir şeyler ters gitti!",
   "message.get-share-url": "Paylaşım adresini al",
   "message.get-tracking-code": "İzleme kodunu al",

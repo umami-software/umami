@@ -68,6 +68,7 @@
   "message.confirm-reset": "Are esate tikri, jog norite atstatyti svetainės {target} statistikos duomenis?",
   "message.copied": "Nukopijuota!",
   "message.delete-warning": "Visi susiję duomenys taip pat bus ištrinti.",
+  "message.edit-dashboard": "Edit dashboard",
   "message.failure": "Kažkas įvyko ne taip.",
   "message.get-share-url": "Gauti bendrinimo nuorodą",
   "message.get-tracking-code": "Gauti sekimo kodą",

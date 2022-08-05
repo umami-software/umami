@@ -6,7 +6,7 @@ import useStore from 'store/app';
 
 const selector = state => state.shareToken;
 
-function parseHeaders(headers = {}, { authToken, shareToken }) {
+function parseHeaders(headers, { authToken, shareToken }) {
   if (authToken) {
     headers.authorization = `Bearer ${authToken}`;
   }
@@ -25,7 +25,7 @@ export default function useApi() {
 
   return {
     get: useCallback(
-      async (url, params, headers) => {
+      async (url, params = {}, headers = {}) => {
         return get(
           `${basePath}/api${url}`,
           params,
@@ -36,7 +36,7 @@ export default function useApi() {
     ),
 
     post: useCallback(
-      async (url, params, headers) => {
+      async (url, params = {}, headers = {}) => {
         return post(
           `${basePath}/api${url}`,
           params,
@@ -47,7 +47,7 @@ export default function useApi() {
     ),
 
     put: useCallback(
-      async (url, params, headers) => {
+      async (url, params = {}, headers = {}) => {
         return put(
           `${basePath}/api${url}`,
           params,
@@ -58,7 +58,7 @@ export default function useApi() {
     ),
 
     del: useCallback(
-      async (url, params, headers) => {
+      async (url, params = {}, headers = {}) => {
         return del(
           `${basePath}/api${url}`,
           params,

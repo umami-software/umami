@@ -8,10 +8,10 @@ import ThemeButton from 'components/settings/ThemeButton';
 import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
-import Logo from 'assets/logo.svg';
-import styles from './Header.module.css';
 import useUser from 'hooks/useUser';
 import { HOMEPAGE_URL } from 'lib/constants';
+import Logo from 'assets/logo.svg';
+import styles from './Header.module.css';
 
 export default function Header() {
   const { user } = useUser();
@@ -19,7 +19,7 @@ export default function Header() {
 
   return (
     <>
-      {user?.is_admin && !process.env.updatesDisabled && <UpdateNotice />}
+      <UpdateNotice />
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <Icon icon={<Logo />} size="large" className={styles.logo} />
