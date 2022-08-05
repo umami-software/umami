@@ -38,7 +38,7 @@ async function produce_event() {
         session_uuid: '00fea66e-a433-536d-a13d-2d873fab0a08',
         created_at: '2020-07-18 11:53:33',
         url: y,
-        event_data: z,
+        event_name: z,
       };
 
       await producer.send({
