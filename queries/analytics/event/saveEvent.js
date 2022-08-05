@@ -39,8 +39,14 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
   );
 }
 
-async function clickhouseQuery(website_id, { session_uuid, url, event_name }) {
-  const params = [website_id, session_uuid, url?.substr(0, URL_LENGTH), event_name?.substr(0, 50)];
+async function clickhouseQuery(website_id, { event_uuid, session_uuid, url, event_name }) {
+  const params = [
+    website_id,
+    event_uuid,
+    session_uuid,
+    url?.substr(0, URL_LENGTH),
+    event_name?.substr(0, 50),
+  ];
 
   return rawQueryClickhouse(
     `
@@ -50,13 +56,13 @@ async function clickhouseQuery(website_id, { session_uuid, url, event_name }) {
   );
 }
 
-async function kafkaQuery(website_id, { session_uuid, url, event_type, event_value }) {
+async function kafkaQuery(website_id, { event_uuid, session_uuid, url, event_name }) {
   const params = {
+    event_uuid: event_uuid,
     website_id: website_id,
     session_uuid: session_uuid,
     url: url?.substr(0, URL_LENGTH),
-    event_type: event_type?.substr(0, 50),
-    event_value: event_value?.substr(0, 50),
+    event_name: event_name?.substr(0, 50),
   };
 
   await kafkaProducer(params, 'event');
