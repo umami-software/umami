@@ -1,4 +1,4 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
+import { CLICKHOUSE, RELATIONAL, KAFKA } from 'lib/constants';
 import {
   getDateFormatClickhouse,
   prisma,
@@ -13,6 +13,7 @@ export async function createSession(...args) {
   return runAnalyticsQuery({
     [RELATIONAL]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [KAFKA]: () => kafkaQuery(...args),
   });
 }
 
@@ -34,6 +35,31 @@ async function clickhouseQuery(
   website_id,
   { session_uuid, hostname, browser, os, screen, language, country, device },
 ) {
+  const params = [
+    session_uuid,
+    website_id,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country ? country : null,
+  ];
+
+  await rawQueryClickhouse(
+    `insert into umami_dev.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
+      values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+    params,
+  );
+
+  return getSessionByUuid(session_uuid);
+}
+
+async function kafkaQuery(
+  website_id,
+  { session_uuid, hostname, browser, os, screen, language, country, device },
+) {
   const params = {
     session_uuid: session_uuid,
     website_id: website_id,
@@ -46,17 +72,7 @@ async function clickhouseQuery(
     country: country ? country : null,
   };
 
-  if (process.env.KAFKA_URL) {
-    await kafkaProducer(params, 'session');
-  } else {
-    const paramsValue = Object.keys(params);
-
-    await rawQueryClickhouse(
-      `insert into umami_dev.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
-        values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-      paramsValue,
-    );
-  }
+  await kafkaProducer(params, 'session');
 
   return getSessionByUuid(session_uuid);
 }
