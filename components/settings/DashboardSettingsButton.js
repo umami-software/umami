@@ -25,11 +25,7 @@ export default function DashboardSettingsButton() {
 
   function handleSelect(value) {
     if (value === 'charts') {
-      saveDashboard(state => {
-        const bs = { showCharts: !state.showCharts };
-        console.log('WTF', { state, bs });
-        return bs;
-      });
+      saveDashboard(state => ({ showCharts: !state.showCharts }));
     }
     if (value === 'order') {
       saveDashboard({ editing: true });

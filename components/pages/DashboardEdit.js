@@ -1,12 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import useDashboard, { saveDashboard } from 'store/dashboard';
-import Button from 'components/common/Button';
-import { useMemo } from 'react';
-import { orderByWebsiteMap } from 'lib/format';
-import styles from './DashboardEdit.module.css';
 import classNames from 'classnames';
+import Button from 'components/common/Button';
+import { sortArrayByMap } from 'lib/array';
+import useDashboard, { saveDashboard } from 'store/dashboard';
+import styles from './DashboardEdit.module.css';
 
 const messages = defineMessages({
   save: { id: 'label.save', defaultMessage: 'Save' },
@@ -16,13 +15,13 @@ const messages = defineMessages({
 
 const dragId = 'dashboard-website-ordering';
 
-export default function DashboardEdit({ data: websites }) {
+export default function DashboardEdit({ websites }) {
   const settings = useDashboard();
   const { websiteOrder } = settings;
   const { formatMessage } = useIntl();
-  const [order, setOrder] = useState(websiteOrder);
+  const [order, setOrder] = useState(websiteOrder || []);
 
-  const ordered = useMemo(() => orderByWebsiteMap(websites, order), [websites, order]);
+  const ordered = useMemo(() => sortArrayByMap(websites, order, 'website_id'), [websites, order]);
 
   console.log({ order, ordered });
 
@@ -33,9 +32,7 @@ export default function DashboardEdit({ data: websites }) {
     const [removed] = orderedWebsites.splice(source.index, 1);
     orderedWebsites.splice(destination.index, 0, removed);
 
-    setOrder(
-      orderedWebsites.map((i, k) => ({ [i.website_uuid]: k })).reduce((a, b) => ({ ...a, ...b })),
-    );
+    setOrder(orderedWebsites.map(({ website_id }) => website_id));
   }
 
   function handleSave() {
@@ -50,7 +47,7 @@ export default function DashboardEdit({ data: websites }) {
   }
 
   function handleReset() {
-    setOrder({});
+    setOrder([]);
   }
 
   return (
@@ -94,6 +91,7 @@ export default function DashboardEdit({ data: websites }) {
                     )}
                   </Draggable>
                 ))}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>

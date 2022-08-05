@@ -40,8 +40,8 @@ export default function Dashboard() {
         <div>{formatMessage(messages.dashboard)}</div>
         {!editing && <DashboardSettingsButton />}
       </PageHeader>
-      {editing && <DashboardEdit data={data} />}
-      {!editing && <WebsiteList data={data} showCharts={showCharts} limit={max} />}
+      {editing && <DashboardEdit websites={data} />}
+      {!editing && <WebsiteList websites={data} showCharts={showCharts} limit={max} />}
       {max < data.length && (
         <Button className={styles.button} onClick={handleMore}>
           {formatMessage(messages.more)}
