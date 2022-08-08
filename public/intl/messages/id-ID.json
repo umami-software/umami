@@ -29,12 +29,6 @@
       "value": "Semua"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "Semua peristiwa"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -741,6 +735,12 @@
       "value": "Halaman"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -757,42 +757,6 @@
     {
       "type": 0,
       "value": "Pengunjung unik"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "Kampanye UTM"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "Konten UTM"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "Media UTM"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "Sumber UTM"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "Tampilan UTM"
     }
   ],
   "metrics.views": [

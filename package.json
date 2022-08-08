@@ -13,7 +13,7 @@
     "dev": "next dev",
     "build": "npm-run-all build-tracker build-geo build-db build-app",
     "start": "npm-run-all check-db start-next",
-    "start-docker": "npm-run-all check-db start-server",
+    "start-docker": "npm-run-all check-db build-tracker start-server",
     "start-env": "node scripts/start-env.js",
     "start-server": "node server.js",
     "start-next": "next start",

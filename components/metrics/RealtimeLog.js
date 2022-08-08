@@ -3,7 +3,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import Icon from 'components/common/Icon';
-import Tag from 'components/common/Tag';
 import Dot from 'components/common/Dot';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
@@ -103,11 +102,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     website_id,
   }) {
     if (event_name) {
-      return (
-        <div>
-          <Tag>{event_name}</Tag>
-        </div>
-      );
+      return <div>{event_name}</div>;
     }
     if (view_id) {
       const domain = getWebsite({ website_id })?.domain;

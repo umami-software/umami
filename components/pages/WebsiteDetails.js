@@ -19,23 +19,23 @@ import LanguagesTable from 'components/metrics/LanguagesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
 import ScreenTable from 'components/metrics/ScreenTable';
-import UTMTable from 'components/metrics/UTMTable';
+import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './WebsiteDetails.module.css';
 
 const messages = defineMessages({
-  pages: { id: 'pages', defaultMessage: 'Pages' },
+  pages: { id: 'metrics.pages', defaultMessage: 'Pages' },
   referrers: { id: 'metrics.referrers', defaultMessage: 'Referrers' },
   screens: { id: 'metrics.screens', defaultMessage: 'Screens' },
   browsers: { id: 'metrics.browsers', defaultMessage: 'Browsers' },
-  os: { id: 'metrics.os', defaultMessage: 'Operating system' },
-  devices: { id: 'metrics.device', defaultMessage: 'Devices' },
-  countries: { id: 'metrics.screens', defaultMessage: 'Screens' },
+  os: { id: 'metrics.operating-systems', defaultMessage: 'Operating system' },
+  devices: { id: 'metrics.devices', defaultMessage: 'Devices' },
+  countries: { id: 'metrics.countries', defaultMessage: 'Countries' },
   languages: { id: 'metrics.languages', defaultMessage: 'Languages' },
-  events: { id: 'metrics.screens', defaultMessage: 'Screens' },
-  utm: { id: 'metrics.utm', defaultMessage: 'UTM' },
+  events: { id: 'metrics.events', defaultMessage: 'Events' },
+  query: { id: 'metrics.query-parameters', defaultMessage: 'Query parameters' },
 });
 
 const views = {
@@ -48,7 +48,7 @@ const views = {
   country: CountriesTable,
   language: LanguagesTable,
   event: EventsTable,
-  utm: UTMTable,
+  query: QueryParametersTable,
 };
 
 export default function WebsiteDetails({ websiteId }) {
@@ -83,10 +83,6 @@ export default function WebsiteDetails({ websiteId }) {
       value: resolve({ view: 'referrer' }),
     },
     {
-      label: formatMessage(messages.screens),
-      value: resolve({ view: 'screen' }),
-    },
-    {
       label: formatMessage(messages.browsers),
       value: resolve({ view: 'browser' }),
     },
@@ -107,12 +103,16 @@ export default function WebsiteDetails({ websiteId }) {
       value: resolve({ view: 'language' }),
     },
     {
+      label: formatMessage(messages.screens),
+      value: resolve({ view: 'screen' }),
+    },
+    {
       label: formatMessage(messages.events),
       value: resolve({ view: 'event' }),
     },
     {
-      label: formatMessage(messages.utm),
-      value: resolve({ view: 'utm' }),
+      label: formatMessage(messages.query),
+      value: resolve({ view: 'query' }),
     },
   ];
 

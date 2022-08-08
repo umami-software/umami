@@ -29,12 +29,6 @@
       "value": "Wszystkie"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "Wszystkie wydarzenia"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -773,6 +767,12 @@
       "value": "Strony"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -789,42 +789,6 @@
     {
       "type": 0,
       "value": "Unikalni odwiedzający"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "Kampanie UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "Kampania"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "Treść"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "Źródło"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "Słowa kluczowe"
     }
   ],
   "metrics.views": [
