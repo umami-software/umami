@@ -29,12 +29,6 @@
       "value": "সবগুলো"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "সবগুলো ঘটনা"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -769,6 +763,12 @@
       "value": "পৃষ্ঠাগুলি"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -785,42 +785,6 @@
     {
       "type": 0,
       "value": "অনন্য ভিজিটর"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM প্রচার"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM সামগ্রী"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM মিডিয়াম"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM উৎস"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM শব্দ"
     }
   ],
   "metrics.views": [

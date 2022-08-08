@@ -29,12 +29,6 @@
       "value": "所有"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "所有事件"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -757,6 +751,12 @@
       "value": "網頁"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -773,42 +773,6 @@
     {
       "type": 0,
       "value": "獨立訪客"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "流量渠道標記"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "流量標識"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "流量搜索內容"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "流量來源類型"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "流量來源"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "流量搜索關鍵字"
     }
   ],
   "metrics.views": [

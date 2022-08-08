@@ -29,12 +29,6 @@
       "value": "Alle"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "Alle Ereignisse"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -773,6 +767,12 @@
       "value": "Seiten"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -789,42 +789,6 @@
     {
       "type": 0,
       "value": "Eindeutige Besucher"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Kampagne"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Inhalt"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Quelle"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Begriff"
     }
   ],
   "metrics.views": [

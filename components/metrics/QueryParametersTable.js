@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import MetricsTable from './MetricsTable';
-import FilterButtons from 'components/common/FilterButtons';
-import FilterLink from 'components/common/FilterLink';
-import { refFilter } from 'lib/filters';
+import Tag from 'components/common/Tag';
+import { paramFilter } from 'lib/filters';
+import { safeDecodeURI } from 'lib/url';
+import FilterButtons from '../common/FilterButtons';
 
 const FILTER_COMBINED = 0;
 const FILTER_RAW = 1;
@@ -11,15 +12,14 @@ const FILTER_RAW = 1;
 const messages = defineMessages({
   combined: { id: 'metrics.filter.combined', defaultMessage: 'Combined' },
   raw: { id: 'metrics.filter.raw', defaultMessage: 'Raw' },
-  referrers: { id: 'metrics.referrers', defaultMessage: 'Referrers' },
   views: { id: 'metrics.views', defaultMessage: 'Views' },
   none: { id: 'label.none', defaultMessage: 'None' },
+  query: { id: 'metrics.query-parameters', defaultMessage: 'Query parameters' },
 });
 
-export default function ReferrersTable({ websiteId, showFilters, ...props }) {
+export default function QueryParametersTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const { formatMessage } = useIntl();
-  const none = formatMessage(messages.none);
 
   const buttons = [
     {
@@ -29,25 +29,27 @@ export default function ReferrersTable({ websiteId, showFilters, ...props }) {
     { label: formatMessage(messages.raw), value: FILTER_RAW },
   ];
 
-  const renderLink = ({ w: link, x: referrer }) => {
-    return referrer ? (
-      <FilterLink id="referrer" value={referrer} externalUrl={link} />
-    ) : (
-      `(${none})`
-    );
-  };
-
   return (
     <>
       {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
       <MetricsTable
         {...props}
-        title={formatMessage(messages.referrers)}
-        type="referrer"
+        title={formatMessage(messages.query)}
+        type="query"
         metric={formatMessage(messages.views)}
         websiteId={websiteId}
-        dataFilter={filter !== FILTER_RAW ? refFilter : null}
-        renderLabel={renderLink}
+        dataFilter={filter !== FILTER_RAW ? paramFilter : null}
+        renderLabel={({ x, p, v }) =>
+          filter === FILTER_RAW ? (
+            x
+          ) : (
+            <>
+              <Tag>{safeDecodeURI(p)}</Tag>
+              {safeDecodeURI(v)}
+            </>
+          )
+        }
+        delay={0}
       />
     </>
   );

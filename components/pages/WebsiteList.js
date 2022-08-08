@@ -6,7 +6,7 @@ import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 import useDashboard from 'store/dashboard';
-import { orderByWebsiteMap } from 'lib/format';
+import { sortArrayByMap } from 'lib/array';
 import { useMemo } from 'react';
 
 const messages = defineMessages({
@@ -20,11 +20,16 @@ const messages = defineMessages({
   },
 });
 
-export default function WebsiteList({ data, showCharts, limit }) {
+export default function WebsiteList({ websites, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
   const { formatMessage } = useIntl();
 
-  const websites = useMemo(() => orderByWebsiteMap(data, websiteOrder), [data, websiteOrder]);
+  console.log({ websiteOrder });
+
+  const ordered = useMemo(
+    () => sortArrayByMap(websites, websiteOrder, 'website_id'),
+    [websites, websiteOrder],
+  );
 
   if (websites.length === 0) {
     return (
@@ -40,7 +45,7 @@ export default function WebsiteList({ data, showCharts, limit }) {
 
   return (
     <div>
-      {websites.map(({ website_id, name, domain }, index) =>
+      {ordered.map(({ website_id, name, domain }, index) =>
         index < limit ? (
           <div key={website_id} className={styles.website}>
             <WebsiteChart
