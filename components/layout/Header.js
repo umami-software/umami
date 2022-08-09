@@ -8,22 +8,26 @@ import ThemeButton from 'components/settings/ThemeButton';
 import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
+import { HOMEPAGE_URL } from 'lib/constants';
+import useConfig from '/hooks/useConfig';
+import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
-import useUser from 'hooks/useUser';
-import { HOMEPAGE_URL } from 'lib/constants';
 
 export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
+  const { updatesDisabled } = useConfig();
+  const isSharePage = pathname.includes('/share/');
+  const allowUpdate = user?.is_admin && !updatesDisabled && !isSharePage;
 
   return (
     <>
-      {user?.is_admin && !process.env.updatesDisabled && <UpdateNotice />}
+      {allowUpdate && <UpdateNotice />}
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <Icon icon={<Logo />} size="large" className={styles.logo} />
-          <Link href={pathname.includes('/share') ? HOMEPAGE_URL : '/'}>umami</Link>
+          <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
         </div>
         <HamburgerButton />
         {user && (

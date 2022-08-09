@@ -1,11 +1,11 @@
 import create from 'zustand';
 import produce from 'immer';
 import semver from 'semver';
-import { VERSION_CHECK, UPDATES_URL } from 'lib/constants';
+import { CURRENT_VERSION, VERSION_CHECK, UPDATES_URL } from 'lib/constants';
 import { getItem } from 'lib/web';
 
 const initialState = {
-  current: process.env.currentVersion,
+  current: CURRENT_VERSION,
   latest: null,
   hasUpdate: false,
   checked: false,

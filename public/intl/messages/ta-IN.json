@@ -29,12 +29,6 @@
       "value": "எல்லாம்"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "அனைத்து நிகழ்வுகளும்"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -477,6 +471,12 @@
       "value": "தொடர்புடைய எல்லா தரவும் நீக்கப்படும்."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
@@ -759,6 +759,12 @@
       "value": "பக்கங்கள்"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -775,42 +781,6 @@
     {
       "type": 0,
       "value": "தனிப்பட்ட பார்வையாளர்கள்"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Campaign"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Content"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Source"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Term"
     }
   ],
   "metrics.views": [

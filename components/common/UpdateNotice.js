@@ -30,7 +30,7 @@ export default function UpdateNotice() {
     if (!checked) {
       checkVersion();
     }
-  }, []);
+  }, [checked]);
 
   if (!hasUpdate || dismissed) {
     return null;

@@ -9,8 +9,8 @@ import {
 
 export function getEvents(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
@@ -40,7 +40,7 @@ function clickhouseQuery(websites, start_at) {
       session_id,
       created_at,
       url,
-      event_type
+      event_name
     from event
     where website_id in (${websites.join[',']}
       and created_at >= ${getDateFormatClickhouse(start_at)})

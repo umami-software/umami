@@ -10,8 +10,8 @@ import { getSessionByUuid } from 'queries';
 
 export async function createSession(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 

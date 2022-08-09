@@ -29,12 +29,6 @@
       "value": "所有"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "所有事件"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -250,13 +244,13 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "無"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "擁有者"
     }
   ],
   "label.password": [
@@ -340,7 +334,7 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "主題"
     }
   ],
   "label.this-month": [
@@ -455,6 +449,12 @@
     {
       "type": 0,
       "value": "所有相關數據將會被刪除。"
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
     }
   ],
   "message.failure": [
@@ -596,7 +596,7 @@
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "切換圖表"
     }
   ],
   "message.track-stats": [
@@ -730,13 +730,13 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "語言"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "操作系统"
+      "value": "操作系統"
     }
   ],
   "metrics.page-views": [
@@ -751,6 +751,12 @@
       "value": "網頁"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -760,49 +766,13 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "屏幕尺寸"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
       "value": "獨立訪客"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Campaign"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Content"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Source"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Term"
     }
   ],
   "metrics.views": [

@@ -14,7 +14,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, start_at, end_at, unit, tz, url, event_type } = req.query;
+    const { id, start_at, end_at, unit, tz, url, event_name } = req.query;
 
     if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
       return badRequest(res);
@@ -26,7 +26,7 @@ export default async (req, res) => {
 
     const events = await getEventMetrics(websiteId, startDate, endDate, tz, unit, {
       url,
-      event_type,
+      event_name,
     });
 
     return ok(res, events);

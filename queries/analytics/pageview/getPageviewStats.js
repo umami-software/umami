@@ -12,8 +12,8 @@ import {
 
 export async function getPageviewStats(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 

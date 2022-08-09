@@ -54,9 +54,12 @@ export default function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      const items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
+      let items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
       if (limit) {
-        return items.filter((e, i) => i < limit).sort(firstBy('y', -1).thenBy('x'));
+        items = items.filter((e, i) => i < limit);
+      }
+      if (filterOptions?.sort === false) {
+        return items;
       }
       return items.sort(firstBy('y', -1).thenBy('x'));
     }

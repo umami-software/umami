@@ -11,8 +11,8 @@ import {
 
 export async function getEventMetrics(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
@@ -29,7 +29,7 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      event_value x,
+      event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event

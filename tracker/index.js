@@ -5,23 +5,25 @@ import { removeTrailingSlash } from '../lib/url';
   const {
     screen: { width, height },
     navigator: { language },
-    location: { hostname, pathname, search },
+    location,
     localStorage,
     document,
     history,
   } = window;
+  const { hostname, pathname, search } = location;
+  const { currentScript } = document;
 
-  const script = document.querySelector('script[data-website-id]');
+  if (!currentScript) return;
 
-  if (!script) return;
-
-  const attr = script.getAttribute.bind(script);
-  const website = attr('data-website-id');
-  const hostUrl = attr('data-host-url');
-  const autoTrack = attr('data-auto-track') !== 'false';
-  const dnt = attr('data-do-not-track');
-  const cssEvents = attr('data-css-events') !== 'false';
-  const domain = attr('data-domains') || '';
+  const _data = 'data-';
+  const _false = 'false';
+  const attr = currentScript.getAttribute.bind(currentScript);
+  const website = attr(_data + 'website-id');
+  const hostUrl = attr(_data + 'host-url');
+  const autoTrack = attr(_data + 'auto-track') !== _false;
+  const dnt = attr(_data + 'do-not-track');
+  const cssEvents = attr(_data + 'css-events') !== _false;
+  const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
 
   const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
@@ -34,7 +36,8 @@ import { removeTrailingSlash } from '../lib/url';
 
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
-    : script.src.split('/').slice(0, -1).join('/');
+    : currentScript.src.split('/').slice(0, -1).join('/');
+  const endpoint = `${root}/api/collect`;
   const screen = `${width}x${height}`;
   const listeners = {};
   let currentUrl = `${pathname}${search}`;
@@ -53,64 +56,45 @@ import { removeTrailingSlash } from '../lib/url';
 
   const assign = (a, b) => {
     Object.keys(b).forEach(key => {
-      a[key] = b[key];
+      if (b[key] !== undefined) a[key] = b[key];
     });
     return a;
   };
 
-  const collect = (type, payload, persist = false) => {
+  const collect = (type, payload) => {
     if (trackingDisabled()) return;
-    const endpoint = `${root}/api/collect`;
-    let headers = { 'Content-Type': 'application/json' };
-    if (cache) headers['x-umami-cache'] = cache;
-    let options = {
+
+    return fetch(endpoint, {
       method: 'POST',
-      body: JSON.stringify({type, payload}),
-      headers
-    };
-    if (!persist) {
-      fetch(endpoint, options).then(res => res.text()).then(resText => { cache = resText });
-    } else {
-      options['keepalive'] = true;
-      fetch(endpoint, options);
-    }
+      body: JSON.stringify({ type, payload }),
+      headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
+    })
+      .then(res => res.text())
+      .then(text => (cache = text));
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
+  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
     collect(
       'pageview',
       assign(getPayload(), {
         website: uuid,
         url,
         referrer,
-      })
+      }),
     );
-  };
 
-  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
+  const trackEvent = (event_name, event_data, url = currentUrl, uuid = website) =>
     collect(
       'event',
       assign(getPayload(), {
         website: uuid,
         url,
-        event_type,
-        event_value,
-      })
+        event_name,
+        event_data,
+      }),
     );
-  };
 
   /* Handle events */
-
-  const sendEvent = (event_value, event_type) => {
-    collect(
-      'event',
-      assign(getPayload(), {
-        event_type,
-        event_value,
-      }),
-      true
-    );
-  };
 
   const addEvents = node => {
     const elements = node.querySelectorAll(eventSelect);
@@ -118,21 +102,36 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const addEvent = element => {
-    (element.getAttribute('class') || '').split(' ').forEach(className => {
+    const get = element.getAttribute.bind(element);
+    (get('class') || '').split(' ').forEach(className => {
       if (!eventClass.test(className)) return;
 
-      const [, type, value] = className.split('--');
+      const [, event, name] = className.split('--');
+
       const listener = listeners[className]
         ? listeners[className]
-        : (listeners[className] = () => {
-            if (element.tagName === 'A') {
-              sendEvent(value, type);
+        : (listeners[className] = e => {
+            if (
+              event === 'click' &&
+              element.tagName === 'A' &&
+              !(
+                e.ctrlKey ||
+                e.shiftKey ||
+                e.metaKey ||
+                (e.button && e.button === 1) ||
+                get('target')
+              )
+            ) {
+              e.preventDefault();
+              trackEvent(name).then(() => {
+                location.href = get('href');
+              });
             } else {
-              trackEvent(value, type);
+              trackEvent(name);
             }
           });
 
-      element.addEventListener(type, listener, true);
+      element.addEventListener(event, listener, true);
     });
   };
 
