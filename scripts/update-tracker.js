@@ -14,5 +14,5 @@ if (endPoint) {
     tracker.toString().replace(/"\/api\/collect"/g, `"${endPoint}"`),
   );
 
-  console.log(`Updated tracker endpoint with "${endPoint}"`);
+  console.log(`Updated tracker endpoint: ${endPoint}.`);
 }
