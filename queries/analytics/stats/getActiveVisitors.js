@@ -4,8 +4,8 @@ import { getDateFormatClickhouse, rawQuery, rawQueryClickhouse, runAnalyticsQuer
 
 export async function getActiveVisitors(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 

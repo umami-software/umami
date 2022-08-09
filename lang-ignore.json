@@ -8,7 +8,9 @@
     "metrics.device.desktop",
     "metrics.device.laptop",
     "metrics.device.tablet",
-    "metrics.referrers"
+    "metrics.referrers",
+    "metrics.utm",
+    "metrics.utm_medium"
   ],
   "en-GB": "*",
   "fr-FR": ["metrics.actions", "metrics.pages"],
@@ -34,5 +36,10 @@
     "metrics.device.desktop",
     "metrics.device.tablet",
     "metrics.filter.raw"
+  ],
+  "pt-PT": [
+    "label.websites",
+    "metrics.device.desktop",
+    "metrics.device.tablet"
   ]
 }

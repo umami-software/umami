@@ -9,8 +9,8 @@ import {
 
 export async function getPageviews(...args) {
   return runAnalyticsQuery({
-    [`${RELATIONAL}`]: () => relationalQuery(...args),
-    [`${CLICKHOUSE}`]: () => clickhouseQuery(...args),
+    [RELATIONAL]: () => relationalQuery(...args),
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 

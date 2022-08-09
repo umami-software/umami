@@ -29,12 +29,6 @@
       "value": "सब"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "All events"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -477,6 +471,12 @@
       "value": "सभी संबद्ध डेटा को भी हटा दिया जाएगा।"
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
@@ -755,6 +755,12 @@
       "value": "पृष्ठों"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -771,42 +777,6 @@
     {
       "type": 0,
       "value": "अद्वितीय आगंतुकों"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Campaign"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Content"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Source"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Term"
     }
   ],
   "metrics.views": [

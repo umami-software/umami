@@ -5,8 +5,8 @@ import FilterButtons from 'components/common/FilterButtons';
 import FilterLink from 'components/common/FilterLink';
 import { refFilter } from 'lib/filters';
 
-export const FILTER_COMBINED = 0;
-export const FILTER_RAW = 1;
+const FILTER_COMBINED = 0;
+const FILTER_RAW = 1;
 
 const messages = defineMessages({
   combined: { id: 'metrics.filter.combined', defaultMessage: 'Combined' },

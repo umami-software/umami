@@ -29,12 +29,6 @@
       "value": "所有"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "所有事件"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -457,6 +451,12 @@
       "value": "所有相关数据将会被删除。"
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
@@ -755,6 +755,12 @@
       "value": "网页"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -771,42 +777,6 @@
     {
       "type": 0,
       "value": "独立访客"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Campaign"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Content"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Source"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Term"
     }
   ],
   "metrics.views": [

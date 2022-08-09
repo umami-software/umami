@@ -29,12 +29,6 @@
       "value": "전체"
     }
   ],
-  "label.all-events": [
-    {
-      "type": 0,
-      "value": "모든 이벤트"
-    }
-  ],
   "label.all-time": [
     {
       "type": 0,
@@ -449,6 +443,12 @@
       "value": "관련된 모든 데이터도 삭제됩니다."
     }
   ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
   "message.failure": [
     {
       "type": 0,
@@ -739,6 +739,12 @@
       "value": "페이지"
     }
   ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "metrics.referrers": [
     {
       "type": 0,
@@ -755,42 +761,6 @@
     {
       "type": 0,
       "value": "순방문자(UV)"
-    }
-  ],
-  "metrics.utm": [
-    {
-      "type": 0,
-      "value": "UTM"
-    }
-  ],
-  "metrics.utm_campaign": [
-    {
-      "type": 0,
-      "value": "UTM Campaign"
-    }
-  ],
-  "metrics.utm_content": [
-    {
-      "type": 0,
-      "value": "UTM Content"
-    }
-  ],
-  "metrics.utm_medium": [
-    {
-      "type": 0,
-      "value": "UTM Medium"
-    }
-  ],
-  "metrics.utm_source": [
-    {
-      "type": 0,
-      "value": "UTM Source"
-    }
-  ],
-  "metrics.utm_term": [
-    {
-      "type": 0,
-      "value": "UTM Term"
     }
   ],
   "metrics.views": [

@@ -1,0 +1,5 @@
+.buttonGroup {
+  display: flex;
+  place-items: center;
+  gap: 10px;
+}
