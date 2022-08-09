@@ -1,6 +1,7 @@
 import { CLICKHOUSE, RELATIONAL, KAFKA } from 'lib/constants';
 import {
   getDateFormatClickhouse,
+  getDateFormatKafka,
   prisma,
   rawQueryClickhouse,
   runAnalyticsQuery,
@@ -48,7 +49,7 @@ async function clickhouseQuery(
   ];
 
   await rawQueryClickhouse(
-    `insert into umami_dev.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
+    `insert into umami.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
       values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
     params,
   );
@@ -63,6 +64,7 @@ async function kafkaQuery(
   const params = {
     session_uuid: session_uuid,
     website_id: website_id,
+    created_at: getDateFormatKafka(new Date()),
     hostname: hostname,
     browser: browser,
     os: os,

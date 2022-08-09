@@ -3,7 +3,7 @@ CREATE TABLE pageview
 (
     website_id UInt32,
     session_uuid UUID,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     url String,
     referrer String
 )
@@ -14,7 +14,7 @@ CREATE TABLE pageview
 CREATE TABLE pageview_queue (
     website_id UInt32,
     session_uuid UUID,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     url String,
     referrer String
 )
@@ -40,7 +40,7 @@ CREATE TABLE session
 (
     session_uuid UUID,
     website_id UInt32,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     hostname LowCardinality(String),
     browser LowCardinality(String),
     os LowCardinality(String),
@@ -56,7 +56,7 @@ CREATE TABLE session
 CREATE TABLE session_queue (
     session_uuid UUID,
     website_id UInt32,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     hostname LowCardinality(String),
     browser LowCardinality(String),
     os LowCardinality(String),
@@ -92,7 +92,7 @@ CREATE TABLE event
     event_uuid UUID,
     website_id UInt32,
     session_uuid UUID,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     url String,
     event_name String
 )
@@ -104,7 +104,7 @@ CREATE TABLE event_queue (
     event_uuid UUID,
     website_id UInt32,
     session_uuid UUID,
-    created_at DateTime,
+    created_at DateTime('UTC'),
     url String,
     event_name String
 )

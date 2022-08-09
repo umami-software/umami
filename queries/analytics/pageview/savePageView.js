@@ -1,6 +1,7 @@
 import { CLICKHOUSE, RELATIONAL, KAFKA, URL_LENGTH } from 'lib/constants';
 import {
   getDateFormatClickhouse,
+  getDateFormatKafka,
   prisma,
   rawQueryClickhouse,
   runAnalyticsQuery,
@@ -39,7 +40,7 @@ async function clickhouseQuery(website_id, { session_uuid, url, referrer }) {
 
   return rawQueryClickhouse(
     `
-    insert into umami_dev.pageview (created_at, website_id, session_uuid, url, referrer)
+    insert into umami.pageview (created_at, website_id, session_uuid, url, referrer)
     values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4);`,
     params,
   );
@@ -49,6 +50,7 @@ async function kafkaQuery(website_id, { session_uuid, url, referrer }) {
   const params = {
     website_id: website_id,
     session_uuid: session_uuid,
+    created_at: getDateFormatKafka(new Date()),
     url: url?.substr(0, URL_LENGTH),
     referrer: referrer?.substr(0, URL_LENGTH),
   };

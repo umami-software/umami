@@ -66,6 +66,7 @@
     "cross-spawn": "^7.0.3",
     "date-fns": "^2.23.0",
     "date-fns-tz": "^1.1.4",
+    "dateformat": "^5.0.3",
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
     "dotenv": "^10.0.0",
