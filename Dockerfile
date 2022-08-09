@@ -12,15 +12,11 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG DATABASE_URL
 ARG DATABASE_TYPE
 ARG BASE_PATH
-ARG DISABLE_LOGIN
 
-ENV DATABASE_URL $DATABASE_URL
 ENV DATABASE_TYPE $DATABASE_TYPE
 ENV BASE_PATH $BASE_PATH
-ENV DISABLE_LOGIN $DISABLE_LOGIN
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
@@ -36,8 +32,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-RUN yarn global add prisma
-RUN yarn add npm-run-all dotenv
+RUN yarn add npm-run-all dotenv prisma
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js .
