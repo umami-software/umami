@@ -4,11 +4,15 @@
     "label.administrator",
     "label.name",
     "label.domain",
+    "label.theme",
     "metrics.device.desktop",
     "metrics.device.laptop",
     "metrics.device.tablet",
-    "metrics.referrers"
+    "metrics.referrers",
+    "metrics.utm",
+    "metrics.utm_medium"
   ],
+  "en-GB": "*",
   "fr-FR": ["metrics.actions", "metrics.pages"],
   "lt-LT": [
     "metrics.device.desktop",
@@ -23,6 +27,19 @@
     "metrics.browsers",
     "metrics.device.desktop",
     "metrics.device.laptop",
+    "metrics.device.tablet"
+  ],
+  "it-IT": [
+    "label.password",
+    "label.reset",
+    "message.powered-by",
+    "metrics.device.desktop",
+    "metrics.device.tablet",
+    "metrics.filter.raw"
+  ],
+  "pt-PT": [
+    "label.websites",
+    "metrics.device.desktop",
     "metrics.device.tablet"
   ]
 }

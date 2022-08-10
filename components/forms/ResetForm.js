@@ -8,7 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
-import usePost from 'hooks/usePost';
+import useApi from 'hooks/useApi';
 
 const CONFIRMATION_WORD = 'RESET';
 
@@ -27,11 +27,11 @@ const validate = ({ confirmation }) => {
 };
 
 export default function ResetForm({ values, onSave, onClose }) {
-  const post = usePost();
+  const { post } = useApi();
   const [message, setMessage] = useState();
 
   const handleSubmit = async ({ type, id }) => {
-    const { ok, data } = await post(`/api/${type}/${id}/reset`);
+    const { ok, data } = await post(`/${type}/${id}/reset`);
 
     if (ok) {
       onSave();

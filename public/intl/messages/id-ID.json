@@ -1,0 +1,774 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Akun"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Tambah akun"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Tambah situs web"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Pengelola"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Semua"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Semua waktu"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Semua website"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Kembali"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Batal"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Ganti kata sandi"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Konfirmasi kata sandi"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Salin ke papan klip"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Kata sandi sekarang"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Rentang khusus"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Dasbor"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Rentang tanggal"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Rentang tanggal bawaan"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Hapus"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Hapus akun"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Hapus situs web"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Tutup"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domain"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Sunting"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Sunting akun"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Sunting situs web"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Aktifkan URL berbagi"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Tidak valid"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Domain tidak valid"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Bahasa"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " hari terakhir"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " jam terakhir"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Masuk sebagai "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Masuk"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Keluar"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Lebih banyak"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Nama"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Kata sandi baru"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Pemilik"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Kata sandi"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Kata sandi tidak cocok"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Waktu nyata"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Log waktu nyata"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Segarkan"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Wajib"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Atur ulang"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Atur ulang statistik"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Simpan"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Pengaturan"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Bagikan URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Sehari"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Tema"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Bulan ini"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Minggu ini"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Tahun ini"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Zona waktu"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Hari ini"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Kode lacak"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Tidak diketahui"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Nama pengguna"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Lihat Detil"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Situs web"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " pengunjung saat ini"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Apakah kamu yakin ingin menghapus "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Anda yakin ingin mengatur ulang statistik "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Tersalin!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Semua data terkait juga akan dihapus."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Ada yang salah."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Dapatkan URL berbagi"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Dapatkan kode pelacakan"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Pergi ke pengaturan"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Nama pengguna/kata sandi salah."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Pengunjung dari "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " dengan "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " di "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Versi terbaru umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " telah tersedia!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Tidak ada data."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Anda tidak memiliki situs web yang dikonfigurasi."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Halaman tidak ditemukan."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Didukung oleh "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "Semua statistik pada website ini akan dihapus, tetapi kode lacak akan tetap terpasang"
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Berhasil disimpan."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Ini adalah URL yang dibagikan secara publik untuk "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Buka grafik"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Untuk melacak statistik "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", tempatkan kode berikut di bagian "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " situs web nda."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Ketikkan "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " pada kotak di bawah untuk konfirmasi."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Ketikkan "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " pada kotak di bawah untuk konfirmasi."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Aksi"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Waktu kunjungan rata-rata"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Rasio pentalan"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Peramban"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Negara"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Desktop"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Ponsel"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tablet"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Perangkat"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Perihal"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Gabungan"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Mentah"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Bahasa"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Sistem Operasi"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Tampilan halaman"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Halaman"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Perujuk"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Layar"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Pengunjung unik"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Tampilan"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Pengunjung"
+    }
+  ]
+}

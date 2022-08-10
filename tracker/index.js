@@ -5,106 +5,94 @@ import { removeTrailingSlash } from '../lib/url';
   const {
     screen: { width, height },
     navigator: { language },
-    location: { hostname, pathname, search },
+    location,
     localStorage,
-    sessionStorage,
     document,
     history,
   } = window;
+  const { hostname, pathname, search } = location;
+  const { currentScript } = document;
 
-  const script = document.querySelector('script[data-website-id]');
+  if (!currentScript) return;
 
-  if (!script) return;
-
-  const attr = script.getAttribute.bind(script);
-  const website = attr('data-website-id');
-  const hostUrl = attr('data-host-url');
-  const autoTrack = attr('data-auto-track') !== 'false';
-  const dnt = attr('data-do-not-track');
-  const useCache = attr('data-cache');
-  const domain = attr('data-domains') || '';
+  const _data = 'data-';
+  const _false = 'false';
+  const attr = currentScript.getAttribute.bind(currentScript);
+  const website = attr(_data + 'website-id');
+  const hostUrl = attr(_data + 'host-url');
+  const autoTrack = attr(_data + 'auto-track') !== _false;
+  const dnt = attr(_data + 'do-not-track');
+  const cssEvents = attr(_data + 'css-events') !== _false;
+  const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
 
   const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
   const eventSelect = "[class*='umami--']";
-  const cacheKey = 'umami.cache';
 
-  const disableTracking = () =>
+  const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
 
   const root = hostUrl
     ? removeTrailingSlash(hostUrl)
-    : script.src.split('/').slice(0, -1).join('/');
+    : currentScript.src.split('/').slice(0, -1).join('/');
+  const endpoint = `${root}/api/collect`;
   const screen = `${width}x${height}`;
   const listeners = {};
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
+  let cache;
 
   /* Collect metrics */
 
-  const post = (url, data, callback) => {
-    const req = new XMLHttpRequest();
-    req.open('POST', url, true);
-    req.setRequestHeader('Content-Type', 'application/json');
+  const getPayload = () => ({
+    website,
+    hostname,
+    screen,
+    language,
+    url: currentUrl,
+  });
 
-    req.onreadystatechange = () => {
-      if (req.readyState === 4) {
-        callback(req.response);
-      }
-    };
-
-    req.send(JSON.stringify(data));
-  };
-
-  const collect = (type, params, uuid) => {
-    if (disableTracking()) return;
-
-    const payload = {
-      website: uuid,
-      hostname,
-      screen,
-      language,
-      cache: useCache && sessionStorage.getItem(cacheKey),
-    };
-
-    Object.keys(params).forEach(key => {
-      payload[key] = params[key];
+  const assign = (a, b) => {
+    Object.keys(b).forEach(key => {
+      if (b[key] !== undefined) a[key] = b[key];
     });
-
-    post(
-      `${root}/api/collect`,
-      {
-        type,
-        payload,
-      },
-      res => useCache && sessionStorage.setItem(cacheKey, res),
-    );
+    return a;
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) => {
+  const collect = (type, payload) => {
+    if (trackingDisabled()) return;
+
+    return fetch(endpoint, {
+      method: 'POST',
+      body: JSON.stringify({ type, payload }),
+      headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
+    })
+      .then(res => res.text())
+      .then(text => (cache = text));
+  };
+
+  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
     collect(
       'pageview',
-      {
+      assign(getPayload(), {
+        website: uuid,
         url,
         referrer,
-      },
-      uuid,
+      }),
     );
-  };
 
-  const trackEvent = (event_value, event_type = 'custom', url = currentUrl, uuid = website) => {
+  const trackEvent = (event_name, event_data, url = currentUrl, uuid = website) =>
     collect(
       'event',
-      {
-        event_type,
-        event_value,
+      assign(getPayload(), {
+        website: uuid,
         url,
-      },
-      uuid,
+        event_name,
+        event_data,
+      }),
     );
-  };
 
   /* Handle events */
 
@@ -114,23 +102,36 @@ import { removeTrailingSlash } from '../lib/url';
   };
 
   const addEvent = element => {
-    (element.getAttribute('class') || '').split(' ').forEach(className => {
+    const get = element.getAttribute.bind(element);
+    (get('class') || '').split(' ').forEach(className => {
       if (!eventClass.test(className)) return;
 
-      const [, type, value] = className.split('--');
+      const [, event, name] = className.split('--');
+
       const listener = listeners[className]
         ? listeners[className]
-        : (listeners[className] = () => trackEvent(value, type));
+        : (listeners[className] = e => {
+            if (
+              event === 'click' &&
+              element.tagName === 'A' &&
+              !(
+                e.ctrlKey ||
+                e.shiftKey ||
+                e.metaKey ||
+                (e.button && e.button === 1) ||
+                get('target')
+              )
+            ) {
+              e.preventDefault();
+              trackEvent(name).then(() => {
+                location.href = get('href');
+              });
+            } else {
+              trackEvent(name);
+            }
+          });
 
-      element.addEventListener(type, listener, true);
-    });
-  };
-
-  const monitorMutate = mutations => {
-    mutations.forEach(mutation => {
-      const element = mutation.target;
-      addEvent(element);
-      addEvents(element);
+      element.addEventListener(event, listener, true);
     });
   };
 
@@ -153,6 +154,19 @@ import { removeTrailingSlash } from '../lib/url';
     }
   };
 
+  const observeDocument = () => {
+    const monitorMutate = mutations => {
+      mutations.forEach(mutation => {
+        const element = mutation.target;
+        addEvent(element);
+        addEvents(element);
+      });
+    };
+
+    const observer = new MutationObserver(monitorMutate);
+    observer.observe(document, { childList: true, subtree: true });
+  };
+
   /* Global */
 
   if (!window.umami) {
@@ -165,20 +179,23 @@ import { removeTrailingSlash } from '../lib/url';
 
   /* Start */
 
-  if (autoTrack && !disableTracking()) {
+  if (autoTrack && !trackingDisabled()) {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
 
     const update = () => {
       if (document.readyState === 'complete') {
-        addEvents(document);
         trackView();
 
-        const observer = new MutationObserver(monitorMutate);
-        observer.observe(document, { childList: true, subtree: true });
+        if (cssEvents) {
+          addEvents(document);
+          observeDocument();
+        }
       }
     };
+
     document.addEventListener('readystatechange', update, true);
+
     update();
   }
 })(window);

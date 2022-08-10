@@ -1,10 +1,10 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const https = require('https');
 const chalk = require('chalk');
 
 const src = path.resolve(__dirname, '../lang');
-const dest = path.resolve(__dirname, '../public/country');
+const dest = path.resolve(__dirname, '../public/intl/country');
 const files = fs.readdirSync(src);
 
 const getUrl = locale =>
@@ -16,11 +16,9 @@ const asyncForEach = async (array, callback) => {
   }
 };
 
-if (!fs.existsSync(dest)) {
-  fs.mkdirSync(dest);
-}
-
 const download = async files => {
+  await fs.ensureDir(dest);
+
   await asyncForEach(files, async file => {
     const locale = file.replace('-', '_').replace('.json', '');
 

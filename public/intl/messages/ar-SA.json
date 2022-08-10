@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "الحسابات"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "إضافة حساب"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "إضافة موقع"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "مدير عام؟"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "الكل"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "كافة المواقع"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "للخلف"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "إلغاء"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "تغيير كلمة المرور"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "تأكيد كلمة المرور"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "نسخ للحافظة"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "كلمة المرور الحالية"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "فترة مخصصة"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "الشاشة الرئيسية"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "فترة مخصصة"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "الفترة المخصصة الافتراضية"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "حذف"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "حذف الحساب"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "حذف الموقع"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "اخفاء"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "نطاق"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "تعديل"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "تعديل الحساب"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "تعديل الموقع"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "تفعيل مشاركة الرابط"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "غير صحيح"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "النطاق غير صحيح"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "اخر "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " يوم/ايام"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "اخر "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ساعة/ساعات"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "تم تسجيل الدخول كـ "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "تسجيل الدخول"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "تسجيل الخروج"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "المزيد"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "الإسم"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "كلمة مرور جديدة"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "كلمة المرور"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "كلمة المرور غير متطابقة"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "الملف الشخصي"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "الوقت الفعلي"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "سجلات الوقت الفعلي"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "تحديث"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "اجباري"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "اعادة تعيين"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "اعادة تعيين الإحصائيات"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "حفظ"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "اعدادات"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "مشاركة الرابط"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "يوم واحد"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "الشهر الحالي"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "الاسبوع الحالي"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "السنة الحالية"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "المنطقة الزمنية"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "اليوم"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "كود التتبع"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "غير معروف"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "اسم المستخدم"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "عرض التفاصيل"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "المواقع"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " حاليا "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "زائر واحد"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "زوار"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "هل أنت متأكد من حذف "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "هل أنت متأكد من اعادة تعيين الإحصائيات لـ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "؟"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "تم النسخ!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "كافة البيانات المرتبطة سيم حذفها ايضا."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "حدث خطأ ما."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "احصل على رابط المشاركة"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "احصل على كود التتبع"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "الذهاب إلى الإعدادات"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "اسم المستخدم او كلمة المرور غير صحيحة."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "زائر من "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " يستخدم "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " على "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "توجد نسخة جديدة من umami رقم "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " سارع بالتحديث!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "لا توجد بيانات متاحة."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "لم تقم بإعداد اي موقع."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "الصفحة غير موجودة."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "مشغل بواسطة "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "سيتم اعادة تعيين كافة الإحصائيات لهذا الموقع، لكن لن يتم تعيير كود التتبع"
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "تم الحفظ بنجاح."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "هذا الرابط الذي تم مشاركته بشكل عام لـ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "لتتبع الاحصاىيات لـ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", ضع الكود التالي في منطقة "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " في موقعك."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "اكتب "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " في الحقل التالي لتأكيد الحذف."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "اكتب "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " في الحقل التالي لتأكيد الحذف."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "اجراءات"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "متوسط وقت الزيارة"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "معدل الارتداد"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "المتصفحات"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "الدول"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "كمبيوتر"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "لابتوب"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "جوال"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "تابلت"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "الأجهزة"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "الأحداث"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "مجمعة"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "مفصلة"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "نظام التشغيل"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "مشاهدات الصفحة"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "الصفحات"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "التحويلات"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "زائرون فريدون"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "مشاهدات"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "زوار"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+name: Create docker images (manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: Version
+        required: true
+
+jobs:
+  build:
+    name: Build, push, and deploy
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        db-type: [postgresql, mysql]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: mr-smithers-excellent/docker-build-push@v5
+        name: Build & push Docker image for ${{ matrix.db-type }}
+        with:
+          image: umami
+          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
+          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}

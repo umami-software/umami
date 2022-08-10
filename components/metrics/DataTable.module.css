@@ -95,3 +95,9 @@
   background: var(--primary400);
   z-index: -1;
 }
+
+@media only screen and (max-width: 992px) {
+  .body {
+    height: auto;
+  }
+}

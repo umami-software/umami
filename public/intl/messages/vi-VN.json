@@ -1,0 +1,790 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Tài khoản"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Thêm tài khoản"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Thêm website"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Quản trị"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Tất cả"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Toàn thời gian"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Tất cả website"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Quay về"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Huỷ bỏ"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Đổi mật khẩu"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Xác nhận mật khẩu"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Lưu vào bộ nhớ tạm"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Mật khẩu hiện tại"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Phạm vi ngày tuỳ chọn"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Bảng điều khiển"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Phạm vi ngày"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Khoảng thời gian mặc định"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Xoá"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Xóa tài khoản"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Xóa website"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Loại trừ"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Tên miền"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa tài khoản"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Chỉnh sửa website"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Bật khả năng chia sẻ URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Không hợp lệ"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Tên miền không hợp lệ"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ngày gần nhất"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " giờ gần nhất"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Đăng nhập như "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Đăng nhập"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Đăng xuất"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Thêm"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Tên"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Mật khẩu mới"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Chủ sở hữu"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Mật khẩu"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Mật khẩu không đồng nhất"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Hồ sơ"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Thời gian thực"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Nhật ký thời gian thực"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Làm mới"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Yêu cầu"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Tái thiết lập"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Tái thiết lập thống kê"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Lưu"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Cài đặt"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Chia sẻ URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Trong ngày"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Giao diện"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Tháng này"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Tuần này"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Năm nay"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Múi giờ"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Hôm nay"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Mã theo dõi"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Không rõ"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Tên đăng nhập"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Xem chi tiết"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Websites"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " hiện tại "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "một"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "trên"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Bạn có chắc chắn muốn xoá "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Bạn có chắc chắn muốn tái thiết lập thống kê "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Đã sao chép!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Tất cả các dữ liệu liên quan cũng sẽ bị xoá."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Đã xảy ra lỗi."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Lấy URL chia sẻ"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Lấy mã theo dõi"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Chuyển tới cài đặt"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Sai tên đăng nhập/mật khẩu."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Khách từ "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " đang dùng "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " trên "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Có một phiên bản mới của umami!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Không có dữ liệu."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Bạn chưa có bất cứ website nào."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Trang không tìm thấy."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Bản quyền thuộc về "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "Tất cả số liệu thống kê của website này sẽ bị xoá, nhưng mã theo dõi sẽ vẫn giữ nguyên."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Đã lưu thành công."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Đây là đường dẫn URL cho "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Bật/tắt biểu đồ"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Để theo dõi "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", dán mã theo dõi vào "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " của website bạn."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Nhập "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " bên dưới để xác nhận."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Nhập "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " bên dưới để xác nhận."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Hành động"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Thời gian truy cập trung bình"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Tỷ lệ thoát trang"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Trình duyệt"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Quốc gia"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Máy bàn"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Di động"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Máy tính bảng"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Thiết bị"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Sự kiện"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Kết hợp"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Gốc"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Ngôn ngữ"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Hệ điều hành"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Lượt xem"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Trang"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Liên kết giới thiệu"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Khách truy cập một lần"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Xem"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Khách"
+    }
+  ]
+}

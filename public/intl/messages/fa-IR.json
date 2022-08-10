@@ -1,0 +1,790 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "حساب‌ها"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "افزودن حساب"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "افزودن وب‌سایت"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "مدیر"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "همه"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "همه زمان"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "همه‌ی وب‌سایت‌ها"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "برگشت"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "انصراف"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "تغییر رمز"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "تایید رمز"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "کپی به حافظه"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "رمز فعلی"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "محدوده‌ی دلخواه"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "داشبورد"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "محدوده‌ی تاریخ"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "محدوده‌ی پیشفرض تاریخ"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "حذف"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "حذف حساب"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "حذف وب‌سایت"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "رد کردن"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "دامنه"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "ویرایش"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "ویرایش حساب"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "ویرایش وب‌سایت"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "فعال کردن اشتراک گذاری URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "نامعتبر"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "دامنه‌ی نامعتبر"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "زبان"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "لیست "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " روز گذشته"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "لیست "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ساعت گذشته"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "وارد شده به عنوان "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "ورود"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "خروج"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "بیشتر"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "نام"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "رمز جدید"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "ایجاد شده توسط"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "رمز"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "رمزها یکسان نیستند"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "پروفایل"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "آمار زنده"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "لاگ‌های زنده"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "به‌روزرسانی"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "ضروری"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "بازنشانی"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "بازنشانی آمار"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "ذخیره"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "تنظیمات"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "به اشتراک گذاری URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "یک روز"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "تم"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "این ماه"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "این هفته"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "امسال"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "منطقه‌ی زمانی"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "امروز"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "کد رهگیری"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "ناشناخته"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "نام کاربری"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "مشاهده‌ی جزئیات"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "وب‌سایت‌ها"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " هم اکنون "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "یک"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "از میان"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "آیا مطمئن هستید می‌خواهید "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " را حذف کنید?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "آیا از بازنشانی آمار "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " مطمئن هستید?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "کپی شد!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "همه‌ی داده‌های مرتبط هم حذف خواهد شد."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "مشکلی پیش آمده است."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "دریافت URL برای اشتراک گذاری"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "گرفتن کد رهگیری"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "رفتن به تنظیمات"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "نام کاربری / رمز نادرست است."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "بازدیدکننده از کشور "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " با مروگر "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " در "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "نسخه‌ی جدید umami ("
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ") موجود است!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "اطلاعاتی موجود نیست."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "شما هیچ وب‌سایتی را پیکربندی نکرده‌اید."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "صفحه یافت نشد."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "قدرت گرفته توسط "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "تمامی آمارهای این وب‌سایت حذف خواهد شد اما tracking code بدون تغییر باقی می‌ماند."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "با موفقیت ذخیره شد."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "این URL به اشتراک گذاشته شده عمومی برای "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " است."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "برای ردیابی آمار "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", کد روبرو را در قسمت "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " وب‌سایت قرار دهید."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "جهت اطمینان {delete} را در کادر زیر بنویسید."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "جهت اطمینان {reset} را در کادر زیر بنویسید."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "اقدامات"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "میانگین زمان بازدید"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "نرخ Bounce"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "مروگرها"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "کشورها"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "دسکتاپ"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "لپ‌تاپ"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "موبایل"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "تبلت"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "دستگاه‌ها"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "رویدادها"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "ترکیب شده"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "خام"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "زبان‌ها"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "سیستم‌عامل‌ها"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "بازدید صفحه"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "صفحه‌ها"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "ارجاع دهندگان"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "بازدیدکننده‌های یکتا"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "بازدید"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "بازدیدکننده"
+    }
+  ]
+}

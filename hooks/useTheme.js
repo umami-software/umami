@@ -1,8 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from 'redux/actions/app';
+import { useEffect } from 'react';
+import useStore, { setTheme } from 'store/app';
 import { getItem, setItem } from 'lib/web';
 import { THEME_CONFIG } from 'lib/constants';
-import { useEffect } from 'react';
+
+const selector = state => state.theme;
 
 export default function useTheme() {
   const defaultTheme =
@@ -11,12 +12,11 @@ export default function useTheme() {
         ? 'dark'
         : 'light'
       : 'light';
-  const theme = useSelector(state => state.app.theme || getItem(THEME_CONFIG) || defaultTheme);
-  const dispatch = useDispatch();
+  const theme = useStore(selector) || getItem(THEME_CONFIG) || defaultTheme;
 
   function saveTheme(value) {
     setItem(THEME_CONFIG, value);
-    dispatch(setTheme(value));
+    setTheme(value);
   }
 
   useEffect(() => {

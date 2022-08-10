@@ -1,0 +1,810 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Kontoer"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Legg til konto"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Legg til nettsted"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administrator"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Alle"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Noensinne"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Alle nettsteder"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Tilbake"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Avvis"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Bytt passord"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Godkjenn passord"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopier til utklippstavle"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Nåværende passord"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Egendefinert utvalg"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Dashbord"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Datointervall"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Standard datoperiode"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Slett"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Slett konto"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Slett nettstedet"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Avbryt"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domene"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Rediger"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Rediger konto"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Rediger nettsted"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Aktiver delings-URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Ugyldig"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Ugyldig domene"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Språk"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Siste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dager"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Siste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " timer"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Logget på som "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Logg inn"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Logg ut"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Mer"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Navn"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Nytt passord"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Eier"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Passord"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Passordene er ikke like"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Sanntid"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Sanntidslogger"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Oppdater"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Påkrevd"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Nullstill"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Nullstill statistikk"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Lagre"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Innstillinger"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Del URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Enkelt dag"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Denne måneden"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Denne uka"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "I år"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Tidssone"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "I dag"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Sporingskode"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Ukjent"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Brukernavn"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Vis detaljer"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Nettsteder"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "besøkende"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "besøkende"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " nå"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Er du sikker på at du vil slette "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Er du sikker på at du vil nullstille "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistikk?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Kopiert!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Alle tilknyttede data slettes også."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Noe gikk galt."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Få delings-URL"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Få sporingskode"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Gå til innstillinger"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Ugyldig brukernavn/passord."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Besøkende fra "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " med "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " på "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "En ny versjon av umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " er tilgjengelig!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Ingen data tilgjengelig."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Du har ikke satt opp noen nettsteder."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Side ikke funnet."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Drevet av "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistikk for denne nettsiden vil bli slettet, men sporingskoden din vil forbli uberørt."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Lagret!"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Dette er den offentlige delings-URL-en for "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Veksle grafer"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "For å spore statistikk for "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", plasser følgende kode i "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": "-delen av nettstedet ditt."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Skriv inn "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " i boksen nedenfor for å bekrefte."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Skriv inn "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " i boksen nedenfor for å bekrefte."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Handlinger"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Gjennomsnittlig besøkstid"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Avvisningsfrekvens"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Nettlesere"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Land"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Stasjonær"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Bærbar"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobiltelefon"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Nettbrett"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Enheter"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Arrangementer"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Kombinert"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Rå"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Språk"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Operativsystemer"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Sidevisninger"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Sider"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Referanser"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Unike besøkende"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Visninger"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Besøkende"
+    }
+  ]
+}

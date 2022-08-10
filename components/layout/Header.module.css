@@ -1,22 +1,12 @@
-.navbar {
-  align-items: stretch;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.burger {
-  display: none;
-}
-
 .header {
   display: flex;
+  align-items: center;
   min-height: 100px;
   width: 100%;
 }
 
 .title {
+  flex: 1;
   font-size: var(--font-size-large);
   display: flex;
   align-items: center;
@@ -27,16 +17,8 @@
   margin-right: 12px;
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  font-size: var(--font-size-normal);
-  font-weight: 600;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.items {
+.links {
+  flex: 2;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,73 +26,42 @@
   font-weight: 600;
 }
 
-.nav a + a {
+.links a + a {
   margin-left: 40px;
 }
 
 .buttons {
+  flex: 1;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
 @media only screen and (max-width: 992px) {
-  .nav {
-    font-size: var(--font-size-large);
-    justify-content: space-between;
-    margin: 20px 0;
+  .header .buttons {
+    flex: 1;
   }
-  .items {
-    flex-wrap: wrap;
+
+  .links {
+    order: 2;
+    margin: 20px 0;
+    min-width: 100%;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .header {
-    padding: 0 15px;
+    padding: 0 30px;
   }
 
-  .title {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .nav {
-    font-size: var(--font-size-normal);
-    flex-wrap: wrap;
-    justify-content: center;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .items {
-    display: flex;
-    justify-content: unset;
-    font-size: var(--font-size-normal);
-    font-weight: 600;
-  }
-
-  .items > div {
+  .buttons,
+  .links {
     display: none;
   }
 
-  .header .active {
-    display: inherit;
-    width: 100%;
-  }
-
-  .items a {
-    width: 100%;
-  }
-
-  .burger {
-    display: block;
-    background: none;
-    border: 1px solid var(--gray900);
-    border-radius: 4px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
+  .title {
+    flex: 1;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 }

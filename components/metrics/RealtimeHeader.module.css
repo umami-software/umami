@@ -1,6 +1,7 @@
 .metrics {
   display: flex;
   margin-bottom: 10px;
+  overflow: auto;
 }
 
 @media only screen and (max-width: 576px) {

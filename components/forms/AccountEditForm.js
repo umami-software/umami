@@ -8,7 +8,7 @@ import FormLayout, {
   FormMessage,
   FormRow,
 } from 'components/layout/FormLayout';
-import usePost from 'hooks/usePost';
+import useApi from 'hooks/useApi';
 
 const initialValues = {
   username: '',
@@ -29,11 +29,11 @@ const validate = ({ user_id, username, password }) => {
 };
 
 export default function AccountEditForm({ values, onSave, onClose }) {
-  const post = usePost();
+  const { post } = useApi();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post('/api/account', values);
+    const { ok, data } = await post('/account', values);
 
     if (ok) {
       onSave();

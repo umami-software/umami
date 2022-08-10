@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Λογαριασμοί"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Προσθήκη λογαριασμού"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Προσθήκη ιστότοπου"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Διαχειριστής"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "All"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "All websites"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Πίσω"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Ακύρωση"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Αλλαγή κωδικού"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Επιβεβαίωση κωδικού"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Αντιγραφή στο πρόχειρο"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Τωρινός κωδικός πρόσβασης"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Προσαρμοσμένο εύρος"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Πίνακας"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Εύρος ημερομηνιών"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Προεπιλεγμένο εύρος ημερομηνιών"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Διαγραφή"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Διαγραφή λογαριασμού"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Διαγραφή ιστότοπου"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Dismiss"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Τομέας"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Επεξεργασία"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Επεξεργασία λογαριασμού"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Επεξεργασία ιστότοπου"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Ενεργοποίηση κοινής χρήσης URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Μη έγκυρο"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Μη έγκυρος τομέας"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Τελευταίες "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ημέρες"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Τελευταίες "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ώρες"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Συνδεθήκατε ως "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Είσοδος"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Αποσύνδεση"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Περισσότερα"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Όνομα"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Νέος κωδικός"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Κωδικός"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Οι κωδικοί πρόσβασης δεν ταιριάζουν"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Προφίλ"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Realtime"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Realtime logs"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Ανανέωση"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Απαιτείται"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Επαναφορά"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Αποθήκευση"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Ρυθμίσεις"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Κοινοποίηση διεύθυνσης URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Ημερήσια"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Αυτο το μήνα"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Αυτή την εβδομάδα"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Αυτή την χρονιά"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Ζώνη ώρας"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Σήμερα"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Κωδικός παρακολούθησης"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Άγνωστο"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Όνομα χρήστη"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Λεπτομέρειες"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Ιστότοποι"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ενεργοί "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "επισκέπτης"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "επισκέπτες"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Είστε βέβαιοι ότι θέλετε να διαγράψετε το "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ";"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Αντιγράφηκε!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Όλα τα σχετικά δεδομένα θα διαγραφούν επίσης."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Κάτι πήγε στραβά."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Λήψη URL κοινής χρήσης"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Λήψη κώδικα παρακολούθησης"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Μεταβείτε στις ρυθμίσεις"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Εσφαλμένο όνομα χρήστη / κωδικός πρόσβασης."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Visitor from "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " using "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Δεν υπάρχουν διαθέσιμα δεδομένα."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Δεν έχετε ρυθμίσει κανένα ιστότοπο."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Η σελίδα δεν βρέθηκε."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Με την υποστήριξη του "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Αποθηκεύτηκε επιτυχώς."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Αυτό είναι το κοινόχρηστο URL για το "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Για να παρακολουθείτε στατιστικά στοιχεία για "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", τοποθετήστε τον ακόλουθο κώδικα στην ενότητα "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " του ιστότοπού σας."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Πληκτρολογήστε "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " στο παρακάτω πλαίσιο για επιβεβαίωση."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Πληκτρολογήστε "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " στο παρακάτω πλαίσιο για επιβεβαίωση."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Ενέργειες"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Μέσος χρόνος επίσκεψης"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Ποσοστό αναπήδησης"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Προγράμματα περιήγησης"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Χώρες"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Σταθερός υπολογιστής"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Λάπτοπ"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Κινητό"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Τάμπλετ"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Συσκευές"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Γεγονότα"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Σε συνδυασμό"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Ακατέργαστο"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Λειτουργικά συστήματα"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Προβολές σελίδας"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Σελίδες"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Παραπομπές"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Μοναδικοί επισκέπτες"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Προβολές"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Επισκέπτες"
+    }
+  ]
+}

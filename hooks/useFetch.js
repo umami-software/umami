@@ -1,27 +1,24 @@
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useRouter } from 'next/router';
-import { get } from 'lib/web';
-import { updateQuery } from 'redux/actions/queries';
+import { saveQuery } from 'store/queries';
+import useApi from './useApi';
 
 export default function useFetch(url, options = {}, update = []) {
-  const dispatch = useDispatch();
   const [response, setResponse] = useState();
   const [error, setError] = useState();
-  const [loading, setLoadiing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
-  const { basePath } = useRouter();
+  const { get } = useApi();
   const { params = {}, headers = {}, disabled, delay = 0, interval, onDataLoad } = options;
 
   async function loadData(params) {
     try {
-      setLoadiing(true);
+      setLoading(true);
       setError(null);
       const time = performance.now();
 
-      const { data, status, ok } = await get(`${basePath}${url}`, params, headers);
+      const { data, status, ok } = await get(url, params, headers);
 
-      dispatch(updateQuery({ url, time: performance.now() - time, completed: Date.now() }));
+      await saveQuery(url, { time: performance.now() - time, completed: Date.now() });
 
       if (status >= 400) {
         setError(data);
@@ -35,7 +32,7 @@ export default function useFetch(url, options = {}, update = []) {
       console.error(e);
       setError(e);
     } finally {
-      setLoadiing(false);
+      setLoading(false);
     }
   }
 

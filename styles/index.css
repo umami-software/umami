@@ -52,11 +52,6 @@ body {
     'Noto Sans Hebrew', sans-serif !important;
 }
 
-.he-IL {
-  display: inline-block;
-  direction: rtl;
-}
-
 *,
 *:before,
 *:after {
@@ -148,6 +143,9 @@ svg {
 
 .container {
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .row {

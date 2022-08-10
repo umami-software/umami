@@ -6,33 +6,33 @@ import ErrorMessage from 'components/common/ErrorMessage';
 import useFetch from 'hooks/useFetch';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
-import useShareToken from 'hooks/useShareToken';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
-import { TOKEN_HEADER } from 'lib/constants';
 import MetricCard from './MetricCard';
 import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId, className }) {
-  const shareToken = useShareToken();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const [format, setFormat] = useState(true);
   const {
-    query: { url, ref },
+    query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
 
   const { data, error, loading } = useFetch(
-    `/api/website/${websiteId}/stats`,
+    `/website/${websiteId}/stats`,
     {
       params: {
         start_at: +startDate,
         end_at: +endDate,
         url,
-        ref,
+        referrer,
+        os,
+        browser,
+        device,
+        country,
       },
-      headers: { [TOKEN_HEADER]: shareToken?.token },
     },
-    [modified, url, ref],
+    [modified, url, referrer, os, browser, device, country],
   );
 
   const formatFunc = format

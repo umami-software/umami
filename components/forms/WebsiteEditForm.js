@@ -10,7 +10,7 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 import Checkbox from 'components/common/Checkbox';
 import { DOMAIN_REGEX } from 'lib/constants';
-import usePost from 'hooks/usePost';
+import useApi from 'hooks/useApi';
 
 const initialValues = {
   name: '',
@@ -34,11 +34,11 @@ const validate = ({ name, domain }) => {
 };
 
 export default function WebsiteEditForm({ values, onSave, onClose }) {
-  const post = usePost();
+  const { post } = useApi();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post('/api/website', values);
+    const { ok, data } = await post('/website', values);
 
     if (ok) {
       onSave();

@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "کھاتہ"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "کھاتہ کا اضافہ کریں"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "ویب سائٹ کا اضافہ کریں"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "منتظم"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "تمام"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "تمام وقت"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "تمام ویب سائٹس"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "پیچھے"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "منسوخ"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "پاس ورڈ تبدیل کریں"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "پاس ورڈ کی تصدیق کریں"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "کلپ بورڈ پر کاپی کریں"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "موجودہ پاس ورڈ"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "اپنی مرضی کی حد"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "ڈیش بورڈ"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "تاریخ کی حد"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "پہلے سے طے شدہ تاریخ کی حد"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "حذف کریں"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "کھاتہ مٹایں"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "ویب سائٹ مٹایں"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "مسترد کریں"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "ڈومین"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "ترمیم"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "اکاؤنٹ میں ترمیم کریں"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "ویب سائٹ میں ترمیم کریں"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "شیئر یو آر ایل کو فعال کریں"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "غلط"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "غلط ڈومین"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "پچھلے "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " دن"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "پچھلے "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " گھنٹے"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "بطور "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    },
+    {
+      "type": 0,
+      "value": " لاگ ان"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "لاگ ان"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "لاگ آوٹ"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "مزید"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "نام"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "نیا پاس ورڈ"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "مالک"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "پاس ورڈ"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "پاس ورڈز مماثل نہیں ہیں"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "پروفائل"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "براہ راست"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "براہ راست فہرست"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "تازہ دم کریں"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "درکار ہے"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "دوبارہ ترتیب دیں"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "اعدادوشمار کو دوبارہ ترتیب دیں"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "محفوظ کریں"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "ترتیبات"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "URL کا اشتراک کریں"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "ایک دن"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "اس مہینے"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "اس ہفتے"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "اس سال"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "ٹائم زون"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "آج"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "ٹریکنگ کوڈ"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "نامعلوم"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "صارف نام"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "تفصیلات دیکھیں"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "ویب سائٹس"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " موجودہ "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "زائر"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "زائرین"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "کیا آپ واقعی "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " کو حذف کرنا چاہتے ہیں؟"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "کیا آپ واقعی "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " کے اعدادوشمار کو دوبارہ ترتیب دینا چاہتے ہیں؟"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "کاپی کیا گیا!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "تمام متعلقہ ڈیٹا بھی حذف کر دیا جائے گا۔"
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "کچھ غلط ہو گیا."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "شیئر URL حاصل کریں"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "ٹریکنگ کوڈ حاصل کریں"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "ترتیبات پر جائیں"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "غلط صارف نام/پاس ورڈ۔"
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": " پر "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " کا استعمال کرتے ہوئے "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " سے آنے والا"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " کا ایک نیا ورژن دستیاب ہے!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "مواد موجود نہیں ہے."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "آپ کے پاس کوئی ویب سائٹ کنفیگر نہیں ہے۔"
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "صفحہ نہیں ملا."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "تقویت یافتہ بذریعہ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "اس ویب سائٹ کے تمام اعدادوشمار کو حذف کر دیا جائے گا، لیکن آپ کا ٹریکنگ کوڈ برقرار رہے گا۔"
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "کامیابی سے محفوظ ہو گیا۔"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "یہ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " کے لیے عوامی طور پر اشتراک کردہ URL ہے۔"
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "چارٹ تبدیل کریں"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " کے اعدادوشمار کو ٹریک کرنے کے لیے، درج ذیل کوڈ کو اپنی ویب سائٹ کے "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " سیکشن میں رکھیں۔"
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "تصدیق کے لیے نیچے والے باکس میں "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " ٹائپ کریں۔"
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "تصدیق کرنے کے لیے نیچے والے باکس میں "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " ٹائپ کریں۔"
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "اعمال"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "وزٹ کا اوسط وقت"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "اچھال کی شرح"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "براؤزرز"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "ممالک"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "ڈیسک ٹاپ"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "لیپ ٹاپ"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "موبائل"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "ٹیبلیٹ"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "آلات"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "واقعات"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "مشترکہ"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "خام"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "زبانیں"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "آپریٹنگ سسٹمز"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "صفحہ کے نظارے"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "صفحات"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "بھیجنے والے"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "منفرد زائرین"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "مناظر"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "زائرین"
+    }
+  ]
+}

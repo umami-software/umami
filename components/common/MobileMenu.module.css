@@ -1,0 +1,41 @@
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--gray50);
+  overflow: auto;
+}
+
+.items {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  font-size: var(--font-size-large);
+}
+
+.item + .item {
+  margin-top: 20px;
+}
+
+.item:last-child {
+  margin-top: 60px;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 100px;
+  padding: 0 30px;
+}

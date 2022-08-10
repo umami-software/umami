@@ -1,27 +1,27 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLocale } from 'redux/actions/app';
 import { useRouter } from 'next/router';
 import { get, setItem } from 'lib/web';
 import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
+import useStore, { setLocale } from 'store/app';
 import useForceUpdate from 'hooks/useForceUpdate';
-import enUS from 'public/messages/en-US.json';
+import enUS from 'public/intl/messages/en-US.json';
 
 const messages = {
   'en-US': enUS,
 };
 
+const selector = state => state.locale;
+
 export default function useLocale() {
-  const locale = useSelector(state => state.app.locale);
-  const dispatch = useDispatch();
+  const locale = useStore(selector);
   const { basePath } = useRouter();
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale) {
-    const { ok, data } = await get(`${basePath}/messages/${locale}.json`);
+    const { ok, data } = await get(`${basePath}/intl/messages/${locale}.json`);
 
     if (ok) {
       messages[locale] = data;
@@ -36,7 +36,7 @@ export default function useLocale() {
     setItem(LOCALE_CONFIG, value);
 
     if (locale !== value) {
-      dispatch(setLocale(value));
+      setLocale(value);
     } else {
       forceUpdate();
     }

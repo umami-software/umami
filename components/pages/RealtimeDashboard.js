@@ -14,7 +14,7 @@ import useFetch from 'hooks/useFetch';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
-import { TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
+import { SHARE_TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
 function mergeData(state, data, time) {
@@ -33,12 +33,12 @@ export default function RealtimeDashboard() {
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(0);
-  const { data: init, loading } = useFetch('/api/realtime/init');
-  const { data: updates } = useFetch('/api/realtime/update', {
+  const { data: init, loading } = useFetch('/realtime/init');
+  const { data: updates } = useFetch('/realtime/update', {
     params: { start_at: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
-    headers: { [TOKEN_HEADER]: init?.token },
+    headers: { [SHARE_TOKEN_HEADER]: init?.token },
   });
 
   const renderCountryName = useCallback(
@@ -145,7 +145,6 @@ export default function RealtimeDashboard() {
               metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
               data={countries}
               renderLabel={renderCountryName}
-              height={500}
             />
           </GridColumn>
           <GridColumn xs={12} lg={8}>

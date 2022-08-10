@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Računi"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Dodaj račun"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Dodaj spletno mesto"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administrator"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Vse"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Vsa spletna mesta"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Nazaj"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Prekliči"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Zamenjaj geslo"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Potrditev gesla"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopiraj v odložišče"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Trenutno geslo"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Razpon po meri"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Nadzorna plošča"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Časovni razpon"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Privzeti časovni razpon"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Izbriši"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Izbriši račun"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Izbriši spletno mesto"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Opusti"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domena"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Uredi"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Uredi račun"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Uredi spletno stran"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Omogoči URL za skupno rabo"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Neveljavno"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Neveljavna domena"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Zadnjih "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dni"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Zadnjih "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ur"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Prijavljen kot "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Prijava"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Odjava"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Več"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Ime"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Novo geslo"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Geslo"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Gesli se ne ujemata"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "V realnem času"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Dnevnik v realnem času"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Osveži"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Zahtevano"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Ponastavi"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Shrani"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Nastavitve"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Deli URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "En dan"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Ta mesec"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Ta teden"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Letos"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Časovni pas"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Danes"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Koda za sledenje"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Neznano"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Uporabniško ime"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Prikaži podrobnosti"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Spletna mesta"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " trenutni "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "obiskovalec"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "obiskovalcev"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Ste prepričani, da želite izbrisati "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Kopirano!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Izbrisani bodo tudi vsi povezani podatki."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Prišlo je do napake."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Pridobi URL za skupno rabo"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Pridobi kodo za sledenje"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Pojdi v nastavitve"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Nepravilno uporabniško ime/geslo"
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Obiskovalec iz "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " uporablja "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " na "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Nova verzija umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " je na voljo!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Podatki niso na voljo."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Ni nastavljenih spletnih mest."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Stran ni bila najdena."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Zagotavlja "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Uspešno shranjeno."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "To je javno dostopen naslov URL za "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Če želite spremljati statistične podatke za "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", v "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " del vašega spletnega mesta namestite naslednjo kodo."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "V spodnje polje vnesite "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " za potrditev."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "V spodnje polje vnesite "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " za potrditev."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Dejanja"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Povprečni čas obiska"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Zapustna stopnja"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Brskalniki"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Države"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Namizni računalnik"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Prenosni računalnik"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobilni telefon"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tablični računalnik"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Naprave"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Dogodki"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Skupno"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Neobdelane meritve"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Operacijski sistemi"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Ogledi strani"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Strani"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Viri"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Unikatni obiskovalci"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Ogledi"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Obiskovalci"
+    }
+  ]
+}

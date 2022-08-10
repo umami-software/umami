@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Brúkarar"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Ger brúkara"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Legg heimasíðu afturat"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Fyrisitari"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Alt"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Allar heimasíður"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Aftur"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Strika"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Skift loyniorð"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Vátta loyniorð"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Avrita til setiðborð"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Núverandi loyniorð"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Tillaga  spenni"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Yvirlitsskíggi"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Vel dato"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Forsett dato"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Sletta"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Sletta brúkara"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Sletta heimasíðu"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Lat fara"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Økisnavn"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Ger broyting"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Broyt brúkara"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Broyt heimasíðu"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Virkja deili leinki"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Ógilda"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Ógilt økisnavn"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Seinastu "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dagarnar"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Seinastu "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " tímarnar"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Ritaður inn sum "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Rita inn"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Rita út"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Meira"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Navn"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Nýtt loyniorð"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Loyniorð"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Loyniorðini eru ikki eins"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Vangi"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Beinleiðis"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Beinleiðis skrá"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Endurskapa"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Kravt"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Nulstilla"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Goym"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Stillingar"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Deil leinku"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Einkultur dagur"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Hendan mánan"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Hesa vikuna"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Hetta árið"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Tíðarsona"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Í dag"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Spori kota"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Ókent"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Brúkaranavn"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Vís frágreiðing"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Heimasíður"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " í løtuni "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "vitjandi"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": " vitjandi "
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Ert tú sikkur at tú ynskir at strika "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Avrita!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Øll data ið er knýtt at verður eisini strika."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Okkurt bleiv gali."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Fá leinku sum tú kanst deila"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Fá sporings kotu"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Far til stillingar"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Skeivt brúkaranavn/loyniorð."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Vitjandi frá "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " brúkar "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " á "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Ein nýggj útgava av umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " er tøkt!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Einki data tøk."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Tú hevur ongar heimasíður stillaða til."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Síðan bleiv ikki funnin."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Powered by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Goymt."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Hettar er tann almenna leinkan av "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Fyri at spora hagtøl fyri "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", koyr kotuna í "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " partin á tínari heimasíðu."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Skriva "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " í feltið fyri at vátta"
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Skriva "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " í feltið fyri at vátta"
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Gerðir"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Miðal vitjurnartíð "
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Bounce prosenttal"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Kagar"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Lond"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Borðtelda"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Fartelda"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Telefon"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Teldil"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Tóleindir"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Hendingar/tiltøk"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Samansett"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Óviðgjørt"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Stýrikervir"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Opnaðar síðir"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Síðir"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Framsendingar"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Einsýna vitjanir"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Sýningar"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Vitjandi"
+    }
+  ]
+}

@@ -24,7 +24,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
     return sessions.filter(
       ({ created_at }) => differenceInMinutes(new Date(), new Date(created_at)) <= 5,
     ).length;
-  }, [sessions]);
+  }, [sessions, websiteId]);
 
   return (
     <>

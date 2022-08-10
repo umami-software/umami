@@ -25,7 +25,7 @@ export default function AccountSettings() {
   const [deleteAccount, setDeleteAccount] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/api/accounts`, {}, [saved]);
+  const { data } = useFetch(`/accounts`, {}, [saved]);
 
   const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
 
@@ -37,39 +37,40 @@ export default function AccountSettings() {
     </Link>
   );
 
-  const Buttons = row =>
-    row.username !== 'admin' ? (
-      <ButtonLayout align="right">
-        <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
-          <FormattedMessage id="label.edit" defaultMessage="Edit" />
-        </Button>
+  const Buttons = row => (
+    <ButtonLayout align="right">
+      <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
+        <FormattedMessage id="label.edit" defaultMessage="Edit" />
+      </Button>
+      {!row.is_admin && (
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
           <FormattedMessage id="label.delete" defaultMessage="Delete" />
         </Button>
-      </ButtonLayout>
-    ) : null;
+      )}
+    </ButtonLayout>
+  );
 
   const columns = [
     {
       key: 'username',
       label: <FormattedMessage id="label.username" defaultMessage="Username" />,
-      className: 'col-4 col-md-3',
+      className: 'col-12 col-lg-4',
     },
     {
       key: 'is_admin',
       label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
-      className: 'col-4 col-md-3',
+      className: 'col-12 col-lg-3',
       render: Checkmark,
     },
     {
       key: 'dashboard',
       label: <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />,
-      className: 'col-4 col-md-3',
+      className: 'col-12 col-lg-3',
       render: DashboardLink,
     },
     {
       key: 'actions',
-      className: classNames(styles.buttons, 'col-12 col-md-3 pt-2 pt-md-0'),
+      className: classNames(styles.buttons, 'col-12 col-lg-2 pt-2 pt-md-0'),
       render: Buttons,
     },
   ];

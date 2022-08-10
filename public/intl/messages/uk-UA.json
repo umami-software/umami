@@ -1,0 +1,782 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Облікові записи"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Додати обліковий запис"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Додати сайт"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Адміністратор"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Всі"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Весь час"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Всі сайти"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Назад"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Відмінити"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Змінити пароль"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Підтвердити пароль"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Копіювати до буферу обміну"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Поточний пароль"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Довільний період"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Інформаційна панель"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Діапазон дат"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Діапазон дат за замовчуванням"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Видалити"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Видалити обліковий запис"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Видалити сайт"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Відхилити"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Домен"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Редагувати"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Редагувати обліковий запис"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Редагувати сайт"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Дозволити ділитися посиланням"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Некоректний"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Некоректний домен"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Останні "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " днів"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Останні "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " годин"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Ви увійшли як "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Увійти"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Вийти"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Більше"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Ім'я"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Новий пароль"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Власник"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Пароль"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Паролі не співпадають"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Профіль"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "У реальному часі"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Логи у реальному часі"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Оновити"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Обов'язкове"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Скинути"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Скинути статистику сайту"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Зберегти"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Налаштування"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Поділитися посилання"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Один день"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Цього місяця"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Цього тижня"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Цього ріку"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Часовий пояс"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Сьогодні"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Код для відслідковування"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Невідомо"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Ім'я користувача"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Переглянути деталі"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Сайти"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " поточних відвідувачів"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Ви впевнені, що бажаєте видалити "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Ви впевнені, що бажаєте скинути статистику для "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Скопійовано!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Усі пов'язані дані будуть видалені також."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Щось пішло не так."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Отримати публічне посилання"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Отримати код для відслідковування"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Перейти до налаштувань"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Невірне ім'я користувача або пароль."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Відвідувач з "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " використовуючи "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " на "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Нова версія umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " доступна!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Немає даних."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "У вас немає налаштованих сайтів."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Сторінку не знайдено."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "На базі "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "Вся статистика для цього сайту буде видалена, проте код відслідковування буде продовжувати працювати."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Збережено успішно."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Це публічне посилання для "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Переключити графіки"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Аби відслідковувати статистику для "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", розмістіть наступний код у "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " секції вашого сайту."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Введіть "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " у полі нижче для підтвердження."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Введіть "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " у полі нижче для підтвердження."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Дії"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Середній час візиту"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Показник відмов"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Браузери"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Країни"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Настільний ПК"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Ноутбук"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Мобільний"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Планшет"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Пристрої"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Події"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Об'єднані"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Сирі дані"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Мови"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Операційні системи"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Перегляди сторінок"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Сторінки"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Джерела"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Унікальні відвідувачі"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Перегляди"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Відвідувачі"
+    }
+  ]
+}

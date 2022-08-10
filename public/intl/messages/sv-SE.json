@@ -1,0 +1,810 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Konton"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Lägg till konto"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Lägg till webbsajt"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administratör"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Alla"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Sedan början"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Alla sajter"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Tillbaka"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Avbryt"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Byt lösenord"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Bekräfta lösenord"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopiera till urklipp"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Nuvarande lösenord"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Anpassat urval"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Översikt"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Datumomfång"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Standard datum-urval"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Radera"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Radera konto"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Radera webbsajt"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Avbryt"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domän"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Redigera"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Redigera konto"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Redigera webbsajt"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Aktivera delnings-URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Ogiltig"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Ogiltig domän"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Språk"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Senaste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dagarna"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Senaste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " timmarna"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Inloggad som "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Logga in"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Logga ut"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Mer"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Namn"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Nytt lösenord"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Ägare"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Lösenord"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Lösenorden är inte samma"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Realtid"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Realtidsloggar"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Uppdatera"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Krävs"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Återställ"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Återställ statistik"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Spara"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Inställningar"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Delnings-URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "En dag"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Tema"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Denna månad"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Denna vecka"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Detta år"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Tidszon"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Idag"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Spårningskod"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Okänd"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Användarnamn"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Visa detaljer"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Webbsajt"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "besökare"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "besökare"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " just nu"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill radera "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Är du säker på att du vill återställa statistiken för "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Kopierad!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "All tillhörande data kommer också raderas."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Något gick fel."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Visa delnings-URL"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Visa spårningskod"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Gå till inställningar"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Felaktigt användarnamn/lösenord."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Besökare från "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " med "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " på "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "En ny version av umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " är tillgänglig!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Ingen data tillgänglig."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Du har inga webbsajter."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Sidan kan inte hittas."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Drivs av "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistik för webbsajten tas bort men spårningskoden förblir oförändrad."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Sparades!"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Det här är den offentliga delnings-URL:en för "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Visa/göm grafer"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "För att spåra statistik för "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", placera följande kod i "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": "-avsnittet på din webbsajt."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Skriv "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " i rutan nedan för att radera."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Skriv "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " i rutan nedan för att bekräfta."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Händelser"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Medelbesökstid"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Avvisningfrekvens"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Webbläsare"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Länder"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Stationär"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Bärbar"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobil"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Platta"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Enheter"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Händelser"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Kombinerade"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Rådata"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Språk"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Operativsystem"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Sidvisningar"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Sidor"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Hänvisare"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Unika besökare"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Visningar"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Besökare"
+    }
+  ]
+}

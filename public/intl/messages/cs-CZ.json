@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Účty"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Přidat účet"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Přidat web"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administrátor"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Vše"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Všechny weby"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Zpět"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Zrušit"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Změnit heslo"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Potvrdit heslo"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopírovat do schránky"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Aktuální heslo"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Vlastní rozsah"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Přehled"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Období"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Výchozí období"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Smazat"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Smazat účet"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Smazat web"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Odejít"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Doména"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Upravit"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Upravit účet"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Upravit web"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Povolit sdílení URL"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Neplatný"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Neplatná doména"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Posledních "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dnů"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Posledních "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " hodin"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Přihlášený jako "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Přihlásit"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Odhlásit"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Více"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Jméno"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Nové heslo"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Heslo"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Hesla se neschodují"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profil"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Aktuálně"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Aktuální záznamy"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Obnovit"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Vyžadováno"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Reset"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Uložit"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Nastavení"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Sdílet URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Jeden den"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Tento měsíc"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Tento týden"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Tento rok"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Časová zóna"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Dnes"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Sledovací kód"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Neznámý"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Uživatelské jméno"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Zobrazit detaily"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Weby"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " aktuálně "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "návštěvník"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "návštěvníci"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Opravdu smazat "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Zkopírováno!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Všechna související data budou také smazána."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Něco se pokazilo."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Získat sdílené URL"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Získat měřící kód"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Jít do nastavení"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Nesprávné jméno/heslo."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Návštěvník z "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " s prohlížečem "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " na "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Nová verze umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " je k dispozici!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Žádná data."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Nemáte nastavený žádný web."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Stránka nenalezena."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Běží na "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Úspěšně uloženo."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Toto je sdílené URL pro "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Pro sledování návštěv na "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": ", přidejte následující kód do "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " části vašeho webu."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Napište "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " pro potvrzení."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Napište "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " pro potvrzení."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Akce"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Průměrný čas návštěvy"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Okamžité opuštění"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Prohlížeč"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Země"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Stolní počítač"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Přenosný počítač"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobilní telefon"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tablet"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Zařízení"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Události"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Kombinace"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Nezpracované"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Operační systém"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Zobrazení stránek"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Stránky"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Odkazy"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Jedinečné návštěvy"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Zobrazení"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Návštěvy"
+    }
+  ]
+}

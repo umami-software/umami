@@ -1,0 +1,786 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "חשבונות"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "הוספה"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "הוספת אתר"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "מנהל"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "הכל"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "All time"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "כל האתרים"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "חזרה"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "ביטול"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "שינוי סיסמה"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "אישור סיסמה"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "העתקה"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "סיסמה נוכחית"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "טווח מותאם"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "דשבורד"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "טווח תאריכים"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "טווח תאריכים בברירת מחדל"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "הסרה"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "הסרת חשבון"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "הסרת אתר"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "שיחרור"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "דומיין"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "עריכה"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "עריכת חשבון"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "עריכת אתר"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "הפעלת URL שיתוף"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "לא תקין"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "דומיין לא תקין"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Language"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ימים אחרונים"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " שעות אחרונות"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "מחובר כ-"
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "התחברות"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "התנתקות"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "עוד"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "שם"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "סיסמה חדשה"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "None"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Owner"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "סיסמה"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "סיסמאות לא תואמות"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "פרופיל"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "זמן אמת"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "לוגים - זמן אמת"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "רענון"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "נדרש"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "איפוס"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Reset statistics"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "שמירה"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "הגדרות"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "שיתוף URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "יום בודד"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Theme"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "החודש"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "השבוע"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "השנה"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "אזור זמן"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "היום"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "קוד מעקב"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "לא ידוע"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "שם משתמש"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "פרטים נוספים"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "אתרים"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " נוכחיים "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "מבקר"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "מבקרים"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "האם באמת למחוק את "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Are your sure you want to reset "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "'s statistics?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "הועתק!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "כל המידע המקושר יימחק"
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "משהו השתבש"
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "קבלת URL שיתוף"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "קבלת קוד מעקב"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "להדרותג"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "שם משתמש או סיסמה לא נכונים"
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "מבקר ממדינת "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " משתמבש בדפדפן "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " ב-"
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "גרסה חדשה של Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " זמינה!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "אין מידע זמין"
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "לא מוגדרים אתרים"
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "דף לא נמצא"
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "Powered by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "נשמר בהצלחה"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "זהו URL ציבורי עבור "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "יש להוסיף את הקוד הבא לאזור ה-"
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " של האתר"
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "הקלידו "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " בתיבה על מנת לאשר"
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "הקלידו "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " בתיבה על מנת לאשר"
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "פעולות"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "זמן ביקור ממוצע"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Bounce rate"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "דפדפנים"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "מדינות"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "דסקטופ"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "לפטופ"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "מובייל"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "טאבלט"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "מכשירים"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "אירועים"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "משותף"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "גולמי"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "מערכות הפעלה"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "צפיות בדפים"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "דפים"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "מפנים"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "מבקרים ייחודיים"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "צפיות"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "מבקרים"
+    }
+  ]
+}

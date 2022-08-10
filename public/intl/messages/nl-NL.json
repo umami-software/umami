@@ -1,0 +1,806 @@
+{
+  "label.accounts": [
+    {
+      "type": 0,
+      "value": "Gebruikers"
+    }
+  ],
+  "label.add-account": [
+    {
+      "type": 0,
+      "value": "Account toevoegen"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Website toevoegen"
+    }
+  ],
+  "label.administrator": [
+    {
+      "type": 0,
+      "value": "Administrator"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Alles"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Onbeperkt"
+    }
+  ],
+  "label.all-websites": [
+    {
+      "type": 0,
+      "value": "Alle websites"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Terug"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Annuleren"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Wachtwoord wijzigen"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Wachtwoord bevestigen"
+    }
+  ],
+  "label.copy-to-clipboard": [
+    {
+      "type": 0,
+      "value": "Kopiëer naar klembord"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Huidig wachtwoord"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Aangepast bereik"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Overzicht"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Datumbereik"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Standaard bereik"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Verwijderen"
+    }
+  ],
+  "label.delete-account": [
+    {
+      "type": 0,
+      "value": "Account verwijderen"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Website verwijderen"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Negeren"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Domein"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Bewerken"
+    }
+  ],
+  "label.edit-account": [
+    {
+      "type": 0,
+      "value": "Account bewerken"
+    }
+  ],
+  "label.edit-website": [
+    {
+      "type": 0,
+      "value": "Website bewerken"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Sta delen via openbare URL toe"
+    }
+  ],
+  "label.invalid": [
+    {
+      "type": 0,
+      "value": "Ongeldig"
+    }
+  ],
+  "label.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Ongeldig domein"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Taal"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Laatste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " dagen"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Laatste "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " uur"
+    }
+  ],
+  "label.logged-in-as": [
+    {
+      "type": 0,
+      "value": "Ingelogd als "
+    },
+    {
+      "type": 1,
+      "value": "username"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Inloggen"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Uitloggen"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Toon meer"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Naam"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Nieuw wachtwoord"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "Geen"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Eigenaar"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Wachtwoord"
+    }
+  ],
+  "label.passwords-dont-match": [
+    {
+      "type": 0,
+      "value": "Wachtwoorden komen niet overeen"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Profiel"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "Actueel"
+    }
+  ],
+  "label.realtime-logs": [
+    {
+      "type": 0,
+      "value": "Actueel logboek"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Vernieuwen"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Verplicht"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Resetten"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Statistieken opnieuw instellen"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Opslaan"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Instellingen"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "URL delen"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Enkele dag"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Thema"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Deze maand"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Deze week"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Dit jaar"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Tijdzone"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Vandaag"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Volgcode"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Onbekend"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Gebruikersnaam"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Meer details"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Websites"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " actieve "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "bezoeker"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "bezoekers"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Weet je zeker dat je "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " wilt verwijderen?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Weet je zeker dat je de statistieken van "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " opnieuw wilt instellen?"
+    }
+  ],
+  "message.copied": [
+    {
+      "type": 0,
+      "value": "Gekopiëerd!"
+    }
+  ],
+  "message.delete-warning": [
+    {
+      "type": 0,
+      "value": "Alle verwante gegezens zullen ook verwijderd worden."
+    }
+  ],
+  "message.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Edit dashboard"
+    }
+  ],
+  "message.failure": [
+    {
+      "type": 0,
+      "value": "Er is iets misgegaan."
+    }
+  ],
+  "message.get-share-url": [
+    {
+      "type": 0,
+      "value": "Openbare URL"
+    }
+  ],
+  "message.get-tracking-code": [
+    {
+      "type": 0,
+      "value": "Tracking code"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Naar instellingen"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Incorrecte gebruikersnaam/wachtwoord."
+    }
+  ],
+  "message.log.visitor": [
+    {
+      "type": 0,
+      "value": "Bezoeker uit "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " met "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " op een "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Een nieuwe versie van umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is beschikbaar!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Geen gegevens beschikbaar."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Je hebt geen websites ingesteld."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Pagina niet gevonden."
+    }
+  ],
+  "message.powered-by": [
+    {
+      "type": 0,
+      "value": "mogelijk gemaakt door "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "message.reset-warning": [
+    {
+      "type": 0,
+      "value": "Alle bijhorende statistieken van deze website worden verwijderd, maar jouw volgcode blijft gelden."
+    }
+  ],
+  "message.save-success": [
+    {
+      "type": 0,
+      "value": "Opslaan succesvol."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Met deze URL kan "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " openbaar gedeeld worden."
+    }
+  ],
+  "message.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Grafieken tonen/verbergen"
+    }
+  ],
+  "message.track-stats": [
+    {
+      "type": 0,
+      "value": "Om statistieken voor "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " bij te houden, plaats je de volgende code in het "
+    },
+    {
+      "type": 1,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " gedeelte van je website."
+    }
+  ],
+  "message.type-delete": [
+    {
+      "type": 0,
+      "value": "Type "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " in onderstaande veld om dit te bevestigen."
+    }
+  ],
+  "message.type-reset": [
+    {
+      "type": 0,
+      "value": "Type "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " in onderstaande veld om dit te bevestigen."
+    }
+  ],
+  "metrics.actions": [
+    {
+      "type": 0,
+      "value": "Acties"
+    }
+  ],
+  "metrics.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Gemiddelde bezoektijd"
+    }
+  ],
+  "metrics.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Bouncepercentage"
+    }
+  ],
+  "metrics.browsers": [
+    {
+      "type": 0,
+      "value": "Browsers"
+    }
+  ],
+  "metrics.countries": [
+    {
+      "type": 0,
+      "value": "Landen"
+    }
+  ],
+  "metrics.device.desktop": [
+    {
+      "type": 0,
+      "value": "Desktop"
+    }
+  ],
+  "metrics.device.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
+    }
+  ],
+  "metrics.device.mobile": [
+    {
+      "type": 0,
+      "value": "Mobiel"
+    }
+  ],
+  "metrics.device.tablet": [
+    {
+      "type": 0,
+      "value": "Tablet"
+    }
+  ],
+  "metrics.devices": [
+    {
+      "type": 0,
+      "value": "Apparaten"
+    }
+  ],
+  "metrics.events": [
+    {
+      "type": 0,
+      "value": "Gebeurtenissen"
+    }
+  ],
+  "metrics.filter.combined": [
+    {
+      "type": 0,
+      "value": "Gecombineerd"
+    }
+  ],
+  "metrics.filter.raw": [
+    {
+      "type": 0,
+      "value": "Ruw"
+    }
+  ],
+  "metrics.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "metrics.operating-systems": [
+    {
+      "type": 0,
+      "value": "Besturingssystemen"
+    }
+  ],
+  "metrics.page-views": [
+    {
+      "type": 0,
+      "value": "Paginaweergaven"
+    }
+  ],
+  "metrics.pages": [
+    {
+      "type": 0,
+      "value": "Pagina's"
+    }
+  ],
+  "metrics.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "metrics.referrers": [
+    {
+      "type": 0,
+      "value": "Verwijzers"
+    }
+  ],
+  "metrics.screens": [
+    {
+      "type": 0,
+      "value": "Schermen"
+    }
+  ],
+  "metrics.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Unieke bezoekers"
+    }
+  ],
+  "metrics.views": [
+    {
+      "type": 0,
+      "value": "Weergaven"
+    }
+  ],
+  "metrics.visitors": [
+    {
+      "type": 0,
+      "value": "Bezoekers"
+    }
+  ]
+}
