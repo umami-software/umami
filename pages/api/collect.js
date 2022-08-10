@@ -89,7 +89,7 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const token = await createToken({ website_id, session_id });
+  const token = await createToken({ website_id, session_id, session_uuid });
 
   return send(res, token);
 };
