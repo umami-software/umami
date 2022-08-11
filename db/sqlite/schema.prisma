@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model account {
+  user_id    Int       @id @default(autoincrement())
+  username   String    @unique
+  password   String
+  is_admin   Boolean   @default(false)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  website    website[]
+}
+
+model event {
+  event_id   Int         @id @default(autoincrement())
+  website_id Int
+  session_id Int
+  created_at DateTime?   @default(now())
+  url        String
+  event_name String
+  session    session     @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
+  website    website     @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  event_data event_data?
+
+  @@index([created_at])
+  @@index([session_id])
+  @@index([website_id])
+}
+
+model event_data {
+  event_data_id Int   @id @default(autoincrement())
+  event_id      Int   @unique
+  event_data    Json
+  event         event @relation(fields: [event_id], references: [event_id])
+}
+
+model pageview {
+  view_id    Int       @id @default(autoincrement())
+  website_id Int
+  session_id Int
+  created_at DateTime? @default(now())
+  url        String
+  referrer   String?
+  session    session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
+  website    website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+
+  @@index([created_at])
+  @@index([session_id])
+  @@index([website_id, created_at])
+  @@index([website_id])
+  @@index([website_id, session_id, created_at])
+}
+
+model session {
+  session_id   Int        @id @default(autoincrement())
+  session_uuid String     @unique
+  website_id   Int
+  created_at   DateTime?  @default(now())
+  hostname     String?
+  browser      String?
+  os           String?
+  device       String?
+  screen       String?
+  language     String?
+  country      String?
+  website      website    @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  pageview     pageview[]
+  event        event[]
+
+  @@index([created_at])
+  @@index([website_id])
+}
+
+model website {
+  website_id   Int        @id @default(autoincrement())
+  website_uuid String     @unique
+  user_id      Int
+  name         String
+  domain       String?
+  share_id     String?    @unique
+  created_at   DateTime?  @default(now())
+  account      account    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  pageview     pageview[]
+  session      session[]
+  event        event[]
+
+  @@index([user_id])
+}
