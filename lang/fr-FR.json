@@ -67,7 +67,7 @@
   "message.confirm-reset": "Êtes-vous sûr de vouloir réinistialiser les statistiques de {target} ?",
   "message.copied": "Copié !",
   "message.delete-warning": "Toutes les données associées seront également supprimées.",
-  "message.edit-dashboard": "Edit dashboard",
+  "message.edit-dashboard": "Modifier l'ordre des sites",
   "message.failure": "Un problème est survenu.",
   "message.get-share-url": "Obtenir l'URL de partage",
   "message.get-tracking-code": "Obtenir le code de suivi",
