@@ -49,14 +49,42 @@ CREATE TABLE `event_data` (
 -- AddForeignKey
 ALTER TABLE `event_data` ADD CONSTRAINT `event_data_event_id_fkey` FOREIGN KEY (`event_id`) REFERENCES `event`(`event_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- RenameIndex
-ALTER TABLE `account` RENAME INDEX `username` TO `account_username_key`;
+-- CreateProcedureRenameIndex
+CREATE PROCEDURE `UmamiRenameIndexIfExists`(
+    IN i_table_name VARCHAR(128),
+    IN i_current_index_name VARCHAR(128),
+    IN i_new_index_name VARCHAR(128)
+    )
+    BEGIN
+
+    SET @tableName = i_table_name;
+    SET @currentIndexName = i_current_index_name;
+    SET @newIndexName = i_new_index_name;
+    SET @indexExists = 0;
+
+    SELECT
+        1
+    INTO @indexExists FROM
+        INFORMATION_SCHEMA.STATISTICS
+    WHERE
+        TABLE_NAME = @tableName
+            AND INDEX_NAME = @currentIndexName;
+
+    SET @query = CONCAT(
+        'ALTER TABLE `', @tableName, '` RENAME INDEX  `', @currentIndexName, '` TO `', @newIndexName, '`;'
+    );
+    IF @indexExists THEN
+        PREPARE stmt FROM @query;
+        EXECUTE stmt;
+        DEALLOCATE PREPARE stmt;
+    END IF;
+END;
 
 -- RenameIndex
-ALTER TABLE `session` RENAME INDEX `session_uuid` TO `session_session_uuid_key`;
+CALL UmamiRenameIndexIfExists('account', 'username', 'account_username_key');
+CALL UmamiRenameIndexIfExists('session', 'session_uuid', 'session_session_uuid_key');
+CALL UmamiRenameIndexIfExists('website', 'share_id', 'website_share_id_key');
+CALL UmamiRenameIndexIfExists('website', 'website_uuid', 'website_website_uuid_key');
 
--- RenameIndex
-ALTER TABLE `website` RENAME INDEX `share_id` TO `website_share_id_key`;
-
--- RenameIndex
-ALTER TABLE `website` RENAME INDEX `website_uuid` TO `website_website_uuid_key`;
+-- Drop CreateProcedureRenameIndex
+drop procedure `UmamiRenameIndexIfExists`;
