@@ -1,13 +1,12 @@
 import { CLICKHOUSE, RELATIONAL, KAFKA, URL_LENGTH } from 'lib/constants';
 import {
   getDateFormatClickhouse,
-  getDateFormatKafka,
   prisma,
   rawQueryClickhouse,
   runAnalyticsQuery,
   runQuery,
-  kafkaProducer,
 } from 'lib/db';
+import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
 
 export async function saveEvent(...args) {
   return runAnalyticsQuery({

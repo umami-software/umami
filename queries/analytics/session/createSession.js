@@ -1,13 +1,12 @@
 import { CLICKHOUSE, RELATIONAL, KAFKA } from 'lib/constants';
 import {
   getDateFormatClickhouse,
-  getDateFormatKafka,
   prisma,
   rawQueryClickhouse,
   runAnalyticsQuery,
   runQuery,
-  kafkaProducer,
 } from 'lib/db';
+import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
 import { getSessionByUuid } from 'queries';
 
 export async function createSession(...args) {
