@@ -95,6 +95,7 @@ CREATE TABLE event
     created_at DateTime('UTC'),
     url String,
     event_name String
+    event_data JSONB,
 )
     engine = MergeTree PRIMARY KEY (event_uuid, created_at)
         ORDER BY (event_uuid, created_at)
@@ -106,7 +107,8 @@ CREATE TABLE event_queue (
     session_uuid UUID,
     created_at DateTime('UTC'),
     url String,
-    event_name String
+    event_name String,
+    event_data String,
 )
 ENGINE = Kafka
 SETTINGS kafka_broker_list = '', -- input broker list
