@@ -20,7 +20,7 @@ CREATE TABLE pageview_queue (
 )
 
 ENGINE = Kafka
-SETTINGS kafka_broker_list = '', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'pageview',
        kafka_group_name = 'pageview_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -33,7 +33,7 @@ SELECT website_id,
     created_at,
     url,
     referrer
-FROM umami.pageview_queue;
+FROM pageview_queue;
 
 -- Create Session
 CREATE TABLE session
@@ -66,7 +66,7 @@ CREATE TABLE session_queue (
     country LowCardinality(String)
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = '', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'session',
        kafka_group_name = 'session_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -94,8 +94,8 @@ CREATE TABLE event
     session_uuid UUID,
     created_at DateTime('UTC'),
     url String,
-    event_name String
-    event_data JSONB,
+    event_name String,
+    event_data String
 )
     engine = MergeTree PRIMARY KEY (event_uuid, created_at)
         ORDER BY (event_uuid, created_at)
@@ -108,10 +108,10 @@ CREATE TABLE event_queue (
     created_at DateTime('UTC'),
     url String,
     event_name String,
-    event_data String,
+    event_data String
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = '', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -124,5 +124,7 @@ SELECT event_uuid,
     session_uuid,
     created_at,
     url,
-    event_name
+    event_name,
+    event_data
 FROM event_queue;
+
