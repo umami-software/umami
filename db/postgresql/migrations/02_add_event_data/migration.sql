@@ -54,13 +54,13 @@ CREATE UNIQUE INDEX "event_data_event_id_key" ON "event_data"("event_id");
 ALTER TABLE "event_data" ADD CONSTRAINT "event_data_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("event_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- RenameIndex
-ALTER INDEX "account.username_unique" RENAME TO "account_username_key";
+ALTER INDEX IF EXISTS "account.username_unique" RENAME TO "account_username_key";
 
 -- RenameIndex
-ALTER INDEX "session.session_uuid_unique" RENAME TO "session_session_uuid_key";
+ALTER INDEX IF EXISTS "session.session_uuid_unique" RENAME TO "session_session_uuid_key";
 
 -- RenameIndex
-ALTER INDEX "website.share_id_unique" RENAME TO "website_share_id_key";
+ALTER INDEX IF EXISTS "website.share_id_unique" RENAME TO "website_share_id_key";
 
 -- RenameIndex
-ALTER INDEX "website.website_uuid_unique" RENAME TO "website_website_uuid_key";
+ALTER INDEX IF EXISTS "website.website_uuid_unique" RENAME TO "website_website_uuid_key";

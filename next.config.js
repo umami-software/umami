@@ -35,6 +35,7 @@ if (process.env.FORCE_SSL) {
 module.exports = {
   env: {
     currentVersion: pkg.version,
+    isProduction: process.env.NODE_ENV === 'production',
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
