@@ -65,9 +65,6 @@ async function checkMigrations() {
 
   console.log(output);
 
-  var x = await prisma.$queryRaw`select * from _prisma_migrations`;
-  console.log(x);
-
   const missingMigrations = output.includes('have not yet been applied');
   const missingInitialMigration =
     output.includes('01_init') && !output.includes('The last common migration is: 01_init');
