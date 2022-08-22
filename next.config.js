@@ -58,7 +58,7 @@ module.exports = {
         headers,
       },
       {
-        source: '/(.*\\.js)',
+        source: '/((?!telemetry).*.js)',
         headers: [
           ...headers,
           {
