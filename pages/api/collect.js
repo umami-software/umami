@@ -72,7 +72,7 @@ export default async (req, res) => {
     url = removeTrailingSlash(url);
   }
 
-  const event_uuid = uuid(website_id, url, session_uuid, event_name);
+  const event_uuid = uuid();
 
   if (type === 'pageview') {
     await savePageView(website_id, { session_id, session_uuid, url, referrer });
