@@ -58,7 +58,7 @@ module.exports = {
         headers,
       },
       {
-        source: '/umami.js',
+        source: '/(.*\\.js)',
         headers: [
           ...headers,
           {
