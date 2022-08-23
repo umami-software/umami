@@ -18,7 +18,6 @@ CREATE TABLE pageview_queue (
     url String,
     referrer String
 )
-
 ENGINE = Kafka
 SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'pageview',
