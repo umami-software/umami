@@ -11,8 +11,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-tracker build-geo build-db build-app",
-    "start": "npm-run-all check-db start-next",
+    "build": "npm-run-all build-db check-db build-tracker build-geo build-app",
+    "start": "npm-run-all start-next",
+    "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
     "start-docker": "npm-run-all check-db update-tracker start-server",
     "start-env": "node scripts/start-env.js",
     "start-server": "node server.js",
