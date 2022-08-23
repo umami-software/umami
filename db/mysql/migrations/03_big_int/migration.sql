@@ -20,7 +20,6 @@
   - The primary key for the `website` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - You are about to alter the column `website_id` on the `website` table. The data in that column could be lost. The data in that column will be cast from `UnsignedInt` to `UnsignedBigInt`.
   - You are about to alter the column `user_id` on the `website` table. The data in that column could be lost. The data in that column will be cast from `UnsignedInt` to `UnsignedBigInt`.
-  - You are about to drop the `_event_old` table. If the table is not empty, all the data it contains will be lost.
 
 */
 -- DropForeignKey
@@ -80,9 +79,6 @@ ALTER TABLE `website` DROP PRIMARY KEY,
     MODIFY `website_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     MODIFY `user_id` BIGINT UNSIGNED NOT NULL,
     ADD PRIMARY KEY (`website_id`);
-
--- DropTable
-DROP TABLE `_event_old`;
 
 -- AddForeignKey
 ALTER TABLE `event` ADD CONSTRAINT `event_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `session`(`session_id`) ON DELETE CASCADE ON UPDATE NO ACTION;

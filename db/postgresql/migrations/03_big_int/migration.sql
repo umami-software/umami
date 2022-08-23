@@ -7,7 +7,6 @@
   - The primary key for the `pageview` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - The primary key for the `session` table will be changed. If it partially fails, the table could be left without primary key constraint.
   - The primary key for the `website` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the `_event_old` table. If the table is not empty, all the data it contains will be lost.
 
 */
 -- DropForeignKey
@@ -75,9 +74,6 @@ ALTER SEQUENCE event_event_id_seq AS BIGINT;
 ALTER SEQUENCE pageview_view_id_seq AS BIGINT;
 ALTER SEQUENCE session_session_id_seq AS BIGINT;
 ALTER SEQUENCE website_website_id_seq AS BIGINT;
-
--- DropTable
-DROP TABLE "_event_old";
 
 -- AddForeignKey
 ALTER TABLE "event" ADD CONSTRAINT "event_session_id_fkey" FOREIGN KEY ("session_id") REFERENCES "session"("session_id") ON DELETE CASCADE ON UPDATE CASCADE;
