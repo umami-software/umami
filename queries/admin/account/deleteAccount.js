@@ -12,12 +12,6 @@ export async function deleteAccount(user_id) {
       prisma.event.deleteMany({
         where: { session: { website: { user_id } } },
       }),
-      prisma.event.deleteMany({
-        where: { session: { website: { user_id } } },
-      }),
-      prisma.event.deleteMany({
-        where: { session: { website: { user_id } } },
-      }),
       prisma.session.deleteMany({
         where: { website: { user_id } },
       }),

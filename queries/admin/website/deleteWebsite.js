@@ -12,12 +12,6 @@ export async function deleteWebsite(website_id) {
       prisma.event.deleteMany({
         where: { session: { website: { website_id } } },
       }),
-      prisma.event.deleteMany({
-        where: { session: { website: { website_id } } },
-      }),
-      prisma.event.deleteMany({
-        where: { session: { website: { website_id } } },
-      }),
       prisma.session.deleteMany({
         where: { website: { website_id } },
       }),
