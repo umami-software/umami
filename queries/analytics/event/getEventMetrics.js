@@ -56,7 +56,7 @@ async function clickhouseQuery(
   return rawQueryClickhouse(
     `
     select
-      event_value x,
+      event_name x,
       ${getDateQueryClickhouse('created_at', unit, timezone)} t,
       count(*) y
     from event
