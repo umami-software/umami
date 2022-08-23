@@ -474,7 +474,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Dashboard bearbeiten"
     }
   ],
   "message.failure": [
@@ -770,7 +770,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Abfrageparameter"
     }
   ],
   "metrics.referrers": [

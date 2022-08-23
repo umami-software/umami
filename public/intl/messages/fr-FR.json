@@ -170,7 +170,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Langage"
+      "value": "Langue"
     }
   ],
   "label.last-days": [
@@ -470,7 +470,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Modifier l'ordre des sites"
     }
   ],
   "message.failure": [
