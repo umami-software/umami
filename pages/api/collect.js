@@ -7,6 +7,7 @@ import { getJsonBody, getIpAddress } from 'lib/request';
 import { ok, send, badRequest, forbidden } from 'lib/response';
 import { createToken } from 'lib/crypto';
 import { removeTrailingSlash } from 'lib/url';
+import { uuid } from 'lib/crypto';
 
 export default async (req, res) => {
   await useCors(req, res);
@@ -71,15 +72,24 @@ export default async (req, res) => {
     url = removeTrailingSlash(url);
   }
 
+  const event_uuid = uuid();
+
   if (type === 'pageview') {
     await savePageView(website_id, { session_id, session_uuid, url, referrer });
   } else if (type === 'event') {
-    await saveEvent(website_id, { session_id, session_uuid, url, event_name, event_data });
+    await saveEvent(website_id, {
+      event_uuid,
+      session_id,
+      session_uuid,
+      url,
+      event_name,
+      event_data,
+    });
   } else {
     return badRequest(res);
   }
 
-  const token = await createToken({ website_id, session_id });
+  const token = await createToken({ website_id, session_id, session_uuid });
 
   return send(res, token);
 };
