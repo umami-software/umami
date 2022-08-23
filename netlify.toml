@@ -1,2 +1,2 @@
 [functions]
-included_files = ["node_modules/.geo/*.mmdb"]
+included_files = ["node_modules/.geo/**"]

@@ -4081,11 +4081,6 @@ is-weakref@^1.0.2:
   dependencies:
     call-bind "^1.0.2"
 
-is_js@^0.9.0:
-  version "0.9.0"
-  resolved "https://registry.npmjs.org/is_js/-/is_js-0.9.0.tgz"
-  integrity sha512-8Y5EHSH+TonfUHX2g3pMJljdbGavg55q4jmHzghJCdqYDbdNROC8uw/YFQwIRCRqRJT1EY3pJefz+kglw+o7sg==
-
 isbot@^3.4.5:
   version "3.5.0"
   resolved "https://registry.npmjs.org/isbot/-/isbot-3.5.0.tgz"
@@ -5669,12 +5664,10 @@ regjsparser@^0.8.2:
   dependencies:
     jsesc "~0.5.0"
 
-request-ip@^2.1.3:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/request-ip/-/request-ip-2.2.0.tgz"
-  integrity sha512-Hn4zUAr+XHbUs2RrfHur62t7+UhvtevqK32ordFewguEfNHUkhSdYgbG7PDGmXZEzqEXll9bei0+VMe6gkmuUQ==
-  dependencies:
-    is_js "^0.9.0"
+request-ip@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/request-ip/-/request-ip-3.3.0.tgz#863451e8fec03847d44f223e30a5d63e369fa611"
+  integrity sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==
 
 request@2.88.0:
   version "2.88.0"
