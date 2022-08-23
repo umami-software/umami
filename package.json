@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm-run-all build-db build-tracker build-geo build-app",
+    "build": "npm-run-all build-db check-db build-tracker build-geo build-app",
     "start": "start-next",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
     "start-docker": "npm-run-all check-db update-tracker start-server",
