@@ -6,7 +6,7 @@ import {
   runAnalyticsQuery,
   runQuery,
 } from 'lib/db';
-import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
+import { sendKafkaMessage, getDateFormatKafka } from 'lib/db/kafka';
 
 export async function saveEvent(...args) {
   return runAnalyticsQuery({
@@ -66,5 +66,5 @@ async function kafkaQuery(website_id, { event_uuid, session_uuid, url, event_nam
     event_name: event_name?.substr(0, 50),
   };
 
-  await kafkaProducer(params, 'event');
+  await sendKafkaMessage(params, 'event');
 }

@@ -6,7 +6,7 @@ import {
   runAnalyticsQuery,
   runQuery,
 } from 'lib/db';
-import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
+import { sendKafkaMessage, getDateFormatKafka } from 'lib/db/kafka';
 import { getSessionByUuid } from 'queries';
 
 export async function createSession(...args) {
@@ -73,7 +73,7 @@ async function kafkaQuery(
     country: country ? country : null,
   };
 
-  await kafkaProducer(params, 'session');
+  await sendKafkaMessage(params, 'session');
 
   return getSessionByUuid(session_uuid);
 }

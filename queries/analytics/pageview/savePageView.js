@@ -6,7 +6,7 @@ import {
   runAnalyticsQuery,
   runQuery,
 } from 'lib/db';
-import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
+import { sendKafkaMessage, getDateFormatKafka } from 'lib/db/kafka';
 
 export async function savePageView(...args) {
   return runAnalyticsQuery({
@@ -54,5 +54,5 @@ async function kafkaQuery(website_id, { session_uuid, url, referrer }) {
     referrer: referrer?.substr(0, URL_LENGTH),
   };
 
-  await kafkaProducer(params, 'pageview');
+  await sendKafkaMessage(params, 'pageview');
 }
