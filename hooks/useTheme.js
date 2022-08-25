@@ -23,5 +23,14 @@ export default function useTheme() {
     document.body.setAttribute('data-theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const theme = url.searchParams.get('theme');
+
+    if (['light', 'dark'].includes(theme)) {
+      saveTheme(theme);
+    }
+  }, []);
+
   return [theme, saveTheme];
 }

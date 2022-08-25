@@ -48,5 +48,14 @@ export default function useLocale() {
     }
   }, [locale]);
 
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const locale = url.searchParams.get('locale');
+
+    if (locale) {
+      saveLocale(locale);
+    }
+  }, []);
+
   return { locale, saveLocale, messages, dir, dateLocale };
 }
