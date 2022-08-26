@@ -43,7 +43,7 @@ export default function MetricsBar({ websiteId, className }) {
     setFormat(state => !state);
   }
 
-  const { pageviews, uniques, bounces, totaltime } = data || {};
+  const { pageviews, uniques, bounces, totaltime, events } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);
   const diffs = data && {
     pageviews: pageviews.value - pageviews.change,
@@ -68,6 +68,12 @@ export default function MetricsBar({ websiteId, className }) {
             label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
             value={uniques.value}
             change={uniques.change}
+            format={formatFunc}
+          />
+          <MetricCard
+            label={<FormattedMessage id="metrics.events" defaultMessage="Events" />}
+            value={events.value}
+            change={events.change}
             format={formatFunc}
           />
           <MetricCard
