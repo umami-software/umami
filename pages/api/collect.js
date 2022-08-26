@@ -93,38 +93,3 @@ export default async (req, res) => {
 
   return send(res, token);
 };
-
-// async function relational(req, res) {
-//   await useSession(req, res);
-
-//   const {
-//     session: { website_id, session_id, session_uuid },
-//   } = req;
-
-//   const { type, payload } = getJsonBody(req);
-
-//   let { url, referrer, event_name, event_data } = payload;
-
-//   if (process.env.REMOVE_TRAILING_SLASH) {
-//     url = removeTrailingSlash(url);
-//   }
-
-//   const event_uuid = uuid();
-
-//   if (type === 'pageview') {
-//     await savePageView(website_id, { session_id, session_uuid, url, referrer });
-//   } else if (type === 'event') {
-//     await saveEvent(website_id, {
-//       event_uuid,
-//       session_id,
-//       session_uuid,
-//       url,
-//       event_name,
-//       event_data,
-//     });
-//   } else {
-//     return badRequest(res);
-//   }
-// }
-
-// function clickhouse() {}
