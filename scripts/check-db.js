@@ -4,6 +4,11 @@ const chalk = require('chalk');
 const spawn = require('cross-spawn');
 const { execSync } = require('child_process');
 
+if (process.env.SKIP_DB_CHECK) {
+  console.log('Skipping database check.');
+  process.exit(0);
+}
+
 const prisma = new PrismaClient();
 
 function success(msg) {
