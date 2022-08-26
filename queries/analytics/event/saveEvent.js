@@ -1,12 +1,8 @@
-import { CLICKHOUSE, RELATIONAL, KAFKA, URL_LENGTH } from 'lib/constants';
-import {
-  getDateFormatClickhouse,
-  prisma,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
-import { sendKafkaMessage, getDateFormatKafka } from 'lib/db/kafka';
+import { CLICKHOUSE, KAFKA, RELATIONAL, URL_LENGTH } from 'lib/constants';
+import clickhouse from 'lib/clickhouse';
+import kafka from 'lib/db/kafka';
+import { prisma, runQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
 
 export async function saveEvent(...args) {
   return runAnalyticsQuery({
@@ -48,10 +44,10 @@ async function clickhouseQuery(website_id, { event_uuid, session_uuid, url, even
     event_name?.substr(0, 50),
   ];
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     insert into umami.event (created_at, website_id, session_uuid, url, event_name)
-    values (${getDateFormatClickhouse(new Date())},  $1, $2, $3, $4);`,
+    values (${clickhouse.getDateFormat(new Date())},  $1, $2, $3, $4);`,
     params,
   );
 }
@@ -61,10 +57,10 @@ async function kafkaQuery(website_id, { event_uuid, session_uuid, url, event_nam
     event_uuid: event_uuid,
     website_id: website_id,
     session_uuid: session_uuid,
-    created_at: getDateFormatKafka(new Date()),
+    created_at: kafka.getDateFormat(new Date()),
     url: url?.substr(0, URL_LENGTH),
     event_name: event_name?.substr(0, 50),
   };
 
-  await sendKafkaMessage(params, 'event');
+  await kafka.sendKafkaMessage(params, 'event');
 }

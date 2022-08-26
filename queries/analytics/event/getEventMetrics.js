@@ -1,13 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  getBetweenDatesClickhouse,
-  getDateQuery,
-  getDateQueryClickhouse,
-  getFilterQuery,
-  rawQuery,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-} from 'lib/db';
+import clickhouse from 'lib/clickhouse';
+import { getDateQuery, getFilterQuery, rawQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
 
 export async function getEventMetrics(...args) {
   return runAnalyticsQuery({
@@ -53,16 +47,16 @@ async function clickhouseQuery(
 ) {
   const params = [website_id];
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     select
       event_name x,
-      ${getDateQueryClickhouse('created_at', unit, timezone)} t,
+      ${clickhouse.getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
     where website_id= $1
-      and ${getBetweenDatesClickhouse('created_at', start_at, end_at)}
-      ${getFilterQuery('event', filters, params)}
+      and ${clickhouse.getBetweenDates('created_at', start_at, end_at)}
+      ${clickhouse.getFilterQuery('event', filters, params)}
     group by x, t
     order by t
     `,

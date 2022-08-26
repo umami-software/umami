@@ -1,11 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  getDateFormatClickhouse,
-  prisma,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
+import clickhouse from 'lib/clickhouse';
+import { runAnalyticsQuery } from 'lib/db/db';
+import { prisma, runQuery } from 'lib/db/relational';
 
 export async function getSessions(...args) {
   return runAnalyticsQuery({
@@ -32,7 +28,7 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     select
       session_id,
@@ -48,7 +44,7 @@ async function clickhouseQuery(websites, start_at) {
       country
     from session
     where website_id in (${websites.join[',']}
-      and created_at >= ${getDateFormatClickhouse(start_at)})
+      and created_at >= ${clickhouse.getDateFormat(start_at)})
     `,
   );
 }

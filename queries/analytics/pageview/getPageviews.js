@@ -1,11 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  rawQueryClickhouse,
-  getDateFormatClickhouse,
-  prisma,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
+import { prisma, runQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
+import clickhouse from 'lib/clickhouse';
 
 export async function getPageviews(...args) {
   return runAnalyticsQuery({
@@ -32,7 +28,7 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
       select
         view_id,
@@ -42,7 +38,7 @@ async function clickhouseQuery(websites, start_at) {
         url
       from pageview
       where website_id in (${websites.join[',']}
-      and created_at >= ${getDateFormatClickhouse(start_at)})
+      and created_at >= ${clickhouse.getDateFormat(start_at)})
     `,
   );
 }

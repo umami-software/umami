@@ -1,4 +1,4 @@
-import { prisma, runQuery } from 'lib/db';
+import { prisma, runQuery } from 'lib/db/relational';
 
 export async function deleteAccount(user_id) {
   return runQuery(

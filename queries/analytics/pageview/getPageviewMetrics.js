@@ -1,11 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  parseFilters,
-  rawQuery,
-  getBetweenDatesClickhouse,
-} from 'lib/db';
+import clickhouse from 'lib/clickhouse';
+import { parseFilters, rawQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
 
 export async function getPageviewMetrics(...args) {
   return runAnalyticsQuery({
@@ -42,7 +38,7 @@ async function relationalQuery(website_id, start_at, end_at, column, table, filt
 
 async function clickhouseQuery(website_id, start_at, end_at, column, table, filters = {}) {
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
+  const { pageviewQuery, sessionQuery, eventQuery, joinSession } = clickhouse.parseFilters(
     table,
     column,
     filters,
@@ -50,13 +46,13 @@ async function clickhouseQuery(website_id, start_at, end_at, column, table, filt
     'session_uuid',
   );
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     select ${column} x, count(*) y
     from ${table}
       ${joinSession}
     where ${table}.website_id= $1
-    and ${getBetweenDatesClickhouse(table + '.created_at', start_at, end_at)}
+    and ${clickhouse.getBetweenDates(table + '.created_at', start_at, end_at)}
     ${pageviewQuery}
     ${joinSession && sessionQuery}
     ${eventQuery}

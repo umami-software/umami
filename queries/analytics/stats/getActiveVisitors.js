@@ -1,6 +1,8 @@
 import { subMinutes } from 'date-fns';
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import { getDateFormatClickhouse, rawQuery, rawQueryClickhouse, runAnalyticsQuery } from 'lib/db';
+import { rawQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
+import clickhouse from 'lib/clickhouse';
 
 export async function getActiveVisitors(...args) {
   return runAnalyticsQuery({
@@ -27,12 +29,12 @@ async function relationalQuery(website_id) {
 async function clickhouseQuery(website_id) {
   const params = [website_id];
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     select count(distinct session_uuid) x
     from pageview
     where website_id = $1
-    and created_at >= ${getDateFormatClickhouse(subMinutes(new Date(), 5))}
+    and created_at >= ${clickhouse.getDateFormat(subMinutes(new Date(), 5))}
     `,
     params,
   );

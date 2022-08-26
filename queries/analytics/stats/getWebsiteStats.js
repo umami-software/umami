@@ -1,14 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  getDateQuery,
-  getBetweenDatesClickhouse,
-  getDateQueryClickhouse,
-  getTimestampInterval,
-  parseFilters,
-  rawQuery,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-} from 'lib/db';
+import { getDateQuery, getTimestampInterval, parseFilters, rawQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db/db';
+import clickhouse from 'lib/clickhouse';
 
 export async function getWebsiteStats(...args) {
   return runAnalyticsQuery({
@@ -52,7 +45,7 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
 
 async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
+  const { pageviewQuery, sessionQuery, joinSession } = clickhouse.parseFilters(
     'pageview',
     null,
     filters,
@@ -60,7 +53,7 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
     'session_uuid',
   );
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
       select 
         sum(t.c) as "pageviews",
@@ -69,14 +62,14 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
         sum(if(max_time < min_time + interval 1 hour, max_time-min_time, 0)) as "totaltime"
       from (
         select pageview.session_uuid,
-          ${getDateQueryClickhouse('pageview.created_at', 'day')} time_series,
+          ${clickhouse.getDateQuery('pageview.created_at', 'day')} time_series,
           count(*) c,
           min(created_at) min_time,
           max(created_at) max_time
         from pageview
           ${joinSession}
         where pageview.website_id = $1
-          and ${getBetweenDatesClickhouse('pageview.created_at', start_at, end_at)}
+          and ${clickhouse.getBetweenDates('pageview.created_at', start_at, end_at)}
           ${pageviewQuery}
           ${sessionQuery}
         group by pageview.session_uuid, time_series

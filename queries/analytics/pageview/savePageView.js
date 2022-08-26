@@ -1,12 +1,8 @@
-import { CLICKHOUSE, RELATIONAL, KAFKA, URL_LENGTH } from 'lib/constants';
-import {
-  getDateFormatClickhouse,
-  prisma,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
-import { sendKafkaMessage, getDateFormatKafka } from 'lib/db/kafka';
+import { CLICKHOUSE, KAFKA, RELATIONAL, URL_LENGTH } from 'lib/constants';
+import clickhouse from 'lib/clickhouse';
+import { runAnalyticsQuery } from 'lib/db/db';
+import kafka from 'lib/db/kafka';
+import { prisma, runQuery } from 'lib/db/relational';
 
 export async function savePageView(...args) {
   return runAnalyticsQuery({
@@ -37,10 +33,10 @@ async function clickhouseQuery(website_id, { session_uuid, url, referrer }) {
     referrer?.substr(0, URL_LENGTH),
   ];
 
-  return rawQueryClickhouse(
+  return clickhouse.rawQuery(
     `
     insert into umami.pageview (created_at, website_id, session_uuid, url, referrer)
-    values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4);`,
+    values (${clickhouse.getDateFormat(new Date())}, $1, $2, $3, $4);`,
     params,
   );
 }
@@ -49,10 +45,10 @@ async function kafkaQuery(website_id, { session_uuid, url, referrer }) {
   const params = {
     website_id: website_id,
     session_uuid: session_uuid,
-    created_at: getDateFormatKafka(new Date()),
+    created_at: kafka.getDateFormat(new Date()),
     url: url?.substr(0, URL_LENGTH),
     referrer: referrer?.substr(0, URL_LENGTH),
   };
 
-  await sendKafkaMessage(params, 'pageview');
+  await kafka.sendKafkaMessage(params, 'pageview');
 }
