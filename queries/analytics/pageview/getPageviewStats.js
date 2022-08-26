@@ -55,7 +55,7 @@ async function clickhouseQuery(
   sessionKey = 'session_uuid',
 ) {
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, joinSession } = clickhouse.parseFilters(
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
     null,
     filters,
