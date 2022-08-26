@@ -1,7 +1,7 @@
 import { CLICKHOUSE, KAFKA, RELATIONAL, URL_LENGTH } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
-import { runAnalyticsQuery } from 'lib/db/db';
-import kafka from 'lib/db/kafka';
+import { runAnalyticsQuery } from 'lib/db';
+import kafka from 'lib/kafka';
 import { prisma, runQuery } from 'lib/relational';
 
 export async function savePageView(...args) {

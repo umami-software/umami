@@ -1,7 +1,7 @@
 import { subMinutes } from 'date-fns';
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import { rawQuery } from 'lib/relational';
-import { runAnalyticsQuery } from 'lib/db/db';
+import { runAnalyticsQuery } from 'lib/db';
 import clickhouse from 'lib/clickhouse';
 
 export async function getActiveVisitors(...args) {

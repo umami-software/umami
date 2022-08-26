@@ -1,8 +1,8 @@
 import { CLICKHOUSE, KAFKA, RELATIONAL } from 'lib/constants';
 import { prisma, runQuery } from 'lib/relational';
 import clickhouse from 'lib/clickhouse';
-import kafka from 'lib/db/kafka';
-import { runAnalyticsQuery } from 'lib/db/db';
+import kafka from 'lib/kafka';
+import { runAnalyticsQuery } from 'lib/db';
 
 export async function createSession(...args) {
   return runAnalyticsQuery({

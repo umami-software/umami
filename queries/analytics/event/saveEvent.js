@@ -1,6 +1,6 @@
 import { CLICKHOUSE, KAFKA, RELATIONAL, URL_LENGTH } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
-import kafka from 'lib/db/kafka';
+import kafka from 'lib/kafka';
 import { prisma, runQuery } from 'lib/relational';
 import { runAnalyticsQuery } from 'lib/db';
 

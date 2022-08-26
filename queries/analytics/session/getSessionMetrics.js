@@ -1,6 +1,6 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
-import { runAnalyticsQuery } from 'lib/db/db';
+import { runAnalyticsQuery } from 'lib/db';
 import { parseFilters, rawQuery } from 'lib/relational';
 
 export async function getSessionMetrics(...args) {

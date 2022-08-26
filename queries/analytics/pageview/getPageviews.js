@@ -1,6 +1,6 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import { prisma, runQuery } from 'lib/relational';
-import { runAnalyticsQuery } from 'lib/db/db';
+import { runAnalyticsQuery } from 'lib/db';
 import clickhouse from 'lib/clickhouse';
 
 export async function getPageviews(...args) {

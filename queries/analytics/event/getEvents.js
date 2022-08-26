@@ -1,7 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import { prisma, runQuery } from 'lib/relational';
 import clickhouse from 'lib/clickhouse';
-import { runAnalyticsQuery } from 'lib/db/db';
+import { runAnalyticsQuery } from 'lib/db';
 
 export function getEvents(...args) {
   return runAnalyticsQuery({
