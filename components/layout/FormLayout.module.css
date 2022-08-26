@@ -24,7 +24,8 @@
   flex: 1 1;
 }
 
-.row > div > input {
+.row > div > input,
+.row > div > select {
   width: 100%;
   min-width: 240px;
 }
