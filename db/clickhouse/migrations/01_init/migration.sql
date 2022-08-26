@@ -19,7 +19,7 @@ CREATE TABLE pageview_queue (
     referrer String
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'pageview',
        kafka_group_name = 'pageview_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -65,7 +65,7 @@ CREATE TABLE session_queue (
     country LowCardinality(String)
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'session',
        kafka_group_name = 'session_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -110,7 +110,7 @@ CREATE TABLE event_queue (
     event_data String
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
+SETTINGS kafka_broker_list = 'localhost:9092,localhost:9093,localhost:9094', -- input broker list
        kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
