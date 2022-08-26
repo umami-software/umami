@@ -25,9 +25,11 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
     filters,
     params,
   );
+  const { joinSession: joinEventSession } = parseFilters('event', null, filters, params);
 
   return rawQuery(
     `
+    select * from (
       select sum(t.c) as "pageviews",
         count(distinct t.session_id) as "uniques",
         sum(case when t.c = 1 then 1 else 0 end) as "bounces",
@@ -44,7 +46,16 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
          ${pageviewQuery}
          ${sessionQuery}
          group by 1, 2
-     ) t
+      ) t
+    ) stats_views
+    cross join (
+      select count(*) events
+      from event
+        ${joinEventSession}
+      where event.website_id=$1
+      and event.created_at between $2 and $3
+      ${sessionQuery}
+    ) stats_events
     `,
     params,
   );
@@ -59,9 +70,11 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
     params,
     'session_uuid',
   );
+  const { joinSession: joinEventSession } = parseFilters('event', null, filters, params);
 
   return rawQueryClickhouse(
     `
+    select * from (
       select 
         sum(t.c) as "pageviews",
         count(distinct t.session_uuid) as "uniques",
@@ -81,7 +94,16 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
           ${sessionQuery}
         group by pageview.session_uuid, time_series
       ) t;
-    `,
+    ) stats_views
+    cross join (
+      select count(*) events
+      from event
+        ${joinEventSession}
+      where event.website_id=$1
+        and ${getBetweenDatesClickhouse('event.created_at', start_at, end_at)}
+        ${sessionQuery}
+    ) stats_events
+      `,
     params,
   );
 }
