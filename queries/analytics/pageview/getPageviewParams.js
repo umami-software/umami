@@ -1,4 +1,4 @@
-import { parseFilters, rawQuery, runAnalyticsQuery } from 'lib/db/relational';
+import { parseFilters, rawQuery, runAnalyticsQuery } from 'lib/relational';
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 
 export async function getPageviewParams(...args) {

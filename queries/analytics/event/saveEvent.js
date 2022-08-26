@@ -1,8 +1,8 @@
 import { CLICKHOUSE, KAFKA, RELATIONAL, URL_LENGTH } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
 import kafka from 'lib/db/kafka';
-import { prisma, runQuery } from 'lib/db/relational';
-import { runAnalyticsQuery } from 'lib/db/db';
+import { prisma, runQuery } from 'lib/relational';
+import { runAnalyticsQuery } from 'lib/db';
 
 export async function saveEvent(...args) {
   return runAnalyticsQuery({

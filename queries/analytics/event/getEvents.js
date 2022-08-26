@@ -1,5 +1,5 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import { prisma, runQuery } from 'lib/db/relational';
+import { prisma, runQuery } from 'lib/relational';
 import clickhouse from 'lib/clickhouse';
 import { runAnalyticsQuery } from 'lib/db/db';
 

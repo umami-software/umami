@@ -1,4 +1,4 @@
-import { prisma, runQuery } from 'lib/db/relational';
+import { prisma, runQuery } from 'lib/relational';
 
 export async function getUserWebsites(user_id) {
   return runQuery(

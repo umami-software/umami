@@ -1,5 +1,5 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import { getDateQuery, getTimestampInterval, parseFilters, rawQuery } from 'lib/db/relational';
+import { getDateQuery, getTimestampInterval, parseFilters, rawQuery } from 'lib/relational';
 import { runAnalyticsQuery } from 'lib/db/db';
 import clickhouse from 'lib/clickhouse';
 

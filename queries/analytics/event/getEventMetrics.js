@@ -1,6 +1,6 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
-import { getDateQuery, getFilterQuery, rawQuery } from 'lib/db/relational';
+import { getDateQuery, getFilterQuery, rawQuery } from 'lib/relational';
 import { runAnalyticsQuery } from 'lib/db/db';
 
 export async function getEventMetrics(...args) {

@@ -1,7 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
 import clickhouse from 'lib/clickhouse';
-import { runAnalyticsQuery } from 'lib/db/db';
-import { prisma, runQuery } from 'lib/db/relational';
+import { runAnalyticsQuery } from 'lib/db';
+import { prisma, runQuery } from 'lib/relational';
 
 export async function getSessions(...args) {
   return runAnalyticsQuery({
