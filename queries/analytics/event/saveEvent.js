@@ -62,5 +62,5 @@ async function kafkaQuery(website_id, { event_uuid, session_uuid, url, event_nam
     event_name: event_name?.substr(0, 50),
   };
 
-  await kafka.sendKafkaMessage(params, 'event');
+  await kafka.sendMessage(params, 'event');
 }

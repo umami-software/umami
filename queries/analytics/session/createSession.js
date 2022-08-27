@@ -73,7 +73,7 @@ async function kafkaQuery(
     country: country ? country : null,
   };
 
-  await kafka.sendKafkaMessage(params, 'session');
+  await kafka.sendMessage(params, 'session');
 
   await redis.set(`session:${session_uuid}`, '');
 }

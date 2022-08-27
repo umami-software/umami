@@ -50,5 +50,5 @@ async function kafkaQuery(website_id, { session_uuid, url, referrer }) {
     referrer: referrer?.substr(0, URL_LENGTH),
   };
 
-  await kafka.sendKafkaMessage(params, 'pageview');
+  await kafka.sendMessage(params, 'pageview');
 }
