@@ -1,8 +1,9 @@
-import { CLICKHOUSE, KAFKA, RELATIONAL } from 'lib/constants';
-import { prisma, runQuery } from 'lib/relational';
 import clickhouse from 'lib/clickhouse';
-import kafka from 'lib/kafka';
+import { CLICKHOUSE, KAFKA, RELATIONAL } from 'lib/constants';
 import { runAnalyticsQuery } from 'lib/db';
+import kafka from 'lib/kafka';
+import redis from 'lib/redis';
+import { prisma, runQuery } from 'lib/relational';
 
 export async function createSession(...args) {
   return runAnalyticsQuery({
@@ -23,7 +24,13 @@ async function relationalQuery(website_id, data) {
         session_id: true,
       },
     }),
-  );
+  ).then(async res => {
+    if (process.env.REDIS_URL) {
+      await redis.set(`session:${res.session_uuid}`, '');
+    }
+
+    return res;
+  });
 }
 
 async function clickhouseQuery(
@@ -67,4 +74,6 @@ async function kafkaQuery(
   };
 
   await kafka.sendKafkaMessage(params, 'session');
+
+  await redis.set(`session:${session_uuid}`, '');
 }

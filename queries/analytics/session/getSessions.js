@@ -14,11 +14,15 @@ async function relationalQuery(websites, start_at) {
   return runQuery(
     prisma.session.findMany({
       where: {
-        website: {
-          website_id: {
-            in: websites,
-          },
-        },
+        ...(websites && websites.length > 0
+          ? {
+              website: {
+                website_id: {
+                  in: websites,
+                },
+              },
+            }
+          : {}),
         created_at: {
           gte: start_at,
         },
@@ -31,7 +35,6 @@ async function clickhouseQuery(websites, start_at) {
   return clickhouse.rawQuery(
     `
     select
-      session_id,
       session_uuid,
       website_id,
       created_at,
@@ -43,8 +46,8 @@ async function clickhouseQuery(websites, start_at) {
       "language",
       country
     from session
-    where website_id in (${websites.join[',']}
-      and created_at >= ${clickhouse.getDateFormat(start_at)})
+    where ${websites && websites.length > 0 ? `(website_id in (${websites.join[',']})` : '0 = 0'}
+      and created_at >= ${clickhouse.getDateFormat(start_at)}
     `,
   );
 }

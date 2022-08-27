@@ -12,7 +12,7 @@ import { uuid } from 'lib/crypto';
 export default async (req, res) => {
   await useCors(req, res);
 
-  if (isbot(req.headers['user-agent'])) {
+  if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
     return unauthorized(res);
   }
 
