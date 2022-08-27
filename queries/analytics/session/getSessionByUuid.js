@@ -1,5 +1,7 @@
 import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import { rawQueryClickhouse, findUnique, prisma, runAnalyticsQuery, runQuery } from 'lib/db';
+import { prisma, runQuery } from 'lib/relational';
+import clickhouse from 'lib/clickhouse';
+import { runAnalyticsQuery } from 'lib/db';
 
 export async function getSessionByUuid(...args) {
   return runAnalyticsQuery({
@@ -21,8 +23,9 @@ async function relationalQuery(session_uuid) {
 async function clickhouseQuery(session_uuid) {
   const params = [session_uuid];
 
-  return rawQueryClickhouse(
-    `
+  return clickhouse
+    .rawQuery(
+      `
     select 
       session_uuid, 
       website_id, 
@@ -37,6 +40,7 @@ async function clickhouseQuery(session_uuid) {
     from session
     where session_uuid = $1
     `,
-    params,
-  ).then(data => findUnique(data));
+      params,
+    )
+    .then(result => clickhouse.findFirst(result));
 }

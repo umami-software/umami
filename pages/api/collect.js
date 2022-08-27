@@ -4,7 +4,7 @@ import ipaddr from 'ipaddr.js';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
-import { ok, send, badRequest, forbidden } from 'lib/response';
+import { unauthorized, send, badRequest, forbidden } from 'lib/response';
 import { createToken } from 'lib/crypto';
 import { removeTrailingSlash } from 'lib/url';
 import { uuid } from 'lib/crypto';
@@ -12,8 +12,8 @@ import { uuid } from 'lib/crypto';
 export default async (req, res) => {
   await useCors(req, res);
 
-  if (isbot(req.headers['user-agent'])) {
-    return ok(res);
+  if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
+    return unauthorized(res);
   }
 
   const ignoreIps = process.env.IGNORE_IP;

@@ -1,13 +1,9 @@
-import { CLICKHOUSE, RELATIONAL, KAFKA } from 'lib/constants';
-import {
-  getDateFormatClickhouse,
-  prisma,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
-import { kafkaProducer, getDateFormatKafka } from 'lib/kafka';
-import { getSessionByUuid } from 'queries';
+import clickhouse from 'lib/clickhouse';
+import { CLICKHOUSE, KAFKA, RELATIONAL } from 'lib/constants';
+import { runAnalyticsQuery } from 'lib/db';
+import kafka from 'lib/kafka';
+import redis from 'lib/redis';
+import { prisma, runQuery } from 'lib/relational';
 
 export async function createSession(...args) {
   return runAnalyticsQuery({
@@ -28,7 +24,13 @@ async function relationalQuery(website_id, data) {
         session_id: true,
       },
     }),
-  );
+  ).then(async res => {
+    if (process.env.REDIS_URL) {
+      await redis.set(`session:${res.session_uuid}`, '');
+    }
+
+    return res;
+  });
 }
 
 async function clickhouseQuery(
@@ -47,13 +49,11 @@ async function clickhouseQuery(
     country ? country : null,
   ];
 
-  await rawQueryClickhouse(
+  await clickhouse.rawQuery(
     `insert into umami.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
-      values (${getDateFormatClickhouse(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+      values (${clickhouse.getDateFormat(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
     params,
   );
-
-  return getSessionByUuid(session_uuid);
 }
 
 async function kafkaQuery(
@@ -63,7 +63,7 @@ async function kafkaQuery(
   const params = {
     session_uuid: session_uuid,
     website_id: website_id,
-    created_at: getDateFormatKafka(new Date()),
+    created_at: kafka.getDateFormat(new Date()),
     hostname: hostname,
     browser: browser,
     os: os,
@@ -73,7 +73,7 @@ async function kafkaQuery(
     country: country ? country : null,
   };
 
-  await kafkaProducer(params, 'session');
+  await kafka.sendKafkaMessage(params, 'session');
 
-  return getSessionByUuid(session_uuid);
+  await redis.set(`session:${session_uuid}`, '');
 }
