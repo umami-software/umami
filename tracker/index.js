@@ -1,6 +1,3 @@
-import { doNotTrack, hook } from '../lib/web';
-import { removeTrailingSlash } from '../lib/url';
-
 (window => {
   const {
     screen: { width, height },
@@ -15,6 +12,41 @@ import { removeTrailingSlash } from '../lib/url';
 
   if (!currentScript) return;
 
+  const assign = (a, b) => {
+    Object.keys(b).forEach(key => {
+      if (b[key] !== undefined) a[key] = b[key];
+    });
+    return a;
+  };
+
+  const hook = (_this, method, callback) => {
+    const orig = _this[method];
+
+    return (...args) => {
+      callback.apply(null, args);
+
+      return orig.apply(_this, args);
+    };
+  };
+
+  const doNotTrack = () => {
+    const { doNotTrack, navigator, external } = window;
+
+    const msTrackProtection = 'msTrackingProtectionEnabled';
+    const msTracking = () => {
+      return external && msTrackProtection in external && external[msTrackProtection]();
+    };
+
+    const dnt = doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || msTracking();
+
+    return dnt == '1' || dnt === 'yes';
+  };
+
+  const trackingDisabled = () =>
+    (localStorage && localStorage.getItem('umami.disabled')) ||
+    (dnt && doNotTrack()) ||
+    (domain && !domains.includes(hostname));
+
   const _data = 'data-';
   const _false = 'false';
   const attr = currentScript.getAttribute.bind(currentScript);
@@ -25,21 +57,15 @@ import { removeTrailingSlash } from '../lib/url';
   const cssEvents = attr(_data + 'css-events') !== _false;
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
-
-  const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
-  const eventSelect = "[class*='umami--']";
-
-  const trackingDisabled = () =>
-    (localStorage && localStorage.getItem('umami.disabled')) ||
-    (dnt && doNotTrack()) ||
-    (domain && !domains.includes(hostname));
-
   const root = hostUrl
-    ? removeTrailingSlash(hostUrl)
+    ? hostUrl.replace(/\/$/, '')
     : currentScript.src.split('/').slice(0, -1).join('/');
   const endpoint = `${root}/api/collect`;
   const screen = `${width}x${height}`;
-  const listeners = {};
+  const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
+  const eventSelect = "[class*='umami--']";
+
+  let listeners = {};
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
   let cache;
@@ -53,13 +79,6 @@ import { removeTrailingSlash } from '../lib/url';
     language,
     url: currentUrl,
   });
-
-  const assign = (a, b) => {
-    Object.keys(b).forEach(key => {
-      if (b[key] !== undefined) a[key] = b[key];
-    });
-    return a;
-  };
 
   const collect = (type, payload) => {
     if (trackingDisabled()) return;
