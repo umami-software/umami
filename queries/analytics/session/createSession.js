@@ -1,21 +1,20 @@
+import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, KAFKA, RELATIONAL } from 'lib/constants';
-import { runAnalyticsQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import redis from 'lib/redis';
-import { prisma, runQuery } from 'lib/relational';
+import { runQuery, CLICKHOUSE, KAFKA, PRISMA } from 'lib/db';
 
 export async function createSession(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
     [KAFKA]: () => kafkaQuery(...args),
   });
 }
 
 async function relationalQuery(website_id, data) {
-  return runQuery(
-    prisma.session.create({
+  return prisma.client.session
+    .create({
       data: {
         website_id,
         ...data,
@@ -23,14 +22,14 @@ async function relationalQuery(website_id, data) {
       select: {
         session_id: true,
       },
-    }),
-  ).then(async res => {
-    if (process.env.REDIS_URL) {
-      await redis.set(`session:${res.session_uuid}`, '');
-    }
+    })
+    .then(async res => {
+      if (process.env.REDIS_URL) {
+        await redis.set(`session:${res.session_uuid}`, '');
+      }
 
-    return res;
-  });
+      return res;
+    });
 }
 
 async function clickhouseQuery(
@@ -48,10 +47,11 @@ async function clickhouseQuery(
     language,
     country ? country : null,
   ];
+  const { rawQuery, getDateFormat } = clickhouse;
 
-  await clickhouse.rawQuery(
+  await rawQuery(
     `insert into umami.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
-      values (${clickhouse.getDateFormat(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
+     values (${getDateFormat(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
     params,
   );
 }
@@ -60,10 +60,11 @@ async function kafkaQuery(
   website_id,
   { session_uuid, hostname, browser, os, screen, language, country, device },
 ) {
+  const { getDateFormat, sendMessage } = kafka;
   const params = {
     session_uuid: session_uuid,
     website_id: website_id,
-    created_at: kafka.getDateFormat(new Date()),
+    created_at: getDateFormat(new Date()),
     hostname: hostname,
     browser: browser,
     os: os,
@@ -73,7 +74,7 @@ async function kafkaQuery(
     country: country ? country : null,
   };
 
-  await kafka.sendMessage(params, 'session');
+  await sendMessage(params, 'session');
 
   await redis.set(`session:${session_uuid}`, '');
 }

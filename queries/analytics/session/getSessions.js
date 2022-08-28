@@ -1,18 +1,17 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
+import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runAnalyticsQuery } from 'lib/db';
-import { prisma, runQuery } from 'lib/relational';
+import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
 
 export async function getSessions(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
 async function relationalQuery(websites, start_at) {
   return runQuery(
-    prisma.session.findMany({
+    prisma.client.session.findMany({
       where: {
         ...(websites && websites.length > 0
           ? {
@@ -32,9 +31,10 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  return clickhouse.rawQuery(
-    `
-    select
+  const { rawQuery, getDateFormat } = clickhouse;
+
+  return rawQuery(
+    `select
       session_uuid,
       website_id,
       created_at,
@@ -43,11 +43,10 @@ async function clickhouseQuery(websites, start_at) {
       os,
       device,
       screen,
-      "language",
+      language,
       country
     from session
     where ${websites && websites.length > 0 ? `(website_id in (${websites.join[',']})` : '0 = 0'}
-      and created_at >= ${clickhouse.getDateFormat(start_at)}
-    `,
+      and created_at >= ${getDateFormat(start_at)}`,
   );
 }
