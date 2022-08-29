@@ -2,9 +2,9 @@ import prisma from 'lib/prisma';
 import redis from 'lib/redis';
 
 export async function deleteWebsite(website_id) {
-  const { client, multiQuery } = prisma;
+  const { client, transaction } = prisma;
 
-  return multiQuery([
+  return transaction([
     client.pageview.deleteMany({
       where: { session: { website: { website_id } } },
     }),
