@@ -10,24 +10,22 @@ export async function getSessions(...args) {
 }
 
 async function relationalQuery(websites, start_at) {
-  return runQuery(
-    prisma.client.session.findMany({
-      where: {
-        ...(websites && websites.length > 0
-          ? {
-              website: {
-                website_id: {
-                  in: websites,
-                },
+  return prisma.client.session.findMany({
+    where: {
+      ...(websites && websites.length > 0
+        ? {
+            website: {
+              website_id: {
+                in: websites,
               },
-            }
-          : {}),
-        created_at: {
-          gte: start_at,
-        },
+            },
+          }
+        : {}),
+      created_at: {
+        gte: start_at,
       },
-    }),
-  );
+    },
+  });
 }
 
 async function clickhouseQuery(websites, start_at) {

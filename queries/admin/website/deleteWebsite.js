@@ -22,7 +22,7 @@ export async function deleteWebsite(website_id) {
     }),
   ]).then(async res => {
     if (process.env.REDIS_URL) {
-      await redis.del(`website:${res.website_uuid}`);
+      await redis.client.del(`website:${res.website_uuid}`);
     }
   });
 }

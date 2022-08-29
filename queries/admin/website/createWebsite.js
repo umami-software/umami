@@ -14,7 +14,7 @@ export async function createWebsite(user_id, data) {
       },
     })
     .then(async res => {
-      if (process.env.REDIS_URL) {
+      if (process.env.REDIS_URL && res) {
         await redis.set(`website:${res.website_uuid}`, Number(res.website_id));
       }
 

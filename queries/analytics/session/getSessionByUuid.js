@@ -1,6 +1,7 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
+import redis from 'lib/redis';
 
 export async function getSessionByUuid(...args) {
   return runQuery({
@@ -10,11 +11,19 @@ export async function getSessionByUuid(...args) {
 }
 
 async function relationalQuery(session_uuid) {
-  return prisma.client.session.findUnique({
-    where: {
-      session_uuid,
-    },
-  });
+  return prisma.client.session
+    .findUnique({
+      where: {
+        session_uuid,
+      },
+    })
+    .then(async res => {
+      if (process.env.REDIS_URL && res) {
+        await redis.client.set(`session:${res.session_uuid}`, 1);
+      }
+
+      return res;
+    });
 }
 
 async function clickhouseQuery(session_uuid) {
@@ -36,5 +45,13 @@ async function clickhouseQuery(session_uuid) {
     from session
     where session_uuid = $1`,
     params,
-  ).then(result => findFirst(result));
+  )
+    .then(result => findFirst(result))
+    .then(async res => {
+      if (process.env.REDIS_URL && res) {
+        await redis.client.set(`session:${res.session_uuid}`, 1);
+      }
+
+      return res;
+    });
 }

@@ -1,14 +1,12 @@
-import prisma from 'lib/prisma';
-import clickhouse from 'lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
+import prisma from 'lib/prisma';
 import redis from 'lib/redis';
-import { runQuery, CLICKHOUSE, KAFKA, PRISMA } from 'lib/db';
 
 export async function createSession(...args) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
-    [KAFKA]: () => kafkaQuery(...args),
   });
 }
 
@@ -24,8 +22,8 @@ async function relationalQuery(website_id, data) {
       },
     })
     .then(async res => {
-      if (process.env.REDIS_URL) {
-        await redis.set(`session:${res.session_uuid}`, '');
+      if (process.env.REDIS_URL && res) {
+        await redis.client.set(`session:${res.session_uuid}`, 1);
       }
 
       return res;
@@ -33,30 +31,6 @@ async function relationalQuery(website_id, data) {
 }
 
 async function clickhouseQuery(
-  website_id,
-  { session_uuid, hostname, browser, os, screen, language, country, device },
-) {
-  const params = [
-    session_uuid,
-    website_id,
-    hostname,
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    country ? country : null,
-  ];
-  const { rawQuery, getDateFormat } = clickhouse;
-
-  await rawQuery(
-    `insert into umami.session (created_at, session_uuid, website_id, hostname, browser, os, device, screen, language, country)
-     values (${getDateFormat(new Date())}, $1, $2, $3, $4, $5, $6, $7, $8, $9);`,
-    params,
-  );
-}
-
-async function kafkaQuery(
   website_id,
   { session_uuid, hostname, browser, os, screen, language, country, device },
 ) {
@@ -76,5 +50,7 @@ async function kafkaQuery(
 
   await sendMessage(params, 'session');
 
-  await redis.set(`session:${session_uuid}`, '');
+  if (process.env.REDIS_URL) {
+    await redis.client.set(`session:${session_uuid}`, 1);
+  }
 }
