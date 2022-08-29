@@ -25,7 +25,12 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
     filters,
     params,
   );
-  const { joinSession: joinEventSession } = parseFilters('event', null, filters, params);
+  const { eventQuery, joinSession: joinEventSession } = parseFilters(
+    'event',
+    null,
+    { ...filters, event_url: filters.url },
+    params,
+  );
 
   return rawQuery(
     `
@@ -54,6 +59,7 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
         ${joinEventSession}
       where event.website_id=$1
       and event.created_at between $2 and $3
+      ${eventQuery}
       ${sessionQuery}
     ) stats_events
     `,
@@ -70,7 +76,12 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
     params,
     'session_uuid',
   );
-  const { joinSession: joinEventSession } = parseFilters('event', null, filters, params);
+  const { eventQuery, joinSession: joinEventSession } = parseFilters(
+    'event',
+    null,
+    filters,
+    params,
+  );
 
   return rawQueryClickhouse(
     `
@@ -101,6 +112,7 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
         ${joinEventSession}
       where event.website_id=$1
         and ${getBetweenDatesClickhouse('event.created_at', start_at, end_at)}
+        ${eventQuery}
         ${sessionQuery}
     ) stats_events
       `,
