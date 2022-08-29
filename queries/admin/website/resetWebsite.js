@@ -18,7 +18,7 @@ export async function resetWebsite(website_id) {
       where: { website: { website_id } },
     }),
   ]).then(async res => {
-    if (process.env.REDIS_URL) {
+    if (redis.client) {
       await redis.del(`website:${res.website_uuid}`);
     }
   });

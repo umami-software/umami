@@ -1,8 +1,11 @@
 import prisma from 'lib/prisma';
-import redis from 'lib/redis';
+import redis, { DELETED } from 'lib/redis';
+import { getWebsiteById } from 'queries';
 
 export async function deleteWebsite(website_id) {
   const { client, transaction } = prisma;
+
+  const { website_uuid } = await getWebsiteById(website_id);
 
   return transaction([
     client.pageview.deleteMany({
@@ -21,8 +24,10 @@ export async function deleteWebsite(website_id) {
       where: { website_id },
     }),
   ]).then(async res => {
-    if (process.env.REDIS_URL) {
-      await redis.client.del(`website:${res.website_uuid}`);
+    if (redis.client) {
+      await redis.client.set(`website:${website_uuid}`, DELETED);
     }
+
+    return res;
   });
 }

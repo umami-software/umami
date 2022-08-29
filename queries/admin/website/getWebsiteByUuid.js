@@ -9,7 +9,7 @@ export async function getWebsiteByUuid(website_uuid) {
       },
     })
     .then(async res => {
-      if (process.env.REDIS_URL && res) {
+      if (redis.client && res) {
         await redis.client.set(`website:${res.website_uuid}`, 1);
       }
 

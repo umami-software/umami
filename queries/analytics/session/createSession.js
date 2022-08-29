@@ -22,7 +22,7 @@ async function relationalQuery(website_id, data) {
       },
     })
     .then(async res => {
-      if (process.env.REDIS_URL && res) {
+      if (redis.client && res) {
         await redis.client.set(`session:${res.session_uuid}`, 1);
       }
 
@@ -50,7 +50,7 @@ async function clickhouseQuery(
 
   await sendMessage(params, 'session');
 
-  if (process.env.REDIS_URL) {
+  if (redis.client) {
     await redis.client.set(`session:${session_uuid}`, 1);
   }
 }
