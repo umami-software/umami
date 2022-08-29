@@ -87,6 +87,7 @@
       method: 'POST',
       body: JSON.stringify({ type, payload }),
       headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
+      keepalive: true,
     })
       .then(res => res.text())
       .then(text => (cache = text));
