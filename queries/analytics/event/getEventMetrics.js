@@ -43,7 +43,7 @@ async function clickhouseQuery(
   unit = 'day',
   filters = {},
 ) {
-  const { rawQuery, getDateQuery, getBetweenDates } = prisma;
+  const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
   const params = [website_id];
 
   return rawQuery(
@@ -54,7 +54,7 @@ async function clickhouseQuery(
     from event
     where website_id= $1
       and ${getBetweenDates('created_at', start_at, end_at)}
-      ${clickhouse.getFilterQuery('event', filters, params)}
+      ${getFilterQuery('event', filters, params)}
     group by x, t
     order by t`,
     params,
