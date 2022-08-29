@@ -5,7 +5,7 @@ import { createToken, unauthorized, send, badRequest, forbidden } from 'next-bas
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
-import { uuid } from 'lib/crypto';
+import { secret, uuid } from 'lib/crypto';
 
 export default async (req, res) => {
   await useCors(req, res);
@@ -87,7 +87,7 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const token = createToken({ website_id, session_id, session_uuid });
+  const token = createToken({ website_id, session_id, session_uuid }, secret());
 
   return send(res, token);
 };
