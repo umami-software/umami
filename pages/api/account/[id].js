@@ -1,6 +1,6 @@
 import { getAccountById, deleteAccount } from 'queries';
 import { useAuth } from 'lib/middleware';
-import { methodNotAllowed, ok, unauthorized } from 'lib/response';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 
 export default async (req, res) => {
   await useAuth(req, res);

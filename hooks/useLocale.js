@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { get, setItem } from 'lib/web';
+import { get, setItem } from 'next-basics';
 import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';

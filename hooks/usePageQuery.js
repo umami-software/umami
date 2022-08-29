@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { getQueryString } from 'lib/url';
+
+function getQueryString(params) {
+  return new URLSearchParams({ ...params }).toString();
+}
 
 export default function usePageQuery() {
   const router = useRouter();

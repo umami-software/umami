@@ -1,6 +1,6 @@
 import create from 'zustand';
 import { DEFAULT_LOCALE, DEFAULT_THEME, LOCALE_CONFIG, THEME_CONFIG } from 'lib/constants';
-import { getItem } from 'lib/web';
+import { getItem } from 'next-basics';
 
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,

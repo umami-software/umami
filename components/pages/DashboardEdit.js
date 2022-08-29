@@ -23,8 +23,6 @@ export default function DashboardEdit({ websites }) {
 
   const ordered = useMemo(() => sortArrayByMap(websites, order, 'website_id'), [websites, order]);
 
-  console.log({ order, ordered });
-
   function handleWebsiteDrag({ destination, source }) {
     if (!destination || destination.index === source.index) return;
 

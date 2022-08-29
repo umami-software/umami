@@ -24,8 +24,6 @@ export default function WebsiteList({ websites, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
   const { formatMessage } = useIntl();
 
-  console.log({ websiteOrder });
-
   const ordered = useMemo(
     () => sortArrayByMap(websites, websiteOrder, 'website_id'),
     [websites, websiteOrder],

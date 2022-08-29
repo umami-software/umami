@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { get } from 'lib/web';
+import { get } from 'next-basics';
 import enUS from 'public/intl/country/en-US.json';
 
 const countryNames = {

@@ -1,12 +1,10 @@
 const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
+import { createToken, unauthorized, send, badRequest, forbidden } from 'next-basics';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
-import { unauthorized, send, badRequest, forbidden } from 'lib/response';
-import { createToken } from 'lib/crypto';
-import { removeTrailingSlash } from 'lib/url';
 import { uuid } from 'lib/crypto';
 
 export default async (req, res) => {
@@ -69,7 +67,7 @@ export default async (req, res) => {
   let { url, referrer, event_name, event_data } = payload;
 
   if (process.env.REMOVE_TRAILING_SLASH) {
-    url = removeTrailingSlash(url);
+    url = url.replace(/\/$/, '');
   }
 
   const event_uuid = uuid();
@@ -89,7 +87,7 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const token = await createToken({ website_id, session_id, session_uuid });
+  const token = createToken({ website_id, session_id, session_uuid });
 
   return send(res, token);
 };
