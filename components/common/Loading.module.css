@@ -21,6 +21,14 @@
   margin: 0;
 }
 
+.loading.overlay {
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background: var(--gray400);
+  opacity: 0.4;
+}
+
 .loading div {
   width: 10px;
   height: 10px;
@@ -28,6 +36,10 @@
   background: var(--gray400);
   animation: blink 1.4s infinite;
   animation-fill-mode: both;
+}
+
+.loading.overlay div {
+  background: var(--gray900);
 }
 
 .loading div + div {
