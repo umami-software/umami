@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 import Button from 'components/common/Button';
-import { sortArrayByMap } from 'lib/array';
+import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
 import styles from './DashboardEdit.module.css';
 
@@ -21,7 +21,13 @@ export default function DashboardEdit({ websites }) {
   const { formatMessage } = useIntl();
   const [order, setOrder] = useState(websiteOrder || []);
 
-  const ordered = useMemo(() => sortArrayByMap(websites, order, 'website_id'), [websites, order]);
+  const ordered = useMemo(
+    () =>
+      websites
+        .map(website => ({ ...website, order: order.indexOf(website.website_id) }))
+        .sort(firstBy('order')),
+    [websites, order],
+  );
 
   function handleWebsiteDrag({ destination, source }) {
     if (!destination || destination.index === source.index) return;
