@@ -94,7 +94,7 @@ CREATE TABLE event
     created_at DateTime('UTC'),
     url String,
     event_name String,
-    event_data String
+    event_data JSON
 )
     engine = MergeTree PRIMARY KEY (event_uuid, created_at)
         ORDER BY (event_uuid, created_at)

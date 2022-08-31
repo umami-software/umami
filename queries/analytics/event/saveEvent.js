@@ -31,15 +31,19 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
   });
 }
 
-async function clickhouseQuery(website_id, { event_uuid, session_uuid, url, event_name }) {
+async function clickhouseQuery(
+  website_id,
+  { event_uuid, session_uuid, url, event_name, event_data },
+) {
   const { getDateFormat, sendMessage } = kafka;
   const params = {
-    event_uuid: event_uuid,
-    website_id: website_id,
-    session_uuid: session_uuid,
+    event_uuid,
+    website_id,
+    session_uuid,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     event_name: event_name?.substring(0, EVENT_NAME_LENGTH),
+    event_data: JSON.stringify(event_data),
   };
 
   await sendMessage(params, 'event');
