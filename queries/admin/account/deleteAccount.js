@@ -4,12 +4,16 @@ import redis, { DELETED } from 'lib/redis';
 export async function deleteAccount(user_id) {
   const { client } = prisma;
 
-  const websiteUuids = await client.website
-    .findMany({
-      where: { user_id },
-      select: { website_uuid: true },
-    })
-    .map(a => a.website_uuid);
+  const websites = await client.website.findMany({
+    where: { user_id },
+    select: { website_uuid: true },
+  });
+
+  let websiteUuids = [];
+
+  if (websites.length > 0) {
+    websiteUuids = websites.map(a => a.website_uuid);
+  }
 
   return client
     .$transaction([
