@@ -170,7 +170,7 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "語言"
     }
   ],
   "label.last-days": [
@@ -454,7 +454,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "編輯管理面板"
     }
   ],
   "message.failure": [
@@ -754,7 +754,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "查詢參數"
     }
   ],
   "metrics.referrers": [
