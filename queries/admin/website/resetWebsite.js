@@ -1,5 +1,4 @@
 import prisma from 'lib/prisma';
-import redis from 'lib/redis';
 
 export async function resetWebsite(website_id) {
   const { client, transaction } = prisma;
@@ -17,9 +16,5 @@ export async function resetWebsite(website_id) {
     client.session.deleteMany({
       where: { website: { website_id } },
     }),
-  ]).then(async res => {
-    if (redis.client) {
-      await redis.del(`website:${res.website_uuid}`);
-    }
-  });
+  ]);
 }
