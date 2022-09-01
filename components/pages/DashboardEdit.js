@@ -23,7 +23,6 @@ export default function DashboardEdit({ websites }) {
 
   const ordered = useMemo(() => sortArrayByMap(websites, order, 'website_id'), [websites, order]);
 
-  console.log({ order, ordered });
 
   function handleWebsiteDrag({ destination, source }) {
     if (!destination || destination.index === source.index) return;
@@ -32,7 +31,7 @@ export default function DashboardEdit({ websites }) {
     const [removed] = orderedWebsites.splice(source.index, 1);
     orderedWebsites.splice(destination.index, 0, removed);
 
-    setOrder(orderedWebsites.map(({ website_id }) => website_id));
+    setOrder(orderedWebsites.map((website) => website?.website_id || 0));
   }
 
   function handleSave() {
