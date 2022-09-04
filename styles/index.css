@@ -84,6 +84,7 @@ a:visited {
 
 input[type='text'],
 input[type='password'],
+select,
 textarea {
   color: var(--gray900);
   background: var(--gray50);

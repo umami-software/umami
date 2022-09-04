@@ -10,7 +10,8 @@ export default async (req, res) => {
   const { website_id, enable_share_url } = req.body;
 
   if (req.method === 'POST') {
-    const { name, domain } = req.body;
+    const { name, domain, owner } = req.body;
+    const website_owner = parseInt(owner);
 
     if (website_id) {
       const website = await getWebsiteById(website_id);
@@ -27,13 +28,13 @@ export default async (req, res) => {
         share_id = null;
       }
 
-      await updateWebsite(website_id, { name, domain, share_id });
+      await updateWebsite(website_id, { name, domain, share_id, user_id: website_owner });
 
       return ok(res);
     } else {
       const website_uuid = uuid();
       const share_id = enable_share_url ? getRandomChars(8) : null;
-      const website = await createWebsite(user_id, { website_uuid, name, domain, share_id });
+      const website = await createWebsite(website_owner, { website_uuid, name, domain, share_id });
 
       return ok(res, website);
     }
