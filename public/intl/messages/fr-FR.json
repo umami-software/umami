@@ -38,7 +38,7 @@
   "label.all-websites": [
     {
       "type": 0,
-      "value": "Tous les sites web"
+      "value": "Tous les sites"
     }
   ],
   "label.back": [
@@ -332,7 +332,7 @@
   "label.this-month": [
     {
       "type": 0,
-      "value": "Ce mois ci"
+      "value": "Ce mois"
     }
   ],
   "label.this-week": [
@@ -450,7 +450,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Êtes-vous sûr de vouloir réinistialiser les statistiques de "
+      "value": "Êtes-vous sûr de vouloir réinitialiser les statistiques de "
     },
     {
       "type": 1,
@@ -476,7 +476,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Modifier l'ordre des sites"
+      "value": "Modifier le tableau de bord"
     }
   ],
   "message.failure": [
@@ -566,7 +566,7 @@
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Vous n'avez configuré aucun site Web."
+      "value": "Vous n'avez configuré aucun site."
     }
   ],
   "message.page-not-found": [
@@ -588,7 +588,7 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "Toutes les statistiques pour ce site seront supprimés, mais votre code de suivi restera intact."
+      "value": "Toutes les statistiques pour ce site seront supprimées, mais votre code de suivi restera intact."
     }
   ],
   "message.save-success": [
@@ -636,7 +636,7 @@
     },
     {
       "type": 0,
-      "value": " de votre site Web."
+      "value": " de votre site."
     }
   ],
   "message.type-delete": [
@@ -748,7 +748,7 @@
   "metrics.languages": [
     {
       "type": 0,
-      "value": "Langages"
+      "value": "Langues"
     }
   ],
   "metrics.operating-systems": [
@@ -772,7 +772,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Paramètres d'URL"
     }
   ],
   "metrics.referrers": [
@@ -784,7 +784,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Tailles d'écran"
+      "value": "Résolutions d'écran"
     }
   ],
   "metrics.unique-visitors": [
