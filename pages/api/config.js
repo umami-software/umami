@@ -1,4 +1,4 @@
-import { ok, methodNotAllowed } from 'lib/response';
+import { ok, methodNotAllowed } from 'next-basics';
 
 export default async (req, res) => {
   if (req.method === 'GET') {

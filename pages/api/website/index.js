@@ -1,7 +1,7 @@
+import { ok, unauthorized, methodNotAllowed, getRandomChars } from 'next-basics';
 import { updateWebsite, createWebsite, getWebsiteById } from 'queries';
 import { useAuth } from 'lib/middleware';
-import { uuid, getRandomChars } from 'lib/crypto';
-import { ok, unauthorized, methodNotAllowed } from 'lib/response';
+import { uuid } from 'lib/crypto';
 
 export default async (req, res) => {
   await useAuth(req, res);

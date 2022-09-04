@@ -1,12 +1,10 @@
-import { prisma, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 
 export async function updateAccount(user_id, data) {
-  return runQuery(
-    prisma.account.update({
-      where: {
-        user_id,
-      },
-      data,
-    }),
-  );
+  return prisma.client.account.update({
+    where: {
+      user_id,
+    },
+    data,
+  });
 }

@@ -1,11 +1,11 @@
+/* eslint-disable no-console */
 require('dotenv').config();
-const bcrypt = require('bcryptjs');
+const { hashPassword } = require('next-basics');
 const chalk = require('chalk');
 const prompts = require('prompts');
 const { PrismaClient } = require('@prisma/client');
 
 const prisma = new PrismaClient();
-const SALT_ROUNDS = 10;
 
 const runQuery = async query => {
   return query.catch(e => {
@@ -22,10 +22,6 @@ const updateAccountByUsername = (username, data) => {
       data,
     }),
   );
-};
-
-const hashPassword = password => {
-  return bcrypt.hashSync(password, SALT_ROUNDS);
 };
 
 const changePassword = async (username, newPassword) => {

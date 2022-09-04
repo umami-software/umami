@@ -1,5 +1,5 @@
 import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'queries';
-import { ok, methodNotAllowed, unauthorized, badRequest } from 'lib/response';
+import { ok, methodNotAllowed, unauthorized, badRequest } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
 import { FILTER_IGNORED } from 'lib/constants';

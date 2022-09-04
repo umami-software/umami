@@ -4,7 +4,12 @@
     "es2020": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "plugin:prettier/recommended", "next"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/recommended",
+    "next"
+  ],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -12,7 +17,27 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["assets", "./assets"],
+          ["components", "./components"],
+          ["db", "./db"],
+          ["hooks", "./hooks"],
+          ["lang", "./lang"],
+          ["lib", "./lib"],
+          ["public", "./public"],
+          ["queries", "./queries"],
+          ["store", "./store"],
+          ["styles", "./styles"]
+        ],
+        "extensions": [".ts", ".js", ".jsx", ".json"]
+      }
+    }
+  },
   "rules": {
+    "no-console": "error",
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",

@@ -1,5 +1,5 @@
 import { resetWebsite } from 'queries';
-import { methodNotAllowed, ok, unauthorized } from 'lib/response';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 
 export default async (req, res) => {

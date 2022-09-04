@@ -1,29 +1,37 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import { rawQueryClickhouse, findUnique, prisma, runAnalyticsQuery, runQuery } from 'lib/db';
+import clickhouse from 'lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
+import redis from 'lib/redis';
 
 export async function getSessionByUuid(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
 async function relationalQuery(session_uuid) {
-  return runQuery(
-    prisma.session.findUnique({
+  return prisma.client.session
+    .findUnique({
       where: {
         session_uuid,
       },
-    }),
-  );
+    })
+    .then(async res => {
+      if (redis.client && res) {
+        await redis.client.set(`session:${res.session_uuid}`, 1);
+      }
+
+      return res;
+    });
 }
 
 async function clickhouseQuery(session_uuid) {
+  const { rawQuery, findFirst } = clickhouse;
   const params = [session_uuid];
 
-  return rawQueryClickhouse(
-    `
-    select 
+  return rawQuery(
+    `select 
       session_uuid, 
       website_id, 
       created_at, 
@@ -32,11 +40,18 @@ async function clickhouseQuery(session_uuid) {
       os, 
       device, 
       screen,
-      "language", 
+      language, 
       country 
     from session
-    where session_uuid = $1
-    `,
+    where session_uuid = $1`,
     params,
-  ).then(data => findUnique(data));
+  )
+    .then(result => findFirst(result))
+    .then(async res => {
+      if (redis.client && res) {
+        await redis.client.set(`session:${res.session_uuid}`, 1);
+      }
+
+      return res;
+    });
 }

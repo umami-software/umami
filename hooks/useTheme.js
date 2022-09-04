@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useStore, { setTheme } from 'store/app';
-import { getItem, setItem } from 'lib/web';
+import { getItem, setItem } from 'next-basics';
 import { THEME_CONFIG } from 'lib/constants';
 
 const selector = state => state.theme;
@@ -22,6 +22,15 @@ export default function useTheme() {
   useEffect(() => {
     document.body.setAttribute('data-theme', theme);
   }, [theme]);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const theme = url.searchParams.get('theme');
+
+    if (['light', 'dark'].includes(theme)) {
+      saveTheme(theme);
+    }
+  }, []);
 
   return [theme, saveTheme];
 }

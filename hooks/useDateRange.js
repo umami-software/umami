@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { parseISO } from 'date-fns';
 import { getDateRange } from 'lib/date';
-import { getItem, setItem } from 'lib/web';
+import { getItem, setItem } from 'next-basics';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';

@@ -1,11 +1,9 @@
-import { prisma, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 
 export async function getAccountByUsername(username) {
-  return runQuery(
-    prisma.account.findUnique({
-      where: {
-        username,
-      },
-    }),
-  );
+  return prisma.client.account.findUnique({
+    where: {
+      username,
+    },
+  });
 }

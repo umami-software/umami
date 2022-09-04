@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
-import MetricsTable from './MetricsTable';
+import { safeDecodeURI } from 'next-basics';
 import Tag from 'components/common/Tag';
+import FilterButtons from 'components/common/FilterButtons';
 import { paramFilter } from 'lib/filters';
-import { safeDecodeURI } from 'lib/url';
-import FilterButtons from '../common/FilterButtons';
+import MetricsTable from './MetricsTable';
 
 const FILTER_COMBINED = 0;
 const FILTER_RAW = 1;

@@ -62,6 +62,7 @@
   "label.username": "Benutzername",
   "label.view-details": "Details anzeigen",
   "label.websites": "Webseiten",
+  "label.yesterday": "Gestern",
   "message.active-users": "{x} {x, plural, one {aktiver Besucher} other {aktive Besucher}}",
   "message.confirm-delete": "Sind Sie sich sicher, {target} zu löschen?",
   "message.confirm-reset": "Sind Sie sicher, dass Sie die Statistiken von {target} zurücksetzen wollen?",

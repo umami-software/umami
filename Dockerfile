@@ -20,7 +20,7 @@ ENV BASE_PATH $BASE_PATH
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN yarn build
+RUN yarn build-docker
 
 # Production image, copy all the files and run next
 FROM node:16-alpine AS runner

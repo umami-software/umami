@@ -1,9 +1,7 @@
-import { prisma, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 
 export async function createAccount(data) {
-  return runQuery(
-    prisma.account.create({
-      data,
-    }),
-  );
+  return prisma.client.account.create({
+    data,
+  });
 }

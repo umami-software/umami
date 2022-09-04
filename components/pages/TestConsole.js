@@ -28,8 +28,6 @@ export default function TestConsole() {
   const website = data.find(({ website_id }) => website_id === +websiteId);
   const selectedValue = options.find(({ value }) => value === website?.website_id)?.value;
 
-  console.log({ websiteId, data, options, website });
-
   function handleSelect(value) {
     router.push(`/console/${value}`);
   }

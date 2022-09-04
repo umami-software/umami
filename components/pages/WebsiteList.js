@@ -6,8 +6,8 @@ import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 import useDashboard from 'store/dashboard';
-import { sortArrayByMap } from 'lib/array';
 import { useMemo } from 'react';
+import { firstBy } from 'thenby';
 
 const messages = defineMessages({
   noWebsites: {
@@ -24,10 +24,11 @@ export default function WebsiteList({ websites, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
   const { formatMessage } = useIntl();
 
-  console.log({ websiteOrder });
-
   const ordered = useMemo(
-    () => sortArrayByMap(websites, websiteOrder, 'website_id'),
+    () =>
+      websites
+        .map(website => ({ ...website, order: websiteOrder.indexOf(website.website_id) || 0 }))
+        .sort(firstBy('order')),
     [websites, websiteOrder],
   );
 
