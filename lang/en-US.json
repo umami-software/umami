@@ -62,6 +62,7 @@
   "label.username": "Username",
   "label.view-details": "View details",
   "label.websites": "Websites",
+  "label.yesterday": "Yesterday",
   "message.active-users": "{x} current {x, plural, one {visitor} other {visitors}}",
   "message.confirm-delete": "Are you sure you want to delete {target}?",
   "message.confirm-reset": "Are you sure you want to reset {target}'s statistics?",

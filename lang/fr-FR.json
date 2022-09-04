@@ -62,6 +62,7 @@
   "label.username": "Nom d'utilisateur",
   "label.view-details": "Voir les details",
   "label.websites": "Sites",
+  "label.yesterday": "Hier",
   "message.active-users": "{x} {x, plural, one {visiteur} other {visiteurs}} actuellement",
   "message.confirm-delete": "Êtes-vous sûr de vouloir supprimer {target} ?",
   "message.confirm-reset": "Êtes-vous sûr de vouloir réinitialiser les statistiques de {target} ?",

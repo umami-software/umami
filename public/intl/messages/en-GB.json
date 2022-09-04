@@ -397,6 +397,12 @@
       "value": "Websites"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Yesterday"
+    }
+  ],
   "message.active-users": [
     {
       "type": 1,
