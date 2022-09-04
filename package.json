@@ -83,7 +83,7 @@
     "isbot": "^3.4.5",
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.6",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "next": "^12.2.5",
     "next-basics": "^0.6.0",
     "node-fetch": "^3.2.8",
