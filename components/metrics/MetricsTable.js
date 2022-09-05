@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { defineMessages, useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
@@ -13,6 +13,10 @@ import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './MetricsTable.module.css';
+
+const messages = defineMessages({
+  more: { id: 'label.more', defaultMessage: 'More' },
+});
 
 export default function MetricsTable({
   websiteId,
@@ -31,6 +35,7 @@ export default function MetricsTable({
     router,
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
+  const { formatMessage } = useIntl();
 
   const { data, loading, error } = useFetch(
     `/website/${websiteId}/metrics`,
@@ -80,7 +85,7 @@ export default function MetricsTable({
             size="small"
             iconRight
           >
-            <FormattedMessage id="label.more" defaultMessage="More" />
+            {formatMessage(messages.more)}
           </Link>
         )}
       </div>
