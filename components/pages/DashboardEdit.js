@@ -36,7 +36,7 @@ export default function DashboardEdit({ websites }) {
     const [removed] = orderedWebsites.splice(source.index, 1);
     orderedWebsites.splice(destination.index, 0, removed);
 
-    setOrder(orderedWebsites.map(({ website_id }) => website_id));
+    setOrder(orderedWebsites.map((website) => website?.website_id || 0));
   }
 
   function handleSave() {

@@ -397,6 +397,12 @@
       "value": "Siti web"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Ieri"
+    }
+  ],
   "message.active-users": [
     {
       "type": 1,
