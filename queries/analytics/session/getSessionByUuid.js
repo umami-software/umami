@@ -19,7 +19,7 @@ async function relationalQuery(session_uuid) {
     })
     .then(async res => {
       if (redis.client && res) {
-        await redis.client.set(`session:${res.session_uuid}`, 1);
+        await redis.client.set(`session:${res.session_uuid}`, res.session_id);
       }
 
       return res;
