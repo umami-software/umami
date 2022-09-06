@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Formik, Form, Field } from 'formik';
+import { setItem } from 'next-basics';
 import { useRouter } from 'next/router';
 import Button from 'components/common/Button';
 import FormLayout, {
@@ -11,7 +12,6 @@ import FormLayout, {
 } from 'components/layout/FormLayout';
 import Icon from 'components/common/Icon';
 import useApi from 'hooks/useApi';
-import { setItem } from 'lib/web';
 import { AUTH_TOKEN } from 'lib/constants';
 import { setUser } from 'store/app';
 import Logo from 'assets/logo.svg';

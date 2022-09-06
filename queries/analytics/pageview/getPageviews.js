@@ -1,40 +1,32 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  rawQueryClickhouse,
-  getDateFormatClickhouse,
-  prisma,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
+import prisma from 'lib/prisma';
+import clickhouse from 'lib/clickhouse';
+import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function getPageviews(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
 async function relationalQuery(websites, start_at) {
-  return runQuery(
-    prisma.pageview.findMany({
-      where: {
-        website: {
-          website_id: {
-            in: websites,
-          },
-        },
-        created_at: {
-          gte: start_at,
+  return prisma.client.pageview.findMany({
+    where: {
+      website: {
+        website_id: {
+          in: websites,
         },
       },
-    }),
-  );
+      created_at: {
+        gte: start_at,
+      },
+    },
+  });
 }
 
 async function clickhouseQuery(websites, start_at) {
-  return rawQueryClickhouse(
-    `
-      select
+  return clickhouse.rawQuery(
+    `select
         view_id,
         website_id,
         session_id,
@@ -42,7 +34,6 @@ async function clickhouseQuery(websites, start_at) {
         url
       from pageview
       where website_id in (${websites.join[',']}
-      and created_at >= ${getDateFormatClickhouse(start_at)})
-    `,
+      and created_at >= ${clickhouse.getDateFormat(start_at)})`,
   );
 }

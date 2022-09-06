@@ -454,7 +454,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "编辑仪表板"
     }
   ],
   "message.failure": [
@@ -758,7 +758,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "查询参数"
     }
   ],
   "metrics.referrers": [

@@ -1,17 +1,10 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  getBetweenDatesClickhouse,
-  getDateQuery,
-  getDateQueryClickhouse,
-  getFilterQuery,
-  rawQuery,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-} from 'lib/db';
+import prisma from 'lib/prisma';
+import clickhouse from 'lib/clickhouse';
+import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function getEventMetrics(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -24,11 +17,11 @@ async function relationalQuery(
   unit = 'day',
   filters = {},
 ) {
+  const { rawQuery, getDateQuery, getFilterQuery } = prisma;
   const params = [website_id, start_at, end_at];
 
   return rawQuery(
-    `
-    select
+    `select
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
@@ -37,8 +30,7 @@ async function relationalQuery(
     and created_at between $2 and $3
     ${getFilterQuery('event', filters, params)}
     group by 1, 2
-    order by 2
-    `,
+    order by 2`,
     params,
   );
 }
@@ -51,21 +43,20 @@ async function clickhouseQuery(
   unit = 'day',
   filters = {},
 ) {
+  const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
   const params = [website_id];
 
-  return rawQueryClickhouse(
-    `
-    select
-      event_value x,
-      ${getDateQueryClickhouse('created_at', unit, timezone)} t,
+  return rawQuery(
+    `select
+      event_name x,
+      ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
     where website_id= $1
-      and ${getBetweenDatesClickhouse('created_at', start_at, end_at)}
+      and ${getBetweenDates('created_at', start_at, end_at)}
       ${getFilterQuery('event', filters, params)}
     group by x, t
-    order by t
-    `,
+    order by t`,
     params,
   );
 }

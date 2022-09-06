@@ -29,9 +29,9 @@ const MetricCard = ({
                 : !reverseColors
                 ? styles.negative
                 : styles.positive
-            }`}
+            } ${change >= 0 ? styles.plusSign : ''}`}
           >
-            {changeProps.x.interpolate(x => `${change >= 0 ? '+' : ''}${format(x)}`)}
+            {changeProps.x.interpolate(x => format(x))}
           </animated.span>
         )}
       </div>

@@ -1,18 +1,10 @@
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
-import {
-  getBetweenDatesClickhouse,
-  getDateQuery,
-  getDateQueryClickhouse,
-  getDateStringQueryClickhouse,
-  parseFilters,
-  rawQuery,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-} from 'lib/db';
+import prisma from 'lib/prisma';
+import clickhouse from 'lib/clickhouse';
+import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function getPageviewStats(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -27,6 +19,7 @@ async function relationalQuery(
   filters = {},
   sessionKey = 'session_id',
 ) {
+  const { getDateQuery, parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
@@ -36,8 +29,7 @@ async function relationalQuery(
   );
 
   return rawQuery(
-    `
-      select ${getDateQuery('pageview.created_at', unit, timezone)} t,
+    `select ${getDateQuery('pageview.created_at', unit, timezone)} t,
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
@@ -45,8 +37,7 @@ async function relationalQuery(
         and pageview.created_at between $2 and $3
         ${pageviewQuery}
         ${sessionQuery}
-      group by 1
-    `,
+      group by 1`,
     params,
   );
 }
@@ -61,6 +52,7 @@ async function clickhouseQuery(
   filters = {},
   sessionKey = 'session_uuid',
 ) {
+  const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
   const params = [website_id];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
@@ -70,24 +62,22 @@ async function clickhouseQuery(
     sessionKey,
   );
 
-  return rawQueryClickhouse(
-    `
-    select
-      ${getDateStringQueryClickhouse('g.t', unit)} as t, 
+  return rawQuery(
+    `select
+      ${getDateStringQuery('g.t', unit)} as t, 
       g.y as y
     from
       (select 
-        ${getDateQueryClickhouse('created_at', unit, timezone)} t,
+        ${getDateQuery('created_at', unit, timezone)} t,
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from pageview
         ${joinSession}
       where pageview.website_id= $1
-        and ${getBetweenDatesClickhouse('pageview.created_at', start_at, end_at)}
+        and ${getBetweenDates('pageview.created_at', start_at, end_at)}
         ${pageviewQuery}
         ${sessionQuery}
       group by t) g
-    order by t
-    `,
+    order by t`,
     params,
   );
 }

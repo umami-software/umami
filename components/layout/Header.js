@@ -9,7 +9,7 @@ import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
 import { HOMEPAGE_URL } from 'lib/constants';
-import useConfig from '/hooks/useConfig';
+import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';

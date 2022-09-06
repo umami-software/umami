@@ -1,8 +1,8 @@
 import { subMinutes } from 'date-fns';
+import { ok, methodNotAllowed, createToken } from 'next-basics';
 import { useAuth } from 'lib/middleware';
-import { ok, methodNotAllowed } from 'lib/response';
 import { getUserWebsites, getRealtimeData } from 'queries';
-import { createToken } from 'lib/crypto';
+import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -12,7 +12,7 @@ export default async (req, res) => {
 
     const websites = await getUserWebsites(user_id);
     const ids = websites.map(({ website_id }) => website_id);
-    const token = await createToken({ websites: ids });
+    const token = createToken({ websites: ids }, secret());
     const data = await getRealtimeData(ids, subMinutes(new Date(), 30));
 
     return ok(res, {

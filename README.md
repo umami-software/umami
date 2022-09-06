@@ -76,12 +76,12 @@ docker-compose up
 
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 ```bash
-docker pull docker.umami.dev/umami-software/umami:postgresql-latest
+docker pull docker.umami.is/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 ```bash
-docker pull docker.umami.dev/umami-software/umami:mysql-latest
+docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates
@@ -92,7 +92,6 @@ To get the latest features, simply do a pull, install any new dependencies, and 
 git pull
 yarn install
 yarn build
-yarn update-db
 ```
 
 To update the Docker image, simply pull the new images and rebuild:

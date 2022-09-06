@@ -37,3 +37,7 @@
 .change.negative {
   color: var(--red500);
 }
+
+.change.plusSign::before {
+  content: '+';
+}

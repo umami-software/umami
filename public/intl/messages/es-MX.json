@@ -397,6 +397,12 @@
       "value": "Sitios"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Ayer"
+    }
+  ],
   "message.active-users": [
     {
       "type": 1,

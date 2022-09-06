@@ -24,8 +24,8 @@ model event {
   created_at DateTime?   @default(now()) @db.Timestamptz(6)
   url        String      @db.VarChar(500)
   event_name String      @db.VarChar(50)
-  session    session     @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
-  website    website     @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  session    session     @relation(fields: [session_id], references: [session_id])
+  website    website     @relation(fields: [website_id], references: [website_id])
   event_data event_data?
 
   @@index([created_at])
@@ -47,8 +47,8 @@ model pageview {
   created_at DateTime? @default(now()) @db.Timestamptz(6)
   url        String    @db.VarChar(500)
   referrer   String?   @db.VarChar(500)
-  session    session   @relation(fields: [session_id], references: [session_id], onDelete: Cascade)
-  website    website   @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
+  session    session   @relation(fields: [session_id], references: [session_id])
+  website    website   @relation(fields: [website_id], references: [website_id])
 
   @@index([created_at])
   @@index([session_id])
@@ -69,9 +69,9 @@ model session {
   screen       String?    @db.VarChar(11)
   language     String?    @db.VarChar(35)
   country      String?    @db.Char(2)
-  website      website    @relation(fields: [website_id], references: [website_id], onDelete: Cascade)
-  pageview     pageview[]
+  website      website    @relation(fields: [website_id], references: [website_id])
   event        event[]
+  pageview     pageview[]
 
   @@index([created_at])
   @@index([website_id])
@@ -85,10 +85,10 @@ model website {
   domain       String?    @db.VarChar(500)
   share_id     String?    @unique @db.VarChar(64)
   created_at   DateTime?  @default(now()) @db.Timestamptz(6)
-  account      account    @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
+  account      account    @relation(fields: [user_id], references: [user_id])
+  event        event[]
   pageview     pageview[]
   session      session[]
-  event        event[]
 
   @@index([user_id])
 }
