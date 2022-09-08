@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { getTimezone } from 'lib/date';
-import { getItem, setItem } from 'lib/web';
+import { getItem, setItem } from 'next-basics';
 import { TIMEZONE_CONFIG } from 'lib/constants';
 
 export default function useTimezone() {

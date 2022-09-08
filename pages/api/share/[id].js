@@ -1,6 +1,6 @@
 import { getWebsiteByShareId } from 'queries';
-import { ok, notFound, methodNotAllowed } from 'lib/response';
-import { createToken } from 'lib/crypto';
+import { ok, notFound, methodNotAllowed, createToken } from 'next-basics';
+import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
   const { id } = req.query;
@@ -10,7 +10,7 @@ export default async (req, res) => {
 
     if (website) {
       const websiteId = website.website_id;
-      const token = await createToken({ website_id: websiteId });
+      const token = createToken({ website_id: websiteId }, secret());
 
       return ok(res, { websiteId, token });
     }

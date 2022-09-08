@@ -62,6 +62,7 @@
   "label.username": "Nom d'usuari",
   "label.view-details": "Veure els detalls",
   "label.websites": "Llocs web",
+  "label.yesterday": "Ahir",
   "message.active-users": "{x} {x, plural, one {visitant actual} other {visitants actuals}}",
   "message.confirm-delete": "Segur que vols esborrar {target}?",
   "message.confirm-reset": "Segur que vols restablir les estadístiques de {target}?",

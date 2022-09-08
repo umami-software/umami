@@ -1,15 +1,11 @@
-import { CLICKHOUSE, RELATIONAL, URL_LENGTH } from 'lib/constants';
-import {
-  getDateFormatClickhouse,
-  prisma,
-  rawQueryClickhouse,
-  runAnalyticsQuery,
-  runQuery,
-} from 'lib/db';
+import { EVENT_NAME_LENGTH, URL_LENGTH } from 'lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import kafka from 'lib/kafka';
+import prisma from 'lib/prisma';
 
 export async function saveEvent(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -18,8 +14,8 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
   const data = {
     website_id,
     session_id,
-    url: url?.substr(0, URL_LENGTH),
-    event_name: event_name?.substr(0, 50),
+    url: url?.substring(0, URL_LENGTH),
+    event_name: event_name?.substring(0, EVENT_NAME_LENGTH),
   };
 
   if (event_data) {
@@ -30,20 +26,25 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
     };
   }
 
-  return runQuery(
-    prisma.event.create({
-      data,
-    }),
-  );
+  return prisma.client.event.create({
+    data,
+  });
 }
 
-async function clickhouseQuery(website_id, { session_uuid, url, event_name }) {
-  const params = [website_id, session_uuid, url?.substr(0, URL_LENGTH), event_name?.substr(0, 50)];
+async function clickhouseQuery(
+  website_id,
+  { event_uuid, session_uuid, url, event_name, event_data },
+) {
+  const { getDateFormat, sendMessage } = kafka;
+  const params = {
+    event_uuid,
+    website_id,
+    session_uuid,
+    created_at: getDateFormat(new Date()),
+    url: url?.substring(0, URL_LENGTH),
+    event_name: event_name?.substring(0, EVENT_NAME_LENGTH),
+    event_data: JSON.stringify(event_data),
+  };
 
-  return rawQueryClickhouse(
-    `
-    insert into umami_dev.event (created_at, website_id, session_uuid, url, event_name)
-    values (${getDateFormatClickhouse(new Date())},  $1, $2, $3, $4);`,
-    params,
-  );
+  await sendMessage(params, 'event');
 }

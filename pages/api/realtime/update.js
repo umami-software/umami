@@ -1,8 +1,8 @@
+import { ok, methodNotAllowed, badRequest, parseToken } from 'next-basics';
 import { useAuth } from 'lib/middleware';
-import { ok, methodNotAllowed, badRequest } from 'lib/response';
 import { getRealtimeData } from 'queries';
-import { parseToken } from 'lib/crypto';
 import { SHARE_TOKEN_HEADER } from 'lib/constants';
+import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -16,7 +16,7 @@ export default async (req, res) => {
       return badRequest(res);
     }
 
-    const { websites } = await parseToken(token);
+    const { websites } = parseToken(token, secret());
 
     const data = await getRealtimeData(websites, new Date(+start_at));
 

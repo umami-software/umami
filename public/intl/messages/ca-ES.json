@@ -397,6 +397,12 @@
       "value": "Llocs web"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Ahir"
+    }
+  ],
   "message.active-users": [
     {
       "type": 1,

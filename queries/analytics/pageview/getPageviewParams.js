@@ -1,14 +1,15 @@
-import { parseFilters, rawQuery, runAnalyticsQuery } from 'lib/db';
-import { CLICKHOUSE, RELATIONAL } from 'lib/constants';
+import prisma from 'lib/prisma';
+import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function getPageviewParams(...args) {
-  return runAnalyticsQuery({
-    [RELATIONAL]: () => relationalQuery(...args),
+  return runQuery({
+    [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
 async function relationalQuery(website_id, start_at, end_at, column, table, filters = {}) {
+  const { parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
@@ -18,8 +19,7 @@ async function relationalQuery(website_id, start_at, end_at, column, table, filt
   );
 
   return rawQuery(
-    `
-    select url x,
+    `select url x,
       count(*) y
     from ${table}
       ${joinSession}
@@ -30,8 +30,7 @@ async function relationalQuery(website_id, start_at, end_at, column, table, filt
       ${joinSession && sessionQuery}
       ${eventQuery}
     group by 1
-    order by 2 desc
-    `,
+    order by 2 desc`,
     params,
   );
 }

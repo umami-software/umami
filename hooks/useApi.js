@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { get, post, put, del, getItem } from 'lib/web';
+import { get, post, put, del, getItem } from 'next-basics';
 import { AUTH_TOKEN, SHARE_TOKEN_HEADER } from 'lib/constants';
 import useStore from 'store/app';
 

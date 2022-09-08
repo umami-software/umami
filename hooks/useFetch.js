@@ -8,7 +8,7 @@ export default function useFetch(url, options = {}, update = []) {
   const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const { get } = useApi();
-  const { params = {}, headers = {}, disabled, delay = 0, interval, onDataLoad } = options;
+  const { params = {}, headers = {}, disabled = false, delay = 0, interval, onDataLoad } = options;
 
   async function loadData(params) {
     try {
@@ -29,7 +29,9 @@ export default function useFetch(url, options = {}, update = []) {
 
       onDataLoad?.(data);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
+
       setError(e);
     } finally {
       setLoading(false);
@@ -44,7 +46,7 @@ export default function useFetch(url, options = {}, update = []) {
         clearTimeout(id);
       };
     }
-  }, [url, !!disabled, count, ...update]);
+  }, [url, disabled, count, ...update]);
 
   useEffect(() => {
     if (interval && !disabled) {
@@ -54,7 +56,7 @@ export default function useFetch(url, options = {}, update = []) {
         clearInterval(id);
       };
     }
-  }, [interval, !!disabled]);
+  }, [interval, disabled]);
 
   return { ...response, error, loading };
 }
