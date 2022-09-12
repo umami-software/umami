@@ -10,7 +10,7 @@ export async function savePageView(...args) {
   });
 }
 
-async function relationalQuery(website_id, { session_id, url, referrer }) {
+async function relationalQuery(website_id, { session: { session_id }, url, referrer }) {
   return prisma.client.pageview.create({
     data: {
       website_id,
@@ -21,15 +21,19 @@ async function relationalQuery(website_id, { session_id, url, referrer }) {
   });
 }
 
-async function clickhouseQuery(website_id, { session_uuid, url, referrer }) {
+async function clickhouseQuery(
+  website_id,
+  { session: { country, ...sessionArgs }, url, referrer },
+) {
   const { getDateFormat, sendMessage } = kafka;
   const params = {
     website_id: website_id,
-    session_uuid: session_uuid,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
+    ...sessionArgs,
+    country: country ? country : null,
   };
 
-  await sendMessage(params, 'pageview');
+  await sendMessage(params, 'event');
 }

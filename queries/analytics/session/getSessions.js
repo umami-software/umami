@@ -32,7 +32,7 @@ async function clickhouseQuery(websites, start_at) {
   const { rawQuery, getDateFormat } = clickhouse;
 
   return rawQuery(
-    `select
+    `select distinct
       session_uuid,
       website_id,
       created_at,
@@ -43,7 +43,7 @@ async function clickhouseQuery(websites, start_at) {
       screen,
       language,
       country
-    from session
+    from event
     where ${websites && websites.length > 0 ? `(website_id in (${websites.join[',']})` : '0 = 0'}
       and created_at >= ${getDateFormat(start_at)}`,
   );

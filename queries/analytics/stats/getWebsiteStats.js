@@ -44,13 +44,7 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
 async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
   const { rawQuery, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const params = [website_id];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
-    'pageview',
-    null,
-    filters,
-    params,
-    'session_uuid',
-  );
+  const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(
     `select 
@@ -59,18 +53,18 @@ async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
        sum(if(t.c = 1, 1, 0)) as "bounces",
        sum(if(max_time < min_time + interval 1 hour, max_time-min_time, 0)) as "totaltime"
      from (
-       select pageview.session_uuid,
-         ${getDateQuery('pageview.created_at', 'day')} time_series,
+       select session_uuid,
+         ${getDateQuery('created_at', 'day')} time_series,
          count(*) c,
          min(created_at) min_time,
          max(created_at) max_time
-       from pageview
-         ${joinSession}
-       where pageview.website_id = $1
-         and ${getBetweenDates('pageview.created_at', start_at, end_at)}
+       from event
+       where event_name = ''
+         and website_id = $1
+         and ${getBetweenDates('created_at', start_at, end_at)}
          ${pageviewQuery}
          ${sessionQuery}
-       group by pageview.session_uuid, time_series
+       group by session_uuid, time_series
      ) t;`,
     params,
   );
