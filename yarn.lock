@@ -4731,10 +4731,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-basics@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.7.0.tgz#ef2a23dcb3bbfb2170df26b8b5f50c823edc1a2a"
-  integrity sha512-Z6u8IU77XqadrntFx98CVmfOBcDOiHvemUW753STMte81W9TLflRgOSg1thIg5iwgzQfvCIaU5I1sd06XvvdeA==
+next-basics@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.12.0.tgz#e946cdb3f32d5d84f67e7c35b6e2e96750763c62"
+  integrity sha512-3meED1Z9m8QvOsG4bz5OAuyjROdV9Cf75Wq2t+cHiGBh+y8qhTluJduqIXuoY5x0S72/5XvY1mwthW+Og47H9A==
   dependencies:
     bcryptjs "^2.4.3"
     jsonwebtoken "^8.5.1"
