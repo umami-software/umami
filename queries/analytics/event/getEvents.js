@@ -29,7 +29,7 @@ function clickhouseQuery(websites, start_at) {
 
   return rawQuery(
     `select
-      event_id,
+      event_uuid,
       website_id, 
       session_id,
       created_at,

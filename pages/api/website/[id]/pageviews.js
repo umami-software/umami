@@ -26,20 +26,34 @@ export default async (req, res) => {
     }
 
     const [pageviews, sessions] = await Promise.all([
-      getPageviewStats(websiteId, startDate, endDate, tz, unit, '*', {
-        url,
-        referrer,
-        os,
-        browser,
-        device,
-        country,
+      getPageviewStats(websiteId, {
+        startDate,
+        endDate,
+        tz,
+        unit,
+        count: '*',
+        filters: {
+          url,
+          referrer,
+          os,
+          browser,
+          device,
+          country,
+        },
       }),
-      getPageviewStats(websiteId, startDate, endDate, tz, unit, 'distinct pageview.', {
-        url,
-        os,
-        browser,
-        device,
-        country,
+      getPageviewStats(websiteId, {
+        startDate,
+        endDate,
+        tz,
+        unit,
+        count: 'distinct pageview.',
+        filters: {
+          url,
+          os,
+          browser,
+          device,
+          country,
+        },
       }),
     ]);
 

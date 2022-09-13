@@ -32,8 +32,9 @@ async function clickhouseQuery(websites, start_at) {
         session_id,
         created_at,
         url
-      from pageview
-      where website_id in (${websites.join[',']}
+      from event
+      where event_name = ''
+      and website_id in (${websites.join[',']}
       and created_at >= ${clickhouse.getDateFormat(start_at)})`,
   );
 }
