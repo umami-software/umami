@@ -27,9 +27,8 @@ async function relationalQuery(websites, start_at) {
 async function clickhouseQuery(websites, start_at) {
   return clickhouse.rawQuery(
     `select
-        view_id,
         website_id,
-        session_id,
+        session_uuid,
         created_at,
         url
       from event
