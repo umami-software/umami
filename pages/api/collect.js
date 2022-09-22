@@ -59,7 +59,7 @@ export default async (req, res) => {
   await useSession(req, res);
 
   const {
-    session: { website_id, session_id, session_uuid },
+    session: { website_id, session },
   } = req;
 
   const { type, payload } = getJsonBody(req);
@@ -73,12 +73,11 @@ export default async (req, res) => {
   const event_uuid = uuid();
 
   if (type === 'pageview') {
-    await savePageView(website_id, { session_id, session_uuid, url, referrer });
+    await savePageView(website_id, { session, url, referrer });
   } else if (type === 'event') {
     await saveEvent(website_id, {
+      session,
       event_uuid,
-      session_id,
-      session_uuid,
       url,
       event_name,
       event_data,
@@ -87,7 +86,10 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const token = createToken({ website_id, session_id, session_uuid }, secret());
+  const token = createToken(
+    { website_id, session_id: session.session_id, session_uuid: session.session_uuid },
+    secret(),
+  );
 
   return send(res, token);
 };

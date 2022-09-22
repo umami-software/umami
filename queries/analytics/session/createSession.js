@@ -19,6 +19,14 @@ async function relationalQuery(website_id, data) {
       },
       select: {
         session_id: true,
+        session_uuid: true,
+        hostname: true,
+        browser: true,
+        os: true,
+        screen: true,
+        language: true,
+        country: true,
+        device: true,
       },
     })
     .then(async res => {
@@ -35,20 +43,21 @@ async function clickhouseQuery(
   { session_uuid, hostname, browser, os, screen, language, country, device },
 ) {
   const { getDateFormat, sendMessage } = kafka;
+
   const params = {
-    session_uuid: session_uuid,
-    website_id: website_id,
+    session_uuid,
+    website_id,
     created_at: getDateFormat(new Date()),
-    hostname: hostname,
-    browser: browser,
-    os: os,
-    device: device,
-    screen: screen,
-    language: language,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
     country: country ? country : null,
   };
 
-  await sendMessage(params, 'session');
+  await sendMessage(params, 'event');
 
   if (redis.client) {
     await redis.client.set(`session:${session_uuid}`, 1);

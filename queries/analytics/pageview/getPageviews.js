@@ -27,13 +27,13 @@ async function relationalQuery(websites, start_at) {
 async function clickhouseQuery(websites, start_at) {
   return clickhouse.rawQuery(
     `select
-        view_id,
         website_id,
-        session_id,
+        session_uuid,
         created_at,
         url
-      from pageview
-      where website_id in (${websites.join[',']}
+      from event
+      where event_name = ''
+      and website_id in (${websites.join[',']}
       and created_at >= ${clickhouse.getDateFormat(start_at)})`,
   );
 }

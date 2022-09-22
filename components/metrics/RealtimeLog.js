@@ -15,6 +15,7 @@ import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
 import { stringToColor } from 'lib/format';
 import { dateFormat } from 'lib/date';
+import { safeDecodeURI } from 'next-basics';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 0;
@@ -113,7 +114,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           target="_blank"
           rel="noreferrer noopener"
         >
-          {url}
+          {safeDecodeURI(url)}
         </a>
       );
     }

@@ -48,11 +48,16 @@ export default async (req, res) => {
     const endDate = new Date(+end_at);
 
     if (sessionColumns.includes(type)) {
-      let data = await getSessionMetrics(websiteId, startDate, endDate, type, {
-        os,
-        browser,
-        device,
-        country,
+      let data = await getSessionMetrics(websiteId, {
+        startDate,
+        endDate,
+        field: type,
+        filters: {
+          os,
+          browser,
+          device,
+          country,
+        },
       });
 
       if (type === 'language') {
@@ -101,7 +106,13 @@ export default async (req, res) => {
         query: type === 'query' && table !== 'event' ? true : undefined,
       };
 
-      const data = await getPageviewMetrics(websiteId, startDate, endDate, column, table, filters);
+      const data = await getPageviewMetrics(websiteId, {
+        startDate,
+        endDate,
+        column,
+        table,
+        filters,
+      });
 
       return ok(res, data);
     }
