@@ -38,6 +38,3 @@ yarn-error.log*
 
 *.dev.yml
 
-# cert
-/lib/cert
-

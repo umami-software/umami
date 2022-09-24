@@ -31,12 +31,13 @@ function clickhouseQuery(websites, start_at) {
     `select
       event_uuid,
       website_id, 
-      session_id,
+      session_uuid,
       created_at,
       url,
       event_name
     from event
-    where website_id in (${websites.join[',']}
-      and created_at >= ${getDateFormat(start_at)})`,
+    where event_name != ''
+      and ${websites && websites.length > 0 ? `website_id in (${websites.join(',')})` : '0 = 0'}
+      and created_at >= ${getDateFormat(start_at)}`,
   );
 }

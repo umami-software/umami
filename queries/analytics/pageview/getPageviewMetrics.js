@@ -43,7 +43,7 @@ async function clickhouseQuery(website_id, { startDate, endDate, column, filters
     `select ${column} x, count(*) y
     from event
     where website_id= $1
-      ${column !== 'event_name' ? `and event_name = ''` : ''}
+      ${column !== 'event_name' ? `and event_name = ''` : `and event_name != ''`}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${pageviewQuery}
       ${sessionQuery}

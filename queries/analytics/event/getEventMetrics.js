@@ -52,7 +52,8 @@ async function clickhouseQuery(
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
-    where website_id= $1
+    where event_name != ''
+      and website_id= $1
       and ${getBetweenDates('created_at', start_at, end_at)}
       ${getFilterQuery('event', filters, params)}
     group by x, t

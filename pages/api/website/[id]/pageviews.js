@@ -27,8 +27,8 @@ export default async (req, res) => {
 
     const [pageviews, sessions] = await Promise.all([
       getPageviewStats(websiteId, {
-        startDate,
-        endDate,
+        start_at: startDate,
+        end_at: endDate,
         tz,
         unit,
         count: '*',
@@ -42,8 +42,8 @@ export default async (req, res) => {
         },
       }),
       getPageviewStats(websiteId, {
-        startDate,
-        endDate,
+        start_at: startDate,
+        end_at: endDate,
         tz,
         unit,
         count: 'distinct pageview.',
