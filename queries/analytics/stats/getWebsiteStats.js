@@ -9,7 +9,7 @@ export async function getWebsiteStats(...args) {
   });
 }
 
-async function relationalQuery(website_id, start_at, end_at, filters = {}) {
+async function relationalQuery(website_id, { start_at, end_at, filters = {} }) {
   const { getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
@@ -41,7 +41,7 @@ async function relationalQuery(website_id, start_at, end_at, filters = {}) {
   );
 }
 
-async function clickhouseQuery(website_id, start_at, end_at, filters = {}) {
+async function clickhouseQuery(website_id, { start_at, end_at, filters = {} }) {
   const { rawQuery, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const params = [website_id];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);

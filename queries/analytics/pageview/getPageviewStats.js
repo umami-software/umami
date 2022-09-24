@@ -59,10 +59,10 @@ async function clickhouseQuery(
     from
       (select 
         ${getDateQuery('created_at', unit, timezone)} t,
-        count(${count !== '*' ? 'session_uuid' : count}) y
+        count(${count !== '*' ? 'distinct session_uuid' : count}) y
       from event
-      where website_id= $1
-        
+      where event_name = ''
+        and website_id= $1        
         and ${getBetweenDates('created_at', start_at, end_at)}
         ${pageviewQuery}
         ${sessionQuery}

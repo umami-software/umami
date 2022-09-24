@@ -44,7 +44,7 @@ async function clickhouseQuery(websites, start_at) {
       language,
       country
     from event
-    where ${websites && websites.length > 0 ? `(website_id in (${websites.join[',']})` : '0 = 0'}
+    where ${websites && websites.length > 0 ? `website_id in (${websites.join(',')})` : '0 = 0'}
       and created_at >= ${getDateFormat(start_at)}`,
   );
 }
