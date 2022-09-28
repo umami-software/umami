@@ -29,7 +29,7 @@ export default async (req, res) => {
       getPageviewStats(websiteId, {
         start_at: startDate,
         end_at: endDate,
-        tz,
+        timezone: tz,
         unit,
         count: '*',
         filters: {
@@ -44,7 +44,7 @@ export default async (req, res) => {
       getPageviewStats(websiteId, {
         start_at: startDate,
         end_at: endDate,
-        tz,
+        timezone: tz,
         unit,
         count: 'distinct pageview.',
         filters: {
