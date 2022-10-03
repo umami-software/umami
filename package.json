@@ -12,12 +12,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm-run-all build-db check-db build-tracker build-geo build-app",
-    "start": "start-next",
+    "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
     "start-docker": "npm-run-all check-db update-tracker start-server",
     "start-env": "node scripts/start-env.js",
     "start-server": "node server.js",
-    "start-next": "next start",
     "build-app": "next build",
     "build-tracker": "rollup -c rollup.tracker.config.js",
     "build-db": "npm-run-all copy-db-files build-db-client",
