@@ -1,6 +1,7 @@
-import { getAllWebsites, getUserWebsites } from 'queries';
+import { createWebsite, getAllWebsites, getUserWebsites } from 'queries';
+import { ok, methodNotAllowed, unauthorized, getRandomChars } from 'next-basics';
 import { useAuth } from 'lib/middleware';
-import { ok, methodNotAllowed, unauthorized } from 'next-basics';
+import { uuid } from 'lib/crypto';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -20,6 +21,25 @@ export default async (req, res) => {
         : await getUserWebsites(userId || current_user_id);
 
     return ok(res, websites);
+  }
+
+  if (req.method === 'POST') {
+    await useAuth(req, res);
+
+    const { is_admin: currentUserIsAdmin, user_id: currentUserId } = req.auth;
+    const { name, domain, owner, enable_share_url } = req.body;
+
+    const website_owner = +owner;
+
+    if (website_owner !== currentUserId && !currentUserIsAdmin) {
+      return unauthorized(res);
+    }
+
+    const website_uuid = uuid();
+    const share_id = enable_share_url ? getRandomChars(8) : null;
+    const website = await createWebsite(website_owner, { website_uuid, name, domain, share_id });
+
+    return ok(res, website);
   }
 
   return methodNotAllowed(res);

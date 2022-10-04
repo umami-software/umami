@@ -38,7 +38,7 @@ export default function MetricsTable({
   const { formatMessage } = useIntl();
 
   const { data, loading, error } = useFetch(
-    `/website/${websiteId}/metrics`,
+    `/websites/${websiteId}/metrics`,
     {
       params: {
         type,

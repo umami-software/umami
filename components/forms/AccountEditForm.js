@@ -34,7 +34,7 @@ export default function AccountEditForm({ values, onSave, onClose }) {
 
   const handleSubmit = async values => {
     const { user_id } = values;
-    const { ok, data } = await post(user_id ? `/account/${user_id}` : '/account', values);
+    const { ok, data } = await post(user_id ? `/accounts/${user_id}` : '/accounts', values);
 
     if (ok) {
       onSave();
