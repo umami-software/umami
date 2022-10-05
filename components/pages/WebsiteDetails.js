@@ -52,7 +52,7 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId }) {
-  const { data } = useFetch(`/website/${websiteId}`);
+  const { data } = useFetch(`/websites/${websiteId}`);
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();

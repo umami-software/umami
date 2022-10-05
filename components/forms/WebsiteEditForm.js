@@ -38,7 +38,6 @@ const validate = ({ name, domain }) => {
 };
 
 const OwnerDropDown = ({ user, accounts }) => {
-  console.info(styles);
   const { setFieldValue, values } = useFormikContext();
 
   useEffect(() => {
@@ -79,7 +78,8 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post('/website', values);
+    const { website_id } = values;
+    const { ok, data } = await post(website_id ? `/websites/${website_id}` : '/websites', values);
 
     if (ok) {
       onSave();
@@ -137,6 +137,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                         defaultMessage="Enable share URL"
                       />
                     }
+                    value={null}
                   />
                 )}
               </Field>

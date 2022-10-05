@@ -29,7 +29,7 @@ async function clickhouseQuery(website_id) {
 
   return rawQuery(
     `select count(distinct session_uuid) x
-    from pageview
+    from event
     where website_id = $1
     and created_at >= ${getDateFormat(subMinutes(new Date(), 5))}`,
     params,

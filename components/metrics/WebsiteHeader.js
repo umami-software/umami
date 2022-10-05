@@ -17,8 +17,8 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
       <Favicon domain={domain} />
       <Link
         className={styles.titleLink}
-        href="/website/[...id]"
-        as={`/website/${websiteId}/${title}`}
+        href="/websites/[...id]"
+        as={`/websites/${websiteId}/${title}`}
       >
         <OverflowText tooltipId={`${websiteId}-title`}>{title}</OverflowText>
       </Link>
@@ -41,8 +41,8 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
           <RefreshButton websiteId={websiteId} />
           {showLink && (
             <Link
-              href="/website/[...id]"
-              as={`/website/${websiteId}/${title}`}
+              href="/websites/[...id]"
+              as={`/websites/${websiteId}/${title}`}
               className={styles.link}
               icon={<Arrow />}
               size="small"
