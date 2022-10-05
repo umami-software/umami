@@ -19,13 +19,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    await useAuth(req, res);
-
-    if (!req.auth.is_admin) {
-      return unauthorized(res);
-    }
-
-    const { username, password } = req.body;
+    const { username, password, account_uuid } = req.body;
 
     const accountByUsername = await getAccountByUsername(username);
 
@@ -36,7 +30,7 @@ export default async (req, res) => {
     const created = await createAccount({
       username,
       password: hashPassword(password),
-      account_uuid: uuid(),
+      account_uuid: account_uuid || uuid(),
     });
 
     return ok(res, created);

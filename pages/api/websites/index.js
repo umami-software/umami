@@ -1,4 +1,4 @@
-import { createWebsite, getAllWebsites, getUserWebsites } from 'queries';
+import { createWebsite, getAccount, getAllWebsites, getUserWebsites } from 'queries';
 import { ok, methodNotAllowed, unauthorized, getRandomChars } from 'next-basics';
 import { useAuth } from 'lib/middleware';
 import { uuid } from 'lib/crypto';
@@ -6,9 +6,15 @@ import { uuid } from 'lib/crypto';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: current_user_id, is_admin } = req.auth;
+  const { user_id: current_user_id, is_admin, account_uuid } = req.auth;
   const { user_id, include_all } = req.query;
-  const userId = +user_id;
+  let account;
+
+  if (account_uuid) {
+    account = await getAccount({ account_uuid });
+  }
+
+  const userId = account ? account.user_id : +user_id;
 
   if (req.method === 'GET') {
     if (userId && userId !== current_user_id && !is_admin) {
@@ -29,7 +35,7 @@ export default async (req, res) => {
     const { is_admin: currentUserIsAdmin, user_id: currentUserId } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
 
-    const website_owner = +owner;
+    const website_owner = account ? account.user_id : +owner;
 
     if (website_owner !== currentUserId && !currentUserIsAdmin) {
       return unauthorized(res);
