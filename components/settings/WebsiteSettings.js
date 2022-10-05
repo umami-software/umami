@@ -86,8 +86,8 @@ export default function WebsiteSettings() {
   const DetailsLink = ({ website_id, name, domain }) => (
     <Link
       className={styles.detailLink}
-      href="/website/[...id]"
-      as={`/website/${website_id}/${name}`}
+      href="/websites/[...id]"
+      as={`/websites/${website_id}/${name}`}
     >
       <Favicon domain={domain} />
       <OverflowText tooltipId={`${website_id}-name`}>{name}</OverflowText>

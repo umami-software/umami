@@ -18,7 +18,7 @@ export default function UpdateNotice() {
   function handleViewClick() {
     updateCheck();
     setDismissed(true);
-    location.href = releaseUrl || REPO_URL;
+    open(releaseUrl || REPO_URL, '_blank');
   }
 
   function handleDismissClick() {

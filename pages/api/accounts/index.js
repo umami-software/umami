@@ -1,6 +1,7 @@
-import { getAccounts } from 'queries';
+import { ok, unauthorized, methodNotAllowed, badRequest, hashPassword } from 'next-basics';
 import { useAuth } from 'lib/middleware';
-import { ok, unauthorized, methodNotAllowed } from 'next-basics';
+import { uuid } from 'lib/crypto';
+import { createAccount, getAccountByUsername, getAccounts } from 'queries';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -15,6 +16,24 @@ export default async (req, res) => {
     const accounts = await getAccounts();
 
     return ok(res, accounts);
+  }
+
+  if (req.method === 'POST') {
+    const { username, password, account_uuid } = req.body;
+
+    const accountByUsername = await getAccountByUsername(username);
+
+    if (accountByUsername) {
+      return badRequest(res, 'Account already exists');
+    }
+
+    const created = await createAccount({
+      username,
+      password: hashPassword(password),
+      account_uuid: account_uuid || uuid(),
+    });
+
+    return ok(res, created);
   }
 
   return methodNotAllowed(res);
