@@ -9,6 +9,7 @@ export * from './admin/website/createWebsite';
 export * from './admin/website/deleteWebsite';
 export * from './admin/website/getAllWebsites';
 export * from './admin/website/getUserWebsites';
+export * from './admin/website/getWebsite';
 export * from './admin/website/getWebsiteById';
 export * from './admin/website/getWebsiteByShareId';
 export * from './admin/website/getWebsiteByUuid';
