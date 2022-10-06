@@ -1,12 +1,14 @@
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteWebsite, getWebsiteById, updateWebsite } from 'queries';
+import { deleteWebsite, getWebsite, getWebsiteById, updateWebsite } from 'queries';
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
+import { validate } from 'uuid';
 
 export default async (req, res) => {
   const { id } = req.query;
 
   const websiteId = +id;
+  const where = validate(id) ? { website_uuid: id } : { website_id: +id };
 
   if (req.method === 'GET') {
     await useCors(req, res);
@@ -15,7 +17,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const website = await getWebsiteById(websiteId);
+    const website = await getWebsite(where);
 
     return ok(res, website);
   }
