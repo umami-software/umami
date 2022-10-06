@@ -41,7 +41,7 @@ export async function deleteAccount(user_id) {
     .then(async res => {
       if (redis.client) {
         for (let i = 0; i < websiteUuids.length; i++) {
-          await redis.client.set(`website:${websiteUuids[i]}`, DELETED);
+          await redis.set(`website:${websiteUuids[i]}`, DELETED);
         }
       }
 
