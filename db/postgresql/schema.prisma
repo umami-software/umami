@@ -12,14 +12,14 @@ model account {
   username    String    @unique @db.VarChar(255)
   password    String    @db.VarChar(60)
   isAdmin     Boolean   @default(false) @map("is_admin")
-  createdAt   DateTime? @default(now()) @map("created_by_id") @db.Timestamptz(6)
-  updatedAt   DateTime? @default(now()) @map("updated_by_id") @db.Timestamptz(6)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
   accountUuid String    @unique @map("account_uuid") @db.Uuid
   website     website[]
 }
 
 model event {
-  id        Int        @id() @unique() @default(autoincrement()) @map("event_id")
+  id        Int        @id() @default(autoincrement()) @map("event_id")
   websiteId Int        @map("website_id")
   sessionId Int        @map("session_id")
   createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -62,7 +62,7 @@ model pageview {
 
 model session {
   id          Int        @id @default(autoincrement()) @map("session_id")
-  sessionUuid String     @map("session_uuid") @db.Uuid
+  sessionUuid String     @unique @map("session_uuid") @db.Uuid
   websiteId   Int        @map("website_id")
   createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
   hostname    String?    @db.VarChar(100)
