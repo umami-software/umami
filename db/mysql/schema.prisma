@@ -8,26 +8,26 @@ datasource db {
 }
 
 model account {
-  id           Int       @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
-  username     String    @unique() @db.VarChar(255)
-  password     String    @db.VarChar(60)
-  is_admin     Boolean   @default(false) @map("is_admin")
-  created_at   DateTime? @default(now()) @map("created_by_id") @db.Timestamp(0)
-  updated_at   DateTime? @default(now()) @map("updated_by_id") @db.Timestamp(0)
-  account_uuid String    @unique() @map("account_uuid") @db.VarChar(36)
-  website      website[]
+  id          Int       @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
+  username    String    @unique() @db.VarChar(255)
+  password    String    @db.VarChar(60)
+  isAdmin     Boolean   @default(false) @map("is_admin")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamp(0)
+  accountUuid String    @unique() @map("account_uuid") @db.VarChar(36)
+  website     website[]
 }
 
 model event {
-  id         Int        @id @default(autoincrement()) @map("event_id") @db.UnsignedInt
-  websiteId  Int        @map("website_id") @db.UnsignedInt
-  sessionId  Int        @map("session_id") @db.UnsignedInt
-  createdAt  DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
-  url        String     @db.VarChar(500)
-  eventName  String     @map("event_name") @db.VarChar(50)
-  session    session    @relation(fields: [sessionId], references: [id])
-  website    website    @relation(fields: [websiteId], references: [id])
-  event_data eventData?
+  id        Int        @id @default(autoincrement()) @map("event_id") @db.UnsignedInt
+  websiteId Int        @map("website_id") @db.UnsignedInt
+  sessionId Int        @map("session_id") @db.UnsignedInt
+  createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
+  url       String     @db.VarChar(500)
+  eventName String     @map("event_name") @db.VarChar(50)
+  session   session    @relation(fields: [sessionId], references: [id])
+  website   website    @relation(fields: [websiteId], references: [id])
+  eventData eventData?
 
   @@index([createdAt])
   @@index([sessionId])
@@ -86,8 +86,8 @@ model website {
   userId      Int        @map("user_id") @db.UnsignedInt
   name        String     @db.VarChar(100)
   domain      String?    @db.VarChar(500)
-  share_id    String?    @unique() @map("share_id") @db.VarChar(64)
-  created_at  DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
+  shareId     String?    @unique() @map("share_id") @db.VarChar(64)
+  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
   account     account    @relation(fields: [userId], references: [id])
   event       event[]
   pageview    pageview[]
