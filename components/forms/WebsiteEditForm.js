@@ -14,6 +14,7 @@ import useApi from 'hooks/useApi';
 import useFetch from 'hooks/useFetch';
 import useUser from 'hooks/useUser';
 import styles from './WebsiteEditForm.module.css';
+import { getRandomChars } from 'next-basics';
 
 const initialValues = {
   name: '',
@@ -78,7 +79,10 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { website_id } = values;
+    const { website_id, enable_share_url, share_id } = values;
+    if (enable_share_url) {
+      values.share_id = share_id || getRandomChars(8);
+    }
     const { ok, data } = await post(website_id ? `/websites/${website_id}` : '/websites', values);
 
     if (ok) {
@@ -137,7 +141,6 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                         defaultMessage="Enable share URL"
                       />
                     }
-                    value={null}
                   />
                 )}
               </Field>
