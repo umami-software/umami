@@ -34,9 +34,9 @@ async function relationalQuery(website_id, { startDate, endDate, column, table, 
   );
 }
 
-async function clickhouseQuery(website_id, { startDate, endDate, column, filters = {} }) {
+async function clickhouseQuery(website_uuid, { startDate, endDate, column, filters = {} }) {
   const { rawQuery, parseFilters, getBetweenDates } = clickhouse;
-  const params = [website_id];
+  const params = [website_uuid];
   const { pageviewQuery, sessionQuery, eventQuery } = parseFilters(column, filters, params);
 
   return rawQuery(

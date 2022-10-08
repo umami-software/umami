@@ -14,6 +14,7 @@ export default async (req, res) => {
     const { id, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
 
     const websiteId = +id;
+    const website_uuid = id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
@@ -21,7 +22,7 @@ export default async (req, res) => {
     const prevStartDate = new Date(+start_at - distance);
     const prevEndDate = new Date(+end_at - distance);
 
-    const metrics = await getWebsiteStats(websiteId, {
+    const metrics = await getWebsiteStats(websiteId, website_uuid, {
       start_at: startDate,
       end_at: endDate,
       filters: {
@@ -33,7 +34,7 @@ export default async (req, res) => {
         country,
       },
     });
-    const prevPeriod = await getWebsiteStats(websiteId, {
+    const prevPeriod = await getWebsiteStats(websiteId, website_uuid, {
       start_at: prevStartDate,
       end_at: prevEndDate,
       filters: {

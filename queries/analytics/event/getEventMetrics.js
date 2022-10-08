@@ -36,7 +36,7 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
-  website_id,
+  website_uuid,
   start_at,
   end_at,
   timezone = 'UTC',
@@ -44,7 +44,7 @@ async function clickhouseQuery(
   filters = {},
 ) {
   const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
-  const params = [website_id];
+  const params = [website_uuid];
 
   return rawQuery(
     `select

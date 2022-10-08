@@ -22,12 +22,12 @@ async function relationalQuery(website_id, { session: { session_id }, url, refer
 }
 
 async function clickhouseQuery(
-  website_id,
+  website_uuid,
   { session: { country, ...sessionArgs }, url, referrer },
 ) {
   const { getDateFormat, sendMessage } = kafka;
   const params = {
-    website_id: website_id,
+    website_id: website_uuid,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),

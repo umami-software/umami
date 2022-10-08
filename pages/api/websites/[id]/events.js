@@ -21,10 +21,11 @@ export default async (req, res) => {
     }
 
     const websiteId = +id;
+    const website_uuid = id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    const events = await getEventMetrics(websiteId, startDate, endDate, tz, unit, {
+    const events = await getEventMetrics(websiteId, website_uuid, startDate, endDate, tz, unit, {
       url,
       event_name,
     });

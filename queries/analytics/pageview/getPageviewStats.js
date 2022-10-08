@@ -45,11 +45,11 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
-  website_id,
+  website_uuid,
   { start_at, end_at, timezone = 'UTC', unit = 'day', count = '*', filters = {} },
 ) {
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
-  const params = [website_id];
+  const params = [website_uuid];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(
@@ -59,7 +59,7 @@ async function clickhouseQuery(
     from
       (select 
         ${getDateQuery('created_at', unit, timezone)} t,
-        count(${count !== '*' ? 'distinct session_uuid' : count}) y
+        count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
       where event_name = ''
         and website_id= $1        

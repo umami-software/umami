@@ -3,9 +3,9 @@ SET allow_experimental_object_type = 1;
 -- Create Event
 CREATE TABLE event
 (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -27,9 +27,9 @@ CREATE TABLE event
         SETTINGS index_granularity = 8192;
 
 CREATE TABLE event_queue (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
     url String,
     referrer String,
     hostname LowCardinality(String),
@@ -52,9 +52,9 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_skip_broken_messages = 1;
 
 CREATE MATERIALIZED VIEW event_queue_mv TO event AS
-SELECT website_id,
-    session_uuid,
-    event_uuid,
+SELECT website_id UUID,
+    session_id UUID,
+    event_id,
     url,
     referrer,
     hostname,

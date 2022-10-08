@@ -18,6 +18,7 @@ export default async (req, res) => {
       req.query;
 
     const websiteId = +id;
+    const website_uuid = id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
@@ -26,7 +27,7 @@ export default async (req, res) => {
     }
 
     const [pageviews, sessions] = await Promise.all([
-      getPageviewStats(websiteId, {
+      getPageviewStats(websiteId, website_uuid, {
         start_at: startDate,
         end_at: endDate,
         timezone: tz,
@@ -41,7 +42,7 @@ export default async (req, res) => {
           country,
         },
       }),
-      getPageviewStats(websiteId, {
+      getPageviewStats(websiteId, website_uuid, {
         start_at: startDate,
         end_at: endDate,
         timezone: tz,
