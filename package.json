@@ -57,6 +57,7 @@
   "dependencies": {
     "@fontsource/inter": "4.5.7",
     "@prisma/client": "4.3.1",
+    "abort-controller": "^3.0.0",
     "chalk": "^4.1.1",
     "chart.js": "^2.9.4",
     "classnames": "^2.3.1",
@@ -71,7 +72,6 @@
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
     "dotenv": "^10.0.0",
-    "favecon": "^1.0.2",
     "formik": "^2.2.9",
     "fs-extra": "^10.0.1",
     "immer": "^9.0.12",
@@ -87,6 +87,7 @@
     "next": "^12.2.5",
     "next-basics": "^0.7.0",
     "node-fetch": "^3.2.8",
+    "node-html-parser": "^6.1.1",
     "npm-run-all": "^4.1.5",
     "prop-types": "^15.7.2",
     "react": "^17.0.0",

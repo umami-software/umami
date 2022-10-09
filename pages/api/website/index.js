@@ -2,22 +2,7 @@ import { ok, unauthorized, methodNotAllowed, getRandomChars } from 'next-basics'
 import { updateWebsite, createWebsite, getWebsiteById } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { uuid } from 'lib/crypto';
-import favecon from 'favecon';
-
-const getFavicon = async domain => {
-  try {
-    const icons = await favecon.getIcons(`https://${domain}`);
-
-    if (icons.length && icons.length > 0) {
-      return icons[0]?.href;
-    }
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(`Could not fetch favicon for domain ${domain}`, e);
-  }
-
-  return null;
-};
+import getFavicon from 'lib/favicon';
 
 export default async (req, res) => {
   await useAuth(req, res);
