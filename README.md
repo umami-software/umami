@@ -101,6 +101,57 @@ docker compose pull
 docker compose up --force-recreate
 ```
 
+## Setting up a local development environment for Umami
+
+If you want to run Umami locally for development purposes, you can follow these instructions.
+
+1. Set correct Node version and install dependencies:
+
+```bash
+nvm use
+npm i
+```
+
+2. Run the development Dockerfile which will start PostgreSQL and Adminer (for database administration)
+
+```bash
+docker-compose -f docker-compose.development.yml up 
+```
+
+3. Create an `.env` file with the following content:
+
+```
+DATABASE_URL=postgresql://umami:umami@localhost:54320/umami
+```
+
+4. Run:
+
+```bash
+ln -s ./db/postgresql prisma
+npm run build-db-client
+```
+
+This will synlink the schema from `db/postgresql` to `prisma/` and generate your Prisma client.
+
+5. Run migrations
+
+```bash
+yarn update-db
+```
+
+6. Start the server
+
+```bash
+yarn dev
+```
+
+You can now visit: http://localhost:3000/
+
+7. Debug database
+
+An Adminer instance is provided, you can reach it at:
+http://localhost:8080/
+
 ## License
 
 MIT

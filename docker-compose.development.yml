@@ -1,0 +1,25 @@
+---
+version: '3'
+services:
+  db:
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    ports:
+      - "54320:5432"
+  adminer:
+      image: michalhosna/adminer
+      ports:
+          - 8080:8080
+      environment:
+          ADMINER_DB: umami
+          ADMINER_DRIVER: pgsql
+          ADMINER_PASSWORD: umami
+          ADMINER_SERVER: db
+          ADMINER_USERNAME: umami
+          ADMINER_AUTOLOGIN: 1
+          ADMINER_NAME: Adminer
+volumes:
+  umami-db-data:
