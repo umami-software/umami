@@ -46,13 +46,13 @@ export default function WebsiteList({ websites, showCharts, limit }) {
 
   return (
     <div>
-      {ordered.map(({ website_id, name, domain }, index) =>
+      {ordered.map(({ website_id, name, favicon }, index) =>
         index < limit ? (
           <div key={website_id} className={styles.website}>
             <WebsiteChart
               websiteId={website_id}
               title={name}
-              domain={domain}
+              favicon={favicon}
               showChart={showCharts}
               showLink
             />

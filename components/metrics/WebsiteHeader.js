@@ -11,10 +11,10 @@ import ActiveUsers from './ActiveUsers';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
 
-export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {
+export default function WebsiteHeader({ websiteId, title, favicon, showLink = false }) {
   const header = showLink ? (
     <>
-      <Favicon domain={domain} />
+      <Favicon url={favicon} />
       <Link
         className={styles.titleLink}
         href="/website/[...id]"
@@ -25,7 +25,7 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
     </>
   ) : (
     <>
-      <Favicon domain={domain} />
+      <Favicon url={favicon} />
       <OverflowText tooltipId={`${websiteId}-title`}>{title}</OverflowText>
     </>
   );

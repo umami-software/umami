@@ -2,27 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Favicon.module.css';
 
-function getHostName(url) {
-  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?=]+)/im);
-  return match && match.length > 1 ? match[1] : null;
-}
+function Favicon({ url, ...props }) {
+  const faviconUrl = url ? url : '/default-favicon.png';
 
-function Favicon({ domain, ...props }) {
-  const hostName = domain ? getHostName(domain) : null;
-
-  return hostName ? (
-    <img
-      className={styles.favicon}
-      src={`https://icons.duckduckgo.com/ip3/${hostName}.ico`}
-      height="16"
-      alt=""
-      {...props}
-    />
-  ) : null;
+  return <img className={styles.favicon} src={faviconUrl} height="16" alt="" {...props} />;
 }
 
 Favicon.propTypes = {
-  domain: PropTypes.string,
+  url: PropTypes.string,
 };
 
 export default Favicon;

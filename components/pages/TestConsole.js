@@ -106,7 +106,7 @@ export default function TestConsole() {
               <WebsiteChart
                 websiteId={website.website_id}
                 title={website.name}
-                domain={website.domain}
+                favicon={website.favicon}
                 showLink
               />
               <PageHeader>Events</PageHeader>

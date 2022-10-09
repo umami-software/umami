@@ -18,7 +18,7 @@ import styles from './WebsiteChart.module.css';
 export default function WebsiteChart({
   websiteId,
   title,
-  domain,
+  favicon,
   stickyHeader = false,
   showLink = false,
   showChart = true,
@@ -81,7 +81,7 @@ export default function WebsiteChart({
 
   return (
     <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
+      <WebsiteHeader websiteId={websiteId} title={title} favicon={favicon} showLink={showLink} />
       <div className={classNames(styles.header, 'row')}>
         <StickyHeader
           className={classNames(styles.metrics, 'col row')}

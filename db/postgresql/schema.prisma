@@ -85,6 +85,7 @@ model website {
   domain       String?    @db.VarChar(500)
   share_id     String?    @unique @db.VarChar(64)
   created_at   DateTime?  @default(now()) @db.Timestamptz(6)
+  favicon      String?    @db.VarChar(500)
   account      account    @relation(fields: [user_id], references: [user_id])
   event        event[]
   pageview     pageview[]
