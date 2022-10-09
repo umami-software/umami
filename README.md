@@ -152,6 +152,13 @@ You can now visit: http://localhost:3000/
 An Adminer instance is provided, you can reach it at:
 http://localhost:8080/
 
+8. Database migrations
+
+You can generate a database migration like this:
+
+1. Make a change in `schema.prisma`
+2. Run `npx prisma migrate dev --name my_cool_migration` 
+
 ## License
 
 MIT
