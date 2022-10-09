@@ -105,6 +105,12 @@ docker compose up --force-recreate
 
 If you want to run Umami locally for development purposes, you can follow these instructions.
 
+Prerequisites:
+
+* [nvm](https://github.com/nvm-sh/nvm)
+* Docker
+* Yarn
+
 1. Set correct Node version and install dependencies:
 
 ```bash
