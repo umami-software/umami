@@ -78,7 +78,8 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { websiteId } = values;
+    const { id: websiteId } = values;
+
     const { ok, data } = await post(websiteId ? `/websites/${websiteId}` : '/websites', values);
 
     if (ok) {
@@ -137,7 +138,6 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                         defaultMessage="Enable share URL"
                       />
                     }
-                    value={null}
                   />
                 )}
               </Field>

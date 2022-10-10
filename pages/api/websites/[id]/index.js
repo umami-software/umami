@@ -1,5 +1,5 @@
-import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteWebsite, getWebsite, getWebsiteById, updateWebsite } from 'queries';
+import { methodNotAllowed, ok, unauthorized, getRandomChars } from 'next-basics';
+import { deleteWebsite, getAccount, getWebsite, updateWebsite } from 'queries';
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { validate } from 'uuid';
@@ -25,24 +25,31 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     await useAuth(req, res);
 
-    const { isAdmin: currentUserIsAdmin, userId: currentUserId } = req.auth;
+    const { isAdmin: currentUserIsAdmin, userId: currentUserId, accountUuid } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
+    let account;
 
-    const website = await getWebsiteById(websiteId);
+    if (accountUuid) {
+      account = await getAccount({ accountUuid });
+    }
+
+    const website = await getWebsite(where);
+
+    const shareId = enable_share_url ? website.shareId || getRandomChars(8) : null;
 
     if (website.userId !== currentUserId && !currentUserIsAdmin) {
       return unauthorized(res);
     }
 
-    let { shareId } = website;
-
-    if (enable_share_url) {
-      shareId = shareId ? shareId : getRandomChars(8);
-    } else {
-      shareId = null;
-    }
-
-    await updateWebsite(websiteId, { name, domain, shareId, userId: +owner });
+    await updateWebsite(
+      {
+        name,
+        domain,
+        shareId: shareId,
+        userId: account ? account.id : +owner,
+      },
+      where,
+    );
 
     return ok(res);
   }

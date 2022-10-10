@@ -1,10 +1,8 @@
 import prisma from 'lib/prisma';
 
-export async function updateWebsite(websiteId, data) {
+export async function updateWebsite(data, where) {
   return prisma.client.website.update({
-    where: {
-      id: websiteId,
-    },
+    where,
     data,
   });
 }

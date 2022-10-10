@@ -32,7 +32,7 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { name, domain, owner, enable_share_url } = req.body;
 
-    const website_owner = account ? account.userId : +owner;
+    const website_owner = account ? account.id : +owner;
 
     if (website_owner !== currentUserId && !isAdmin) {
       return unauthorized(res);
