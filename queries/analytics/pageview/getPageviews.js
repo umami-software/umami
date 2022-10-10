@@ -13,11 +13,11 @@ async function relationalQuery(websites, start_at) {
   return prisma.client.pageview.findMany({
     where: {
       website: {
-        website_id: {
+        id: {
           in: websites,
         },
       },
-      created_at: {
+      createdAt: {
         gte: start_at,
       },
     },

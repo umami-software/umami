@@ -1,9 +1,9 @@
 import prisma from 'lib/prisma';
 
-export async function updateAccount(user_id, data) {
+export async function updateAccount(userId, data) {
   return prisma.client.account.update({
     where: {
-      user_id,
+      id: userId,
     },
     data,
   });

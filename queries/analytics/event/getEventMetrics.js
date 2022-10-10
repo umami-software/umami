@@ -10,7 +10,7 @@ export async function getEventMetrics(...args) {
 }
 
 async function relationalQuery(
-  website_id,
+  websiteId,
   start_at,
   end_at,
   timezone = 'utc',
@@ -18,7 +18,7 @@ async function relationalQuery(
   filters = {},
 ) {
   const { rawQuery, getDateQuery, getFilterQuery } = prisma;
-  const params = [website_id, start_at, end_at];
+  const params = [websiteId, start_at, end_at];
 
   return rawQuery(
     `select
@@ -36,6 +36,7 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
+  websiteId,
   website_uuid,
   start_at,
   end_at,
@@ -44,7 +45,7 @@ async function clickhouseQuery(
   filters = {},
 ) {
   const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
-  const params = [website_uuid];
+  const params = [websiteId];
 
   return rawQuery(
     `select

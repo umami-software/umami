@@ -27,7 +27,7 @@ export default async (req, res) => {
 
     const events = await getEventMetrics(websiteId, website_uuid, startDate, endDate, tz, unit, {
       url,
-      event_name,
+      eventName: event_name,
     });
 
     return ok(res, events);

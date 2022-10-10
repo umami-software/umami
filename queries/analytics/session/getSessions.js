@@ -15,13 +15,13 @@ async function relationalQuery(websites, start_at) {
       ...(websites && websites.length > 0
         ? {
             website: {
-              website_id: {
+              id: {
                 in: websites,
               },
             },
           }
         : {}),
-      created_at: {
+      createdAt: {
         gte: start_at,
       },
     },

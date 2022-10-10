@@ -19,7 +19,7 @@ export default function Header() {
   const { pathname } = useRouter();
   const { updatesDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');
-  const allowUpdate = user?.is_admin && !updatesDisabled && !isSharePage;
+  const allowUpdate = user?.isAdmin && !updatesDisabled && !isSharePage;
 
   return (
     <>

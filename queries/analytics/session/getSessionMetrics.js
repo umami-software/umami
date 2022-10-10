@@ -9,9 +9,9 @@ export async function getSessionMetrics(...args) {
   });
 }
 
-async function relationalQuery(website_id, { startDate, endDate, field, filters = {} }) {
+async function relationalQuery(websiteId, { startDate, endDate, field, filters = {} }) {
   const { parseFilters, rawQuery } = prisma;
-  const params = [website_id, startDate, endDate];
+  const params = [websiteId, startDate, endDate];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(null, filters, params);
 
   return rawQuery(
@@ -32,9 +32,9 @@ async function relationalQuery(website_id, { startDate, endDate, field, filters 
   );
 }
 
-async function clickhouseQuery(website_id, { startDate, endDate, field, filters = {} }) {
+async function clickhouseQuery(websiteId, { startDate, endDate, field, filters = {} }) {
   const { parseFilters, getBetweenDates, rawQuery } = clickhouse;
-  const params = [website_id];
+  const params = [websiteId];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(

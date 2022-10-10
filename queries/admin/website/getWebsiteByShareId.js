@@ -1,9 +1,9 @@
 import prisma from 'lib/prisma';
 
-export async function getWebsiteByShareId(share_id) {
+export async function getWebsiteByShareId(shareId) {
   return prisma.client.website.findUnique({
     where: {
-      share_id,
+      shareId,
     },
   });
 }

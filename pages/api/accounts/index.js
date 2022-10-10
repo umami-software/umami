@@ -6,9 +6,9 @@ import { createAccount, getAccountByUsername, getAccounts } from 'queries';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { is_admin } = req.auth;
+  const { isAdmin } = req.auth;
 
-  if (!is_admin) {
+  if (!isAdmin) {
     return unauthorized(res);
   }
 
@@ -30,7 +30,7 @@ export default async (req, res) => {
     const created = await createAccount({
       username,
       password: hashPassword(password),
-      account_uuid: account_uuid || uuid(),
+      accountUuid: account_uuid || uuid(),
     });
 
     return ok(res, created);
