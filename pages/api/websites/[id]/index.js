@@ -8,7 +8,7 @@ export default async (req, res) => {
   const { id } = req.query;
 
   const websiteId = +id;
-  const where = validate(id) ? { website_uuid: id } : { website_id: +id };
+  const where = validate(id) ? { websiteUuid: id } : { id: +id };
 
   if (req.method === 'GET') {
     await useCors(req, res);
@@ -25,24 +25,24 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     await useAuth(req, res);
 
-    const { is_admin: currentUserIsAdmin, user_id: currentUserId } = req.auth;
+    const { isAdmin: currentUserIsAdmin, userId: currentUserId } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
 
     const website = await getWebsiteById(websiteId);
 
-    if (website.user_id !== currentUserId && !currentUserIsAdmin) {
+    if (website.userId !== currentUserId && !currentUserIsAdmin) {
       return unauthorized(res);
     }
 
-    let { share_id } = website;
+    let { shareId } = website;
 
     if (enable_share_url) {
-      share_id = share_id ? share_id : getRandomChars(8);
+      shareId = shareId ? shareId : getRandomChars(8);
     } else {
-      share_id = null;
+      shareId = null;
     }
 
-    await updateWebsite(websiteId, { name, domain, share_id, user_id: +owner });
+    await updateWebsite(websiteId, { name, domain, shareId, userId: +owner });
 
     return ok(res);
   }

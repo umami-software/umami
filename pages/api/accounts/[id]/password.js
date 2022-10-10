@@ -12,7 +12,7 @@ import {
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: currentUserId, is_admin: currentUserIsAdmin } = req.auth;
+  const { userId: currentUserId, isAdmin: currentUserIsAdmin } = req.auth;
   const { current_password, new_password } = req.body;
   const { id } = req.query;
   const userId = +id;

@@ -15,13 +15,13 @@ const initialValues = {
   password: '',
 };
 
-const validate = ({ user_id, username, password }) => {
+const validate = ({ userId, username, password }) => {
   const errors = {};
 
   if (!username) {
     errors.username = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
-  if (!user_id && !password) {
+  if (!userId && !password) {
     errors.password = <FormattedMessage id="label.required" defaultMessage="Required" />;
   }
 
@@ -33,8 +33,8 @@ export default function AccountEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { user_id } = values;
-    const { ok, data } = await post(user_id ? `/accounts/${user_id}` : '/accounts', values);
+    const { userId } = values;
+    const { ok, data } = await post(userId ? `/accounts/${userId}` : '/accounts', values);
 
     if (ok) {
       onSave();

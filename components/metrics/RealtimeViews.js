@@ -16,7 +16,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
     id =>
       websites.length === 1
         ? websites[0]?.domain
-        : websites.find(({ website_id }) => website_id === id)?.domain,
+        : websites.find(({ websiteId }) => websiteId === id)?.domain,
     [websites],
   );
 
@@ -65,10 +65,10 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
       const pages = percentFilter(
         pageviews
-          .reduce((arr, { url, website_id }) => {
+          .reduce((arr, { url, websiteId }) => {
             if (url?.startsWith('/')) {
               if (!websiteId && websites.length > 1) {
-                url = `${getDomain(website_id)}${url}`;
+                url = `${getDomain(websiteId)}${url}`;
               }
               const row = arr.find(({ x }) => x === url);
 

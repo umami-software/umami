@@ -9,8 +9,8 @@ function mapData(data) {
   const arr = [];
 
   data.reduce((obj, val) => {
-    const { created_at } = val;
-    const t = startOfMinute(parseISO(created_at));
+    const { createdAt } = val;
+    const t = startOfMinute(parseISO(createdAt));
     if (t.getTime() > last) {
       obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
       arr.push(obj);

@@ -41,14 +41,14 @@ const OwnerDropDown = ({ user, accounts }) => {
   const { setFieldValue, values } = useFormikContext();
 
   useEffect(() => {
-    if (values.user_id != null && values.owner === '') {
-      setFieldValue('owner', values.user_id.toString());
-    } else if (user?.user_id && values.owner === '') {
-      setFieldValue('owner', user.user_id.toString());
+    if (values.userId != null && values.owner === '') {
+      setFieldValue('owner', values.userId.toString());
+    } else if (user?.id && values.owner === '') {
+      setFieldValue('owner', user.id.toString());
     }
   }, [accounts, setFieldValue, user, values]);
 
-  if (user?.is_admin) {
+  if (user?.isAdmin) {
     return (
       <FormRow>
         <label htmlFor="owner">
@@ -57,7 +57,7 @@ const OwnerDropDown = ({ user, accounts }) => {
         <div>
           <Field as="select" name="owner" className={styles.dropdown}>
             {accounts?.map(acc => (
-              <option key={acc.user_id} value={acc.user_id}>
+              <option key={acc.id} value={acc.id}>
                 {acc.username}
               </option>
             ))}
@@ -78,8 +78,8 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { website_id } = values;
-    const { ok, data } = await post(website_id ? `/websites/${website_id}` : '/websites', values);
+    const { websiteId } = values;
+    const { ok, data } = await post(websiteId ? `/websites/${websiteId}` : '/websites', values);
 
     if (ok) {
       onSave();
@@ -93,7 +93,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   return (
     <FormLayout>
       <Formik
-        initialValues={{ ...initialValues, ...values, enable_share_url: !!values?.share_id }}
+        initialValues={{ ...initialValues, ...values, enable_share_url: !!values?.shareId }}
         validate={validate}
         onSubmit={handleSubmit}
       >
@@ -117,9 +117,9 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                   name="domain"
                   type="text"
                   placeholder="example.com"
-                  spellcheck="false"
-                  autocapitalize="off"
-                  autocorrect="off"
+                  spellCheck="false"
+                  autoCapitalize="off"
+                  autoCorrect="off"
                 />
                 <FormError name="domain" />
               </div>

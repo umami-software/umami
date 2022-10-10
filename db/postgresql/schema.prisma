@@ -86,7 +86,7 @@ model website {
   userId      Int        @map("user_id")
   name        String     @db.VarChar(100)
   domain      String?    @db.VarChar(500)
-  share_id    String?    @unique @map("share_id") @db.VarChar(64)
+  shareId     String?    @unique @map("share_id") @db.VarChar(64)
   createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
   account     account    @relation(fields: [userId], references: [id])
   event       event[]

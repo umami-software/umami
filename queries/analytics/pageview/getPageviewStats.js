@@ -10,7 +10,7 @@ export async function getPageviewStats(...args) {
 }
 
 async function relationalQuery(
-  website_id,
+  websiteId,
   {
     start_at,
     end_at,
@@ -22,7 +22,7 @@ async function relationalQuery(
   },
 ) {
   const { getDateQuery, parseFilters, rawQuery } = prisma;
-  const params = [website_id, start_at, end_at];
+  const params = [websiteId, start_at, end_at];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
     null,
@@ -45,11 +45,11 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
-  website_id,
+  websiteId,
   { start_at, end_at, timezone = 'UTC', unit = 'day', count = '*', filters = {} },
 ) {
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
-  const params = [website_id];
+  const params = [websiteId];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(

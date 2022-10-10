@@ -11,9 +11,9 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
+    const { website_id, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
 
-    const websiteId = +id;
+    const websiteId = +website_id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
