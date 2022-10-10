@@ -43,7 +43,7 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
   const { user } = useUser();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post(`/accounts/${user.user_id}/password`, values);
+    const { ok, data } = await post(`/accounts/${user.userId}/password`, values);
 
     if (ok) {
       onSave();

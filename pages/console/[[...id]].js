@@ -8,7 +8,7 @@ export default function ConsolePage({ enabled }) {
   const { loading } = useRequireLogin();
   const { user } = useUser();
 
-  if (loading || !enabled || !user?.is_admin) {
+  if (loading || !enabled || !user?.isAdmin) {
     return null;
   }
 

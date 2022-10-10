@@ -10,18 +10,18 @@ export async function saveEvent(...args) {
   });
 }
 
-async function relationalQuery(website_id, { session_id, url, event_name, event_data }) {
+async function relationalQuery(websiteId, { sessionId, url, eventName, eventData }) {
   const data = {
-    website_id,
-    session_id,
+    websiteId,
+    sessionId,
     url: url?.substring(0, URL_LENGTH),
-    event_name: event_name?.substring(0, EVENT_NAME_LENGTH),
+    eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
   };
 
-  if (event_data) {
-    data.event_data = {
+  if (eventData) {
+    data.eventData = {
       create: {
-        event_data: event_data,
+        eventData: eventData,
       },
     };
   }
@@ -32,18 +32,19 @@ async function relationalQuery(website_id, { session_id, url, event_name, event_
 }
 
 async function clickhouseQuery(
-  website_id,
-  { session: { country, ...sessionArgs }, event_uuid, url, event_name, event_data },
+  websiteId,
+  { session: { country, sessionUuid, ...sessionArgs }, eventUuid, url, eventName, eventData },
 ) {
   const { getDateFormat, sendMessage } = kafka;
 
   const params = {
-    event_uuid,
-    website_id,
+    session_uuid: sessionUuid,
+    event_uuid: eventUuid,
+    website_id: websiteId,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
-    event_name: event_name?.substring(0, EVENT_NAME_LENGTH),
-    event_data: JSON.stringify(event_data),
+    event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
+    event_data: JSON.stringify(eventData),
     ...sessionArgs,
     country: country ? country : null,
   };

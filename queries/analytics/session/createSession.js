@@ -10,16 +10,16 @@ export async function createSession(...args) {
   });
 }
 
-async function relationalQuery(website_id, data) {
+async function relationalQuery(websiteId, data) {
   return prisma.client.session
     .create({
       data: {
-        website_id,
+        websiteId,
         ...data,
       },
       select: {
-        session_id: true,
-        session_uuid: true,
+        sessionId: true,
+        sessionUuid: true,
         hostname: true,
         browser: true,
         os: true,
@@ -31,7 +31,7 @@ async function relationalQuery(website_id, data) {
     })
     .then(async res => {
       if (redis.client && res) {
-        await redis.client.set(`session:${res.session_uuid}`, res.session_id);
+        await redis.client.set(`session:${res.sessionUuid}`, res.id);
       }
 
       return res;
@@ -39,14 +39,14 @@ async function relationalQuery(website_id, data) {
 }
 
 async function clickhouseQuery(
-  website_id,
-  { session_uuid, hostname, browser, os, screen, language, country, device },
+  websiteId,
+  { sessionUuid, hostname, browser, os, screen, language, country, device },
 ) {
   const { getDateFormat, sendMessage } = kafka;
 
   const params = {
-    session_uuid,
-    website_id,
+    session_uuid: sessionUuid,
+    website_id: websiteId,
     created_at: getDateFormat(new Date()),
     hostname,
     browser,
@@ -60,6 +60,6 @@ async function clickhouseQuery(
   await sendMessage(params, 'event');
 
   if (redis.client) {
-    await redis.client.set(`session:${session_uuid}`, 1);
+    await redis.client.set(`session:${sessionUuid}`, 1);
   }
 }

@@ -6,44 +6,41 @@ import { uuid } from 'lib/crypto';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: current_user_id, is_admin, account_uuid } = req.auth;
+  const { userId: currentUserId, isAdmin, accountUuid } = req.auth;
   const { user_id, include_all } = req.query;
   let account;
 
-  if (account_uuid) {
-    account = await getAccount({ account_uuid });
+  if (accountUuid) {
+    account = await getAccount({ accountUuid: accountUuid });
   }
 
-  const userId = account ? account.user_id : +user_id;
+  const userId = account ? account.id : +user_id;
 
   if (req.method === 'GET') {
-    if (userId && userId !== current_user_id && !is_admin) {
+    if (userId && userId !== currentUserId && !isAdmin) {
       return unauthorized(res);
     }
 
     const websites =
-      is_admin && include_all
+      isAdmin && include_all
         ? await getAllWebsites()
-        : await getUserWebsites(userId || current_user_id);
+        : await getUserWebsites(userId || currentUserId);
 
     return ok(res, websites);
   }
 
   if (req.method === 'POST') {
-    await useAuth(req, res);
-
-    const { is_admin: currentUserIsAdmin, user_id: currentUserId } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
 
-    const website_owner = account ? account.user_id : +owner;
+    const website_owner = account ? account.id : +owner;
 
-    if (website_owner !== currentUserId && !currentUserIsAdmin) {
+    if (website_owner !== currentUserId && !isAdmin) {
       return unauthorized(res);
     }
 
-    const website_uuid = uuid();
-    const share_id = enable_share_url ? getRandomChars(8) : null;
-    const website = await createWebsite(website_owner, { website_uuid, name, domain, share_id });
+    const websiteUuid = uuid();
+    const shareId = enable_share_url ? getRandomChars(8) : null;
+    const website = await createWebsite(website_owner, { websiteUuid, name, domain, shareId });
 
     return ok(res, website);
   }
