@@ -14,9 +14,8 @@ export default async (req, res) => {
     const { id } = req.query;
 
     const websiteId = +id;
-    const website_uuid = id;
 
-    const result = await getActiveVisitors(websiteId, website_uuid);
+    const result = await getActiveVisitors(websiteId);
 
     return ok(res, result);
   }

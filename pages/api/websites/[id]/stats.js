@@ -1,4 +1,4 @@
-import { getWebsiteStats, getWebsiteById } from 'queries';
+import { getWebsiteStats } from 'queries';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 import { useCors } from 'lib/middleware';
@@ -14,7 +14,6 @@ export default async (req, res) => {
     const { website_id, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
 
     const websiteId = +website_id;
-    let websiteUuid = (await getWebsiteById(websiteId)).websiteUuid;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
@@ -22,7 +21,7 @@ export default async (req, res) => {
     const prevStartDate = new Date(+start_at - distance);
     const prevEndDate = new Date(+end_at - distance);
 
-    const metrics = await getWebsiteStats(websiteUuid, {
+    const metrics = await getWebsiteStats(websiteId, {
       start_at: startDate,
       end_at: endDate,
       filters: {
@@ -34,7 +33,7 @@ export default async (req, res) => {
         country,
       },
     });
-    const prevPeriod = await getWebsiteStats(websiteUuid, {
+    const prevPeriod = await getWebsiteStats(websiteId, {
       start_at: prevStartDate,
       end_at: prevEndDate,
       filters: {

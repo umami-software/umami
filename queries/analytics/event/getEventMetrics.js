@@ -37,7 +37,6 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId,
-  website_uuid,
   start_at,
   end_at,
   timezone = 'UTC',

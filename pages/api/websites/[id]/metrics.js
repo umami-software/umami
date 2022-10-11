@@ -44,7 +44,6 @@ export default async (req, res) => {
     const { id, type, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
 
     const websiteId = +id;
-    const website_uuid = id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
@@ -107,7 +106,7 @@ export default async (req, res) => {
         query: type === 'query' && table !== 'event' ? true : undefined,
       };
 
-      const data = await getPageviewMetrics(websiteId, website_uuid, {
+      const data = await getPageviewMetrics(websiteId, {
         startDate,
         endDate,
         column,

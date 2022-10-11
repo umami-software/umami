@@ -37,7 +37,7 @@ async function clickhouseQuery(websites, start_at) {
       where event_name = ''
       and ${
         websites && websites.length > 0
-          ? `website_id in (${getCommaSeparatedStringFormat(websites, websites.website_uuid)})`
+          ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
           : '0 = 0'
       }
       and created_at >= ${clickhouse.getDateFormat(start_at)}`,
