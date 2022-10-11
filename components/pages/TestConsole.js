@@ -55,7 +55,7 @@ export default function TestConsole() {
       <PageHeader>
         <div>Test Console</div>
         <DropDown
-          value={selectedValue || 'Select website'}
+          value={selectedValue || 'Select websites'}
           options={options}
           onChange={handleSelect}
         />
