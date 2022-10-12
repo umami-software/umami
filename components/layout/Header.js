@@ -14,7 +14,7 @@ import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 
-export default function Header() {
+export default function Header({ settingsDisabled }) {
   const { user } = useUser();
   const { pathname } = useRouter();
   const { updatesDisabled } = useConfig();
@@ -38,15 +38,17 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            <Link href="/settings">
-              <FormattedMessage id="label.settings" defaultMessage="Settings" />
-            </Link>
+            {!settingsDisabled && (
+              <Link href="/settings">
+                <FormattedMessage id="label.settings" defaultMessage="Settings" />
+              </Link>
+            )}
           </div>
         )}
         <div className={styles.buttons}>
           <ThemeButton />
           <LanguageButton menuAlign="right" />
-          {user && <UserButton />}
+          {user && <UserButton settingsDisabled={settingsDisabled} />}
         </div>
       </header>
     </>

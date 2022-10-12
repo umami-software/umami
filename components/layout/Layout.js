@@ -4,7 +4,13 @@ import Header from 'components/layout/Header';
 import Footer from 'components/layout/Footer';
 import useLocale from 'hooks/useLocale';
 
-export default function Layout({ title, children, header = true, footer = true }) {
+export default function Layout({
+  title,
+  children,
+  header = true,
+  footer = true,
+  settingsDisabled = false,
+}) {
   const { dir } = useLocale();
 
   return (
@@ -13,7 +19,7 @@ export default function Layout({ title, children, header = true, footer = true }
         <title>umami{title && ` - ${title}`}</title>
       </Head>
 
-      {header && <Header />}
+      {header && <Header settingsDisabled={settingsDisabled} />}
       <main>{children}</main>
       {footer && <Footer />}
       <div id="__modals" dir={dir} />

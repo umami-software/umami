@@ -4,7 +4,7 @@ import TestConsole from 'components/pages/TestConsole';
 import useRequireLogin from 'hooks/useRequireLogin';
 import useUser from 'hooks/useUser';
 
-export default function ConsolePage({ enabled }) {
+export default function ConsolePage({ enabled, settingsDisabled }) {
   const { loading } = useRequireLogin();
   const { user } = useUser();
 
@@ -13,7 +13,7 @@ export default function ConsolePage({ enabled }) {
   }
 
   return (
-    <Layout>
+    <Layout settingsDisabled={settingsDisabled}>
       <TestConsole />
     </Layout>
   );
