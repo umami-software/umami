@@ -10,7 +10,10 @@ export async function saveEvent(...args) {
   });
 }
 
-async function relationalQuery(websiteId, { sessionId, url, eventName, eventData }) {
+async function relationalQuery(
+  { websiteId },
+  { session: { id: sessionId }, url, eventName, eventData },
+) {
   const data = {
     websiteId,
     sessionId,
@@ -32,7 +35,7 @@ async function relationalQuery(websiteId, { sessionId, url, eventName, eventData
 }
 
 async function clickhouseQuery(
-  websiteId,
+  { websiteUuid: websiteId },
   { session: { country, sessionUuid, ...sessionArgs }, eventUuid, url, eventName, eventData },
 ) {
   const { getDateFormat, sendMessage } = kafka;

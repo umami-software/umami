@@ -15,7 +15,7 @@ async function relationalQuery(websites, start_at) {
       ...(websites && websites.length > 0
         ? {
             website: {
-              id: {
+              websiteUuid: {
                 in: websites,
               },
             },
@@ -29,11 +29,11 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  const { rawQuery, getDateFormat } = clickhouse;
+  const { rawQuery, getDateFormat, getCommaSeparatedStringFormat } = clickhouse;
 
   return rawQuery(
     `select distinct
-      session_uuid,
+      session_id,
       website_id,
       created_at,
       hostname,
@@ -44,7 +44,11 @@ async function clickhouseQuery(websites, start_at) {
       language,
       country
     from event
-    where ${websites && websites.length > 0 ? `website_id in (${websites.join(',')})` : '0 = 0'}
+    where ${
+      websites && websites.length > 0
+        ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
+        : '0 = 0'
+    }
       and created_at >= ${getDateFormat(start_at)}`,
   );
 }

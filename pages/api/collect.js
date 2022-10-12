@@ -59,7 +59,7 @@ export default async (req, res) => {
   await useSession(req, res);
 
   const {
-    session: { websiteId, session },
+    session: { website, session },
   } = req;
 
   const { type, payload } = getJsonBody(req);
@@ -73,9 +73,9 @@ export default async (req, res) => {
   const eventUuid = uuid();
 
   if (type === 'pageview') {
-    await savePageView(websiteId, { session, url, referrer });
+    await savePageView(website, { session, url, referrer });
   } else if (type === 'event') {
-    await saveEvent(websiteId, {
+    await saveEvent(website, {
       session,
       eventUuid,
       url,
@@ -87,7 +87,11 @@ export default async (req, res) => {
   }
 
   const token = createToken(
-    { websiteId, sessionId: session.sessionId, sessionUuid: session.sessionUuid },
+    {
+      websiteId: website.websiteUuid,
+      sessionId: session.sessionId,
+      sessionUuid: session.sessionUuid,
+    },
     secret(),
   );
 
