@@ -3,7 +3,7 @@ import Layout from 'components/layout/Layout';
 import Dashboard from 'components/pages/Dashboard';
 import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function DashboardPage({ settingsDisabled }) {
+export default function DashboardPage() {
   const { loading } = useRequireLogin();
 
   if (loading) {
@@ -11,16 +11,8 @@ export default function DashboardPage({ settingsDisabled }) {
   }
 
   return (
-    <Layout settingsDisabled={settingsDisabled}>
+    <Layout>
       <Dashboard />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      settingsDisabled: !!process.env.CLOUD_MODE,
-    },
-  };
 }

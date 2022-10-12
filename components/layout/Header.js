@@ -14,7 +14,7 @@ import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
 
-export default function Header({ settingsDisabled }) {
+export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
   const { updatesDisabled } = useConfig();
@@ -38,7 +38,7 @@ export default function Header({ settingsDisabled }) {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            {!settingsDisabled && (
+            {!process.env.isCloudMode && (
               <Link href="/settings">
                 <FormattedMessage id="label.settings" defaultMessage="Settings" />
               </Link>
@@ -48,7 +48,7 @@ export default function Header({ settingsDisabled }) {
         <div className={styles.buttons}>
           <ThemeButton />
           <LanguageButton menuAlign="right" />
-          {user && <UserButton settingsDisabled={settingsDisabled} />}
+          {user && <UserButton />}
         </div>
       </header>
     </>

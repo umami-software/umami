@@ -9,7 +9,7 @@ import styles from './UserButton.module.css';
 import { AUTH_TOKEN } from 'lib/constants';
 import useUser from 'hooks/useUser';
 
-export default function UserButton({ settingsDisabled }) {
+export default function UserButton() {
   const { user } = useUser();
   const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function UserButton({ settingsDisabled }) {
     {
       label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
       value: 'profile',
-      hidden: settingsDisabled,
+      hidden: process.env.isCloudMode,
     },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];

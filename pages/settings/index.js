@@ -3,26 +3,16 @@ import Layout from 'components/layout/Layout';
 import Settings from 'components/pages/Settings';
 import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function SettingsPage({ settingsDisabled }) {
+export default function SettingsPage() {
   const { loading } = useRequireLogin();
 
-  if (settingsDisabled || loading) {
+  if (process.env.isCloudMode || loading) {
     return null;
   }
 
   return (
-    <Layout settingsDisabled={settingsDisabled}>
-      TEST TEST TEST
-      {settingsDisabled}
+    <Layout>
       <Settings />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      settingsDisabled: !!process.env.CLOUD_MODE,
-    },
-  };
 }

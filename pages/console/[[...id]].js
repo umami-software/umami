@@ -4,7 +4,7 @@ import TestConsole from 'components/pages/TestConsole';
 import useRequireLogin from 'hooks/useRequireLogin';
 import useUser from 'hooks/useUser';
 
-export default function ConsolePage({ enabled, settingsDisabled }) {
+export default function ConsolePage({ enabled }) {
   const { loading } = useRequireLogin();
   const { user } = useUser();
 
@@ -13,14 +13,8 @@ export default function ConsolePage({ enabled, settingsDisabled }) {
   }
 
   return (
-    <Layout settingsDisabled={settingsDisabled}>
+    <Layout>
       <TestConsole />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: { enabled: !!process.env.ENABLE_TEST_CONSOLE },
-  };
 }
