@@ -10,7 +10,7 @@ export async function savePageView(...args) {
   });
 }
 
-async function relationalQuery(websiteId, { session: { sessionId }, url, referrer }) {
+async function relationalQuery({ websiteId }, { session: { id: sessionId }, url, referrer }) {
   return prisma.client.pageview.create({
     data: {
       websiteId,
@@ -22,7 +22,7 @@ async function relationalQuery(websiteId, { session: { sessionId }, url, referre
 }
 
 async function clickhouseQuery(
-  websiteId,
+  { websiteUuid: websiteId },
   { session: { country, sessionUuid, ...sessionArgs }, url, referrer },
 ) {
   const { getDateFormat, sendMessage } = kafka;

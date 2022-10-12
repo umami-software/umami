@@ -13,7 +13,7 @@ async function relationalQuery(websites, start_at) {
   return prisma.client.pageview.findMany({
     where: {
       website: {
-        id: {
+        websiteUuid: {
           in: websites,
         },
       },
@@ -25,9 +25,9 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  const { getCommaSeparatedStringFormat } = clickhouse;
+  const { rawQuery, getCommaSeparatedStringFormat } = clickhouse;
 
-  return clickhouse.rawQuery(
+  return rawQuery(
     `select
         website_id,
         session_id,
