@@ -23,7 +23,7 @@ CREATE TABLE event
     created_at DateTime('UTC')
 )
     engine = MergeTree
-        ORDER BY (website_id, session_uuid, created_at)
+        ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
 CREATE TABLE event_queue (
@@ -44,7 +44,7 @@ CREATE TABLE event_queue (
     created_at DateTime('UTC')
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
+SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
        kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -52,8 +52,8 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_skip_broken_messages = 1;
 
 CREATE MATERIALIZED VIEW event_queue_mv TO event AS
-SELECT website_id UUID,
-    session_id UUID,
+SELECT website_id,
+    session_id,
     event_id,
     url,
     referrer,
