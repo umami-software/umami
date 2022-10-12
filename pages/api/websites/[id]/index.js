@@ -5,6 +5,10 @@ import { useAuth, useCors } from 'lib/middleware';
 import { validate } from 'uuid';
 
 export default async (req, res) => {
+  await useAuth(req, res);
+
+  const { isAdmin, userId, accountUuid } = req.auth;
+
   const { id } = req.query;
 
   const websiteId = +id;
@@ -23,9 +27,6 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    await useAuth(req, res);
-
-    const { isAdmin: currentUserIsAdmin, userId: currentUserId, accountUuid } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
     let account;
 
@@ -37,7 +38,7 @@ export default async (req, res) => {
 
     const shareId = enable_share_url ? website.shareId || getRandomChars(8) : null;
 
-    if (website.userId !== currentUserId && !currentUserIsAdmin) {
+    if (website.userId !== userId && !isAdmin) {
       return unauthorized(res);
     }
 
