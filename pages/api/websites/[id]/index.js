@@ -1,6 +1,6 @@
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getRandomChars, methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getAccount, getWebsite, updateWebsite } from 'queries';
 
 export default async (req, res) => {
@@ -26,21 +26,31 @@ export default async (req, res) => {
 
     if (accountUuid) {
       account = await getAccount({ accountUuid });
+
+      if (!account) {
+        return serverError(res, 'Account does not exist.');
+      }
     }
 
     const website = await getWebsite({ websiteUuid: websiteId });
 
     const newShareId = enableShareUrl ? website.shareId || getRandomChars(8) : null;
 
-    await updateWebsite(
-      {
-        name,
-        domain,
-        shareId: shareId ? shareId : newShareId,
-        userId: account ? account.id : +owner,
-      },
-      { websiteUuid: websiteId },
-    );
+    try {
+      await updateWebsite(
+        {
+          name,
+          domain,
+          shareId: shareId ? shareId : newShareId,
+          userId: account ? account.id : +owner || undefined,
+        },
+        { websiteUuid: websiteId },
+      );
+    } catch (e) {
+      if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
+        return serverError(res, 'That share ID is already taken.');
+      }
+    }
 
     return ok(res);
   }
