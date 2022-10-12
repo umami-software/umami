@@ -11,9 +11,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id } = req.query;
-
-    const websiteId = +id;
+    const { id: websiteId } = req.query;
 
     const result = await getActiveVisitors(websiteId);
 

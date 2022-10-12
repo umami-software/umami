@@ -20,8 +20,10 @@ async function relationalQuery(websiteId, { startDate, endDate, field, filters =
     where x.session_id in (
       select pageview.session_id
       from pageview
+        join website 
+          on pageview.website_id = website.website_id
         ${joinSession}
-      where pageview.website_id=$1
+      where website.website_uuid='${websiteId}'
       and pageview.created_at between $2 and $3
       ${pageviewQuery}
       ${sessionQuery}

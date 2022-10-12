@@ -22,8 +22,9 @@ async function relationalQuery(websiteId, start_at, end_at, column, table, filte
     `select url x,
       count(*) y
     from ${table}
+      ${` join website on ${table}.website_id = website.website_id`}
       ${joinSession}
-    where ${table}.website_id=$1
+    where website.website_uuid='${websiteId}'
       and ${table}.created_at between $2 and $3
       and ${table}.url like '%?%'
       ${pageviewQuery}

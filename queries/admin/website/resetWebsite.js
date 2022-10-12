@@ -5,16 +5,16 @@ export async function resetWebsite(websiteId) {
 
   return transaction([
     client.pageview.deleteMany({
-      where: { session: { website: { id: websiteId } } },
+      where: { session: { website: { websiteUuid: websiteId } } },
     }),
     client.eventData.deleteMany({
-      where: { event: { session: { website: { id: websiteId } } } },
+      where: { event: { session: { website: { websiteUuid: websiteId } } } },
     }),
     client.event.deleteMany({
-      where: { session: { website: { id: websiteId } } },
+      where: { session: { website: { websiteUuid: websiteId } } },
     }),
     client.session.deleteMany({
-      where: { website: { id: websiteId } },
+      where: { website: { websiteUuid: websiteId } },
     }),
   ]);
 }

@@ -1,18 +1,10 @@
-import { methodNotAllowed, ok, unauthorized, getRandomChars } from 'next-basics';
-import { deleteWebsite, getAccount, getWebsite, updateWebsite } from 'queries';
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { validate } from 'uuid';
+import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { deleteWebsite, getAccount, getWebsite, getWebsiteByUuid, updateWebsite } from 'queries';
 
 export default async (req, res) => {
-  await useAuth(req, res);
-
-  const { isAdmin, userId, accountUuid } = req.auth;
-
-  const { id } = req.query;
-
-  const websiteId = +id;
-  const where = validate(id) ? { websiteUuid: id } : { id: +id };
+  const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
     await useCors(req, res);
@@ -21,12 +13,15 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const website = await getWebsite(where);
+    const website = await getWebsiteByUuid(websiteId);
 
     return ok(res, website);
   }
 
   if (req.method === 'POST') {
+    await useAuth(req, res);
+
+    const { isAdmin: currentUserIsAdmin, userId: currentUserId, accountUuid } = req.auth;
     const { name, domain, owner, enable_share_url } = req.body;
     let account;
 
@@ -34,11 +29,11 @@ export default async (req, res) => {
       account = await getAccount({ accountUuid });
     }
 
-    const website = await getWebsite(where);
+    const website = await getWebsite(websiteId);
 
     const shareId = enable_share_url ? website.shareId || getRandomChars(8) : null;
 
-    if (website.userId !== userId && !isAdmin) {
+    if (website.userId !== currentUserId && !currentUserIsAdmin) {
       return unauthorized(res);
     }
 
@@ -49,7 +44,7 @@ export default async (req, res) => {
         shareId: shareId,
         userId: account ? account.id : +owner,
       },
-      where,
+      { websiteUuid: websiteId },
     );
 
     return ok(res);

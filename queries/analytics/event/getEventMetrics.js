@@ -23,11 +23,13 @@ async function relationalQuery(
   return rawQuery(
     `select
       event_name x,
-      ${getDateQuery('created_at', unit, timezone)} t,
+      ${getDateQuery('event.created_at', unit, timezone)} t,
       count(*) y
     from event
-    where website_id=$1
-    and created_at between $2 and $3
+      join website 
+        on event.website_id = website.website_id
+    where website_uuid='${websiteId}'
+      and event.created_at between $2 and $3
     ${getFilterQuery('event', filters, params)}
     group by 1, 2
     order by 2`,

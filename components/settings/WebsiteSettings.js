@@ -46,7 +46,7 @@ export default function WebsiteSettings() {
           icon={<LinkIcon />}
           size="small"
           tooltip={<FormattedMessage id="message.get-share-url" defaultMessage="Get share URL" />}
-          tooltipId={`button-share-${row.id}`}
+          tooltipId={`button-share-${row.websiteUuid}`}
           onClick={() => setShowUrl(row)}
         />
       )}
@@ -56,42 +56,46 @@ export default function WebsiteSettings() {
         tooltip={
           <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
         }
-        tooltipId={`button-code-${row.id}`}
+        tooltipId={`button-code-${row.websiteUuid}`}
         onClick={() => setShowCode(row)}
       />
       <Button
         icon={<Pen />}
         size="small"
         tooltip={<FormattedMessage id="label.edit" defaultMessage="Edit" />}
-        tooltipId={`button-edit-${row.id}`}
+        tooltipId={`button-edit-${row.websiteUuid}`}
         onClick={() => setEditWebsite(row)}
       />
       <Button
         icon={<Reset />}
         size="small"
         tooltip={<FormattedMessage id="label.reset" defaultMessage="Reset" />}
-        tooltipId={`button-reset-${row.id}`}
+        tooltipId={`button-reset-${row.websiteUuid}`}
         onClick={() => setResetWebsite(row)}
       />
       <Button
         icon={<Trash />}
         size="small"
         tooltip={<FormattedMessage id="label.delete" defaultMessage="Delete" />}
-        tooltipId={`button-delete-${row.id}`}
+        tooltipId={`button-delete-${row.websiteUuid}`}
         onClick={() => setDeleteWebsite(row)}
       />
     </ButtonLayout>
   );
 
-  const DetailsLink = ({ id, name, domain }) => (
-    <Link className={styles.detailLink} href="/websites/[...id]" as={`/websites/${id}/${name}`}>
+  const DetailsLink = ({ websiteUuid, name, domain }) => (
+    <Link
+      className={styles.detailLink}
+      href="/websites/[...id]"
+      as={`/websites/${websiteUuid}/${name}`}
+    >
       <Favicon domain={domain} />
-      <OverflowText tooltipId={`${id}-name`}>{name}</OverflowText>
+      <OverflowText tooltipId={`${websiteUuid}-name`}>{name}</OverflowText>
     </Link>
   );
 
-  const Domain = ({ domain, id }) => (
-    <OverflowText tooltipId={`${id}-domain`}>{domain}</OverflowText>
+  const Domain = ({ domain, websiteUuid }) => (
+    <OverflowText tooltipId={`${websiteUuid}-domain`}>{domain}</OverflowText>
   );
 
   const adminColumns = [
@@ -199,7 +203,7 @@ export default function WebsiteSettings() {
           title={<FormattedMessage id="label.reset-website" defaultMessage="Reset statistics" />}
         >
           <ResetForm
-            values={{ type: 'websites', id: resetWebsite.id, name: resetWebsite.name }}
+            values={{ type: 'websites', id: resetWebsite.websiteUuid, name: resetWebsite.name }}
             onSave={handleSave}
             onClose={handleClose}
           />
@@ -210,7 +214,7 @@ export default function WebsiteSettings() {
           title={<FormattedMessage id="label.delete-website" defaultMessage="Delete website" />}
         >
           <DeleteForm
-            values={{ type: 'websites', id: deleteWebsite.id, name: deleteWebsite.name }}
+            values={{ type: 'websites', id: deleteWebsite.websiteUuid, name: deleteWebsite.name }}
             onSave={handleSave}
             onClose={handleClose}
           />

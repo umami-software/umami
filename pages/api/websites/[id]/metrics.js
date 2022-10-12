@@ -1,8 +1,8 @@
-import { getPageviewMetrics, getSessionMetrics, getWebsiteById } from 'queries';
-import { ok, methodNotAllowed, unauthorized, badRequest } from 'next-basics';
 import { allowQuery } from 'lib/auth';
-import { useCors } from 'lib/middleware';
 import { FILTER_IGNORED } from 'lib/constants';
+import { useCors } from 'lib/middleware';
+import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getPageviewMetrics, getSessionMetrics, getWebsiteByUuid } from 'queries';
 
 const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
 const pageviewColumns = ['url', 'referrer', 'query'];
@@ -41,9 +41,19 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, type, start_at, end_at, url, referrer, os, browser, device, country } = req.query;
+    const {
+      id: websiteId,
+      type,
+      start_at,
+      end_at,
+      url,
+      referrer,
+      os,
+      browser,
+      device,
+      country,
+    } = req.query;
 
-    const websiteId = +id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
@@ -83,7 +93,7 @@ export default async (req, res) => {
       let domain;
 
       if (type === 'referrer') {
-        const website = await getWebsiteById(websiteId);
+        const website = await getWebsiteByUuid(websiteId);
 
         if (!website) {
           return badRequest(res);

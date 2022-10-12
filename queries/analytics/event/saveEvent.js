@@ -38,8 +38,8 @@ async function clickhouseQuery(
   const { getDateFormat, sendMessage } = kafka;
 
   const params = {
-    session_uuid: sessionUuid,
-    event_uuid: eventUuid,
+    session_id: sessionUuid,
+    event_id: eventUuid,
     website_id: websiteId,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
