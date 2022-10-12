@@ -34,8 +34,10 @@ async function relationalQuery(
     `select ${getDateQuery('pageview.created_at', unit, timezone)} t,
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from pageview
+        join website
+            on pageview.website_id = website.website_id
         ${joinSession}
-      where pageview.website_id=$1
+      where website.website_uuid='${websiteId}'
         and pageview.created_at between $2 and $3
         ${pageviewQuery}
         ${sessionQuery}

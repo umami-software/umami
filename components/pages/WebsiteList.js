@@ -27,7 +27,7 @@ export default function WebsiteList({ websites, showCharts, limit }) {
   const ordered = useMemo(
     () =>
       websites
-        .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
+        .map(website => ({ ...website, order: websiteOrder.indexOf(website.websiteUuid) || 0 }))
         .sort(firstBy('order')),
     [websites, websiteOrder],
   );
@@ -46,11 +46,11 @@ export default function WebsiteList({ websites, showCharts, limit }) {
 
   return (
     <div>
-      {ordered.map(({ id, name, domain }, index) =>
+      {ordered.map(({ websiteUuid, name, domain }, index) =>
         index < limit ? (
-          <div key={id} className={styles.website}>
+          <div key={websiteUuid} className={styles.website}>
             <WebsiteChart
-              websiteId={id}
+              websiteId={websiteUuid}
               title={name}
               domain={domain}
               showChart={showCharts}

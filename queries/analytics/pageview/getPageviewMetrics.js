@@ -22,8 +22,9 @@ async function relationalQuery(websiteId, { startDate, endDate, column, table, f
   return rawQuery(
     `select ${column} x, count(*) y
     from ${table}
+      ${` join website on ${table}.website_id = website.website_id`}
       ${joinSession}
-    where ${table}.website_id=$1
+    where website.website_uuid='${websiteId}'
       and ${table}.created_at between $2 and $3
       ${pageviewQuery}
       ${joinSession && sessionQuery}

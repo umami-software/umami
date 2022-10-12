@@ -17,8 +17,10 @@ async function relationalQuery(websiteId) {
   return prisma.rawQuery(
     `select count(distinct session_id) x
     from pageview
-    where website_id = $1
-    and created_at >= $2`,
+      join website 
+        on pageview.website_id = website.website_id
+    where website.website_uuid = '${websiteId}'
+    and pageview.created_at >= $2`,
     params,
   );
 }

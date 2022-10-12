@@ -30,11 +30,13 @@ async function relationalQuery(websiteId, { start_at, end_at, filters = {} }) {
           count(*) c,
           ${getTimestampInterval('pageview.created_at')} as "time"
         from pageview
+          join website 
+            on pageview.website_id = website.website_id
           ${joinSession}
-        where pageview.website_id=$1
-        and pageview.created_at between $2 and $3
-        ${pageviewQuery}
-        ${sessionQuery}
+        where website.website_uuid='${websiteId}'
+          and pageview.created_at between $2 and $3
+          ${pageviewQuery}
+          ${sessionQuery}
         group by 1, 2
      ) t`,
     params,
