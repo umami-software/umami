@@ -30,11 +30,13 @@ async function relationalQuery(websiteId, { start_at, end_at, filters = {} }) {
           count(*) c,
           ${getTimestampInterval('pageview.created_at')} as "time"
         from pageview
+          join website 
+            on pageview.website_id = website.website_id
           ${joinSession}
-        where pageview.website_id=$1
-        and pageview.created_at between $2 and $3
-        ${pageviewQuery}
-        ${sessionQuery}
+        where website.website_uuid='${websiteId}'
+          and pageview.created_at between $2 and $3
+          ${pageviewQuery}
+          ${sessionQuery}
         group by 1, 2
      ) t`,
     params,
@@ -49,11 +51,11 @@ async function clickhouseQuery(websiteId, { start_at, end_at, filters = {} }) {
   return rawQuery(
     `select 
        sum(t.c) as "pageviews",
-       count(distinct t.session_uuid) as "uniques",
+       count(distinct t.session_id) as "uniques",
        sum(if(t.c = 1, 1, 0)) as "bounces",
        sum(if(max_time < min_time + interval 1 hour, max_time-min_time, 0)) as "totaltime"
      from (
-       select session_uuid,
+       select session_id,
          ${getDateQuery('created_at', 'day')} time_series,
          count(*) c,
          min(created_at) min_time,
@@ -64,7 +66,7 @@ async function clickhouseQuery(websiteId, { start_at, end_at, filters = {} }) {
          and ${getBetweenDates('created_at', start_at, end_at)}
          ${pageviewQuery}
          ${sessionQuery}
-       group by session_uuid, time_series
+       group by session_id, time_series
      ) t;`,
     params,
   );

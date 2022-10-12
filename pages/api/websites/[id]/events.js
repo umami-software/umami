@@ -14,13 +14,11 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const { id, start_at, end_at, unit, tz, url, event_name } = req.query;
+    const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
 
     if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
-
-    const websiteId = +id;
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 

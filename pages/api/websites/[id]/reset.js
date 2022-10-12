@@ -3,8 +3,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 
 export default async (req, res) => {
-  const { id } = req.query;
-  const websiteId = +id;
+  const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
     if (!(await allowQuery(req))) {

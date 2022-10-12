@@ -3,9 +3,9 @@ SET allow_experimental_object_type = 1;
 -- Create Event
 CREATE TABLE event
 (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -23,13 +23,13 @@ CREATE TABLE event
     created_at DateTime('UTC')
 )
     engine = MergeTree
-        ORDER BY (website_id, session_uuid, created_at)
+        ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
 CREATE TABLE event_queue (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
     url String,
     referrer String,
     hostname LowCardinality(String),
@@ -44,7 +44,7 @@ CREATE TABLE event_queue (
     created_at DateTime('UTC')
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
+SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
        kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
@@ -53,8 +53,8 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
 
 CREATE MATERIALIZED VIEW event_queue_mv TO event AS
 SELECT website_id,
-    session_uuid,
-    event_uuid,
+    session_id,
+    event_id,
     url,
     referrer,
     hostname,
