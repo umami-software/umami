@@ -13,7 +13,7 @@ function relationalQuery(websites, start_at) {
   return prisma.client.event.findMany({
     where: {
       website: {
-        id: {
+        websiteUuid: {
           in: websites,
         },
       },

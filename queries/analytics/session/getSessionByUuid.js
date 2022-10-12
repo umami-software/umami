@@ -19,7 +19,7 @@ async function relationalQuery(sessionUuid) {
     })
     .then(async res => {
       if (redis.client && res) {
-        await redis.client.set(`session:${res.sessionUuid}`, res.sessionId);
+        await redis.client.set(`session:${res.sessionUuid}`, 1);
       }
 
       return res;
@@ -32,7 +32,7 @@ async function clickhouseQuery(sessionUuid) {
 
   return rawQuery(
     `select distinct
-      session_uuid, 
+      session_id, 
       website_id, 
       created_at, 
       hostname, 
@@ -43,7 +43,7 @@ async function clickhouseQuery(sessionUuid) {
       language, 
       country 
     from event
-    where session_uuid = $1`,
+    where session_id = $1`,
     params,
   )
     .then(result => findFirst(result))

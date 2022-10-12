@@ -44,7 +44,7 @@ CREATE TABLE event_queue (
     created_at DateTime('UTC')
 )
 ENGINE = Kafka
-SETTINGS kafka_broker_list = 'dev-01.umami.dev:9092,dev-01.umami.dev:9093,dev-01.umami.dev:9094', -- input broker list
+SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
        kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
