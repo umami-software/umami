@@ -30,7 +30,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { name, domain, owner, enable_share_url } = req.body;
+    const { name, domain, owner, enableShareUrl } = req.body;
 
     const website_owner = account ? account.id : +owner;
 
@@ -39,7 +39,7 @@ export default async (req, res) => {
     }
 
     const websiteUuid = uuid();
-    const shareId = enable_share_url ? getRandomChars(8) : null;
+    const shareId = enableShareUrl ? getRandomChars(8) : null;
     const website = await createWebsite(website_owner, { websiteUuid, name, domain, shareId });
 
     return ok(res, website);

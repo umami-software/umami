@@ -2,14 +2,15 @@ import moment from 'moment-timezone';
 import { getPageviewStats } from 'queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
-import { useCors } from 'lib/middleware';
+import { useAuth, useCors } from 'lib/middleware';
 
 const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export default async (req, res) => {
-  if (req.method === 'GET') {
-    await useCors(req, res);
+  await useCors(req, res);
+  await useAuth(req, res);
 
+  if (req.method === 'GET') {
     if (!(await allowQuery(req))) {
       return unauthorized(res);
     }

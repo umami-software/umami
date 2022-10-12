@@ -94,7 +94,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
   return (
     <FormLayout>
       <Formik
-        initialValues={{ ...initialValues, ...values, enable_share_url: !!values?.shareId }}
+        initialValues={{ ...initialValues, ...values, enableShareUrl: !!values?.shareId }}
         validate={validate}
         onSubmit={handleSubmit}
       >
@@ -128,7 +128,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
             <OwnerDropDown accounts={accounts} user={user} />
             <FormRow>
               <label />
-              <Field name="enable_share_url">
+              <Field name="enableShareUrl">
                 {({ field }) => (
                   <Checkbox
                     {...field}

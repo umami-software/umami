@@ -1,6 +1,6 @@
 import { allowQuery } from 'lib/auth';
 import { FILTER_IGNORED } from 'lib/constants';
-import { useCors } from 'lib/middleware';
+import { useAuth, useCors } from 'lib/middleware';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewMetrics, getSessionMetrics, getWebsiteByUuid } from 'queries';
 
@@ -34,9 +34,10 @@ function getColumn(type) {
 }
 
 export default async (req, res) => {
-  if (req.method === 'GET') {
-    await useCors(req, res);
+  await useCors(req, res);
+  await useAuth(req, res);
 
+  if (req.method === 'GET') {
     if (!(await allowQuery(req))) {
       return unauthorized(res);
     }

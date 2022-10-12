@@ -1,47 +1,42 @@
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteWebsite, getAccount, getWebsite, getWebsiteByUuid, updateWebsite } from 'queries';
+import { deleteWebsite, getAccount, getWebsite, updateWebsite } from 'queries';
 
 export default async (req, res) => {
+  await useCors(req, res);
+  await useAuth(req, res);
+
   const { id: websiteId } = req.query;
 
+  if (!(await allowQuery(req))) {
+    return unauthorized(res);
+  }
+
   if (req.method === 'GET') {
-    await useCors(req, res);
-
-    if (!(await allowQuery(req))) {
-      return unauthorized(res);
-    }
-
-    const website = await getWebsiteByUuid(websiteId);
+    const website = await getWebsite({ websiteUuid: websiteId });
 
     return ok(res, website);
   }
 
   if (req.method === 'POST') {
-    await useAuth(req, res);
-
-    const { isAdmin: currentUserIsAdmin, userId: currentUserId, accountUuid } = req.auth;
-    const { name, domain, owner, enable_share_url } = req.body;
+    const { name, domain, owner, enableShareUrl, shareId } = req.body;
+    const { accountUuid } = req.auth;
     let account;
 
     if (accountUuid) {
       account = await getAccount({ accountUuid });
     }
 
-    const website = await getWebsite(websiteId);
+    const website = await getWebsite({ websiteUuid: websiteId });
 
-    const shareId = enable_share_url ? website.shareId || getRandomChars(8) : null;
-
-    if (website.userId !== currentUserId && !currentUserIsAdmin) {
-      return unauthorized(res);
-    }
+    const newShareId = enableShareUrl ? website.shareId || getRandomChars(8) : null;
 
     await updateWebsite(
       {
         name,
         domain,
-        shareId: shareId,
+        shareId: shareId ? shareId : newShareId,
         userId: account ? account.id : +owner,
       },
       { websiteUuid: websiteId },

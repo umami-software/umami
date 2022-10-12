@@ -1,32 +1,31 @@
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getAccountById, deleteAccount, getAccountByUsername, updateAccount } from 'queries';
+import { getAccount, deleteAccount, updateAccount } from 'queries';
 import { useAuth } from 'lib/middleware';
 
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { is_admin: currentUserIsAdmin, user_id: currentUserId } = req.auth;
+  const { isAdmin, userId } = req.auth;
   const { id } = req.query;
-  const userId = +id;
 
   if (req.method === 'GET') {
-    if (userId !== currentUserId && !currentUserIsAdmin) {
+    if (id !== userId && !isAdmin) {
       return unauthorized(res);
     }
 
-    const account = await getAccountById(userId);
+    const account = await getAccount({ id: +id });
 
     return ok(res, account);
   }
 
   if (req.method === 'POST') {
-    const { username, password, is_admin } = req.body;
+    const { username, password } = req.body;
 
-    if (userId !== currentUserId && !currentUserIsAdmin) {
+    if (id !== userId && !isAdmin) {
       return unauthorized(res);
     }
 
-    const account = await getAccountById(userId);
+    const account = await getAccount({ id: +id });
 
     const data = {};
 
@@ -35,27 +34,26 @@ export default async (req, res) => {
     }
 
     // Only admin can change these fields
-    if (currentUserIsAdmin) {
+    if (isAdmin) {
       data.username = username;
-      data.isAdmin = is_admin;
     }
 
     // Check when username changes
     if (data.username && account.username !== data.username) {
-      const accountByUsername = await getAccountByUsername(username);
+      const accountByUsername = await getAccount({ username });
 
       if (accountByUsername) {
         return badRequest(res, 'Account already exists');
       }
     }
 
-    const updated = await updateAccount(userId, data);
+    const updated = await updateAccount(data, { id: +id });
 
     return ok(res, updated);
   }
 
   if (req.method === 'DELETE') {
-    if (!currentUserIsAdmin) {
+    if (!isAdmin) {
       return unauthorized(res);
     }
 

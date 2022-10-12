@@ -1,12 +1,13 @@
 import { getWebsiteStats } from 'queries';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
-import { useCors } from 'lib/middleware';
+import { useAuth, useCors } from 'lib/middleware';
 
 export default async (req, res) => {
-  if (req.method === 'GET') {
-    await useCors(req, res);
+  await useCors(req, res);
+  await useAuth(req, res);
 
+  if (req.method === 'GET') {
     if (!(await allowQuery(req))) {
       return unauthorized(res);
     }
