@@ -38,9 +38,11 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            <Link href="/settings">
-              <FormattedMessage id="label.settings" defaultMessage="Settings" />
-            </Link>
+            {!process.env.isCloudMode && (
+              <Link href="/settings">
+                <FormattedMessage id="label.settings" defaultMessage="Settings" />
+              </Link>
+            )}
           </div>
         )}
         <div className={styles.buttons}>
