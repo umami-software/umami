@@ -6,7 +6,7 @@ import useRequireLogin from 'hooks/useRequireLogin';
 export default function SettingsPage() {
   const { loading } = useRequireLogin();
 
-  if (loading) {
+  if (process.env.isCloudMode || loading) {
     return null;
   }
 

@@ -25,7 +25,11 @@ export default function UserButton() {
       value: 'username',
       className: styles.username,
     },
-    { label: <FormattedMessage id="label.profile" defaultMessage="Profile" />, value: 'profile' },
+    {
+      label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
+      value: 'profile',
+      hidden: process.env.isCloudMode,
+    },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];
 
