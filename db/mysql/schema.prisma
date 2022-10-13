@@ -69,6 +69,8 @@ model session {
   screen       String?    @db.VarChar(11)
   language     String?    @db.VarChar(35)
   country      String?    @db.Char(2)
+  ip           String?    @db.VarChar(255)
+  user_agent   String?    @db.Text
   website      website    @relation(fields: [website_id], references: [website_id])
   event        event[]
   pageview     pageview[]

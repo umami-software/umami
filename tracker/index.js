@@ -86,7 +86,10 @@
     return fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify({ type, payload }),
-      headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
+      headers: assign(
+        { 'Content-Type': 'application/json' },
+        { ['x-umami-cache']: cache, ['x-lemonsquare-cache']: cache },
+      ),
     })
       .then(res => res.text())
       .then(text => (cache = text));
@@ -194,6 +197,7 @@
     umami.trackEvent = trackEvent;
 
     window.umami = umami;
+    window.lemonsquare = umami;
   }
 
   /* Start */
