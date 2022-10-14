@@ -1,0 +1,31 @@
+replicaCount: 1
+
+ENVIRONMENT: alpha
+
+envFrom:
+  - secretRef:
+      name: lemon-umami
+
+autoscaling:
+  enabled: false
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: analytics.alpha-lemon.cchan.tv
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: 
+    - secretName: lemon-umami-alpha-tls
+      hosts:
+        - analytics.alpha-lemon.cchan.tv
+

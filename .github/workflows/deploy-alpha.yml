@@ -1,4 +1,4 @@
-name: Lemon Umami Alpha - Build Docker
+name: Lemon Umami Alpha - CD
 
 on:
   push:
@@ -52,30 +52,30 @@ jobs:
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}_$IMAGE_TAG \
             --push
       
-  # rollout:
-  #   needs: update_config
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: AWS Credentials
-  #       uses: aws-actions/configure-aws-credentials@v1
-  #       with:
-  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  #         aws-region: ${{ env.AWS_REGION }}
-  #     - name: helm deploy
-  #       uses: koslib/helm-eks-action@master
-  #       env:
-  #         KUBE_CONFIG_DATA: ${{ secrets.EKS_ALPHA }}
-  #         IMAGE_TAG: ${{ github.sha }}
-  #       with:
-  #         command: |
-  #           helm upgrade lemon-api helm/apps/lemon-api -i \
-  #             --values helm/apps/lemon-api/values.yaml \
-  #             -f helm/apps/lemon-api/env-alpha.yaml \
-  #             --set image.tag=${{ env.ENVIRONMENT }}_$IMAGE_TAG \
-  #             --set environment=${{ env.ENVIRONMENT }} \
-  #             -n alpha
+  rollout:
+    needs: update_config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: helm deploy
+        uses: koslib/helm-eks-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.EKS_ALPHA }}
+          IMAGE_TAG: ${{ github.sha }}
+        with:
+          command: |
+            helm upgrade lemon-umami helm/lemon-umami -i \
+              --values helm/lemon-umami/values.yaml \
+              -f helm/lemon-umami/env-alpha.yaml \
+              --set image.tag=${{ env.ENVIRONMENT }}_$IMAGE_TAG \
+              --set environment=${{ env.ENVIRONMENT }} \
+              -n alpha
 
   slackNotification:
     needs: build_and_publish
