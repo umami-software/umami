@@ -16,6 +16,8 @@ model account {
   updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamp(0)
   accountUuid String    @unique() @map("account_uuid") @db.VarChar(36)
   website     website[]
+
+  @@index([accountUuid])
 }
 
 model event {
@@ -25,6 +27,7 @@ model event {
   createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
   url       String     @db.VarChar(500)
   eventName String     @map("event_name") @db.VarChar(50)
+  eventUuid String     @unique() @map("event_uuid") @db.VarChar(36)
   session   session    @relation(fields: [sessionId], references: [id])
   website   website    @relation(fields: [websiteId], references: [id])
   eventData eventData?
@@ -32,6 +35,7 @@ model event {
   @@index([createdAt])
   @@index([sessionId])
   @@index([websiteId])
+  @@index([eventUuid])
 }
 
 model eventData {
@@ -78,6 +82,7 @@ model session {
 
   @@index([createdAt])
   @@index([websiteId])
+  @@index([sessionUuid])
 }
 
 model website {
@@ -94,4 +99,5 @@ model website {
   session     session[]
 
   @@index([userId])
+  @@index([websiteUuid])
 }
