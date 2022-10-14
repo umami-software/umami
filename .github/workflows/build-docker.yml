@@ -47,7 +47,7 @@ jobs:
         run: |
           docker buildx build . \
             --build-arg DATABASE_TYPE=mysql \
-            --build-arg BASE_PATH=/ \
+            --build-arg BASE_PATH= \
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}-latest \
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}_$IMAGE_TAG \
             --push
@@ -76,7 +76,7 @@ jobs:
   #             --set image.tag=${{ env.ENVIRONMENT }}_$IMAGE_TAG \
   #             --set environment=${{ env.ENVIRONMENT }} \
   #             -n alpha
-  
+
   slackNotification:
     needs: build_and_publish
     name: Slack Notification
