@@ -62,8 +62,9 @@
     : currentScript.src.split('/').slice(0, -1).join('/');
   const endpoint = `${root}/api/collect`;
   const screen = `${width}x${height}`;
-  const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
+  const eventClass = /^(umami|lemonsquare)--([a-z]+)--([\w]+[\w-]*)$/;
   const eventSelect = "[class*='umami--']";
+  const eventSelectLemonsquare = "[class*='lemonsquare--']";
 
   let listeners = {};
   let currentUrl = `${pathname}${search}`;
@@ -121,6 +122,8 @@
   const addEvents = node => {
     const elements = node.querySelectorAll(eventSelect);
     Array.prototype.forEach.call(elements, addEvent);
+    const elementsLemonsquare = node.querySelectorAll(eventSelectLemonsquare);
+    Array.prototype.forEach.call(elementsLemonsquare, addEvent);
   };
 
   const addEvent = element => {
