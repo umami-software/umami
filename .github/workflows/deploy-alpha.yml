@@ -53,7 +53,7 @@ jobs:
             --push
       
   rollout:
-    needs: update_config
+    needs: build_and_publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -78,7 +78,7 @@ jobs:
               -n alpha
 
   slackNotification:
-    needs: build_and_publish
+    needs: rollout
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
