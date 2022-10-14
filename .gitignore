@@ -38,3 +38,5 @@ yarn-error.log*
 
 *.dev.yml
 
+
+**/secret.sh
