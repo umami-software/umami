@@ -70,6 +70,7 @@
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
   let cache;
+  let ip;
 
   /* Collect metrics */
 
@@ -79,9 +80,26 @@
     screen,
     language,
     url: currentUrl,
+    ip,
   });
 
+  const getClientIPAddress = () => {
+    if (ip) return ip;
+    fetch('https://api64.ipify.org/?format=json')
+      .then(res => res.json())
+      .then(data => {
+        ip = data.ip;
+      });
+  };
+
   const collect = (type, payload) => {
+    if (!ip) {
+      setTimeout(() => {
+        collect(type, payload);
+      }, 100);
+      return;
+    }
+
     if (trackingDisabled()) return;
 
     return fetch(endpoint, {
@@ -193,6 +211,7 @@
   };
 
   /* Global */
+  getClientIPAddress();
 
   if (!window.umami) {
     const umami = eventValue => trackEvent(eventValue);
