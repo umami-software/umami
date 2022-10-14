@@ -1,0 +1,1 @@
+docker build --build-arg DATABASE_TYPE=mysql --build-arg BASE_PATH=/ --tag umami-mysql:latest .

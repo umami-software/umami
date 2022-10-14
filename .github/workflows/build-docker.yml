@@ -1,0 +1,88 @@
+name: Lemon Umami Alpha - Build Docker
+
+on:
+  push:
+    branches:
+      - meza/initial-setup
+
+env:
+  AWS_REGION: 'ap-northeast-1'
+  ECR_REPOSITORY: 'lemon-umami-mysql'
+  ECR_REGISTRY: '730220438133.dkr.ecr.ap-northeast-1.amazonaws.com'
+  ENVIRONMENT: 'alpha'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ env.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker buildx build . \
+            --build-arg DATABASE_TYPE=mysql \
+            --build-arg BASE_PATH=/ \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}-latest \
+            --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}_$IMAGE_TAG \
+            --push
+      
+  # rollout:
+  #   needs: update_config
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: AWS Credentials
+  #       uses: aws-actions/configure-aws-credentials@v1
+  #       with:
+  #         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  #         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #         aws-region: ${{ env.AWS_REGION }}
+  #     - name: helm deploy
+  #       uses: koslib/helm-eks-action@master
+  #       env:
+  #         KUBE_CONFIG_DATA: ${{ secrets.EKS_ALPHA }}
+  #         IMAGE_TAG: ${{ github.sha }}
+  #       with:
+  #         command: |
+  #           helm upgrade lemon-api helm/apps/lemon-api -i \
+  #             --values helm/apps/lemon-api/values.yaml \
+  #             -f helm/apps/lemon-api/env-alpha.yaml \
+  #             --set image.tag=${{ env.ENVIRONMENT }}_$IMAGE_TAG \
+  #             --set environment=${{ env.ENVIRONMENT }} \
+  #             -n alpha
+  slackNotification:
+    needs: build_and_publish
+    name: Slack Notification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
