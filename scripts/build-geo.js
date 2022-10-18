@@ -20,14 +20,8 @@ if (process.env.MAXMIND_LICENSE_KEY) {
 
 const dest = path.resolve(__dirname, '../node_modules/.geo');
 
-const citiesDest = path.resolve(__dirname, '../node_modules/.cities-geo');
-
 if (!fs.existsSync(dest)) {
   fs.mkdirSync(dest);
-}
-
-if (!fs.existsSync(citiesDest)) {
-  fs.mkdirSync(citiesDest);
 }
 
 const download = url =>
@@ -62,7 +56,7 @@ download(citiesUrl).then(
     new Promise((resolve, reject) => {
       res.on('entry', entry => {
         if (entry.path.endsWith('.mmdb')) {
-          const filename = path.join(citiesDest, path.basename(entry.path));
+          const filename = path.join(dest, path.basename(entry.path));
           entry.pipe(fs.createWriteStream(filename));
 
           console.log('Saved cities geo database:', filename);
