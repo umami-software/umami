@@ -71,7 +71,6 @@
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
   let cache;
-  let ip;
 
   /* Collect metrics */
 
@@ -81,40 +80,9 @@
     screen,
     language,
     url: currentUrl,
-    ip,
   });
 
-  const getClientIPAddress = () => {
-    return new Promise((res, rej) => {
-      if (window.ip || ip) {
-        ip = ip || window.ip;
-        res(ip);
-        return;
-      }
-      console.log('fetching user ip');
-      fetch('https://api64.ipify.org/?format=json')
-        .then(res => res.json())
-        .then(data => {
-          ip = data.ip;
-          window.ip = data.ip;
-          res(ip);
-          return;
-        })
-        .catch(err => {
-          console.error(err);
-          rej(err);
-        });
-    });
-  };
-
   const collect = (type, payload) => {
-    if (!ip) {
-      setTimeout(() => {
-        collect(type, payload);
-      }, 100);
-      return;
-    }
-
     if (trackingDisabled()) return;
 
     return fetch(endpoint, {
@@ -226,38 +194,36 @@
   };
 
   /* Global */
-  getClientIPAddress().then(() => {
-    if (!window.umami) {
-      const umami = eventValue => trackEvent(eventValue);
-      umami.trackView = trackView;
-      umami.trackEvent = trackEvent;
+  if (!window.umami) {
+    const umami = eventValue => trackEvent(eventValue);
+    umami.trackView = trackView;
+    umami.trackEvent = trackEvent;
 
-      window.umami = umami;
-      window.lemonsquare = umami;
+    window.umami = umami;
+    window.lemonsquare = umami;
 
-      console.log('LemonSquare is ready to track your events!');
-    }
+    console.log('LemonSquare is ready to track your events!');
+  }
 
-    /* Start */
+  /* Start */
 
-    if (autoTrack && !trackingDisabled()) {
-      history.pushState = hook(history, 'pushState', handlePush);
-      history.replaceState = hook(history, 'replaceState', handlePush);
+  if (autoTrack && !trackingDisabled()) {
+    history.pushState = hook(history, 'pushState', handlePush);
+    history.replaceState = hook(history, 'replaceState', handlePush);
 
-      const update = () => {
-        if (document.readyState === 'complete') {
-          trackView();
+    const update = () => {
+      if (document.readyState === 'complete') {
+        trackView();
 
-          if (cssEvents) {
-            addEvents(document);
-            observeDocument();
-          }
+        if (cssEvents) {
+          addEvents(document);
+          observeDocument();
         }
-      };
+      }
+    };
 
-      document.addEventListener('readystatechange', update, true);
+    document.addEventListener('readystatechange', update, true);
 
-      update();
-    }
-  });
+    update();
+  }
 })(window);
