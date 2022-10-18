@@ -21,6 +21,7 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/compute-full-forwarded-for: "true"
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
+    nginx.ingress.kubernetes.io/forwarded-for-header: "LS-Connecting-IP"
   hosts:
     - host: analytics.alpha-lemon.cchan.tv
       paths:
