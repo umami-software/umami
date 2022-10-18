@@ -86,9 +86,9 @@
 
   const getClientIPAddress = () => {
     return new Promise((res, rej) => {
-      if (window.ip) {
-        ip = window.ip;
-        res(window.ip);
+      if (window.ip || ip) {
+        ip = ip || window.ip;
+        res(ip);
         return;
       }
       fetch('https://api64.ipify.org/?format=json')
