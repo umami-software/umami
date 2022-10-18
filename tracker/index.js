@@ -91,6 +91,7 @@
         res(ip);
         return;
       }
+      console.log('fetching user ip');
       fetch('https://api64.ipify.org/?format=json')
         .then(res => res.json())
         .then(data => {
