@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
@@ -38,6 +39,7 @@ export default async (req, res) => {
     const clientIp = getIpAddress(req);
 
     const blocked = ips.find(ip => {
+      console.log('collect.js', ip, clientIp);
       if (ip === clientIp) return true;
 
       // CIDR notation
