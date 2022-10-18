@@ -64,7 +64,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: helm deploy
-        uses: koslib/helm-eks-action@master
+        uses: koslib/helm-eks-action@v1.25.0
         env:
           KUBE_CONFIG_DATA: ${{ secrets.EKS_ALPHA }}
           IMAGE_TAG: ${{ github.sha }}
