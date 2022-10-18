@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -8,6 +9,9 @@ const tar = require('tar');
 let url =
   'https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/GeoLite2-Country.tar.gz';
 
+let citiesUrl =
+  'https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/GeoLite2-City.tar.gz';
+
 if (process.env.MAXMIND_LICENSE_KEY) {
   url =
     `https://download.maxmind.com/app/geoip_download` +
@@ -16,8 +20,14 @@ if (process.env.MAXMIND_LICENSE_KEY) {
 
 const dest = path.resolve(__dirname, '../node_modules/.geo');
 
+const citiesDest = path.resolve(__dirname, '../node_modules/.cities-geo');
+
 if (!fs.existsSync(dest)) {
   fs.mkdirSync(dest);
+}
+
+if (!fs.existsSync(citiesDest)) {
+  fs.mkdirSync(citiesDest);
 }
 
 const download = url =>
@@ -35,7 +45,27 @@ download(url).then(
           const filename = path.join(dest, path.basename(entry.path));
           entry.pipe(fs.createWriteStream(filename));
 
-          console.log('Saved geo database:', filename);
+          console.log('Saved countries geo database:', filename);
+        }
+      });
+
+      res.on('error', e => {
+        reject(e);
+      });
+      res.on('finish', () => {
+        resolve();
+      });
+    }),
+);
+download(citiesUrl).then(
+  res =>
+    new Promise((resolve, reject) => {
+      res.on('entry', entry => {
+        if (entry.path.endsWith('.mmdb')) {
+          const filename = path.join(citiesDest, path.basename(entry.path));
+          entry.pipe(fs.createWriteStream(filename));
+
+          console.log('Saved cities geo database:', filename);
         }
       });
 
