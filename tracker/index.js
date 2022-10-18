@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (window => {
   const {
     screen: { width, height },
@@ -84,7 +85,7 @@
   });
 
   const getClientIPAddress = () => {
-    return new Promise(res => {
+    return new Promise((res, rej) => {
       if (ip) {
         res(ip);
         return;
@@ -95,6 +96,10 @@
           ip = data.ip;
           res(ip);
           return;
+        })
+        .catch(err => {
+          console.error(err);
+          rej(err);
         });
     });
   };
