@@ -58,7 +58,11 @@ document.head.appendChild(script);
 // };
 
 // analytics.subscribe('page_viewed', async event => {
-//   lemonsquare.trackView(event.url, event.referrer);
+//   lemonsquare.trackView(
+//     event.context.location.pathname,
+//     event.context.document.referrer,
+//     WEBSITE_ID,
+//   );
 // });
 
 // // product_viewed Event
