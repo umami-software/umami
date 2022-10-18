@@ -233,6 +233,8 @@
 
       window.umami = umami;
       window.lemonsquare = umami;
+
+      console.log('LemonSquare is ready to track your events!');
     }
 
     /* Start */
