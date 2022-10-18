@@ -19,6 +19,7 @@
 
 - [ ] ~~Add process.env.MAXMIND_LICENSE_KEY for more accurate city geolocation ($100 / month)~~
 - [x] Add crossdomain support
+- [ ] Fix issue with aws/nginx ingress.
 
 ## About
 
