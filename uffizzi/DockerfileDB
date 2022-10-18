@@ -1,0 +1,3 @@
+FROM postgres:12-alpine
+
+COPY ./sql/schema.postgresql.sql /docker-entrypoint-initdb.d/schema.postgresql.sql

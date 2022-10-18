@@ -1,0 +1,44 @@
+version: '3'
+
+x-uffizzi:
+  ingress:
+    service: umami
+    port: 3000
+  continuous_previews:
+    deploy_preview_when_pull_request_is_opened: true
+    delete_preview_when_pull_request_is_closed: true
+    share_to_github: true
+
+services:
+  umami:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+      args:
+        - DATABASE_TYPE=postgresql
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://umami:umami@localhost:5432/umami
+      DATABASE_TYPE: postgresql
+      HASH_SALT: replace-me-with-a-random-string
+    depends_on:
+      - db
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+  db:
+    build:
+      context: ./
+      dockerfile: ./uffizzi/DockerfileDB
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: umami
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 500M 
