@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (window => {
   const {
     screen: { width, height },
@@ -84,12 +85,23 @@
   });
 
   const getClientIPAddress = () => {
-    if (ip) return ip;
-    fetch('https://api64.ipify.org/?format=json')
-      .then(res => res.json())
-      .then(data => {
-        ip = data.ip;
-      });
+    return new Promise((res, rej) => {
+      if (ip) {
+        res(ip);
+        return;
+      }
+      fetch('https://api64.ipify.org/?format=json')
+        .then(res => res.json())
+        .then(data => {
+          ip = data.ip;
+          res(ip);
+          return;
+        })
+        .catch(err => {
+          console.error(err);
+          rej(err);
+        });
+    });
   };
 
   const collect = (type, payload) => {
@@ -211,36 +223,36 @@
   };
 
   /* Global */
-  getClientIPAddress();
+  getClientIPAddress().then(() => {
+    if (!window.umami) {
+      const umami = eventValue => trackEvent(eventValue);
+      umami.trackView = trackView;
+      umami.trackEvent = trackEvent;
 
-  if (!window.umami) {
-    const umami = eventValue => trackEvent(eventValue);
-    umami.trackView = trackView;
-    umami.trackEvent = trackEvent;
+      window.umami = umami;
+      window.lemonsquare = umami;
+    }
 
-    window.umami = umami;
-    window.lemonsquare = umami;
-  }
+    /* Start */
 
-  /* Start */
+    if (autoTrack && !trackingDisabled()) {
+      history.pushState = hook(history, 'pushState', handlePush);
+      history.replaceState = hook(history, 'replaceState', handlePush);
 
-  if (autoTrack && !trackingDisabled()) {
-    history.pushState = hook(history, 'pushState', handlePush);
-    history.replaceState = hook(history, 'replaceState', handlePush);
+      const update = () => {
+        if (document.readyState === 'complete') {
+          trackView();
 
-    const update = () => {
-      if (document.readyState === 'complete') {
-        trackView();
-
-        if (cssEvents) {
-          addEvents(document);
-          observeDocument();
+          if (cssEvents) {
+            addEvents(document);
+            observeDocument();
+          }
         }
-      }
-    };
+      };
 
-    document.addEventListener('readystatechange', update, true);
+      document.addEventListener('readystatechange', update, true);
 
-    update();
-  }
+      update();
+    }
+  });
 })(window);
