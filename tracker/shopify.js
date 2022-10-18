@@ -19,7 +19,7 @@ document.head.appendChild(script);
 
 // https://shopify.dev/api/pixels/customer-events
 
-// // Event structure
+// Event structure
 // const event_structure = {
 //   id: 'id of the event',
 //   clientId: 'id of the client',
@@ -52,22 +52,22 @@ document.head.appendChild(script);
 //   },
 // };
 
-// // page_viewed Event
+// page_viewed Event
 // const page_viewed = {
-//   // ...event_structure
+// ...event_structure
 // };
 
-// analytics.subscribe('page_viewed', async event => {
-//   lemonsquare.trackView(
-//     event.context.location.pathname,
-//     event.context.document.referrer,
-//     WEBSITE_ID,
-//   );
-// });
+analytics.subscribe('page_viewed', async event => {
+  window.lemonsquare.trackView(
+    event.context.location.pathname,
+    event.context.document.referrer,
+    WEBSITE_ID,
+  );
+});
 
-// // product_viewed Event
+// product_viewed Event
 // const product_viewed = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     productVariant: {
 //       id: 'globally unique identifier',
@@ -89,11 +89,18 @@ document.head.appendChild(script);
 //   },
 // };
 
-// analytics.subscribe('product_viewed', async event => {});
+analytics.subscribe('product_viewed', async event => {
+  window.lemonsquare.trackEvent(
+    'product_viewed',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // product_added_to_cart event
+// product_added_to_cart event
 // const product_added_to_cart = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     cartLine: {
 //       cost: {
@@ -103,18 +110,25 @@ document.head.appendChild(script);
 //         },
 //       },
 //       merchandise: {
-//         // ...product_viewed.data.productVariant
+// ...product_viewed.data.productVariant
 //       },
 //       quantity: 0,
 //     },
 //   },
 // };
 
-// analytics.subscribe('product_added_to_cart', async event => {});
+analytics.subscribe('product_added_to_cart', async event => {
+  window.lemonsquare.trackEvent(
+    'product_added_to_cart',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // collection_viewed event
+// collection_viewed event
 // const collection_viewed = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     collection: {
 //       id: 'globally unique identifier',
@@ -123,11 +137,18 @@ document.head.appendChild(script);
 //   },
 // };
 
-// analytics.subscribe('collection_viewed', async event => {});
+analytics.subscribe('collection_viewed', async event => {
+  window.lemonsquare.trackEvent(
+    'collection_viewed',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // search_submitted event
+// search_submitted event
 // const search_submitted = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     searchResult: {
 //       query: 'the query string',
@@ -135,11 +156,18 @@ document.head.appendChild(script);
 //   },
 // };
 
-// analytics.subscribe('search_submitted', async event => {});
+analytics.subscribe('search_submitted', async event => {
+  window.lemonsquare.trackEvent(
+    'search_submitted',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // checkout_started event
+// checkout_started event
 // const checkout_started = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     checkout: {
 //       currencyCode: 'string',
@@ -148,7 +176,7 @@ document.head.appendChild(script);
 //           quantity: 0,
 //           title: 'string',
 //           variant: {
-//             // ...product_viewed.data.productVariant
+// ...product_viewed.data.productVariant
 //           },
 //         },
 //       ],
@@ -178,28 +206,49 @@ document.head.appendChild(script);
 //   },
 // };
 
-// analytics.subscribe('checkout_started', async event => {});
+analytics.subscribe('checkout_started', async event => {
+  window.lemonsquare.trackEvent(
+    'checkout_started',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // payment_info_submitted event
+// payment_info_submitted event
 // const payment_info_submitted = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     checkout: {
-//       // ...checkout_started.data.checkout
+// ...checkout_started.data.checkout
 //     },
 //   },
 // };
 
-// analytics.subscribe('payment_info_submitted', async event => {});
+analytics.subscribe('payment_info_submitted', async event => {
+  window.lemonsquare.trackEvent(
+    'payment_info_submitted',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
 
-// // checkout_completed event
+// checkout_completed event
 // const checkout_completed = {
-//   // ...event_structure
+// ...event_structure
 //   data: {
 //     checkout: {
-//       // ...checkout_started.data.checkout
+// ...checkout_started.data.checkout
 //     },
 //   },
 // };
 
-// analytics.subscribe('checkout_completed', async event => {});
+analytics.subscribe('checkout_completed', async event => {
+  window.lemonsquare.trackEvent(
+    'checkout_completed',
+    event.data,
+    event.context.location.pathname,
+    WEBSITE_ID,
+  );
+});
