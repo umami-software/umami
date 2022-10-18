@@ -24,9 +24,9 @@ export default function TestConsole() {
     return null;
   }
 
-  const options = data.map(({ name, websiteId }) => ({ label: name, value: websiteId }));
-  const website = data.find(({ websiteId }) => websiteId === +websiteId);
-  const selectedValue = options.find(({ value }) => value === website?.websiteId)?.value;
+  const options = data.map(({ name, websiteUuid }) => ({ label: name, value: websiteUuid }));
+  const website = data.find(({ websiteUuid }) => websiteId === websiteUuid);
+  const selectedValue = options.find(({ value }) => value === website?.websiteUuid)?.value;
 
   function handleSelect(value) {
     router.push(`/console/${value}`);
@@ -104,13 +104,13 @@ export default function TestConsole() {
           <div className="row">
             <div className="col-12">
               <WebsiteChart
-                websiteId={website.websiteId}
+                websiteId={website.websiteUuid}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
               <PageHeader>Events</PageHeader>
-              <EventsChart websiteId={website.websiteId} />
+              <EventsChart websiteId={website.websiteUuid} />
             </div>
           </div>
         </>

@@ -18,3 +18,9 @@ export default function ConsolePage({ enabled }) {
     </Layout>
   );
 }
+
+export async function getServerSideProps() {
+  return {
+    props: { enabled: !!process.env.ENABLE_TEST_CONSOLE },
+  };
+}

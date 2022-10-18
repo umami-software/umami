@@ -58,13 +58,11 @@ export default async (req, res) => {
 
   await useSession(req, res);
 
-  const {
-    session: { website, session },
-  } = req;
+  const { website, session } = req.session;
 
   const { type, payload } = getJsonBody(req);
 
-  let { url, referrer, eventName, eventData } = payload;
+  let { url, referrer, event_name: eventName, event_data: eventData } = payload;
 
   if (process.env.REMOVE_TRAILING_SLASH) {
     url = url.replace(/\/$/, '');
@@ -88,9 +86,8 @@ export default async (req, res) => {
 
   const token = createToken(
     {
-      websiteId: website.websiteUuid,
-      sessionId: session.sessionId,
-      sessionUuid: session.sessionUuid,
+      website,
+      session,
     },
     secret(),
   );

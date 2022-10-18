@@ -12,13 +12,14 @@ export async function saveEvent(...args) {
 
 async function relationalQuery(
   { websiteId },
-  { session: { id: sessionId }, url, eventName, eventData },
+  { session: { id: sessionId }, eventUuid, url, eventName, eventData },
 ) {
   const data = {
     websiteId,
     sessionId,
     url: url?.substring(0, URL_LENGTH),
     eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
+    eventUuid,
   };
 
   if (eventData) {
@@ -47,7 +48,7 @@ async function clickhouseQuery(
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
-    event_data: JSON.stringify(eventData),
+    event_data: eventData ? JSON.stringify(eventData) : null,
     ...sessionArgs,
     country: country ? country : null,
   };
