@@ -86,14 +86,16 @@
 
   const getClientIPAddress = () => {
     return new Promise((res, rej) => {
-      if (ip) {
-        res(ip);
+      if (window.ip) {
+        ip = window.ip;
+        res(window.ip);
         return;
       }
       fetch('https://api64.ipify.org/?format=json')
         .then(res => res.json())
         .then(data => {
           ip = data.ip;
+          window.ip = data.ip;
           res(ip);
           return;
         })
