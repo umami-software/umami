@@ -16,7 +16,7 @@ service:
 
 ingress:
   enabled: true
-  className: nginx
+  className: nginx-new
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
