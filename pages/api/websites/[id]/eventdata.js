@@ -4,8 +4,6 @@ import { ok, badRequest, methodNotAllowed, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 
-const unitTypes = ['year', 'month', 'hour', 'day'];
-
 export default async (req, res) => {
   await useCors(req, res);
   await useAuth(req, res);
@@ -15,18 +13,11 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const {
-      website_id: websiteId,
-      start_at,
-      end_at,
-      unit,
-      timezone,
-      event_name: eventName,
-      columns,
-      filters,
-    } = req.body;
+    const { id: websiteId } = req.query;
 
-    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
+    const { start_at, end_at, timezone, event_name: eventName, columns, filters } = req.body;
+
+    if (!moment.tz.zone(timezone)) {
       return badRequest(res);
     }
 
@@ -37,7 +28,6 @@ export default async (req, res) => {
       startDate,
       endDate,
       timezone,
-      unit,
       eventName,
       columns,
       filters,

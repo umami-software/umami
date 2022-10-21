@@ -12,7 +12,7 @@ export async function getActiveVisitors(...args) {
 
 async function relationalQuery(websiteId) {
   const date = subMinutes(new Date(), 5);
-  const params = [websiteId, date];
+  const params = [date];
 
   return prisma.rawQuery(
     `select count(distinct session_id) x
@@ -20,7 +20,7 @@ async function relationalQuery(websiteId) {
       join website 
         on pageview.website_id = website.website_id
     where website.website_uuid = '${websiteId}'
-    and pageview.created_at >= $2`,
+    and pageview.created_at >= $1`,
     params,
   );
 }
