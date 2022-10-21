@@ -77,8 +77,8 @@ export const dateOptions = [
 export default function EventDataForm({ websiteId, onClose, className }) {
   const { post } = useApi();
   const [message, setMessage] = useState();
-  const [columns, setColumns] = useState({ url: 'count', inventory: 'sum', price: 'avg' });
-  const [filters, setFilters] = useState({ url: '/about' });
+  const [columns, setColumns] = useState();
+  const [filters, setFilters] = useState();
   const [data, setData] = useState([]);
   const [dateRange, setDateRange] = useDateRange('report');
   const { startDate, endDate, value } = dateRange;
