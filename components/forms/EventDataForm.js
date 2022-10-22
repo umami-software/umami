@@ -99,11 +99,11 @@ export default function EventDataForm({ websiteId, onClose, className }) {
   };
 
   const handleRemoveTag = (value, list, setState) => {
-    const { ...rest } = list;
+    const next = { ...list };
 
-    delete rest[`${value}`];
+    delete next[`${value}`];
 
-    setState(rest);
+    setState(next);
   };
 
   const handleSubmit = async () => {
@@ -123,10 +123,7 @@ export default function EventDataForm({ websiteId, onClose, className }) {
       setData([]);
     } else {
       setData(data);
-
-      if (message) {
-        setMessage(null);
-      }
+      setMessage(null);
     }
   };
 
