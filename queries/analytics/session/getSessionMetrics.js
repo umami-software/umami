@@ -12,12 +12,7 @@ export async function getSessionMetrics(...args) {
 async function relationalQuery(website_id, start_at, end_at, field, filters = {}) {
   const { parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
-    'pageview',
-    null,
-    filters,
-    params,
-  );
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
 
   return rawQuery(
     `select ${field} x, count(*) y
@@ -42,7 +37,6 @@ async function clickhouseQuery(website_id, start_at, end_at, field, filters = {}
   const params = [website_id];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
-    null,
     filters,
     params,
     'session_uuid',

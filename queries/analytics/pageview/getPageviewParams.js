@@ -8,12 +8,11 @@ export async function getPageviewParams(...args) {
   });
 }
 
-async function relationalQuery(website_id, start_at, end_at, column, table, filters = {}) {
+async function relationalQuery(website_id, start_at, end_at, table, filters = {}) {
   const { parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
-    column,
     filters,
     params,
   );

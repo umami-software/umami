@@ -14,7 +14,6 @@ async function relationalQuery(website_id, start_at, end_at, column, table, filt
   const params = [website_id, start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
-    column,
     filters,
     params,
   );
@@ -39,7 +38,6 @@ async function clickhouseQuery(website_id, start_at, end_at, column, table, filt
   const params = [website_id];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
-    column,
     filters,
     params,
     'session_uuid',

@@ -21,12 +21,7 @@ async function relationalQuery(
 ) {
   const { getDateQuery, parseFilters, rawQuery } = prisma;
   const params = [website_id, start_at, end_at];
-  const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
-    'pageview',
-    null,
-    filters,
-    params,
-  );
+  const { pageviewQuery, sessionQuery, joinSession } = parseFilters('pageview', filters, params);
 
   return rawQuery(
     `select ${getDateQuery('pageview.created_at', unit, timezone)} t,
@@ -56,7 +51,6 @@ async function clickhouseQuery(
   const params = [website_id];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
-    null,
     filters,
     params,
     sessionKey,
