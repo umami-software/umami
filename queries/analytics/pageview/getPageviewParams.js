@@ -10,7 +10,7 @@ export async function getPageviewParams(...args) {
 
 async function relationalQuery(websiteId, start_at, end_at, column, table, filters = {}) {
   const { parseFilters, rawQuery } = prisma;
-  const params = [websiteId, start_at, end_at];
+  const params = [start_at, end_at];
   const { pageviewQuery, sessionQuery, eventQuery, joinSession } = parseFilters(
     table,
     column,
@@ -25,7 +25,7 @@ async function relationalQuery(websiteId, start_at, end_at, column, table, filte
       ${` join website on ${table}.website_id = website.website_id`}
       ${joinSession}
     where website.website_uuid='${websiteId}'
-      and ${table}.created_at between $2 and $3
+      and ${table}.created_at between $1 and $2
       and ${table}.url like '%?%'
       ${pageviewQuery}
       ${joinSession && sessionQuery}

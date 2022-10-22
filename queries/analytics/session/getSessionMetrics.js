@@ -11,7 +11,7 @@ export async function getSessionMetrics(...args) {
 
 async function relationalQuery(websiteId, { startDate, endDate, field, filters = {} }) {
   const { parseFilters, rawQuery } = prisma;
-  const params = [websiteId, startDate, endDate];
+  const params = [startDate, endDate];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(null, filters, params);
 
   return rawQuery(
@@ -24,7 +24,7 @@ async function relationalQuery(websiteId, { startDate, endDate, field, filters =
           on pageview.website_id = website.website_id
         ${joinSession}
       where website.website_uuid='${websiteId}'
-      and pageview.created_at between $2 and $3
+      and pageview.created_at between $1 and $2
       ${pageviewQuery}
       ${sessionQuery}
     )
