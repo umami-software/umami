@@ -77,8 +77,8 @@ export const dateOptions = [
 export default function EventDataForm({ websiteId, onClose, className }) {
   const { post } = useApi();
   const [message, setMessage] = useState();
-  const [columns, setColumns] = useState();
-  const [filters, setFilters] = useState();
+  const [columns, setColumns] = useState({});
+  const [filters, setFilters] = useState({});
   const [data, setData] = useState([]);
   const [dateRange, setDateRange] = useDateRange('report');
   const { startDate, endDate, value } = dateRange;
@@ -99,11 +99,11 @@ export default function EventDataForm({ websiteId, onClose, className }) {
   };
 
   const handleRemoveTag = (value, list, setState) => {
-    const next = { ...list };
+    const newList = { ...list };
 
-    delete next[`${value}`];
+    delete newList[`${value}`];
 
-    setState(next);
+    setState(newList);
   };
 
   const handleSubmit = async () => {
