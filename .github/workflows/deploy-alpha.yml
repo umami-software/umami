@@ -2,8 +2,8 @@ name: Lemon Umami Alpha - CD
 
 on:
   push:
-    branches:
-      - meza/initial-setup
+    branches: [meza/initial-setup]
+    paths: [pages, components, db, helm, lib, scripts, store, tracker]
 
 env:
   AWS_REGION: 'ap-northeast-1'
@@ -16,7 +16,7 @@ defaults:
     shell: bash
 
 jobs:
-  build_and_publish:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -52,19 +52,22 @@ jobs:
             --tag $ECR_REGISTRY/$ECR_REPOSITORY:${{ env.ENVIRONMENT }}_$IMAGE_TAG \
             --push
       
-  rollout:
-    needs: build_and_publish
+  cd:
+    needs: ci
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
       - name: helm deploy
-        uses: koslib/helm-eks-action@v1.25.0
+        uses: koslib/helm-eks-action@master
         env:
           KUBE_CONFIG_DATA: ${{ secrets.EKS_ALPHA }}
           IMAGE_TAG: ${{ github.sha }}
@@ -78,11 +81,13 @@ jobs:
               -n alpha
 
   slackNotification:
-    needs: rollout
+    needs: cd
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
         env:
