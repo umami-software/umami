@@ -38,7 +38,7 @@ ALTER TABLE "event" ADD CONSTRAINT "event_session_id_fkey" FOREIGN KEY ("session
 -- AddForeignKey
 ALTER TABLE "event" ADD CONSTRAINT "event_website_id_fkey" FOREIGN KEY ("website_id") REFERENCES "website"("website_id") ON DELETE CASCADE ON UPDATE CASCADE;
 
-CREATE SEQUENCE event_data_seq;
+CREATE SEQUENCE IF NOT EXISTS event_data_seq;
 
 -- CreateTable
 CREATE TABLE "event_data" (
