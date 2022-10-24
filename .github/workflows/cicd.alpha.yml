@@ -1,9 +1,7 @@
-name: Lemon Umami Alpha - CD
-
 on:
   push:
     branches: [meza/initial-setup]
-    paths: [pages, components, db, helm, lib, scripts, store, tracker]
+    paths: [pages, components, db, helm, lib, scripts, store, tracker, .github/workflows/cicd.alpha.yml]
 
 env:
   AWS_REGION: 'ap-northeast-1'
