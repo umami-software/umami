@@ -9,10 +9,11 @@ export default async (req, res) => {
     const website = await getWebsiteByShareId(id);
 
     if (website) {
-      const { websiteId, websiteUuid } = website;
-      const token = createToken({ websiteId, websiteUuid }, secret());
+      const { websiteUuid } = website;
+      const data = { id: websiteUuid };
+      const token = createToken(data, secret());
 
-      return ok(res, { websiteId, websiteUuid, token });
+      return ok(res, { ...data, token });
     }
 
     return notFound(res);
