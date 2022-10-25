@@ -30,7 +30,7 @@ export default function AccountSettings() {
   const Checkmark = ({ isAdmin }) => (isAdmin ? <Icon icon={<Check />} size="medium" /> : null);
 
   const DashboardLink = row => (
-    <Link href={`/dashboard/${row.userId}/${row.username}`}>
+    <Link href={`/dashboard/${row.id}/${row.username}`}>
       <a>
         <Icon icon={<LinkIcon />} />
       </a>
