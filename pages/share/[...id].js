@@ -14,11 +14,9 @@ export default function SharePage() {
     return null;
   }
 
-  const { websiteUuid } = shareToken;
-
   return (
     <Layout>
-      <WebsiteDetails websiteId={websiteUuid} />
+      <WebsiteDetails websiteId={shareToken.id} />
     </Layout>
   );
 }
