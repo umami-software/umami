@@ -14,6 +14,7 @@ export async function getAccounts() {
       isAdmin: true,
       createdAt: true,
       updatedAt: true,
+      accountUuid: true,
     },
   });
 }
