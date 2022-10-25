@@ -9,7 +9,7 @@ import FormLayout, {
   FormRow,
 } from 'components/layout/FormLayout';
 import useApi from 'hooks/useApi';
-import useUser from '../../hooks/useUser';
+import useUser from 'hooks/useUser';
 
 const initialValues = {
   current_password: '',
@@ -43,13 +43,13 @@ export default function ChangePasswordForm({ values, onSave, onClose }) {
   const { user } = useUser();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post(`/accounts/${user.userId}/password`, values);
+    const { ok, error } = await post(`/accounts/${user.accountUuid}/password`, values);
 
     if (ok) {
       onSave();
     } else {
       setMessage(
-        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
+        error || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
       );
     }
   };

@@ -6,15 +6,16 @@ import { uuid } from 'lib/crypto';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { userId: currentUserId, isAdmin, accountUuid } = req.auth;
   const { user_id, include_all } = req.query;
+  const { userId: currentUserId, isAdmin } = req.auth;
+  const accountUuid = user_id || req.auth.accountUuid;
   let account;
 
   if (accountUuid) {
-    account = await getAccount({ accountUuid: accountUuid });
+    account = await getAccount({ accountUuid });
   }
 
-  const userId = account ? account.id : +user_id;
+  const userId = account ? account.id : user_id;
 
   if (req.method === 'GET') {
     if (userId && userId !== currentUserId && !isAdmin) {
@@ -24,7 +25,7 @@ export default async (req, res) => {
     const websites =
       isAdmin && include_all
         ? await getAllWebsites()
-        : await getUserWebsites(userId || currentUserId);
+        : await getUserWebsites({ userId: account.id });
 
     return ok(res, websites);
   }

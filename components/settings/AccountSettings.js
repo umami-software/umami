@@ -29,13 +29,15 @@ export default function AccountSettings() {
 
   const Checkmark = ({ isAdmin }) => (isAdmin ? <Icon icon={<Check />} size="medium" /> : null);
 
-  const DashboardLink = row => (
-    <Link href={`/dashboard/${row.userId}/${row.username}`}>
-      <a>
-        <Icon icon={<LinkIcon />} />
-      </a>
-    </Link>
-  );
+  const DashboardLink = row => {
+    return (
+      <Link href={`/dashboard/${row.accountUuid}/${row.username}`}>
+        <a>
+          <Icon icon={<LinkIcon />} />
+        </a>
+      </Link>
+    );
+  };
 
   const Buttons = row => (
     <ButtonLayout align="right">
