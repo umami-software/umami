@@ -10,7 +10,7 @@ export async function getEventMetrics(...args) {
 }
 
 async function relationalQuery(
-  website_id,
+  websiteId,
   start_at,
   end_at,
   timezone = 'utc',
@@ -18,16 +18,18 @@ async function relationalQuery(
   filters = {},
 ) {
   const { rawQuery, getDateQuery, getFilterQuery } = prisma;
-  const params = [website_id, start_at, end_at];
+  const params = [start_at, end_at];
 
   return rawQuery(
     `select
       event_name x,
-      ${getDateQuery('created_at', unit, timezone)} t,
+      ${getDateQuery('event.created_at', unit, timezone)} t,
       count(*) y
     from event
-    where website_id=$1
-    and created_at between $2 and $3
+      join website 
+        on event.website_id = website.website_id
+    where website_uuid='${websiteId}'
+      and event.created_at between $1 and $2
     ${getFilterQuery('event', filters, params)}
     group by 1, 2
     order by 2`,
@@ -36,7 +38,7 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
-  website_id,
+  websiteId,
   start_at,
   end_at,
   timezone = 'UTC',
@@ -44,7 +46,7 @@ async function clickhouseQuery(
   filters = {},
 ) {
   const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
-  const params = [website_id];
+  const params = [websiteId];
 
   return rawQuery(
     `select
@@ -52,7 +54,8 @@ async function clickhouseQuery(
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from event
-    where website_id= $1
+    where event_name != ''
+      and website_id= $1
       and ${getBetweenDates('created_at', start_at, end_at)}
       ${getFilterQuery('event', filters, params)}
     group by x, t

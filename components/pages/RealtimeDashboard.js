@@ -21,11 +21,11 @@ function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
   return state
     .concat(data.filter(({ __id }) => !ids.includes(__id)))
-    .filter(({ created_at }) => new Date(created_at).getTime() >= time);
+    .filter(({ createdAt }) => new Date(createdAt).getTime() >= time);
 }
 
 function filterWebsite(data, id) {
-  return data.filter(({ website_id }) => website_id === id);
+  return data.filter(({ websiteId }) => websiteId === id);
 }
 
 export default function RealtimeDashboard() {

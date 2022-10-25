@@ -244,7 +244,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Байхгүй"
     }
   ],
   "label.owner": [
@@ -397,6 +397,12 @@
       "value": "Вебүүд"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Өчигдөр"
+    }
+  ],
   "message.active-users": [
     {
       "type": 0,
@@ -456,7 +462,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Are your sure you want to reset "
+      "value": "Та "
     },
     {
       "type": 1,
@@ -464,7 +470,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?"
     }
   ],
   "message.copied": [
@@ -482,7 +488,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Хянах самбар засах"
     }
   ],
   "message.failure": [
@@ -770,7 +776,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Query параметр"
     }
   ],
   "metrics.referrers": [
@@ -782,7 +788,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Дэлгэц"
     }
   ],
   "metrics.unique-visitors": [

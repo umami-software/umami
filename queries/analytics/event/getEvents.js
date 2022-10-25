@@ -13,11 +13,11 @@ function relationalQuery(websites, start_at) {
   return prisma.client.event.findMany({
     where: {
       website: {
-        website_id: {
+        websiteUuid: {
           in: websites,
         },
       },
-      created_at: {
+      createdAt: {
         gte: start_at,
       },
     },
@@ -25,7 +25,7 @@ function relationalQuery(websites, start_at) {
 }
 
 function clickhouseQuery(websites, start_at) {
-  const { rawQuery, getDateFormat } = clickhouse;
+  const { rawQuery, getDateFormat, getCommaSeparatedStringFormat } = clickhouse;
 
   return rawQuery(
     `select
@@ -36,7 +36,12 @@ function clickhouseQuery(websites, start_at) {
       url,
       event_name
     from event
-    where website_id in (${websites.join[',']}
-      and created_at >= ${getDateFormat(start_at)})`,
+    where event_name != ''
+      and ${
+        websites && websites.length > 0
+          ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
+          : '0 = 0'
+      }
+      and created_at >= ${getDateFormat(start_at)}`,
   );
 }

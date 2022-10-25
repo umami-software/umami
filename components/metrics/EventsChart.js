@@ -16,7 +16,7 @@ export default function EventsChart({ websiteId, className, token }) {
   } = usePageQuery();
 
   const { data, loading } = useFetch(
-    `/website/${websiteId}/events`,
+    `/websites/${websiteId}/events`,
     {
       params: {
         start_at: +startDate,

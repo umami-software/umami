@@ -62,6 +62,7 @@
   "label.username": "用户名",
   "label.view-details": "查看更多",
   "label.websites": "网站",
+  "label.yesterday": "昨天",
   "message.active-users": "当前在线 {x} 人",
   "message.confirm-delete": "你确定要删除 {target} 吗？",
   "message.confirm-reset": "您确定要重置 {target} 的数据吗?",

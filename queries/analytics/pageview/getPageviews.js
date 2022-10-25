@@ -13,11 +13,11 @@ async function relationalQuery(websites, start_at) {
   return prisma.client.pageview.findMany({
     where: {
       website: {
-        website_id: {
+        websiteUuid: {
           in: websites,
         },
       },
-      created_at: {
+      createdAt: {
         gte: start_at,
       },
     },
@@ -25,15 +25,21 @@ async function relationalQuery(websites, start_at) {
 }
 
 async function clickhouseQuery(websites, start_at) {
-  return clickhouse.rawQuery(
+  const { rawQuery, getCommaSeparatedStringFormat } = clickhouse;
+
+  return rawQuery(
     `select
-        view_id,
         website_id,
         session_id,
         created_at,
         url
-      from pageview
-      where website_id in (${websites.join[',']}
-      and created_at >= ${clickhouse.getDateFormat(start_at)})`,
+      from event
+      where event_name = ''
+      and ${
+        websites && websites.length > 0
+          ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
+          : '0 = 0'
+      }
+      and created_at >= ${clickhouse.getDateFormat(start_at)}`,
   );
 }

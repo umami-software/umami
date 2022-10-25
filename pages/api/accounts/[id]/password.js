@@ -12,24 +12,25 @@ import {
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: auth_user_id, is_admin } = req.auth;
-  const { user_id, current_password, new_password } = req.body;
+  const { userId: currentUserId, isAdmin: currentUserIsAdmin } = req.auth;
+  const { current_password, new_password } = req.body;
+  const { id } = req.query;
+  const userId = +id;
 
-  if (!is_admin && user_id !== auth_user_id) {
+  if (!currentUserIsAdmin && userId !== currentUserId) {
     return unauthorized(res);
   }
 
   if (req.method === 'POST') {
-    const account = await getAccountById(user_id);
-    const valid = checkPassword(current_password, account.password);
+    const account = await getAccountById(userId);
 
-    if (!valid) {
+    if (!checkPassword(current_password, account.password)) {
       return badRequest(res, 'Current password is incorrect');
     }
 
     const password = hashPassword(new_password);
 
-    const updated = await updateAccount(user_id, { password });
+    const updated = await updateAccount(userId, { password });
 
     return ok(res, updated);
   }

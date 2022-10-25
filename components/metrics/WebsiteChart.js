@@ -35,7 +35,7 @@ export default function WebsiteChart({
   const { get } = useApi();
 
   const { data, loading, error } = useFetch(
-    `/website/${websiteId}/pageviews`,
+    `/websites/${websiteId}/pageviews`,
     {
       params: {
         start_at: +startDate,
@@ -70,9 +70,9 @@ export default function WebsiteChart({
 
   async function handleDateChange(value) {
     if (value === 'all') {
-      const { data, ok } = await get(`/website/${websiteId}`);
+      const { data, ok } = await get(`/websites/${websiteId}`);
       if (ok) {
-        setDateRange({ value, ...getDateRangeValues(new Date(data.created_at), Date.now()) });
+        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
       }
     } else {
       setDateRange(value);

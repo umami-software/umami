@@ -27,10 +27,10 @@ export default function AccountSettings() {
   const [message, setMessage] = useState();
   const { data } = useFetch(`/accounts`, {}, [saved]);
 
-  const Checkmark = ({ is_admin }) => (is_admin ? <Icon icon={<Check />} size="medium" /> : null);
+  const Checkmark = ({ isAdmin }) => (isAdmin ? <Icon icon={<Check />} size="medium" /> : null);
 
   const DashboardLink = row => (
-    <Link href={`/dashboard/${row.user_id}/${row.username}`}>
+    <Link href={`/dashboard/${row.userId}/${row.username}`}>
       <a>
         <Icon icon={<LinkIcon />} />
       </a>
@@ -42,7 +42,7 @@ export default function AccountSettings() {
       <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
         <FormattedMessage id="label.edit" defaultMessage="Edit" />
       </Button>
-      {!row.is_admin && (
+      {!row.isAdmin && (
         <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
           <FormattedMessage id="label.delete" defaultMessage="Delete" />
         </Button>
@@ -57,7 +57,7 @@ export default function AccountSettings() {
       className: 'col-12 col-lg-4',
     },
     {
-      key: 'is_admin',
+      key: 'isAdmin',
       label: <FormattedMessage id="label.administrator" defaultMessage="Administrator" />,
       className: 'col-12 col-lg-3',
       render: Checkmark,
@@ -121,7 +121,7 @@ export default function AccountSettings() {
           title={<FormattedMessage id="label.delete-account" defaultMessage="Delete account" />}
         >
           <DeleteForm
-            values={{ type: 'account', id: deleteAccount.user_id, name: deleteAccount.username }}
+            values={{ type: 'accounts', id: deleteAccount.id, name: deleteAccount.username }}
             onSave={handleSave}
             onClose={handleClose}
           />

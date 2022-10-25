@@ -32,7 +32,7 @@ export default function ProfileSettings() {
     return null;
   }
 
-  const { user_id, username } = user;
+  const { userId, username } = user;
 
   return (
     <>
@@ -79,7 +79,7 @@ export default function ProfileSettings() {
           title={<FormattedMessage id="label.change-password" defaultMessage="Change password" />}
         >
           <ChangePasswordForm
-            values={{ user_id }}
+            values={{ userId }}
             onSave={handleSave}
             onClose={() => setChangePassword(false)}
           />

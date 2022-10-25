@@ -10,29 +10,29 @@ export async function getSessionByUuid(...args) {
   });
 }
 
-async function relationalQuery(session_uuid) {
+async function relationalQuery(sessionUuid) {
   return prisma.client.session
     .findUnique({
       where: {
-        session_uuid,
+        sessionUuid,
       },
     })
     .then(async res => {
       if (redis.client && res) {
-        await redis.client.set(`session:${res.session_uuid}`, 1);
+        await redis.client.set(`session:${res.sessionUuid}`, 1);
       }
 
       return res;
     });
 }
 
-async function clickhouseQuery(session_uuid) {
+async function clickhouseQuery(sessionUuid) {
   const { rawQuery, findFirst } = clickhouse;
-  const params = [session_uuid];
+  const params = [sessionUuid];
 
   return rawQuery(
-    `select 
-      session_uuid, 
+    `select distinct
+      session_id, 
       website_id, 
       created_at, 
       hostname, 
@@ -42,8 +42,8 @@ async function clickhouseQuery(session_uuid) {
       screen,
       language, 
       country 
-    from session
-    where session_uuid = $1`,
+    from event
+    where session_id = $1`,
     params,
   )
     .then(result => findFirst(result))

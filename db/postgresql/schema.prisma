@@ -8,87 +8,96 @@ datasource db {
 }
 
 model account {
-  user_id    Int       @id @default(autoincrement())
-  username   String    @unique @db.VarChar(255)
-  password   String    @db.VarChar(60)
-  is_admin   Boolean   @default(false)
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at DateTime? @default(now()) @db.Timestamptz(6)
-  website    website[]
+  id          Int       @id @default(autoincrement()) @map("user_id")
+  username    String    @unique @db.VarChar(255)
+  password    String    @db.VarChar(60)
+  isAdmin     Boolean   @default(false) @map("is_admin")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
+  accountUuid String    @unique @map("account_uuid") @db.Uuid
+  website     website[]
+
+  @@index([accountUuid])
 }
 
 model event {
-  event_id   Int         @id @default(autoincrement())
-  website_id Int
-  session_id Int
-  created_at DateTime?   @default(now()) @db.Timestamptz(6)
-  url        String      @db.VarChar(500)
-  event_name String      @db.VarChar(50)
-  session    session     @relation(fields: [session_id], references: [session_id])
-  website    website     @relation(fields: [website_id], references: [website_id])
-  event_data event_data?
+  id        Int        @id() @default(autoincrement()) @map("event_id")
+  websiteId Int        @map("website_id")
+  sessionId Int        @map("session_id")
+  createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
+  url       String     @db.VarChar(500)
+  eventName String     @map("event_name") @db.VarChar(50)
+  eventUuid String     @unique @map("event_uuid") @db.Uuid
+  session   session    @relation(fields: [sessionId], references: [id])
+  website   website    @relation(fields: [websiteId], references: [id])
+  eventData eventData?
 
-  @@index([created_at])
-  @@index([session_id])
-  @@index([website_id])
+  @@index([createdAt])
+  @@index([sessionId])
+  @@index([websiteId])
+  @@index([eventUuid])
 }
 
-model event_data {
-  event_data_id Int   @id @default(autoincrement())
-  event_id      Int   @unique
-  event_data    Json
-  event         event @relation(fields: [event_id], references: [event_id])
+model eventData {
+  id        Int   @id @default(autoincrement()) @map("event_data_id")
+  eventId   Int   @unique @map("event_id")
+  eventData Json  @map("event_data")
+  event     event @relation(fields: [eventId], references: [id])
+
+  @@map("event_data")
 }
 
 model pageview {
-  view_id    Int       @id @default(autoincrement())
-  website_id Int
-  session_id Int
-  created_at DateTime? @default(now()) @db.Timestamptz(6)
-  url        String    @db.VarChar(500)
-  referrer   String?   @db.VarChar(500)
-  session    session   @relation(fields: [session_id], references: [session_id])
-  website    website   @relation(fields: [website_id], references: [website_id])
+  id        Int       @id @default(autoincrement()) @map("view_id")
+  websiteId Int       @map("website_id")
+  sessionId Int       @map("session_id")
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  url       String    @db.VarChar(500)
+  referrer  String?   @db.VarChar(500)
+  session   session   @relation(fields: [sessionId], references: [id])
+  website   website   @relation(fields: [websiteId], references: [id])
 
-  @@index([created_at])
-  @@index([session_id])
-  @@index([website_id, created_at])
-  @@index([website_id])
-  @@index([website_id, session_id, created_at])
+  @@index([createdAt])
+  @@index([sessionId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId])
+  @@index([websiteId, sessionId, createdAt])
 }
 
 model session {
-  session_id   Int        @id @default(autoincrement())
-  session_uuid String     @unique @db.Uuid
-  website_id   Int
-  created_at   DateTime?  @default(now()) @db.Timestamptz(6)
-  hostname     String?    @db.VarChar(100)
-  browser      String?    @db.VarChar(20)
-  os           String?    @db.VarChar(20)
-  device       String?    @db.VarChar(20)
-  screen       String?    @db.VarChar(11)
-  language     String?    @db.VarChar(35)
-  country      String?    @db.Char(2)
-  website      website    @relation(fields: [website_id], references: [website_id])
-  event        event[]
-  pageview     pageview[]
+  id          Int        @id @default(autoincrement()) @map("session_id")
+  sessionUuid String     @unique @map("session_uuid") @db.Uuid
+  websiteId   Int        @map("website_id")
+  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
+  hostname    String?    @db.VarChar(100)
+  browser     String?    @db.VarChar(20)
+  os          String?    @db.VarChar(20)
+  device      String?    @db.VarChar(20)
+  screen      String?    @db.VarChar(11)
+  language    String?    @db.VarChar(35)
+  country     String?    @db.Char(2)
+  website     website?   @relation(fields: [websiteId], references: [id])
+  events      event[]
+  pageview    pageview[]
 
-  @@index([created_at])
-  @@index([website_id])
+  @@index([createdAt])
+  @@index([websiteId])
+  @@index([sessionUuid])
 }
 
 model website {
-  website_id   Int        @id @default(autoincrement())
-  website_uuid String     @unique @db.Uuid
-  user_id      Int
-  name         String     @db.VarChar(100)
-  domain       String?    @db.VarChar(500)
-  share_id     String?    @unique @db.VarChar(64)
-  created_at   DateTime?  @default(now()) @db.Timestamptz(6)
-  account      account    @relation(fields: [user_id], references: [user_id])
-  event        event[]
-  pageview     pageview[]
-  session      session[]
+  id          Int        @id @default(autoincrement()) @map("website_id")
+  websiteUuid String     @unique @map("website_uuid") @db.Uuid
+  userId      Int        @map("user_id")
+  name        String     @db.VarChar(100)
+  domain      String?    @db.VarChar(500)
+  shareId     String?    @unique @map("share_id") @db.VarChar(64)
+  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
+  account     account    @relation(fields: [userId], references: [id])
+  event       event[]
+  pageview    pageview[]
+  session     session[]
 
-  @@index([user_id])
+  @@index([userId])
+  @@index([websiteUuid])
 }

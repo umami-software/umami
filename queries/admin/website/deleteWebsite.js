@@ -1,31 +1,31 @@
 import prisma from 'lib/prisma';
 import redis, { DELETED } from 'lib/redis';
-import { getWebsiteById } from 'queries';
+import { getWebsiteByUuid } from 'queries';
 
-export async function deleteWebsite(website_id) {
+export async function deleteWebsite(websiteId) {
   const { client, transaction } = prisma;
 
-  const { website_uuid } = await getWebsiteById(website_id);
+  const { websiteUuid } = await getWebsiteByUuid(websiteId);
 
   return transaction([
     client.pageview.deleteMany({
-      where: { session: { website: { website_id } } },
+      where: { session: { website: { websiteUuid: websiteId } } },
     }),
-    client.event_data.deleteMany({
-      where: { event: { session: { website: { website_id } } } },
+    client.eventData.deleteMany({
+      where: { event: { session: { website: { websiteUuid: websiteId } } } },
     }),
     client.event.deleteMany({
-      where: { session: { website: { website_id } } },
+      where: { session: { website: { websiteUuid: websiteId } } },
     }),
     client.session.deleteMany({
-      where: { website: { website_id } },
+      where: { website: { websiteUuid: websiteId } },
     }),
     client.website.delete({
-      where: { website_id },
+      where: { websiteUuid: websiteId },
     }),
   ]).then(async res => {
     if (redis.client) {
-      await redis.client.set(`website:${website_uuid}`, DELETED);
+      await redis.client.set(`website:${websiteUuid}`, DELETED);
     }
 
     return res;

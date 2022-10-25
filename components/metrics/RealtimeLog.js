@@ -15,6 +15,7 @@ import Visitor from 'assets/visitor.svg';
 import Eye from 'assets/eye.svg';
 import { stringToColor } from 'lib/format';
 import { dateFormat } from 'lib/date';
+import { safeDecodeURI } from 'next-basics';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 0;
@@ -36,7 +37,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
 
   const logs = useMemo(() => {
     const { pageviews, sessions, events } = data;
-    const logs = [...pageviews, ...sessions, ...events].sort(firstBy('created_at', -1));
+    const logs = [...pageviews, ...sessions, ...events].sort(firstBy('createdAt', -1));
     if (filter) {
       return logs.filter(row => getType(row) === filter);
     }
@@ -44,8 +45,8 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   }, [data, filter]);
 
   const uuids = useMemo(() => {
-    return data.sessions.reduce((obj, { session_id, session_uuid }) => {
-      obj[session_id] = session_uuid;
+    return data.sessions.reduce((obj, { sessionId, sessionUuid }) => {
+      obj[sessionId] = sessionUuid;
       return obj;
     }, {});
   }, [data]);
@@ -69,14 +70,14 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     },
   ];
 
-  function getType({ view_id, session_id, event_id }) {
-    if (event_id) {
+  function getType({ pageviewId, sessionId, eventId }) {
+    if (eventId) {
       return TYPE_EVENT;
     }
-    if (view_id) {
+    if (pageviewId) {
       return TYPE_PAGEVIEW;
     }
-    if (session_id) {
+    if (sessionId) {
       return TYPE_SESSION;
     }
     return null;
@@ -86,26 +87,26 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     return TYPE_ICONS[getType(row)];
   }
 
-  function getWebsite({ website_id }) {
-    return websites.find(n => n.website_id === website_id);
+  function getWebsite({ websiteId }) {
+    return websites.find(n => n.id === websiteId);
   }
 
   function getDetail({
-    event_name,
-    view_id,
-    session_id,
+    eventName,
+    pageviewId,
+    sessionId,
     url,
     browser,
     os,
     country,
     device,
-    website_id,
+    websiteId,
   }) {
-    if (event_name) {
-      return <div>{event_name}</div>;
+    if (eventName) {
+      return <div>{eventName}</div>;
     }
-    if (view_id) {
-      const domain = getWebsite({ website_id })?.domain;
+    if (pageviewId) {
+      const domain = getWebsite({ websiteId })?.domain;
       return (
         <a
           className={styles.link}
@@ -113,11 +114,11 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           target="_blank"
           rel="noreferrer noopener"
         >
-          {url}
+          {safeDecodeURI(url)}
         </a>
       );
     }
-    if (session_id) {
+    if (sessionId) {
       return (
         <FormattedMessage
           id="message.log.visitor"
@@ -133,14 +134,14 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     }
   }
 
-  function getTime({ created_at }) {
-    return dateFormat(new Date(created_at), 'pp', locale);
+  function getTime({ createdAt }) {
+    return dateFormat(new Date(createdAt), 'pp', locale);
   }
 
   function getColor(row) {
-    const { session_id } = row;
+    const { sessionId } = row;
 
-    return stringToColor(uuids[session_id] || `${session_id}${getWebsite(row)}`);
+    return stringToColor(uuids[sessionId] || `${sessionId}${getWebsite(row)}`);
   }
 
   const Row = ({ index, style }) => {

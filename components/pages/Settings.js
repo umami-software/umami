@@ -30,7 +30,7 @@ export default function Settings() {
     {
       label: <FormattedMessage id="label.accounts" defaultMessage="Accounts" />,
       value: ACCOUNTS,
-      hidden: !user?.is_admin,
+      hidden: !user?.isAdmin,
     },
     {
       label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,

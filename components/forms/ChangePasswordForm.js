@@ -9,6 +9,7 @@ import FormLayout, {
   FormRow,
 } from 'components/layout/FormLayout';
 import useApi from 'hooks/useApi';
+import useUser from '../../hooks/useUser';
 
 const initialValues = {
   current_password: '',
@@ -39,9 +40,10 @@ const validate = ({ current_password, new_password, confirm_password }) => {
 export default function ChangePasswordForm({ values, onSave, onClose }) {
   const { post } = useApi();
   const [message, setMessage] = useState();
+  const { user } = useUser();
 
   const handleSubmit = async values => {
-    const { ok, data } = await post('/account/password', values);
+    const { ok, data } = await post(`/accounts/${user.userId}/password`, values);
 
     if (ok) {
       onSave();

@@ -58,36 +58,39 @@ export default async (req, res) => {
 
   await useSession(req, res);
 
-  const {
-    session: { website_id, session_id, session_uuid },
-  } = req;
+  const { website, session } = req.session;
 
   const { type, payload } = getJsonBody(req);
 
-  let { url, referrer, event_name, event_data } = payload;
+  let { url, referrer, event_name: eventName, event_data: eventData } = payload;
 
   if (process.env.REMOVE_TRAILING_SLASH) {
     url = url.replace(/\/$/, '');
   }
 
-  const event_uuid = uuid();
+  const eventUuid = uuid();
 
   if (type === 'pageview') {
-    await savePageView(website_id, { session_id, session_uuid, url, referrer });
+    await savePageView(website, { session, url, referrer });
   } else if (type === 'event') {
-    await saveEvent(website_id, {
-      event_uuid,
-      session_id,
-      session_uuid,
+    await saveEvent(website, {
+      session,
+      eventUuid,
       url,
-      event_name,
-      event_data,
+      eventName,
+      eventData,
     });
   } else {
     return badRequest(res);
   }
 
-  const token = createToken({ website_id, session_id, session_uuid }, secret());
+  const token = createToken(
+    {
+      website,
+      session,
+    },
+    secret(),
+  );
 
   return send(res, token);
 };

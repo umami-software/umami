@@ -6,7 +6,7 @@ import Dot from 'components/common/Dot';
 import styles from './ActiveUsers.module.css';
 
 export default function ActiveUsers({ websiteId, className, value, interval = 60000 }) {
-  const url = websiteId ? `/website/${websiteId}/active` : null;
+  const url = websiteId ? `/websites/${websiteId}/active` : null;
   const { data } = useFetch(url, {
     interval,
   });

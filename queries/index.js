@@ -1,63 +1,33 @@
-import { createAccount } from './admin/account/createAccount';
-import { deleteAccount } from './admin/account/deleteAccount';
-import { getAccountById } from './admin/account/getAccountById';
-import { getAccountByUsername } from './admin/account/getAccountByUsername';
-import { getAccounts } from './admin/account/getAccounts';
-import { updateAccount } from './admin/account/updateAccount';
-import { createWebsite } from './admin/website/createWebsite';
-import { deleteWebsite } from './admin/website/deleteWebsite';
-import { getAllWebsites } from './admin/website/getAllWebsites';
-import { getUserWebsites } from './admin/website/getUserWebsites';
-import { getWebsiteById } from './admin/website/getWebsiteById';
-import { getWebsiteByShareId } from './admin/website/getWebsiteByShareId';
-import { getWebsiteByUuid } from './admin/website/getWebsiteByUuid';
-import { resetWebsite } from './admin/website/resetWebsite';
-import { updateWebsite } from './admin/website/updateWebsite';
-import { getEventMetrics } from './analytics/event/getEventMetrics';
-import { getEvents } from './analytics/event/getEvents';
-import { saveEvent } from './analytics/event/saveEvent';
-import { getPageviewMetrics } from './analytics/pageview/getPageviewMetrics';
-import { getPageviewParams } from './analytics/pageview/getPageviewParams';
-import { getPageviews } from './analytics/pageview/getPageviews';
-import { getPageviewStats } from './analytics/pageview/getPageviewStats';
-import { savePageView } from './analytics/pageview/savePageView';
-import { createSession } from './analytics/session/createSession';
-import { getSessionByUuid } from './analytics/session/getSessionByUuid';
-import { getSessionMetrics } from './analytics/session/getSessionMetrics';
-import { getSessions } from './analytics/session/getSessions';
-import { getActiveVisitors } from './analytics/stats/getActiveVisitors';
-import { getRealtimeData } from './analytics/stats/getRealtimeData';
-import { getWebsiteStats } from './analytics/stats/getWebsiteStats';
-
-export {
-  createWebsite,
-  deleteWebsite,
-  getAllWebsites,
-  getUserWebsites,
-  getWebsiteById,
-  getWebsiteByShareId,
-  getWebsiteByUuid,
-  resetWebsite,
-  updateWebsite,
-  createAccount,
-  deleteAccount,
-  getAccountById,
-  getAccountByUsername,
-  getAccounts,
-  updateAccount,
-  getEventMetrics,
-  getEvents,
-  saveEvent,
-  getPageviewMetrics,
-  getPageviewParams,
-  getPageviews,
-  getPageviewStats,
-  savePageView,
-  createSession,
-  getSessionByUuid,
-  getSessionMetrics,
-  getSessions,
-  getActiveVisitors,
-  getRealtimeData,
-  getWebsiteStats,
-};
+export * from './admin/account/createAccount';
+export * from './admin/account/deleteAccount';
+export * from './admin/account/getAccount';
+export * from './admin/account/getAccountById';
+export * from './admin/account/getAccountByUsername';
+export * from './admin/account/getAccounts';
+export * from './admin/account/updateAccount';
+export * from './admin/website/createWebsite';
+export * from './admin/website/deleteWebsite';
+export * from './admin/website/getAllWebsites';
+export * from './admin/website/getUserWebsites';
+export * from './admin/website/getWebsite';
+export * from './admin/website/getWebsiteById';
+export * from './admin/website/getWebsiteByShareId';
+export * from './admin/website/getWebsiteByUuid';
+export * from './admin/website/resetWebsite';
+export * from './admin/website/updateWebsite';
+export * from './analytics/event/getEventMetrics';
+export * from './analytics/event/getEvents';
+export * from './analytics/event/getEventData';
+export * from './analytics/event/saveEvent';
+export * from './analytics/pageview/getPageviewMetrics';
+export * from './analytics/pageview/getPageviewParams';
+export * from './analytics/pageview/getPageviews';
+export * from './analytics/pageview/getPageviewStats';
+export * from './analytics/pageview/savePageView';
+export * from './analytics/session/createSession';
+export * from './analytics/session/getSessionByUuid';
+export * from './analytics/session/getSessionMetrics';
+export * from './analytics/session/getSessions';
+export * from './analytics/stats/getActiveVisitors';
+export * from './analytics/stats/getRealtimeData';
+export * from './analytics/stats/getWebsiteStats';

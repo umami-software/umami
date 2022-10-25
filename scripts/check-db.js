@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const chalk = require('chalk');
@@ -39,7 +40,7 @@ async function checkConnection() {
 
 async function checkTables() {
   try {
-    await prisma.account.findFirst();
+    await prisma.$queryRaw`select * from account limit 1`;
 
     success('Database tables found.');
   } catch (e) {
