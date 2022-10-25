@@ -21,9 +21,9 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { username, password, account_uuid } = req.body;
 
-    const accountByUsername = await getAccount({ username });
+    const account = await getAccount({ username });
 
-    if (accountByUsername) {
+    if (account) {
       return badRequest(res, 'Account already exists');
     }
 
