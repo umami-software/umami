@@ -25,7 +25,7 @@ export default async (req, res) => {
     const websites =
       isAdmin && include_all
         ? await getAllWebsites()
-        : await getUserWebsites({ userId: account.id });
+        : await getUserWebsites({ userId: account?.id });
 
     return ok(res, websites);
   }
