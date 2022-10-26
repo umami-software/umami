@@ -22,7 +22,7 @@ export const filterOptions = [
   { label: 'Count', value: 'count' },
   { label: 'Average', value: 'avg' },
   { label: 'Minimum', value: 'min' },
-  { label: 'Maxmimum', value: 'max' },
+  { label: 'Maximum', value: 'max' },
   { label: 'Sum', value: 'sum' },
 ];
 

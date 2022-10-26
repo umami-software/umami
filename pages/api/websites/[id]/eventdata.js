@@ -3,13 +3,14 @@ import { getEventData } from 'queries';
 import { ok, badRequest, methodNotAllowed, unauthorized } from 'next-basics';
 import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
+import { TYPE_WEBSITE } from 'lib/constants';
 
 export default async (req, res) => {
   await useCors(req, res);
   await useAuth(req, res);
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req))) {
+    if (!(await allowQuery(req, TYPE_WEBSITE))) {
       return unauthorized(res);
     }
 
