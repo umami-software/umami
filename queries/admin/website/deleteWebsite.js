@@ -21,8 +21,8 @@ export async function deleteWebsite(websiteUuid) {
       where: { websiteUuid },
     }),
   ]).then(async res => {
-    if (redis.client) {
-      await redis.client.set(`website:${websiteUuid}`, DELETED);
+    if (redis.enabled) {
+      await redis.set(`website:${websiteUuid}`, DELETED);
     }
 
     return res;
