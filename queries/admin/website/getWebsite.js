@@ -8,7 +8,7 @@ export async function getWebsite(where) {
     })
     .then(async data => {
       if (redis.enabled && data) {
-        await redis.client.set(`website:${data.websiteUuid}`, data.id);
+        await redis.set(`website:${data.websiteUuid}`, data.id);
       }
 
       return data;
