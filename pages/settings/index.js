@@ -2,11 +2,13 @@ import React from 'react';
 import Layout from 'components/layout/Layout';
 import Settings from 'components/pages/Settings';
 import useRequireLogin from 'hooks/useRequireLogin';
+import useConfig from 'hooks/useConfig';
 
-export default function SettingsPage({ pageDisabled }) {
+export default function SettingsPage() {
   const { loading } = useRequireLogin();
+  const { adminDisabled } = useConfig();
 
-  if (pageDisabled || loading) {
+  if (adminDisabled || loading) {
     return null;
   }
 
@@ -15,12 +17,4 @@ export default function SettingsPage({ pageDisabled }) {
       <Settings />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      pageDisabled: !!process.env.DISABLE_UI || !!process.env.isAdminDisabled,
-    },
-  };
 }

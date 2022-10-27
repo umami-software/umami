@@ -17,8 +17,7 @@ export default function LoginPage({ pageDisabled }) {
 export async function getServerSideProps() {
   return {
     props: {
-      pageDisabled:
-        !!process.env.DISABLE_LOGIN || !!process.env.DISABLE_UI || !!process.env.isAdminDisabled,
+      pageDisabled: !!(process.env.DISABLE_LOGIN || process.env.DISABLE_ADMIN),
     },
   };
 }

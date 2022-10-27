@@ -17,7 +17,7 @@ import styles from './Header.module.css';
 export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
-  const { updatesDisabled } = useConfig();
+  const { updatesDisabled, adminDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');
   const allowUpdate = user?.isAdmin && !updatesDisabled && !isSharePage;
 
@@ -38,7 +38,7 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            {!process.env.isAdminDisabled && (
+            {!adminDisabled && (
               <Link href="/settings">
                 <FormattedMessage id="label.settings" defaultMessage="Settings" />
               </Link>

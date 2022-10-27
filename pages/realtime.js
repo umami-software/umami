@@ -3,10 +3,10 @@ import Layout from 'components/layout/Layout';
 import RealtimeDashboard from 'components/pages/RealtimeDashboard';
 import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function RealtimePage({ pageDisabled }) {
+export default function RealtimePage() {
   const { loading } = useRequireLogin();
 
-  if (pageDisabled || loading) {
+  if (loading) {
     return null;
   }
 
@@ -15,12 +15,4 @@ export default function RealtimePage({ pageDisabled }) {
       <RealtimeDashboard />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      pageDisabled: !!process.env.DISABLE_UI,
-    },
-  };
 }

@@ -5,7 +5,7 @@ import useRequireLogin from 'hooks/useRequireLogin';
 import { useRouter } from 'next/router';
 import useUser from 'hooks/useUser';
 
-export default function DashboardPage({ pageDisabled }) {
+export default function DashboardPage() {
   const {
     query: { id },
     isReady,
@@ -14,7 +14,7 @@ export default function DashboardPage({ pageDisabled }) {
   const { loading } = useRequireLogin();
   const user = useUser();
 
-  if (pageDisabled || !user || !isReady || loading) {
+  if (!user || !isReady || loading) {
     return null;
   }
 
@@ -25,12 +25,4 @@ export default function DashboardPage({ pageDisabled }) {
       <Dashboard key={asPath} userId={user.id || userId} />
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      pageDisabled: !!process.env.DISABLE_UI,
-    },
-  };
 }

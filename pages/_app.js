@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { IntlProvider } from 'react-intl';
 import useLocale from 'hooks/useLocale';
+import useConfig from 'hooks/useConfig';
 import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
 import 'styles/index.css';
@@ -23,6 +24,11 @@ const Intl = ({ children }) => {
 export default function App({ Component, pageProps }) {
   const { basePath } = useRouter();
   const { dir } = useLocale();
+  const { uiDisabled } = useConfig();
+
+  if (uiDisabled) {
+    return null;
+  }
 
   return (
     <Intl>
