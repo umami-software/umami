@@ -106,6 +106,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
+    "@netlify/plugin-nextjs": "^4.27.3",
     "@rollup/plugin-buble": "^0.21.3",
     "@rollup/plugin-replace": "^4.0.0",
     "@svgr/webpack": "^6.2.1",
