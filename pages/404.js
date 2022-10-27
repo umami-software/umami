@@ -2,11 +2,7 @@ import React from 'react';
 import Layout from 'components/layout/Layout';
 import { FormattedMessage } from 'react-intl';
 
-export default function Custom404({ pageDisabled }) {
-  if (pageDisabled) {
-    return null;
-  }
-
+export default function Custom404() {
   return (
     <Layout>
       <div className="row justify-content-center">
@@ -16,12 +12,4 @@ export default function Custom404({ pageDisabled }) {
       </div>
     </Layout>
   );
-}
-
-export async function getServerSideProps() {
-  return {
-    props: {
-      pageDisabled: !!process.env.DISABLE_UI,
-    },
-  };
 }
