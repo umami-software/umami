@@ -4,12 +4,12 @@ import Layout from 'components/layout/Layout';
 import WebsiteDetails from 'components/pages/WebsiteDetails';
 import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function DetailsPage() {
+export default function DetailsPage({ pageDisabled }) {
   const { loading } = useRequireLogin();
   const router = useRouter();
   const { id } = router.query;
 
-  if (!id || loading) {
+  if (pageDisabled || !id || loading) {
     return null;
   }
 
@@ -20,4 +20,12 @@ export default function DetailsPage() {
       <WebsiteDetails websiteId={websiteId} />
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      pageDisabled: !!process.env.DISABLE_UI,
+    },
+  };
 }

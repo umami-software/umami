@@ -3,10 +3,10 @@ import Layout from 'components/layout/Layout';
 import Settings from 'components/pages/Settings';
 import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function SettingsPage() {
+export default function SettingsPage({ pageDisabled }) {
   const { loading } = useRequireLogin();
 
-  if (process.env.isCloudMode || loading) {
+  if (pageDisabled || loading) {
     return null;
   }
 
@@ -15,4 +15,12 @@ export default function SettingsPage() {
       <Settings />
     </Layout>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      pageDisabled: !!process.env.DISABLE_UI || !!process.env.isAdminDisabled,
+    },
+  };
 }
