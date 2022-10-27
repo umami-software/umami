@@ -28,7 +28,7 @@ export default function UserButton() {
     {
       label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
       value: 'profile',
-      hidden: process.env.isCloudMode,
+      hidden: process.env.isAdminDisabled,
     },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];

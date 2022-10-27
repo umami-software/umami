@@ -38,7 +38,7 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            {!process.env.isCloudMode && (
+            {!process.env.isAdminDisabled && (
               <Link href="/settings">
                 <FormattedMessage id="label.settings" defaultMessage="Settings" />
               </Link>
