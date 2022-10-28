@@ -24,7 +24,7 @@ export default function App({ Component, pageProps }) {
   const { basePath } = useRouter();
   const { dir } = useLocale();
 
-  if (!process.env.uiDisabled) {
+  if (process.env.uiDisabled) {
     return null;
   }
 

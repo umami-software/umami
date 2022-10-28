@@ -30,7 +30,7 @@ export default function Header() {
           <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
         </div>
         <HamburgerButton />
-        {user && (
+        {user && !adminDisabled && (
           <div className={styles.links}>
             <Link href="/dashboard">
               <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
@@ -38,11 +38,9 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            {!adminDisabled && (
-              <Link href="/settings">
-                <FormattedMessage id="label.settings" defaultMessage="Settings" />
-              </Link>
-            )}
+            <Link href="/settings">
+              <FormattedMessage id="label.settings" defaultMessage="Settings" />
+            </Link>
           </div>
         )}
         <div className={styles.buttons}>
