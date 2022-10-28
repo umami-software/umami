@@ -36,6 +36,7 @@ module.exports = {
   env: {
     currentVersion: pkg.version,
     isProduction: process.env.NODE_ENV === 'production',
+    uiDisabled: !!process.env.DISABLE_UI,
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
