@@ -10,7 +10,10 @@ export default function Layout({ title, children, header = true, footer = true }
   return (
     <>
       <Head>
-        <title>umami{title && ` - ${title}`}</title>
+        <title>
+          {process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'umami'}
+          {title && ` - ${title}`}
+        </title>
       </Head>
 
       {header && <Header />}

@@ -27,7 +27,11 @@ export default function Header() {
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <Icon icon={<Logo />} size="large" className={styles.logo} />
-          <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
+          <Link
+            href={isSharePage ? process.env.NEXT_PUBLIC_CUSTOM_HOMEPAGE_URL || HOMEPAGE_URL : '/'}
+          >
+            {process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'umami'}
+          </Link>
         </div>
         <HamburgerButton />
         {user && (
