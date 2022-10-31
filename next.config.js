@@ -53,7 +53,6 @@ module.exports = {
     return config;
   },
   images: {
-    dangerouslyAllowSVG: true,
     domains: [new URL(process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL).hostname],
   },
   async headers() {
