@@ -2,34 +2,27 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { IntlProvider } from 'react-intl';
 import useLocale from 'hooks/useLocale';
+import useConfig from 'hooks/useConfig';
 import 'styles/variables.css';
 import 'styles/bootstrap-grid.css';
 import 'styles/index.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
 
-const Intl = ({ children }) => {
-  const { locale, messages } = useLocale();
-
-  const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
-
-  return (
-    <IntlProvider locale={locale} messages={messages[locale]} textComponent={Wrapper}>
-      {children}
-    </IntlProvider>
-  );
-};
-
 export default function App({ Component, pageProps }) {
+  const { locale, messages } = useLocale();
   const { basePath } = useRouter();
   const { dir } = useLocale();
+  useConfig();
+
+  const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
 
   if (process.env.uiDisabled) {
     return null;
   }
 
   return (
-    <Intl>
+    <IntlProvider locale={locale} messages={messages[locale]} textComponent={Wrapper}>
       <Head>
         <link rel="icon" href={`${basePath}/favicon.ico`} />
         <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
@@ -45,6 +38,6 @@ export default function App({ Component, pageProps }) {
       <div className="container" dir={dir}>
         <Component {...pageProps} />
       </div>
-    </Intl>
+    </IntlProvider>
   );
 }
