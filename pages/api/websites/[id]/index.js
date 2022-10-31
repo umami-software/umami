@@ -23,6 +23,7 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { name, domain, owner, enableShareUrl, shareId } = req.body;
     const { accountUuid } = req.auth;
+
     let account;
 
     if (accountUuid) {
@@ -43,7 +44,7 @@ export default async (req, res) => {
           name,
           domain,
           shareId: shareId ? shareId : newShareId,
-          userId: account ? account.id : +owner || undefined,
+          userId: +owner || account.id,
         },
         { websiteUuid },
       );
