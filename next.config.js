@@ -3,7 +3,7 @@ const pkg = require('./package.json');
 
 const contentSecurityPolicy = `
   default-src 'self';
-  img-src *;
+  img-src * 'self' data:;
   script-src 'self' 'unsafe-eval';
   style-src 'self' 'unsafe-inline';
   connect-src 'self' api.umami.is;
@@ -51,6 +51,10 @@ module.exports = {
     });
 
     return config;
+  },
+  images: {
+    dangerouslyAllowSVG: true,
+    domains: [new URL(process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL).hostname],
   },
   async headers() {
     return [

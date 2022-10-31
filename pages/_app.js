@@ -27,12 +27,33 @@ export default function App({ Component, pageProps }) {
   return (
     <Intl>
       <Head>
-        <link rel="icon" href={`${basePath}/favicon.ico`} />
-        <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />
-        <link rel="icon" type="image/png" sizes="32x32" href={`${basePath}/favicon-32x32.png`} />
-        <link rel="icon" type="image/png" sizes="16x16" href={`${basePath}/favicon-16x16.png`} />
+        <link
+          rel="icon"
+          href={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || `${basePath}/favicon.ico`}
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || `${basePath}/apple-touch-icon.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || `${basePath}/favicon-32x32.png`}
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || `${basePath}/favicon-16x16.png`}
+        />
         <link rel="manifest" href={`${basePath}/site.webmanifest`} />
-        <link rel="mask-icon" href={`${basePath}/safari-pinned-tab.svg`} color="#5bbad5" />
+        <link
+          rel="mask-icon"
+          href={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || `${basePath}/safari-pinned-tab.svg`}
+          color="#5bbad5"
+        />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
         <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />

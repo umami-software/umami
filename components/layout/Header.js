@@ -26,7 +26,11 @@ export default function Header() {
       {allowUpdate && <UpdateNotice />}
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
-          <Icon icon={<Logo />} size="large" className={styles.logo} />
+          <Icon
+            icon={process.env.NEXT_PUBLIC_CUSTOM_FAVICON_URL || <Logo />}
+            size="large"
+            className={styles.logo}
+          />
           <Link
             href={isSharePage ? process.env.NEXT_PUBLIC_CUSTOM_HOMEPAGE_URL || HOMEPAGE_URL : '/'}
           >

@@ -76,7 +76,11 @@ export default function LoginForm() {
         {() => (
           <Form>
             <div className={styles.header}>
-              <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
+              <Icon
+                icon={process.env.NEXT_PUBLIC_CUSTOM_LOGO_URL || <Logo />}
+                size="xlarge"
+                className={styles.icon}
+              />
               <h1 className="center">{process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'umami'}</h1>
             </div>
             <FormRow>

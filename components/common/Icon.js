@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Image from 'next/image';
 import styles from './Icon.module.css';
 
 function Icon({ icon, className, size = 'medium', ...props }) {
@@ -15,7 +16,7 @@ function Icon({ icon, className, size = 'medium', ...props }) {
       })}
       {...props}
     >
-      {icon}
+      {typeof icon === 'string' ? <Image src={icon} width={20} height={20} /> : icon}
     </div>
   );
 }
