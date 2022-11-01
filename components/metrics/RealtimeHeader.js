@@ -9,11 +9,14 @@ import styles from './RealtimeHeader.module.css';
 
 export default function RealtimeHeader({ websites, data, websiteId, onSelect }) {
   const options = [
-    { label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />, value: 0 },
+    {
+      label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />,
+      value: null,
+    },
   ].concat(
-    websites.map(({ name, id }, index) => ({
+    websites.map(({ name, websiteUuid }, index) => ({
       label: name,
-      value: id,
+      value: websiteUuid,
       divider: index === 0,
     })),
   );

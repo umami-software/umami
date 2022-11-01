@@ -2,8 +2,8 @@ import React from 'react';
 import Layout from 'components/layout/Layout';
 import LoginForm from 'components/forms/LoginForm';
 
-export default function LoginPage({ loginDisabled }) {
-  if (loginDisabled) {
+export default function LoginPage({ pageDisabled }) {
+  if (pageDisabled) {
     return null;
   }
 
@@ -16,6 +16,8 @@ export default function LoginPage({ loginDisabled }) {
 
 export async function getServerSideProps() {
   return {
-    props: { loginDisabled: !!process.env.DISABLE_LOGIN || !!process.env.isCloudMode },
+    props: {
+      pageDisabled: !!process.env.DISABLE_LOGIN,
+    },
   };
 }

@@ -2,19 +2,20 @@ import { allowQuery } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { getRandomChars, methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getAccount, getWebsite, updateWebsite } from 'queries';
+import { TYPE_WEBSITE } from 'lib/constants';
 
 export default async (req, res) => {
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { id: websiteId } = req.query;
+  const { id: websiteUuid } = req.query;
 
-  if (!(await allowQuery(req))) {
+  if (!(await allowQuery(req, TYPE_WEBSITE))) {
     return unauthorized(res);
   }
 
   if (req.method === 'GET') {
-    const website = await getWebsite({ websiteUuid: websiteId });
+    const website = await getWebsite({ websiteUuid });
 
     return ok(res, website);
   }
@@ -22,6 +23,7 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { name, domain, owner, enableShareUrl, shareId } = req.body;
     const { accountUuid } = req.auth;
+
     let account;
 
     if (accountUuid) {
@@ -32,7 +34,7 @@ export default async (req, res) => {
       }
     }
 
-    const website = await getWebsite({ websiteUuid: websiteId });
+    const website = await getWebsite({ websiteUuid });
 
     const newShareId = enableShareUrl ? website.shareId || getRandomChars(8) : null;
 
@@ -42,9 +44,9 @@ export default async (req, res) => {
           name,
           domain,
           shareId: shareId ? shareId : newShareId,
-          userId: account ? account.id : +owner || undefined,
+          userId: +owner || account.id,
         },
-        { websiteUuid: websiteId },
+        { websiteUuid },
       );
     } catch (e) {
       if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
@@ -56,11 +58,11 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, true))) {
+    if (!(await allowQuery(req, TYPE_WEBSITE))) {
       return unauthorized(res);
     }
 
-    await deleteWebsite(websiteId);
+    await deleteWebsite(websiteUuid);
 
     return ok(res);
   }

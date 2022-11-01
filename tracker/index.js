@@ -143,7 +143,10 @@
             ) {
               e.preventDefault();
               trackEvent(name).then(() => {
-                location.href = get('href');
+                const href = get('href');
+                if (href) {
+                  location.href = href;
+                }
               });
             } else {
               trackEvent(name);

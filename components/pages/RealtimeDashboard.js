@@ -32,7 +32,7 @@ export default function RealtimeDashboard() {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
-  const [websiteId, setWebsiteId] = useState(0);
+  const [websiteUuid, setWebsiteUuid] = useState(null);
   const { data: init, loading } = useFetch('/realtime/init');
   const { data: updates } = useFetch('/realtime/update', {
     params: { start_at: data?.timestamp },
@@ -50,17 +50,18 @@ export default function RealtimeDashboard() {
     if (data) {
       const { pageviews, sessions, events } = data;
 
-      if (websiteId) {
+      if (websiteUuid) {
+        const { id } = init.websites.find(n => n.websiteUuid === websiteUuid);
         return {
-          pageviews: filterWebsite(pageviews, websiteId),
-          sessions: filterWebsite(sessions, websiteId),
-          events: filterWebsite(events, websiteId),
+          pageviews: filterWebsite(pageviews, id),
+          sessions: filterWebsite(sessions, id),
+          events: filterWebsite(events, id),
         };
       }
     }
 
     return data;
-  }, [data, websiteId]);
+  }, [data, websiteUuid]);
 
   const countries = useMemo(() => {
     if (realtimeData?.sessions) {
@@ -117,25 +118,20 @@ export default function RealtimeDashboard() {
     <Page>
       <RealtimeHeader
         websites={websites}
-        websiteId={websiteId}
+        websiteId={websiteUuid}
         data={{ ...realtimeData, countries }}
-        onSelect={setWebsiteId}
+        onSelect={setWebsiteUuid}
       />
       <div className={styles.chart}>
-        <RealtimeChart
-          websiteId={websiteId}
-          data={realtimeData}
-          unit="minute"
-          records={REALTIME_RANGE}
-        />
+        <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>
       <GridLayout>
         <GridRow>
           <GridColumn xs={12} lg={4}>
-            <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
+            <RealtimeViews websiteId={websiteUuid} data={realtimeData} websites={websites} />
           </GridColumn>
           <GridColumn xs={12} lg={8}>
-            <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
+            <RealtimeLog websiteId={websiteUuid} data={realtimeData} websites={websites} />
           </GridColumn>
         </GridRow>
         <GridRow>

@@ -14,8 +14,8 @@ export async function createWebsite(userId, data) {
       },
     })
     .then(async res => {
-      if (redis.client && res) {
-        await redis.client.set(`website:${res.websiteUuid}`, res.id);
+      if (redis.enabled && res) {
+        await redis.set(`website:${res.websiteUuid}`, res.id);
       }
 
       return res;

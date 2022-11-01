@@ -11,6 +11,18 @@
       "value": "Add account"
     }
   ],
+  "label.add-column": [
+    {
+      "type": 0,
+      "value": "Add column"
+    }
+  ],
+  "label.add-filter": [
+    {
+      "type": 0,
+      "value": "Add filter"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -153,6 +165,18 @@
     {
       "type": 0,
       "value": "Enable share URL"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Event Data"
+    }
+  ],
+  "label.field-name": [
+    {
+      "type": 0,
+      "value": "Field Name"
     }
   ],
   "label.invalid": [
@@ -313,6 +337,12 @@
       "value": "Save"
     }
   ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
   "label.settings": [
     {
       "type": 0,
@@ -373,6 +403,12 @@
       "value": "Tracking code"
     }
   ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -383,6 +419,12 @@
     {
       "type": 0,
       "value": "Username"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "label.view-details": [
