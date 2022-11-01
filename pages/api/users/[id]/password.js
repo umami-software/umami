@@ -1,4 +1,4 @@
-import { getAccount, updateAccount } from 'queries';
+import { getUser, updateUser } from 'queries';
 import { useAuth } from 'lib/middleware';
 import {
   badRequest,
@@ -15,22 +15,22 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { current_password, new_password } = req.body;
-  const { id: accountUuid } = req.query;
+  const { id } = req.query;
 
   if (!(await allowQuery(req, TYPE_ACCOUNT))) {
     return unauthorized(res);
   }
 
   if (req.method === 'POST') {
-    const account = await getAccount({ accountUuid });
+    const user = await getUser({ id });
 
-    if (!checkPassword(current_password, account.password)) {
+    if (!checkPassword(current_password, user.password)) {
       return badRequest(res, 'Current password is incorrect');
     }
 
     const password = hashPassword(new_password);
 
-    const updated = await updateAccount({ password }, { accountUuid });
+    const updated = await updateUser({ password }, { id });
 
     return ok(res, updated);
   }

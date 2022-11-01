@@ -21,7 +21,7 @@ async function relationalQuery(websiteId, { startDate, endDate, event_name, colu
         on event.website_id = website.website_id
       join event_data
         on event.event_id = event_data.event_id
-    where website_uuid='${websiteId}'
+    where website.website_id='${websiteId}'
       and event.created_at between $1 and $2
       ${event_name ? `and event_name = ${event_name}` : ''}
       ${

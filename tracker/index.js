@@ -92,21 +92,21 @@
       .then(text => (cache = text));
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, websiteUuid = website) =>
+  const trackView = (url = currentUrl, referrer = currentRef, websiteId = website) =>
     collect(
       'pageview',
       assign(getPayload(), {
-        website: websiteUuid,
+        website: websiteId,
         url,
         referrer,
       }),
     );
 
-  const trackEvent = (eventName, eventData, url = currentUrl, websiteUuid = website) =>
+  const trackEvent = (eventName, eventData, url = currentUrl, websiteId = website) =>
     collect(
       'event',
       assign(getPayload(), {
-        website: websiteUuid,
+        website: websiteId,
         url,
         event_name: eventName,
         event_data: eventData,

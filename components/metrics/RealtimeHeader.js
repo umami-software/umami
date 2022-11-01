@@ -14,9 +14,9 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
       value: null,
     },
   ].concat(
-    websites.map(({ name, websiteUuid }, index) => ({
+    websites.map(({ name, id }, index) => ({
       label: name,
-      value: websiteUuid,
+      value: id,
       divider: index === 0,
     })),
   );

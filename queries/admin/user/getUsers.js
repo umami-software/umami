@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 
-export async function getAccounts() {
-  return prisma.client.account.findMany({
+export async function getUsers() {
+  return prisma.client.user.findMany({
     orderBy: [
       { isAdmin: 'desc' },
       {
@@ -13,8 +13,6 @@ export async function getAccounts() {
       username: true,
       isAdmin: true,
       createdAt: true,
-      updatedAt: true,
-      accountUuid: true,
     },
   });
 }

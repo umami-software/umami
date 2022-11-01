@@ -13,7 +13,7 @@ async function relationalQuery(websites, start_at) {
   return prisma.client.pageview.findMany({
     where: {
       website: {
-        websiteUuid: {
+        id: {
           in: websites,
         },
       },
