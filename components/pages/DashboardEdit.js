@@ -24,7 +24,7 @@ export default function DashboardEdit({ websites }) {
   const ordered = useMemo(
     () =>
       websites
-        .map(website => ({ ...website, order: order.indexOf(website.websiteUuid) }))
+        .map(website => ({ ...website, order: order.indexOf(website.id) }))
         .sort(firstBy('order')),
     [websites, order],
   );
@@ -36,7 +36,7 @@ export default function DashboardEdit({ websites }) {
     const [removed] = orderedWebsites.splice(source.index, 1);
     orderedWebsites.splice(destination.index, 0, removed);
 
-    setOrder(orderedWebsites.map(website => website?.websiteUuid || 0));
+    setOrder(orderedWebsites.map(website => website?.id || 0));
   }
 
   function handleSave() {
@@ -76,12 +76,8 @@ export default function DashboardEdit({ websites }) {
                 ref={provided.innerRef}
                 style={{ marginBottom: snapshot.isDraggingOver ? 260 : null }}
               >
-                {ordered.map(({ websiteUuid, name, domain }, index) => (
-                  <Draggable
-                    key={websiteUuid}
-                    draggableId={`${dragId}-${websiteUuid}`}
-                    index={index}
-                  >
+                {ordered.map(({ id, name, domain }, index) => (
+                  <Draggable key={id} draggableId={`${dragId}-${id}`} index={index}>
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}

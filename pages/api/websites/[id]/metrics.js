@@ -94,7 +94,7 @@ export default async (req, res) => {
       let domain;
 
       if (type === 'referrer') {
-        const website = await getWebsite({ websiteUuid: websiteId });
+        const website = await getWebsite({ id: websiteId });
 
         if (!website) {
           return badRequest(res);

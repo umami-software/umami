@@ -28,7 +28,7 @@ async function relationalQuery(
     from event
       join website 
         on event.website_id = website.website_id
-    where website_uuid='${websiteId}'
+    where website.website_id='${websiteId}'
       and event.created_at between $1 and $2
     ${getFilterQuery('event', filters, params)}
     group by 1, 2

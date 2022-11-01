@@ -28,13 +28,13 @@ const validate = ({ id, username, password }) => {
   return errors;
 };
 
-export default function AccountEditForm({ values, onSave, onClose }) {
+export default function UserEditForm({ values, onSave, onClose }) {
   const { post } = useApi();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
     const { id } = values;
-    const { ok, data } = await post(id ? `/accounts/${id}` : '/accounts', values);
+    const { ok, data } = await post(id ? `/users/${id}` : '/users', values);
 
     if (ok) {
       onSave();

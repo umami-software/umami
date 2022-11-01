@@ -1,4 +1,4 @@
-import { createWebsite, getAccount, getAllWebsites, getUserWebsites } from 'queries';
+import { createWebsite, getUser, getAllWebsites, getUserWebsites } from 'queries';
 import { ok, methodNotAllowed, unauthorized, getRandomChars } from 'next-basics';
 import { useAuth } from 'lib/middleware';
 import { uuid } from 'lib/crypto';
@@ -8,14 +8,14 @@ export default async (req, res) => {
 
   const { user_id, include_all } = req.query;
   const { userId: currentUserId, isAdmin } = req.auth;
-  const accountUuid = user_id || req.auth.accountUuid;
-  let account;
+  const id = user_id || currentUserId;
+  let user;
 
-  if (accountUuid) {
-    account = await getAccount({ accountUuid });
+  if (id) {
+    user = await getUser({ id });
   }
 
-  const userId = account ? account.id : user_id;
+  const userId = user ? user.id : user_id;
 
   if (req.method === 'GET') {
     if (userId && userId !== currentUserId && !isAdmin) {
@@ -23,9 +23,7 @@ export default async (req, res) => {
     }
 
     const websites =
-      isAdmin && include_all
-        ? await getAllWebsites()
-        : await getUserWebsites({ userId: account?.id });
+      isAdmin && include_all ? await getAllWebsites() : await getUserWebsites({ userId });
 
     return ok(res, websites);
   }
@@ -33,15 +31,14 @@ export default async (req, res) => {
   if (req.method === 'POST') {
     const { name, domain, owner, enableShareUrl } = req.body;
 
-    const website_owner = account ? account.id : +owner;
+    const website_owner = user ? userId : +owner;
 
     if (website_owner !== currentUserId && !isAdmin) {
       return unauthorized(res);
     }
 
-    const websiteUuid = uuid();
     const shareId = enableShareUrl ? getRandomChars(8) : null;
-    const website = await createWebsite(website_owner, { websiteUuid, name, domain, shareId });
+    const website = await createWebsite(website_owner, { id: uuid(), name, domain, shareId });
 
     return ok(res, website);
   }

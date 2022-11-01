@@ -19,7 +19,7 @@ async function relationalQuery(websiteId) {
     from pageview
       join website 
         on pageview.website_id = website.website_id
-    where website.website_uuid = '${websiteId}'
+    where website.website_id = '${websiteId}'
     and pageview.created_at >= $1`,
     params,
   );

@@ -8,7 +8,7 @@ import Icon from 'components/common/Icon';
 import Table from 'components/common/Table';
 import Modal from 'components/common/Modal';
 import Toast from 'components/common/Toast';
-import AccountEditForm from 'components/forms/AccountEditForm';
+import UserEditForm from 'components/forms/UserEditForm';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import DeleteForm from 'components/forms/DeleteForm';
 import useFetch from 'hooks/useFetch';
@@ -17,21 +17,21 @@ import Plus from 'assets/plus.svg';
 import Trash from 'assets/trash.svg';
 import Check from 'assets/check.svg';
 import LinkIcon from 'assets/external-link.svg';
-import styles from './AccountSettings.module.css';
+import styles from './UserSettings.module.css';
 
-export default function AccountSettings() {
-  const [addAccount, setAddAccount] = useState();
-  const [editAccount, setEditAccount] = useState();
-  const [deleteAccount, setDeleteAccount] = useState();
+export default function UserSettings() {
+  const [addUser, setAddUser] = useState();
+  const [editUser, setEditUser] = useState();
+  const [deleteUser, setDeleteUser] = useState();
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
-  const { data } = useFetch(`/accounts`, {}, [saved]);
+  const { data } = useFetch(`/users`, {}, [saved]);
 
   const Checkmark = ({ isAdmin }) => (isAdmin ? <Icon icon={<Check />} size="medium" /> : null);
 
   const DashboardLink = row => {
     return (
-      <Link href={`/dashboard/${row.accountUuid}/${row.username}`}>
+      <Link href={`/dashboard/${row.id}/${row.username}`}>
         <a>
           <Icon icon={<LinkIcon />} />
         </a>
@@ -41,11 +41,11 @@ export default function AccountSettings() {
 
   const Buttons = row => (
     <ButtonLayout align="right">
-      <Button icon={<Pen />} size="small" onClick={() => setEditAccount(row)}>
+      <Button icon={<Pen />} size="small" onClick={() => setEditUser(row)}>
         <FormattedMessage id="label.edit" defaultMessage="Edit" />
       </Button>
       {!row.isAdmin && (
-        <Button icon={<Trash />} size="small" onClick={() => setDeleteAccount(row)}>
+        <Button icon={<Trash />} size="small" onClick={() => setDeleteUser(row)}>
           <FormattedMessage id="label.delete" defaultMessage="Delete" />
         </Button>
       )}
@@ -84,9 +84,9 @@ export default function AccountSettings() {
   }
 
   function handleClose() {
-    setEditAccount(null);
-    setAddAccount(null);
-    setDeleteAccount(null);
+    setEditUser(null);
+    setAddUser(null);
+    setDeleteUser(null);
   }
 
   if (!data) {
@@ -97,33 +97,31 @@ export default function AccountSettings() {
     <>
       <PageHeader>
         <div>
-          <FormattedMessage id="label.accounts" defaultMessage="Accounts" />
+          <FormattedMessage id="label.users" defaultMessage="Users" />
         </div>
-        <Button icon={<Plus />} size="small" onClick={() => setAddAccount(true)}>
-          <FormattedMessage id="label.add-account" defaultMessage="Add account" />
+        <Button icon={<Plus />} size="small" onClick={() => setAddUser(true)}>
+          <FormattedMessage id="label.add-user" defaultMessage="Add user" />
         </Button>
       </PageHeader>
       <Table columns={columns} rows={data} />
-      {editAccount && (
-        <Modal title={<FormattedMessage id="label.edit-account" defaultMessage="Edit account" />}>
-          <AccountEditForm
-            values={{ ...editAccount, password: '' }}
+      {editUser && (
+        <Modal title={<FormattedMessage id="label.edit-user" defaultMessage="Edit user" />}>
+          <UserEditForm
+            values={{ ...editUser, password: '' }}
             onSave={handleSave}
             onClose={handleClose}
           />
         </Modal>
       )}
-      {addAccount && (
-        <Modal title={<FormattedMessage id="label.add-account" defaultMessage="Add account" />}>
-          <AccountEditForm onSave={handleSave} onClose={handleClose} />
+      {addUser && (
+        <Modal title={<FormattedMessage id="label.add-user" defaultMessage="Add user" />}>
+          <UserEditForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
-      {deleteAccount && (
-        <Modal
-          title={<FormattedMessage id="label.delete-account" defaultMessage="Delete account" />}
-        >
+      {deleteUser && (
+        <Modal title={<FormattedMessage id="label.delete-user" defaultMessage="Delete user" />}>
           <DeleteForm
-            values={{ type: 'accounts', id: deleteAccount.id, name: deleteAccount.username }}
+            values={{ type: 'users', id: deleteUser.id, name: deleteUser.username }}
             onSave={handleSave}
             onClose={handleClose}
           />

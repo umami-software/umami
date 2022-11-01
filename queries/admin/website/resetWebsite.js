@@ -1,20 +1,20 @@
 import prisma from 'lib/prisma';
 
-export async function resetWebsite(websiteId) {
+export async function resetWebsite(id) {
   const { client, transaction } = prisma;
 
   return transaction([
     client.pageview.deleteMany({
-      where: { session: { website: { websiteUuid: websiteId } } },
+      where: { session: { website: { id } } },
     }),
     client.eventData.deleteMany({
-      where: { event: { session: { website: { websiteUuid: websiteId } } } },
+      where: { event: { session: { website: { id } } } },
     }),
     client.event.deleteMany({
-      where: { session: { website: { websiteUuid: websiteId } } },
+      where: { session: { website: { id } } },
     }),
     client.session.deleteMany({
-      where: { website: { websiteUuid: websiteId } },
+      where: { website: { id } },
     }),
   ]);
 }

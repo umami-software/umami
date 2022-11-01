@@ -2,6 +2,7 @@ import { EVENT_NAME_LENGTH, URL_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
+import { uuid } from 'lib/crypto';
 
 export async function saveEvent(...args) {
   return runQuery({
@@ -11,10 +12,11 @@ export async function saveEvent(...args) {
 }
 
 async function relationalQuery(
-  { websiteId },
-  { session: { id: sessionId }, eventUuid, url, eventName, eventData },
+  websiteId,
+  { eventId, session: { id: sessionId }, eventUuid, url, eventName, eventData },
 ) {
   const data = {
+    id: eventId,
     websiteId,
     sessionId,
     url: url?.substring(0, URL_LENGTH),
@@ -26,6 +28,7 @@ async function relationalQuery(
     data.eventData = {
       create: {
         eventData: eventData,
+        id: uuid(),
       },
     };
   }
@@ -36,7 +39,7 @@ async function relationalQuery(
 }
 
 async function clickhouseQuery(
-  { websiteUuid: websiteId },
+  websiteId,
   { session: { country, sessionUuid, ...sessionArgs }, eventUuid, url, eventName, eventData },
 ) {
   const { getDateFormat, sendMessage } = kafka;

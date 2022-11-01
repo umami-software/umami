@@ -15,7 +15,7 @@ async function relationalQuery(websites, start_at) {
       ...(websites && websites.length > 0
         ? {
             website: {
-              websiteUuid: {
+              id: {
                 in: websites,
               },
             },

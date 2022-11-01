@@ -19,7 +19,6 @@ async function relationalQuery(websiteId, data) {
       },
       select: {
         id: true,
-        sessionUuid: true,
         hostname: true,
         browser: true,
         os: true,
@@ -31,7 +30,7 @@ async function relationalQuery(websiteId, data) {
     })
     .then(async res => {
       if (redis.enabled && res) {
-        await redis.set(`session:${res.sessionUuid}`, 1);
+        await redis.set(`session:${res.id}`, 1);
       }
 
       return res;
@@ -40,12 +39,12 @@ async function relationalQuery(websiteId, data) {
 
 async function clickhouseQuery(
   websiteId,
-  { sessionUuid, hostname, browser, os, screen, language, country, device },
+  { sessionId, hostname, browser, os, screen, language, country, device },
 ) {
   const { getDateFormat, sendMessage } = kafka;
 
   const params = {
-    session_uuid: sessionUuid,
+    sessionId,
     website_id: websiteId,
     created_at: getDateFormat(new Date()),
     hostname,
@@ -60,6 +59,6 @@ async function clickhouseQuery(
   await sendMessage(params, 'event');
 
   if (redis.enabled) {
-    await redis.set(`session:${sessionUuid}`, 1);
+    await redis.set(`session:${sessionId}`, 1);
   }
 }

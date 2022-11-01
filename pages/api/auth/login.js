@@ -1,5 +1,5 @@
 import { ok, unauthorized, badRequest, checkPassword, createSecureToken } from 'next-basics';
-import { getAccount } from 'queries';
+import { getUser } from 'queries';
 import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
@@ -9,12 +9,11 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const account = await getAccount({ username });
+  const user = await getUser({ username });
 
-  if (account && checkPassword(password, account.password)) {
-    const { id, username, isAdmin, accountUuid } = account;
-    const user = { userId: id, username, isAdmin, accountUuid };
-    const token = createSecureToken(user, secret());
+  if (user && checkPassword(password, user.password)) {
+    const { id: userId, username, isAdmin } = user;
+    const token = createSecureToken({ userId, username, isAdmin }, secret());
 
     return ok(res, { token, user });
   }
