@@ -43,7 +43,7 @@ export default async (req, res) => {
       const accountByUsername = await getAccount({ username });
 
       if (accountByUsername) {
-        return badRequest(res, 'Account already exists');
+        return badRequest(res, 'Account already exists.');
       }
     }
 
@@ -53,11 +53,15 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
+    if (id === userId) {
+      return badRequest(res, 'You cannot delete your own account.');
+    }
+
     if (!isAdmin) {
       return unauthorized(res);
     }
 
-    await deleteAccount(userId);
+    await deleteAccount(+id);
 
     return ok(res);
   }
