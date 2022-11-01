@@ -9,7 +9,7 @@ import {
   hashPassword,
 } from 'next-basics';
 import { allowQuery } from 'lib/auth';
-import { TYPE_ACCOUNT } from 'lib/constants';
+import { TYPE_USER } from 'lib/constants';
 
 export default async (req, res) => {
   await useAuth(req, res);
@@ -17,7 +17,7 @@ export default async (req, res) => {
   const { current_password, new_password } = req.body;
   const { id } = req.query;
 
-  if (!(await allowQuery(req, TYPE_ACCOUNT))) {
+  if (!(await allowQuery(req, TYPE_USER))) {
     return unauthorized(res);
   }
 
