@@ -11,6 +11,18 @@
       "value": "Dodaj konto"
     }
   ],
+  "label.add-column": [
+    {
+      "type": 0,
+      "value": "Dodaj kolumnę"
+    }
+  ],
+  "label.add-filter": [
+    {
+      "type": 0,
+      "value": "Dodaj filtr"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -155,6 +167,18 @@
       "value": "Włącz udostępnianie adresu URL"
     }
   ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Dane zdarzenia"
+    }
+  ],
+  "label.field-name": [
+    {
+      "type": 0,
+      "value": "Nazwa pola"
+    }
+  ],
   "label.invalid": [
     {
       "type": 0,
@@ -244,7 +268,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Brak"
     }
   ],
   "label.owner": [
@@ -313,6 +337,12 @@
       "value": "Zapisz"
     }
   ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Szukaj"
+    }
+  ],
   "label.settings": [
     {
       "type": 0,
@@ -373,6 +403,12 @@
       "value": "Kod śledzenia"
     }
   ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Typ"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -385,6 +421,12 @@
       "value": "Nazwa użytkownika"
     }
   ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Wartość"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
@@ -395,6 +437,12 @@
     {
       "type": 0,
       "value": "Witryny"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Wczoraj"
     }
   ],
   "message.active-users": [
@@ -474,7 +522,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Edytuj panel"
     }
   ],
   "message.failure": [
@@ -770,7 +818,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Parametry query"
     }
   ],
   "metrics.referrers": [

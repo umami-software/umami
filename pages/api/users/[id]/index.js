@@ -53,6 +53,10 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
+    if (id === userId) {
+      return badRequest(res, 'You cannot delete your own user.');
+    }
+
     if (!isAdmin) {
       return unauthorized(res);
     }
