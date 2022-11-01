@@ -367,12 +367,6 @@
       "value": "Hoje"
     }
   ],
-  "label.yesterday": [
-    {
-      "type": 0,
-      "value": "Ontem"
-    }
-  ],
   "label.tracking-code": [
     {
       "type": 0,
@@ -401,42 +395,6 @@
     {
       "type": 0,
       "value": "Sites"
-    }
-  ],
-  "label.event-data": [
-    {
-      "type": 0,
-      "value": "Consultar dados do evento"
-    }
-  ],
-  "label.field-name": [
-    {
-      "type": 0,
-      "value": "Nome do campo"
-    }
-  ],
-  "label.type": [
-    {
-      "type": 0,
-      "value": "Tipo"
-    }
-  ],
-  "label.add-column": [
-    {
-      "type": 0,
-      "value": "Adicionar columna"
-    }
-  ],
-  "label.value": [
-    {
-      "type": 0,
-      "value": "Valor"
-    }
-  ],
-  "label.add-filter": [
-    {
-      "type": 0,
-      "value": "Adicionar filtro"
     }
   ],
   "message.active-users": [
@@ -520,7 +478,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Editar painel"
+      "value": "Edit dashboard"
     }
   ],
   "message.failure": [
@@ -627,12 +585,6 @@
     {
       "type": 1,
       "value": "name"
-    }
-  ],
-  "label.search": [
-    {
-      "type": 0,
-      "value": "Procurar"
     }
   ],
   "message.reset-warning": [
@@ -822,7 +774,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Parâmetros da URL"
+      "value": "Query parameters"
     }
   ],
   "metrics.referrers": [
@@ -834,7 +786,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Telas"
+      "value": "Screens"
     }
   ],
   "metrics.unique-visitors": [
