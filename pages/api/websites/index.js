@@ -1,9 +1,10 @@
 import { createWebsite, getUser, getAllWebsites, getUserWebsites } from 'queries';
 import { ok, methodNotAllowed, unauthorized, getRandomChars } from 'next-basics';
-import { useAuth } from 'lib/middleware';
+import { useAuth, useCors } from 'lib/middleware';
 import { uuid } from 'lib/crypto';
 
 export default async (req, res) => {
+  await useCors(req, res);
   await useAuth(req, res);
 
   const { user_id, include_all } = req.query;
