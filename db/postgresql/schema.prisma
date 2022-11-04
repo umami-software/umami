@@ -23,46 +23,6 @@ model user {
   website     website[]
 }
 
-model event {
-  id        String    @id() @map("event_id") @db.Uuid
-  websiteId String    @map("website_id") @db.Uuid
-  sessionId String    @map("session_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  url       String    @db.VarChar(500)
-  eventName String    @map("event_name") @db.VarChar(50)
-
-  eventData eventData?
-
-  @@index([createdAt])
-  @@index([sessionId])
-  @@index([websiteId])
-}
-
-model eventData {
-  id        String @id @unique @map("event_data_id") @db.Uuid
-  eventId   String @unique @map("event_id") @db.Uuid
-  eventData Json   @map("event_data")
-
-  event event @relation(fields: [eventId], references: [id])
-
-  @@map("event_data")
-}
-
-model pageview {
-  id        String    @id @unique @map("view_id") @db.Uuid
-  websiteId String    @map("website_id") @db.Uuid
-  sessionId String    @map("session_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  url       String    @db.VarChar(500)
-  referrer  String?   @db.VarChar(500)
-
-  @@index([createdAt])
-  @@index([sessionId])
-  @@index([websiteId, createdAt])
-  @@index([websiteId])
-  @@index([websiteId, sessionId, createdAt])
-}
-
 model session {
   id        String    @id @unique @map("session_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
@@ -85,13 +45,34 @@ model website {
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
   shareId   String?   @unique @map("share_id") @db.VarChar(64)
+  revId     Int       @default(0) @map("rev_id") @db.Int
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  isDeleted Boolean   @default(false) @map("is_deleted")
 
   user        user          @relation(fields: [userId], references: [id])
   teamWebsite teamWebsite[]
   userWebsite userWebsite[]
 
   @@index([userId])
+  @@index([createdAt])
+  @@index([shareId])
+}
+
+model websiteEvent {
+  id        String    @id() @map("event_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  sessionId String    @map("session_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  url       String    @db.VarChar(500)
+  referrer  String?   @db.VarChar(500)
+  eventName String    @map("event_name") @db.VarChar(50)
+  eventData Json      @map("event_data")
+
+  @@index([createdAt])
+  @@index([sessionId])
+  @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, sessionId, createdAt])
 }
 
 model group {
@@ -208,7 +189,6 @@ model userWebsite {
   userId    String    @map("user_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  isDeleted Boolean   @default(false) @map("is_deleted")
 
   website website @relation(fields: [websiteId], references: [id])
   user    user    @relation(fields: [userId], references: [id])
