@@ -3,7 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
-import redis from 'lib/redis';
+import cache from 'lib/cache';
 
 export async function saveEvent(...args) {
   return runQuery({
@@ -12,52 +12,49 @@ export async function saveEvent(...args) {
   });
 }
 
-async function relationalQuery(
-  websiteId,
-  { eventId, session: { id: sessionId }, eventUuid, url, eventName, eventData },
-) {
-  const data = {
+async function relationalQuery(data) {
+  const { websiteId, sessionId, url, eventName, eventData } = data;
+  const eventId = uuid();
+
+  const params = {
     id: eventId,
     websiteId,
     sessionId,
     url: url?.substring(0, URL_LENGTH),
     eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
-    eventUuid,
   };
 
   if (eventData) {
-    data.eventData = {
+    params.eventData = {
       create: {
+        id: eventId,
         eventData: eventData,
-        id: uuid(),
       },
     };
   }
 
   return prisma.client.event.create({
-    data,
+    data: params,
   });
 }
 
-async function clickhouseQuery(
-  websiteId,
-  { session: { country, sessionUuid, ...sessionArgs }, eventUuid, url, eventName, eventData },
-) {
+async function clickhouseQuery(data) {
+  const { websiteId, sessionId, url, eventName, eventData } = data;
   const { getDateFormat, sendMessage } = kafka;
-  const website = await redis.get(`website:${websiteId}`);
+  const website = await cache.fetchWebsite(websiteId);
 
   const params = {
-    session_id: sessionUuid,
-    event_id: eventUuid,
     website_id: websiteId,
-    rev_id: website?.revId || 0,
-    created_at: getDateFormat(new Date()),
+    session_id: sessionId,
+    event_id: uuid(),
     url: url?.substring(0, URL_LENGTH),
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
     event_data: eventData ? JSON.stringify(eventData) : null,
-    ...sessionArgs,
-    country: country ? country : null,
+    rev_id: website?.revId || 0,
+    created_at: getDateFormat(new Date()),
   };
 
   await sendMessage(params, 'event');
+
+  return data;
 }

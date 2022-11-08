@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import redis from 'lib/redis';
+import cache from 'lib/cache';
 
 export async function getSessionMetrics(...args) {
   return runQuery({
@@ -37,7 +37,7 @@ async function relationalQuery(websiteId, { startDate, endDate, field, filters =
 
 async function clickhouseQuery(websiteId, { startDate, endDate, field, filters = {} }) {
   const { parseFilters, getBetweenDates, rawQuery } = clickhouse;
-  const website = await redis.get(`website:${websiteId}`);
+  const website = await cache.fetchWebsite(websiteId);
   const params = [websiteId, website?.revId || 0];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 

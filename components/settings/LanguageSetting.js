@@ -5,7 +5,7 @@ import Button from 'components/common/Button';
 import useLocale from 'hooks/useLocale';
 import { DEFAULT_LOCALE } from 'lib/constants';
 import styles from './TimezoneSetting.module.css';
-import { languages } from '../../lib/lang';
+import { languages } from 'lib/lang';
 
 export default function LanguageSetting() {
   const { locale, saveLocale } = useLocale();

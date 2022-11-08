@@ -1,5 +1,5 @@
 import prisma from 'lib/prisma';
-import redis, { DELETED } from 'lib/redis';
+import cache from 'lib/cache';
 
 export async function deleteWebsite(id) {
   const { client, transaction } = prisma;
@@ -20,11 +20,11 @@ export async function deleteWebsite(id) {
     client.website.delete({
       where: { id },
     }),
-  ]).then(async res => {
-    if (redis.enabled) {
-      await redis.set(`website:${id}`, DELETED);
+  ]).then(async data => {
+    if (cache.enabled) {
+      await cache.deleteWebsite(id);
     }
 
-    return res;
+    return data;
   });
 }

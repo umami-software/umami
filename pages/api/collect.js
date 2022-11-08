@@ -5,7 +5,7 @@ import { createToken, unauthorized, send, badRequest, forbidden } from 'next-bas
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
-import { secret, uuid } from 'lib/crypto';
+import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
   await useCors(req, res);
@@ -58,9 +58,10 @@ export default async (req, res) => {
 
   await useSession(req, res);
 
-  const { websiteId, session } = req.session;
+  const session = req.session;
 
   const { type, payload } = getJsonBody(req);
+  const { websiteId } = session;
 
   let { url, referrer, event_name: eventName, event_data: eventData } = payload;
 
@@ -69,10 +70,9 @@ export default async (req, res) => {
   }
 
   if (type === 'pageview') {
-    await savePageView(websiteId, { pageViewId: uuid(), session, url, referrer });
+    await savePageView(websiteId, { session, url, referrer });
   } else if (type === 'event') {
     await saveEvent(websiteId, {
-      eventId: uuid(),
       session,
       url,
       eventName,
@@ -82,13 +82,7 @@ export default async (req, res) => {
     return badRequest(res);
   }
 
-  const token = createToken(
-    {
-      websiteId,
-      session,
-    },
-    secret(),
-  );
+  const token = createToken(session, secret());
 
   return send(res, token);
 };

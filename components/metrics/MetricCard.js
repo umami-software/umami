@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSpring, animated } from 'react-spring';
-import { formatNumber } from '../../lib/format';
+import { formatNumber } from 'lib/format';
 import styles from './MetricCard.module.css';
 
 const MetricCard = ({
