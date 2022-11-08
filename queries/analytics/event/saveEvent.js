@@ -3,6 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
+import redis from 'lib/redis';
 
 export async function saveEvent(...args) {
   return runQuery({
@@ -43,11 +44,13 @@ async function clickhouseQuery(
   { session: { country, sessionUuid, ...sessionArgs }, eventUuid, url, eventName, eventData },
 ) {
   const { getDateFormat, sendMessage } = kafka;
+  const website = await redis.get(`website:${websiteId}`);
 
   const params = {
     session_id: sessionUuid,
     event_id: eventUuid,
     website_id: websiteId,
+    rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),

@@ -2,6 +2,7 @@ import { URL_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
+import redis from 'lib/redis';
 
 export async function savePageView(...args) {
   return runQuery({
@@ -29,6 +30,7 @@ async function clickhouseQuery(
   websiteId,
   { session: { country, id: sessionId, ...sessionArgs }, url, referrer },
 ) {
+  const website = await redis.get(`website:${websiteId}`);
   const { getDateFormat, sendMessage } = kafka;
   const params = {
     session_id: sessionId,
@@ -36,6 +38,7 @@ async function clickhouseQuery(
     created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
+    rev_id: website?.revId || 0,
     ...sessionArgs,
     country: country ? country : null,
   };

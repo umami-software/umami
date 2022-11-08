@@ -45,7 +45,7 @@ model website {
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
   shareId   String?   @unique @map("share_id") @db.VarChar(64)
-  revId     Int       @default(0) @map("rev_id") @db.Int
+  revId     Int       @default(0) @map("rev_id") @db.Integer
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 

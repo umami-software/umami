@@ -7,34 +7,32 @@ export async function createSession(...args) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+  }).then(async data => {
+    if (redis.enabled && data) {
+      await redis.set(`session:${data.id}`, data);
+    }
+
+    return data;
   });
 }
 
 async function relationalQuery(websiteId, data) {
-  return prisma.client.session
-    .create({
-      data: {
-        websiteId,
-        ...data,
-      },
-      select: {
-        id: true,
-        hostname: true,
-        browser: true,
-        os: true,
-        screen: true,
-        language: true,
-        country: true,
-        device: true,
-      },
-    })
-    .then(async res => {
-      if (redis.enabled && res) {
-        await redis.set(`session:${res.id}`, 1);
-      }
-
-      return res;
-    });
+  return prisma.client.session.create({
+    data: {
+      websiteId,
+      ...data,
+    },
+    select: {
+      id: true,
+      hostname: true,
+      browser: true,
+      os: true,
+      screen: true,
+      language: true,
+      country: true,
+      device: true,
+    },
+  });
 }
 
 async function clickhouseQuery(
@@ -42,10 +40,12 @@ async function clickhouseQuery(
   { sessionId, hostname, browser, os, screen, language, country, device },
 ) {
   const { getDateFormat, sendMessage } = kafka;
+  const website = await redis.get(`website:${websiteId}`);
 
-  const params = {
+  const data = {
     sessionId,
     website_id: websiteId,
+    rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     hostname,
     browser,
@@ -56,9 +56,7 @@ async function clickhouseQuery(
     country: country ? country : null,
   };
 
-  await sendMessage(params, 'event');
+  await sendMessage(data, 'event');
 
-  if (redis.enabled) {
-    await redis.set(`session:${sessionId}`, 1);
-  }
+  return data;
 }

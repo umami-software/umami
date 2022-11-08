@@ -7,26 +7,24 @@ export async function getSession(...args) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+  }).then(async data => {
+    if (redis.enabled && data) {
+      await redis.set(`session:${data.id}`, data);
+    }
+
+    return data;
   });
 }
 
 async function relationalQuery(where) {
-  return prisma.client.session
-    .findUnique({
-      where,
-    })
-    .then(async res => {
-      if (redis.enabled && res) {
-        await redis.set(`session:${res.sessionUuid}`, 1);
-      }
-
-      return res;
-    });
+  return prisma.client.session.findUnique({
+    where,
+  });
 }
 
-async function clickhouseQuery(sessionUuid) {
+async function clickhouseQuery(sessionId) {
   const { rawQuery, findFirst } = clickhouse;
-  const params = [sessionUuid];
+  const params = [sessionId];
 
   return rawQuery(
     `select distinct
@@ -43,13 +41,5 @@ async function clickhouseQuery(sessionUuid) {
     from event
     where session_id = $1`,
     params,
-  )
-    .then(result => findFirst(result))
-    .then(async res => {
-      if (redis.enabled && res) {
-        await redis.set(`session:${res.id}`, 1);
-      }
-
-      return res;
-    });
+  ).then(result => findFirst(result));
 }
