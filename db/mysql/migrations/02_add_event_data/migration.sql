@@ -1,15 +1,3 @@
--- DropForeignKey
-ALTER TABLE `event` DROP FOREIGN KEY `event_ibfk_1`;
-ALTER TABLE `event` DROP FOREIGN KEY `event_ibfk_2`;
-
-DROP INDEX `event_created_at_idx` ON `event`;
-DROP INDEX `event_session_id_idx` ON `event`;
-DROP INDEX `event_website_id_idx` ON `event`;
-
-CREATE INDEX `event_old_created_at_idx` ON `event` (created_at);
-CREATE INDEX `event_old_session_id_idx` ON `event` (session_id);
-CREATE INDEX `event_old_website_id_idx` ON `event` (website_id);
-
 -- RenameTable
 RENAME TABLE `event` TO `_event_old`;
 
@@ -29,12 +17,6 @@ CREATE TABLE `event`
     PRIMARY KEY (`event_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `event` ADD CONSTRAINT `event_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `session`(`session_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE `event` ADD CONSTRAINT `event_ibfk_1` FOREIGN KEY (`website_id`) REFERENCES `website`(`website_id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
 
 -- CreateTable
 CREATE TABLE `event_data` (
@@ -46,8 +28,6 @@ CREATE TABLE `event_data` (
     PRIMARY KEY (`event_data_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddForeignKey
-ALTER TABLE `event_data` ADD CONSTRAINT `event_data_event_id_fkey` FOREIGN KEY (`event_id`) REFERENCES `event`(`event_id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- CreateProcedureRenameIndex
 CREATE PROCEDURE `UmamiRenameIndexIfExists`(
