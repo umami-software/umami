@@ -8,19 +8,25 @@ export async function deleteUser(userId) {
     where: { userId },
   });
 
+  let websiteIds = [];
+
+  if (websites.length > 0) {
+    websiteIds = websites.map(a => a.id);
+  }
+
   return client
     .$transaction([
       client.pageview.deleteMany({
-        where: { session: { website: { userId } } },
+        where: { websiteId: { in: websiteIds } },
       }),
       client.eventData.deleteMany({
-        where: { event: { session: { website: { userId } } } },
+        where: { event: { websiteId: { in: websiteIds } } },
       }),
       client.event.deleteMany({
-        where: { session: { website: { userId } } },
+        where: { websiteId: { in: websiteIds } },
       }),
       client.session.deleteMany({
-        where: { website: { userId } },
+        where: { websiteId: { in: websiteIds } },
       }),
       client.website.deleteMany({
         where: { userId },

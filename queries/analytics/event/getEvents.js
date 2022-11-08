@@ -12,10 +12,8 @@ export function getEvents(...args) {
 function relationalQuery(websites, start_at) {
   return prisma.client.event.findMany({
     where: {
-      website: {
-        id: {
-          in: websites,
-        },
+      websiteId: {
+        in: websites,
       },
       createdAt: {
         gte: start_at,
