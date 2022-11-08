@@ -6,16 +6,16 @@ export async function deleteWebsite(id) {
 
   return transaction([
     client.pageview.deleteMany({
-      where: { session: { website: { id } } },
+      where: { websiteId: id },
     }),
     client.eventData.deleteMany({
-      where: { event: { session: { website: { id } } } },
+      where: { event: { websiteId: id } },
     }),
     client.event.deleteMany({
-      where: { session: { website: { id } } },
+      where: { websiteId: id },
     }),
     client.session.deleteMany({
-      where: { website: { id } },
+      where: { websiteId: id },
     }),
     client.website.delete({
       where: { id },
