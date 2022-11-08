@@ -14,14 +14,15 @@ export default async (req, res) => {
   const user = await getUser({ username });
 
   if (user && checkPassword(password, user.password)) {
-    const { id: userId, username, isAdmin } = user;
-
     if (redis.enabled) {
-      const token = `auth:${generateAuthToken()}`;
+      const token = generateAuthToken();
+
+      await redis.set(token, user);
 
       return ok(res, { token, user });
     }
 
+    const { id: userId, username, isAdmin } = user;
     const token = createSecureToken({ userId, username, isAdmin }, secret());
 
     return ok(res, { token, user });
