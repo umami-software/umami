@@ -6,6 +6,7 @@ CREATE TABLE event
     website_id UUID,
     session_id UUID,
     event_id Nullable(UUID),
+    rev_id UInt32,
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -30,6 +31,7 @@ CREATE TABLE event_queue (
     website_id UUID,
     session_id UUID,
     event_id Nullable(UUID),
+    rev_id UInt32,
     url String,
     referrer String,
     hostname LowCardinality(String),
@@ -55,6 +57,7 @@ CREATE MATERIALIZED VIEW event_queue_mv TO event AS
 SELECT website_id,
     session_id,
     event_id,
+    rev_id,
     url,
     referrer,
     hostname,
