@@ -15,7 +15,7 @@ async function relationalQuery(where) {
   });
 }
 
-async function clickhouseQuery(sessionId) {
+async function clickhouseQuery({ id: sessionId }) {
   const { rawQuery, findFirst } = clickhouse;
   const params = [sessionId];
 
@@ -32,7 +32,7 @@ async function clickhouseQuery(sessionId) {
       language, 
       country 
     from event
-    where session_id = $1
+      where session_id = $1
     limit 1`,
     params,
   ).then(result => findFirst(result));
