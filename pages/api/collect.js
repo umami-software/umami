@@ -61,7 +61,6 @@ export default async (req, res) => {
   const session = req.session;
 
   const { type, payload } = getJsonBody(req);
-  const { websiteId } = session;
 
   let { url, referrer, event_name: eventName, event_data: eventData } = payload;
 
@@ -70,10 +69,10 @@ export default async (req, res) => {
   }
 
   if (type === 'pageview') {
-    await savePageView(websiteId, { session, url, referrer });
+    await savePageView({ ...session, url, referrer });
   } else if (type === 'event') {
-    await saveEvent(websiteId, {
-      session,
+    await saveEvent({
+      ...session,
       url,
       eventName,
       eventData,
