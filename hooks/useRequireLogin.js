@@ -12,14 +12,17 @@ export default function useRequireLogin() {
   async function loadUser() {
     setLoading(true);
 
-    const { ok, data } = await get('/auth/verify');
+    const {
+      ok,
+      data: { user },
+    } = await get('/auth/verify');
 
     if (!ok) {
       await router.push('/login');
       return null;
     }
 
-    setUser(data);
+    setUser(user);
 
     setLoading(false);
   }
