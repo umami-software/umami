@@ -39,7 +39,7 @@ async function relationalQuery(data) {
 }
 
 async function clickhouseQuery(data) {
-  const { websiteId, sessionId, url, eventName, eventData } = data;
+  const { websiteId, id: sessionId, url, eventName, eventData, country, ...args } = data;
   const { getDateFormat, sendMessage } = kafka;
   const website = await cache.fetchWebsite(websiteId);
 
@@ -52,6 +52,8 @@ async function clickhouseQuery(data) {
     event_data: eventData ? JSON.stringify(eventData) : null,
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
+    country: country ? country : null,
+    ...args,
   };
 
   await sendMessage(params, 'event');

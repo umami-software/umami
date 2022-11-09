@@ -26,7 +26,7 @@ async function relationalQuery(data) {
 }
 
 async function clickhouseQuery(data) {
-  const { websiteId, sessionId, url, referrer } = data;
+  const { websiteId, id: sessionId, url, referrer, country, ...args } = data;
   const website = await cache.fetchWebsite(websiteId);
   const { getDateFormat, sendMessage } = kafka;
 
@@ -37,6 +37,8 @@ async function clickhouseQuery(data) {
     referrer: referrer?.substring(0, URL_LENGTH),
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
+    country: country ? country : null,
+    ...args,
   };
 
   await sendMessage(msg, 'event');
