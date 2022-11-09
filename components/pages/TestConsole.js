@@ -12,7 +12,7 @@ import useFetch from 'hooks/useFetch';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
-  const { data } = useFetch('/websites');
+  const { data } = useFetch('/websites?include_all=true');
   const router = useRouter();
   const {
     basePath,

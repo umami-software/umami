@@ -5,7 +5,9 @@ import { useAuth } from 'lib/middleware';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { isAdmin, userId } = req.auth;
+  const {
+    user: { id: userId, isAdmin },
+  } = req.auth;
   const { id } = req.query;
 
   if (req.method === 'GET') {

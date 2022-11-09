@@ -8,8 +8,7 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const {
-    user: { id: userId },
-    isAdmin,
+    user: { id: userId, isAdmin },
   } = req.auth;
 
   if (req.method === 'GET') {
