@@ -38,8 +38,6 @@ download(url).then(
         if (entry.path.endsWith('.mmdb')) {
           const filename = path.join(dest, path.basename(entry.path));
           entry.pipe(fs.createWriteStream(filename));
-
-          console.log('Saved countries geo database:', filename);
         }
       });
 
@@ -58,8 +56,6 @@ download(citiesUrl).then(
         if (entry.path.endsWith('.mmdb')) {
           const filename = path.join(dest, path.basename(entry.path));
           entry.pipe(fs.createWriteStream(filename));
-
-          console.log('Saved cities geo database:', filename);
         }
       });
 
