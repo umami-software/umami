@@ -7,7 +7,10 @@ export default async (req, res) => {
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { userId, isAdmin } = req.auth;
+  const {
+    user: { id: userId },
+    isAdmin,
+  } = req.auth;
 
   if (req.method === 'GET') {
     const { include_all } = req.query;
