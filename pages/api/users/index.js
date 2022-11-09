@@ -6,7 +6,7 @@ import { createUser, getUser, getUsers } from 'queries';
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { isAdmin } = req.auth;
+  const { isAdmin } = req.auth.user;
 
   if (!isAdmin) {
     return unauthorized(res);
