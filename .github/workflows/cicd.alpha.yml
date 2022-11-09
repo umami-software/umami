@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [meza/initial-setup]
+    branches: [alpha-k8s]
     paths: [pages, components, db, helm, lib, scripts, store, tracker, .github/workflows/cicd.alpha.yml]
 
 env:
