@@ -19,7 +19,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { username, password } = req.body;
+    const { username, password, id } = req.body;
 
     const user = await getUser({ username });
 
@@ -28,7 +28,7 @@ export default async (req, res) => {
     }
 
     const created = await createUser({
-      id: uuid(),
+      id: id || uuid(),
       username,
       password: hashPassword(password),
     });
