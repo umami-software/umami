@@ -56,6 +56,7 @@
     ]
   },
   "dependencies": {
+    "@fluent-org/logger": "^1.0.10",
     "@fontsource/inter": "4.5.7",
     "@prisma/client": "^4.4.0",
     "chalk": "^4.1.1",

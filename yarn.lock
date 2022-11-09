@@ -1141,6 +1141,13 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@fluent-org/logger@^1.0.10":
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/@fluent-org/logger/-/logger-1.0.10.tgz#b90a4c8cf6ead0819bf86f47ee4b268d2ee70b88"
+  integrity sha512-7gWfwknDWlcvh92sbUGj1pbGyKwkprfNH2ZuFTgCBQLQmcexvFEYh70z69S/TLnQ6z9sqpgfT/gyHrudBqRtZg==
+  dependencies:
+    "@msgpack/msgpack" "^2.7.1"
+
 "@fontsource/inter@4.5.7":
   version "4.5.7"
   resolved "https://registry.npmjs.org/@fontsource/inter/-/inter-4.5.7.tgz"
@@ -1346,6 +1353,11 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
+
+"@msgpack/msgpack@^2.7.1":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@msgpack/msgpack/-/msgpack-2.8.0.tgz#4210deb771ee3912964f14a15ddfb5ff877e70b9"
+  integrity sha512-h9u4u/jiIRKbq25PM+zymTyW6bhTzELvOoUd+AvYriWOAKpLGnIamaET3pnHYoI5iYphAHBI4ayx0MehR+VVPQ==
 
 "@next/env@12.2.5":
   version "12.2.5"
