@@ -8,7 +8,7 @@ export default async (req, res) => {
 
   if (req.method === 'POST') {
     if (redis.enabled) {
-      await redis.del(`auth:${getAuthToken(req)}`);
+      await redis.del(getAuthToken(req));
     }
 
     return ok(res);
