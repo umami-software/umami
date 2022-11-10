@@ -21,6 +21,8 @@ model User {
   teamUser    TeamUser[]
   userWebsite UserWebsite[]
   website     Website[]
+
+  @@map("user")
 }
 
 model Session {
@@ -37,6 +39,7 @@ model Session {
 
   @@index([createdAt])
   @@index([websiteId])
+  @@map("session")
 }
 
 model Website {
@@ -56,6 +59,7 @@ model Website {
   @@index([userId])
   @@index([createdAt])
   @@index([shareId])
+  @@map("website")
 }
 
 model WebsiteEvent {
@@ -85,6 +89,8 @@ model Group {
 
   groupRoles GroupRole[]
   groupUsers GroupUser[]
+
+  @@map("group")
 }
 
 model GroupRole {
@@ -121,6 +127,8 @@ model Permission {
   description String?   @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted   Boolean   @default(false) @map("is_deleted")
+
+  @@map("permission")
 }
 
 model Role {
@@ -132,6 +140,8 @@ model Role {
 
   groupRoles GroupRole[]
   userRoles  UserRole[]
+
+  @@map("role")
 }
 
 model UserRole {
@@ -155,6 +165,8 @@ model Team {
 
   teamWebsites TeamWebsite[]
   teamUsers    TeamUser[]
+
+  @@map("team")
 }
 
 model TeamWebsite {
