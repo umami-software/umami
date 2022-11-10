@@ -13,6 +13,7 @@ import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
+import SettingsButton from '../settings/SettingsButton';
 
 export default function Header() {
   const { user } = useUser();
@@ -46,6 +47,7 @@ export default function Header() {
         <div className={styles.buttons}>
           <ThemeButton />
           <LanguageButton menuAlign="right" />
+          <SettingsButton />
           {user && !adminDisabled && <UserButton />}
         </div>
       </header>
