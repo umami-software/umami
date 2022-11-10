@@ -46,7 +46,7 @@ export default function Header() {
         <div className={styles.buttons}>
           <ThemeButton />
           <LanguageButton menuAlign="right" />
-          {user && <UserButton />}
+          {user && !adminDisabled && <UserButton />}
         </div>
       </header>
     </>

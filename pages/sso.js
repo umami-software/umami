@@ -13,7 +13,7 @@ export default function SingleSignOnPage() {
 
       router.push(url);
     }
-  }, [url, token]);
+  }, [router, url, token]);
 
   return null;
 }
