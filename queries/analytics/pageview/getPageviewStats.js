@@ -66,7 +66,8 @@ async function clickhouseQuery(
         count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
       where event_name = ''
-        and website_id= $1        
+        and website_id = $1      
+        and rev_id = $2  
         and ${getBetweenDates('created_at', start_at, end_at)}
         ${pageviewQuery}
         ${sessionQuery}

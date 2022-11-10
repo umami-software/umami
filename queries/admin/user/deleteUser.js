@@ -16,13 +16,7 @@ export async function deleteUser(userId) {
 
   return client
     .$transaction([
-      client.pageview.deleteMany({
-        where: { websiteId: { in: websiteIds } },
-      }),
-      client.eventData.deleteMany({
-        where: { event: { websiteId: { in: websiteIds } } },
-      }),
-      client.event.deleteMany({
+      client.websiteEvent.deleteMany({
         where: { websiteId: { in: websiteIds } },
       }),
       client.session.deleteMany({

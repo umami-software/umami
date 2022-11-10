@@ -5,13 +5,7 @@ export async function deleteWebsite(id) {
   const { client, transaction } = prisma;
 
   return transaction([
-    client.pageview.deleteMany({
-      where: { websiteId: id },
-    }),
-    client.eventData.deleteMany({
-      where: { event: { websiteId: id } },
-    }),
-    client.event.deleteMany({
+    client.websiteEvent.deleteMany({
       where: { websiteId: id },
     }),
     client.session.deleteMany({

@@ -33,11 +33,11 @@ async function clickhouseQuery(websites, start_at) {
         url
       from event
       where event_name = ''
-      and ${
-        websites && websites.length > 0
-          ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
-          : '0 = 0'
-      }
+        and ${
+          websites && websites.length > 0
+            ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
+            : '0 = 0'
+        }
       and created_at >= ${clickhouse.getDateFormat(start_at)}`,
   );
 }
