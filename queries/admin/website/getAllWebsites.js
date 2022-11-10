@@ -11,7 +11,7 @@ export async function getAllWebsites() {
       },
     ],
     include: {
-      account: {
+      user: {
         select: {
           username: true,
         },
@@ -19,5 +19,5 @@ export async function getAllWebsites() {
     },
   });
 
-  return data.map(i => ({ ...i, account: i.account.username }));
+  return data.map(i => ({ ...i, user: i.user.username }));
 }

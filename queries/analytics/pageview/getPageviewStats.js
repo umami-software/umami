@@ -1,6 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import cache from 'lib/cache';
 
 export async function getPageviewStats(...args) {
   return runQuery({
@@ -37,7 +38,7 @@ async function relationalQuery(
         join website
             on pageview.website_id = website.website_id
         ${joinSession}
-      where website.website_uuid='${websiteId}'
+      where website.website_id='${websiteId}'
         and pageview.created_at between $1 and $2
         ${pageviewQuery}
         ${sessionQuery}
@@ -51,7 +52,8 @@ async function clickhouseQuery(
   { start_at, end_at, timezone = 'UTC', unit = 'day', count = '*', filters = {} },
 ) {
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
-  const params = [websiteId];
+  const website = await cache.fetchWebsite(websiteId);
+  const params = [websiteId, website?.revId || 0];
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(
@@ -64,7 +66,8 @@ async function clickhouseQuery(
         count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
       where event_name = ''
-        and website_id= $1        
+        and website_id = $1      
+        and rev_id = $2  
         and ${getBetweenDates('created_at', start_at, end_at)}
         ${pageviewQuery}
         ${sessionQuery}

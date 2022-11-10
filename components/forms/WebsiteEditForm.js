@@ -37,7 +37,7 @@ const validate = ({ name, domain }) => {
   return errors;
 };
 
-const OwnerDropDown = ({ user, accounts }) => {
+const OwnerDropDown = ({ user, users }) => {
   const { setFieldValue, values } = useFormikContext();
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const OwnerDropDown = ({ user, accounts }) => {
     } else if (user?.id && values.owner === '') {
       setFieldValue('owner', user.id.toString());
     }
-  }, [accounts, setFieldValue, user, values]);
+  }, [users, setFieldValue, user, values]);
 
   if (user?.isAdmin) {
     return (
@@ -56,7 +56,7 @@ const OwnerDropDown = ({ user, accounts }) => {
         </label>
         <div>
           <Field as="select" name="owner" className={styles.dropdown}>
-            {accounts?.map(acc => (
+            {users?.map(acc => (
               <option key={acc.id} value={acc.id}>
                 {acc.username}
               </option>
@@ -73,14 +73,14 @@ const OwnerDropDown = ({ user, accounts }) => {
 
 export default function WebsiteEditForm({ values, onSave, onClose }) {
   const { post } = useApi();
-  const { data: accounts } = useFetch(`/accounts`);
+  const { data: users } = useFetch(`/users`);
   const { user } = useUser();
   const [message, setMessage] = useState();
 
   const handleSubmit = async values => {
-    const { websiteUuid: websiteId } = values;
+    const { id } = values;
 
-    const { ok, data } = await post(websiteId ? `/websites/${websiteId}` : '/websites', values);
+    const { ok, data } = await post(id ? `/websites/${id}` : '/websites', values);
 
     if (ok) {
       onSave();
@@ -125,7 +125,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                 <FormError name="domain" />
               </div>
             </FormRow>
-            <OwnerDropDown accounts={accounts} user={user} />
+            <OwnerDropDown users={users} user={user} />
             <FormRow>
               <label />
               <Field name="enableShareUrl">

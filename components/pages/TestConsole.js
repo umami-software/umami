@@ -12,7 +12,7 @@ import useFetch from 'hooks/useFetch';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
-  const { data } = useFetch('/websites');
+  const { data } = useFetch('/websites?include_all=true');
   const router = useRouter();
   const {
     basePath,
@@ -24,9 +24,9 @@ export default function TestConsole() {
     return null;
   }
 
-  const options = data.map(({ name, websiteUuid }) => ({ label: name, value: websiteUuid }));
-  const website = data.find(({ websiteUuid }) => websiteId === websiteUuid);
-  const selectedValue = options.find(({ value }) => value === website?.websiteUuid)?.value;
+  const options = data.map(({ name, id }) => ({ label: name, value: id }));
+  const website = data.find(({ id }) => websiteId === id);
+  const selectedValue = options.find(({ value }) => value === website?.id)?.value;
 
   function handleSelect(value) {
     router.push(`/console/${value}`);
@@ -46,7 +46,7 @@ export default function TestConsole() {
           <script
             async
             defer
-            data-website-id={website.websiteUuid}
+            data-website-id={website.id}
             src={`${basePath}/umami.js`}
             data-cache="true"
           />
@@ -104,13 +104,13 @@ export default function TestConsole() {
           <div className="row">
             <div className="col-12">
               <WebsiteChart
-                websiteId={website.websiteUuid}
+                websiteId={website.id}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
               <PageHeader>Events</PageHeader>
-              <EventsChart websiteId={website.websiteUuid} />
+              <EventsChart websiteId={website.id} />
             </div>
           </div>
         </>

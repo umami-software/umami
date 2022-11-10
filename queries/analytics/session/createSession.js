@@ -1,65 +1,45 @@
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import redis from 'lib/redis';
+import cache from 'lib/cache';
 
 export async function createSession(...args) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+  }).then(async data => {
+    if (cache.enabled) {
+      await cache.storeSession(data);
+    }
+
+    return data;
   });
 }
 
-async function relationalQuery(websiteId, data) {
-  return prisma.client.session
-    .create({
-      data: {
-        websiteId,
-        ...data,
-      },
-      select: {
-        id: true,
-        sessionUuid: true,
-        hostname: true,
-        browser: true,
-        os: true,
-        screen: true,
-        language: true,
-        country: true,
-        device: true,
-      },
-    })
-    .then(async res => {
-      if (redis.enabled && res) {
-        await redis.set(`session:${res.sessionUuid}`, 1);
-      }
-
-      return res;
-    });
+async function relationalQuery(data) {
+  return prisma.client.session.create({ data });
 }
 
-async function clickhouseQuery(
-  websiteId,
-  { sessionUuid, hostname, browser, os, screen, language, country, device },
-) {
+async function clickhouseQuery(data) {
+  const { id, websiteId, hostname, browser, os, device, screen, language, country } = data;
   const { getDateFormat, sendMessage } = kafka;
+  const website = await cache.fetchWebsite(websiteId);
 
-  const params = {
-    session_uuid: sessionUuid,
+  const msg = {
+    session_id: id,
     website_id: websiteId,
-    created_at: getDateFormat(new Date()),
     hostname,
     browser,
     os,
     device,
     screen,
     language,
-    country: country ? country : null,
+    country,
+    rev_id: website?.revId || 0,
+    created_at: getDateFormat(new Date()),
   };
 
-  await sendMessage(params, 'event');
+  await sendMessage(msg, 'event');
 
-  if (redis.enabled) {
-    await redis.set(`session:${sessionUuid}`, 1);
-  }
+  return data;
 }

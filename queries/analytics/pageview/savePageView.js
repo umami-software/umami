@@ -2,6 +2,8 @@ import { URL_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
+import cache from 'lib/cache';
+import { uuid } from 'lib/crypto';
 
 export async function savePageView(...args) {
   return runQuery({
@@ -10,9 +12,11 @@ export async function savePageView(...args) {
   });
 }
 
-async function relationalQuery({ websiteId }, { session: { id: sessionId }, url, referrer }) {
+async function relationalQuery(data) {
+  const { websiteId, sessionId, url, referrer } = data;
   return prisma.client.pageview.create({
     data: {
+      id: uuid(),
       websiteId,
       sessionId,
       url: url?.substring(0, URL_LENGTH),
@@ -21,20 +25,23 @@ async function relationalQuery({ websiteId }, { session: { id: sessionId }, url,
   });
 }
 
-async function clickhouseQuery(
-  { websiteUuid: websiteId },
-  { session: { country, sessionUuid, ...sessionArgs }, url, referrer },
-) {
+async function clickhouseQuery(data) {
+  const { websiteId, id: sessionId, url, referrer, country, ...args } = data;
+  const website = await cache.fetchWebsite(websiteId);
   const { getDateFormat, sendMessage } = kafka;
-  const params = {
-    session_uuid: sessionUuid,
+
+  const msg = {
+    session_id: sessionId,
     website_id: websiteId,
-    created_at: getDateFormat(new Date()),
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
-    ...sessionArgs,
+    rev_id: website?.revId || 0,
+    created_at: getDateFormat(new Date()),
     country: country ? country : null,
+    ...args,
   };
 
-  await sendMessage(params, 'event');
+  await sendMessage(msg, 'event');
+
+  return data;
 }

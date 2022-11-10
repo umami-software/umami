@@ -13,11 +13,12 @@ import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 import Logo from 'assets/logo.svg';
 import styles from './Header.module.css';
+import SettingsButton from '../settings/SettingsButton';
 
 export default function Header() {
   const { user } = useUser();
   const { pathname } = useRouter();
-  const { updatesDisabled } = useConfig();
+  const { updatesDisabled, adminDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');
   const allowUpdate = user?.isAdmin && !updatesDisabled && !isSharePage;
 
@@ -30,7 +31,7 @@ export default function Header() {
           <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
         </div>
         <HamburgerButton />
-        {user && (
+        {user && !adminDisabled && (
           <div className={styles.links}>
             <Link href="/dashboard">
               <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
@@ -38,17 +39,16 @@ export default function Header() {
             <Link href="/realtime">
               <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
             </Link>
-            {!process.env.isCloudMode && (
-              <Link href="/settings">
-                <FormattedMessage id="label.settings" defaultMessage="Settings" />
-              </Link>
-            )}
+            <Link href="/settings">
+              <FormattedMessage id="label.settings" defaultMessage="Settings" />
+            </Link>
           </div>
         )}
         <div className={styles.buttons}>
           <ThemeButton />
           <LanguageButton menuAlign="right" />
-          {user && <UserButton />}
+          <SettingsButton />
+          {user && !adminDisabled && <UserButton />}
         </div>
       </header>
     </>

@@ -5344,10 +5344,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
   integrity sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=
 
-next-basics@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.18.0.tgz#7683ec67d562fb57a6f3fb346c989802157450d1"
-  integrity sha512-KJZjAHahQ++YYaSPuJVAY0wH9QYXVq85ZUGW5mBMq+qDfL8ZVG4nTWc8GhuI8EYLLR+oZp/eInvoqYgiW/dbhg==
+next-basics@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.23.0.tgz#6ccc4b5f3cd87550b07d280c2a3bdee26f557912"
+  integrity sha512-AwKipMFkxS84ZKFDVSo8ZHXoOVzF2sPZp21pgtGlqf9aUmj48+QtxdM6ZnJVRg8Savf48ENjeYzeiu5I8Z4l/w==
   dependencies:
     base-x "^4.0.0"
     bcryptjs "^2.4.3"

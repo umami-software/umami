@@ -1,0 +1,20 @@
+.button {
+  position: relative;
+}
+
+.panel {
+  background: var(--gray50);
+  border: 1px solid var(--gray500);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 20px;
+  z-index: 100;
+}
+
+.panel dd {
+  display: flex;
+}

@@ -1,11 +1,11 @@
 import prisma from 'lib/prisma';
-import redis from 'lib/redis';
+import cache from 'lib/cache';
 
 export async function createWebsite(userId, data) {
   return prisma.client.website
     .create({
       data: {
-        account: {
+        user: {
           connect: {
             id: userId,
           },
@@ -13,11 +13,11 @@ export async function createWebsite(userId, data) {
         ...data,
       },
     })
-    .then(async res => {
-      if (redis.enabled && res) {
-        await redis.set(`website:${res.websiteUuid}`, res.id);
+    .then(async data => {
+      if (cache.enabled) {
+        await cache.storeWebsite(data);
       }
 
-      return res;
+      return data;
     });
 }

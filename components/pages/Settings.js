@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import MenuLayout from 'components/layout/MenuLayout';
 import WebsiteSettings from 'components/settings/WebsiteSettings';
-import AccountSettings from 'components/settings/AccountSettings';
+import UserSettings from 'components/settings/UserSettings';
 import ProfileSettings from 'components/settings/ProfileSettings';
 import useUser from 'hooks/useUser';
 
 const WEBSITES = '/settings';
-const ACCOUNTS = '/settings/accounts';
+const ACCOUNTS = '/settings/users';
 const PROFILE = '/settings/profile';
 
 export default function Settings() {
@@ -28,7 +28,7 @@ export default function Settings() {
       value: WEBSITES,
     },
     {
-      label: <FormattedMessage id="label.accounts" defaultMessage="Accounts" />,
+      label: <FormattedMessage id="label.users" defaultMessage="Users" />,
       value: ACCOUNTS,
       hidden: !user?.isAdmin,
     },
@@ -42,7 +42,7 @@ export default function Settings() {
     <Page>
       <MenuLayout menu={menuOptions} selectedOption={option} onMenuSelect={setOption}>
         {pathname === WEBSITES && <WebsiteSettings />}
-        {pathname === ACCOUNTS && <AccountSettings />}
+        {pathname === ACCOUNTS && <UserSettings />}
         {pathname === PROFILE && <ProfileSettings />}
       </MenuLayout>
     </Page>

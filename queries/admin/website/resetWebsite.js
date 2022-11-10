@@ -1,20 +1,25 @@
 import prisma from 'lib/prisma';
+import { getWebsite } from 'queries';
+import cache from 'lib/cache';
 
-export async function resetWebsite(websiteId) {
+export async function resetWebsite(id) {
   const { client, transaction } = prisma;
 
+  const { revId } = await getWebsite({ id });
+
   return transaction([
-    client.pageview.deleteMany({
-      where: { session: { website: { websiteUuid: websiteId } } },
-    }),
-    client.eventData.deleteMany({
-      where: { event: { session: { website: { websiteUuid: websiteId } } } },
-    }),
-    client.event.deleteMany({
-      where: { session: { website: { websiteUuid: websiteId } } },
+    client.websiteEvent.deleteMany({
+      where: { websiteId: id },
     }),
     client.session.deleteMany({
-      where: { website: { websiteUuid: websiteId } },
+      where: { websiteId: id },
     }),
-  ]);
+    client.website.update({ where: { id }, data: { revId: revId + 1 } }),
+  ]).then(async data => {
+    if (cache.enabled) {
+      await cache.storeWebsite(data[2]);
+    }
+
+    return data;
+  });
 }

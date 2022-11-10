@@ -1,30 +1,24 @@
 import prisma from 'lib/prisma';
-import redis, { DELETED } from 'lib/redis';
+import cache from 'lib/cache';
 
-export async function deleteWebsite(websiteUuid) {
+export async function deleteWebsite(id) {
   const { client, transaction } = prisma;
 
   return transaction([
-    client.pageview.deleteMany({
-      where: { session: { website: { websiteUuid } } },
-    }),
-    client.eventData.deleteMany({
-      where: { event: { session: { website: { websiteUuid } } } },
-    }),
-    client.event.deleteMany({
-      where: { session: { website: { websiteUuid } } },
+    client.websiteEvent.deleteMany({
+      where: { websiteId: id },
     }),
     client.session.deleteMany({
-      where: { website: { websiteUuid } },
+      where: { websiteId: id },
     }),
     client.website.delete({
-      where: { websiteUuid },
+      where: { id },
     }),
-  ]).then(async res => {
-    if (redis.enabled) {
-      await redis.set(`website:${websiteUuid}`, DELETED);
+  ]).then(async data => {
+    if (cache.enabled) {
+      await cache.deleteWebsite(id);
     }
 
-    return res;
+    return data;
   });
 }

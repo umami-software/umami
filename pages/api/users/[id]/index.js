@@ -1,11 +1,13 @@
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getAccount, deleteAccount, updateAccount } from 'queries';
+import { getUser, deleteUser, updateUser } from 'queries';
 import { useAuth } from 'lib/middleware';
 
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { isAdmin, userId } = req.auth;
+  const {
+    user: { id: userId, isAdmin },
+  } = req.auth;
   const { id } = req.query;
 
   if (req.method === 'GET') {
@@ -13,9 +15,9 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const account = await getAccount({ id: +id });
+    const user = await getUser({ id });
 
-    return ok(res, account);
+    return ok(res, user);
   }
 
   if (req.method === 'POST') {
@@ -25,7 +27,7 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const account = await getAccount({ id: +id });
+    const user = await getUser({ id });
 
     const data = {};
 
@@ -39,29 +41,29 @@ export default async (req, res) => {
     }
 
     // Check when username changes
-    if (data.username && account.username !== data.username) {
-      const accountByUsername = await getAccount({ username });
+    if (data.username && user.username !== data.username) {
+      const userByUsername = await getUser({ username });
 
-      if (accountByUsername) {
-        return badRequest(res, 'Account already exists.');
+      if (userByUsername) {
+        return badRequest(res, 'User already exists');
       }
     }
 
-    const updated = await updateAccount(data, { id: +id });
+    const updated = await updateUser(data, { id });
 
     return ok(res, updated);
   }
 
   if (req.method === 'DELETE') {
     if (id === userId) {
-      return badRequest(res, 'You cannot delete your own account.');
+      return badRequest(res, 'You cannot delete your own user.');
     }
 
     if (!isAdmin) {
       return unauthorized(res);
     }
 
-    await deleteAccount(+id);
+    await deleteUser(id);
 
     return ok(res);
   }

@@ -3,14 +3,14 @@ import { ok, notFound, methodNotAllowed, createToken } from 'next-basics';
 import { secret } from 'lib/crypto';
 
 export default async (req, res) => {
-  const { id } = req.query;
+  const { id: shareId } = req.query;
 
   if (req.method === 'GET') {
-    const website = await getWebsite({ shareId: id });
+    const website = await getWebsite({ shareId });
 
     if (website) {
-      const { websiteUuid } = website;
-      const data = { id: websiteUuid };
+      const { id } = website;
+      const data = { id };
       const token = createToken(data, secret());
 
       return ok(res, { ...data, token });

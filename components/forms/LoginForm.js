@@ -42,9 +42,11 @@ export default function LoginForm() {
     });
 
     if (ok) {
-      setItem(AUTH_TOKEN, data.token);
+      const { user, token } = data;
 
-      setUser(data.user);
+      setItem(AUTH_TOKEN, token);
+
+      setUser(user);
 
       await router.push('/');
 
