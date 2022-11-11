@@ -7,23 +7,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
+model User {
   id        String    @id @unique @map("user_id") @db.Uuid
   username  String    @unique @db.VarChar(255)
   password  String    @db.VarChar(60)
   isAdmin   Boolean   @default(false) @map("is_admin")
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  groupRole   groupRole[]
-  groupUser   groupUser[]
-  userRole    userRole[]
-  teamWebsite teamWebsite[]
-  teamUser    teamUser[]
-  userWebsite userWebsite[]
-  website     website[]
+  groupRole   GroupRole[]
+  groupUser   GroupUser[]
+  userRole    UserRole[]
+  teamWebsite TeamWebsite[]
+  teamUser    TeamUser[]
+  userWebsite UserWebsite[]
+  website     Website[]
+
+  @@map("user")
 }
 
-model session {
+model Session {
   id        String    @id @unique @map("session_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   hostname  String?   @db.VarChar(100)
@@ -37,9 +39,10 @@ model session {
 
   @@index([createdAt])
   @@index([websiteId])
+  @@map("session")
 }
 
-model website {
+model Website {
   id        String    @id @unique @map("website_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   name      String    @db.VarChar(100)
@@ -49,16 +52,17 @@ model website {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  user        user          @relation(fields: [userId], references: [id])
-  teamWebsite teamWebsite[]
-  userWebsite userWebsite[]
+  user        User          @relation(fields: [userId], references: [id])
+  teamWebsite TeamWebsite[]
+  userWebsite UserWebsite[]
 
   @@index([userId])
   @@index([createdAt])
   @@index([shareId])
+  @@map("website")
 }
 
-model websiteEvent {
+model WebsiteEvent {
   id        String    @id() @map("event_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   sessionId String    @map("session_id") @db.Uuid
@@ -73,125 +77,134 @@ model websiteEvent {
   @@index([websiteId])
   @@index([websiteId, createdAt])
   @@index([websiteId, sessionId, createdAt])
+  @@map("website_event")
 }
 
-model group {
+model Group {
   id          String    @id() @unique() @map("group_id") @db.Uuid
   name        String    @unique() @db.VarChar(255)
   description String?   @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted   Boolean   @default(false) @map("is_deleted")
 
-  groupRoles groupRole[]
-  groupUsers groupUser[]
+  groupRoles GroupRole[]
+  groupUsers GroupUser[]
+
+  @@map("group")
 }
 
-model groupRole {
+model GroupRole {
   id        String    @id() @unique() @map("group_role_id") @db.Uuid
   groupId   String    @map("group_id") @db.Uuid
   roleId    String    @map("role_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  group  group   @relation(fields: [groupId], references: [id])
-  role   role    @relation(fields: [roleId], references: [id])
-  user   user?   @relation(fields: [userId], references: [id])
+  group  Group   @relation(fields: [groupId], references: [id])
+  role   Role    @relation(fields: [roleId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
   userId String? @db.Uuid
 
   @@map("group_role")
 }
 
-model groupUser {
+model GroupUser {
   id        String    @id() @unique() @map("group_user_id") @db.Uuid
   groupId   String    @map("group_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  group group @relation(fields: [groupId], references: [id])
-  user  user  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+  User  User  @relation(fields: [userId], references: [id])
 
   @@map("group_user")
 }
 
-model permission {
+model Permission {
   id          String    @id() @unique() @map("permission_id") @db.Uuid
   name        String    @unique() @db.VarChar(255)
   description String?   @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted   Boolean   @default(false) @map("is_deleted")
+
+  @@map("permission")
 }
 
-model role {
+model Role {
   id          String    @id() @unique() @map("role_id") @db.Uuid
   name        String    @unique() @db.VarChar(255)
   description String?   @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted   Boolean   @default(false) @map("is_deleted")
 
-  groupRoles groupRole[]
-  userRoles  userRole[]
+  groupRoles GroupRole[]
+  userRoles  UserRole[]
+
+  @@map("role")
 }
 
-model userRole {
+model UserRole {
   id        String    @id() @unique() @map("user_role_id") @db.Uuid
   roleId    String    @map("role_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  role role @relation(fields: [roleId], references: [id])
-  user user @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@map("user_role")
 }
 
-model team {
+model Team {
   id        String    @id() @unique() @map("team_id") @db.Uuid
   name      String    @unique() @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  teamWebsites teamWebsite[]
-  teamUsers    teamUser[]
+  teamWebsites TeamWebsite[]
+  teamUsers    TeamUser[]
+
+  @@map("team")
 }
 
-model teamWebsite {
+model TeamWebsite {
   id        String    @id() @unique() @map("team_website_id") @db.Uuid
   teamId    String    @map("team_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  website website @relation(fields: [websiteId], references: [id])
-  team    team    @relation(fields: [teamId], references: [id])
-  user    user?   @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+  team    Team    @relation(fields: [teamId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id])
   userId  String? @db.Uuid
 
   @@map("team_website")
 }
 
-model teamUser {
+model TeamUser {
   id        String    @id() @unique() @map("team_user_id") @db.Uuid
   teamId    String    @map("team_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  team team @relation(fields: [teamId], references: [id])
-  user user @relation(fields: [userId], references: [id])
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@map("team_user")
 }
 
-model userWebsite {
+model UserWebsite {
   id        String    @id() @unique() @map("user_website_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  website website @relation(fields: [websiteId], references: [id])
-  user    user    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
 
   @@map("user_website")
 }
