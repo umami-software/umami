@@ -2,181 +2,205 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "حساب‌ها"
+      "value": "Računi"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "افزودن حساب"
+      "value": "Dodaj račun"
+    }
+  ],
+  "label.add-column": [
+    {
+      "type": 0,
+      "value": "Dodaj stupac"
+    }
+  ],
+  "label.add-filter": [
+    {
+      "type": 0,
+      "value": "Dodaj filter"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "افزودن وب‌سایت"
+      "value": "Dodaj web stranicu"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "مدیر"
+      "value": "Administrator"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "همه"
+      "value": "Sve"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "همه زمان"
+      "value": "Svo vrijeme"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "همه‌ی وب‌سایت‌ها"
+      "value": "Sve web stranice"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "برگشت"
+      "value": "Natrag "
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "انصراف"
+      "value": "Odustani"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "تغییر رمز"
+      "value": "Promijeni lozinku"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "تایید رمز"
+      "value": "Potvrdi lozinku"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "کپی به حافظه"
+      "value": "Kopiraj u međuspremnik"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "رمز فعلی"
+      "value": "Trenutna lozinka"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "محدوده‌ی دلخواه"
+      "value": "Prilagođeni raspon"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "داشبورد"
+      "value": "Nadzorna ploča"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "محدوده‌ی تاریخ"
+      "value": "Raspon datuma"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "محدوده‌ی پیشفرض تاریخ"
+      "value": "Zadani datumski raspon"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "حذف"
+      "value": "Obriši"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "حذف حساب"
+      "value": "Obriši račun"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "حذف وب‌سایت"
+      "value": "Obriši web stranicu"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "رد کردن"
+      "value": "Odbaci"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "دامنه"
+      "value": "Domena"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "ویرایش"
+      "value": "Uredi"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "ویرایش حساب"
+      "value": "Uredi račun"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "ویرایش وب‌سایت"
+      "value": "Uredi web stranicu"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "فعال کردن اشتراک گذاری URL"
+      "value": "Omogući dijeljenje URL-a"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Podaci događaja"
+    }
+  ],
+  "label.field-name": [
+    {
+      "type": 0,
+      "value": "Naziv polja"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "نامعتبر"
+      "value": "Nesipravno"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "دامنه‌ی نامعتبر"
+      "value": "Neispravna domena"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "زبان"
+      "value": "Jezik"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "لیست "
+      "value": "Zadnjih "
     },
     {
       "type": 1,
@@ -184,13 +208,13 @@
     },
     {
       "type": 0,
-      "value": " روز گذشته"
+      "value": " dana"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "لیست "
+      "value": "Zadnjih "
     },
     {
       "type": 1,
@@ -198,13 +222,13 @@
     },
     {
       "type": 0,
-      "value": " ساعت گذشته"
+      "value": " sati"
     }
   ],
   "label.logged-in-as": [
     {
       "type": 0,
-      "value": "وارد شده به عنوان "
+      "value": "Prijavljen kao "
     },
     {
       "type": 1,
@@ -214,187 +238,211 @@
   "label.login": [
     {
       "type": 0,
-      "value": "ورود"
+      "value": "Prijava"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "خروج"
+      "value": "Odjava"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "بیشتر"
+      "value": "Više"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "نام"
+      "value": "Ime"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "رمز جدید"
+      "value": "Nova lozinka"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "هیچ"
+      "value": "Ništa"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "ایجاد شده توسط"
+      "value": "Vlasnik"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "رمز"
+      "value": "Lozinka"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "رمزها یکسان نیستند"
+      "value": "Lozinka nije točna"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "پروفایل"
+      "value": "Profil"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "آمار زنده"
+      "value": "Stvarno vrijeme"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "لاگ‌های زنده"
+      "value": "Trenutni zapisi"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "به‌روزرسانی"
+      "value": "Osvježi"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "ضروری"
+      "value": "Potrebna"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "بازنشانی"
+      "value": "Resetirati"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "بازنشانی آمار"
+      "value": "Resetirati web stranicu"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "ذخیره"
+      "value": "Spremi"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Pretraži"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "تنظیمات"
+      "value": "Postavke"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "به اشتراک گذاری URL"
+      "value": "Podijeli URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "یک روز"
+      "value": "Jedan dan"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "تم"
+      "value": "Tema"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "این ماه"
+      "value": "Ovaj mjesec"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "این هفته"
+      "value": "Ovaj tjedan"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "امسال"
+      "value": "Ova godina"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "منطقه‌ی زمانی"
+      "value": "Vremenska zona"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "امروز"
+      "value": "Danas"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "کد رهگیری"
+      "value": "Kod za praćenje"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Tip"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "ناشناخته"
+      "value": "Nepoznato"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "نام کاربری"
+      "value": "Korisničko ime"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Vrijednost"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "مشاهده‌ی جزئیات"
+      "value": "Pogledaj detalje"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "وب‌سایت‌ها"
+      "value": "Web stranice"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Jučer"
     }
   ],
   "message.active-users": [
@@ -404,7 +452,7 @@
     },
     {
       "type": 0,
-      "value": " هم اکنون "
+      "value": " Trenutno "
     },
     {
       "offset": 0,
@@ -413,7 +461,7 @@
           "value": [
             {
               "type": 0,
-              "value": "یک"
+              "value": "visitor"
             }
           ]
         },
@@ -421,7 +469,7 @@
           "value": [
             {
               "type": 0,
-              "value": "از میان"
+              "value": "visitors"
             }
           ]
         }
@@ -434,7 +482,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "آیا مطمئن هستید می‌خواهید "
+      "value": "Jeste li sigurni da želite obrisati "
     },
     {
       "type": 1,
@@ -442,13 +490,13 @@
     },
     {
       "type": 0,
-      "value": " را حذف کنید?"
+      "value": "?"
     }
   ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "آیا از بازنشانی آمار "
+      "value": "Jeste li sigurni da želite resetirati "
     },
     {
       "type": 1,
@@ -456,61 +504,61 @@
     },
     {
       "type": 0,
-      "value": " مطمئن هستید?"
+      "value": "'s statistiku?"
     }
   ],
   "message.copied": [
     {
       "type": 0,
-      "value": "کپی شد!"
+      "value": "Kopirano!"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "همه‌ی داده‌های مرتبط هم حذف خواهد شد."
+      "value": "Izbrisat će se  svi povezani podaci."
     }
   ],
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "ویرایش داشبورد"
+      "value": "Uredi nadzornu ploču"
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "مشکلی پیش آمده است."
+      "value": "Nešto je pošlo po zlu."
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "دریافت URL برای اشتراک گذاری"
+      "value": "Dohvati URL za dijeljenje"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "گرفتن کد رهگیری"
+      "value": "Dohvati kod za praćenje"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "رفتن به تنظیمات"
+      "value": "Idi u postavke"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "نام کاربری / رمز نادرست است."
+      "value": "Neispravno korisničke ime/lozinka."
     }
   ],
   "message.log.visitor": [
     {
       "type": 0,
-      "value": "بازدیدکننده از کشور "
+      "value": "Posjetitelj iz "
     },
     {
       "type": 1,
@@ -518,7 +566,7 @@
     },
     {
       "type": 0,
-      "value": " با مروگر "
+      "value": " koristi "
     },
     {
       "type": 1,
@@ -526,7 +574,7 @@
     },
     {
       "type": 0,
-      "value": " در "
+      "value": " na "
     },
     {
       "type": 1,
@@ -544,7 +592,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "نسخه‌ی جدید umami ("
+      "value": "Nova verzija umami "
     },
     {
       "type": 1,
@@ -552,31 +600,31 @@
     },
     {
       "type": 0,
-      "value": ") موجود است!"
+      "value": " je dostupna!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "اطلاعاتی موجود نیست."
+      "value": "Nema dostupnih podataka."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "شما هیچ وب‌سایتی را پیکربندی نکرده‌اید."
+      "value": "Nemate konfiguriranu nijednu web stranicu."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "صفحه یافت نشد."
+      "value": "Stranica nije pronađena."
     }
   ],
   "message.powered-by": [
     {
       "type": 0,
-      "value": "قدرت گرفته توسط "
+      "value": "Powered by "
     },
     {
       "type": 1,
@@ -586,19 +634,19 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "تمامی آمارهای این وب‌سایت حذف خواهد شد اما tracking code بدون تغییر باقی می‌ماند."
+      "value": "Sve statistike za ovu web stranicu bit će izbrisane, ali će vaš kod za praćenje ostati netaknut."
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "با موفقیت ذخیره شد."
+      "value": "Uspješno spremljeno."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "این URL به اشتراک گذاشته شده عمومی برای "
+      "value": "Ovo je javno dijeljeni URL za "
     },
     {
       "type": 1,
@@ -606,19 +654,19 @@
     },
     {
       "type": 0,
-      "value": " است."
+      "value": "."
     }
   ],
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "Toggle charts"
+      "value": "Uključi/isključi grafikone"
     }
   ],
   "message.track-stats": [
     {
       "type": 0,
-      "value": "برای ردیابی آمار "
+      "value": "Da biste pratili statistiku za "
     },
     {
       "type": 1,
@@ -626,7 +674,7 @@
     },
     {
       "type": 0,
-      "value": ", کد روبرو را در قسمت "
+      "value": ", postavite sljedeći kod u odjeljak "
     },
     {
       "type": 1,
@@ -634,157 +682,173 @@
     },
     {
       "type": 0,
-      "value": " وب‌سایت قرار دهید."
+      "value": " svoje web stranice."
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "جهت اطمینان {delete} را در کادر زیر بنویسید."
+      "value": "Upišite "
+    },
+    {
+      "type": 1,
+      "value": "delete"
+    },
+    {
+      "type": 0,
+      "value": " u donji okvir za potvrdu."
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "جهت اطمینان {reset} را در کادر زیر بنویسید."
+      "value": "  Upišite "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": " u donji okvir za potvrdu. "
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "اقدامات"
+      "value": "Akcije"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "میانگین زمان بازدید"
+      "value": "Prosječno vrijeme posjeta"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "نرخ Bounce"
+      "value": "Stopa napuštanja stranice"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "مروگرها"
+      "value": "Web preglednici"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "کشورها"
+      "value": "Zemlje"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "دسکتاپ"
+      "value": "Pc"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "لپ‌تاپ"
+      "value": "Laptop"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "موبایل"
+      "value": "Mobitel"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "تبلت"
+      "value": "Tablet"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "دستگاه‌ها"
+      "value": "Uređaji"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "رویدادها"
+      "value": "Događaji"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "ترکیب شده"
+      "value": "Kombinirano"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "خام"
+      "value": "Neobrađeni podaci"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "زبان‌ها"
+      "value": "Jezici"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "سیستم‌عامل‌ها"
+      "value": "Operativni sustavi"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "بازدید صفحه"
+      "value": "Pregledi stranice"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "صفحه‌ها"
+      "value": "Stranice"
     }
   ],
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "پارامترهای کوئری"
+      "value": "Parametri upita"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "ارجاع دهندگان"
+      "value": "Upučivaći"
     }
   ],
   "metrics.screens": [
     {
       "type": 0,
-      "value": "نمایشگرها"
+      "value": "Zasloni"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "بازدیدکننده‌های یکتا"
+      "value": "Jedinstveni posjetitelji"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "بازدید"
+      "value": "Pregledi"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "بازدیدکننده"
+      "value": "Posjetitelji"
     }
   ]
 }
