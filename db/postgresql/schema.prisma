@@ -69,8 +69,9 @@ model WebsiteEvent {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   url       String    @db.VarChar(500)
   referrer  String?   @db.VarChar(500)
-  eventName String    @map("event_name") @db.VarChar(50)
-  eventData Json      @map("event_data")
+  eventType Int       @default(1) @map("event_type") @db.Integer
+  eventName String?   @map("event_name") @db.VarChar(50)
+  eventData Json?     @map("event_data")
 
   @@index([createdAt])
   @@index([sessionId])

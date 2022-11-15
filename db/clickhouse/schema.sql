@@ -19,6 +19,7 @@ CREATE TABLE event
     url String,
     referrer String,
     --event
+    event_type UInt32,
     event_name String,
     event_data JSON,
     created_at DateTime('UTC')
@@ -41,6 +42,7 @@ CREATE TABLE event_queue (
     screen LowCardinality(String),
     language LowCardinality(String),
     country LowCardinality(String),
+    event_type UInt32,
     event_name String,
     event_data String,
     created_at DateTime('UTC')
@@ -67,6 +69,7 @@ SELECT website_id,
     screen,
     language,
     country,
+    event_type,
     event_name,
     event_data,
     created_at
