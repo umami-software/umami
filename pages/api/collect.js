@@ -1,7 +1,7 @@
 const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
-import { createToken, unauthorized, send, badRequest, forbidden } from 'next-basics';
+import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/request';
@@ -11,7 +11,7 @@ export default async (req, res) => {
   await useCors(req, res);
 
   if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
-    return unauthorized(res);
+    return ok(res);
   }
 
   const ignoreIps = process.env.IGNORE_IP;
