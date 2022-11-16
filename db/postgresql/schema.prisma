@@ -11,7 +11,6 @@ model User {
   id        String    @id @unique @map("user_id") @db.Uuid
   username  String    @unique @db.VarChar(255)
   password  String    @db.VarChar(60)
-  isAdmin   Boolean   @default(false) @map("is_admin")
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   groupRole   GroupRole[]
@@ -20,7 +19,6 @@ model User {
   teamWebsite TeamWebsite[]
   teamUser    TeamUser[]
   userWebsite UserWebsite[]
-  website     Website[]
 
   @@map("user")
 }
@@ -44,7 +42,6 @@ model Session {
 
 model Website {
   id        String    @id @unique @map("website_id") @db.Uuid
-  userId    String    @map("user_id") @db.Uuid
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
   shareId   String?   @unique @map("share_id") @db.VarChar(64)
@@ -52,11 +49,9 @@ model Website {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  user        User          @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
   userWebsite UserWebsite[]
 
-  @@index([userId])
   @@index([createdAt])
   @@index([shareId])
   @@map("website")
@@ -117,7 +112,7 @@ model GroupUser {
   isDeleted Boolean   @default(false) @map("is_deleted")
 
   group Group @relation(fields: [groupId], references: [id])
-  User  User  @relation(fields: [userId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
 
   @@map("group_user")
 }
