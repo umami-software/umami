@@ -71,6 +71,6 @@ SELECT website_id,
     country,
     event_type,
     event_name,
-    event_data,
+    if((empty(event_data) = 0) AND startsWith(event_data, '"'), concat('{', event_data, ': true}'), event_data) AS event_data,
     created_at
 FROM event_queue;
