@@ -52,8 +52,8 @@ export default async (
     const prevEndDate = new Date(+end_at - distance);
 
     const metrics = await getWebsiteStats(websiteId, {
-      start_at: startDate,
-      end_at: endDate,
+      startDate,
+      endDate,
       filters: {
         url,
         referrer,
@@ -64,8 +64,8 @@ export default async (
       },
     });
     const prevPeriod = await getWebsiteStats(websiteId, {
-      start_at: prevStartDate,
-      end_at: prevEndDate,
+      startDate: prevStartDate,
+      endDate: prevEndDate,
       filters: {
         url,
         referrer,

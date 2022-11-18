@@ -1,9 +1,9 @@
-import { createWebsite, getAllWebsites, getUserWebsites } from 'queries';
-import { ok, methodNotAllowed, getRandomChars } from 'next-basics';
-import { useAuth, useCors } from 'lib/middleware';
-import { uuid } from 'lib/crypto';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { uuid } from 'lib/crypto';
+import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
+import { getRandomChars, methodNotAllowed, ok } from 'next-basics';
+import { createWebsiteByUser, getAllWebsites, getWebsitesByUserId } from 'queries';
 
 export interface WebsitesReqeustQuery {
   include_all?: boolean;
@@ -30,7 +30,7 @@ export default async (
     const { include_all } = req.query;
 
     const websites =
-      isAdmin && include_all ? await getAllWebsites() : await getUserWebsites(userId);
+      isAdmin && include_all ? await getAllWebsites() : await getWebsitesByUserId(userId);
 
     return ok(res, websites);
   }
@@ -39,7 +39,7 @@ export default async (
     const { name, domain, enableShareUrl } = req.body;
 
     const shareId = enableShareUrl ? getRandomChars(8) : null;
-    const website = await createWebsite(userId, { id: uuid(), name, domain, shareId });
+    const website = await createWebsiteByUser(userId, { id: uuid(), name, domain, shareId });
 
     return ok(res, website);
   }
