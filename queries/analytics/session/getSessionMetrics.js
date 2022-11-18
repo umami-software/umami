@@ -42,7 +42,7 @@ async function clickhouseQuery(websiteId, { startDate, endDate, field, filters =
   const { pageviewQuery, sessionQuery } = parseFilters(null, filters, params);
 
   return rawQuery(
-    `select ${field} x, count(*) y
+    `select ${field} x, count(distinct session_id) y
     from event as x
     where website_id = $1
       and rev_id = $2
