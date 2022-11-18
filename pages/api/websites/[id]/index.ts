@@ -7,18 +7,18 @@ import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { NextApiResponse } from 'next';
 import { Website } from 'interface/api/models';
 
-export interface WebsiteReqeustQuery {
+export interface WebsiteRequestQuery {
   id: string;
 }
 
-export interface WebsiteReqeustBody {
+export interface WebsiteRequestBody {
   name: string;
   domain: string;
   shareId: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsiteReqeustQuery, WebsiteReqeustBody>,
+  req: NextApiRequestQueryBody<WebsiteRequestQuery, WebsiteRequestBody>,
   res: NextApiResponse<Website | any>,
 ) => {
   await useCors(req, res);

@@ -6,12 +6,12 @@ import { TYPE_WEBSITE } from 'lib/constants';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { NextApiResponse } from 'next';
 
-export interface WebsiteResetReqeustQuery {
+export interface WebsiteResetRequestQuery {
   id: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsiteResetReqeustQuery>,
+  req: NextApiRequestQueryBody<WebsiteResetRequestQuery>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);

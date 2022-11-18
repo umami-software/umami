@@ -10,7 +10,7 @@ import { getPageviewStats } from 'queries';
 
 const unitTypes = ['year', 'month', 'hour', 'day'];
 
-export interface WebsitePageviewReqeustQuery {
+export interface WebsitePageviewRequestQuery {
   id: string;
   websiteId: string;
   start_at: number;
@@ -26,7 +26,7 @@ export interface WebsitePageviewReqeustQuery {
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsitePageviewReqeustQuery>,
+  req: NextApiRequestQueryBody<WebsitePageviewRequestQuery>,
   res: NextApiResponse<WebsitePageviews>,
 ) => {
   await useCors(req, res);

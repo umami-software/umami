@@ -36,7 +36,7 @@ function getColumn(type) {
   return type;
 }
 
-export interface WebsiteMetricsReqeustQuery {
+export interface WebsiteMetricsRequestQuery {
   id: string;
   type: string;
   start_at: number;
@@ -50,7 +50,7 @@ export interface WebsiteMetricsReqeustQuery {
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsiteMetricsReqeustQuery>,
+  req: NextApiRequestQueryBody<WebsiteMetricsRequestQuery>,
   res: NextApiResponse<WebsiteMetric[]>,
 ) => {
   await useCors(req, res);

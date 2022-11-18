@@ -7,7 +7,7 @@ import { WebsiteStats } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { NextApiResponse } from 'next';
 
-export interface WebsiteStatsReqeustQuery {
+export interface WebsiteStatsRequestQuery {
   id: string;
   type: string;
   start_at: number;
@@ -21,7 +21,7 @@ export interface WebsiteStatsReqeustQuery {
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsiteStatsReqeustQuery>,
+  req: NextApiRequestQueryBody<WebsiteStatsRequestQuery>,
   res: NextApiResponse<WebsiteStats>,
 ) => {
   await useCors(req, res);

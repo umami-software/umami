@@ -5,18 +5,18 @@ import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok } from 'next-basics';
 import { createWebsiteByUser, getAllWebsites, getWebsitesByUserId } from 'queries';
 
-export interface WebsitesReqeustQuery {
+export interface WebsitesRequestQuery {
   include_all?: boolean;
 }
 
-export interface WebsitesReqeustBody {
+export interface WebsitesRequestBody {
   name: string;
   domain: string;
   enableShareUrl: boolean;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsitesReqeustQuery, WebsitesReqeustBody>,
+  req: NextApiRequestQueryBody<WebsitesRequestQuery, WebsitesRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);

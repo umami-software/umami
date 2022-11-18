@@ -1,22 +1,22 @@
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getUser, deleteUser, updateUser } from 'queries';
+import { getTeam, deleteTeam, updateTeam } from 'queries';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { User } from 'interface/api/models';
+import { Team } from '@prisma/client';
 
-export interface UserRequestQuery {
+export interface TeamRequestQuery {
   id: string;
 }
 
-export interface UserRequestBody {
+export interface TeamRequestBody {
   username: string;
   password: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<UserRequestQuery, UserRequestBody>,
-  res: NextApiResponse<User>,
+  req: NextApiRequestQueryBody<TeamRequestQuery, TeamRequestBody>,
+  res: NextApiResponse<Team>,
 ) => {
   await useAuth(req, res);
 
@@ -30,7 +30,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getUser({ id });
+    const user = await getTeam({ id });
 
     return ok(res, user);
   }
@@ -42,7 +42,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getUser({ id });
+    const user = await getTeam({ id });
 
     const data: any = {};
 
@@ -57,14 +57,14 @@ export default async (
 
     // Check when username changes
     if (data.username && user.username !== data.username) {
-      const userByUsername = await getUser({ username });
+      const userByTeamname = await getTeam({ username });
 
-      if (userByUsername) {
-        return badRequest(res, 'User already exists');
+      if (userByTeamname) {
+        return badRequest(res, 'Team already exists');
       }
     }
 
-    const updated = await updateUser(data, { id });
+    const updated = await updateTeam(data, { id });
 
     return ok(res, updated);
   }
@@ -78,7 +78,7 @@ export default async (
       return unauthorized(res);
     }
 
-    await deleteUser(id);
+    await deleteTeam(id);
 
     return ok(res);
   }
