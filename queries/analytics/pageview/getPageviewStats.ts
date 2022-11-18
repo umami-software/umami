@@ -2,7 +2,7 @@ import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/enum';
 
 export async function getPageviewStats(
   ...args: [

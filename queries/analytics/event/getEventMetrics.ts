@@ -3,7 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { WebsiteEventMetric } from 'interface/api/models';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/enum';
 
 export async function getEventMetrics(
   ...args: [
