@@ -4,7 +4,7 @@ import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
 import { uuid } from 'lib/crypto';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/enum';
 
 export async function savePageView(args: {
   id: string;

@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/enum';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 
@@ -82,22 +82,16 @@ export async function updateUser(
   data: Prisma.UserUpdateInput,
   where: Prisma.UserWhereUniqueInput,
 ): Promise<User> {
-  return prisma.client.user
-    .update({
-      where,
-      data,
-      select: {
-        id: true,
-        username: true,
-        createdAt: true,
-        userRole: true,
-      },
-    })
-    .then(user => {
-      const { userRole, ...rest } = user;
-
-      return { ...rest, isAdmin: userRole.some(a => a.roleId === UmamiApi.SystemRole.Admin) };
-    });
+  return prisma.client.user.update({
+    where,
+    data,
+    select: {
+      id: true,
+      username: true,
+      createdAt: true,
+      userRole: true,
+    },
+  });
 }
 
 export async function deleteUser(
