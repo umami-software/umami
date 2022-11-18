@@ -1,17 +1,17 @@
-import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getTeam, deleteTeam, updateTeam } from 'queries';
+import { Team } from '@prisma/client';
+import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { Team } from '@prisma/client';
+import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { deleteTeam, getTeam, updateTeam } from 'queries';
 
 export interface TeamRequestQuery {
   id: string;
 }
 
 export interface TeamRequestBody {
-  username: string;
-  password: string;
+  name?: string;
+  is_deleted?: boolean;
 }
 
 export default async (
@@ -36,35 +36,13 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { username, password } = req.body;
+    const { name, is_deleted: isDeleted } = req.body;
 
     if (id !== userId && !isAdmin) {
       return unauthorized(res);
     }
 
-    const user = await getTeam({ id });
-
-    const data: any = {};
-
-    if (password) {
-      data.password = hashPassword(password);
-    }
-
-    // Only admin can change these fields
-    if (isAdmin) {
-      data.username = username;
-    }
-
-    // Check when username changes
-    if (data.username && user.username !== data.username) {
-      const userByTeamname = await getTeam({ username });
-
-      if (userByTeamname) {
-        return badRequest(res, 'Team already exists');
-      }
-    }
-
-    const updated = await updateTeam(data, { id });
+    const updated = await updateTeam({ name, isDeleted }, { id });
 
     return ok(res, updated);
   }

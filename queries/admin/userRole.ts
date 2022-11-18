@@ -1,7 +1,9 @@
 import { Prisma, UserRole } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function createUserRole(data: Prisma.UserRoleCreateInput): Promise<UserRole> {
+export async function createUserRole(
+  data: Prisma.UserRoleCreateInput | Prisma.UserRoleUncheckedCreateInput,
+): Promise<UserRole> {
   return prisma.client.userRole.create({
     data,
   });

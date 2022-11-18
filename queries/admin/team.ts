@@ -1,19 +1,19 @@
-import { Prisma, Role, Team, TeamUser } from '@prisma/client';
+import { Prisma, Team, TeamUser } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function createTeam(data: Prisma.RoleCreateInput): Promise<Role> {
+export async function createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
   return prisma.client.role.create({
     data,
   });
 }
 
-export async function getTeam(where: Prisma.RoleWhereUniqueInput): Promise<Role> {
+export async function getTeam(where: Prisma.TeamWhereUniqueInput): Promise<Team> {
   return prisma.client.role.findUnique({
     where,
   });
 }
 
-export async function getTeams(where: Prisma.RoleWhereInput): Promise<Role[]> {
+export async function getTeams(where: Prisma.TeamWhereInput): Promise<Team[]> {
   return prisma.client.role.findMany({
     where,
   });
@@ -35,16 +35,16 @@ export async function getTeamsByUserId(userId: string): Promise<
 }
 
 export async function updateTeam(
-  data: Prisma.RoleUpdateInput,
-  where: Prisma.RoleWhereUniqueInput,
-): Promise<Role> {
+  data: Prisma.TeamUpdateInput,
+  where: Prisma.TeamWhereUniqueInput,
+): Promise<Team> {
   return prisma.client.role.update({
     data,
     where,
   });
 }
 
-export async function deleteTeam(teamId: string): Promise<Role> {
+export async function deleteTeam(teamId: string): Promise<Team> {
   return prisma.client.role.update({
     data: {
       isDeleted: true,

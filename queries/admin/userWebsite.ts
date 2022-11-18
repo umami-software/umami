@@ -1,7 +1,9 @@
 import { Prisma, UserWebsite } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function createUserWebsite(data: Prisma.UserWebsiteCreateInput): Promise<UserWebsite> {
+export async function createUserWebsite(
+  data: Prisma.UserWebsiteCreateInput | Prisma.UserWebsiteUncheckedCreateInput,
+): Promise<UserWebsite> {
   return prisma.client.userWebsite.create({
     data,
   });

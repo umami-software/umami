@@ -1,7 +1,9 @@
 import { Prisma, TeamWebsite } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function createTeamWebsite(data: Prisma.TeamWebsiteCreateInput): Promise<TeamWebsite> {
+export async function createTeamWebsite(
+  data: Prisma.TeamWebsiteCreateInput | Prisma.TeamWebsiteUncheckedCreateInput,
+): Promise<TeamWebsite> {
   return prisma.client.teamWebsite.create({
     data,
   });

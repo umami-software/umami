@@ -1,7 +1,9 @@
 import { Prisma, TeamUser } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function createTeamUser(data: Prisma.TeamUserCreateInput): Promise<TeamUser> {
+export async function createTeamUser(
+  data: Prisma.TeamUserCreateInput | Prisma.TeamUserUncheckedCreateInput,
+): Promise<TeamUser> {
   return prisma.client.teamUser.create({
     data,
   });

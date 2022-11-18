@@ -13,7 +13,7 @@ export interface UsersRequestBody {
 }
 
 export default async (
-  req: NextApiRequestQueryBody<UsersRequestBody>,
+  req: NextApiRequestQueryBody<any, UsersRequestBody>,
   res: NextApiResponse<User[] | User>,
 ) => {
   await useAuth(req, res);
