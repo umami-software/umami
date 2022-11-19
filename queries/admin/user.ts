@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { UmamiApi } from 'lib/enum';
+import { UmamiApi } from 'lib/constants';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 

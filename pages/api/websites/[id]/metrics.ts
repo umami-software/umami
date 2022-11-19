@@ -1,7 +1,7 @@
 import { WebsiteMetric } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { allowQuery } from 'lib/auth';
-import { FILTER_IGNORED, TYPE_WEBSITE } from 'lib/constants';
+import { FILTER_IGNORED, UmamiApi } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -57,7 +57,7 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
       return unauthorized(res);
     }
 

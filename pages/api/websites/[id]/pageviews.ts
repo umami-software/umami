@@ -1,7 +1,7 @@
 import { WebsitePageviews } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { allowQuery } from 'lib/auth';
-import { TYPE_WEBSITE } from 'lib/constants';
+import { UmamiApi } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';
 import { NextApiResponse } from 'next';
@@ -33,7 +33,7 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
       return unauthorized(res);
     }
 

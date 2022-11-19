@@ -1,3 +1,15 @@
+/* eslint-disable no-unused-vars */
+export namespace UmamiApi {
+  export enum EventType {
+    Pageview = 1,
+    Event = 2,
+  }
+
+  export enum AuthType {
+    Website,
+    User,
+  }
+}
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';

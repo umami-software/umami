@@ -7,12 +7,11 @@ import {
   methodNotAllowed,
   getRandomChars,
 } from 'next-basics';
-import { getUser } from 'queries';
+import { getUser, User } from 'queries';
 import { secret } from 'lib/crypto';
 import redis from 'lib/redis';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { NextApiResponse } from 'next';
-import { User } from 'interface/api/models';
 
 export interface LoginRequestBody {
   username: string;

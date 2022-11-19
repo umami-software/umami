@@ -1,11 +1,11 @@
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { allowQuery } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
-import { getActiveVisitors } from 'queries';
-import { TYPE_WEBSITE } from 'lib/constants';
 import { WebsiteActive } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { allowQuery } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
+import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getActiveVisitors } from 'queries';
 
 export interface WebsiteActiveRequestQuery {
   id: string;
@@ -19,7 +19,7 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
       return unauthorized(res);
     }
 
