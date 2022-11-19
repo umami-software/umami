@@ -1,11 +1,11 @@
+import { Website } from 'interface/api/models';
+import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { allowQuery } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
+import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
-import { TYPE_WEBSITE } from 'lib/constants';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { NextApiResponse } from 'next';
-import { Website } from 'interface/api/models';
 
 export interface WebsiteRequestQuery {
   id: string;
@@ -26,7 +26,7 @@ export default async (
 
   const { id: websiteId } = req.query;
 
-  if (!(await allowQuery(req, TYPE_WEBSITE))) {
+  if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
     return unauthorized(res);
   }
 
@@ -45,7 +45,7 @@ export default async (
         domain,
         shareId,
       });
-    } catch (e) {
+    } catch (e: any) {
       if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
         return serverError(res, 'That share ID is already taken.');
       }
@@ -55,7 +55,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
       return unauthorized(res);
     }
 

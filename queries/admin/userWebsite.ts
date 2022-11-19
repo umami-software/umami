@@ -9,10 +9,8 @@ export async function createUserWebsite(
   });
 }
 
-export async function getUserWebsite(
-  where: Prisma.UserWebsiteWhereUniqueInput,
-): Promise<UserWebsite> {
-  return prisma.client.userWebsite.findUnique({
+export async function getUserWebsite(where: Prisma.UserWebsiteWhereInput): Promise<UserWebsite> {
+  return prisma.client.userWebsite.findFirst({
     where,
   });
 }
