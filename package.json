@@ -42,7 +42,7 @@
     "postbuild": "node scripts/postbuild.js"
   },
   "lint-staged": {
-    "**/*.js": [
+    "**/*.{js,jsx,ts,tsx}": [
       "prettier --write",
       "eslint"
     ],
