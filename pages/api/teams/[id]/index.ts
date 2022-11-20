@@ -1,8 +1,10 @@
 import { Team } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { allowQuery } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { deleteTeam, getTeam, updateTeam } from 'queries';
 
 export interface TeamRequestQuery {
@@ -10,8 +12,7 @@ export interface TeamRequestQuery {
 }
 
 export interface TeamRequestBody {
-  name?: string;
-  is_deleted?: boolean;
+  name: string;
 }
 
 export default async (
@@ -20,43 +21,35 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const {
-    user: { id: userId, isAdmin },
-  } = req.auth;
-  const { id } = req.query;
+  const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (id !== userId && !isAdmin) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Team))) {
       return unauthorized(res);
     }
-
-    const user = await getTeam({ id });
+    const user = await getTeam({ id: teamId });
 
     return ok(res, user);
   }
 
   if (req.method === 'POST') {
-    const { name, is_deleted: isDeleted } = req.body;
+    const { name } = req.body;
 
-    if (id !== userId && !isAdmin) {
-      return unauthorized(res);
+    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+      return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    const updated = await updateTeam({ name, isDeleted }, { id });
+    const updated = await updateTeam({ name }, { id: teamId });
 
     return ok(res, updated);
   }
 
   if (req.method === 'DELETE') {
-    if (id === userId) {
-      return badRequest(res, 'You cannot delete your own user.');
+    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+      return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    if (!isAdmin) {
-      return unauthorized(res);
-    }
-
-    await deleteTeam(id);
+    await deleteTeam(teamId);
 
     return ok(res);
   }

@@ -1,9 +1,10 @@
-import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getUser, deleteUser, updateUser } from 'queries';
+import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { checkPermission } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { User } from 'interface/api/models';
+import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { deleteUser, getUser, updateUser, User } from 'queries';
 
 export interface UserRequestQuery {
   id: string;
@@ -21,12 +22,12 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId, isAdmin },
+    user: { id: userId },
   } = req.auth;
   const { id } = req.query;
 
   if (req.method === 'GET') {
-    if (id !== userId && !isAdmin) {
+    if (id !== userId) {
       return unauthorized(res);
     }
 
@@ -38,7 +39,7 @@ export default async (
   if (req.method === 'POST') {
     const { username, password } = req.body;
 
-    if (id !== userId && !isAdmin) {
+    if (id !== userId) {
       return unauthorized(res);
     }
 
@@ -51,7 +52,7 @@ export default async (
     }
 
     // Only admin can change these fields
-    if (isAdmin) {
+    if (!(await checkPermission(req, UmamiApi.Permission.Admin))) {
       data.username = username;
     }
 
@@ -74,7 +75,7 @@ export default async (
       return badRequest(res, 'You cannot delete your own user.');
     }
 
-    if (!isAdmin) {
+    if (!(await checkPermission(req, UmamiApi.Permission.Admin))) {
       return unauthorized(res);
     }
 

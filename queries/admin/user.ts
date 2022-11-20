@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import { UmamiApi } from 'lib/constants';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 
@@ -99,14 +98,14 @@ export async function deleteUser(
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Prisma.BatchPayload, User]> {
   const { client } = prisma;
 
-  const websites = await client.userWebsite.findMany({
+  const websites = await client.website.findMany({
     where: { userId },
   });
 
   let websiteIds = [];
 
   if (websites.length > 0) {
-    websiteIds = websites.map(a => a.websiteId);
+    websiteIds = websites.map(a => a.id);
   }
 
   return client

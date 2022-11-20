@@ -1,6 +1,6 @@
-import { getWebsite, getUser, getSession } from '../queries';
+import { User, Website } from '@prisma/client';
 import redis, { DELETED } from 'lib/redis';
-import { Role, Team, TeamUser, User, UserRole, UserWebsite, Website } from '@prisma/client';
+import { getSession, getUser, getWebsite } from '../queries';
 
 async function fetchObject(key, query) {
   const obj = await redis.get(key);
@@ -26,7 +26,7 @@ async function deleteObject(key) {
   return redis.set(key, DELETED);
 }
 
-async function fetchWebsite(id) {
+async function fetchWebsite(id): Promise<Website> {
   return fetchObject(`website:${id}`, () => getWebsite({ id }));
 }
 
@@ -41,13 +41,7 @@ async function deleteWebsite(id) {
   return deleteObject(`website:${id}`);
 }
 
-async function fetchUser(id): Promise<
-  User & {
-    userRole?: (UserRole & { role: Role })[];
-    teamUser?: (TeamUser & { team: Team })[];
-    userWebsite?: (UserWebsite & { website: Website })[];
-  }
-> {
+async function fetchUser(id): Promise<User> {
   return fetchObject(`user:${id}`, () => getUser({ id }, true));
 }
 

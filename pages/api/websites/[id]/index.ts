@@ -4,7 +4,7 @@ import { allowQuery } from 'lib/auth';
 import { UmamiApi } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
+import { methodNotAllowed, ok, serverError, unauthorized, badRequest } from 'next-basics';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 
 export interface WebsiteRequestQuery {
@@ -15,6 +15,8 @@ export interface WebsiteRequestBody {
   name: string;
   domain: string;
   shareId: string;
+  userId?: string;
+  teamId?: string;
 }
 
 export default async (
@@ -37,14 +39,14 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name, domain, shareId } = req.body;
+    const { ...data } = req.body;
+
+    if (!data.userId && !data.teamId) {
+      badRequest(res, 'A website must be assigned to a User or Team.');
+    }
 
     try {
-      await updateWebsite(websiteId, {
-        name,
-        domain,
-        shareId,
-      });
+      await updateWebsite(websiteId, data);
     } catch (e: any) {
       if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
         return serverError(res, 'That share ID is already taken.');
@@ -55,10 +57,6 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
-      return unauthorized(res);
-    }
-
     await deleteWebsite(websiteId);
 
     return ok(res);
