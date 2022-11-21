@@ -21,6 +21,15 @@ export async function getUserRoles(where: Prisma.UserRoleWhereInput): Promise<Us
   });
 }
 
+export async function getUserRolesByUserId(userId: string, teamId?: string): Promise<UserRole[]> {
+  return prisma.client.userRole.findMany({
+    where: {
+      userId,
+      teamId,
+    },
+  });
+}
+
 export async function updateUserRole(
   data: Prisma.UserRoleUpdateInput,
   where: Prisma.UserRoleWhereUniqueInput,
