@@ -41,7 +41,7 @@ export default async (
   if (req.method === 'POST') {
     const { ...data } = req.body;
 
-    if (!data.userId && !data.teamId) {
+    if (data.userId && data.userId === null && data.teamId && data.teamId === null) {
       badRequest(res, 'A website must be assigned to a User or Team.');
     }
 
