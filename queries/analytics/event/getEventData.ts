@@ -3,7 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
 import { WebsiteMetric } from 'interface/api/models';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/constants';
 
 export async function getEventData(
   ...args: [
@@ -11,7 +11,7 @@ export async function getEventData(
     data: {
       startDate: Date;
       endDate: Date;
-      event_name: string;
+      eventName: string;
       columns: any;
       filters: object;
     },
@@ -32,12 +32,12 @@ async function relationalQuery(
   data: {
     startDate: Date;
     endDate: Date;
-    event_name: string;
+    eventName: string;
     columns: any;
     filters: object;
   },
 ) {
-  const { startDate, endDate, event_name, columns, filters } = data;
+  const { startDate, endDate, eventName, columns, filters } = data;
   const { rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery } = prisma;
   const params = [startDate, endDate];
 
@@ -48,7 +48,7 @@ async function relationalQuery(
     where website_id ='${websiteId}'
       and created_at between $1 and $2
       and event_type = ${UmamiApi.EventType.Event}
-      ${event_name ? `and event_name = ${event_name}` : ''}
+      ${eventName ? `and eventName = ${eventName}` : ''}
       ${
         Object.keys(filters).length > 0
           ? `and ${getEventDataFilterQuery('event_data', filters)}`
@@ -63,12 +63,12 @@ async function clickhouseQuery(
   data: {
     startDate: Date;
     endDate: Date;
-    event_name: string;
+    eventName: string;
     columns: any;
     filters: object;
   },
 ) {
-  const { startDate, endDate, event_name, columns, filters } = data;
+  const { startDate, endDate, eventName, columns, filters } = data;
   const { rawQuery, getBetweenDates, getEventDataColumnsQuery, getEventDataFilterQuery } =
     clickhouse;
   const website = await cache.fetchWebsite(websiteId);
@@ -81,7 +81,7 @@ async function clickhouseQuery(
     where website_id = $1
       and rev_id = $2
       and event_type = ${UmamiApi.EventType.Event}
-      ${event_name ? `and event_name = ${event_name}` : ''}
+      ${eventName ? `and eventName = ${eventName}` : ''}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${
         Object.keys(filters).length > 0

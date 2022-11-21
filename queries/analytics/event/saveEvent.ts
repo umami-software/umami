@@ -4,7 +4,7 @@ import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
 import cache from 'lib/cache';
-import { UmamiApi } from 'interface/enum';
+import { UmamiApi } from 'lib/constants';
 
 export async function saveEvent(args: {
   id: string;

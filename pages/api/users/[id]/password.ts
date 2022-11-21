@@ -1,18 +1,17 @@
-import { getUser, updateUser } from 'queries';
+import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { allowQuery } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
 import { useAuth } from 'lib/middleware';
+import { NextApiResponse } from 'next';
 import {
   badRequest,
+  checkPassword,
+  hashPassword,
   methodNotAllowed,
   ok,
   unauthorized,
-  checkPassword,
-  hashPassword,
 } from 'next-basics';
-import { allowQuery } from 'lib/auth';
-import { TYPE_USER } from 'lib/constants';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { NextApiResponse } from 'next';
-import { User } from 'interface/api/models';
+import { getUser, updateUser, User } from 'queries';
 
 export interface UserPasswordRequestQuery {
   id: string;
@@ -32,7 +31,7 @@ export default async (
   const { current_password, new_password } = req.body;
   const { id } = req.query;
 
-  if (!(await allowQuery(req, TYPE_USER))) {
+  if (!(await allowQuery(req, UmamiApi.AuthType.User))) {
     return unauthorized(res);
   }
 

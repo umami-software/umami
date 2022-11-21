@@ -1,10 +1,10 @@
-import { resetWebsite } from 'queries';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { allowQuery } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
-import { TYPE_WEBSITE } from 'lib/constants';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { allowQuery } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
+import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { resetWebsite } from 'queries';
 
 export interface WebsiteResetRequestQuery {
   id: string;
@@ -20,7 +20,7 @@ export default async (
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
+    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
       return unauthorized(res);
     }
 

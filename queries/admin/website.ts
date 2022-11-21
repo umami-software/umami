@@ -1,6 +1,7 @@
 import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
+import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function createWebsiteByUser(
   userId: string,
@@ -150,7 +151,14 @@ export async function getAllWebsites(): Promise<(Website & { user: string })[]> 
 
 export async function deleteWebsite(
   websiteId: string,
-): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
+) {
+  return runQuery({
+    [PRISMA]: () => deleteWebsiteRelationalQuery(websiteId),
+    [CLICKHOUSE]: () => deleteWebsiteClickhouseQuery(websiteId),
+  });
+}
+
+async function deleteWebsiteRelationalQuery(websiteId): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 
   return transaction([
@@ -172,5 +180,14 @@ export async function deleteWebsite(
     }
 
     return data;
+  });
+}
+
+async function deleteWebsiteClickhouseQuery(websiteId): Promise<Website> {
+  return prisma.client.website.update({
+    data: {
+      isDeleted: true,
+    },
+    where: { id: websiteId },
   });
 }

@@ -1,8 +1,9 @@
-import { parseSecureToken, parseToken } from 'next-basics';
-import { getUser, getWebsite } from 'queries';
 import debug from 'debug';
-import { SHARE_TOKEN_HEADER, TYPE_USER, TYPE_WEBSITE } from 'lib/constants';
+import { NextApiRequestAuth } from 'interface/api/nextApi';
+import { SHARE_TOKEN_HEADER, UmamiApi } from 'lib/constants';
 import { secret } from 'lib/crypto';
+import { parseSecureToken, parseToken } from 'next-basics';
+import { getUser, getUserWebsite } from 'queries';
 
 const log = debug('umami:auth');
 
@@ -47,29 +48,37 @@ export function isValidToken(token, validation) {
   return false;
 }
 
-export async function allowQuery(req, type) {
-  const { id } = req.query;
+export async function allowQuery(
+  req: NextApiRequestAuth,
+  type: UmamiApi.AuthType,
+  typeId?: string,
+) {
+  const { id } = req.query as { id: string };
 
   const { user, shareToken } = req.auth;
-
-  if (user?.isAdmin) {
-    return true;
-  }
 
   if (shareToken) {
     return isValidToken(shareToken, { id });
   }
 
   if (user?.id) {
-    if (type === TYPE_WEBSITE) {
-      const website = await getWebsite({ id });
+    if (type === UmamiApi.AuthType.Website) {
+      const userWebsite = await getUserWebsite({
+        userId: user.id,
+        websiteId: typeId ?? id,
+        isDeleted: false,
+      });
 
-      return website && website.userId === user.id;
-    } else if (type === TYPE_USER) {
+      return userWebsite;
+    } else if (type === UmamiApi.AuthType.User) {
       const user = await getUser({ id });
 
       return user && user.id === id;
     }
+  }
+
+  if (user?.isAdmin) {
+    return true;
   }
 
   return false;
