@@ -21,17 +21,17 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const users = await getTeamsByUserId(id);
+    const teams = await getTeamsByUserId(id);
 
-    return ok(res, users);
+    return ok(res, teams);
   }
 
   if (req.method === 'POST') {
     const { name } = req.body;
 
-    const user = await getTeam({ name });
+    const team = await getTeam({ name });
 
-    if (user) {
+    if (team) {
       return badRequest(res, 'Team already exists');
     }
 

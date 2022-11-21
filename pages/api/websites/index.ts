@@ -1,9 +1,10 @@
+import { Prisma } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { getRandomChars, methodNotAllowed, ok } from 'next-basics';
-import { createWebsiteByUser, getAllWebsites, getWebsitesByUserId } from 'queries';
+import { methodNotAllowed, ok } from 'next-basics';
+import { createWebsite, getAllWebsites, getWebsitesByUserId } from 'queries';
 
 export interface WebsitesRequestQuery {
   include_all?: boolean;
@@ -12,7 +13,8 @@ export interface WebsitesRequestQuery {
 export interface WebsitesRequestBody {
   name: string;
   domain: string;
-  enableShareUrl: boolean;
+  shareId: string;
+  teamId?: string;
 }
 
 export default async (
@@ -36,10 +38,22 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name, domain, enableShareUrl } = req.body;
+    const { name, domain, shareId, teamId } = req.body;
 
-    const shareId = enableShareUrl ? getRandomChars(8) : null;
-    const website = await createWebsiteByUser(userId, { id: uuid(), name, domain, shareId });
+    const data: Prisma.WebsiteCreateInput = {
+      id: uuid(),
+      name,
+      domain,
+      shareId,
+    };
+
+    if (teamId) {
+      data.teamId = teamId;
+    } else {
+      data.userId = userId;
+    }
+
+    const website = await createWebsite(data);
 
     return ok(res, website);
   }

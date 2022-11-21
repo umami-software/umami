@@ -8,6 +8,16 @@ export namespace UmamiApi {
   export enum AuthType {
     Website,
     User,
+    Team,
+    TeamOwner,
+  }
+
+  export enum Permission {
+    Admin = 'Admin',
+  }
+
+  export enum Role {
+    Admin = 'Admin',
   }
 }
 export const CURRENT_VERSION = process.env.currentVersion;

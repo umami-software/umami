@@ -19,6 +19,27 @@ export async function getPermissions(where: Prisma.PermissionWhereInput): Promis
   });
 }
 
+export async function getPermissionsByUserId(userId, name?: string): Promise<Permission[]> {
+  return prisma.client.permission.findMany({
+    where: {
+      ...(name ? { name } : {}),
+      RolePermission: {
+        every: {
+          role: {
+            is: {
+              userRoles: {
+                every: {
+                  userId,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
 export async function updatePermission(
   data: Prisma.PermissionUpdateInput,
   where: Prisma.PermissionWhereUniqueInput,
