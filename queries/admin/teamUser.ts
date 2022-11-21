@@ -9,8 +9,8 @@ export async function createTeamUser(
   });
 }
 
-export async function getTeamUser(where: Prisma.TeamUserWhereUniqueInput): Promise<TeamUser> {
-  return prisma.client.teamUser.findUnique({
+export async function getTeamUser(where: Prisma.TeamUserWhereInput): Promise<TeamUser> {
+  return prisma.client.teamUser.findFirst({
     where,
   });
 }

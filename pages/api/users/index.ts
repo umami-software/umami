@@ -1,10 +1,11 @@
-import { ok, unauthorized, methodNotAllowed, badRequest, hashPassword } from 'next-basics';
-import { useAuth } from 'lib/middleware';
-import { uuid } from 'lib/crypto';
-import { createUser, getUser, getUsers } from 'queries';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { checkPermission } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
+import { uuid } from 'lib/crypto';
+import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { User } from 'interface/api/models';
+import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { createUser, getUser, getUsers, User } from 'queries';
 
 export interface UsersRequestBody {
   username: string;
@@ -18,11 +19,7 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const {
-    user: { isAdmin },
-  } = req.auth;
-
-  if (!isAdmin) {
+  if (!(await checkPermission(req, UmamiApi.Permission.Admin))) {
     return unauthorized(res);
   }
 

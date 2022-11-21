@@ -9,8 +9,8 @@ export async function createUserRole(
   });
 }
 
-export async function getUserRole(where: Prisma.UserRoleWhereUniqueInput): Promise<UserRole> {
-  return prisma.client.userRole.findUnique({
+export async function getUserRole(where: Prisma.UserRoleWhereInput): Promise<UserRole> {
+  return prisma.client.userRole.findFirst({
     where,
   });
 }

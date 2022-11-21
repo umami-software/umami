@@ -1,9 +1,10 @@
 import debug from 'debug';
 import { NextApiRequestAuth } from 'interface/api/nextApi';
+import cache from 'lib/cache';
 import { SHARE_TOKEN_HEADER, UmamiApi } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { parseSecureToken, parseToken } from 'next-basics';
-import { getUser, getUserWebsite } from 'queries';
+import { getPermissionsByUserId, getTeamUser, getUser } from 'queries';
 
 const log = debug('umami:auth');
 
@@ -63,23 +64,51 @@ export async function allowQuery(
 
   if (user?.id) {
     if (type === UmamiApi.AuthType.Website) {
-      const userWebsite = await getUserWebsite({
-        userId: user.id,
-        websiteId: typeId ?? id,
-        isDeleted: false,
-      });
+      const website = await cache.fetchWebsite(typeId ?? id);
 
-      return userWebsite;
+      if (website && website.userId === user.id) {
+        return true;
+      }
+
+      if (website.teamId) {
+        const teamUser = getTeamUser({ userId: user.id, teamId: website.teamId, isDeleted: false });
+
+        return teamUser;
+      }
+
+      return false;
     } else if (type === UmamiApi.AuthType.User) {
       const user = await getUser({ id });
 
       return user && user.id === id;
+    } else if (type === UmamiApi.AuthType.Team) {
+      const teamUser = await getTeamUser({
+        userId: user.id,
+        teamId: typeId ?? id,
+        isDeleted: false,
+      });
+
+      return teamUser;
+    } else if (type === UmamiApi.AuthType.TeamOwner) {
+      const teamUser = await getTeamUser({
+        userId: user.id,
+        teamId: typeId ?? id,
+        isDeleted: false,
+      });
+
+      return teamUser && teamUser.isOwner;
     }
   }
 
-  if (user?.isAdmin) {
-    return true;
-  }
-
   return false;
+}
+
+export async function checkPermission(req: NextApiRequestAuth, type: UmamiApi.Permission) {
+  const {
+    user: { id: userId },
+  } = req.auth;
+
+  const userRole = await getPermissionsByUserId(userId, type);
+
+  return userRole.length > 0;
 }
