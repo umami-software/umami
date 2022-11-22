@@ -42,7 +42,7 @@ export default async (
 
         await redis.set(key, user);
 
-        const token = createSecureToken(key, secret());
+        const token = createSecureToken({ key }, secret());
 
         return ok(res, { token, user });
       }
