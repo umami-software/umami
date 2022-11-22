@@ -18,8 +18,7 @@ model User {
   groupUser GroupUser[]
   userRole  UserRole[]
   teamUser  TeamUser[]
-  Website   Website?    @relation(fields: [websiteId], references: [id])
-  websiteId String?     @db.Uuid
+  Website   Website[]
 
   @@map("user")
 }
@@ -52,8 +51,8 @@ model Website {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  team Team[]
-  user User[]
+  team Team? @relation(fields: [teamId], references: [id])
+  user User? @relation(fields: [userId], references: [id])
 
   @@index([createdAt])
   @@index([shareId])
@@ -183,8 +182,7 @@ model Team {
 
   teamUsers TeamUser[]
   UserRole  UserRole[]
-  Website   Website?   @relation(fields: [websiteId], references: [id])
-  websiteId String?    @db.Uuid
+  Website   Website[]
 
   @@map("team")
 }

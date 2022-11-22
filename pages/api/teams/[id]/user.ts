@@ -4,8 +4,8 @@ import { UmamiApi } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeamUser, deleteTeamUser, getUsersByTeamId } from 'queries';
+import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { createTeamUser, deleteTeamUser, getUsersByTeamId, getTeamUser } from 'queries';
 
 export interface TeamUserRequestQuery {
   id: string;
@@ -41,6 +41,13 @@ export default async (
 
     const { user_id: userId } = req.body;
 
+    // Check for TeamUser
+    const teamUser = getTeamUser({ userId, teamId });
+
+    if (!teamUser) {
+      return badRequest(res, 'The User already exists on this Team.');
+    }
+
     const updated = await createTeamUser({ id: uuid(), userId, teamId });
 
     return ok(res, updated);
@@ -50,7 +57,6 @@ export default async (
     if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
-
     const { team_user_id } = req.body;
 
     await deleteTeamUser(team_user_id);

@@ -15,8 +15,6 @@ export interface WebsiteRequestBody {
   name: string;
   domain: string;
   shareId: string;
-  userId?: string;
-  teamId?: string;
 }
 
 export default async (
@@ -39,14 +37,10 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { ...data } = req.body;
-
-    if (!data.userId && !data.teamId) {
-      badRequest(res, 'A website must be assigned to a User or Team.');
-    }
+    const { name, domain, shareId } = req.body;
 
     try {
-      await updateWebsite(websiteId, data);
+      await updateWebsite(websiteId, { name, domain, shareId });
     } catch (e: any) {
       if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
         return serverError(res, 'That share ID is already taken.');

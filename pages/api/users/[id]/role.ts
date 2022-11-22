@@ -42,7 +42,6 @@ export default async (
   if (req.method === 'POST') {
     const { roleId, teamId } = req.body;
 
-    // Check when userRolename changes
     const userRole = getUserRole({ userId: id, roleId, teamId });
 
     if (userRole) {
@@ -56,13 +55,6 @@ export default async (
 
   if (req.method === 'DELETE') {
     const { userRoleId } = req.body;
-
-    // Check when userRolename changes
-    const userRole = getUserRole({ id: userRoleId });
-
-    if (userRole) {
-      return badRequest(res, 'Role already exists for User.');
-    }
 
     const updated = await deleteUserRole(userRoleId);
 

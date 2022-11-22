@@ -5,6 +5,8 @@ import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createWebsite, getAllWebsites, getWebsitesByUserId } from 'queries';
+import { checkPermission } from 'lib/auth';
+import { UmamiApi } from 'lib/constants';
 
 export interface WebsitesRequestQuery {
   include_all?: boolean;
@@ -25,11 +27,13 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId, isAdmin },
+    user: { id: userId },
   } = req.auth;
 
   if (req.method === 'GET') {
     const { include_all } = req.query;
+
+    const isAdmin = await checkPermission(req, UmamiApi.Permission.Admin);
 
     const websites =
       isAdmin && include_all ? await getAllWebsites() : await getWebsitesByUserId(userId);
