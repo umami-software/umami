@@ -97,9 +97,7 @@ export async function deleteWebsite(websiteId: string) {
   });
 }
 
-async function deleteWebsiteRelationalQuery(
-  websiteId,
-): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
+async function deleteWebsiteRelationalQuery(websiteId,): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 
   return transaction([
@@ -109,10 +107,7 @@ async function deleteWebsiteRelationalQuery(
     client.session.deleteMany({
       where: { websiteId },
     }),
-    client.website.update({
-      data: {
-        isDeleted: true,
-      },
+    client.website.delete({
       where: { id: websiteId },
     }),
   ]).then(async data => {
