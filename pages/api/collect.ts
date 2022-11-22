@@ -29,6 +29,18 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     return unauthorized(res);
   }
 
+  const { type, payload } = getJsonBody(req);
+
+  const { referrer, event_name: eventName, event_data: eventData } = payload;
+  let { url } = payload;
+
+  // Validate eventData is JSON
+  const valid = eventData && typeof eventData === 'object' && !Array.isArray(eventData);
+
+  if (!valid) {
+    return badRequest(res, 'Event Data must be in the form of a JSON Object.');
+  }
+
   const ignoreIps = process.env.IGNORE_IP;
   const ignoreHostnames = process.env.IGNORE_HOSTNAME;
 
@@ -74,10 +86,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useSession(req, res);
 
   const session = req.session;
-
-  const { type, payload } = getJsonBody(req);
-
-  let { url, referrer, event_name: eventName, event_data: eventData } = payload;
 
   if (process.env.REMOVE_TRAILING_SLASH) {
     url = url.replace(/\/$/, '');

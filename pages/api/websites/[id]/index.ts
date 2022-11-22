@@ -4,7 +4,7 @@ import { allowQuery } from 'lib/auth';
 import { UmamiApi } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, serverError, unauthorized, badRequest } from 'next-basics';
+import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 
 export interface WebsiteRequestQuery {
@@ -19,7 +19,7 @@ export interface WebsiteRequestBody {
 
 export default async (
   req: NextApiRequestQueryBody<WebsiteRequestQuery, WebsiteRequestBody>,
-  res: NextApiResponse<Website | any>,
+  res: NextApiResponse<Website>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);

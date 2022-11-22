@@ -50,7 +50,7 @@ async function clickhouseQuery(data) {
   const website = await cache.fetchWebsite(websiteId);
   const { getDateFormat, sendMessage } = kafka;
 
-  const msg = {
+  const message = {
     session_id: sessionId,
     website_id: websiteId,
     url: url?.substring(0, URL_LENGTH),
@@ -58,10 +58,11 @@ async function clickhouseQuery(data) {
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     country: country ? country : null,
+    event_type: UmamiApi.EventType.Pageview,
     ...args,
   };
 
-  await sendMessage(msg, 'event');
+  await sendMessage(message, 'event');
 
   return data;
 }
