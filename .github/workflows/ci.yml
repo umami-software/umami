@@ -16,9 +16,9 @@ jobs:
     strategy:
       matrix:
         include:
-        - node-version: 14.x
+        - node-version: 18.x
           db-type: postgresql
-        - node-version: 14.x
+        - node-version: 18.x
           db-type: mysql
         - node-version: 16.x
           db-type: postgresql
@@ -34,6 +34,6 @@ jobs:
         cache: 'npm'
       env:
         DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm install --global yarn
-    - run: yarn install --frozen-lockfile
-    - run: yarn build
+    - run: npm i -g pnpm
+    - run: pnpm install
+    - run: pnpm build

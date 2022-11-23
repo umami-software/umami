@@ -13,7 +13,7 @@ services:
       - db
     restart: always
   db:
-    image: postgres:12-alpine
+    image: postgres:14-alpine
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami
