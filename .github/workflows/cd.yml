@@ -3,7 +3,6 @@ name: Create docker images
 on: [create]
 
 jobs:
-
   build:
     name: Build, push, and deploy
     if: ${{ startsWith(github.ref, 'refs/tags/v') }}
@@ -16,10 +15,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-      
+
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2

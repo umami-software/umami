@@ -16,24 +16,24 @@ jobs:
     strategy:
       matrix:
         include:
-        - node-version: 18.x
-          db-type: postgresql
-        - node-version: 18.x
-          db-type: mysql
-        - node-version: 16.x
-          db-type: postgresql
-        - node-version: 16.x
-          db-type: mysql
+          - node-version: 18.x
+            db-type: postgresql
+          - node-version: 18.x
+            db-type: mysql
+          - node-version: 16.x
+            db-type: postgresql
+          - node-version: 16.x
+            db-type: mysql
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-      env:
-        DATABASE_TYPE: ${{ matrix.db-type }}
-    - run: npm i -g pnpm
-    - run: pnpm install
-    - run: pnpm build
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+        env:
+          DATABASE_TYPE: ${{ matrix.db-type }}
+      - run: npm i -g pnpm
+      - run: pnpm install
+      - run: pnpm build
