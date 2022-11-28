@@ -21,11 +21,10 @@ export async function getUserRoles(where: Prisma.UserRoleWhereInput): Promise<Us
   });
 }
 
-export async function getUserRolesByUserId(userId: string, teamId?: string): Promise<UserRole[]> {
+export async function getUserRolesByUserId(userId: string): Promise<UserRole[]> {
   return prisma.client.userRole.findMany({
     where: {
       userId,
-      teamId,
     },
   });
 }

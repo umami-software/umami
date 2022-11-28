@@ -140,6 +140,7 @@ model Role {
   groupRoles     GroupRole[]
   userRoles      UserRole[]
   RolePermission RolePermission[]
+  TeamUser       TeamUser[]
 
   @@map("role")
 }
@@ -162,15 +163,13 @@ model UserRole {
   id        String    @id() @unique() @map("user_role_id") @db.Uuid
   roleId    String    @map("role_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
-  teamId    String?   @map("team_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
-  role Role  @relation(fields: [roleId], references: [id])
-  user User  @relation(fields: [userId], references: [id])
-  team Team? @relation(fields: [teamId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  @@unique([roleId, userId, teamId])
+  @@unique([roleId, userId])
   @@map("user_role")
 }
 
@@ -181,7 +180,6 @@ model Team {
   isDeleted Boolean   @default(false) @map("is_deleted")
 
   teamUsers TeamUser[]
-  UserRole  UserRole[]
   Website   Website[]
 
   @@map("team")
@@ -191,12 +189,14 @@ model TeamUser {
   id        String    @id() @unique() @map("team_user_id") @db.Uuid
   teamId    String    @map("team_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
+  roleId    String    @map("role_id") @db.Uuid
   isOwner   Boolean   @default(false) @map("is_owner")
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
 
   @@map("team_user")
 }

@@ -1,4 +1,4 @@
-import { Prisma, TeamUser, UserRole } from '@prisma/client';
+import { Prisma, TeamUser } from '@prisma/client';
 import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
@@ -6,26 +6,15 @@ export async function createTeamUser(
   userId: string,
   teamId: string,
   roleId: string,
-): Promise<[TeamUser, UserRole]> {
-  const { client } = prisma;
-
-  return client.$transaction([
-    client.teamUser.create({
-      data: {
-        id: uuid(),
-        userId,
-        teamId,
-      },
-    }),
-    client.userRole.create({
-      data: {
-        id: uuid(),
-        userId,
-        teamId,
-        roleId,
-      },
-    }),
-  ]);
+): Promise<TeamUser> {
+  return prisma.client.teamUser.create({
+    data: {
+      id: uuid(),
+      userId,
+      teamId,
+      roleId,
+    },
+  });
 }
 
 export async function getTeamUser(where: Prisma.TeamUserWhereInput): Promise<TeamUser> {
