@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import {
   Form,
@@ -20,18 +19,14 @@ export default function LoginForm() {
   const router = useRouter();
   const { post } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/auth/login', data));
-  const ref = useRef();
 
   const handleSubmit = async data => {
     mutate(data, {
-      onSuccess: async ({ token, account }) => {
+      onSuccess: async ({ token, user }) => {
         setAuthToken(token);
-        setUser(account);
+        setUser(user);
 
         await router.push('/websites');
-      },
-      onError: async () => {
-        ref.current.reset(undefined, { keepDirty: true, keepValues: true });
       },
     });
   };
@@ -44,7 +39,7 @@ export default function LoginForm() {
         </Icon>
         <p>umami</p>
       </div>
-      <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
+      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
         <FormInput name="username" label="Username" rules={{ required: 'Required' }}>
           <TextField autoComplete="off" />
         </FormInput>
