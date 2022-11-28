@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Container } from 'react-basics';
 import useLocale from 'hooks/useLocale';
 import useConfig from 'hooks/useConfig';
 import 'react-basics/dist/styles.css';
@@ -12,9 +13,8 @@ import '@fontsource/inter/600.css';
 const client = new QueryClient();
 
 export default function App({ Component, pageProps }) {
-  const { locale, messages } = useLocale();
+  const { locale, messages, dir } = useLocale();
   const { basePath } = useRouter();
-  const { dir } = useLocale();
   useConfig();
 
   const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
@@ -38,9 +38,9 @@ export default function App({ Component, pageProps }) {
           <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <div className="container" dir={dir}>
+        <Container dir={dir}>
           <Component {...pageProps} />
-        </div>
+        </Container>
       </IntlProvider>
     </QueryClientProvider>
   );
