@@ -14,10 +14,24 @@ export namespace UmamiApi {
 
   export enum Permission {
     Admin = 'Admin',
+    WebsiteCreate = 'website:create',
+    WebsiteRead = 'website:read',
+    WebsiteUpdate = 'website:update',
+    WebsiteReset = 'website:reset',
+    WebsiteDelete = 'website:delete',
+    TeamCreate = 'team:create',
+    TeamUpdate = 'team:update',
+    TeamDelete = 'team:delete',
+    TeamAddUser = 'team:add-user',
+    TeamRemoveUser = 'team:remove-user',
   }
 
   export enum Role {
     Admin = 'Admin',
+    Member = 'Member',
+    TeamOwner = 'Team Owner',
+    TeamMember = 'Team Member',
+    TeamGuest = 'Team Guest,',
   }
 }
 export const CURRENT_VERSION = process.env.currentVersion;
