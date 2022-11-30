@@ -34,6 +34,13 @@ export function parseShareToken(req) {
   }
 }
 
+export function hasPermission(
+  value: UmamiApi.Role | UmamiApi.Permission,
+  permissions: UmamiApi.Role[] | UmamiApi.Permission[],
+) {
+  return permissions.some(a => a === value);
+}
+
 export function isValidToken(token, validation) {
   try {
     if (typeof validation === 'object') {
@@ -85,7 +92,6 @@ export async function allowQuery(
       const teamUser = await getTeamUser({
         userId: user.id,
         teamId: typeId ?? id,
-        isDeleted: false,
       });
 
       return teamUser;
@@ -93,10 +99,12 @@ export async function allowQuery(
       const teamUser = await getTeamUser({
         userId: user.id,
         teamId: typeId ?? id,
-        isDeleted: false,
       });
 
-      return teamUser && teamUser.isOwner;
+      return (
+        teamUser &&
+        (teamUser.roleId === UmamiApi.Role.TeamOwner || teamUser.roleId === UmamiApi.Role.Admin)
+      );
     }
   }
 

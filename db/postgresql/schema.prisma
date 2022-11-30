@@ -124,7 +124,6 @@ model Permission {
   name           String           @unique() @db.VarChar(255)
   description    String?          @db.VarChar(255)
   createdAt      DateTime?        @default(now()) @map("created_at") @db.Timestamptz(6)
-  isDeleted      Boolean          @default(false) @map("is_deleted")
   RolePermission RolePermission[]
 
   @@map("permission")
@@ -135,7 +134,6 @@ model Role {
   name        String    @unique() @db.VarChar(255)
   description String?   @db.VarChar(255)
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  isDeleted   Boolean   @default(false) @map("is_deleted")
 
   groupRoles     GroupRole[]
   userRoles      UserRole[]
@@ -190,7 +188,6 @@ model TeamUser {
   teamId    String    @map("team_id") @db.Uuid
   userId    String    @map("user_id") @db.Uuid
   roleId    String    @map("role_id") @db.Uuid
-  isOwner   Boolean   @default(false) @map("is_owner")
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   isDeleted Boolean   @default(false) @map("is_deleted")
 
