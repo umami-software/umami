@@ -7,7 +7,7 @@
     document,
     history,
   } = window;
-  const { hostname, pathname, search } = location;
+  const { hostname, pathname, search, protocol } = location;
   const { currentScript } = document;
 
   if (!currentScript) return;
@@ -45,7 +45,8 @@
   const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (dnt && doNotTrack()) ||
-    (domain && !domains.includes(hostname));
+    (domain && !domains.includes(hostname)) ||
+    (/^localhost$|^127(\.[0-9]+){0,2}\.[0-9]+$|^\[::1?\]$/.test(hostname) || protocol === 'file:');
 
   const _data = 'data-';
   const _false = 'false';
