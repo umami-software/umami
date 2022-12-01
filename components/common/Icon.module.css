@@ -9,26 +9,31 @@
   fill: currentColor;
 }
 
+.xlarge > img,
 .xlarge > svg {
   width: 48px;
   height: 48px;
 }
 
+.large > img,
 .large > svg {
   width: 24px;
   height: 24px;
 }
 
+.medium > img,
 .medium > svg {
   width: 16px;
   height: 16px;
 }
 
+.small > img,
 .small > svg {
   width: 12px;
   height: 12px;
 }
 
+.xsmall > img,
 .xsmall > svg {
   width: 10px;
   height: 10px;

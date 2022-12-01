@@ -14,7 +14,6 @@ import Icon from 'components/common/Icon';
 import useApi from 'hooks/useApi';
 import { AUTH_TOKEN } from 'lib/constants';
 import { setUser } from 'store/app';
-import Logo from 'assets/logo.svg';
 import styles from './LoginForm.module.css';
 
 const validate = ({ username, password }) => {
@@ -76,8 +75,18 @@ export default function LoginForm() {
         {() => (
           <Form>
             <div className={styles.header}>
-              <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
-              <h1 className="center">umami</h1>
+              <Icon
+                icon={
+                  <img
+                    src="https://uploads-ssl.webflow.com/5ea18b09bf3bfd55814199f9/5ea18b09bf3bfda137419a00_petri_square_03.gif"
+                    className={styles.logo}
+                    alt="Logo"
+                  />
+                }
+                size="xlarge"
+                className={styles.icon}
+              />
+              <h1 className="center">Headless Analytics</h1>
             </div>
             <FormRow>
               <label htmlFor="username">

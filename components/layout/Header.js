@@ -25,9 +25,10 @@ export default function Header() {
       <header className={classNames(styles.header, 'row')}>
         <div className={styles.title}>
           <img
-          src="https://uploads-ssl.webflow.com/5ea18b09bf3bfd55814199f9/5ea18b09bf3bfda137419a00_petri_square_03.gif"
-          className={styles.logo}
-        />
+            src="https://uploads-ssl.webflow.com/5ea18b09bf3bfd55814199f9/5ea18b09bf3bfda137419a00_petri_square_03.gif"
+            className={styles.logo}
+            alt="Logo"
+          />
           <Link href={isSharePage ? HOMEPAGE_URL : '/'}>Headless Analytics</Link>
         </div>
         <HamburgerButton />
