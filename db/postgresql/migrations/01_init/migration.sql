@@ -287,10 +287,10 @@ INSERT INTO "user" (user_id, username, password) VALUES ('41e2b680-648e-4b09-bcd
 
 -- Add Roles
 INSERT INTO "role" ("role_id", "name", "description") VALUES (gen_random_uuid(), 'Admin', 'System Admin.');
-INSERT INTO "role" ("role_id", "name", "description") (gen_random_uuid(), 'Member', 'Create and maintain websites.');
-INSERT INTO "role" ("role_id", "name", "description") (gen_random_uuid(), 'Team Owner', 'Create and maintain the team, memberships, websites, and responsible for billing.');
-INSERT INTO "role" ("role_id", "name", "description") (gen_random_uuid(), 'Team Member', 'Create and maintain websites.');
-INSERT INTO "role" ("role_id", "name", "description") (gen_random_uuid(), 'Team Guest', 'View Websites.');
+INSERT INTO "role" ("role_id", "name", "description") VALUES (gen_random_uuid(), 'Member', 'Create and maintain websites.');
+INSERT INTO "role" ("role_id", "name", "description") VALUES (gen_random_uuid(), 'Team Owner', 'Create and maintain the team, memberships, websites, and responsible for billing.');
+INSERT INTO "role" ("role_id", "name", "description") VALUES (gen_random_uuid(), 'Team Member', 'Create and maintain websites.');
+INSERT INTO "role" ("role_id", "name", "description") VALUES (gen_random_uuid(), 'Team Guest', 'View Websites.');
 
 -- Add Permissions
 INSERT INTO "permission" ("permission_id", "name", "description") VALUES (gen_random_uuid(), 'admin', 'System Admin');

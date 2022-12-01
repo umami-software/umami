@@ -44,14 +44,3 @@ export async function updateRole(
     where,
   });
 }
-
-export async function deleteRole(roleId: string): Promise<Role> {
-  return prisma.client.role.update({
-    data: {
-      isDeleted: true,
-    },
-    where: {
-      id: roleId,
-    },
-  });
-}

@@ -1,10 +1,9 @@
 import debug from 'debug';
-import { NextApiRequestAuth } from 'interface/api/nextApi';
 import cache from 'lib/cache';
 import { SHARE_TOKEN_HEADER, UmamiApi } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { parseSecureToken, parseToken } from 'next-basics';
-import { getPermissionsByUserId, getTeamUser, getUser } from 'queries';
+import { getPermissionsByUserId, getTeamPermissionsByUserId } from 'queries';
 
 const log = debug('umami:auth');
 
@@ -34,13 +33,6 @@ export function parseShareToken(req) {
   }
 }
 
-export function hasPermission(
-  value: UmamiApi.Role | UmamiApi.Permission,
-  permissions: UmamiApi.Role[] | UmamiApi.Permission[],
-) {
-  return permissions.some(a => a === value);
-}
-
 export function isValidToken(token, validation) {
   try {
     if (typeof validation === 'object') {
@@ -57,66 +49,44 @@ export function isValidToken(token, validation) {
 }
 
 export async function allowQuery(
-  req: NextApiRequestAuth,
+  requestUserId: string,
   type: UmamiApi.AuthType,
   typeId?: string,
+  permission?: UmamiApi.Permission,
 ) {
-  const { id } = req.query as { id: string };
+  if (type === UmamiApi.AuthType.Website) {
+    const website = await cache.fetchWebsite(typeId);
 
-  const { user, shareToken } = req.auth;
-
-  if (shareToken) {
-    return isValidToken(shareToken, { id });
-  }
-
-  if (user?.id) {
-    if (type === UmamiApi.AuthType.Website) {
-      const website = await cache.fetchWebsite(typeId ?? id);
-
-      if (website && website.userId === user.id) {
-        return true;
-      }
-
-      if (website.teamId) {
-        const teamUser = getTeamUser({ userId: user.id, teamId: website.teamId, isDeleted: false });
-
-        return teamUser;
-      }
-
-      return false;
-    } else if (type === UmamiApi.AuthType.User) {
-      const user = await getUser({ id });
-
-      return user && user.id === id;
-    } else if (type === UmamiApi.AuthType.Team) {
-      const teamUser = await getTeamUser({
-        userId: user.id,
-        teamId: typeId ?? id,
-      });
-
-      return teamUser;
-    } else if (type === UmamiApi.AuthType.TeamOwner) {
-      const teamUser = await getTeamUser({
-        userId: user.id,
-        teamId: typeId ?? id,
-      });
-
-      return (
-        teamUser &&
-        (teamUser.roleId === UmamiApi.Role.TeamOwner || teamUser.roleId === UmamiApi.Role.Admin)
-      );
+    if (website && website.userId === requestUserId) {
+      return true;
     }
+
+    if (website.teamId) {
+      return checkTeamPermission(requestUserId, typeId, permission);
+    }
+
+    return false;
+  } else if (type === UmamiApi.AuthType.User) {
+    if (requestUserId !== typeId) {
+      return checkUserPermission(requestUserId, permission || UmamiApi.Permission.Admin);
+    }
+
+    return requestUserId === typeId;
+  } else if (type === UmamiApi.AuthType.Team) {
+    return checkTeamPermission(requestUserId, typeId, permission);
   }
 
   return false;
 }
 
-export async function checkPermission(req: NextApiRequestAuth, type: UmamiApi.Permission) {
-  const {
-    user: { id: userId },
-  } = req.auth;
-
+export async function checkUserPermission(userId: string, type: UmamiApi.Permission) {
   const userRole = await getPermissionsByUserId(userId, type);
+
+  return userRole.length > 0;
+}
+
+export async function checkTeamPermission(userId, teamId: string, type: UmamiApi.Permission) {
+  const userRole = await getTeamPermissionsByUserId(userId, teamId, type);
 
   return userRole.length > 0;
 }

@@ -9,11 +9,10 @@ export namespace UmamiApi {
     Website,
     User,
     Team,
-    TeamOwner,
   }
 
   export enum Permission {
-    Admin = 'Admin',
+    Admin = 'admin',
     WebsiteCreate = 'website:create',
     WebsiteRead = 'website:read',
     WebsiteUpdate = 'website:update',

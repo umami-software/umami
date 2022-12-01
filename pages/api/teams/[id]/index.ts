@@ -21,12 +21,16 @@ export default async (
 ) => {
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Team))) {
+    if (!(await allowQuery(userId, UmamiApi.AuthType.Team, teamId))) {
       return unauthorized(res);
     }
+
     const user = await getTeam({ id: teamId });
 
     return ok(res, user);
@@ -35,7 +39,9 @@ export default async (
   if (req.method === 'POST') {
     const { name } = req.body;
 
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (
+      !(await allowQuery(userId, UmamiApi.AuthType.Team, teamId, UmamiApi.Permission.TeamUpdate))
+    ) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
@@ -45,7 +51,9 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (
+      !(await allowQuery(userId, UmamiApi.AuthType.Team, teamId, UmamiApi.Permission.TeamDelete))
+    ) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 

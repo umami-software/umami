@@ -19,7 +19,7 @@ export async function getPermissions(where: Prisma.PermissionWhereInput): Promis
   });
 }
 
-export async function getPermissionsByUserId(userId, name?: string): Promise<Permission[]> {
+export async function getPermissionsByUserId(userId: string, name?: string): Promise<Permission[]> {
   return prisma.client.permission.findMany({
     where: {
       ...(name ? { name } : {}),
@@ -40,7 +40,11 @@ export async function getPermissionsByUserId(userId, name?: string): Promise<Per
   });
 }
 
-export async function getPermissionsByTeamId(teamId, name?: string): Promise<Permission[]> {
+export async function getTeamPermissionsByUserId(
+  userId: string,
+  teamId: string,
+  name?: string,
+): Promise<Permission[]> {
   return prisma.client.permission.findMany({
     where: {
       ...(name ? { name } : {}),
@@ -50,6 +54,7 @@ export async function getPermissionsByTeamId(teamId, name?: string): Promise<Per
             is: {
               TeamUser: {
                 every: {
+                  userId,
                   teamId,
                 },
               },
@@ -68,16 +73,5 @@ export async function updatePermission(
   return prisma.client.permission.update({
     data,
     where,
-  });
-}
-
-export async function deletePermission(permissionId: string): Promise<Permission> {
-  return prisma.client.permission.update({
-    data: {
-      isDeleted: true,
-    },
-    where: {
-      id: permissionId,
-    },
   });
 }
