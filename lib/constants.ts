@@ -34,6 +34,27 @@ export namespace UmamiApi {
     TeamGuest = 'Team Guest,',
   }
 }
+
+export const PERMISSIONS = {
+  all: 'all',
+  websiteCreate: 'website:create',
+  websiteUpdate: 'website:update',
+  websiteDelete: 'website:delete',
+  teamCreate: 'team:create',
+  teamUpdate: 'team:update',
+  teamDelete: 'team:delete',
+};
+
+export const ROLES = {
+  admin: { name: 'admin', permissions: [PERMISSIONS.all] },
+  teamOwner: { name: 'team-owner', permissions: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete] },
+  teamMember: {
+    name: 'team-member',
+    permissions: [PERMISSIONS.websiteCreate, PERMISSIONS.websiteUpdate, PERMISSIONS.websiteDelete],
+  },
+  teamGuest: { name: 'team-guest' },
+};
+
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
@@ -56,9 +77,6 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 3000;
-
-export const TYPE_WEBSITE = 'website';
-export const TYPE_USER = 'user';
 
 export const THEME_COLORS = {
   light: {

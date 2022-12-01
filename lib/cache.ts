@@ -1,5 +1,5 @@
 import { User, Website } from '@prisma/client';
-import redis, { DELETED } from 'lib/redis';
+import redis from 'lib/redis';
 import { getSession, getUser, getWebsite } from '../queries';
 
 async function fetchObject(key, query) {
@@ -23,7 +23,7 @@ async function storeObject(key, data) {
 }
 
 async function deleteObject(key) {
-  return redis.set(key, DELETED);
+  return redis.set(key, redis.DELETED);
 }
 
 async function fetchWebsite(id): Promise<Website> {

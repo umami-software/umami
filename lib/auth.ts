@@ -120,3 +120,23 @@ export async function checkPermission(req: NextApiRequestAuth, type: UmamiApi.Pe
 
   return userRole.length > 0;
 }
+
+export async function canViewWebsite(userId: string, websiteId: string) {
+  const website = await cache.fetchWebsite(websiteId);
+
+  if (website.userId) {
+    return userId === website.userId;
+  }
+
+  return false;
+}
+
+export async function canUpdateWebsite(userId: string, websiteId: string) {
+  const website = await cache.fetchWebsite(websiteId);
+
+  if (website.userId) {
+    return userId === website.userId;
+  }
+
+  return false;
+}
