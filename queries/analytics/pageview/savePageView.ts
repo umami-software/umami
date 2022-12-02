@@ -4,7 +4,7 @@ import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
 import { uuid } from 'lib/crypto';
-import { UmamiApi } from 'lib/constants';
+import { EventType } from 'lib/types';
 
 export async function savePageView(args: {
   id: string;
@@ -40,7 +40,7 @@ async function relationalQuery(data: {
       sessionId,
       url: url?.substring(0, URL_LENGTH),
       referrer: referrer?.substring(0, URL_LENGTH),
-      eventType: UmamiApi.EventType.Pageview,
+      eventType: EventType.Pageview,
     },
   });
 }
@@ -58,7 +58,7 @@ async function clickhouseQuery(data) {
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     country: country ? country : null,
-    event_type: UmamiApi.EventType.Pageview,
+    event_type: EventType.Pageview,
     ...args,
   };
 

@@ -2,7 +2,7 @@ import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { UmamiApi } from 'lib/constants';
+import { EventType } from 'lib/types';
 
 export async function getPageviewStats(
   ...args: [
@@ -56,7 +56,7 @@ async function relationalQuery(
         ${joinSession}
       where website.website_id='${websiteId}'
         and pageview.created_at between $1 and $2
-        and event_type = ${UmamiApi.EventType.Pageview}
+        and event_type = ${EventType.Pageview}
         ${filterQuery}
       group by 1`,
     params,
@@ -92,7 +92,7 @@ async function clickhouseQuery(
       from event
       where website_id = $1      
         and rev_id = $2  
-        and event_type = ${UmamiApi.EventType.Pageview}
+        and event_type = ${EventType.Pageview}
         and ${getBetweenDates('created_at', startDate, endDate)}
         ${filterQuery}
       group by t) g

@@ -3,7 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { WebsiteEventMetric } from 'interface/api/models';
-import { UmamiApi } from 'lib/constants';
+import { EventType } from 'lib/types';
 
 export async function getEventMetrics(
   ...args: [
@@ -56,7 +56,7 @@ async function relationalQuery(
     from website_event
     where website_id='${websiteId}'
       and created_at between $1 and $2
-      and event_type = ${UmamiApi.EventType.Event}
+      and event_type = ${EventType.Event}
       ${getFilterQuery(filters, params)}
     group by 1, 2
     order by 2`,
@@ -95,7 +95,7 @@ async function clickhouseQuery(
     from event
     where website_id = $1
       and rev_id = $2
-      and event_type = ${UmamiApi.EventType.Event}
+      and event_type = ${EventType.Event}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${getFilterQuery(filters, params)}
     group by x, t

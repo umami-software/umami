@@ -1,9 +1,10 @@
+import { parseSecureToken, parseToken } from 'next-basics';
 import { UserRole } from '@prisma/client';
 import debug from 'debug';
 import cache from 'lib/cache';
-import { SHARE_TOKEN_HEADER, UmamiApi } from 'lib/constants';
+import { SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { parseSecureToken, parseToken } from 'next-basics';
+import { Permission, Roles } from 'lib/types';
 import { getTeamUser, getUserRoles } from 'queries';
 
 const log = debug('umami:auth');
@@ -59,7 +60,7 @@ export async function canViewWebsite(userId: string, websiteId: string) {
   if (website.teamId) {
     const teamUser = await getTeamUser({ userId, teamId: website.teamId });
 
-    checkPermission(UmamiApi.Permission.websiteUpdate, teamUser.role as keyof UmamiApi.Roles);
+    checkPermission(Permission.websiteUpdate, teamUser.role);
   }
 
   return checkAdmin(userId);
@@ -75,7 +76,7 @@ export async function canUpdateWebsite(userId: string, websiteId: string) {
   if (website.teamId) {
     const teamUser = await getTeamUser({ userId, teamId: website.teamId });
 
-    checkPermission(UmamiApi.Permission.websiteUpdate, teamUser.role as keyof UmamiApi.Roles);
+    checkPermission(Permission.websiteUpdate, teamUser.role);
   }
 
   return checkAdmin(userId);
@@ -91,7 +92,7 @@ export async function canDeleteWebsite(userId: string, websiteId: string) {
   if (website.teamId) {
     const teamUser = await getTeamUser({ userId, teamId: website.teamId });
 
-    if (checkPermission(UmamiApi.Permission.websiteDelete, teamUser.role as keyof UmamiApi.Roles)) {
+    if (checkPermission(Permission.websiteDelete, teamUser.role)) {
       return true;
     }
   }
@@ -113,7 +114,7 @@ export async function canViewTeam(userId: string, teamId) {
 export async function canUpdateTeam(userId: string, teamId: string) {
   const teamUser = await getTeamUser({ userId, teamId });
 
-  if (checkPermission(UmamiApi.Permission.teamUpdate, teamUser.role as keyof UmamiApi.Roles)) {
+  if (checkPermission(Permission.teamUpdate, teamUser.role)) {
     return true;
   }
 }
@@ -121,7 +122,7 @@ export async function canUpdateTeam(userId: string, teamId: string) {
 export async function canDeleteTeam(userId: string, teamId: string) {
   const teamUser = await getTeamUser({ userId, teamId });
 
-  if (checkPermission(UmamiApi.Permission.teamDelete, teamUser.role as keyof UmamiApi.Roles)) {
+  if (checkPermission(Permission.teamDelete, teamUser.role)) {
     return true;
   }
 }
@@ -158,8 +159,8 @@ export async function canDeleteUser(userId: string) {
   return checkAdmin(userId);
 }
 
-export async function checkPermission(permission: UmamiApi.Permission, role: keyof UmamiApi.Roles) {
-  return UmamiApi.Roles[role].permissions.some(a => a === permission);
+export async function checkPermission(permission: Permission, role: string) {
+  return Roles[role].permissions.some(a => a === permission);
 }
 
 export async function checkAdmin(userId: string, userRoles?: UserRole[]) {
@@ -167,5 +168,5 @@ export async function checkAdmin(userId: string, userRoles?: UserRole[]) {
     userRoles = await getUserRoles({ userId });
   }
 
-  return userRoles.some(a => a.role === UmamiApi.Role.Admin);
+  return userRoles.some(a => a.role === Roles.admin.name);
 }

@@ -3,7 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
 import { WebsiteMetric } from 'interface/api/models';
-import { UmamiApi } from 'lib/constants';
+import { EventType } from 'lib/types';
 
 export async function getEventData(
   ...args: [
@@ -47,7 +47,7 @@ async function relationalQuery(
     from website_event
     where website_id ='${websiteId}'
       and created_at between $1 and $2
-      and event_type = ${UmamiApi.EventType.Event}
+      and event_type = ${EventType.Event}
       ${eventName ? `and eventName = ${eventName}` : ''}
       ${
         Object.keys(filters).length > 0
@@ -80,7 +80,7 @@ async function clickhouseQuery(
     from event
     where website_id = $1
       and rev_id = $2
-      and event_type = ${UmamiApi.EventType.Event}
+      and event_type = ${EventType.Event}
       ${eventName ? `and eventName = ${eventName}` : ''}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${

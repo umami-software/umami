@@ -1,7 +1,7 @@
 import { UserRole } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
 import { canUpdateUserRole } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { Role } from 'lib/types';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -11,7 +11,7 @@ export interface UserRoleRequestQuery {
   id: string;
 }
 export interface UserRoleRequestBody {
-  role: UmamiApi.Role;
+  role: Role;
   userRoleId?: string;
 }
 
