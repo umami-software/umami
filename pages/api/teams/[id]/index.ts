@@ -1,7 +1,6 @@
 import { Team } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -21,12 +20,16 @@ export default async (
 ) => {
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Team))) {
+    if (await canViewTeam(userId, teamId)) {
       return unauthorized(res);
     }
+
     const user = await getTeam({ id: teamId });
 
     return ok(res, user);
@@ -35,7 +38,7 @@ export default async (
   if (req.method === 'POST') {
     const { name } = req.body;
 
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (await canUpdateTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
@@ -45,7 +48,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (await canDeleteTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 

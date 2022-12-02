@@ -1,6 +1,6 @@
 import { Website } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { canViewWebsite, canUpdateWebsite } from 'lib/auth';
+import { canViewWebsite, canUpdateWebsite, canDeleteWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
@@ -23,10 +23,13 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await canViewWebsite(req.auth.user.id, websiteId))) {
+    if (!(await canViewWebsite(userId, websiteId))) {
       return unauthorized(res);
     }
 
@@ -36,7 +39,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!(await canUpdateWebsite(req.auth.user.id, websiteId))) {
+    if (!(await canUpdateWebsite(userId, websiteId))) {
       return unauthorized(res);
     }
 
@@ -54,6 +57,10 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
+    if (!(await canDeleteWebsite(userId, websiteId))) {
+      return unauthorized(res);
+    }
+
     await deleteWebsite(websiteId);
 
     return ok(res);

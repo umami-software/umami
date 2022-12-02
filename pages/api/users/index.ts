@@ -1,6 +1,5 @@
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { checkPermission } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canCreateUser, canViewUsers } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
@@ -19,17 +18,25 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  if (!(await checkPermission(req, UmamiApi.Permission.Admin))) {
-    return unauthorized(res);
-  }
+  const {
+    user: { id: userId },
+  } = req.auth;
 
   if (req.method === 'GET') {
+    if (canViewUsers(userId)) {
+      return unauthorized(res);
+    }
+
     const users = await getUsers();
 
     return ok(res, users);
   }
 
   if (req.method === 'POST') {
+    if (canCreateUser(userId)) {
+      return unauthorized(res);
+    }
+
     const { username, password, id } = req.body;
 
     const user = await getUser({ username });

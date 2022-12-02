@@ -1,9 +1,10 @@
 import { Team } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { badRequest, methodNotAllowed, ok } from 'next-basics';
+import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createTeam, getTeam, getTeamsByUserId } from 'queries';
 export interface TeamsRequestBody {
   name: string;
@@ -17,16 +18,20 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id },
+    user: { id: userId },
   } = req.auth;
 
   if (req.method === 'GET') {
-    const teams = await getTeamsByUserId(id);
+    const teams = await getTeamsByUserId(userId);
 
     return ok(res, teams);
   }
 
   if (req.method === 'POST') {
+    if (await canCreateTeam(userId)) {
+      return unauthorized(res);
+    }
+
     const { name } = req.body;
 
     const team = await getTeam({ name });
@@ -36,7 +41,7 @@ export default async (
     }
 
     const created = await createTeam({
-      id: id || uuid(),
+      id: uuid(),
       name,
     });
 

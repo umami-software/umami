@@ -36,9 +36,7 @@ export async function getUser(
       id: true,
       username: true,
       userRole: {
-        include: {
-          role: true,
-        },
+        select: { role: true },
       },
       password: includePassword,
     },

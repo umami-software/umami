@@ -1,12 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { checkAdmin } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createWebsite, getAllWebsites, getWebsitesByUserId } from 'queries';
-import { checkPermission } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
 
 export interface WebsitesRequestQuery {
   include_all?: boolean;
@@ -33,7 +32,7 @@ export default async (
   if (req.method === 'GET') {
     const { include_all } = req.query;
 
-    const isAdmin = await checkPermission(req, UmamiApi.Permission.Admin);
+    const isAdmin = await checkAdmin(userId);
 
     const websites =
       isAdmin && include_all ? await getAllWebsites() : await getWebsitesByUserId(userId);
@@ -44,7 +43,7 @@ export default async (
   if (req.method === 'POST') {
     const { name, domain, shareId, teamId } = req.body;
 
-    const data: Prisma.WebsiteCreateInput = {
+    const data: Prisma.WebsiteUncheckedCreateInput = {
       id: uuid(),
       name,
       domain,
