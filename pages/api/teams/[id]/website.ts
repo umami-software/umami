@@ -1,6 +1,5 @@
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -21,10 +20,13 @@ export default async (
 ) => {
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Team))) {
+    if (await canViewTeam(userId, teamId)) {
       return unauthorized(res);
     }
 

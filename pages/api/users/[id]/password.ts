@@ -1,6 +1,5 @@
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canUpdateUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import {
@@ -30,12 +29,15 @@ export default async (
 
   const { current_password, new_password } = req.body;
   const { id } = req.query;
-
-  if (!(await allowQuery(req, UmamiApi.AuthType.User))) {
-    return unauthorized(res);
-  }
+  const {
+    user: { id: userId },
+  } = req.auth;
 
   if (req.method === 'POST') {
+    if (canUpdateUser(userId, id)) {
+      return unauthorized(res);
+    }
+
     const user = await getUser({ id });
 
     if (!checkPassword(current_password, user.password)) {

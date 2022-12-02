@@ -12,27 +12,54 @@ export namespace UmamiApi {
   }
 
   export enum Permission {
-    Admin = 'admin',
-    WebsiteCreate = 'website:create',
-    WebsiteRead = 'website:read',
-    WebsiteUpdate = 'website:update',
-    WebsiteReset = 'website:reset',
-    WebsiteDelete = 'website:delete',
-    TeamCreate = 'team:create',
-    TeamUpdate = 'team:update',
-    TeamDelete = 'team:delete',
-    TeamAddUser = 'team:add-user',
-    TeamRemoveUser = 'team:remove-user',
+    all = 'all',
+    websiteCreate = 'website:create',
+    websiteUpdate = 'website:update',
+    websiteDelete = 'website:delete',
+    teamCreate = 'team:create',
+    teamUpdate = 'team:update',
+    teamDelete = 'team:delete',
   }
 
   export enum Role {
-    Admin = 'Admin',
-    Member = 'Member',
-    TeamOwner = 'Team Owner',
-    TeamMember = 'Team Member',
-    TeamGuest = 'Team Guest,',
+    Admin = 'admin',
+    User = 'user',
+    TeamOwner = 'team-owner',
+    TeamMember = 'team-member',
+    TeamGuest = 'team-guest',
   }
+
+  export const Roles = {
+    admin: { name: Role.Admin, permissions: [Permission.all] },
+    member: {
+      name: Role.User,
+      permissions: [
+        Permission.websiteCreate,
+        Permission.websiteUpdate,
+        Permission.websiteDelete,
+        Permission.teamCreate,
+      ],
+    },
+    teamOwner: {
+      name: Role.TeamOwner,
+      permissions: [
+        Permission.teamUpdate,
+        Permission.teamDelete,
+        Permission.websiteCreate,
+        Permission.websiteUpdate,
+        Permission.websiteDelete,
+      ],
+    },
+    teamMember: {
+      name: Role.TeamMember,
+      permissions: [Permission.websiteCreate, Permission.websiteUpdate, Permission.websiteDelete],
+    },
+    teamGuest: { name: Role.TeamGuest, permissions: [] },
+  };
+
+  export type Roles = typeof Roles;
 }
+
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
@@ -55,9 +82,6 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 3000;
-
-export const TYPE_WEBSITE = 'website';
-export const TYPE_USER = 'user';
 
 export const THEME_COLORS = {
   light: {

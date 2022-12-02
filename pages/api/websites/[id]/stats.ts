@@ -1,7 +1,6 @@
 import { WebsiteStats } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -27,22 +26,25 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
+  const {
+    id: websiteId,
+    start_at,
+    end_at,
+    url,
+    referrer,
+    os,
+    browser,
+    device,
+    country,
+  } = req.query;
+
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
+    if (!(await canViewWebsite(userId, websiteId))) {
       return unauthorized(res);
     }
-
-    const {
-      id: websiteId,
-      start_at,
-      end_at,
-      url,
-      referrer,
-      os,
-      browser,
-      device,
-      country,
-    } = req.query;
 
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);

@@ -1,20 +1,17 @@
 import { UserRole } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { checkPermission } from 'lib/auth';
+import { canUpdateUserRole } from 'lib/auth';
 import { UmamiApi } from 'lib/constants';
-import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createUserRole, deleteUserRole, getUserRole, getUserRoles } from 'queries';
+import { deleteUserRole, getUserRole, getUserRoles, updateUserRole } from 'queries';
 
 export interface UserRoleRequestQuery {
   id: string;
 }
-
 export interface UserRoleRequestBody {
-  roleId: string;
-  teamId?: string;
+  role: UmamiApi.Role;
   userRoleId?: string;
 }
 
@@ -29,7 +26,7 @@ export default async (
   } = req.auth;
   const { id } = req.query;
 
-  if (id !== userId || !(await checkPermission(req, UmamiApi.Permission.Admin))) {
+  if (await canUpdateUserRole(userId)) {
     return unauthorized(res);
   }
 
@@ -40,17 +37,17 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { roleId, teamId } = req.body;
+    const { role } = req.body;
 
-    const userRole = getUserRole({ userId: id, roleId, teamId });
+    const userRole = await getUserRole({ userId: id });
 
-    if (userRole) {
+    if (userRole && userRole.role === role) {
       return badRequest(res, 'Role already exists for User.');
+    } else {
+      const updated = await updateUserRole({ role }, { id: userRole.id });
+
+      return ok(res, updated);
     }
-
-    const updated = await createUserRole({ id: uuid(), userId: id, roleId, teamId });
-
-    return ok(res, updated);
   }
 
   if (req.method === 'DELETE') {

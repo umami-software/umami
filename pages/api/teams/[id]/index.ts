@@ -1,7 +1,6 @@
 import { Team } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -27,7 +26,7 @@ export default async (
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(userId, UmamiApi.AuthType.Team, teamId))) {
+    if (await canViewTeam(userId, teamId)) {
       return unauthorized(res);
     }
 
@@ -39,9 +38,7 @@ export default async (
   if (req.method === 'POST') {
     const { name } = req.body;
 
-    if (
-      !(await allowQuery(userId, UmamiApi.AuthType.Team, teamId, UmamiApi.Permission.TeamUpdate))
-    ) {
+    if (await canUpdateTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
@@ -51,9 +48,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (
-      !(await allowQuery(userId, UmamiApi.AuthType.Team, teamId, UmamiApi.Permission.TeamDelete))
-    ) {
+    if (await canDeleteTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 

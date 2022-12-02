@@ -1,6 +1,5 @@
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -17,10 +16,13 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
+    if (!(await canViewWebsite(userId, websiteId))) {
       return unauthorized(res);
     }
 
