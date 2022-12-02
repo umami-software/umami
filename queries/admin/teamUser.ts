@@ -5,14 +5,14 @@ import prisma from 'lib/prisma';
 export async function createTeamUser(
   userId: string,
   teamId: string,
-  roleId: string,
+  role: string,
 ): Promise<TeamUser> {
   return prisma.client.teamUser.create({
     data: {
       id: uuid(),
       userId,
       teamId,
-      roleId,
+      role,
     },
   });
 }

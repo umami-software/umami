@@ -19,7 +19,10 @@ export async function createWebsite(
     });
 }
 
-export async function updateWebsite(websiteId, data: Prisma.WebsiteUpdateInput): Promise<Website> {
+export async function updateWebsite(
+  websiteId,
+  data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
+): Promise<Website> {
   return prisma.client.website.update({
     where: {
       id: websiteId,
@@ -97,7 +100,9 @@ export async function deleteWebsite(websiteId: string) {
   });
 }
 
-async function deleteWebsiteRelationalQuery(websiteId,): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
+async function deleteWebsiteRelationalQuery(
+  websiteId,
+): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 
   return transaction([

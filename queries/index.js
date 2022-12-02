@@ -1,5 +1,3 @@
-export * from './admin/permission';
-export * from './admin/role';
 export * from './admin/team';
 export * from './admin/teamUser';
 export * from './admin/user';

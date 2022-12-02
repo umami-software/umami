@@ -1,6 +1,5 @@
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -22,10 +21,13 @@ export default async (
 ) => {
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Team))) {
+    if (await canViewTeam(userId, teamId)) {
       return unauthorized(res);
     }
 
@@ -35,7 +37,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (await canUpdateTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
@@ -54,7 +56,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.TeamOwner))) {
+    if (await canUpdateTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
     const { team_user_id } = req.body;

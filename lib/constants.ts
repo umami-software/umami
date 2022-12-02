@@ -9,52 +9,56 @@ export namespace UmamiApi {
     Website,
     User,
     Team,
-    TeamOwner,
   }
 
   export enum Permission {
-    Admin = 'Admin',
-    WebsiteCreate = 'website:create',
-    WebsiteRead = 'website:read',
-    WebsiteUpdate = 'website:update',
-    WebsiteReset = 'website:reset',
-    WebsiteDelete = 'website:delete',
-    TeamCreate = 'team:create',
-    TeamUpdate = 'team:update',
-    TeamDelete = 'team:delete',
-    TeamAddUser = 'team:add-user',
-    TeamRemoveUser = 'team:remove-user',
+    all = 'all',
+    websiteCreate = 'website:create',
+    websiteUpdate = 'website:update',
+    websiteDelete = 'website:delete',
+    teamCreate = 'team:create',
+    teamUpdate = 'team:update',
+    teamDelete = 'team:delete',
   }
 
   export enum Role {
-    Admin = 'Admin',
-    Member = 'Member',
-    TeamOwner = 'Team Owner',
-    TeamMember = 'Team Member',
-    TeamGuest = 'Team Guest,',
+    Admin = 'admin',
+    User = 'user',
+    TeamOwner = 'team-owner',
+    TeamMember = 'team-member',
+    TeamGuest = 'team-guest',
   }
+
+  export const Roles = {
+    admin: { name: Role.Admin, permissions: [Permission.all] },
+    member: {
+      name: Role.User,
+      permissions: [
+        Permission.websiteCreate,
+        Permission.websiteUpdate,
+        Permission.websiteDelete,
+        Permission.teamCreate,
+      ],
+    },
+    teamOwner: {
+      name: Role.TeamOwner,
+      permissions: [
+        Permission.teamUpdate,
+        Permission.teamDelete,
+        Permission.websiteCreate,
+        Permission.websiteUpdate,
+        Permission.websiteDelete,
+      ],
+    },
+    teamMember: {
+      name: Role.TeamMember,
+      permissions: [Permission.websiteCreate, Permission.websiteUpdate, Permission.websiteDelete],
+    },
+    teamGuest: { name: Role.TeamGuest, permissions: [] },
+  };
+
+  export type Roles = typeof Roles;
 }
-
-export const PERMISSIONS = {
-  all: 'all',
-  websiteCreate: 'website:create',
-  websiteUpdate: 'website:update',
-  websiteDelete: 'website:delete',
-  teamCreate: 'team:create',
-  teamUpdate: 'team:update',
-  teamDelete: 'team:delete',
-};
-
-export const ROLES = {
-  admin: { name: 'admin', permissions: [PERMISSIONS.all] },
-  teamOwner: { name: 'team-owner', permissions: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete] },
-  teamMember: {
-    name: 'team-member',
-    permissions: [PERMISSIONS.websiteCreate, PERMISSIONS.websiteUpdate, PERMISSIONS.websiteDelete],
-  },
-  teamGuest: { name: 'team-guest' },
-};
-
 export const CURRENT_VERSION = process.env.currentVersion;
 export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';

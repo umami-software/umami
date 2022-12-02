@@ -1,7 +1,6 @@
 import { WebsiteMetric } from 'interface/api/models';
 import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { allowQuery } from 'lib/auth';
-import { UmamiApi } from 'lib/constants';
+import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';
 import { NextApiResponse } from 'next';
@@ -27,12 +26,15 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
+  const {
+    user: { id: userId },
+  } = req.auth;
+  const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
+
   if (req.method === 'GET') {
-    if (!(await allowQuery(req, UmamiApi.AuthType.Website))) {
+    if (canViewWebsite(userId, websiteId)) {
       return unauthorized(res);
     }
-
-    const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
 
     if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
       return badRequest(res);
