@@ -1,10 +1,9 @@
-import { URL_LENGTH } from 'lib/constants';
+import { URL_LENGTH, EVENT_TYPE } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
 import { uuid } from 'lib/crypto';
-import { EventType } from 'lib/types';
 
 export async function savePageView(args: {
   id: string;
@@ -40,7 +39,7 @@ async function relationalQuery(data: {
       sessionId,
       url: url?.substring(0, URL_LENGTH),
       referrer: referrer?.substring(0, URL_LENGTH),
-      eventType: EventType.Pageview,
+      eventType: EVENT_TYPE.pageView,
     },
   });
 }
@@ -58,7 +57,7 @@ async function clickhouseQuery(data) {
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     country: country ? country : null,
-    event_type: EventType.Pageview,
+    event_type: EVENT_TYPE.pageView,
     ...args,
   };
 

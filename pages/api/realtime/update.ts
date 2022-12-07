@@ -3,9 +3,9 @@ import { useAuth } from 'lib/middleware';
 import { getRealtimeData } from 'queries';
 import { SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { RealtimeUpdate } from 'interface/api/models';
+import { RealtimeUpdate } from 'lib/types';
 
 export interface InitUpdateRequestQuery {
   start_at: string;

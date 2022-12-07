@@ -1,6 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, Team } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
+import { Website } from 'lib/types';
 
 export interface User {
   id: string;
@@ -9,36 +10,19 @@ export interface User {
   createdAt?: Date;
 }
 
-export async function createUser(data: {
-  id: string;
-  username: string;
-  password: string;
-}): Promise<{
-  id: string;
-  username: string;
-}> {
-  return prisma.client.user.create({
-    data,
-    select: {
-      id: true,
-      username: true,
-    },
-  });
-}
-
 export async function getUser(
   where: Prisma.UserWhereUniqueInput,
-  includePassword = false,
+  options: { includePassword?: boolean } = {},
 ): Promise<User> {
+  const { includePassword = false } = options;
+
   return prisma.client.user.findUnique({
     where,
     select: {
       id: true,
       username: true,
-      userRole: {
-        select: { role: true },
-      },
       password: includePassword,
+      role: true,
     },
   });
 }
@@ -53,24 +37,56 @@ export async function getUsers(): Promise<User[]> {
     select: {
       id: true,
       username: true,
+      role: true,
       createdAt: true,
     },
   });
 }
 
-export async function getUsersByTeamId(teamId): Promise<User[]> {
-  return prisma.client.user.findMany({
-    where: {
-      teamUser: {
-        every: {
-          teamId,
-        },
+export async function getUserTeams(userId: string): Promise<Team[]> {
+  return prisma.client.teamUser
+    .findMany({
+      where: {
+        userId,
       },
+      include: {
+        team: true,
+      },
+    })
+    .then(data => {
+      return data.map(a => a.team);
+    });
+}
+
+export async function getUserWebsites(userId: string): Promise<Website[]> {
+  return prisma.client.website.findMany({
+    where: {
+      userId,
     },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
+  });
+}
+
+export async function createUser(data: {
+  id: string;
+  username: string;
+  password: string;
+  role: string;
+}): Promise<{
+  id: string;
+  username: string;
+  role: string;
+}> {
+  return prisma.client.user.create({
+    data,
     select: {
       id: true,
       username: true,
-      createdAt: true,
+      role: true,
     },
   });
 }
@@ -85,8 +101,8 @@ export async function updateUser(
     select: {
       id: true,
       username: true,
+      role: true,
       createdAt: true,
-      userRole: true,
     },
   });
 }
@@ -106,8 +122,8 @@ export async function deleteUser(
     websiteIds = websites.map(a => a.id);
   }
 
-  return client
-    .$transaction([
+  return prisma
+    .transaction([
       client.websiteEvent.deleteMany({
         where: { websiteId: { in: websiteIds } },
       }),
@@ -116,13 +132,13 @@ export async function deleteUser(
       }),
       client.website.updateMany({
         data: {
-          isDeleted: true,
+          deletedAt: new Date(),
         },
         where: { id: { in: websiteIds } },
       }),
       client.user.update({
         data: {
-          isDeleted: true,
+          deletedAt: new Date(),
         },
         where: {
           id: userId,

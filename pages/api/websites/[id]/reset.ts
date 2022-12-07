@@ -1,4 +1,4 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';

@@ -1,7 +1,7 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { canCreateUser, canViewUsers } from 'lib/auth';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
+import { ROLES } from 'lib/constants';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUser, getUsers, User } from 'queries';
@@ -19,11 +19,11 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId },
+    user: { isAdmin },
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (canViewUsers(userId)) {
+    if (isAdmin) {
       return unauthorized(res);
     }
 
@@ -33,15 +33,15 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (canCreateUser(userId)) {
+    if (isAdmin) {
       return unauthorized(res);
     }
 
     const { username, password, id } = req.body;
 
-    const user = await getUser({ username });
+    const existingUser = await getUser({ username });
 
-    if (user) {
+    if (existingUser) {
       return badRequest(res, 'User already exists');
     }
 
@@ -49,6 +49,7 @@ export default async (
       id: id || uuid(),
       username,
       password: hashPassword(password),
+      role: ROLES.user,
     });
 
     return ok(res, created);

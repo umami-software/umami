@@ -1,5 +1,5 @@
-import { WebsiteMetric } from 'interface/api/models';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { WebsiteMetric } from 'lib/types';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';

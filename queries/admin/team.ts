@@ -1,14 +1,8 @@
 import { Prisma, Team } from '@prisma/client';
 import prisma from 'lib/prisma';
-
-export async function createTeam(
-  data: Prisma.TeamCreateInput,
-  searchDeleted = false,
-): Promise<Team> {
-  return prisma.client.team.create({
-    data: { ...data, isDeleted: searchDeleted ? null : false },
-  });
-}
+import { uuid } from 'lib/crypto';
+import { ROLES } from 'lib/constants';
+import { Website } from 'lib/types';
 
 export async function getTeam(where: Prisma.TeamWhereInput): Promise<Team> {
   return prisma.client.team.findFirst({
@@ -22,19 +16,35 @@ export async function getTeams(where: Prisma.TeamWhereInput): Promise<Team[]> {
   });
 }
 
-export async function getTeamsByUserId(userId: string): Promise<Team[]> {
-  return prisma.client.teamUser
-    .findMany({
-      where: {
+export async function getTeamWebsites(teamId: string): Promise<Website[]> {
+  return prisma.client.website.findMany({
+    where: {
+      teamId,
+    },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
+  });
+}
+
+export async function createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
+  const { id, userId } = data;
+
+  return prisma.transaction([
+    prisma.client.team.create({
+      data,
+    }),
+    prisma.client.teamUser.create({
+      data: {
+        id: uuid(),
+        teamId: id,
         userId,
+        role: ROLES.teamOwner,
       },
-      include: {
-        team: true,
-      },
-    })
-    .then(data => {
-      return data.map(a => a.team);
-    });
+    }),
+  ]);
 }
 
 export async function updateTeam(
@@ -42,7 +52,10 @@ export async function updateTeam(
   where: Prisma.TeamWhereUniqueInput,
 ): Promise<Team> {
   return prisma.client.team.update({
-    data,
+    data: {
+      ...data,
+      updatedAt: new Date(),
+    },
     where,
   });
 }
@@ -50,7 +63,7 @@ export async function updateTeam(
 export async function deleteTeam(teamId: string): Promise<Team> {
   return prisma.client.team.update({
     data: {
-      isDeleted: true,
+      deletedAt: new Date(),
     },
     where: {
       id: teamId,

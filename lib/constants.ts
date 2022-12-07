@@ -22,6 +22,52 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 3000;
 
+export const EVENT_TYPE = {
+  pageView: 1,
+  customEvent: 2,
+};
+
+export const ROLES = {
+  admin: 'admin',
+  user: 'user',
+  teamOwner: 'team-owner',
+  teamMember: 'team-member',
+  teamGuest: 'team-guest',
+};
+
+export const PERMISSIONS = {
+  all: 'all',
+  websiteCreate: 'website:create',
+  websiteUpdate: 'website:update',
+  websiteDelete: 'website:delete',
+  teamCreate: 'team:create',
+  teamUpdate: 'team:update',
+  teamDelete: 'team:delete',
+};
+
+export const ROLE_PERMISSIONS = {
+  [ROLES.admin]: [PERMISSIONS.all],
+  [ROLES.user]: [
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+    PERMISSIONS.teamCreate,
+  ],
+  [ROLES.teamOwner]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamMember]: [
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamGuest]: [],
+};
+
 export const THEME_COLORS = {
   light: {
     primary: '#2680eb',

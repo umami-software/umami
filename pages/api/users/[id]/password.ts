@@ -1,4 +1,4 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { canUpdateUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';

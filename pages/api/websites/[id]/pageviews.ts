@@ -1,5 +1,4 @@
-import { WebsitePageviews } from 'interface/api/models';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';

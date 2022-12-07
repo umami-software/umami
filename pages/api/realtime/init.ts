@@ -1,6 +1,6 @@
 import { subMinutes } from 'date-fns';
-import { RealtimeInit } from 'interface/api/models';
-import { NextApiRequestAuth } from 'interface/api/nextApi';
+import { RealtimeInit } from 'lib/types';
+import { NextApiRequestAuth } from 'lib/types';
 import { secret } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';

@@ -10,7 +10,7 @@ import {
 import { getUser, User } from 'queries';
 import { secret } from 'lib/crypto';
 import redis from 'lib/redis';
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 
 export interface LoginRequestBody {

@@ -8,7 +8,6 @@ import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
-import Arrow from 'assets/arrow-right.svg';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -20,11 +19,12 @@ import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
 import ScreenTable from 'components/metrics/ScreenTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
+import EventDataButton from 'components/common/EventDataButton';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
-import EventDataButton from 'components/common/EventDataButton';
 
 const messages = defineMessages({
   pages: { id: 'metrics.pages', defaultMessage: 'Pages' },

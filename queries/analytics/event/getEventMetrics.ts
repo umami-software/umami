@@ -2,8 +2,8 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
-import { WebsiteEventMetric } from 'interface/api/models';
-import { EventType } from 'lib/types';
+import { WebsiteEventMetric } from 'lib/types';
+import { EVENT_TYPE } from 'lib/constants';
 
 export async function getEventMetrics(
   ...args: [
@@ -56,7 +56,7 @@ async function relationalQuery(
     from website_event
     where website_id='${websiteId}'
       and created_at between $1 and $2
-      and event_type = ${EventType.Event}
+      and event_type = ${EVENT_TYPE.customEvent}
       ${getFilterQuery(filters, params)}
     group by 1, 2
     order by 2`,
@@ -95,7 +95,7 @@ async function clickhouseQuery(
     from event
     where website_id = $1
       and rev_id = $2
-      and event_type = ${EventType.Event}
+      and event_type = ${EVENT_TYPE.customEvent}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${getFilterQuery(filters, params)}
     group by x, t

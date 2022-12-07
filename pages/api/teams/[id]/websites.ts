@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { canViewTeam } from 'lib/auth';
-import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getWebsitesByTeamId } from 'queries';
+import { NextApiRequestQueryBody } from 'lib/types';
+import { canViewTeam } from 'lib/auth';
+import { useAuth } from 'lib/middleware';
+import { getTeamWebsites } from 'queries/admin/team';
 
 export interface TeamWebsiteRequestQuery {
   id: string;
@@ -30,9 +30,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const website = await getWebsitesByTeamId({ teamId });
+    const websites = await getTeamWebsites(teamId);
 
-    return ok(res, website);
+    return ok(res, websites);
   }
 
   return methodNotAllowed(res);

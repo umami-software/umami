@@ -1,4 +1,4 @@
-import { NextApiRequestAuth } from 'interface/api/nextApi';
+import { NextApiRequestAuth } from 'lib/types';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { ok } from 'next-basics';

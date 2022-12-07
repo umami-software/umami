@@ -1,5 +1,5 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
-import { canDeleteUser, canUpdateUser, canViewUser, checkAdmin } from 'lib/auth';
+import { NextApiRequestQueryBody } from 'lib/types';
+import { canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -21,7 +21,7 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId },
+    user: { id: userId, isAdmin },
   } = req.auth;
   const { id } = req.query;
 
@@ -51,7 +51,7 @@ export default async (
     }
 
     // Only admin can change these fields
-    if (username && (await checkAdmin(userId))) {
+    if (username && isAdmin) {
       data.username = username;
     }
 
@@ -70,7 +70,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (canDeleteUser(userId)) {
+    if (isAdmin) {
       return unauthorized(res);
     }
 

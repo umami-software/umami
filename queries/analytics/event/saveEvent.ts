@@ -1,10 +1,9 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH } from 'lib/constants';
+import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
 import cache from 'lib/cache';
-import { EventType } from 'lib/types';
 
 export async function saveEvent(args: {
   id: string;
@@ -43,7 +42,7 @@ async function relationalQuery(data: {
     sessionId,
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
-    eventType: EventType.Event,
+    eventType: EVENT_TYPE.customEvent,
     eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
     eventData,
   };
@@ -77,7 +76,7 @@ async function clickhouseQuery(data: {
     session_id: sessionId,
     event_id: uuid(),
     url: url?.substring(0, URL_LENGTH),
-    event_type: EventType.Event,
+    event_type: EVENT_TYPE.customEvent,
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
     event_data: eventData ? JSON.stringify(eventData) : null,
     rev_id: website?.revId || 0,

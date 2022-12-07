@@ -1,7 +1,6 @@
 export * from './admin/team';
 export * from './admin/teamUser';
 export * from './admin/user';
-export * from './admin/userRole';
 export * from './admin/website';
 export * from './analytics/event/getEventMetrics';
 export * from './analytics/event/getEvents';

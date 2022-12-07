@@ -1,4 +1,4 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { secret } from 'lib/crypto';
 import { NextApiResponse } from 'next';
 import { createToken, methodNotAllowed, notFound, ok } from 'next-basics';

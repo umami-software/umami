@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody } from 'interface/api/nextApi';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeamUser, deleteTeamUser, getUser, getUsersByTeamId } from 'queries';
+import { createTeamUser, deleteTeamUser, getUser, getTeamUsers } from 'queries';
 
 export interface TeamUserRequestQuery {
   id: string;
@@ -27,17 +27,17 @@ export default async (
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (await canViewTeam(userId, teamId)) {
+    if (!(await canViewTeam(userId, teamId))) {
       return unauthorized(res);
     }
 
-    const user = await getUsersByTeamId({ teamId });
+    const users = await getTeamUsers(teamId);
 
-    return ok(res, user);
+    return ok(res, users);
   }
 
   if (req.method === 'POST') {
-    if (await canUpdateTeam(userId, teamId)) {
+    if (!(await canUpdateTeam(userId, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 

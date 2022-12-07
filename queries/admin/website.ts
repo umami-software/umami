@@ -3,6 +3,20 @@ import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
+export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
+  return prisma.client.website.findUnique({
+    where,
+  });
+}
+
+export async function getWebsites(): Promise<Website[]> {
+  return prisma.client.website.findMany({
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
+
 export async function createWebsite(
   data: Prisma.WebsiteCreateInput | Prisma.WebsiteUncheckedCreateInput,
 ): Promise<Website> {
@@ -55,44 +69,6 @@ export async function resetWebsite(
   });
 }
 
-export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
-  return prisma.client.website.findUnique({
-    where,
-  });
-}
-
-export async function getWebsitesByUserId(userId): Promise<Website[]> {
-  return prisma.client.website.findMany({
-    where: {
-      userId,
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
-}
-
-export async function getWebsitesByTeamId(teamId): Promise<Website[]> {
-  return prisma.client.website.findMany({
-    where: {
-      teamId,
-    },
-    orderBy: {
-      name: 'asc',
-    },
-  });
-}
-
-export async function getAllWebsites(): Promise<Website[]> {
-  return await prisma.client.website.findMany({
-    orderBy: [
-      {
-        name: 'asc',
-      },
-    ],
-  });
-}
-
 export async function deleteWebsite(websiteId: string) {
   return runQuery({
     [PRISMA]: () => deleteWebsiteRelationalQuery(websiteId),
@@ -127,7 +103,7 @@ async function deleteWebsiteRelationalQuery(
 async function deleteWebsiteClickhouseQuery(websiteId): Promise<Website> {
   return prisma.client.website.update({
     data: {
-      isDeleted: true,
+      deletedAt: new Date(),
     },
     where: { id: websiteId },
   });

@@ -1,11 +1,9 @@
-import { parseSecureToken, parseToken } from 'next-basics';
-import { UserRole } from '@prisma/client';
+import { parseSecureToken, parseToken, ensureArray } from 'next-basics';
 import debug from 'debug';
 import cache from 'lib/cache';
-import { SHARE_TOKEN_HEADER } from 'lib/constants';
+import { SHARE_TOKEN_HEADER, PERMISSIONS, ROLE_PERMISSIONS } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { Permission, Roles } from 'lib/types';
-import { getTeamUser, getUserRoles } from 'queries';
+import { getTeamUser } from 'queries';
 
 const log = debug('umami:auth');
 
@@ -58,12 +56,10 @@ export async function canViewWebsite(userId: string, websiteId: string) {
   }
 
   if (website.teamId) {
-    const teamUser = await getTeamUser({ userId, teamId: website.teamId });
-
-    checkPermission(Permission.websiteUpdate, teamUser.role);
+    return getTeamUser(website.teamId, userId);
   }
 
-  return checkAdmin(userId);
+  return false;
 }
 
 export async function canUpdateWebsite(userId: string, websiteId: string) {
@@ -74,12 +70,12 @@ export async function canUpdateWebsite(userId: string, websiteId: string) {
   }
 
   if (website.teamId) {
-    const teamUser = await getTeamUser({ userId, teamId: website.teamId });
+    const teamUser = await getTeamUser(website.teamId, userId);
 
-    checkPermission(Permission.websiteUpdate, teamUser.role);
+    return hasPermission(teamUser.role, PERMISSIONS.websiteUpdate);
   }
 
-  return checkAdmin(userId);
+  return false;
 }
 
 export async function canDeleteWebsite(userId: string, websiteId: string) {
@@ -90,14 +86,12 @@ export async function canDeleteWebsite(userId: string, websiteId: string) {
   }
 
   if (website.teamId) {
-    const teamUser = await getTeamUser({ userId, teamId: website.teamId });
+    const teamUser = await getTeamUser(website.teamId, userId);
 
-    if (checkPermission(Permission.websiteDelete, teamUser.role)) {
-      return true;
-    }
+    return hasPermission(teamUser.role, PERMISSIONS.websiteDelete);
   }
 
-  return checkAdmin(userId);
+  return false;
 }
 
 // To-do: Implement when payments are setup.
@@ -107,66 +101,29 @@ export async function canCreateTeam(userId: string) {
 
 // To-do: Implement when payments are setup.
 export async function canViewTeam(userId: string, teamId) {
-  const teamUser = await getTeamUser({ userId, teamId });
-  return !!teamUser;
+  return getTeamUser(teamId, userId);
 }
 
 export async function canUpdateTeam(userId: string, teamId: string) {
-  const teamUser = await getTeamUser({ userId, teamId });
+  const teamUser = await getTeamUser(teamId, userId);
 
-  if (checkPermission(Permission.teamUpdate, teamUser.role)) {
-    return true;
-  }
+  return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
 }
 
 export async function canDeleteTeam(userId: string, teamId: string) {
-  const teamUser = await getTeamUser({ userId, teamId });
+  const teamUser = await getTeamUser(teamId, userId);
 
-  if (checkPermission(Permission.teamDelete, teamUser.role)) {
-    return true;
-  }
-}
-
-export async function canCreateUser(userId: string) {
-  return checkAdmin(userId);
+  return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
 }
 
 export async function canViewUser(userId: string, viewedUserId: string) {
-  if (userId === viewedUserId) {
-    return true;
-  }
-
-  return checkAdmin(userId);
-}
-
-export async function canViewUsers(userId: string) {
-  return checkAdmin(userId);
+  return userId === viewedUserId;
 }
 
 export async function canUpdateUser(userId: string, viewedUserId: string) {
-  if (userId === viewedUserId) {
-    return true;
-  }
-
-  return checkAdmin(userId);
+  return userId === viewedUserId;
 }
 
-export async function canUpdateUserRole(userId: string) {
-  return checkAdmin(userId);
-}
-
-export async function canDeleteUser(userId: string) {
-  return checkAdmin(userId);
-}
-
-export async function checkPermission(permission: Permission, role: string) {
-  return Roles[role].permissions.some(a => a === permission);
-}
-
-export async function checkAdmin(userId: string, userRoles?: UserRole[]) {
-  if (!userRoles) {
-    userRoles = await getUserRoles({ userId });
-  }
-
-  return userRoles.some(a => a.role === Roles.admin.name);
+export async function hasPermission(role: string, permission: string | string[]) {
+  return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
