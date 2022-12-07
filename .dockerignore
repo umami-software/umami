@@ -1,5 +1,5 @@
 .git
-docker-compose.yml
+compose.yaml
 Dockerfile
 .gitignore
 .DS_Store
