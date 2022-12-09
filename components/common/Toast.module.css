@@ -17,7 +17,7 @@
 }
 
 .message {
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-md);
 }
 
 .close {

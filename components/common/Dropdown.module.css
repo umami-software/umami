@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid var(--gray500);
+  border: 1px solid var(--base500);
   border-radius: 4px;
   cursor: pointer;
 }
@@ -12,7 +12,7 @@
   flex: 1;
   display: flex;
   justify-content: space-between;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   flex-wrap: nowrap;
   white-space: nowrap;
   padding: 4px 16px;

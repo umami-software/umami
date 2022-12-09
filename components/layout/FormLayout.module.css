@@ -54,7 +54,7 @@
 .msg {
   color: var(--msgColor);
   background: var(--red400);
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   padding: 4px 8px;
   border-radius: 4px;
   white-space: nowrap;
@@ -78,8 +78,8 @@
   margin: 20px 0;
   padding: 4px 8px;
   border-radius: 4px;
-  color: var(--gray50);
-  background: var(--gray800);
+  color: var(--base50);
+  background: var(--base800);
 }
 
 @media only screen and (max-width: 576px) {

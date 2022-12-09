@@ -34,7 +34,7 @@ export default async (
       return badRequest(res);
     }
 
-    const user = await getUser({ username }, true);
+    const user = await getUser({ username }, { includePassword: true });
 
     if (user && checkPassword(password, user.password)) {
       if (redis.enabled) {

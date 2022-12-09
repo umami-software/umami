@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Row, Column } from 'react-basics';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
-import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
@@ -137,8 +137,8 @@ export default function WebsiteDetails({ websiteId }) {
 
   return (
     <Page>
-      <div className="row">
-        <div className={classNames(styles.chart, 'col')}>
+      <Row>
+        <Column className={styles.chart}>
           <WebsiteChart
             websiteId={websiteId}
             title={data.name}
@@ -148,47 +148,47 @@ export default function WebsiteDetails({ websiteId }) {
             stickyHeader
           />
           {!chartLoaded && <Loading />}
-        </div>
-      </div>
+        </Column>
+      </Row>
       {chartLoaded && !view && (
-        <GridLayout>
-          <GridRow>
-            <GridColumn md={12} lg={6}>
+        <>
+          <Row>
+            <Column md={12} lg={6}>
               <PagesTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={6}>
+            </Column>
+            <Column md={12} lg={6}>
               <ReferrersTable {...tableProps} />
-            </GridColumn>
-          </GridRow>
-          <GridRow>
-            <GridColumn md={12} lg={4}>
+            </Column>
+          </Row>
+          <Row>
+            <Column md={12} lg={4}>
               <BrowsersTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={4}>
+            </Column>
+            <Column md={12} lg={4}>
               <OSTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={4}>
+            </Column>
+            <Column md={12} lg={4}>
               <DevicesTable {...tableProps} />
-            </GridColumn>
-          </GridRow>
-          <GridRow>
-            <GridColumn xs={12} md={12} lg={8}>
+            </Column>
+          </Row>
+          <Row>
+            <Column xs={12} md={12} lg={8}>
               <WorldMap data={countryData} />
-            </GridColumn>
-            <GridColumn xs={12} md={12} lg={4}>
+            </Column>
+            <Column xs={12} md={12} lg={4}>
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
-            </GridColumn>
-          </GridRow>
-          <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
-            <GridColumn xs={12} md={12} lg={4}>
+            </Column>
+          </Row>
+          <Row className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
+            <Column xs={12} md={12} lg={4}>
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
-            </GridColumn>
-            <GridColumn xs={12} md={12} lg={8}>
+            </Column>
+            <Column xs={12} md={12} lg={8}>
               <EventDataButton websiteId={websiteId} />
               <EventsChart className={styles.eventschart} websiteId={websiteId} />
-            </GridColumn>
-          </GridRow>
-        </GridLayout>
+            </Column>
+          </Row>
+        </>
       )}
       {view && chartLoaded && (
         <MenuLayout

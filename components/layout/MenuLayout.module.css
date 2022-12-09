@@ -12,7 +12,7 @@
 .container .content {
   flex: 1;
   position: relative;
-  border-left: 1px solid var(--gray300);
+  border-left: 1px solid var(--base300);
   padding-left: 30px;
   margin-left: 30px;
 }
@@ -30,7 +30,7 @@
   }
 
   .container .content {
-    border-top: 1px solid var(--gray300);
+    border-top: 1px solid var(--base300);
     border-left: 0;
     padding-left: 0;
     margin-left: 0;

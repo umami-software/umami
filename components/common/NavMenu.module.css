@@ -1,6 +1,6 @@
 .menu {
-  color: var(--gray800);
-  border: 1px solid var(--gray500);
+  color: var(--base800);
+  border: 1px solid var(--base500);
   border-radius: 4px;
   overflow: hidden;
   z-index: 2;
@@ -13,10 +13,10 @@
 }
 
 .option:hover {
-  background: var(--gray75);
+  background: var(--base75);
 }
 
 .selected {
-  color: var(--gray900);
+  color: var(--base900);
   font-weight: 600;
 }

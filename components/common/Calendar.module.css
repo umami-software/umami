@@ -1,7 +1,7 @@
 .calendar {
   display: flex;
   flex-direction: column;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   flex: 1;
   min-height: 306px;
 }
@@ -12,7 +12,7 @@
 }
 
 .calendar td {
-  color: var(--gray800);
+  color: var(--base800);
   cursor: pointer;
   text-align: center;
   vertical-align: center;
@@ -23,17 +23,17 @@
 }
 
 .calendar td:hover {
-  border: 1px solid var(--gray300);
-  background: var(--gray75);
+  border: 1px solid var(--base300);
+  background: var(--base75);
 }
 
 .calendar td.faded {
-  color: var(--gray500);
+  color: var(--base500);
 }
 
 .calendar td.selected {
   font-weight: 600;
-  border: 1px solid var(--gray600);
+  border: 1px solid var(--base600);
 }
 
 .calendar td.selected:hover {
@@ -41,18 +41,18 @@
 }
 
 .calendar td.disabled {
-  color: var(--gray400);
-  background: var(--gray75);
+  color: var(--base400);
+  background: var(--base75);
 }
 
 .calendar td.disabled:hover {
   cursor: default;
-  background: var(--gray75);
+  background: var(--base75);
   border-color: transparent;
 }
 
 .calendar td.faded.disabled {
-  background: var(--gray100);
+  background: var(--base100);
 }
 
 .header {
@@ -61,7 +61,7 @@
   align-items: center;
   font-weight: 700;
   line-height: 40px;
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-md);
 }
 
 .body {

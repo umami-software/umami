@@ -1,5 +1,5 @@
 .wrapper {
-  background: var(--gray50);
+  background: var(--base50);
   margin-right: 10px;
   border-radius: 100%;
 }

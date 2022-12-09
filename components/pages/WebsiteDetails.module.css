@@ -3,11 +3,11 @@
 }
 
 .view {
-  border-top: 1px solid var(--gray300);
+  border-top: 1px solid var(--base300);
 }
 
 .menu {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
 }
 
 .content {

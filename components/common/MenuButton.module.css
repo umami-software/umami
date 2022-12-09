@@ -10,11 +10,11 @@
 }
 
 .text {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
 }
 
 .open,
 .open:hover {
-  background: var(--gray50);
-  border: 1px solid var(--gray500);
+  background: var(--base50);
+  border: 1px solid var(--base500);
 }

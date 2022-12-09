@@ -63,7 +63,7 @@ async function clickhouseQuery(
   const { startDate, endDate, column, filters = {} } = data;
   const { rawQuery, parseFilters, getBetweenDates } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = [websiteId, website?.revId || 0, EVENT_TYPE.pageView];
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -71,9 +71,8 @@ async function clickhouseQuery(
     from event
     where website_id = $1
       and rev_id = $2
-      and event_type = ${EVENT_TYPE.pageView}
-      ${column !== 'event_name' ? `and event_name = ''` : `and event_name != ''`}
-      and ${getBetweenDates('created_at', startDate, endDate)}n
+      and event_type = $3
+      and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x
     order by y desc`,

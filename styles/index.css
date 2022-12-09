@@ -13,11 +13,8 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-}
-
-body {
-  color: var(--gray900);
-  background: var(--gray75);
+  color: var(--base800);
+  background: var(--base100);
 }
 
 .zh-CN {
@@ -74,24 +71,6 @@ a:visited {
   color: var(--primary400);
 }
 
-label {
-  flex: 1;
-  margin-right: 20px;
-}
-
-label:empty {
-  flex: 0;
-}
-
-dt {
-  font-weight: 600;
-  margin: 0 0 5px 0;
-}
-
-dd {
-  margin: 0 0 30px 0;
-}
-
 main {
   flex: 1;
   display: flex;
@@ -108,8 +87,4 @@ svg {
   width: 100%;
   height: 100%;
   flex: 1;
-}
-
-#__modals {
-  z-index: 10;
 }

@@ -31,8 +31,8 @@
   position: fixed;
   top: 0;
   margin: auto;
-  background: var(--gray50);
-  border-bottom: 1px solid var(--gray300);
+  background: var(--base50);
+  border-bottom: 1px solid var(--base300);
   z-index: 3;
 }
 

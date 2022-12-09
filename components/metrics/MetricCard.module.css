@@ -6,7 +6,7 @@
 }
 
 .value {
-  font-size: var(--font-size-xlarge);
+  font-size: var(--font-size-xl);
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;
@@ -14,7 +14,7 @@
 }
 
 .label {
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-md);
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -26,8 +26,8 @@
   padding: 0 5px;
   border-radius: 5px;
   margin-left: 4px;
-  border: 1px solid var(--gray200);
-  color: var(--gray500);
+  border: 1px solid var(--base200);
+  color: var(--base500);
 }
 
 .change.positive {

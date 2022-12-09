@@ -8,7 +8,7 @@
 .label {
   display: flex;
   align-items: center;
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
   cursor: pointer;
 }
 
@@ -17,5 +17,5 @@
 }
 
 .hidden {
-  color: var(--gray400);
+  color: var(--base400);
 }

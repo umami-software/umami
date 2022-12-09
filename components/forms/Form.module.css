@@ -43,7 +43,7 @@
 .error {
   width: 600px;
   margin: 0 auto 30px;
-  background: var(--gray50);
+  background: var(--base50);
   padding: 16px;
   color: var(--red400);
   border: 1px solid var(--red400);
@@ -54,7 +54,7 @@
 .success {
   width: 600px;
   margin: 60px auto;
-  background: var(--gray50);
+  background: var(--base50);
   padding: 16px;
   color: var(--green400);
   border: 1px solid var(--green400);
