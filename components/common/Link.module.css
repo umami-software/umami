@@ -17,7 +17,7 @@ a.link:hover span {
 }
 
 a.link.large {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
 }
 
 a.link.small {

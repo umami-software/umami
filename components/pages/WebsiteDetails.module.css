@@ -29,14 +29,3 @@
 .hidden {
   display: none;
 }
-
-.eventschart {
-  padding-top: 30px;
-}
-
-@media only screen and (max-width: 992px) {
-  .menu {
-    display: flex;
-    flex-direction: column;
-  }
-}

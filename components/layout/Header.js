@@ -1,6 +1,6 @@
+import { Row, Column } from 'react-basics';
 import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
 import Link from 'components/common/Link';
 import Icon from 'components/common/Icon';
 import LanguageButton from 'components/settings/LanguageButton';
@@ -25,31 +25,33 @@ export default function Header() {
   return (
     <>
       {allowUpdate && <UpdateNotice />}
-      <header className={classNames(styles.header, 'row')}>
-        <div className={styles.title}>
-          <Icon icon={<Logo />} size="large" className={styles.logo} />
-          <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
-        </div>
-        <HamburgerButton />
-        {user && !adminDisabled && (
-          <div className={styles.links}>
-            <Link href="/dashboard">
-              <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
-            </Link>
-            <Link href="/realtime">
-              <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
-            </Link>
-            <Link href="/settings">
-              <FormattedMessage id="label.settings" defaultMessage="Settings" />
-            </Link>
-          </div>
-        )}
-        <div className={styles.buttons}>
-          <ThemeButton />
-          <LanguageButton menuAlign="right" />
-          <SettingsButton />
-          {user && !adminDisabled && <UserButton />}
-        </div>
+      <header className={styles.header}>
+        <Row>
+          <Column className={styles.title}>
+            <Icon icon={<Logo />} size="large" className={styles.logo} />
+            <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
+          </Column>
+          <HamburgerButton />
+          {user && !adminDisabled && (
+            <div className={styles.links}>
+              <Link href="/dashboard">
+                <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
+              </Link>
+              <Link href="/realtime">
+                <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
+              </Link>
+              <Link href="/settings">
+                <FormattedMessage id="label.settings" defaultMessage="Settings" />
+              </Link>
+            </div>
+          )}
+          <Column className={styles.buttons}>
+            <ThemeButton />
+            <LanguageButton menuAlign="right" />
+            <SettingsButton />
+            {user && !adminDisabled && <UserButton />}
+          </Column>
+        </Row>
       </header>
     </>
   );
