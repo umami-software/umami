@@ -35,9 +35,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   let { url } = payload;
 
   // Validate eventData is JSON
-  const valid = eventData && typeof eventData === 'object' && !Array.isArray(eventData);
-
-  if (!valid) {
+  if (eventData && !(typeof eventData === 'object' && !Array.isArray(eventData))) {
     return badRequest(res, 'Event Data must be in the form of a JSON Object.');
   }
 

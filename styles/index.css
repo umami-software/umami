@@ -13,8 +13,8 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-  color: var(--base800);
-  background: var(--base100);
+  color: var(--font-color100);
+  background: var(--background200);
 }
 
 .zh-CN {
