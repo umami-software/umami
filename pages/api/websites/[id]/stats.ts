@@ -1,5 +1,4 @@
-import { WebsiteStats } from 'lib/types';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, WebsiteStats } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
@@ -27,9 +26,6 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId },
-  } = req.auth;
-  const {
     id: websiteId,
     start_at,
     end_at,
@@ -40,9 +36,14 @@ export default async (
     device,
     country,
   } = req.query;
+  const { user, shareToken } = req.auth;
+  const userId = user?.id;
+  const shared = shareToken?.websiteId === websiteId;
 
   if (req.method === 'GET') {
-    if (!(await canViewWebsite(userId, websiteId))) {
+    const canView = await canViewWebsite(userId, websiteId);
+
+    if (!canView && !shared) {
       return unauthorized(res);
     }
 

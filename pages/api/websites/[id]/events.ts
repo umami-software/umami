@@ -25,13 +25,15 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
+  const { user, shareToken } = req.auth;
+  const userId = user?.id;
+  const shared = shareToken?.websiteId === websiteId;
 
   if (req.method === 'GET') {
-    if (canViewWebsite(userId, websiteId)) {
+    const canView = canViewWebsite(userId, websiteId);
+
+    if (!canView && !shared) {
       return unauthorized(res);
     }
 

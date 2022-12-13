@@ -16,7 +16,7 @@ export default function SharePage() {
 
   return (
     <Layout>
-      <WebsiteDetails websiteId={shareToken.id} />
+      <WebsiteDetails websiteId={shareToken.websiteId} />
     </Layout>
   );
 }

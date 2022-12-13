@@ -30,7 +30,9 @@ export default async (
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    if (canViewWebsite(userId, websiteId)) {
+    const canView = canViewWebsite(userId, websiteId);
+
+    if (!canView) {
       return unauthorized(res);
     }
 

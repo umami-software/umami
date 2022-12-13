@@ -23,8 +23,7 @@ export default async (
     const website = await getWebsite({ shareId });
 
     if (website) {
-      const { id } = website;
-      const data = { id };
+      const data = { websiteId: website.id };
       const token = createToken(data, secret());
 
       return ok(res, { ...data, token });
