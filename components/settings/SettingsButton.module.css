@@ -3,8 +3,8 @@
 }
 
 .panel {
-  background: var(--gray50);
-  border: 1px solid var(--gray500);
+  background: var(--base50);
+  border: 1px solid var(--base500);
   border-radius: 4px;
   display: flex;
   flex-direction: column;

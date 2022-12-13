@@ -25,7 +25,7 @@
   height: 100%;
   width: 100%;
   z-index: 10;
-  background: var(--gray400);
+  background: var(--base400);
   opacity: 0.4;
 }
 
@@ -33,13 +33,13 @@
   width: 10px;
   height: 10px;
   border-radius: 100%;
-  background: var(--gray400);
+  background: var(--base400);
   animation: blink 1.4s infinite;
   animation-fill-mode: both;
 }
 
 .loading.overlay div {
-  background: var(--gray900);
+  background: var(--base900);
 }
 
 .loading div + div {

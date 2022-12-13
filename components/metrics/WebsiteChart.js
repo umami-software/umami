@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import classNames from 'classnames';
+import { useMemo } from 'react';
+import { Row, Column } from 'react-basics';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
@@ -20,7 +20,6 @@ export default function WebsiteChart({
   title,
   domain,
   stickyHeader = false,
-  showLink = false,
   showChart = true,
   onDataLoad = () => {},
 }) {
@@ -80,33 +79,34 @@ export default function WebsiteChart({
   }
 
   return (
-    <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
-      <div className={classNames(styles.header, 'row')}>
-        <StickyHeader
-          className={classNames(styles.metrics, 'col row')}
-          stickyClassName={styles.sticky}
-          enabled={stickyHeader}
-        >
-          <FilterTags
-            params={{ url, referrer, os, browser, device, country }}
-            onClick={handleCloseFilter}
-          />
-          <div className="col-12 col-lg-9">
+    <>
+      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} />
+
+      <StickyHeader
+        className={styles.metrics}
+        stickyClassName={styles.sticky}
+        enabled={stickyHeader}
+      >
+        <FilterTags
+          params={{ url, referrer, os, browser, device, country }}
+          onClick={handleCloseFilter}
+        />
+        <Row className={styles.header}>
+          <Column xs={12} sm={12} md={12} defaultSize={10}>
             <MetricsBar websiteId={websiteId} />
-          </div>
-          <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
+          </Column>
+          <Column className={styles.filter} xs={12} sm={12} md={12} defaultSize={2}>
             <DateFilter
               value={value}
               startDate={startDate}
               endDate={endDate}
               onChange={handleDateChange}
             />
-          </div>
-        </StickyHeader>
-      </div>
-      <div className="row">
-        <div className={classNames(styles.chart, 'col')}>
+          </Column>
+        </Row>
+      </StickyHeader>
+      <Row>
+        <Column className={styles.chart}>
           {error && <ErrorMessage />}
           {showChart && (
             <PageviewsChart
@@ -117,8 +117,8 @@ export default function WebsiteChart({
               loading={loading}
             />
           )}
-        </div>
-      </div>
-    </div>
+        </Column>
+      </Row>
+    </>
   );
 }

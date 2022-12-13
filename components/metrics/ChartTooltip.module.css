@@ -17,7 +17,7 @@
 }
 
 .title {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
   font-weight: 600;
 }
 
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   font-weight: 600;
 }
 
@@ -34,7 +34,7 @@
   overflow: hidden;
   border-radius: 100%;
   margin-right: 8px;
-  background: var(--gray50);
+  background: var(--base50);
 }
 
 .color {

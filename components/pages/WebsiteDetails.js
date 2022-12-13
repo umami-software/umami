@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Column } from 'react-basics';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import WorldMap from 'components/common/WorldMap';
 import Page from 'components/layout/Page';
-import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
+import GridRow from 'components/layout/GridRow';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
 import Loading from 'components/common/Loading';
-import Arrow from 'assets/arrow-right.svg';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -16,15 +16,13 @@ import OSTable from 'components/metrics/OSTable';
 import DevicesTable from 'components/metrics/DevicesTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
-import EventsTable from 'components/metrics/EventsTable';
-import EventsChart from 'components/metrics/EventsChart';
 import ScreenTable from 'components/metrics/ScreenTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
-import EventDataButton from 'components/common/EventDataButton';
 
 const messages = defineMessages({
   pages: { id: 'metrics.pages', defaultMessage: 'Pages' },
@@ -35,7 +33,6 @@ const messages = defineMessages({
   devices: { id: 'metrics.devices', defaultMessage: 'Devices' },
   countries: { id: 'metrics.countries', defaultMessage: 'Countries' },
   languages: { id: 'metrics.languages', defaultMessage: 'Languages' },
-  events: { id: 'metrics.events', defaultMessage: 'Events' },
   query: { id: 'metrics.query-parameters', defaultMessage: 'Query parameters' },
 });
 
@@ -48,7 +45,6 @@ const views = {
   screen: ScreenTable,
   country: CountriesTable,
   language: LanguagesTable,
-  event: EventsTable,
   query: QueryParametersTable,
 };
 
@@ -56,7 +52,6 @@ export default function WebsiteDetails({ websiteId }) {
   const { data } = useFetch(`/websites/${websiteId}`);
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
-  const [eventsData, setEventsData] = useState();
   const {
     resolve,
     query: { view },
@@ -65,7 +60,7 @@ export default function WebsiteDetails({ websiteId }) {
 
   const BackButton = () => (
     <div key="back-button" className={classNames(styles.backButton, 'col-12')}>
-      <Link key="back-button" href={resolve({ view: undefined })} icon={<Arrow />} size="small">
+      <Link key="back-button" href={resolve({ view: undefined })} icon={<Arrow />} sizes="small">
         <FormattedMessage id="label.back" defaultMessage="Back" />
       </Link>
     </div>
@@ -108,10 +103,6 @@ export default function WebsiteDetails({ websiteId }) {
       value: resolve({ view: 'screen' }),
     },
     {
-      label: formatMessage(messages.events),
-      value: resolve({ view: 'event' }),
-    },
-    {
       label: formatMessage(messages.query),
       value: resolve({ view: 'query' }),
     },
@@ -137,58 +128,45 @@ export default function WebsiteDetails({ websiteId }) {
 
   return (
     <Page>
-      <div className="row">
-        <div className={classNames(styles.chart, 'col')}>
-          <WebsiteChart
-            websiteId={websiteId}
-            title={data.name}
-            domain={data.domain}
-            onDataLoad={handleDataLoad}
-            showLink={false}
-            stickyHeader
-          />
-          {!chartLoaded && <Loading />}
-        </div>
-      </div>
+      <WebsiteChart
+        websiteId={websiteId}
+        title={data.name}
+        domain={data.domain}
+        onDataLoad={handleDataLoad}
+        showLink={false}
+        stickyHeader
+      />
+      {!chartLoaded && <Loading />}
       {chartLoaded && !view && (
-        <GridLayout>
+        <>
           <GridRow>
-            <GridColumn md={12} lg={6}>
+            <Column variant="two" className={styles.column}>
               <PagesTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={6}>
+            </Column>
+            <Column variant="two" className={styles.column}>
               <ReferrersTable {...tableProps} />
-            </GridColumn>
+            </Column>
           </GridRow>
           <GridRow>
-            <GridColumn md={12} lg={4}>
+            <Column variant="three" className={styles.column}>
               <BrowsersTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={4}>
+            </Column>
+            <Column variant="three" className={styles.column}>
               <OSTable {...tableProps} />
-            </GridColumn>
-            <GridColumn md={12} lg={4}>
+            </Column>
+            <Column variant="three" className={styles.column}>
               <DevicesTable {...tableProps} />
-            </GridColumn>
+            </Column>
           </GridRow>
           <GridRow>
-            <GridColumn xs={12} md={12} lg={8}>
+            <Column xs={12} sm={12} md={12} defaultSize={8}>
               <WorldMap data={countryData} />
-            </GridColumn>
-            <GridColumn xs={12} md={12} lg={4}>
+            </Column>
+            <Column xs={12} sm={12} md={12} defaultSize={4}>
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
-            </GridColumn>
+            </Column>
           </GridRow>
-          <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
-            <GridColumn xs={12} md={12} lg={4}>
-              <EventsTable {...tableProps} onDataLoad={setEventsData} />
-            </GridColumn>
-            <GridColumn xs={12} md={12} lg={8}>
-              <EventDataButton websiteId={websiteId} />
-              <EventsChart className={styles.eventschart} websiteId={websiteId} />
-            </GridColumn>
-          </GridRow>
-        </GridLayout>
+        </>
       )}
       {view && chartLoaded && (
         <MenuLayout

@@ -7,10 +7,11 @@
 
 .chart {
   position: relative;
+  padding-bottom: 20px;
 }
 
 .title {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
   line-height: 60px;
   font-weight: 600;
 }
@@ -31,19 +32,11 @@
   position: fixed;
   top: 0;
   margin: auto;
-  background: var(--gray50);
-  border-bottom: 1px solid var(--gray300);
+  background: var(--base50);
+  border-bottom: 1px solid var(--base300);
   z-index: 3;
 }
 
 .filter {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-@media only screen and (max-width: 992px) {
-  .filter {
-    display: block;
-  }
+  align-self: center;
 }

@@ -3,11 +3,11 @@
 }
 
 .view {
-  border-top: 1px solid var(--gray300);
+  border-top: 1px solid var(--base300);
 }
 
 .menu {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
 }
 
 .content {
@@ -28,15 +28,4 @@
 
 .hidden {
   display: none;
-}
-
-.eventschart {
-  padding-top: 30px;
-}
-
-@media only screen and (max-width: 992px) {
-  .menu {
-    display: flex;
-    flex-direction: column;
-  }
 }

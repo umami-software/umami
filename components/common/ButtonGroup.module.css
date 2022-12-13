@@ -2,14 +2,14 @@
   display: inline-flex;
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid var(--gray500);
+  border: 1px solid var(--base500);
 }
 
 .group .button {
   border-radius: 0;
-  color: var(--gray800);
-  background: var(--gray50);
-  border-left: 1px solid var(--gray500);
+  color: var(--base800);
+  background: var(--base50);
+  border-left: 1px solid var(--base500);
   padding: 4px 8px;
 }
 
@@ -18,7 +18,7 @@
 }
 
 .group .button:hover {
-  background: var(--gray100);
+  background: var(--base100);
 }
 
 .group .button + .button {
@@ -26,6 +26,6 @@
 }
 
 .group .button.selected {
-  color: var(--gray900);
+  color: var(--base900);
   font-weight: 600;
 }

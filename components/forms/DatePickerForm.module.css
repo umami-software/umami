@@ -16,7 +16,7 @@
 .calendars > div + div {
   margin-left: 20px;
   padding-left: 20px;
-  border-left: 1px solid var(--gray300);
+  border-left: 1px solid var(--base300);
 }
 
 .filter {

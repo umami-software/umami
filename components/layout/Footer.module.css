@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   text-align: center;
   margin: 30px 0;
 }

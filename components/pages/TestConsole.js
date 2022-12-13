@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { Row, Column } from 'react-basics';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -62,8 +62,8 @@ export default function TestConsole() {
       </PageHeader>
       {website && (
         <>
-          <div className={classNames(styles.test, 'row')}>
-            <div className="col-4">
+          <Row className={styles.test}>
+            <Column xs="4">
               <PageHeader>Page links</PageHeader>
               <div>
                 <Link href={`/console/${websiteId}?page=1`}>
@@ -87,22 +87,22 @@ export default function TestConsole() {
                   </a>
                 </Link>
               </div>
-            </div>
-            <div className="col-4">
+            </Column>
+            <Column xs="4">
               <PageHeader>CSS events</PageHeader>
               <Button id="primary-button" className="umami--click--button-click" variant="action">
                 Send event
               </Button>
-            </div>
-            <div className="col-4">
+            </Column>
+            <Column xs="4">
               <PageHeader>Javascript events</PageHeader>
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
               </Button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
+            </Column>
+          </Row>
+          <Row>
+            <Column>
               <WebsiteChart
                 websiteId={website.id}
                 title={website.name}
@@ -111,8 +111,8 @@ export default function TestConsole() {
               />
               <PageHeader>Events</PageHeader>
               <EventsChart websiteId={website.id} />
-            </div>
-          </div>
+            </Column>
+          </Row>
         </>
       )}
     </Page>

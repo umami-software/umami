@@ -5,16 +5,16 @@
 
 .table label {
   display: none;
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
   font-weight: bold;
 }
 
 .header {
-  border-bottom: 1px solid var(--gray300);
+  border-bottom: 1px solid var(--base300);
 }
 
 .head {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   line-height: 40px;
 }
@@ -26,7 +26,7 @@
 }
 
 .row {
-  border-bottom: 1px solid var(--gray300);
+  border-bottom: 1px solid var(--base300);
   padding: 10px 0;
 }
 

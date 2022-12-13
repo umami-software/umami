@@ -1,113 +1,57 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Formik, Form, Field } from 'formik';
-import { setItem } from 'next-basics';
-import { useRouter } from 'next/router';
-import Button from 'components/common/Button';
-import FormLayout, {
+import { useMutation } from '@tanstack/react-query';
+import {
+  Form,
+  FormInput,
   FormButtons,
-  FormError,
-  FormMessage,
-  FormRow,
-} from 'components/layout/FormLayout';
-import Icon from 'components/common/Icon';
-import useApi from 'hooks/useApi';
-import { AUTH_TOKEN } from 'lib/constants';
+  TextField,
+  PasswordField,
+  SubmitButton,
+  Icon,
+} from 'react-basics';
+import { useRouter } from 'next/router';
+import { useApi } from 'next-basics';
 import { setUser } from 'store/app';
+import { setAuthToken } from 'lib/client';
 import Logo from 'assets/logo.svg';
-import styles from './LoginForm.module.css';
-
-const validate = ({ username, password }) => {
-  const errors = {};
-
-  if (!username) {
-    errors.username = <FormattedMessage id="label.required" defaultMessage="Required" />;
-  }
-  if (!password) {
-    errors.password = <FormattedMessage id="label.required" defaultMessage="Required" />;
-  }
-
-  return errors;
-};
+import styles from './Form.module.css';
 
 export default function LoginForm() {
-  const { post } = useApi();
   const router = useRouter();
-  const [message, setMessage] = useState();
+  const { post } = useApi();
+  const { mutate, error, isLoading } = useMutation(data => post('/auth/login', data));
 
-  const handleSubmit = async ({ username, password }) => {
-    const { ok, status, data } = await post('/auth/login', {
-      username,
-      password,
+  const handleSubmit = async data => {
+    mutate(data, {
+      onSuccess: async ({ token, user }) => {
+        setAuthToken(token);
+        setUser(user);
+
+        await router.push('/websites');
+      },
     });
-
-    if (ok) {
-      const { user, token } = data;
-
-      setItem(AUTH_TOKEN, token);
-
-      setUser(user);
-
-      await router.push('/');
-
-      return null;
-    } else {
-      setMessage(
-        status === 401 ? (
-          <FormattedMessage
-            id="message.incorrect-username-password"
-            defaultMessage="Incorrect username/password."
-          />
-        ) : (
-          data
-        ),
-      );
-    }
   };
 
   return (
-    <FormLayout className={styles.login}>
-      <Formik
-        initialValues={{
-          username: '',
-          password: '',
-        }}
-        validate={validate}
-        onSubmit={handleSubmit}
-      >
-        {() => (
-          <Form>
-            <div className={styles.header}>
-              <Icon icon={<Logo />} size="xlarge" className={styles.icon} />
-              <h1 className="center">umami</h1>
-            </div>
-            <FormRow>
-              <label htmlFor="username">
-                <FormattedMessage id="label.username" defaultMessage="Username" />
-              </label>
-              <div>
-                <Field name="username" type="text" />
-                <FormError name="username" />
-              </div>
-            </FormRow>
-            <FormRow>
-              <label htmlFor="password">
-                <FormattedMessage id="label.password" defaultMessage="Password" />
-              </label>
-              <div>
-                <Field name="password" type="password" />
-                <FormError name="password" />
-              </div>
-            </FormRow>
-            <FormButtons>
-              <Button type="submit" variant="action">
-                <FormattedMessage id="label.login" defaultMessage="Login" />
-              </Button>
-            </FormButtons>
-            <FormMessage>{message}</FormMessage>
-          </Form>
-        )}
-      </Formik>
-    </FormLayout>
+    <>
+      <div className={styles.header}>
+        <Icon size="xl">
+          <Logo />
+        </Icon>
+        <p>umami</p>
+      </div>
+      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
+        <FormInput name="username" label="Username" rules={{ required: 'Required' }}>
+          <TextField autoComplete="off" />
+        </FormInput>
+        <FormInput name="password" label="Password" rules={{ required: 'Required' }}>
+          <PasswordField />
+        </FormInput>
+        <FormButtons>
+          <SubmitButton variant="primary" className={styles.button} disabled={isLoading}>
+            Log in
+          </SubmitButton>
+        </FormButtons>
+      </Form>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 .website {
   padding-bottom: 30px;
-  border-bottom: 1px solid var(--gray300);
+  border-bottom: 1px solid var(--base300);
   margin-bottom: 30px;
   align-self: stretch;
 }
