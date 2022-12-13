@@ -70,7 +70,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (isAdmin) {
+    if (!isAdmin) {
       return unauthorized(res);
     }
 
