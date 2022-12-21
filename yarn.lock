@@ -6308,10 +6308,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.39.0:
-  version "0.39.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.39.0.tgz#9e40dbdfad338756196cd5e461e476ea19801286"
-  integrity sha512-9J7HtHudvlHQVPFRcryZqbzDmg7VRWeFkfv8XAKt9dm83kPVgN535Cc3xomUWLSCPQTr70VuBNvdjG1kDd7TiQ==
+react-basics@^0.40.0:
+  version "0.40.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.40.0.tgz#434895c617e9e53fa915b93022a9eccc5b0213b0"
+  integrity sha512-ng6mjseCwJf5Zp81KLhOmKsFUGXc1mPtJLgGDDt4tipXt9zuG+Orr8xdUM5409UEi4Eg5aVqlVKGmFzMybf5RA==
   dependencies:
     classnames "^2.3.1"
     react "^18.2.0"
