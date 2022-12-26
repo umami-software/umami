@@ -1,11 +1,11 @@
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import ProfileSettings from 'components/settings/ProfileSettings';
+import ProfileDetails from 'components/settings/ProfileDetails';
 import { useState } from 'react';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
-import ProfilePasswordForm from 'components/forms/ProfilePasswordForm';
+import UserPasswordForm from 'components/forms/UserPasswordForm';
 
-export default function ProfileDetails() {
+export default function ProfileSettings() {
   const [tab, setTab] = useState('general');
   const { toast, showToast } = useToast();
 
@@ -25,8 +25,8 @@ export default function ProfileDetails() {
         <Item key="general">General</Item>
         <Item key="password">Password</Item>
       </Tabs>
-      {tab === 'general' && <ProfileSettings />}
-      {tab === 'password' && <ProfilePasswordForm onSave={handleSave} />}
+      {tab === 'general' && <ProfileDetails />}
+      {tab === 'password' && <UserPasswordForm onSave={handleSave} />}
     </Page>
   );
 }

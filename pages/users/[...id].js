@@ -1,5 +1,5 @@
 import Settings from 'components/pages/Settings';
-import UserDetails from 'components/pages/UserDetails';
+import UserSettings from 'components/pages/UserSettings';
 import useRequireLogin from 'hooks/useRequireLogin';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -15,7 +15,7 @@ export default function TeamDetailPage() {
 
   return (
     <Settings>
-      <UserDetails userId={id} />
+      <UserSettings userId={id} />
     </Settings>
   );
 }

@@ -1,5 +1,5 @@
 import Settings from 'components/pages/Settings';
-import ProfileDetails from 'components/pages/ProfileDetails';
+import ProfileSettings from 'components/pages/ProfileSettings';
 import useRequireLogin from 'hooks/useRequireLogin';
 import React from 'react';
 
@@ -12,7 +12,7 @@ export default function TeamsPage() {
 
   return (
     <Settings>
-      <ProfileDetails />
+      <ProfileSettings />
     </Settings>
   );
 }

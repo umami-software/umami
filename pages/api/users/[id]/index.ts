@@ -46,7 +46,8 @@ export default async (
 
     const data: any = {};
 
-    if (password) {
+    // Only admin can change these fields
+    if (password && isAdmin) {
       data.password = hashPassword(password);
     }
 

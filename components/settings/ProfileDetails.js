@@ -7,7 +7,7 @@ import LanguageSetting from './LanguageSetting';
 import styles from './ProfileSettings.module.css';
 import ThemeSetting from './ThemeSetting';
 
-export default function ProfileSettings() {
+export default function ProfileDetails() {
   const { user } = useUser();
 
   if (!user) {

@@ -53,7 +53,7 @@ export default function UserDetails({ userId }) {
           <Item>
             <Link href="/users">Users</Link>
           </Item>
-          <Item>{values?.name}</Item>
+          <Item>{values?.username}</Item>
         </Breadcrumbs>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
