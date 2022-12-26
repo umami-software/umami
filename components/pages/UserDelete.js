@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button, Form, FormRow, Modal } from 'react-basics';
 
-export default function WebsiteReset({ userId, onSave }) {
+export default function UserDelete({ userId, onSave }) {
   const [modal, setModal] = useState(null);
   const router = useRouter();
 

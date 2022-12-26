@@ -41,27 +41,25 @@ export default function UserEditForm({ data, onSave }) {
   };
 
   return (
-    <>
-      <Form
-        key={id}
-        className={styles.form}
-        ref={ref}
-        onSubmit={handleSubmit}
-        error={error}
-        values={data}
-      >
-        <FormInput name="username" label="Username">
-          <TextField />
-        </FormInput>
-        <FormInput name="role" label="Role">
-          <Dropdown items={items} style={{ width: 200 }}>
-            {({ value, label }) => <Item key={value}>{label}</Item>}
-          </Dropdown>
-        </FormInput>
-        <FormButtons>
-          <SubmitButton variant="primary">Save</SubmitButton>
-        </FormButtons>
-      </Form>
-    </>
+    <Form
+      key={id}
+      className={styles.form}
+      ref={ref}
+      onSubmit={handleSubmit}
+      error={error}
+      values={data}
+    >
+      <FormInput name="username" label="Username">
+        <TextField />
+      </FormInput>
+      <FormInput name="role" label="Role">
+        <Dropdown items={items} style={{ width: 200 }}>
+          {({ value, label }) => <Item key={value}>{label}</Item>}
+        </Dropdown>
+      </FormInput>
+      <FormButtons>
+        <SubmitButton variant="primary">Save</SubmitButton>
+      </FormButtons>
+    </Form>
   );
 }

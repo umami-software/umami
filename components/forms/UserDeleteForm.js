@@ -6,7 +6,7 @@ import styles from './Form.module.css';
 
 const CONFIRM_VALUE = 'DELETE';
 
-export default function WebsiteDeleteForm({ userId, onSave, onClose }) {
+export default function UserDeleteForm({ userId, onSave, onClose }) {
   const { del } = useApi(getAuthToken());
   const { mutate, error, isLoading } = useMutation(data => del(`/users/${userId}`, data));
 

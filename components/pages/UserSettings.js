@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import UserDelete from 'components/forms/UserDelete';
+import UserDelete from 'components/pages/UserDelete';
 import UserEditForm from 'components/forms/UserEditForm';
 import UserPasswordForm from 'components/forms/UserPasswordForm';
 import Page from 'components/layout/Page';
@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 
-export default function UserDetails({ userId }) {
+export default function UserSettings({ userId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
   const { get } = useApi(getAuthToken());
