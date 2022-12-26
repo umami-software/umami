@@ -3,7 +3,7 @@ import { Form, FormInput, FormButtons, PasswordField, Button } from 'react-basic
 import { useApi } from 'next-basics';
 import { useMutation } from '@tanstack/react-query';
 import { getAuthToken } from 'lib/client';
-import styles from './UserForm.module.css';
+import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
 
 export default function UserPasswordForm({ onSave, userId }) {
