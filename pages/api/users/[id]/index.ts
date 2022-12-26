@@ -26,7 +26,7 @@ export default async (
   const { id } = req.query;
 
   if (req.method === 'GET') {
-    if (await canViewUser(userId, id)) {
+    if (!isAdmin && !(await canViewUser(userId, id))) {
       return unauthorized(res);
     }
 
@@ -36,7 +36,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (await canUpdateUser(userId, id)) {
+    if (!isAdmin && !(await canUpdateUser(userId, id))) {
       return unauthorized(res);
     }
 
@@ -70,7 +70,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (isAdmin) {
+    if (!isAdmin) {
       return unauthorized(res);
     }
 

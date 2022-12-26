@@ -1,49 +1,23 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import PageHeader from 'components/layout/PageHeader';
-import Button from 'components/common/Button';
-import Modal from 'components/common/Modal';
-import Toast from 'components/common/Toast';
-import ChangePasswordForm from 'components/forms/ChangePasswordForm';
 import TimezoneSetting from 'components/settings/TimezoneSetting';
-import Dots from 'assets/ellipsis-h.svg';
-import styles from './ProfileSettings.module.css';
-import DateRangeSetting from './DateRangeSetting';
-import useEscapeKey from 'hooks/useEscapeKey';
 import useUser from 'hooks/useUser';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import DateRangeSetting from './DateRangeSetting';
 import LanguageSetting from './LanguageSetting';
+import styles from './ProfileSettings.module.css';
 import ThemeSetting from './ThemeSetting';
 
 export default function ProfileSettings() {
   const { user } = useUser();
-  const [changePassword, setChangePassword] = useState(false);
-  const [message, setMessage] = useState(null);
-
-  function handleSave() {
-    setChangePassword(false);
-    setMessage(<FormattedMessage id="message.save-success" defaultMessage="Saved successfully." />);
-  }
-
-  useEscapeKey(() => {
-    setChangePassword(false);
-  });
 
   if (!user) {
     return null;
   }
 
-  const { userId, username } = user;
+  const { username } = user;
 
   return (
     <>
-      <PageHeader>
-        <div>
-          <FormattedMessage id="label.profile" defaultMessage="Profile" />
-        </div>
-        <Button icon={<Dots />} size="small" onClick={() => setChangePassword(true)}>
-          <FormattedMessage id="label.change-password" defaultMessage="Change password" />
-        </Button>
-      </PageHeader>
       <dl className={styles.list}>
         <dt>
           <FormattedMessage id="label.username" defaultMessage="Username" />
@@ -74,18 +48,6 @@ export default function ProfileSettings() {
           <ThemeSetting />
         </dd>
       </dl>
-      {changePassword && (
-        <Modal
-          title={<FormattedMessage id="label.change-password" defaultMessage="Change password" />}
-        >
-          <ChangePasswordForm
-            values={{ userId }}
-            onSave={handleSave}
-            onClose={() => setChangePassword(false)}
-          />
-        </Modal>
-      )}
-      {message && <Toast message={message} onClose={() => setMessage(null)} />}
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function WebsiteList({ websites, showCharts, limit }) {
     return (
       <Page>
         <EmptyPlaceholder msg={formatMessage(messages.noWebsites)}>
-          <Link href="/settings" icon={<Arrow />} iconRight>
+          <Link href="/websites" icon={<Arrow />} iconRight>
             {formatMessage(messages.goToSettngs)}
           </Link>
         </EmptyPlaceholder>

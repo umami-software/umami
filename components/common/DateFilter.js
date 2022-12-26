@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import { endOfYear, isSameDay } from 'date-fns';
-import Modal from './Modal';
-import DropDown from './DropDown';
+import Calendar from 'assets/calendar-alt.svg';
 import DatePickerForm from 'components/forms/DatePickerForm';
+import { endOfYear, isSameDay } from 'date-fns';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
-import Calendar from 'assets/calendar-alt.svg';
-import Icon from './Icon';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { Icon, Modal } from 'react-basics';
+import { FormattedMessage } from 'react-intl';
+import DropDown from './DropDown';
 
 export const filterOptions = [
   { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },
@@ -120,7 +119,9 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
 
   return (
     <>
-      <Icon icon={<Calendar />} className="mr-2" onClick={handleClick} />
+      <Icon className="mr-2" onClick={handleClick}>
+        <Calendar />
+      </Icon>
       {dateFormat(startDate, 'd LLL y', locale)}
       {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
     </>

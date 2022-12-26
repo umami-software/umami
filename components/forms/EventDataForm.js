@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import DateFilter from 'components/common/DateFilter';
 import DropDown from 'components/common/DropDown';
 import FormLayout, {

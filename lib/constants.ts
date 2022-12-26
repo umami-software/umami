@@ -33,7 +33,7 @@ export const ROLES = {
   teamOwner: 'team-owner',
   teamMember: 'team-member',
   teamGuest: 'team-guest',
-};
+} as const;
 
 export const PERMISSIONS = {
   all: 'all',

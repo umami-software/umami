@@ -30,15 +30,15 @@ export default async (
   const { current_password, new_password } = req.body;
   const { id } = req.query;
   const {
-    user: { id: userId },
+    user: { id: userId, isAdmin },
   } = req.auth;
 
   if (req.method === 'POST') {
-    if (canUpdateUser(userId, id)) {
+    if (!isAdmin && !(await canUpdateUser(userId, id))) {
       return unauthorized(res);
     }
 
-    const user = await getUser({ id });
+    const user = await getUser({ id }, { includePassword: true });
 
     if (!checkPassword(current_password, user.password)) {
       return badRequest(res, 'Current password is incorrect');

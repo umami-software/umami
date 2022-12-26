@@ -1,5 +1,7 @@
-.dropdown {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
+.copy {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
 }

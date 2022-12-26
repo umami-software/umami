@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import TimezoneSetting from './TimezoneSetting';
 import DateRangeSetting from './DateRangeSetting';
-import Button from 'components/common/Button';
+import { Button, Icon } from 'react-basics';
 import styles from './SettingsButton.module.css';
 import Gear from 'assets/gear.svg';
 import useDocumentClick from '../../hooks/useDocumentClick';
@@ -23,7 +23,11 @@ export default function SettingsButton() {
 
   return (
     <div className={styles.button} ref={ref}>
-      <Button icon={<Gear />} variant="light" onClick={handleClick} />
+      <Button variant="light" onClick={handleClick}>
+        <Icon>
+          <Gear />
+        </Icon>
+      </Button>
       {show && (
         <div className={styles.panel}>
           <dt>

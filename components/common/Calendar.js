@@ -16,7 +16,7 @@ import {
   isBefore,
   isAfter,
 } from 'date-fns';
-import Button from './Button';
+import { Button, Icon } from 'react-basics';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
 import { chunk } from 'lib/array';
@@ -24,7 +24,6 @@ import { getDateLocale } from 'lib/lang';
 import Chevron from 'assets/chevron-down.svg';
 import Cross from 'assets/times.svg';
 import styles from './Calendar.module.css';
-import Icon from './Icon';
 
 export default function Calendar({ date, minDate, maxDate, onChange }) {
   const { locale } = useLocale();
@@ -61,14 +60,18 @@ export default function Calendar({ date, minDate, maxDate, onChange }) {
           onClick={toggleMonthSelect}
         >
           {month}
-          <Icon className={styles.icon} icon={selectMonth ? <Cross /> : <Chevron />} size="small" />
+          <Icon className={styles.icon} size="small">
+            {selectMonth ? <Cross /> : <Chevron />}
+          </Icon>
         </div>
         <div
           className={classNames(styles.selector, { [styles.open]: selectYear })}
           onClick={toggleYearSelect}
         >
           {year}
-          <Icon className={styles.icon} icon={selectYear ? <Cross /> : <Chevron />} size="small" />
+          <Icon className={styles.icon} size="small">
+            {selectMonth ? <Cross /> : <Chevron />}
+          </Icon>
         </div>
       </div>
       <div className={styles.body}>
@@ -230,12 +233,15 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
     <div className={styles.pager}>
       <div className={styles.left}>
         <Button
-          icon={<Chevron />}
           size="small"
           onClick={handlePrevClick}
           disabled={years[0] <= minYear}
           variant="light"
-        />
+        >
+          <Icon>
+            <Chevron />
+          </Icon>
+        </Button>
       </div>
       <div className={styles.middle}>
         <table>
@@ -261,12 +267,15 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
       </div>
       <div className={styles.right}>
         <Button
-          icon={<Chevron />}
           size="small"
           onClick={handleNextClick}
           disabled={years[years.length - 1] > maxYear}
           variant="light"
-        />
+        >
+          <Icon>
+            <Chevron />
+          </Icon>
+        </Button>
       </div>
     </div>
   );
