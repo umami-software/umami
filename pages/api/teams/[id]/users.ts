@@ -11,8 +11,8 @@ export interface TeamUserRequestQuery {
 
 export interface TeamUserRequestBody {
   email: string;
-  role_id: string;
-  team_user_id?: string;
+  roleId: string;
+  teamUserId?: string;
 }
 
 export default async (
@@ -41,7 +41,7 @@ export default async (
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    const { email, role_id: roleId } = req.body;
+    const { email, roleId: roleId } = req.body;
 
     // Check for User
     const user = await getUser({ username: email });
@@ -59,9 +59,9 @@ export default async (
     if (await canUpdateTeam(userId, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
-    const { team_user_id } = req.body;
+    const { teamUserId } = req.body;
 
-    await deleteTeamUser(team_user_id);
+    await deleteTeamUser(teamUserId);
 
     return ok(res);
   }

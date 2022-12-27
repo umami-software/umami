@@ -38,8 +38,8 @@ function getColumn(type) {
 export interface WebsiteMetricsRequestQuery {
   id: string;
   type: string;
-  start_at: number;
-  end_at: number;
+  startAt: number;
+  endAt: number;
   url: string;
   referrer: string;
   os: string;
@@ -61,8 +61,8 @@ export default async (
   const {
     id: websiteId,
     type,
-    start_at,
-    end_at,
+    startAt,
+    endAt,
     url,
     referrer,
     os,
@@ -76,8 +76,8 @@ export default async (
       return unauthorized(res);
     }
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     if (sessionColumns.includes(type)) {
       let data = await getSessionMetrics(websiteId, {

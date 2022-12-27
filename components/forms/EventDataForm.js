@@ -109,8 +109,8 @@ export default function EventDataForm({ websiteId, onClose, className }) {
   const handleSubmit = async () => {
     const params = {
       website_id: websiteId,
-      start_at: +startDate,
-      end_at: +endDate,
+      startAt: +startDate,
+      endAt: +endDate,
       timezone,
       columns,
       filters,

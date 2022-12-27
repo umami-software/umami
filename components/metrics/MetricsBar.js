@@ -22,8 +22,8 @@ export default function MetricsBar({ websiteId, className }) {
     `/websites/${websiteId}/stats`,
     {
       params: {
-        start_at: +startDate,
-        end_at: +endDate,
+        startAt: +startDate,
+        endAt: +endDate,
         url,
         referrer,
         os,

@@ -10,9 +10,9 @@ export interface WebsiteEventDataRequestQuery {
 }
 
 export interface WebsiteEventDataRequestBody {
-  start_at: string;
-  end_at: string;
-  event_name: string;
+  startAt: string;
+  endAt: string;
+  eventName: string;
   columns: { [key: string]: 'count' | 'max' | 'min' | 'avg' | 'sum' };
   filters?: { [key: string]: any };
 }
@@ -34,10 +34,10 @@ export default async (
       return unauthorized(res);
     }
 
-    const { start_at, end_at, event_name: eventName, columns, filters } = req.body;
+    const { startAt, endAt, event_name: eventName, columns, filters } = req.body;
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     const events = await getEventData(websiteId, {
       startDate,

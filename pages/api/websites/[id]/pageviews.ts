@@ -11,8 +11,8 @@ const unitTypes = ['year', 'month', 'hour', 'day'];
 export interface WebsitePageviewRequestQuery {
   id: string;
   websiteId: string;
-  start_at: number;
-  end_at: number;
+  startAt: number;
+  endAt: number;
   unit: string;
   tz: string;
   url?: string;
@@ -35,8 +35,8 @@ export default async (
   } = req.auth;
   const {
     id: websiteId,
-    start_at,
-    end_at,
+    startAt,
+    endAt,
     unit,
     tz,
     url,
@@ -52,8 +52,8 @@ export default async (
       return unauthorized(res);
     }
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
       return badRequest(res);

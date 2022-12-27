@@ -35,7 +35,7 @@ export default function RealtimeDashboard() {
   const [websiteId, setWebsiteId] = useState(null);
   const { data: init, loading } = useFetch('/realtime/init');
   const { data: updates } = useFetch('/realtime/update', {
-    params: { start_at: data?.timestamp },
+    params: { startAt: data?.timestamp },
     disabled: !init?.websites?.length || !data,
     interval: REALTIME_INTERVAL,
     headers: { [SHARE_TOKEN_HEADER]: init?.token },
