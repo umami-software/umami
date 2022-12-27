@@ -24,13 +24,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    if (canViewWebsite(userId, websiteId)) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 

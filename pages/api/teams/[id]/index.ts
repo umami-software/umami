@@ -20,13 +20,10 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await canViewTeam(userId, teamId))) {
+    if (!(await canViewTeam(req.auth, teamId))) {
       return unauthorized(res);
     }
 
@@ -38,7 +35,7 @@ export default async (
   if (req.method === 'POST') {
     const { name } = req.body;
 
-    if (!(await canUpdateTeam(userId, teamId))) {
+    if (!(await canUpdateTeam(req.auth, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
@@ -48,7 +45,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await canDeleteTeam(userId, teamId))) {
+    if (!(await canDeleteTeam(req.auth, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 

@@ -1,9 +1,10 @@
-import { parseSecureToken, parseToken, ensureArray } from 'next-basics';
 import debug from 'debug';
 import cache from 'lib/cache';
-import { SHARE_TOKEN_HEADER, PERMISSIONS, ROLE_PERMISSIONS } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
+import { ensureArray, parseSecureToken, parseToken } from 'next-basics';
 import { getTeamUser } from 'queries';
+import { Auth } from './types';
 
 const log = debug('umami:auth');
 
@@ -48,29 +49,51 @@ export function isValidToken(token, validation) {
   return false;
 }
 
-export async function canViewWebsite(userId: string, websiteId: string) {
+export async function canViewWebsite({ user }: Auth, websiteId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
   const website = await cache.fetchWebsite(websiteId);
 
   if (website.userId) {
-    return userId === website.userId;
+    return user.id === website.userId;
   }
 
   if (website.teamId) {
-    return getTeamUser(website.teamId, userId);
+    return getTeamUser(website.teamId, user.id);
   }
 
   return false;
 }
 
-export async function canUpdateWebsite(userId: string, websiteId: string) {
+export async function canCreateWebsite({ user }: Auth, teamId?: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  if (teamId) {
+    const teamUser = await getTeamUser(teamId, user.id);
+
+    return hasPermission(teamUser.role, PERMISSIONS.websiteCreate);
+  }
+
+  return hasPermission(user.role, PERMISSIONS.websiteCreate);
+}
+
+export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
   const website = await cache.fetchWebsite(websiteId);
 
   if (website.userId) {
-    return userId === website.userId;
+    return user.id === website.userId;
   }
 
   if (website.teamId) {
-    const teamUser = await getTeamUser(website.teamId, userId);
+    const teamUser = await getTeamUser(website.teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.websiteUpdate);
   }
@@ -78,15 +101,19 @@ export async function canUpdateWebsite(userId: string, websiteId: string) {
   return false;
 }
 
-export async function canDeleteWebsite(userId: string, websiteId: string) {
+export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
   const website = await cache.fetchWebsite(websiteId);
 
   if (website.userId) {
-    return userId === website.userId;
+    return user.id === website.userId;
   }
 
   if (website.teamId) {
-    const teamUser = await getTeamUser(website.teamId, userId);
+    const teamUser = await getTeamUser(website.teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.websiteDelete);
   }
@@ -95,33 +122,69 @@ export async function canDeleteWebsite(userId: string, websiteId: string) {
 }
 
 // To-do: Implement when payments are setup.
-export async function canCreateTeam(userId: string) {
-  return !!userId;
+export async function canCreateTeam({ user }: Auth) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  return !!user;
 }
 
 // To-do: Implement when payments are setup.
-export async function canViewTeam(userId: string, teamId) {
-  return getTeamUser(teamId, userId);
+export async function canViewTeam({ user }: Auth, teamId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  return getTeamUser(teamId, user.id);
 }
 
-export async function canUpdateTeam(userId: string, teamId: string) {
-  const teamUser = await getTeamUser(teamId, userId);
+export async function canUpdateTeam({ user }: Auth, teamId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  const teamUser = await getTeamUser(teamId, user.id);
 
   return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
 }
 
-export async function canDeleteTeam(userId: string, teamId: string) {
-  const teamUser = await getTeamUser(teamId, userId);
+export async function canDeleteTeam({ user }: Auth, teamId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  const teamUser = await getTeamUser(teamId, user.id);
 
   return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
 }
 
-export async function canViewUser(userId: string, viewedUserId: string) {
-  return userId === viewedUserId;
+export async function canCreateUser({ user }: Auth) {
+  return user.isAdmin;
 }
 
-export async function canUpdateUser(userId: string, viewedUserId: string) {
-  return userId === viewedUserId;
+export async function canViewUser({ user }: Auth, viewedUserId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  return user.id === viewedUserId;
+}
+
+export async function canViewUsers({ user }: Auth) {
+  return user.isAdmin;
+}
+
+export async function canUpdateUser({ user }: Auth, viewedUserId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  return user.id === viewedUserId;
+}
+
+export async function canDeleteUser({ user }: Auth) {
+  return user.isAdmin;
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {

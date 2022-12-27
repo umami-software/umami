@@ -29,12 +29,9 @@ export default async (
 
   const { currentPassword, newPassword } = req.body;
   const { id } = req.query;
-  const {
-    user: { id: userId, isAdmin },
-  } = req.auth;
 
   if (req.method === 'POST') {
-    if (!isAdmin && !(await canUpdateUser(userId, id))) {
+    if (!(await canUpdateUser(req.auth, id))) {
       return unauthorized(res);
     }
 
