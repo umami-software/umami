@@ -43,7 +43,7 @@ model Website {
   id        String    @id @unique @map("website_id") @db.Uuid
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
-  shareId   String?   @unique @map("share_id") @db.VarChar(64)
+  shareId   String?   @unique @map("share_id") @db.VarChar(50)
   revId     Int       @default(0) @map("rev_id") @db.Integer
   userId    String?   @map("user_id") @db.Uuid
   teamId    String?   @map("team_id") @db.Uuid
@@ -79,16 +79,19 @@ model WebsiteEvent {
 }
 
 model Team {
-  id        String    @id() @unique() @map("team_id") @db.Uuid
-  name      String    @db.VarChar(50)
-  userId    String    @map("user_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id         String    @id() @unique() @map("team_id") @db.Uuid
+  name       String    @db.VarChar(50)
+  userId     String    @map("user_id") @db.Uuid
+  accessCode String?   @unique @map("access_code") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   teamUsers TeamUser[]
   Website   Website[]
 
+  @@index([userId])
+  @@index([accessCode])
   @@map("team")
 }
 
@@ -104,5 +107,7 @@ model TeamUser {
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
 
+  @@index([teamId])
+  @@index([userId])
   @@map("team_user")
 }
