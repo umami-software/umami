@@ -36,7 +36,7 @@ export default async (
   if (req.method === 'POST') {
     const { name, domain, shareId, teamId } = req.body;
 
-    if (teamId && !(await canCreateWebsite(req.auth, teamId))) {
+    if (!(await canCreateWebsite(req.auth, teamId))) {
       return unauthorized(res);
     }
 
