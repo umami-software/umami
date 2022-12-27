@@ -61,6 +61,8 @@
     "@fontsource/inter": "4.5.7",
     "@prisma/client": "4.8.0",
     "@tanstack/react-query": "^4.16.1",
+    "@umami/prisma-client": "^0.1.0",
+    "@umami/redis-client": "^0.1.0",
     "chalk": "^4.1.1",
     "chart.js": "^2.9.4",
     "classnames": "^2.3.1",

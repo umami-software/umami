@@ -2290,6 +2290,21 @@
     "@typescript-eslint/types" "5.45.0"
     eslint-visitor-keys "^3.3.0"
 
+"@umami/prisma-client@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@umami/prisma-client/-/prisma-client-0.1.0.tgz#4ecc17b1998cb738b8f2027b80b003864beef6a4"
+  integrity sha512-2qTXN0dtMUT+HVhz37eVC02lDSwz9TGUGHRRO0LPRHdfJPfSkUF0D8pgksX7ETy3IZoIQP1h45tiXsM0pKBMZA==
+  dependencies:
+    debug "^4.3.4"
+
+"@umami/redis-client@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.1.0.tgz#69599b1243406a3aef83927bb8655a3ef4c0c031"
+  integrity sha512-XCqCdc3xA5KDOorIUvOVlz+/F/SEyL9cKWfCCGYYZix1b9yFo+5BzM0C0q7Yu/qV+1jYd+viNsBQQSM6a8sfjg==
+  dependencies:
+    debug "^4.3.4"
+    redis "^4.5.1"
+
 "@vercel/node-bridge@^2.1.0":
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/@vercel/node-bridge/-/node-bridge-2.2.2.tgz#f63466ab6a2588afdc6262c2d060289bfe8baa6b"
@@ -6632,7 +6647,7 @@ redis-parser@^3.0.0:
   dependencies:
     redis-errors "^1.0.0"
 
-redis@^4.5.0:
+redis@^4.5.0, redis@^4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/redis/-/redis-4.5.1.tgz#f5a818970bb2dc5d60540bab41308640604c7d33"
   integrity sha512-oxXSoIqMJCQVBTfxP6BNTCtDMyh9G6Vi5wjdPdV/sRKkufyZslDqCScSGcOr6XGR/reAWZefz7E4leM31RgdBA==
