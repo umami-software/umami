@@ -23,7 +23,7 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (isAdmin) {
+    if (!isAdmin) {
       return unauthorized(res);
     }
 
@@ -33,7 +33,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (isAdmin) {
+    if (!isAdmin) {
       return unauthorized(res);
     }
 

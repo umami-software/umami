@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Link from './Link';
-import Button from './Button';
+import { Button } from 'react-basics';
 import XMark from 'assets/xmark.svg';
 import styles from './MobileMenu.module.css';
 

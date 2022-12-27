@@ -1,0 +1,46 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  gap: 10px;
+  background: transparent;
+  margin-right: 16px;
+}
+
+.menu svg {
+  width: 20px;
+  height: 20px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-weight: 600;
+  background: transparent;
+  padding: 0;
+  border-radius: 8px;
+}
+
+.item:hover {
+  background: var(--base100);
+}
+
+.item a {
+  color: var(--base700);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.item a:hover {
+  color: var(--base900);
+}
+
+.item.selected a {
+  color: var(--base900);
+  background: var(--base100);
+}

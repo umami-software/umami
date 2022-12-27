@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import NextLink from 'next/link';
-import Icon from './Icon';
+import { Icon } from 'react-basics';
 import styles from './Link.module.css';
 
 function Link({ className, icon, children, size, iconRight, onClick, ...props }) {

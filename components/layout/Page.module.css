@@ -2,7 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 30px;
+  padding: 30px;
   background: var(--base50);
-  border-radius: 8px;
+  position: relative;
 }
