@@ -134,7 +134,7 @@ export default async (
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
-        event_url: type !== 'url' && table === 'event' ? url : undefined,
+        eventUrl: type !== 'url' && table === 'event' ? url : undefined,
         query: type === 'query' && table !== 'event' ? true : undefined,
       };
 

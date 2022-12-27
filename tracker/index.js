@@ -108,8 +108,8 @@
       assign(getPayload(), {
         website: websiteId,
         url,
-        event_name: eventName,
-        event_data: eventData,
+        eventName: eventName,
+        eventData: eventData,
       }),
     );
 
