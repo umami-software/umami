@@ -34,7 +34,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { startAt, endAt, event_name: eventName, columns, filters } = req.body;
+    const { startAt, endAt, eventName, columns, filters } = req.body;
 
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);

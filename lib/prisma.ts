@@ -124,19 +124,26 @@ function getFilterQuery(filters = {}, params = []): string {
       case 'browser':
       case 'device':
       case 'country':
-      case 'eventName':
         arr.push(`and ${key}=$${params.length + 1}`);
         params.push(decodeURIComponent(filter));
         break;
+
+      case 'eventName':
+        arr.push(`and event_name=$${params.length + 1}`);
+        params.push(decodeURIComponent(filter));
+        break;
+
       case 'referrer':
         arr.push(`and referrer like $${params.length + 1}`);
         params.push(`%${decodeURIComponent(filter)}%`);
         break;
+
       case 'domain':
         arr.push(`and referrer not like $${params.length + 1}`);
         arr.push(`and referrer not like '/%'`);
         params.push(`%://${filter}/%`);
         break;
+
       case 'query':
         arr.push(`and url like '%?%'`);
     }
@@ -152,12 +159,12 @@ function parseFilters(
   params = [],
   sessionKey = 'session_id',
 ) {
-  const { domain, url, event_url, referrer, os, browser, device, country, eventName, query } =
+  const { domain, url, eventUrl, referrer, os, browser, device, country, eventName, query } =
     filters;
 
   const pageviewFilters = { domain, url, referrer, query };
   const sessionFilters = { os, browser, device, country };
-  const eventFilters = { url: event_url, eventName };
+  const eventFilters = { url: eventUrl, eventName };
 
   return {
     pageviewFilters,
