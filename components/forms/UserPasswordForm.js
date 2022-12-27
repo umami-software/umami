@@ -21,7 +21,7 @@ export default function UserPasswordForm({ onSave, userId }) {
     const payload = isCurrentUser
       ? data
       : {
-          password: data.new_password,
+          password: data.newPassword,
         };
 
     mutate(payload, {
@@ -33,7 +33,7 @@ export default function UserPasswordForm({ onSave, userId }) {
   };
 
   const samePassword = value => {
-    if (value !== ref?.current?.getValues('new_password')) {
+    if (value !== ref?.current?.getValues('newPassword')) {
       return "Passwords don't match";
     }
     return true;
@@ -42,16 +42,12 @@ export default function UserPasswordForm({ onSave, userId }) {
   return (
     <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
       {isCurrentUser && (
-        <FormInput
-          name="current_password"
-          label="Current password"
-          rules={{ required: 'Required' }}
-        >
+        <FormInput name="currentPassword" label="Current password" rules={{ required: 'Required' }}>
           <PasswordField autoComplete="off" />
         </FormInput>
       )}
       <FormInput
-        name="new_password"
+        name="newPassword"
         label="New password"
         rules={{
           required: 'Required',
@@ -61,7 +57,7 @@ export default function UserPasswordForm({ onSave, userId }) {
         <PasswordField autoComplete="off" />
       </FormInput>
       <FormInput
-        name="confirm_password"
+        name="confirmPassword"
         label="Confirm password"
         rules={{
           required: 'Required',

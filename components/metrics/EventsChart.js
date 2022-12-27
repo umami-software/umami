@@ -19,12 +19,12 @@ export default function EventsChart({ websiteId, className, token }) {
     `/websites/${websiteId}/events`,
     {
       params: {
-        start_at: +startDate,
-        end_at: +endDate,
+        startAt: +startDate,
+        endAt: +endDate,
         unit,
         tz: timezone,
         url,
-        event_name: eventName,
+        eventName,
         token,
       },
     },

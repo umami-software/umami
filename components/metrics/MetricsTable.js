@@ -42,8 +42,8 @@ export default function MetricsTable({
     {
       params: {
         type,
-        start_at: +startDate,
-        end_at: +endDate,
+        startAt: +startDate,
+        endAt: +endDate,
         url,
         referrer,
         os,

@@ -9,20 +9,20 @@ export function getEvents(...args) {
   });
 }
 
-function relationalQuery(websites, start_at) {
+function relationalQuery(websites, startAt) {
   return prisma.client.event.findMany({
     where: {
       websiteId: {
         in: websites,
       },
       createdAt: {
-        gte: start_at,
+        gte: startAt,
       },
     },
   });
 }
 
-function clickhouseQuery(websites, start_at) {
+function clickhouseQuery(websites, startAt) {
   const { rawQuery, getDateFormat, getCommaSeparatedStringFormat } = clickhouse;
 
   return rawQuery(
@@ -40,6 +40,6 @@ function clickhouseQuery(websites, start_at) {
           ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
           : '0 = 0'
       }
-      and created_at >= ${getDateFormat(start_at)}`,
+      and created_at >= ${getDateFormat(startAt)}`,
   );
 }
