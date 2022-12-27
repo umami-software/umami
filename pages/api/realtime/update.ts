@@ -8,7 +8,7 @@ import { NextApiResponse } from 'next';
 import { RealtimeUpdate } from 'lib/types';
 
 export interface InitUpdateRequestQuery {
-  start_at: string;
+  startAt: string;
 }
 
 export default async (
@@ -18,7 +18,7 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    const { start_at } = req.query;
+    const { startAt } = req.query;
 
     const token = req.headers[SHARE_TOKEN_HEADER];
 
@@ -28,7 +28,7 @@ export default async (
 
     const { websites } = parseToken(token, secret());
 
-    const data = await getRealtimeData(websites, new Date(+start_at));
+    const data = await getRealtimeData(websites, new Date(+startAt));
 
     return ok(res, data);
   }

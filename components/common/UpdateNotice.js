@@ -4,7 +4,7 @@ import { setItem } from 'next-basics';
 import ButtonLayout from 'components/layout/ButtonLayout';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
-import Button from './Button';
+import { Button } from 'react-basics';
 import styles from './UpdateNotice.module.css';
 
 export default function UpdateNotice() {

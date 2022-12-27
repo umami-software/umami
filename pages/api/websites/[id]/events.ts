@@ -10,12 +10,12 @@ const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export interface WebsiteEventsRequestQuery {
   id: string;
-  start_at: string;
-  end_at: string;
+  startAt: string;
+  endAt: string;
   unit: string;
   tz: string;
   url: string;
-  event_name: string;
+  eventName: string;
 }
 
 export default async (
@@ -28,7 +28,7 @@ export default async (
   const {
     user: { id: userId },
   } = req.auth;
-  const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
+  const { id: websiteId, startAt, endAt, unit, tz, url, eventName } = req.query;
 
   if (req.method === 'GET') {
     if (canViewWebsite(userId, websiteId)) {
@@ -38,8 +38,8 @@ export default async (
     if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     const events = await getEventMetrics(websiteId, {
       startDate,
@@ -48,7 +48,7 @@ export default async (
       unit,
       filters: {
         url,
-        eventName: event_name,
+        eventName,
       },
     });
 

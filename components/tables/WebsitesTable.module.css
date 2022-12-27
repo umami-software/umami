@@ -1,0 +1,18 @@
+.table th,
+.table td {
+  flex: 2;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+}
+
+.cell:last-child {
+  justify-content: flex-end;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}

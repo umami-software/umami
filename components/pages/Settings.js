@@ -1,50 +1,23 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
-import Page from 'components/layout/Page';
-import MenuLayout from 'components/layout/MenuLayout';
-import WebsiteSettings from 'components/settings/WebsiteSettings';
-import UserSettings from 'components/settings/UserSettings';
-import ProfileSettings from 'components/settings/ProfileSettings';
-import useUser from 'hooks/useUser';
+import Layout from 'components/layout/Layout';
+import Menu from 'components/nav/Nav';
+import useRequireLogin from 'hooks/useRequireLogin';
+import styles from './Settings.module.css';
 
-const WEBSITES = '/settings';
-const ACCOUNTS = '/settings/users';
-const PROFILE = '/settings/profile';
+export default function Settings({ children }) {
+  const { user: loggedIn } = useRequireLogin();
 
-export default function Settings() {
-  const { user } = useUser();
-  const [option, setOption] = useState(WEBSITES);
-  const router = useRouter();
-  const { pathname } = router;
-
-  if (!user) {
+  if (!loggedIn) {
     return null;
   }
 
-  const menuOptions = [
-    {
-      label: <FormattedMessage id="label.websites" defaultMessage="Websites" />,
-      value: WEBSITES,
-    },
-    {
-      label: <FormattedMessage id="label.users" defaultMessage="Users" />,
-      value: ACCOUNTS,
-      hidden: !user?.isAdmin,
-    },
-    {
-      label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
-      value: PROFILE,
-    },
-  ];
-
   return (
-    <Page>
-      <MenuLayout menu={menuOptions} selectedOption={option} onMenuSelect={setOption}>
-        {pathname === WEBSITES && <WebsiteSettings />}
-        {pathname === ACCOUNTS && <UserSettings />}
-        {pathname === PROFILE && <ProfileSettings />}
-      </MenuLayout>
-    </Page>
+    <Layout>
+      <div className={styles.dashboard}>
+        <div className={styles.nav}>
+          <Menu />
+        </div>
+        <div className={styles.content}>{children}</div>
+      </div>
+    </Layout>
   );
 }

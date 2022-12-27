@@ -1,14 +1,13 @@
-import { Row, Column } from 'react-basics';
+import DropDown from 'components/common/DropDown';
+import Page from 'components/layout/Page';
+import PageHeader from 'components/layout/PageHeader';
+import EventsChart from 'components/metrics/EventsChart';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import useFetch from 'hooks/useFetch';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import Page from 'components/layout/Page';
-import PageHeader from 'components/layout/PageHeader';
-import DropDown from 'components/common/DropDown';
-import WebsiteChart from 'components/metrics/WebsiteChart';
-import EventsChart from 'components/metrics/EventsChart';
-import Button from 'components/common/Button';
-import useFetch from 'hooks/useFetch';
+import { Button, Column, Row } from 'react-basics';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {

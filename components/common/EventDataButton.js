@@ -1,10 +1,9 @@
 import List from 'assets/list-ul.svg';
-import Modal from 'components/common/Modal';
+import EventDataForm from 'components/forms/EventDataForm';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Button, Icon, Modal } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
-import Button from './Button';
-import EventDataForm from 'components/forms/EventDataForm';
 import styles from './EventDataButton.module.css';
 
 function EventDataButton({ websiteId }) {
@@ -23,13 +22,15 @@ function EventDataButton({ websiteId }) {
   return (
     <>
       <Button
-        icon={<List />}
         tooltip={<FormattedMessage id="label.event-data" defaultMessage="Event" />}
         tooltipId="button-event"
         size="small"
         onClick={handleClick}
         className={styles.button}
       >
+        <Icon>
+          <List />
+        </Icon>
         Event Data
       </Button>
       {showEventData && (

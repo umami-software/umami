@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import DateFilter, { filterOptions } from 'components/common/DateFilter';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
 import styles from './DateRangeSetting.module.css';
@@ -28,7 +28,7 @@ export default function DateRangeSetting() {
         endDate={endDate}
         onChange={handleChange}
       />
-      <Button className={styles.button} size="small" onClick={handleReset}>
+      <Button className={styles.button} size="sm" onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
     </>

@@ -159,7 +159,7 @@ function getFilterQuery(filters = {}, params = []): string {
       case 'browser':
       case 'device':
       case 'country':
-      case 'event_name':
+      case 'eventName':
         arr.push(`and ${key}=$${params.length + 1}`);
         params.push(decodeURIComponent(filter));
         break;
@@ -187,18 +187,18 @@ function parseFilters(
   params = [],
   sessionKey = 'session_id',
 ) {
-  const { domain, url, event_url, referrer, os, browser, device, country, event_name, query } =
+  const { domain, url, event_url, referrer, os, browser, device, country, eventName, query } =
     filters;
 
   const pageviewFilters = { domain, url, referrer, query };
   const sessionFilters = { os, browser, device, country };
-  const eventFilters = { url: event_url, event_name };
+  const eventFilters = { url: event_url, eventName };
 
   return {
     pageviewFilters,
     sessionFilters,
     eventFilters,
-    event: { event_name },
+    event: { eventName },
     joinSession:
       os || browser || device || country
         ? `inner join session on ${sessionKey} = session.${sessionKey}`

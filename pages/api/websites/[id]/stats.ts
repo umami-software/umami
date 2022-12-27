@@ -9,8 +9,8 @@ import { getWebsiteStats } from 'queries';
 export interface WebsiteStatsRequestQuery {
   id: string;
   type: string;
-  start_at: number;
-  end_at: number;
+  startAt: number;
+  endAt: number;
   url: string;
   referrer: string;
   os: string;
@@ -29,29 +29,19 @@ export default async (
   const {
     user: { id: userId },
   } = req.auth;
-  const {
-    id: websiteId,
-    start_at,
-    end_at,
-    url,
-    referrer,
-    os,
-    browser,
-    device,
-    country,
-  } = req.query;
+  const { id: websiteId, startAt, endAt, url, referrer, os, browser, device, country } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(userId, websiteId))) {
       return unauthorized(res);
     }
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
-    const distance = end_at - start_at;
-    const prevStartDate = new Date(+start_at - distance);
-    const prevEndDate = new Date(+end_at - distance);
+    const distance = endAt - startAt;
+    const prevStartDate = new Date(+startAt - distance);
+    const prevEndDate = new Date(+endAt - distance);
 
     const metrics = await getWebsiteStats(websiteId, {
       startDate,

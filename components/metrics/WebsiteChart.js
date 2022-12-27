@@ -37,8 +37,8 @@ export default function WebsiteChart({
     `/websites/${websiteId}/pageviews`,
     {
       params: {
-        start_at: +startDate,
-        end_at: +endDate,
+        startAt: +startDate,
+        endAt: +endDate,
         unit,
         tz: timezone,
         url,

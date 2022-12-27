@@ -31,7 +31,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, event_name: eventName, event_data: eventData } = payload;
+  const { referrer, eventName, event_data: eventData } = payload;
   let { url } = payload;
 
   // Validate eventData is JSON

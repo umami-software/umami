@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteList from 'components/pages/WebsiteList';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
 import useFetch from 'hooks/useFetch';
 import useDashboard from 'store/dashboard';

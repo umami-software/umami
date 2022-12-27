@@ -4,7 +4,7 @@ import useTheme from 'hooks/useTheme';
 import Sun from 'assets/sun.svg';
 import Moon from 'assets/moon.svg';
 import styles from './ThemeButton.module.css';
-import Icon from '../common/Icon';
+import { Icon } from 'react-basics';
 
 export default function ThemeButton() {
   const [theme, setTheme] = useTheme();
@@ -30,7 +30,7 @@ export default function ThemeButton() {
     <div className={styles.button} onClick={handleClick}>
       {transitions((styles, item) => (
         <animated.div key={item} style={styles}>
-          <Icon icon={item === 'light' ? <Sun /> : <Moon />} />
+          <Icon>{item === 'light' ? <Sun /> : <Moon />}</Icon>
         </animated.div>
       ))}
     </div>

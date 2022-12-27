@@ -3,7 +3,23 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  min-height: 80px;
   align-self: stretch;
+  margin-bottom: 40px;
+  font-size: 18px;
   font-weight: bold;
+  height: 50px;
+}
+
+.header a {
+  color: var(--base600);
+}
+
+.header a:hover {
+  color: var(--base900);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }

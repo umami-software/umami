@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import useStore from 'store/queries';
 import { setDateRange } from 'store/websites';
-import Button from './Button';
+import { Button, Icon } from 'react-basics';
 import Refresh from 'assets/redo.svg';
 import Dots from 'assets/ellipsis-h.svg';
 import useDateRange from 'hooks/useDateRange';
@@ -31,12 +31,13 @@ function RefreshButton({ websiteId }) {
 
   return (
     <Button
-      icon={loading ? <Dots /> : <Refresh />}
       tooltip={<FormattedMessage id="label.refresh" defaultMessage="Refresh" />}
       tooltipId="button-refresh"
       size="small"
       onClick={handleClick}
-    />
+    >
+      <Icon>{loading ? <Dots /> : <Refresh />}</Icon>
+    </Button>
   );
 }
 
