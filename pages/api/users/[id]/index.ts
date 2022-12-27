@@ -1,5 +1,5 @@
 import { NextApiRequestQueryBody } from 'lib/types';
-import { canUpdateUser, canViewUser } from 'lib/auth';
+import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -26,7 +26,7 @@ export default async (
   const { id } = req.query;
 
   if (req.method === 'GET') {
-    if (!isAdmin && !(await canViewUser(userId, id))) {
+    if (!(await canViewUser(req.auth, id))) {
       return unauthorized(res);
     }
 
@@ -36,7 +36,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!isAdmin && !(await canUpdateUser(userId, id))) {
+    if (!(await canUpdateUser(req.auth, id))) {
       return unauthorized(res);
     }
 
@@ -71,7 +71,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!isAdmin) {
+    if (!(await canDeleteUser(req.auth))) {
       return unauthorized(res);
     }
 
