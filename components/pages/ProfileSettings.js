@@ -2,9 +2,8 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import ProfileDetails from 'components/settings/ProfileDetails';
 import { useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToast, Modal, Button } from 'react-basics';
+import { Breadcrumbs, Icon, Item, Tabs, useToast, Modal, Button } from 'react-basics';
 import UserPasswordForm from 'components/forms/UserPasswordForm';
-import Icon from './../common/Icon';
 import Pen from 'assets/pen.svg';
 
 export default function ProfileSettings() {
