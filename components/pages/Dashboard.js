@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import WebsiteList from 'components/pages/WebsiteList';
+import WebsiteChartList from 'components/pages/WebsiteChartList';
 import { Button } from 'react-basics';
 import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
 import useFetch from 'hooks/useFetch';
@@ -37,7 +37,7 @@ export default function Dashboard({ userId }) {
         {!editing && <DashboardSettingsButton />}
       </PageHeader>
       {editing && <DashboardEdit websites={data} />}
-      {!editing && <WebsiteList websites={data} showCharts={showCharts} limit={max} />}
+      {!editing && <WebsiteChartList websites={data} showCharts={showCharts} limit={max} />}
       {max < data.length && (
         <Button className={styles.button} onClick={handleMore}>
           {formatMessage(messages.more)}
