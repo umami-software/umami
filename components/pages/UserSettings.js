@@ -8,9 +8,11 @@ import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
+import { Breadcrumbs, Item, Icon, Tabs, useToast, Modal, Button } from 'react-basics';
+import Pen from 'assets/pen.svg';
 
 export default function UserSettings({ userId }) {
+  const [edit, setEdit] = useState(false);
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
   const { get } = useApi();
@@ -31,6 +33,18 @@ export default function UserSettings({ userId }) {
     if (data) {
       setValues(state => ({ ...state, ...data }));
     }
+
+    if (edit) {
+      setEdit(false);
+    }
+  };
+
+  const handleAdd = () => {
+    setEdit(true);
+  };
+
+  const handleClose = () => {
+    setEdit(false);
   };
 
   const handleDelete = async () => {
@@ -54,15 +68,26 @@ export default function UserSettings({ userId }) {
           </Item>
           <Item>{values?.username}</Item>
         </Breadcrumbs>
+        <Button onClick={handleAdd}>
+          <Icon>
+            <Pen />
+          </Icon>
+          Change Password
+        </Button>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="general">General</Item>
-        <Item key="password">Password</Item>
         <Item key="delete">Danger Zone</Item>
       </Tabs>
       {tab === 'general' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
-      {tab === 'password' && <UserPasswordForm userId={userId} data={values} onSave={handleSave} />}
       {tab === 'delete' && <UserDelete userId={userId} onSave={handleDelete} />}
+      {edit && (
+        <Modal title="Add website" onClose={handleClose}>
+          {close => (
+            <UserPasswordForm userId={userId} data={values} onSave={handleSave} onClose={close} />
+          )}
+        </Modal>
+      )}
     </Page>
   );
 }

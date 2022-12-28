@@ -1,16 +1,15 @@
 import { useRef } from 'react';
 import { Form, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
 import useApi from 'hooks/useApi';
-import { useMutation } from '@tanstack/react-query';
 import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
 
-export default function UserPasswordForm({ onSave, userId }) {
+export default function UserPasswordForm({ onSave, onClose, userId }) {
   const user = useUser();
 
   const isCurrentUser = !userId || user?.id === userId;
   const url = isCurrentUser ? `/users/${user?.id}/password` : `/users/${user?.id}`;
-  const { post } = useApi();
+  const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post(url, data));
   const ref = useRef(null);
 
@@ -65,9 +64,10 @@ export default function UserPasswordForm({ onSave, userId }) {
         <PasswordField autoComplete="off" />
       </FormInput>
       <FormButtons flex>
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" variant="primary" disabled={isLoading}>
           Save
         </Button>
+        <Button onClick={onClose}>Close</Button>
       </FormButtons>
     </Form>
   );

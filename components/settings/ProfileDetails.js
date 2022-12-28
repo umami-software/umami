@@ -4,7 +4,7 @@ import useUser from 'hooks/useUser';
 import { FormattedMessage } from 'react-intl';
 import DateRangeSetting from './DateRangeSetting';
 import LanguageSetting from './LanguageSetting';
-import styles from './ProfileSettings.module.css';
+import styles from './ProfileDetails.module.css';
 import ThemeSetting from './ThemeSetting';
 
 export default function ProfileDetails() {
