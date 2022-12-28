@@ -397,6 +397,12 @@
       "value": "网站"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "昨天"
+    }
+  ],
   "message.active-users": [
     {
       "type": 0,

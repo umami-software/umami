@@ -24,9 +24,9 @@ export default function TestConsole() {
     return null;
   }
 
-  const options = data.map(({ name, website_id }) => ({ label: name, value: website_id }));
-  const website = data.find(({ website_id }) => website_id === +websiteId);
-  const selectedValue = options.find(({ value }) => value === website?.website_id)?.value;
+  const options = data.map(({ name, websiteUuid }) => ({ label: name, value: websiteUuid }));
+  const website = data.find(({ websiteUuid }) => websiteId === websiteUuid);
+  const selectedValue = options.find(({ value }) => value === website?.websiteUuid)?.value;
 
   function handleSelect(value) {
     router.push(`/console/${value}`);
@@ -46,7 +46,7 @@ export default function TestConsole() {
           <script
             async
             defer
-            data-website-id={website.website_uuid}
+            data-website-id={website.websiteUuid}
             src={`${basePath}/umami.js`}
             data-cache="true"
           />
@@ -104,13 +104,13 @@ export default function TestConsole() {
           <div className="row">
             <div className="col-12">
               <WebsiteChart
-                websiteId={website.website_id}
+                websiteId={website.websiteUuid}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
               <PageHeader>Events</PageHeader>
-              <EventsChart websiteId={website.website_id} />
+              <EventsChart websiteId={website.websiteUuid} />
             </div>
           </div>
         </>

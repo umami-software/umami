@@ -10,26 +10,28 @@ export async function getActiveVisitors(...args) {
   });
 }
 
-async function relationalQuery(website_id) {
+async function relationalQuery(websiteId) {
   const date = subMinutes(new Date(), 5);
-  const params = [website_id, date];
+  const params = [date];
 
   return prisma.rawQuery(
     `select count(distinct session_id) x
     from pageview
-    where website_id = $1
-    and created_at >= $2`,
+      join website 
+        on pageview.website_id = website.website_id
+    where website.website_uuid = '${websiteId}'
+    and pageview.created_at >= $1`,
     params,
   );
 }
 
-async function clickhouseQuery(website_id) {
+async function clickhouseQuery(websiteId) {
   const { rawQuery, getDateFormat } = clickhouse;
-  const params = [website_id];
+  const params = [websiteId];
 
   return rawQuery(
-    `select count(distinct session_uuid) x
-    from pageview
+    `select count(distinct session_id) x
+    from event
     where website_id = $1
     and created_at >= ${getDateFormat(subMinutes(new Date(), 5))}`,
     params,

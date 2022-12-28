@@ -10,19 +10,19 @@ export async function getRealtimeData(websites, time) {
   ]);
 
   return {
-    pageviews: pageviews.map(({ view_id, ...props }) => ({
-      __id: `p${view_id}`,
-      view_id,
+    pageviews: pageviews.map(({ id, ...props }) => ({
+      __id: `p${id}`,
+      pageviewId: id,
       ...props,
     })),
-    sessions: sessions.map(({ session_id, ...props }) => ({
-      __id: `s${session_id}`,
-      session_id,
+    sessions: sessions.map(({ id, ...props }) => ({
+      __id: `s${id}`,
+      sessionId: id,
       ...props,
     })),
-    events: events.map(({ event_id, ...props }) => ({
-      __id: `e${event_id}`,
-      event_id,
+    events: events.map(({ id, ...props }) => ({
+      __id: `e${id}`,
+      eventId: id,
       ...props,
     })),
     timestamp: Date.now(),

@@ -8,7 +8,7 @@ import CopyButton from 'components/common/CopyButton';
 export default function TrackingCodeForm({ values, onClose }) {
   const ref = useRef();
   const { basePath } = useRouter();
-  const { name, share_id } = values;
+  const { name, shareId } = values;
 
   return (
     <FormLayout>
@@ -27,7 +27,7 @@ export default function TrackingCodeForm({ values, onClose }) {
           spellCheck={false}
           defaultValue={`${
             document.location.origin
-          }${basePath}/share/${share_id}/${encodeURIComponent(name)}`}
+          }${basePath}/share/${shareId}/${encodeURIComponent(name)}`}
           readOnly
         />
       </FormRow>

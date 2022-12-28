@@ -1,4 +1,4 @@
-import { getAccountById, updateAccount } from 'queries';
+import { getAccount, updateAccount } from 'queries';
 import { useAuth } from 'lib/middleware';
 import {
   badRequest,
@@ -8,28 +8,29 @@ import {
   checkPassword,
   hashPassword,
 } from 'next-basics';
+import { allowQuery } from 'lib/auth';
+import { TYPE_ACCOUNT } from 'lib/constants';
 
 export default async (req, res) => {
   await useAuth(req, res);
 
-  const { user_id: auth_user_id, is_admin } = req.auth;
-  const { user_id, current_password, new_password } = req.body;
+  const { current_password, new_password } = req.body;
+  const { id: accountUuid } = req.query;
 
-  if (!is_admin && user_id !== auth_user_id) {
+  if (!(await allowQuery(req, TYPE_ACCOUNT))) {
     return unauthorized(res);
   }
 
   if (req.method === 'POST') {
-    const account = await getAccountById(user_id);
-    const valid = checkPassword(current_password, account.password);
+    const account = await getAccount({ accountUuid });
 
-    if (!valid) {
+    if (!checkPassword(current_password, account.password)) {
       return badRequest(res, 'Current password is incorrect');
     }
 
     const password = hashPassword(new_password);
 
-    const updated = await updateAccount(user_id, { password });
+    const updated = await updateAccount({ password }, { accountUuid });
 
     return ok(res, updated);
   }

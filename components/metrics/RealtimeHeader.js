@@ -9,11 +9,14 @@ import styles from './RealtimeHeader.module.css';
 
 export default function RealtimeHeader({ websites, data, websiteId, onSelect }) {
   const options = [
-    { label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />, value: 0 },
+    {
+      label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />,
+      value: null,
+    },
   ].concat(
-    websites.map(({ name, website_id }, index) => ({
+    websites.map(({ name, websiteUuid }, index) => ({
       label: name,
-      value: website_id,
+      value: websiteUuid,
       divider: index === 0,
     })),
   );
@@ -22,7 +25,7 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
 
   const count = useMemo(() => {
     return sessions.filter(
-      ({ created_at }) => differenceInMinutes(new Date(), new Date(created_at)) <= 5,
+      ({ createdAt }) => differenceInMinutes(new Date(), new Date(createdAt)) <= 5,
     ).length;
   }, [sessions, websiteId]);
 

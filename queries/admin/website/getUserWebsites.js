@@ -1,10 +1,8 @@
 import prisma from 'lib/prisma';
 
-export async function getUserWebsites(user_id) {
+export async function getUserWebsites(where) {
   return prisma.client.website.findMany({
-    where: {
-      user_id,
-    },
+    where,
     orderBy: {
       name: 'asc',
     },

@@ -24,6 +24,7 @@ import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import styles from './WebsiteDetails.module.css';
+import EventDataButton from 'components/common/EventDataButton';
 
 const messages = defineMessages({
   pages: { id: 'metrics.pages', defaultMessage: 'Pages' },
@@ -52,7 +53,7 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId }) {
-  const { data } = useFetch(`/website/${websiteId}`);
+  const { data } = useFetch(`/websites/${websiteId}`);
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const [eventsData, setEventsData] = useState();
@@ -183,6 +184,7 @@ export default function WebsiteDetails({ websiteId }) {
               <EventsTable {...tableProps} onDataLoad={setEventsData} />
             </GridColumn>
             <GridColumn xs={12} md={12} lg={8}>
+              <EventDataButton websiteId={websiteId} />
               <EventsChart className={styles.eventschart} websiteId={websiteId} />
             </GridColumn>
           </GridRow>

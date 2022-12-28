@@ -1,14 +1,13 @@
-import React from 'react';
+import Arrow from 'assets/arrow-right.svg';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import Favicon from 'components/common/Favicon';
 import Link from 'components/common/Link';
 import OverflowText from 'components/common/OverflowText';
-import PageHeader from 'components/layout/PageHeader';
 import RefreshButton from 'components/common/RefreshButton';
 import ButtonLayout from 'components/layout/ButtonLayout';
-import Favicon from 'components/common/Favicon';
+import PageHeader from 'components/layout/PageHeader';
+import { FormattedMessage } from 'react-intl';
 import ActiveUsers from './ActiveUsers';
-import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteHeader.module.css';
 
 export default function WebsiteHeader({ websiteId, title, domain, showLink = false }) {
@@ -17,8 +16,8 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
       <Favicon domain={domain} />
       <Link
         className={styles.titleLink}
-        href="/website/[...id]"
-        as={`/website/${websiteId}/${title}`}
+        href="/websites/[...id]"
+        as={`/websites/${websiteId}/${title}`}
       >
         <OverflowText tooltipId={`${websiteId}-title`}>{title}</OverflowText>
       </Link>
@@ -41,8 +40,8 @@ export default function WebsiteHeader({ websiteId, title, domain, showLink = fal
           <RefreshButton websiteId={websiteId} />
           {showLink && (
             <Link
-              href="/website/[...id]"
-              as={`/website/${websiteId}/${title}`}
+              href="/websites/[...id]"
+              as={`/websites/${websiteId}/${title}`}
               className={styles.link}
               icon={<Arrow />}
               size="small"

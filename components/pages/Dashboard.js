@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useRouter } from 'next/router';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteList from 'components/pages/WebsiteList';
@@ -16,10 +15,7 @@ const messages = defineMessages({
   more: { id: 'label.more', defaultMessage: 'More' },
 });
 
-export default function Dashboard() {
-  const router = useRouter();
-  const { id } = router.query;
-  const userId = id?.[0];
+export default function Dashboard({ userId }) {
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);

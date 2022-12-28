@@ -4,7 +4,7 @@ export async function getAllWebsites() {
   let data = await prisma.client.website.findMany({
     orderBy: [
       {
-        user_id: 'asc',
+        userId: 'asc',
       },
       {
         name: 'asc',

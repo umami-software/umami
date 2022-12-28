@@ -37,16 +37,16 @@ export default function WebsiteSettings() {
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
 
-  const { data } = useFetch('/websites', { params: { include_all: !!user?.is_admin } }, [saved]);
+  const { data } = useFetch('/websites', { params: { include_all: !!user?.isAdmin } }, [saved]);
 
   const Buttons = row => (
     <ButtonLayout align="right">
-      {row.share_id && (
+      {row.shareId && (
         <Button
           icon={<LinkIcon />}
           size="small"
           tooltip={<FormattedMessage id="message.get-share-url" defaultMessage="Get share URL" />}
-          tooltipId={`button-share-${row.website_id}`}
+          tooltipId={`button-share-${row.websiteUuid}`}
           onClick={() => setShowUrl(row)}
         />
       )}
@@ -56,46 +56,46 @@ export default function WebsiteSettings() {
         tooltip={
           <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
         }
-        tooltipId={`button-code-${row.website_id}`}
+        tooltipId={`button-code-${row.websiteUuid}`}
         onClick={() => setShowCode(row)}
       />
       <Button
         icon={<Pen />}
         size="small"
         tooltip={<FormattedMessage id="label.edit" defaultMessage="Edit" />}
-        tooltipId={`button-edit-${row.website_id}`}
+        tooltipId={`button-edit-${row.websiteUuid}`}
         onClick={() => setEditWebsite(row)}
       />
       <Button
         icon={<Reset />}
         size="small"
         tooltip={<FormattedMessage id="label.reset" defaultMessage="Reset" />}
-        tooltipId={`button-reset-${row.website_id}`}
+        tooltipId={`button-reset-${row.websiteUuid}`}
         onClick={() => setResetWebsite(row)}
       />
       <Button
         icon={<Trash />}
         size="small"
         tooltip={<FormattedMessage id="label.delete" defaultMessage="Delete" />}
-        tooltipId={`button-delete-${row.website_id}`}
+        tooltipId={`button-delete-${row.websiteUuid}`}
         onClick={() => setDeleteWebsite(row)}
       />
     </ButtonLayout>
   );
 
-  const DetailsLink = ({ website_id, name, domain }) => (
+  const DetailsLink = ({ websiteUuid, name, domain }) => (
     <Link
       className={styles.detailLink}
-      href="/website/[...id]"
-      as={`/website/${website_id}/${name}`}
+      href="/websites/[...id]"
+      as={`/websites/${websiteUuid}/${name}`}
     >
       <Favicon domain={domain} />
-      <OverflowText tooltipId={`${website_id}-name`}>{name}</OverflowText>
+      <OverflowText tooltipId={`${websiteUuid}-name`}>{name}</OverflowText>
     </Link>
   );
 
-  const Domain = ({ domain, website_id }) => (
-    <OverflowText tooltipId={`${website_id}-domain`}>{domain}</OverflowText>
+  const Domain = ({ domain, websiteUuid }) => (
+    <OverflowText tooltipId={`${websiteUuid}-domain`}>{domain}</OverflowText>
   );
 
   const adminColumns = [
@@ -187,7 +187,7 @@ export default function WebsiteSettings() {
           <FormattedMessage id="label.add-website" defaultMessage="Add website" />
         </Button>
       </PageHeader>
-      <Table columns={user.is_admin ? adminColumns : columns} rows={data} empty={empty} />
+      <Table columns={user.isAdmin ? adminColumns : columns} rows={data} empty={empty} />
       {editWebsite && (
         <Modal title={<FormattedMessage id="label.edit-website" defaultMessage="Edit website" />}>
           <WebsiteEditForm values={editWebsite} onSave={handleSave} onClose={handleClose} />
@@ -203,7 +203,7 @@ export default function WebsiteSettings() {
           title={<FormattedMessage id="label.reset-website" defaultMessage="Reset statistics" />}
         >
           <ResetForm
-            values={{ type: 'website', id: resetWebsite.website_id, name: resetWebsite.name }}
+            values={{ type: 'websites', id: resetWebsite.websiteUuid, name: resetWebsite.name }}
             onSave={handleSave}
             onClose={handleClose}
           />
@@ -214,7 +214,7 @@ export default function WebsiteSettings() {
           title={<FormattedMessage id="label.delete-website" defaultMessage="Delete website" />}
         >
           <DeleteForm
-            values={{ type: 'website', id: deleteWebsite.website_id, name: deleteWebsite.name }}
+            values={{ type: 'websites', id: deleteWebsite.websiteUuid, name: deleteWebsite.name }}
             onSave={handleSave}
             onClose={handleClose}
           />

@@ -48,13 +48,7 @@ mysql://username:mypassword@localhost:3306/mydb
 yarn build
 ```
 
-### Create database tables
-
-```bash
-yarn update-db
-```
-
-This will also create a login account with username **admin** and password **umami**.
+The build step will also create tables in your database if you ae installing for the first time. It will also create a login account with username **admin** and password **umami**.
 
 ### Start the application
 
@@ -76,12 +70,12 @@ docker compose up
 
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 ```bash
-docker pull docker.umami.is/umami-software/umami:postgresql-latest
+docker pull docker.umami.dev/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 ```bash
-docker pull docker.umami.is/umami-software/umami:mysql-latest
+docker pull docker.umami.dev/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates
