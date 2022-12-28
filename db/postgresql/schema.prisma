@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -54,6 +55,8 @@ model Website {
   team Team? @relation(fields: [teamId], references: [id])
   user User? @relation(fields: [userId], references: [id])
 
+  @@index([teamId])
+  @@index([userId])
   @@index([createdAt])
   @@index([shareId])
   @@map("website")
