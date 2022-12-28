@@ -14,6 +14,7 @@ export default function ProfileSettings() {
 
   const handleSave = () => {
     showToast({ message: 'Saved successfully.', variant: 'success' });
+    setEdit(false);
   };
 
   const handleAdd = () => {
