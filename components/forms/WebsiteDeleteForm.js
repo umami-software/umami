@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { getClientAuthToken } from 'lib/client';
 import useApi from 'hooks/useApi';
 import { Button, Form, FormButtons, FormInput, SubmitButton, TextField } from 'react-basics';
 import styles from './Form.module.css';
@@ -7,7 +6,7 @@ import styles from './Form.module.css';
 const CONFIRM_VALUE = 'DELETE';
 
 export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
-  const { del } = useApi(getClientAuthToken());
+  const { del } = useApi();
   const { mutate, error, isLoading } = useMutation(data => del(`/websites/${websiteId}`, data));
 
   const handleSubmit = async data => {

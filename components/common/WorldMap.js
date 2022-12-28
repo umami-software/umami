@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';

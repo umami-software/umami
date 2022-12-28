@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import DateFilter, { filterOptions } from 'components/common/DateFilter';
 import { Button } from 'react-basics';

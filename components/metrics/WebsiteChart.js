@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Row, Column } from 'react-basics';
+import { Row, Column, Loading } from 'react-basics';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
@@ -7,12 +7,11 @@ import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
-import useApi from 'hooks/useApi';
 import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
@@ -31,26 +30,24 @@ export default function WebsiteChart({
     resolve,
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
-  const { get } = useApi();
+  const { get, useQuery } = useApi();
 
-  const { data, loading, error } = useFetch(
-    `/websites/${websiteId}/pageviews`,
-    {
-      params: {
+  const { data, isLoading, error } = useQuery(
+    ['websites:pageviews', { websiteId, modified, url, referrer, os, browser, device, country }],
+    () =>
+      get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
         endAt: +endDate,
         unit,
-        tz: timezone,
+        timezone,
         url,
         referrer,
         os,
         browser,
         device,
         country,
-      },
-      onDataLoad,
-    },
-    [modified, url, referrer, os, browser, device, country],
+      }),
+    { onSuccess: onDataLoad },
   );
 
   const chartData = useMemo(() => {
@@ -78,10 +75,13 @@ export default function WebsiteChart({
     }
   }
 
+  if (isLoading) {
+    return <Loading variant="dots" />;
+  }
+
   return (
     <>
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain} />
-
       <StickyHeader
         className={styles.metrics}
         stickyClassName={styles.sticky}
@@ -114,7 +114,7 @@ export default function WebsiteChart({
               data={chartData}
               unit={unit}
               records={getDateLength(startDate, endDate, unit)}
-              loading={loading}
+              loading={isLoading}
             />
           )}
         </Column>

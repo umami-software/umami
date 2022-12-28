@@ -52,7 +52,7 @@ function getTimestampInterval(field: string): string {
   }
 }
 
-function getJsonField(column, property, isNumber): string {
+function getJsonField(column: string, property: string, isNumber: boolean): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {

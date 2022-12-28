@@ -6,19 +6,21 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Icon, Item, Menu, Text } from 'react-basics';
 import styles from './Nav.module.css';
-import useRequireLogin from 'hooks/useRequireLogin';
+import useUser from 'hooks/useUser';
 
 export default function Nav() {
-  const {
-    user: { role },
-  } = useRequireLogin();
+  const user = useUser();
   const { pathname } = useRouter();
+
+  if (!user) {
+    return null;
+  }
 
   const handleSelect = () => {};
 
   const items = [
     { icon: <Website />, label: 'Websites', url: '/websites' },
-    { icon: <User />, label: 'Users', url: '/users', hidden: role !== 'admin' },
+    { icon: <User />, label: 'Users', url: '/users', hidden: !user.isAdmin },
     { icon: <Team />, label: 'Teams', url: '/teams' },
     { icon: <User />, label: 'Profile', url: '/profile' },
   ];

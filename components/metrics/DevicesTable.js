@@ -1,4 +1,3 @@
-import React from 'react';
 import MetricsTable from './MetricsTable';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { getDeviceMessage } from 'components/messages';

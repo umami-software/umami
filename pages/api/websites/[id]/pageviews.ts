@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
-import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
+import { canViewWebsite } from 'lib/auth';
+import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
 
 const unitTypes = ['year', 'month', 'hour', 'day'];
@@ -14,7 +14,7 @@ export interface WebsitePageviewRequestQuery {
   startAt: number;
   endAt: number;
   unit: string;
-  tz: string;
+  timezone: string;
   url?: string;
   referrer?: string;
   os?: string;
@@ -35,7 +35,7 @@ export default async (
     startAt,
     endAt,
     unit,
-    tz,
+    timezone,
     url,
     referrer,
     os,
@@ -52,7 +52,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
 
@@ -60,7 +60,7 @@ export default async (
       getPageviewStats(websiteId, {
         startDate,
         endDate,
-        timezone: tz,
+        timezone,
         unit,
         count: '*',
         filters: {
@@ -75,7 +75,7 @@ export default async (
       getPageviewStats(websiteId, {
         startDate,
         endDate,
-        timezone: tz,
+        timezone,
         unit,
         count: 'distinct pageview.',
         filters: {

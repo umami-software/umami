@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import { safeDecodeURI } from 'next-basics';
 import { Button } from 'react-basics';

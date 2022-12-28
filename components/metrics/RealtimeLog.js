@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { StatusLight } from 'react-basics';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import { Icon } from 'react-basics';
-import Dot from 'components/common/Dot';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
 import { getDeviceMessage, labels } from 'components/messages';
@@ -149,7 +149,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     return (
       <div className={styles.row} style={style}>
         <div>
-          <Dot color={getColor(row)} />
+          <StatusLight color={getColor(row)} />
         </div>
         <div className={styles.time}>{getTime(row)}</div>
         <div className={styles.detail}>

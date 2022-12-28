@@ -1,12 +1,11 @@
 import Settings from 'components/pages/Settings';
 import TeamsList from 'components/pages/TeamsList';
-import useRequireLogin from 'hooks/useRequireLogin';
-import React from 'react';
+import useUser from 'hooks/useUser';
 
 export default function TeamsPage() {
-  const { loading } = useRequireLogin();
+  const user = useUser();
 
-  if (loading) {
+  if (!user) {
     return null;
   }
 

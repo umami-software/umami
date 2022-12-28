@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+import { Loading } from 'react-basics';
 import { defineMessages, useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
-import Loading from 'components/common/Loading';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
@@ -36,11 +36,15 @@ export default function MetricsTable({
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { formatMessage } = useIntl();
+  const { get, useQuery } = useApi();
 
-  const { data, loading, error } = useFetch(
-    `/websites/${websiteId}/metrics`,
-    {
-      params: {
+  const { data, isLoading, error } = useQuery(
+    [
+      'websites:mnetrics',
+      { websiteId, type, modified, url, referrer, os, browser, device, country },
+    ],
+    () =>
+      get(`/websites/${websiteId}/metrics`, {
         type,
         startAt: +startDate,
         endAt: +endDate,
@@ -50,11 +54,8 @@ export default function MetricsTable({
         browser,
         device,
         country,
-      },
-      onDataLoad,
-      delay: delay || DEFAULT_ANIMATION_DURATION,
-    },
-    [type, modified, url, referrer, os, browser, device, country],
+      }),
+    { onSuccess: onDataLoad, retryDelay: delay || DEFAULT_ANIMATION_DURATION },
   );
 
   const filteredData = useMemo(() => {
@@ -73,7 +74,7 @@ export default function MetricsTable({
 
   return (
     <div className={classNames(styles.container, className)}>
-      {!data && loading && <Loading />}
+      {!data && isLoading && <Loading variant="dots" />}
       {error && <ErrorMessage />}
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>

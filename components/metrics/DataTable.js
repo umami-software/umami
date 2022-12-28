@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';

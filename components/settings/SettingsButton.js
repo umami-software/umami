@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import TimezoneSetting from './TimezoneSetting';
 import DateRangeSetting from './DateRangeSetting';

@@ -2,7 +2,7 @@ import Calendar from 'components/common/Calendar';
 import { FormButtons } from 'components/layout/FormLayout';
 import { isAfter, isBefore, isSameDay } from 'date-fns';
 import { getDateRangeValues } from 'lib/date';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, ButtonGroup } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import styles from './DatePickerForm.module.css';

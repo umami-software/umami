@@ -1,4 +1,3 @@
-import React from 'react';
 import Layout from 'components/layout/Layout';
 import { FormattedMessage } from 'react-intl';
 

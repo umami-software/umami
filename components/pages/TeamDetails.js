@@ -6,13 +6,12 @@ import Link from 'next/link';
 import Page from 'components/layout/Page';
 import TeamEditForm from 'components/forms/TeamEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import { getClientAuthToken } from 'lib/client';
 import TeamMembersTable from '../tables/TeamMembersTable';
 
 export default function TeamDetails({ teamId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
-  const { get } = useApi(getClientAuthToken());
+  const { get } = useApi();
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
     ['team', teamId],

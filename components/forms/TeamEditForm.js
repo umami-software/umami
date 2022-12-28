@@ -2,10 +2,9 @@ import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from '
 import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
 import useApi from 'hooks/useApi';
-import { getClientAuthToken } from 'lib/client';
 
 export default function TeamEditForm({ teamId, data, onSave }) {
-  const { post } = useApi(getClientAuthToken());
+  const { post } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
   const ref = useRef(null);
 

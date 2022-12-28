@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
 import DropDown from 'components/common/DropDown';

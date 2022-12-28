@@ -1,5 +1,4 @@
 import Exclamation from 'assets/exclamation-triangle.svg';
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import styles from './ErrorMessage.module.css';
 import { Icon } from 'react-basics';

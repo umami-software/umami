@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Column } from 'react-basics';
+import { Column, Loading } from 'react-basics';
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
 import classNames from 'classnames';
 import WebsiteChart from 'components/metrics/WebsiteChart';
@@ -8,7 +8,6 @@ import Page from 'components/layout/Page';
 import GridRow from 'components/layout/GridRow';
 import MenuLayout from 'components/layout/MenuLayout';
 import Link from 'components/common/Link';
-import Loading from 'components/common/Loading';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -18,8 +17,8 @@ import CountriesTable from 'components/metrics/CountriesTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
 import ScreenTable from 'components/metrics/ScreenTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
-import useFetch from 'hooks/useFetch';
 import usePageQuery from 'hooks/usePageQuery';
+import useApi from 'hooks/useApi';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteDetails.module.css';
@@ -49,7 +48,10 @@ const views = {
 };
 
 export default function WebsiteDetails({ websiteId }) {
-  const { data } = useFetch(`/websites/${websiteId}`);
+  const { get, useQuery } = useApi();
+  const { data, isLoading } = useQuery(['websites', websiteId], () =>
+    get(`/websites/${websiteId}`),
+  );
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
   const {
@@ -122,6 +124,10 @@ export default function WebsiteDetails({ websiteId }) {
     }
   }
 
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (!data) {
     return null;
   }
@@ -136,7 +142,7 @@ export default function WebsiteDetails({ websiteId }) {
         showLink={false}
         stickyHeader
       />
-      {!chartLoaded && <Loading />}
+      {!chartLoaded && <Loading variant="dots" />}
       {chartLoaded && !view && (
         <>
           <GridRow>

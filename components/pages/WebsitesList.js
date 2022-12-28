@@ -7,14 +7,13 @@ import WebsiteAddForm from 'components/forms/WebsiteAddForm';
 import PageHeader from 'components/layout/PageHeader';
 import WebsitesTable from 'components/tables/WebsitesTable';
 import Page from 'components/layout/Page';
-import { getClientAuthToken } from 'lib/client';
 import useUser from 'hooks/useUser';
 
 export default function WebsitesList() {
   const [edit, setEdit] = useState(false);
   const [update, setUpdate] = useState(0);
-  const { get } = useApi(getClientAuthToken());
-  const { user } = useUser();
+  const { get } = useApi();
+  const user = useUser();
   const { data, isLoading, error } = useQuery(['websites', update], () =>
     get(`/users/${user.id}/websites`),
   );

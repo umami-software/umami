@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { getClientAuthToken } from 'lib/client';
-import { getRandomChars, useApi } from 'next-basics';
+import { getRandomChars } from 'next-basics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Button,
@@ -12,11 +11,12 @@ import {
   TextField,
   Toggle,
 } from 'react-basics';
+import useApi from 'hooks/useApi';
 
 export default function ShareUrlForm({ websiteId, data, onSave }) {
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
-  const { post } = useApi(getClientAuthToken());
+  const { post } = useApi();
   const { mutate, error } = useMutation(({ shareId }) =>
     post(`/websites/${websiteId}`, { shareId }),
   );

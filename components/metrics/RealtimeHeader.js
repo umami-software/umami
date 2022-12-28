@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { differenceInMinutes } from 'date-fns';
 import PageHeader from 'components/layout/PageHeader';

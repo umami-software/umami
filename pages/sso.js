@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { setItem } from 'next-basics';
-import { AUTH_TOKEN } from 'lib/constants';
+import { setClientAuthToken } from 'lib/client';
 
 export default function SingleSignOnPage() {
   const router = useRouter();
@@ -9,7 +8,7 @@ export default function SingleSignOnPage() {
 
   useEffect(() => {
     if (url && token) {
-      setItem(AUTH_TOKEN, token);
+      setClientAuthToken(token);
 
       router.push(url);
     }

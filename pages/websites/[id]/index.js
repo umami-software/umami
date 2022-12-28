@@ -1,15 +1,14 @@
-import React from 'react';
 import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
 import WebsiteDetails from 'components/pages/WebsiteDetails';
-import useRequireLogin from 'hooks/useRequireLogin';
+import useUser from 'hooks/useUser';
 
 export default function DetailsPage() {
-  const { loading } = useRequireLogin();
+  const user = useUser();
   const router = useRouter();
   const { id } = router.query;
 
-  if (!id || loading) {
+  if (!id || !user) {
     return null;
   }
 

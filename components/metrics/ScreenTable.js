@@ -1,4 +1,3 @@
-import React from 'react';
 import MetricsTable from './MetricsTable';
 import { FormattedMessage } from 'react-intl';
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import DropDown from 'components/common/DropDown';
 import { Button } from 'react-basics';

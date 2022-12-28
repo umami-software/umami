@@ -3,7 +3,6 @@ import PageHeader from 'components/layout/PageHeader';
 import UsersTable from 'components/tables/UsersTable';
 import { useState } from 'react';
 import { Button, Icon, useToast } from 'react-basics';
-import { getClientAuthToken } from 'lib/client';
 import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
 
@@ -11,7 +10,7 @@ export default function UsersList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
   const { toast, showToast } = useToast();
-  const { post } = useApi(getClientAuthToken());
+  const { post } = useApi();
   const { mutate, isLoading } = useMutation(data => post('/api-key', data));
 
   const handleSave = () => {

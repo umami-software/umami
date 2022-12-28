@@ -4,7 +4,7 @@ import { endOfYear, isSameDay } from 'date-fns';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Icon, Modal } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import DropDown from './DropDown';

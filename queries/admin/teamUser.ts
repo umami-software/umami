@@ -16,6 +16,9 @@ export async function getTeamUsers(teamId: string): Promise<TeamUser[]> {
     where: {
       teamId,
     },
+    include: {
+      user: true,
+    },
   });
 }
 

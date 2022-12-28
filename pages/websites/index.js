@@ -1,14 +1,14 @@
 import Settings from 'components/pages/Settings';
 import useConfig from 'hooks/useConfig';
-import useRequireLogin from 'hooks/useRequireLogin';
-import React from 'react';
+import useUser from 'hooks/useUser';
+
 import WebsitesList from 'components/pages/WebsitesList';
 
 export default function WebsitesPage() {
-  const { loading } = useRequireLogin();
+  const user = useUser();
   const { adminDisabled } = useConfig();
 
-  if (adminDisabled || loading) {
+  if (adminDisabled || !user) {
     return null;
   }
 

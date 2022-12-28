@@ -1,39 +1,37 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+import { Loading } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from './BarChart';
 import { getDateArray, getDateLength } from 'lib/date';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { EVENT_COLORS } from 'lib/constants';
 
 export default function EventsChart({ websiteId, className, token }) {
+  const { get, useQuery } = useApi();
   const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
   const [timezone] = useTimezone();
   const {
     query: { url, eventName },
   } = usePageQuery();
 
-  const { data, loading } = useFetch(
-    `/websites/${websiteId}/events`,
-    {
-      params: {
-        startAt: +startDate,
-        endAt: +endDate,
-        unit,
-        tz: timezone,
-        url,
-        eventName,
-        token,
-      },
-    },
-    [modified, eventName],
+  const { data, isLoading } = useQuery(['events', { websiteId, modified, eventName }], () =>
+    get(`/websites/${websiteId}/events`, {
+      startAt: +startDate,
+      endAt: +endDate,
+      unit,
+      timezone,
+      url,
+      eventName,
+      token,
+    }),
   );
 
   const datasets = useMemo(() => {
     if (!data) return [];
-    if (loading) return data;
+    if (isLoading) return data;
 
     const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
@@ -60,12 +58,16 @@ export default function EventsChart({ websiteId, className, token }) {
         borderWidth: 1,
       };
     });
-  }, [data, loading]);
+  }, [data, isLoading]);
 
   function handleUpdate(chart) {
     chart.data.datasets = datasets;
 
     chart.update();
+  }
+
+  if (isLoading) {
+    return <Loading variant="dots" />;
   }
 
   if (!data) {
@@ -81,7 +83,7 @@ export default function EventsChart({ websiteId, className, token }) {
       height={300}
       records={getDateLength(startDate, endDate, unit)}
       onUpdate={handleUpdate}
-      loading={loading}
+      loading={isLoading}
       stacked
     />
   );

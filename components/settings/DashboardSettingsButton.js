@@ -1,4 +1,3 @@
-import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import MenuButton from 'components/common/MenuButton';
 import Gear from 'assets/gear.svg';

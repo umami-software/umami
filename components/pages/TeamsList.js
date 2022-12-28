@@ -6,13 +6,12 @@ import TeamAddForm from 'components/forms/TeamAddForm';
 import PageHeader from 'components/layout/PageHeader';
 import TeamsTable from 'components/tables/TeamsTable';
 import Page from 'components/layout/Page';
-import { getClientAuthToken } from 'lib/client';
 import { useQuery } from '@tanstack/react-query';
 
 export default function TeamsList() {
   const [edit, setEdit] = useState(false);
   const [update, setUpdate] = useState(0);
-  const { get } = useApi(getClientAuthToken());
+  const { get } = useApi();
   const { data, isLoading, error } = useQuery(['teams', update], () => get(`/teams`));
   const hasData = data && data.length !== 0;
   const { toast, showToast } = useToast();

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Loading } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import Loading from 'components/common/Loading';
 import ErrorMessage from 'components/common/ErrorMessage';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
@@ -11,6 +11,7 @@ import MetricCard from './MetricCard';
 import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId, className }) {
+  const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const [format, setFormat] = useState(true);
@@ -18,10 +19,10 @@ export default function MetricsBar({ websiteId, className }) {
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
 
-  const { data, error, loading } = useFetch(
-    `/websites/${websiteId}/stats`,
-    {
-      params: {
+  const { data, error, isLoading } = useQuery(
+    ['websites:stats', { websiteId, modified, url, referrer, os, browser, device, country }],
+    () =>
+      get(`/websites/${websiteId}/stats`, {
         startAt: +startDate,
         endAt: +endDate,
         url,
@@ -30,9 +31,7 @@ export default function MetricsBar({ websiteId, className }) {
         browser,
         device,
         country,
-      },
-    },
-    [modified, url, referrer, os, browser, device, country],
+      }),
   );
 
   const formatFunc = format
@@ -54,7 +53,7 @@ export default function MetricsBar({ websiteId, className }) {
 
   return (
     <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
-      {!data && loading && <Loading />}
+      {isLoading && <Loading variant="dots" />}
       {error && <ErrorMessage />}
       {data && !error && (
         <>

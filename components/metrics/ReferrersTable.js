@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import FilterButtons from 'components/common/FilterButtons';

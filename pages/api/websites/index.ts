@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
@@ -40,7 +39,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data: Prisma.WebsiteUncheckedCreateInput = {
+    const data: any = {
       id: uuid(),
       name,
       domain,

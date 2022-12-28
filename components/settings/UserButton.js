@@ -4,7 +4,7 @@ import useUser from 'hooks/useUser';
 import { AUTH_TOKEN } from 'lib/constants';
 import { removeItem } from 'next-basics';
 import { useRouter } from 'next/router';
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button, Icon, Item, Menu, Popup, Text } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import styles from './UserButton.module.css';
@@ -13,7 +13,7 @@ import useDocumentClick from '../../hooks/useDocumentClick';
 export default function UserButton() {
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const { user } = useUser();
+  const user = useUser();
   const router = useRouter();
   const { adminDisabled } = useConfig();
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import firstBy from 'thenby';
@@ -10,7 +10,7 @@ import RealtimeHeader from 'components/metrics/RealtimeHeader';
 import WorldMap from 'components/common/WorldMap';
 import DataTable from 'components/metrics/DataTable';
 import RealtimeViews from 'components/metrics/RealtimeViews';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
@@ -33,13 +33,17 @@ export default function RealtimeDashboard() {
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
   const [websiteId, setWebsiteId] = useState(null);
-  const { data: init, loading } = useFetch('/realtime/init');
-  const { data: updates } = useFetch('/realtime/update', {
-    params: { startAt: data?.timestamp },
-    disabled: !init?.websites?.length || !data,
-    interval: REALTIME_INTERVAL,
-    headers: { [SHARE_TOKEN_HEADER]: init?.token },
-  });
+  const { get, useQuery } = useApi();
+  const { data: init, isLoading } = useQuery(['realtime:init'], () => get('/realtime/init'));
+  const { data: updates } = useQuery(
+    ['realtime:updates'],
+    () =>
+      get('/realtime/update', { startAt: data?.timestamp }, { [SHARE_TOKEN_HEADER]: init?.token }),
+    {
+      disabled: !init?.websites?.length || !data,
+      retryInterval: REALTIME_INTERVAL,
+    },
+  );
 
   const renderCountryName = useCallback(
     ({ x }) => <span className={locale}>{countryNames[x]}</span>,
@@ -108,7 +112,7 @@ export default function RealtimeDashboard() {
     }
   }, [updates]);
 
-  if (!init || !data || loading) {
+  if (!init || !data || isLoading) {
     return null;
   }
 

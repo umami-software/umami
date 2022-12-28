@@ -15,7 +15,7 @@ import SettingsButton from '../settings/SettingsButton';
 import styles from './Header.module.css';
 
 export default function Header() {
-  const { user } = useUser();
+  const user = useUser();
   const { pathname } = useRouter();
   const { updatesDisabled, adminDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');

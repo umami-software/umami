@@ -1,6 +1,6 @@
 import TimezoneSetting from 'components/settings/TimezoneSetting';
 import useUser from 'hooks/useUser';
-import React from 'react';
+
 import { FormattedMessage } from 'react-intl';
 import DateRangeSetting from './DateRangeSetting';
 import LanguageSetting from './LanguageSetting';
@@ -8,7 +8,7 @@ import styles from './ProfileSettings.module.css';
 import ThemeSetting from './ThemeSetting';
 
 export default function ProfileDetails() {
-  const { user } = useUser();
+  const user = useUser();
 
   if (!user) {
     return null;

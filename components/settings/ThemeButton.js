@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTransition, animated } from 'react-spring';
 import useTheme from 'hooks/useTheme';
 import Sun from 'assets/sun.svg';

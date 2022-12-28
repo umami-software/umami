@@ -1,4 +1,3 @@
-import React from 'react';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';

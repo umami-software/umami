@@ -9,13 +9,12 @@ import WebsiteReset from 'components/forms/WebsiteReset';
 import PageHeader from 'components/layout/PageHeader';
 import TrackingCodeForm from 'components/forms/TrackingCodeForm';
 import ShareUrlForm from 'components/forms/ShareUrlForm';
-import { getClientAuthToken } from 'lib/client';
 import ExternalLink from 'assets/external-link.svg';
 
 export default function Websites({ websiteId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
-  const { get } = useApi(getClientAuthToken());
+  const { get } = useApi();
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
     ['website', websiteId],

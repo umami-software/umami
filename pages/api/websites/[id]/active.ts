@@ -20,7 +20,7 @@ export default async (
   const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
-    if (await canViewWebsite(req.auth, websiteId)) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 

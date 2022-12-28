@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
 import Legend from 'components/metrics/Legend';

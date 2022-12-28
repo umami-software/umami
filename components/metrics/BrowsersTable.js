@@ -1,4 +1,3 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
 import MetricsTable from 'components/metrics/MetricsTable';

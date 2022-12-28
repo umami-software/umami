@@ -3,10 +3,9 @@ import { Form, FormInput, FormButtons, TextField, Button } from 'react-basics';
 import useApi from 'hooks/useApi';
 import styles from './Form.module.css';
 import { useMutation } from '@tanstack/react-query';
-import { getClientAuthToken } from 'lib/client';
 
 export default function TeamAddForm({ onSave, onClose }) {
-  const { post } = useApi(getClientAuthToken());
+  const { post } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/teams', data));
   const ref = useRef(null);
 

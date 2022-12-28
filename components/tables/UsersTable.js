@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { formatDistance } from 'date-fns';
-import { getClientAuthToken } from 'lib/client';
 import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -26,7 +25,7 @@ const defaultColumns = [
 
 export default function UsersTable({ columns = defaultColumns, onLoading, onAddKeyClick }) {
   const [values, setValues] = useState(null);
-  const { get } = useApi(getClientAuthToken());
+  const { get } = useApi();
   const { data, isLoading, error } = useQuery(['user'], () => get(`/users`));
   const hasData = data && data.length !== 0;
 

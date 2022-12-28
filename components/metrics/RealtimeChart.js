@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { format, parseISO, startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
 import { getDateArray } from 'lib/date';
