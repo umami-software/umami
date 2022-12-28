@@ -1,9 +1,10 @@
 import { Prisma } from '@prisma/client';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite, getUserWebsites } from 'queries';
 
 export interface WebsitesRequestQuery {}
@@ -34,6 +35,10 @@ export default async (
 
   if (req.method === 'POST') {
     const { name, domain, shareId, teamId } = req.body;
+
+    if (!(await canCreateWebsite(req.auth, teamId))) {
+      return unauthorized(res);
+    }
 
     const data: Prisma.WebsiteUncheckedCreateInput = {
       id: uuid(),

@@ -22,13 +22,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await canViewWebsite(userId, websiteId))) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
@@ -38,7 +35,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!(await canUpdateWebsite(userId, websiteId))) {
+    if (!(await canUpdateWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
@@ -56,7 +53,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (!(await canDeleteWebsite(userId, websiteId))) {
+    if (!(await canDeleteWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 

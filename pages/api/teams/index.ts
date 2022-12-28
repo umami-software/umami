@@ -28,7 +28,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!(await canCreateTeam(userId))) {
+    if (!(await canCreateTeam(req.auth))) {
       return unauthorized(res);
     }
 

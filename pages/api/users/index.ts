@@ -1,7 +1,8 @@
-import { NextApiRequestQueryBody } from 'lib/types';
+import { canCreateUser, canViewUsers } from 'lib/auth';
+import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
-import { ROLES } from 'lib/constants';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUser, getUsers, User } from 'queries';
@@ -18,12 +19,8 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const {
-    user: { isAdmin },
-  } = req.auth;
-
   if (req.method === 'GET') {
-    if (!isAdmin) {
+    if (!(await canViewUsers(req.auth))) {
       return unauthorized(res);
     }
 
@@ -33,7 +30,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!isAdmin) {
+    if (!(await canCreateUser(req.auth))) {
       return unauthorized(res);
     }
 

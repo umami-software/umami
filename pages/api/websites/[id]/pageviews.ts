@@ -31,9 +31,6 @@ export default async (
   await useAuth(req, res);
 
   const {
-    user: { id: userId },
-  } = req.auth;
-  const {
     id: websiteId,
     startAt,
     endAt,
@@ -48,7 +45,7 @@ export default async (
   } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await canViewWebsite(userId, websiteId))) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
