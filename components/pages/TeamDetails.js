@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import { useQuery } from '@tanstack/react-query';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import TeamEditForm from 'components/forms/TeamEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import TeamMembersTable from '../tables/TeamMembersTable';
 
 export default function TeamDetails({ teamId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
-  const { get } = useApi(getAuthToken());
+  const { get } = useApi(getClientAuthToken());
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
     ['team', teamId],

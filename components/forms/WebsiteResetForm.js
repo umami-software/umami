@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { getAuthToken } from 'lib/client';
-import { useApi } from 'next-basics';
+import { getClientAuthToken } from 'lib/client';
+import useApi from 'hooks/useApi';
 import { Button, Form, FormButtons, FormInput, SubmitButton, TextField } from 'react-basics';
 import styles from './Form.module.css';
 
 const CONFIRM_VALUE = 'RESET';
 
 export default function WebsiteResetForm({ websiteId, onSave, onClose }) {
-  const { post } = useApi(getAuthToken());
+  const { post } = useApi(getClientAuthToken());
   const { mutate, error, isLoading } = useMutation(data =>
     post(`/websites/${websiteId}/reset`, data),
   );

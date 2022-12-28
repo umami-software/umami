@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 import { Form, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import { useMutation } from '@tanstack/react-query';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
 
@@ -13,7 +13,7 @@ export default function UserPasswordForm({ onSave, userId }) {
 
   const isCurrentUser = !userId || id === userId;
   const url = isCurrentUser ? `/users/${id}/password` : `/users/${id}`;
-  const { post } = useApi(getAuthToken());
+  const { post } = useApi(getClientAuthToken());
   const { mutate, error, isLoading } = useMutation(data => post(url, data));
   const ref = useRef(null);
 

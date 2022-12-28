@@ -17,9 +17,9 @@ import {
   isAfter,
 } from 'date-fns';
 import { Button, Icon } from 'react-basics';
+import { chunkArray } from 'next-basics';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
-import { chunk } from 'lib/array';
 import { getDateLocale } from 'lib/lang';
 import Chevron from 'assets/chevron-down.svg';
 import Cross from 'assets/times.svg';
@@ -142,7 +142,7 @@ const DaySelector = ({ date, minDate, maxDate, locale, onSelect }) => {
         </tr>
       </thead>
       <tbody>
-        {chunk(days, 7).map((week, i) => (
+        {chunkArray(days, 7).map((week, i) => (
           <tr key={i}>
             {week.map((day, j) => {
               const disabled = isBefore(day, minDate) || isAfter(day, maxDate);
@@ -181,7 +181,7 @@ const MonthSelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   return (
     <table>
       <tbody>
-        {chunk(months, 3).map((row, i) => (
+        {chunkArray(months, 3).map((row, i) => (
           <tr key={i}>
             {row.map((month, j) => {
               const disabled =
@@ -246,7 +246,7 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
       <div className={styles.middle}>
         <table>
           <tbody>
-            {chunk(years, 5).map((row, i) => (
+            {chunkArray(years, 5).map((row, i) => (
               <tr key={i}>
                 {row.map((n, j) => (
                   <td

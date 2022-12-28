@@ -21,7 +21,7 @@ export const useSession = createMiddleware(async (req, res, next) => {
     return badRequest(res);
   }
 
-  req.session = session;
+  (req as any).session = session;
   next();
 });
 
@@ -50,6 +50,6 @@ export const useAuth = createMiddleware(async (req, res, next) => {
     user.isAdmin = user.role === ROLES.admin;
   }
 
-  req.auth = { user, token, shareToken, key };
+  (req as any).auth = { user, token, shareToken, key };
   next();
 });

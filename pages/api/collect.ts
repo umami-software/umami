@@ -4,7 +4,7 @@ import ipaddr from 'ipaddr.js';
 import { createToken, unauthorized, send, badRequest, forbidden } from 'next-basics';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
-import { getJsonBody, getIpAddress } from 'lib/request';
+import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 

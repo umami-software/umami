@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Breadcrumbs, Item, Tabs, useToast, Button, Icon } from 'react-basics';
 import { useQuery } from '@tanstack/react-query';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import WebsiteEditForm from 'components/forms/WebsiteEditForm';
@@ -9,13 +9,13 @@ import WebsiteReset from 'components/forms/WebsiteReset';
 import PageHeader from 'components/layout/PageHeader';
 import TrackingCodeForm from 'components/forms/TrackingCodeForm';
 import ShareUrlForm from 'components/forms/ShareUrlForm';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import ExternalLink from 'assets/external-link.svg';
 
 export default function Websites({ websiteId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
-  const { get } = useApi(getAuthToken());
+  const { get } = useApi(getClientAuthToken());
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
     ['website', websiteId],
