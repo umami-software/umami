@@ -6,7 +6,7 @@ import { getClientAuthToken } from 'lib/client';
 import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
 
-export default function UserPasswordForm({ onSave, userId }) {
+export default function UserPasswordForm({ onSave, onClose, userId }) {
   const {
     user: { id },
   } = useUser();
@@ -68,9 +68,10 @@ export default function UserPasswordForm({ onSave, userId }) {
         <PasswordField autoComplete="off" />
       </FormInput>
       <FormButtons flex>
-        <Button type="submit" disabled={isLoading}>
+        <Button type="submit" variant="primary" disabled={isLoading}>
           Save
         </Button>
+        <Button onClick={onClose}>Close</Button>
       </FormButtons>
     </Form>
   );
