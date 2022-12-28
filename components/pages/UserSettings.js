@@ -4,8 +4,8 @@ import UserEditForm from 'components/forms/UserEditForm';
 import UserPasswordForm from 'components/forms/UserPasswordForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import { getAuthToken } from 'lib/client';
-import { useApi } from 'next-basics';
+import { getClientAuthToken } from 'lib/client';
+import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -14,7 +14,7 @@ import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 export default function UserSettings({ userId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('general');
-  const { get } = useApi(getAuthToken());
+  const { get } = useApi(getClientAuthToken());
   const { toast, showToast } = useToast();
   const router = useRouter();
   const { data, isLoading } = useQuery(

@@ -1,12 +1,11 @@
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
 import { useMutation } from '@tanstack/react-query';
 import { useRef } from 'react';
-import { useApi } from 'next-basics';
-import { getAuthToken } from 'lib/client';
+import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
 
 export default function WebsiteEditForm({ websiteId, data, onSave }) {
-  const { post } = useApi(getAuthToken());
+  const { post } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}`, data));
   const ref = useRef(null);
 

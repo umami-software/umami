@@ -1,13 +1,13 @@
 import { useRef } from 'react';
 import { Form, FormInput, FormButtons, TextField, Button, SubmitButton } from 'react-basics';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import styles from './Form.module.css';
 import { useMutation } from '@tanstack/react-query';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import { DOMAIN_REGEX } from 'lib/constants';
 
 export default function WebsiteAddForm({ onSave, onClose }) {
-  const { post } = useApi(getAuthToken());
+  const { post } = useApi(getClientAuthToken());
   const { mutate, error, isLoading } = useMutation(data => post('/websites', data));
   const ref = useRef(null);
 

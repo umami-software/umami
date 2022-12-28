@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { removeItem, useApi } from 'next-basics';
-import { AUTH_TOKEN } from 'lib/constants';
+import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
+import { removeClientAuthToken } from 'lib/client';
 
 export default function LogoutPage() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function LogoutPage() {
       await post('/logout');
     }
 
-    removeItem(AUTH_TOKEN);
+    removeClientAuthToken();
 
     logout();
 

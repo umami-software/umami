@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { Button, Icon, Modal, useToast, Flexbox } from 'react-basics';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import TeamAddForm from 'components/forms/TeamAddForm';
 import PageHeader from 'components/layout/PageHeader';
 import TeamsTable from 'components/tables/TeamsTable';
 import Page from 'components/layout/Page';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import { useQuery } from '@tanstack/react-query';
 
 export default function TeamsList() {
   const [edit, setEdit] = useState(false);
   const [update, setUpdate] = useState(0);
-  const { get } = useApi(getAuthToken());
+  const { get } = useApi(getClientAuthToken());
   const { data, isLoading, error } = useQuery(['teams', update], () => get(`/teams`));
   const hasData = data && data.length !== 0;
   const { toast, showToast } = useToast();

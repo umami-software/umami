@@ -8,7 +8,7 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
-      HASH_SALT: replace-me-with-a-random-string
+      APP_SECRET: replace-me-with-a-random-string
     depends_on:
       - db
     restart: always

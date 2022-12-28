@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { Button, Icon, Modal, useToast, Flexbox } from 'react-basics';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import { useQuery } from '@tanstack/react-query';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import WebsiteAddForm from 'components/forms/WebsiteAddForm';
 import PageHeader from 'components/layout/PageHeader';
 import WebsitesTable from 'components/tables/WebsitesTable';
 import Page from 'components/layout/Page';
-import { getAuthToken } from 'lib/client';
+import { getClientAuthToken } from 'lib/client';
 import useUser from 'hooks/useUser';
 
 export default function WebsitesList() {
   const [edit, setEdit] = useState(false);
   const [update, setUpdate] = useState(0);
-  const { get } = useApi(getAuthToken());
+  const { get } = useApi(getClientAuthToken());
   const { user } = useUser();
   const { data, isLoading, error } = useQuery(['websites', update], () =>
     get(`/users/${user.id}/websites`),
