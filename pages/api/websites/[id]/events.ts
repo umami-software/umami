@@ -13,7 +13,7 @@ export interface WebsiteEventsRequestQuery {
   startAt: string;
   endAt: string;
   unit: string;
-  tz: string;
+  timezone: string;
   url: string;
   eventName: string;
 }
@@ -25,14 +25,14 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { id: websiteId, startAt, endAt, unit, tz, url, eventName } = req.query;
+  const { id: websiteId, startAt, endAt, unit, timezone, url, eventName } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
     const startDate = new Date(+startAt);
@@ -41,7 +41,7 @@ export default async (
     const events = await getEventMetrics(websiteId, {
       startDate,
       endDate,
-      timezone: tz,
+      timezone,
       unit,
       filters: {
         url,

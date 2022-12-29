@@ -39,6 +39,11 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     return badRequest(res, 'Event Data must be in the form of a JSON Object.');
   }
 
+  // Validate eventData is less than 100kB
+  if (eventData && new TextEncoder().encode(eventData).length / 1024 > 100) {
+    return badRequest(res, 'Event Data exceeds maximum size of 100 kB.');
+  }
+
   const ignoreIps = process.env.IGNORE_IP;
   const ignoreHostnames = process.env.IGNORE_HOSTNAME;
 
