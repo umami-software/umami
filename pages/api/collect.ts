@@ -4,7 +4,7 @@ import ipaddr from 'ipaddr.js';
 import { createToken, unauthorized, send, badRequest, forbidden } from 'next-basics';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
-import { getJsonBody, getIpAddress } from 'lib/request';
+import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -31,12 +31,17 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, event_name: eventName, event_data: eventData } = payload;
+  const { referrer, eventName, eventData } = payload;
   let { url } = payload;
 
   // Validate eventData is JSON
   if (eventData && !(typeof eventData === 'object' && !Array.isArray(eventData))) {
     return badRequest(res, 'Event Data must be in the form of a JSON Object.');
+  }
+
+  // Validate eventData is less than 100kB
+  if (eventData && new TextEncoder().encode(eventData).length / 1024 > 100) {
+    return badRequest(res, 'Event Data exceeds maximum size of 100 kB.');
   }
 
   const ignoreIps = process.env.IGNORE_IP;

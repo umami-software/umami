@@ -1,13 +1,13 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from 'components/common/Menu';
-import Button from 'components/common/Button';
 import useDocumentClick from 'hooks/useDocumentClick';
 import styles from './MenuButton.module.css';
+import { Button } from 'react-basics';
 
 function MenuButton({
-  icon,
+  children,
   value,
   options,
   buttonClassName,
@@ -41,7 +41,6 @@ function MenuButton({
   return (
     <div className={styles.container} ref={ref}>
       <Button
-        icon={icon}
         className={classNames(styles.button, buttonClassName, { [styles.open]: showMenu })}
         onClick={toggleMenu}
         variant={buttonVariant}
@@ -49,6 +48,7 @@ function MenuButton({
         {!hideLabel && (
           <div className={styles.text}>{renderValue ? renderValue(selectedOption) : value}</div>
         )}
+        {children}
       </Button>
       {showMenu && (
         <Menu

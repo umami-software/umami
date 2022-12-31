@@ -10,12 +10,12 @@ const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export interface WebsiteEventsRequestQuery {
   id: string;
-  start_at: string;
-  end_at: string;
+  startAt: string;
+  endAt: string;
   unit: string;
-  tz: string;
+  timezone: string;
   url: string;
-  event_name: string;
+  eventName: string;
 }
 
 export default async (
@@ -25,32 +25,27 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
-  const { user, shareToken } = req.auth;
-  const userId = user?.id;
-  const shared = shareToken?.websiteId === websiteId;
+  const { id: websiteId, startAt, endAt, unit, timezone, url, eventName } = req.query;
 
   if (req.method === 'GET') {
-    const canView = canViewWebsite(userId, websiteId);
-
-    if (!canView && !shared) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     const events = await getEventMetrics(websiteId, {
       startDate,
       endDate,
-      timezone: tz,
+      timezone,
       unit,
       filters: {
         url,
-        eventName: event_name,
+        eventName,
       },
     });
 

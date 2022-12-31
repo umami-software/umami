@@ -1,7 +1,6 @@
-import React from 'react';
+import { StatusLight } from 'react-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
-import Dot from 'components/common/Dot';
 import useLocale from 'hooks/useLocale';
 import useForceUpdate from 'hooks/useForceUpdate';
 import styles from './Legend.module.css';
@@ -35,7 +34,7 @@ export default function Legend({ chart }) {
             className={classNames(styles.label, { [styles.hidden]: hidden })}
             onClick={() => handleClick(datasetIndex)}
           >
-            <Dot color={color.alpha(color.alpha() + 0.2).toHex()} />
+            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()} />
             <span className={locale}>{text}</span>
           </div>
         );

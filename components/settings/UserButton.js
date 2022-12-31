@@ -1,17 +1,19 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { useRouter } from 'next/router';
-import { removeItem } from 'next-basics';
-import MenuButton from 'components/common/MenuButton';
-import Icon from 'components/common/Icon';
 import User from 'assets/user.svg';
-import styles from './UserButton.module.css';
-import { AUTH_TOKEN } from 'lib/constants';
-import useUser from 'hooks/useUser';
 import useConfig from 'hooks/useConfig';
+import useUser from 'hooks/useUser';
+import { AUTH_TOKEN } from 'lib/constants';
+import { removeItem } from 'next-basics';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { Button, Icon, Item, Menu, Popup, Text } from 'react-basics';
+import { FormattedMessage } from 'react-intl';
+import styles from './UserButton.module.css';
+import useDocumentClick from '../../hooks/useDocumentClick';
 
 export default function UserButton() {
-  const { user } = useUser();
+  const [show, setShow] = useState(false);
+  const ref = useRef();
+  const user = useUser();
   const router = useRouter();
   const { adminDisabled } = useConfig();
 
@@ -31,26 +33,48 @@ export default function UserButton() {
       label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
       value: 'profile',
       hidden: adminDisabled,
+      divider: true,
     },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];
+
+  function handleClick() {
+    setShow(state => !state);
+  }
 
   function handleSelect(value) {
     if (value === 'logout') {
       removeItem(AUTH_TOKEN);
       router.push('/login');
     } else if (value === 'profile') {
-      router.push('/settings/profile');
+      router.push('/profile');
     }
   }
 
+  useDocumentClick(e => {
+    if (!ref.current?.contains(e.target)) {
+      setShow(false);
+    }
+  });
+
   return (
-    <MenuButton
-      icon={<Icon icon={<User />} size="large" />}
-      buttonVariant="light"
-      options={menuOptions}
-      onSelect={handleSelect}
-      hideLabel
-    />
+    <div className={styles.button} ref={ref}>
+      <Button variant="light" onClick={handleClick}>
+        <Icon className={styles.icon} size="large">
+          <User />
+        </Icon>
+      </Button>
+      {show && (
+        <Popup className={styles.menu} position="bottom" gap={5}>
+          <Menu items={menuOptions} onSelect={handleSelect}>
+            {({ label, value }) => (
+              <Item key={value}>
+                <Text>{label}</Text>
+              </Item>
+            )}
+          </Menu>
+        </Popup>
+      )}
+    </div>
   );
 }

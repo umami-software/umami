@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';

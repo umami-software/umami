@@ -22,15 +22,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { user, shareToken } = req.auth;
-  const userId = user?.id;
-  const websiteId = req.query.id;
-  const shared = shareToken?.websiteId === websiteId;
+  const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
-    const canView = await canViewWebsite(userId, websiteId);
-
-    if (!canView && !shared) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
@@ -40,9 +35,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const canUpdate = await canUpdateWebsite(userId, websiteId);
-
-    if (!canUpdate) {
+    if (!(await canUpdateWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
@@ -60,9 +53,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    const canDelete = await canDeleteWebsite(userId, websiteId);
-
-    if (!canDelete) {
+    if (!(await canDeleteWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 

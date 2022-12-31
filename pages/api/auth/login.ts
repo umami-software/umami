@@ -7,9 +7,9 @@ import {
   methodNotAllowed,
   getRandomChars,
 } from 'next-basics';
+import redis from '@umami/redis-client';
 import { getUser, User } from 'queries';
 import { secret } from 'lib/crypto';
-import redis from 'lib/redis';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 

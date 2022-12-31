@@ -1,5 +1,4 @@
-import React from 'react';
-import Dot from 'components/common/Dot';
+import { StatusLight } from 'react-basics';
 import styles from './ChartTooltip.module.css';
 import ReactTooltip from 'react-tooltip';
 
@@ -16,7 +15,7 @@ export default function ChartTooltip({ chartId, tooltip }) {
         <div className={styles.content}>
           <div className={styles.title}>{title}</div>
           <div className={styles.metric}>
-            <Dot color={labelColor} />
+            <StatusLight color={labelColor} />
             {value} {label}
           </div>
         </div>

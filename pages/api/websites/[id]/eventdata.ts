@@ -10,9 +10,9 @@ export interface WebsiteEventDataRequestQuery {
 }
 
 export interface WebsiteEventDataRequestBody {
-  start_at: string;
-  end_at: string;
-  event_name: string;
+  startAt: string;
+  endAt: string;
+  eventName: string;
   columns: { [key: string]: 'count' | 'max' | 'min' | 'avg' | 'sum' };
   filters?: { [key: string]: any };
 }
@@ -24,22 +24,17 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    const canView = canViewWebsite(userId, websiteId);
-
-    if (!canView) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const { start_at, end_at, event_name: eventName, columns, filters } = req.body;
+    const { startAt, endAt, eventName, columns, filters } = req.body;
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     const events = await getEventData(websiteId, {
       startDate,

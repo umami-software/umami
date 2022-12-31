@@ -1,9 +1,9 @@
-import React from 'react';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import MenuButton from 'components/common/MenuButton';
 import Globe from 'assets/globe.svg';
 import styles from './LanguageButton.module.css';
+import { Icon } from 'react-basics';
 
 export default function LanguageButton() {
   const { locale, saveLocale } = useLocale();
@@ -15,13 +15,16 @@ export default function LanguageButton() {
 
   return (
     <MenuButton
-      icon={<Globe />}
       options={menuOptions}
       value={locale}
       menuClassName={styles.menu}
       buttonVariant="light"
       onSelect={handleSelect}
       hideLabel
-    />
+    >
+      <Icon>
+        <Globe />
+      </Icon>
+    </MenuButton>
   );
 }

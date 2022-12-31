@@ -54,7 +54,7 @@ async function relationalQuery(
           ? `and ${getEventDataFilterQuery('event_data', filters)}`
           : ''
       }`,
-    params,
+    params as any,
   );
 }
 

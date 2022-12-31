@@ -17,8 +17,8 @@ export interface UserPasswordRequestQuery {
 }
 
 export interface UserPasswordRequestBody {
-  current_password: string;
-  new_password: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
 export default async (
@@ -27,24 +27,21 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const { current_password, new_password } = req.body;
+  const { currentPassword, newPassword } = req.body;
   const { id } = req.query;
-  const {
-    user: { id: userId },
-  } = req.auth;
 
   if (req.method === 'POST') {
-    if (canUpdateUser(userId, id)) {
+    if (!(await canUpdateUser(req.auth, id))) {
       return unauthorized(res);
     }
 
-    const user = await getUser({ id });
+    const user = await getUser({ id }, { includePassword: true });
 
-    if (!checkPassword(current_password, user.password)) {
+    if (!checkPassword(currentPassword, user.password)) {
       return badRequest(res, 'Current password is incorrect');
     }
 
-    const password = hashPassword(new_password);
+    const password = hashPassword(newPassword);
 
     const updated = await updateUser({ password }, { id });
 

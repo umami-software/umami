@@ -1,11 +1,11 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Menu from './Menu';
 import useDocumentClick from 'hooks/useDocumentClick';
 import Chevron from 'assets/chevron-down.svg';
 import styles from './Dropdown.module.css';
-import Icon from './Icon';
+import { Icon } from 'react-basics';
 
 function DropDown({ value, className, menuClassName, options = [], onChange = () => {} }) {
   const [showMenu, setShowMenu] = useState(false);
@@ -33,7 +33,9 @@ function DropDown({ value, className, menuClassName, options = [], onChange = ()
     <div ref={ref} className={classNames(styles.dropdown, className)} onClick={handleShowMenu}>
       <div className={styles.value}>
         <div className={styles.text}>{options.find(e => e.value === value)?.label || value}</div>
-        <Icon icon={<Chevron />} className={styles.icon} size="small" />
+        <Icon className={styles.icon} size="small">
+          <Chevron />
+        </Icon>
       </div>
       {showMenu && (
         <Menu

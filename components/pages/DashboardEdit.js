@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
 import styles from './DashboardEdit.module.css';

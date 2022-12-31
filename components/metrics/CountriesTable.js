@@ -1,4 +1,3 @@
-import React from 'react';
 import MetricsTable from './MetricsTable';
 import { percentFilter } from 'lib/filters';
 import { useIntl, defineMessages } from 'react-intl';

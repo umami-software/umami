@@ -1,7 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import ButtonLayout from 'components/layout/ButtonLayout';
-import ButtonGroup from './ButtonGroup';
+import { ButtonGroup } from 'react-basics';
 
 function FilterButtons({ buttons, selected, onClick }) {
   return (

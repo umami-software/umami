@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { isAfter, isBefore, isSameDay } from 'date-fns';
 import Calendar from 'components/common/Calendar';
-import Button from 'components/common/Button';
 import { FormButtons } from 'components/layout/FormLayout';
+import { isAfter, isBefore, isSameDay } from 'date-fns';
 import { getDateRangeValues } from 'lib/date';
+import { useState } from 'react';
+import { Button, ButtonGroup } from 'react-basics';
+import { FormattedMessage } from 'react-intl';
 import styles from './DatePickerForm.module.css';
-import ButtonGroup from 'components/common/ButtonGroup';
 
 const FILTER_DAY = 0;
 const FILTER_RANGE = 1;

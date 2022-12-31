@@ -1,6 +1,6 @@
 import { methodNotAllowed, ok } from 'next-basics';
+import redis from '@umami/redis-client';
 import { useAuth } from 'lib/middleware';
-import redis from 'lib/redis';
 import { getAuthToken } from 'lib/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 

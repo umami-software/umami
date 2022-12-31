@@ -11,8 +11,8 @@ export interface TeamUserRequestQuery {
 
 export interface TeamUserRequestBody {
   email: string;
-  role_id: string;
-  team_user_id?: string;
+  roleId: string;
+  teamUserId?: string;
 }
 
 export default async (
@@ -21,13 +21,10 @@ export default async (
 ) => {
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (!(await canViewTeam(userId, teamId))) {
+    if (!(await canViewTeam(req.auth, teamId))) {
       return unauthorized(res);
     }
 
@@ -37,11 +34,11 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    if (!(await canUpdateTeam(userId, teamId))) {
+    if (!(await canUpdateTeam(req.auth, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    const { email, role_id: roleId } = req.body;
+    const { email, roleId: roleId } = req.body;
 
     // Check for User
     const user = await getUser({ username: email });
@@ -56,12 +53,12 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (await canUpdateTeam(userId, teamId)) {
+    if (await canUpdateTeam(req.auth, teamId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
-    const { team_user_id } = req.body;
+    const { teamUserId } = req.body;
 
-    await deleteTeamUser(team_user_id);
+    await deleteTeamUser(teamUserId);
 
     return ok(res);
   }

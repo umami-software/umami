@@ -1,89 +1,64 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Formik, Form, Field } from 'formik';
-import Button from 'components/common/Button';
-import FormLayout, {
+import {
+  Dropdown,
+  Item,
+  Form,
   FormButtons,
-  FormError,
-  FormMessage,
-  FormRow,
-} from 'components/layout/FormLayout';
+  FormInput,
+  TextField,
+  SubmitButton,
+} from 'react-basics';
+import { useRef } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
+import { ROLES } from 'lib/constants';
+import styles from './UserForm.module.css';
 
-const initialValues = {
-  username: '',
-  password: '',
-};
+const items = [
+  {
+    value: ROLES.user,
+    label: 'User',
+  },
+  {
+    value: ROLES.admin,
+    label: 'Admin',
+  },
+];
 
-const validate = ({ id, username, password }) => {
-  const errors = {};
-
-  if (!username) {
-    errors.username = <FormattedMessage id="label.required" defaultMessage="Required" />;
-  }
-  if (!id && !password) {
-    errors.password = <FormattedMessage id="label.required" defaultMessage="Required" />;
-  }
-
-  return errors;
-};
-
-export default function UserEditForm({ values, onSave, onClose }) {
+export default function UserEditForm({ data, onSave }) {
+  const { id } = data;
   const { post } = useApi();
-  const [message, setMessage] = useState();
+  const { mutate, error } = useMutation(({ username }) => post(`/user/${id}`, { username }));
+  const ref = useRef(null);
 
-  const handleSubmit = async values => {
-    const { id } = values;
-    const { ok, data } = await post(id ? `/users/${id}` : '/users', values);
-
-    if (ok) {
-      onSave();
-    } else {
-      setMessage(
-        data || <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
-      );
-    }
+  const handleSubmit = async data => {
+    mutate(data, {
+      onSuccess: async () => {
+        onSave(data);
+        ref.current.reset(data);
+      },
+    });
   };
 
   return (
-    <FormLayout>
-      <Formik
-        initialValues={{ ...initialValues, ...values }}
-        validate={validate}
-        onSubmit={handleSubmit}
-      >
-        {() => (
-          <Form>
-            <FormRow>
-              <label htmlFor="username">
-                <FormattedMessage id="label.username" defaultMessage="Username" />
-              </label>
-              <div>
-                <Field name="username" type="text" />
-                <FormError name="username" />
-              </div>
-            </FormRow>
-            <FormRow>
-              <label htmlFor="password">
-                <FormattedMessage id="label.password" defaultMessage="Password" />
-              </label>
-              <div>
-                <Field name="password" type="password" />
-                <FormError name="password" />
-              </div>
-            </FormRow>
-            <FormButtons>
-              <Button type="submit" variant="action">
-                <FormattedMessage id="label.save" defaultMessage="Save" />
-              </Button>
-              <Button onClick={onClose}>
-                <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
-              </Button>
-            </FormButtons>
-            <FormMessage>{message}</FormMessage>
-          </Form>
-        )}
-      </Formik>
-    </FormLayout>
+    <Form
+      key={id}
+      className={styles.form}
+      ref={ref}
+      onSubmit={handleSubmit}
+      error={error}
+      values={data}
+    >
+      <FormInput name="username" label="Username">
+        <TextField />
+      </FormInput>
+      <FormInput name="role" label="Role">
+        <Dropdown items={items} style={{ width: 200 }}>
+          {({ value, label }) => <Item key={value}>{label}</Item>}
+        </Dropdown>
+      </FormInput>
+      <FormButtons>
+        <SubmitButton variant="primary">Save</SubmitButton>
+      </FormButtons>
+    </Form>
   );
 }

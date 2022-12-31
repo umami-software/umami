@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { colord } from 'colord';
 import CheckVisible from 'components/helpers/CheckVisible';

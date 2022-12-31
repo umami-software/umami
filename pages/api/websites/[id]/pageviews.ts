@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
-import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
 import moment from 'moment-timezone';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
+import { canViewWebsite } from 'lib/auth';
+import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
 
 const unitTypes = ['year', 'month', 'hour', 'day'];
@@ -11,10 +11,10 @@ const unitTypes = ['year', 'month', 'hour', 'day'];
 export interface WebsitePageviewRequestQuery {
   id: string;
   websiteId: string;
-  start_at: number;
-  end_at: number;
+  startAt: number;
+  endAt: number;
   unit: string;
-  tz: string;
+  timezone: string;
   url?: string;
   referrer?: string;
   os?: string;
@@ -32,10 +32,10 @@ export default async (
 
   const {
     id: websiteId,
-    start_at,
-    end_at,
+    startAt,
+    endAt,
     unit,
-    tz,
+    timezone,
     url,
     referrer,
     os,
@@ -43,21 +43,16 @@ export default async (
     device,
     country,
   } = req.query;
-  const { user, shareToken } = req.auth;
-  const userId = user?.id;
-  const shared = shareToken?.websiteId === websiteId;
 
   if (req.method === 'GET') {
-    const canView = await canViewWebsite(userId, websiteId);
-
-    if (!canView && !shared) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
       return badRequest(res);
     }
 
@@ -65,7 +60,7 @@ export default async (
       getPageviewStats(websiteId, {
         startDate,
         endDate,
-        timezone: tz,
+        timezone,
         unit,
         count: '*',
         filters: {
@@ -80,7 +75,7 @@ export default async (
       getPageviewStats(websiteId, {
         startDate,
         endDate,
-        timezone: tz,
+        timezone,
         unit,
         count: 'distinct pageview.',
         filters: {

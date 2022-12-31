@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useIntl, defineMessage } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';

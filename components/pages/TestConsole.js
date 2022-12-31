@@ -1,24 +1,30 @@
-import { Row, Column } from 'react-basics';
+import { Button, Column, Loading, Row } from 'react-basics';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import DropDown from 'components/common/DropDown';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import DropDown from 'components/common/DropDown';
-import WebsiteChart from 'components/metrics/WebsiteChart';
 import EventsChart from 'components/metrics/EventsChart';
-import Button from 'components/common/Button';
-import useFetch from 'hooks/useFetch';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import useApi from 'hooks/useApi';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
-  const { data } = useFetch('/websites?include_all=true');
+  const { get, useQuery } = useApi();
+  const { data, isLoading } = useQuery(['websites:test-console'], () =>
+    get('/websites?include_all=true'),
+  );
   const router = useRouter();
   const {
     basePath,
     query: { id },
   } = router;
   const websiteId = id?.[0];
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (!data) {
     return null;

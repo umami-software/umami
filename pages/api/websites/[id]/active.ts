@@ -1,4 +1,5 @@
-import { NextApiRequestQueryBody, WebsiteActive } from 'lib/types';
+import { WebsiteActive } from 'lib/types';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
@@ -16,15 +17,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { user, shareToken } = req.auth;
-  const userId = user?.id;
-  const websiteId = req.query.id;
-  const shared = shareToken?.websiteId === websiteId;
+  const { id: websiteId } = req.query;
 
   if (req.method === 'GET') {
-    const canView = await canViewWebsite(userId, websiteId);
-
-    if (!canView && !shared) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 

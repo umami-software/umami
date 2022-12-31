@@ -1,8 +1,7 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
 import DropDown from 'components/common/DropDown';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import useTimezone from 'hooks/useTimezone';
 import { getTimezone } from 'lib/date';
 import styles from './TimezoneSetting.module.css';
@@ -23,7 +22,7 @@ export default function TimezoneSetting() {
         options={options}
         onChange={saveTimezone}
       />
-      <Button className={styles.button} size="small" onClick={handleReset}>
+      <Button className={styles.button} size="sm" onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
     </>

@@ -1,7 +1,6 @@
-import React from 'react';
 import classNames from 'classnames';
 import { safeDecodeURI } from 'next-basics';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import Times from 'assets/times.svg';
 import styles from './FilterTags.module.css';
 

@@ -9,9 +9,9 @@ import {
   Icon,
 } from 'react-basics';
 import { useRouter } from 'next/router';
-import { useApi } from 'next-basics';
+import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
-import { setAuthToken } from 'lib/client';
+import { setClientAuthToken } from 'lib/client';
 import Logo from 'assets/logo.svg';
 import styles from './Form.module.css';
 
@@ -23,7 +23,7 @@ export default function LoginForm() {
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async ({ token, user }) => {
-        setAuthToken(token);
+        setClientAuthToken(token);
         setUser(user);
 
         await router.push('/websites');

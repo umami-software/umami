@@ -38,8 +38,8 @@ function getColumn(type) {
 export interface WebsiteMetricsRequestQuery {
   id: string;
   type: string;
-  start_at: number;
-  end_at: number;
+  startAt: number;
+  endAt: number;
   url: string;
   referrer: string;
   os: string;
@@ -58,8 +58,8 @@ export default async (
   const {
     id: websiteId,
     type,
-    start_at,
-    end_at,
+    startAt,
+    endAt,
     url,
     referrer,
     os,
@@ -67,19 +67,14 @@ export default async (
     device,
     country,
   } = req.query;
-  const { user, shareToken } = req.auth;
-  const userId = user?.id;
-  const shared = shareToken?.websiteId === websiteId;
 
   if (req.method === 'GET') {
-    const canView = await canViewWebsite(userId, websiteId);
-
-    if (!canView && !shared) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const startDate = new Date(+start_at);
-    const endDate = new Date(+end_at);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     if (sessionColumns.includes(type)) {
       let data = await getSessionMetrics(websiteId, {
@@ -136,7 +131,7 @@ export default async (
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
-        event_url: type !== 'url' && table === 'event' ? url : undefined,
+        eventUrl: type !== 'url' && table === 'event' ? url : undefined,
         query: type === 'query' && table !== 'event' ? true : undefined,
       };
 

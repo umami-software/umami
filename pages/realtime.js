@@ -1,12 +1,11 @@
-import React from 'react';
 import Layout from 'components/layout/Layout';
 import RealtimeDashboard from 'components/pages/RealtimeDashboard';
-import useRequireLogin from 'hooks/useRequireLogin';
+import useUser from 'hooks/useUser';
 
 export default function RealtimePage() {
-  const { loading } = useRequireLogin();
+  const user = useUser();
 
-  if (loading) {
+  if (!user) {
     return null;
   }
 

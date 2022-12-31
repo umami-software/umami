@@ -1,7 +1,6 @@
-import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import DropDown from 'components/common/DropDown';
-import Button from 'components/common/Button';
+import { Button } from 'react-basics';
 import useLocale from 'hooks/useLocale';
 import { DEFAULT_LOCALE } from 'lib/constants';
 import styles from './TimezoneSetting.module.css';
@@ -23,7 +22,7 @@ export default function LanguageSetting() {
         options={options}
         onChange={saveLocale}
       />
-      <Button className={styles.button} size="small" onClick={handleReset}>
+      <Button className={styles.button} size="sm" onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
     </>

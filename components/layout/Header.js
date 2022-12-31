@@ -1,22 +1,21 @@
-import { Row, Column } from 'react-basics';
-import { useRouter } from 'next/router';
-import { FormattedMessage } from 'react-intl';
+import Logo from 'assets/logo.svg';
+import HamburgerButton from 'components/common/HamburgerButton';
 import Link from 'components/common/Link';
-import Icon from 'components/common/Icon';
+import UpdateNotice from 'components/common/UpdateNotice';
 import LanguageButton from 'components/settings/LanguageButton';
 import ThemeButton from 'components/settings/ThemeButton';
-import HamburgerButton from 'components/common/HamburgerButton';
-import UpdateNotice from 'components/common/UpdateNotice';
 import UserButton from 'components/settings/UserButton';
-import { HOMEPAGE_URL } from 'lib/constants';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
-import Logo from 'assets/logo.svg';
-import styles from './Header.module.css';
+import { HOMEPAGE_URL } from 'lib/constants';
+import { useRouter } from 'next/router';
+import { Column, Icon, Row } from 'react-basics';
+import { FormattedMessage } from 'react-intl';
 import SettingsButton from '../settings/SettingsButton';
+import styles from './Header.module.css';
 
 export default function Header() {
-  const { user } = useUser();
+  const user = useUser();
   const { pathname } = useRouter();
   const { updatesDisabled, adminDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');
@@ -28,7 +27,9 @@ export default function Header() {
       <header className={styles.header}>
         <Row>
           <Column className={styles.title}>
-            <Icon icon={<Logo />} size="large" className={styles.logo} />
+            <Icon size="lg" className={styles.logo}>
+              <Logo />
+            </Icon>
             <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
           </Column>
           <HamburgerButton />
@@ -40,7 +41,7 @@ export default function Header() {
               <Link href="/realtime">
                 <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
               </Link>
-              <Link href="/settings">
+              <Link href="/websites">
                 <FormattedMessage id="label.settings" defaultMessage="Settings" />
               </Link>
             </div>

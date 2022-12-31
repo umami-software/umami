@@ -25,7 +25,7 @@ export const REALTIME_INTERVAL = 3000;
 export const EVENT_TYPE = {
   pageView: 1,
   customEvent: 2,
-};
+} as const;
 
 export const ROLES = {
   admin: 'admin',
@@ -33,7 +33,7 @@ export const ROLES = {
   teamOwner: 'team-owner',
   teamMember: 'team-member',
   teamGuest: 'team-guest',
-};
+} as const;
 
 export const PERMISSIONS = {
   all: 'all',
@@ -43,7 +43,7 @@ export const PERMISSIONS = {
   teamCreate: 'team:create',
   teamUpdate: 'team:update',
   teamDelete: 'team:delete',
-};
+} as const;
 
 export const ROLE_PERMISSIONS = {
   [ROLES.admin]: [PERMISSIONS.all],
@@ -66,7 +66,7 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
   ],
   [ROLES.teamGuest]: [],
-};
+} as const;
 
 export const THEME_COLORS = {
   light: {

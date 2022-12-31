@@ -1,10 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import chalk from 'chalk';
+import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
-import debug from 'debug';
-import { PRISMA, MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
+import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { FILTER_IGNORED } from 'lib/constants';
-import { PrismaClientOptions } from '@prisma/client/runtime';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -22,39 +19,7 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-const log = debug('umami:prisma');
-
-const PRISMA_OPTIONS = {
-  log: [
-    {
-      emit: 'event',
-      level: 'query',
-    },
-  ],
-};
-
-function logQuery(e) {
-  log(chalk.yellow(e.params), '->', e.query, chalk.greenBright(`${e.duration}ms`));
-}
-
-function getClient(options) {
-  const prisma: PrismaClient<PrismaClientOptions, 'query' | 'error' | 'info' | 'warn'> =
-    new PrismaClient(options);
-
-  if (process.env.LOG_QUERY) {
-    prisma.$on('query', logQuery);
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    global[PRISMA] = prisma;
-  }
-
-  log('Prisma initialized');
-
-  return prisma;
-}
-
-function getDateQuery(field, unit, timezone?): string {
+function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -75,7 +40,7 @@ function getDateQuery(field, unit, timezone?): string {
   }
 }
 
-function getTimestampInterval(field): string {
+function getTimestampInterval(field: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -87,7 +52,7 @@ function getTimestampInterval(field): string {
   }
 }
 
-function getJsonField(column, property, isNumber): string {
+function getJsonField(column: string, property: string, isNumber: boolean): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -159,19 +124,26 @@ function getFilterQuery(filters = {}, params = []): string {
       case 'browser':
       case 'device':
       case 'country':
-      case 'event_name':
         arr.push(`and ${key}=$${params.length + 1}`);
         params.push(decodeURIComponent(filter));
         break;
+
+      case 'eventName':
+        arr.push(`and event_name=$${params.length + 1}`);
+        params.push(decodeURIComponent(filter));
+        break;
+
       case 'referrer':
         arr.push(`and referrer like $${params.length + 1}`);
         params.push(`%${decodeURIComponent(filter)}%`);
         break;
+
       case 'domain':
         arr.push(`and referrer not like $${params.length + 1}`);
         arr.push(`and referrer not like '/%'`);
         params.push(`%://${filter}/%`);
         break;
+
       case 'query':
         arr.push(`and url like '%?%'`);
     }
@@ -187,18 +159,18 @@ function parseFilters(
   params = [],
   sessionKey = 'session_id',
 ) {
-  const { domain, url, event_url, referrer, os, browser, device, country, event_name, query } =
+  const { domain, url, eventUrl, referrer, os, browser, device, country, eventName, query } =
     filters;
 
   const pageviewFilters = { domain, url, referrer, query };
   const sessionFilters = { os, browser, device, country };
-  const eventFilters = { url: event_url, event_name };
+  const eventFilters = { url: eventUrl, eventName };
 
   return {
     pageviewFilters,
     sessionFilters,
     eventFilters,
-    event: { event_name },
+    event: { eventName },
     joinSession:
       os || browser || device || country
         ? `inner join session on ${sessionKey} = session.${sessionKey}`
@@ -207,7 +179,7 @@ function parseFilters(
   };
 }
 
-async function rawQuery(query, params = []): Promise<any> {
+async function rawQuery(query: string, params: never[] = []): Promise<any> {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db !== POSTGRESQL && db !== MYSQL) {
@@ -216,20 +188,11 @@ async function rawQuery(query, params = []): Promise<any> {
 
   const sql = db === MYSQL ? query.replace(/\$[0-9]+/g, '?') : query;
 
-  return prisma.$queryRawUnsafe.apply(prisma, [sql, ...params]);
+  return prisma.rawQuery(sql, params);
 }
-
-async function transaction(queries): Promise<any> {
-  return prisma.$transaction(queries);
-}
-
-// Initialization
-const prisma: PrismaClient<PrismaClientOptions, 'query' | 'error' | 'info' | 'warn'> =
-  global[PRISMA] || getClient(PRISMA_OPTIONS);
 
 export default {
-  client: prisma,
-  log,
+  ...prisma,
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
@@ -237,5 +200,4 @@ export default {
   getEventDataFilterQuery,
   parseFilters,
   rawQuery,
-  transaction,
 };

@@ -1,5 +1,5 @@
 import { NextApiRequestQueryBody } from 'lib/types';
-import { canUpdateWebsite } from 'lib/auth';
+import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -16,15 +16,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
   const { id: websiteId } = req.query;
 
   if (req.method === 'POST') {
-    const canUpdate = await canUpdateWebsite(userId, websiteId);
-
-    if (!canUpdate) {
+    if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
