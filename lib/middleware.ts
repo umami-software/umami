@@ -13,7 +13,7 @@ const log = debug('umami:middleware');
 
 export const useCors = createMiddleware(cors());
 
-export const useSession = createMiddleware(async (req, res, next) => {
+export const useSession = createMiddleware(async (req: any, res, next) => {
   const session = await findSession(req);
 
   if (!session) {
@@ -21,7 +21,7 @@ export const useSession = createMiddleware(async (req, res, next) => {
     return badRequest(res);
   }
 
-  (req as any).session = session;
+  req.session = session;
   next();
 });
 

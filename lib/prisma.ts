@@ -1,7 +1,7 @@
 import prisma from '@umami/prisma-client';
-import moment from 'moment-timezone';
-import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { FILTER_IGNORED } from 'lib/constants';
+import { getDatabaseType, MYSQL, POSTGRESQL } from 'lib/db';
+import moment from 'moment-timezone';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',

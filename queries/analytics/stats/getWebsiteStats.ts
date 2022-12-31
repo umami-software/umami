@@ -18,7 +18,7 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, filters = {} } = data;
   const { getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
-  const params = [startDate, endDate];
+  const params: any = [startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(

@@ -2290,10 +2290,10 @@
     "@typescript-eslint/types" "5.45.0"
     eslint-visitor-keys "^3.3.0"
 
-"@umami/prisma-client@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@umami/prisma-client/-/prisma-client-0.1.0.tgz#4ecc17b1998cb738b8f2027b80b003864beef6a4"
-  integrity sha512-2qTXN0dtMUT+HVhz37eVC02lDSwz9TGUGHRRO0LPRHdfJPfSkUF0D8pgksX7ETy3IZoIQP1h45tiXsM0pKBMZA==
+"@umami/prisma-client@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@umami/prisma-client/-/prisma-client-0.2.0.tgz#b9de1f28be67ccfb9e2544f23c69c392c5b26ea7"
+  integrity sha512-+27dd4DLl8SvbbIYG1mdm6pIZd+UzQI7eZGNjQ9ONeWO0jr+/wiVnPIXUzd8w4R/OoM4ChpI3mBZPqcWa5MAOw==
   dependencies:
     debug "^4.3.4"
 

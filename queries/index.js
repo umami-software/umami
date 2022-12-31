@@ -16,4 +16,5 @@ export * from './analytics/session/getSessionMetrics';
 export * from './analytics/session/getSessions';
 export * from './analytics/stats/getActiveVisitors';
 export * from './analytics/stats/getRealtimeData';
+export * from './analytics/stats/getViewTotals';
 export * from './analytics/stats/getWebsiteStats';

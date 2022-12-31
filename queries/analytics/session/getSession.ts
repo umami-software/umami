@@ -1,7 +1,7 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma, Session } from '@prisma/client';
 
 export async function getSession(args: { id: string }) {
   return runQuery({
@@ -10,7 +10,7 @@ export async function getSession(args: { id: string }) {
   });
 }
 
-async function relationalQuery(where: Prisma.SessionWhereUniqueInput) {
+async function relationalQuery(where: Prisma.SessionWhereUniqueInput): Promise<Session> {
   return prisma.client.session.findUnique({
     where,
   });

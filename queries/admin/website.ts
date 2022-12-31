@@ -1,16 +1,45 @@
-import { Prisma, Website } from '@prisma/client';
+import { Prisma, Team, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
-export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
+export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<
+  Website & {
+    team?: Team;
+  }
+> {
   return prisma.client.website.findUnique({
     where,
+    include: {
+      team: true,
+    },
   });
 }
 
-export async function getWebsites(): Promise<Website[]> {
+export async function getWebsites(
+  where: Prisma.WebsiteFindManyArgs,
+  showDeleted = false,
+): Promise<Website[]> {
   return prisma.client.website.findMany({
+    where: { ...where, deletedAt: showDeleted ? { not: null } : null },
+    orderBy: {
+      name: 'asc',
+    },
+  });
+}
+
+export async function getAllWebsitesByUser(userId): Promise<Website[]> {
+  return prisma.client.website.findMany({
+    where: {
+      OR: [
+        { userId },
+        {
+          team: {
+            userId,
+          },
+        },
+      ],
+    },
     orderBy: {
       name: 'asc',
     },
