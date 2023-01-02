@@ -2,65 +2,25 @@ import { Session, Team, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
 import { secret, uuid } from 'lib/crypto';
-import { getClientInfo, getJsonBody } from 'lib/detect';
+import { getClientInfo } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { createSession, getSession, getWebsite } from 'queries';
-import { validate } from 'uuid';
 
-export async function findSession(req): Promise<{
-  error?: {
-    status: number;
-    message: string;
-  };
-  session?: {
-    id: string;
-    websiteId: string;
-    hostname: string;
-    browser: string;
-    os: string;
-    device: string;
-    screen: string;
-    language: string;
-    country: string;
-  };
-  website?: Website & { team?: Team };
+export async function findSession(
+  req,
+  payload,
+): Promise<{
+  id: string;
+  websiteId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
 }> {
-  const { payload } = getJsonBody(req);
-
-  if (!payload) {
-    return null;
-  }
-
-  // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
-
-  // Find website
-  let website: Website & { team?: Team } = null;
-
-  if (cache.enabled) {
-    website = await cache.fetchWebsite(websiteId);
-  } else {
-    website = await getWebsite({ id: websiteId });
-  }
-
-  if (!website || website.deletedAt) {
-    throw new Error(`Website not found: ${websiteId}`);
-  }
-
-  // Check if cache token is passed
-  const cacheToken = req.headers['x-umami-cache'];
-
-  if (cacheToken) {
-    const result = await parseToken(cacheToken, secret());
-
-    if (result) {
-      return { session: result, website };
-    }
-  }
-
-  if (!validate(websiteId)) {
-    return null;
-  }
 
   const { userAgent, browser, os, ip, country, device } = await getClientInfo(req, payload);
   const sessionId = uuid(websiteId, hostname, ip, userAgent);
@@ -68,18 +28,15 @@ export async function findSession(req): Promise<{
   // Clickhouse does not require session lookup
   if (clickhouse.enabled) {
     return {
-      session: {
-        id: sessionId,
-        websiteId,
-        hostname,
-        browser,
-        os,
-        device,
-        screen,
-        language,
-        country,
-      },
-      website,
+      id: sessionId,
+      websiteId,
+      hostname,
+      browser,
+      os,
+      device,
+      screen,
+      language,
+      country,
     };
   }
 
@@ -113,5 +70,61 @@ export async function findSession(req): Promise<{
     }
   }
 
-  return { session, website };
+  return session;
+}
+
+export async function useSessionCache(req: any): Promise<{
+  id: string;
+  websiteId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+}> {
+  // Check if cache token is passed
+  const cacheToken = req.headers['x-umami-cache'];
+
+  if (cacheToken) {
+    const result = await parseToken(cacheToken, secret());
+
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+export async function findWebsite(websiteId: string) {
+  let website: Website & { team?: Team } = null;
+
+  if (cache.enabled) {
+    website = await cache.fetchWebsite(websiteId);
+  } else {
+    website = await getWebsite({ id: websiteId }, true);
+  }
+
+  if (!website || website.deletedAt) {
+    throw new Error(`Website not found: ${websiteId}`);
+  }
+
+  return website;
+}
+
+export async function isOverApiLimit(website) {
+  const userId = website.userId ? website.userId : website.team.teamu.userId;
+
+  const limit = await cache.fetchCollectLimit(userId);
+
+  // To-do: Need to implement logic to find user-specific limit. Defaulted to 10k.
+  if (limit > 10000) {
+    return true;
+  }
+
+  await cache.incrementCollectLimit(userId);
+
+  return false;
 }

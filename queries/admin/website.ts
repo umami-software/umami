@@ -1,18 +1,29 @@
-import { Prisma, Team, Website } from '@prisma/client';
+import { Prisma, Team, TeamUser, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
-export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<
+export async function getWebsite(
+  where: Prisma.WebsiteWhereUniqueInput,
+  includeTeamData = false,
+): Promise<
   Website & {
-    team?: Team;
+    team?: Team & { teamUsers: TeamUser[] };
   }
 > {
+  prisma.client.team.findMany();
+
   return prisma.client.website.findUnique({
     where,
-    include: {
-      team: true,
-    },
+    include: includeTeamData
+      ? {
+          team: {
+            include: {
+              teamUsers: true,
+            },
+          },
+        }
+      : {},
   });
 }
 

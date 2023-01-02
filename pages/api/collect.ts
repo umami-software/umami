@@ -1,40 +1,24 @@
 const { Resolver } = require('dns').promises;
-import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
-import {
-  createToken,
-  unauthorized,
-  send,
-  badRequest,
-  forbidden,
-  tooManyRequest,
-} from 'next-basics';
-import { savePageView, saveEvent } from 'queries';
-import { useCors, useSession } from 'lib/middleware';
-import { getJsonBody, getIpAddress } from 'lib/detect';
+import isbot from 'isbot';
 import { secret } from 'lib/crypto';
+import { getIpAddress, getJsonBody } from 'lib/detect';
+import { useCors, useSession } from 'lib/middleware';
 import { NextApiRequest, NextApiResponse } from 'next';
-import cache from 'lib/cache';
-import { Team, Website } from '@prisma/client';
+import { badRequest, createToken, forbidden, send, unauthorized } from 'next-basics';
+import { saveEvent, savePageView } from 'queries';
 
 export interface NextApiRequestCollect extends NextApiRequest {
-  session: {
-    error?: {
-      status: number;
-      message: string;
-    };
-    session?: {
-      id: string;
-      websiteId: string;
-      hostname: string;
-      browser: string;
-      os: string;
-      device: string;
-      screen: string;
-      language: string;
-      country: string;
-    };
-    website?: Website & { team?: Team };
+  session?: {
+    id: string;
+    websiteId: string;
+    hostname: string;
+    browser: string;
+    os: string;
+    device: string;
+    screen: string;
+    language: string;
+    country: string;
   };
 }
 
@@ -104,21 +88,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   await useSession(req, res);
 
-  const { session, website } = req.session;
-
-  // Check collection limit
-  if (process.env.ENABLE_COLLECT_LIMIT) {
-    const userId = website.userId ? website.userId : website.team.userId;
-
-    const limit = await cache.fetchCollectLimit(userId);
-
-    // To-do: Need to implement logic to find user-specific limit. Defaulted to 10k.
-    if (limit > 10000) {
-      return tooManyRequest(res, 'Collect currently exceeds monthly limit of 10000.');
-    }
-
-    await cache.incrementCollectLimit(userId);
-  }
+  const session = req.session;
 
   if (process.env.REMOVE_TRAILING_SLASH) {
     url = url.replace(/\/$/, '');

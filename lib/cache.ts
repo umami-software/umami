@@ -1,4 +1,4 @@
-import { User, Website, Team } from '@prisma/client';
+import { User, Website, Team, TeamUser } from '@prisma/client';
 import redis from '@umami/redis-client';
 import { lightFormat, startOfMonth } from 'date-fns';
 import { getAllWebsitesByUser, getSession, getUser, getViewTotals, getWebsite } from '../queries';
@@ -35,10 +35,10 @@ async function deleteObject(key, soft = false) {
 
 async function fetchWebsite(id): Promise<
   Website & {
-    team?: Team;
+    team?: Team & { teamUsers: TeamUser[] };
   }
 > {
-  return fetchObject(`website:${id}`, () => getWebsite({ id }));
+  return fetchObject(`website:${id}`, () => getWebsite({ id }, true));
 }
 
 async function storeWebsite(data) {
