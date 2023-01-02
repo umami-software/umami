@@ -1,5 +1,4 @@
-import { WebsiteActive } from 'lib/types';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { WebsiteActive, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
