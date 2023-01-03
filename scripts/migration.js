@@ -78,21 +78,15 @@ async function renameTables() {
 async function dropIndexes() {
   try {
     // drop indexes
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "account_account_uuid_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "event_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "event_event_uuid_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "event_session_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "event_website_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "pageview_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "pageview_session_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "pageview_website_id_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "pageview_website_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "pageview_website_id_session_id_created_at_idx";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "user_user_id_key";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "user_username_key";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_id_key";`;
     await prisma.$executeRaw`DROP INDEX IF EXISTS "session_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_uuid_idx";`;
     await prisma.$executeRaw`DROP INDEX IF EXISTS "session_website_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_uuid_idx";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_id_key";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`;
 
     success('Dropped v1 database indexes.');
   } catch (e) {
