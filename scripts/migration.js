@@ -35,7 +35,7 @@ async function checkConnection() {
 
 async function checkTables() {
   try {
-    await prisma.$queryRaw`select * from user limit 1`;
+    await prisma.$queryRaw`select * from account limit 1`;
 
     success('Database tables found.');
   } catch (e) {
@@ -94,6 +94,39 @@ async function dropIndexes() {
   }
 }
 
+async function createPrismaTable() {
+  try {
+    // drop / recreate _prisma_migrations table
+    await prisma.$executeRaw`DROP TABLE IF EXISTS "_prisma_migrations";`;
+    await prisma.$executeRaw`CREATE TABLE "_prisma_migrations"
+    (
+        id                  varchar(36)                            not null
+            constraint "_prisma_migrations_pkey"
+                primary key,
+        "checksum"            varchar(64)                            not null,
+        "finished_at"         timestamp with time zone,
+        "migration_name"      varchar(255)                           not null,
+        "logs"                text,
+        "rolled_back_at"      timestamp with time zone,
+        "started_at"          timestamp with time zone default now() not null,
+        "applied_steps_count" integer                  default 0     not null
+    );`;
+
+    success('Created Prisma migrations table.');
+  } catch (e) {
+    throw new Error('Failed to create Prisma migrations table.');
+  }
+}
+
+// async function prismaMigrate() {
+//   try {
+
+//     success('Created Prisma migrations table.');
+//   } catch (e) {
+//     throw new Error('Failed to create Prisma migrations table.');
+//   }
+// }
+
 // async function checkNewTables() {
 //     try {
 //       await prisma.$queryRaw`select * from website_event limit 1`;
@@ -106,7 +139,16 @@ async function dropIndexes() {
 
 (async () => {
   let err = false;
-  for (let fn of [checkEnv, checkConnection, checkTables, dropKeys, renameTables, dropIndexes]) {
+  for (let fn of [
+    checkEnv,
+    checkConnection,
+    checkTables,
+    dropKeys,
+    renameTables,
+    dropIndexes,
+    createPrismaTable,
+  ]) {
+    // for (let fn of [checkEnv, checkConnection, createPrismaTable]) {
     try {
       await fn();
     } catch (e) {
