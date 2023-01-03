@@ -61,13 +61,13 @@ async function dropKeys() {
 async function renameTables() {
   try {
     // rename tables
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "_prisma_migrations_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "account_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "event_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "event_data_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "pageview_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "session_v1";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "website_v1";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`;
 
     success('Renamed v1 database tables.');
   } catch (e) {
