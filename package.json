@@ -27,6 +27,7 @@
     "update-tracker": "node scripts/update-tracker.js",
     "update-db": "prisma migrate deploy",
     "check-db": "node scripts/check-db.js",
+    "migrate-db": "node scripts/migrate-db.js",
     "copy-db-files": "node scripts/copy-db-files.js",
     "generate-lang": "npm-run-all extract-lang merge-lang",
     "extract-lang": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",

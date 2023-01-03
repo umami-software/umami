@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const { PrismaClient } = require('@prisma/client');
 const chalk = require('chalk');
-// const spawn = require('cross-spawn');
-// const { execSync } = require('child_process');
+const { execSync } = require('child_process');
 
 const prisma = new PrismaClient();
 
@@ -11,9 +12,9 @@ function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
 }
 
-// function error(msg) {
-//   console.log(chalk.redBright(`✗ ${msg}`));
-// }
+function error(msg) {
+  console.log(chalk.redBright(`✗ ${msg}`));
+}
 
 async function checkEnv() {
   if (!process.env.DATABASE_URL) {
@@ -33,13 +34,35 @@ async function checkConnection() {
   }
 }
 
-async function checkTables() {
+async function checkV1Tables() {
   try {
     await prisma.$queryRaw`select * from account limit 1`;
 
-    success('Database tables found.');
+    success('Database v1 tables found.');
+    console.log('Preparing v1 tables for migration');
+
+    // alter v1 tables
+    await dropKeys();
+    await renameTables();
+    await dropIndexes();
   } catch (e) {
-    throw new Error('Database tables not found.');
+    error('Database v1 tables not found.');
+  }
+}
+
+async function checkV2Tables() {
+  try {
+    await prisma.$queryRaw`select * from website_event limit 1`;
+
+    success('Database v2 tables found.');
+  } catch (e) {
+    error('Database v2 tables not found.');
+    console.log('Adding v2 tables...');
+
+    // run v2 prisma migration steps
+    await runInitMigration();
+    console.log(execSync('prisma migrate resolve --applied 01_init').toString());
+    console.log(execSync('prisma migrate deploy').toString());
   }
 }
 
@@ -87,6 +110,7 @@ async function dropIndexes() {
     await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`;
     await prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`;
     await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`;
+    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`;
 
     success('Dropped v1 database indexes.');
   } catch (e) {
@@ -94,61 +118,35 @@ async function dropIndexes() {
   }
 }
 
-async function createPrismaTable() {
+async function runInitMigration() {
   try {
-    // drop / recreate _prisma_migrations table
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "_prisma_migrations";`;
-    await prisma.$executeRaw`CREATE TABLE "_prisma_migrations"
-    (
-        id                  varchar(36)                            not null
-            constraint "_prisma_migrations_pkey"
-                primary key,
-        "checksum"            varchar(64)                            not null,
-        "finished_at"         timestamp with time zone,
-        "migration_name"      varchar(255)                           not null,
-        "logs"                text,
-        "rolled_back_at"      timestamp with time zone,
-        "started_at"          timestamp with time zone default now() not null,
-        "applied_steps_count" integer                  default 0     not null
-    );`;
+    const rawSql = await fs.promises.readFile(
+      path.join(__dirname, '../prisma/migrations/01_init/migration.sql'),
+    );
 
-    success('Created Prisma migrations table.');
+    const sqlStatements = rawSql
+      .toString()
+      .split('\n')
+      .filter(line => !line.startsWith('--')) // remove comments-only lines
+      .join('\n')
+      .replace(/\r\n|\n|\r/g, ' ') // remove newlines
+      .replace(/\s+/g, ' ') // excess white space
+      .split(';');
+
+    for (const sql of sqlStatements) {
+      await prisma.$executeRawUnsafe(sql);
+    }
+
+    success('Ran 01_init migration.');
   } catch (e) {
-    throw new Error('Failed to create Prisma migrations table.');
+    console.error(e);
+    throw new Error('Failed to run 01_init migration.');
   }
 }
 
-// async function prismaMigrate() {
-//   try {
-
-//     success('Created Prisma migrations table.');
-//   } catch (e) {
-//     throw new Error('Failed to create Prisma migrations table.');
-//   }
-// }
-
-// async function checkNewTables() {
-//     try {
-//       await prisma.$queryRaw`select * from website_event limit 1`;
-
-//       success('Database v2 tables found.');
-//     } catch (e) {
-//       throw new Error('Database v2 tables not found.');
-//     }
-//   }
-
 (async () => {
   let err = false;
-  for (let fn of [
-    checkEnv,
-    checkConnection,
-    checkTables,
-    dropKeys,
-    renameTables,
-    dropIndexes,
-    createPrismaTable,
-  ]) {
-    // for (let fn of [checkEnv, checkConnection, createPrismaTable]) {
+  for (let fn of [checkEnv, checkConnection, checkV1Tables, checkV2Tables]) {
     try {
       await fn();
     } catch (e) {
