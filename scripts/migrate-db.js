@@ -60,9 +60,10 @@ async function checkV2Tables() {
     console.log('Adding v2 tables...');
 
     // run v2 prisma migration steps
-    await runInitMigration();
+    await runSqlFile('../prisma/migrations/01_init/migration.sql');
     console.log(execSync('prisma migrate resolve --applied 01_init').toString());
     console.log(execSync('prisma migrate deploy').toString());
+    await runSqlFile('../db/postgresql/migration_v2.sql');
   }
 }
 
@@ -118,11 +119,9 @@ async function dropIndexes() {
   }
 }
 
-async function runInitMigration() {
+async function runSqlFile(filePath) {
   try {
-    const rawSql = await fs.promises.readFile(
-      path.join(__dirname, '../prisma/migrations/01_init/migration.sql'),
-    );
+    const rawSql = await fs.promises.readFile(path.join(__dirname, filePath));
 
     const sqlStatements = rawSql
       .toString()
@@ -136,11 +135,12 @@ async function runInitMigration() {
     for (const sql of sqlStatements) {
       await prisma.$executeRawUnsafe(sql);
     }
+    filePath;
 
-    success('Ran 01_init migration.');
+    success(`Ran sql file ${filePath}.`);
   } catch (e) {
     console.error(e);
-    throw new Error('Failed to run 01_init migration.');
+    throw new Error(`Failed to run sql file ${filePath}.`);
   }
 }
 
