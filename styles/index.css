@@ -69,6 +69,7 @@ a,
 a:active,
 a:visited {
   color: var(--primary400);
+  text-decoration: none;
 }
 
 main {

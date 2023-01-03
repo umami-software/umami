@@ -7,7 +7,9 @@ export interface Auth {
     role: string;
     isAdmin: boolean;
   };
-  shareToken?: string;
+  shareToken?: {
+    websiteId: string;
+  };
 }
 
 export interface NextApiRequestQueryBody<TQuery = any, TBody = any> extends NextApiRequest {
