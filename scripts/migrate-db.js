@@ -134,6 +134,8 @@ async function deleteV1TablesPrompt() {
   if (response.value === 'Y') {
     await deleteV1Tables();
   }
+
+  success('Migration successfully completed.');
 }
 
 async function deleteV1Tables() {
