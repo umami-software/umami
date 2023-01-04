@@ -63,6 +63,9 @@ async function checkV2Tables() {
     await runSqlFile('../prisma/migrations/01_init/migration.sql');
     console.log(execSync('prisma migrate resolve --applied 01_init').toString());
     console.log(execSync('prisma migrate deploy').toString());
+    console.log(
+      'Starting v2 data migration. Please do no cancel this process, it may take a while.',
+    );
     await runSqlFile('../db/postgresql/migration_v2.sql');
   }
 }

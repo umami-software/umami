@@ -56,7 +56,7 @@ SELECT gen_random_uuid() event_id,
     1 event_type
 FROM v1_pageview p
 JOIN v1_session s
-ON s.session_id = s.session_id
+ON s.session_id = p.session_id
 JOIN v1_website w
 ON w.website_id = s.website_id;
 
@@ -68,12 +68,12 @@ SELECT e.event_uuid,
     s.session_uuid,
     e.created_at,
     e.url,
-    1 event_type,
+    2 event_type,
     e.event_name,
     ed.event_data
 FROM v1_event e
 JOIN v1_session s
-ON s.session_id = s.session_id
+ON s.session_id = e.session_id
 JOIN v1_website w
 ON w.website_id = s.website_id
 LEFT JOIN v1_event_data ed
