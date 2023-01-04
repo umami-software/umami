@@ -139,8 +139,8 @@ export default async (
         startDate,
         endDate,
         column,
-        table,
         filters,
+        type,
       });
 
       return ok(res, data);
