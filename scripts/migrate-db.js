@@ -74,11 +74,11 @@ async function checkV2Tables() {
 async function dropV1Keys() {
   try {
     // drop keys
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "_prisma_migrations" DROP CONSTRAINT IF EXISTS "_prisma_migrations_pkey" cascade;`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "account" DROP CONSTRAINT IF EXISTS "account_pkey" cascade;`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "event" DROP CONSTRAINT IF EXISTS "event_pkey" cascade;`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "session" DROP CONSTRAINT IF EXISTS "session_pkey" cascade;`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "website" DROP CONSTRAINT IF EXISTS "website_pkey" cascade;`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" DROP CONSTRAINT IF EXISTS "_prisma_migrations_pkey" cascade;`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" DROP CONSTRAINT IF EXISTS "account_pkey" cascade;`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" DROP CONSTRAINT IF EXISTS "event_pkey" cascade;`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" DROP CONSTRAINT IF EXISTS "session_pkey" cascade;`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" DROP CONSTRAINT IF EXISTS "website_pkey" cascade;`;
 
     success('Dropped v1 database keys.');
   } catch (e) {
@@ -89,13 +89,13 @@ async function dropV1Keys() {
 async function renameV1Tables() {
   try {
     // rename tables
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "account" RENAME TO "v1_account";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "event" RENAME TO "v1_event";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "session" RENAME TO "v1_session";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "website" RENAME TO "v1_website";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`;
+    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`;
 
     success('Renamed v1 database tables.');
   } catch (e) {
@@ -173,7 +173,7 @@ async function runSqlFile(filePath) {
 
     success(`Ran sql file ${filePath}.`);
   } catch (e) {
-    console.error(e);
+    console.log(e);
     throw new Error(`Failed to run sql file ${filePath}.`);
   }
 }
@@ -183,7 +183,6 @@ async function runSqlFile(filePath) {
   for (let fn of [checkEnv, checkConnection, checkV1Tables, checkV2Tables, deleteV1TablesPrompt]) {
     try {
       await fn();
-      success('Migration successfully completed.');
     } catch (e) {
       console.log(chalk.red(`✗ ${e.message}`));
       err = true;
