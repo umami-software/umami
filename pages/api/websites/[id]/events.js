@@ -18,7 +18,7 @@ export default async (req, res) => {
 
     const { id: websiteId, start_at, end_at, unit, tz, url, event_name } = req.query;
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if ((tz && !moment.tz.zone(tz)) || (unit && !unitTypes.includes(unit))) {
       return badRequest(res);
     }
     const startDate = new Date(+start_at);

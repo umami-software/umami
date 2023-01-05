@@ -33,7 +33,7 @@ export default async (req, res) => {
     const startDate = new Date(+start_at);
     const endDate = new Date(+end_at);
 
-    if (!moment.tz.zone(tz) || !unitTypes.includes(unit)) {
+    if ((tz && !moment.tz.zone(tz)) || (unit && !unitTypes.includes(unit))) {
       return badRequest(res);
     }
 
