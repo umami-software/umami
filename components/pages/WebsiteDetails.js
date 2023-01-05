@@ -59,7 +59,6 @@ export default function WebsiteDetails({ websiteId }) {
   );
   const [chartLoaded, setChartLoaded] = useState(false);
   const [countryData, setCountryData] = useState();
-  const [eventsData, setEventsData] = useState();
   const {
     resolve,
     query: { view },
@@ -182,9 +181,9 @@ export default function WebsiteDetails({ websiteId }) {
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
             </Column>
           </GridRow>
-          <GridRow className={classNames({ [styles.hidden]: !eventsData?.length > 0 })}>
+          <GridRow>
             <Column xs={12} md={12} lg={4} defaultSize={4}>
-              <EventsTable {...tableProps} onDataLoad={setEventsData} />
+              <EventsTable {...tableProps} />
             </Column>
             <Column xs={12} md={12} lg={8} defaultSize={8}>
               <EventDataButton websiteId={websiteId} />

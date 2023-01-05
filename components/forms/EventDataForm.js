@@ -1,22 +1,26 @@
+import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
-import { Button } from 'react-basics';
 import DateFilter from 'components/common/DateFilter';
-import DropDown from 'components/common/DropDown';
-import FormLayout, {
-  FormButtons,
-  FormError,
-  FormMessage,
-  FormRow,
-} from 'components/layout/FormLayout';
 import DataTable from 'components/metrics/DataTable';
 import FilterTags from 'components/metrics/FilterTags';
-import { Field, Form, Formik } from 'formik';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
-import { useState, useEffect } from 'react';
-import { FormattedMessage } from 'react-intl';
-import styles from './EventDataForm.module.css';
 import useTimezone from 'hooks/useTimezone';
+import { useEffect, useState, useRef } from 'react';
+import {
+  Button,
+  Dropdown,
+  Flexbox,
+  Form,
+  FormButtons,
+  FormInput,
+  FormRow,
+  Item,
+  TextField,
+} from 'react-basics';
+import { FormattedMessage } from 'react-intl';
+import { FormMessage } from './../layout/FormLayout';
+import styles from './EventDataForm.module.css';
 
 export const filterOptions = [
   { label: 'Count', value: 'count' },
@@ -77,13 +81,17 @@ export const dateOptions = [
 export default function EventDataForm({ websiteId, onClose, className }) {
   const { post } = useApi();
   const [message, setMessage] = useState();
+  const { mutate } = useMutation(data => post(`/websites/${websiteId}/eventdata`, data));
   const [columns, setColumns] = useState({});
   const [filters, setFilters] = useState({});
+  const [type, setType] = useState('');
   const [data, setData] = useState([]);
   const [dateRange, setDateRange] = useDateRange('report');
   const { startDate, endDate, value } = dateRange;
   const [timezone] = useTimezone();
   const [isValid, setIsValid] = useState(false);
+  const columnRef = useRef(null);
+  const filterRef = useRef(null);
 
   useEffect(() => {
     if (Object.keys(columns).length > 0) {
@@ -93,9 +101,14 @@ export default function EventDataForm({ websiteId, onClose, className }) {
     }
   }, [columns]);
 
-  const handleAddTag = (value, list, setState, resetForm) => {
+  const handleAddTag = (value, list, setState, ref, clearDropdown) => {
     setState({ ...list, [`${value.field}`]: value.value });
-    resetForm();
+
+    ref.current.reset({ field: '', value: '' });
+
+    if (clearDropdown) {
+      setType('');
+    }
   };
 
   const handleRemoveTag = (value, list, setState) => {
@@ -116,134 +129,102 @@ export default function EventDataForm({ websiteId, onClose, className }) {
       filters,
     };
 
-    const { ok, data } = await post(`/websites/${websiteId}/eventdata`, params);
-
-    if (!ok) {
-      setMessage(<FormattedMessage id="message.failure" defaultMessage="Something went wrong." />);
-      setData([]);
-    } else {
-      setData(data);
-      setMessage(null);
-    }
+    mutate(params, {
+      onSuccess: async data => {
+        setData(data);
+        setMessage(null);
+      },
+      onError: async () => {
+        setMessage(
+          <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />,
+        );
+        setData([]);
+      },
+    });
   };
 
   return (
     <>
-      <FormMessage>{message}</FormMessage>
+      <Flexbox className={styles.message} alignItems="center" direction="column">
+        <FormMessage>{message}</FormMessage>
+      </Flexbox>
       <div className={classNames(styles.container, className)}>
         <div className={styles.form}>
-          <FormLayout>
-            <div className={styles.filters}>
-              <FormRow>
-                <label htmlFor="date-range">
-                  <FormattedMessage id="label.date-range" defaultMessage="Date Range" />
-                </label>
-                <DateFilter
-                  value={value}
-                  startDate={startDate}
-                  endDate={endDate}
-                  onChange={setDateRange}
-                  options={dateOptions}
-                />
+          <div className={styles.filters}>
+            <FormRow label={<FormattedMessage id="label.date-range" defaultMessage="Date Range" />}>
+              <DateFilter
+                value={value}
+                startDate={startDate}
+                endDate={endDate}
+                onChange={setDateRange}
+                options={dateOptions}
+              />
+            </FormRow>
+          </div>
+          <div className={styles.filters}>
+            <Form
+              ref={columnRef}
+              onSubmit={value =>
+                handleAddTag({ ...value, value: type }, columns, setColumns, columnRef, true)
+              }
+            >
+              <FormInput
+                name="field"
+                label={<FormattedMessage id="label.field-name" defaultMessage="Field Name" />}
+                rules={{ required: 'Required' }}
+              >
+                <TextField />
+              </FormInput>
+              <FormRow
+                name="value"
+                label={<FormattedMessage id="label.type" defaultMessage="Type" />}
+              >
+                <Dropdown items={filterOptions} value={type} onChange={setType}>
+                  {({ value, label }) => <Item key={value}>{label}</Item>}
+                </Dropdown>
               </FormRow>
-            </div>
-            <div className={styles.filters}>
-              <Formik
-                initialValues={{ field: '', value: '' }}
-                onSubmit={(value, { resetForm }) =>
-                  handleAddTag(value, columns, setColumns, resetForm)
-                }
+              <FormButtons className={styles.formButtons}>
+                <Button variant="action" type="submit">
+                  <FormattedMessage id="label.add-column" defaultMessage="Add Column" />
+                </Button>
+              </FormButtons>
+            </Form>
+            <FilterTags
+              className={styles.filterTag}
+              params={columns}
+              onClick={value => handleRemoveTag(value, columns, setColumns)}
+            />
+          </div>
+          <div className={styles.filters}>
+            <Form
+              ref={filterRef}
+              onSubmit={value => handleAddTag(value, filters, setFilters, filterRef)}
+            >
+              <FormInput
+                name="field"
+                label={<FormattedMessage id="label.field-name" defaultMessage="Field Name" />}
               >
-                {({ values, setFieldValue }) => (
-                  <Form>
-                    <FormRow>
-                      <label htmlFor="field">
-                        <FormattedMessage id="label.field-name" defaultMessage="Field Name" />
-                      </label>
-                      <div>
-                        <Field name="field" type="text" />
-                        <FormError name="field" />
-                      </div>
-                    </FormRow>
-                    <FormRow>
-                      <label htmlFor="value">
-                        <FormattedMessage id="label.type" defaultMessage="Type" />
-                      </label>
-                      <div>
-                        <DropDown
-                          value={values.value}
-                          onChange={value => setFieldValue('value', value)}
-                          className={styles.dropdown}
-                          name="value"
-                          options={filterOptions}
-                        />
-                        <FormError name="value" />
-                      </div>
-                    </FormRow>
-                    <FormButtons className={styles.formButtons}>
-                      <Button
-                        variant="action"
-                        type="submit"
-                        disabled={!values.field || !values.value}
-                      >
-                        <FormattedMessage id="label.add-column" defaultMessage="Add Column" />
-                      </Button>
-                    </FormButtons>
-                  </Form>
-                )}
-              </Formik>
-              <FilterTags
-                className={styles.filterTag}
-                params={columns}
-                onClick={value => handleRemoveTag(value, columns, setColumns)}
-              />
-            </div>
-            <div className={styles.filters}>
-              <Formik
-                initialValues={{ field: '', value: '' }}
-                onSubmit={(value, { resetForm }) =>
-                  handleAddTag(value, filters, setFilters, resetForm)
-                }
+                <TextField />
+              </FormInput>
+              <FormInput
+                name="value"
+                label={<FormattedMessage id="label.value" defaultMessage="Value" />}
               >
-                {({ values }) => (
-                  <Form>
-                    <FormRow>
-                      <label htmlFor="field">
-                        <FormattedMessage id="label.field-name" defaultMessage="Field Name" />
-                      </label>
-                      <div>
-                        <Field name="field" type="text" />
-                        <FormError name="field" />
-                      </div>
-                    </FormRow>
-                    <FormRow>
-                      <label htmlFor="value">
-                        <FormattedMessage id="label.value" defaultMessage="Value" />
-                      </label>
-                      <div>
-                        <Field name="value" type="text" />
-                        <FormError name="value" />
-                      </div>
-                    </FormRow>
-                    <FormButtons className={styles.formButtons}>
-                      <Button
-                        variant="action"
-                        type="submit"
-                        disabled={!values.field || !values.value}
-                      >
-                        <FormattedMessage id="label.add-filter" defaultMessage="Add Filter" />
-                      </Button>
-                    </FormButtons>
-                  </Form>
-                )}
-              </Formik>
-              <FilterTags
-                className={styles.filterTag}
-                params={filters}
-                onClick={value => handleRemoveTag(value, filters, setFilters)}
-              />
-            </div>
-          </FormLayout>
+                <TextField />
+              </FormInput>
+
+              <FormButtons className={styles.formButtons}>
+                <Button variant="action" type="submit">
+                  <FormattedMessage id="label.add-filter" defaultMessage="Add Filter" />
+                </Button>
+              </FormButtons>
+            </Form>
+            <FilterTags
+              className={styles.filterTag}
+              params={filters}
+              onClick={value => handleRemoveTag(value, filters, setFilters)}
+            />
+          </div>
         </div>
         <div>
           <DataTable className={styles.table} data={data} title="Results" showPercentage={false} />
