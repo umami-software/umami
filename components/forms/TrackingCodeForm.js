@@ -5,7 +5,7 @@ import { Form, FormRow, TextArea } from 'react-basics';
 export default function TrackingCodeForm({ websiteId }) {
   const ref = useRef(null);
   const { trackerScriptName } = useConfig();
-  const code = `<script async defer src="${trackerScriptName}" data-website-id="${websiteId}"></script>`;
+  const code = `<script defer src="${trackerScriptName}" data-website-id="${websiteId}"></script>`;
 
   return (
     <>
