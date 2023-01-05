@@ -3,19 +3,19 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model User {
-  id        String    @id @unique @map("user_id") @db.Uuid
+  id        String    @id @unique @map("user_id") @db.VarChar(36)
   username  String    @unique @db.VarChar(255)
   password  String    @db.VarChar(60)
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(0)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(0)
 
   teamUser TeamUser[]
   Website  Website[]
@@ -24,8 +24,8 @@ model User {
 }
 
 model Session {
-  id        String    @id @unique @map("session_id") @db.Uuid
-  websiteId String    @map("website_id") @db.Uuid
+  id        String    @id @unique @map("session_id") @db.VarChar(36)
+  websiteId String    @map("website_id") @db.VarChar(36)
   hostname  String?   @db.VarChar(100)
   browser   String?   @db.VarChar(20)
   os        String?   @db.VarChar(20)
@@ -33,7 +33,7 @@ model Session {
   screen    String?   @db.VarChar(11)
   language  String?   @db.VarChar(35)
   country   String?   @db.Char(2)
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(0)
 
   @@index([createdAt])
   @@index([websiteId])
@@ -41,16 +41,16 @@ model Session {
 }
 
 model Website {
-  id        String    @id @unique @map("website_id") @db.Uuid
+  id        String    @id @unique @map("website_id") @db.VarChar(36)
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
   shareId   String?   @unique @map("share_id") @db.VarChar(50)
-  revId     Int       @default(0) @map("rev_id") @db.Integer
-  userId    String?   @map("user_id") @db.Uuid
-  teamId    String?   @map("team_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  revId     Int       @default(0) @map("rev_id") @db.UnsignedInt
+  userId    String?   @map("user_id") @db.VarChar(36)
+  teamId    String?   @map("team_id") @db.VarChar(36)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(0)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(0)
 
   team Team? @relation(fields: [teamId], references: [id])
   user User? @relation(fields: [userId], references: [id])
@@ -63,13 +63,13 @@ model Website {
 }
 
 model WebsiteEvent {
-  id        String    @id() @map("event_id") @db.Uuid
-  websiteId String    @map("website_id") @db.Uuid
-  sessionId String    @map("session_id") @db.Uuid
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  id        String    @id() @map("event_id") @db.VarChar(36)
+  websiteId String    @map("website_id") @db.VarChar(36)
+  sessionId String    @map("session_id") @db.VarChar(36)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(0)
   url       String    @db.VarChar(500)
   referrer  String?   @db.VarChar(500)
-  eventType Int       @default(1) @map("event_type") @db.Integer
+  eventType Int       @default(1) @map("event_type") @db.UnsignedInt
   eventName String?   @map("event_name") @db.VarChar(50)
   eventData Json?     @map("event_data")
 
@@ -82,13 +82,13 @@ model WebsiteEvent {
 }
 
 model Team {
-  id         String    @id() @unique() @map("team_id") @db.Uuid
+  id         String    @id() @unique() @map("team_id") @db.VarChar(36)
   name       String    @db.VarChar(50)
-  userId     String    @map("user_id") @db.Uuid
+  userId     String    @map("user_id") @db.VarChar(36)
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
-  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt  DateTime? @map("updated_at") @db.Timestamptz(0)
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(0)
 
   teamUsers TeamUser[]
   Website   Website[]
@@ -99,13 +99,13 @@ model Team {
 }
 
 model TeamUser {
-  id        String    @id() @unique() @map("team_user_id") @db.Uuid
-  teamId    String    @map("team_id") @db.Uuid
-  userId    String    @map("user_id") @db.Uuid
+  id        String    @id() @unique() @map("team_user_id") @db.VarChar(36)
+  teamId    String    @map("team_id") @db.VarChar(36)
+  userId    String    @map("user_id") @db.VarChar(36)
   role      String    @map("role") @db.VarChar(50)
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(0)
+  updatedAt DateTime? @map("updated_at") @db.Timestamptz(0)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(0)
 
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
