@@ -4,7 +4,7 @@
 
 .form {
   padding: 20px;
-  border-right: 1px solid var(--light300);
+  border-right: 1px solid var(--base300);
   width: 425px;
 }
 
@@ -13,7 +13,7 @@
 }
 
 .filters + .filters {
-  border-top: 1px solid var(--light300);
+  border-top: 1px solid var(--base300);
   min-height: 250px;
 }
 
