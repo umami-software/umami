@@ -1,10 +1,10 @@
 import Layout from 'components/layout/Layout';
 import Menu from 'components/nav/Nav';
-import useUser from 'hooks/useUser';
+import useRequireLogin from 'hooks/useRequireLogin';
 import styles from './Settings.module.css';
 
 export default function Settings({ children }) {
-  const user = useUser();
+  const { user } = useRequireLogin();
 
   if (!user) {
     return null;

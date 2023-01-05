@@ -1,9 +1,9 @@
 import Layout from 'components/layout/Layout';
 import RealtimeDashboard from 'components/pages/RealtimeDashboard';
-import useUser from 'hooks/useUser';
+import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function RealtimePage() {
-  const user = useUser();
+  const { user } = useRequireLogin();
 
   if (!user) {
     return null;
