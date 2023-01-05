@@ -1,8 +1,8 @@
 import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
 import Dashboard from 'components/pages/Dashboard';
-import useUser from 'hooks/useUser';
 import useConfig from 'hooks/useConfig';
+import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function DashboardPage() {
   const {
@@ -10,7 +10,7 @@ export default function DashboardPage() {
     isReady,
     asPath,
   } = useRouter();
-  const user = useUser();
+  const { user } = useRequireLogin();
   const { adminDisabled } = useConfig();
 
   if (adminDisabled || !user || !isReady) {

@@ -6,6 +6,7 @@ import PageHeader from 'components/layout/PageHeader';
 import WebsiteChartList from 'components/pages/WebsiteChartList';
 import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
 import useApi from 'hooks/useApi';
+import useRequireLogin from 'hooks/useRequireLogin';
 import useDashboard from 'store/dashboard';
 import DashboardEdit from './DashboardEdit';
 import styles from './WebsiteList.module.css';
@@ -16,6 +17,7 @@ const messages = defineMessages({
 });
 
 export default function Dashboard({ userId }) {
+  const { user } = useRequireLogin();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);
@@ -27,7 +29,7 @@ export default function Dashboard({ userId }) {
     setMax(max + limit);
   }
 
-  if (isLoading) {
+  if (!user || isLoading) {
     return <Loading />;
   }
 

@@ -26,7 +26,7 @@ export async function getTeamWebsites(teamId: string): Promise<Website[]> {
         name: 'asc',
       },
     ],
-  });
+  } as any);
 }
 
 export async function createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
