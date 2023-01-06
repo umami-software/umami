@@ -24,7 +24,7 @@ function EventDataButton({ websiteId }) {
       <Button
         tooltip={<FormattedMessage id="label.event-data" defaultMessage="Event" />}
         tooltipId="button-event"
-        size="small"
+        size="sm"
         onClick={handleClick}
         className={styles.button}
       >
@@ -34,8 +34,11 @@ function EventDataButton({ websiteId }) {
         Event Data
       </Button>
       {showEventData && (
-        <Modal title={<FormattedMessage id="label.event-data" defaultMessage="Query Event Data" />}>
-          <EventDataForm websiteId={websiteId} onClose={handleClose} />
+        <Modal
+          title={<FormattedMessage id="label.event-data" defaultMessage="Query Event Data" />}
+          onClose={handleClose}
+        >
+          {close => <EventDataForm websiteId={websiteId} onClose={close} />}
         </Modal>
       )}
     </>

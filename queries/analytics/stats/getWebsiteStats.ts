@@ -67,7 +67,7 @@ async function clickhouseQuery(
          min(created_at) min_time,
          max(created_at) max_time
        from event
-       where event_name = ''
+       where event_type = 1
          and website_id = $1
          and rev_id = $2
          and ${getBetweenDates('created_at', startDate, endDate)}

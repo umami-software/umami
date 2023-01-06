@@ -32,7 +32,7 @@ async function clickhouseQuery(websites, startAt) {
         created_at,
         url
       from event
-      where event_name = ''
+      where event_type = 1
         and ${
           websites && websites.length > 0
             ? `website_id in (${getCommaSeparatedStringFormat(websites)})`

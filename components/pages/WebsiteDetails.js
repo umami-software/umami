@@ -1,26 +1,29 @@
-import { useState } from 'react';
-import { Column, Loading } from 'react-basics';
-import { defineMessages, FormattedMessage, useIntl } from 'react-intl';
+import Arrow from 'assets/arrow-right.svg';
 import classNames from 'classnames';
-import WebsiteChart from 'components/metrics/WebsiteChart';
+import Link from 'components/common/Link';
 import WorldMap from 'components/common/WorldMap';
-import Page from 'components/layout/Page';
 import GridRow from 'components/layout/GridRow';
 import MenuLayout from 'components/layout/MenuLayout';
-import Link from 'components/common/Link';
-import PagesTable from 'components/metrics/PagesTable';
-import ReferrersTable from 'components/metrics/ReferrersTable';
+import Page from 'components/layout/Page';
 import BrowsersTable from 'components/metrics/BrowsersTable';
-import OSTable from 'components/metrics/OSTable';
-import DevicesTable from 'components/metrics/DevicesTable';
 import CountriesTable from 'components/metrics/CountriesTable';
+import DevicesTable from 'components/metrics/DevicesTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
-import ScreenTable from 'components/metrics/ScreenTable';
+import OSTable from 'components/metrics/OSTable';
+import PagesTable from 'components/metrics/PagesTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
-import usePageQuery from 'hooks/usePageQuery';
+import ReferrersTable from 'components/metrics/ReferrersTable';
+import ScreenTable from 'components/metrics/ScreenTable';
+import WebsiteChart from 'components/metrics/WebsiteChart';
 import useApi from 'hooks/useApi';
+import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
-import Arrow from 'assets/arrow-right.svg';
+import { useState } from 'react';
+import { Column, Loading } from 'react-basics';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
+import EventDataButton from './../common/EventDataButton';
+import EventsChart from './../metrics/EventsChart';
+import EventsTable from './../metrics/EventsTable';
 import styles from './WebsiteDetails.module.css';
 
 const messages = defineMessages({
@@ -32,6 +35,7 @@ const messages = defineMessages({
   devices: { id: 'metrics.devices', defaultMessage: 'Devices' },
   countries: { id: 'metrics.countries', defaultMessage: 'Countries' },
   languages: { id: 'metrics.languages', defaultMessage: 'Languages' },
+  events: { id: 'metrics.events', defaultMessage: 'Events' },
   query: { id: 'metrics.query-parameters', defaultMessage: 'Query parameters' },
 });
 
@@ -44,6 +48,7 @@ const views = {
   screen: ScreenTable,
   country: CountriesTable,
   language: LanguagesTable,
+  event: EventsTable,
   query: QueryParametersTable,
 };
 
@@ -103,6 +108,10 @@ export default function WebsiteDetails({ websiteId }) {
     {
       label: formatMessage(messages.screens),
       value: resolve({ view: 'screen' }),
+    },
+    {
+      label: formatMessage(messages.events),
+      value: resolve({ view: 'event' }),
     },
     {
       label: formatMessage(messages.query),
@@ -170,6 +179,15 @@ export default function WebsiteDetails({ websiteId }) {
             </Column>
             <Column xs={12} sm={12} md={12} defaultSize={4}>
               <CountriesTable {...tableProps} onDataLoad={setCountryData} />
+            </Column>
+          </GridRow>
+          <GridRow>
+            <Column xs={12} md={12} lg={4} defaultSize={4}>
+              <EventsTable {...tableProps} />
+            </Column>
+            <Column xs={12} md={12} lg={8} defaultSize={8}>
+              <EventDataButton websiteId={websiteId} />
+              <EventsChart className={styles.eventschart} websiteId={websiteId} />
             </Column>
           </GridRow>
         </>

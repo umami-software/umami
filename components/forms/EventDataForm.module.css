@@ -3,8 +3,9 @@
 }
 
 .form {
+  padding: 20px;
   border-right: 1px solid var(--base300);
-  width: 420px;
+  width: 425px;
 }
 
 .filters {
@@ -14,6 +15,10 @@
 .filters + .filters {
   border-top: 1px solid var(--base300);
   min-height: 250px;
+}
+
+.message {
+  width: 100%;
 }
 
 .table {

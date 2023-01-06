@@ -58,7 +58,7 @@ async function clickhouseQuery(
     from event as x
     where website_id = $1
       and rev_id = $2
-      and event_name = ''
+      and event_type = 1
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x
