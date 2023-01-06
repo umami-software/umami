@@ -1,5 +1,13 @@
 import { useRef } from 'react';
-import { Form, FormInput, FormButtons, TextField, Button, SubmitButton } from 'react-basics';
+import {
+  Form,
+  FormRow,
+  FormInput,
+  FormButtons,
+  TextField,
+  Button,
+  SubmitButton,
+} from 'react-basics';
 import useApi from 'hooks/useApi';
 import styles from './Form.module.css';
 import { useMutation } from '@tanstack/react-query';
@@ -20,19 +28,22 @@ export default function WebsiteAddForm({ onSave, onClose }) {
 
   return (
     <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
-      <FormInput name="name" label="Name" rules={{ required: 'Required' }}>
-        <TextField autoComplete="off" />
-      </FormInput>
-      <FormInput
-        name="domain"
-        label="Domain"
-        rules={{
-          required: 'Required',
-          pattern: { value: DOMAIN_REGEX, message: 'Invalid domain' },
-        }}
-      >
-        <TextField autoComplete="off" />
-      </FormInput>
+      <FormRow label="Name">
+        <FormInput name="name" rules={{ required: 'Required' }}>
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
+      <FormRow label="Domain">
+        <FormInput
+          name="domain"
+          rules={{
+            required: 'Required',
+            pattern: { value: DOMAIN_REGEX, message: 'Invalid domain' },
+          }}
+        >
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
       <FormButtons flex>
         <SubmitButton variant="primary" disabled={false}>
           Save

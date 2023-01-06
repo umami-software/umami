@@ -1,32 +1,31 @@
-import { useMutation } from '@tanstack/react-query';
-import { getRandomChars } from 'next-basics';
-import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  Button,
   Form,
-  FormButtons,
   FormRow,
-  HiddenInput,
-  SubmitButton,
+  FormButtons,
+  Flexbox,
   TextField,
+  SubmitButton,
+  Button,
   Toggle,
 } from 'react-basics';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { getRandomChars } from 'next-basics';
 import useApi from 'hooks/useApi';
+
+const generateId = () => getRandomChars(16);
 
 export default function ShareUrlForm({ websiteId, data, onSave }) {
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
-  const { post } = useApi();
+  const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(({ shareId }) =>
     post(`/websites/${websiteId}`, { shareId }),
   );
   const ref = useRef(null);
   const url = useMemo(
-    () => `${process.env.analyticsUrl}/share/${id}/${encodeURIComponent(name)}`,
+    () => `${location.origin}/share/${id}/${encodeURIComponent(name)}`,
     [id, name],
   );
-
-  const generateId = () => getRandomChars(16);
 
   const handleSubmit = async data => {
     mutate(data, {
@@ -46,7 +45,7 @@ export default function ShareUrlForm({ websiteId, data, onSave }) {
     setId(id);
   };
 
-  const handleChange = checked => {
+  const handleCheck = checked => {
     const data = { shareId: checked ? generateId() : null };
     mutate(data, {
       onSuccess: async () => {
@@ -63,23 +62,26 @@ export default function ShareUrlForm({ websiteId, data, onSave }) {
   }, [id, shareId]);
 
   return (
-    <>
-      <Toggle checked={Boolean(id)} onChange={handleChange}>
-        Enable share URL
-      </Toggle>
+    <Form key={websiteId} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
+      <FormRow>
+        <Toggle checked={Boolean(id)} onChecked={handleCheck}>
+          Enable share URL
+        </Toggle>
+      </FormRow>
       {id && (
-        <Form key={websiteId} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
+        <>
           <FormRow>
             <p>Your website stats are publically available at the following URL:</p>
-            <TextField value={url} readOnly allowCopy />
+            <Flexbox gap={10}>
+              <TextField value={url} readOnly allowCopy />
+              <Button onClick={handleGenerate}>Regenerate URL</Button>
+            </Flexbox>
           </FormRow>
-          <HiddenInput name="shareId" />
           <FormButtons>
             <SubmitButton variant="primary">Save</SubmitButton>
-            <Button onClick={handleGenerate}>Regenerate URL</Button>
           </FormButtons>
-        </Form>
+        </>
       )}
-    </>
+    </Form>
   );
 }

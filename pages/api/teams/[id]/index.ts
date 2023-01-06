@@ -12,6 +12,7 @@ export interface TeamRequestQuery {
 
 export interface TeamRequestBody {
   name: string;
+  accessCode: string;
 }
 
 export default async (
@@ -33,13 +34,14 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name } = req.body;
-
     if (!(await canUpdateTeam(req.auth, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    const updated = await updateTeam({ name }, { id: teamId });
+    const { name, accessCode } = req.body;
+    const data = { name, accessCode };
+
+    const updated = await updateTeam(data, { id: teamId });
 
     return ok(res, updated);
   }

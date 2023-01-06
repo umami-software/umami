@@ -13,7 +13,7 @@ import ExternalLink from 'assets/external-link.svg';
 
 export default function Websites({ websiteId }) {
   const [values, setValues] = useState(null);
-  const [tab, setTab] = useState('general');
+  const [tab, setTab] = useState('details');
   const { get } = useApi();
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
@@ -59,12 +59,12 @@ export default function Websites({ websiteId }) {
         </Link>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="general">General</Item>
+        <Item key="details">General</Item>
         <Item key="tracking">Tracking code</Item>
         <Item key="share">Share URL</Item>
         <Item key="danger">Danger zone</Item>
       </Tabs>
-      {tab === 'general' && (
+      {tab === 'details' && (
         <WebsiteEditForm websiteId={websiteId} data={values} onSave={handleSave} />
       )}
       {tab === 'tracking' && <TrackingCodeForm websiteId={websiteId} data={values} />}

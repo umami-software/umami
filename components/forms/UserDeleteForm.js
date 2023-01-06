@@ -1,6 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
-import { Button, Form, FormButtons, FormInput, SubmitButton, TextField } from 'react-basics';
+import {
+  Button,
+  Form,
+  FormRow,
+  FormButtons,
+  FormInput,
+  SubmitButton,
+  TextField,
+} from 'react-basics';
 import styles from './Form.module.css';
 
 const CONFIRM_VALUE = 'DELETE';
@@ -19,16 +27,14 @@ export default function UserDeleteForm({ userId, onSave, onClose }) {
 
   return (
     <Form className={styles.form} onSubmit={handleSubmit} error={error}>
-      <div>
+      <p>
         To delete this user, type <b>{CONFIRM_VALUE}</b> in the box below to confirm.
-      </div>
-      <FormInput
-        name="confirmation"
-        label="Confirm"
-        rules={{ validate: value => value === CONFIRM_VALUE }}
-      >
-        <TextField autoComplete="off" />
-      </FormInput>
+      </p>
+      <FormRow label="Confirm">
+        <FormInput name="confirmation" rules={{ validate: value => value === CONFIRM_VALUE }}>
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
       <FormButtons flex>
         <SubmitButton variant="primary" className={styles.button} disabled={isLoading}>
           Save

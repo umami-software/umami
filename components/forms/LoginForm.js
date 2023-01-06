@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import {
   Form,
+  FormRow,
   FormInput,
   FormButtons,
   TextField,
@@ -40,12 +41,16 @@ export default function LoginForm() {
         <p>umami</p>
       </div>
       <Form className={styles.form} onSubmit={handleSubmit} error={error}>
-        <FormInput name="username" label="Username" rules={{ required: 'Required' }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-        <FormInput name="password" label="Password" rules={{ required: 'Required' }}>
-          <PasswordField />
-        </FormInput>
+        <FormRow label="Username">
+          <FormInput name="username" rules={{ required: 'Required' }}>
+            <TextField autoComplete="off" />
+          </FormInput>
+        </FormRow>
+        <FormRow label="Password">
+          <FormInput name="password" rules={{ required: 'Required' }}>
+            <PasswordField />
+          </FormInput>
+        </FormRow>
         <FormButtons>
           <SubmitButton variant="primary" className={styles.button} disabled={isLoading}>
             Log in

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Form, FormInput, FormButtons, TextField, Button } from 'react-basics';
+import { Form, FormRow, FormInput, FormButtons, TextField, Button } from 'react-basics';
 import useApi from 'hooks/useApi';
 import styles from './Form.module.css';
 import { useMutation } from '@tanstack/react-query';
@@ -19,9 +19,11 @@ export default function TeamAddForm({ onSave, onClose }) {
 
   return (
     <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
-      <FormInput name="name" label="Name" rules={{ required: 'Required' }}>
-        <TextField autoComplete="off" />
-      </FormInput>
+      <FormRow label="Name">
+        <FormInput name="name" rules={{ required: 'Required' }}>
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
       <FormButtons flex>
         <Button type="submit" variant="primary" disabled={isLoading}>
           Save

@@ -22,9 +22,11 @@ export default function TeamEditForm({ teamId, data, onSave }) {
       <FormRow label="Team ID">
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
-      <FormInput name="name" label="Name" rules={{ required: 'Required' }}>
-        <TextField />
-      </FormInput>
+      <FormRow label="Name">
+        <FormInput name="name" rules={{ required: 'Required' }}>
+          <TextField />
+        </FormInput>
+      </FormRow>
       <FormButtons>
         <SubmitButton variant="primary">Save</SubmitButton>
       </FormButtons>

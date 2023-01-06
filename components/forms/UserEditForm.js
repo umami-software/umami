@@ -2,6 +2,7 @@ import {
   Dropdown,
   Item,
   Form,
+  FormRow,
   FormButtons,
   FormInput,
   TextField,
@@ -48,14 +49,18 @@ export default function UserEditForm({ data, onSave }) {
       error={error}
       values={data}
     >
-      <FormInput name="username" label="Username">
-        <TextField />
-      </FormInput>
-      <FormInput name="role" label="Role">
-        <Dropdown items={items} style={{ width: 200 }}>
-          {({ value, label }) => <Item key={value}>{label}</Item>}
-        </Dropdown>
-      </FormInput>
+      <FormRow label="Username">
+        <FormInput name="username">
+          <TextField />
+        </FormInput>
+      </FormRow>
+      <FormRow label="Role">
+        <FormInput name="role">
+          <Dropdown items={items} style={{ width: 200 }}>
+            {({ value, label }) => <Item key={value}>{label}</Item>}
+          </Dropdown>
+        </FormInput>
+      </FormRow>
       <FormButtons>
         <SubmitButton variant="primary">Save</SubmitButton>
       </FormButtons>

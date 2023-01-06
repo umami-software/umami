@@ -23,22 +23,25 @@ export default function WebsiteEditForm({ websiteId, data, onSave }) {
       <FormRow label="Website ID">
         <TextField value={websiteId} readOnly allowCopy />
       </FormRow>
-      <FormInput name="name" label="Name" rules={{ required: 'Required' }}>
-        <TextField />
-      </FormInput>
-      <FormInput
-        name="domain"
-        label="Domain"
-        rules={{
-          required: 'Required',
-          pattern: {
-            value: DOMAIN_REGEX,
-            message: 'Invalid domain',
-          },
-        }}
-      >
-        <TextField />
-      </FormInput>
+      <FormRow label="Name">
+        <FormInput name="name" rules={{ required: 'Required' }}>
+          <TextField />
+        </FormInput>
+      </FormRow>
+      <FormRow label="Domain">
+        <FormInput
+          name="domain"
+          rules={{
+            required: 'Required',
+            pattern: {
+              value: DOMAIN_REGEX,
+              message: 'Invalid domain',
+            },
+          }}
+        >
+          <TextField />
+        </FormInput>
+      </FormRow>
       <FormButtons>
         <SubmitButton variant="primary">Save</SubmitButton>
       </FormButtons>

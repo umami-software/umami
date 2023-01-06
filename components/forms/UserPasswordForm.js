@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Form, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
+import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
 import useApi from 'hooks/useApi';
 import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
@@ -38,31 +38,35 @@ export default function UserPasswordForm({ onSave, onClose, userId }) {
   return (
     <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
       {isCurrentUser && (
-        <FormInput name="currentPassword" label="Current password" rules={{ required: 'Required' }}>
+        <FormRow label="Current password">
+          <FormInput name="currentPassword" rules={{ required: 'Required' }}>
+            <PasswordField autoComplete="off" />
+          </FormInput>
+        </FormRow>
+      )}
+      <FormRow label="New password">
+        <FormInput
+          name="newPassword"
+          rules={{
+            required: 'Required',
+            minLength: { value: 8, message: 'Minimum length 8 characters' },
+          }}
+        >
           <PasswordField autoComplete="off" />
         </FormInput>
-      )}
-      <FormInput
-        name="newPassword"
-        label="New password"
-        rules={{
-          required: 'Required',
-          minLength: { value: 8, message: 'Minimum length 8 characters' },
-        }}
-      >
-        <PasswordField autoComplete="off" />
-      </FormInput>
-      <FormInput
-        name="confirmPassword"
-        label="Confirm password"
-        rules={{
-          required: 'Required',
-          minLength: { value: 8, message: 'Minimum length 8 characters' },
-          validate: samePassword,
-        }}
-      >
-        <PasswordField autoComplete="off" />
-      </FormInput>
+      </FormRow>
+      <FormRow label="Confirm password">
+        <FormInput
+          name="confirmPassword"
+          rules={{
+            required: 'Required',
+            minLength: { value: 8, message: 'Minimum length 8 characters' },
+            validate: samePassword,
+          }}
+        >
+          <PasswordField autoComplete="off" />
+        </FormInput>
+      </FormRow>
       <FormButtons flex>
         <Button type="submit" variant="primary" disabled={isLoading}>
           Save

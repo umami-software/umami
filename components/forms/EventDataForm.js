@@ -168,20 +168,19 @@ export default function EventDataForm({ websiteId, onClose, className }) {
                 handleAddTag({ ...value, value: type }, columns, setColumns, columnRef, true)
               }
             >
-              <FormInput
-                name="field"
-                label={<FormattedMessage id="label.field-name" defaultMessage="Field Name" />}
-                rules={{ required: 'Required' }}
-              >
-                <TextField />
-              </FormInput>
               <FormRow
-                name="value"
-                label={<FormattedMessage id="label.type" defaultMessage="Type" />}
+                label={<FormattedMessage id="label.field-name" defaultMessage="Field Name" />}
               >
-                <Dropdown items={filterOptions} value={type} onChange={setType}>
-                  {({ value, label }) => <Item key={value}>{label}</Item>}
-                </Dropdown>
+                <FormInput name="field" rules={{ required: 'Required' }}>
+                  <TextField />
+                </FormInput>
+              </FormRow>
+              <FormRow label={<FormattedMessage id="label.type" defaultMessage="Type" />}>
+                <FormInput name="value">
+                  <Dropdown items={filterOptions} value={type} onChange={setType}>
+                    {({ value, label }) => <Item key={value}>{label}</Item>}
+                  </Dropdown>
+                </FormInput>
               </FormRow>
               <FormButtons className={styles.formButtons}>
                 <Button variant="action" type="submit">
@@ -200,19 +199,19 @@ export default function EventDataForm({ websiteId, onClose, className }) {
               ref={filterRef}
               onSubmit={value => handleAddTag(value, filters, setFilters, filterRef)}
             >
-              <FormInput
-                name="field"
+              <FormRow
                 label={<FormattedMessage id="label.field-name" defaultMessage="Field Name" />}
               >
-                <TextField />
-              </FormInput>
-              <FormInput
-                name="value"
-                label={<FormattedMessage id="label.value" defaultMessage="Value" />}
-              >
-                <TextField />
-              </FormInput>
-
+                <FormInput name="field">
+                  <TextField />
+                </FormInput>
+              </FormRow>
+              <FormRow label={<FormattedMessage id="label.value" defaultMessage="Value" />}>
+                <FormInput name="value">
+                  <TextField />
+                </FormInput>
+              </FormRow>
+              +
               <FormButtons className={styles.formButtons}>
                 <Button variant="action" type="submit">
                   <FormattedMessage id="label.add-filter" defaultMessage="Add Filter" />
