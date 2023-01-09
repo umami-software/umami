@@ -37,7 +37,7 @@ async function checkConnection() {
 
 async function checkV1Tables() {
   try {
-    await prisma.$queryRaw`select * from account limit 1`;
+    await prisma.$queryRaw`select * from _prisma_migrations where migration_name = '04_add_uuid' and finished_at IS NOT NULL`;
 
     success('Database v1 tables found.');
     console.log('Preparing v1 tables for migration');
@@ -74,11 +74,13 @@ async function checkV2Tables() {
 async function dropV1Keys() {
   try {
     // drop keys
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" DROP CONSTRAINT IF EXISTS "_prisma_migrations_pkey" cascade;`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" DROP CONSTRAINT IF EXISTS "account_pkey" cascade;`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" DROP CONSTRAINT IF EXISTS "event_pkey" cascade;`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" DROP CONSTRAINT IF EXISTS "session_pkey" cascade;`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" DROP CONSTRAINT IF EXISTS "website_pkey" cascade;`;
+    await prisma.$transaction([
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" DROP CONSTRAINT IF EXISTS "_prisma_migrations_pkey" cascade;`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" DROP CONSTRAINT IF EXISTS "account_pkey" cascade;`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" DROP CONSTRAINT IF EXISTS "event_pkey" cascade;`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" DROP CONSTRAINT IF EXISTS "session_pkey" cascade;`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" DROP CONSTRAINT IF EXISTS "website_pkey" cascade;`,
+    ]);
 
     success('Dropped v1 database keys.');
   } catch (e) {
@@ -89,13 +91,15 @@ async function dropV1Keys() {
 async function renameV1Tables() {
   try {
     // rename tables
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`;
-    await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`;
+    await prisma.$transaction([
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`,
+      await prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`,
+    ]);
 
     success('Renamed v1 database tables.');
   } catch (e) {
@@ -106,16 +110,18 @@ async function renameV1Tables() {
 async function dropV1Indexes() {
   try {
     // drop indexes
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "user_user_id_key";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "user_username_key";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_id_key";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "session_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "session_website_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_id_key";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`;
-    await prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`;
+    await prisma.$transaction([
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "user_user_id_key";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "user_username_key";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_id_key";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "session_created_at_idx";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "session_website_id_idx";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_id_key";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`,
+      await prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`,
+    ]);
 
     success('Dropped v1 database indexes.');
   } catch (e) {
@@ -141,13 +147,15 @@ async function deleteV1TablesPrompt() {
 async function deleteV1Tables() {
   try {
     // drop tables
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_prisma_migrations";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_account";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_event";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_event_data";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_pageview";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_session";`;
-    await prisma.$executeRaw`DROP TABLE IF EXISTS "v1_website";`;
+    await prisma.$transaction([
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_prisma_migrations";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_account";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_event";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_event_data";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_pageview";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_session";`,
+      prisma.$executeRaw`DROP TABLE IF EXISTS "v1_website";`,
+    ]);
 
     success('Dropped v1 database tables.');
   } catch (e) {
