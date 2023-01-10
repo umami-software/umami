@@ -38,8 +38,8 @@ export default function WebsitesTable({ columns = [], rows = [] }) {
                   </Button>
                 </a>
               </Link>
-              <Link href={`/analytics/websites/${id}`}>
-                <a target="_blank">
+              <Link href={`/websites/${id}`}>
+                <a>
                   <Button>
                     <Icon>
                       <ExternalLink />

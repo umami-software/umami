@@ -2,7 +2,11 @@ import { TextArea } from 'react-basics';
 import { TRACKER_SCRIPT_URL } from 'lib/constants';
 
 export default function TrackingCode({ websiteId }) {
-  const code = `<script async src="${TRACKER_SCRIPT_URL}" data-website-id="${websiteId}"></script>`;
+  const url = TRACKER_SCRIPT_URL.startsWith('http')
+    ? TRACKER_SCRIPT_URL
+    : `${location.origin}${TRACKER_SCRIPT_URL}`;
+
+  const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
 
   return (
     <>

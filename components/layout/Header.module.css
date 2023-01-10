@@ -8,6 +8,7 @@
 .title {
   flex: 1;
   font-size: var(--font-size-lg);
+  font-weight: 700;
   display: flex;
   align-items: center;
   flex-direction: row;

@@ -46,8 +46,8 @@ export default function WebsiteDetails({ websiteId }) {
           </Item>
           <Item>{values?.name}</Item>
         </Breadcrumbs>
-        <Link href={`/analytics/websites/${websiteId}`}>
-          <a target="_blank">
+        <Link href={`/websites/${websiteId}`}>
+          <a>
             <Button variant="primary">
               <Icon>
                 <ExternalLink />
