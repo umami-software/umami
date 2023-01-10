@@ -36,28 +36,25 @@ async function checkConnection() {
 }
 
 async function checkV1Tables() {
-  try {
-    await prisma.$transaction([
-      prisma.$queryRaw`select * from _prisma_migrations where migration_name = '04_add_uuid' and finished_at IS NOT NULL`,
-      prisma.$queryRaw`select * from account limit 1`,
-    ]);
+  const updateV1 =
+    await prisma.$queryRaw`select * from _prisma_migrations where migration_name = '04_add_uuid' and finished_at IS NOT NULL`;
+
+  if (updateV1.length > 0) {
     console.log('Preparing v1 tables for migration');
 
     // alter v1 tables
     await dropV1Keys();
     await renameV1Tables();
     await dropV1Indexes();
+  }
 
-    success('Database v1 tables prepared for migration.');
+  // check for V1 renamed tables
+  try {
+    await prisma.$queryRaw`select * from v1_account limit 1`;
+
+    success('Database v1 tables ready for migration.');
   } catch (e) {
-    // check for V1 renamed tables
-    try {
-      await prisma.$queryRaw`select * from v1_account limit 1`;
-
-      success('Database v1 tables ready for migration.');
-    } catch (e) {
-      throw new Error('Database v1 tables not found.');
-    }
+    throw new Error('Database v1 tables not found.');
   }
 }
 
@@ -94,8 +91,8 @@ async function dropV1Keys() {
 
     success('Dropped v1 database keys.');
   } catch (e) {
-    error('Failed to drop v1 database keys.');
-    process.exit(1);
+    console.log(e);
+    throw new Error('Failed to drop v1 database keys.');
   }
 }
 
@@ -114,8 +111,8 @@ async function renameV1Tables() {
 
     success('Renamed v1 database tables.');
   } catch (e) {
-    error('Failed to rename v1 database tables.');
-    process.exit(1);
+    console.log(e);
+    throw new Error('Failed to rename v1 database tables.');
   }
 }
 
@@ -138,8 +135,8 @@ async function dropV1Indexes() {
 
     success('Dropped v1 database indexes.');
   } catch (e) {
-    error('Failed to drop v1 database indexes.');
-    process.exit(1);
+    console.log(e);
+    throw new Error('Failed to drop v1 database indexes.');
   }
 }
 
@@ -148,10 +145,11 @@ async function deleteV1TablesPrompt() {
     type: 'text',
     name: 'value',
     message: 'Do you want to delete V1 database tables? (Y/N)',
-    validate: value => (value !== 'Y' && value !== 'N' ? `Please enter Y or N.` : true),
+    validate: value =>
+      value.toUpperCase() !== 'Y' && value.toUpperCase() !== 'N' ? `Please enter Y or N.` : true,
   });
 
-  if (response.value === 'Y') {
+  if (response.value.toUpperCase() == 'Y') {
     await deleteV1Tables();
   }
 

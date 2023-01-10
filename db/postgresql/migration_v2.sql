@@ -11,7 +11,8 @@ SELECT account_uuid,
     created_at,
     updated_at,
     NULL
-FROM v1_account;
+FROM v1_account
+WHERE NOT EXISTS (SELECT 1 FROM "user");
 
 -- website
 INSERT INTO website
@@ -26,7 +27,8 @@ SELECT website_uuid,
     a.created_at
 FROM v1_website w
 JOIN v1_account a
-ON a.user_id = w.user_id;
+ON a.user_id = w.user_id
+WHERE NOT EXISTS (SELECT 1 FROM website);
 
 -- session
 INSERT INTO session
@@ -42,7 +44,8 @@ SELECT session_uuid,
     country
 FROM v1_session s
 JOIN v1_website w
-ON w.website_id = s.website_id;
+ON w.website_id = s.website_id
+WHERE NOT EXISTS (SELECT 1 FROM session);
 
 -- pageview
 INSERT INTO website_event
@@ -58,7 +61,8 @@ FROM v1_pageview p
 JOIN v1_session s
 ON s.session_id = p.session_id
 JOIN v1_website w
-ON w.website_id = s.website_id;
+ON w.website_id = s.website_id
+WHERE NOT EXISTS (SELECT 1 FROM website_event WHERE event_type = 1);
 
 -- event / event_data
 INSERT INTO website_event
@@ -77,4 +81,5 @@ ON s.session_id = e.session_id
 JOIN v1_website w
 ON w.website_id = s.website_id
 LEFT JOIN v1_event_data ed
-ON ed.event_id = e.event_id;
+ON ed.event_id = e.event_id
+WHERE NOT EXISTS (SELECT 1 FROM website_event WHERE event_type = 2);
