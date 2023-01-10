@@ -1,0 +1,31 @@
+.table th,
+.table td {
+  flex: 2;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+}
+
+.header:first-child,
+.cell:first-child {
+  min-width: 320px;
+}
+
+.input {
+  flex: 2;
+}
+
+.cell:last-child {
+  justify-content: flex-end;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.empty {
+  min-height: 300px;
+}

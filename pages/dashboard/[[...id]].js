@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
-import Dashboard from 'components/pages/Dashboard';
+import Dashboard from 'components/pages/dashboard/Dashboard';
 import useConfig from 'hooks/useConfig';
 import useRequireLogin from 'hooks/useRequireLogin';
 

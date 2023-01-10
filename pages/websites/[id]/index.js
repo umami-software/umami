@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Layout from 'components/layout/Layout';
-import WebsiteDetails from 'components/pages/WebsiteDetails';
+import WebsiteDetails from 'components/pages/websites/WebsiteDetails';
 import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function DetailsPage() {

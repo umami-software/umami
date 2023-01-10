@@ -1,5 +1,5 @@
 import Calendar from 'assets/calendar-alt.svg';
-import DatePickerForm from 'components/forms/DatePickerForm';
+import DatePickerForm from 'components/metrics/DatePickerForm';
 import { endOfYear, isSameDay } from 'date-fns';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';

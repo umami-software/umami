@@ -1,5 +1,5 @@
 import Layout from 'components/layout/Layout';
-import LoginForm from 'components/forms/LoginForm';
+import LoginForm from 'components/pages/login/LoginForm';
 
 export default function LoginPage({ pageDisabled }) {
   if (pageDisabled) {

@@ -1,5 +1,5 @@
 import Layout from 'components/layout/Layout';
-import TestConsole from 'components/pages/TestConsole';
+import TestConsole from 'components/pages/console/TestConsole';
 import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function ConsolePage({ pageDisabled }) {

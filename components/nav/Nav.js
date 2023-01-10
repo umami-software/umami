@@ -19,10 +19,10 @@ export default function Nav() {
   const handleSelect = () => {};
 
   const items = [
-    { icon: <Website />, label: 'Websites', url: '/websites' },
-    { icon: <User />, label: 'Users', url: '/users', hidden: !user.isAdmin },
-    { icon: <Team />, label: 'Teams', url: '/teams' },
-    { icon: <User />, label: 'Profile', url: '/profile' },
+    { icon: <Website />, label: 'Websites', url: '/settings/websites' },
+    { icon: <User />, label: 'Users', url: '/settings/users' },
+    { icon: <Team />, label: 'Teams', url: '/settings/teams' },
+    { icon: <User />, label: 'Profile', url: '/settings/profile' },
   ];
 
   return (

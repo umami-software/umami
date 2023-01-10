@@ -12,7 +12,10 @@ const menuItems = [
     value: '/dashboard',
   },
   { label: <FormattedMessage id="label.realtime" defaultMessage="Realtime" />, value: '/realtime' },
-  { label: <FormattedMessage id="label.settings" defaultMessage="Settings" />, value: '/settings' },
+  {
+    label: <FormattedMessage id="label.settings" defaultMessage="SettingsLayout" />,
+    value: '/settings',
+  },
   {
     label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
     value: '/settings/profile',

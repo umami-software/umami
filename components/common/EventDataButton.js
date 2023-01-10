@@ -1,5 +1,5 @@
 import List from 'assets/list-ul.svg';
-import EventDataForm from 'components/forms/EventDataForm';
+import EventDataForm from 'components/metrics/EventDataForm';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Button, Icon, Modal } from 'react-basics';

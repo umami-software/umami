@@ -10,7 +10,6 @@ import useUser from 'hooks/useUser';
 import { HOMEPAGE_URL } from 'lib/constants';
 import { useRouter } from 'next/router';
 import { Column, Icon, Row } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
 import SettingsButton from '../settings/SettingsButton';
 import styles from './Header.module.css';
 
@@ -33,19 +32,6 @@ export default function Header() {
             <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
           </Column>
           <HamburgerButton />
-          {user && !adminDisabled && (
-            <div className={styles.links}>
-              <Link href="/dashboard">
-                <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
-              </Link>
-              <Link href="/realtime">
-                <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
-              </Link>
-              <Link href="/websites">
-                <FormattedMessage id="label.settings" defaultMessage="Settings" />
-              </Link>
-            </div>
-          )}
           <Column className={styles.buttons}>
             <ThemeButton />
             <LanguageButton menuAlign="right" />
