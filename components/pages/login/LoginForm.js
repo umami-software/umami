@@ -26,7 +26,7 @@ export default function LoginForm() {
         setClientAuthToken(token);
         setUser(user);
 
-        await router.push('/websites');
+        await router.push('/settings/websites');
       },
     });
   };
