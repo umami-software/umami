@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { get, setItem } from 'next-basics';
+import { setItem } from 'next-basics';
 import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';
 import useForceUpdate from 'hooks/useForceUpdate';
+import useApi from 'hooks/useApi';
 import enUS from 'public/intl/messages/en-US.json';
 
 const messages = {
@@ -19,6 +20,7 @@ export default function useLocale() {
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
+  const { get } = useApi();
 
   async function loadMessages(locale) {
     const data = await get(`${basePath}/intl/messages/${locale}.json`);

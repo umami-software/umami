@@ -9,7 +9,7 @@ export default function useShareToken(shareId) {
   const { get } = useApi();
 
   async function loadToken(id) {
-    const { data } = await get(`/share/${id}`);
+    const data = await get(`/share/${id}`);
 
     if (data) {
       setShareToken(data);

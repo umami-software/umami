@@ -1,11 +1,8 @@
 .buttons {
   display: flex;
-}
-
-.buttons button {
-  margin-right: 20px;
+  gap: 10px;
 }
 
 .active {
-  border: 1px solid var(--primary400);
+  border: 2px solid var(--primary400);
 }

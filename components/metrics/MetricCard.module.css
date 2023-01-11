@@ -6,7 +6,7 @@
 }
 
 .value {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-xxl);
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;
@@ -14,7 +14,6 @@
 }
 
 .label {
-  font-size: var(--font-size-md);
   white-space: nowrap;
   display: flex;
   align-items: center;

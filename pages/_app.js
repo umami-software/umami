@@ -32,7 +32,12 @@ export default function App({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={client}>
-      <IntlProvider locale={locale} messages={messages[locale]} textComponent={Wrapper}>
+      <IntlProvider
+        locale={locale}
+        messages={messages[locale]}
+        textComponent={Wrapper}
+        onError={() => null}
+      >
         <Head>
           <link rel="icon" href={`${basePath}/favicon.ico`} />
           <link rel="apple-touch-icon" sizes="180x180" href={`${basePath}/apple-touch-icon.png`} />

@@ -6,7 +6,6 @@
 }
 
 .message {
-  font-size: var(--font-size-sm);
   font-weight: 600;
   flex: 1;
   text-align: center;

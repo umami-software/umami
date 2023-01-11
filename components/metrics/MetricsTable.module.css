@@ -2,7 +2,6 @@
   position: relative;
   min-height: 430px;
   height: 100%;
-  font-size: var(--font-size-sm);
   display: flex;
   flex-direction: column;
 }

@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
 import useApi from 'hooks/useApi';
-import styles from './UserPasswordForm.module.css';
 import useUser from 'hooks/useUser';
 
 export default function UserPasswordForm({ onSave, onClose, userId }) {
@@ -36,7 +35,7 @@ export default function UserPasswordForm({ onSave, onClose, userId }) {
   };
 
   return (
-    <Form ref={ref} className={styles.form} onSubmit={handleSubmit} error={error}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error}>
       {isCurrentUser && (
         <FormRow label="Current password">
           <FormInput name="currentPassword" rules={{ required: 'Required' }}>

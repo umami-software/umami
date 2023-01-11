@@ -13,13 +13,13 @@ export default function LanguageSetting() {
   const { locale, saveLocale } = useLocale();
   const options = Object.keys(languages);
 
-  function handleReset() {
-    saveLocale(DEFAULT_LOCALE);
-  }
+  const handleReset = () => saveLocale(DEFAULT_LOCALE);
+
+  const renderValue = value => languages[value].label;
 
   return (
-    <Flexbox gap={10} style={{ width: 400 }}>
-      <Dropdown items={options} value={locale} onChange={saveLocale}>
+    <Flexbox width={400} gap={10}>
+      <Dropdown items={options} value={locale} renderValue={renderValue} onChange={saveLocale}>
         {item => <Item key={item}>{languages[item].label}</Item>}
       </Dropdown>
       <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>

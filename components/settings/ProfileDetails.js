@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 export default function ProfileDetails() {
-  const user = useUser();
+  const { user } = useUser();
   const { formatMessage } = useIntl();
 
   if (!user) {

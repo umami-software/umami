@@ -12,7 +12,6 @@
   flex: 1;
   display: flex;
   justify-content: space-between;
-  font-size: var(--font-size-sm);
   flex-wrap: nowrap;
   white-space: nowrap;
   padding: 4px 16px;

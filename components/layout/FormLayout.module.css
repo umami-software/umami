@@ -54,7 +54,6 @@
 .msg {
   color: var(--msgColor);
   background: var(--red400);
-  font-size: var(--font-size-sm);
   padding: 4px 8px;
   border-radius: 4px;
   white-space: nowrap;

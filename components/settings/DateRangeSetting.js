@@ -1,35 +1,21 @@
 import { FormattedMessage } from 'react-intl';
-import DateFilter, { filterOptions } from 'components/common/DateFilter';
-import { Button } from 'react-basics';
+import DateFilter from 'components/common/DateFilter';
+import { Button, Flexbox } from 'react-basics';
 import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
-import styles from './DateRangeSetting.module.css';
 
 export default function DateRangeSetting() {
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
-  const options = filterOptions.filter(e => e.value !== 'all');
 
-  function handleChange(value) {
-    setDateRange(value);
-  }
-
-  function handleReset() {
-    setDateRange(DEFAULT_DATE_RANGE);
-  }
+  const handleReset = () => setDateRange(DEFAULT_DATE_RANGE);
 
   return (
-    <>
-      <DateFilter
-        options={options}
-        value={value}
-        startDate={startDate}
-        endDate={endDate}
-        onChange={handleChange}
-      />
-      <Button className={styles.button} size="sm" onClick={handleReset}>
+    <Flexbox width={400} gap={10}>
+      <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={setDateRange} />
+      <Button onClick={handleReset}>
         <FormattedMessage id="label.reset" defaultMessage="Reset" />
       </Button>
-    </>
+    </Flexbox>
   );
 }

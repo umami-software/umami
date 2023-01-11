@@ -7,8 +7,6 @@
 }
 
 .option {
-  font-size: var(--font-size-sm);
-  font-weight: normal;
   background: var(--base50);
   padding: 4px 16px;
   cursor: pointer;

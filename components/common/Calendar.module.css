@@ -1,7 +1,6 @@
 .calendar {
   display: flex;
   flex-direction: column;
-  font-size: var(--font-size-sm);
   flex: 1;
   min-height: 306px;
 }

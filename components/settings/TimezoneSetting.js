@@ -1,4 +1,4 @@
-import { Dropdown, Item, Button } from 'react-basics';
+import { Dropdown, Item, Button, Flexbox } from 'react-basics';
 import { useIntl, defineMessages } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
 import useTimezone from 'hooks/useTimezone';
@@ -13,16 +13,14 @@ export default function TimezoneSetting() {
   const [timezone, saveTimezone] = useTimezone();
   const options = listTimeZones();
 
-  function handleReset() {
-    saveTimezone(getTimezone());
-  }
+  const handleReset = () => saveTimezone(getTimezone());
 
   return (
-    <>
+    <Flexbox width={400} gap={10}>
       <Dropdown items={options} value={timezone} onChange={saveTimezone}>
         {item => <Item key={item}>{item}</Item>}
       </Dropdown>
       <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>
-    </>
+    </Flexbox>
   );
 }
