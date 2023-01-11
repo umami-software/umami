@@ -9,13 +9,25 @@ const prompts = require('prompts');
 
 const prisma = new PrismaClient();
 
+// function getDatabaseType(url = process.env.DATABASE_URL) {
+//   const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
+
+//   if (type === 'postgres') {
+//     return 'postgresql';
+//   }
+
+//   return type;
+// }
+
+// const databaseType = getDatabaseType();
+
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
 }
 
-function error(msg) {
-  console.log(chalk.redBright(`✗ ${msg}`));
-}
+// function error(msg) {
+//   console.log(chalk.redBright(`✗ ${msg}`));
+// }
 
 async function checkEnv() {
   if (!process.env.DATABASE_URL) {
@@ -71,11 +83,14 @@ async function checkV2Tables() {
     await runSqlFile('../prisma/migrations/01_init/migration.sql');
     console.log(execSync('prisma migrate resolve --applied 01_init').toString());
     console.log(execSync('prisma migrate deploy').toString());
-    console.log(
-      'Starting v2 data migration. Please do no cancel this process, it may take a while.',
-    );
-    await runSqlFile('../db/postgresql/migration_v2.sql');
   }
+}
+
+async function migrateData() {
+  console.log('Starting v2 data migration. Please do no cancel this process, it may take a while.');
+  await runSqlFile('../db/postgresql/migration_v2.sql');
+
+  success('Data migration from V1 to V2 tables completed.');
 }
 
 async function dropV1Keys() {
@@ -171,8 +186,7 @@ async function deleteV1Tables() {
 
     success('Dropped v1 database tables.');
   } catch (e) {
-    error('Failed to drop v1 database tables.');
-    process.exit(1);
+    throw new Error('Failed to drop v1 database tables.');
   }
 }
 
@@ -203,7 +217,14 @@ async function runSqlFile(filePath) {
 
 (async () => {
   let err = false;
-  for (let fn of [checkEnv, checkConnection, checkV1Tables, checkV2Tables, deleteV1TablesPrompt]) {
+  for (let fn of [
+    checkEnv,
+    checkConnection,
+    checkV1Tables,
+    checkV2Tables,
+    migrateData,
+    deleteV1TablesPrompt,
+  ]) {
     try {
       await fn();
     } catch (e) {
