@@ -45,8 +45,8 @@ async function relationalQuery(
     filters = {},
     sessionKey = 'session_id',
   } = data;
-  const { getDateQuery, parseFilters, rawQuery } = prisma;
-  const params = [startDate, endDate];
+  const { toUuid, getDateQuery, parseFilters, rawQuery } = prisma;
+  const params: any = [websiteId, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -54,8 +54,8 @@ async function relationalQuery(
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from website_event
         ${joinSession}
-      where website.website_id='${websiteId}'
-        and pageview.created_at between $1 and $2
+      where website_event.website_id = $1${toUuid()}
+        and website_event.created_at between $2 and $3
         and event_type = ${EVENT_TYPE.pageView}
         ${filterQuery}
       group by 1`,
@@ -90,7 +90,7 @@ async function clickhouseQuery(
         ${getDateQuery('created_at', unit, timezone)} t,
         count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
-      where website_id = $1      
+      where website_id = $1 
         and rev_id = $2  
         and event_type = ${EVENT_TYPE.pageView}
         and ${getBetweenDates('created_at', startDate, endDate)}
