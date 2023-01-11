@@ -1,23 +1,31 @@
 .login {
-  display: flex;
-  flex-direction: column;
-  margin-top: 80px;
+  width: 300px;
+  margin: auto;
+  transform: translateY(-25%);
 }
 
-.login form {
-  margin: 0 auto;
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin: 30px 0;
 }
 
 .icon {
-  display: flex;
+  width: 100%;
+}
+
+.icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.button {
+  flex: 1;
   justify-content: center;
-  margin: 0 auto;
-}
-
-.header {
-  margin-bottom: 30px;
-}
-
-.header h1 {
-  margin: 12px 0;
 }

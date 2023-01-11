@@ -1,4 +1,4 @@
-import Layout from 'components/layout/Layout';
+import LoginLayout from 'components/pages/login/LoginLayout';
 import LoginForm from 'components/pages/login/LoginForm';
 
 export default function LoginPage({ pageDisabled }) {
@@ -7,9 +7,9 @@ export default function LoginPage({ pageDisabled }) {
   }
 
   return (
-    <Layout title="login" header={false} footer={false} center>
+    <LoginLayout title="login">
       <LoginForm />
-    </Layout>
+    </LoginLayout>
   );
 }
 

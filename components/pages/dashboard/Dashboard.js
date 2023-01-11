@@ -5,11 +5,11 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteChartList from 'components/pages/websites/WebsiteChartList';
 import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
+import DashboardEdit from 'components/pages/dashboard/DashboardEdit';
+import styles from 'components/pages/websites/WebsiteList.module.css';
+import useUser from 'hooks/useUser';
 import useApi from 'hooks/useApi';
-import useRequireLogin from 'hooks/useRequireLogin';
 import useDashboard from 'store/dashboard';
-import DashboardEdit from './DashboardEdit';
-import styles from '../websites/WebsiteList.module.css';
 
 const messages = defineMessages({
   dashboard: { id: 'label.dashboard', defaultMessage: 'Dashboard' },
@@ -17,7 +17,7 @@ const messages = defineMessages({
 });
 
 export default function Dashboard({ userId }) {
-  const { user } = useRequireLogin();
+  const { user } = useUser();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);

@@ -1,20 +1,18 @@
 import { useRouter } from 'next/router';
-import Layout from 'components/layout/Layout';
+import AppLayout from 'components/layout/AppLayout';
 import WebsiteDetails from 'components/pages/websites/WebsiteDetails';
-import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function DetailsPage() {
-  const { user } = useRequireLogin();
   const router = useRouter();
   const { id } = router.query;
 
-  if (!id || !user) {
+  if (!id) {
     return null;
   }
 
   return (
-    <Layout>
+    <AppLayout>
       <WebsiteDetails websiteId={id} />
-    </Layout>
+    </AppLayout>
   );
 }
