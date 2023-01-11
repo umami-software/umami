@@ -2,13 +2,12 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import ProfileDetails from 'components/settings/ProfileDetails';
 import { useState } from 'react';
-import { Breadcrumbs, Icon, Item, Tabs, useToast, Modal, Button } from 'react-basics';
+import { Breadcrumbs, Icon, Item, useToast, Modal, Button } from 'react-basics';
 import UserPasswordForm from 'components/pages/settings/users/UserPasswordForm';
-import Pen from 'assets/pen.svg';
+import Lock from 'assets/lock.svg';
 
 export default function ProfileSettings() {
   const [edit, setEdit] = useState(false);
-  const [tab, setTab] = useState('general');
   const { toast, showToast } = useToast();
 
   const handleSave = () => {
@@ -33,17 +32,14 @@ export default function ProfileSettings() {
         </Breadcrumbs>
         <Button onClick={handleAdd}>
           <Icon>
-            <Pen />
+            <Lock />
           </Icon>
           Change Password
         </Button>
       </PageHeader>
-      <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="general">General</Item>
-      </Tabs>
-      {tab === 'general' && <ProfileDetails />}
+      <ProfileDetails />
       {edit && (
-        <Modal title="Add website" onClose={handleClose}>
+        <Modal title="Change password" onClose={handleClose}>
           {close => <UserPasswordForm onSave={handleSave} onClose={close} />}
         </Modal>
       )}

@@ -1,53 +1,46 @@
+import { Form, FormRow } from 'react-basics';
+import { useIntl, defineMessages } from 'react-intl';
 import TimezoneSetting from 'components/settings/TimezoneSetting';
+import DateRangeSetting from 'components/settings/DateRangeSetting';
+import LanguageSetting from 'components/settings/LanguageSetting';
+import ThemeSetting from 'components/settings/ThemeSetting';
 import useUser from 'hooks/useUser';
 
-import { FormattedMessage } from 'react-intl';
-import DateRangeSetting from './DateRangeSetting';
-import LanguageSetting from './LanguageSetting';
-import styles from './ProfileDetails.module.css';
-import ThemeSetting from './ThemeSetting';
+const messages = defineMessages({
+  username: { id: 'label.username', defaultMessage: 'Username' },
+  role: { id: 'label.role', defaultMessage: 'Role' },
+  timezone: { id: 'label.timezone', defaultMessage: 'Timezone' },
+  dateRange: { id: 'label.default-date-range', defaultMessage: 'Default date range' },
+  language: { id: 'label.language', defaultMessage: 'Language' },
+  theme: { id: 'label.theme', defaultMessage: 'Theme' },
+});
 
 export default function ProfileDetails() {
   const user = useUser();
+  const { formatMessage } = useIntl();
 
   if (!user) {
     return null;
   }
 
-  const { username } = user;
+  const { username, role } = user;
 
   return (
-    <>
-      <dl className={styles.list}>
-        <dt>
-          <FormattedMessage id="label.username" defaultMessage="Username" />
-        </dt>
-        <dd>{username}</dd>
-        <dt>
-          <FormattedMessage id="label.timezone" defaultMessage="Timezone" />
-        </dt>
-        <dd>
-          <TimezoneSetting />
-        </dd>
-        <dt>
-          <FormattedMessage id="label.default-date-range" defaultMessage="Default date range" />
-        </dt>
-        <dd>
-          <DateRangeSetting />
-        </dd>
-        <dt>
-          <FormattedMessage id="label.language" defaultMessage="Language" />
-        </dt>
-        <dd>
-          <LanguageSetting />
-        </dd>
-        <dt>
-          <FormattedMessage id="label.theme" defaultMessage="Theme" />
-        </dt>
-        <dd>
-          <ThemeSetting />
-        </dd>
-      </dl>
-    </>
+    <Form>
+      <FormRow label={formatMessage(messages.username)}>{username}</FormRow>
+      <FormRow label={formatMessage(messages.role)}>{role}</FormRow>
+      <FormRow label={formatMessage(messages.language)} inline>
+        <LanguageSetting />
+      </FormRow>
+      <FormRow label={formatMessage(messages.timezone)} inline>
+        <TimezoneSetting />
+      </FormRow>
+      <FormRow label={formatMessage(messages.dateRange)} inline>
+        <DateRangeSetting />
+      </FormRow>
+      <FormRow label={formatMessage(messages.theme)}>
+        <ThemeSetting />
+      </FormRow>
+    </Form>
   );
 }

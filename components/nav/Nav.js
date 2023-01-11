@@ -1,12 +1,13 @@
-import User from 'assets/user.svg';
-import Team from 'assets/users.svg';
-import Website from 'assets/website.svg';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Icon, Item, Menu, Text } from 'react-basics';
-import styles from './Nav.module.css';
 import useUser from 'hooks/useUser';
+import User from 'assets/user.svg';
+import Team from 'assets/users.svg';
+import Website from 'assets/website.svg';
+import Profile from 'assets/profile.svg';
+import styles from './Nav.module.css';
 
 export default function Nav() {
   const user = useUser();
@@ -22,7 +23,7 @@ export default function Nav() {
     { icon: <Website />, label: 'Websites', url: '/settings/websites' },
     { icon: <User />, label: 'Users', url: '/settings/users' },
     { icon: <Team />, label: 'Teams', url: '/settings/teams' },
-    { icon: <User />, label: 'Profile', url: '/settings/profile' },
+    { icon: <Profile />, label: 'Profile', url: '/settings/profile' },
   ];
 
   return (

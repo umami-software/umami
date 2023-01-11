@@ -1,14 +1,17 @@
-import { FormattedMessage } from 'react-intl';
+import { Dropdown, Item, Button } from 'react-basics';
+import { useIntl, defineMessages } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
-import DropDown from 'components/common/DropDown';
-import { Button } from 'react-basics';
 import useTimezone from 'hooks/useTimezone';
 import { getTimezone } from 'lib/date';
-import styles from './TimezoneSetting.module.css';
+
+const messages = defineMessages({
+  reset: { id: 'label.reset', defaultMessage: 'Reset' },
+});
 
 export default function TimezoneSetting() {
+  const { formatMessage } = useIntl();
   const [timezone, saveTimezone] = useTimezone();
-  const options = listTimeZones().map(n => ({ label: n, value: n }));
+  const options = listTimeZones();
 
   function handleReset() {
     saveTimezone(getTimezone());
@@ -16,15 +19,10 @@ export default function TimezoneSetting() {
 
   return (
     <>
-      <DropDown
-        menuClassName={styles.menu}
-        value={timezone}
-        options={options}
-        onChange={saveTimezone}
-      />
-      <Button className={styles.button} size="sm" onClick={handleReset}>
-        <FormattedMessage id="label.reset" defaultMessage="Reset" />
-      </Button>
+      <Dropdown items={options} value={timezone} onChange={saveTimezone}>
+        {item => <Item key={item}>{item}</Item>}
+      </Dropdown>
+      <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>
     </>
   );
 }

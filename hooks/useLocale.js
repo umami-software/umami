@@ -21,9 +21,9 @@ export default function useLocale() {
   const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale) {
-    const { ok, data } = await get(`${basePath}/intl/messages/${locale}.json`);
+    const data = await get(`${basePath}/intl/messages/${locale}.json`);
 
-    if (ok) {
+    if (data) {
       messages[locale] = data;
     }
   }

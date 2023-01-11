@@ -1,4 +1,3 @@
-import User from 'assets/user.svg';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 import { AUTH_TOKEN } from 'lib/constants';
@@ -7,8 +6,9 @@ import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { Button, Icon, Item, Menu, Popup, Text } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
+import useDocumentClick from 'hooks/useDocumentClick';
+import Profile from 'assets/profile.svg';
 import styles from './UserButton.module.css';
-import useDocumentClick from '../../hooks/useDocumentClick';
 
 export default function UserButton() {
   const [show, setShow] = useState(false);
@@ -61,7 +61,7 @@ export default function UserButton() {
     <div className={styles.button} ref={ref}>
       <Button variant="light" onClick={handleClick}>
         <Icon className={styles.icon} size="large">
-          <User />
+          <Profile />
         </Icon>
       </Button>
       {show && (

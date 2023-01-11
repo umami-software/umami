@@ -11,7 +11,13 @@ import 'styles/index.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
 
-const client = new QueryClient();
+const client = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function App({ Component, pageProps }) {
   const { locale, messages } = useLocale();

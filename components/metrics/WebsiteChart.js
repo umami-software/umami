@@ -66,8 +66,9 @@ export default function WebsiteChart({
 
   async function handleDateChange(value) {
     if (value === 'all') {
-      const { data, ok } = await get(`/websites/${websiteId}`);
-      if (ok) {
+      const data = await get(`/websites/${websiteId}`);
+
+      if (data) {
         setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
       }
     } else {

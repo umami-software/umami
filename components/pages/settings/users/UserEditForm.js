@@ -12,7 +12,6 @@ import { useRef } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
-import styles from './UserForm.module.css';
 
 const items = [
   {
@@ -41,14 +40,7 @@ export default function UserEditForm({ data, onSave }) {
   };
 
   return (
-    <Form
-      key={id}
-      className={styles.form}
-      ref={ref}
-      onSubmit={handleSubmit}
-      error={error}
-      values={data}
-    >
+    <Form key={id} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
       <FormRow label="Username">
         <FormInput name="username">
           <TextField />

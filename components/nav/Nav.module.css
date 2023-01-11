@@ -27,7 +27,7 @@
 }
 
 .item a {
-  color: var(--base700);
+  color: var(--base600);
   display: flex;
   align-items: center;
   gap: 20px;
@@ -42,5 +42,4 @@
 
 .item.selected a {
   color: var(--base900);
-  background: var(--base100);
 }
