@@ -211,7 +211,6 @@ export default function EventDataForm({ websiteId, onClose, className }) {
                   <TextField />
                 </FormInput>
               </FormRow>
-              +
               <FormButtons className={styles.formButtons}>
                 <Button variant="action" type="submit">
                   <FormattedMessage id="label.add-filter" defaultMessage="Add Filter" />

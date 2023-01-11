@@ -57,13 +57,11 @@ export default function UsersTable({ columns = defaultColumns, onLoading, onAddK
 
               row.action = (
                 <div className={styles.actions}>
-                  <Link href={`/users/${row.id}`} shallow>
-                    <a>
-                      <Button>
-                        <Icon icon="arrow-right" />
-                        Settings
-                      </Button>
-                    </a>
+                  <Link href={`/settings/users/${row.id}`}>
+                    <Button>
+                      <Icon icon="arrow-right" />
+                      Settings
+                    </Button>
                   </Link>
                 </div>
               );

@@ -19,6 +19,18 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
+function toUuid(): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return '::uuid';
+  }
+
+  if (db === MYSQL) {
+    return '';
+  }
+}
+
 function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -173,7 +185,7 @@ function parseFilters(
     event: { eventName },
     joinSession:
       os || browser || device || country
-        ? `inner join session on ${sessionKey} = session.${sessionKey}`
+        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
         : '',
     filterQuery: getFilterQuery(filters, params),
   };
@@ -198,6 +210,7 @@ export default {
   getFilterQuery,
   getEventDataColumnsQuery,
   getEventDataFilterQuery,
+  toUuid,
   parseFilters,
   rawQuery,
 };

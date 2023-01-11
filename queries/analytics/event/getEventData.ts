@@ -38,23 +38,23 @@ async function relationalQuery(
   },
 ) {
   const { startDate, endDate, eventName, columns, filters } = data;
-  const { rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery } = prisma;
-  const params = [startDate, endDate];
+  const { toUuid, rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery } = prisma;
+  const params: any = [websiteId, startDate, endDate, eventName];
 
   return rawQuery(
     `select
       ${getEventDataColumnsQuery('event_data', columns)}
     from website_event
-    where website_id ='${websiteId}'
-      and created_at between $1 and $2
+    where website_id = $1${toUuid()}
+      and created_at between $2 and $3
       and event_type = ${EVENT_TYPE.customEvent}
-      ${eventName ? `and eventName = ${eventName}` : ''}
+      ${eventName ? `and eventName = $4` : ''}
       ${
         Object.keys(filters).length > 0
           ? `and ${getEventDataFilterQuery('event_data', filters)}`
           : ''
       }`,
-    params as any,
+    params,
   );
 }
 

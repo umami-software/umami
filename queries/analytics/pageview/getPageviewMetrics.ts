@@ -34,8 +34,9 @@ async function relationalQuery(
   },
 ) {
   const { startDate, endDate, column, filters = {}, type } = data;
-  const { rawQuery, parseFilters } = prisma;
+  const { rawQuery, parseFilters, toUuid } = prisma;
   const params: any = [
+    websiteId,
     startDate,
     endDate,
     type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
@@ -46,9 +47,9 @@ async function relationalQuery(
     `select ${column} x, count(*) y
     from website_event
       ${joinSession}
-    where website_id='${websiteId}'
-      and website_event.created_at between $1 and $2
-      and event_type = $3
+    where website_event.website_id = $1${toUuid()}
+      and website_event.created_at between $2 and $3
+      and event_type = $4
       ${filterQuery}
     group by 1
     order by 2 desc`,
