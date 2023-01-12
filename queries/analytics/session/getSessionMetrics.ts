@@ -20,21 +20,21 @@ async function relationalQuery(
   data: { startDate: Date; endDate: Date; field: string; filters: object },
 ) {
   const { startDate, endDate, field, filters = {} } = data;
-  const { parseFilters, rawQuery } = prisma;
-  const params = [startDate, endDate];
+  const { toUuid, parseFilters, rawQuery } = prisma;
+  const params: any = [websiteId, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${field} x, count(*) y
     from session as x
     where x.session_id in (
-      select pageview.session_id
-      from pageview
+      select website_event.session_id
+      from website_event
         join website 
-          on pageview.website_id = website.website_id
+          on website_event.website_id = website.website_id
         ${joinSession}
-      where website.website_id='${websiteId}'
-      and pageview.created_at between $1 and $2
+      where website.website_id = $1${toUuid()}
+      and website_event.created_at between $2 and $3
       ${filterQuery}
     )
     group by 1
