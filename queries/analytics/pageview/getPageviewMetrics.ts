@@ -68,15 +68,19 @@ async function clickhouseQuery(
   const { startDate, endDate, column, filters = {} } = data;
   const { rawQuery, parseFilters, getBetweenDates } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0, EVENT_TYPE.pageView];
+  const params = {
+    websiteId,
+    revId: website?.revId || 0,
+    eventType: EVENT_TYPE.pageView,
+  };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${column} x, count(*) y
     from event
-    where website_id = $1
-      and rev_id = $2
-      and event_type = $3
+    where website_id = {websiteId:UUID}
+      and rev_id = {revId:UInt32}
+      and event_type = {eventType:UInt32}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x
