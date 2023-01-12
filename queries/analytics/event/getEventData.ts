@@ -72,14 +72,14 @@ async function clickhouseQuery(
   const { rawQuery, getBetweenDates, getEventDataColumnsQuery, getEventDataFilterQuery } =
     clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = { websiteId, revId: website?.revId || 0 };
 
   return rawQuery(
     `select
       ${getEventDataColumnsQuery('event_data', columns)}
     from event
-    where website_id = $1
-      and rev_id = $2
+    where website_id = {websiteId:UUID}
+      and rev_id = {revId:UInt32}
       and event_type = ${EVENT_TYPE.customEvent}
       ${eventName ? `and eventName = ${eventName}` : ''}
       and ${getBetweenDates('created_at', startDate, endDate)}

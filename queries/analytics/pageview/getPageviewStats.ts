@@ -78,7 +78,7 @@ async function clickhouseQuery(
   const { startDate, endDate, timezone = 'UTC', unit = 'day', count = '*', filters = {} } = data;
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = { websiteId, revId: website?.revId || 0 };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -90,8 +90,8 @@ async function clickhouseQuery(
         ${getDateQuery('created_at', unit, timezone)} t,
         count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
-      where website_id = $1 
-        and rev_id = $2  
+      where website_id = {websiteId:UUID}
+        and rev_id = {revId:UInt32}
         and event_type = ${EVENT_TYPE.pageView}
         and ${getBetweenDates('created_at', startDate, endDate)}
         ${filterQuery}

@@ -2,14 +2,14 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
 
-export async function getSessions(...args) {
+export async function getSessions(...args: [websites: string[], startAt: Date]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websites, startAt) {
+async function relationalQuery(websites: string[], startAt: Date) {
   return prisma.client.session.findMany({
     where: {
       ...(websites && websites.length > 0
@@ -26,8 +26,8 @@ async function relationalQuery(websites, startAt) {
   });
 }
 
-async function clickhouseQuery(websites, startAt) {
-  const { rawQuery, getDateFormat, getCommaSeparatedStringFormat } = clickhouse;
+async function clickhouseQuery(websites: string[], startAt: Date) {
+  const { rawQuery } = clickhouse;
 
   return rawQuery(
     `select distinct
@@ -42,11 +42,11 @@ async function clickhouseQuery(websites, startAt) {
       language,
       country
     from event
-    where ${
-      websites && websites.length > 0
-        ? `website_id in (${getCommaSeparatedStringFormat(websites)})`
-        : '0 = 0'
-    }
-      and created_at >= ${getDateFormat(startAt)}`,
+    where ${websites && websites.length > 0 ? `website_id in {websites:Array(UUID)}` : '0 = 0'}
+      and created_at >= {startAt:DateTime('UTC')}`,
+    {
+      websites,
+      startAt,
+    },
   );
 }

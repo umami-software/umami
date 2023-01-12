@@ -28,14 +28,14 @@ async function relationalQuery(websiteId: string) {
 }
 
 async function clickhouseQuery(websiteId: string) {
-  const { rawQuery, getDateFormat } = clickhouse;
-  const params = [websiteId];
+  const { rawQuery } = clickhouse;
+  const params = { websiteId, startAt: subMinutes(new Date(), 5) };
 
   return rawQuery(
     `select count(distinct session_id) x
     from event
-    where website_id = $1
-    and created_at >= ${getDateFormat(subMinutes(new Date(), 5))}`,
+    where website_id = {websiteId:UUID}
+    and created_at >= {startAt:DateTime('UTC')}`,
     params,
   );
 }

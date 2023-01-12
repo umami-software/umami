@@ -52,7 +52,7 @@ async function clickhouseQuery(
   const { startDate, endDate, filters = {} } = data;
   const { rawQuery, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = { websiteId, revId: website?.revId || 0 };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -69,8 +69,8 @@ async function clickhouseQuery(
          max(created_at) max_time
        from event
        where event_type = ${EVENT_TYPE.pageView}
-         and website_id = $1
-         and rev_id = $2
+        and website_id = {websiteId:UUID}
+        and rev_id = {revId:UInt32}
          and ${getBetweenDates('created_at', startDate, endDate)}
          ${filterQuery}
        group by session_id, time_series

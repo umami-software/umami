@@ -2,6 +2,7 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
+import { EVENT_TYPE } from 'lib/constants';
 
 export async function getSessionMetrics(
   ...args: [
@@ -50,15 +51,15 @@ async function clickhouseQuery(
   const { startDate, endDate, field, filters = {} } = data;
   const { parseFilters, getBetweenDates, rawQuery } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = { websiteId, revId: website?.revId || 0 };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${field} x, count(distinct session_id) y
     from event as x
-    where website_id = $1
-      and rev_id = $2
-      and event_type = 1
+    where website_id = {websiteId:UUID}
+    and rev_id = {revId:UInt32}
+    and event_type = ${EVENT_TYPE.pageView}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x
