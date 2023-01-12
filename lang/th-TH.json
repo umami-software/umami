@@ -64,7 +64,7 @@
   "label.websites": "เว็บไซต์",
   "message.active-users": "มีผู้ใช้งาน {x} {x, plural, one {คนในขณะนี้} other {คนในขณะนี้}}",
   "message.confirm-delete": "คุณแน่ใจหรือไม่ว่าต้องการลบ {target} ?",
-  "message.confirm-reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซตข้อมูลสถิติของ {target} ?",
+  "message.confirm-reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลสถิติของ {target} ?",
   "message.copied": "คัดลอกแล้ว!",
   "message.delete-warning": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ.",
   "message.edit-dashboard": "Edit dashboard",
