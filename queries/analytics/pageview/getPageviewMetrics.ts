@@ -32,14 +32,14 @@ async function relationalQuery(
     filters: object;
   },
 ) {
-  const { startDate, endDate, column, filters = {}, type } = data;
+  const { startDate, endDate, column, filters = {} } = data;
   const { rawQuery, parseFilters, toUuid } = prisma;
-  const params: any = [
+  const params: any = {
     websiteId,
     startDate,
     endDate,
-    type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
-  ];
+    type: EVENT_TYPE.pageView,
+  };
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
