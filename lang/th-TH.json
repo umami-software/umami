@@ -103,7 +103,7 @@
   "metrics.operating-systems": "ระบบปฏิบัติการ",
   "metrics.page-views": "การเข้าชม",
   "metrics.pages": "หน้าเพจ",
-  "metrics.query-parameters": "Query parameters",
+  "metrics.query-parameters": "พารามิเตอร์ URL",
   "metrics.referrers": "แหล่งที่มา",
   "metrics.screens": "ขนาดหน้าจอ",
   "metrics.unique-visitors": "ผู้เข้าชม",
