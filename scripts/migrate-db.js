@@ -9,17 +9,17 @@ const prompts = require('prompts');
 
 const prisma = new PrismaClient();
 
-// function getDatabaseType(url = process.env.DATABASE_URL) {
-//   const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
+function getDatabaseType(url = process.env.DATABASE_URL) {
+  const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
 
-//   if (type === 'postgres') {
-//     return 'postgresql';
-//   }
+  if (type === 'postgres') {
+    return 'postgresql';
+  }
 
-//   return type;
-// }
+  return type;
+}
 
-// const databaseType = getDatabaseType();
+const databaseType = getDatabaseType();
 
 function success(msg) {
   console.log(chalk.greenBright(`✓ ${msg}`));
@@ -47,7 +47,7 @@ async function checkConnection() {
   }
 }
 
-async function checkV1Tables() {
+async function checkV1Tables(databaseType) {
   const updateV1 =
     await prisma.$queryRaw`select * from _prisma_migrations where migration_name = '04_add_uuid' and finished_at IS NOT NULL`;
 
@@ -55,9 +55,12 @@ async function checkV1Tables() {
     console.log('Preparing v1 tables for migration');
 
     // alter v1 tables
-    await dropV1Keys();
-    await renameV1Tables();
-    await dropV1Indexes();
+    if (databaseType === 'postgresql') {
+      await dropV1Keys();
+    }
+
+    await renameV1Tables(databaseType);
+    await dropV1Indexes(databaseType);
   }
 
   // check for V1 renamed tables
@@ -111,18 +114,30 @@ async function dropV1Keys() {
   }
 }
 
-async function renameV1Tables() {
+async function renameV1Tables(databaseType) {
   try {
     // rename tables
-    await prisma.$transaction([
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`,
-      prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`,
-    ]);
+    if (databaseType === 'postgresql') {
+      await prisma.$transaction([
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "_prisma_migrations" RENAME TO "v1_prisma_migrations";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "account" RENAME TO "v1_account";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "event" RENAME TO "v1_event";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "event_data" RENAME TO "v1_event_data";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "pageview" RENAME TO "v1_pageview";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "session" RENAME TO "v1_session";`,
+        prisma.$executeRaw`ALTER TABLE IF EXISTS "website" RENAME TO "v1_website";`,
+      ]);
+    } else {
+      await prisma.$transaction([
+        prisma.$executeRaw`RENAME TABLE _prisma_migrations TO v1_prisma_migrations;`,
+        prisma.$executeRaw`RENAME TABLE account TO v1_account;`,
+        prisma.$executeRaw`RENAME TABLE event TO v1_event;`,
+        prisma.$executeRaw`RENAME TABLE event_data TO v1_event_data;`,
+        prisma.$executeRaw`RENAME TABLE pageview TO v1_pageview;`,
+        prisma.$executeRaw`RENAME TABLE session TO v1_session;`,
+        prisma.$executeRaw`RENAME TABLE website TO v1_website;`,
+      ]);
+    }
 
     success('Renamed v1 database tables.');
   } catch (e) {
@@ -131,22 +146,29 @@ async function renameV1Tables() {
   }
 }
 
-async function dropV1Indexes() {
+async function dropV1Indexes(databaseType) {
   try {
     // drop indexes
-    await prisma.$transaction([
-      prisma.$executeRaw`DROP INDEX IF EXISTS "user_user_id_key";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "user_username_key";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_id_key";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "session_created_at_idx";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "session_website_id_idx";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_id_key";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`,
-      prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx2";`,
-    ]);
+    if (databaseType === 'postgresql') {
+      await prisma.$transaction([
+        prisma.$executeRaw`DROP INDEX IF EXISTS "session_session_id_key";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "session_created_at_idx";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "session_website_id_idx";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "website_website_id_key";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_key";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "website_created_at_idx";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "website_share_id_idx";`,
+        prisma.$executeRaw`DROP INDEX IF EXISTS "website_user_id_idx";`,
+      ]);
+    } else {
+      await prisma.$transaction([
+        prisma.$executeRaw`DROP INDEX session_session_uuid_key ON session;`,
+        prisma.$executeRaw`DROP INDEX session_created_at_idx ON session;`,
+        prisma.$executeRaw`DROP INDEX session_website_id_idx ON session;`,
+        prisma.$executeRaw`DROP INDEX website_share_id_key ON website;`,
+        prisma.$executeRaw`DROP INDEX website_website_uuid_key ON website;`,
+      ]);
+    }
 
     success('Dropped v1 database indexes.');
   } catch (e) {
@@ -226,7 +248,7 @@ async function runSqlFile(filePath) {
     deleteV1TablesPrompt,
   ]) {
     try {
-      await fn();
+      fn.name === 'checkV1Tables' ? await fn(databaseType) : await fn();
     } catch (e) {
       console.log(chalk.red(`✗ ${e.message}`));
       err = true;
