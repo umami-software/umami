@@ -67,7 +67,7 @@
   "message.confirm-reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลสถิติของ {target} ?",
   "message.copied": "คัดลอกแล้ว!",
   "message.delete-warning": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ.",
-  "message.edit-dashboard": "Edit dashboard",
+  "message.edit-dashboard": "แก้ไขแดชบอร์ด",
   "message.failure": "เกิดข้อผิดพลาด.",
   "message.get-share-url": "รับลิงก์สำหรับแชร์",
   "message.get-tracking-code": "รับโค้ดสำหรับใช้ติดตาม",
