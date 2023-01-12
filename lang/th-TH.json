@@ -64,6 +64,7 @@
   "label.username": "ชื่อผู้ใช้",
   "label.view-details": "แสดงรายละเอียด",
   "label.websites": "เว็บไซต์",
+  "label.yesterday": "เมื่อวาน",
   "message.active-users": "มีผู้ใช้งาน {x} {x, plural, one {คนในขณะนี้} other {คนในขณะนี้}}",
   "message.confirm-delete": "คุณแน่ใจหรือไม่ว่าต้องการลบ {target} ?",
   "message.confirm-reset": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลสถิติของ {target} ?",
