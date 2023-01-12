@@ -1,23 +1,23 @@
-import Layout from 'components/layout/Layout';
+import AppLayout from 'components/layout/AppLayout';
 import Menu from 'components/nav/Nav';
-import useRequireLogin from 'hooks/useRequireLogin';
 import styles from './SettingsLayout.module.css';
+import useConfig from 'hooks/useConfig';
 
 export default function SettingsLayout({ children }) {
-  const { user } = useRequireLogin();
+  const { adminDisabled } = useConfig();
 
-  if (!user) {
+  if (adminDisabled) {
     return null;
   }
 
   return (
-    <Layout>
+    <AppLayout>
       <div className={styles.dashboard}>
         <div className={styles.nav}>
           <Menu />
         </div>
         <div className={styles.content}>{children}</div>
       </div>
-    </Layout>
+    </AppLayout>
   );
 }

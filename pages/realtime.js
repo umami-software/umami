@@ -1,17 +1,10 @@
-import Layout from 'components/layout/Layout';
+import AppLayout from 'components/layout/AppLayout';
 import RealtimeDashboard from 'components/pages/realtime/RealtimeDashboard';
-import useRequireLogin from 'hooks/useRequireLogin';
 
 export default function RealtimePage() {
-  const { user } = useRequireLogin();
-
-  if (!user) {
-    return null;
-  }
-
   return (
-    <Layout>
+    <AppLayout>
       <RealtimeDashboard />
-    </Layout>
+    </AppLayout>
   );
 }

@@ -14,6 +14,7 @@ import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
 import { setClientAuthToken } from 'lib/client';
 import Logo from 'assets/logo.svg';
+import styles from './LoginForm.module.css';
 
 export default function LoginForm() {
   const router = useRouter();
@@ -26,20 +27,18 @@ export default function LoginForm() {
         setClientAuthToken(token);
         setUser(user);
 
-        await router.push('/settings/websites');
+        await router.push('/dashboard');
       },
     });
   };
 
   return (
-    <>
-      <div>
-        <Icon size="xl">
-          <Logo />
-        </Icon>
-        <p>umami</p>
-      </div>
-      <Form onSubmit={handleSubmit} error={error}>
+    <div className={styles.login}>
+      <Icon className={styles.icon} size="xl">
+        <Logo />
+      </Icon>
+      <div className={styles.title}>umami</div>
+      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
         <FormRow label="Username">
           <FormInput name="username" rules={{ required: 'Required' }}>
             <TextField autoComplete="off" />
@@ -51,11 +50,11 @@ export default function LoginForm() {
           </FormInput>
         </FormRow>
         <FormButtons>
-          <SubmitButton variant="primary" disabled={isLoading}>
+          <SubmitButton className={styles.button} variant="primary" disabled={isLoading}>
             Log in
           </SubmitButton>
         </FormButtons>
       </Form>
-    </>
+    </div>
   );
 }

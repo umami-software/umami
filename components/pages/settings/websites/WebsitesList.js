@@ -12,8 +12,10 @@ export default function WebsitesList() {
   const [edit, setEdit] = useState(false);
   const { get, useQuery } = useApi();
   const { user } = useUser();
-  const { data, isLoading, error, refetch } = useQuery(['websites', user.id], () =>
-    get(`/users/${user.id}/websites`),
+  const { data, isLoading, error, refetch } = useQuery(
+    ['websites', user?.id],
+    () => get(`/users/${user?.id}/websites`),
+    { enabled: !!user },
   );
   const hasData = data && data.length !== 0;
   const { toast, showToast } = useToast();

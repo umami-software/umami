@@ -3,8 +3,10 @@ import Head from 'next/head';
 import Header from 'components/layout/Header';
 import Footer from 'components/layout/Footer';
 import useLocale from 'hooks/useLocale';
+import useRequireLogin from 'hooks/useRequireLogin';
 
-export default function Layout({ title, children, header = true, footer = true }) {
+export default function AppLayout({ title, children }) {
+  useRequireLogin();
   const { dir } = useLocale();
 
   return (
@@ -12,9 +14,9 @@ export default function Layout({ title, children, header = true, footer = true }
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
       </Head>
-      {header && <Header />}
+      <Header />
       <main>{children}</main>
-      {footer && <Footer />}
+      <Footer />
     </Container>
   );
 }

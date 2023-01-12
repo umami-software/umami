@@ -1,4 +1,4 @@
-import Layout from 'components/layout/Layout';
+import AppLayout from 'components/layout/AppLayout';
 import { useIntl, defineMessages } from 'react-intl';
 
 const messages = defineMessages({
@@ -9,10 +9,10 @@ export default function Custom404() {
   const { formatMessage } = useIntl();
 
   return (
-    <Layout>
+    <AppLayout>
       <div className="row justify-content-center">
         <h1 style={{ textAlign: 'center' }}>{formatMessage(messages.notFound)}</h1>
       </div>
-    </Layout>
+    </AppLayout>
   );
 }
