@@ -106,3 +106,6 @@ CREATE TABLE `team_user` (
     INDEX `team_user_user_id_idx`(`user_id`),
     PRIMARY KEY (`team_user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateAdminUser
+INSERT INTO account (username, password, is_admin) values ('admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa', true);

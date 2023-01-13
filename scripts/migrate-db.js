@@ -59,8 +59,8 @@ async function checkV1Tables(databaseType) {
       await dropV1Keys();
     }
 
-    await renameV1Tables(databaseType);
     await dropV1Indexes(databaseType);
+    await renameV1Tables(databaseType);
   }
 
   // check for V1 renamed tables
@@ -162,11 +162,12 @@ async function dropV1Indexes(databaseType) {
       ]);
     } else {
       await prisma.$transaction([
-        prisma.$executeRaw`DROP INDEX session_session_uuid_key ON session;`,
+        prisma.$executeRaw`ALTER TABLE session DROP FOREIGN KEY session_website_id_fkey;`,
         prisma.$executeRaw`DROP INDEX session_created_at_idx ON session;`,
         prisma.$executeRaw`DROP INDEX session_website_id_idx ON session;`,
+        prisma.$executeRaw`ALTER TABLE website DROP FOREIGN KEY website_user_id_fkey;`,
+        prisma.$executeRaw`DROP INDEX website_user_id_idx ON website;`,
         prisma.$executeRaw`DROP INDEX website_share_id_key ON website;`,
-        prisma.$executeRaw`DROP INDEX website_website_uuid_key ON website;`,
       ]);
     }
 
@@ -226,7 +227,9 @@ async function runSqlFile(filePath) {
       .split(';');
 
     for (const sql of sqlStatements) {
-      await prisma.$executeRawUnsafe(sql);
+      if (sql.length > 0) {
+        await prisma.$executeRawUnsafe(sql);
+      }
     }
     filePath;
 
