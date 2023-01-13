@@ -14,7 +14,7 @@ export const CLICKHOUSE_DATE_FORMATS = {
 
 const log = debug('umami:clickhouse');
 
-let clickhouse;
+let clickhouse: ClickHouse;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
 
 function getClient() {
@@ -49,7 +49,7 @@ function getDateStringQuery(data, unit) {
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
-function getDateQuery(field, unit, timezone) {
+function getDateQuery(field, unit, timezone?) {
   if (timezone) {
     return `date_trunc('${unit}', ${field}, '${timezone}')`;
   }
@@ -60,12 +60,8 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getCommaSeparatedStringFormat(data) {
-  return data.map(a => `'${a}'`).join(',') || '';
-}
-
-function getBetweenDates(field, start_at, end_at) {
-  return `${field} between ${getDateFormat(start_at)} and ${getDateFormat(end_at)}`;
+function getBetweenDates(field, startAt, endAt) {
+  return `${field} between ${getDateFormat(startAt)} and ${getDateFormat(endAt)}`;
 }
 
 function getJsonField(column, property) {
@@ -106,7 +102,7 @@ function getEventDataFilterQuery(column, filters) {
   return query.join('\nand ');
 }
 
-function getFilterQuery(filters = {}, params = []) {
+function getFilterQuery(filters = {}, params = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
@@ -120,20 +116,24 @@ function getFilterQuery(filters = {}, params = []) {
       case 'browser':
       case 'device':
       case 'country':
-      case 'event_name':
-        arr.push(`and ${key}=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
+        arr.push(`and ${key} = {${key}:String}`);
+        params[key] = filter;
+        break;
+
+      case 'eventName':
+        arr.push(`and event_name = {${key}:String}`);
+        params[key] = filter;
         break;
 
       case 'referrer':
-        arr.push(`and referrer like $${params.length + 1}`);
-        params.push(`%${decodeURIComponent(filter)}%`);
+        arr.push(`and referrer ILIKE {${key}:String}`);
+        params[key] = `%${filter}`;
         break;
 
       case 'domain':
-        arr.push(`and referrer not like $${params.length + 1}`);
-        arr.push(`and referrer not like '/%'`);
-        params.push(`%://${filter}/%`);
+        arr.push(`and referrer NOT ILIKE {${key}:String}`);
+        arr.push(`and referrer NOT ILIKE '/%'`);
+        params[key] = `%://${filter}/%`;
         break;
 
       case 'query':
@@ -146,49 +146,32 @@ function getFilterQuery(filters = {}, params = []) {
   return query.join('\n');
 }
 
-function parseFilters(filters = {}, params = []) {
-  const { domain, url, event_url, referrer, os, browser, device, country, event_name, query } =
+function parseFilters(filters: any = {}, params: any = {}) {
+  const { domain, url, eventUrl, referrer, os, browser, device, country, eventName, query } =
     filters;
 
   const pageviewFilters = { domain, url, referrer, query };
   const sessionFilters = { os, browser, device, country };
-  const eventFilters = { url: event_url, event_name };
+  const eventFilters = { url: eventUrl, eventName };
 
   return {
     pageviewFilters,
     sessionFilters,
     eventFilters,
-    event: { event_name },
+    event: { eventName },
     filterQuery: getFilterQuery(filters, params),
   };
 }
 
-function formatQuery(str, params = []) {
-  let formattedString = str;
-
-  params.forEach((param, i) => {
-    let replace = param;
-
-    if (typeof param === 'string' || param instanceof String) {
-      replace = `'${replace}'`;
-    }
-
-    formattedString = formattedString.replace(`$${i + 1}`, replace);
-  });
-
-  return formattedString;
-}
-
-async function rawQuery(query, params = []) {
-  let formattedQuery = formatQuery(query, params);
-
+async function rawQuery(query, params = {}) {
   if (process.env.LOG_QUERY) {
-    log(formattedQuery);
+    log(query);
+    log(params);
   }
 
   await connect();
 
-  return clickhouse.query(formattedQuery).toPromise();
+  return clickhouse.query(query, { params }).toPromise();
 }
 
 async function findUnique(data) {
@@ -204,7 +187,7 @@ async function findFirst(data) {
 }
 
 async function connect() {
-  if (!clickhouse) {
+  if (enabled && !clickhouse) {
     clickhouse = process.env.CLICKHOUSE_URL && (global[CLICKHOUSE] || getClient());
   }
 
@@ -219,7 +202,6 @@ export default {
   getDateStringQuery,
   getDateQuery,
   getDateFormat,
-  getCommaSeparatedStringFormat,
   getBetweenDates,
   getEventDataColumnsQuery,
   getEventDataFilterQuery,

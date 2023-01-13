@@ -2,6 +2,7 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
+import { EVENT_TYPE } from 'lib/constants';
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, data: { startDate: Date; endDate: Date; filters: object }]
@@ -17,8 +18,8 @@ async function relationalQuery(
   data: { startDate: Date; endDate: Date; filters: object },
 ) {
   const { startDate, endDate, filters = {} } = data;
-  const { getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
-  const params = [startDate, endDate];
+  const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
+  const params: any = [websiteId, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -27,16 +28,16 @@ async function relationalQuery(
         sum(case when t.c = 1 then 1 else 0 end) as "bounces",
         sum(t.time) as "totaltime"
       from (
-        select pageview.session_id,
-          ${getDateQuery('pageview.created_at', 'hour')},
+        select website_event.session_id,
+          ${getDateQuery('website_event.created_at', 'hour')},
           count(*) c,
-          ${getTimestampInterval('pageview.created_at')} as "time"
-        from pageview
+          ${getTimestampInterval('website_event.created_at')} as "time"
+        from website_event
           join website 
-            on pageview.website_id = website.website_id
+            on website_event.website_id = website.website_id
           ${joinSession}
-        where website.website_id='${websiteId}'
-          and pageview.created_at between $1 and $2
+        where website.website_id = $1${toUuid()}
+          and website_event.created_at between $2 and $3
           ${filterQuery}
         group by 1, 2
      ) t`,
@@ -51,7 +52,7 @@ async function clickhouseQuery(
   const { startDate, endDate, filters = {} } = data;
   const { rawQuery, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0];
+  const params = { websiteId, revId: website?.revId || 0 };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -67,9 +68,9 @@ async function clickhouseQuery(
          min(created_at) min_time,
          max(created_at) max_time
        from event
-       where event_name = ''
-         and website_id = $1
-         and rev_id = $2
+       where event_type = ${EVENT_TYPE.pageView}
+        and website_id = {websiteId:UUID}
+        and rev_id = {revId:UInt32}
          and ${getBetweenDates('created_at', startDate, endDate)}
          ${filterQuery}
        group by session_id, time_series

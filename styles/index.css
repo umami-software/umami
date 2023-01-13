@@ -88,3 +88,41 @@ svg {
   height: 100%;
   flex: 1;
 }
+
+input[type='text'],
+input[type='password'],
+select,
+textarea {
+  color: var(--base900);
+  background: var(--base50);
+  padding: 4px 8px;
+  font-size: var(--font-size-normal);
+  line-height: 1.8;
+  border: 1px solid var(--base500);
+  border-radius: 4px;
+  outline: none;
+  resize: none;
+  flex: 1;
+}
+
+input[type='checkbox'] + label {
+  margin-left: 10px;
+}
+
+label {
+  flex: 1;
+  margin-right: 20px;
+}
+
+label:empty {
+  flex: 0;
+}
+
+dt {
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+dd {
+  margin: 0 0 30px 0;
+}

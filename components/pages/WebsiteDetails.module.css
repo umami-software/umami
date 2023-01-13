@@ -29,3 +29,7 @@
 .hidden {
   display: none;
 }
+
+.eventschart {
+  padding-top: 30px;
+}

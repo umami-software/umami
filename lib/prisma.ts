@@ -54,7 +54,19 @@ function getClient(options) {
   return prisma;
 }
 
-function getDateQuery(field, unit, timezone?): string {
+function toUuid(): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return '::uuid';
+  }
+
+  if (db === MYSQL) {
+    return '';
+  }
+}
+
+function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -201,7 +213,7 @@ function parseFilters(
     event: { event_name },
     joinSession:
       os || browser || device || country
-        ? `inner join session on ${sessionKey} = session.${sessionKey}`
+        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
         : '',
     filterQuery: getFilterQuery(filters, params),
   };
@@ -235,6 +247,7 @@ export default {
   getFilterQuery,
   getEventDataColumnsQuery,
   getEventDataFilterQuery,
+  toUuid,
   parseFilters,
   rawQuery,
   transaction,
