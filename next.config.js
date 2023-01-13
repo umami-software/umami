@@ -36,16 +36,20 @@ module.exports = {
   env: {
     currentVersion: pkg.version,
     isProduction: process.env.NODE_ENV === 'production',
+    uiDisabled: !!process.env.DISABLE_UI,
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.js$/,
+      issuer: /\.{js|jsx|ts|tsx}$/,
       use: ['@svgr/webpack'],
     });
 

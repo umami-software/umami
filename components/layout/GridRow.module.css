@@ -1,0 +1,21 @@
+.column {
+  padding: 20px;
+  border-top: 1px solid var(--base200);
+  border-left: 1px solid var(--base200);
+}
+
+.column:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.column:last-child {
+  padding-right: 0;
+}
+
+.column.xs,
+.column.sm,
+.column.md {
+  border-left: 0;
+  border-right: 0;
+}

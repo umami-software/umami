@@ -5,7 +5,7 @@
 
 .text {
   display: flex;
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-md);
 }
 
 .value {

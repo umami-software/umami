@@ -1,46 +1,20 @@
 -- CreateTable
-CREATE TABLE "account" (
-    "user_id" SERIAL NOT NULL,
+CREATE TABLE "user" (
+    "user_id" UUID NOT NULL,
     "username" VARCHAR(255) NOT NULL,
     "password" VARCHAR(60) NOT NULL,
-    "is_admin" BOOLEAN NOT NULL DEFAULT false,
+    "role" VARCHAR(50) NOT NULL,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
+    "deleted_at" TIMESTAMPTZ(6),
 
-    PRIMARY KEY ("user_id")
-);
-
--- CreateTable
-CREATE TABLE "event" (
-    "event_id" SERIAL NOT NULL,
-    "website_id" INTEGER NOT NULL,
-    "session_id" INTEGER NOT NULL,
-    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "url" VARCHAR(500) NOT NULL,
-    "event_type" VARCHAR(50) NOT NULL,
-    "event_value" VARCHAR(50) NOT NULL,
-
-    PRIMARY KEY ("event_id")
-);
-
--- CreateTable
-CREATE TABLE "pageview" (
-    "view_id" SERIAL NOT NULL,
-    "website_id" INTEGER NOT NULL,
-    "session_id" INTEGER NOT NULL,
-    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
-    "url" VARCHAR(500) NOT NULL,
-    "referrer" VARCHAR(500),
-
-    PRIMARY KEY ("view_id")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("user_id")
 );
 
 -- CreateTable
 CREATE TABLE "session" (
-    "session_id" SERIAL NOT NULL,
-    "session_uuid" UUID NOT NULL,
-    "website_id" INTEGER NOT NULL,
-    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "session_id" UUID NOT NULL,
+    "website_id" UUID NOT NULL,
     "hostname" VARCHAR(100),
     "browser" VARCHAR(20),
     "os" VARCHAR(20),
@@ -48,52 +22,75 @@ CREATE TABLE "session" (
     "screen" VARCHAR(11),
     "language" VARCHAR(35),
     "country" CHAR(2),
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
 
-    PRIMARY KEY ("session_id")
+    CONSTRAINT "session_pkey" PRIMARY KEY ("session_id")
 );
 
 -- CreateTable
 CREATE TABLE "website" (
-    "website_id" SERIAL NOT NULL,
-    "website_uuid" UUID NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "website_id" UUID NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "domain" VARCHAR(500),
     "share_id" VARCHAR(64),
+    "rev_id" INTEGER NOT NULL DEFAULT 0,
+    "user_id" UUID,
+    "team_id" UUID,
     "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
+    "deleted_at" TIMESTAMPTZ(6),
 
-    PRIMARY KEY ("website_id")
+    CONSTRAINT "website_pkey" PRIMARY KEY ("website_id")
+);
+
+-- CreateTable
+CREATE TABLE "website_event" (
+    "event_id" UUID NOT NULL,
+    "website_id" UUID NOT NULL,
+    "session_id" UUID NOT NULL,
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "url" VARCHAR(500) NOT NULL,
+    "referrer" VARCHAR(500),
+    "event_type" INTEGER NOT NULL DEFAULT 1,
+    "event_name" VARCHAR(50),
+    "event_data" JSONB,
+
+    CONSTRAINT "website_event_pkey" PRIMARY KEY ("event_id")
+);
+
+-- CreateTable
+CREATE TABLE "team" (
+    "team_id" UUID NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
+    "user_id" UUID NOT NULL,
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
+    "deleted_at" TIMESTAMPTZ(6),
+
+    CONSTRAINT "team_pkey" PRIMARY KEY ("team_id")
+);
+
+-- CreateTable
+CREATE TABLE "team_user" (
+    "team_user_id" UUID NOT NULL,
+    "team_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+    "role" VARCHAR(50) NOT NULL,
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
+    "deleted_at" TIMESTAMPTZ(6),
+
+    CONSTRAINT "team_user_pkey" PRIMARY KEY ("team_user_id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "account.username_unique" ON "account"("username");
+CREATE UNIQUE INDEX "user_user_id_key" ON "user"("user_id");
 
 -- CreateIndex
-CREATE INDEX "event_created_at_idx" ON "event"("created_at");
+CREATE UNIQUE INDEX "user_username_key" ON "user"("username");
 
 -- CreateIndex
-CREATE INDEX "event_session_id_idx" ON "event"("session_id");
-
--- CreateIndex
-CREATE INDEX "event_website_id_idx" ON "event"("website_id");
-
--- CreateIndex
-CREATE INDEX "pageview_created_at_idx" ON "pageview"("created_at");
-
--- CreateIndex
-CREATE INDEX "pageview_session_id_idx" ON "pageview"("session_id");
-
--- CreateIndex
-CREATE INDEX "pageview_website_id_created_at_idx" ON "pageview"("website_id", "created_at");
-
--- CreateIndex
-CREATE INDEX "pageview_website_id_idx" ON "pageview"("website_id");
-
--- CreateIndex
-CREATE INDEX "pageview_website_id_session_id_created_at_idx" ON "pageview"("website_id", "session_id", "created_at");
-
--- CreateIndex
-CREATE UNIQUE INDEX "session.session_uuid_unique" ON "session"("session_uuid");
+CREATE UNIQUE INDEX "session_session_id_key" ON "session"("session_id");
 
 -- CreateIndex
 CREATE INDEX "session_created_at_idx" ON "session"("created_at");
@@ -102,31 +99,49 @@ CREATE INDEX "session_created_at_idx" ON "session"("created_at");
 CREATE INDEX "session_website_id_idx" ON "session"("website_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "website.website_uuid_unique" ON "website"("website_uuid");
+CREATE UNIQUE INDEX "website_website_id_key" ON "website"("website_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "website.share_id_unique" ON "website"("share_id");
+CREATE UNIQUE INDEX "website_share_id_key" ON "website"("share_id");
 
 -- CreateIndex
-CREATE INDEX "website_user_id_idx" ON "website"("user_id");
+CREATE INDEX "website_created_at_idx" ON "website"("created_at");
+
+-- CreateIndex
+CREATE INDEX "website_share_id_idx" ON "website"("share_id");
+
+-- CreateIndex
+CREATE INDEX "website_event_created_at_idx" ON "website_event"("created_at");
+
+-- CreateIndex
+CREATE INDEX "website_event_session_id_idx" ON "website_event"("session_id");
+
+-- CreateIndex
+CREATE INDEX "website_event_website_id_idx" ON "website_event"("website_id");
+
+-- CreateIndex
+CREATE INDEX "website_event_website_id_created_at_idx" ON "website_event"("website_id", "created_at");
+
+-- CreateIndex
+CREATE INDEX "website_event_website_id_session_id_created_at_idx" ON "website_event"("website_id", "session_id", "created_at");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "team_team_id_key" ON "team"("team_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "team_user_team_user_id_key" ON "team_user"("team_user_id");
 
 -- AddForeignKey
-ALTER TABLE "event" ADD FOREIGN KEY ("session_id") REFERENCES "session"("session_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "website" ADD CONSTRAINT "website_team_id_fkey" FOREIGN KEY ("team_id") REFERENCES "team"("team_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "event" ADD FOREIGN KEY ("website_id") REFERENCES "website"("website_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "website" ADD CONSTRAINT "website_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("user_id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "pageview" ADD FOREIGN KEY ("session_id") REFERENCES "session"("session_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "team_user" ADD CONSTRAINT "team_user_team_id_fkey" FOREIGN KEY ("team_id") REFERENCES "team"("team_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "pageview" ADD FOREIGN KEY ("website_id") REFERENCES "website"("website_id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "team_user" ADD CONSTRAINT "team_user_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("user_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
-ALTER TABLE "session" ADD FOREIGN KEY ("website_id") REFERENCES "website"("website_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "website" ADD FOREIGN KEY ("user_id") REFERENCES "account"("user_id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- CreateAdminUser
-INSERT INTO account (username, password, is_admin) values ('admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa', true);
+-- AddSystemUser
+INSERT INTO "user" (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');

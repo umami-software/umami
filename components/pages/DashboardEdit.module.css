@@ -16,19 +16,19 @@
 
 .item h2 {
   font-size: 14px;
-  color: var(--gray700);
+  color: var(--base700);
 }
 
 .text {
   padding: 20px;
   border-radius: 5px;
-  border: 1px solid var(--gray400);
-  background: var(--gray50);
+  border: 1px solid var(--base400);
+  background: var(--base50);
 }
 
 .active .text {
-  border-color: var(--gray600);
-  box-shadow: 4px 4px 4px var(--gray100);
+  border-color: var(--base600);
+  box-shadow: 4px 4px 4px var(--base100);
 }
 
 .dragActive {

@@ -19,7 +19,7 @@ export default function useRequireLogin() {
       return null;
     }
 
-    setUser(data);
+    setUser(data.user);
 
     setLoading(false);
   }

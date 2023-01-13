@@ -4,11 +4,11 @@
 }
 
 .row .inactive {
-  color: var(--gray500);
+  color: var(--base500);
 }
 
 .row .active {
-  color: var(--gray900);
+  color: var(--base900);
   font-weight: 600;
 }
 

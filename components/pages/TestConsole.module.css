@@ -1,5 +1,5 @@
 .test {
-  border: 1px solid var(--gray200);
+  border: 1px solid var(--base200);
   border-radius: 5px;
   padding: 0 20px 20px 20px;
 }

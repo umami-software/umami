@@ -2,9 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--font-size-normal);
-  color: var(--gray900);
-  background: var(--gray100);
+  font-size: var(--font-size-md);
+  color: var(--base900);
+  background: var(--base100);
   padding: 8px 16px;
   border-radius: 4px;
   border: 0;
@@ -14,11 +14,11 @@
 }
 
 .button:hover {
-  background: var(--gray200);
+  background: var(--base200);
 }
 
 .button:active {
-  color: var(--gray900);
+  color: var(--base900);
 }
 
 .label {
@@ -29,30 +29,30 @@
 }
 
 .large {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
 }
 
 .small {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
 }
 
 .xsmall {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
 }
 
 .action,
 .action:active {
-  color: var(--gray50);
-  background: var(--gray900);
+  color: var(--base50);
+  background: var(--base900);
 }
 
 .action:hover {
-  background: var(--gray800);
+  background: var(--base800);
 }
 
 .danger,
 .danger:active {
-  color: var(--gray50);
+  color: var(--base50);
   background: var(--red500);
 }
 
@@ -62,7 +62,7 @@
 
 .light,
 .light:active {
-  color: var(--gray900);
+  color: var(--base900);
   background: transparent;
 }
 
@@ -85,18 +85,18 @@
 
 .button:disabled {
   cursor: default;
-  color: var(--gray500);
-  background: var(--gray75);
+  color: var(--base500);
+  background: var(--base75);
 }
 
 .button:disabled:active {
-  color: var(--gray500);
+  color: var(--base500);
 }
 
 .button:disabled:hover {
-  background: var(--gray75);
+  background: var(--base75);
 }
 
 .button.light:disabled {
-  background: var(--gray50);
+  background: var(--base50);
 }

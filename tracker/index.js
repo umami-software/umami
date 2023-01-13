@@ -92,24 +92,24 @@
       .then(text => (cache = text));
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, uuid = website) =>
+  const trackView = (url = currentUrl, referrer = currentRef, websiteId = website) =>
     collect(
       'pageview',
       assign(getPayload(), {
-        website: uuid,
+        website: websiteId,
         url,
         referrer,
       }),
     );
 
-  const trackEvent = (event_name, event_data, url = currentUrl, uuid = website) =>
+  const trackEvent = (eventName, eventData, url = currentUrl, websiteId = website) =>
     collect(
       'event',
       assign(getPayload(), {
-        website: uuid,
+        website: websiteId,
         url,
-        event_name,
-        event_data,
+        event_name: eventName,
+        event_data: eventData,
       }),
     );
 
@@ -143,7 +143,10 @@
             ) {
               e.preventDefault();
               trackEvent(name).then(() => {
-                location.href = get('href');
+                const href = get('href');
+                if (href) {
+                  location.href = href;
+                }
               });
             } else {
               trackEvent(name);

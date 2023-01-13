@@ -1,5 +1,5 @@
 .table {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
   overflow: hidden;
   height: 100%;
   display: grid;
@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   height: 40px;
-  border-bottom: 1px solid var(--gray300);
+  border-bottom: 1px solid var(--base300);
 }
 
 .body {
@@ -50,7 +50,7 @@
 }
 
 .row .link {
-  color: var(--gray900);
+  color: var(--base900);
   text-decoration: none;
 }
 

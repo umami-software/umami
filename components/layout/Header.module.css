@@ -7,10 +7,10 @@
 
 .title {
   flex: 1;
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
   display: flex;
   align-items: center;
-  line-height: 1.4;
+  flex-direction: row;
 }
 
 .logo {
@@ -22,7 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: var(--font-size-normal);
+  font-size: var(--font-size-md);
   font-weight: 600;
 }
 
@@ -33,6 +33,7 @@
 .buttons {
   flex: 1;
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
   align-items: center;
 }

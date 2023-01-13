@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { Row, Column } from 'react-basics';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,7 +12,7 @@ import useFetch from 'hooks/useFetch';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
-  const { data } = useFetch('/websites');
+  const { data } = useFetch('/websites?include_all=true');
   const router = useRouter();
   const {
     basePath,
@@ -24,9 +24,9 @@ export default function TestConsole() {
     return null;
   }
 
-  const options = data.map(({ name, website_id }) => ({ label: name, value: website_id }));
-  const website = data.find(({ website_id }) => website_id === +websiteId);
-  const selectedValue = options.find(({ value }) => value === website?.website_id)?.value;
+  const options = data.map(({ name, id }) => ({ label: name, value: id }));
+  const website = data.find(({ id }) => websiteId === id);
+  const selectedValue = options.find(({ value }) => value === website?.id)?.value;
 
   function handleSelect(value) {
     router.push(`/console/${value}`);
@@ -46,7 +46,7 @@ export default function TestConsole() {
           <script
             async
             defer
-            data-website-id={website.website_uuid}
+            data-website-id={website.id}
             src={`${basePath}/umami.js`}
             data-cache="true"
           />
@@ -62,8 +62,8 @@ export default function TestConsole() {
       </PageHeader>
       {website && (
         <>
-          <div className={classNames(styles.test, 'row')}>
-            <div className="col-4">
+          <Row className={styles.test}>
+            <Column xs="4">
               <PageHeader>Page links</PageHeader>
               <div>
                 <Link href={`/console/${websiteId}?page=1`}>
@@ -87,32 +87,32 @@ export default function TestConsole() {
                   </a>
                 </Link>
               </div>
-            </div>
-            <div className="col-4">
+            </Column>
+            <Column xs="4">
               <PageHeader>CSS events</PageHeader>
               <Button id="primary-button" className="umami--click--button-click" variant="action">
                 Send event
               </Button>
-            </div>
-            <div className="col-4">
+            </Column>
+            <Column xs="4">
               <PageHeader>Javascript events</PageHeader>
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
               </Button>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12">
+            </Column>
+          </Row>
+          <Row>
+            <Column>
               <WebsiteChart
-                websiteId={website.website_id}
+                websiteId={website.id}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
               <PageHeader>Events</PageHeader>
-              <EventsChart websiteId={website.website_id} />
-            </div>
-          </div>
+              <EventsChart websiteId={website.id} />
+            </Column>
+          </Row>
         </>
       )}
     </Page>

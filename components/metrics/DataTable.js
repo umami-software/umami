@@ -16,6 +16,7 @@ export default function DataTable({
   height,
   animate = true,
   virtualize = false,
+  showPercentage = true,
 }) {
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
@@ -38,6 +39,7 @@ export default function DataTable({
         animate={animate && !virtualize}
         format={formatFunc}
         onClick={handleSetFormat}
+        showPercentage={showPercentage}
       />
     );
   };
@@ -68,7 +70,15 @@ export default function DataTable({
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) => {
+const AnimatedRow = ({
+  label,
+  value = 0,
+  percent,
+  animate,
+  format,
+  onClick,
+  showPercentage = true,
+}) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -82,15 +92,17 @@ const AnimatedRow = ({ label, value = 0, percent, animate, format, onClick }) =>
       <div className={styles.value} onClick={onClick}>
         <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
       </div>
-      <div className={styles.percent}>
-        <animated.div
-          className={styles.bar}
-          style={{ width: props.width.interpolate(n => `${n}%`) }}
-        />
-        <animated.span className={styles.percentValue}>
-          {props.width.interpolate(n => `${n.toFixed(0)}%`)}
-        </animated.span>
-      </div>
+      {showPercentage && (
+        <div className={styles.percent}>
+          <animated.div
+            className={styles.bar}
+            style={{ width: props.width.interpolate(n => `${n}%`) }}
+          />
+          <animated.span className={styles.percentValue}>
+            {props.width.interpolate(n => `${n.toFixed(0)}%`)}
+          </animated.span>
+        </div>
+      )}
     </div>
   );
 };

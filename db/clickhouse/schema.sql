@@ -3,9 +3,10 @@ SET allow_experimental_object_type = 1;
 -- Create Event
 CREATE TABLE event
 (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
+    rev_id UInt32,
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -18,18 +19,20 @@ CREATE TABLE event
     url String,
     referrer String,
     --event
+    event_type UInt32,
     event_name String,
     event_data JSON,
     created_at DateTime('UTC')
 )
     engine = MergeTree
-        ORDER BY (website_id, session_uuid, created_at)
+        ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
 CREATE TABLE event_queue (
-    website_id UInt32,
-    session_uuid UUID,
-    event_uuid Nullable(UUID),
+    website_id UUID,
+    session_id UUID,
+    event_id Nullable(UUID),
+    rev_id UInt32,
     url String,
     referrer String,
     hostname LowCardinality(String),
@@ -39,6 +42,7 @@ CREATE TABLE event_queue (
     screen LowCardinality(String),
     language LowCardinality(String),
     country LowCardinality(String),
+    event_type UInt32,
     event_name String,
     event_data String,
     created_at DateTime('UTC')
@@ -53,8 +57,9 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
 
 CREATE MATERIALIZED VIEW event_queue_mv TO event AS
 SELECT website_id,
-    session_uuid,
-    event_uuid,
+    session_id,
+    event_id,
+    rev_id,
     url,
     referrer,
     hostname,
@@ -64,7 +69,8 @@ SELECT website_id,
     screen,
     language,
     country,
+    event_type,
     event_name,
-    event_data,
+    if((empty(event_data) = 0) AND startsWith(event_data, '"'), concat('{', event_data, ': true}'), event_data) AS event_data,
     created_at
 FROM event_queue;

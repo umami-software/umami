@@ -21,18 +21,18 @@ function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
   return state
     .concat(data.filter(({ __id }) => !ids.includes(__id)))
-    .filter(({ created_at }) => new Date(created_at).getTime() >= time);
+    .filter(({ createdAt }) => new Date(createdAt).getTime() >= time);
 }
 
 function filterWebsite(data, id) {
-  return data.filter(({ website_id }) => website_id === id);
+  return data.filter(({ websiteId }) => websiteId === id);
 }
 
 export default function RealtimeDashboard() {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
-  const [websiteId, setWebsiteId] = useState(0);
+  const [websiteId, setWebsiteId] = useState(null);
   const { data: init, loading } = useFetch('/realtime/init');
   const { data: updates } = useFetch('/realtime/update', {
     params: { start_at: data?.timestamp },
@@ -51,10 +51,11 @@ export default function RealtimeDashboard() {
       const { pageviews, sessions, events } = data;
 
       if (websiteId) {
+        const { id } = init.websites.find(n => n.id === websiteId);
         return {
-          pageviews: filterWebsite(pageviews, websiteId),
-          sessions: filterWebsite(sessions, websiteId),
-          events: filterWebsite(events, websiteId),
+          pageviews: filterWebsite(pageviews, id),
+          sessions: filterWebsite(sessions, id),
+          events: filterWebsite(events, id),
         };
       }
     }
@@ -122,12 +123,7 @@ export default function RealtimeDashboard() {
         onSelect={setWebsiteId}
       />
       <div className={styles.chart}>
-        <RealtimeChart
-          websiteId={websiteId}
-          data={realtimeData}
-          unit="minute"
-          records={REALTIME_RANGE}
-        />
+        <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>
       <GridLayout>
         <GridRow>

@@ -8,10 +8,12 @@ import User from 'assets/user.svg';
 import styles from './UserButton.module.css';
 import { AUTH_TOKEN } from 'lib/constants';
 import useUser from 'hooks/useUser';
+import useConfig from 'hooks/useConfig';
 
 export default function UserButton() {
   const { user } = useUser();
   const router = useRouter();
+  const { adminDisabled } = useConfig();
 
   const menuOptions = [
     {
@@ -25,7 +27,11 @@ export default function UserButton() {
       value: 'username',
       className: styles.username,
     },
-    { label: <FormattedMessage id="label.profile" defaultMessage="Profile" />, value: 'profile' },
+    {
+      label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
+      value: 'profile',
+      hidden: adminDisabled,
+    },
     { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: 'logout' },
   ];
 

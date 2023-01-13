@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const fs = require('fs-extra');
 const path = require('path');
 const https = require('https');

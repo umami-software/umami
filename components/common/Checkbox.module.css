@@ -11,7 +11,7 @@
   align-items: center;
   width: 20px;
   height: 20px;
-  border: 1px solid var(--gray500);
+  border: 1px solid var(--base500);
   border-radius: 4px;
 }
 

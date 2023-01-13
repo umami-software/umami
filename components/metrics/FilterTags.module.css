@@ -7,8 +7,5 @@
 .tag {
   text-align: center;
   margin-bottom: 10px;
-}
-
-.tag + .tag {
-  margin-left: 20px;
+  margin-right: 20px;
 }

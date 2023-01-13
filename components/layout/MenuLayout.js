@@ -17,9 +17,9 @@ export default function MenuLayout({
 
   function handleSelect(url) {
     if (replace) {
-      router.replace(url);
+      router.replace(url, undefined, { shallow: true });
     } else {
-      router.push(url);
+      router.push(url, undefined, { shallow: true });
     }
   }
 

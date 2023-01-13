@@ -40,7 +40,7 @@ async function checkConnection() {
 
 async function checkTables() {
   try {
-    await prisma.$queryRaw`select * from account limit 1`;
+    await prisma.$queryRaw`select * from user limit 1`;
 
     success('Database tables found.');
   } catch (e) {

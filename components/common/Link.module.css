@@ -2,7 +2,7 @@ a.link,
 a.link:active,
 a.link:visited {
   position: relative;
-  color: var(--gray900);
+  color: var(--base900);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -17,15 +17,15 @@ a.link:hover span {
 }
 
 a.link.large {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
 }
 
 a.link.small {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-sm);
 }
 
 a.link.xsmall {
-  font-size: var(--font-size-xsmall);
+  font-size: var(--font-size-xs);
 }
 
 a.link .icon + * {
