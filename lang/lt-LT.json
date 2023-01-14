@@ -62,6 +62,7 @@
   "label.username": "Vartotojo vardas",
   "label.view-details": "Peržiūrėti detaliau",
   "label.websites": "Svetainės",
+  "label.yesterday": "Vakar",
   "message.active-users": "{x, plural, =0 {# aktyvių vartotojų} zero {# aktyvių vartotojų} one {# aktyvus vartotojas} other {# aktyvūs vartotojai}}",
   "message.confirm-delete": "Ar esate tikri, jog norite ištrinti svetainę {target}?",
   "message.confirm-reset": "Are esate tikri, jog norite atstatyti svetainės {target} statistikos duomenis?",
