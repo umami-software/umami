@@ -9,8 +9,9 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { id: websiteUuid } = req.query;
+  const { userId } = req.auth;
 
-  if (!(await allowQuery(req, TYPE_WEBSITE))) {
+  if (!userId || !(await allowQuery(req, TYPE_WEBSITE))) {
     return unauthorized(res);
   }
 
@@ -58,10 +59,6 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, TYPE_WEBSITE))) {
-      return unauthorized(res);
-    }
-
     await deleteWebsite(websiteUuid);
 
     return ok(res);
