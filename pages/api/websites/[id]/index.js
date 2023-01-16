@@ -9,9 +9,8 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { id: websiteUuid } = req.query;
-  const { userId } = req.auth;
 
-  if (!userId || !(await allowQuery(req, TYPE_WEBSITE))) {
+  if (!(await allowQuery(req, TYPE_WEBSITE, false))) {
     return unauthorized(res);
   }
 
