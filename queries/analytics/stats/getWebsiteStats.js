@@ -10,8 +10,8 @@ export async function getWebsiteStats(...args) {
 }
 
 async function relationalQuery(websiteId, { start_at, end_at, filters = {} }) {
-  const { getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
-  const params = [start_at, end_at];
+  const { getDateQuery, getTimestampInterval, parseFilters, rawQuery, toUuid } = prisma;
+  const params = [websiteId, start_at, end_at];
   const { pageviewQuery, sessionQuery, joinSession } = parseFilters(
     'pageview',
     null,
@@ -33,8 +33,8 @@ async function relationalQuery(websiteId, { start_at, end_at, filters = {} }) {
           join website 
             on pageview.website_id = website.website_id
           ${joinSession}
-        where website.website_uuid='${websiteId}'
-          and pageview.created_at between $1 and $2
+        where website.website_uuid = $1${toUuid()}
+          and pageview.created_at between $2 and $3
           ${pageviewQuery}
           ${sessionQuery}
         group by 1, 2

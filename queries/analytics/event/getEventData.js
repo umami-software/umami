@@ -10,8 +10,8 @@ export async function getEventData(...args) {
 }
 
 async function relationalQuery(websiteId, { startDate, endDate, event_name, columns, filters }) {
-  const { rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery } = prisma;
-  const params = [startDate, endDate];
+  const { rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery, toUuid } = prisma;
+  const params = [websiteId, startDate, endDate];
 
   return rawQuery(
     `select
@@ -21,8 +21,8 @@ async function relationalQuery(websiteId, { startDate, endDate, event_name, colu
         on event.website_id = website.website_id
       join event_data
         on event.event_id = event_data.event_id
-    where website_uuid='${websiteId}'
-      and event.created_at between $1 and $2
+    where website_uuid = $1${toUuid()}
+      and event.created_at between $2 and $3
       ${event_name ? `and event_name = ${event_name}` : ''}
       ${
         Object.keys(filters).length > 0
