@@ -7,6 +7,7 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { user_id, include_all } = req.query;
+
   const { userId: currentUserId, isAdmin } = req.auth;
   const accountUuid = user_id || req.auth.accountUuid;
   let account;
@@ -18,7 +19,7 @@ export default async (req, res) => {
   const userId = account ? account.id : user_id;
 
   if (req.method === 'GET') {
-    if (userId && userId !== currentUserId && !isAdmin) {
+    if (!userId || (userId !== currentUserId && !isAdmin)) {
       return unauthorized(res);
     }
 
