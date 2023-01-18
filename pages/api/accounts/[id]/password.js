@@ -17,7 +17,7 @@ export default async (req, res) => {
   const { current_password, new_password } = req.body;
   const { id: accountUuid } = req.query;
 
-  if (!(await allowQuery(req, TYPE_ACCOUNT))) {
+  if (!(await allowQuery(req, TYPE_ACCOUNT, false))) {
     return unauthorized(res);
   }
 
