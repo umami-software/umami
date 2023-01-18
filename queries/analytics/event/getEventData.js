@@ -10,15 +10,21 @@ export async function getEventData(...args) {
 }
 
 async function relationalQuery(websiteId, { startDate, endDate, event_name, columns, filters }) {
-  const { rawQuery, getEventDataColumnsQuery, getEventDataFilterQuery, toUuid } = prisma;
+  const {
+    rawQuery,
+    getEventDataColumnsQuery,
+    getEventDataFilterQuery,
+    toUuid,
+    getSanitizedColumns,
+  } = prisma;
+  const sanitizedColumns = getSanitizedColumns(columns);
   const params = [websiteId, startDate, endDate];
 
   if (event_name) {
     params.push(event_name);
   }
 
-  const columnQuery = getEventDataColumnsQuery('event_data.event_data', columns, params);
-
+  const columnQuery = getEventDataColumnsQuery('event_data.event_data', sanitizedColumns, params);
   const filterQuery =
     Object.keys(filters).length > 0
       ? `and ${getEventDataFilterQuery('event_data.event_data', filters, params)}`
@@ -38,10 +44,10 @@ async function relationalQuery(websiteId, { startDate, endDate, event_name, colu
       ${filterQuery}`,
     params,
   ).then(results => {
-    const fields = Object.keys(columns);
+    const fields = Object.keys(sanitizedColumns);
 
     return Object.keys(results[0]).map((a, i) => {
-      return { x: `${columns[fields[i]]}(${fields[i]})`, y: results[0][i] };
+      return { x: `${sanitizedColumns[fields[i]]}(${fields[i]})`, y: results[0][i] };
     });
   });
 }
