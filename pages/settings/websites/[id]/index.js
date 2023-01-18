@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import WebsiteDetails from 'components/pages/settings/websites/WebsiteDetails';
 import useUser from 'hooks/useUser';
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 
 export default function WebsiteSettingsPage() {
   const user = useUser();
@@ -13,8 +13,8 @@ export default function WebsiteSettingsPage() {
   }
 
   return (
-    <SettingsLayout>
+    <AppLayout>
       <WebsiteDetails websiteId={id} />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

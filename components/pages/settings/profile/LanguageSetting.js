@@ -19,7 +19,13 @@ export default function LanguageSetting() {
 
   return (
     <Flexbox width={400} gap={10}>
-      <Dropdown items={options} value={locale} renderValue={renderValue} onChange={saveLocale}>
+      <Dropdown
+        items={options}
+        value={locale}
+        renderValue={renderValue}
+        onChange={saveLocale}
+        menuProps={{ style: { height: 300, width: 300 } }}
+      >
         {item => <Item key={item}>{languages[item].label}</Item>}
       </Dropdown>
       <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>

@@ -17,7 +17,12 @@ export default function TimezoneSetting() {
 
   return (
     <Flexbox width={400} gap={10}>
-      <Dropdown items={options} value={timezone} onChange={saveTimezone}>
+      <Dropdown
+        items={options}
+        value={timezone}
+        onChange={saveTimezone}
+        menuProps={{ style: { height: 300, width: 300 } }}
+      >
         {item => <Item key={item}>{item}</Item>}
       </Dropdown>
       <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>

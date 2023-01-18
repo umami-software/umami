@@ -1,33 +1,38 @@
+import { Row, Column } from 'react-basics';
 import { useRouter } from 'next/router';
 import Script from 'next/script';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
+import { useIntl, defineMessages } from 'react-intl';
 import Link from 'components/common/Link';
-import styles from './Footer.module.css';
 import { CURRENT_VERSION, HOMEPAGE_URL, REPO_URL } from 'lib/constants';
+import styles from './Footer.module.css';
 
-export default function Footer() {
+const messages = defineMessages({
+  poweredBy: { id: 'message.powered-by', defaultMessage: 'Powered by {name}' },
+});
+
+export default function Footer({ className }) {
   const { pathname } = useRouter();
+  const { formatMessage } = useIntl();
 
   return (
-    <footer className={classNames(styles.footer, 'row')}>
-      <div className="col-12 col-md-4" />
-      <div className="col-12 col-md-4">
-        <FormattedMessage
-          id="message.powered-by"
-          defaultMessage="Powered by {name}"
-          values={{
-            name: (
-              <Link href={HOMEPAGE_URL}>
-                <b>umami</b>
-              </Link>
-            ),
-          }}
-        />
-      </div>
-      <div className={classNames(styles.version, 'col-12 col-md-4')}>
-        <Link href={REPO_URL}>{`v${CURRENT_VERSION}`}</Link>
-      </div>
+    <footer className={classNames(styles.footer, className)}>
+      <Row>
+        <Column>
+          <div>
+            {formatMessage(messages.poweredBy, {
+              name: (
+                <Link href={HOMEPAGE_URL}>
+                  <b>umami</b>
+                </Link>
+              ),
+            })}
+          </div>
+        </Column>
+        <Column className={styles.version}>
+          <Link href={REPO_URL}>{`v${CURRENT_VERSION}`}</Link>
+        </Column>
+      </Row>
       {!pathname.includes('/share/') && <Script src={`/telemetry.js`} />}
     </footer>
   );

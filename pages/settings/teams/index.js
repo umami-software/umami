@@ -1,4 +1,4 @@
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 import TeamsList from 'components/pages/settings/teams/TeamsList';
 import useUser from 'hooks/useUser';
 
@@ -10,8 +10,8 @@ export default function TeamsPage() {
   }
 
   return (
-    <SettingsLayout>
+    <AppLayout>
       <TeamsList />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

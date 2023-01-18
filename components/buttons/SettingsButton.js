@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import TimezoneSetting from './TimezoneSetting';
-import DateRangeSetting from './DateRangeSetting';
+import TimezoneSetting from '../pages/settings/profile/TimezoneSetting';
+import DateRangeSetting from '../pages/settings/profile/DateRangeSetting';
 import { Button, Icon } from 'react-basics';
 import styles from './SettingsButton.module.css';
 import Gear from 'assets/gear.svg';

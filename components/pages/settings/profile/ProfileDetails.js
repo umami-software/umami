@@ -1,9 +1,9 @@
 import { Form, FormRow } from 'react-basics';
 import { useIntl, defineMessages } from 'react-intl';
-import TimezoneSetting from 'components/settings/TimezoneSetting';
-import DateRangeSetting from 'components/settings/DateRangeSetting';
-import LanguageSetting from 'components/settings/LanguageSetting';
-import ThemeSetting from 'components/settings/ThemeSetting';
+import TimezoneSetting from 'components/pages/settings/profile/TimezoneSetting';
+import DateRangeSetting from 'components/pages/settings/profile/DateRangeSetting';
+import LanguageSetting from 'components/pages/settings/profile/LanguageSetting';
+import ThemeSetting from 'components/buttons/ThemeSetting';
 import useUser from 'hooks/useUser';
 
 const messages = defineMessages({

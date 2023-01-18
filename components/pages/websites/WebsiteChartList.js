@@ -15,8 +15,8 @@ const messages = defineMessages({
     defaultMessage: "You don't have any websites configured.",
   },
   goToSettngs: {
-    id: 'message.go-to-settings',
-    defaultMessage: 'Go to settings',
+    id: 'message.go-to-buttons',
+    defaultMessage: 'Go to buttons',
   },
 });
 

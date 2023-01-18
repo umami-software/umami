@@ -35,6 +35,8 @@ export default function useLocale() {
 
     setItem(LOCALE_CONFIG, value);
 
+    document.getElementById('__next')?.setAttribute('dir', getTextDirection(value));
+
     if (locale !== value) {
       setLocale(value);
     } else {

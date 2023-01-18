@@ -1,10 +1,10 @@
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 import ProfileSettings from 'components/pages/settings/profile/ProfileSettings';
 
 export default function ProfilePage() {
   return (
-    <SettingsLayout>
+    <AppLayout>
       <ProfileSettings />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

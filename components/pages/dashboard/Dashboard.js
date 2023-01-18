@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteChartList from 'components/pages/websites/WebsiteChartList';
-import DashboardSettingsButton from 'components/settings/DashboardSettingsButton';
+import DashboardSettingsButton from 'components/pages/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'components/pages/dashboard/DashboardEdit';
 import styles from 'components/pages/websites/WebsiteList.module.css';
 import useUser from 'hooks/useUser';

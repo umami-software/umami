@@ -1,4 +1,4 @@
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 
@@ -13,8 +13,8 @@ export default function UsersPage() {
   }
 
   return (
-    <SettingsLayout>
+    <AppLayout>
       <UsersList />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

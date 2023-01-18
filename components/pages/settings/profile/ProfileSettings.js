@@ -1,6 +1,6 @@
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import ProfileDetails from 'components/settings/ProfileDetails';
+import ProfileDetails from 'components/pages/settings/profile/ProfileDetails';
 import { useState } from 'react';
 import { Breadcrumbs, Icon, Item, useToast, Modal, Button } from 'react-basics';
 import UserPasswordForm from 'components/pages/settings/users/UserPasswordForm';

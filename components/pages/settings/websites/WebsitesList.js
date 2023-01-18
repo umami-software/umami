@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Icon, Modal, useToast } from 'react-basics';
+import { Button, Icon, Text, Modal, useToast, Icons } from 'react-basics';
 import useApi from 'hooks/useApi';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
@@ -7,6 +7,8 @@ import PageHeader from 'components/layout/PageHeader';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import Page from 'components/layout/Page';
 import useUser from 'hooks/useUser';
+
+const { Plus } = Icons;
 
 export default function WebsitesList() {
   const [edit, setEdit] = useState(false);
@@ -44,8 +46,11 @@ export default function WebsitesList() {
     <Page loading={isLoading} error={error}>
       {toast}
       <PageHeader title="Websites">
-        <Button onClick={handleAdd}>
-          <Icon icon="plus" /> Add website
+        <Button variant="primary" onClick={handleAdd}>
+          <Icon>
+            <Plus />
+          </Icon>
+          <Text>Add website</Text>
         </Button>
       </PageHeader>
 
@@ -53,7 +58,10 @@ export default function WebsitesList() {
       {!hasData && (
         <EmptyPlaceholder message="You don't have any websites configured.">
           <Button variant="primary" onClick={handleAdd}>
-            <Icon icon="plus" /> Add website
+            <Icon>
+              <Plus />
+            </Icon>
+            <Text>Add website</Text>
           </Button>
         </EmptyPlaceholder>
       )}

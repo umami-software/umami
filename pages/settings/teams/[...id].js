@@ -1,4 +1,4 @@
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 import TeamDetails from 'components/pages/settings/teams/TeamDetails';
 import useUser from 'hooks/useUser';
 import { useRouter } from 'next/router';
@@ -13,8 +13,8 @@ export default function TeamDetailPage() {
   }
 
   return (
-    <SettingsLayout>
+    <AppLayout>
       <TeamDetails teamId={id} />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

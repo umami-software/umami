@@ -1,22 +1,25 @@
 import { Container } from 'react-basics';
 import Head from 'next/head';
-import Header from 'components/layout/Header';
-import Footer from 'components/layout/Footer';
-import useLocale from 'hooks/useLocale';
+import NavBar from 'components/layout/NavBar';
 import useRequireLogin from 'hooks/useRequireLogin';
+import styles from './AppLayout.module.css';
 
 export default function AppLayout({ title, children }) {
   useRequireLogin();
-  const { dir } = useLocale();
 
   return (
-    <Container dir={dir} style={{ maxWidth: 1140 }}>
+    <div className={styles.layout}>
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
       </Head>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </Container>
+      <div className={styles.nav}>
+        <NavBar />
+      </div>
+      <div className={styles.body}>
+        <Container>
+          <main>{children}</main>
+        </Container>
+      </div>
+    </div>
   );
 }

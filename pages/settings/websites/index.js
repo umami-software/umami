@@ -1,10 +1,10 @@
-import SettingsLayout from 'components/pages/settings/SettingsLayout';
+import AppLayout from 'components/layout/AppLayout';
 import WebsitesList from 'components/pages/settings/websites/WebsitesList';
 
 export default function WebsitesPage() {
   return (
-    <SettingsLayout>
+    <AppLayout>
       <WebsitesList />
-    </SettingsLayout>
+    </AppLayout>
   );
 }

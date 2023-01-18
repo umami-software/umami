@@ -8,9 +8,11 @@ import {
   TableColumn,
   Button,
   Icon,
+  Icons,
 } from 'react-basics';
-import ExternalLink from 'assets/external-link.svg';
 import styles from './WebsitesTable.module.css';
+
+const { ArrowRight, External } = Icons;
 
 export default function WebsitesTable({ columns = [], rows = [] }) {
   return (
@@ -33,7 +35,9 @@ export default function WebsitesTable({ columns = [], rows = [] }) {
               <Link href={`/settings/websites/${id}`}>
                 <a>
                   <Button>
-                    <Icon icon="arrow-right" />
+                    <Icon>
+                      <ArrowRight />
+                    </Icon>
                     Settings
                   </Button>
                 </a>
@@ -42,7 +46,7 @@ export default function WebsitesTable({ columns = [], rows = [] }) {
                 <a>
                   <Button>
                     <Icon>
-                      <ExternalLink />
+                      <External />
                     </Icon>
                     View
                   </Button>

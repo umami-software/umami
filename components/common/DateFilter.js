@@ -5,7 +5,7 @@ import { useIntl, defineMessages } from 'react-intl';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
-import Calendar from 'assets/calendar-alt.svg';
+import Calendar from 'assets/calendar.svg';
 
 const messages = defineMessages({
   today: { id: 'label.today', defaultMessage: 'Today' },
