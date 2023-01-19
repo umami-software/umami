@@ -47,7 +47,7 @@ export default async (req, res) => {
         {
           name,
           domain,
-          shareId: shareId ? shareId : newShareId,
+          shareId: shareId && enableShareUrl === undefined ? shareId : newShareId,
           userId: +owner || account.id,
         },
         { websiteUuid },
