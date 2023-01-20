@@ -123,8 +123,7 @@ const DaySelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   }
 
   const days = [];
-  const weekCount = addDays(startDay, 36).getMonth() === month ? 42 : 35;
-  for (let i = 0; i < weekCount; i++) {
+  for (let i = 0; i < 42; i++) {
     days.push(addDays(startDay, i));
   }
 
