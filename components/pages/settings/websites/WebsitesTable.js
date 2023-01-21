@@ -14,9 +14,15 @@ import styles from './WebsitesTable.module.css';
 
 const { ArrowRight, External } = Icons;
 
-export default function WebsitesTable({ columns = [], rows = [] }) {
+const columns = [
+  { name: 'name', label: 'Name', style: { flex: 2 } },
+  { name: 'domain', label: 'Domain' },
+  { name: 'action', label: ' ' },
+];
+
+export default function WebsitesTable({ data = [] }) {
   return (
-    <Table className={styles.table} columns={columns} rows={rows}>
+    <Table className={styles.table} columns={columns} rows={data}>
       <TableHeader>
         {(column, index) => {
           return (

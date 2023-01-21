@@ -4,19 +4,22 @@ import classNames from 'classnames';
 import { Dashboard, Logo, Profile, User, Users, Clock, Globe } from 'components/icons';
 import NavGroup from './NavGroup';
 import styles from './NavBar.module.css';
+import ThemeButton from '../buttons/ThemeButton';
+import LanguageButton from '../buttons/LanguageButton';
 
 const { ChevronDown, Search } = Icons;
 
 const analytics = [
-  { key: 'dashboard', label: 'Dashboard', url: '/dashboard', icon: <Dashboard /> },
-  { key: 'realtime', label: 'Realtime', url: '/realtime', icon: <Clock /> },
-  { key: 'queries', label: 'Queries', url: '/queries', icon: <Search /> },
+  { label: 'Dashboard', url: '/dashboard', icon: <Dashboard /> },
+  { label: 'Realtime', url: '/realtime', icon: <Clock /> },
+  { label: 'Queries', url: '/queries', icon: <Search /> },
 ];
 
 const settings = [
-  { key: 'websites', label: 'Websites', url: '/settings/websites', icon: <Globe /> },
-  { key: 'users', label: 'Users', url: '/settings/users', icon: <User /> },
-  { key: 'teams', label: 'Teams', url: '/settings/teams', icon: <Users /> },
+  { label: 'Websites', url: '/settings/websites', icon: <Globe /> },
+  { label: 'Users', url: '/settings/users', icon: <User /> },
+  { label: 'Teams', url: '/settings/teams', icon: <Users /> },
+  { label: 'Profile', url: '/settings/profile', icon: <Profile /> },
 ];
 
 export default function NavBar() {
@@ -38,10 +41,10 @@ export default function NavBar() {
       <NavGroup title="Analytics" items={analytics} minimized={minimized} />
       <NavGroup title="Settings" items={settings} minimized={minimized} />
       <div className={styles.footer}>
-        <Icon>
-          <Profile />
-        </Icon>
-        <Text>Profile</Text>
+        <div className={styles.buttons}>
+          <ThemeButton />
+          <LanguageButton />
+        </div>
       </div>
     </div>
   );

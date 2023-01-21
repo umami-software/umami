@@ -1,21 +1,30 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
+import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import UserDelete from 'components/pages/settings/users/UserDelete';
-import UserEditForm from 'components/pages/settings/users/UserEditForm';
+import UserEditForm from 'components/pages/settings/users//UserEditForm';
 import UserPasswordForm from 'components/pages/settings/users/UserPasswordForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import useApi from 'hooks/useApi';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Icon, Tabs, useToast, Modal, Button } from 'react-basics';
-import Pen from 'assets/pen.svg';
+
+const messages = defineMessages({
+  users: { id: 'label.users', defaultMessage: 'Users' },
+  details: { id: 'label.details', defaultMessage: 'Details' },
+  changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
+  actions: { id: 'label.actions', defaultMessage: 'Actions' },
+  saved: { id: 'message.saved-successfully', defaultMessage: 'Saved successfully.' },
+  delete: { id: 'message.delete-successfully', defaultMessage: 'Delete successfully.' },
+});
 
 export default function UserSettings({ userId }) {
+  const { formatMessage } = useIntl();
   const [edit, setEdit] = useState(false);
   const [values, setValues] = useState(null);
-  const [tab, setTab] = useState('general');
-  const { get } = useApi();
+  const [tab, setTab] = useState('details');
+  const { get, useQuery } = useApi();
   const { toast, showToast } = useToast();
   const router = useRouter();
   const { data, isLoading } = useQuery(
@@ -39,14 +48,6 @@ export default function UserSettings({ userId }) {
     }
   };
 
-  const handleAdd = () => {
-    setEdit(true);
-  };
-
-  const handleClose = () => {
-    setEdit(false);
-  };
-
   const handleDelete = async () => {
     showToast({ message: 'Deleted successfully.', variant: 'danger' });
     await router.push('/users');
@@ -64,30 +65,19 @@ export default function UserSettings({ userId }) {
       <PageHeader>
         <Breadcrumbs>
           <Item>
-            <Link href="/users">Users</Link>
+            <Link href="/settings/users">{formatMessage(messages.users)}</Link>
           </Item>
           <Item>{values?.username}</Item>
         </Breadcrumbs>
-        <Button onClick={handleAdd}>
-          <Icon>
-            <Pen />
-          </Icon>
-          Change Password
-        </Button>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="general">General</Item>
-        <Item key="delete">Danger Zone</Item>
+        <Item key="details">{formatMessage(messages.details)}</Item>
+        <Item key="password">{formatMessage(messages.changePassword)}</Item>
+        <Item key="delete">{formatMessage(messages.actions)}</Item>
       </Tabs>
-      {tab === 'general' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
+      {tab === 'details' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
+      {tab === 'password' && <UserPasswordForm userId={userId} onSave={handleSave} />}
       {tab === 'delete' && <UserDelete userId={userId} onSave={handleDelete} />}
-      {edit && (
-        <Modal title="Add website" onClose={handleClose}>
-          {close => (
-            <UserPasswordForm userId={userId} data={values} onSave={handleSave} onClose={close} />
-          )}
-        </Modal>
-      )}
     </Page>
   );
 }

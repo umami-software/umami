@@ -1,44 +1,69 @@
+import { useState } from 'react';
+import { Button, Text, Icon, useToast, Icons, Modal } from 'react-basics';
+import { useIntl, defineMessages } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import UsersTable from 'components/pages/settings/users/UsersTable';
-import { useState } from 'react';
-import { Button, Icon, useToast } from 'react-basics';
-import { useMutation } from '@tanstack/react-query';
+import UserEditForm from 'components/pages/settings/users/UserEditForm';
 import useApi from 'hooks/useApi';
+import useUser from 'hooks/useUser';
+
+const { Plus } = Icons;
+
+const messages = defineMessages({
+  saved: { id: 'messages.api-key-saved', defaultMessage: 'API key saved.' },
+  noUsers: {
+    id: 'messages.no-useres',
+    defaultMessage: "You don't have any users.",
+  },
+  users: { id: 'label.users', defaultMessage: 'Users' },
+  createUser: { id: 'label.create-user', defaultMessage: 'Create user' },
+});
 
 export default function UsersList() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState();
+  const [edit, setEdit] = useState(false);
+  const { formatMessage } = useIntl();
   const { toast, showToast } = useToast();
-  const { post } = useApi();
-  const { mutate, isLoading } = useMutation(data => post('/api-key', data));
+  const { user } = useUser();
+  const { get, useQuery } = useApi();
+  const { data, isLoading, error, refetch } = useQuery(['user'], () => get(`/users`), {
+    enabled: !!user,
+  });
+  const hasData = data && data.length !== 0;
 
-  const handleSave = () => {
-    mutate(
-      {},
-      {
-        onSuccess: async () => {
-          showToast({ message: 'API key saved.', variant: 'success' });
-        },
-      },
-    );
+  const handleSave = async () => {
+    await refetch();
+    setEdit(false);
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
+  const handleAdd = () => setEdit(true);
+
+  const handleClose = () => setEdit(false);
+
+  const addButton = (
+    <Button variant="primary" onClick={handleAdd}>
+      <Icon>
+        <Plus />
+      </Icon>
+      <Text>{formatMessage(messages.createUser)}</Text>
+    </Button>
+  );
+
   return (
-    <Page loading={loading || isLoading} error={error}>
+    <Page loading={isLoading} error={error}>
       {toast}
-      <PageHeader title="Users">
-        <Button onClick={handleSave}>
-          <Icon icon="plus" /> Create user
-        </Button>
-      </PageHeader>
-      <UsersTable
-        onLoading={({ isLoading, error }) => {
-          setLoading(isLoading);
-          setError(error);
-        }}
-        onAddKeyClick={handleSave}
-      />
+      <PageHeader title={formatMessage(messages.users)}>{addButton}</PageHeader>
+      {hasData && <UsersTable data={data} />}
+      {!hasData && (
+        <EmptyPlaceholder message={formatMessage(messages.noUsers)}>{addButton}</EmptyPlaceholder>
+      )}
+      {edit && (
+        <Modal title={formatMessage(messages.createUser)} onClose={handleClose}>
+          {close => <UserEditForm onSave={handleSave} onClose={close} />}
+        </Modal>
+      )}
     </Page>
   );
 }

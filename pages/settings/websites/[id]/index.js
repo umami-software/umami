@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import WebsiteDetails from 'components/pages/settings/websites/WebsiteDetails';
+import WebsiteSettings from 'components/pages/settings/websites/WebsiteSettings';
 import useUser from 'hooks/useUser';
 import AppLayout from 'components/layout/AppLayout';
 
@@ -14,7 +14,7 @@ export default function WebsiteSettingsPage() {
 
   return (
     <AppLayout>
-      <WebsiteDetails websiteId={id} />
+      <WebsiteSettings websiteId={id} />
     </AppLayout>
   );
 }

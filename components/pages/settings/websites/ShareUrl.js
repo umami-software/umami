@@ -23,7 +23,7 @@ export default function ShareUrl({ websiteId, data, onSave }) {
   );
   const ref = useRef(null);
   const url = useMemo(
-    () => `${process.env.analyticsUrl}/share/${id}/${encodeURIComponent(name)}`,
+    () => `${process.env.analyticsUrl || location.origin}/share/${id}/${encodeURIComponent(name)}`,
     [id, name],
   );
 

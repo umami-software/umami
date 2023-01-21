@@ -26,18 +26,23 @@ export default function NavGroup({
         [styles.minimized]: minimized,
       })}
     >
-      <div className={styles.header} onClick={allowExpand ? handleExpand : undefined}>
-        <Text>{title}</Text>
-        <Icon size="sm" rotate={expanded ? 0 : -90}>
-          <ChevronDown />
-        </Icon>
-      </div>
+      {title && (
+        <div className={styles.header} onClick={allowExpand ? handleExpand : undefined}>
+          <Text>{title}</Text>
+          <Icon size="sm" rotate={expanded ? 0 : -90}>
+            <ChevronDown />
+          </Icon>
+        </div>
+      )}
       <div className={styles.body}>
-        {items.map(({ key, label, url, icon }) => {
+        {items.map(({ label, url, icon, divider }) => {
           return (
-            <Link key={key} href={url}>
+            <Link key={label} href={url}>
               <a
-                className={classNames(styles.item, { [styles.selected]: pathname.startsWith(url) })}
+                className={classNames(styles.item, {
+                  [styles.divider]: divider,
+                  [styles.selected]: pathname.startsWith(url),
+                })}
               >
                 <Icon>{icon}</Icon>
                 <Text className={styles.text}>{label}</Text>

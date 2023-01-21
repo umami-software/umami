@@ -3,7 +3,7 @@ import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 're
 import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 
-export default function UserPasswordForm({ onSave, onClose, userId }) {
+export default function PasswordEditForm({ userId, onSave, onClose }) {
   const user = useUser();
   const isCurrentUser = !userId || user?.id === userId;
   const url = isCurrentUser ? `/users/${user?.id}/password` : `/users/${user?.id}`;

@@ -9,7 +9,6 @@ import {
   SubmitButton,
 } from 'react-basics';
 import { useRef } from 'react';
-import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
 
@@ -26,7 +25,7 @@ const items = [
 
 export default function UserEditForm({ data, onSave }) {
   const { id } = data;
-  const { post } = useApi();
+  const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(({ username }) => post(`/user/${id}`, { username }));
   const ref = useRef(null);
 

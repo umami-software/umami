@@ -45,3 +45,9 @@
   justify-content: flex-end;
   padding: 20px;
 }
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

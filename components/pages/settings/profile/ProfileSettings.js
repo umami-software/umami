@@ -1,48 +1,26 @@
+import { Breadcrumbs, Item } from 'react-basics';
+import { defineMessages, useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import ProfileDetails from 'components/pages/settings/profile/ProfileDetails';
-import { useState } from 'react';
-import { Breadcrumbs, Icon, Item, useToast, Modal, Button } from 'react-basics';
-import UserPasswordForm from 'components/pages/settings/users/UserPasswordForm';
-import Lock from 'assets/lock.svg';
+import ProfileDetails from './ProfileDetails';
+import ChangePasswordButton from './ChangePasswordButton';
+
+const messages = defineMessages({
+  profile: { id: 'label.profile', defaultMessage: 'Profile' },
+});
 
 export default function ProfileSettings() {
-  const [edit, setEdit] = useState(false);
-  const { toast, showToast } = useToast();
-
-  const handleSave = () => {
-    showToast({ message: 'Saved successfully.', variant: 'success' });
-    setEdit(false);
-  };
-
-  const handleAdd = () => {
-    setEdit(true);
-  };
-
-  const handleClose = () => {
-    setEdit(false);
-  };
+  const { formatMessage } = useIntl();
 
   return (
     <Page>
-      {toast}
       <PageHeader>
         <Breadcrumbs>
-          <Item>Profile</Item>
+          <Item>{formatMessage(messages.profile)}</Item>
         </Breadcrumbs>
-        <Button onClick={handleAdd}>
-          <Icon>
-            <Lock />
-          </Icon>
-          Change Password
-        </Button>
+        <ChangePasswordButton />
       </PageHeader>
       <ProfileDetails />
-      {edit && (
-        <Modal title="Change password" onClose={handleClose}>
-          {close => <UserPasswordForm onSave={handleSave} onClose={close} />}
-        </Modal>
-      )}
     </Page>
   );
 }

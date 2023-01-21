@@ -39,8 +39,7 @@ export default function Dashboard({ userId }) {
 
   return (
     <Page>
-      <PageHeader>
-        <div>{formatMessage(messages.dashboard)}</div>
+      <PageHeader title={formatMessage(messages.dashboard)}>
         {!editing && <DashboardSettingsButton />}
       </PageHeader>
       {editing && <DashboardEdit websites={data} />}
