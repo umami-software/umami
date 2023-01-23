@@ -8,10 +8,12 @@ import {
   TextField,
   PasswordField,
   SubmitButton,
+  Button,
 } from 'react-basics';
 import { useIntl, defineMessages } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
+import { labels } from 'components/messages';
 
 const messages = defineMessages({
   username: { id: 'label.username', defaultMessage: 'Username' },
@@ -19,14 +21,11 @@ const messages = defineMessages({
   role: { id: 'label.role', defaultMessage: 'Role' },
   user: { id: 'label.user', defaultMessage: 'User' },
   admin: { id: 'label.admin', defaultMessage: 'Admin' },
-  save: { id: 'label.save', defaultMessage: 'Save' },
-  cancel: { id: 'label.cancel', defaultMessage: 'Cancel' },
-  required: { id: 'label.required', defaultMessage: 'Required' },
 });
 
-export default function UserAddForm({ onSave }) {
+export default function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation(data => post(`/users`, data));
+  const { mutate, error, isLoading } = useMutation(data => post(`/users`, data));
   const { formatMessage } = useIntl();
 
   const handleSubmit = async data => {
@@ -37,28 +36,42 @@ export default function UserAddForm({ onSave }) {
     });
   };
 
+  const renderValue = value => {
+    if (value === ROLES.user) {
+      return formatMessage(messages.user);
+    }
+    if (value === ROLES.admin) {
+      return formatMessage(messages.admin);
+    }
+  };
+
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(messages.username)}>
-        <FormInput name="username" rules={{ required: formatMessage(messages.required) }}>
-          <TextField />
+        <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
+          <TextField autoComplete="new-username" />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(messages.password)}>
-        <FormInput name="password" rules={{ required: formatMessage(messages.required) }}>
-          <PasswordField />
+        <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
+          <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(messages.role)}>
-        <FormInput name="role" rules={{ required: formatMessage(messages.required) }}>
-          <Dropdown style={{ width: 200 }}>
+        <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
+          <Dropdown renderValue={renderValue} style={{ width: 200 }}>
             <Item key={ROLES.user}>{formatMessage(messages.user)}</Item>
             <Item key={ROLES.admin}>{formatMessage(messages.admin)}</Item>
           </Dropdown>
         </FormInput>
       </FormRow>
-      <FormButtons>
-        <SubmitButton variant="primary">{formatMessage(messages.save)}</SubmitButton>
+      <FormButtons flex>
+        <SubmitButton variant="primary" disabled={false}>
+          {formatMessage(labels.save)}
+        </SubmitButton>
+        <Button disabled={isLoading} onClick={onClose}>
+          {formatMessage(labels.cancel)}
+        </Button>
       </FormButtons>
     </Form>
   );

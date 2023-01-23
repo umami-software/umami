@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { Button, Icon, Modal, useToast } from 'react-basics';
+import { Button, Icon, Text, Modal, useToast } from 'react-basics';
 import PasswordEditForm from 'components/pages/settings/profile/PasswordEditForm';
 import { Lock } from 'components/icons';
 
@@ -9,7 +9,7 @@ const messages = defineMessages({
   saved: { id: 'message.saved-successfully', defaultMessage: 'Saved successfully.' },
 });
 
-export default function ChangePasswordButton() {
+export default function PasswordChangeButton() {
   const { formatMessage } = useIntl();
   const [edit, setEdit] = useState(false);
   const { toast, showToast } = useToast();
@@ -19,7 +19,7 @@ export default function ChangePasswordButton() {
     setEdit(false);
   };
 
-  const handleAdd = () => {
+  const handleEdit = () => {
     setEdit(true);
   };
 
@@ -30,11 +30,11 @@ export default function ChangePasswordButton() {
   return (
     <>
       {toast}
-      <Button onClick={handleAdd}>
+      <Button onClick={handleEdit}>
         <Icon>
           <Lock />
         </Icon>
-        Change Password
+        <Text>{formatMessage(messages.changePassword)}</Text>
       </Button>
       {edit && (
         <Modal title={formatMessage(messages.changePassword)} onClose={handleClose}>

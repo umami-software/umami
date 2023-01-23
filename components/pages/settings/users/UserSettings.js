@@ -3,17 +3,17 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import UserDelete from 'components/pages/settings/users/UserDelete';
+import UserDeleteForm from 'components/pages/settings/users/UserDeleteForm';
 import UserEditForm from 'components/pages/settings/users//UserEditForm';
-import UserPasswordForm from 'components/pages/settings/users/UserPasswordForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import useApi from 'hooks/useApi';
+import WebsitesTable from '../websites/WebsitesTable';
 
 const messages = defineMessages({
   users: { id: 'label.users', defaultMessage: 'Users' },
   details: { id: 'label.details', defaultMessage: 'Details' },
-  changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
+  websites: { id: 'label.websites', defaultMessage: 'Websites' },
   actions: { id: 'label.actions', defaultMessage: 'Actions' },
   saved: { id: 'message.saved-successfully', defaultMessage: 'Saved successfully.' },
   delete: { id: 'message.delete-successfully', defaultMessage: 'Delete successfully.' },
@@ -38,7 +38,7 @@ export default function UserSettings({ userId }) {
   );
 
   const handleSave = data => {
-    showToast({ message: 'Saved successfully.', variant: 'success' });
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
     if (data) {
       setValues(state => ({ ...state, ...data }));
     }
@@ -49,7 +49,7 @@ export default function UserSettings({ userId }) {
   };
 
   const handleDelete = async () => {
-    showToast({ message: 'Deleted successfully.', variant: 'danger' });
+    showToast({ message: formatMessage(messages.delete), variant: 'danger' });
     await router.push('/users');
   };
 
@@ -72,12 +72,12 @@ export default function UserSettings({ userId }) {
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(messages.details)}</Item>
-        <Item key="password">{formatMessage(messages.changePassword)}</Item>
+        <Item key="websites">{formatMessage(messages.websites)}</Item>
         <Item key="delete">{formatMessage(messages.actions)}</Item>
       </Tabs>
       {tab === 'details' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
-      {tab === 'password' && <UserPasswordForm userId={userId} onSave={handleSave} />}
-      {tab === 'delete' && <UserDelete userId={userId} onSave={handleDelete} />}
+      {tab === 'websites' && <WebsitesTable />}
+      {tab === 'delete' && <UserDeleteForm userId={userId} onSave={handleDelete} />}
     </Page>
   );
 }

@@ -7,53 +7,75 @@ import {
   FormInput,
   TextField,
   SubmitButton,
+  PasswordField,
 } from 'react-basics';
-import { useRef } from 'react';
+import { defineMessages, useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
+import { labels } from 'components/messages';
 
-const items = [
-  {
-    value: ROLES.user,
-    label: 'User',
-  },
-  {
-    value: ROLES.admin,
-    label: 'Admin',
-  },
-];
+const messages = defineMessages({
+  username: { id: 'label.username', defaultMessage: 'Username' },
 
-export default function UserEditForm({ data, onSave }) {
-  const { id } = data;
+  password: { id: 'label.password', defaultMessage: 'Password' },
+  role: { id: 'label.role', defaultMessage: 'Role' },
+  user: { id: 'label.user', defaultMessage: 'User' },
+  admin: { id: 'label.admin', defaultMessage: 'Admin' },
+  minLength: {
+    id: 'message.min-password-length',
+    defaultMessage: 'Minimum length of 8 characters',
+  },
+});
+
+export default function UserEditForm({ userId, data, onSave }) {
+  const { formatMessage } = useIntl();
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation(({ username }) => post(`/user/${id}`, { username }));
-  const ref = useRef(null);
+  const { mutate, error } = useMutation(({ username }) => post(`/users/${userId}`, { username }));
 
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async () => {
         onSave(data);
-        ref.current.reset(data);
       },
     });
   };
 
+  const renderValue = value => {
+    if (value === ROLES.user) {
+      return formatMessage(messages.user);
+    }
+    if (value === ROLES.admin) {
+      return formatMessage(messages.admin);
+    }
+  };
+
   return (
-    <Form key={id} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
-      <FormRow label="Username">
+    <Form onSubmit={handleSubmit} error={error} values={data} style={{ width: 600 }}>
+      <FormRow label={formatMessage(messages.username)}>
         <FormInput name="username">
           <TextField />
         </FormInput>
       </FormRow>
-      <FormRow label="Role">
-        <FormInput name="role">
-          <Dropdown items={items} style={{ width: 200 }}>
-            {({ value, label }) => <Item key={value}>{label}</Item>}
+      <FormRow label={formatMessage(messages.password)}>
+        <FormInput
+          name="newPassword"
+          rules={{
+            minLength: { value: 8, message: formatMessage(messages.minLength) },
+          }}
+        >
+          <PasswordField autoComplete="new-password" />
+        </FormInput>
+      </FormRow>
+      <FormRow label={formatMessage(messages.role)}>
+        <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
+          <Dropdown renderValue={renderValue} style={{ width: 200 }}>
+            <Item key={ROLES.user}>{formatMessage(messages.user)}</Item>
+            <Item key={ROLES.admin}>{formatMessage(messages.admin)}</Item>
           </Dropdown>
         </FormInput>
       </FormRow>
       <FormButtons>
-        <SubmitButton variant="primary">Save</SubmitButton>
+        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
       </FormButtons>
     </Form>
   );

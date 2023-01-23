@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import ProfileDetails from './ProfileDetails';
-import ChangePasswordButton from './ChangePasswordButton';
+import PasswordChangeButton from './PasswordChangeButton';
 
 const messages = defineMessages({
   profile: { id: 'label.profile', defaultMessage: 'Profile' },
@@ -18,7 +18,7 @@ export default function ProfileSettings() {
         <Breadcrumbs>
           <Item>{formatMessage(messages.profile)}</Item>
         </Breadcrumbs>
-        <ChangePasswordButton />
+        <PasswordChangeButton />
       </PageHeader>
       <ProfileDetails />
     </Page>
