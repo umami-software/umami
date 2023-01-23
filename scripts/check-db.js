@@ -57,7 +57,7 @@ async function checkDatabaseVersion(databaseType) {
 
   if (semver.lt(version, minVersion)) {
     throw new Error(
-      `Database version is not compatible. Please upgrade to ${databaseType} version to ${minVersion} or greater`,
+      `Database version is not compatible. Please upgrade ${databaseType} version to ${minVersion} or greater`,
     );
   }
 
