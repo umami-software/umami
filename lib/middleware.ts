@@ -11,7 +11,10 @@ import { getUser } from '../queries';
 
 const log = debug('umami:middleware');
 
-export const useCors = createMiddleware(cors());
+export const useCors = createMiddleware(cors({
+  // Cache CORS preflight request 24 hours by default
+  maxAge: process.env.CORS_MAX_AGE || 86400,
+}));
 
 export const useSession = createMiddleware(async (req, res, next) => {
   const session = await findSession(req);
