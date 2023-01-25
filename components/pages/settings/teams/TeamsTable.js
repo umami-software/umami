@@ -8,17 +8,25 @@ import {
   TableColumn,
   Button,
   Icon,
+  Flexbox,
+  Icons,
+  Text,
 } from 'react-basics';
-import styles from './TeamsTable.module.css';
+import { useIntl } from 'react-intl';
+import { labels } from 'components/messages';
 
-const columns = [
-  { name: 'name', label: 'Name', style: { flex: 2 } },
-  { name: 'action', label: ' ' },
-];
+const { ArrowRight } = Icons;
 
 export default function TeamsTable({ data = [] }) {
+  const { formatMessage } = useIntl();
+
+  const columns = [
+    { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
+    { name: 'action', label: ' ' },
+  ];
+
   return (
-    <Table className={styles.table} columns={columns} rows={data}>
+    <Table columns={columns} rows={data}>
       <TableHeader>
         {(column, index) => {
           return (
@@ -33,28 +41,28 @@ export default function TeamsTable({ data = [] }) {
           const { id } = row;
 
           row.action = (
-            <div className={styles.actions}>
+            <Flexbox flex={1} justifyContent="end">
               <Link href={`/settings/teams/${id}`}>
                 <a>
                   <Button>
-                    <Icon icon="arrow-right" />
-                    Settings
+                    <Icon>
+                      <ArrowRight />
+                    </Icon>
+                    <Text>{formatMessage(labels.settings)}</Text>
                   </Button>
                 </a>
               </Link>
-            </div>
+            </Flexbox>
           );
 
           return (
             <TableRow key={rowIndex} data={row} keys={keys}>
               {(data, key, colIndex) => {
                 return (
-                  <TableCell
-                    key={colIndex}
-                    className={styles.cell}
-                    style={{ ...columns[colIndex]?.style }}
-                  >
-                    {data[key]}
+                  <TableCell key={colIndex} style={{ ...columns[colIndex]?.style }}>
+                    <Flexbox flex={1} alignItems="center">
+                      {data[key]}
+                    </Flexbox>
                   </TableCell>
                 );
               }}

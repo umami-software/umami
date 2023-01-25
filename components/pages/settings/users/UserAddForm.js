@@ -10,18 +10,10 @@ import {
   SubmitButton,
   Button,
 } from 'react-basics';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
 import { labels } from 'components/messages';
-
-const messages = defineMessages({
-  username: { id: 'label.username', defaultMessage: 'Username' },
-  password: { id: 'label.password', defaultMessage: 'Password' },
-  role: { id: 'label.role', defaultMessage: 'Role' },
-  user: { id: 'label.user', defaultMessage: 'User' },
-  admin: { id: 'label.admin', defaultMessage: 'Admin' },
-});
 
 export default function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
@@ -38,30 +30,30 @@ export default function UserAddForm({ onSave, onClose }) {
 
   const renderValue = value => {
     if (value === ROLES.user) {
-      return formatMessage(messages.user);
+      return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(messages.admin);
+      return formatMessage(labels.admin);
     }
   };
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <FormRow label={formatMessage(messages.username)}>
+      <FormRow label={formatMessage(labels.username)}>
         <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
           <TextField autoComplete="new-username" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(messages.password)}>
+      <FormRow label={formatMessage(labels.password)}>
         <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
           <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(messages.role)}>
+      <FormRow label={formatMessage(labels.role)}>
         <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown renderValue={renderValue} style={{ width: 200 }}>
-            <Item key={ROLES.user}>{formatMessage(messages.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(messages.admin)}</Item>
+          <Dropdown renderValue={renderValue}>
+            <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
+            <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
           </Dropdown>
         </FormInput>
       </FormRow>

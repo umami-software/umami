@@ -1,75 +1,65 @@
 import { useRef } from 'react';
 import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
+import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
-import useUser from 'hooks/useUser';
+import { labels, messages } from 'components/messages';
 
-export default function PasswordEditForm({ userId, onSave, onClose }) {
-  const user = useUser();
-  const isCurrentUser = !userId || user?.id === userId;
-  const url = isCurrentUser ? `/users/${user?.id}/password` : `/users/${user?.id}`;
+export default function PasswordEditForm({ onSave, onClose }) {
+  const { formatMessage } = useIntl();
   const { post, useMutation } = useApi();
-  const { mutate, error, isLoading } = useMutation(data => post(url, data));
+  const { mutate, error, isLoading } = useMutation(data => post('/me/password', data));
   const ref = useRef(null);
 
   const handleSubmit = async data => {
-    const payload = isCurrentUser
-      ? data
-      : {
-          password: data.newPassword,
-        };
-
-    mutate(payload, {
+    mutate(data, {
       onSuccess: async () => {
         onSave();
-        ref.current.reset();
       },
     });
   };
 
   const samePassword = value => {
     if (value !== ref?.current?.getValues('newPassword')) {
-      return "Passwords don't match";
+      return formatMessage(messages.noMatchPassword);
     }
     return true;
   };
 
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error}>
-      {isCurrentUser && (
-        <FormRow label="Current password">
-          <FormInput name="currentPassword" rules={{ required: 'Required' }}>
-            <PasswordField autoComplete="off" />
-          </FormInput>
-        </FormRow>
-      )}
-      <FormRow label="New password">
+      <FormRow label={formatMessage(labels.currentPassword)}>
+        <FormInput name="currentPassword" rules={{ required: 'Required' }}>
+          <PasswordField autoComplete="current-password" />
+        </FormInput>
+      </FormRow>
+      <FormRow label={formatMessage(labels.newPassword)}>
         <FormInput
           name="newPassword"
           rules={{
             required: 'Required',
-            minLength: { value: 8, message: 'Minimum length 8 characters' },
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
           }}
         >
-          <PasswordField autoComplete="off" />
+          <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
-      <FormRow label="Confirm password">
+      <FormRow label={formatMessage(labels.confirmPassword)}>
         <FormInput
           name="confirmPassword"
           rules={{
-            required: 'Required',
-            minLength: { value: 8, message: 'Minimum length 8 characters' },
+            required: formatMessage(labels.required),
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
             validate: samePassword,
           }}
         >
-          <PasswordField autoComplete="off" />
+          <PasswordField autoComplete="confirm-password" />
         </FormInput>
       </FormRow>
       <FormButtons flex>
         <Button type="submit" variant="primary" disabled={isLoading}>
-          Save
+          {formatMessage(labels.save)}
         </Button>
-        <Button onClick={onClose}>Close</Button>
+        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
       </FormButtons>
     </Form>
   );

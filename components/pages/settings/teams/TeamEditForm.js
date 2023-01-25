@@ -8,13 +8,16 @@ import {
   Button,
   Flexbox,
 } from 'react-basics';
+import { useIntl } from 'react-intl';
 import { getRandomChars } from 'next-basics';
 import { useRef, useState } from 'react';
 import useApi from 'hooks/useApi';
+import { labels } from 'components/messages';
 
 const generateId = () => getRandomChars(16);
 
 export default function TeamEditForm({ teamId, data, onSave }) {
+  const { formatMessage } = useIntl();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
   const ref = useRef(null);
@@ -40,22 +43,22 @@ export default function TeamEditForm({ teamId, data, onSave }) {
 
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error} values={data}>
-      <FormRow label="Team ID">
+      <FormRow label={formatMessage(labels.teamId)}>
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
-      <FormRow label="Name">
+      <FormRow label={formatMessage(labels.name)}>
         <FormInput name="name" rules={{ required: 'Required' }}>
           <TextField />
         </FormInput>
       </FormRow>
-      <FormRow label="Access code">
+      <FormRow label={formatMessage(labels.accessCode)}>
         <Flexbox gap={10}>
           <TextField value={accessCode} readOnly allowCopy />
-          <Button onClick={handleRegenerate}>Regenerate</Button>
+          <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
         </Flexbox>
       </FormRow>
       <FormButtons>
-        <SubmitButton variant="primary">Save</SubmitButton>
+        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
       </FormButtons>
     </Form>
   );

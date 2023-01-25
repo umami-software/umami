@@ -7,18 +7,27 @@ import {
   TableColumn,
   Button,
   Icon,
+  Icons,
+  Flexbox,
+  Text,
 } from 'react-basics';
-import styles from './TeamsTable.module.css';
+import { ROLES } from 'lib/constants';
+import { labels } from 'components/messages';
+import { useIntl } from 'react-intl';
 
-const columns = [
-  { name: 'username', label: 'Username', style: { flex: 4 } },
-  { name: 'role', label: 'Role' },
-  { name: 'action', label: '' },
-];
+const { Close } = Icons;
 
 export default function TeamMembersTable({ data = [] }) {
+  const { formatMessage } = useIntl();
+
+  const columns = [
+    { name: 'username', label: formatMessage(labels.username), style: { flex: 4 } },
+    { name: 'role', label: formatMessage(labels.role) },
+    { name: 'action', label: '' },
+  ];
+
   return (
-    <Table className={styles.table} columns={columns} rows={data}>
+    <Table columns={columns} rows={data}>
       <TableHeader>
         {(column, index) => {
           return (
@@ -30,25 +39,35 @@ export default function TeamMembersTable({ data = [] }) {
       </TableHeader>
       <TableBody>
         {(row, keys, rowIndex) => {
-          row.action = (
-            <div className={styles.actions}>
-              <Button>
-                <Icon icon="cross" />
-                Remove
-              </Button>
-            </div>
-          );
+          const rowData = {
+            username: row?.user?.username,
+            role: formatMessage(
+              labels[Object.keys(ROLES).find(key => ROLES[key] === row.role) || labels.unknown],
+            ),
+            action: (
+              <div>
+                <Button>
+                  <Icon>
+                    <Close />
+                  </Icon>
+                  <Text>{formatMessage(labels.remove)}</Text>
+                </Button>
+              </div>
+            ),
+          };
 
           return (
-            <TableRow key={rowIndex} data={row} keys={keys}>
+            <TableRow key={rowIndex} data={rowData} keys={keys}>
               {(data, key, colIndex) => {
                 return (
-                  <TableCell
-                    key={colIndex}
-                    className={styles.cell}
-                    style={{ ...columns[colIndex]?.style }}
-                  >
-                    {data[key] ?? data?.user?.[key]}
+                  <TableCell key={colIndex} style={{ ...columns[colIndex]?.style }}>
+                    <Flexbox
+                      flex={1}
+                      alignItems="center"
+                      justifyContent={key === 'action' ? 'end' : undefined}
+                    >
+                      {data[key]}
+                    </Flexbox>
                   </TableCell>
                 );
               }}

@@ -31,12 +31,12 @@ export default function WebsiteAddForm({ onSave, onClose }) {
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <FormRow label="Name">
+      <FormRow label={formatMessage(labels.name)}>
         <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>
-      <FormRow label="Domain">
+      <FormRow label={formatMessage(labels.domain)}>
         <FormInput
           name="domain"
           rules={{

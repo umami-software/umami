@@ -1,4 +1,3 @@
-import useApi from 'hooks/useApi';
 import {
   Button,
   Form,
@@ -8,12 +7,16 @@ import {
   SubmitButton,
   TextField,
 } from 'react-basics';
+import { useIntl } from 'react-intl';
+import { labels, messages } from 'components/messages';
+import useApi from 'hooks/useApi';
 
 const CONFIRM_VALUE = 'DELETE';
 
 export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
+  const { formatMessage } = useIntl();
   const { del, useMutation } = useApi();
-  const { mutate, error, isLoading } = useMutation(data => del(`/websites/${websiteId}`, data));
+  const { mutate, error } = useMutation(data => del(`/websites/${websiteId}`, data));
 
   const handleSubmit = async data => {
     mutate(data, {
@@ -25,21 +28,15 @@ export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <div>
-        To delete this website, type <b>{CONFIRM_VALUE}</b> in the box below to confirm.
-      </div>
-      <FormRow label="Confirm">
+      <p>{formatMessage(messages.deleteWebsite, { confirmation: CONFIRM_VALUE })}</p>
+      <FormRow label={formatMessage(labels.confirm)}>
         <FormInput name="confirmation" rules={{ validate: value => value === CONFIRM_VALUE }}>
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>
       <FormButtons flex>
-        <SubmitButton variant="primary" disabled={isLoading}>
-          Save
-        </SubmitButton>
-        <Button disabled={isLoading} onClick={onClose}>
-          Cancel
-        </Button>
+        <SubmitButton variant="danger">{formatMessage(labels.delete)}</SubmitButton>
+        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
       </FormButtons>
     </Form>
   );

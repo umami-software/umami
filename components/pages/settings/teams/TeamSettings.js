@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import useApi from 'hooks/useApi';
 import Link from 'next/link';
@@ -6,8 +7,11 @@ import Page from 'components/layout/Page';
 import TeamEditForm from 'components/pages/settings/teams/TeamEditForm';
 import PageHeader from 'components/layout/PageHeader';
 import TeamMembers from 'components/pages/settings/teams/TeamMembers';
+import { labels, messages } from 'components/messages';
+import TeamWebsites from './TeamWebsites';
 
-export default function TeamDetails({ teamId }) {
+export default function TeamSettings({ teamId }) {
+  const { formatMessage } = useIntl();
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
@@ -23,7 +27,7 @@ export default function TeamDetails({ teamId }) {
   );
 
   const handleSave = data => {
-    showToast({ message: 'Saved successfully.', variant: 'success' });
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
     setValues(state => ({ ...state, ...data }));
   };
 
@@ -44,13 +48,14 @@ export default function TeamDetails({ teamId }) {
           <Item>{values?.name}</Item>
         </Breadcrumbs>
       </PageHeader>
-      <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="details">Details</Item>
-        <Item key="members">Members</Item>
-        <Item key="websites">Websites</Item>
+      <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
+        <Item key="details">{formatMessage(labels.details)}</Item>
+        <Item key="members">{formatMessage(labels.members)}</Item>
+        <Item key="websites">{formatMessage(labels.websites)}</Item>
       </Tabs>
       {tab === 'details' && <TeamEditForm teamId={teamId} data={values} onSave={handleSave} />}
       {tab === 'members' && <TeamMembers teamId={teamId} />}
+      {tab === 'websites' && <TeamWebsites teamId={teamId} />}
     </Page>
   );
 }

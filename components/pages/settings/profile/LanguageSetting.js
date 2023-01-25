@@ -1,12 +1,9 @@
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Button, Dropdown, Item, Flexbox } from 'react-basics';
 import useLocale from 'hooks/useLocale';
 import { DEFAULT_LOCALE } from 'lib/constants';
 import { languages } from 'lib/lang';
-
-const messages = defineMessages({
-  reset: { id: 'label.reset', defaultMessage: 'Reset' },
-});
+import { labels } from 'components/messages';
 
 export default function LanguageSetting() {
   const { formatMessage } = useIntl();
@@ -28,7 +25,7 @@ export default function LanguageSetting() {
       >
         {item => <Item key={item}>{languages[item].label}</Item>}
       </Dropdown>
-      <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>
+      <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );
 }

@@ -1,12 +1,9 @@
 import { Dropdown, Item, Button, Flexbox } from 'react-basics';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
 import useTimezone from 'hooks/useTimezone';
 import { getTimezone } from 'lib/date';
-
-const messages = defineMessages({
-  reset: { id: 'label.reset', defaultMessage: 'Reset' },
-});
+import { labels } from 'components/messages';
 
 export default function TimezoneSetting() {
   const { formatMessage } = useIntl();
@@ -25,7 +22,7 @@ export default function TimezoneSetting() {
       >
         {item => <Item key={item}>{item}</Item>}
       </Dropdown>
-      <Button onClick={handleReset}>{formatMessage(messages.reset)}</Button>
+      <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );
 }

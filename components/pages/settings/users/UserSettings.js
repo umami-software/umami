@@ -1,23 +1,13 @@
 import { useEffect, useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import UserDeleteForm from 'components/pages/settings/users/UserDeleteForm';
 import UserEditForm from 'components/pages/settings/users//UserEditForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import useApi from 'hooks/useApi';
-import WebsitesTable from '../websites/WebsitesTable';
-
-const messages = defineMessages({
-  users: { id: 'label.users', defaultMessage: 'Users' },
-  details: { id: 'label.details', defaultMessage: 'Details' },
-  websites: { id: 'label.websites', defaultMessage: 'Websites' },
-  actions: { id: 'label.actions', defaultMessage: 'Actions' },
-  saved: { id: 'message.saved-successfully', defaultMessage: 'Saved successfully.' },
-  delete: { id: 'message.delete-successfully', defaultMessage: 'Delete successfully.' },
-});
+import { labels, messages } from 'components/messages';
+import UserWebsites from './UserWebsites';
 
 export default function UserSettings({ userId }) {
   const { formatMessage } = useIntl();
@@ -26,7 +16,6 @@ export default function UserSettings({ userId }) {
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
   const { toast, showToast } = useToast();
-  const router = useRouter();
   const { data, isLoading } = useQuery(
     ['user', userId],
     () => {
@@ -48,11 +37,6 @@ export default function UserSettings({ userId }) {
     }
   };
 
-  const handleDelete = async () => {
-    showToast({ message: formatMessage(messages.delete), variant: 'danger' });
-    await router.push('/users');
-  };
-
   useEffect(() => {
     if (data) {
       setValues(data);
@@ -65,19 +49,17 @@ export default function UserSettings({ userId }) {
       <PageHeader>
         <Breadcrumbs>
           <Item>
-            <Link href="/settings/users">{formatMessage(messages.users)}</Link>
+            <Link href="/settings/users">{formatMessage(labels.users)}</Link>
           </Item>
           <Item>{values?.username}</Item>
         </Breadcrumbs>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="details">{formatMessage(messages.details)}</Item>
-        <Item key="websites">{formatMessage(messages.websites)}</Item>
-        <Item key="delete">{formatMessage(messages.actions)}</Item>
+        <Item key="details">{formatMessage(labels.details)}</Item>
+        <Item key="websites">{formatMessage(labels.websites)}</Item>
       </Tabs>
       {tab === 'details' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
-      {tab === 'websites' && <WebsitesTable />}
-      {tab === 'delete' && <UserDeleteForm userId={userId} onSave={handleDelete} />}
+      {tab === 'websites' && <UserWebsites userId={userId} />}
     </Page>
   );
 }

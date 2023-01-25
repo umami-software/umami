@@ -8,13 +8,16 @@ import {
   Button,
   Toggle,
 } from 'react-basics';
+import { useIntl } from 'react-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import useApi from 'hooks/useApi';
+import { labels, messages } from 'components/messages';
 
 const generateId = () => getRandomChars(16);
 
 export default function ShareUrl({ websiteId, data, onSave }) {
+  const { formatMessage } = useIntl();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
   const { post, useMutation } = useApi();
@@ -62,26 +65,24 @@ export default function ShareUrl({ websiteId, data, onSave }) {
   }, [id, shareId]);
 
   return (
-    <Form key={websiteId} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
-      <FormRow>
-        <Toggle checked={Boolean(id)} onChecked={handleCheck}>
-          Enable share URL
-        </Toggle>
-      </FormRow>
+    <>
+      <Toggle checked={Boolean(id)} onChecked={handleCheck} style={{ marginBottom: 30 }}>
+        {formatMessage(labels.enableShareUrl)}
+      </Toggle>
       {id && (
-        <>
+        <Form key={websiteId} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
           <FormRow>
-            <p>Your website stats are publically available at the following URL:</p>
+            <p>{formatMessage(messages.shareUrl)}</p>
             <Flexbox gap={10}>
               <TextField value={url} readOnly allowCopy />
-              <Button onClick={handleGenerate}>Regenerate URL</Button>
+              <Button onClick={handleGenerate}>{formatMessage(labels.regenerate)}</Button>
             </Flexbox>
           </FormRow>
           <FormButtons>
-            <SubmitButton variant="primary">Save</SubmitButton>
+            <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
           </FormButtons>
-        </>
+        </Form>
       )}
-    </Form>
+    </>
   );
 }

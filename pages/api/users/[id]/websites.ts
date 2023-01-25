@@ -26,9 +26,10 @@ export default async (
   const {
     user: { id: userId },
   } = req.auth;
+  const { id } = req.query;
 
   if (req.method === 'GET') {
-    const websites = await getUserWebsites(userId);
+    const websites = await getUserWebsites(id as string);
 
     return ok(res, websites);
   }

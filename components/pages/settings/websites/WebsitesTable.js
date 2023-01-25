@@ -9,20 +9,28 @@ import {
   Button,
   Icon,
   Icons,
+  Flexbox,
 } from 'react-basics';
-import styles from './WebsitesTable.module.css';
+import { defineMessages, useIntl } from 'react-intl';
 
 const { ArrowRight, External } = Icons;
 
-const columns = [
-  { name: 'name', label: 'Name', style: { flex: 2 } },
-  { name: 'domain', label: 'Domain' },
-  { name: 'action', label: ' ' },
-];
+const messages = defineMessages({
+  name: { id: 'label.name', defaultMessage: 'Name' },
+  domain: { id: 'label.domain', defaultMessage: 'Domain' },
+});
 
 export default function WebsitesTable({ data = [] }) {
+  const { formatMessage } = useIntl();
+
+  const columns = [
+    { name: 'name', label: formatMessage(messages.name), style: { flex: 2 } },
+    { name: 'domain', label: formatMessage(messages.domain) },
+    { name: 'action', label: ' ' },
+  ];
+
   return (
-    <Table className={styles.table} columns={columns} rows={data}>
+    <Table columns={columns} rows={data}>
       <TableHeader>
         {(column, index) => {
           return (
@@ -37,7 +45,7 @@ export default function WebsitesTable({ data = [] }) {
           const { id } = row;
 
           row.action = (
-            <div className={styles.actions}>
+            <Flexbox flex={1} justifyContent="end" gap={10}>
               <Link href={`/settings/websites/${id}`}>
                 <a>
                   <Button>
@@ -58,19 +66,17 @@ export default function WebsitesTable({ data = [] }) {
                   </Button>
                 </a>
               </Link>
-            </div>
+            </Flexbox>
           );
 
           return (
             <TableRow key={rowIndex} data={row} keys={keys}>
               {(data, key, colIndex) => {
                 return (
-                  <TableCell
-                    key={colIndex}
-                    className={styles.cell}
-                    style={{ ...columns[colIndex]?.style }}
-                  >
-                    {data[key]}
+                  <TableCell key={colIndex} style={{ ...columns[colIndex]?.style }}>
+                    <Flexbox flex={1} alignItems="center">
+                      {data[key]}
+                    </Flexbox>
                   </TableCell>
                 );
               }}

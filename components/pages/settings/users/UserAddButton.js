@@ -1,16 +1,12 @@
 import { useState } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { Button, Icon, Text, Modal, useToast, Icons } from 'react-basics';
 import UserAddForm from './UserAddForm';
+import { labels, messages } from 'components/messages';
 
 const { Plus } = Icons;
 
-const messages = defineMessages({
-  createUser: { id: 'label.create-user', defaultMessage: 'Create user' },
-  saved: { id: 'message.saved-successfully', defaultMessage: 'Saved successfully.' },
-});
-
-export default function UserAddButton() {
+export default function UserAddButton({ onSave }) {
   const { formatMessage } = useIntl();
   const [edit, setEdit] = useState(false);
   const { toast, showToast } = useToast();
@@ -18,6 +14,7 @@ export default function UserAddButton() {
   const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
     setEdit(false);
+    onSave();
   };
 
   const handleAdd = () => {
@@ -35,11 +32,11 @@ export default function UserAddButton() {
         <Icon>
           <Plus />
         </Icon>
-        <Text>{formatMessage(messages.createUser)}</Text>
+        <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
       {edit && (
-        <Modal title={formatMessage(messages.createUser)} onClose={handleClose}>
-          {() => <UserAddForm onSave={handleSave} onClose={handleClose} />}
+        <Modal title={formatMessage(labels.createUser)} onClose={handleClose}>
+          <UserAddForm onSave={handleSave} onClose={handleClose} />
         </Modal>
       )}
     </>

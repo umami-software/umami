@@ -1,9 +1,12 @@
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
 import { useRef } from 'react';
+import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
+import { labels, messages } from 'components/messages';
 
 export default function WebsiteEditForm({ websiteId, data, onSave }) {
+  const { formatMessage } = useIntl();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}`, data));
   const ref = useRef(null);
@@ -19,22 +22,22 @@ export default function WebsiteEditForm({ websiteId, data, onSave }) {
 
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error} values={data} style={{ width: 600 }}>
-      <FormRow label="Website ID">
+      <FormRow label={formatMessage(labels.websiteId)}>
         <TextField value={websiteId} readOnly allowCopy />
       </FormRow>
-      <FormRow label="Name">
-        <FormInput name="name" rules={{ required: 'Required' }}>
+      <FormRow label={formatMessage(labels.name)}>
+        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
           <TextField />
         </FormInput>
       </FormRow>
-      <FormRow label="Domain">
+      <FormRow label={formatMessage(labels.domain)}>
         <FormInput
           name="domain"
           rules={{
-            required: 'Required',
+            required: formatMessage(labels.required),
             pattern: {
               value: DOMAIN_REGEX,
-              message: 'Invalid domain',
+              message: formatMessage(messages.invalidDomain),
             },
           }}
         >
@@ -42,7 +45,7 @@ export default function WebsiteEditForm({ websiteId, data, onSave }) {
         </FormInput>
       </FormRow>
       <FormButtons>
-        <SubmitButton variant="primary">Save</SubmitButton>
+        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
       </FormButtons>
     </Form>
   );

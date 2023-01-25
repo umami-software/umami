@@ -1,5 +1,5 @@
 import AppLayout from 'components/layout/AppLayout';
-import TeamDetails from 'components/pages/settings/teams/TeamDetails';
+import TeamSettings from 'components/pages/settings/teams/TeamSettings';
 import useUser from 'hooks/useUser';
 import { useRouter } from 'next/router';
 
@@ -14,7 +14,7 @@ export default function TeamDetailPage() {
 
   return (
     <AppLayout>
-      <TeamDetails teamId={id} />
+      <TeamSettings teamId={id} />
     </AppLayout>
   );
 }

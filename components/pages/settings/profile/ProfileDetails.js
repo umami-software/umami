@@ -1,19 +1,11 @@
 import { Form, FormRow } from 'react-basics';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 import TimezoneSetting from 'components/pages/settings/profile/TimezoneSetting';
 import DateRangeSetting from 'components/pages/settings/profile/DateRangeSetting';
 import LanguageSetting from 'components/pages/settings/profile/LanguageSetting';
 import ThemeSetting from 'components/buttons/ThemeSetting';
 import useUser from 'hooks/useUser';
-
-const messages = defineMessages({
-  username: { id: 'label.username', defaultMessage: 'Username' },
-  role: { id: 'label.role', defaultMessage: 'Role' },
-  timezone: { id: 'label.timezone', defaultMessage: 'Timezone' },
-  dateRange: { id: 'label.default-date-range', defaultMessage: 'Default date range' },
-  language: { id: 'label.language', defaultMessage: 'Language' },
-  theme: { id: 'label.theme', defaultMessage: 'Theme' },
-});
+import { labels } from 'components/messages';
 
 export default function ProfileDetails() {
   const { user } = useUser();
@@ -27,18 +19,18 @@ export default function ProfileDetails() {
 
   return (
     <Form>
-      <FormRow label={formatMessage(messages.username)}>{username}</FormRow>
-      <FormRow label={formatMessage(messages.role)}>{role}</FormRow>
-      <FormRow label={formatMessage(messages.language)} inline>
+      <FormRow label={formatMessage(labels.username)}>{username}</FormRow>
+      <FormRow label={formatMessage(labels.role)}>{role}</FormRow>
+      <FormRow label={formatMessage(labels.language)} inline>
         <LanguageSetting />
       </FormRow>
-      <FormRow label={formatMessage(messages.timezone)} inline>
+      <FormRow label={formatMessage(labels.timezone)} inline>
         <TimezoneSetting />
       </FormRow>
-      <FormRow label={formatMessage(messages.dateRange)} inline>
+      <FormRow label={formatMessage(labels.dateRange)} inline>
         <DateRangeSetting />
       </FormRow>
-      <FormRow label={formatMessage(messages.theme)}>
+      <FormRow label={formatMessage(labels.theme)}>
         <ThemeSetting />
       </FormRow>
     </Form>

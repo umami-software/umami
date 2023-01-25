@@ -9,23 +9,10 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import { defineMessages, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
-import { labels } from 'components/messages';
-
-const messages = defineMessages({
-  username: { id: 'label.username', defaultMessage: 'Username' },
-
-  password: { id: 'label.password', defaultMessage: 'Password' },
-  role: { id: 'label.role', defaultMessage: 'Role' },
-  user: { id: 'label.user', defaultMessage: 'User' },
-  admin: { id: 'label.admin', defaultMessage: 'Admin' },
-  minLength: {
-    id: 'message.min-password-length',
-    defaultMessage: 'Minimum length of 8 characters',
-  },
-});
+import { labels, messages } from 'components/messages';
 
 export default function UserEditForm({ userId, data, onSave }) {
   const { formatMessage } = useIntl();
@@ -42,35 +29,35 @@ export default function UserEditForm({ userId, data, onSave }) {
 
   const renderValue = value => {
     if (value === ROLES.user) {
-      return formatMessage(messages.user);
+      return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(messages.admin);
+      return formatMessage(labels.admin);
     }
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={data} style={{ width: 600 }}>
-      <FormRow label={formatMessage(messages.username)}>
+    <Form onSubmit={handleSubmit} error={error} values={data} style={{ width: 300 }}>
+      <FormRow label={formatMessage(labels.username)}>
         <FormInput name="username">
           <TextField />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(messages.password)}>
+      <FormRow label={formatMessage(labels.password)}>
         <FormInput
           name="newPassword"
           rules={{
-            minLength: { value: 8, message: formatMessage(messages.minLength) },
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
           }}
         >
           <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(messages.role)}>
+      <FormRow label={formatMessage(labels.role)}>
         <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown renderValue={renderValue} style={{ width: 200 }}>
-            <Item key={ROLES.user}>{formatMessage(messages.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(messages.admin)}</Item>
+          <Dropdown renderValue={renderValue}>
+            <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
+            <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
           </Dropdown>
         </FormInput>
       </FormRow>
