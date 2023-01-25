@@ -164,7 +164,7 @@
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Omogući dijeljenje URL-a"
+      "value": "Omogući dijeljenje poveznice"
     }
   ],
   "label.event-data": [
@@ -182,7 +182,7 @@
   "label.invalid": [
     {
       "type": 0,
-      "value": "Nesipravno"
+      "value": "Neispravno"
     }
   ],
   "label.invalid-domain": [
@@ -286,7 +286,7 @@
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "Lozinka nije točna"
+      "value": "Lozinke se ne podudaraju"
     }
   ],
   "label.profile": [
@@ -352,7 +352,7 @@
   "label.share-url": [
     {
       "type": 0,
-      "value": "Podijeli URL"
+      "value": "Podijeli poveznicu"
     }
   ],
   "label.single-day": [
@@ -461,7 +461,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitor"
+              "value": "posjetitelj"
             }
           ]
         },
@@ -469,7 +469,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitors"
+              "value": "posjetitelja"
             }
           ]
         }
@@ -516,7 +516,7 @@
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "Izbrisat će se  svi povezani podaci."
+      "value": "Izbrisat će se svi povezani podaci."
     }
   ],
   "message.edit-dashboard": [
@@ -534,7 +534,7 @@
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "Dohvati URL za dijeljenje"
+      "value": "Dohvati poveznicu za dijeljenje"
     }
   ],
   "message.get-tracking-code": [
@@ -624,7 +624,7 @@
   "message.powered-by": [
     {
       "type": 0,
-      "value": "Powered by "
+      "value": "Pokreće "
     },
     {
       "type": 1,
@@ -646,7 +646,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Ovo je javno dijeljeni URL za "
+      "value": "Ovo je javno dijeljena poveznica za "
     },
     {
       "type": 1,
