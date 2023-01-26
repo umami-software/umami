@@ -17,8 +17,8 @@ async function relationalQuery(
   unit = 'day',
   filters = {},
 ) {
-  const { rawQuery, getDateQuery, getFilterQuery } = prisma;
-  const params = [start_at, end_at];
+  const { rawQuery, getDateQuery, getFilterQuery, toUuid } = prisma;
+  const params = [websiteId, start_at, end_at];
 
   return rawQuery(
     `select
@@ -28,8 +28,8 @@ async function relationalQuery(
     from event
       join website 
         on event.website_id = website.website_id
-    where website_uuid='${websiteId}'
-      and event.created_at between $1 and $2
+    where website_uuid = $1${toUuid()}
+      and event.created_at between $2 and $3
     ${getFilterQuery('event', filters, params)}
     group by 1, 2
     order by 2`,

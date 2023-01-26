@@ -68,7 +68,8 @@ CREATE PROCEDURE `UmamiRenameIndexIfExists`(
         INFORMATION_SCHEMA.STATISTICS
     WHERE
         TABLE_NAME = @tableName
-            AND INDEX_NAME = @currentIndexName;
+            AND INDEX_NAME = @currentIndexName
+            AND TABLE_SCHEMA = database();
 
     SET @query = CONCAT(
         'ALTER TABLE `', @tableName, '` RENAME INDEX  `', @currentIndexName, '` TO `', @newIndexName, '`;'

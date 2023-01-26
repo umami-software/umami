@@ -502,6 +502,12 @@
       "value": "Svetainės"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Vakar"
+    }
+  ],
   "message.active-users": [
     {
       "offset": 0,

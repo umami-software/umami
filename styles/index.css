@@ -47,6 +47,10 @@ body {
     'Times New Roman', serif !important;
 }
 
+.si-LK {
+  font-family: 'Noto Sans Sinhala', Roboto, Noto, 'Times New Roman', sans-serif !important;
+}
+
 .he-IL {
   font-family: 'New Peninim MT', 'Arial Hebrew', Gisha, 'Times New Roman', Roboto, Noto,
     'Noto Sans Hebrew', sans-serif !important;
