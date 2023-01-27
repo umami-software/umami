@@ -1,5 +1,5 @@
 import { subMinutes } from 'date-fns';
-import { ok, methodNotAllowed, createToken } from 'next-basics';
+import { ok, unauthorized, methodNotAllowed, createToken } from 'next-basics';
 import { useAuth } from 'lib/middleware';
 import { getUserWebsites, getRealtimeData } from 'queries';
 import { secret } from 'lib/crypto';
@@ -9,6 +9,10 @@ export default async (req, res) => {
 
   if (req.method === 'GET') {
     const { userId } = req.auth;
+
+    if (!userId) {
+      return unauthorized(res);
+    }
 
     const websites = await getUserWebsites({ userId });
     const ids = websites.map(({ websiteUuid }) => websiteUuid);

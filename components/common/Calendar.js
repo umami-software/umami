@@ -123,7 +123,7 @@ const DaySelector = ({ date, minDate, maxDate, locale, onSelect }) => {
   }
 
   const days = [];
-  for (let i = 0; i < 35; i++) {
+  for (let i = 0; i < 42; i++) {
     days.push(addDays(startDay, i));
   }
 

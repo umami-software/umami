@@ -2,213 +2,233 @@
   "label.accounts": [
     {
       "type": 0,
-      "value": "บัญชี"
+      "value": "ගිණුම්"
     }
   ],
   "label.add-account": [
     {
       "type": 0,
-      "value": "เพิ่มบัญชี"
+      "value": "ගිණුම එකතු කරන්න"
     }
   ],
   "label.add-column": [
     {
       "type": 0,
-      "value": "สร้างคอลัมน์"
+      "value": "තීරුව එක් කරන්න"
     }
   ],
   "label.add-filter": [
     {
       "type": 0,
-      "value": "สร้างตัวกรอง"
+      "value": "පෙරහන එකතු කරන්න"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "เพิ่มเว็บไซต์"
+      "value": "වෙබ් අඩවිය එක් කරන්න"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "ผู้ดูแลระบบ"
+      "value": "පරිපාලක"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "ทั้งหมด"
+      "value": "සියල්ල"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "ทุกช่วงเวลา"
+      "value": "හැම වෙලාවෙම"
     }
   ],
   "label.all-websites": [
     {
       "type": 0,
-      "value": "เว็บไซต์ทั้งหมด"
+      "value": "සියලුම වෙබ් අඩවි"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "ย้อนกลับ"
+      "value": "ආපසු"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "ยกเลิก"
+      "value": "අවලංගු කරන්න"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "เปลี่ยนรหัสผ่าน"
+      "value": "මුරපදය වෙනස් කරන්න"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "ยืนยันรหัสผ่าน"
+      "value": "මුරපදය සත්‍යාපනය කරන්න"
     }
   ],
   "label.copy-to-clipboard": [
     {
       "type": 0,
-      "value": "คัดลอกไปยังคลิปบอร์ด"
+      "value": "පසුරු පුවරුවට පිටපත් කරන්න"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "รหัสผ่านปัจจุบัน"
+      "value": "වත්මන් මුරපදය"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "กำหนดช่วงเวลา"
+      "value": "අභිරුචි පරාසය"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "แดชบอร์ด"
+      "value": "උපකරණ පුවරුව"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "ตั้งแต่วันที่"
+      "value": "දින පරාසය"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "ช่วงเวลา"
+      "value": "පෙරනිමි දින පරාසය"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "ลบ"
+      "value": "මකන්න"
     }
   ],
   "label.delete-account": [
     {
       "type": 0,
-      "value": "ลบบัญชี"
+      "value": "ගිණුම මකන්න"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "ลบเว็บไซต์"
+      "value": "වෙබ් අඩවිය මකන්න"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "ยกเลิก"
+      "value": "මගහරින්න"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "โดเมน"
+      "value": "වසම"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "แก้ไข"
+      "value": "සංස්කරණය කරන්න"
     }
   ],
   "label.edit-account": [
     {
       "type": 0,
-      "value": "แก้ไขบัญชี"
+      "value": "ගිණුම සංස්කරණය කරන්න"
     }
   ],
   "label.edit-website": [
     {
       "type": 0,
-      "value": "แก้ไขเว็บไซต์"
+      "value": "වෙබ් අඩවිය සංස්කරණය කරන්න"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "เปิดใช้งานการแชร์ลิงก์"
+      "value": "බෙදාගැනීමේ URL සබල කරන්න"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "සිදුවීම් දත්ත"
+    }
+  ],
+  "label.field-name": [
+    {
+      "type": 0,
+      "value": "ක්ෂේත්‍ර නාම"
     }
   ],
   "label.invalid": [
     {
       "type": 0,
-      "value": "ไม่ถูกต้อง"
+      "value": "වලංගු නැත"
     }
   ],
   "label.invalid-domain": [
     {
       "type": 0,
-      "value": "โดเมนไม่ถูกต้อง"
+      "value": "වලංගු නොවන වසමක්"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "ภาษา"
+      "value": "භාෂාව"
     }
   ],
   "label.last-days": [
     {
+      "type": 0,
+      "value": "අන්තිම "
+    },
+    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " วันที่ผ่านมา"
+      "value": " දින"
     }
   ],
   "label.last-hours": [
     {
+      "type": 0,
+      "value": "අන්තිම "
+    },
+    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " ชั่วโมงที่ผ่านมา"
+      "value": " පැය"
     }
   ],
   "label.logged-in-as": [
     {
       "type": 0,
-      "value": "เข้าสู่ระบบโดย "
+      "value": "ලොග් වී ඇත්තේ "
     },
     {
       "type": 1,
@@ -218,213 +238,221 @@
   "label.login": [
     {
       "type": 0,
-      "value": "เข้าสู่ระบบ"
+      "value": "ලොග් වෙන්න"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "ออกจากระบบ"
+      "value": "පිටවීම"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "เพิ่มเติม"
+      "value": "තවත්"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "ชื่อ"
+      "value": "නම"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "รหัสผ่านใหม่"
+      "value": "අලුත් මුරපදය"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "ไม่ได้กำหนด"
+      "value": "කිසිවක් නැත"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "เจ้าของ"
+      "value": "හිමිකරු"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "รหัสผ่าน"
+      "value": "මුරපදය"
     }
   ],
   "label.passwords-dont-match": [
     {
       "type": 0,
-      "value": "รหัสผ่านไม่ตรงกัน"
+      "value": "මුරපද නොගැලපේ"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "โปรไฟล์"
+      "value": "පැතිකඩ"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "เรียลไทม์"
+      "value": "තත්ය කාල"
     }
   ],
   "label.realtime-logs": [
     {
       "type": 0,
-      "value": "Log แบบเรียลไทม์"
+      "value": "තත්‍ය කාලීන ලොග්"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "รีเฟรช"
+      "value": "නැවුම් කරන්න"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "จำเป็น"
+      "value": "අවශ්‍යයි"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "รีเซต"
+      "value": "යළි පිහිටුවන්න"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "รีเซตข้อมูลสถิติ"
+      "value": "සංඛ්යා ලේඛන නැවත සකසන්න"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "บันทึก"
+      "value": "සුරකින්න"
     }
   ],
   "label.search": [
     {
       "type": 0,
-      "value": "ค้นหา"
+      "value": "සෙවීම"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "ตั้งค่า"
+      "value": "සැකසුම්"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "แชร์ลิงก์"
+      "value": "බෙදාගැනීමේ URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "วันที่"
+      "value": "තනි දවස"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "ธีม"
+      "value": "තේමාව"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "เดือนปัจจุบัน"
+      "value": "මෙ මාසය"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "สัปดาห์ปัจจุบัน"
+      "value": "මේ සතිය"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "ปีปัจจุบัน"
+      "value": "මේ අවුරුද්ද"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "เขตเวลา"
+      "value": "වේලා කලාපය"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "วันนี้"
+      "value": "අද"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "โค้ดสำหรับใช้ติดตาม"
+      "value": "ලුහුබැඳීමේ කේතය"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "වර්ගය"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "ไม่รู้จัก"
+      "value": "නොදනී"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "ชื่อผู้ใช้"
+      "value": "පරිශීලක නාමය"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "වටිනාකම"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "แสดงรายละเอียด"
+      "value": "තොරතුරු පෙන්වන්න"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "เว็บไซต์"
+      "value": "වෙබ් අඩවි"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "เมื่อวาน"
+      "value": "ඊයේ"
     }
   ],
   "message.active-users": [
-    {
-      "type": 0,
-      "value": "มีผู้ใช้งาน "
-    },
     {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " "
+      "value": " දැන් "
     },
     {
       "offset": 0,
@@ -433,7 +461,7 @@
           "value": [
             {
               "type": 0,
-              "value": "คนในขณะนี้"
+              "value": "අමුත්තා"
             }
           ]
         },
@@ -441,7 +469,7 @@
           "value": [
             {
               "type": 0,
-              "value": "คนในขณะนี้"
+              "value": "අමුත්තන්"
             }
           ]
         }
@@ -453,100 +481,88 @@
   ],
   "message.confirm-delete": [
     {
-      "type": 0,
-      "value": "คุณแน่ใจหรือไม่ว่าต้องการลบ "
-    },
-    {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": " ?"
+      "value": " මකා දැමීම ගැන විශ්වාසද?"
     }
   ],
   "message.confirm-reset": [
     {
-      "type": 0,
-      "value": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลสถิติของ "
-    },
-    {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": " ?"
+      "value": " ට අදාල සංඛ්‍යාලේඛන නැවත පිහිටුවීමට අවශ්‍යද?"
     }
   ],
   "message.copied": [
     {
       "type": 0,
-      "value": "คัดลอกแล้ว!"
+      "value": "පිටපත් කරගත්තා!"
     }
   ],
   "message.delete-warning": [
     {
       "type": 0,
-      "value": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ."
+      "value": "සියලුම ආශ්‍රිත දත්ත ද මකා දැමෙනු ඇත."
     }
   ],
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "แก้ไขแดชบอร์ด"
+      "value": "උපකරණ පුවරුව සංස්කරණය කරන්න"
     }
   ],
   "message.failure": [
     {
       "type": 0,
-      "value": "เกิดข้อผิดพลาด."
+      "value": "යම් ගැටලුවක් මතු වී ඇත."
     }
   ],
   "message.get-share-url": [
     {
       "type": 0,
-      "value": "รับลิงก์สำหรับแชร์"
+      "value": "බෙදාගැනීමේ URL ලබා ගන්න"
     }
   ],
   "message.get-tracking-code": [
     {
       "type": 0,
-      "value": "รับโค้ดสำหรับใช้ติดตาม"
+      "value": "ලුහුබැඳීමේ කේතය ලබා ගන්න"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "ไปที่การตั้งค่า"
+      "value": "සැකසීම් වෙත යන්න"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง."
+      "value": "වැරදි පරිශීලක නාමය/මුරපදය."
     }
   ],
   "message.log.visitor": [
-    {
-      "type": 0,
-      "value": "ผู้เข้าชมจาก "
-    },
     {
       "type": 1,
       "value": "country"
     },
     {
       "type": 0,
-      "value": " กำลังใช้งานผ่าน "
+      "value": " වලින් පැමිණි අමුත්තකු "
     },
     {
       "type": 1,
-      "value": "browser"
+      "value": "device"
     },
     {
       "type": 0,
-      "value": " บน "
+      "value": " එකේ, මේ "
     },
     {
       "type": 1,
@@ -554,17 +570,21 @@
     },
     {
       "type": 0,
-      "value": " "
+      "value": " එකේ, මේ "
     },
     {
       "type": 1,
-      "value": "device"
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " එකෙන් ඉන්නවා"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "umami เวอร์ชันใหม่ ("
+      "value": "umami අලුත්ම "
     },
     {
       "type": 1,
@@ -572,31 +592,31 @@
     },
     {
       "type": 0,
-      "value": ") มาแล้ว!"
+      "value": " වන අනුවාදය නිකුත් උනා!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "ไม่มีข้อมูล."
+      "value": "පෙන්වීමට දත්ත නොමැත."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "คุณยังไม่ได้ตั้งค่าเว็บไซต์ใด ๆ ไว้."
+      "value": "ඔබට වින්‍යාස කර ඇති වෙබ් අඩවි කිසිවක් නොමැත."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "ไม่พบหน้านี้."
+      "value": "පිටුව හමු නොවීය."
     }
   ],
   "message.powered-by": [
     {
       "type": 0,
-      "value": "ขับเคลื่อนโดย "
+      "value": "බල ගැන්වුයේ "
     },
     {
       "type": 1,
@@ -606,19 +626,19 @@
   "message.reset-warning": [
     {
       "type": 0,
-      "value": "สถิติทั้งหมดสำหรับเว็บไซต์นี้จะถูกลบออก แต่โค้ดสำหรับใช้ติดตามของคุณจะยังคงอยู่เหมือนเดิม."
+      "value": "සියලුම සංඛ්‍යාලේඛන මකා දමනු ඇත. නමුත් ඔබගේ නිරීක්ෂණ කේතය නොවෙනස්ව පවතිනු ඇත."
     }
   ],
   "message.save-success": [
     {
       "type": 0,
-      "value": "บันทึกข้อมูลเรียบร้อย."
+      "value": "සාර්තකව සුරැකිණි."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "นี่คือลิงก์ที่แชร์แบบสาธารณะสำหรับ "
+      "value": "මේ "
     },
     {
       "type": 1,
@@ -626,27 +646,23 @@
     },
     {
       "type": 0,
-      "value": "."
+      "value": " සඳහා ප්‍රසිද්ධියේ බෙදාගත් URL එකයි."
     }
   ],
   "message.toggle-charts": [
     {
       "type": 0,
-      "value": "เปิด/ปิดแผนภูมิ"
+      "value": "ප්‍රස්ථාර ටොගල් කරන්න"
     }
   ],
   "message.track-stats": [
-    {
-      "type": 0,
-      "value": "หากต้องการติดตามสถิติสำหรับ "
-    },
     {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": " ให้วางโค้ดต่อไปนี้ในส่วน "
+      "value": " හි සංඛ්යාලේඛන බැලීම සදහා, පහත කේතය "
     },
     {
       "type": 1,
@@ -654,13 +670,13 @@
     },
     {
       "type": 0,
-      "value": " ของเว็บไซต์ของคุณ."
+      "value": " කොටසට ඇතුලත් කරන්න."
     }
   ],
   "message.type-delete": [
     {
       "type": 0,
-      "value": "พิมพ์ข้อความ "
+      "value": "සත්‍යාපනය සදහා "
     },
     {
       "type": 1,
@@ -668,13 +684,13 @@
     },
     {
       "type": 0,
-      "value": " ในช่องด้านล่างเพื่อยืนยัน."
+      "value": " ලෙස පහල කොටුවේ ටයිප් කරන්න"
     }
   ],
   "message.type-reset": [
     {
       "type": 0,
-      "value": "พิมพ์ข้อความ "
+      "value": "සත්‍යාපනය සදහා "
     },
     {
       "type": 1,
@@ -682,145 +698,145 @@
     },
     {
       "type": 0,
-      "value": " ในช่องด้านล่างเพื่อยืนยัน."
+      "value": " ලෙස පහල කොටුවේ ටයිප් කරන්න"
     }
   ],
   "metrics.actions": [
     {
       "type": 0,
-      "value": "การกระทำ"
+      "value": "ක්රියාවන්"
     }
   ],
   "metrics.average-visit-time": [
     {
       "type": 0,
-      "value": "ระยะเวลาเข้าชมเฉลี่ย"
+      "value": "සාමාන්‍ය සංචාර කාලය"
     }
   ],
   "metrics.bounce-rate": [
     {
       "type": 0,
-      "value": "อัตราตีกลับ"
+      "value": "හැරී යන ප්‍රමාණය"
     }
   ],
   "metrics.browsers": [
     {
       "type": 0,
-      "value": "เบราว์เซอร์"
+      "value": "බ්‍රව්සර්"
     }
   ],
   "metrics.countries": [
     {
       "type": 0,
-      "value": "ประเทศ"
+      "value": "රටවල්"
     }
   ],
   "metrics.device.desktop": [
     {
       "type": 0,
-      "value": "เดสก์ท็อป"
+      "value": "ඩෙස්ක්ටොප්"
     }
   ],
   "metrics.device.laptop": [
     {
       "type": 0,
-      "value": "แล็ปท็อป"
+      "value": "ලැප්ටොප්"
     }
   ],
   "metrics.device.mobile": [
     {
       "type": 0,
-      "value": "โทรศัพท์มือถือ"
+      "value": "ජංගම"
     }
   ],
   "metrics.device.tablet": [
     {
       "type": 0,
-      "value": "แท็บเล็ต"
+      "value": "ටැබ්ලට්"
     }
   ],
   "metrics.devices": [
     {
       "type": 0,
-      "value": "อุปกรณ์"
+      "value": "උපකරණ"
     }
   ],
   "metrics.events": [
     {
       "type": 0,
-      "value": "เหตุการณ์"
+      "value": "සිද්ධීන්"
     }
   ],
   "metrics.filter.combined": [
     {
       "type": 0,
-      "value": "ข้อมูลรวม"
+      "value": "ඒකාබද්ධ"
     }
   ],
   "metrics.filter.raw": [
     {
       "type": 0,
-      "value": "ข้อมูลดิบ"
+      "value": "අමු"
     }
   ],
   "metrics.languages": [
     {
       "type": 0,
-      "value": "ภาษา"
+      "value": "භාෂා"
     }
   ],
   "metrics.operating-systems": [
     {
       "type": 0,
-      "value": "ระบบปฏิบัติการ"
+      "value": "මෙහෙයුම් පද්ධති"
     }
   ],
   "metrics.page-views": [
     {
       "type": 0,
-      "value": "การเข้าชม"
+      "value": "පිටු බැලීම්"
     }
   ],
   "metrics.pages": [
     {
       "type": 0,
-      "value": "หน้าเพจ"
+      "value": "පිටු"
     }
   ],
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "พารามิเตอร์ URL"
+      "value": "විමසුම් පරාමිතීන්"
     }
   ],
   "metrics.referrers": [
     {
       "type": 0,
-      "value": "แหล่งที่มา"
+      "value": "යොමු කරන්නන්"
     }
   ],
   "metrics.screens": [
     {
       "type": 0,
-      "value": "ขนาดหน้าจอ"
+      "value": "තිර"
     }
   ],
   "metrics.unique-visitors": [
     {
       "type": 0,
-      "value": "ผู้เข้าชม"
+      "value": "අලුත්ම අමුත්තන්"
     }
   ],
   "metrics.views": [
     {
       "type": 0,
-      "value": "การเข้าชม"
+      "value": "බැලූ ගණන"
     }
   ],
   "metrics.visitors": [
     {
       "type": 0,
-      "value": "ผู้เข้าชม"
+      "value": "අමුත්තන්"
     }
   ]
 }
