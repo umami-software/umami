@@ -5,9 +5,11 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  padding-bottom: 3px;
 }
 
-.button svg {
+.button > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
 }

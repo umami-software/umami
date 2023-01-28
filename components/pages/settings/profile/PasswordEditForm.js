@@ -14,6 +14,7 @@ export default function PasswordEditForm({ onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave();
+        onClose();
       },
     });
   };

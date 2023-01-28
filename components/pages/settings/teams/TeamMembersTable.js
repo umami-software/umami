@@ -11,11 +11,9 @@ import {
   Flexbox,
   Text,
 } from 'react-basics';
+import { useIntl } from 'react-intl';
 import { ROLES } from 'lib/constants';
 import { labels } from 'components/messages';
-import { useIntl } from 'react-intl';
-
-const { Close } = Icons;
 
 export default function TeamMembersTable({ data = [] }) {
   const { formatMessage } = useIntl();
@@ -48,7 +46,7 @@ export default function TeamMembersTable({ data = [] }) {
               <div>
                 <Button>
                   <Icon>
-                    <Close />
+                    <Icons.Close />
                   </Icon>
                   <Text>{formatMessage(labels.remove)}</Text>
                 </Button>

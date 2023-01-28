@@ -25,6 +25,7 @@ export default function WebsiteAddForm({ onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave();
+        onClose();
       },
     });
   };

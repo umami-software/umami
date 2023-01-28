@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from './NavGroup.module.css';
 
-const { ChevronDown } = Icons;
-
 export default function NavGroup({
   title,
   items,
@@ -30,7 +28,7 @@ export default function NavGroup({
         <div className={styles.header} onClick={allowExpand ? handleExpand : undefined}>
           <Text>{title}</Text>
           <Icon size="sm" rotate={expanded ? 0 : -90}>
-            <ChevronDown />
+            <Icons.ChevronDown />
           </Icon>
         </div>
       )}

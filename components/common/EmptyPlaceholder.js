@@ -1,13 +1,13 @@
 import { Icon, Text, Flexbox } from 'react-basics';
 import Logo from 'assets/logo.svg';
 
-function EmptyPlaceholder({ msg, children }) {
+function EmptyPlaceholder({ message, children }) {
   return (
     <Flexbox direction="column" alignItems="center" justifyContent="center" gap={60} height={600}>
       <Icon size="xl">
         <Logo />
       </Icon>
-      <Text size="lg">{msg}</Text>
+      <Text size="lg">{message}</Text>
       <div>{children}</div>
     </Flexbox>
   );

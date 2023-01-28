@@ -22,6 +22,7 @@ export default function TeamAddForm({ onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave();
+        onClose();
       },
     });
   };
@@ -29,7 +30,7 @@ export default function TeamAddForm({ onSave, onClose }) {
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: 'Required' }}>
+        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>

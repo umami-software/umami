@@ -1,53 +1,62 @@
 import { useState } from 'react';
-import { Button, Loading } from 'react-basics';
-import { defineMessages, useIntl } from 'react-intl';
+import { Button, Icon, Icons, Text, Flexbox } from 'react-basics';
+import { useIntl } from 'react-intl';
+import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteChartList from 'components/pages/websites/WebsiteChartList';
 import DashboardSettingsButton from 'components/pages/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'components/pages/dashboard/DashboardEdit';
-import styles from 'components/pages/websites/WebsiteList.module.css';
-import useUser from 'hooks/useUser';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useApi from 'hooks/useApi';
+import { labels, messages } from 'components/messages';
 import useDashboard from 'store/dashboard';
 
-const messages = defineMessages({
-  dashboard: { id: 'label.dashboard', defaultMessage: 'Dashboard' },
-  more: { id: 'label.more', defaultMessage: 'More' },
-});
-
 export default function Dashboard({ userId }) {
-  const { user } = useUser();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);
   const { get, useQuery } = useApi();
-  const { data, isLoading } = useQuery(['websites'], () => get('/websites', { userId }));
+  const { data, isLoading, error } = useQuery(['websites'], () => get('/websites', { userId }));
   const { formatMessage } = useIntl();
+  const hasData = data && data.length !== 0;
 
   function handleMore() {
     setMax(max + limit);
   }
 
-  if (!user || isLoading) {
-    return <Loading />;
-  }
-
-  if (!data) {
-    return null;
-  }
-
   return (
-    <Page>
-      <PageHeader title={formatMessage(messages.dashboard)}>
-        {!editing && <DashboardSettingsButton />}
+    <Page loading={isLoading} error={error}>
+      <PageHeader title={formatMessage(labels.dashboard)}>
+        {!editing && hasData && <DashboardSettingsButton />}
       </PageHeader>
-      {editing && <DashboardEdit websites={data} />}
-      {!editing && <WebsiteChartList websites={data} showCharts={showCharts} limit={max} />}
-      {max < data.length && (
-        <Button className={styles.button} onClick={handleMore}>
-          {formatMessage(messages.more)}
-        </Button>
+      {!hasData && (
+        <EmptyPlaceholder message={formatMessage(messages.noWebsites)}>
+          <Link href="/settings/websites">
+            <Button>
+              <Icon>
+                <Icons.ArrowRight />
+              </Icon>
+              <Text>{formatMessage(messages.goToSettings)}</Text>
+            </Button>
+          </Link>
+        </EmptyPlaceholder>
+      )}
+      {hasData && (
+        <>
+          {editing && <DashboardEdit websites={data} />}
+          {!editing && <WebsiteChartList websites={data} showCharts={showCharts} limit={max} />}
+          {max < data.length && (
+            <Flexbox justifyContent="center">
+              <Button onClick={handleMore}>
+                <Icon>
+                  <Icons.More />
+                </Icon>
+                <Text>{formatMessage(labels.more)}</Text>
+              </Button>
+            </Flexbox>
+          )}
+        </>
       )}
     </Page>
   );

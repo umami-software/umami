@@ -52,17 +52,24 @@ export const labels = defineMessages({
   language: { id: 'label.language', defaultMessage: 'Language' },
   theme: { id: 'label.theme', defaultMessage: 'Theme' },
   profile: { id: 'label.profile', defaultMessage: 'Profile' },
+  dashboard: { id: 'label.dashboard', defaultMessage: 'Dashboard' },
+  more: { id: 'label.more', defaultMessage: 'More' },
+  realtime: { id: 'label.realtime', defaultMessage: 'Realtime' },
+  queries: { id: 'label.queries', defaultMessage: 'Queries' },
+  teams: { id: 'label.teams', defaultMessage: 'Teams' },
+  analytics: { id: 'label.analytics', defaultMessage: 'Analytics' },
+  logout: { id: 'label.logout', defaultMessage: 'Logout' },
 });
 
 export const messages = defineMessages({
   error: { id: 'message.error', defaultMessage: 'Something went wrong.' },
-  saved: { id: 'message.saved', defaultMessage: 'Saved successfully.' },
+  saved: { id: 'message.saved', defaultMessage: 'Saved.' },
   noUsers: { id: 'message.no-users', defaultMessage: 'There are no users.' },
-  userDeleted: { id: 'message.user-deleted', defaultMessage: 'User deleted successfully.' },
+  userDeleted: { id: 'message.user-deleted', defaultMessage: 'User deleted.' },
   noData: { id: 'message.no-data', defaultMessage: 'No data available.' },
   deleteUserWarning: {
     id: 'message.delete-user-warning',
-    defaultMessage: 'Are you sure you want to delete {username}?',
+    defaultMessage: 'Are you sure you want to delete the user {username}?',
   },
   minPasswordLength: {
     id: 'message.min-password-length',
@@ -79,7 +86,7 @@ export const messages = defineMessages({
   trackingCode: {
     id: 'message.tracking-code',
     defaultMessage:
-      'To track stats for this website, place the following code in the <head> section of your HTML.',
+      'To track stats for this website, place the following code in the <head>...</head> section of your HTML.',
   },
   deleteWebsite: {
     id: 'message.delete-website',
@@ -107,6 +114,10 @@ export const messages = defineMessages({
     defaultMessage: 'You do not have any websites configured.',
   },
   noMatchPassword: { id: 'message.no-match-password', defaultMessage: 'Passwords do not match.' },
+  goToSettings: {
+    id: 'message.go-to-settings',
+    defaultMessage: 'Go to settings',
+  },
 });
 
 export const devices = defineMessages({

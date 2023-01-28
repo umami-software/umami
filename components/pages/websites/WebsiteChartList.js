@@ -1,28 +1,11 @@
-import { defineMessages, useIntl } from 'react-intl';
-import Link from 'components/common/Link';
 import WebsiteChart from 'components/metrics/WebsiteChart';
-import Page from 'components/layout/Page';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import Arrow from 'assets/arrow-right.svg';
 import styles from './WebsiteList.module.css';
 import useDashboard from 'store/dashboard';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 
-const messages = defineMessages({
-  noWebsites: {
-    id: 'message.no-websites-configured',
-    defaultMessage: "You don't have any websites configured.",
-  },
-  goToSettngs: {
-    id: 'message.go-to-buttons',
-    defaultMessage: 'Go to buttons',
-  },
-});
-
 export default function WebsiteList({ websites, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
-  const { formatMessage } = useIntl();
 
   const ordered = useMemo(
     () =>
@@ -31,18 +14,6 @@ export default function WebsiteList({ websites, showCharts, limit }) {
         .sort(firstBy('order')),
     [websites, websiteOrder],
   );
-
-  if (websites.length === 0) {
-    return (
-      <Page>
-        <EmptyPlaceholder msg={formatMessage(messages.noWebsites)}>
-          <Link href="/websites" icon={<Arrow />} iconRight>
-            {formatMessage(messages.goToSettngs)}
-          </Link>
-        </EmptyPlaceholder>
-      </Page>
-    );
-  }
 
   return (
     <div>

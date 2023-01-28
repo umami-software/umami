@@ -13,8 +13,6 @@ import {
 } from 'react-basics';
 import { defineMessages, useIntl } from 'react-intl';
 
-const { ArrowRight, External } = Icons;
-
 const messages = defineMessages({
   name: { id: 'label.name', defaultMessage: 'Name' },
   domain: { id: 'label.domain', defaultMessage: 'Domain' },
@@ -50,7 +48,7 @@ export default function WebsitesTable({ data = [] }) {
                 <a>
                   <Button>
                     <Icon>
-                      <ArrowRight />
+                      <Icons.ArrowRight />
                     </Icon>
                     Settings
                   </Button>
@@ -60,7 +58,7 @@ export default function WebsitesTable({ data = [] }) {
                 <a>
                   <Button>
                     <Icon>
-                      <External />
+                      <Icons.External />
                     </Icon>
                     View
                   </Button>

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import useApi from 'hooks/useApi';
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
-import { useIntl } from 'react-intl';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { labels, messages } from 'components/messages';
 
 export default function UserDeleteForm({ userId, username, onSave, onClose }) {
@@ -20,9 +20,14 @@ export default function UserDeleteForm({ userId, username, onSave, onClose }) {
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <p>{formatMessage(messages.deleteUserWarning, { username })}</p>
+      <p>
+        <FormattedMessage
+          {...messages.deleteUserWarning}
+          values={{ username: <b>{username}</b> }}
+        />
+      </p>
       <FormButtons flex>
-        <SubmitButton variant="primary" disabled={isLoading}>
+        <SubmitButton variant="danger" disabled={isLoading}>
           {formatMessage(labels.delete)}
         </SubmitButton>
         <Button disabled={isLoading} onClick={onClose}>

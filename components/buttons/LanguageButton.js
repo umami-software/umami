@@ -1,30 +1,51 @@
+import { Icon, Button, PopupTrigger, Popup, Tooltip, Icons, Text } from 'react-basics';
+import { useIntl } from 'react-intl';
+import classNames from 'classnames';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
-import MenuButton from 'components/common/MenuButton';
-import Globe from 'assets/globe.svg';
+import { Globe } from 'components/icons';
+import { labels } from 'components/messages';
 import styles from './LanguageButton.module.css';
-import { Icon } from 'react-basics';
 
-export default function LanguageButton() {
+export default function LanguageButton({ tooltipPosition = 'top' }) {
+  const { formatMessage } = useIntl();
   const { locale, saveLocale } = useLocale();
-  const menuOptions = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
+  const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
   function handleSelect(value) {
     saveLocale(value);
   }
 
   return (
-    <MenuButton
-      options={menuOptions}
-      value={locale}
-      menuClassName={styles.menu}
-      buttonVariant="light"
-      onSelect={handleSelect}
-      hideLabel
-    >
-      <Icon>
-        <Globe />
-      </Icon>
-    </MenuButton>
+    <PopupTrigger>
+      <PopupTrigger action="hover">
+        <Button variant="quiet">
+          <Icon>
+            <Globe />
+          </Icon>
+        </Button>
+        <Tooltip position={tooltipPosition}>{formatMessage(labels.language)}</Tooltip>
+      </PopupTrigger>
+      <Popup position="right" alignment="end">
+        <div className={styles.menu}>
+          {items.map(({ value, label }) => {
+            return (
+              <div
+                key={value}
+                className={classNames(styles.item, { [styles.selected]: value === locale })}
+                onClick={handleSelect.bind(null, value)}
+              >
+                <Text>{label}</Text>
+                {value === locale && (
+                  <Icon className={styles.icon}>
+                    <Icons.Check />
+                  </Icon>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </Popup>
+    </PopupTrigger>
   );
 }

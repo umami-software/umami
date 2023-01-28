@@ -47,7 +47,7 @@ export default function TeamEditForm({ teamId, data, onSave }) {
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
       <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: 'Required' }}>
+        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
           <TextField />
         </FormInput>
       </FormRow>

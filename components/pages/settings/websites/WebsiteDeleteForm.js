@@ -22,6 +22,7 @@ export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave();
+        onClose();
       },
     });
   };

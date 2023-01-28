@@ -15,8 +15,6 @@ import {
 import { useIntl } from 'react-intl';
 import { labels } from 'components/messages';
 
-const { ArrowRight } = Icons;
-
 export default function TeamsTable({ data = [] }) {
   const { formatMessage } = useIntl();
 
@@ -46,7 +44,7 @@ export default function TeamsTable({ data = [] }) {
                 <a>
                   <Button>
                     <Icon>
-                      <ArrowRight />
+                      <Icons.ArrowRight />
                     </Icon>
                     <Text>{formatMessage(labels.settings)}</Text>
                   </Button>

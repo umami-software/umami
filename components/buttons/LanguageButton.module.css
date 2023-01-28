@@ -1,25 +1,35 @@
 .menu {
   display: flex;
   flex-flow: row wrap;
-  min-width: 560px;
+  min-width: 600px;
   max-width: 100vw;
   padding: 10px;
-}
-
-.menu div {
+  background: var(--base50);
+  z-index: var(--z-index100);
   border-radius: 5px;
+  border: 1px solid var(--border-color);
+  margin-left: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   min-width: calc(100% / 3);
+  border-radius: 5px;
+  padding: 5px 10px;
 }
 
-@media only screen and (max-width: 992px) {
-  .menu {
-    min-width: 90vw;
-    transform: translateX(calc(40vw));
-  }
+.item:hover {
+  background: var(--base75);
+  cursor: pointer;
 }
 
-@media only screen and (max-width: 768px) {
-  .menu div {
-    min-width: 50%;
-  }
+.selected {
+  font-weight: 700;
+  background: var(--blue100);
+}
+
+.icon {
+  color: var(--primary400);
 }

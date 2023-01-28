@@ -1,8 +1,7 @@
-import List from 'assets/list-ul.svg';
 import EventDataForm from 'components/metrics/EventDataForm';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { Button, Icon, Modal } from 'react-basics';
+import { Button, Icon, Modal, Icons } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import styles from './EventDataButton.module.css';
 
@@ -29,7 +28,7 @@ function EventDataButton({ websiteId }) {
         className={styles.button}
       >
         <Icon>
-          <List />
+          <Icons.More />
         </Icon>
         Event Data
       </Button>

@@ -16,13 +16,11 @@ import {
   isBefore,
   isAfter,
 } from 'date-fns';
-import { Button, Icon } from 'react-basics';
+import { Button, Icon, Icons } from 'react-basics';
 import { chunkArray } from 'next-basics';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
 import { getDateLocale } from 'lib/lang';
-import Chevron from 'assets/chevron-down.svg';
-import Cross from 'assets/times.svg';
 import styles from './Calendar.module.css';
 
 export default function Calendar({ date, minDate, maxDate, onChange }) {
@@ -61,7 +59,7 @@ export default function Calendar({ date, minDate, maxDate, onChange }) {
         >
           {month}
           <Icon className={styles.icon} size="small">
-            {selectMonth ? <Cross /> : <Chevron />}
+            {selectMonth ? <Icons.Close /> : <Icons.ChevronDown />}
           </Icon>
         </div>
         <div
@@ -70,7 +68,7 @@ export default function Calendar({ date, minDate, maxDate, onChange }) {
         >
           {year}
           <Icon className={styles.icon} size="small">
-            {selectMonth ? <Cross /> : <Chevron />}
+            {selectMonth ? <Icons.Close /> : <Icons.ChevronDown />}
           </Icon>
         </div>
       </div>
@@ -239,7 +237,7 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
           variant="light"
         >
           <Icon>
-            <Chevron />
+            <Icons.ChevronDown />
           </Icon>
         </Button>
       </div>
@@ -273,7 +271,7 @@ const YearSelector = ({ date, minDate, maxDate, onSelect }) => {
           variant="light"
         >
           <Icon>
-            <Chevron />
+            <Icons.ChevronDown />
           </Icon>
         </Button>
       </div>

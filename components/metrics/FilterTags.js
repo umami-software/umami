@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { safeDecodeURI } from 'next-basics';
-import { Button, Icon } from 'react-basics';
-import Times from 'assets/times.svg';
+import { Button, Icon, Icons } from 'react-basics';
 import styles from './FilterTags.module.css';
 
 export default function FilterTags({ className, params, onClick }) {
@@ -19,7 +18,7 @@ export default function FilterTags({ className, params, onClick }) {
             <Button onClick={() => onClick(key)} variant="action" iconRight>
               {`${key}: ${safeDecodeURI(params[key])}`}
               <Icon>
-                <Times />
+                <Icons.Close />
               </Icon>
             </Button>
           </div>

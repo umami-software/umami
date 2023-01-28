@@ -1,44 +1,26 @@
-import { useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, Modal, useToast, Icons } from 'react-basics';
+import { Button, Icon, Text, Modal, Icons, ModalTrigger } from 'react-basics';
 import UserAddForm from './UserAddForm';
-import { labels, messages } from 'components/messages';
-
-const { Plus } = Icons;
+import { labels } from 'components/messages';
 
 export default function UserAddButton({ onSave }) {
   const { formatMessage } = useIntl();
-  const [edit, setEdit] = useState(false);
-  const { toast, showToast } = useToast();
 
   const handleSave = () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
-    setEdit(false);
     onSave();
   };
 
-  const handleAdd = () => {
-    setEdit(true);
-  };
-
-  const handleClose = () => {
-    setEdit(false);
-  };
-
   return (
-    <>
-      {toast}
-      <Button variant="primary" onClick={handleAdd}>
+    <ModalTrigger>
+      <Button variant="primary">
         <Icon>
-          <Plus />
+          <Icons.Plus />
         </Icon>
         <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
-      {edit && (
-        <Modal title={formatMessage(labels.createUser)} onClose={handleClose}>
-          <UserAddForm onSave={handleSave} onClose={handleClose} />
-        </Modal>
-      )}
-    </>
+      <Modal title={formatMessage(labels.createUser)}>
+        {close => <UserAddForm onSave={handleSave} onClose={close} />}
+      </Modal>
+    </ModalTrigger>
   );
 }

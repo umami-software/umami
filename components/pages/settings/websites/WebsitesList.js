@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Button, Icon, Text, Modal, useToast, Icons } from 'react-basics';
+import { Button, Icon, Text, Modal, ModalTrigger, useToast, Icons } from 'react-basics';
 import { useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
@@ -10,10 +9,7 @@ import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import { labels, messages } from 'components/messages';
 
-const { Plus } = Icons;
-
 export default function WebsitesList() {
-  const [edit, setEdit] = useState(false);
   const { user } = useUser();
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(
@@ -27,21 +23,21 @@ export default function WebsitesList() {
 
   const handleSave = async () => {
     await refetch();
-    setEdit(false);
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
-  const handleAdd = () => setEdit(true);
-
-  const handleClose = () => setEdit(false);
-
   const addButton = (
-    <Button variant="primary" onClick={handleAdd}>
-      <Icon>
-        <Plus />
-      </Icon>
-      <Text>{formatMessage(labels.addWebsite)}</Text>
-    </Button>
+    <ModalTrigger>
+      <Button variant="primary">
+        <Icon>
+          <Icons.Plus />
+        </Icon>
+        <Text>{formatMessage(labels.addWebsite)}</Text>
+      </Button>
+      <Modal title={formatMessage(labels.addWebsite)}>
+        {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
+      </Modal>
+    </ModalTrigger>
   );
 
   return (
@@ -53,11 +49,6 @@ export default function WebsitesList() {
         <EmptyPlaceholder message={formatMessage(messages.noWebsites)}>
           {addButton}
         </EmptyPlaceholder>
-      )}
-      {edit && (
-        <Modal title={formatMessage(labels.addWebsite)} onClose={handleClose}>
-          {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
-        </Modal>
       )}
     </Page>
   );

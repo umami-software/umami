@@ -51,3 +51,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.minimized .buttons {
+  flex-direction: column;
+}

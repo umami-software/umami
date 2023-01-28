@@ -11,17 +11,15 @@ import {
   Flexbox,
   Icons,
   ModalTrigger,
+  Modal,
 } from 'react-basics';
 import { useIntl } from 'react-intl';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
-import { Edit } from 'components/icons';
 import useUser from 'hooks/useUser';
 import UserDeleteForm from './UserDeleteForm';
 import { labels } from 'components/messages';
 import { ROLES } from 'lib/constants';
-
-const { Trash } = Icons;
 
 export default function UsersTable({ data = [], onDelete }) {
   const { formatMessage } = useIntl();
@@ -60,7 +58,7 @@ export default function UsersTable({ data = [], onDelete }) {
                 <Link href={`/settings/users/${row.id}`}>
                   <Button>
                     <Icon>
-                      <Edit />
+                      <Icons.Edit />
                     </Icon>
                     <Text>{formatMessage(labels.edit)}</Text>
                   </Button>
@@ -68,18 +66,20 @@ export default function UsersTable({ data = [], onDelete }) {
                 <ModalTrigger disabled={row.id === user.id}>
                   <Button disabled={row.id === user.id}>
                     <Icon>
-                      <Trash />
+                      <Icons.Trash />
                     </Icon>
                     <Text>{formatMessage(labels.delete)}</Text>
                   </Button>
-                  {close => (
-                    <UserDeleteForm
-                      userId={row.id}
-                      username={row.username}
-                      onSave={onDelete}
-                      onClose={close}
-                    />
-                  )}
+                  <Modal>
+                    {close => (
+                      <UserDeleteForm
+                        userId={row.id}
+                        username={row.username}
+                        onSave={onDelete}
+                        onClose={close}
+                      />
+                    )}
+                  </Modal>
                 </ModalTrigger>
               </>
             ),

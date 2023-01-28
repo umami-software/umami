@@ -22,6 +22,7 @@ export default function WebsiteResetForm({ websiteId, onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave();
+        onClose();
       },
     });
   };

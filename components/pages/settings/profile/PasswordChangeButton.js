@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, useToast, ModalTrigger } from 'react-basics';
+import { Button, Icon, Text, useToast, ModalTrigger, Modal } from 'react-basics';
 import PasswordEditForm from 'components/pages/settings/profile/PasswordEditForm';
 import { Lock } from 'components/icons';
 import { labels, messages } from 'components/messages';
@@ -22,7 +22,7 @@ export default function PasswordChangeButton() {
           </Icon>
           <Text>{formatMessage(labels.changePassword)}</Text>
         </Button>
-        {close => <PasswordEditForm onSave={handleSave} onClose={close} />}
+        <Modal>{close => <PasswordEditForm onSave={handleSave} onClose={close} />}</Modal>
       </ModalTrigger>
     </>
   );

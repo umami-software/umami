@@ -22,7 +22,7 @@ export default function UsersList() {
   const handleSave = () => refetch();
 
   const handleDelete = () =>
-    showToast({ message: formatMessage(messages.deleted), variant: 'success' });
+    showToast({ message: formatMessage(messages.userDeleted), variant: 'success' });
 
   return (
     <Page loading={isLoading} error={error}>

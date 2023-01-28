@@ -1,12 +1,14 @@
 import { useTransition, animated } from 'react-spring';
+import { Button, Icon, PopupTrigger, Tooltip } from 'react-basics';
+import { useIntl } from 'react-intl';
 import useTheme from 'hooks/useTheme';
-import Sun from 'assets/sun.svg';
-import Moon from 'assets/moon.svg';
+import { Sun, Moon } from 'components/icons';
+import { labels } from 'components/messages';
 import styles from './ThemeButton.module.css';
-import { Icon } from 'react-basics';
 
-export default function ThemeButton() {
+export default function ThemeButton({ tooltipPosition = 'top' }) {
   const [theme, setTheme] = useTheme();
+  const { formatMessage } = useIntl();
 
   const transitions = useTransition(theme, {
     initial: { opacity: 1 },
@@ -14,7 +16,7 @@ export default function ThemeButton() {
       opacity: 0,
       transform: `translateY(${theme === 'light' ? '20px' : '-20px'}) scale(0.5)`,
     },
-    enter: { opacity: 1, transform: 'translateY(0px) scale(1)' },
+    enter: { opacity: 1, transform: 'translateY(0px) scale(1.0)' },
     leave: {
       opacity: 0,
       transform: `translateY(${theme === 'light' ? '-20px' : '20px'}) scale(0.5)`,
@@ -26,12 +28,15 @@ export default function ThemeButton() {
   }
 
   return (
-    <div className={styles.button} onClick={handleClick}>
-      {transitions((styles, item) => (
-        <animated.div key={item} style={styles}>
-          <Icon>{item === 'light' ? <Sun /> : <Moon />}</Icon>
-        </animated.div>
-      ))}
-    </div>
+    <PopupTrigger action="hover" popupProps={{ position: 'top' }}>
+      <Button variant="quiet" className={styles.button} onClick={handleClick}>
+        {transitions((style, item) => (
+          <animated.div key={item} style={style}>
+            <Icon className={styles.icon}>{item === 'light' ? <Sun /> : <Moon />}</Icon>
+          </animated.div>
+        ))}
+      </Button>
+      <Tooltip position={tooltipPosition}>{formatMessage(labels.theme)}</Tooltip>
+    </PopupTrigger>
   );
 }

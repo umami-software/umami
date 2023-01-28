@@ -24,6 +24,7 @@ export default function UserAddForm({ onSave, onClose }) {
     mutate(data, {
       onSuccess: async () => {
         onSave(data);
+        onClose();
       },
     });
   };
