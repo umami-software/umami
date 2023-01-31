@@ -1,14 +1,15 @@
-import Calendar from 'components/common/Calendar';
-import { FormButtons } from 'components/layout/FormLayout';
-import { isAfter, isBefore, isSameDay } from 'date-fns';
-import { getDateRangeValues } from 'lib/date';
 import { useState } from 'react';
-import { Button, ButtonGroup } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
+import { Button, ButtonGroup, Calendar } from 'react-basics';
+import { useIntl } from 'react-intl';
+import { isAfter, isBefore, isSameDay } from 'date-fns';
+import useLocale from 'hooks/useLocale';
+import { getDateRangeValues } from 'lib/date';
+import { getDateLocale } from 'lib/lang';
+import { labels } from 'components/messages';
 import styles from './DatePickerForm.module.css';
 
-const FILTER_DAY = 0;
-const FILTER_RANGE = 1;
+const FILTER_DAY = 'day';
+const FILTER_RANGE = 'range';
 
 export default function DatePickerForm({
   startDate: defaultStartDate,
@@ -24,59 +25,59 @@ export default function DatePickerForm({
   const [date, setDate] = useState(defaultStartDate);
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
+  const { locale } = useLocale();
+  const { formatMessage } = useIntl();
 
   const disabled =
     selected === FILTER_DAY
       ? isAfter(minDate, date) && isBefore(maxDate, date)
       : isAfter(startDate, endDate);
 
-  const buttons = [
-    {
-      label: <FormattedMessage id="label.single-day" defaultMessage="Single day" />,
-      value: FILTER_DAY,
-    },
-    {
-      label: <FormattedMessage id="label.date-range" defaultMessage="Date range" />,
-      value: FILTER_RANGE,
-    },
-  ];
-
-  function handleSave() {
+  const handleSave = () => {
     if (selected === FILTER_DAY) {
       onChange({ ...getDateRangeValues(date, date), value: 'custom' });
     } else {
       onChange({ ...getDateRangeValues(startDate, endDate), value: 'custom' });
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.filter}>
-        <ButtonGroup size="small" items={buttons} selectedItem={selected} onClick={setSelected} />
+        <ButtonGroup size="sm" selectedKey={selected} onSelect={setSelected}>
+          <Button key={FILTER_DAY}>{formatMessage(labels.singleDay)}</Button>
+          <Button key={FILTER_RANGE}>{formatMessage(labels.dateRange)}</Button>
+        </ButtonGroup>
       </div>
       <div className={styles.calendars}>
-        {selected === FILTER_DAY ? (
+        {selected === FILTER_DAY && (
           <Calendar date={date} minDate={minDate} maxDate={maxDate} onChange={setDate} />
-        ) : (
+        )}
+        {selected === FILTER_RANGE && (
           <>
             <Calendar
               date={startDate}
               minDate={minDate}
               maxDate={endDate}
+              locale={getDateLocale(locale)}
               onChange={setStartDate}
             />
-            <Calendar date={endDate} minDate={startDate} maxDate={maxDate} onChange={setEndDate} />
+            <Calendar
+              date={endDate}
+              minDate={startDate}
+              maxDate={maxDate}
+              locale={getDateLocale(locale)}
+              onChange={setEndDate}
+            />
           </>
         )}
       </div>
-      <FormButtons>
-        <Button variant="action" onClick={handleSave} disabled={disabled}>
-          <FormattedMessage id="label.save" defaultMessage="Save" />
+      <div className={styles.buttons}>
+        <Button variant="primary" onClick={handleSave} disabled={disabled}>
+          {formatMessage(labels.save)}
         </Button>
-        <Button onClick={onClose}>
-          <FormattedMessage id="label.cancel" defaultMessage="Cancel" />
-        </Button>
-      </FormButtons>
+        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+      </div>
     </div>
   );
 }

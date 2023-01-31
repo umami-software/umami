@@ -11,10 +11,12 @@ import { getUser } from '../queries';
 
 const log = debug('umami:middleware');
 
-export const useCors = createMiddleware(cors({
-  // Cache CORS preflight request 24 hours by default
-  maxAge: process.env.CORS_MAX_AGE || 86400,
-}));
+export const useCors = createMiddleware(
+  cors({
+    // Cache CORS preflight request 24 hours by default
+    maxAge: process.env.CORS_MAX_AGE || 86400,
+  }),
+);
 
 export const useSession = createMiddleware(async (req, res, next) => {
   const session = await findSession(req);
@@ -34,17 +36,17 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const shareToken = await parseShareToken(req);
 
   let user = null;
-  const { userId, key } = payload || {};
+  const { userId, authKey } = payload || {};
 
   if (validate(userId)) {
     user = await getUser({ id: userId });
-  } else if (redis.enabled && key) {
-    user = await redis.get(key);
+  } else if (redis.enabled && authKey) {
+    user = await redis.get(authKey);
   }
 
   log({ token, payload, user, shareToken });
 
-  if (!user && !shareToken) {
+  if (!user?.id && !shareToken) {
     log('useAuth: User not authorized');
     return unauthorized(res);
   }
@@ -53,6 +55,6 @@ export const useAuth = createMiddleware(async (req, res, next) => {
     user.isAdmin = user.role === ROLES.admin;
   }
 
-  (req as any).auth = { user, token, shareToken, key };
+  (req as any).auth = { user, token, shareToken, authKey };
   next();
 });

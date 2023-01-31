@@ -1,10 +1,9 @@
 import { Button, Icon } from 'react-basics';
-import XMark from 'assets/xmark.svg';
-import Bars from 'assets/bars.svg';
 import { useState } from 'react';
-import styles from './HamburgerButton.module.css';
-import MobileMenu from './MobileMenu';
 import { FormattedMessage } from 'react-intl';
+import MobileMenu from './MobileMenu';
+import Icons from 'components/icons';
+import styles from './HamburgerButton.module.css';
 
 const menuItems = [
   {
@@ -37,7 +36,7 @@ export default function HamburgerButton() {
   return (
     <>
       <Button className={styles.button} onClick={handleClick}>
-        <Icon>{active ? <XMark /> : <Bars />}</Icon>
+        <Icon>{active ? <Icons.Close /> : <Icons.Menu />}</Icon>
       </Button>
       {active && <MobileMenu items={menuItems} onClose={handleClose} />}
     </>

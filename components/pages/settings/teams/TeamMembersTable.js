@@ -14,14 +14,16 @@ import {
 import { useIntl } from 'react-intl';
 import { ROLES } from 'lib/constants';
 import { labels } from 'components/messages';
+import useUser from 'hooks/useUser';
 
 export default function TeamMembersTable({ data = [] }) {
   const { formatMessage } = useIntl();
+  const { user } = useUser();
 
   const columns = [
-    { name: 'username', label: formatMessage(labels.username), style: { flex: 4 } },
-    { name: 'role', label: formatMessage(labels.role) },
-    { name: 'action', label: '' },
+    { name: 'username', label: formatMessage(labels.username), style: { flex: 2 } },
+    { name: 'role', label: formatMessage(labels.role), style: { flex: 1 } },
+    { name: 'action', label: '', style: { flex: 1 } },
   ];
 
   return (
@@ -43,14 +45,14 @@ export default function TeamMembersTable({ data = [] }) {
               labels[Object.keys(ROLES).find(key => ROLES[key] === row.role) || labels.unknown],
             ),
             action: (
-              <div>
-                <Button>
+              <Flexbox flex={1} justifyContent="end">
+                <Button disabled={user.id === row?.user?.id}>
                   <Icon>
                     <Icons.Close />
                   </Icon>
                   <Text>{formatMessage(labels.remove)}</Text>
                 </Button>
-              </div>
+              </Flexbox>
             ),
           };
 
@@ -59,11 +61,7 @@ export default function TeamMembersTable({ data = [] }) {
               {(data, key, colIndex) => {
                 return (
                   <TableCell key={colIndex} style={{ ...columns[colIndex]?.style }}>
-                    <Flexbox
-                      flex={1}
-                      alignItems="center"
-                      justifyContent={key === 'action' ? 'end' : undefined}
-                    >
+                    <Flexbox flex={1} alignItems="center">
                       {data[key]}
                     </Flexbox>
                   </TableCell>

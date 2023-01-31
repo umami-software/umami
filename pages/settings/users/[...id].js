@@ -4,7 +4,7 @@ import useUser from 'hooks/useUser';
 import { useRouter } from 'next/router';
 
 export default function TeamDetailPage() {
-  const user = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const { id } = router.query;
 

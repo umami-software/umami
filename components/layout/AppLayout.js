@@ -5,7 +5,11 @@ import useRequireLogin from 'hooks/useRequireLogin';
 import styles from './AppLayout.module.css';
 
 export default function AppLayout({ title, children }) {
-  useRequireLogin();
+  const { user } = useRequireLogin();
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className={styles.layout}>

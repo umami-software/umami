@@ -1,9 +1,9 @@
-import { Icon, Button, PopupTrigger, Popup, Tooltip, Icons, Text } from 'react-basics';
+import { Icon, Button, PopupTrigger, Popup, Tooltip, Text } from 'react-basics';
 import { useIntl } from 'react-intl';
 import classNames from 'classnames';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
-import { Globe } from 'components/icons';
+import Icons from 'components/icons';
 import { labels } from 'components/messages';
 import styles from './LanguageButton.module.css';
 
@@ -21,7 +21,7 @@ export default function LanguageButton({ tooltipPosition = 'top' }) {
       <PopupTrigger action="hover">
         <Button variant="quiet">
           <Icon>
-            <Globe />
+            <Icons.Globe />
           </Icon>
         </Button>
         <Tooltip position={tooltipPosition}>{formatMessage(labels.language)}</Tooltip>

@@ -13,7 +13,7 @@ import styles from './UserButton.module.css';
 export default function UserButton() {
   const [show, setShow] = useState(false);
   const ref = useRef();
-  const user = useUser();
+  const { user } = useUser();
   const router = useRouter();
   const { adminDisabled } = useConfig();
 

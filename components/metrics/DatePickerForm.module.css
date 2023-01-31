@@ -26,6 +26,14 @@
   margin-bottom: 20px;
 }
 
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 @media only screen and (max-width: 768px) {
   .calendars {
     flex-direction: column;

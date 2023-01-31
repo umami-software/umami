@@ -1,4 +1,4 @@
-import Arrow from 'assets/arrow-right.svg';
+import { Icons } from 'react-basics';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import WorldMap from 'components/common/WorldMap';
@@ -67,7 +67,12 @@ export default function WebsiteDetails({ websiteId }) {
 
   const BackButton = () => (
     <div key="back-button" className={classNames(styles.backButton, 'col-12')}>
-      <Link key="back-button" href={resolve({ view: undefined })} icon={<Arrow />} sizes="small">
+      <Link
+        key="back-button"
+        href={resolve({ view: undefined })}
+        icon={<Icons.ArrowRight />}
+        sizes="small"
+      >
         <FormattedMessage id="label.back" defaultMessage="Back" />
       </Link>
     </div>

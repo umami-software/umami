@@ -12,7 +12,7 @@ import styles from './Header.module.css';
 import classNames from 'classnames';
 
 export default function Header({ className }) {
-  const user = useUser();
+  const { user } = useUser();
   const { pathname } = useRouter();
   const { updatesDisabled, adminDisabled } = useConfig();
   const isSharePage = pathname.includes('/share/');

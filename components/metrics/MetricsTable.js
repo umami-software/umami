@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
-import { Loading } from 'react-basics';
+import { Loading, Icons } from 'react-basics';
 import { defineMessages, useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import classNames from 'classnames';
 import Link from 'components/common/Link';
 import useApi from 'hooks/useApi';
-import Arrow from 'assets/arrow-right.svg';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
@@ -80,7 +79,7 @@ export default function MetricsTable({
       <div className={styles.footer}>
         {data && !error && limit && (
           <Link
-            icon={<Arrow />}
+            icon={<Icons.ArrowRight />}
             href={router.pathname}
             as={resolve({ view: type })}
             size="small"

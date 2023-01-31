@@ -48,7 +48,7 @@ export const labels = defineMessages({
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },
   confirmPassword: { id: 'label.confirm-password', defaultMessage: 'Confirm password' },
   timezone: { id: 'label.timezone', defaultMessage: 'Timezone' },
-  dateRange: { id: 'label.default-date-range', defaultMessage: 'Default date range' },
+  defaultDateRange: { id: 'label.default-date-range', defaultMessage: 'Default date range' },
   language: { id: 'label.language', defaultMessage: 'Language' },
   theme: { id: 'label.theme', defaultMessage: 'Theme' },
   profile: { id: 'label.profile', defaultMessage: 'Profile' },
@@ -59,6 +59,8 @@ export const labels = defineMessages({
   teams: { id: 'label.teams', defaultMessage: 'Teams' },
   analytics: { id: 'label.analytics', defaultMessage: 'Analytics' },
   logout: { id: 'label.logout', defaultMessage: 'Logout' },
+  singleDay: { id: 'label.single-day', defaultMessage: 'Single day' },
+  dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
 });
 
 export const messages = defineMessages({

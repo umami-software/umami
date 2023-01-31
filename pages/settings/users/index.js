@@ -5,7 +5,7 @@ import useUser from 'hooks/useUser';
 import UsersList from 'components/pages/settings/users/UsersList';
 
 export default function UsersPage() {
-  const user = useUser();
+  const { user } = useUser();
   const { adminDisabled } = useConfig();
 
   if (adminDisabled || !user) {

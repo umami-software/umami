@@ -2,7 +2,7 @@ import { useTransition, animated } from 'react-spring';
 import { Button, Icon, PopupTrigger, Tooltip } from 'react-basics';
 import { useIntl } from 'react-intl';
 import useTheme from 'hooks/useTheme';
-import { Sun, Moon } from 'components/icons';
+import Icons from 'components/icons';
 import { labels } from 'components/messages';
 import styles from './ThemeButton.module.css';
 
@@ -28,11 +28,11 @@ export default function ThemeButton({ tooltipPosition = 'top' }) {
   }
 
   return (
-    <PopupTrigger action="hover" popupProps={{ position: 'top' }}>
+    <PopupTrigger action="hover">
       <Button variant="quiet" className={styles.button} onClick={handleClick}>
         {transitions((style, item) => (
           <animated.div key={item} style={style}>
-            <Icon className={styles.icon}>{item === 'light' ? <Sun /> : <Moon />}</Icon>
+            <Icon className={styles.icon}>{item === 'light' ? <Icons.Sun /> : <Icons.Moon />}</Icon>
           </animated.div>
         ))}
       </Button>

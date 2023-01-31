@@ -7,23 +7,20 @@ import {
   TableCell,
   TableColumn,
   Button,
+  Text,
   Icon,
   Icons,
   Flexbox,
 } from 'react-basics';
-import { defineMessages, useIntl } from 'react-intl';
-
-const messages = defineMessages({
-  name: { id: 'label.name', defaultMessage: 'Name' },
-  domain: { id: 'label.domain', defaultMessage: 'Domain' },
-});
+import { useIntl } from 'react-intl';
+import { labels } from 'components/messages';
 
 export default function WebsitesTable({ data = [] }) {
   const { formatMessage } = useIntl();
 
   const columns = [
-    { name: 'name', label: formatMessage(messages.name), style: { flex: 2 } },
-    { name: 'domain', label: formatMessage(messages.domain) },
+    { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
+    { name: 'domain', label: formatMessage(labels.domain) },
     { name: 'action', label: ' ' },
   ];
 
@@ -50,7 +47,7 @@ export default function WebsitesTable({ data = [] }) {
                     <Icon>
                       <Icons.ArrowRight />
                     </Icon>
-                    Settings
+                    <Text>Settings</Text>
                   </Button>
                 </a>
               </Link>
@@ -60,7 +57,7 @@ export default function WebsitesTable({ data = [] }) {
                     <Icon>
                       <Icons.External />
                     </Icon>
-                    View
+                    <Text>View</Text>
                   </Button>
                 </a>
               </Link>

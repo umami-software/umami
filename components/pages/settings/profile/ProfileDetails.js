@@ -21,14 +21,14 @@ export default function ProfileDetails() {
     <Form>
       <FormRow label={formatMessage(labels.username)}>{username}</FormRow>
       <FormRow label={formatMessage(labels.role)}>{role}</FormRow>
+      <FormRow label={formatMessage(labels.defaultDateRange)}>
+        <DateRangeSetting />
+      </FormRow>
       <FormRow label={formatMessage(labels.language)}>
         <LanguageSetting />
       </FormRow>
       <FormRow label={formatMessage(labels.timezone)}>
         <TimezoneSetting />
-      </FormRow>
-      <FormRow label={formatMessage(labels.dateRange)}>
-        <DateRangeSetting />
       </FormRow>
       <FormRow label={formatMessage(labels.theme)}>
         <ThemeSetting />

@@ -1,3 +1,4 @@
+import { Icons } from 'react-basics';
 import Bolt from 'assets/bolt.svg';
 import Calendar from 'assets/calendar.svg';
 import Clock from 'assets/clock.svg';
@@ -12,7 +13,8 @@ import Sun from 'assets/sun.svg';
 import User from 'assets/user.svg';
 import Users from 'assets/users.svg';
 
-export {
+const icons = {
+  ...Icons,
   Bolt,
   Calendar,
   Clock,
@@ -27,3 +29,5 @@ export {
   User,
   Users,
 };
+
+export default icons;

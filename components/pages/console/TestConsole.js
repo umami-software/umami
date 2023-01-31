@@ -1,8 +1,7 @@
-import { Button, Column, Loading, Row } from 'react-basics';
+import { Button, Column, Row, Dropdown, Item } from 'react-basics';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import DropDown from 'components/common/DropDown';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
@@ -12,29 +11,14 @@ import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
   const { get, useQuery } = useApi();
-  const { data, isLoading } = useQuery(['websites:test-console'], () =>
-    get('/websites?include_all=true'),
-  );
+  const { data, isLoading, error } = useQuery(['websites:test-console'], () => get('/websites'));
   const router = useRouter();
   const {
     basePath,
     query: { id },
   } = router;
-  const websiteId = id?.[0];
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (!data) {
-    return null;
-  }
-
-  const options = data.map(({ name, id }) => ({ label: name, value: id }));
-  const website = data.find(({ id }) => websiteId === id);
-  const selectedValue = options.find(({ value }) => value === website?.id)?.value;
-
-  function handleSelect(value) {
+  function handleChange(value) {
     router.push(`/console/${value}`);
   }
 
@@ -45,8 +29,15 @@ export default function TestConsole() {
     window.umami.trackEvent('track-event-with-data', { test: 'test-data', time: Date.now() });
   }
 
+  if (!data) {
+    return null;
+  }
+
+  const websiteId = id?.[0];
+  const website = data.find(({ id }) => websiteId === id);
+
   return (
-    <Page>
+    <Page loading={isLoading} error={error}>
       <Head>
         {typeof window !== 'undefined' && website && (
           <script
@@ -58,19 +49,22 @@ export default function TestConsole() {
           />
         )}
       </Head>
-      <PageHeader>
-        <div>Test Console</div>
-        <DropDown
-          value={selectedValue || 'Select website'}
-          options={options}
-          onChange={handleSelect}
-        />
+      <PageHeader title="Test console">
+        <Dropdown
+          items={data}
+          renderValue={() => website?.name || 'Select website'}
+          value={website?.id}
+          onChange={handleChange}
+          style={{ width: 300 }}
+        >
+          {({ id, name }) => <Item key={id}>{name}</Item>}
+        </Dropdown>
       </PageHeader>
       {website && (
         <>
           <Row className={styles.test}>
             <Column xs="4">
-              <PageHeader>Page links</PageHeader>
+              <div className={styles.header}>Page links</div>
               <div>
                 <Link href={`/console/${websiteId}?page=1`}>
                   <a>page one</a>
@@ -95,13 +89,13 @@ export default function TestConsole() {
               </div>
             </Column>
             <Column xs="4">
-              <PageHeader>CSS events</PageHeader>
+              <div className={styles.header}>CSS events</div>
               <Button id="primary-button" className="umami--click--button-click" variant="action">
                 Send event
               </Button>
             </Column>
             <Column xs="4">
-              <PageHeader>Javascript events</PageHeader>
+              <div className={styles.header}>Javascript events</div>
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
               </Button>
@@ -109,13 +103,14 @@ export default function TestConsole() {
           </Row>
           <Row>
             <Column>
+              <div className={styles.header}>Statistics</div>
               <WebsiteChart
                 websiteId={website.id}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
-              <PageHeader>Events</PageHeader>
+              <div className={styles.header}>Events</div>
               <EventsChart websiteId={website.id} />
             </Column>
           </Row>
