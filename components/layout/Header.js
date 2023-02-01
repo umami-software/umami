@@ -29,21 +29,24 @@ export default function Header() {
           <Icon icon={<Logo />} size="large" className={styles.logo} />
           <Link href={isSharePage ? HOMEPAGE_URL : '/'}>umami</Link>
         </div>
-        <HamburgerButton />
+
         {user && (
-          <div className={styles.links}>
-            <Link href="/dashboard">
-              <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
-            </Link>
-            <Link href="/realtime">
-              <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
-            </Link>
-            {!process.env.isCloudMode && (
-              <Link href="/settings">
-                <FormattedMessage id="label.settings" defaultMessage="Settings" />
+          <>
+            <HamburgerButton />
+            <div className={styles.links}>
+              <Link href="/dashboard">
+                <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />
               </Link>
-            )}
-          </div>
+              <Link href="/realtime">
+                <FormattedMessage id="label.realtime" defaultMessage="Realtime" />
+              </Link>
+              {!process.env.isCloudMode && (
+                <Link href="/settings">
+                  <FormattedMessage id="label.settings" defaultMessage="Settings" />
+                </Link>
+              )}
+            </div>
+          </>
         )}
         <div className={styles.buttons}>
           <ThemeButton />
