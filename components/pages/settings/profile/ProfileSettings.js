@@ -1,4 +1,3 @@
-import { Breadcrumbs, Item } from 'react-basics';
 import { useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
@@ -11,10 +10,7 @@ export default function ProfileSettings() {
 
   return (
     <Page>
-      <PageHeader>
-        <Breadcrumbs>
-          <Item>{formatMessage(labels.profile)}</Item>
-        </Breadcrumbs>
+      <PageHeader title={formatMessage(labels.profile)}>
         <PasswordChangeButton />
       </PageHeader>
       <ProfileDetails />

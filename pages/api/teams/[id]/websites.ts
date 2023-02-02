@@ -10,8 +10,8 @@ export interface TeamWebsiteRequestQuery {
 }
 
 export interface TeamWebsiteRequestBody {
-  website_id: string;
-  team_website_id?: string;
+  websiteId: string;
+  teamWebsiteId?: string;
 }
 
 export default async (
