@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
-import useApi from 'hooks/useApi';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
-import TeamEditForm from 'components/pages/settings/teams/TeamEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import TeamMembers from 'components/pages/settings/teams/TeamMembers';
 import { labels, messages } from 'components/messages';
+import { ROLES } from 'lib/constants';
+import useUser from 'hooks/useUser';
+import useApi from 'hooks/useApi';
+import TeamEditForm from './TeamEditForm';
+import TeamMembers from './TeamMembers';
 import TeamWebsites from './TeamWebsites';
 
 export default function TeamSettings({ teamId }) {
   const { formatMessage } = useIntl();
+  const { user } = useUser();
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
@@ -24,6 +27,9 @@ export default function TeamSettings({ teamId }) {
       }
     },
     { cacheTime: 0 },
+  );
+  const canEdit = data?.teamUser?.find(
+    ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,
   );
 
   const handleSave = data => {
@@ -55,9 +61,11 @@ export default function TeamSettings({ teamId }) {
         <Item key="members">{formatMessage(labels.members)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>
       </Tabs>
-      {tab === 'details' && <TeamEditForm teamId={teamId} data={values} onSave={handleSave} />}
-      {tab === 'members' && <TeamMembers teamId={teamId} />}
-      {tab === 'websites' && <TeamWebsites teamId={teamId} />}
+      {tab === 'details' && (
+        <TeamEditForm teamId={teamId} data={values} onSave={handleSave} readOnly={!canEdit} />
+      )}
+      {tab === 'members' && <TeamMembers teamId={teamId} readOnly={!canEdit} />}
+      {tab === 'websites' && <TeamWebsites teamId={teamId} readOnly={!canEdit} />}
     </Page>
   );
 }

@@ -16,7 +16,7 @@ import { labels } from 'components/messages';
 
 const generateId = () => getRandomChars(16);
 
-export default function TeamEditForm({ teamId, data, onSave }) {
+export default function TeamEditForm({ teamId, data, onSave, readOnly }) {
   const { formatMessage } = useIntl();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
@@ -47,19 +47,26 @@ export default function TeamEditForm({ teamId, data, onSave }) {
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
       <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
-          <TextField />
-        </FormInput>
+        {!readOnly && (
+          <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
+            <TextField />
+          </FormInput>
+        )}
+        {readOnly && data.name}
       </FormRow>
       <FormRow label={formatMessage(labels.accessCode)}>
         <Flexbox gap={10}>
           <TextField value={accessCode} readOnly allowCopy />
-          <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
+          {!readOnly && (
+            <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
+          )}
         </Flexbox>
       </FormRow>
-      <FormButtons>
-        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
-      </FormButtons>
+      {!readOnly && (
+        <FormButtons>
+          <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+        </FormButtons>
+      )}
     </Form>
   );
 }

@@ -6,6 +6,9 @@ import { ROLES } from 'lib/constants';
 export async function getTeam(where: Prisma.TeamWhereInput): Promise<Team> {
   return prisma.client.team.findFirst({
     where,
+    include: {
+      teamUser: true,
+    },
   });
 }
 

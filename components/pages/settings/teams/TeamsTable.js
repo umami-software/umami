@@ -11,12 +11,15 @@ import {
   Flexbox,
   Icons,
   Text,
+  ModalTrigger,
+  Modal,
 } from 'react-basics';
 import { useIntl } from 'react-intl';
 import { labels } from 'components/messages';
 import { ROLES } from 'lib/constants';
+import TeamDeleteForm from './TeamDeleteForm';
 
-export default function TeamsTable({ data = [] }) {
+export default function TeamsTable({ data = [], onDelete }) {
   const { formatMessage } = useIntl();
 
   const columns = [
@@ -44,7 +47,7 @@ export default function TeamsTable({ data = [] }) {
             ...row,
             owner: row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username,
             action: (
-              <Flexbox flex={1} justifyContent="end">
+              <Flexbox flex={1} gap={10} justifyContent="end">
                 <Link href={`/settings/teams/${id}`}>
                   <a>
                     <Button>
@@ -55,6 +58,17 @@ export default function TeamsTable({ data = [] }) {
                     </Button>
                   </a>
                 </Link>
+                <ModalTrigger>
+                  <Button>
+                    <Icon>
+                      <Icons.Trash />
+                    </Icon>
+                    <Text>{formatMessage(labels.delete)}</Text>
+                  </Button>
+                  <Modal title={formatMessage(labels.deleteTeam)}>
+                    {close => <TeamDeleteForm teamId={row.id} onSave={onDelete} onClose={close} />}
+                  </Modal>
+                </ModalTrigger>
               </Flexbox>
             ),
           };

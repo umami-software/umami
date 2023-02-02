@@ -25,6 +25,12 @@ export default function TeamsList() {
   };
 
   const handleJoin = () => {
+    setUpdate(state => state + 1);
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
+
+  const handleDelete = () => {
+    setUpdate(state => state + 1);
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
@@ -67,7 +73,7 @@ export default function TeamsList() {
           </Flexbox>
         )}
       </PageHeader>
-      {hasData && <TeamsTable data={data} />}
+      {hasData && <TeamsTable data={data} onDelete={handleDelete} />}
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noTeams)}>
           {createButton}

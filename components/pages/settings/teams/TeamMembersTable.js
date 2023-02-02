@@ -16,7 +16,7 @@ import { ROLES } from 'lib/constants';
 import { labels } from 'components/messages';
 import useUser from 'hooks/useUser';
 
-export default function TeamMembersTable({ data = [] }) {
+export default function TeamMembersTable({ data = [], readOnly }) {
   const { formatMessage } = useIntl();
   const { user } = useUser();
 
@@ -44,9 +44,9 @@ export default function TeamMembersTable({ data = [] }) {
             role: formatMessage(
               labels[Object.keys(ROLES).find(key => ROLES[key] === row.role) || labels.unknown],
             ),
-            action: (
+            action: !readOnly && (
               <Flexbox flex={1} justifyContent="end">
-                <Button disabled={user.id === row?.user?.id}>
+                <Button disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}>
                   <Icon>
                     <Icons.Close />
                   </Icon>

@@ -33,7 +33,6 @@ export const ROLES = {
   user: 'user',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
-  teamGuest: 'team-guest',
 } as const;
 
 export const PERMISSIONS = {
@@ -54,19 +53,8 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
     PERMISSIONS.teamCreate,
   ],
-  [ROLES.teamOwner]: [
-    PERMISSIONS.teamUpdate,
-    PERMISSIONS.teamDelete,
-    PERMISSIONS.websiteCreate,
-    PERMISSIONS.websiteUpdate,
-    PERMISSIONS.websiteDelete,
-  ],
-  [ROLES.teamMember]: [
-    PERMISSIONS.websiteCreate,
-    PERMISSIONS.websiteUpdate,
-    PERMISSIONS.websiteDelete,
-  ],
-  [ROLES.teamGuest]: [],
+  [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
+  [ROLES.teamMember]: [],
 } as const;
 
 export const THEME_COLORS = {

@@ -1,4 +1,5 @@
 import debug from 'debug';
+import { validate } from 'uuid';
 import cache from 'lib/cache';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
@@ -60,10 +61,6 @@ export async function canViewWebsite({ user }: Auth, websiteId: string) {
     return user.id === website.userId;
   }
 
-  if (website.teamId) {
-    return getTeamUser(website.teamId, user.id);
-  }
-
   return false;
 }
 
@@ -86,16 +83,14 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
+  if (!validate(websiteId)) {
+    return false;
+  }
+
   const website = await cache.fetchWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
-  }
-
-  if (website.teamId) {
-    const teamUser = await getTeamUser(website.teamId, user.id);
-
-    return hasPermission(teamUser.role, PERMISSIONS.websiteUpdate);
   }
 
   return false;
@@ -110,12 +105,6 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 
   if (website.userId) {
     return user.id === website.userId;
-  }
-
-  if (website.teamId) {
-    const teamUser = await getTeamUser(website.teamId, user.id);
-
-    return hasPermission(teamUser.role, PERMISSIONS.websiteDelete);
   }
 
   return false;
@@ -144,9 +133,13 @@ export async function canUpdateTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  const teamUser = await getTeamUser(teamId, user.id);
+  if (validate(teamId)) {
+    const teamUser = await getTeamUser(teamId, user.id);
 
-  return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
+    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
+  }
+
+  return false;
 }
 
 export async function canDeleteTeam({ user }: Auth, teamId: string) {
@@ -154,9 +147,13 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  const teamUser = await getTeamUser(teamId, user.id);
+  if (validate(teamId)) {
+    const teamUser = await getTeamUser(teamId, user.id);
 
-  return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
+    return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
+  }
+
+  return false;
 }
 
 export async function canCreateUser({ user }: Auth) {

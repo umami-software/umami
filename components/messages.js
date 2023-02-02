@@ -65,6 +65,7 @@ export const labels = defineMessages({
   singleDay: { id: 'label.single-day', defaultMessage: 'Single day' },
   dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
   viewDetails: { id: 'label.view-details', defaultMessage: 'View details' },
+  deleteTeam: { id: 'label.delete-team', defaultMessage: 'Delete team' },
 });
 
 export const messages = defineMessages({
@@ -131,6 +132,10 @@ export const messages = defineMessages({
   teamNotFound: {
     id: 'message.team-not-found',
     defaultMessage: 'Team not found.',
+  },
+  deleteTeam: {
+    id: 'message.delete-team',
+    defaultMessage: 'To delete this team, type {confirmation} in the box below to confirm.',
   },
 });
 
