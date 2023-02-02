@@ -48,10 +48,7 @@ export async function updateTeamUser(
 }
 
 export async function deleteTeamUser(teamUserId: string): Promise<TeamUser> {
-  return prisma.client.teamUser.update({
-    data: {
-      deletedAt: new Date(),
-    },
+  return prisma.client.teamUser.delete({
     where: {
       id: teamUserId,
     },
