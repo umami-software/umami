@@ -49,14 +49,14 @@ export async function getUsers(): Promise<User[]> {
 export async function getUserTeams(userId: string): Promise<Team[]> {
   return prisma.client.team.findMany({
     where: {
-      teamUsers: {
+      teamUser: {
         some: {
           userId,
         },
       },
     },
     include: {
-      teamUsers: {
+      teamUser: {
         include: {
           user: true,
         },

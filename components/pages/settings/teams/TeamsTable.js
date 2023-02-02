@@ -42,7 +42,7 @@ export default function TeamsTable({ data = [] }) {
 
           const rowData = {
             ...row,
-            owner: row.teamUsers.find(({ role }) => role === ROLES.teamOwner)?.user?.username,
+            owner: row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username,
             action: (
               <Flexbox flex={1} justifyContent="end">
                 <Link href={`/settings/teams/${id}`}>
