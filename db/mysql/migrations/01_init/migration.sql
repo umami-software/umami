@@ -40,14 +40,12 @@ CREATE TABLE `website` (
     `share_id` VARCHAR(50) NULL,
     `rev_id` INTEGER UNSIGNED NOT NULL DEFAULT 0,
     `user_id` VARCHAR(36) NULL,
-    `team_id` VARCHAR(36) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL,
     `deleted_at` TIMESTAMP(0) NULL,
 
     UNIQUE INDEX `website_website_id_key`(`website_id`),
     UNIQUE INDEX `website_share_id_key`(`share_id`),
-    INDEX `website_team_id_idx`(`team_id`),
     INDEX `website_user_id_idx`(`user_id`),
     INDEX `website_created_at_idx`(`created_at`),
     INDEX `website_share_id_idx`(`share_id`),
@@ -82,7 +80,6 @@ CREATE TABLE `team` (
     `access_code` VARCHAR(50) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL,
-    `deleted_at` TIMESTAMP(0) NULL,
 
     UNIQUE INDEX `team_team_id_key`(`team_id`),
     UNIQUE INDEX `team_access_code_key`(`access_code`),
@@ -99,7 +96,6 @@ CREATE TABLE `team_user` (
     `role` VARCHAR(50) NOT NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL,
-    `deleted_at` TIMESTAMP(0) NULL,
 
     UNIQUE INDEX `team_user_team_user_id_key`(`team_user_id`),
     INDEX `team_user_team_id_idx`(`team_id`),
@@ -107,5 +103,17 @@ CREATE TABLE `team_user` (
     PRIMARY KEY (`team_user_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
--- AddSystemUser
-INSERT INTO `user` (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');
+-- CreateTable
+CREATE TABLE `team_website` (
+    `team_website_id` VARCHAR(36) NOT NULL,
+    `team_id` VARCHAR(36) NOT NULL,
+    `user_id` VARCHAR(36) NOT NULL,
+    `website_id` VARCHAR(36) NOT NULL,
+    `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+
+    UNIQUE INDEX `team_website_team_website_id_key`(`team_website_id`),
+    INDEX `team_website_team_id_idx`(`team_id`),
+    INDEX `team_website_user_id_idx`(`user_id`),
+    INDEX `team_website_website_id_idx`(`website_id`),
+    PRIMARY KEY (`team_website_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
