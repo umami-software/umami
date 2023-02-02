@@ -1,8 +1,7 @@
-import { Prisma, Team } from '@prisma/client';
+import { Prisma, Team, TeamWebsite } from '@prisma/client';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
-import { Website } from 'lib/types';
 
 export async function getTeam(where: Prisma.TeamWhereInput): Promise<Team> {
   return prisma.client.team.findFirst({
@@ -16,17 +15,22 @@ export async function getTeams(where: Prisma.TeamWhereInput): Promise<Team[]> {
   });
 }
 
-export async function getTeamWebsites(teamId: string): Promise<Website[]> {
-  return prisma.client.website.findMany({
+export async function getTeamWebsites(teamId: string): Promise<TeamWebsite[]> {
+  return prisma.client.teamWebsite.findMany({
     where: {
       teamId,
     },
+    include: {
+      team: true,
+    },
     orderBy: [
       {
-        name: 'asc',
+        team: {
+          name: 'asc',
+        },
       },
     ],
-  });
+  } as any);
 }
 
 export async function createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
@@ -61,10 +65,7 @@ export async function updateTeam(
 }
 
 export async function deleteTeam(teamId: string): Promise<Team> {
-  return prisma.client.team.update({
-    data: {
-      deletedAt: new Date(),
-    },
+  return prisma.client.team.delete({
     where: {
       id: teamId,
     },

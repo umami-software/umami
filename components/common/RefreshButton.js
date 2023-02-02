@@ -1,12 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import useStore from 'store/queries';
 import { setDateRange } from 'store/websites';
 import { Button, Icon } from 'react-basics';
-import Refresh from 'assets/redo.svg';
-import Dots from 'assets/ellipsis-h.svg';
 import useDateRange from 'hooks/useDateRange';
+import Icons from 'components/icons';
 
 function RefreshButton({ websiteId }) {
   const [dateRange] = useDateRange(websiteId);
@@ -17,7 +15,7 @@ function RefreshButton({ websiteId }) {
   function handleClick() {
     if (!loading && dateRange) {
       setLoading(true);
-      if (/^[\d]+/.test(dateRange.value)) {
+      if (/^\d+/.test(dateRange.value)) {
         setDateRange(websiteId, dateRange.value);
       } else {
         setDateRange(websiteId, dateRange);
@@ -36,13 +34,11 @@ function RefreshButton({ websiteId }) {
       size="small"
       onClick={handleClick}
     >
-      <Icon>{loading ? <Dots /> : <Refresh />}</Icon>
+      <Icon>
+        <Icons.Refresh />
+      </Icon>
     </Button>
   );
 }
-
-RefreshButton.propTypes = {
-  websiteId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
 
 export default RefreshButton;

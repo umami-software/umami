@@ -15,8 +15,9 @@ export default function ChartTooltip({ chartId, tooltip }) {
         <div className={styles.content}>
           <div className={styles.title}>{title}</div>
           <div className={styles.metric}>
-            <StatusLight color={labelColor} />
-            {value} {label}
+            <StatusLight color={labelColor}>
+              {value} {label}
+            </StatusLight>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@ export default function Page({ className, error, loading, children }) {
   }
 
   if (loading) {
-    return <Loading />;
+    return <Loading icon="spinner" size="xl" position="page" />;
   }
 
   return <div className={classNames(styles.page, className)}>{children}</div>;

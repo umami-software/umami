@@ -2,25 +2,11 @@ import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { differenceInMinutes } from 'date-fns';
 import PageHeader from 'components/layout/PageHeader';
-import DropDown from 'components/common/DropDown';
 import ActiveUsers from './ActiveUsers';
 import MetricCard from './MetricCard';
 import styles from './RealtimeHeader.module.css';
 
-export default function RealtimeHeader({ websites, data, websiteId, onSelect }) {
-  const options = [
-    {
-      label: <FormattedMessage id="label.all-websites" defaultMessage="All websites" />,
-      value: null,
-    },
-  ].concat(
-    websites.map(({ name, id }, index) => ({
-      label: name,
-      value: id,
-      divider: index === 0,
-    })),
-  );
-
+export default function RealtimeHeader({ data, websiteId }) {
   const { pageviews, sessions, events, countries } = data;
 
   const count = useMemo(() => {
@@ -38,7 +24,6 @@ export default function RealtimeHeader({ websites, data, websiteId, onSelect }) 
         <div>
           <ActiveUsers className={styles.active} value={count} />
         </div>
-        <DropDown value={websiteId} options={options} onChange={onSelect} />
       </PageHeader>
       <div className={styles.metrics}>
         <MetricCard

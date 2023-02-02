@@ -1,99 +1,109 @@
-import Calendar from 'assets/calendar-alt.svg';
-import DatePickerForm from 'components/forms/DatePickerForm';
 import { endOfYear, isSameDay } from 'date-fns';
+import { useState } from 'react';
+import { Icon, Modal, Dropdown, Item } from 'react-basics';
+import { useIntl, defineMessages } from 'react-intl';
+import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
 import { dateFormat } from 'lib/date';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Icon, Modal } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
-import DropDown from './DropDown';
+import Calendar from 'assets/calendar.svg';
 
-export const filterOptions = [
-  { label: <FormattedMessage id="label.today" defaultMessage="Today" />, value: '1day' },
-  {
-    label: (
-      <FormattedMessage id="label.last-hours" defaultMessage="Last {x} hours" values={{ x: 24 }} />
-    ),
-    value: '24hour',
-  },
-  {
-    label: <FormattedMessage id="label.yesterday" defaultMessage="Yesterday" />,
-    value: '-1day',
-  },
-  {
-    label: <FormattedMessage id="label.this-week" defaultMessage="This week" />,
-    value: '1week',
-    divider: true,
-  },
-  {
-    label: (
-      <FormattedMessage id="label.last-days" defaultMessage="Last {x} days" values={{ x: 7 }} />
-    ),
-    value: '7day',
-  },
-  {
-    label: <FormattedMessage id="label.this-month" defaultMessage="This month" />,
-    value: '1month',
-    divider: true,
-  },
-  {
-    label: (
-      <FormattedMessage id="label.last-days" defaultMessage="Last {x} days" values={{ x: 30 }} />
-    ),
-    value: '30day',
-  },
-  {
-    label: (
-      <FormattedMessage id="label.last-days" defaultMessage="Last {x} days" values={{ x: 90 }} />
-    ),
-    value: '90day',
-  },
-  { label: <FormattedMessage id="label.this-year" defaultMessage="This year" />, value: '1year' },
-  {
-    label: <FormattedMessage id="label.all-time" defaultMessage="All time" />,
-    value: 'all',
-    divider: true,
-  },
-  {
-    label: <FormattedMessage id="label.custom-range" defaultMessage="Custom range" />,
-    value: 'custom',
-    divider: true,
-  },
-];
+const messages = defineMessages({
+  today: { id: 'label.today', defaultMessage: 'Today' },
+  lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
+  yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
+  thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
+  lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
+  thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
+  thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
+  allTime: { id: 'label.all-time', defaultMessage: 'All time' },
+  customRange: { id: 'label.custom-range', defaultMessage: 'Custom-range' },
+});
 
-function DateFilter({ value, startDate, endDate, onChange, className, options }) {
+function DateFilter({ value, startDate, endDate, onChange, className }) {
+  const { formatMessage } = useIntl();
   const [showPicker, setShowPicker] = useState(false);
-  const displayValue =
-    value === 'custom' ? (
+
+  const options = [
+    { label: formatMessage(messages.today), value: '1day' },
+    {
+      label: formatMessage(messages.lastHours, { x: 24 }),
+      value: '24hour',
+    },
+    {
+      label: formatMessage(messages.yesterday),
+      value: '-1day',
+    },
+    {
+      label: formatMessage(messages.thisWeek),
+      value: '1week',
+      divider: true,
+    },
+    {
+      label: formatMessage(messages.lastDays, { x: 7 }),
+      value: '7day',
+    },
+    {
+      label: formatMessage(messages.thisMonth),
+      value: '1month',
+      divider: true,
+    },
+    {
+      label: formatMessage(messages.lastDays, { x: 30 }),
+      value: '30day',
+    },
+    {
+      label: formatMessage(messages.lastDays, { x: 90 }),
+      value: '90day',
+    },
+    { label: formatMessage(messages.thisYear), value: '1year' },
+    {
+      label: formatMessage(messages.allTime),
+      value: 'all',
+      divider: true,
+    },
+    {
+      label: formatMessage(messages.customRange),
+      value: 'custom',
+      divider: true,
+    },
+  ];
+
+  const renderValue = value => {
+    return value === 'custom' ? (
       <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
     ) : (
-      value
+      options.find(e => e.value === value).label
     );
+  };
 
-  async function handleChange(value) {
+  const handleChange = async value => {
     if (value === 'custom') {
       setShowPicker(true);
       return;
     }
     onChange(value);
-  }
+  };
 
-  function handlePickerChange(value) {
+  const handlePickerChange = value => {
     setShowPicker(false);
     onChange(value);
-  }
+  };
+
+  const handleClose = () => setShowPicker(false);
 
   return (
     <>
-      <DropDown
+      <Dropdown
         className={className}
-        value={displayValue}
-        options={options || filterOptions}
+        items={options}
+        renderValue={renderValue}
+        value={value}
         onChange={handleChange}
-      />
+      >
+        {({ label, value }) => <Item key={value}>{label}</Item>}
+      </Dropdown>
       {showPicker && (
-        <Modal>
+        <Modal onClose={handleClose}>
           <DatePickerForm
             startDate={startDate}
             endDate={endDate}
@@ -126,14 +136,6 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
       {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
     </>
   );
-};
-
-DateFilter.propTypes = {
-  value: PropTypes.string,
-  startDate: PropTypes.instanceOf(Date),
-  endDate: PropTypes.instanceOf(Date),
-  onChange: PropTypes.func,
-  className: PropTypes.string,
 };
 
 export default DateFilter;

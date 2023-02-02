@@ -1,7 +1,6 @@
 .table {
   position: relative;
   height: 100%;
-  font-size: var(--font-size-sm);
   display: grid;
   grid-template-rows: fit-content(100%) auto;
   overflow: hidden;
@@ -23,11 +22,9 @@
 .title {
   display: flex;
   font-weight: 600;
-  font-size: var(--font-size-md);
 }
 
 .metric {
-  font-size: var(--font-size-sm);
   font-weight: 600;
   text-align: center;
   width: 100px;

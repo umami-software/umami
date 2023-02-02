@@ -1,0 +1,15 @@
+.test {
+  border: 1px solid var(--base200);
+  border-radius: 5px;
+  padding: 0 20px 20px 20px;
+}
+
+.header {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 90px;
+}
+
+.hidden {
+  transform: rotate(-90deg);
+}

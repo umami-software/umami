@@ -19,8 +19,9 @@ model User {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  teamUser TeamUser[]
   Website  Website[]
+  teamUser TeamUser[]
+  teamWebsite TeamWebsite[]
 
   @@map("user")
 }
@@ -49,15 +50,13 @@ model Website {
   shareId   String?   @unique @map("share_id") @db.VarChar(50)
   revId     Int       @default(0) @map("rev_id") @db.Integer
   userId    String?   @map("user_id") @db.Uuid
-  teamId    String?   @map("team_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  team Team? @relation(fields: [teamId], references: [id])
   user User? @relation(fields: [userId], references: [id])
+  teamWebsite TeamWebsite[]
 
-  @@index([teamId])
   @@index([userId])
   @@index([createdAt])
   @@index([shareId])
@@ -90,10 +89,9 @@ model Team {
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  teamUsers TeamUser[]
-  Website   Website[]
+  teamUser TeamUser[]
+  teamWebsite TeamWebsite[]
 
   @@index([userId])
   @@index([accessCode])
@@ -107,7 +105,6 @@ model TeamUser {
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
@@ -115,4 +112,21 @@ model TeamUser {
   @@index([teamId])
   @@index([userId])
   @@map("team_user")
+}
+
+model TeamWebsite {
+  id        String    @id() @unique() @map("team_website_id") @db.Uuid
+  teamId    String    @map("team_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([teamId])
+  @@index([userId])
+  @@index([websiteId])
+  @@map("team_website")
 }

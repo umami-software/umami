@@ -1,0 +1,57 @@
+.navbar {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--base75);
+  height: 100%;
+  width: 200px;
+  border-right: 2px solid var(--base200);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 20px 0;
+  cursor: pointer;
+}
+
+.header:hover .icon {
+  visibility: visible;
+}
+
+.icon {
+  position: absolute;
+  right: 0;
+  visibility: hidden;
+}
+
+.minimized.navbar {
+  width: 60px;
+}
+
+.minimized .text {
+  display: none;
+}
+
+.footer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.minimized .buttons {
+  flex-direction: column;
+}

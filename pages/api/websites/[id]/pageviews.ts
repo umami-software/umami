@@ -77,7 +77,7 @@ export default async (
         endDate,
         timezone,
         unit,
-        count: 'distinct pageview.',
+        count: 'distinct website_event.',
         filters: {
           url,
           os,

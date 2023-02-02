@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import { Row, Column, Loading } from 'react-basics';
+import { useIntl } from 'react-intl';
+import { Button, Icon, Text, Row, Column, Loading } from 'react-basics';
+import Link from 'next/link';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
@@ -12,6 +14,8 @@ import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
+import Icons from 'components/icons';
+import { labels } from 'components/messages';
 import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
@@ -20,8 +24,10 @@ export default function WebsiteChart({
   domain,
   stickyHeader = false,
   showChart = true,
+  showDetailsButton = false,
   onDataLoad = () => {},
 }) {
+  const { formatMessage } = useIntl();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
@@ -66,8 +72,9 @@ export default function WebsiteChart({
 
   async function handleDateChange(value) {
     if (value === 'all') {
-      const { data, ok } = await get(`/websites/${websiteId}`);
-      if (ok) {
+      const data = await get(`/websites/${websiteId}`);
+
+      if (data) {
         setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
       }
     } else {
@@ -81,7 +88,20 @@ export default function WebsiteChart({
 
   return (
     <>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} />
+      <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
+        {showDetailsButton && (
+          <Link href={`/websites/${websiteId}`}>
+            <a>
+              <Button>
+                <Text>{formatMessage(labels.viewDetails)}</Text>
+                <Icon>
+                  <Icons.ArrowRight />
+                </Icon>
+              </Button>
+            </a>
+          </Link>
+        )}
+      </WebsiteHeader>
       <StickyHeader
         className={styles.metrics}
         stickyClassName={styles.sticky}

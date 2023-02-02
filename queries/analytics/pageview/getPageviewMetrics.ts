@@ -12,8 +12,8 @@ export async function getPageviewMetrics(
       startDate: Date;
       endDate: Date;
       column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
-      table: string;
       filters: object;
+      type: string;
     },
   ]
 ) {
@@ -30,20 +30,26 @@ async function relationalQuery(
     endDate: Date;
     column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
     filters: object;
+    type: string;
   },
 ) {
-  const { startDate, endDate, column, filters = {} } = data;
-  const { rawQuery, parseFilters } = prisma;
-  const params = [startDate, endDate];
+  const { startDate, endDate, column, filters = {}, type } = data;
+  const { rawQuery, parseFilters, toUuid } = prisma;
+  const params: any = [
+    websiteId,
+    startDate,
+    endDate,
+    type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+  ];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${column} x, count(*) y
     from website_event
       ${joinSession}
-    where website_id='${websiteId}'
-      and website_event.created_at between $1 and $2
-      and event_type = ${EVENT_TYPE.pageView}
+    where website_event.website_id = $1${toUuid()}
+      and website_event.created_at between $2 and $3
+      and event_type = $4
       ${filterQuery}
     group by 1
     order by 2 desc`,
@@ -58,20 +64,25 @@ async function clickhouseQuery(
     endDate: Date;
     column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
     filters: object;
+    type: string;
   },
 ) {
-  const { startDate, endDate, column, filters = {} } = data;
+  const { startDate, endDate, column, filters = {}, type } = data;
   const { rawQuery, parseFilters, getBetweenDates } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = [websiteId, website?.revId || 0, EVENT_TYPE.pageView];
+  const params = {
+    websiteId,
+    revId: website?.revId || 0,
+    eventType: type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+  };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${column} x, count(*) y
     from event
-    where website_id = $1
-      and rev_id = $2
-      and event_type = $3
+    where website_id = {websiteId:UUID}
+      and rev_id = {revId:UInt32}
+      and event_type = {eventType:UInt32}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x

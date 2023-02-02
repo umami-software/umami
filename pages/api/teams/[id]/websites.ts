@@ -10,8 +10,8 @@ export interface TeamWebsiteRequestQuery {
 }
 
 export interface TeamWebsiteRequestBody {
-  website_id: string;
-  team_website_id?: string;
+  websiteId: string;
+  teamWebsiteId?: string;
 }
 
 export default async (
@@ -23,7 +23,7 @@ export default async (
   const { id: teamId } = req.query;
 
   if (req.method === 'GET') {
-    if (await canViewTeam(req.auth, teamId)) {
+    if (!(await canViewTeam(req.auth, teamId))) {
       return unauthorized(res);
     }
 

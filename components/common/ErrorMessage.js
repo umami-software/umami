@@ -1,15 +1,17 @@
-import Exclamation from 'assets/exclamation-triangle.svg';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { Icon, Icons, Text } from 'react-basics';
+import { messages } from 'components/messages';
 import styles from './ErrorMessage.module.css';
-import { Icon } from 'react-basics';
 
 export default function ErrorMessage() {
+  const { formatMessage } = useIntl();
+
   return (
     <div className={styles.error}>
       <Icon className={styles.icon} size="large">
-        <Exclamation />
+        <Icons.Alert />
       </Icon>
-      <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
+      <Text>{formatMessage(messages.error)}</Text>
     </div>
   );
 }

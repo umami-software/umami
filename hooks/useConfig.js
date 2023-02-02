@@ -9,7 +9,7 @@ export default function useConfig() {
   const { get } = useApi();
 
   async function loadConfig() {
-    const { data } = await get('/config');
+    const data = await get('/config');
     loading = false;
     setConfig(data);
   }

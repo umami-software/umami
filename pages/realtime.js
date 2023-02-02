@@ -1,17 +1,10 @@
-import Layout from 'components/layout/Layout';
-import RealtimeDashboard from 'components/pages/RealtimeDashboard';
-import useUser from 'hooks/useUser';
+import AppLayout from 'components/layout/AppLayout';
+import RealtimeDashboard from 'components/pages/realtime/RealtimeDashboard';
 
 export default function RealtimePage() {
-  const user = useUser();
-
-  if (!user) {
-    return null;
-  }
-
   return (
-    <Layout>
+    <AppLayout>
       <RealtimeDashboard />
-    </Layout>
+    </AppLayout>
   );
 }

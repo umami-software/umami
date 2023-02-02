@@ -18,7 +18,7 @@ async function relationalQuery(where: Prisma.SessionWhereUniqueInput) {
 
 async function clickhouseQuery({ id: sessionId }: { id: string }) {
   const { rawQuery, findFirst } = clickhouse;
-  const params = [sessionId];
+  const params = { sessionId };
 
   return rawQuery(
     `select
@@ -33,7 +33,7 @@ async function clickhouseQuery({ id: sessionId }: { id: string }) {
       language, 
       country 
     from event
-      where session_id = $1
+      where session_id = {sessionId:UUID}
     limit 1`,
     params,
   ).then(result => findFirst(result));

@@ -12,6 +12,7 @@ export const HOMEPAGE_URL = 'https://umami.is';
 export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
+export const TRACKER_SCRIPT_URL = '/script.js';
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';

@@ -2,8 +2,7 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { safeDecodeURI } from 'next-basics';
 import usePageQuery from 'hooks/usePageQuery';
-import External from 'assets/arrow-up-right-from-square.svg';
-import { Icon } from 'react-basics';
+import { Icon, Icons } from 'react-basics';
 import styles from './FilterLink.module.css';
 
 export default function FilterLink({ id, value, label, externalUrl }) {
@@ -26,7 +25,7 @@ export default function FilterLink({ id, value, label, externalUrl }) {
       {externalUrl && (
         <a className={styles.link} href={externalUrl} target="_blank" rel="noreferrer noopener">
           <Icon className={styles.icon}>
-            <External />
+            <Icons.External />
           </Icon>
         </a>
       )}

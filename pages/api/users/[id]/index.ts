@@ -76,7 +76,7 @@ export default async (
     }
 
     if (id === userId) {
-      return badRequest(res, 'You cannot delete your own user.');
+      return badRequest(res, 'You cannot delete yourself.');
     }
 
     await deleteUser(id);

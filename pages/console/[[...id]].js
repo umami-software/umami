@@ -1,18 +1,15 @@
-import Layout from 'components/layout/Layout';
-import TestConsole from 'components/pages/TestConsole';
-import useUser from 'hooks/useUser';
+import AppLayout from 'components/layout/AppLayout';
+import TestConsole from 'components/pages/console/TestConsole';
 
 export default function ConsolePage({ pageDisabled }) {
-  const user = useUser();
-
-  if (pageDisabled || !user || !user.isAdmin) {
+  if (pageDisabled) {
     return null;
   }
 
   return (
-    <Layout>
+    <AppLayout>
       <TestConsole />
-    </Layout>
+    </AppLayout>
   );
 }
 

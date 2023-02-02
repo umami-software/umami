@@ -29,6 +29,9 @@ export async function getUser(
 
 export async function getUsers(): Promise<User[]> {
   return prisma.client.user.findMany({
+    where: {
+      deletedAt: null,
+    },
     orderBy: [
       {
         username: 'asc',
@@ -44,18 +47,22 @@ export async function getUsers(): Promise<User[]> {
 }
 
 export async function getUserTeams(userId: string): Promise<Team[]> {
-  return prisma.client.teamUser
-    .findMany({
-      where: {
-        userId,
+  return prisma.client.team.findMany({
+    where: {
+      teamUser: {
+        some: {
+          userId,
+        },
       },
-      include: {
-        team: true,
+    },
+    include: {
+      teamUser: {
+        include: {
+          user: true,
+        },
       },
-    })
-    .then(data => {
-      return data.map(a => a.team);
-    });
+    },
+  });
 }
 
 export async function getUserWebsites(userId: string): Promise<Website[]> {
