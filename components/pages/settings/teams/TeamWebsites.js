@@ -7,7 +7,7 @@ import { messages } from 'components/messages';
 export default function TeamWebsites({ teamId }) {
   const { formatMessage } = useIntl();
   const { get, useQuery } = useApi();
-  const { data, isLoading } = useQuery(['teams/websites', teamId], () =>
+  const { data, isLoading } = useQuery(['teams:websites', teamId], () =>
     get(`/teams/${teamId}/websites`),
   );
   const hasData = data && data.length !== 0;

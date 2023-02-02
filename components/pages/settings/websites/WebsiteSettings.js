@@ -49,13 +49,16 @@ export default function WebsiteSettings({ websiteId }) {
   return (
     <Page loading={isLoading || !values}>
       {toast}
-      <PageHeader>
-        <Breadcrumbs>
-          <Item>
-            <Link href="/settings/websites">{formatMessage(labels.websites)}</Link>
-          </Item>
-          <Item>{values?.name}</Item>
-        </Breadcrumbs>
+      <PageHeader
+        title={
+          <Breadcrumbs>
+            <Item>
+              <Link href="/settings/websites">{formatMessage(labels.websites)}</Link>
+            </Item>
+            <Item>{values?.name}</Item>
+          </Breadcrumbs>
+        }
+      >
         <Link href={`/websites/${websiteId}`}>
           <a>
             <Button variant="primary">

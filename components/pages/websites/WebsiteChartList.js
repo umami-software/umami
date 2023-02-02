@@ -1,10 +1,10 @@
-import WebsiteChart from 'components/metrics/WebsiteChart';
-import styles from './WebsiteList.module.css';
-import useDashboard from 'store/dashboard';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';
+import WebsiteChart from 'components/metrics/WebsiteChart';
+import useDashboard from 'store/dashboard';
+import styles from './WebsiteList.module.css';
 
-export default function WebsiteList({ websites, showCharts, limit }) {
+export default function WebsiteChartList({ websites, showCharts, limit }) {
   const { websiteOrder } = useDashboard();
 
   const ordered = useMemo(
@@ -17,19 +17,19 @@ export default function WebsiteList({ websites, showCharts, limit }) {
 
   return (
     <div>
-      {ordered.map(({ id, name, domain }, index) =>
-        index < limit ? (
+      {ordered.map(({ id, name, domain }, index) => {
+        return index < limit ? (
           <div key={id} className={styles.website}>
             <WebsiteChart
               websiteId={id}
               title={name}
               domain={domain}
               showChart={showCharts}
-              showLink
+              showDetailsButton={true}
             />
           </div>
-        ) : null,
-      )}
+        ) : null;
+      })}
     </div>
   );
 }

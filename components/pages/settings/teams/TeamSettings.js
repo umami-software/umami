@@ -40,14 +40,16 @@ export default function TeamSettings({ teamId }) {
   return (
     <Page loading={isLoading || !values}>
       {toast}
-      <PageHeader>
-        <Breadcrumbs>
-          <Item>
-            <Link href="/settings/teams">Teams</Link>
-          </Item>
-          <Item>{values?.name}</Item>
-        </Breadcrumbs>
-      </PageHeader>
+      <PageHeader
+        title={
+          <Breadcrumbs>
+            <Item>
+              <Link href="/settings/teams">Teams</Link>
+            </Item>
+            <Item>{values?.name}</Item>
+          </Breadcrumbs>
+        }
+      />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="members">{formatMessage(labels.members)}</Item>

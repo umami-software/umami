@@ -4,7 +4,7 @@ import TeamMembersTable from 'components/pages/settings/teams/TeamMembersTable';
 
 export default function TeamMembers({ teamId }) {
   const { get, useQuery } = useApi();
-  const { data, isLoading } = useQuery(['team-members', teamId], () =>
+  const { data, isLoading } = useQuery(['teams:users', teamId], () =>
     get(`/teams/${teamId}/users`),
   );
 

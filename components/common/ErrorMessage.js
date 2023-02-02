@@ -1,14 +1,17 @@
-import { FormattedMessage } from 'react-intl';
-import { Icon, Icons } from 'react-basics';
+import { useIntl } from 'react-intl';
+import { Icon, Icons, Text } from 'react-basics';
+import { messages } from 'components/messages';
 import styles from './ErrorMessage.module.css';
 
 export default function ErrorMessage() {
+  const { formatMessage } = useIntl();
+
   return (
     <div className={styles.error}>
       <Icon className={styles.icon} size="large">
         <Icons.Alert />
       </Icon>
-      <FormattedMessage id="message.failure" defaultMessage="Something went wrong." />
+      <Text>{formatMessage(messages.error)}</Text>
     </div>
   );
 }

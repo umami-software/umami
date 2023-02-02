@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Icon, Modal, ModalTrigger, useToast, Icons, Text } from 'react-basics';
+import { Button, Icon, Modal, ModalTrigger, useToast, Text, Flexbox } from 'react-basics';
 import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -8,6 +8,8 @@ import PageHeader from 'components/layout/PageHeader';
 import TeamsTable from 'components/pages/settings/teams/TeamsTable';
 import Page from 'components/layout/Page';
 import { labels, messages } from 'components/messages';
+import Icons from 'components/icons';
+import TeamJoinForm from './JoinTeamForm';
 
 export default function TeamsList() {
   const { formatMessage } = useIntl();
@@ -21,6 +23,24 @@ export default function TeamsList() {
     setUpdate(state => state + 1);
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
+
+  const handleJoin = () => {
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
+
+  const joinButton = (
+    <ModalTrigger>
+      <Button variant="secondary">
+        <Icon>
+          <Icons.AddUser />
+        </Icon>
+        <Text>{formatMessage(labels.joinTeam)}</Text>
+      </Button>
+      <Modal title={formatMessage(labels.joinTeam)}>
+        {close => <TeamJoinForm onSave={handleJoin} onClose={close} />}
+      </Modal>
+    </ModalTrigger>
+  );
 
   const createButton = (
     <ModalTrigger>
@@ -39,7 +59,14 @@ export default function TeamsList() {
   return (
     <Page loading={isLoading} error={error}>
       {toast}
-      <PageHeader title={formatMessage(labels.team)}>{createButton}</PageHeader>
+      <PageHeader title={formatMessage(labels.team)}>
+        {hasData && (
+          <Flexbox gap={10}>
+            {joinButton}
+            {createButton}
+          </Flexbox>
+        )}
+      </PageHeader>
       {hasData && <TeamsTable data={data} />}
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noTeams)}>

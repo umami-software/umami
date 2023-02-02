@@ -46,14 +46,16 @@ export default function UserSettings({ userId }) {
   return (
     <Page loading={isLoading || !values}>
       {toast}
-      <PageHeader>
-        <Breadcrumbs>
-          <Item>
-            <Link href="/settings/users">{formatMessage(labels.users)}</Link>
-          </Item>
-          <Item>{values?.username}</Item>
-        </Breadcrumbs>
-      </PageHeader>
+      <PageHeader
+        title={
+          <Breadcrumbs>
+            <Item>
+              <Link href="/settings/users">{formatMessage(labels.users)}</Link>
+            </Item>
+            <Item>{values?.username}</Item>
+          </Breadcrumbs>
+        }
+      />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>

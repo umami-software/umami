@@ -26,8 +26,11 @@ export const labels = defineMessages({
   team: { id: 'label.team', defaultMessage: 'Team' },
   regenerate: { id: 'label.regenerate', defaultMessage: 'Regenerate' },
   remove: { id: 'label.remove', defaultMessage: 'Remove' },
+  join: { id: 'label.join', defaultMessage: 'Join' },
   createTeam: { id: 'label.create-team', defaultMessage: 'Create team' },
+  joinTeam: { id: 'label.join-team', defaultMessage: 'Join team' },
   settings: { id: 'label.settings', defaultMessage: 'Settings' },
+  owner: { id: 'label.owner', defaultMessage: 'Owner' },
   teamOwner: { id: 'label.team-owner', defaultMessage: 'Team owner' },
   teamMember: { id: 'label.team-member', defaultMessage: 'Team member' },
   teamGuest: { id: 'label.team-guest', defaultMessage: 'Team guest' },
@@ -61,6 +64,7 @@ export const labels = defineMessages({
   logout: { id: 'label.logout', defaultMessage: 'Logout' },
   singleDay: { id: 'label.single-day', defaultMessage: 'Single day' },
   dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
+  viewDetails: { id: 'label.view-details', defaultMessage: 'View details' },
 });
 
 export const messages = defineMessages({
@@ -79,7 +83,7 @@ export const messages = defineMessages({
   },
   noTeams: {
     id: 'message.no-teams',
-    defaultMessage: 'You have no created any teams.',
+    defaultMessage: 'You have not created any teams.',
   },
   shareUrl: {
     id: 'message.share-url',
@@ -120,6 +124,14 @@ export const messages = defineMessages({
     id: 'message.go-to-settings',
     defaultMessage: 'Go to settings',
   },
+  activeUsers: {
+    id: 'message.active-users',
+    defaultMessage: '{x} current {x, plural, one {visitor} other {visitors}}',
+  },
+  teamNotFound: {
+    id: 'message.team-not-found',
+    defaultMessage: 'Team not found.',
+  },
 });
 
 export const devices = defineMessages({
@@ -128,6 +140,12 @@ export const devices = defineMessages({
   tablet: { id: 'metrics.device.tablet', defaultMessage: 'Tablet' },
   mobile: { id: 'metrics.device.mobile', defaultMessage: 'Mobile' },
 });
+
+export function getMessage(id, formatMessage) {
+  const message = Object.values(messages).find(value => value.id === id);
+
+  return message ? formatMessage(message) : id;
+}
 
 export function getDeviceMessage(device) {
   return devices[device] || labels.unknown;

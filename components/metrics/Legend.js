@@ -34,8 +34,9 @@ export default function Legend({ chart }) {
             className={classNames(styles.label, { [styles.hidden]: hidden })}
             onClick={() => handleClick(datasetIndex)}
           >
-            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()} />
-            <span className={locale}>{text}</span>
+            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
+              <span className={locale}>{text}</span>
+            </StatusLight>
           </div>
         );
       })}

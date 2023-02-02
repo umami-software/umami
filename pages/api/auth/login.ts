@@ -38,11 +38,11 @@ export default async (
 
     if (user && checkPassword(password, user.password)) {
       if (redis.enabled) {
-        const key = `auth:${getRandomChars(32)}`;
+        const authKey = `auth:${getRandomChars(32)}`;
 
-        await redis.set(key, user);
+        await redis.set(authKey, user);
 
-        const token = createSecureToken({ key }, secret());
+        const token = createSecureToken({ authKey }, secret());
 
         return ok(res, { token, user });
       }

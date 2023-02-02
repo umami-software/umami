@@ -4,7 +4,7 @@ import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createTeam, getUserTeams } from 'queries';
 
 export interface TeamsRequestBody {
@@ -34,13 +34,14 @@ export default async (
 
     const { name } = req.body;
 
-    const created = await createTeam({
+    const team = await createTeam({
       id: uuid(),
       name,
       userId,
+      accessCode: getRandomChars(16),
     });
 
-    return ok(res, created);
+    return ok(res, team);
   }
 
   return methodNotAllowed(res);
