@@ -52,9 +52,9 @@ export default function TeamsTable({ data = [], onDelete }) {
                   <a>
                     <Button>
                       <Icon>
-                        <Icons.ArrowRight />
+                        <Icons.Edit />
                       </Icon>
-                      <Text>{formatMessage(labels.settings)}</Text>
+                      <Text>{formatMessage(labels.edit)}</Text>
                     </Button>
                   </a>
                 </Link>
@@ -66,7 +66,14 @@ export default function TeamsTable({ data = [], onDelete }) {
                     <Text>{formatMessage(labels.delete)}</Text>
                   </Button>
                   <Modal title={formatMessage(labels.deleteTeam)}>
-                    {close => <TeamDeleteForm teamId={row.id} onSave={onDelete} onClose={close} />}
+                    {close => (
+                      <TeamDeleteForm
+                        teamId={row.id}
+                        teamName={row.name}
+                        onSave={onDelete}
+                        onClose={close}
+                      />
+                    )}
                   </Modal>
                 </ModalTrigger>
               </Flexbox>

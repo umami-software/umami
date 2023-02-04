@@ -67,7 +67,7 @@ export default function EventsChart({ websiteId, className, token }) {
   }
 
   if (isLoading) {
-    return <Loading variant="dots" />;
+    return <Loading icon="dots" />;
   }
 
   if (!data) {

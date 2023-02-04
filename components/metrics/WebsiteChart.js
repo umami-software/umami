@@ -83,7 +83,7 @@ export default function WebsiteChart({
   }
 
   if (isLoading) {
-    return <Loading variant="dots" />;
+    return <Loading icon="dots" />;
   }
 
   return (

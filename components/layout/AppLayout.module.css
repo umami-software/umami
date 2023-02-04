@@ -1,7 +1,7 @@
 .layout {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: minmax(60px, 200px) 1fr;
+  grid-template-columns: max-content 1fr;
   height: 100vh;
   overflow: hidden;
 }

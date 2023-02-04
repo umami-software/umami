@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Icon, Text, Icons } from 'react-basics';
+import { Icon, Text, Tooltip } from 'react-basics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import Icons from 'components/icons';
 import styles from './NavGroup.module.css';
 
 export default function NavGroup({
@@ -35,17 +36,19 @@ export default function NavGroup({
       <div className={styles.body}>
         {items.map(({ label, url, icon, divider }) => {
           return (
-            <Link key={label} href={url}>
-              <a
-                className={classNames(styles.item, {
-                  [styles.divider]: divider,
-                  [styles.selected]: pathname.startsWith(url),
-                })}
-              >
-                <Icon>{icon}</Icon>
-                <Text className={styles.text}>{label}</Text>
-              </a>
-            </Link>
+            <Tooltip key={label} label={label} position="right" disabled={!minimized}>
+              <Link href={url}>
+                <a
+                  className={classNames(styles.item, {
+                    [styles.divider]: divider,
+                    [styles.selected]: pathname.startsWith(url),
+                  })}
+                >
+                  <Icon>{icon}</Icon>
+                  <Text className={styles.text}>{label}</Text>
+                </a>
+              </Link>
+            </Tooltip>
           );
         })}
       </div>

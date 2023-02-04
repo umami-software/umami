@@ -66,6 +66,19 @@ export const labels = defineMessages({
   dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
   viewDetails: { id: 'label.view-details', defaultMessage: 'View details' },
   deleteTeam: { id: 'label.delete-team', defaultMessage: 'Delete team' },
+  refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
+  pages: { id: 'label.pages', defaultMessage: 'Pages' },
+  referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
+  screens: { id: 'label.screens', defaultMessage: 'Screens' },
+  browsers: { id: 'label.browsers', defaultMessage: 'Browsers' },
+  os: { id: 'label.operating-systems', defaultMessage: 'Operating systems' },
+  devices: { id: 'label.devices', defaultMessage: 'Devices' },
+  countries: { id: 'label.countries', defaultMessage: 'Countries' },
+  languages: { id: 'label.languages', defaultMessage: 'Languages' },
+  events: { id: 'label.events', defaultMessage: 'Events' },
+  query: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
+  back: { id: 'label.back', defaultMessage: 'Back' },
+  visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
 });
 
 export const messages = defineMessages({
@@ -77,6 +90,10 @@ export const messages = defineMessages({
   deleteUserWarning: {
     id: 'message.delete-user-warning',
     defaultMessage: 'Are you sure you want to delete the user {username}?',
+  },
+  deleteTeamWarning: {
+    id: 'message.delete-team-warning',
+    defaultMessage: 'Are you sure you want to delete the team {name}?',
   },
   minPasswordLength: {
     id: 'message.min-password-length',
@@ -132,10 +149,6 @@ export const messages = defineMessages({
   teamNotFound: {
     id: 'message.team-not-found',
     defaultMessage: 'Team not found.',
-  },
-  deleteTeam: {
-    id: 'message.delete-team',
-    defaultMessage: 'To delete this team, type {confirmation} in the box below to confirm.',
   },
 });
 

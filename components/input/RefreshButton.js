@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
+import { Button, Icon, Tooltip } from '../react-basics';
 import useStore from 'store/queries';
 import { setDateRange } from 'store/websites';
-import { Button, Icon } from 'react-basics';
 import useDateRange from 'hooks/useDateRange';
 import Icons from 'components/icons';
+import { labels } from 'components/messages';
 
 function RefreshButton({ websiteId }) {
+  const { formatMessage } = useIntl();
   const [dateRange] = useDateRange(websiteId);
   const [loading, setLoading] = useState(false);
   const selector = useCallback(state => state[`/websites/${websiteId}/stats`], [websiteId]);
@@ -28,16 +30,13 @@ function RefreshButton({ websiteId }) {
   }, [completed]);
 
   return (
-    <Button
-      tooltip={<FormattedMessage id="label.refresh" defaultMessage="Refresh" />}
-      tooltipId="button-refresh"
-      size="small"
-      onClick={handleClick}
-    >
-      <Icon>
-        <Icons.Refresh />
-      </Icon>
-    </Button>
+    <Tooltip label={formatMessage(labels.refresh)}>
+      <Button onClick={handleClick}>
+        <Icon>
+          <Icons.Refresh />
+        </Icon>
+      </Button>
+    </Tooltip>
   );
 }
 

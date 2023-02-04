@@ -24,15 +24,6 @@
   display: block;
 }
 
-.items {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-right: -2px;
-  width: 200px;
-}
-
 .item {
   position: relative;
   display: flex;
@@ -43,6 +34,7 @@
   gap: var(--size500);
   font-weight: 600;
   width: 200px;
+  margin-right: -2px;
 }
 
 a.item {

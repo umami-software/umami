@@ -19,7 +19,7 @@ export default function MetricsBar({ websiteId, className }) {
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
 
-  const { data, error, isLoading } = useQuery(
+  const { data, error, isLoading, isFetched } = useQuery(
     ['websites:stats', { websiteId, modified, url, referrer, os, browser, device, country }],
     () =>
       get(`/websites/${websiteId}/stats`, {
@@ -53,9 +53,9 @@ export default function MetricsBar({ websiteId, className }) {
 
   return (
     <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
-      {isLoading && <Loading variant="dots" />}
+      {isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
-      {data && !error && (
+      {data && !error && isFetched && (
         <>
           <MetricCard
             label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}

@@ -6,7 +6,7 @@
 }
 
 .value {
-  font-size: var(--font-size-xxl);
+  font-size: var(--font-size-2xl);
   line-height: 40px;
   min-height: 40px;
   font-weight: 600;

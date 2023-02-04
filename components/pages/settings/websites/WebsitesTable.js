@@ -45,9 +45,9 @@ export default function WebsitesTable({ data = [] }) {
                 <a>
                   <Button>
                     <Icon>
-                      <Icons.ArrowRight />
+                      <Icons.Edit />
                     </Icon>
-                    <Text>Settings</Text>
+                    <Text>{formatMessage(labels.edit)}</Text>
                   </Button>
                 </a>
               </Link>
@@ -57,7 +57,7 @@ export default function WebsitesTable({ data = [] }) {
                     <Icon>
                       <Icons.External />
                     </Icon>
-                    <Text>View</Text>
+                    <Text>{formatMessage(labels.view)}</Text>
                   </Button>
                 </a>
               </Link>

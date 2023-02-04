@@ -1,13 +1,13 @@
 import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
-import LanguageButton from 'components/buttons/LanguageButton';
-import ThemeButton from 'components/buttons/ThemeButton';
-import UserButton from 'components/buttons/UserButton';
+import LanguageButton from 'components/input/LanguageButton';
+import ThemeButton from 'components/input/ThemeButton';
+import UserButton from 'components/input/UserButton';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
 import { useRouter } from 'next/router';
 import { Column, Row } from 'react-basics';
-import SettingsButton from '../buttons/SettingsButton';
+import SettingsButton from '../input/SettingsButton';
 import styles from './Header.module.css';
 import classNames from 'classnames';
 

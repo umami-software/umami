@@ -28,7 +28,7 @@ export default function ThemeButton({ tooltipPosition = 'top' }) {
   }
 
   return (
-    <PopupTrigger action="hover">
+    <Tooltip label={formatMessage(labels.theme)} position={tooltipPosition}>
       <Button variant="quiet" className={styles.button} onClick={handleClick}>
         {transitions((style, item) => (
           <animated.div key={item} style={style}>
@@ -36,7 +36,6 @@ export default function ThemeButton({ tooltipPosition = 'top' }) {
           </animated.div>
         ))}
       </Button>
-      <Tooltip position={tooltipPosition}>{formatMessage(labels.theme)}</Tooltip>
-    </PopupTrigger>
+    </Tooltip>
   );
 }

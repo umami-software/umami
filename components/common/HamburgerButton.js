@@ -13,11 +13,11 @@ const menuItems = [
   { label: <FormattedMessage id="label.realtime" defaultMessage="Realtime" />, value: '/realtime' },
   {
     label: <FormattedMessage id="label.settings" defaultMessage="AppLayout" />,
-    value: '/buttons',
+    value: '/input',
   },
   {
     label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
-    value: '/buttons/profile',
+    value: '/input/profile',
   },
   { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: '/logout' },
 ];

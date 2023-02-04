@@ -42,6 +42,10 @@ a:visited {
   text-decoration: none;
 }
 
+p {
+  line-height: 1.8rem;
+}
+
 main {
   flex: 1;
   display: flex;

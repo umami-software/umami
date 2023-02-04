@@ -37,7 +37,7 @@ export default function MetricsTable({
   const { formatMessage } = useIntl();
   const { get, useQuery } = useApi();
 
-  const { data, isLoading, error } = useQuery(
+  const { data, isLoading, isFetched, error } = useQuery(
     [
       'websites:mnetrics',
       { websiteId, type, modified, url, referrer, os, browser, device, country },
@@ -73,7 +73,7 @@ export default function MetricsTable({
 
   return (
     <div className={classNames(styles.container, className)}>
-      {!data && isLoading && <Loading variant="dots" />}
+      {!data && isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
