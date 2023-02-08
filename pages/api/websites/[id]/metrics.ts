@@ -90,15 +90,15 @@ export default async (
       });
 
       if (type === 'language') {
-        let combined = {};
+        const combined = {};
 
-        for (let { x, y } of data) {
-          x = String(x).toLowerCase().split('-')[0];
+        for (const { x, y } of data) {
+          const key = String(x).toLowerCase().split('-')[0];
 
-          if (!combined[x]) {
-            combined[x] = { x, y };
+          if (!combined[key]) {
+            combined[key] = { x, y };
           } else {
-            combined[x].y += y;
+            combined[key].y += y;
           }
         }
 

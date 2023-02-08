@@ -39,8 +39,6 @@ export interface Share {
   token: string;
 }
 
-export interface Empty {}
-
 export interface WebsiteActive {
   x: number;
 }

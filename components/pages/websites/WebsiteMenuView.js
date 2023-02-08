@@ -1,4 +1,4 @@
-import { Row, Column, Menu, Item, Icon, Text, Button } from 'react-basics';
+import { Row, Column, Menu, Item, Icon, Button } from 'react-basics';
 import Link from 'next/link';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';

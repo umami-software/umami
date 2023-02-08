@@ -1,62 +1,33 @@
-import { Prisma } from '@prisma/client';
-import { canCreateWebsite } from 'lib/auth';
-import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite, getUserWebsites } from 'queries';
-
-export interface WebsitesRequestQuery {}
+import { getUserWebsites } from 'queries';
 
 export interface WebsitesRequestBody {
   name: string;
   domain: string;
   shareId: string;
-  teamId?: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<WebsitesRequestQuery, WebsitesRequestBody>,
+  req: NextApiRequestQueryBody<any, WebsitesRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
-  const { id } = req.query;
+  const { user } = req.auth;
+  const { id: userId } = req.query;
 
   if (req.method === 'GET') {
-    const websites = await getUserWebsites(id as string);
-
-    return ok(res, websites);
-  }
-
-  if (req.method === 'POST') {
-    const { name, domain, shareId, teamId } = req.body;
-
-    if (!(await canCreateWebsite(req.auth, teamId))) {
+    if (!user.isAdmin && user.id !== userId) {
       return unauthorized(res);
     }
 
-    const data: Prisma.WebsiteUncheckedCreateInput = {
-      id: uuid(),
-      name,
-      domain,
-      shareId,
-    };
+    const websites = await getUserWebsites(userId);
 
-    if (teamId) {
-      data.teamId = teamId;
-    } else {
-      data.userId = userId;
-    }
-
-    const website = await createWebsite(data);
-
-    return ok(res, website);
+    return ok(res, websites);
   }
 
   return methodNotAllowed(res);
