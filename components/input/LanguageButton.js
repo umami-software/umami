@@ -18,14 +18,13 @@ export default function LanguageButton({ tooltipPosition = 'top' }) {
 
   return (
     <PopupTrigger>
-      <PopupTrigger action="hover">
+      <Tooltip label={formatMessage(labels.language)} position={tooltipPosition}>
         <Button variant="quiet">
           <Icon>
             <Icons.Globe />
           </Icon>
         </Button>
-        <Tooltip position={tooltipPosition}>{formatMessage(labels.language)}</Tooltip>
-      </PopupTrigger>
+      </Tooltip>
       <Popup position="right" alignment="end">
         <div className={styles.menu}>
           {items.map(({ value, label }) => {

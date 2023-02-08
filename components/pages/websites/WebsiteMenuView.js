@@ -12,7 +12,7 @@ import ScreenTable from 'components/metrics/ScreenTable';
 import EventsTable from 'components/metrics/EventsTable';
 import usePageQuery from 'hooks/usePageQuery';
 import Icons from 'components/icons';
-import { labels } from '../../messages';
+import { labels } from 'components/messages';
 import { useIntl } from 'react-intl';
 
 const views = {
