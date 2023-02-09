@@ -19,7 +19,7 @@ export default function AppLayout({ title, children }) {
       <div className={styles.nav}>
         <NavBar />
       </div>
-      <div className={styles.body}>
+      <div className={styles.body} id="layout-body">
         <Container>
           <main>{children}</main>
         </Container>

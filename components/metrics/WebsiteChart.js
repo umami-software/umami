@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, Row, Column, Loading } from 'react-basics';
+import { Button, Icon, Text, Row, Column, Container } from 'react-basics';
 import Link from 'next/link';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';

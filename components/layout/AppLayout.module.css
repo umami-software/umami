@@ -6,11 +6,10 @@
 
 .nav {
   grid-row: 1 / 3;
-  height: 100vh;
-  position: fixed;
 }
 
 .body {
   grid-area: 1 / 2;
   overflow: auto;
+  height: 100vh;
 }

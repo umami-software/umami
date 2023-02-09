@@ -1,27 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function useSticky(defaultSticky = false) {
+export default function useSticky(
+  element = document.getElementById('layout-body'),
+  defaultSticky = false,
+) {
   const [isSticky, setIsSticky] = useState(defaultSticky);
   const ref = useRef(null);
-  const initialTop = useRef(0);
+  const initialTop = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.pageYOffset > initialTop.current) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
+      setIsSticky(element.scrollTop > initialTop.current);
     };
 
-    initialTop.current = ref.current.offsetTop;
+    if (initialTop.current === null) {
+      initialTop.current = ref.current.offsetTop;
+    }
 
-    window.addEventListener('scroll', handleScroll);
+    element.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      element.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [setIsSticky]);
 
   return { ref, isSticky };
 }
