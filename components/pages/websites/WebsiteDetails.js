@@ -40,7 +40,7 @@ export default function WebsiteDetails({ websiteId }) {
         domain={data?.domain}
         onDataLoad={handleDataLoad}
         showLink={false}
-        stickyHeader
+        stickyHeader={true}
       />
       {!chartLoaded && <Loading icon="dots" />}
       {chartLoaded && (

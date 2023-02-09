@@ -39,7 +39,7 @@ export default function WebsiteChart({
   const { get, useQuery } = useApi();
 
   const { data, isLoading, error } = useQuery(
-    ['websites:pageviews', { websiteId, modified, url, referrer, os, browser, device, country }],
+    ['websites:pageviews', websiteId, modified, url, referrer, os, browser, device, country],
     () =>
       get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
@@ -80,10 +80,6 @@ export default function WebsiteChart({
     } else {
       setDateRange(value);
     }
-  }
-
-  if (isLoading) {
-    return <Loading icon="dots" />;
   }
 
   return (

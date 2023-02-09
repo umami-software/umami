@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import { Loading, Icons } from 'react-basics';
+import { Loading, Icon, Text, Button } from 'react-basics';
 import { defineMessages, useIntl } from 'react-intl';
+import Link from 'next/link';
 import firstBy from 'thenby';
 import classNames from 'classnames';
-import Link from 'components/common/Link';
 import useApi from 'hooks/useApi';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
@@ -11,6 +11,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import Icons from 'components/icons';
 import styles from './MetricsTable.module.css';
 
 const messages = defineMessages({
@@ -78,14 +79,15 @@ export default function MetricsTable({
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <Link
-            icon={<Icons.ArrowRight />}
-            href={router.pathname}
-            as={resolve({ view: type })}
-            size="small"
-            iconRight
-          >
-            {formatMessage(messages.more)}
+          <Link href={router.pathname} as={resolve({ view: type })}>
+            <a>
+              <Button variant="quiet">
+                <Text>{formatMessage(messages.more)}</Text>
+                <Icon size="sm">
+                  <Icons.ArrowRight />
+                </Icon>
+              </Button>
+            </a>
           </Link>
         )}
       </div>

@@ -1,46 +1,15 @@
-import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import useSticky from 'hooks/useSticky';
 
-export default function StickyHeader({
-  className,
-  stickyClassName,
-  stickyStyle,
-  children,
-  enabled = true,
-}) {
-  const [sticky, setSticky] = useState(false);
-  const ref = useRef();
-  const top = useRef(0);
-
-  useEffect(() => {
-    const checkPosition = () => {
-      if (ref.current) {
-        if (!top.current) {
-          top.current = ref.current.offsetTop + ref.current.offsetHeight;
-        }
-        const state = window.pageYOffset > top.current;
-        if (sticky !== state) {
-          setSticky(state);
-        }
-      }
-    };
-
-    if (enabled) {
-      checkPosition();
-      window.addEventListener('scroll', checkPosition);
-    }
-
-    return () => {
-      window.removeEventListener('scroll', checkPosition);
-    };
-  }, [sticky, enabled]);
+export default function StickyHeader({ className, stickyClassName, stickyStyle, children }) {
+  const { ref, isSticky } = useSticky();
 
   return (
     <div
       ref={ref}
-      data-sticky={sticky}
-      className={classNames(className, { [stickyClassName]: sticky })}
-      style={sticky ? { ...stickyStyle, width: ref?.current?.clientWidth } : null}
+      data-sticky={isSticky}
+      className={classNames(className, { [stickyClassName]: isSticky })}
+      style={isSticky ? { ...stickyStyle, width: ref?.current?.clientWidth } : null}
     >
       {children}
     </div>
