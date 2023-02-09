@@ -69,42 +69,35 @@ export async function resetWebsite(
   });
 }
 
-export async function deleteWebsite(websiteId: string) {
-  return runQuery({
-    [PRISMA]: () => deleteWebsiteRelationalQuery(websiteId),
-    [CLICKHOUSE]: () => deleteWebsiteClickhouseQuery(websiteId),
-  });
-}
-
-async function deleteWebsiteRelationalQuery(
-  websiteId,
+export async function deleteWebsite(
+  websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 
-  return transaction([
-    client.websiteEvent.deleteMany({
-      where: { websiteId },
-    }),
-    client.session.deleteMany({
-      where: { websiteId },
-    }),
-    client.website.delete({
+  if (process.env.CLOUD_MODE) {
+    return prisma.client.website.update({
+      data: {
+        deletedAt: new Date(),
+      },
       where: { id: websiteId },
-    }),
-  ]).then(async data => {
-    if (cache.enabled) {
-      await cache.deleteWebsite(websiteId);
-    }
+    });
+  } else {
+    return transaction([
+      client.websiteEvent.deleteMany({
+        where: { websiteId },
+      }),
+      client.session.deleteMany({
+        where: { websiteId },
+      }),
+      client.website.delete({
+        where: { id: websiteId },
+      }),
+    ]).then(async data => {
+      if (cache.enabled) {
+        await cache.deleteWebsite(websiteId);
+      }
 
-    return data;
-  });
-}
-
-async function deleteWebsiteClickhouseQuery(websiteId): Promise<Website> {
-  return prisma.client.website.update({
-    data: {
-      deletedAt: new Date(),
-    },
-    where: { id: websiteId },
-  });
+      return data;
+    });
+  }
 }

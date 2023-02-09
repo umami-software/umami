@@ -16,7 +16,7 @@ export default function LoginPage({ pageDisabled }) {
 export async function getServerSideProps() {
   return {
     props: {
-      pageDisabled: !!process.env.DISABLE_LOGIN,
+      pageDisabled: !!process.env.CLOUD_MODE,
     },
   };
 }
