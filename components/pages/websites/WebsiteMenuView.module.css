@@ -11,3 +11,12 @@
   padding-left: 0;
   border-left: 0;
 }
+
+.menu {
+  display: flex;
+  gap: 20px;
+}
+
+.menu a {
+  color: var(--font-color100);
+}

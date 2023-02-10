@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
@@ -88,16 +87,5 @@ function WorldMap({ data, className }) {
     </div>
   );
 }
-
-WorldMap.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      x: PropTypes.string,
-      y: PropTypes.number,
-      z: PropTypes.number,
-    }),
-  ),
-  className: PropTypes.string,
-};
 
 export default WorldMap;

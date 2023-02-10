@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ReactTooltip from 'react-tooltip';
 
@@ -56,11 +55,6 @@ const OverflowText = ({ children, tooltipId }) => {
       {isOverflown && <ReactTooltip id={tooltipId}>{children}</ReactTooltip>}
     </span>
   );
-};
-
-OverflowText.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-  tooltipId: PropTypes.string.isRequired,
 };
 
 export default OverflowText;

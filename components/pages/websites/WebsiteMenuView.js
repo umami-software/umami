@@ -1,6 +1,7 @@
 import { Row, Column, Menu, Item, Icon, Button } from 'react-basics';
 import { useIntl } from 'react-intl';
 import Link from 'next/link';
+import classNames from 'classnames';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import DevicesTable from 'components/metrics/DevicesTable';
@@ -83,7 +84,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
 
   return (
     <Row className={styles.row}>
-      <Column defaultSize={3} className={styles.col}>
+      <Column defaultSize={3} className={classNames(styles.col, styles.menu)}>
         <Button>
           <Icon rotate={180}>
             <Icons.ArrowRight />
