@@ -1,50 +1,42 @@
 import { useState } from 'react';
-import { useIntl, defineMessages } from 'react-intl';
+import { useIntl } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import FilterButtons from 'components/common/FilterButtons';
 import FilterLink from 'components/common/FilterLink';
 import { refFilter } from 'lib/filters';
+import { labels } from 'components/messages';
 
 const FILTER_COMBINED = 0;
 const FILTER_RAW = 1;
 
-const messages = defineMessages({
-  combined: { id: 'metrics.filter.combined', defaultMessage: 'Combined' },
-  raw: { id: 'metrics.filter.raw', defaultMessage: 'Raw' },
-  referrers: { id: 'metrics.referrers', defaultMessage: 'Referrers' },
-  views: { id: 'metrics.views', defaultMessage: 'Views' },
-  none: { id: 'label.none', defaultMessage: 'None' },
-});
-
 export default function ReferrersTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const { formatMessage } = useIntl();
-  const none = formatMessage(messages.none);
 
-  const buttons = [
+  const items = [
     {
-      label: formatMessage(messages.combined),
+      label: formatMessage(labels.filterCombined),
       value: FILTER_COMBINED,
     },
-    { label: formatMessage(messages.raw), value: FILTER_RAW },
+    { label: formatMessage(labels.filterRaw), value: FILTER_RAW },
   ];
 
   const renderLink = ({ w: link, x: referrer }) => {
     return referrer ? (
       <FilterLink id="referrer" value={referrer} externalUrl={link} />
     ) : (
-      `(${none})`
+      `(${formatMessage(labels.none)})`
     );
   };
 
   return (
     <>
-      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      {showFilters && <FilterButtons items={items} selected={filter} onSelect={setFilter} />}
       <MetricsTable
         {...props}
-        title={formatMessage(messages.referrers)}
+        title={formatMessage(labels.referrers)}
         type="referrer"
-        metric={formatMessage(messages.views)}
+        metric={formatMessage(labels.views)}
         websiteId={websiteId}
         dataFilter={filter !== FILTER_RAW ? refFilter : null}
         renderLabel={renderLink}

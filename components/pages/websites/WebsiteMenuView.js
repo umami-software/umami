@@ -1,4 +1,5 @@
 import { Row, Column, Menu, Item, Icon, Button } from 'react-basics';
+import { useIntl } from 'react-intl';
 import Link from 'next/link';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
@@ -13,7 +14,7 @@ import EventsTable from 'components/metrics/EventsTable';
 import usePageQuery from 'hooks/usePageQuery';
 import Icons from 'components/icons';
 import { labels } from 'components/messages';
-import { useIntl } from 'react-intl';
+import styles from './WebsiteMenuView.module.css';
 
 const views = {
   url: PagesTable,
@@ -81,8 +82,8 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   const DetailsComponent = views[view];
 
   return (
-    <Row>
-      <Column>
+    <Row className={styles.row}>
+      <Column defaultSize={3} className={styles.col}>
         <Button>
           <Icon rotate={180}>
             <Icons.ArrowRight />
@@ -91,15 +92,15 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
         </Button>
         <Menu items={items}>
           {({ value, label }) => (
-            <Link href={resolve()}>
-              <a>
-                <Item key={value}>{label}</Item>
-              </a>
-            </Link>
+            <Item key={value}>
+              <Link href={resolve()}>
+                <a>{label}</a>
+              </Link>
+            </Item>
           )}
         </Menu>
       </Column>
-      <Column>
+      <Column defaultSize={9} className={styles.col}>
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}

@@ -23,6 +23,8 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 3000;
 
+export const UI_LAYOUT_BODY = 'ui-layout-body';
+
 export const EVENT_TYPE = {
   pageView: 1,
   customEvent: 2,

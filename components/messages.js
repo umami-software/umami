@@ -79,6 +79,10 @@ export const labels = defineMessages({
   query: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
   back: { id: 'label.back', defaultMessage: 'Back' },
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
+  filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
+  filterRaw: { id: 'label.filter-raw', defaultMessage: 'Raw' },
+  views: { id: 'label.views', defaultMessage: 'View' },
+  none: { id: 'label.none', defaultMessage: 'None' },
 });
 
 export const messages = defineMessages({

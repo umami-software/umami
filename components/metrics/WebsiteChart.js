@@ -97,16 +97,12 @@ export default function WebsiteChart({
             </a>
           </Link>
         )}
-      </WebsiteHeader>
-      <StickyHeader
-        className={styles.metrics}
-        stickyClassName={styles.sticky}
-        enabled={stickyHeader}
-      >
         <FilterTags
           params={{ url, referrer, os, browser, device, country }}
           onClick={handleCloseFilter}
         />
+      </WebsiteHeader>
+      <StickyHeader stickyClassName={styles.sticky} enabled={stickyHeader}>
         <Row className={styles.header}>
           <Column xs={12} sm={12} md={12} defaultSize={10}>
             <MetricsBar websiteId={websiteId} />

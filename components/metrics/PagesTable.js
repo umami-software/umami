@@ -1,19 +1,13 @@
 import { useState } from 'react';
-import { useIntl, defineMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';
 import { urlFilter } from 'lib/filters';
+import { labels } from 'components/messages';
 import MetricsTable from './MetricsTable';
 
 export const FILTER_COMBINED = 0;
 export const FILTER_RAW = 1;
-
-const messages = defineMessage({
-  combined: { id: 'metrics.filter.combined', defaultMessage: 'Combined' },
-  raw: { id: 'metrics.filter.raw', defaultMessage: 'Raw' },
-  pages: { id: 'metrics.pages', defaultMessage: 'Pages' },
-  views: { id: 'metrics.views', defaultMessage: 'View' },
-});
 
 export default function PagesTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
@@ -21,11 +15,11 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
 
   const buttons = [
     {
-      label: formatMessage(messages.combined),
+      label: formatMessage(labels.filterCombined),
       value: FILTER_COMBINED,
     },
     {
-      label: formatMessage(messages.raw),
+      label: formatMessage(labels.filterRaw),
       value: FILTER_RAW,
     },
   ];
@@ -38,9 +32,9 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
     <>
       {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
       <MetricsTable
-        title={formatMessage(messages.pages)}
+        title={formatMessage(labels.pages)}
         type="url"
-        metric={formatMessage(messages.views)}
+        metric={formatMessage(labels.views)}
         websiteId={websiteId}
         dataFilter={filter !== FILTER_RAW ? urlFilter : null}
         renderLabel={renderLink}
