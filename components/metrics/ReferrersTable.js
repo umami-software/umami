@@ -5,9 +5,12 @@ import FilterButtons from 'components/common/FilterButtons';
 import FilterLink from 'components/common/FilterLink';
 import { refFilter } from 'lib/filters';
 import { labels } from 'components/messages';
+import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 
-const FILTER_COMBINED = 0;
-const FILTER_RAW = 1;
+const filters = {
+  [FILTER_RAW]: null,
+  [FILTER_COMBINED]: refFilter,
+};
 
 export default function ReferrersTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
@@ -16,9 +19,9 @@ export default function ReferrersTable({ websiteId, showFilters, ...props }) {
   const items = [
     {
       label: formatMessage(labels.filterCombined),
-      value: FILTER_COMBINED,
+      key: FILTER_COMBINED,
     },
-    { label: formatMessage(labels.filterRaw), value: FILTER_RAW },
+    { label: formatMessage(labels.filterRaw), key: FILTER_RAW },
   ];
 
   const renderLink = ({ w: link, x: referrer }) => {
@@ -31,14 +34,14 @@ export default function ReferrersTable({ websiteId, showFilters, ...props }) {
 
   return (
     <>
-      {showFilters && <FilterButtons items={items} selected={filter} onSelect={setFilter} />}
+      {showFilters && <FilterButtons items={items} selectedKey={filter} onSelect={setFilter} />}
       <MetricsTable
         {...props}
         title={formatMessage(labels.referrers)}
         type="referrer"
         metric={formatMessage(labels.views)}
         websiteId={websiteId}
-        dataFilter={filter !== FILTER_RAW ? refFilter : null}
+        dataFilter={filters[filter]}
         renderLabel={renderLink}
       />
     </>

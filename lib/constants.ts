@@ -25,6 +25,14 @@ export const REALTIME_INTERVAL = 3000;
 
 export const UI_LAYOUT_BODY = 'ui-layout-body';
 
+export const FILTER_COMBINED = 'filter-combined';
+export const FILTER_RAW = 'filter-raw';
+export const FILTER_IGNORED = 'filter-ignored';
+export const FILTER_DAY = 'filter-day';
+export const FILTER_RANGE = 'filter-range';
+export const FILTER_REFERRERS = 'filter-referrers';
+export const FILTER_PAGES = 'filter-pages';
+
 export const EVENT_TYPE = {
   pageView: 1,
   customEvent: 2,
@@ -104,8 +112,6 @@ export const EVENT_COLORS = [
   '#ec1562',
   '#ffec16',
 ];
-
-export const FILTER_IGNORED = Symbol.for('filter-ignored');
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63})$/;

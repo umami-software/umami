@@ -4,9 +4,7 @@ import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
 import DataTable from './DataTable';
 import FilterButtons from 'components/common/FilterButtons';
-
-const FILTER_REFERRERS = 0;
-const FILTER_PAGES = 1;
+import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 
 export default function RealtimeViews({ websiteId, data, websites }) {
   const { pageviews } = data;
@@ -23,11 +21,11 @@ export default function RealtimeViews({ websiteId, data, websites }) {
   const buttons = [
     {
       label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
-      value: FILTER_REFERRERS,
+      key: FILTER_REFERRERS,
     },
     {
       label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
-      value: FILTER_PAGES,
+      key: FILTER_PAGES,
     },
   ];
 
@@ -90,7 +88,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
   return (
     <>
-      <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />
+      <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
       {filter === FILTER_REFERRERS && (
         <DataTable
           title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}

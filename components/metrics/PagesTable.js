@@ -5,9 +5,12 @@ import FilterButtons from 'components/common/FilterButtons';
 import { urlFilter } from 'lib/filters';
 import { labels } from 'components/messages';
 import MetricsTable from './MetricsTable';
+import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
 
-export const FILTER_COMBINED = 0;
-export const FILTER_RAW = 1;
+const filters = {
+  [FILTER_RAW]: null,
+  [FILTER_COMBINED]: urlFilter,
+};
 
 export default function PagesTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
@@ -16,11 +19,11 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
   const buttons = [
     {
       label: formatMessage(labels.filterCombined),
-      value: FILTER_COMBINED,
+      key: FILTER_COMBINED,
     },
     {
       label: formatMessage(labels.filterRaw),
-      value: FILTER_RAW,
+      key: FILTER_RAW,
     },
   ];
 
@@ -30,13 +33,13 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
 
   return (
     <>
-      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      {showFilters && <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />}
       <MetricsTable
         title={formatMessage(labels.pages)}
         type="url"
         metric={formatMessage(labels.views)}
         websiteId={websiteId}
-        dataFilter={filter !== FILTER_RAW ? urlFilter : null}
+        dataFilter={filters[filter]}
         renderLabel={renderLink}
         {...props}
       />

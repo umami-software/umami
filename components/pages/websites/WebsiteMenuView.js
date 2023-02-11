@@ -1,4 +1,4 @@
-import { Row, Column, Menu, Item, Icon, Button } from 'react-basics';
+import { Row, Column, Menu, Item, Icon, Button, Flexbox, Text } from 'react-basics';
 import { useIntl } from 'react-intl';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -39,44 +39,44 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
 
   const items = [
     {
+      key: 'url',
       label: formatMessage(labels.pages),
-      value: resolve({ view: 'url' }),
     },
     {
+      key: 'referrer',
       label: formatMessage(labels.referrers),
-      value: resolve({ view: 'referrer' }),
     },
     {
+      key: 'browser',
       label: formatMessage(labels.browsers),
-      value: resolve({ view: 'browser' }),
     },
     {
+      key: 'os',
       label: formatMessage(labels.os),
-      value: resolve({ view: 'os' }),
     },
     {
+      key: 'device',
       label: formatMessage(labels.devices),
-      value: resolve({ view: 'device' }),
     },
     {
+      key: 'country',
       label: formatMessage(labels.countries),
-      value: resolve({ view: 'country' }),
     },
     {
+      key: 'language',
       label: formatMessage(labels.languages),
-      value: resolve({ view: 'language' }),
     },
     {
+      key: 'screen',
       label: formatMessage(labels.screens),
-      value: resolve({ view: 'screen' }),
     },
     {
+      key: 'event',
       label: formatMessage(labels.events),
-      value: resolve({ view: 'event' }),
     },
     {
+      key: 'query',
       label: formatMessage(labels.query),
-      value: resolve({ view: 'query' }),
     },
   ];
 
@@ -85,31 +85,37 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   return (
     <Row className={styles.row}>
       <Column defaultSize={3} className={classNames(styles.col, styles.menu)}>
-        <Button>
-          <Icon rotate={180}>
-            <Icons.ArrowRight />
-          </Icon>
-          {formatMessage(labels.back)}
-        </Button>
-        <Menu items={items}>
-          {({ value, label }) => (
-            <Item key={value}>
-              <Link href={resolve()}>
+        <Link href={resolve({ view: undefined })}>
+          <a>
+            <Flexbox justifyContent="center">
+              <Button variant="quiet">
+                <Icon rotate={180}>
+                  <Icons.ArrowRight />
+                </Icon>
+                <Text>{formatMessage(labels.back)}</Text>
+              </Button>
+            </Flexbox>
+          </a>
+        </Link>
+        <Menu items={items} selectedKey={view}>
+          {({ key, label }) => (
+            <Item key={key} className={styles.item}>
+              <Link href={resolve({ view: key })} shallow={true}>
                 <a>{label}</a>
               </Link>
             </Item>
           )}
         </Menu>
       </Column>
-      <Column defaultSize={9} className={styles.col}>
+      <Column defaultSize={9} className={classNames(styles.col, styles.data)}>
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}
           height={500}
           limit={false}
           animate={false}
-          showFilters
-          virtualize
+          showFilters={true}
+          virtualize={true}
         />
       </Column>
     </Row>
