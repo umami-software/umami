@@ -117,7 +117,7 @@ export default function WebsiteEditForm({ values, onSave, onClose }) {
                 <Field
                   name="domain"
                   type="text"
-                  placeholder="example.com"
+                  placeholder={<FormattedMessage id="label.example" defaultMessage="example.com" />}
                   spellCheck="false"
                   autoCapitalize="off"
                   autoCorrect="off"

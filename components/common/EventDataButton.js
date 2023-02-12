@@ -24,16 +24,16 @@ function EventDataButton({ websiteId }) {
     <>
       <Button
         icon={<List />}
-        tooltip={<FormattedMessage id="label.event-data" defaultMessage="Event" />}
+        tooltip={<FormattedMessage id="label.event" defaultMessage="Event" />}
         tooltipId="button-event"
         size="small"
         onClick={handleClick}
         className={styles.button}
       >
-        Event Data
+        <FormattedMessage id="label.event-data" defaultMessage="Event Data" />
       </Button>
       {showEventData && (
-        <Modal title={<FormattedMessage id="label.event-data" defaultMessage="Query Event Data" />}>
+        <Modal title={<FormattedMessage id="label.query-event-data" defaultMessage="Query Event Data" />}>
           <EventDataForm websiteId={websiteId} onClose={handleClose} />
         </Modal>
       )}
