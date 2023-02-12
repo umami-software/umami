@@ -83,6 +83,7 @@ export const labels = defineMessages({
   filterRaw: { id: 'label.filter-raw', defaultMessage: 'Raw' },
   views: { id: 'label.views', defaultMessage: 'View' },
   none: { id: 'label.none', defaultMessage: 'None' },
+  clearAll: { id: 'label.clear-all', defaultMessage: 'Clear all' },
 });
 
 export const messages = defineMessages({

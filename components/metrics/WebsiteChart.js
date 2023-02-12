@@ -34,7 +34,7 @@ export default function WebsiteChart({
   const {
     router,
     resolve,
-    query: { url, referrer, os, browser, device, country },
+    query: { view, url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { get, useQuery } = useApi();
 
@@ -67,7 +67,11 @@ export default function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   function handleCloseFilter(param) {
-    router.push(resolve({ [param]: undefined }));
+    if (param === null) {
+      router.push(`/websites/${websiteId}/?view=${view}`);
+    } else {
+      router.push(resolve({ [param]: undefined }));
+    }
   }
 
   async function handleDateChange(value) {
@@ -97,11 +101,11 @@ export default function WebsiteChart({
             </a>
           </Link>
         )}
-        <FilterTags
-          params={{ url, referrer, os, browser, device, country }}
-          onClick={handleCloseFilter}
-        />
       </WebsiteHeader>
+      <FilterTags
+        params={{ url, referrer, os, browser, device, country }}
+        onClick={handleCloseFilter}
+      />
       <StickyHeader stickyClassName={styles.sticky} enabled={stickyHeader}>
         <Row className={styles.header}>
           <Column xs={12} sm={12} md={12} defaultSize={10}>

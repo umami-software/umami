@@ -1,9 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { Row, Column } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import firstBy from 'thenby';
 import Page from 'components/layout/Page';
-import GridLayout, { GridRow, GridColumn } from 'components/layout/GridLayout';
 import RealtimeChart from 'components/metrics/RealtimeChart';
 import RealtimeLog from 'components/metrics/RealtimeLog';
 import RealtimeHeader from 'components/metrics/RealtimeHeader';
@@ -129,29 +129,27 @@ export default function RealtimeDashboard() {
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>
-      <GridLayout>
-        <GridRow>
-          <GridColumn xs={12} lg={4}>
-            <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
-          </GridColumn>
-          <GridColumn xs={12} lg={8}>
-            <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
-          </GridColumn>
-        </GridRow>
-        <GridRow>
-          <GridColumn xs={12} lg={4}>
-            <DataTable
-              title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
-              metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
-              data={countries}
-              renderLabel={renderCountryName}
-            />
-          </GridColumn>
-          <GridColumn xs={12} lg={8}>
-            <WorldMap data={countries} />
-          </GridColumn>
-        </GridRow>
-      </GridLayout>
+      <Row>
+        <Column xs={12} lg={4}>
+          <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
+        </Column>
+        <Column xs={12} lg={8}>
+          <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
+        </Column>
+      </Row>
+      <Row>
+        <Column xs={12} lg={4}>
+          <DataTable
+            title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
+            metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+            data={countries}
+            renderLabel={renderCountryName}
+          />
+        </Column>
+        <Column xs={12} lg={8}>
+          <WorldMap data={countries} />
+        </Column>
+      </Row>
     </Page>
   );
 }
