@@ -7,9 +7,7 @@ import { getDateRangeValues } from 'lib/date';
 import { getDateLocale } from 'lib/lang';
 import { labels } from 'components/messages';
 import styles from './DatePickerForm.module.css';
-
-const FILTER_DAY = 'day';
-const FILTER_RANGE = 'range';
+import { FILTER_DAY, FILTER_RANGE } from 'lib/constants';
 
 export default function DatePickerForm({
   startDate: defaultStartDate,

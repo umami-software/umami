@@ -2,8 +2,6 @@
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: max-content 1fr;
-  height: 100vh;
-  overflow: hidden;
 }
 
 .nav {
@@ -13,4 +11,5 @@
 .body {
   grid-area: 1 / 2;
   overflow: auto;
+  height: 100vh;
 }

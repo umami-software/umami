@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import Script from 'next/script';
 import classNames from 'classnames';
 import { useIntl, defineMessages } from 'react-intl';
-import Link from 'components/common/Link';
 import { CURRENT_VERSION, HOMEPAGE_URL, REPO_URL } from 'lib/constants';
 import styles from './Footer.module.css';
 
@@ -22,15 +21,15 @@ export default function Footer({ className }) {
           <div>
             {formatMessage(messages.poweredBy, {
               name: (
-                <Link href={HOMEPAGE_URL}>
+                <a href={HOMEPAGE_URL}>
                   <b>umami</b>
-                </Link>
+                </a>
               ),
             })}
           </div>
         </Column>
         <Column className={styles.version}>
-          <Link href={REPO_URL}>{`v${CURRENT_VERSION}`}</Link>
+          <a href={REPO_URL}>{`v${CURRENT_VERSION}`}</a>
         </Column>
       </Row>
       {!pathname.includes('/share/') && <Script src={`/telemetry.js`} />}

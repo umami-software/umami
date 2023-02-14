@@ -1,8 +1,3 @@
-.grid {
-  display: flex;
-  flex-direction: column;
-}
-
 .col {
   display: flex;
   flex-direction: column;

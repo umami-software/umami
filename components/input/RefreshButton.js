@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Tooltip } from '../react-basics';
+import { Button, Icon, Tooltip } from 'react-basics';
 import useStore from 'store/queries';
 import { setDateRange } from 'store/websites';
 import useDateRange from 'hooks/useDateRange';

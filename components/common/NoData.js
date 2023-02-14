@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FormattedMessage } from 'react-intl';
 import styles from './NoData.module.css';
@@ -10,9 +9,5 @@ function NoData({ className }) {
     </div>
   );
 }
-
-NoData.propTypes = {
-  className: PropTypes.string,
-};
 
 export default NoData;

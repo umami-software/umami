@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, Row, Column, Loading } from 'react-basics';
+import { Button, Icon, Text, Row, Column, Container } from 'react-basics';
 import Link from 'next/link';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
@@ -34,12 +34,12 @@ export default function WebsiteChart({
   const {
     router,
     resolve,
-    query: { url, referrer, os, browser, device, country },
+    query: { view, url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { get, useQuery } = useApi();
 
   const { data, isLoading, error } = useQuery(
-    ['websites:pageviews', { websiteId, modified, url, referrer, os, browser, device, country }],
+    ['websites:pageviews', websiteId, modified, url, referrer, os, browser, device, country],
     () =>
       get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
@@ -67,7 +67,11 @@ export default function WebsiteChart({
   }, [data, startDate, endDate, unit]);
 
   function handleCloseFilter(param) {
-    router.push(resolve({ [param]: undefined }));
+    if (param === null) {
+      router.push(`/websites/${websiteId}/?view=${view}`);
+    } else {
+      router.push(resolve({ [param]: undefined }));
+    }
   }
 
   async function handleDateChange(value) {
@@ -80,10 +84,6 @@ export default function WebsiteChart({
     } else {
       setDateRange(value);
     }
-  }
-
-  if (isLoading) {
-    return <Loading icon="dots" />;
   }
 
   return (
@@ -102,15 +102,11 @@ export default function WebsiteChart({
           </Link>
         )}
       </WebsiteHeader>
-      <StickyHeader
-        className={styles.metrics}
-        stickyClassName={styles.sticky}
-        enabled={stickyHeader}
-      >
-        <FilterTags
-          params={{ url, referrer, os, browser, device, country }}
-          onClick={handleCloseFilter}
-        />
+      <FilterTags
+        params={{ url, referrer, os, browser, device, country }}
+        onClick={handleCloseFilter}
+      />
+      <StickyHeader stickyClassName={styles.sticky} enabled={stickyHeader}>
         <Row className={styles.header}>
           <Column xs={12} sm={12} md={12} defaultSize={10}>
             <MetricsBar websiteId={websiteId} />

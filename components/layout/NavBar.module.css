@@ -25,9 +25,14 @@
 }
 
 .icon {
-  position: absolute;
-  right: 0;
   visibility: hidden;
+  position: absolute;
+  right: -10px;
+  border-radius: 100%;
+  color: var(--base50);
+  background: var(--base800);
+  height: 20px;
+  width: 20px;
 }
 
 .minimized.navbar {

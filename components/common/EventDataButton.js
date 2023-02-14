@@ -1,5 +1,4 @@
 import EventDataForm from 'components/metrics/EventDataForm';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Button, Icon, Modal, Icons } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
@@ -43,9 +42,5 @@ function EventDataButton({ websiteId }) {
     </>
   );
 }
-
-EventDataButton.propTypes = {
-  websiteId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-};
 
 export default EventDataButton;

@@ -1,48 +1,32 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { useMeasure, useCombinedRefs } from 'react-basics';
 import classNames from 'classnames';
+import useSticky from 'hooks/useSticky';
+import { UI_LAYOUT_BODY } from 'lib/constants';
 
 export default function StickyHeader({
   className,
   stickyClassName,
   stickyStyle,
-  children,
   enabled = true,
+  children,
 }) {
-  const [sticky, setSticky] = useState(false);
-  const ref = useRef();
-  const top = useRef(0);
-
-  useEffect(() => {
-    const checkPosition = () => {
-      if (ref.current) {
-        if (!top.current) {
-          top.current = ref.current.offsetTop + ref.current.offsetHeight;
-        }
-        const state = window.pageYOffset > top.current;
-        if (sticky !== state) {
-          setSticky(state);
-        }
-      }
-    };
-
-    if (enabled) {
-      checkPosition();
-      window.addEventListener('scroll', checkPosition);
-    }
-
-    return () => {
-      window.removeEventListener('scroll', checkPosition);
-    };
-  }, [sticky, enabled]);
+  const { ref: scrollRef, isSticky } = useSticky({ scrollElementId: UI_LAYOUT_BODY });
+  const { ref: measureRef, dimensions } = useMeasure();
 
   return (
     <div
-      ref={ref}
-      data-sticky={sticky}
-      className={classNames(className, { [stickyClassName]: sticky })}
-      style={sticky ? { ...stickyStyle, width: ref?.current?.clientWidth } : null}
+      ref={measureRef}
+      data-sticky={enabled && isSticky}
+      style={enabled && isSticky ? { height: dimensions.height } : null}
     >
-      {children}
+      <div
+        ref={scrollRef}
+        className={classNames(className, { [stickyClassName]: enabled && isSticky })}
+        style={enabled && isSticky ? { ...stickyStyle, width: dimensions.width } : null}
+      >
+        {children}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,31 @@
+.row {
+  border-top: 1px solid var(--base300);
+}
+
+.col {
+  border-left: 1px solid var(--base300);
+  padding: 30px;
+}
+
+.col:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.menu {
+  gap: 20px;
+}
+
+.item a {
+  color: var(--font-color100);
+  flex: 1;
+  padding: var(--size300) var(--size600);
+}
+
+.item {
+  padding: 0;
+}
+
+.data {
+  min-height: 600px;
+}

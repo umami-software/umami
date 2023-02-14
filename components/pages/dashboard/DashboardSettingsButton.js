@@ -1,8 +1,8 @@
 import { defineMessages, useIntl } from 'react-intl';
-import MenuButton from 'components/common/MenuButton';
-import Gear from 'assets/gear.svg';
+import { Menu, Icon, Text, PopupTrigger, Popup, Item, Button } from 'react-basics';
+import Icons from 'components/icons';
+import { labels } from 'components/messages';
 import { saveDashboard } from 'store/dashboard';
-import { Icon } from 'react-basics';
 
 const messages = defineMessages({
   toggleCharts: { id: 'message.toggle-charts', defaultMessage: 'Toggle charts' },
@@ -33,10 +33,18 @@ export default function DashboardSettingsButton() {
   }
 
   return (
-    <MenuButton options={menuOptions} onSelect={handleSelect} hideLabel>
-      <Icon>
-        <Gear />
-      </Icon>
-    </MenuButton>
+    <PopupTrigger>
+      <Button>
+        <Icon>
+          <Icons.Edit />
+        </Icon>
+        <Text>{formatMessage(labels.edit)}</Text>
+      </Button>
+      <Popup alignment="end">
+        <Menu variant="popup" items={menuOptions} onSelect={handleSelect}>
+          {({ label, value }) => <Item key={value}>{label}</Item>}
+        </Menu>
+      </Popup>
+    </PopupTrigger>
   );
 }

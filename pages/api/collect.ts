@@ -1,12 +1,12 @@
-const { Resolver } = require('dns').promises;
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
-import { createToken, unauthorized, send, badRequest, forbidden } from 'next-basics';
+import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
 import { savePageView, saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Resolver } from 'dns/promises';
 
 export interface NextApiRequestCollect extends NextApiRequest {
   session: {
@@ -26,7 +26,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
 
   if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
-    return unauthorized(res);
+    return ok(res);
   }
 
   const { type, payload } = getJsonBody(req);
@@ -61,7 +61,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         .map(n => resolver.resolve4(n.trim()).catch(() => {}));
 
       await Promise.all(promises).then(resolvedIps => {
-        ips.push(...resolvedIps.filter(n => n).flatMap(n => n));
+        ips.push(...resolvedIps.filter(n => n).flatMap(n => n as string[]));
       });
     }
 

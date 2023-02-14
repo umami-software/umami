@@ -17,24 +17,22 @@
 }
 
 .header {
-  min-height: 90px;
-}
-
-.metrics {
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  min-height: 90px;
+  margin-bottom: 20px;
 }
 
 .sticky {
   position: fixed;
   top: 0;
-  margin: auto;
   background: var(--base50);
   border-bottom: 1px solid var(--base300);
   z-index: 3;
+  width: inherit;
+  padding-top: 20px;
 }
 
 .filter {

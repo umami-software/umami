@@ -54,19 +54,19 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   const buttons = [
     {
       label: <FormattedMessage id="label.all" defaultMessage="All" />,
-      value: TYPE_ALL,
+      key: TYPE_ALL,
     },
     {
       label: <FormattedMessage id="metrics.views" defaultMessage="Views" />,
-      value: TYPE_PAGEVIEW,
+      key: TYPE_PAGEVIEW,
     },
     {
       label: <FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />,
-      value: TYPE_SESSION,
+      key: TYPE_SESSION,
     },
     {
       label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
-      value: TYPE_EVENT,
+      key: TYPE_EVENT,
     },
   ];
 
@@ -165,7 +165,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
 
   return (
     <div className={styles.table}>
-      <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />
+      <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
       <div className={styles.header}>
         <FormattedMessage id="label.realtime-logs" defaultMessage="Realtime logs" />
       </div>
