@@ -81,9 +81,21 @@ export const labels = defineMessages({
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
   filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
   filterRaw: { id: 'label.filter-raw', defaultMessage: 'Raw' },
-  views: { id: 'label.views', defaultMessage: 'View' },
+  views: { id: 'label.views', defaultMessage: 'Views' },
   none: { id: 'label.none', defaultMessage: 'None' },
   clearAll: { id: 'label.clear-all', defaultMessage: 'Clear all' },
+  today: { id: 'label.today', defaultMessage: 'Today' },
+  lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
+  yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
+  thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
+  lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
+  thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
+  thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
+  allTime: { id: 'label.all-time', defaultMessage: 'All time' },
+  customRange: { id: 'label.custom-range', defaultMessage: 'Custom-range' },
+  selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  all: { id: 'label.all', defaultMessage: 'All' },
+  sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
 });
 
 export const messages = defineMessages({

@@ -1,41 +1,42 @@
 import { useMemo, useState } from 'react';
-import { StatusLight } from 'react-basics';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { StatusLight, Icon } from 'react-basics';
+import { useIntl, FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
-import { Icon } from 'react-basics';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
 import { getDeviceMessage, labels } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
-import Bolt from 'assets/bolt.svg';
-import Visitor from 'assets/visitor.svg';
-import Eye from 'assets/eye.svg';
 import { stringToColor } from 'lib/format';
 import { dateFormat } from 'lib/date';
 import { safeDecodeURI } from 'next-basics';
+import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
 
-const TYPE_ALL = 0;
-const TYPE_PAGEVIEW = 1;
-const TYPE_SESSION = 2;
-const TYPE_EVENT = 3;
+const TYPE_ALL = 'type-all';
+const TYPE_PAGEVIEW = 'type-pageview';
+const TYPE_SESSION = 'type-session';
+const TYPE_EVENT = 'type-event';
 
 const TYPE_ICONS = {
-  [TYPE_PAGEVIEW]: <Eye />,
-  [TYPE_SESSION]: <Visitor />,
-  [TYPE_EVENT]: <Bolt />,
+  [TYPE_PAGEVIEW]: <Icons.Eye />,
+  [TYPE_SESSION]: <Icons.Visitor />,
+  [TYPE_EVENT]: <Icons.Bolt />,
 };
 
 export default function RealtimeLog({ data, websites, websiteId }) {
-  const intl = useIntl();
+  const { formatMessage } = useIntl();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
   const logs = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
     const { pageviews, sessions, events } = data;
     const logs = [...pageviews, ...sessions, ...events].sort(firstBy('createdAt', -1));
     if (filter) {
@@ -45,6 +46,10 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   }, [data, filter]);
 
   const uuids = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
     return data.sessions.reduce((obj, { sessionId, sessionUuid }) => {
       obj[sessionId] = sessionUuid;
       return obj;
@@ -53,19 +58,19 @@ export default function RealtimeLog({ data, websites, websiteId }) {
 
   const buttons = [
     {
-      label: <FormattedMessage id="label.all" defaultMessage="All" />,
+      label: formatMessage(labels.all),
       key: TYPE_ALL,
     },
     {
-      label: <FormattedMessage id="metrics.views" defaultMessage="Views" />,
+      label: formatMessage(labels.views),
       key: TYPE_PAGEVIEW,
     },
     {
-      label: <FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />,
+      label: formatMessage(labels.sessions),
       key: TYPE_SESSION,
     },
     {
-      label: <FormattedMessage id="metrics.events" defaultMessage="Events" />,
+      label: formatMessage(labels.events),
       key: TYPE_EVENT,
     },
   ];
@@ -124,10 +129,10 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           id="message.log.visitor"
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
           values={{
-            country: <b>{countryNames[country] || intl.formatMessage(labels.unknown)}</b>,
+            country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
-            device: <b>{intl.formatMessage(getDeviceMessage(device))}</b>,
+            device: <b>{formatMessage(getDeviceMessage(device))}</b>,
           }}
         />
       );

@@ -42,7 +42,7 @@ export default function DatePickerForm({
   return (
     <div className={styles.container}>
       <div className={styles.filter}>
-        <ButtonGroup size="sm" selectedKey={selected} onSelect={setSelected}>
+        <ButtonGroup selectedKey={selected} onSelect={setSelected}>
           <Button key={FILTER_DAY}>{formatMessage(labels.singleDay)}</Button>
           <Button key={FILTER_RANGE}>{formatMessage(labels.dateRange)}</Button>
         </ButtonGroup>

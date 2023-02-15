@@ -1,21 +1,25 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Row, Column } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
-import { subMinutes, startOfMinute } from 'date-fns';
+import { useIntl } from 'react-intl';
+import { subMinutes, startOfMinute, differenceInMinutes } from 'date-fns';
 import firstBy from 'thenby';
+import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import RealtimeLog from 'components/metrics/RealtimeLog';
-import RealtimeHeader from 'components/metrics/RealtimeHeader';
+import RealtimeLog from 'components/pages/realtime/RealtimeLog';
+import RealtimeHeader from 'components/pages/realtime/RealtimeHeader';
 import WorldMap from 'components/common/WorldMap';
 import DataTable from 'components/metrics/DataTable';
-import RealtimeViews from 'components/metrics/RealtimeViews';
+import RealtimeViews from 'components/pages/realtime/RealtimeViews';
 import useApi from 'hooks/useApi';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
+import { labels } from 'components/messages';
 import { SHARE_TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
+import StickyHeader from 'components/helpers/StickyHeader';
+import PageHeader from 'components/layout/PageHeader';
+import ActiveUsers from 'components/metrics/ActiveUsers';
 
 function mergeData(state, data, time) {
   const ids = state.map(({ __id }) => __id);
@@ -29,18 +33,19 @@ function filterWebsite(data, id) {
 }
 
 export default function RealtimeDashboard() {
+  const { formatMessage } = useIntl();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [data, setData] = useState();
-  const [websiteId, setWebsiteId] = useState(null);
+  const [websiteId, setWebsiteId] = useState();
   const { get, useQuery } = useApi();
-  const { data: init, isLoading } = useQuery(['realtime:init'], () => get('/realtime/init'));
+  const { data: websites, isLoading } = useQuery(['websites:me'], () => get('/me/websites'));
+
   const { data: updates } = useQuery(
     ['realtime:updates'],
-    () =>
-      get('/realtime/update', { startAt: data?.timestamp }, { [SHARE_TOKEN_HEADER]: init?.token }),
+    () => get('/realtime/update', { startAt: data?.timestamp }),
     {
-      disabled: !init?.websites?.length || !data,
+      enabled: !!websiteId,
       retryInterval: REALTIME_INTERVAL,
     },
   );
@@ -55,7 +60,7 @@ export default function RealtimeDashboard() {
       const { pageviews, sessions, events } = data;
 
       if (websiteId) {
-        const { id } = init.websites.find(n => n.id === websiteId);
+        const { id } = websites.find(n => n.id === websiteId);
         return {
           pageviews: filterWebsite(pageviews, id),
           sessions: filterWebsite(sessions, id),
@@ -65,6 +70,15 @@ export default function RealtimeDashboard() {
     }
 
     return data;
+  }, [data, websiteId]);
+
+  const count = useMemo(() => {
+    if (data) {
+      const { sessions } = data;
+      return sessions.filter(
+        ({ createdAt }) => differenceInMinutes(new Date(), new Date(createdAt)) <= 5,
+      ).length;
+    }
   }, [data, websiteId]);
 
   const countries = useMemo(() => {
@@ -90,14 +104,6 @@ export default function RealtimeDashboard() {
   }, [realtimeData?.sessions]);
 
   useEffect(() => {
-    if (init && !data) {
-      const { websites, data } = init;
-
-      setData({ websites, ...data });
-    }
-  }, [init]);
-
-  useEffect(() => {
     if (updates) {
       const { pageviews, sessions, events, timestamp } = updates;
       const time = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
@@ -112,44 +118,43 @@ export default function RealtimeDashboard() {
     }
   }, [updates]);
 
-  if (!init || !data || isLoading) {
-    return null;
-  }
-
-  const { websites } = data;
-
   return (
-    <Page>
-      <RealtimeHeader
-        websites={websites}
-        websiteId={websiteId}
-        data={{ ...realtimeData, countries }}
-        onSelect={setWebsiteId}
-      />
+    <Page loading={isLoading || !websites}>
+      <PageHeader title={formatMessage(labels.realtime)}>
+        <ActiveUsers value={count} />
+      </PageHeader>
+      <StickyHeader stickyClassName={styles.sticky}>
+        <RealtimeHeader
+          websites={websites}
+          websiteId={websiteId}
+          data={{ ...realtimeData, countries }}
+          onSelect={setWebsiteId}
+        />
+      </StickyHeader>
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>
-      <Row>
-        <Column xs={12} lg={4}>
+      <GridRow>
+        <GridColumn xs={12} sm={12} md={12} lg={4} xl={4}>
           <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
-        </Column>
-        <Column xs={12} lg={8}>
+        </GridColumn>
+        <GridColumn xs={12} sm={12} md={12} lg={8} xl={8}>
           <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
-        </Column>
-      </Row>
-      <Row>
-        <Column xs={12} lg={4}>
+        </GridColumn>
+      </GridRow>
+      <GridRow>
+        <GridColumn xs={12} lg={4}>
           <DataTable
-            title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
-            metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+            title={formatMessage(labels.countries)}
+            metric={formatMessage(labels.visitors)}
             data={countries}
             renderLabel={renderCountryName}
           />
-        </Column>
-        <Column xs={12} lg={8}>
+        </GridColumn>
+        <GridColumn xs={12} lg={8}>
           <WorldMap data={countries} />
-        </Column>
-      </Row>
+        </GridColumn>
+      </GridRow>
     </Page>
   );
 }

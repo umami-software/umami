@@ -31,7 +31,7 @@ export default function MetricsTable({
 }) {
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
-    resolve,
+    resolveUrl,
     router,
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
@@ -79,7 +79,7 @@ export default function MetricsTable({
       {data && !error && <DataTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <Link href={router.pathname} as={resolve({ view: type })}>
+          <Link href={router.pathname} as={resolveUrl({ view: type })}>
             <a>
               <Button variant="quiet">
                 <Text>{formatMessage(messages.more)}</Text>

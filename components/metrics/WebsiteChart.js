@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, Row, Column, Container } from 'react-basics';
+import { Button, Icon, Text, Row, Column, Flexbox } from 'react-basics';
 import Link from 'next/link';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
@@ -9,6 +9,7 @@ import DateFilter from 'components/common/DateFilter';
 import StickyHeader from 'components/helpers/StickyHeader';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
+import RefreshButton from 'components/input/RefreshButton';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
@@ -28,13 +29,11 @@ export default function WebsiteChart({
   onDataLoad = () => {},
 }) {
   const { formatMessage } = useIntl();
-  const [dateRange, setDateRange] = useDateRange(websiteId);
+  const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
   const {
-    router,
-    resolve,
-    query: { view, url, referrer, os, browser, device, country },
+    query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { get, useQuery } = useApi();
 
@@ -66,26 +65,6 @@ export default function WebsiteChart({
     return { pageviews: [], sessions: [] };
   }, [data, startDate, endDate, unit]);
 
-  function handleCloseFilter(param) {
-    if (param === null) {
-      router.push(`/websites/${websiteId}/?view=${view}`);
-    } else {
-      router.push(resolve({ [param]: undefined }));
-    }
-  }
-
-  async function handleDateChange(value) {
-    if (value === 'all') {
-      const data = await get(`/websites/${websiteId}`);
-
-      if (data) {
-        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
-      }
-    } else {
-      setDateRange(value);
-    }
-  }
-
   return (
     <>
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
@@ -102,22 +81,15 @@ export default function WebsiteChart({
           </Link>
         )}
       </WebsiteHeader>
-      <FilterTags
-        params={{ url, referrer, os, browser, device, country }}
-        onClick={handleCloseFilter}
-      />
+      <FilterTags websiteId={websiteId} params={{ url, referrer, os, browser, device, country }} />
       <StickyHeader stickyClassName={styles.sticky} enabled={stickyHeader}>
         <Row className={styles.header}>
-          <Column xs={12} sm={12} md={12} defaultSize={10}>
+          <Column>
             <MetricsBar websiteId={websiteId} />
           </Column>
-          <Column className={styles.filter} xs={12} sm={12} md={12} defaultSize={2}>
-            <DateFilter
-              value={value}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={handleDateChange}
-            />
+          <Column className={styles.actions}>
+            <RefreshButton websiteId={websiteId} isLoading={isLoading} />
+            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
           </Column>
         </Row>
       </StickyHeader>

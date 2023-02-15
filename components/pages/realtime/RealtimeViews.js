@@ -1,12 +1,14 @@
 import { useMemo, useState, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { ButtonGroup, Button } from 'react-basics';
+import { useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
-import DataTable from './DataTable';
-import FilterButtons from 'components/common/FilterButtons';
+import DataTable from 'components/metrics/DataTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
+import { labels } from 'components/messages';
 
-export default function RealtimeViews({ websiteId, data, websites }) {
+export default function RealtimeViews({ websiteId, data = {}, websites }) {
+  const { formatMessage } = useIntl();
   const { pageviews } = data;
   const [filter, setFilter] = useState(FILTER_REFERRERS);
   const domains = useMemo(() => websites.map(({ domain }) => domain), [websites]);
@@ -20,11 +22,11 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
   const buttons = [
     {
-      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
+      label: formatMessage(labels.referrers),
       key: FILTER_REFERRERS,
     },
     {
-      label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
+      label: formatMessage(labels.pages),
       key: FILTER_PAGES,
     },
   ];
@@ -38,7 +40,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
     );
   };
 
-  const [referrers, pages] = useMemo(() => {
+  const [referrers = [], pages = []] = useMemo(() => {
     if (pageviews) {
       const referrers = percentFilter(
         pageviews
@@ -83,24 +85,27 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
       return [referrers, pages];
     }
+
     return [];
   }, [pageviews]);
 
   return (
     <>
-      <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+      <ButtonGroup items={buttons} selectedKey={filter} onSelect={setFilter}>
+        {({ key, label }) => <Button key={key}>{label}</Button>}
+      </ButtonGroup>
       {filter === FILTER_REFERRERS && (
         <DataTable
-          title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
-          metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          title={formatMessage(labels.referrers)}
+          metric={formatMessage(labels.views)}
           renderLabel={renderLink}
           data={referrers}
         />
       )}
       {filter === FILTER_PAGES && (
         <DataTable
-          title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
-          metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          title={formatMessage(labels.pages)}
+          metric={formatMessage(labels.views)}
           renderLabel={renderLink}
           data={pages}
         />
