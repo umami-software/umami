@@ -24,6 +24,8 @@ CREATE TABLE `session` (
     `screen` VARCHAR(11) NULL,
     `language` VARCHAR(35) NULL,
     `country` CHAR(2) NULL,
+    `subdivision` CHAR(3) NULL,
+    `city` VARCHAR(50) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     UNIQUE INDEX `session_session_id_key`(`session_id`),
@@ -60,6 +62,7 @@ CREATE TABLE `website_event` (
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `url` VARCHAR(500) NOT NULL,
     `referrer` VARCHAR(500) NULL,
+    `page_title` VARCHAR(500) NULL,
     `event_type` INTEGER UNSIGNED NOT NULL DEFAULT 1,
     `event_name` VARCHAR(50) NULL,
     `event_data` JSON NULL,
