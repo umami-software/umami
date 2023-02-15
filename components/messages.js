@@ -96,6 +96,7 @@ export const labels = defineMessages({
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
+  pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
 });
 
 export const messages = defineMessages({

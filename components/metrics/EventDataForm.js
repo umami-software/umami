@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import classNames from 'classnames';
-import DateFilter from 'components/common/DateFilter';
+import DateFilter from 'components/input/DateFilter';
 import DataTable from 'components/metrics/DataTable';
 import FilterTags from 'components/metrics/FilterTags';
 import useApi from 'hooks/useApi';

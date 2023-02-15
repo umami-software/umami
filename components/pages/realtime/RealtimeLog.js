@@ -26,7 +26,7 @@ const TYPE_ICONS = {
   [TYPE_EVENT]: <Icons.Bolt />,
 };
 
-export default function RealtimeLog({ data, websites, websiteId }) {
+export default function RealtimeLog({ data, websiteDomain }) {
   const { formatMessage } = useIntl();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
@@ -92,10 +92,6 @@ export default function RealtimeLog({ data, websites, websiteId }) {
     return TYPE_ICONS[getType(row)];
   }
 
-  function getWebsite({ websiteId }) {
-    return websites.find(n => n.id === websiteId);
-  }
-
   function getDetail({
     eventName,
     pageviewId,
@@ -111,11 +107,10 @@ export default function RealtimeLog({ data, websites, websiteId }) {
       return <div>{eventName}</div>;
     }
     if (pageviewId) {
-      const domain = getWebsite({ websiteId })?.domain;
       return (
         <a
           className={styles.link}
-          href={`//${domain}${url}`}
+          href={`//${websiteDomain}${url}`}
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -146,7 +141,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
   function getColor(row) {
     const { sessionId } = row;
 
-    return stringToColor(uuids[sessionId] || `${sessionId}${getWebsite(row)}`);
+    return stringToColor(uuids[sessionId] || `${sessionId}}`);
   }
 
   const Row = ({ index, style }) => {
@@ -161,9 +156,6 @@ export default function RealtimeLog({ data, websites, websiteId }) {
           <Icon className={styles.icon} icon={getIcon(row)} />
           {getDetail(row)}
         </div>
-        {!websiteId && websites.length > 1 && (
-          <div className={styles.website}>{getWebsite(row)?.domain}</div>
-        )}
       </div>
     );
   };

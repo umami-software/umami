@@ -1,5 +1,5 @@
-import { useMemo, useState, useCallback } from 'react';
-import { ButtonGroup, Button } from 'react-basics';
+import { useMemo, useState } from 'react';
+import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import { useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
@@ -7,18 +7,10 @@ import DataTable from 'components/metrics/DataTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import { labels } from 'components/messages';
 
-export default function RealtimeViews({ websiteId, data = {}, websites }) {
+export default function RealtimeUrls({ websiteDomain, data = {} }) {
   const { formatMessage } = useIntl();
   const { pageviews } = data;
   const [filter, setFilter] = useState(FILTER_REFERRERS);
-  const domains = useMemo(() => websites.map(({ domain }) => domain), [websites]);
-  const getDomain = useCallback(
-    id =>
-      websites.length === 1
-        ? websites[0]?.domain
-        : websites.find(({ websiteId }) => websiteId === id)?.domain,
-    [websites],
-  );
 
   const buttons = [
     {
@@ -32,7 +24,7 @@ export default function RealtimeViews({ websiteId, data = {}, websites }) {
   ];
 
   const renderLink = ({ x }) => {
-    const domain = x.startsWith('/') ? getDomain(websiteId) : '';
+    const domain = x.startsWith('/') ? websiteDomain : '';
     return (
       <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
         {x}
@@ -48,7 +40,7 @@ export default function RealtimeViews({ websiteId, data = {}, websites }) {
             if (referrer?.startsWith('http')) {
               const hostname = new URL(referrer).hostname.replace(/^www\./, '');
 
-              if (hostname && !domains.includes(hostname)) {
+              if (hostname) {
                 const row = arr.find(({ x }) => x === hostname);
 
                 if (!row) {
@@ -65,11 +57,8 @@ export default function RealtimeViews({ websiteId, data = {}, websites }) {
 
       const pages = percentFilter(
         pageviews
-          .reduce((arr, { url, websiteId }) => {
+          .reduce((arr, { url }) => {
             if (url?.startsWith('/')) {
-              if (!websiteId && websites.length > 1) {
-                url = `${getDomain(websiteId)}${url}`;
-              }
               const row = arr.find(({ x }) => x === url);
 
               if (!row) {
@@ -91,9 +80,11 @@ export default function RealtimeViews({ websiteId, data = {}, websites }) {
 
   return (
     <>
-      <ButtonGroup items={buttons} selectedKey={filter} onSelect={setFilter}>
-        {({ key, label }) => <Button key={key}>{label}</Button>}
-      </ButtonGroup>
+      <Flexbox justifyContent="center">
+        <ButtonGroup items={buttons} selectedKey={filter} onSelect={setFilter}>
+          {({ key, label }) => <Button key={key}>{label}</Button>}
+        </ButtonGroup>
+      </Flexbox>
       {filter === FILTER_REFERRERS && (
         <DataTable
           title={formatMessage(labels.referrers)}

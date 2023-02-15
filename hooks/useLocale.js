@@ -51,7 +51,7 @@ export default function useLocale() {
   }, [locale]);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
+    const url = new URL(window?.location?.href);
     const locale = url.searchParams.get('locale');
 
     if (locale) {

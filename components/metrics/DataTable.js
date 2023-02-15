@@ -8,7 +8,7 @@ import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './DataTable.module.css';
 
 export default function DataTable({
-  data,
+  data = [],
   title,
   metric,
   className,

@@ -1,10 +1,10 @@
 import AppLayout from 'components/layout/AppLayout';
-import RealtimeDashboard from 'components/pages/realtime/RealtimeDashboard';
+import RealtimeHome from 'components/pages/realtime/RealtimeHome';
 
 export default function RealtimePage() {
   return (
     <AppLayout>
-      <RealtimeDashboard />
+      <RealtimeHome />
     </AppLayout>
   );
 }

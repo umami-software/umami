@@ -6,12 +6,13 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
 import WebsiteChart from 'components/metrics/WebsiteChart';
+import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
   const { get, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(['websites:test-console'], () => get('/websites'));
+  const { data, isLoading, error } = useQuery(['websites:me'], () => get('/me/websites'));
   const router = useRouter();
   const {
     basePath,
@@ -50,15 +51,7 @@ export default function TestConsole() {
         )}
       </Head>
       <PageHeader title="Test console">
-        <Dropdown
-          items={data}
-          renderValue={() => website?.name || 'Select website'}
-          value={website?.id}
-          onChange={handleChange}
-          style={{ width: 300 }}
-        >
-          {({ id, name }) => <Item key={id}>{name}</Item>}
-        </Dropdown>
+        <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
       </PageHeader>
       {website && (
         <>

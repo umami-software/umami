@@ -2,11 +2,11 @@ import { getPageviews } from '../pageview/getPageviews';
 import { getSessions } from '../session/getSessions';
 import { getEvents } from '../event/getEvents';
 
-export async function getRealtimeData(websites, time) {
+export async function getRealtimeData(websiteId, time) {
   const [pageviews, sessions, events] = await Promise.all([
-    getPageviews(websites, time),
-    getSessions(websites, time),
-    getEvents(websites, time),
+    getPageviews(websiteId, time),
+    getSessions(websiteId, time),
+    getEvents(websiteId, time),
   ]);
 
   return {
