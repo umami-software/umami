@@ -24,7 +24,8 @@ CREATE TABLE `session` (
     `screen` VARCHAR(11) NULL,
     `language` VARCHAR(35) NULL,
     `country` CHAR(2) NULL,
-    `subdivision` CHAR(3) NULL,
+    `subdivision1` CHAR(3) NULL,
+    `subdivision2` CHAR(3) NULL,
     `city` VARCHAR(50) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
 
