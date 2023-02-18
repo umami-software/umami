@@ -33,9 +33,16 @@ export default function RealtimeChart({ data, unit, ...props }) {
       return { pageviews: [], sessions: [] };
     }
 
+    const visitors = data.sessions?.reduce((arr, val) => {
+      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
+        return arr.concat(val);
+      }
+      return arr;
+    }, []);
+
     return {
       pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
-      sessions: getDateArray(mapData(data.sessions), startDate, endDate, unit),
+      sessions: getDateArray(mapData(visitors), startDate, endDate, unit),
     };
   }, [data, startDate, endDate, unit]);
 
