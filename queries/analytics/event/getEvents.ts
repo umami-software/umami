@@ -26,12 +26,13 @@ function clickhouseQuery(websiteId: string, startAt: Date) {
 
   return rawQuery(
     `select
-      event_id,
-      website_id, 
-      session_id,
-      created_at,
+      event_id as id,
+      website_id as websiteId, 
+      session_id as sessionId,
+      created_at as createdAt,
+      toUnixTimestamp(created_at) as timestamp,
       url,
-      event_name
+      event_name as eventName
     from event
     where event_type = ${EVENT_TYPE.customEvent}
       and website_id = {websiteId:UUID}

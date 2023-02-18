@@ -29,6 +29,7 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
         website_id as websiteId,
         session_id as sessionId,
         created_at as createdAt,
+        toUnixTimestamp(created_at) as timestamp,
         url
       from event
       where event_type = ${EVENT_TYPE.pageView}

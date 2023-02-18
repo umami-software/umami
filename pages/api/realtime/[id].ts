@@ -9,9 +9,14 @@ export default async (req: NextApiRequestAuth, res: NextApiResponse<RealtimeInit
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    const { id } = req.query;
+    const { id, startAt } = req.query;
+    let startTime = subMinutes(new Date(), 30);
 
-    const data = await getRealtimeData(id, subMinutes(new Date(), 30));
+    if (+startAt > startTime.getTime()) {
+      startTime = new Date(+startAt);
+    }
+
+    const data = await getRealtimeData(id, startTime);
 
     return ok(res, data);
   }

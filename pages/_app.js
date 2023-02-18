@@ -14,6 +14,7 @@ import '@fontsource/inter/600.css';
 const client = new QueryClient({
   defaultOptions: {
     queries: {
+      retry: false,
       refetchOnWindowFocus: false,
     },
   },

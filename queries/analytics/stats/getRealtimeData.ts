@@ -1,3 +1,4 @@
+import { md5 } from 'lib/crypto';
 import { getPageviews } from '../pageview/getPageviews';
 import { getSessions } from '../session/getSessions';
 import { getEvents } from '../event/getEvents';
@@ -9,22 +10,19 @@ export async function getRealtimeData(websiteId, time) {
     getEvents(websiteId, time),
   ]);
 
+  const decorate = (id, data) => {
+    return data.map(props => ({
+      ...props,
+      __id: md5(id, ...Object.values(props)),
+      timestamp: props.timestamp * 1000,
+      timestampCompare: new Date(props.createdAt).getTime(),
+    }));
+  };
+
   return {
-    pageviews: pageviews.map(({ id, ...props }) => ({
-      __id: `p${id}`,
-      pageviewId: id,
-      ...props,
-    })),
-    sessions: sessions.map(({ id, ...props }) => ({
-      __id: `s${id}`,
-      sessionId: id,
-      ...props,
-    })),
-    events: events.map(({ id, ...props }) => ({
-      __id: `e${id}`,
-      eventId: id,
-      ...props,
-    })),
+    pageviews: decorate('pageviews', pageviews),
+    sessions: decorate('sessions', sessions),
+    events: decorate('events', events),
     timestamp: Date.now(),
   };
 }

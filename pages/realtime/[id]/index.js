@@ -12,7 +12,7 @@ export default function RealtimeDetailsPage() {
 
   return (
     <AppLayout>
-      <RealtimeDashboard websiteId={websiteId} />
+      <RealtimeDashboard key={websiteId} websiteId={websiteId} />
     </AppLayout>
   );
 }

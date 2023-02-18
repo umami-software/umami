@@ -1,66 +1,57 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { subMinutes, startOfMinute, differenceInMinutes } from 'date-fns';
+import { subMinutes, startOfMinute } from 'date-fns';
+import { useRouter } from 'next/router';
 import firstBy from 'thenby';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import RealtimeLog from 'components/pages/realtime/RealtimeLog';
-import RealtimeHeader from 'components/pages/realtime/RealtimeHeader';
 import StickyHeader from 'components/helpers/StickyHeader';
 import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
-import DataTable from 'components/metrics/DataTable';
+import RealtimeLog from 'components/pages/realtime/RealtimeLog';
+import RealtimeHeader from 'components/pages/realtime/RealtimeHeader';
 import RealtimeUrls from 'components/pages/realtime/RealtimeUrls';
+import RealtimeCountries from 'components/pages/realtime/RealtimeCountries';
+import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
-import useLocale from 'hooks/useLocale';
-import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
 import { labels } from 'components/messages';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
-import WebsiteSelect from '../../input/WebsiteSelect';
-import { useRouter } from 'next/router';
 
-function mergeData(state = [], data, time) {
+function mergeData(state = [], data = [], time) {
   const ids = state.map(({ __id }) => __id);
   return state
     .concat(data.filter(({ __id }) => !ids.includes(__id)))
-    .filter(({ createdAt }) => new Date(createdAt).getTime() >= time);
+    .filter(({ timestamp }) => timestamp >= time);
 }
 
 export default function RealtimeDashboard({ websiteId }) {
   const { formatMessage } = useIntl();
-  const { locale } = useLocale();
   const router = useRouter();
-  const countryNames = useCountryNames(locale);
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(
     ['realtime', websiteId],
-    () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp }),
+    () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
     {
       enabled: !!websiteId,
-      retryInterval: REALTIME_INTERVAL,
+      refetchInterval: REALTIME_INTERVAL,
+      cache: false,
     },
-  );
-
-  const renderCountryName = useCallback(
-    ({ x }) => <span className={locale}>{countryNames[x]}</span>,
-    [countryNames],
   );
 
   useEffect(() => {
     if (data) {
-      const { pageviews, sessions, events, timestamp } = data;
-      const time = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
+      const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+      const time = date.getTime();
 
       setCurrentData(state => ({
-        ...state,
-        pageviews: mergeData(state?.pageviews, pageviews, time),
-        sessions: mergeData(state?.sessions, sessions, time),
-        events: mergeData(state?.events, events, time),
-        timestamp,
+        pageviews: mergeData(state?.pageviews, data.pageviews, time),
+        sessions: mergeData(state?.sessions, data.sessions, time),
+        events: mergeData(state?.events, data.events, time),
+        timestamp: data.timestamp,
       }));
     }
   }, [data]);
@@ -72,6 +63,12 @@ export default function RealtimeDashboard({ websiteId }) {
 
     currentData.countries = percentFilter(
       currentData.sessions
+        .reduce((arr, data) => {
+          if (!arr.find(({ sessionId }) => sessionId === data.sessionId)) {
+            return arr.concat(data);
+          }
+          return arr;
+        }, [])
         .reduce((arr, { country }) => {
           if (country) {
             const row = arr.find(({ x }) => x === country);
@@ -115,12 +112,7 @@ export default function RealtimeDashboard({ websiteId }) {
       </GridRow>
       <GridRow>
         <GridColumn xs={12} lg={4}>
-          <DataTable
-            title={formatMessage(labels.countries)}
-            metric={formatMessage(labels.visitors)}
-            data={realtimeData?.countries}
-            renderLabel={renderCountryName}
-          />
+          <RealtimeCountries data={realtimeData?.countries} />
         </GridColumn>
         <GridColumn xs={12} lg={8}>
           <WorldMap data={realtimeData?.countries} />
