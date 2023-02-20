@@ -40,7 +40,10 @@ async function clickhouseQuery(websites: string[], startAt: Date) {
       device,
       screen,
       language,
-      country
+      country,
+      subdivision1,
+      subdivision2,
+      city
     from event
     where ${websites && websites.length > 0 ? `website_id in {websites:Array(UUID)}` : '0 = 0'}
       and created_at >= {startAt:DateTime('UTC')}`,

@@ -19,6 +19,9 @@ export interface NextApiRequestCollect extends NextApiRequest {
     screen: string;
     language: string;
     country: string;
+    subdivision1: string;
+    subdivision2: string;
+    city: string;
   };
 }
 

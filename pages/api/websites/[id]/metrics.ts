@@ -46,6 +46,9 @@ export interface WebsiteMetricsRequestQuery {
   browser: string;
   device: string;
   country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }
 
 export default async (
@@ -66,6 +69,9 @@ export default async (
     browser,
     device,
     country,
+    subdivision1,
+    subdivision2,
+    city,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -86,6 +92,9 @@ export default async (
           browser,
           device,
           country,
+          subdivision1,
+          subdivision2,
+          city,
         },
       });
 
@@ -131,6 +140,9 @@ export default async (
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
+        subdivision1: type !== 'subdivision1' ? subdivision1 : undefined,
+        subdivision2: type !== 'subdivision2' ? subdivision2 : undefined,
+        city: type !== 'city' ? city : undefined,
         eventUrl: type !== 'url' && table === 'event' ? url : undefined,
         query: type === 'query' && table !== 'event' ? true : undefined,
       };

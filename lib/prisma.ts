@@ -135,6 +135,9 @@ function getFilterQuery(filters = {}, params = []): string {
       case 'os':
       case 'browser':
       case 'device':
+      case 'subdivision1':
+      case 'subdivision2':
+      case 'city':
       case 'country':
         arr.push(`and ${key}=$${params.length + 1}`);
         params.push(decodeURIComponent(filter));
@@ -171,11 +174,24 @@ function parseFilters(
   params = [],
   sessionKey = 'session_id',
 ) {
-  const { domain, url, eventUrl, referrer, os, browser, device, country, eventName, query } =
-    filters;
+  const {
+    domain,
+    url,
+    eventUrl,
+    referrer,
+    os,
+    browser,
+    device,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+    eventName,
+    query,
+  } = filters;
 
   const pageviewFilters = { domain, url, referrer, query };
-  const sessionFilters = { os, browser, device, country };
+  const sessionFilters = { os, browser, device, country, subdivision1, subdivision2, city };
   const eventFilters = { url: eventUrl, eventName };
 
   return {
@@ -184,7 +200,7 @@ function parseFilters(
     eventFilters,
     event: { eventName },
     joinSession:
-      os || browser || device || country
+      os || browser || device || country || subdivision1 || subdivision2 || city
         ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
         : '',
     filterQuery: getFilterQuery(filters, params),

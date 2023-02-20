@@ -31,7 +31,10 @@ async function clickhouseQuery({ id: sessionId }: { id: string }) {
       device, 
       screen,
       language, 
-      country 
+      country,
+      subdivision1,
+      subdivision2,
+      city
     from event
       where session_id = {sessionId:UUID}
     limit 1`,

@@ -12,7 +12,7 @@ let url =
 if (process.env.MAXMIND_LICENSE_KEY) {
   url =
     `https://download.maxmind.com/app/geoip_download` +
-    `?edition_id=GeoLite2-Country&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
+    `?edition_id=GeoLite2-City&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
 }
 
 const dest = path.resolve(__dirname, '../node_modules/.geo');

@@ -17,6 +17,9 @@ export async function savePageView(args: {
   screen?: string;
   language?: string;
   country?: string;
+  subdivision1?: string;
+  subdivision2?: string;
+  city?: string;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
@@ -45,19 +48,32 @@ async function relationalQuery(data: {
 }
 
 async function clickhouseQuery(data) {
-  const { websiteId, id: sessionId, url, referrer, country, ...args } = data;
-  const website = await cache.fetchWebsite(websiteId);
+  const {
+    websiteId,
+    id: sessionId,
+    url,
+    referrer,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+    ...args
+  } = data;
   const { getDateFormat, sendMessage } = kafka;
+  const website = await cache.fetchWebsite(websiteId);
 
   const message = {
-    session_id: sessionId,
     website_id: websiteId,
+    session_id: sessionId,
+    rev_id: website?.revId || 0,
+    country: country ? country : null,
+    subdivision1: subdivision1 ? subdivision1 : null,
+    subdivision2: subdivision2 ? subdivision2 : null,
+    city: city ? city : null,
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
-    rev_id: website?.revId || 0,
-    created_at: getDateFormat(new Date()),
-    country: country ? country : null,
     event_type: EVENT_TYPE.pageView,
+    created_at: getDateFormat(new Date()),
     ...args,
   };
 

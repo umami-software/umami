@@ -15,7 +15,7 @@ CREATE TABLE event
     screen LowCardinality(String),
     language LowCardinality(String),
     country LowCardinality(String),
-    subdivision LowCardinality(String),
+    subdivision1 LowCardinality(String),
     subdivision2 LowCardinality(String),
     city String,
     --pageview

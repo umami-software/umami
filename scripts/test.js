@@ -1,10 +1,7 @@
 /* eslint-disable no-console */
 require('dotenv').config();
-const fs = require('fs');
 const path = require('path');
-const https = require('https');
-const zlib = require('zlib');
-const tar = require('tar');
+
 const maxmind = require('maxmind');
 
 async function getLocation() {
