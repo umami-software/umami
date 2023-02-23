@@ -5,14 +5,7 @@ import styles from './RealtimeHeader.module.css';
 
 export default function RealtimeHeader({ data = {} }) {
   const { formatMessage } = useIntl();
-  const { pageviews, sessions, events, countries } = data;
-
-  const visitors = sessions?.reduce((arr, { sessionId }) => {
-    if (sessionId && !arr.includes(sessionId)) {
-      return arr.concat(sessionId);
-    }
-    return arr;
-  }, []);
+  const { pageviews, visitors, events, countries } = data;
 
   return (
     <div className={styles.header}>

@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
-import { StatusLight, Icon } from 'react-basics';
+import { StatusLight, Icon, Text } from 'react-basics';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
-import { getDeviceMessage, labels } from 'components/messages';
+import { getDeviceMessage, labels, messages } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -15,12 +15,12 @@ import { safeDecodeURI } from 'next-basics';
 import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
 
-const TYPE_ALL = 'type-all';
-const TYPE_PAGEVIEW = 'type-pageview';
-const TYPE_SESSION = 'type-session';
-const TYPE_EVENT = 'type-event';
+const TYPE_ALL = 'all';
+const TYPE_PAGEVIEW = 'pageview';
+const TYPE_SESSION = 'session';
+const TYPE_EVENT = 'event';
 
-const TYPE_ICONS = {
+const icons = {
   [TYPE_PAGEVIEW]: <Icons.Eye />,
   [TYPE_SESSION]: <Icons.Visitor />,
   [TYPE_EVENT]: <Icons.Bolt />,
@@ -32,30 +32,6 @@ export default function RealtimeLog({ data, websiteDomain }) {
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
-  const logs = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    const { pageviews, sessions, events } = data;
-    const logs = [...pageviews, ...sessions, ...events].sort(firstBy('createdAt', -1));
-    if (filter) {
-      return logs.filter(row => getType(row) === filter);
-    }
-    return logs;
-  }, [data, filter]);
-
-  const uuids = useMemo(() => {
-    if (!data) {
-      return [];
-    }
-
-    return data.sessions.reduce((obj, { sessionId, sessionUuid }) => {
-      obj[sessionId] = sessionUuid;
-      return obj;
-    }, {});
-  }, [data]);
-
   const buttons = [
     {
       label: formatMessage(labels.all),
@@ -66,7 +42,7 @@ export default function RealtimeLog({ data, websiteDomain }) {
       key: TYPE_PAGEVIEW,
     },
     {
-      label: formatMessage(labels.sessions),
+      label: formatMessage(labels.visitors),
       key: TYPE_SESSION,
     },
     {
@@ -75,42 +51,41 @@ export default function RealtimeLog({ data, websiteDomain }) {
     },
   ];
 
-  function getType({ pageviewId, sessionId, eventId }) {
-    if (eventId) {
-      return TYPE_EVENT;
-    }
-    if (pageviewId) {
-      return TYPE_PAGEVIEW;
-    }
-    if (sessionId) {
-      return TYPE_SESSION;
-    }
-    return null;
-  }
+  const getTime = ({ createdAt }) => dateFormat(new Date(createdAt), 'pp', locale);
 
-  function getIcon(row) {
-    return TYPE_ICONS[getType(row)];
-  }
+  const getColor = ({ sessionId }) => stringToColor(sessionId);
 
-  function getDetail({
-    eventName,
-    pageviewId,
-    sessionId,
-    url,
-    browser,
-    os,
-    country,
-    device,
-    websiteId,
-  }) {
-    if (eventName) {
-      return <div>{eventName}</div>;
+  const getIcon = ({ __type }) => icons[__type];
+
+  const getDetail = log => {
+    const { __type, eventName, url, browser, os, country, device } = log;
+
+    if (__type === TYPE_EVENT) {
+      return (
+        <FormattedMessage
+          {...messages.eventLog}
+          values={{
+            event: <b>{eventName || formatMessage(labels.unknown)}</b>,
+            url: (
+              <a
+                href={`//${websiteDomain}${url}`}
+                className={styles.link}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                {url}
+              </a>
+            ),
+          }}
+        />
+      );
     }
-    if (pageviewId) {
+
+    if (__type === TYPE_PAGEVIEW) {
       return (
         <a
-          className={styles.link}
           href={`//${websiteDomain}${url}`}
+          className={styles.link}
           target="_blank"
           rel="noreferrer noopener"
         >
@@ -118,11 +93,11 @@ export default function RealtimeLog({ data, websiteDomain }) {
         </a>
       );
     }
-    if (sessionId) {
+
+    if (__type === TYPE_SESSION) {
       return (
         <FormattedMessage
-          id="message.log.visitor"
-          defaultMessage="Visitor from {country} using {browser} on {os} {device}"
+          {...messages.visitorLog}
           values={{
             country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
@@ -132,17 +107,7 @@ export default function RealtimeLog({ data, websiteDomain }) {
         />
       );
     }
-  }
-
-  function getTime({ createdAt }) {
-    return dateFormat(new Date(createdAt), 'pp', locale);
-  }
-
-  function getColor(row) {
-    const { sessionId } = row;
-
-    return stringToColor(uuids[sessionId] || `${sessionId}}`);
-  }
+  };
 
   const Row = ({ index, style }) => {
     const row = logs[index];
@@ -153,19 +118,32 @@ export default function RealtimeLog({ data, websiteDomain }) {
         </div>
         <div className={styles.time}>{getTime(row)}</div>
         <div className={styles.detail}>
-          <Icon className={styles.icon} icon={getIcon(row)} />
-          {getDetail(row)}
+          <Icon className={styles.icon}>{getIcon(row)}</Icon>
+          <Text>{getDetail(row)}</Text>
         </div>
       </div>
     );
   };
 
+  const logs = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    const { pageviews, visitors, events } = data;
+    const logs = [...pageviews, ...visitors, ...events].sort(firstBy('createdAt', -1));
+
+    if (filter !== TYPE_ALL) {
+      return logs.filter(({ __type }) => __type === filter);
+    }
+
+    return logs;
+  }, [data, filter]);
+
   return (
     <div className={styles.table}>
       <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
-      <div className={styles.header}>
-        <FormattedMessage id="label.realtime-logs" defaultMessage="Realtime logs" />
-      </div>
+      <div className={styles.header}>{formatMessage(labels.logs)}</div>
       <div className={styles.body}>
         {logs?.length === 0 && <NoData />}
         {logs?.length > 0 && (

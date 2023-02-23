@@ -58,7 +58,7 @@ export default function RealtimeDashboard({ websiteId }) {
 
   const realtimeData = useMemo(() => {
     if (!currentData) {
-      return { pageviews: [], sessions: [], events: [], countries: [] };
+      return { pageviews: [], sessions: [], events: [], countries: [], visitors: [] };
     }
 
     currentData.countries = percentFilter(
@@ -83,6 +83,13 @@ export default function RealtimeDashboard({ websiteId }) {
         }, [])
         .sort(firstBy('y', -1)),
     );
+
+    currentData.visitors = currentData.sessions.reduce((arr, val) => {
+      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
+        return arr.concat(val);
+      }
+      return arr;
+    }, []);
 
     return currentData;
   }, [currentData]);

@@ -14,15 +14,15 @@ export async function getRealtimeData(websiteId, time) {
     return data.map(props => ({
       ...props,
       __id: md5(id, ...Object.values(props)),
-      timestamp: props.timestamp * 1000,
-      timestampCompare: new Date(props.createdAt).getTime(),
+      __type: id,
+      timestamp: props.timestamp ? props.timestamp * 1000 : new Date(props.createdAt).getTime(),
     }));
   };
 
   return {
-    pageviews: decorate('pageviews', pageviews),
-    sessions: decorate('sessions', sessions),
-    events: decorate('events', events),
+    pageviews: decorate('pageview', pageviews),
+    sessions: decorate('session', sessions),
+    events: decorate('event', events),
     timestamp: Date.now(),
   };
 }

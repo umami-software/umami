@@ -1,16 +1,14 @@
 .table {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
   overflow: hidden;
   height: 100%;
-  display: grid;
-  grid-template-rows: fit-content(100%) fit-content(100%) auto;
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 16px;
+  font-size: var(--font-size-md);
   line-height: 40px;
   font-weight: 600;
 }
@@ -18,6 +16,7 @@
 .row {
   display: flex;
   align-items: center;
+  gap: 10px;
   height: 40px;
   border-bottom: 1px solid var(--base300);
 }
@@ -44,6 +43,7 @@
 .detail {
   display: flex;
   flex: 1;
+  gap: 10px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

@@ -97,6 +97,7 @@ export const labels = defineMessages({
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
+  logs: { id: 'label.activity-log', defaultMessage: 'Activity log' },
 });
 
 export const messages = defineMessages({
@@ -167,6 +168,14 @@ export const messages = defineMessages({
   teamNotFound: {
     id: 'message.team-not-found',
     defaultMessage: 'Team not found.',
+  },
+  visitorLog: {
+    id: 'message.visitor-log',
+    defaultMessage: 'Visitor from {country} using {browser} on {os} {device}',
+  },
+  eventLog: {
+    id: 'message.event-log',
+    defaultMessage: '{event} on {url}',
   },
 });
 

@@ -8,7 +8,7 @@ function mapData(data) {
   let last = 0;
   const arr = [];
 
-  data.reduce((obj, { timestamp }) => {
+  data?.reduce((obj, { timestamp }) => {
     const t = startOfMinute(new Date(timestamp));
     if (t.getTime() > last) {
       obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
@@ -33,16 +33,9 @@ export default function RealtimeChart({ data, unit, ...props }) {
       return { pageviews: [], sessions: [] };
     }
 
-    const visitors = data.sessions?.reduce((arr, val) => {
-      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
-        return arr.concat(val);
-      }
-      return arr;
-    }, []);
-
     return {
       pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
-      sessions: getDateArray(mapData(visitors), startDate, endDate, unit),
+      sessions: getDateArray(mapData(data.visitors), startDate, endDate, unit),
     };
   }, [data, startDate, endDate, unit]);
 
