@@ -11,13 +11,13 @@ export interface User {
 }
 
 export async function getUser(
-  where: Prisma.UserWhereUniqueInput,
-  options: { includePassword?: boolean } = {},
+  where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
+  options: { includePassword?: boolean; showDeleted?: boolean } = {},
 ): Promise<User> {
-  const { includePassword = false } = options;
+  const { includePassword = false, showDeleted = false } = options;
 
-  return prisma.client.user.findUnique({
-    where,
+  return prisma.client.user.findFirst({
+    where: { ...where, ...(showDeleted ? {} : { deletedAt: null }) },
     select: {
       id: true,
       username: true,
@@ -69,6 +69,7 @@ export async function getUserWebsites(userId: string): Promise<Website[]> {
   return prisma.client.website.findMany({
     where: {
       userId,
+      deletedAt: null,
     },
     orderBy: [
       {
@@ -118,6 +119,7 @@ export async function deleteUser(
   userId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Prisma.BatchPayload, User]> {
   const { client } = prisma;
+  const cloudMode = process.env.CLOUD_MODE;
 
   const websites = await client.website.findMany({
     where: { userId },
@@ -137,20 +139,30 @@ export async function deleteUser(
       client.session.deleteMany({
         where: { websiteId: { in: websiteIds } },
       }),
-      client.website.updateMany({
-        data: {
-          deletedAt: new Date(),
-        },
-        where: { id: { in: websiteIds } },
-      }),
-      client.user.update({
-        data: {
-          deletedAt: new Date(),
-        },
-        where: {
-          id: userId,
-        },
-      }),
+      cloudMode
+        ? client.website.updateMany({
+            data: {
+              deletedAt: new Date(),
+            },
+            where: { id: { in: websiteIds } },
+          })
+        : client.website.deleteMany({
+            where: { id: { in: websiteIds } },
+          }),
+      cloudMode
+        ? client.user.update({
+            data: {
+              deletedAt: new Date(),
+            },
+            where: {
+              id: userId,
+            },
+          })
+        : client.user.delete({
+            where: {
+              id: userId,
+            },
+          }),
     ])
     .then(async data => {
       if (cache.enabled) {
