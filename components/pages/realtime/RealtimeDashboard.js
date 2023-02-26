@@ -32,11 +32,12 @@ export default function RealtimeDashboard({ websiteId }) {
   const router = useRouter();
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
+  const { data: website } = useQuery(['websites', websiteId], () => get(`/websites/${websiteId}`));
   const { data, isLoading, error } = useQuery(
     ['realtime', websiteId],
     () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
     {
-      enabled: !!websiteId,
+      enabled: !!(websiteId && website),
       refetchInterval: REALTIME_INTERVAL,
       cache: false,
     },
@@ -111,10 +112,10 @@ export default function RealtimeDashboard({ websiteId }) {
       </div>
       <GridRow>
         <GridColumn xs={12} sm={12} md={12} lg={4} xl={4}>
-          <RealtimeUrls websiteId={websiteId} data={realtimeData} />
+          <RealtimeUrls websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
         </GridColumn>
         <GridColumn xs={12} sm={12} md={12} lg={8} xl={8}>
-          <RealtimeLog websiteId={websiteId} data={realtimeData} />
+          <RealtimeLog websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
         </GridColumn>
       </GridRow>
       <GridRow>

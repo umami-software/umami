@@ -17,10 +17,10 @@ export default function RealtimeHome() {
     if (data?.length) {
       router.push(`realtime/${data[0].id}`);
     }
-  }, [data]);
+  }, [data, router]);
 
   return (
-    <Page loading={isLoading || !data} error={error}>
+    <Page loading={isLoading || data?.length > 0} error={error}>
       <PageHeader title={formatMessage(labels.realtime)} />
       {data?.length === 0 && <EmptyPlaceholder message={formatMessage(messages.noWebsites)} />}
     </Page>

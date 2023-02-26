@@ -22,7 +22,7 @@ export default function WebsiteSelect({ websiteId, onSelect }) {
       placeholder={formatMessage(labels.selectWebsite)}
       style={{ width: 200 }}
     >
-      {item => <Item key={item.id}>{item.name}</Item>}
+      {({ id, name }) => <Item key={id}>{name}</Item>}
     </Dropdown>
   );
 }
