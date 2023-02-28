@@ -8,9 +8,9 @@ import {
   getRandomChars,
 } from 'next-basics';
 import redis from '@umami/redis-client';
-import { getUser, User } from 'queries';
+import { getUser } from 'queries';
 import { secret } from 'lib/crypto';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 
 export interface LoginRequestBody {

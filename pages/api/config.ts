@@ -7,6 +7,7 @@ export interface ConfigResponse {
   updatesDisabled: boolean;
   telemetryDisabled: boolean;
   adminDisabled: boolean;
+  cloudMode: boolean;
 }
 
 export default async (req: NextApiRequest, res: NextApiResponse<ConfigResponse>) => {
@@ -17,6 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ConfigResponse>)
       updatesDisabled: !!process.env.DISABLE_UPDATES,
       telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
       adminDisabled: !!process.env.DISABLE_ADMIN,
+      cloudMode: true, //!!process.env.CLOUD_MODE,
     });
   }
 

@@ -10,9 +10,11 @@ import { labels } from 'components/messages';
 import useUser from 'hooks/useUser';
 import NavGroup from './NavGroup';
 import styles from './NavBar.module.css';
+import useConfig from 'hooks/useConfig';
 
 export default function NavBar() {
   const { user } = useUser();
+  const { cloudMode } = useConfig();
   const { formatMessage } = useIntl();
   const [minimized, setMinimized] = useState(false);
   const tooltipPosition = minimized ? 'right' : 'top';
@@ -24,13 +26,21 @@ export default function NavBar() {
   ];
 
   const settings = [
-    { label: formatMessage(labels.websites), url: '/settings/websites', icon: <Icons.Globe /> },
+    !cloudMode && {
+      label: formatMessage(labels.websites),
+      url: '/settings/websites',
+      icon: <Icons.Globe />,
+    },
     user?.isAdmin && {
       label: formatMessage(labels.users),
       url: '/settings/users',
       icon: <Icons.User />,
     },
-    { label: formatMessage(labels.teams), url: '/settings/teams', icon: <Icons.Users /> },
+    !cloudMode && {
+      label: formatMessage(labels.teams),
+      url: '/settings/teams',
+      icon: <Icons.Users />,
+    },
     { label: formatMessage(labels.profile), url: '/settings/profile', icon: <Icons.Profile /> },
   ].filter(n => n);
 
@@ -53,7 +63,7 @@ export default function NavBar() {
         <div className={styles.buttons}>
           <ThemeButton tooltipPosition={tooltipPosition} />
           <LanguageButton tooltipPosition={tooltipPosition} />
-          <LogoutButton tooltipPosition={tooltipPosition} />
+          {!cloudMode && <LogoutButton tooltipPosition={tooltipPosition} />}
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteEditForm from 'components/pages/settings/websites/WebsiteEditForm';
-import WebsiteReset from 'components/pages/settings/websites/WebsiteReset';
+import WebsiteData from 'components/pages/settings/websites/WebsiteData';
 import TrackingCode from 'components/pages/settings/websites/TrackingCode';
 import ShareUrl from 'components/pages/settings/websites/ShareUrl';
 import useApi from 'hooks/useApi';
@@ -59,8 +59,8 @@ export default function WebsiteSettings({ websiteId }) {
           </Breadcrumbs>
         }
       >
-        <Link href={`/websites/${websiteId}`}>
-          <a>
+        <Link href={`/analytics/websites/${websiteId}`}>
+          <a target="_blank">
             <Button variant="primary">
               <Icon>
                 <Icons.External />
@@ -81,7 +81,7 @@ export default function WebsiteSettings({ websiteId }) {
       )}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} data={values} />}
       {tab === 'share' && <ShareUrl websiteId={websiteId} data={values} onSave={handleSave} />}
-      {tab === 'data' && <WebsiteReset websiteId={websiteId} onSave={handleReset} />}
+      {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleReset} />}
     </Page>
   );
 }

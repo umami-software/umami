@@ -1,14 +1,7 @@
 import { Prisma, Team } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
-import { Website } from 'lib/types';
-
-export interface User {
-  id: string;
-  username: string;
-  password?: string;
-  createdAt?: Date;
-}
+import { Website, User } from 'lib/types';
 
 export async function getUser(
   where: Prisma.UserWhereUniqueInput,

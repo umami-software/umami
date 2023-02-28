@@ -1,12 +1,8 @@
 import AppLayout from 'components/layout/AppLayout';
-import useConfig from 'hooks/useConfig';
-
 import UsersList from 'components/pages/settings/users/UsersList';
 
-export default function UsersPage() {
-  const { adminDisabled } = useConfig();
-
-  if (adminDisabled) {
+export default function UsersPage({ disabled }) {
+  if (disabled) {
     return null;
   }
 
@@ -15,4 +11,12 @@ export default function UsersPage() {
       <UsersList />
     </AppLayout>
   );
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      disabled: !!process.env.CLOUD_MODE,
+    },
+  };
 }

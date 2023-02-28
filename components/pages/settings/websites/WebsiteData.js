@@ -1,10 +1,10 @@
-import { Button, Form, FormRow, Modal, ModalTrigger } from 'react-basics';
+import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
 import { useIntl } from 'react-intl';
 import WebsiteDeleteForm from 'components/pages/settings/websites/WebsiteDeleteForm';
 import WebsiteResetForm from 'components/pages/settings/websites/WebsiteResetForm';
 import { labels, messages } from 'components/messages';
 
-export default function WebsiteReset({ websiteId, onSave }) {
+export default function WebsiteData({ websiteId, onSave }) {
   const { formatMessage } = useIntl();
 
   const handleReset = async () => {
@@ -16,29 +16,33 @@ export default function WebsiteReset({ websiteId, onSave }) {
   };
 
   return (
-    <Form>
-      <FormRow label={formatMessage(labels.resetWebsite)}>
-        <p>{formatMessage(messages.resetWebsiteWarning)}</p>
+    <>
+      <ActionForm
+        label={formatMessage(labels.resetWebsite)}
+        description={formatMessage(messages.resetWebsiteWarning)}
+      >
         <ModalTrigger>
-          <Button>{formatMessage(labels.reset)}</Button>
+          <Button variant="secondary">{formatMessage(labels.reset)}</Button>
           <Modal title={formatMessage(labels.resetWebsite)}>
             {close => (
               <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
             )}
           </Modal>
         </ModalTrigger>
-      </FormRow>
-      <FormRow label={formatMessage(labels.deleteWebsite)}>
-        <p>{formatMessage(messages.deleteWebsiteWarning)}</p>
+      </ActionForm>
+      <ActionForm
+        label={formatMessage(labels.deleteWebsite)}
+        description={formatMessage(messages.deleteWebsiteWarning)}
+      >
         <ModalTrigger>
-          <Button>Delete</Button>
+          <Button variant="danger">Delete</Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
             {close => (
               <WebsiteDeleteForm websiteId={websiteId} onSave={handleDelete} onClose={close} />
             )}
           </Modal>
         </ModalTrigger>
-      </FormRow>
-    </Form>
+      </ActionForm>
+    </>
   );
 }
