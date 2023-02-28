@@ -123,14 +123,6 @@ export default function RealtimeLog({ data, websites, websiteId }) {
         <FormattedMessage
           id="message.log.visitor"
           defaultMessage="Visitor from {country} using {browser} on {os} {device}"
-          style={{
-            overflow: 'hidden',
-            'text-overflow': 'ellipsis',
-            display: '-webkit-box',
-            '-webkit-line-clamp': 2,
-            'line-clamp': 2,
-            '-webkit-box-orient': 'vertical',
-          }}
           values={{
             country: <b>{countryNames[country] || intl.formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
