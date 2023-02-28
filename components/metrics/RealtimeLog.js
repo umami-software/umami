@@ -172,7 +172,7 @@ export default function RealtimeLog({ data, websites, websiteId }) {
       <div className={styles.body}>
         {logs?.length === 0 && <NoData />}
         {logs?.length > 0 && (
-          <FixedSizeList height={400} itemCount={logs.length} itemSize={40}>
+          <FixedSizeList height={500} itemCount={logs.length} itemSize={50}>
             {Row}
           </FixedSizeList>
         )}
