@@ -36,7 +36,7 @@ export default async (
 
     const { username, password, id } = req.body;
 
-    const existingUser = await getUser({ username });
+    const existingUser = await getUser({ username }, { showDeleted: true });
 
     if (existingUser) {
       return badRequest(res, 'User already exists');

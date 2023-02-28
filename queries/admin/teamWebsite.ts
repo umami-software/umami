@@ -3,7 +3,7 @@ import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
 export async function getTeamWebsite(teamId: string, userId: string): Promise<TeamWebsite> {
-  return prisma.client.TeamWebsite.findFirst({
+  return prisma.client.teamWebsite.findFirst({
     where: {
       teamId,
       userId,
@@ -12,7 +12,7 @@ export async function getTeamWebsite(teamId: string, userId: string): Promise<Te
 }
 
 export async function getTeamWebsites(teamId: string): Promise<TeamWebsite[]> {
-  return prisma.client.TeamWebsite.findMany({
+  return prisma.client.teamWebsite.findMany({
     where: {
       teamId,
     },
@@ -28,20 +28,12 @@ export async function createTeamWebsite(
   teamId: string,
   websiteId: string,
 ): Promise<TeamWebsite> {
-  return prisma.client.TeamWebsite.create({
+  return prisma.client.teamWebsite.create({
     data: {
       id: uuid(),
       userId,
       teamId,
       websiteId,
-    },
-  });
-}
-
-export async function deleteTeamWebsite(TeamWebsiteId: string): Promise<TeamWebsite> {
-  return prisma.client.teamUser.delete({
-    where: {
-      id: TeamWebsiteId,
     },
   });
 }
