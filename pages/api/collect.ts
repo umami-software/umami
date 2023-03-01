@@ -34,7 +34,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, eventName, eventData } = payload;
+  const { referrer, eventName, eventData, pageTitle } = payload;
   let { url } = payload;
 
   // Validate eventData is JSON
@@ -98,12 +98,13 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   }
 
   if (type === 'pageview') {
-    await savePageView({ ...session, url, referrer });
+    await savePageView({ ...session, url, referrer, pageTitle });
   } else if (type === 'event') {
     await saveEvent({
       ...session,
       url,
       referrer,
+      pageTitle,
       eventName,
       eventData,
     });

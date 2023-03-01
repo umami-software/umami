@@ -10,6 +10,7 @@ export async function savePageView(args: {
   websiteId: string;
   url: string;
   referrer?: string;
+  pageTitle?: string;
   hostname?: string;
   browser?: string;
   os?: string;
@@ -32,8 +33,9 @@ async function relationalQuery(data: {
   websiteId: string;
   url: string;
   referrer?: string;
+  pageTitle?: string;
 }) {
-  const { websiteId, id: sessionId, url, referrer } = data;
+  const { websiteId, id: sessionId, url, referrer, pageTitle } = data;
 
   return prisma.client.websiteEvent.create({
     data: {
@@ -42,6 +44,7 @@ async function relationalQuery(data: {
       sessionId,
       url: url?.substring(0, URL_LENGTH),
       referrer: referrer?.substring(0, URL_LENGTH),
+      pageTitle: pageTitle,
       eventType: EVENT_TYPE.pageView,
     },
   });
@@ -53,6 +56,7 @@ async function clickhouseQuery(data) {
     id: sessionId,
     url,
     referrer,
+    pageTitle,
     country,
     subdivision1,
     subdivision2,
@@ -72,6 +76,7 @@ async function clickhouseQuery(data) {
     city: city ? city : null,
     url: url?.substring(0, URL_LENGTH),
     referrer: referrer?.substring(0, URL_LENGTH),
+    page_title: pageTitle,
     event_type: EVENT_TYPE.pageView,
     created_at: getDateFormat(new Date()),
     ...args,

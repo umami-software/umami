@@ -7,7 +7,7 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewMetrics, getSessionMetrics, getWebsite } from 'queries';
 
 const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
-const pageviewColumns = ['url', 'referrer', 'query'];
+const pageviewColumns = ['url', 'referrer', 'query', 'pageTitle'];
 
 function getTable(type) {
   if (type === 'event') {
@@ -42,6 +42,7 @@ export interface WebsiteMetricsRequestQuery {
   endAt: number;
   url: string;
   referrer: string;
+  pageTitle: string;
   os: string;
   browser: string;
   device: string;
@@ -65,6 +66,7 @@ export default async (
     endAt,
     url,
     referrer,
+    pageTitle,
     os,
     browser,
     device,
@@ -136,6 +138,7 @@ export default async (
         domain,
         url: type !== 'url' && table !== 'event' ? url : undefined,
         referrer: type !== 'referrer' && table !== 'event' ? referrer : FILTER_IGNORED,
+        pageTitle: type !== 'pageTitle' && table !== 'event' ? pageTitle : undefined,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,

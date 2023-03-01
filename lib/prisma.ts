@@ -133,6 +133,7 @@ function getFilterQuery(filters = {}, params = []): string {
     switch (key) {
       case 'url':
       case 'os':
+      case 'pageTitle':
       case 'browser':
       case 'device':
       case 'subdivision1':
@@ -179,6 +180,7 @@ function parseFilters(
     url,
     eventUrl,
     referrer,
+    pageTitle,
     os,
     browser,
     device,
@@ -190,7 +192,7 @@ function parseFilters(
     query,
   } = filters;
 
-  const pageviewFilters = { domain, url, referrer, query };
+  const pageviewFilters = { domain, url, referrer, query, pageTitle };
   const sessionFilters = { os, browser, device, country, subdivision1, subdivision2, city };
   const eventFilters = { url: eventUrl, eventName };
 

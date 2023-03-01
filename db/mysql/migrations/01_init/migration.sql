@@ -121,3 +121,6 @@ CREATE TABLE `team_website` (
     INDEX `team_website_website_id_idx`(`website_id`),
     PRIMARY KEY (`team_website_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddSystemUser
+INSERT INTO "user" (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');

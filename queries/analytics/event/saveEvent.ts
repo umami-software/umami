@@ -10,6 +10,7 @@ export async function saveEvent(args: {
   websiteId: string;
   url: string;
   referrer?: string;
+  pageTitle?: string;
   eventName?: string;
   eventData?: any;
   hostname?: string;
@@ -34,10 +35,11 @@ async function relationalQuery(data: {
   websiteId: string;
   url: string;
   referrer?: string;
+  pageTitle?: string;
   eventName?: string;
   eventData?: any;
 }) {
-  const { websiteId, id: sessionId, url, eventName, eventData, referrer } = data;
+  const { websiteId, id: sessionId, url, eventName, eventData, referrer, pageTitle } = data;
 
   return prisma.client.websiteEvent.create({
     data: {
@@ -46,6 +48,7 @@ async function relationalQuery(data: {
       sessionId,
       url: url?.substring(0, URL_LENGTH),
       referrer: referrer?.substring(0, URL_LENGTH),
+      pageTitle: pageTitle,
       eventType: EVENT_TYPE.customEvent,
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
@@ -58,6 +61,7 @@ async function clickhouseQuery(data) {
     websiteId,
     id: sessionId,
     url,
+    pageTitle,
     eventName,
     eventData,
     country,
@@ -79,6 +83,7 @@ async function clickhouseQuery(data) {
     subdivision2: subdivision2 ? subdivision2 : null,
     city: city ? city : null,
     url: url?.substring(0, URL_LENGTH),
+    page_title: pageTitle,
     event_type: EVENT_TYPE.customEvent,
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
     event_data: eventData ? JSON.stringify(eventData) : null,
