@@ -1,155 +1,131 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Row, Column } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
+import { useState, useEffect, useMemo } from 'react';
+import { useIntl } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
+import { useRouter } from 'next/router';
 import firstBy from 'thenby';
+import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import RealtimeLog from 'components/metrics/RealtimeLog';
-import RealtimeHeader from 'components/metrics/RealtimeHeader';
+import StickyHeader from 'components/helpers/StickyHeader';
+import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
-import DataTable from 'components/metrics/DataTable';
-import RealtimeViews from 'components/metrics/RealtimeViews';
+import RealtimeLog from 'components/pages/realtime/RealtimeLog';
+import RealtimeHeader from 'components/pages/realtime/RealtimeHeader';
+import RealtimeUrls from 'components/pages/realtime/RealtimeUrls';
+import RealtimeCountries from 'components/pages/realtime/RealtimeCountries';
+import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
-import useLocale from 'hooks/useLocale';
-import useCountryNames from 'hooks/useCountryNames';
 import { percentFilter } from 'lib/filters';
-import { SHARE_TOKEN_HEADER, REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
+import { labels } from 'components/messages';
+import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
-function mergeData(state, data, time) {
+function mergeData(state = [], data = [], time) {
   const ids = state.map(({ __id }) => __id);
   return state
     .concat(data.filter(({ __id }) => !ids.includes(__id)))
-    .filter(({ createdAt }) => new Date(createdAt).getTime() >= time);
+    .filter(({ timestamp }) => timestamp >= time);
 }
 
-function filterWebsite(data, id) {
-  return data.filter(({ websiteId }) => websiteId === id);
-}
-
-export default function RealtimeDashboard() {
-  const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
-  const [data, setData] = useState();
-  const [websiteId, setWebsiteId] = useState(null);
+export default function RealtimeDashboard({ websiteId }) {
+  const { formatMessage } = useIntl();
+  const router = useRouter();
+  const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
-  const { data: init, isLoading } = useQuery(['realtime:init'], () => get('/realtime/init'));
-  const { data: updates } = useQuery(
-    ['realtime:updates'],
-    () =>
-      get('/realtime/update', { startAt: data?.timestamp }, { [SHARE_TOKEN_HEADER]: init?.token }),
+  const { data: website } = useQuery(['websites', websiteId], () => get(`/websites/${websiteId}`));
+  const { data, isLoading, error } = useQuery(
+    ['realtime', websiteId],
+    () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
     {
-      disabled: !init?.websites?.length || !data,
-      retryInterval: REALTIME_INTERVAL,
+      enabled: !!(websiteId && website),
+      refetchInterval: REALTIME_INTERVAL,
+      cache: false,
     },
   );
 
-  const renderCountryName = useCallback(
-    ({ x }) => <span className={locale}>{countryNames[x]}</span>,
-    [countryNames],
-  );
-
-  const realtimeData = useMemo(() => {
+  useEffect(() => {
     if (data) {
-      const { pageviews, sessions, events } = data;
+      const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+      const time = date.getTime();
 
-      if (websiteId) {
-        const { id } = init.websites.find(n => n.id === websiteId);
-        return {
-          pageviews: filterWebsite(pageviews, id),
-          sessions: filterWebsite(sessions, id),
-          events: filterWebsite(events, id),
-        };
-      }
-    }
-
-    return data;
-  }, [data, websiteId]);
-
-  const countries = useMemo(() => {
-    if (realtimeData?.sessions) {
-      return percentFilter(
-        realtimeData.sessions
-          .reduce((arr, { country }) => {
-            if (country) {
-              const row = arr.find(({ x }) => x === country);
-
-              if (!row) {
-                arr.push({ x: country, y: 1 });
-              } else {
-                row.y += 1;
-              }
-            }
-            return arr;
-          }, [])
-          .sort(firstBy('y', -1)),
-      );
-    }
-    return [];
-  }, [realtimeData?.sessions]);
-
-  useEffect(() => {
-    if (init && !data) {
-      const { websites, data } = init;
-
-      setData({ websites, ...data });
-    }
-  }, [init]);
-
-  useEffect(() => {
-    if (updates) {
-      const { pageviews, sessions, events, timestamp } = updates;
-      const time = subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime();
-
-      setData(state => ({
-        ...state,
-        pageviews: mergeData(state.pageviews, pageviews, time),
-        sessions: mergeData(state.sessions, sessions, time),
-        events: mergeData(state.events, events, time),
-        timestamp,
+      setCurrentData(state => ({
+        pageviews: mergeData(state?.pageviews, data.pageviews, time),
+        sessions: mergeData(state?.sessions, data.sessions, time),
+        events: mergeData(state?.events, data.events, time),
+        timestamp: data.timestamp,
       }));
     }
-  }, [updates]);
+  }, [data]);
 
-  if (!init || !data || isLoading) {
-    return null;
-  }
+  const realtimeData = useMemo(() => {
+    if (!currentData) {
+      return { pageviews: [], sessions: [], events: [], countries: [], visitors: [] };
+    }
 
-  const { websites } = data;
+    currentData.countries = percentFilter(
+      currentData.sessions
+        .reduce((arr, data) => {
+          if (!arr.find(({ sessionId }) => sessionId === data.sessionId)) {
+            return arr.concat(data);
+          }
+          return arr;
+        }, [])
+        .reduce((arr, { country }) => {
+          if (country) {
+            const row = arr.find(({ x }) => x === country);
+
+            if (!row) {
+              arr.push({ x: country, y: 1 });
+            } else {
+              row.y += 1;
+            }
+          }
+          return arr;
+        }, [])
+        .sort(firstBy('y', -1)),
+    );
+
+    currentData.visitors = currentData.sessions.reduce((arr, val) => {
+      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
+        return arr.concat(val);
+      }
+      return arr;
+    }, []);
+
+    return currentData;
+  }, [currentData]);
+
+  const handleSelect = id => {
+    router.push(`/realtime/${id}`);
+  };
 
   return (
-    <Page>
-      <RealtimeHeader
-        websites={websites}
-        websiteId={websiteId}
-        data={{ ...realtimeData, countries }}
-        onSelect={setWebsiteId}
-      />
+    <Page loading={isLoading} error={error}>
+      <PageHeader title={formatMessage(labels.realtime)}>
+        <WebsiteSelect websiteId={websiteId} onSelect={handleSelect} />
+      </PageHeader>
+      <StickyHeader stickyClassName={styles.sticky}>
+        <RealtimeHeader websiteId={websiteId} data={currentData} />
+      </StickyHeader>
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>
-      <Row>
-        <Column xs={12} lg={4}>
-          <RealtimeViews websiteId={websiteId} data={realtimeData} websites={websites} />
-        </Column>
-        <Column xs={12} lg={8}>
-          <RealtimeLog websiteId={websiteId} data={realtimeData} websites={websites} />
-        </Column>
-      </Row>
-      <Row>
-        <Column xs={12} lg={4}>
-          <DataTable
-            title={<FormattedMessage id="metrics.countries" defaultMessage="Countries" />}
-            metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
-            data={countries}
-            renderLabel={renderCountryName}
-          />
-        </Column>
-        <Column xs={12} lg={8}>
-          <WorldMap data={countries} />
-        </Column>
-      </Row>
+      <GridRow>
+        <GridColumn xs={12} sm={12} md={12} lg={4} xl={4}>
+          <RealtimeUrls websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
+        </GridColumn>
+        <GridColumn xs={12} sm={12} md={12} lg={8} xl={8}>
+          <RealtimeLog websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
+        </GridColumn>
+      </GridRow>
+      <GridRow>
+        <GridColumn xs={12} lg={4}>
+          <RealtimeCountries data={realtimeData?.countries} />
+        </GridColumn>
+        <GridColumn xs={12} lg={8}>
+          <WorldMap data={realtimeData?.countries} />
+        </GridColumn>
+      </GridRow>
     </Page>
   );
 }

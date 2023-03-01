@@ -19,7 +19,7 @@
 .title {
   display: flex;
   align-items: center;
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 700;
   gap: 20px;
 }

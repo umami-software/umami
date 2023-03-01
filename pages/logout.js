@@ -4,7 +4,7 @@ import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
 import { removeClientAuthToken } from 'lib/client';
 
-export default function LogoutPage() {
+export default function LogoutPage({ disabled }) {
   const router = useRouter();
   const { post } = useApi();
 
@@ -13,14 +13,24 @@ export default function LogoutPage() {
       await post('/logout');
     }
 
-    removeClientAuthToken();
+    if (!disabled) {
+      removeClientAuthToken();
 
-    logout();
+      logout();
 
-    router.push('/login');
+      router.push('/login');
 
-    return () => setUser(null);
-  }, []);
+      return () => setUser(null);
+    }
+  }, [disabled, router, post]);
 
   return null;
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      disabled: !!(process.env.DISABLE_LOGIN || process.env.CLOUD_MODE),
+    },
+  };
 }

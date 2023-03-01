@@ -8,13 +8,10 @@ import WebsiteChart from 'components/metrics/WebsiteChart';
 import useApi from 'hooks/useApi';
 import usePageQuery from 'hooks/usePageQuery';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
-import { labels } from 'components/messages';
-import styles from './WebsiteDetails.module.css';
 import WebsiteTableView from './WebsiteTableView';
 import WebsiteMenuView from './WebsiteMenuView';
 
 export default function WebsiteDetails({ websiteId }) {
-  const { formatMessage } = useIntl();
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites', websiteId], () =>
     get(`/websites/${websiteId}`),
@@ -22,7 +19,6 @@ export default function WebsiteDetails({ websiteId }) {
   const [chartLoaded, setChartLoaded] = useState(false);
 
   const {
-    resolve,
     query: { view },
   } = usePageQuery();
 

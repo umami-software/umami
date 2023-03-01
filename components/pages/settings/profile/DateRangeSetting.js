@@ -1,5 +1,5 @@
 import { useIntl } from 'react-intl';
-import DateFilter from 'components/common/DateFilter';
+import DateFilter from 'components/input/DateFilter';
 import { Button, Flexbox } from 'react-basics';
 import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';

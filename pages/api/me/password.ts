@@ -1,4 +1,4 @@
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, User } from 'lib/types';
 import { canUpdateUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
@@ -7,10 +7,11 @@ import {
   checkPassword,
   hashPassword,
   methodNotAllowed,
+  forbidden,
   ok,
   unauthorized,
 } from 'next-basics';
-import { getUser, updateUser, User } from 'queries';
+import { getUser, updateUser } from 'queries';
 
 export interface UserPasswordRequestQuery {
   id: string;
@@ -25,6 +26,10 @@ export default async (
   req: NextApiRequestQueryBody<UserPasswordRequestQuery, UserPasswordRequestBody>,
   res: NextApiResponse<User>,
 ) => {
+  if (process.env.CLOUD_MODE) {
+    return forbidden(res);
+  }
+
   await useAuth(req, res);
 
   const { currentPassword, newPassword } = req.body;

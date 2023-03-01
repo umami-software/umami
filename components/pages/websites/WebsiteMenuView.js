@@ -1,7 +1,7 @@
-import { Row, Column, Menu, Item, Icon, Button, Flexbox, Text } from 'react-basics';
+import { Menu, Item, Icon, Button, Flexbox, Text } from 'react-basics';
 import { useIntl } from 'react-intl';
 import Link from 'next/link';
-import classNames from 'classnames';
+import { GridRow, GridColumn } from 'components/layout/Grid';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import DevicesTable from 'components/metrics/DevicesTable';
@@ -33,7 +33,7 @@ const views = {
 export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   const { formatMessage } = useIntl();
   const {
-    resolve,
+    resolveUrl,
     query: { view },
   } = usePageQuery();
 
@@ -80,12 +80,12 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
     },
   ];
 
-  const DetailsComponent = views[view];
+  const DetailsComponent = views[view] || (() => null);
 
   return (
-    <Row className={styles.row}>
-      <Column defaultSize={3} className={classNames(styles.col, styles.menu)}>
-        <Link href={resolve({ view: undefined })}>
+    <GridRow>
+      <GridColumn xs={12} sm={12} md={12} defaultSize={3} className={styles.menu}>
+        <Link href={resolveUrl({ view: undefined })}>
           <a>
             <Flexbox justifyContent="center">
               <Button variant="quiet">
@@ -100,14 +100,14 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
         <Menu items={items} selectedKey={view}>
           {({ key, label }) => (
             <Item key={key} className={styles.item}>
-              <Link href={resolve({ view: key })} shallow={true}>
+              <Link href={resolveUrl({ view: key })} shallow={true}>
                 <a>{label}</a>
               </Link>
             </Item>
           )}
         </Menu>
-      </Column>
-      <Column defaultSize={9} className={classNames(styles.col, styles.data)}>
+      </GridColumn>
+      <GridColumn xs={12} sm={12} md={12} defaultSize={9} className={styles.data}>
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}
@@ -117,7 +117,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
           showFilters={true}
           virtualize={true}
         />
-      </Column>
-    </Row>
+      </GridColumn>
+    </GridRow>
   );
 }

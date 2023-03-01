@@ -81,9 +81,23 @@ export const labels = defineMessages({
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
   filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
   filterRaw: { id: 'label.filter-raw', defaultMessage: 'Raw' },
-  views: { id: 'label.views', defaultMessage: 'View' },
+  views: { id: 'label.views', defaultMessage: 'Views' },
   none: { id: 'label.none', defaultMessage: 'None' },
   clearAll: { id: 'label.clear-all', defaultMessage: 'Clear all' },
+  today: { id: 'label.today', defaultMessage: 'Today' },
+  lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
+  yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
+  thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
+  lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
+  thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
+  thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
+  allTime: { id: 'label.all-time', defaultMessage: 'All time' },
+  customRange: { id: 'label.custom-range', defaultMessage: 'Custom-range' },
+  selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  all: { id: 'label.all', defaultMessage: 'All' },
+  sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
+  pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
+  logs: { id: 'label.activity-log', defaultMessage: 'Activity log' },
 });
 
 export const messages = defineMessages({
@@ -154,6 +168,14 @@ export const messages = defineMessages({
   teamNotFound: {
     id: 'message.team-not-found',
     defaultMessage: 'Team not found.',
+  },
+  visitorLog: {
+    id: 'message.visitor-log',
+    defaultMessage: 'Visitor from {country} using {browser} on {os} {device}',
+  },
+  eventLog: {
+    id: 'message.event-log',
+    defaultMessage: '{event} on {url}',
   },
 });
 

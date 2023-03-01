@@ -13,6 +13,7 @@ export default function ActiveUsers({ websiteId, value, refetchInterval = 60000 
     () => get(`/websites/${websiteId}/active`),
     {
       refetchInterval,
+      enabled: !!websiteId,
     },
   );
 

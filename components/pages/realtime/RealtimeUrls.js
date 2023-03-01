@@ -1,36 +1,30 @@
-import { useMemo, useState, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useMemo, useState } from 'react';
+import { ButtonGroup, Button, Flexbox } from 'react-basics';
+import { useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
-import DataTable from './DataTable';
-import FilterButtons from 'components/common/FilterButtons';
+import DataTable from 'components/metrics/DataTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
+import { labels } from 'components/messages';
 
-export default function RealtimeViews({ websiteId, data, websites }) {
+export default function RealtimeUrls({ websiteDomain, data = {} }) {
+  const { formatMessage } = useIntl();
   const { pageviews } = data;
   const [filter, setFilter] = useState(FILTER_REFERRERS);
-  const domains = useMemo(() => websites.map(({ domain }) => domain), [websites]);
-  const getDomain = useCallback(
-    id =>
-      websites.length === 1
-        ? websites[0]?.domain
-        : websites.find(({ websiteId }) => websiteId === id)?.domain,
-    [websites],
-  );
 
   const buttons = [
     {
-      label: <FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />,
+      label: formatMessage(labels.referrers),
       key: FILTER_REFERRERS,
     },
     {
-      label: <FormattedMessage id="metrics.pages" defaultMessage="Pages" />,
+      label: formatMessage(labels.pages),
       key: FILTER_PAGES,
     },
   ];
 
   const renderLink = ({ x }) => {
-    const domain = x.startsWith('/') ? getDomain(websiteId) : '';
+    const domain = x.startsWith('/') ? websiteDomain : '';
     return (
       <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
         {x}
@@ -38,7 +32,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
     );
   };
 
-  const [referrers, pages] = useMemo(() => {
+  const [referrers = [], pages = []] = useMemo(() => {
     if (pageviews) {
       const referrers = percentFilter(
         pageviews
@@ -46,7 +40,7 @@ export default function RealtimeViews({ websiteId, data, websites }) {
             if (referrer?.startsWith('http')) {
               const hostname = new URL(referrer).hostname.replace(/^www\./, '');
 
-              if (hostname && !domains.includes(hostname)) {
+              if (hostname) {
                 const row = arr.find(({ x }) => x === hostname);
 
                 if (!row) {
@@ -63,11 +57,8 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
       const pages = percentFilter(
         pageviews
-          .reduce((arr, { url, websiteId }) => {
+          .reduce((arr, { url }) => {
             if (url?.startsWith('/')) {
-              if (!websiteId && websites.length > 1) {
-                url = `${getDomain(websiteId)}${url}`;
-              }
               const row = arr.find(({ x }) => x === url);
 
               if (!row) {
@@ -83,24 +74,29 @@ export default function RealtimeViews({ websiteId, data, websites }) {
 
       return [referrers, pages];
     }
+
     return [];
   }, [pageviews]);
 
   return (
     <>
-      <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+      <Flexbox justifyContent="center">
+        <ButtonGroup items={buttons} selectedKey={filter} onSelect={setFilter}>
+          {({ key, label }) => <Button key={key}>{label}</Button>}
+        </ButtonGroup>
+      </Flexbox>
       {filter === FILTER_REFERRERS && (
         <DataTable
-          title={<FormattedMessage id="metrics.referrers" defaultMessage="Referrers" />}
-          metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          title={formatMessage(labels.referrers)}
+          metric={formatMessage(labels.views)}
           renderLabel={renderLink}
           data={referrers}
         />
       )}
       {filter === FILTER_PAGES && (
         <DataTable
-          title={<FormattedMessage id="metrics.pages" defaultMessage="Pages" />}
-          metric={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+          title={formatMessage(labels.pages)}
+          metric={formatMessage(labels.views)}
           renderLabel={renderLink}
           data={pages}
         />

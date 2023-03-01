@@ -1,17 +1,3 @@
-.row {
-  border-top: 1px solid var(--base300);
-}
-
-.col {
-  border-left: 1px solid var(--base300);
-  padding: 30px;
-}
-
-.col:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
 .menu {
   gap: 20px;
 }

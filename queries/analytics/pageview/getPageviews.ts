@@ -3,19 +3,17 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
 
-export async function getPageviews(...args: [websites: string[], startAt: Date]) {
+export async function getPageviews(...args: [websiteId: string, startAt: Date]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websites: string[], startAt: Date) {
-  return prisma.client.pageview.findMany({
+async function relationalQuery(websiteId: string, startAt: Date) {
+  return prisma.client.websiteEvent.findMany({
     where: {
-      websiteId: {
-        in: websites,
-      },
+      websiteId,
       createdAt: {
         gte: startAt,
       },
@@ -23,21 +21,22 @@ async function relationalQuery(websites: string[], startAt: Date) {
   });
 }
 
-async function clickhouseQuery(websites: string[], startAt: Date) {
+async function clickhouseQuery(websiteId: string, startAt: Date) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
     `select
-        website_id,
-        session_id,
-        created_at,
+        website_id as websiteId,
+        session_id as sessionId,
+        created_at as createdAt,
+        toUnixTimestamp(created_at) as timestamp,
         url
       from event
       where event_type = ${EVENT_TYPE.pageView}
-        and ${websites && websites.length > 0 ? `website_id in {websites:Array(UUID)}` : '0 = 0'}
+        and website_id = {websiteId:UUID}
         and created_at >= {startAt:DateTime('UTC')}`,
     {
-      websites,
+      websiteId,
       startAt,
     },
   );

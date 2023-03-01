@@ -1,7 +1,6 @@
 import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 
 export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
   return prisma.client.website.findUnique({
@@ -70,34 +69,33 @@ export async function resetWebsite(
 }
 
 export async function deleteWebsite(
-  websiteId: string,
+  websiteId,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
+  const cloudMode = process.env.CLOUD_MODE;
 
-  if (process.env.CLOUD_MODE) {
-    return prisma.client.website.update({
-      data: {
-        deletedAt: new Date(),
-      },
-      where: { id: websiteId },
-    });
-  } else {
-    return transaction([
-      client.websiteEvent.deleteMany({
-        where: { websiteId },
-      }),
-      client.session.deleteMany({
-        where: { websiteId },
-      }),
-      client.website.delete({
-        where: { id: websiteId },
-      }),
-    ]).then(async data => {
-      if (cache.enabled) {
-        await cache.deleteWebsite(websiteId);
-      }
+  return transaction([
+    client.websiteEvent.deleteMany({
+      where: { websiteId },
+    }),
+    client.session.deleteMany({
+      where: { websiteId },
+    }),
+    cloudMode
+      ? prisma.client.website.update({
+          data: {
+            deletedAt: new Date(),
+          },
+          where: { id: websiteId },
+        })
+      : client.website.delete({
+          where: { id: websiteId },
+        }),
+  ]).then(async data => {
+    if (cache.enabled) {
+      await cache.deleteWebsite(websiteId);
+    }
 
-      return data;
-    });
-  }
+    return data;
+  });
 }

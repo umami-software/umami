@@ -1,7 +1,7 @@
 import create from 'zustand';
 import produce from 'immer';
 import app from './app';
-import { getDateRange } from '../lib/date';
+import { getDateRange } from 'lib/date';
 
 const store = create(() => ({}));
 

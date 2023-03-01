@@ -1,68 +1,74 @@
-import { endOfYear, isSameDay } from 'date-fns';
 import { useState } from 'react';
-import { Icon, Modal, Dropdown, Item } from 'react-basics';
-import { useIntl, defineMessages } from 'react-intl';
+import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
+import { useIntl } from 'react-intl';
+import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
-import { dateFormat } from 'lib/date';
-import Calendar from 'assets/calendar.svg';
+import { dateFormat, getDateRangeValues } from 'lib/date';
+import Icons from 'components/icons';
+import { labels } from 'components/messages';
+import useApi from 'hooks/useApi';
+import useDateRange from 'hooks/useDateRange';
 
-const messages = defineMessages({
-  today: { id: 'label.today', defaultMessage: 'Today' },
-  lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
-  yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
-  thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
-  lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
-  thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
-  thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
-  allTime: { id: 'label.all-time', defaultMessage: 'All time' },
-  customRange: { id: 'label.custom-range', defaultMessage: 'Custom-range' },
-});
-
-function DateFilter({ value, startDate, endDate, onChange, className }) {
+function DateFilter({ websiteId, value, className }) {
   const { formatMessage } = useIntl();
+  const { get } = useApi();
+  const [dateRange, setDateRange] = useDateRange(websiteId);
+  const { startDate, endDate } = dateRange;
   const [showPicker, setShowPicker] = useState(false);
 
+  async function handleDateChange(value) {
+    if (value === 'all') {
+      const data = await get(`/websites/${websiteId}`);
+
+      if (data) {
+        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
+      }
+    } else {
+      setDateRange(value);
+    }
+  }
+
   const options = [
-    { label: formatMessage(messages.today), value: '1day' },
+    { label: formatMessage(labels.today), value: '1day' },
     {
-      label: formatMessage(messages.lastHours, { x: 24 }),
+      label: formatMessage(labels.lastHours, { x: 24 }),
       value: '24hour',
     },
     {
-      label: formatMessage(messages.yesterday),
+      label: formatMessage(labels.yesterday),
       value: '-1day',
     },
     {
-      label: formatMessage(messages.thisWeek),
+      label: formatMessage(labels.thisWeek),
       value: '1week',
       divider: true,
     },
     {
-      label: formatMessage(messages.lastDays, { x: 7 }),
+      label: formatMessage(labels.lastDays, { x: 7 }),
       value: '7day',
     },
     {
-      label: formatMessage(messages.thisMonth),
+      label: formatMessage(labels.thisMonth),
       value: '1month',
       divider: true,
     },
     {
-      label: formatMessage(messages.lastDays, { x: 30 }),
+      label: formatMessage(labels.lastDays, { x: 30 }),
       value: '30day',
     },
     {
-      label: formatMessage(messages.lastDays, { x: 90 }),
+      label: formatMessage(labels.lastDays, { x: 90 }),
       value: '90day',
     },
-    { label: formatMessage(messages.thisYear), value: '1year' },
+    { label: formatMessage(labels.thisYear), value: '1year' },
     {
-      label: formatMessage(messages.allTime),
+      label: formatMessage(labels.allTime),
       value: 'all',
       divider: true,
     },
     {
-      label: formatMessage(messages.customRange),
+      label: formatMessage(labels.customRange),
       value: 'custom',
       divider: true,
     },
@@ -76,17 +82,17 @@ function DateFilter({ value, startDate, endDate, onChange, className }) {
     );
   };
 
-  const handleChange = async value => {
+  const handleChange = value => {
     if (value === 'custom') {
       setShowPicker(true);
       return;
     }
-    onChange(value);
+    handleDateChange(value);
   };
 
   const handlePickerChange = value => {
     setShowPicker(false);
-    onChange(value);
+    handleDateChange(value);
   };
 
   const handleClose = () => setShowPicker(false);
@@ -98,9 +104,14 @@ function DateFilter({ value, startDate, endDate, onChange, className }) {
         items={options}
         renderValue={renderValue}
         value={value}
+        alignment="end"
         onChange={handleChange}
       >
-        {({ label, value }) => <Item key={value}>{label}</Item>}
+        {({ label, value, divider }) => (
+          <Item key={value} divider={divider}>
+            {label}
+          </Item>
+        )}
       </Dropdown>
       {showPicker && (
         <Modal onClose={handleClose}>
@@ -128,13 +139,15 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
   }
 
   return (
-    <>
+    <Flexbox gap={10} alignItems="center" wrap="nowrap">
       <Icon className="mr-2" onClick={handleClick}>
-        <Calendar />
+        <Icons.Calendar />
       </Icon>
-      {dateFormat(startDate, 'd LLL y', locale)}
-      {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
-    </>
+      <Text>
+        {dateFormat(startDate, 'd LLL y', locale)}
+        {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
+      </Text>
+    </Flexbox>
   );
 };
 

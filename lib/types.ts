@@ -24,6 +24,13 @@ export interface NextApiRequestAuth extends NextApiRequest {
   headers: any;
 }
 
+export interface User {
+  id: string;
+  username: string;
+  password?: string;
+  createdAt?: Date;
+}
+
 export interface Website {
   id: string;
   userId: string;

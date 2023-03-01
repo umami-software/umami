@@ -6,13 +6,13 @@ import { Icon, Icons } from 'react-basics';
 import styles from './FilterLink.module.css';
 
 export default function FilterLink({ id, value, label, externalUrl }) {
-  const { resolve, query } = usePageQuery();
+  const { resolveUrl, query } = usePageQuery();
   const active = query[id] !== undefined;
   const selected = query[id] === value;
 
   return (
     <div className={styles.row}>
-      <Link href={resolve({ [id]: value })} replace>
+      <Link href={resolveUrl({ [id]: value })} replace>
         <a
           className={classNames(styles.label, {
             [styles.inactive]: active && !selected,

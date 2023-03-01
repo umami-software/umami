@@ -2,23 +2,17 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
 
-export async function getSessions(...args: [websites: string[], startAt: Date]) {
+export async function getSessions(...args: [websiteId: string, startAt: Date]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websites: string[], startAt: Date) {
+async function relationalQuery(websiteId: string, startAt: Date) {
   return prisma.client.session.findMany({
     where: {
-      ...(websites && websites.length > 0
-        ? {
-            websiteId: {
-              in: websites,
-            },
-          }
-        : {}),
+      websiteId,
       createdAt: {
         gte: startAt,
       },
@@ -26,14 +20,15 @@ async function relationalQuery(websites: string[], startAt: Date) {
   });
 }
 
-async function clickhouseQuery(websites: string[], startAt: Date) {
+async function clickhouseQuery(websiteId: string, startAt: Date) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
     `select distinct
-      session_id,
-      website_id,
-      created_at,
+      session_id as sessionId,
+      website_id as websiteId,
+      created_at as createdAt,
+      toUnixTimestamp(created_at) as timestamp,
       hostname,
       browser,
       os,
@@ -45,10 +40,10 @@ async function clickhouseQuery(websites: string[], startAt: Date) {
       subdivision2,
       city
     from event
-    where ${websites && websites.length > 0 ? `website_id in {websites:Array(UUID)}` : '0 = 0'}
+    where website_id = {websiteId:UUID}
       and created_at >= {startAt:DateTime('UTC')}`,
     {
-      websites,
+      websiteId,
       startAt,
     },
   );

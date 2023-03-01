@@ -65,7 +65,7 @@ export default function TeamsList() {
   return (
     <Page loading={isLoading} error={error}>
       {toast}
-      <PageHeader title={formatMessage(labels.team)}>
+      <PageHeader title={formatMessage(labels.teams)}>
         {hasData && (
           <Flexbox gap={10}>
             {joinButton}
