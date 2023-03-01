@@ -35,7 +35,7 @@ model Session {
   language     String? @db.VarChar(35)
   country      String? @db.Char(2)
   subdivision1 String? @db.Char(3)
-  subdivision2 String? @db.Char(3)
+  subdivision2 String? @db.VarChar(50)
   city         String? @db.VarChar(50)
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
