@@ -17,10 +17,14 @@ export interface WebsitePageviewRequestQuery {
   timezone: string;
   url?: string;
   referrer?: string;
+  pageTitle?: string;
   os?: string;
   browser?: string;
   device?: string;
   country?: string;
+  subdivision1?: string;
+  subdivision2?: string;
+  city?: string;
 }
 
 export default async (
@@ -38,10 +42,14 @@ export default async (
     timezone,
     url,
     referrer,
+    pageTitle,
     os,
     browser,
     device,
     country,
+    subdivision1,
+    subdivision2,
+    city,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -66,10 +74,14 @@ export default async (
         filters: {
           url,
           referrer,
+          pageTitle,
           os,
           browser,
           device,
           country,
+          subdivision1,
+          subdivision2,
+          city,
         },
       }),
       getPageviewStats(websiteId, {
@@ -80,10 +92,14 @@ export default async (
         count: 'distinct website_event.',
         filters: {
           url,
+          pageTitle,
           os,
           browser,
           device,
           country,
+          subdivision1,
+          subdivision2,
+          city,
         },
       }),
     ]);

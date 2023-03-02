@@ -13,10 +13,14 @@ export interface WebsiteStatsRequestQuery {
   endAt: number;
   url: string;
   referrer: string;
+  pageTitle: string;
   os: string;
   browser: string;
   device: string;
   country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }
 
 export default async (
@@ -26,7 +30,21 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { id: websiteId, startAt, endAt, url, referrer, os, browser, device, country } = req.query;
+  const {
+    id: websiteId,
+    startAt,
+    endAt,
+    url,
+    referrer,
+    pageTitle,
+    os,
+    browser,
+    device,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+  } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -46,10 +64,14 @@ export default async (
       filters: {
         url,
         referrer,
+        pageTitle,
         os,
         browser,
         device,
         country,
+        subdivision1,
+        subdivision2,
+        city,
       },
     });
     const prevPeriod = await getWebsiteStats(websiteId, {
@@ -58,10 +80,14 @@ export default async (
       filters: {
         url,
         referrer,
+        pageTitle,
         os,
         browser,
         device,
         country,
+        subdivision1,
+        subdivision2,
+        city,
       },
     });
 

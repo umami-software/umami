@@ -112,9 +112,13 @@ function getFilterQuery(filters = {}, params = {}) {
 
     switch (key) {
       case 'url':
+      case 'pageTitle':
       case 'os':
       case 'browser':
       case 'device':
+      case 'subdivision1':
+      case 'subdivision2':
+      case 'city':
       case 'country':
         arr.push(`and ${key} = {${key}:String}`);
         params[key] = filter;
@@ -147,11 +151,25 @@ function getFilterQuery(filters = {}, params = {}) {
 }
 
 function parseFilters(filters: any = {}, params: any = {}) {
-  const { domain, url, eventUrl, referrer, os, browser, device, country, eventName, query } =
-    filters;
+  const {
+    domain,
+    url,
+    eventUrl,
+    referrer,
+    pageTitle,
+    os,
+    browser,
+    device,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+    eventName,
+    query,
+  } = filters;
 
-  const pageviewFilters = { domain, url, referrer, query };
-  const sessionFilters = { os, browser, device, country };
+  const pageviewFilters = { domain, url, referrer, query, pageTitle };
+  const sessionFilters = { os, browser, device, country, subdivision1, subdivision2, city };
   const eventFilters = { url: eventUrl, eventName };
 
   return {
