@@ -21,7 +21,6 @@ CREATE TABLE event
     --event
     event_type UInt32,
     event_name String,
-    event_data JSON,
     created_at DateTime('UTC')
 )
     engine = MergeTree
@@ -44,7 +43,6 @@ CREATE TABLE event_queue (
     country LowCardinality(String),
     event_type UInt32,
     event_name String,
-    event_data String,
     created_at DateTime('UTC')
 )
 ENGINE = Kafka
@@ -71,6 +69,5 @@ SELECT website_id,
     country,
     event_type,
     event_name,
-    if((empty(event_data) = 0) AND startsWith(event_data, '"'), concat('{', event_data, ': true}'), event_data) AS event_data,
     created_at
 FROM event_queue;

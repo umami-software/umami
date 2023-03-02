@@ -56,7 +56,6 @@ CREATE TABLE "website_event" (
     "referrer" VARCHAR(500),
     "event_type" INTEGER NOT NULL DEFAULT 1,
     "event_name" VARCHAR(50),
-    "event_data" JSONB,
 
     CONSTRAINT "website_event_pkey" PRIMARY KEY ("event_id")
 );

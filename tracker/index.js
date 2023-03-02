@@ -102,14 +102,13 @@
       }),
     );
 
-  const trackEvent = (eventName, eventData, url = currentUrl, websiteId = website) =>
+  const trackEvent = (eventName, url = currentUrl, websiteId = website) =>
     collect(
       'event',
       assign(getPayload(), {
         website: websiteId,
         url,
         eventName: eventName,
-        eventData: eventData,
       }),
     );
 
