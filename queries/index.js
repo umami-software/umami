@@ -4,7 +4,6 @@ export * from './admin/user';
 export * from './admin/website';
 export * from './analytics/event/getEventMetrics';
 export * from './analytics/event/getEvents';
-export * from './analytics/event/getEventData';
 export * from './analytics/event/saveEvent';
 export * from './analytics/pageview/getPageviewMetrics';
 export * from './analytics/pageview/getPageviews';

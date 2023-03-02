@@ -1,7 +1,6 @@
-import { WebsiteStats } from 'lib/types';
-import { NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
+import { NextApiRequestQueryBody, WebsiteStats } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsiteStats } from 'queries';

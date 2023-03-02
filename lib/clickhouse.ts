@@ -64,44 +64,6 @@ function getBetweenDates(field, startAt, endAt) {
   return `${field} between ${getDateFormat(startAt)} and ${getDateFormat(endAt)}`;
 }
 
-function getJsonField(column, property) {
-  return `${column}.${property}`;
-}
-
-function getEventDataColumnsQuery(column, columns) {
-  const query = Object.keys(columns).reduce((arr, key) => {
-    const filter = columns[key];
-
-    if (filter === undefined) {
-      return arr;
-    }
-
-    arr.push(`${filter}(${getJsonField(column, key)}) as "${filter}(${key})"`);
-
-    return arr;
-  }, []);
-
-  return query.join(',\n');
-}
-
-function getEventDataFilterQuery(column, filters) {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-
-    if (filter === undefined) {
-      return arr;
-    }
-
-    arr.push(
-      `${getJsonField(column, key)} = ${typeof filter === 'string' ? `'${filter}'` : filter}`,
-    );
-
-    return arr;
-  }, []);
-
-  return query.join('\nand ');
-}
-
 function getFilterQuery(filters = {}, params = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
@@ -221,8 +183,6 @@ export default {
   getDateQuery,
   getDateFormat,
   getBetweenDates,
-  getEventDataColumnsQuery,
-  getEventDataFilterQuery,
   getFilterQuery,
   parseFilters,
   findUnique,

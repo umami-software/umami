@@ -12,7 +12,6 @@ export async function saveEvent(args: {
   referrer?: string;
   pageTitle?: string;
   eventName?: string;
-  eventData?: any;
   hostname?: string;
   browser?: string;
   os?: string;
@@ -37,9 +36,8 @@ async function relationalQuery(data: {
   referrer?: string;
   pageTitle?: string;
   eventName?: string;
-  eventData?: any;
 }) {
-  const { websiteId, id: sessionId, url, eventName, eventData, referrer, pageTitle } = data;
+  const { websiteId, id: sessionId, url, eventName, referrer, pageTitle } = data;
 
   return prisma.client.websiteEvent.create({
     data: {
@@ -51,7 +49,6 @@ async function relationalQuery(data: {
       pageTitle: pageTitle,
       eventType: EVENT_TYPE.customEvent,
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
-      eventData,
     },
   });
 }
@@ -63,7 +60,6 @@ async function clickhouseQuery(data) {
     url,
     pageTitle,
     eventName,
-    eventData,
     country,
     subdivision1,
     subdivision2,
@@ -77,7 +73,6 @@ async function clickhouseQuery(data) {
     website_id: websiteId,
     session_id: sessionId,
     event_id: uuid(),
-    rev_id: website?.revId || 0,
     country: country ? country : null,
     subdivision1: subdivision1 ? subdivision1 : null,
     subdivision2: subdivision2 ? subdivision2 : null,
@@ -86,7 +81,7 @@ async function clickhouseQuery(data) {
     page_title: pageTitle,
     event_type: EVENT_TYPE.customEvent,
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
-    event_data: eventData ? JSON.stringify(eventData) : null,
+    rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
     ...args,
   };

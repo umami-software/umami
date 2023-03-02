@@ -50,10 +50,6 @@ export interface WebsiteActive {
   x: number;
 }
 
-export interface WebsiteEventDataMetric {
-  [key: string]: number;
-}
-
 export interface WebsiteMetric {
   x: string;
   y: number;

@@ -112,7 +112,6 @@
 
   const trackEvent = (
     eventName,
-    eventData,
     url = currentUrl,
     websiteId = website,
     pageTitle = currentPageTitle,
@@ -124,7 +123,6 @@
         url,
         pageTitle,
         eventName: eventName,
-        eventData: eventData,
       }),
     );
 

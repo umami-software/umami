@@ -64,64 +64,6 @@ function getTimestampInterval(field: string): string {
   }
 }
 
-function getJsonField(column: string, property: string, isNumber: boolean): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
-
-  if (db === POSTGRESQL) {
-    let accessor = `${column} ->> '${property}'`;
-
-    if (isNumber) {
-      accessor = `CAST(${accessor} AS DECIMAL)`;
-    }
-
-    return accessor;
-  }
-
-  if (db === MYSQL) {
-    return `${column} ->> "$.${property}"`;
-  }
-}
-
-function getEventDataColumnsQuery(column, columns): string {
-  const query = Object.keys(columns).reduce((arr, key) => {
-    const filter = columns[key];
-
-    if (filter === undefined) {
-      return arr;
-    }
-
-    const isNumber = ['sum', 'avg', 'min', 'max'].some(a => a === filter);
-
-    arr.push(`${filter}(${getJsonField(column, key, isNumber)}) as "${filter}(${key})"`);
-
-    return arr;
-  }, []);
-
-  return query.join(',\n');
-}
-
-function getEventDataFilterQuery(column, filters): string {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-
-    if (filter === undefined) {
-      return arr;
-    }
-
-    const isNumber = filter && typeof filter === 'number';
-
-    arr.push(
-      `${getJsonField(column, key, isNumber)} = ${
-        typeof filter === 'string' ? `'${filter}'` : filter
-      }`,
-    );
-
-    return arr;
-  }, []);
-
-  return query.join('\nand ');
-}
-
 function getFilterQuery(filters = {}, params = []): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
@@ -226,8 +168,6 @@ export default {
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
-  getEventDataColumnsQuery,
-  getEventDataFilterQuery,
   toUuid,
   parseFilters,
   rawQuery,

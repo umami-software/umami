@@ -25,7 +25,6 @@ CREATE TABLE event
     --event
     event_type UInt32,
     event_name String,
-    event_data JSON,
     created_at DateTime('UTC')
 )
     engine = MergeTree
@@ -55,7 +54,6 @@ CREATE TABLE event_queue (
     --event
     event_type UInt32,
     event_name String,
-    event_data String,
     created_at DateTime('UTC')
 )
 ENGINE = Kafka
@@ -86,6 +84,5 @@ SELECT website_id,
     page_title,
     event_type,
     event_name,
-    event_data,
     created_at
 FROM event_queue;

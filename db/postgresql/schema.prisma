@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -17,8 +17,8 @@ model User {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  Website  Website[]
-  teamUser TeamUser[]
+  Website     Website[]
+  teamUser    TeamUser[]
   teamWebsite TeamWebsite[]
 
   @@map("user")
@@ -55,7 +55,7 @@ model Website {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  user User? @relation(fields: [userId], references: [id])
+  user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
 
   @@index([userId])
@@ -74,7 +74,6 @@ model WebsiteEvent {
   pageTitle String?   @map("page_title") @db.VarChar(500)
   eventType Int       @default(1) @map("event_type") @db.Integer
   eventName String?   @map("event_name") @db.VarChar(50)
-  eventData Json?     @map("event_data")
 
   @@index([createdAt])
   @@index([sessionId])
@@ -92,7 +91,7 @@ model Team {
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
 
-  teamUser TeamUser[]
+  teamUser    TeamUser[]
   teamWebsite TeamWebsite[]
 
   @@index([userId])
@@ -123,8 +122,8 @@ model TeamWebsite {
   websiteId String    @map("website_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  team Team @relation(fields: [teamId], references: [id])
-  user User @relation(fields: [userId], references: [id])
+  team    Team    @relation(fields: [teamId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
   website Website @relation(fields: [websiteId], references: [id])
 
   @@index([teamId])

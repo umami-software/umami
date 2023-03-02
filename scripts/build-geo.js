@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable no-console */
 require('dotenv').config();
 const fs = require('fs');

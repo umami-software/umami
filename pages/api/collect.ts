@@ -34,18 +34,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, eventName, eventData, pageTitle } = payload;
+  const { referrer, eventName, pageTitle } = payload;
   let { url } = payload;
-
-  // Validate eventData is JSON
-  if (eventData && !(typeof eventData === 'object' && !Array.isArray(eventData))) {
-    return badRequest(res, 'Event Data must be in the form of a JSON Object.');
-  }
-
-  // Validate eventData is less than 100kB
-  if (eventData && new TextEncoder().encode(eventData).length / 1024 > 100) {
-    return badRequest(res, 'Event Data exceeds maximum size of 100 kB.');
-  }
 
   const ignoreIps = process.env.IGNORE_IP;
   const ignoreHostnames = process.env.IGNORE_HOSTNAME;
@@ -106,7 +96,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       referrer,
       pageTitle,
       eventName,
-      eventData,
     });
   } else {
     return badRequest(res);

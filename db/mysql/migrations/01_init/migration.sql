@@ -66,7 +66,6 @@ CREATE TABLE `website_event` (
     `page_title` VARCHAR(500) NULL,
     `event_type` INTEGER UNSIGNED NOT NULL DEFAULT 1,
     `event_name` VARCHAR(50) NULL,
-    `event_data` JSON NULL,
 
     INDEX `website_event_created_at_idx`(`created_at`),
     INDEX `website_event_session_id_idx`(`session_id`),
