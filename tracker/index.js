@@ -47,6 +47,7 @@
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
 
+  const tracker_delay_duration = 300;
   const _data = 'data-';
   const _false = 'false';
   const attr = currentScript.getAttribute.bind(currentScript);
@@ -68,6 +69,7 @@
   let listeners = {};
   let currentUrl = `${pathname}${search}`;
   let currentRef = document.referrer;
+  let currentPageTitle = document.title;
   let cache;
 
   /* Collect metrics */
@@ -92,22 +94,34 @@
       .then(text => (cache = text));
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, websiteId = website) =>
+  const trackView = (
+    url = currentUrl,
+    referrer = currentRef,
+    websiteId = website,
+    pageTitle = currentPageTitle,
+  ) =>
     collect(
       'pageview',
       assign(getPayload(), {
         website: websiteId,
         url,
         referrer,
+        pageTitle,
       }),
     );
 
-  const trackEvent = (eventName, url = currentUrl, websiteId = website) =>
+  const trackEvent = (
+    eventName,
+    url = currentUrl,
+    websiteId = website,
+    pageTitle = currentPageTitle,
+  ) =>
     collect(
       'event',
       assign(getPayload(), {
         website: websiteId,
         url,
+        pageTitle,
         eventName: eventName,
       }),
     );
@@ -161,6 +175,7 @@
   const handlePush = (state, title, url) => {
     if (!url) return;
 
+    observeTitle();
     currentRef = currentUrl;
     const newUrl = url.toString();
 
@@ -171,7 +186,7 @@
     }
 
     if (currentUrl !== currentRef) {
-      trackView();
+      setTimeout(() => trackView(), tracker_delay_duration);
     }
   };
 
@@ -186,6 +201,19 @@
 
     const observer = new MutationObserver(monitorMutate);
     observer.observe(document, { childList: true, subtree: true });
+  };
+
+  const observeTitle = () => {
+    const monitorMutate = mutations => {
+      currentPageTitle = mutations[0].target.text;
+    };
+
+    const observer = new MutationObserver(monitorMutate);
+    observer.observe(document.querySelector('title'), {
+      subtree: true,
+      characterData: true,
+      childList: true,
+    });
   };
 
   /* Global */

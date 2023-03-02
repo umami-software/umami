@@ -7,7 +7,7 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewMetrics, getSessionMetrics, getWebsite } from 'queries';
 
 const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
-const pageviewColumns = ['url', 'referrer', 'query'];
+const pageviewColumns = ['url', 'referrer', 'query', 'pageTitle'];
 
 function getTable(type) {
   if (type === 'event') {
@@ -42,10 +42,14 @@ export interface WebsiteMetricsRequestQuery {
   endAt: number;
   url: string;
   referrer: string;
+  pageTitle: string;
   os: string;
   browser: string;
   device: string;
   country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }
 
 export default async (
@@ -62,10 +66,14 @@ export default async (
     endAt,
     url,
     referrer,
+    pageTitle,
     os,
     browser,
     device,
     country,
+    subdivision1,
+    subdivision2,
+    city,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -86,6 +94,9 @@ export default async (
           browser,
           device,
           country,
+          subdivision1,
+          subdivision2,
+          city,
         },
       });
 
@@ -127,10 +138,14 @@ export default async (
         domain,
         url: type !== 'url' && table !== 'event' ? url : undefined,
         referrer: type !== 'referrer' && table !== 'event' ? referrer : FILTER_IGNORED,
+        pageTitle: type !== 'pageTitle' && table !== 'event' ? pageTitle : undefined,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,
         country: type !== 'country' ? country : undefined,
+        subdivision1: type !== 'subdivision1' ? subdivision1 : undefined,
+        subdivision2: type !== 'subdivision2' ? subdivision2 : undefined,
+        city: type !== 'city' ? city : undefined,
         eventUrl: type !== 'url' && table === 'event' ? url : undefined,
         query: type === 'query' && table !== 'event' ? true : undefined,
       };

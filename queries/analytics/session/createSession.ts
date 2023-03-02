@@ -31,8 +31,24 @@ async function clickhouseQuery(data: {
   screen?: string;
   language?: string;
   country?: string;
+  subdivision1?: string;
+  subdivision2?: string;
+  city?: string;
 }) {
-  const { id, websiteId, hostname, browser, os, device, screen, language, country } = data;
+  const {
+    id,
+    websiteId,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+  } = data;
   const { getDateFormat, sendMessage } = kafka;
   const website = await cache.fetchWebsite(websiteId);
 
@@ -46,6 +62,9 @@ async function clickhouseQuery(data: {
     screen,
     language,
     country,
+    subdivision1,
+    subdivision2,
+    city,
     rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
   };

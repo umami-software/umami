@@ -35,7 +35,10 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
       device,
       screen,
       language,
-      country
+      country,
+      subdivision1,
+      subdivision2,
+      city
     from event
     where website_id = {websiteId:UUID}
       and created_at >= {startAt:DateTime('UTC')}`,

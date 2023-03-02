@@ -19,6 +19,9 @@ export interface NextApiRequestCollect extends NextApiRequest {
     screen: string;
     language: string;
     country: string;
+    subdivision1: string;
+    subdivision2: string;
+    city: string;
   };
 }
 
@@ -31,7 +34,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, eventName } = payload;
+  const { referrer, eventName, pageTitle } = payload;
   let { url } = payload;
 
   const ignoreIps = process.env.IGNORE_IP;
@@ -85,12 +88,13 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   }
 
   if (type === 'pageview') {
-    await savePageView({ ...session, url, referrer });
+    await savePageView({ ...session, url, referrer, pageTitle });
   } else if (type === 'event') {
     await saveEvent({
       ...session,
       url,
       referrer,
+      pageTitle,
       eventName,
     });
   } else {
