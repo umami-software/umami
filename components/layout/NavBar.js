@@ -22,7 +22,6 @@ export default function NavBar() {
   const analytics = [
     { label: formatMessage(labels.dashboard), url: '/dashboard', icon: <Icons.Dashboard /> },
     { label: formatMessage(labels.realtime), url: '/realtime', icon: <Icons.Clock /> },
-    { label: formatMessage(labels.queries), url: '/queries', icon: <Icons.Search /> },
   ];
 
   const settings = [

@@ -1,15 +1,15 @@
+import { useRouter } from 'next/router';
+import { Column, Row } from 'react-basics';
+import classNames from 'classnames';
 import HamburgerButton from 'components/common/HamburgerButton';
 import UpdateNotice from 'components/common/UpdateNotice';
 import LanguageButton from 'components/input/LanguageButton';
 import ThemeButton from 'components/input/ThemeButton';
 import UserButton from 'components/input/UserButton';
+import SettingsButton from 'components/input/SettingsButton';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
-import { useRouter } from 'next/router';
-import { Column, Row } from 'react-basics';
-import SettingsButton from '../input/SettingsButton';
 import styles from './Header.module.css';
-import classNames from 'classnames';
 
 export default function Header({ className }) {
   const { user } = useUser();

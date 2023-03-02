@@ -98,6 +98,7 @@ export const labels = defineMessages({
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
   logs: { id: 'label.activity-log', defaultMessage: 'Activity log' },
+  dismiss: { id: 'label.dismiss', defaultMessage: 'Dismiss' },
 });
 
 export const messages = defineMessages({
@@ -176,6 +177,10 @@ export const messages = defineMessages({
   eventLog: {
     id: 'message.event-log',
     defaultMessage: '{event} on {url}',
+  },
+  newVersionAvailable: {
+    id: 'new-version-available',
+    defaultMessage: 'A new version of Umami {version} is available!',
   },
 });
 
