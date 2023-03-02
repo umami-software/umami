@@ -36,7 +36,13 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const shareToken = await parseShareToken(req);
 
   let user = null;
-  const { userId, authKey } = payload || {};
+  let userId = null;
+
+  const { authKey } = payload || {};
+
+  if (typeof payload === 'string') {
+    userId = payload;
+  }
 
   if (validate(userId)) {
     user = await getUser({ id: userId });
