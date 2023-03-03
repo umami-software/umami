@@ -72,6 +72,12 @@
   let currentPageTitle = document.title;
   let cache;
 
+  if (currentRef.substring(0, 4) === 'http') {
+    if ((currentRef = currentRef.split('/')[2].split(':')[0] === hostname)) {
+      currentRef = '/' + currentRef.split('/').splice(3).join('/');
+    }
+  }
+
   /* Collect metrics */
 
   const getPayload = () => ({

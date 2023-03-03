@@ -50,7 +50,23 @@ async function relationalQuery(data: {
   });
 }
 
-async function clickhouseQuery(data) {
+async function clickhouseQuery(data: {
+  id: string;
+  websiteId: string;
+  url: string;
+  referrer?: string;
+  pageTitle?: string;
+  hostname?: string;
+  browser?: string;
+  os?: string;
+  device?: string;
+  screen?: string;
+  language?: string;
+  country?: string;
+  subdivision1?: string;
+  subdivision2?: string;
+  city?: string;
+}) {
   const {
     websiteId,
     id: sessionId,
