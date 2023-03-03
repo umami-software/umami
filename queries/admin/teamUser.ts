@@ -54,3 +54,15 @@ export async function deleteTeamUser(teamUserId: string): Promise<TeamUser> {
     },
   });
 }
+
+export async function deleteTeamUserByUserId(
+  userId: string,
+  teamId: string,
+): Promise<Prisma.BatchPayload> {
+  return prisma.client.teamUser.deleteMany({
+    where: {
+      userId,
+      teamId,
+    },
+  });
+}

@@ -1,7 +1,7 @@
 import { Prisma, Team } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
-import { Website, User } from 'lib/types';
+import { Website, User, Roles } from 'lib/types';
 
 export async function getUser(
   where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
@@ -76,7 +76,7 @@ export async function createUser(data: {
   id: string;
   username: string;
   password: string;
-  role: string;
+  role: Roles;
 }): Promise<{
   id: string;
   username: string;
@@ -110,7 +110,17 @@ export async function updateUser(
 
 export async function deleteUser(
   userId: string,
-): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Prisma.BatchPayload, User]> {
+): Promise<
+  [
+    Prisma.BatchPayload,
+    Prisma.BatchPayload,
+    Prisma.BatchPayload,
+    Prisma.BatchPayload,
+    Prisma.BatchPayload,
+    Prisma.BatchPayload,
+    User,
+  ]
+> {
   const { client } = prisma;
   const cloudMode = process.env.CLOUD_MODE;
 
@@ -131,6 +141,25 @@ export async function deleteUser(
       }),
       client.session.deleteMany({
         where: { websiteId: { in: websiteIds } },
+      }),
+      client.teamWebsite.deleteMany({
+        where: {
+          website: {
+            userId,
+          },
+        },
+      }),
+      client.teamUser.deleteMany({
+        where: {
+          team: {
+            userId,
+          },
+        },
+      }),
+      client.team.deleteMany({
+        where: {
+          userId,
+        },
       }),
       cloudMode
         ? client.website.updateMany({
