@@ -1,5 +1,5 @@
 import { useTransition, animated } from 'react-spring';
-import { Button, Icon, PopupTrigger, Tooltip } from 'react-basics';
+import { Button, Icon, Tooltip } from 'react-basics';
 import { useIntl } from 'react-intl';
 import useTheme from 'hooks/useTheme';
 import Icons from 'components/icons';

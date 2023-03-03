@@ -50,8 +50,12 @@ export function isValidToken(token, validation) {
   return false;
 }
 
-export async function canViewWebsite({ user }: Auth, websiteId: string) {
-  if (user.isAdmin) {
+export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
+  if (user?.isAdmin) {
+    return true;
+  }
+
+  if (shareToken?.websiteId === websiteId) {
     return true;
   }
 
@@ -72,7 +76,7 @@ export async function canCreateWebsite({ user }: Auth, teamId?: string) {
   if (teamId) {
     const teamUser = await getTeamUser(teamId, user.id);
 
-    return hasPermission(teamUser.role, PERMISSIONS.websiteCreate);
+    return hasPermission(teamUser?.role, PERMISSIONS.websiteCreate);
   }
 
   return hasPermission(user.role, PERMISSIONS.websiteCreate);

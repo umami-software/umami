@@ -1,17 +1,16 @@
-import { useEffect, useRef } from 'react';
-import { useMeasure, useCombinedRefs } from 'react-basics';
+import { useMeasure } from 'react-basics';
 import classNames from 'classnames';
 import useSticky from 'hooks/useSticky';
-import { UI_LAYOUT_BODY } from 'lib/constants';
 
 export default function StickyHeader({
   className,
   stickyClassName,
   stickyStyle,
   enabled = true,
+  scrollElement,
   children,
 }) {
-  const { ref: scrollRef, isSticky } = useSticky({ scrollElementId: UI_LAYOUT_BODY });
+  const { ref: scrollRef, isSticky } = useSticky({ scrollElement });
   const { ref: measureRef, dimensions } = useMeasure();
 
   return (

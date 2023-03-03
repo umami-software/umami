@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Button, Icon, Text, Row, Column, Flexbox } from 'react-basics';
+import { Button, Icon, Text, Row, Column } from 'react-basics';
 import Link from 'next/link';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
@@ -14,8 +14,9 @@ import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
-import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
+import { getDateArray, getDateLength } from 'lib/date';
 import Icons from 'components/icons';
+import { UI_LAYOUT_BODY } from 'lib/constants';
 import { labels } from 'components/messages';
 import styles from './WebsiteChart.module.css';
 
@@ -82,7 +83,11 @@ export default function WebsiteChart({
         )}
       </WebsiteHeader>
       <FilterTags websiteId={websiteId} params={{ url, referrer, os, browser, device, country }} />
-      <StickyHeader stickyClassName={styles.sticky} enabled={stickyHeader}>
+      <StickyHeader
+        stickyClassName={styles.sticky}
+        enabled={stickyHeader}
+        scrollElement={document.getElementById(UI_LAYOUT_BODY) || document}
+      >
         <Row className={styles.header}>
           <Column>
             <MetricsBar websiteId={websiteId} />

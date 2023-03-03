@@ -18,6 +18,7 @@
 .label {
   display: flex;
   align-items: center;
+  font-weight: 700;
   gap: 5px;
   white-space: nowrap;
   min-height: 30px;

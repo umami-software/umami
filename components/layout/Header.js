@@ -1,38 +1,31 @@
-import { useRouter } from 'next/router';
-import { Column, Row } from 'react-basics';
-import classNames from 'classnames';
-import HamburgerButton from 'components/common/HamburgerButton';
-import UpdateNotice from 'components/common/UpdateNotice';
+import { Column, Icon, Row, Text } from 'react-basics';
+import Link from 'next/link';
 import LanguageButton from 'components/input/LanguageButton';
 import ThemeButton from 'components/input/ThemeButton';
-import UserButton from 'components/input/UserButton';
 import SettingsButton from 'components/input/SettingsButton';
-import useConfig from 'hooks/useConfig';
-import useUser from 'hooks/useUser';
+import Icons from 'components/icons';
 import styles from './Header.module.css';
 
-export default function Header({ className }) {
-  const { user } = useUser();
-  const { pathname } = useRouter();
-  const { updatesDisabled, adminDisabled } = useConfig();
-  const isSharePage = pathname.includes('/share/');
-  const allowUpdate = user?.isAdmin && !updatesDisabled && !isSharePage;
-
+export default function Header() {
   return (
-    <>
-      {allowUpdate && <UpdateNotice />}
-      <header className={classNames(styles.header, className)}>
-        <Row>
-          <Column className={styles.title}></Column>
-          <HamburgerButton />
-          <Column className={styles.buttons}>
-            <ThemeButton />
-            <LanguageButton menuAlign="right" />
-            <SettingsButton />
-            {user && !adminDisabled && <UserButton />}
-          </Column>
-        </Row>
-      </header>
-    </>
+    <header className={styles.header}>
+      <Row>
+        <Column>
+          <Link href="https://umami.is" target="_blank">
+            <a className={styles.title}>
+              <Icon size="lg">
+                <Icons.Logo />
+              </Icon>
+              <Text>umami</Text>
+            </a>
+          </Link>
+        </Column>
+        <Column className={styles.buttons}>
+          <ThemeButton tooltipPosition="bottom" />
+          <LanguageButton tooltipPosition="bottom" menuPosition="bottom" />
+          <SettingsButton />
+        </Column>
+      </Row>
+    </header>
   );
 }

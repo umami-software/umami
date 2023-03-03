@@ -7,7 +7,7 @@ import Icons from 'components/icons';
 import { labels } from 'components/messages';
 import styles from './LanguageButton.module.css';
 
-export default function LanguageButton({ tooltipPosition = 'top' }) {
+export default function LanguageButton({ tooltipPosition = 'top', menuPosition = 'right' }) {
   const { formatMessage } = useIntl();
   const { locale, saveLocale } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
@@ -25,7 +25,7 @@ export default function LanguageButton({ tooltipPosition = 'top' }) {
           </Icon>
         </Button>
       </Tooltip>
-      <Popup position="right" alignment="end">
+      <Popup position={menuPosition} alignment="end">
         <div className={styles.menu}>
           {items.map(({ value, label }) => {
             return (

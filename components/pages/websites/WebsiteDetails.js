@@ -1,8 +1,5 @@
 import { useState } from 'react';
-import { Icons, Loading } from 'react-basics';
-import { useIntl } from 'react-intl';
-import Link from 'next/link';
-import classNames from 'classnames';
+import { Loading } from 'react-basics';
 import Page from 'components/layout/Page';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import useApi from 'hooks/useApi';

@@ -1,8 +1,4 @@
-.button {
-  position: relative;
-}
-
-.panel {
+.popup {
   background: var(--base50);
   border: 1px solid var(--base500);
   border-radius: 4px;
@@ -13,8 +9,4 @@
   right: 0;
   padding: 20px;
   z-index: 100;
-}
-
-.panel dd {
-  display: flex;
 }
