@@ -37,3 +37,11 @@ export async function createTeamWebsite(
     },
   });
 }
+
+export async function deleteTeamWebsite(teamWebsiteId: string): Promise<TeamWebsite> {
+  return prisma.client.teamWebsite.delete({
+    where: {
+      id: teamWebsiteId,
+    },
+  });
+}
