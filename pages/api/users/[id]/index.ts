@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, User } from 'lib/types';
 import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteUser, getUser, updateUser, User } from 'queries';
+import { deleteUser, getUser, updateUser } from 'queries';
 
 export interface UserRequestQuery {
   id: string;

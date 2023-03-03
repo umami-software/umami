@@ -81,6 +81,11 @@ export async function deleteWebsite(
     client.session.deleteMany({
       where: { websiteId },
     }),
+    client.teamWebsite.deleteMany({
+      where: {
+        websiteId,
+      },
+    }),
     cloudMode
       ? prisma.client.website.update({
           data: {

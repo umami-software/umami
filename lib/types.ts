@@ -1,4 +1,9 @@
 import { NextApiRequest } from 'next';
+import { ROLES } from './constants';
+
+type ObjectValues<T> = T[keyof T];
+
+export type Roles = ObjectValues<typeof ROLES>;
 
 export interface Auth {
   user?: {

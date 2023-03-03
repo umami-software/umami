@@ -67,10 +67,26 @@ export async function updateTeam(
   });
 }
 
-export async function deleteTeam(teamId: string): Promise<Team> {
-  return prisma.client.team.delete({
-    where: {
-      id: teamId,
-    },
-  });
+export async function deleteTeam(
+  teamId: string,
+): Promise<Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Team]>> {
+  const { client } = prisma;
+
+  return prisma.transaction([
+    client.teamWebsite.deleteMany({
+      where: {
+        id: teamId,
+      },
+    }),
+    client.teamUser.deleteMany({
+      where: {
+        id: teamId,
+      },
+    }),
+    client.team.delete({
+      where: {
+        id: teamId,
+      },
+    }),
+  ]);
 }
