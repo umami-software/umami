@@ -19,7 +19,7 @@ export default function useSticky({ scrollElement = document, defaultSticky = fa
     return () => {
       scrollElement.removeEventListener('scroll', handleScroll, true);
     };
-  }, [ref, setIsSticky]);
+  }, [ref, setIsSticky, scrollElement]);
 
   return { ref, isSticky };
 }

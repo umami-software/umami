@@ -1,38 +1,31 @@
 import { Row, Column } from 'react-basics';
-import { useRouter } from 'next/router';
-import Script from 'next/script';
-import classNames from 'classnames';
-import { useIntl, defineMessages } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { CURRENT_VERSION, HOMEPAGE_URL, REPO_URL } from 'lib/constants';
+import { labels } from 'components/messages';
 import styles from './Footer.module.css';
 
-const messages = defineMessages({
-  poweredBy: { id: 'message.powered-by', defaultMessage: 'Powered by {name}' },
-});
-
-export default function Footer({ className }) {
-  const { pathname } = useRouter();
-  const { formatMessage } = useIntl();
-
+export default function Footer() {
   return (
-    <footer className={classNames(styles.footer, className)}>
+    <footer className={styles.footer}>
       <Row>
-        <Column>
+        <Column defaultSize={11} xs={12} sm={12}>
           <div>
-            {formatMessage(messages.poweredBy, {
-              name: (
-                <a href={HOMEPAGE_URL}>
-                  <b>umami</b>
-                </a>
-              ),
-            })}
+            <FormattedMessage
+              {...labels.poweredBy}
+              values={{
+                name: (
+                  <a href={HOMEPAGE_URL}>
+                    <b>umami</b>
+                  </a>
+                ),
+              }}
+            />
           </div>
         </Column>
-        <Column className={styles.version}>
+        <Column className={styles.version} defaultSize={1} xs={12} sm={12}>
           <a href={REPO_URL}>{`v${CURRENT_VERSION}`}</a>
         </Column>
       </Row>
-      {!pathname.includes('/share/') && <Script src={`/telemetry.js`} />}
     </footer>
   );
 }

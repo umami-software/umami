@@ -99,6 +99,7 @@ export const labels = defineMessages({
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
   logs: { id: 'label.activity-log', defaultMessage: 'Activity log' },
   dismiss: { id: 'label.dismiss', defaultMessage: 'Dismiss' },
+  poweredBy: { id: 'label.powered-by', defaultMessage: 'Powered by {name}' },
 });
 
 export const messages = defineMessages({

@@ -10,6 +10,7 @@ import 'styles/locale.css';
 import 'styles/index.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/600.css';
+import Script from 'next/script';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -22,7 +23,7 @@ const client = new QueryClient({
 
 export default function App({ Component, pageProps }) {
   const { locale, messages } = useLocale();
-  const { basePath } = useRouter();
+  const { basePath, pathname } = useRouter();
   useConfig();
 
   const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
@@ -52,6 +53,7 @@ export default function App({ Component, pageProps }) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
         <Component {...pageProps} />
+        {!pathname.includes('/share/') && <Script src={`${basePath}/telemetry.js`} />}
       </IntlProvider>
     </QueryClientProvider>
   );
