@@ -52,7 +52,8 @@ async function relationalQuery(
       and event_type = $4
       ${filterQuery}
     group by 1
-    order by 2 desc`,
+    order by 2 desc
+    limit 200`,
     params,
   );
 }
@@ -86,7 +87,8 @@ async function clickhouseQuery(
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x
-    order by y desc`,
+    order by y desc
+    limit 200`,
     params,
   );
 }
