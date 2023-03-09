@@ -6,7 +6,6 @@ export interface ConfigResponse {
   trackerScriptName: string;
   updatesDisabled: boolean;
   telemetryDisabled: boolean;
-  adminDisabled: boolean;
   cloudMode: boolean;
 }
 
@@ -17,8 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ConfigResponse>)
       trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
       updatesDisabled: !!process.env.DISABLE_UPDATES,
       telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
-      adminDisabled: !!process.env.DISABLE_ADMIN,
-      cloudMode: process.env.CLOUD_MODE,
+      cloudMode: !!process.env.CLOUD_MODE,
     });
   }
 

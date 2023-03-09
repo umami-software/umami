@@ -47,7 +47,7 @@
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
 
-  const tracker_delay_duration = 300;
+  const delayDuration = 300;
   const _data = 'data-';
   const _false = 'false';
   const attr = currentScript.getAttribute.bind(currentScript);
@@ -192,7 +192,7 @@
     }
 
     if (currentUrl !== currentRef) {
-      setTimeout(() => trackView(), tracker_delay_duration);
+      setTimeout(() => trackView(), delayDuration);
     }
   };
 

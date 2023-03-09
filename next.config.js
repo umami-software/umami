@@ -2,6 +2,8 @@
 require('dotenv').config();
 const pkg = require('./package.json');
 
+const CLOUD_URL = 'https://cloud.umami.is';
+
 const contentSecurityPolicy = `
   default-src 'self';
   img-src *;
@@ -33,11 +35,29 @@ if (process.env.FORCE_SSL) {
   });
 }
 
-module.exports = {
+const rewrites = [];
+
+if (process.env.COLLECT_API_ENDPOINT) {
+  rewrites.push({
+    source: 'process.env.COLLECT_API_ENDPOINT',
+    destination: '/api/in',
+  });
+}
+
+const redirects = [];
+
+if (process.env.CLOUD_MODE) {
+  redirects.push({
+    source: '/login',
+    destination: CLOUD_URL,
+    permanent: false,
+  });
+}
+
+const config = {
   env: {
     currentVersion: pkg.version,
     isProduction: process.env.NODE_ENV === 'production',
-    uiDisabled: !!process.env.DISABLE_UI,
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
@@ -66,10 +86,16 @@ module.exports = {
   },
   async rewrites() {
     return [
+      ...rewrites,
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
       },
     ];
   },
+  async redirects() {
+    return [...redirects];
+  },
 };
+
+module.exports = config;

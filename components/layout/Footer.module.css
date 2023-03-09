@@ -1,6 +1,7 @@
 .footer {
   font-size: var(--font-size-sm);
   text-align: center;
+  line-height: 30px;
   margin: 60px 0;
 }
 
@@ -11,10 +12,5 @@
 .version {
   text-align: right;
   padding-right: 10px;
-}
-
-@media only screen and (max-width: 768px) {
-  .footer .version {
-    text-align: center;
-  }
+  white-space: nowrap;
 }

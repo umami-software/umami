@@ -18,7 +18,7 @@ function DateFilter({ websiteId, value, className }) {
   const [showPicker, setShowPicker] = useState(false);
 
   async function handleDateChange(value) {
-    if (value === 'all') {
+    if (value === 'all' && websiteId) {
       const data = await get(`/websites/${websiteId}`);
 
       if (data) {

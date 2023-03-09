@@ -1,42 +1,38 @@
-import { useCallback, useMemo } from 'react';
 import { parseISO } from 'date-fns';
-import { getDateRange } from 'lib/date';
-import { getItem, setItem } from 'next-basics';
+import { parseDateRange } from 'lib/date';
+import { setItem } from 'next-basics';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
-import useForceUpdate from './useForceUpdate';
 import useLocale from './useLocale';
-import useStore, { setDateRange } from 'store/websites';
+import { getWebsiteDateRange, setWebsiteDateRange } from 'store/websites';
+import useStore, { setDateRange } from 'store/app';
+
+function parseValue(value, locale) {
+  if (typeof value === 'string') {
+    return parseDateRange(value, locale);
+  } else if (typeof value === 'object') {
+    return {
+      ...value,
+      startDate: parseISO(value.startDate),
+      endDate: parseISO(value.endDate),
+    };
+  }
+}
 
 export default function useDateRange(websiteId) {
   const { locale } = useLocale();
-  const forceUpdate = useForceUpdate();
-  const selector = useCallback(state => state?.[websiteId]?.dateRange, [websiteId]);
-  const websiteDateRange = useStore(selector);
-  const defaultDateRange = useMemo(() => getDateRange(DEFAULT_DATE_RANGE, locale), [locale]);
+  const websiteConfig = getWebsiteDateRange(websiteId);
+  const defaultConfig = DEFAULT_DATE_RANGE;
+  const globalConfig = useStore(state => state.dateRange);
+  const dateRange = parseValue(websiteConfig || globalConfig || defaultConfig, locale);
 
-  const globalDefault = getItem(DATE_RANGE_CONFIG);
-  let globalDateRange;
-
-  if (globalDefault) {
-    if (typeof globalDefault === 'string') {
-      globalDateRange = getDateRange(globalDefault, locale);
-    } else if (typeof globalDefault === 'object') {
-      globalDateRange = {
-        ...globalDefault,
-        startDate: parseISO(globalDefault.startDate),
-        endDate: parseISO(globalDefault.endDate),
-      };
-    }
-  }
-
-  function saveDateRange(dateRange) {
+  function saveDateRange(value) {
     if (websiteId) {
-      setDateRange(websiteId, dateRange);
+      setWebsiteDateRange(websiteId, value);
     } else {
-      setItem(DATE_RANGE_CONFIG, dateRange);
-      forceUpdate();
+      setItem(DATE_RANGE_CONFIG, value);
+      setDateRange(value);
     }
   }
 
-  return [websiteDateRange || globalDateRange || defaultDateRange, saveDateRange];
+  return [dateRange, saveDateRange];
 }
