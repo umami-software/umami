@@ -56,13 +56,13 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  const teamWebsite = await getTeamWebsiteByWebsiteIdUserId(websiteId, user.id);
-
-  if (teamWebsite) {
+  if (shareToken?.websiteId === websiteId) {
     return true;
   }
 
-  if (shareToken?.websiteId === websiteId) {
+  const teamWebsite = await getTeamWebsiteByWebsiteIdUserId(websiteId, user.id);
+
+  if (teamWebsite) {
     return true;
   }
 
