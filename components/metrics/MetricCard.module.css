@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   font-weight: 700;
-  gap: 5px;
+  gap: 10px;
   white-space: nowrap;
   min-height: 30px;
 }
@@ -28,17 +28,17 @@
   font-size: 12px;
   padding: 0 5px;
   border-radius: 5px;
-  margin-left: 4px;
-  border: 1px solid var(--base200);
   color: var(--base500);
 }
 
 .change.positive {
-  color: var(--green500);
+  color: var(--green700);
+  background: var(--green100);
 }
 
 .change.negative {
-  color: var(--red500);
+  color: var(--red700);
+  background: var(--red100);
 }
 
 .change.plusSign::before {

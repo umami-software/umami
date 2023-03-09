@@ -1,23 +1,27 @@
 import MetricsTable from './MetricsTable';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { getDeviceMessage } from 'components/messages';
+import { useIntl } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
+import { labels } from 'components/messages';
 
 export default function DevicesTable({ websiteId, ...props }) {
   const { formatMessage } = useIntl();
 
   function renderLink({ x: device }) {
     return (
-      <FilterLink id="device" value={device} label={formatMessage(getDeviceMessage(device))} />
+      <FilterLink
+        id="device"
+        value={device}
+        label={formatMessage(labels[device] || labels.unknown)}
+      />
     );
   }
 
   return (
     <MetricsTable
       {...props}
-      title={<FormattedMessage id="metrics.devices" defaultMessage="Devices" />}
+      title={formatMessage(labels.devices)}
       type="device"
-      metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+      metric={formatMessage(labels.visitors)}
       websiteId={websiteId}
       renderLabel={renderLink}
     />

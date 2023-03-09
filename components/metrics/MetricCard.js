@@ -15,7 +15,7 @@ const MetricCard = ({
 
   return (
     <div className={styles.card}>
-      <animated.div className={styles.value}>{props.x.interpolate(x => format(x))}</animated.div>
+      <animated.div className={styles.value}>{props.x.to(x => format(x))}</animated.div>
       <div className={styles.label}>
         {label}
         {~~change !== 0 && !hideComparison && (
@@ -30,7 +30,7 @@ const MetricCard = ({
                 : styles.positive
             } ${change >= 0 ? styles.plusSign : ''}`}
           >
-            {changeProps.x.interpolate(x => format(x))}
+            {changeProps.x.to(x => format(x))}
           </animated.span>
         )}
       </div>

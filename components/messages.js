@@ -105,6 +105,10 @@ export const labels = defineMessages({
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
   averageVisitTime: { id: 'label.average-visit-time', defaultMessage: 'Average visit time' },
+  desktop: { id: 'label.desktop', defaultMessage: 'Desktop' },
+  laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
+  tablet: { id: 'label.tablet', defaultMessage: 'Tablet' },
+  mobile: { id: 'label.mobile', defaultMessage: 'Mobile' },
 });
 
 export const messages = defineMessages({

@@ -90,16 +90,13 @@ const AnimatedRow = ({
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
       <div className={styles.value} onClick={onClick}>
-        <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
+        <animated.div className={styles.value}>{props.y?.to(format)}</animated.div>
       </div>
       {showPercentage && (
         <div className={styles.percent}>
-          <animated.div
-            className={styles.bar}
-            style={{ width: props.width.interpolate(n => `${n}%`) }}
-          />
+          <animated.div className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
           <animated.span className={styles.percentValue}>
-            {props.width.interpolate(n => `${n.toFixed(0)}%`)}
+            {props.width.to(n => `${n.toFixed(0)}%`)}
           </animated.span>
         </div>
       )}
