@@ -34,12 +34,14 @@ export default async (
 
     const { name } = req.body;
 
-    const team = await createTeam({
-      id: uuid(),
-      name,
+    const team = await createTeam(
+      {
+        id: uuid(),
+        name,
+        accessCode: getRandomChars(16),
+      },
       userId,
-      accessCode: getRandomChars(16),
-    });
+    );
 
     return ok(res, team);
   }

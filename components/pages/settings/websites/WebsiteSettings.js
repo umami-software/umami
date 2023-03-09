@@ -59,7 +59,7 @@ export default function WebsiteSettings({ websiteId }) {
           </Breadcrumbs>
         }
       >
-        <Link href={`/analytics/websites/${websiteId}`}>
+        <Link href={`/websites/${websiteId}`}>
           <a target="_blank">
             <Button variant="primary">
               <Icon>

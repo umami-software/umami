@@ -46,6 +46,7 @@ export const labels = defineMessages({
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
+  addWebsites: { id: 'label.add-websites', defaultMessage: 'Add websites' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },
@@ -98,8 +99,6 @@ export const labels = defineMessages({
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
   logs: { id: 'label.activity-log', defaultMessage: 'Activity log' },
-  dismiss: { id: 'label.dismiss', defaultMessage: 'Dismiss' },
-  poweredBy: { id: 'label.powered-by', defaultMessage: 'Powered by {name}' },
 });
 
 export const messages = defineMessages({
@@ -141,6 +140,10 @@ export const messages = defineMessages({
     id: 'message.reset-website',
     defaultMessage: 'To reset this website, type {confirmation} in the box below to confirm.',
   },
+  websitesShared: {
+    id: 'message.shared-website',
+    defaultMessage: 'Websites can be viewed by the entire team.',
+  },
   invalidDomain: {
     id: 'message.invalid-domain',
     defaultMessage: 'Invalid domain. Do not include http/https.',
@@ -157,6 +160,14 @@ export const messages = defineMessages({
   noWebsites: {
     id: 'messages.no-websites',
     defaultMessage: 'You do not have any websites configured.',
+  },
+  noTeamWebsites: {
+    id: 'messages.no-team-websites',
+    defaultMessage: 'This team does not have any websites.',
+  },
+  websitesAreShared: {
+    id: 'messages.websites-are-shared',
+    defaultMessage: 'Websites can be viewed by anyone on the team.',
   },
   noMatchPassword: { id: 'message.no-match-password', defaultMessage: 'Passwords do not match.' },
   goToSettings: {
@@ -179,25 +190,10 @@ export const messages = defineMessages({
     id: 'message.event-log',
     defaultMessage: '{event} on {url}',
   },
-  newVersionAvailable: {
-    id: 'new-version-available',
-    defaultMessage: 'A new version of Umami {version} is available!',
-  },
-});
-
-export const devices = defineMessages({
-  desktop: { id: 'metrics.device.desktop', defaultMessage: 'Desktop' },
-  laptop: { id: 'metrics.device.laptop', defaultMessage: 'Laptop' },
-  tablet: { id: 'metrics.device.tablet', defaultMessage: 'Tablet' },
-  mobile: { id: 'metrics.device.mobile', defaultMessage: 'Mobile' },
 });
 
 export function getMessage(id, formatMessage) {
   const message = Object.values(messages).find(value => value.id === id);
 
   return message ? formatMessage(message) : id;
-}
-
-export function getDeviceMessage(device) {
-  return devices[device] || labels.unknown;
 }
