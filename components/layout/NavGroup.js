@@ -37,16 +37,15 @@ export default function NavGroup({
         {items.map(({ label, url, icon, divider }) => {
           return (
             <Tooltip key={label} label={label} position="right" disabled={!minimized}>
-              <Link href={url}>
-                <a
-                  className={classNames(styles.item, {
-                    [styles.divider]: divider,
-                    [styles.selected]: pathname.startsWith(url),
-                  })}
-                >
-                  <Icon>{icon}</Icon>
-                  <Text className={styles.text}>{label}</Text>
-                </a>
+              <Link
+                href={url}
+                className={classNames(styles.item, {
+                  [styles.divider]: divider,
+                  [styles.selected]: pathname.startsWith(url),
+                })}
+              >
+                <Icon>{icon}</Icon>
+                <Text className={styles.text}>{label}</Text>
               </Link>
             </Tooltip>
           );
