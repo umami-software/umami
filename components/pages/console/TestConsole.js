@@ -59,26 +59,25 @@ export default function TestConsole() {
             <Column xs="4">
               <div className={styles.header}>Page links</div>
               <div>
-                <Link href={`/console/${websiteId}?page=1`}>
-                  <a>page one</a>
-                </Link>
+                <Link href={`/console/${websiteId}?page=1`}>page one</Link>
               </div>
               <div>
-                <Link href={`/console/${websiteId}?page=2`}>
-                  <a>page two</a>
-                </Link>
+                <Link href={`/console/${websiteId}?page=2`}>page two</Link>
               </div>
               <div>
-                <Link href={`https://www.google.com`}>
-                  <a className="umami--click--external-link-direct">external link (direct)</a>
-                </Link>
+                <a href="https://www.google.com" className="umami--click--external-link-direct">
+                  external link (direct)
+                </a>
               </div>
               <div>
-                <Link href={`https://www.google.com`}>
-                  <a className="umami--click--external-link-tab" target="_blank">
-                    external link (tab)
-                  </a>
-                </Link>
+                <a
+                  href="https://www.google.com"
+                  className="umami--click--external-link-tab"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  external link (tab)
+                </a>
               </div>
             </Column>
             <Column xs="4">

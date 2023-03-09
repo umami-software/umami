@@ -71,14 +71,12 @@ export default function WebsiteChart({
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
         {showDetailsButton && (
           <Link href={`/websites/${websiteId}`}>
-            <a>
-              <Button>
-                <Text>{formatMessage(labels.viewDetails)}</Text>
-                <Icon>
-                  <Icons.ArrowRight />
-                </Icon>
-              </Button>
-            </a>
+            <Button>
+              <Text>{formatMessage(labels.viewDetails)}</Text>
+              <Icon>
+                <Icons.ArrowRight />
+              </Icon>
+            </Button>
           </Link>
         )}
       </WebsiteHeader>

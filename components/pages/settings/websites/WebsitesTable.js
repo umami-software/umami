@@ -42,24 +42,20 @@ export default function WebsitesTable({ data = [] }) {
           row.action = (
             <Flexbox flex={1} justifyContent="end" gap={10}>
               <Link href={`/settings/websites/${id}`}>
-                <a>
-                  <Button>
-                    <Icon>
-                      <Icons.Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </Button>
-                </a>
+                <Button>
+                  <Icon>
+                    <Icons.Edit />
+                  </Icon>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </Button>
               </Link>
               <Link href={`/websites/${id}`}>
-                <a>
-                  <Button>
-                    <Icon>
-                      <Icons.External />
-                    </Icon>
-                    <Text>{formatMessage(labels.view)}</Text>
-                  </Button>
-                </a>
+                <Button>
+                  <Icon>
+                    <Icons.External />
+                  </Icon>
+                  <Text>{formatMessage(labels.view)}</Text>
+                </Button>
               </Link>
             </Flexbox>
           );

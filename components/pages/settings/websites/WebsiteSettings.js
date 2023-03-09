@@ -59,15 +59,13 @@ export default function WebsiteSettings({ websiteId }) {
           </Breadcrumbs>
         }
       >
-        <Link href={`/analytics/websites/${websiteId}`}>
-          <a target="_blank">
-            <Button variant="primary">
-              <Icon>
-                <Icons.External />
-              </Icon>
-              <Text>{formatMessage(labels.view)}</Text>
-            </Button>
-          </a>
+        <Link href={`/analytics/websites/${websiteId}`} target="_blank">
+          <Button variant="primary">
+            <Icon>
+              <Icons.External />
+            </Icon>
+            <Text>{formatMessage(labels.view)}</Text>
+          </Button>
         </Link>
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>

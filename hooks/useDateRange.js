@@ -3,27 +3,15 @@ import { parseDateRange } from 'lib/date';
 import { setItem } from 'next-basics';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import useLocale from './useLocale';
-import { getWebsiteDateRange, setWebsiteDateRange } from 'store/websites';
-import useStore, { setDateRange } from 'store/app';
-
-function parseValue(value, locale) {
-  if (typeof value === 'string') {
-    return parseDateRange(value, locale);
-  } else if (typeof value === 'object') {
-    return {
-      ...value,
-      startDate: parseISO(value.startDate),
-      endDate: parseISO(value.endDate),
-    };
-  }
-}
+import websiteStore, { setWebsiteDateRange } from 'store/websites';
+import appStore, { setDateRange } from 'store/app';
 
 export default function useDateRange(websiteId) {
   const { locale } = useLocale();
-  const websiteConfig = getWebsiteDateRange(websiteId);
+  const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
   const defaultConfig = DEFAULT_DATE_RANGE;
-  const globalConfig = useStore(state => state.dateRange);
-  const dateRange = parseValue(websiteConfig || globalConfig || defaultConfig, locale);
+  const globalConfig = appStore(state => state.dateRange);
+  const dateRange = parseDateRange(websiteConfig || globalConfig || defaultConfig, locale);
 
   function saveDateRange(value) {
     if (websiteId) {

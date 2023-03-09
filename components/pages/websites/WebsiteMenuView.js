@@ -86,22 +86,20 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
     <GridRow>
       <GridColumn xs={12} sm={12} md={12} defaultSize={3} className={styles.menu}>
         <Link href={resolveUrl({ view: undefined })}>
-          <a>
-            <Flexbox justifyContent="center">
-              <Button variant="quiet">
-                <Icon rotate={180}>
-                  <Icons.ArrowRight />
-                </Icon>
-                <Text>{formatMessage(labels.back)}</Text>
-              </Button>
-            </Flexbox>
-          </a>
+          <Flexbox justifyContent="center">
+            <Button variant="quiet">
+              <Icon rotate={180}>
+                <Icons.ArrowRight />
+              </Icon>
+              <Text>{formatMessage(labels.back)}</Text>
+            </Button>
+          </Flexbox>
         </Link>
         <Menu items={items} selectedKey={view}>
           {({ key, label }) => (
             <Item key={key} className={styles.item}>
               <Link href={resolveUrl({ view: key })} shallow={true}>
-                <a>{label}</a>
+                {label}
               </Link>
             </Item>
           )}

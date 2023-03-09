@@ -102,6 +102,8 @@ export const labels = defineMessages({
   poweredBy: { id: 'label.powered-by', defaultMessage: 'Powered by {name}' },
   pageViews: { id: 'label.page-views', defaultMessage: 'Page views' },
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
+  bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
+  averageVisitTime: { id: 'label.average-visit-time', defaultMessage: 'Average visit time' },
 });
 
 export const messages = defineMessages({
