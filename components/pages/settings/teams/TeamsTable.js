@@ -1,26 +1,28 @@
+import { labels } from 'components/messages';
+import useUser from 'hooks/useUser';
+import { ROLES } from 'lib/constants';
 import Link from 'next/link';
 import {
+  Button,
+  Flexbox,
+  Icon,
+  Icons,
+  Modal,
+  ModalTrigger,
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
   TableCell,
   TableColumn,
-  Button,
-  Icon,
-  Flexbox,
-  Icons,
+  TableHeader,
+  TableRow,
   Text,
-  ModalTrigger,
-  Modal,
 } from 'react-basics';
 import { useIntl } from 'react-intl';
-import { labels } from 'components/messages';
-import { ROLES } from 'lib/constants';
 import TeamDeleteForm from './TeamDeleteForm';
 
 export default function TeamsTable({ data = [], onDelete }) {
   const { formatMessage } = useIntl();
+  const { user } = useUser();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
@@ -42,10 +44,12 @@ export default function TeamsTable({ data = [], onDelete }) {
       <TableBody>
         {(row, keys, rowIndex) => {
           const { id } = row;
+          const owner = row.teamUser.find(({ role }) => role === ROLES.teamOwner);
+          const showDelete = user.id === owner?.userId;
 
           const rowData = {
             ...row,
-            owner: row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username,
+            owner: owner?.user?.username,
             action: (
               <Flexbox flex={1} gap={10} justifyContent="end">
                 <Link href={`/settings/teams/${id}`}>
@@ -56,24 +60,26 @@ export default function TeamsTable({ data = [], onDelete }) {
                     <Text>{formatMessage(labels.edit)}</Text>
                   </Button>
                 </Link>
-                <ModalTrigger>
-                  <Button>
-                    <Icon>
-                      <Icons.Trash />
-                    </Icon>
-                    <Text>{formatMessage(labels.delete)}</Text>
-                  </Button>
-                  <Modal title={formatMessage(labels.deleteTeam)}>
-                    {close => (
-                      <TeamDeleteForm
-                        teamId={row.id}
-                        teamName={row.name}
-                        onSave={onDelete}
-                        onClose={close}
-                      />
-                    )}
-                  </Modal>
-                </ModalTrigger>
+                {showDelete && (
+                  <ModalTrigger>
+                    <Button>
+                      <Icon>
+                        <Icons.Trash />
+                      </Icon>
+                      <Text>{formatMessage(labels.delete)}</Text>
+                    </Button>
+                    <Modal title={formatMessage(labels.deleteTeam)}>
+                      {close => (
+                        <TeamDeleteForm
+                          teamId={row.id}
+                          teamName={row.name}
+                          onSave={onDelete}
+                          onClose={close}
+                        />
+                      )}
+                    </Modal>
+                  </ModalTrigger>
+                )}
               </Flexbox>
             ),
           };

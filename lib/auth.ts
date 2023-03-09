@@ -1,10 +1,11 @@
 import debug from 'debug';
-import { validate } from 'uuid';
 import cache from 'lib/cache';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { ensureArray, parseSecureToken, parseToken } from 'next-basics';
 import { getTeamUser } from 'queries';
+import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
+import { validate } from 'uuid';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
@@ -56,6 +57,12 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   }
 
   if (shareToken?.websiteId === websiteId) {
+    return true;
+  }
+
+  const teamWebsite = await getTeamWebsiteByTeamMemberId(websiteId, user.id);
+
+  if (teamWebsite) {
     return true;
   }
 
@@ -153,6 +160,26 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
 
   if (validate(teamId)) {
     const teamUser = await getTeamUser(teamId, user.id);
+
+    return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
+  }
+
+  return false;
+}
+
+export async function canDeleteTeamWebsite({ user }: Auth, teamWebsiteId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  if (validate(teamWebsiteId)) {
+    const teamWebsite = await getTeamWebsite(teamWebsiteId);
+
+    if (teamWebsite.website.userId === user.id) {
+      return true;
+    }
+
+    const teamUser = await getTeamUser(teamWebsite.teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
   }

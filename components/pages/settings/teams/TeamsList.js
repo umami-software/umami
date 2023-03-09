@@ -76,7 +76,10 @@ export default function TeamsList() {
       {hasData && <TeamsTable data={data} onDelete={handleDelete} />}
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noTeams)}>
-          {createButton}
+          <Flexbox gap={10}>
+            {joinButton}
+            {createButton}
+          </Flexbox>
         </EmptyPlaceholder>
       )}
     </Page>

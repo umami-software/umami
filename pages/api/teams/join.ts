@@ -6,13 +6,13 @@ import { methodNotAllowed, ok, notFound } from 'next-basics';
 import { createTeamUser, getTeam } from 'queries';
 import { ROLES } from 'lib/constants';
 
-export interface TeamsRequestBody {
+export interface TeamsJoinRequestBody {
   accessCode: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<any, TeamsRequestBody>,
-  res: NextApiResponse<Team[] | Team>,
+  req: NextApiRequestQueryBody<any, TeamsJoinRequestBody>,
+  res: NextApiResponse<Team>,
 ) => {
   await useAuth(req, res);
 

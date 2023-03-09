@@ -18,26 +18,8 @@ export async function getTeams(where: Prisma.TeamWhereInput): Promise<Team[]> {
   });
 }
 
-export async function getTeamWebsites(teamId: string): Promise<TeamWebsite[]> {
-  return prisma.client.teamWebsite.findMany({
-    where: {
-      teamId,
-    },
-    include: {
-      team: true,
-    },
-    orderBy: [
-      {
-        team: {
-          name: 'asc',
-        },
-      },
-    ],
-  } as any);
-}
-
-export async function createTeam(data: Prisma.TeamCreateInput): Promise<Team> {
-  const { id, userId } = data;
+export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<Team> {
+  const { id } = data;
 
   return prisma.transaction([
     prisma.client.team.create({

@@ -17,9 +17,8 @@ model User {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  Website     Website[]
-  teamUser    TeamUser[]
-  teamWebsite TeamWebsite[]
+  Website  Website[]
+  teamUser TeamUser[]
 
   @@map("user")
 }
@@ -86,7 +85,6 @@ model WebsiteEvent {
 model Team {
   id         String    @id() @unique() @map("team_id") @db.Uuid
   name       String    @db.VarChar(50)
-  userId     String    @map("user_id") @db.Uuid
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt  DateTime? @map("updated_at") @db.Timestamptz(6)
@@ -94,7 +92,6 @@ model Team {
   teamUser    TeamUser[]
   teamWebsite TeamWebsite[]
 
-  @@index([userId])
   @@index([accessCode])
   @@map("team")
 }
@@ -118,16 +115,13 @@ model TeamUser {
 model TeamWebsite {
   id        String    @id() @unique() @map("team_website_id") @db.Uuid
   teamId    String    @map("team_id") @db.Uuid
-  userId    String    @map("user_id") @db.Uuid
   websiteId String    @map("website_id") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   team    Team    @relation(fields: [teamId], references: [id])
-  user    User    @relation(fields: [userId], references: [id])
   website Website @relation(fields: [websiteId], references: [id])
 
   @@index([teamId])
-  @@index([userId])
   @@index([websiteId])
   @@map("team_website")
 }
