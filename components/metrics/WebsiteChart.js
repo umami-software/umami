@@ -6,7 +6,7 @@ import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/input/DateFilter';
-import StickyHeader from 'components/helpers/StickyHeader';
+import StickyHeader from 'components/common/StickyHeader';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
 import RefreshButton from 'components/input/RefreshButton';
@@ -71,14 +71,12 @@ export default function WebsiteChart({
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
         {showDetailsButton && (
           <Link href={`/websites/${websiteId}`}>
-            <a>
-              <Button>
-                <Text>{formatMessage(labels.viewDetails)}</Text>
-                <Icon>
-                  <Icons.ArrowRight />
-                </Icon>
-              </Button>
-            </a>
+            <Button>
+              <Text>{formatMessage(labels.viewDetails)}</Text>
+              <Icon>
+                <Icons.ArrowRight />
+              </Icon>
+            </Button>
           </Link>
         )}
       </WebsiteHeader>

@@ -44,7 +44,9 @@ export const useAuth = createMiddleware(async (req, res, next) => {
     user = await redis.get(authKey);
   }
 
-  log({ token, payload, user, shareToken });
+  if (process.env.NODE_ENV === 'development') {
+    log({ token, shareToken, payload, user });
+  }
 
   if (!user?.id && !shareToken) {
     log('useAuth: User not authorized');

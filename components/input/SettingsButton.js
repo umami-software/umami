@@ -18,7 +18,12 @@ export default function SettingsButton() {
           </Icon>
         </Button>
       </Tooltip>
-      <Popup className={styles.popup} position="bottom" alignment="end">
+      <Popup
+        className={styles.popup}
+        position="bottom"
+        alignment="end"
+        onClick={e => e.stopPropagation()}
+      >
         <Form>
           <FormRow label={formatMessage(labels.timezone)}>
             <TimezoneSetting />

@@ -80,14 +80,12 @@ export default function MetricsTable({
       <div className={styles.footer}>
         {data && !error && limit && (
           <Link href={router.pathname} as={resolveUrl({ view: type })}>
-            <a>
-              <Button variant="quiet">
-                <Text>{formatMessage(messages.more)}</Text>
-                <Icon size="sm">
-                  <Icons.ArrowRight />
-                </Icon>
-              </Button>
-            </a>
+            <Button variant="quiet">
+              <Text>{formatMessage(messages.more)}</Text>
+              <Icon size="sm">
+                <Icons.ArrowRight />
+              </Icon>
+            </Button>
           </Link>
         )}
       </div>

@@ -1,6 +1,6 @@
 import { useIntl } from 'react-intl';
 import { LoadingButton, Icon, Tooltip } from 'react-basics';
-import { setDateRange } from 'store/websites';
+import { setWebsiteDateRange } from 'store/websites';
 import useDateRange from 'hooks/useDateRange';
 import Icons from 'components/icons';
 import { labels } from 'components/messages';
@@ -12,9 +12,9 @@ function RefreshButton({ websiteId, isLoading }) {
   function handleClick() {
     if (!isLoading && dateRange) {
       if (/^\d+/.test(dateRange.value)) {
-        setDateRange(websiteId, dateRange.value);
+        setWebsiteDateRange(websiteId, dateRange.value);
       } else {
-        setDateRange(websiteId, dateRange);
+        setWebsiteDateRange(websiteId, dateRange);
       }
     }
   }

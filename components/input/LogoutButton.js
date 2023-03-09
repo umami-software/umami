@@ -7,15 +7,13 @@ export default function LogoutButton({ tooltipPosition = 'top' }) {
   const { formatMessage } = useIntl();
   return (
     <Link href="/logout">
-      <a>
-        <Tooltip label={formatMessage(labels.logout)} position={tooltipPosition}>
-          <Button variant="quiet">
-            <Icon>
-              <Icons.Logout />
-            </Icon>
-          </Button>
-        </Tooltip>
-      </a>
+      <Tooltip label={formatMessage(labels.logout)} position={tooltipPosition}>
+        <Button variant="quiet">
+          <Icon>
+            <Icons.Logout />
+          </Icon>
+        </Button>
+      </Tooltip>
     </Link>
   );
 }

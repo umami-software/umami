@@ -53,14 +53,12 @@ export default function TeamsTable({ data = [], onDelete }) {
             action: (
               <Flexbox flex={1} gap={10} justifyContent="end">
                 <Link href={`/settings/teams/${id}`}>
-                  <a>
-                    <Button>
-                      <Icon>
-                        <Icons.Edit />
-                      </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
-                    </Button>
-                  </a>
+                  <Button>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </Button>
                 </Link>
                 {showDelete && (
                   <ModalTrigger>

@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Loading } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
+import { useIntl } from 'react-intl';
 import ErrorMessage from 'components/common/ErrorMessage';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import MetricCard from './MetricCard';
+import { labels } from 'components/messages';
 import styles from './MetricsBar.module.css';
 
-export default function MetricsBar({ websiteId, className }) {
+export default function MetricsBar({ websiteId }) {
+  const { formatMessage } = useIntl();
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
@@ -52,25 +53,25 @@ export default function MetricsBar({ websiteId, className }) {
   };
 
   return (
-    <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
+    <div className={styles.bar} onClick={handleSetFormat}>
       {isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
       {data && !error && isFetched && (
         <>
           <MetricCard
-            label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+            label={formatMessage(labels.views)}
             value={pageviews.value}
             change={pageviews.change}
             format={formatFunc}
           />
           <MetricCard
-            label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+            label={formatMessage(labels.visitors)}
             value={uniques.value}
             change={uniques.change}
             format={formatFunc}
           />
           <MetricCard
-            label={<FormattedMessage id="metrics.bounce-rate" defaultMessage="Bounce rate" />}
+            label={formatMessage(labels.bounceRate)}
             value={uniques.value ? (num / uniques.value) * 100 : 0}
             change={
               uniques.value && uniques.change
@@ -82,12 +83,7 @@ export default function MetricsBar({ websiteId, className }) {
             reverseColors
           />
           <MetricCard
-            label={
-              <FormattedMessage
-                id="metrics.average-visit-time"
-                defaultMessage="Average visit time"
-              />
-            }
+            label={formatMessage(labels.averageVisitTime)}
             value={
               totaltime.value && pageviews.value
                 ? totaltime.value / (pageviews.value - bounces.value)

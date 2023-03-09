@@ -12,15 +12,15 @@ export default function FilterLink({ id, value, label, externalUrl }) {
 
   return (
     <div className={styles.row}>
-      <Link href={resolveUrl({ [id]: value })} replace>
-        <a
-          className={classNames(styles.label, {
-            [styles.inactive]: active && !selected,
-            [styles.active]: active && selected,
-          })}
-        >
-          {safeDecodeURI(label || value)}
-        </a>
+      <Link
+        href={resolveUrl({ [id]: value })}
+        className={classNames(styles.label, {
+          [styles.inactive]: active && !selected,
+          [styles.active]: active && selected,
+        })}
+        replace
+      >
+        {safeDecodeURI(label || value)}
       </Link>
       {externalUrl && (
         <a className={styles.link} href={externalUrl} target="_blank" rel="noreferrer noopener">

@@ -6,7 +6,7 @@ import firstBy from 'thenby';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import StickyHeader from 'components/helpers/StickyHeader';
+import StickyHeader from 'components/common/StickyHeader';
 import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
 import RealtimeLog from 'components/pages/realtime/RealtimeLog';

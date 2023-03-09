@@ -8,7 +8,7 @@ export default function Footer() {
   return (
     <footer className={styles.footer}>
       <Row>
-        <Column defaultSize={11} xs={12} sm={12}>
+        <Column defaultSize={12} lg={11} xl={11}>
           <div>
             <FormattedMessage
               {...labels.poweredBy}
@@ -22,7 +22,7 @@ export default function Footer() {
             />
           </div>
         </Column>
-        <Column className={styles.version} defaultSize={1} xs={12} sm={12}>
+        <Column className={styles.version} defaultSize={12} lg={1} xl={1}>
           <a href={REPO_URL}>{`v${CURRENT_VERSION}`}</a>
         </Column>
       </Row>

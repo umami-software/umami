@@ -9,7 +9,7 @@ import 'styles/variables.css';
 import 'styles/locale.css';
 import 'styles/index.css';
 import '@fontsource/inter/400.css';
-import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
 import Script from 'next/script';
 
 const client = new QueryClient({
@@ -24,11 +24,11 @@ const client = new QueryClient({
 export default function App({ Component, pageProps }) {
   const { locale, messages } = useLocale();
   const { basePath, pathname } = useRouter();
-  useConfig();
+  const config = useConfig();
 
   const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
 
-  if (process.env.uiDisabled) {
+  if (!config || config.uiDisabled) {
     return null;
   }
 

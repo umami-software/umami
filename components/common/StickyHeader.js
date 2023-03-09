@@ -12,17 +12,18 @@ export default function StickyHeader({
 }) {
   const { ref: scrollRef, isSticky } = useSticky({ scrollElement });
   const { ref: measureRef, dimensions } = useMeasure();
+  const active = enabled && isSticky;
 
   return (
     <div
       ref={measureRef}
-      data-sticky={enabled && isSticky}
-      style={enabled && isSticky ? { height: dimensions.height } : null}
+      data-sticky={active}
+      style={active ? { height: dimensions.height } : null}
     >
       <div
         ref={scrollRef}
-        className={classNames(className, { [stickyClassName]: enabled && isSticky })}
-        style={enabled && isSticky ? { ...stickyStyle, width: dimensions.width } : null}
+        className={classNames(className, { [stickyClassName]: active })}
+        style={active ? { ...stickyStyle, width: dimensions.width } : null}
       >
         {children}
       </div>
