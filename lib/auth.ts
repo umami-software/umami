@@ -4,7 +4,7 @@ import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants
 import { secret } from 'lib/crypto';
 import { ensureArray, parseSecureToken, parseToken } from 'next-basics';
 import { getTeamUser } from 'queries';
-import { getTeamWebsite, getTeamWebsiteByWebsiteIdUserId } from 'queries/admin/teamWebsite';
+import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
 import { Auth } from './types';
 
@@ -60,7 +60,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  const teamWebsite = await getTeamWebsiteByWebsiteIdUserId(websiteId, user.id);
+  const teamWebsite = await getTeamWebsiteByTeamMemberId(websiteId, user.id);
 
   if (teamWebsite) {
     return true;

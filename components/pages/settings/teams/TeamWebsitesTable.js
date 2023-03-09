@@ -64,15 +64,13 @@ export default function TeamWebsitesTable({ teamId, data = [], onSave }) {
 
           row.action = (
             <Flexbox flex={1} justifyContent="end" gap={10}>
-              <Link href={`/websites/${websiteId}`}>
-                <a target="_blank">
-                  <Button>
-                    <Icon>
-                      <Icons.External />
-                    </Icon>
-                    <Text>{formatMessage(labels.view)}</Text>
-                  </Button>
-                </a>
+              <Link href={`/websites/${websiteId}`} target="_blank">
+                <Button>
+                  <Icon>
+                    <Icons.External />
+                  </Icon>
+                  <Text>{formatMessage(labels.view)}</Text>
+                </Button>
               </Link>
               {canRemove && (
                 <Button onClick={() => handleRemoveWebsite(teamWebsiteId)}>

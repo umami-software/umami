@@ -120,7 +120,6 @@ model TeamWebsite {
 
   team    Team    @relation(fields: [teamId], references: [id])
   website Website @relation(fields: [websiteId], references: [id])
-  userId  String? @db.Uuid
 
   @@index([teamId])
   @@index([websiteId])

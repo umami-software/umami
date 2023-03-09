@@ -18,7 +18,7 @@ export async function getTeamWebsite(teamWebsiteId: string): Promise<
   });
 }
 
-export async function getTeamWebsiteByWebsiteIdUserId(
+export async function getTeamWebsiteByTeamMemberId(
   websiteId: string,
   userId: string,
 ): Promise<TeamWebsite> {
