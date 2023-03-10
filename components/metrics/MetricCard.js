@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useSpring, animated } from 'react-spring';
 import { formatNumber } from 'lib/format';
 import styles from './MetricCard.module.css';
@@ -20,15 +21,11 @@ const MetricCard = ({
         {label}
         {~~change !== 0 && !hideComparison && (
           <animated.span
-            className={`${styles.change} ${
-              change >= 0
-                ? !reverseColors
-                  ? styles.positive
-                  : styles.negative
-                : !reverseColors
-                ? styles.negative
-                : styles.positive
-            } ${change >= 0 ? styles.plusSign : ''}`}
+            className={classNames(styles.change, {
+              [styles.positive]: change * (reverseColors ? -1 : 1) >= 0,
+              [styles.negative]: change * (reverseColors ? -1 : 1) < 0,
+              [styles.plusSign]: change > 0,
+            })}
           >
             {changeProps.x.to(x => format(x))}
           </animated.span>
