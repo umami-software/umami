@@ -1,5 +1,6 @@
 import { Prisma, Team } from '@prisma/client';
 import cache from 'lib/cache';
+import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { Website, User, Roles } from 'lib/types';
 
@@ -134,6 +135,19 @@ export async function deleteUser(
     websiteIds = websites.map(a => a.id);
   }
 
+  const teams = await client.team.findMany({
+    where: {
+      teamUser: {
+        some: {
+          userId,
+          role: ROLES.teamOwner,
+        },
+      },
+    },
+  });
+
+  const teamIds = teams.map(a => a.id);
+
   return prisma
     .transaction([
       client.websiteEvent.deleteMany({
@@ -144,21 +158,39 @@ export async function deleteUser(
       }),
       client.teamWebsite.deleteMany({
         where: {
-          website: {
-            userId,
+          OR: [
+            {
+              websiteId: {
+                in: websiteIds,
+              },
+            },
+            {
+              teamId: {
+                in: teamIds,
+              },
+            },
+          ],
+        },
+      }),
+      client.teamWebsite.deleteMany({
+        where: {
+          teamId: {
+            in: teamIds,
           },
         },
       }),
       client.teamUser.deleteMany({
         where: {
-          team: {
-            userId,
+          teamId: {
+            in: teamIds,
           },
         },
       }),
       client.team.deleteMany({
         where: {
-          userId,
+          id: {
+            in: teamIds,
+          },
         },
       }),
       cloudMode

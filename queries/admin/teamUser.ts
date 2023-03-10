@@ -2,6 +2,14 @@ import { Prisma, TeamUser } from '@prisma/client';
 import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
+export async function getTeamUserById(teamUserId: string): Promise<TeamUser> {
+  return prisma.client.teamUser.findUnique({
+    where: {
+      id: teamUserId,
+    },
+  });
+}
+
 export async function getTeamUser(teamId: string, userId: string): Promise<TeamUser> {
   return prisma.client.teamUser.findFirst({
     where: {
@@ -48,11 +56,25 @@ export async function updateTeamUser(
 }
 
 export async function deleteTeamUser(teamUserId: string): Promise<TeamUser> {
-  return prisma.client.teamUser.delete({
-    where: {
-      id: teamUserId,
-    },
-  });
+  const { client, transaction } = prisma;
+
+  const teamUser = await getTeamUserById(teamUserId);
+
+  return transaction([
+    client.teamWebsite.deleteMany({
+      where: {
+        teamId: teamUser.teamId,
+        website: {
+          userId: teamUser.userId,
+        },
+      },
+    }),
+    client.teamUser.deleteMany({
+      where: {
+        id: teamUserId,
+      },
+    }),
+  ]);
 }
 
 export async function deleteTeamUserByUserId(
