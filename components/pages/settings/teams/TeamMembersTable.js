@@ -15,16 +15,30 @@ import { useIntl } from 'react-intl';
 import { ROLES } from 'lib/constants';
 import { labels } from 'components/messages';
 import useUser from 'hooks/useUser';
+import useApi from 'hooks/useApi';
 
-export default function TeamMembersTable({ data = [], readOnly }) {
+export default function TeamMembersTable({ data = [], onSave, readOnly }) {
   const { formatMessage } = useIntl();
   const { user } = useUser();
+  const { del, useMutation } = useApi();
+  const { mutate } = useMutation(data => del(`/teamUsers/${data.teamUserId}`));
 
   const columns = [
     { name: 'username', label: formatMessage(labels.username), style: { flex: 2 } },
     { name: 'role', label: formatMessage(labels.role), style: { flex: 1 } },
     { name: 'action', label: '', style: { flex: 1 } },
   ];
+
+  const handleRemoveTeamMember = teamUserId => {
+    mutate(
+      { teamUserId },
+      {
+        onSuccess: async () => {
+          onSave();
+        },
+      },
+    );
+  };
 
   return (
     <Table columns={columns} rows={data}>
@@ -46,7 +60,10 @@ export default function TeamMembersTable({ data = [], readOnly }) {
             ),
             action: !readOnly && (
               <Flexbox flex={1} justifyContent="end">
-                <Button disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}>
+                <Button
+                  onClick={() => handleRemoveTeamMember(row.id)}
+                  disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
+                >
                   <Icon>
                     <Icons.Close />
                   </Icon>

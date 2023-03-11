@@ -1,10 +1,14 @@
-import { Loading } from 'react-basics';
-import useApi from 'hooks/useApi';
+import { messages } from 'components/messages';
 import TeamMembersTable from 'components/pages/settings/teams/TeamMembersTable';
+import useApi from 'hooks/useApi';
+import { Loading, useToast } from 'react-basics';
+import { useIntl } from 'react-intl';
 
 export default function TeamMembers({ teamId, readOnly }) {
+  const { toast, showToast } = useToast();
   const { get, useQuery } = useApi();
-  const { data, isLoading } = useQuery(['teams:users', teamId], () =>
+  const { formatMessage } = useIntl();
+  const { data, isLoading, refetch } = useQuery(['teams:users', teamId], () =>
     get(`/teams/${teamId}/users`),
   );
 
@@ -12,5 +16,15 @@ export default function TeamMembers({ teamId, readOnly }) {
     return <Loading icon="dots" position="block" />;
   }
 
-  return <TeamMembersTable data={data} readOnly={readOnly} />;
+  const handleSave = async () => {
+    await refetch();
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
+
+  return (
+    <>
+      {toast}
+      <TeamMembersTable onSave={handleSave} data={data} readOnly={readOnly} />
+    </>
+  );
 }

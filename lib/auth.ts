@@ -3,7 +3,7 @@ import cache from 'lib/cache';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { ensureArray, parseSecureToken, parseToken } from 'next-basics';
-import { getTeamUser } from 'queries';
+import { getTeamUser, getTeamUserById } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
 import { Auth } from './types';
@@ -162,6 +162,22 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
+  }
+
+  return false;
+}
+
+export async function canDeleteTeamUser({ user }: Auth, teamUserId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  if (validate(teamUserId)) {
+    const removeUser = await getTeamUserById(teamUserId);
+
+    const teamUser = await getTeamUser(removeUser.teamId, user.id);
+
+    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
   }
 
   return false;

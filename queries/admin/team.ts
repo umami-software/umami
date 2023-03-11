@@ -52,17 +52,17 @@ export async function updateTeam(
 export async function deleteTeam(
   teamId: string,
 ): Promise<Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Team]>> {
-  const { client } = prisma;
+  const { client, transaction } = prisma;
 
-  return prisma.transaction([
+  return transaction([
     client.teamWebsite.deleteMany({
       where: {
-        id: teamId,
+        teamId,
       },
     }),
     client.teamUser.deleteMany({
       where: {
-        id: teamId,
+        teamId,
       },
     }),
     client.team.delete({
