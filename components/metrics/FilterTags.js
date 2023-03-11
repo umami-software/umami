@@ -32,15 +32,13 @@ export default function FilterTags({ websiteId, params, onClick }) {
           return null;
         }
         return (
-          <div key={key} className={styles.tag}>
-            <Button onClick={() => handleCloseFilter(key)} variant="primary" size="sm">
-              <Text>
-                <b>{`${key}`}</b> — {`${safeDecodeURI(params[key])}`}
-              </Text>
-              <Icon>
-                <Icons.Close />
-              </Icon>
-            </Button>
+          <div key={key} className={styles.tag} onClick={() => handleCloseFilter(key)}>
+            <Text>
+              <b>{`${key}`}</b> = {`${safeDecodeURI(params[key])}`}
+            </Text>
+            <Icon>
+              <Icons.Close />
+            </Icon>
           </div>
         );
       })}
