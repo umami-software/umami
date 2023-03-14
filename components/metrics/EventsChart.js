@@ -76,7 +76,6 @@ export default function EventsChart({ websiteId, className, token }) {
 
   return (
     <BarChart
-      chartId={`events-${websiteId}`}
       className={className}
       datasets={datasets}
       unit={unit}

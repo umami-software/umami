@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
+import { StatusLight } from 'react-basics';
 import classNames from 'classnames';
 import ChartJS from 'chart.js';
+import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
 import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/date';
@@ -9,10 +11,8 @@ import useTheme from 'hooks/useTheme';
 import useForceUpdate from 'hooks/useForceUpdate';
 import { DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
-import ChartTooltip from './ChartTooltip';
 
 export default function BarChart({
-  chartId,
   datasets,
   unit,
   records,
@@ -89,22 +89,20 @@ export default function BarChart({
     }
 
     const [label, value] = body[0].lines[0].split(':');
+    const format = unit === 'hour' ? 'EEE p — PPP' : 'PPPP';
 
-    setTooltip({
-      title: dateFormat(new Date(+title[0]), getTooltipFormat(unit), locale),
-      value,
-      label,
-      labelColor: labelColors[0].backgroundColor,
-    });
-  }
-
-  function getTooltipFormat(unit) {
-    switch (unit) {
-      case 'hour':
-        return 'EEE p — PPP';
-      default:
-        return 'PPPP';
-    }
+    setTooltip(
+      <>
+        <div>{dateFormat(new Date(+title[0]), format, locale)}</div>
+        <div>
+          <StatusLight color={labelColors[0].backgroundColor}>
+            <b>
+              {formatLongNumber(value)} {label}
+            </b>
+          </StatusLight>
+        </div>
+      </>,
+    );
   }
 
   function createChart() {
@@ -124,6 +122,9 @@ export default function BarChart({
       maintainAspectRatio: false,
       legend: {
         display: false,
+      },
+      onResize: ({ width, height }) => {
+        //console.log({ width, height });
       },
       scales: {
         xAxes: [
@@ -206,19 +207,15 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets, unit, animationDuration, locale, theme]);
+  }, [datasets, unit, animationDuration, locale]);
 
   return (
     <>
-      <div
-        data-tip=""
-        data-for={`${chartId}-tooltip`}
-        className={classNames(styles.chart, className)}
-      >
+      <div className={classNames(styles.chart, className)}>
         <canvas ref={canvas} />
       </div>
       <Legend chart={chart.current} />
-      <ChartTooltip chartId={chartId} tooltip={tooltip} />
+      {tooltip && <HoverTooltip tooltip={tooltip} />}
     </>
   );
 }

@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import ReactTooltip from 'react-tooltip';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
@@ -9,6 +8,8 @@ import { ISO_COUNTRIES, THEME_COLORS, MAP_FILE } from 'lib/constants';
 import styles from './WorldMap.module.css';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
+import HoverTooltip from './HoverTooltip';
+import { formatLongNumber } from '../../lib/format';
 
 function WorldMap({ data, className }) {
   const { basePath } = useRouter();
@@ -46,7 +47,7 @@ function WorldMap({ data, className }) {
   function handleHover(code) {
     if (code === 'AQ') return;
     const country = data?.find(({ x }) => x === code);
-    setTooltip(`${countryNames[code]}: ${country?.y || 0} visitors`);
+    setTooltip(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
   }
 
   return (
@@ -83,7 +84,7 @@ function WorldMap({ data, className }) {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      <ReactTooltip id="world-map-tooltip">{tooltip}</ReactTooltip>
+      {tooltip && <HoverTooltip tooltip={tooltip} />}
     </div>
   );
 }

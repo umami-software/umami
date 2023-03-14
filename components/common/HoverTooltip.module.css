@@ -3,7 +3,7 @@
 }
 
 .tooltip {
-  color: var(--msgColor);
+  position: fixed;
   pointer-events: none;
   z-index: 1;
 }

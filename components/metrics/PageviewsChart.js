@@ -55,7 +55,6 @@ export default function PageviewsChart({
       <BarChart
         {...props}
         className={className}
-        chartId={websiteId}
         datasets={[
           {
             label: formatMessage(labels.uniqueVisitors),
