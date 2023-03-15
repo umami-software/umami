@@ -34,9 +34,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { referrer, eventName, pageTitle } = payload;
-  let { url } = payload;
-
+  const { url, referrer, eventName, pageTitle } = payload;
   const ignoreIps = process.env.IGNORE_IP;
   const ignoreHostnames = process.env.IGNORE_HOSTNAME;
 
@@ -83,17 +81,41 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const session = req.session;
 
+  let urlPath = url.split('?')[0];
+  const urlQuery = url.split('?')[1];
+  let referrerPath;
+  let referrerQuery;
+  let referrerDomain;
+
+  if (referrer.substring(0, 4) === 'http') {
+    const newRef = new URL(referrer);
+    referrerPath = newRef.pathname;
+    referrerDomain = newRef.hostname;
+    referrerQuery = newRef.search.substring(1);
+  } else {
+    referrerPath = referrer.split('?')[0];
+    referrerQuery = referrer.split('?')[1];
+  }
+
   if (process.env.REMOVE_TRAILING_SLASH) {
-    url = url.replace(/\/$/, '');
+    urlPath = urlPath.replace(/\/$/, '');
   }
 
   if (type === 'pageview') {
-    await savePageView({ ...session, url, referrer, pageTitle });
+    await savePageView({
+      ...session,
+      urlPath,
+      urlQuery,
+      referrerPath,
+      referrerQuery,
+      referrerDomain,
+      pageTitle,
+    });
   } else if (type === 'event') {
     await saveEvent({
       ...session,
-      url,
-      referrer,
+      urlPath,
+      urlQuery,
       pageTitle,
       eventName,
     });
