@@ -61,7 +61,7 @@
   const root = hostUrl
     ? hostUrl.replace(/\/$/, '')
     : currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${root}/api/collect`;
+  const endpoint = `${root}/api/send`;
   const screen = `${width}x${height}`;
   const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
   const eventSelect = "[class*='umami--']";
