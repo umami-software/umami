@@ -25,12 +25,16 @@ export default function PageviewsChart({
     const primaryColor = colord(THEME_COLORS[theme].primary);
     return {
       views: {
-        background: primaryColor.alpha(0.4).toRgbString(),
-        border: primaryColor.alpha(0.5).toRgbString(),
+        hoverBackgroundColor: primaryColor.alpha(0.7).toRgbString(),
+        backgroundColor: primaryColor.alpha(0.4).toRgbString(),
+        borderColor: primaryColor.alpha(0.7).toRgbString(),
+        hoverBorderColor: primaryColor.toRgbString(),
       },
       visitors: {
-        background: primaryColor.alpha(0.6).toRgbString(),
-        border: primaryColor.alpha(0.7).toRgbString(),
+        hoverBackgroundColor: primaryColor.alpha(0.9).toRgbString(),
+        backgroundColor: primaryColor.alpha(0.6).toRgbString(),
+        borderColor: primaryColor.alpha(0.9).toRgbString(),
+        hoverBorderColor: primaryColor.toRgbString(),
       },
     };
   }, [theme]);
@@ -50,29 +54,30 @@ export default function PageviewsChart({
     return null;
   }
 
+  const datasets = [
+    {
+      label: formatMessage(labels.uniqueVisitors),
+      data: data.sessions,
+      lineTension: 0,
+      borderWidth: 1,
+      ...colors.visitors,
+    },
+    {
+      label: formatMessage(labels.pageViews),
+      data: data.pageviews,
+      lineTension: 0,
+      borderWidth: 1,
+      ...colors.views,
+    },
+  ];
+
   return (
     <div ref={ref}>
       <BarChart
         {...props}
+        key={websiteId}
         className={className}
-        datasets={[
-          {
-            label: formatMessage(labels.uniqueVisitors),
-            data: data.sessions,
-            lineTension: 0,
-            backgroundColor: colors.visitors.background,
-            borderColor: colors.visitors.border,
-            borderWidth: 1,
-          },
-          {
-            label: formatMessage(labels.pageViews),
-            data: data.pageviews,
-            lineTension: 0,
-            backgroundColor: colors.views.background,
-            borderColor: colors.views.border,
-            borderWidth: 1,
-          },
-        ]}
+        datasets={datasets}
         unit={unit}
         records={records}
         animationDuration={visible ? animationDuration : 0}

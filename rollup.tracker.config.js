@@ -6,12 +6,12 @@ import { terser } from 'rollup-plugin-terser';
 export default {
   input: 'tracker/index.js',
   output: {
-    file: 'public/umami.js',
+    file: 'public/script.js',
     format: 'iife',
   },
   plugins: [
     replace({
-      '/api/collect': process.env.COLLECT_API_ENDPOINT || '/api/collect',
+      '/api/send': process.env.COLLECT_API_ENDPOINT || '/api/send',
       delimiters: ['', ''],
       preventAssignment: true,
     }),

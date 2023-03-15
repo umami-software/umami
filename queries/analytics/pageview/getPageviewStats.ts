@@ -50,7 +50,7 @@ async function relationalQuery(
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
-    `select ${getDateQuery('website_event.created_at', unit, timezone)} t,
+    `select ${getDateQuery('website_event.created_at', unit, timezone)} x,
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from website_event
         ${joinSession}
@@ -83,7 +83,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `select
-      ${getDateStringQuery('g.t', unit)} as t, 
+      ${getDateStringQuery('g.t', unit)} as x, 
       g.y as y
     from
       (select 
