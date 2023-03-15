@@ -7,7 +7,7 @@
 
 .chart {
   position: relative;
-  padding-bottom: 10px;
+  overflow: hidden;
 }
 
 .title {
