@@ -10,6 +10,7 @@ import 'styles/locale.css';
 import 'styles/index.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/700.css';
+import 'chartjs-adapter-date-fns';
 import Script from 'next/script';
 
 const client = new QueryClient({

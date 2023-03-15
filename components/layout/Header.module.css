@@ -12,7 +12,7 @@
   gap: 10px;
   font-size: var(--font-size-lg);
   font-weight: 700;
-  color: var(--font-color100);
+  color: var(--font-color100) !important;
 }
 
 .buttons {
