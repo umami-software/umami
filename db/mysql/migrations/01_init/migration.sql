@@ -82,14 +82,12 @@ CREATE TABLE `website_event` (
 CREATE TABLE `team` (
     `team_id` VARCHAR(36) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
-    `user_id` VARCHAR(36) NOT NULL,
     `access_code` VARCHAR(50) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL,
 
     UNIQUE INDEX `team_team_id_key`(`team_id`),
     UNIQUE INDEX `team_access_code_key`(`access_code`),
-    INDEX `team_user_id_idx`(`user_id`),
     INDEX `team_access_code_idx`(`access_code`),
     PRIMARY KEY (`team_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -113,13 +111,11 @@ CREATE TABLE `team_user` (
 CREATE TABLE `team_website` (
     `team_website_id` VARCHAR(36) NOT NULL,
     `team_id` VARCHAR(36) NOT NULL,
-    `user_id` VARCHAR(36) NOT NULL,
     `website_id` VARCHAR(36) NOT NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     UNIQUE INDEX `team_website_team_website_id_key`(`team_website_id`),
     INDEX `team_website_team_id_idx`(`team_id`),
-    INDEX `team_website_user_id_idx`(`user_id`),
     INDEX `team_website_website_id_idx`(`website_id`),
     PRIMARY KEY (`team_website_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

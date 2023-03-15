@@ -15,5 +15,4 @@ DROP INDEX "team_website_user_id_idx";
 ALTER TABLE "team" DROP COLUMN "user_id";
 
 -- AlterTable
-ALTER TABLE "team_website" DROP COLUMN "user_id",
-ADD COLUMN     "userId" UUID;
+ALTER TABLE "team_website" DROP COLUMN "user_id";
