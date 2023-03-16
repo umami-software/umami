@@ -8,7 +8,6 @@ import { formatLongNumber } from 'lib/format';
 import { dateFormat } from 'lib/date';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
-import useForceUpdate from 'hooks/useForceUpdate';
 import { DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
 
@@ -27,22 +26,20 @@ export default function BarChart({
   const [tooltip, setTooltip] = useState(null);
   const { locale } = useLocale();
   const [theme] = useTheme();
-  const forceUpdate = useForceUpdate();
 
   const colors = useMemo(
     () => ({
       text: THEME_COLORS[theme].gray700,
       line: THEME_COLORS[theme].gray200,
-      zeroLine: THEME_COLORS[theme].gray500,
     }),
     [theme],
   );
 
-  function renderYLabel(label) {
+  const renderYLabel = label => {
     return +label > 1000 ? formatLongNumber(label) : label;
-  }
+  };
 
-  function renderTooltip(model) {
+  const renderTooltip = model => {
     const { opacity, labelColors, dataPoints } = model.tooltip;
 
     if (!dataPoints?.length || !opacity) {
@@ -64,9 +61,11 @@ export default function BarChart({
         </div>
       </>,
     );
-  }
+  };
 
-  function createChart() {
+  const createChart = () => {
+    Chart.defaults.font.family = 'Inter';
+
     const options = {
       responsive: true,
       maintainAspectRatio: false,
@@ -92,10 +91,17 @@ export default function BarChart({
         x: {
           type: 'time',
           stacked: true,
+          time: {
+            unit,
+          },
           grid: {
             display: false,
           },
+          border: {
+            color: colors.line,
+          },
           ticks: {
+            color: colors.text,
             autoSkip: false,
             maxRotation: 0,
           },
@@ -105,7 +111,14 @@ export default function BarChart({
           min: 0,
           beginAtZero: true,
           stacked,
+          grid: {
+            color: colors.line,
+          },
+          border: {
+            color: colors.line,
+          },
           ticks: {
+            color: colors.text,
             callback: renderYLabel,
           },
         },
@@ -121,19 +134,23 @@ export default function BarChart({
       },
       options,
     });
-  }
+  };
 
-  function updateChart() {
-    const { options } = chart.current;
+  const updateChart = () => {
+    const { animation, scales } = chart.current.options;
 
-    options.animation.duration = animationDuration;
+    animation.duration = animationDuration;
+    scales.x.ticks.color = colors.text;
+    scales.x.time.unit = unit;
+    scales.x.border.color = colors.line;
+    scales.y.ticks.color = colors.text;
+    scales.y.grid.color = colors.line;
+    scales.y.border.color = colors.line;
 
     onUpdate(chart.current);
 
     chart.current.update();
-
-    forceUpdate();
-  }
+  };
 
   useEffect(() => {
     if (datasets) {
@@ -144,7 +161,7 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets, unit, animationDuration, locale, loading]);
+  }, [datasets, unit, theme, animationDuration, locale, loading]);
 
   return (
     <>
