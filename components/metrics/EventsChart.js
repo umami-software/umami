@@ -33,12 +33,12 @@ export default function EventsChart({ websiteId, className, token }) {
     if (!data) return [];
     if (isLoading) return data;
 
-    const map = data.reduce((obj, { x, t, y }) => {
+    const map = data.reduce((obj, { x, y }) => {
       if (!obj[x]) {
         obj[x] = [];
       }
 
-      obj[x].push({ t, y });
+      obj[x].push({ x, y });
 
       return obj;
     }, {});

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { StatusLight } from 'react-basics';
 import classNames from 'classnames';
 import Chart from 'chart.js/auto';
@@ -15,14 +15,14 @@ export default function BarChart({
   datasets,
   unit,
   animationDuration = DEFAULT_ANIMATION_DURATION,
-  className,
   stacked = false,
   loading = false,
   onCreate = () => {},
   onUpdate = () => {},
+  className,
 }) {
   const canvas = useRef();
-  const chart = useRef();
+  const chart = useRef(null);
   const [tooltip, setTooltip] = useState(null);
   const { locale } = useLocale();
   const [theme] = useTheme();
@@ -39,34 +39,45 @@ export default function BarChart({
     return +label > 1000 ? formatLongNumber(label) : label;
   };
 
-  const renderTooltip = model => {
-    const { opacity, labelColors, dataPoints } = model.tooltip;
+  const renderTooltip = useCallback(
+    model => {
+      const { opacity, labelColors, dataPoints } = model.tooltip;
 
-    if (!dataPoints?.length || !opacity) {
-      setTooltip(null);
-      return;
-    }
+      if (!dataPoints?.length || !opacity) {
+        setTooltip(null);
+        return;
+      }
 
-    const format = unit === 'hour' ? 'EEE p — PPP' : 'PPPP';
+      const formats = {
+        millisecond: 'T',
+        second: 'pp',
+        minute: 'p',
+        hour: 'h aaa',
+        day: 'PPPP',
+        week: 'PPPP',
+        month: 'LLLL yyyy',
+        quarter: 'qqq',
+        year: 'yyyy',
+      };
 
-    setTooltip(
-      <>
-        <div>{dateFormat(new Date(dataPoints[0].raw.x), format, locale)}</div>
-        <div>
-          <StatusLight color={labelColors?.[0]?.backgroundColor}>
-            <b>
-              {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}
-            </b>
-          </StatusLight>
-        </div>
-      </>,
-    );
-  };
+      setTooltip(
+        <div className={styles.tooltip}>
+          <div>{dateFormat(new Date(dataPoints[0].raw.x), formats[unit], locale)}</div>
+          <div>
+            <StatusLight color={labelColors?.[0]?.backgroundColor}>
+              <div className={styles.value}>
+                {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}
+              </div>
+            </StatusLight>
+          </div>
+        </div>,
+      );
+    },
+    [unit],
+  );
 
-  const createChart = () => {
-    Chart.defaults.font.family = 'Inter';
-
-    const options = {
+  const getOptions = useCallback(() => {
+    return {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
@@ -124,6 +135,12 @@ export default function BarChart({
         },
       },
     };
+  }, [animationDuration, renderTooltip, stacked, colors]);
+
+  const createChart = () => {
+    Chart.defaults.font.family = 'Inter';
+
+    const options = getOptions();
 
     onCreate(options);
 
@@ -137,15 +154,9 @@ export default function BarChart({
   };
 
   const updateChart = () => {
-    const { animation, scales } = chart.current.options;
+    setTooltip(null);
 
-    animation.duration = animationDuration;
-    scales.x.ticks.color = colors.text;
-    scales.x.time.unit = unit;
-    scales.x.border.color = colors.line;
-    scales.y.ticks.color = colors.text;
-    scales.y.grid.color = colors.line;
-    scales.y.border.color = colors.line;
+    chart.current.options = getOptions();
 
     onUpdate(chart.current);
 
@@ -157,7 +168,6 @@ export default function BarChart({
       if (!chart.current) {
         createChart();
       } else {
-        setTooltip(null);
         updateChart();
       }
     }

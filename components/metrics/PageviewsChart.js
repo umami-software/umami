@@ -58,14 +58,12 @@ export default function PageviewsChart({
     {
       label: formatMessage(labels.uniqueVisitors),
       data: data.sessions,
-      lineTension: 0,
       borderWidth: 1,
       ...colors.visitors,
     },
     {
       label: formatMessage(labels.pageViews),
       data: data.pageviews,
-      lineTension: 0,
       borderWidth: 1,
       ...colors.views,
     },
