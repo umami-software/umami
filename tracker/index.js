@@ -80,7 +80,7 @@
     url: currentUrl,
   });
 
-  const collect = (type, payload) => {
+  const collect = (type, payload, cb = () => {}) => {
     if (trackingDisabled()) return;
 
     return fetch(endpoint, {
@@ -89,10 +89,11 @@
       headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
     })
       .then(res => res.text())
-      .then(text => (cache = text));
+      .then(text => (cache = text))
+	  .finally(cb);
   };
 
-  const trackView = (url = currentUrl, referrer = currentRef, websiteUuid = website) =>
+  const trackView = (url = currentUrl, referrer = currentRef, websiteUuid = website, cb = () => {}) =>
     collect(
       'pageview',
       assign(getPayload(), {
@@ -100,9 +101,10 @@
         url,
         referrer,
       }),
+	  cb
     );
 
-  const trackEvent = (eventName, eventData, url = currentUrl, websiteUuid = website) =>
+  const trackEvent = (eventName, eventData, url = currentUrl, websiteUuid = website, cb = () => {}) =>
     collect(
       'event',
       assign(getPayload(), {
@@ -111,6 +113,7 @@
         event_name: eventName,
         event_data: eventData,
       }),
+	  cb
     );
 
   /* Handle events */
