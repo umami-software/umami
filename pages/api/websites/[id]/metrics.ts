@@ -6,7 +6,17 @@ import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewMetrics, getSessionMetrics, getWebsite } from 'queries';
 
-const sessionColumns = ['browser', 'os', 'device', 'screen', 'country', 'language'];
+const sessionColumns = [
+  'browser',
+  'os',
+  'device',
+  'screen',
+  'country',
+  'language',
+  'subdivision1',
+  'subdivision2',
+  'city',
+];
 const pageviewColumns = ['url', 'referrer', 'query', 'pageTitle'];
 
 function getTable(type) {
@@ -26,12 +36,17 @@ function getTable(type) {
 }
 
 function getColumn(type) {
-  if (type === 'event') {
-    return 'event_name';
+  switch (type) {
+    case 'url':
+      return 'url_path';
+    case 'referrer':
+      return 'referrer_domain';
+    case 'event':
+      return 'event_name';
+    case 'query':
+      return 'url_query';
   }
-  if (type === 'query') {
-    return 'url';
-  }
+
   return type;
 }
 

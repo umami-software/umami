@@ -19,7 +19,6 @@ model User {
 
   teamUser    TeamUser[]
   Website     Website[]
-  teamWebsite TeamWebsite[]
 
   @@map("user")
 }
@@ -65,15 +64,18 @@ model Website {
 }
 
 model WebsiteEvent {
-  id        String    @id() @map("event_id") @db.VarChar(36)
-  websiteId String    @map("website_id") @db.VarChar(36)
-  sessionId String    @map("session_id") @db.VarChar(36)
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  url       String    @db.VarChar(500)
-  referrer  String?   @db.VarChar(500)
-  pageTitle String?   @map("page_title") @db.VarChar(500)
-  eventType Int       @default(1) @map("event_type") @db.UnsignedInt
-  eventName String?   @map("event_name") @db.VarChar(50)
+  id             String    @id() @map("event_id") @db.VarChar(36)
+  websiteId      String    @map("website_id") @db.VarChar(36)
+  sessionId      String    @map("session_id") @db.VarChar(36)
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  urlPath        String    @map("url_path") @db.VarChar(500)
+  urlQuery       String?   @map("url_query") @db.VarChar(500)
+  referrerPath   String?   @map("referrer_path") @db.VarChar(500)
+  referrerQuery  String?   @map("referrer_query") @db.VarChar(500)
+  referrerDomain String?   @map("referrer_domain") @db.VarChar(500)
+  pageTitle      String?   @map("page_title") @db.VarChar(500)
+  eventType      Int       @default(1) @map("event_type") @db.UnsignedInt
+  eventName      String?   @map("event_name") @db.VarChar(50)
 
   @@index([createdAt])
   @@index([sessionId])
@@ -86,7 +88,6 @@ model WebsiteEvent {
 model Team {
   id         String    @id() @unique() @map("team_id") @db.VarChar(36)
   name       String    @db.VarChar(50)
-  userId     String    @map("user_id") @db.VarChar(36)
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt  DateTime? @map("updated_at") @db.Timestamp(0)
@@ -94,7 +95,6 @@ model Team {
   teamUsers   TeamUser[]
   teamWebsite TeamWebsite[]
 
-  @@index([userId])
   @@index([accessCode])
   @@map("team")
 }
@@ -118,16 +118,13 @@ model TeamUser {
 model TeamWebsite {
   id        String    @id() @unique() @map("team_website_id") @db.VarChar(36)
   teamId    String    @map("team_id") @db.VarChar(36)
-  userId    String    @map("user_id") @db.VarChar(36)
   websiteId String    @map("website_id") @db.VarChar(36)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   team    Team    @relation(fields: [teamId], references: [id])
-  user    User    @relation(fields: [userId], references: [id])
   website Website @relation(fields: [websiteId], references: [id])
 
   @@index([teamId])
-  @@index([userId])
   @@index([websiteId])
   @@map("team_website")
 }
