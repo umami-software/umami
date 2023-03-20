@@ -5,7 +5,7 @@ import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
-import { getDeviceMessage, labels, messages } from 'components/messages';
+import { labels, messages } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -102,7 +102,7 @@ export default function RealtimeLog({ data, websiteDomain }) {
             country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{os}</b>,
-            device: <b>{formatMessage(getDeviceMessage(device))}</b>,
+            device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
           }}
         />
       );
