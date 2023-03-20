@@ -87,12 +87,12 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   let referrerQuery;
   let referrerDomain;
 
-  if (referrer.substring(0, 4) === 'http') {
+  try {
     const newRef = new URL(referrer);
     referrerPath = newRef.pathname;
     referrerDomain = newRef.hostname;
     referrerQuery = newRef.search.substring(1);
-  } else {
+  } catch {
     referrerPath = referrer.split('?')[0];
     referrerQuery = referrer.split('?')[1];
   }

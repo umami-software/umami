@@ -74,6 +74,9 @@ function getFilterQuery(filters = {}, params = {}) {
 
     switch (key) {
       case 'url':
+        arr.push(`and url_path = {${key}:String}`);
+        params[key] = filter;
+        break;
       case 'pageTitle':
       case 'os':
       case 'browser':
@@ -92,18 +95,20 @@ function getFilterQuery(filters = {}, params = {}) {
         break;
 
       case 'referrer':
-        arr.push(`and referrer ILIKE {${key}:String}`);
-        params[key] = `%${filter}`;
+        arr.push(`and referrer_domain= {${key}:String}`);
+        params[key] = filter;
         break;
 
       case 'domain':
-        arr.push(`and referrer NOT ILIKE {${key}:String}`);
-        arr.push(`and referrer NOT ILIKE '/%'`);
+        arr.push(`and referrer_domain NOT ILIKE {${key}:String}`);
+        arr.push(`and referrer_domain NOT ILIKE '/%'`);
         params[key] = `%://${filter}/%`;
         break;
 
       case 'query':
-        arr.push(`and url like '%?%'`);
+        arr.push(`and url_query= {${key}:String}`);
+        params[key] = filter;
+        break;
     }
 
     return arr;
