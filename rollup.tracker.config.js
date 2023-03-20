@@ -11,7 +11,7 @@ export default {
   },
   plugins: [
     replace({
-      '/api/collect': process.env.COLLECT_API_ENDPOINT || '/api/collect',
+      '/api/send': process.env.COLLECT_API_ENDPOINT || '/api/send',
       delimiters: ['', ''],
       preventAssignment: true,
     }),

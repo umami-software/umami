@@ -12,7 +12,7 @@ function customCollectEndpoint(req) {
     const { pathname } = url;
 
     if (pathname.endsWith(collectEndpoint)) {
-      url.pathname = '/api/collect';
+      url.pathname = '/api/send';
       return NextResponse.rewrite(url);
     }
   }

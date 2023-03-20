@@ -38,6 +38,19 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
+export const EVENT_DATA_TYPE = {
+  string: 1,
+  number: 2,
+  boolean: 3,
+  date: 4,
+  array: 5,
+} as const;
+
+export const KAFKA_TOPIC = {
+  event: 'event',
+  eventData: 'event_data',
+} as const;
+
 export const ROLES = {
   admin: 'admin',
   user: 'user',

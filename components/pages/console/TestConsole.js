@@ -1,13 +1,13 @@
-import { Button, Column, Row, Dropdown, Item } from 'react-basics';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
 import WebsiteChart from 'components/metrics/WebsiteChart';
-import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { Button, Column, Row } from 'react-basics';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
@@ -27,7 +27,11 @@ export default function TestConsole() {
     window.umami('umami-default');
     window.umami.trackView('/page-view', 'https://www.google.com');
     window.umami.trackEvent('track-event-no-data');
-    window.umami.trackEvent('track-event-with-data', { test: 'test-data', time: Date.now() });
+    window.umami.trackEvent('track-event-with-data', {
+      test: 'test-data',
+      time: new Date(),
+      time2: new Date().toISOString(),
+    });
   }
 
   if (!data) {
