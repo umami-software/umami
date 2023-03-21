@@ -74,6 +74,9 @@ function getFilterQuery(filters = {}, params = []): string {
 
     switch (key) {
       case 'url':
+        arr.push(`and url_path=$${params.length + 1}`);
+        params.push(decodeURIComponent(filter));
+        break;
       case 'os':
       case 'pageTitle':
       case 'browser':
@@ -92,18 +95,20 @@ function getFilterQuery(filters = {}, params = []): string {
         break;
 
       case 'referrer':
-        arr.push(`and referrer like $${params.length + 1}`);
-        params.push(`%${decodeURIComponent(filter)}%`);
+        arr.push(`and referrer_domain=$${params.length + 1}`);
+        params.push(decodeURIComponent(filter));
         break;
 
       case 'domain':
-        arr.push(`and referrer not like $${params.length + 1}`);
-        arr.push(`and referrer not like '/%'`);
+        arr.push(`and referrer_domain not like $${params.length + 1}`);
+        arr.push(`and referrer_domain not like '/%'`);
         params.push(`%://${filter}/%`);
         break;
 
       case 'query':
-        arr.push(`and url like '%?%'`);
+        arr.push(`and url_query=$${params.length + 1}`);
+        params.push(decodeURIComponent(filter));
+        break;
     }
 
     return arr;

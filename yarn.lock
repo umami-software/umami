@@ -1760,6 +1760,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@kurkle/color@^0.3.0":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@kurkle/color/-/color-0.3.2.tgz#5acd38242e8bde4f9986e7913c8fdf49d3aa199f"
+  integrity sha512-fuscdXJ9G1qb7W8VdHi+IwRqij3lBkosAm4ydQtEmbY58OzHXqQhvlxqEkoz0yssNVn38bcpRWgA9PP+OGoisw==
+
 "@netlify/esbuild-android-64@0.14.39":
   version "0.14.39"
   resolved "https://registry.yarnpkg.com/@netlify/esbuild-android-64/-/esbuild-android-64-0.14.39.tgz#7bd30aba94a92351d2c5e25e178ceb824f3c2f99"
@@ -3393,28 +3398,17 @@ chalk@^4.0.0, chalk@^4.1.1, chalk@^4.1.2:
     ansi-styles "^4.1.0"
     supports-color "^7.1.0"
 
-chart.js@^2.9.4:
-  version "2.9.4"
-  resolved "https://registry.npmjs.org/chart.js/-/chart.js-2.9.4.tgz"
-  integrity sha512-B07aAzxcrikjAPyV+01j7BmOpxtQETxTSlQ26BEYJ+3iUkbNKaOJ/nDbT6JjyqYxseM0ON12COHYdU2cTIjC7A==
+chart.js@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-4.2.1.tgz#d2bd5c98e9a0ae35408975b638f40513b067ba1d"
+  integrity sha512-6YbpQ0nt3NovAgOzbkSSeeAQu/3za1319dPUQTXn9WcOpywM8rGKxJHrhS8V8xEkAlk8YhEfjbuAPfUyp6jIsw==
   dependencies:
-    chartjs-color "^2.1.0"
-    moment "^2.10.2"
+    "@kurkle/color" "^0.3.0"
 
-chartjs-color-string@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/chartjs-color-string/-/chartjs-color-string-0.6.0.tgz"
-  integrity sha512-TIB5OKn1hPJvO7JcteW4WY/63v6KwEdt6udfnDE9iCAZgy+V4SrbSxoIbTw/xkUIapjEI4ExGtD0+6D3KyFd7A==
-  dependencies:
-    color-name "^1.0.0"
-
-chartjs-color@^2.1.0:
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/chartjs-color/-/chartjs-color-2.4.1.tgz"
-  integrity sha512-haqOg1+Yebys/Ts/9bLo/BqUcONQOdr/hoEr2LLTRl6C5LXctUdHxsCYfvQVg5JIxITrfCNUDr4ntqmQk9+/0w==
-  dependencies:
-    chartjs-color-string "^0.6.0"
-    color-convert "^1.9.3"
+chartjs-adapter-date-fns@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/chartjs-adapter-date-fns/-/chartjs-adapter-date-fns-3.0.0.tgz#c25f63c7f317c1f96f9a7c44bd45eeedb8a478e5"
+  integrity sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==
 
 chokidar@^3.5.3:
   version "3.5.3"
@@ -3509,7 +3503,7 @@ cluster-key-slot@^1.1.0:
   resolved "https://registry.yarnpkg.com/cluster-key-slot/-/cluster-key-slot-1.1.2.tgz#88ddaa46906e303b5de30d3153b7d9fe0a0c19ac"
   integrity sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==
 
-color-convert@^1.9.0, color-convert@^1.9.3:
+color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.npmjs.org/color-convert/-/color-convert-1.9.3.tgz"
   integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
@@ -6177,7 +6171,7 @@ moment-timezone@^0.5.35:
   dependencies:
     moment "^2.29.4"
 
-"moment@>= 2.9.0", moment@^2.10.2, moment@^2.29.4:
+"moment@>= 2.9.0", moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.npmjs.org/moment/-/moment-2.29.4.tgz"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
@@ -7142,10 +7136,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.71.0:
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.71.0.tgz#317ab58cdbadd4ba36b233cc64dec2a64fe0f1b8"
-  integrity sha512-DLhx9bweJz2JG0lETnRrjQNeLL/pmyBqd0SFLM+VXaw8+6SnFheVhQ1Q/W8UerNRsN2oLGH4Hg1XuULG0JlrgA==
+react-basics@^0.73.0:
+  version "0.73.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.73.0.tgz#9555563f3407ac417dc833dfca47588123d55535"
+  integrity sha512-eEK8yWWrXO7JATBlPKBfFQlD1hNZoNeEtlYNx+QjOCLKu1qjClutP5nXWHmX4gHE97XFwUKzbTU35NkNEy5C0w==
   dependencies:
     classnames "^2.3.1"
     date-fns "^2.29.3"
@@ -7257,14 +7251,6 @@ react-spring@^9.5.5:
     "@react-spring/three" "~9.5.5"
     "@react-spring/web" "~9.5.5"
     "@react-spring/zdog" "~9.5.5"
-
-react-tooltip@^4.2.21:
-  version "4.5.1"
-  resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-4.5.1.tgz#77eccccdf16adec804132e558ec20ca5783b866a"
-  integrity sha512-Zo+CSFUGXar1uV+bgXFFDe7VeS2iByeIp5rTgTcc2HqtuOS5D76QapejNNfx320MCY91TlhTQat36KGFTqgcvw==
-  dependencies:
-    prop-types "^15.8.1"
-    uuid "^7.0.3"
 
 react-use-measure@^2.0.4:
   version "2.1.1"
@@ -8640,11 +8626,6 @@ uuid@3.4.0, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
-  integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
 
 uuid@^8.3.0, uuid@^8.3.2:
   version "8.3.2"

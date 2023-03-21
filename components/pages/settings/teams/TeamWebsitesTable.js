@@ -17,14 +17,14 @@ import { labels } from 'components/messages';
 import useUser from 'hooks/useUser';
 import useApi from 'hooks/useApi';
 
-export default function TeamWebsitesTable({ teamId, data = [], onSave }) {
+export default function TeamWebsitesTable({ data = [], onSave }) {
   const { formatMessage } = useIntl();
   const { user } = useUser();
   const { del, useMutation } = useApi();
-  const { mutate } = useMutation(data => del(`/teamWebsites/${data.teamWebsiteId}`));
+  const { mutate } = useMutation(({ teamWebsiteId }) => del(`/teamWebsites/${teamWebsiteId}`));
 
   const columns = [
-    { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
+    { name: 'name', label: formatMessage(labels.name) },
     { name: 'domain', label: formatMessage(labels.domain) },
     { name: 'action', label: ' ' },
   ];

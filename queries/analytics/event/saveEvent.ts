@@ -9,8 +9,8 @@ import { saveEventData } from '../eventData/saveEventData';
 export async function saveEvent(args: {
   id: string;
   websiteId: string;
-  url: string;
-  referrer?: string;
+  urlPath: string;
+  urlQuery?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -34,21 +34,21 @@ export async function saveEvent(args: {
 async function relationalQuery(data: {
   id: string;
   websiteId: string;
-  url: string;
-  referrer?: string;
+  urlPath: string;
+  urlQuery?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
 }) {
-  const { websiteId, id: sessionId, url, eventName, referrer, pageTitle } = data;
+  const { websiteId, id: sessionId, urlPath, urlQuery, eventName, pageTitle } = data;
 
   return prisma.client.websiteEvent.create({
     data: {
       id: uuid(),
       websiteId,
       sessionId,
-      url: url?.substring(0, URL_LENGTH),
-      referrer: referrer?.substring(0, URL_LENGTH),
+      urlPath: urlPath?.substring(0, URL_LENGTH),
+      urlQuery: urlQuery?.substring(0, URL_LENGTH),
       pageTitle: pageTitle,
       eventType: EVENT_TYPE.customEvent,
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
@@ -59,8 +59,8 @@ async function relationalQuery(data: {
 async function clickhouseQuery(data: {
   id: string;
   websiteId: string;
-  url: string;
-  referrer?: string;
+  urlPath: string;
+  urlQuery?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -78,7 +78,8 @@ async function clickhouseQuery(data: {
   const {
     websiteId,
     id: sessionId,
-    url,
+    urlPath,
+    urlQuery,
     pageTitle,
     eventName,
     eventData,
@@ -101,7 +102,8 @@ async function clickhouseQuery(data: {
     subdivision1: subdivision1 ? subdivision1 : null,
     subdivision2: subdivision2 ? subdivision2 : null,
     city: city ? city : null,
-    url: url?.substring(0, URL_LENGTH),
+    urlPath: urlPath?.substring(0, URL_LENGTH),
+    urlQuery: urlQuery?.substring(0, URL_LENGTH),
     page_title: pageTitle,
     event_type: EVENT_TYPE.customEvent,
     event_name: eventName?.substring(0, EVENT_NAME_LENGTH),

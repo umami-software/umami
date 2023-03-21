@@ -40,7 +40,7 @@ export default function MetricsTable({
 
   const { data, isLoading, isFetched, error } = useQuery(
     [
-      'websites:mnetrics',
+      'websites:metrics',
       { websiteId, type, modified, url, referrer, os, browser, device, country },
     ],
     () =>
