@@ -9,6 +9,7 @@ export async function saveEventData(args: {
   sessionId: string;
   eventId: string;
   revId: number;
+  urlPath: string;
   eventName: string;
   eventData: EventData;
   createdAt: string;
@@ -36,11 +37,12 @@ async function clickhouseQuery(data: {
   sessionId: string;
   eventId: string;
   revId: number;
+  urlPath: string;
   eventName: string;
   eventData: EventData;
   createdAt: string;
 }) {
-  const { websiteId, sessionId, eventId, revId, eventName, eventData, createdAt } = data;
+  const { websiteId, sessionId, eventId, revId, urlPath, eventName, eventData, createdAt } = data;
 
   const { getDateFormat, sendMessages } = kafka;
 
@@ -51,6 +53,7 @@ async function clickhouseQuery(data: {
     session_id: sessionId,
     event_id: eventId,
     rev_id: revId,
+    url_path: urlPath,
     event_name: eventName,
     event_key: a.key,
     event_string_value:
@@ -64,6 +67,7 @@ async function clickhouseQuery(data: {
     event_data_type: a.eventDataType,
     created_at: createdAt,
   }));
+  ``;
 
   await sendMessages(messages, 'event_data');
 

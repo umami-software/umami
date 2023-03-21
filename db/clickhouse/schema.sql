@@ -102,6 +102,7 @@ CREATE TABLE event_data
     session_id UUID,
     event_id UUID,
     rev_id UInt32,
+    url_path String,
     event_name String,
     event_key String,
     event_string_value Nullable(String),
@@ -111,7 +112,7 @@ CREATE TABLE event_data
     created_at DateTime('UTC')
 )
     engine = MergeTree
-        ORDER BY (website_id, session_id, created_at)
+        ORDER BY (website_id, session_id, event_id, event_key, created_at)
         SETTINGS index_granularity = 8192;
 
 CREATE TABLE event_data_queue (
@@ -119,6 +120,7 @@ CREATE TABLE event_data_queue (
     session_id UUID,
     event_id UUID,
     rev_id UInt32,
+    url_path String,
     event_name String,
     event_key String,
     event_string_value Nullable(String),
@@ -140,6 +142,7 @@ SELECT website_id,
     session_id,
     event_id,
     rev_id,
+    url_path,
     event_name,
     event_key,
     event_string_value,
