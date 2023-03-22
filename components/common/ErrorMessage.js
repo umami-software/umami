@@ -1,10 +1,9 @@
-import { useIntl } from 'react-intl';
 import { Icon, Icons, Text } from 'react-basics';
-import { messages } from 'components/messages';
 import styles from './ErrorMessage.module.css';
+import useMessages from 'hooks/useMessages';
 
 export default function ErrorMessage() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, messages } = useMessages();
 
   return (
     <div className={styles.error}>

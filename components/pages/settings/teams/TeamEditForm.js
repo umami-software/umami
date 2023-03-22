@@ -8,16 +8,15 @@ import {
   Button,
   Flexbox,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { getRandomChars } from 'next-basics';
 import { useRef, useState } from 'react';
 import useApi from 'hooks/useApi';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 const generateId = () => getRandomChars(16);
 
 export default function TeamEditForm({ teamId, data, onSave, readOnly }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
   const ref = useRef(null);

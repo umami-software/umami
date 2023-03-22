@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import useApi from 'hooks/useApi';
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { labels, messages } from 'components/messages';
+import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function UserDeleteForm({ userId, username, onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, FormattedMessage, labels, messages } = useMessages();
   const { del } = useApi();
   const { mutate, error, isLoading } = useMutation(() => del(`/users/${userId}`));
 

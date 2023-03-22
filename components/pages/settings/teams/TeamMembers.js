@@ -1,13 +1,12 @@
-import { messages } from 'components/messages';
+import { Loading, useToast } from 'react-basics';
 import TeamMembersTable from 'components/pages/settings/teams/TeamMembersTable';
 import useApi from 'hooks/useApi';
-import { Loading, useToast } from 'react-basics';
-import { useIntl } from 'react-intl';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamMembers({ teamId, readOnly }) {
   const { toast, showToast } = useToast();
   const { get, useQuery } = useApi();
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { data, isLoading, refetch } = useQuery(['teams:users', teamId], () =>
     get(`/teams/${teamId}/users`),
   );
@@ -18,7 +17,7 @@ export default function TeamMembers({ teamId, readOnly }) {
 
   const handleSave = async () => {
     await refetch();
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    showToast({ message: formatMessage(labels.saved), variant: 'success' });
   };
 
   return (

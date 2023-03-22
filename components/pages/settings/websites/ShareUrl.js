@@ -8,16 +8,15 @@ import {
   Button,
   Toggle,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import useApi from 'hooks/useApi';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 const generateId = () => getRandomChars(16);
 
 export default function ShareUrl({ websiteId, data, onSave }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
   const { post, useMutation } = useApi();

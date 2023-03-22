@@ -1,10 +1,9 @@
-import { useIntl } from 'react-intl';
 import { Button, Icon, Text, Modal, Icons, ModalTrigger } from 'react-basics';
 import UserAddForm from './UserAddForm';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function UserAddButton({ onSave }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const handleSave = () => {
     onSave();

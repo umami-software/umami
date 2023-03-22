@@ -109,6 +109,8 @@ export const labels = defineMessages({
   laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
   tablet: { id: 'label.tablet', defaultMessage: 'Tablet' },
   mobile: { id: 'label.mobile', defaultMessage: 'Mobile' },
+  toggleCharts: { id: 'label.toggle-charts', defaultMessage: 'Toggle charts' },
+  editDashboard: { id: 'label.edit-dashboard', defaultMessage: 'Edit dashboard' },
 });
 
 export const messages = defineMessages({
@@ -201,9 +203,3 @@ export const messages = defineMessages({
     defaultMessage: '{event} on {url}',
   },
 });
-
-export function getMessage(id, formatMessage) {
-  const message = Object.values(messages).find(value => value.id === id);
-
-  return message ? formatMessage(message) : id;
-}

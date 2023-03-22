@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { Loading, Icon, Text, Button } from 'react-basics';
-import { defineMessages, useIntl } from 'react-intl';
 import Link from 'next/link';
 import firstBy from 'thenby';
 import classNames from 'classnames';
@@ -12,11 +11,8 @@ import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
+import useMessages from 'hooks/useMessages';
 import styles from './MetricsTable.module.css';
-
-const messages = defineMessages({
-  more: { id: 'label.more', defaultMessage: 'More' },
-});
 
 export default function MetricsTable({
   websiteId,
@@ -35,7 +31,7 @@ export default function MetricsTable({
     router,
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
 
   const { data, isLoading, isFetched, error } = useQuery(
@@ -81,7 +77,7 @@ export default function MetricsTable({
         {data && !error && limit && (
           <Link href={router.pathname} as={resolveUrl({ view: type })}>
             <Button variant="quiet">
-              <Text>{formatMessage(messages.more)}</Text>
+              <Text>{formatMessage(labels.more)}</Text>
               <Icon size="sm">
                 <Icons.ArrowRight />
               </Icon>

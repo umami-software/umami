@@ -1,11 +1,10 @@
 import { Loading } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
-import { messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function UserWebsites({ userId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { data, isLoading } = useQuery(['user:websites', userId], () =>
     get(`/users/${userId}/websites`),

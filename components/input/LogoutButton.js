@@ -1,10 +1,9 @@
 import { Button, Icon, Icons, Tooltip } from 'react-basics';
 import Link from 'next/link';
-import { labels } from 'components/messages';
-import { useIntl } from 'react-intl';
+import useMessages from 'hooks/useMessages';
 
 export default function LogoutButton({ tooltipPosition = 'top' }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   return (
     <Link href="/logout">
       <Tooltip label={formatMessage(labels.logout)} position={tooltipPosition}>

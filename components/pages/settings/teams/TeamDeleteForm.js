@@ -1,10 +1,9 @@
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
-import { useIntl, FormattedMessage } from 'react-intl';
-import { labels, messages } from 'components/messages';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => del(`/teams/${teamId}`, data));
 

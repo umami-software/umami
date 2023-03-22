@@ -1,6 +1,3 @@
-import { labels } from 'components/messages';
-import useUser from 'hooks/useUser';
-import { ROLES } from 'lib/constants';
 import Link from 'next/link';
 import {
   Button,
@@ -17,11 +14,13 @@ import {
   TableRow,
   Text,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import TeamDeleteForm from './TeamDeleteForm';
+import useMessages from 'hooks/useMessages';
+import useUser from 'hooks/useUser';
+import { ROLES } from 'lib/constants';
 
 export default function TeamsTable({ data = [], onDelete }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
   const columns = [

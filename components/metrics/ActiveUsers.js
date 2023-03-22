@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
 import { StatusLight } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
-import { messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 import styles from './ActiveUsers.module.css';
 
 export default function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { data } = useQuery(
     ['websites:active', websiteId],

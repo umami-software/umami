@@ -1,6 +1,5 @@
 import { useTransition, animated } from 'react-spring';
 import { Button, Icon } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useTheme from 'hooks/useTheme';
 import Icons from 'components/icons';
 import styles from './ThemeButton.module.css';

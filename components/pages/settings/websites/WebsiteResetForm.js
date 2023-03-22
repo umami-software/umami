@@ -8,13 +8,12 @@ import {
   TextField,
 } from 'react-basics';
 import useApi from 'hooks/useApi';
-import { useIntl } from 'react-intl';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 const CONFIRM_VALUE = 'RESET';
 
 export default function WebsiteResetForm({ websiteId, onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}/reset`, data));
 

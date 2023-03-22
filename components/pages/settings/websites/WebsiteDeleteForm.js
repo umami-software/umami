@@ -7,14 +7,13 @@ import {
   SubmitButton,
   TextField,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
-import { labels, messages } from 'components/messages';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 const CONFIRM_VALUE = 'DELETE';
 
 export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error } = useMutation(data => del(`/websites/${websiteId}`, data));
 

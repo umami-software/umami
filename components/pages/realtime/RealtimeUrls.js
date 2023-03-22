@@ -1,14 +1,13 @@
 import { useMemo, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
 import DataTable from 'components/metrics/DataTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function RealtimeUrls({ websiteDomain, data = {} }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { pageviews } = data;
   const [filter, setFilter] = useState(FILTER_REFERRERS);
 

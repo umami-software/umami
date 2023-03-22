@@ -1,16 +1,15 @@
 import { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import Link from 'next/link';
 import UserEditForm from 'components/pages/settings/users//UserEditForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import useApi from 'hooks/useApi';
-import { labels, messages } from 'components/messages';
 import UserWebsites from './UserWebsites';
+import useMessages from 'hooks/useMessages';
 
 export default function UserSettings({ userId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const [edit, setEdit] = useState(false);
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');

@@ -1,11 +1,9 @@
 import { useMemo, useState } from 'react';
 import { StatusLight, Icon, Text } from 'react-basics';
-import { useIntl, FormattedMessage } from 'react-intl';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import FilterButtons from 'components/common/FilterButtons';
 import NoData from 'components/common/NoData';
-import { labels, messages } from 'components/messages';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -14,6 +12,7 @@ import { dateFormat } from 'lib/date';
 import { safeDecodeURI } from 'next-basics';
 import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
+import useMessages from 'hooks/useMessages';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -27,7 +26,7 @@ const icons = {
 };
 
 export default function RealtimeLog({ data, websiteDomain }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);

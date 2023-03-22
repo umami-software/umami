@@ -1,5 +1,4 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import { useRouter } from 'next/router';
 import firstBy from 'thenby';
@@ -14,8 +13,8 @@ import RealtimeUrls from 'components/pages/realtime/RealtimeUrls';
 import RealtimeCountries from 'components/pages/realtime/RealtimeCountries';
 import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 import { percentFilter } from 'lib/filters';
-import { labels } from 'components/messages';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
@@ -27,7 +26,7 @@ function mergeData(state = [], data = [], time) {
 }
 
 export default function RealtimeDashboard({ websiteId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();

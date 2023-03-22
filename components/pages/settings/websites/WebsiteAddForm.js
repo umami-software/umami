@@ -7,17 +7,12 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { defineMessages, useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
-import { labels } from 'components/messages';
-
-const messages = defineMessages({
-  invalidDomain: { id: 'label.invalid-domain', defaultMessage: 'Invalid domain' },
-});
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteAddForm({ onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/websites', data));
 
@@ -42,7 +37,7 @@ export default function WebsiteAddForm({ onSave, onClose }) {
           name="domain"
           rules={{
             required: formatMessage(labels.required),
-            pattern: { value: DOMAIN_REGEX, message: formatMessage(messages.invalidDomain) },
+            pattern: { value: DOMAIN_REGEX, message: formatMessage(labels.invalidDomain) },
           }}
         >
           <TextField autoComplete="off" />

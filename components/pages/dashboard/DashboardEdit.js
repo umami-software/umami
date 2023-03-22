@@ -1,24 +1,18 @@
 import { useState, useMemo } from 'react';
-import { defineMessages, useIntl } from 'react-intl';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 import { Button } from 'react-basics';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
+import useMessages from 'hooks/useMessages';
 import styles from './DashboardEdit.module.css';
-
-const messages = defineMessages({
-  save: { id: 'label.save', defaultMessage: 'Save' },
-  reset: { id: 'label.reset', defaultMessage: 'Reset' },
-  cancel: { id: 'label.cancel', defaultMessage: 'Cancel' },
-});
 
 const dragId = 'dashboard-website-ordering';
 
 export default function DashboardEdit({ websites }) {
   const settings = useDashboard();
   const { websiteOrder } = settings;
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
 
   const ordered = useMemo(
@@ -58,13 +52,13 @@ export default function DashboardEdit({ websites }) {
     <>
       <div className={styles.buttons}>
         <Button onClick={handleSave} variant="action" size="small">
-          {formatMessage(messages.save)}
+          {formatMessage(labels.save)}
         </Button>
         <Button onClick={handleCancel} size="small">
-          {formatMessage(messages.cancel)}
+          {formatMessage(labels.cancel)}
         </Button>
         <Button onClick={handleReset} size="small">
-          {formatMessage(messages.reset)}
+          {formatMessage(labels.reset)}
         </Button>
       </div>
       <div className={styles.dragActive}>

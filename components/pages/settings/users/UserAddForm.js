@@ -10,15 +10,14 @@ import {
   SubmitButton,
   Button,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post(`/users`, data));
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const handleSubmit = async data => {
     mutate(data, {

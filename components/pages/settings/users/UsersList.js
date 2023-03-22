@@ -1,4 +1,4 @@
-import { useIntl } from 'react-intl';
+import { useToast } from 'react-basics';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -6,11 +6,10 @@ import UsersTable from './UsersTable';
 import UserAddButton from './UserAddButton';
 import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
-import { useToast } from 'react-basics';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function UsersList() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(['user'], () => get(`/users`), {

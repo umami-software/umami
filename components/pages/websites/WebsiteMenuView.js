@@ -1,5 +1,4 @@
 import { Menu, Item, Icon, Button, Flexbox, Text } from 'react-basics';
-import { useIntl } from 'react-intl';
 import Link from 'next/link';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -14,8 +13,8 @@ import ScreenTable from 'components/metrics/ScreenTable';
 import EventsTable from 'components/metrics/EventsTable';
 import usePageQuery from 'hooks/usePageQuery';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import styles from './WebsiteMenuView.module.css';
+import useMessages from 'hooks/useMessages';
 
 const views = {
   url: PagesTable,
@@ -31,7 +30,7 @@ const views = {
 };
 
 export default function WebsiteMenuView({ websiteId, websiteDomain }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const {
     resolveUrl,
     query: { view },

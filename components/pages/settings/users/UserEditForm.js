@@ -9,13 +9,12 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function UserEditForm({ userId, data, onSave }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(({ username }) => post(`/users/${userId}`, { username }));
 

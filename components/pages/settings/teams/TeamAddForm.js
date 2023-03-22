@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useIntl } from 'react-intl';
 import {
   Form,
   FormRow,
@@ -10,10 +9,10 @@ import {
   SubmitButton,
 } from 'react-basics';
 import useApi from 'hooks/useApi';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamAddForm({ onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/teams', data));
   const ref = useRef(null);

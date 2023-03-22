@@ -1,11 +1,10 @@
 import { useRef } from 'react';
 import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function PasswordEditForm({ onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/me/password', data));
   const ref = useRef(null);

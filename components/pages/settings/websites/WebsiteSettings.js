@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Breadcrumbs, Item, Tabs, useToast, Button, Text, Icon, Icons } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
@@ -10,11 +9,11 @@ import WebsiteData from 'components/pages/settings/websites/WebsiteData';
 import TrackingCode from 'components/pages/settings/websites/TrackingCode';
 import ShareUrl from 'components/pages/settings/websites/ShareUrl';
 import useApi from 'hooks/useApi';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteSettings({ websiteId }) {
   const router = useRouter();
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();

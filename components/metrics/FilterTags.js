@@ -1,12 +1,11 @@
-import { useIntl } from 'react-intl';
 import { safeDecodeURI } from 'next-basics';
 import { Button, Icon, Icons, Text } from 'react-basics';
-import { labels } from 'components/messages';
 import usePageQuery from 'hooks/usePageQuery';
 import styles from './FilterTags.module.css';
+import useMessages from 'hooks/useMessages';
 
-export default function FilterTags({ websiteId, params, onClick }) {
-  const { formatMessage } = useIntl();
+export default function FilterTags({ websiteId, params }) {
+  const { formatMessage, labels } = useMessages();
   const {
     router,
     resolveUrl,

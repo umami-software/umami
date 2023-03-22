@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { Button, Icon, Text, Row, Column } from 'react-basics';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -16,9 +15,9 @@ import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import styles from './WebsiteChart.module.css';
-import useSticky from '../../hooks/useSticky';
+import useSticky from 'hooks/useSticky';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteChart({
   websiteId,
@@ -29,7 +28,7 @@ export default function WebsiteChart({
   showDetailsButton = false,
   onDataLoad = () => {},
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();

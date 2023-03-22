@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useIntl } from 'react-intl';
 import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import { labels, messages } from 'components/messages';
 import { ROLES } from 'lib/constants';
 import useUser from 'hooks/useUser';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 import TeamEditForm from './TeamEditForm';
 import TeamMembers from './TeamMembers';
 import TeamWebsites from './TeamWebsites';
 
 export default function TeamSettings({ teamId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');

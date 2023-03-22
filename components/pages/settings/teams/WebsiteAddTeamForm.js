@@ -1,12 +1,11 @@
-import { labels } from 'components/messages';
 import useApi from 'hooks/useApi';
 import { useRef, useState } from 'react';
 import { Button, Dropdown, Form, FormButtons, FormRow, Item, SubmitButton } from 'react-basics';
-import { useIntl } from 'react-intl';
 import WebsiteTags from './WebsiteTags';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteAddTeamForm({ teamId, onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
   const { data: websites } = useQuery(['websites'], () => get('/websites'));

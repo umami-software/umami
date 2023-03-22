@@ -1,10 +1,9 @@
-import { useIntl } from 'react-intl';
 import MetricsTable from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function OSTable({ websiteId, ...props }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: os }) {
     return <FilterLink id="os" value={os} />;

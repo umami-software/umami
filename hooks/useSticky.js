@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function useSticky({ defaultSticky = false, enabled = true }) {
-  const [isSticky, setIsSticky] = useState(defaultSticky);
+export default function useSticky({ enabled = true, threshold = 1 }) {
+  const [isSticky, setIsSticky] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
     let observer;
-    const handler = ([entry]) => setIsSticky(entry.intersectionRatio < 1);
+    const handler = ([entry]) => setIsSticky(entry.intersectionRatio < threshold);
 
     if (enabled && ref.current) {
-      observer = new IntersectionObserver(handler, { threshold: [1] });
+      observer = new IntersectionObserver(handler, { threshold: [threshold] });
       observer.observe(ref.current);
     }
     return () => {
@@ -17,7 +17,7 @@ export default function useSticky({ defaultSticky = false, enabled = true }) {
         observer.disconnect();
       }
     };
-  }, [ref]);
+  }, [ref, enabled, threshold]);
 
   return { ref, isSticky };
 }

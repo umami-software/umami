@@ -1,10 +1,9 @@
-import { useIntl } from 'react-intl';
 import MetricCard from 'components/metrics/MetricCard';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 import styles from './RealtimeHeader.module.css';
 
 export default function RealtimeHeader({ data = {} }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { pageviews, visitors, events, countries } = data;
 
   return (

@@ -1,10 +1,9 @@
 import MetricsTable from './MetricsTable';
-import { useIntl } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function DevicesTable({ websiteId, ...props }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: device }) {
     return (

@@ -12,11 +12,10 @@ import {
   Icons,
   Flexbox,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsitesTable({ data = [] }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },

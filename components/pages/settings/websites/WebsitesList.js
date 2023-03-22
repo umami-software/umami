@@ -1,5 +1,4 @@
 import { Button, Icon, Text, Modal, ModalTrigger, useToast, Icons } from 'react-basics';
-import { useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -7,9 +6,10 @@ import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsitesList() {
+  const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(
@@ -18,7 +18,6 @@ export default function WebsitesList() {
     { enabled: !!user },
   );
   const { toast, showToast } = useToast();
-  const { formatMessage } = useIntl();
   const hasData = data && data.length !== 0;
 
   const handleSave = async () => {
