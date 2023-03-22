@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }) {
 
   const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
 
-  if (!config || config.uiDisabled) {
+  if (config?.uiDisabled) {
     return null;
   }
 

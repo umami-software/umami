@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import styles from './Page.module.css';
 import { Banner, Loading } from 'react-basics';
+import styles from './Page.module.css';
 
 export default function Page({ className, error, loading, children }) {
   if (error) {

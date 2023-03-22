@@ -84,7 +84,7 @@ export default function WebsiteChart({
       <StickyHeader
         stickyClassName={styles.sticky}
         enabled={stickyHeader}
-        scrollElement={document.getElementById(UI_LAYOUT_BODY) || document}
+        scrollElement={document.getElementById(UI_LAYOUT_BODY)}
       >
         <Row className={styles.header}>
           <Column>
