@@ -6,7 +6,6 @@ import firstBy from 'thenby';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import StickyHeader from 'components/common/StickyHeader';
 import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
 import RealtimeLog from 'components/pages/realtime/RealtimeLog';
@@ -104,9 +103,7 @@ export default function RealtimeDashboard({ websiteId }) {
       <PageHeader title={formatMessage(labels.realtime)}>
         <WebsiteSelect websiteId={websiteId} onSelect={handleSelect} />
       </PageHeader>
-      <StickyHeader stickyClassName={styles.sticky}>
-        <RealtimeHeader websiteId={websiteId} data={currentData} />
-      </StickyHeader>
+      <RealtimeHeader websiteId={websiteId} data={currentData} />
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>

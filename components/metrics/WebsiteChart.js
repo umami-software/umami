@@ -2,11 +2,11 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { Button, Icon, Text, Row, Column } from 'react-basics';
 import Link from 'next/link';
+import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
 import DateFilter from 'components/input/DateFilter';
-import StickyHeader from 'components/common/StickyHeader';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
 import RefreshButton from 'components/input/RefreshButton';
@@ -16,9 +16,9 @@ import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
 import Icons from 'components/icons';
-import { UI_LAYOUT_BODY } from 'lib/constants';
 import { labels } from 'components/messages';
 import styles from './WebsiteChart.module.css';
+import useSticky from '../../hooks/useSticky';
 
 export default function WebsiteChart({
   websiteId,
@@ -37,6 +37,7 @@ export default function WebsiteChart({
     query: { url, referrer, os, browser, device, country },
   } = usePageQuery();
   const { get, useQuery } = useApi();
+  const { ref, isSticky } = useSticky({ enabled: stickyHeader });
 
   const { data, isLoading, error } = useQuery(
     ['websites:pageviews', websiteId, modified, url, referrer, os, browser, device, country],
@@ -81,21 +82,21 @@ export default function WebsiteChart({
         )}
       </WebsiteHeader>
       <FilterTags websiteId={websiteId} params={{ url, referrer, os, browser, device, country }} />
-      <StickyHeader
-        stickyClassName={styles.sticky}
-        enabled={stickyHeader}
-        scrollElement={document.getElementById(UI_LAYOUT_BODY)}
+      <Row
+        ref={ref}
+        className={classNames(styles.header, {
+          [styles.sticky]: stickyHeader,
+          [styles.isSticky]: isSticky,
+        })}
       >
-        <Row className={styles.header}>
-          <Column>
-            <MetricsBar websiteId={websiteId} />
-          </Column>
-          <Column className={styles.actions}>
-            <RefreshButton websiteId={websiteId} isLoading={isLoading} />
-            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
-          </Column>
-        </Row>
-      </StickyHeader>
+        <Column>
+          <MetricsBar websiteId={websiteId} />
+        </Column>
+        <Column className={styles.actions}>
+          <RefreshButton websiteId={websiteId} isLoading={isLoading} />
+          <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
+        </Column>
+      </Row>
       <Row>
         <Column className={styles.chart}>
           {error && <ErrorMessage />}

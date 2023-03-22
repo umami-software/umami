@@ -1,25 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 
-export default function useSticky({ scrollElement = document, defaultSticky = false }) {
+export default function useSticky({ defaultSticky = false, enabled = true }) {
   const [isSticky, setIsSticky] = useState(defaultSticky);
   const ref = useRef(null);
-  const initialTop = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsSticky((scrollElement?.scrollTop ?? window.scrollY) > initialTop.current);
-    };
+    let observer;
+    const handler = ([entry]) => setIsSticky(entry.intersectionRatio < 1);
 
-    if (initialTop.current === null) {
-      initialTop.current = ref?.current?.offsetTop;
+    if (enabled && ref.current) {
+      observer = new IntersectionObserver(handler, { threshold: [1] });
+      observer.observe(ref.current);
     }
-
-    scrollElement.addEventListener('scroll', handleScroll, true);
-
     return () => {
-      scrollElement.removeEventListener('scroll', handleScroll, true);
+      if (observer) {
+        observer.disconnect();
+      }
     };
-  }, [ref, setIsSticky, scrollElement]);
+  }, [ref]);
 
   return { ref, isSticky };
 }

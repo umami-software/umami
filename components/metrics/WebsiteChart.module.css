@@ -17,22 +17,23 @@
 }
 
 .header {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 0;
   min-height: 90px;
   margin-bottom: 20px;
+  background: var(--base50);
 }
 
 .sticky {
-  position: fixed;
-  top: 0;
-  background: var(--base50);
+  position: sticky;
+  top: -1px;
+  z-index: 2;
+}
+
+.isSticky {
   border-bottom: 1px solid var(--base300);
-  z-index: 3;
-  width: inherit;
-  padding-top: 10px;
 }
 
 .actions {
