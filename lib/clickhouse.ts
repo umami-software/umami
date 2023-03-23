@@ -3,6 +3,7 @@ import dateFormat from 'dateformat';
 import debug from 'debug';
 import { FILTER_IGNORED } from 'lib/constants';
 import { CLICKHOUSE } from 'lib/db';
+import { getEventDataType } from './eventData';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%M:00',
@@ -62,6 +63,45 @@ function getDateFormat(date) {
 
 function getBetweenDates(field, startAt, endAt) {
   return `${field} between ${getDateFormat(startAt)} and ${getDateFormat(endAt)}`;
+}
+
+function getEventDataFilterQuery(
+  filters: {
+    eventKey?: string;
+    eventValue?: string | number | boolean | Date;
+  }[] = [],
+  params: any,
+) {
+  const query = filters.reduce((ac, cv, i) => {
+    const type = getEventDataType(cv.eventValue);
+
+    let value = cv.eventValue;
+
+    ac.push(`and (event_key = {eventKey${i}:String}`);
+
+    switch (type) {
+      case 'number':
+        ac.push(`and event_numeric_value = {eventValue${i}:UInt64})`);
+        break;
+      case 'string':
+        ac.push(`and event_string_value = {eventValue${i}:String})`);
+        break;
+      case 'boolean':
+        ac.push(`and event_string_value = {eventValue${i}:String})`);
+        value = cv ? 'true' : 'false';
+        break;
+      case 'date':
+        ac.push(`and event_date_value = {eventValue${i}:DateTime('UTC')})`);
+        break;
+    }
+
+    params[`eventKey${i}`] = cv.eventKey;
+    params[`eventValue${i}`] = value;
+
+    return ac;
+  }, []);
+
+  return query.join('\n');
 }
 
 function getFilterQuery(filters = {}, params = {}) {
@@ -189,6 +229,7 @@ export default {
   getDateFormat,
   getBetweenDates,
   getFilterQuery,
+  getEventDataFilterQuery,
   parseFilters,
   findUnique,
   findFirst,

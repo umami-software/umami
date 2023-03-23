@@ -75,6 +75,13 @@ export interface WebsiteEventMetric {
   y: number;
 }
 
+export interface WebsiteEventDataMetric {
+  x: string;
+  t: string;
+  eventName?: string;
+  urlPath?: string;
+}
+
 export interface WebsitePageviews {
   pageviews: {
     t: string;

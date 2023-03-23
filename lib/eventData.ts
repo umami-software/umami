@@ -25,8 +25,18 @@ export function flattenJSON(
   ).keyValues;
 }
 
+export function getEventDataType(value: any): string {
+  let type: string = typeof value;
+
+  if ((type === 'string' && isValid(value)) || isValid(parseISO(value))) {
+    type = 'date';
+  }
+
+  return type;
+}
+
 function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
-  const type = isValid(value) || isValid(parseISO(value)) ? 'date' : typeof value;
+  const type = getEventDataType(value);
 
   let eventDataType = null;
 
