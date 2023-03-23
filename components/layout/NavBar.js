@@ -9,8 +9,10 @@ import ProfileButton from 'components/input/ProfileButton';
 import styles from './NavBar.module.css';
 import useConfig from 'hooks/useConfig';
 import useMessages from 'hooks/useMessages';
+import { useRouter } from 'next/router';
 
 export default function NavBar() {
+  const { pathname } = useRouter();
   const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
   const [minimized, setMinimized] = useState(false);
@@ -34,8 +36,11 @@ export default function NavBar() {
       <div className={styles.links}>
         {links.map(({ url, icon, label }) => {
           return (
-            <Link key={url} href={url}>
-              <Icon>{icon}</Icon>
+            <Link
+              key={url}
+              href={url}
+              className={classNames({ [styles.selected]: pathname.startsWith(url) })}
+            >
               <Text>{label}</Text>
             </Link>
           );

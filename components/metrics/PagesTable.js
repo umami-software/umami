@@ -38,7 +38,6 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
         type="url"
         metric={formatMessage(labels.views)}
         websiteId={websiteId}
-        dataFilter={filters[filter]}
         renderLabel={renderLink}
         {...props}
       />

@@ -1,0 +1,17 @@
+.container {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  padding: 40px 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}

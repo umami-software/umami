@@ -12,7 +12,7 @@ import { DOMAIN_REGEX } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
 export default function WebsiteAddForm({ onSave, onClose }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/websites', data));
 
@@ -37,7 +37,7 @@ export default function WebsiteAddForm({ onSave, onClose }) {
           name="domain"
           rules={{
             required: formatMessage(labels.required),
-            pattern: { value: DOMAIN_REGEX, message: formatMessage(labels.invalidDomain) },
+            pattern: { value: DOMAIN_REGEX, message: formatMessage(messages.invalidDomain) },
           }}
         >
           <TextField autoComplete="off" />

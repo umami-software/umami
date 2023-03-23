@@ -5,7 +5,7 @@
   align-items: center;
   height: 60px;
   background: var(--base75);
-  border-bottom: 1px solid var(--base200);
+  border-bottom: 2px solid var(--base300);
   padding: 0 20px;
 }
 
@@ -23,7 +23,7 @@
 .links {
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 30px;
   padding: 0 40px;
   flex: 1;
   font-weight: 700;
@@ -33,11 +33,19 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  color: var(--font-color100);
+  line-height: 60px;
+  color: var(--font-color200);
+  border-bottom: 2px solid transparent;
 }
 
 .links a:hover {
-  color: var(--primary400);
+  color: var(--font-color100);
+  border-bottom: 2px solid var(--primary400);
+}
+
+.links .selected {
+  color: var(--font-color100);
+  border-bottom: 2px solid var(--primary400);
 }
 
 .actions {
