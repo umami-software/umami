@@ -115,6 +115,7 @@ CREATE TABLE umami.event_data
         ORDER BY (website_id, event_id, event_key, created_at)
         SETTINGS index_granularity = 8192;
 
+CREATE TABLE umami.event_data_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
