@@ -1,12 +1,11 @@
-import { useIntl } from 'react-intl';
 import DateFilter from 'components/input/DateFilter';
 import { Button, Flexbox } from 'react-basics';
 import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function DateRangeSetting() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 

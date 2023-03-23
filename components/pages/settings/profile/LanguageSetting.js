@@ -1,12 +1,11 @@
-import { useIntl } from 'react-intl';
 import { Button, Dropdown, Item, Flexbox } from 'react-basics';
 import useLocale from 'hooks/useLocale';
 import { DEFAULT_LOCALE } from 'lib/constants';
 import { languages } from 'lib/lang';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function LanguageSetting() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { locale, saveLocale } = useLocale();
   const options = Object.keys(languages);
 

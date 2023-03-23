@@ -1,15 +1,21 @@
 .layout {
   display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: max-content 1fr;
+  grid-template-rows: max-content 1fr;
+  grid-template-columns: 1fr;
 }
 
 .nav {
-  grid-row: 1 / 3;
+  height: 60px;
+  width: 100vw;
+  z-index: 100;
+  grid-column: 1;
+  grid-row: 1 / 2;
 }
 
 .body {
-  grid-area: 1 / 2;
-  overflow: auto;
-  height: 100vh;
+  grid-column: 1;
+  grid-row: 2 / 3;
+  min-height: 0;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
 }

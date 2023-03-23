@@ -1,13 +1,12 @@
-import { useIntl } from 'react-intl';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import ProfileDetails from './ProfileDetails';
 import PasswordChangeButton from './PasswordChangeButton';
-import { labels } from 'components/messages';
 import useConfig from 'hooks/useConfig';
+import useMessages from 'hooks/useMessages';
 
 export default function ProfileSettings() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { cloudMode } = useConfig();
 
   return (

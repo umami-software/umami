@@ -1,11 +1,10 @@
+import { useMemo } from 'react';
 import { useVisible } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { colord } from 'colord';
 import BarChart from './BarChart';
-import useTheme from 'hooks/useTheme';
 import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
-import { labels } from 'components/messages';
-import { useMemo } from 'react';
+import useTheme from 'hooks/useTheme';
+import useMessages from 'hooks/useMessages';
 
 export default function PageviewsChart({
   websiteId,
@@ -17,7 +16,7 @@ export default function PageviewsChart({
   animationDuration = DEFAULT_ANIMATION_DURATION,
   ...props
 }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [theme] = useTheme();
   const { ref, visible } = useVisible();
 

@@ -1,10 +1,9 @@
 import { Row, Column, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
 import AppLayout from 'components/layout/AppLayout';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function Custom404() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   return (
     <AppLayout>

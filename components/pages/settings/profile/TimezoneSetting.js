@@ -1,12 +1,11 @@
 import { Dropdown, Item, Button, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { listTimeZones } from 'timezone-support';
 import useTimezone from 'hooks/useTimezone';
+import useMessages from 'hooks/useMessages';
 import { getTimezone } from 'lib/date';
-import { labels } from 'components/messages';
 
 export default function TimezoneSetting() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [timezone, saveTimezone] = useTimezone();
   const options = listTimeZones();
 

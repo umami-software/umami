@@ -1,14 +1,11 @@
-import { Icon, Button, PopupTrigger, Popup, Tooltip, Text } from 'react-basics';
-import { useIntl } from 'react-intl';
+import { Icon, Button, PopupTrigger, Popup, Text } from 'react-basics';
 import classNames from 'classnames';
 import { languages } from 'lib/lang';
 import useLocale from 'hooks/useLocale';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import styles from './LanguageButton.module.css';
 
-export default function LanguageButton({ tooltipPosition = 'top', menuPosition = 'right' }) {
-  const { formatMessage } = useIntl();
+export default function LanguageButton() {
   const { locale, saveLocale } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
@@ -18,14 +15,12 @@ export default function LanguageButton({ tooltipPosition = 'top', menuPosition =
 
   return (
     <PopupTrigger>
-      <Tooltip label={formatMessage(labels.language)} position={tooltipPosition}>
-        <Button variant="quiet">
-          <Icon>
-            <Icons.Globe />
-          </Icon>
-        </Button>
-      </Tooltip>
-      <Popup position={menuPosition} alignment="end">
+      <Button variant="quiet">
+        <Icon>
+          <Icons.Globe />
+        </Icon>
+      </Button>
+      <Popup position="bottom" alignment="end">
         <div className={styles.menu}>
           {items.map(({ value, label }) => {
             return (

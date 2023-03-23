@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
 import { dateFormat, getDateRangeValues } from 'lib/date';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
+import useMessages from 'hooks/useMessages';
 
 function DateFilter({ websiteId, value, className }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { get } = useApi();
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;

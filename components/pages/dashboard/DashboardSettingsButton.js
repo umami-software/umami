@@ -1,24 +1,18 @@
-import { defineMessages, useIntl } from 'react-intl';
 import { Menu, Icon, Text, PopupTrigger, Popup, Item, Button } from 'react-basics';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import { saveDashboard } from 'store/dashboard';
-
-const messages = defineMessages({
-  toggleCharts: { id: 'message.toggle-charts', defaultMessage: 'Toggle charts' },
-  editDashboard: { id: 'message.edit-dashboard', defaultMessage: 'Edit dashboard' },
-});
+import useMessages from 'hooks/useMessages';
 
 export default function DashboardSettingsButton() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const menuOptions = [
     {
-      label: formatMessage(messages.toggleCharts),
+      label: formatMessage(labels.toggleCharts),
       value: 'charts',
     },
     {
-      label: formatMessage(messages.editDashboard),
+      label: formatMessage(labels.editDashboard),
       value: 'order',
     },
   ];

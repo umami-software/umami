@@ -1,7 +1,3 @@
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { labels, messages } from 'components/messages';
-import TeamWebsitesTable from 'components/pages/settings/teams/TeamWebsitesTable';
-import useApi from 'hooks/useApi';
 import {
   ActionForm,
   Button,
@@ -13,12 +9,15 @@ import {
   Text,
   useToast,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import TeamWebsitesTable from 'components/pages/settings/teams/TeamWebsitesTable';
 import WebsiteAddTeamForm from 'components/pages/settings/teams/WebsiteAddTeamForm';
+import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamWebsites({ teamId }) {
   const { toast, showToast } = useToast();
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { data, isLoading, refetch } = useQuery(['teams:websites', teamId], () =>
     get(`/teams/${teamId}/websites`),

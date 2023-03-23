@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useIntl } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';
 import { urlFilter } from 'lib/filters';
-import { labels } from 'components/messages';
 import MetricsTable from './MetricsTable';
 import { FILTER_COMBINED, FILTER_RAW } from 'lib/constants';
+import useMessages from 'hooks/useMessages';
 
 const filters = {
   [FILTER_RAW]: null,
@@ -14,7 +13,7 @@ const filters = {
 
 export default function PagesTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const buttons = [
     {

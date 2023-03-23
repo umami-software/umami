@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { useIntl } from 'react-intl';
 import {
   Form,
   FormRow,
@@ -10,10 +9,10 @@ import {
   SubmitButton,
 } from 'react-basics';
 import useApi from 'hooks/useApi';
-import { labels, getMessage } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamJoinForm({ onSave, onClose }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, getMessage } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post('/teams/join', data));
   const ref = useRef(null);
@@ -28,7 +27,7 @@ export default function TeamJoinForm({ onSave, onClose }) {
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error && getMessage(error, formatMessage)}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error && getMessage(error)}>
       <FormRow label={formatMessage(labels.accessCode)}>
         <FormInput name="accessCode" rules={{ required: formatMessage(labels.required) }}>
           <TextField autoComplete="off" />

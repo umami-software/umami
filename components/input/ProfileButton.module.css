@@ -1,0 +1,9 @@
+.menu {
+  width: 200px;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  background: var(--base50);
+}

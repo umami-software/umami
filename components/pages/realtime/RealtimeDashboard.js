@@ -1,12 +1,10 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useIntl } from 'react-intl';
 import { subMinutes, startOfMinute } from 'date-fns';
 import { useRouter } from 'next/router';
 import firstBy from 'thenby';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import StickyHeader from 'components/common/StickyHeader';
 import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
 import RealtimeLog from 'components/pages/realtime/RealtimeLog';
@@ -15,8 +13,8 @@ import RealtimeUrls from 'components/pages/realtime/RealtimeUrls';
 import RealtimeCountries from 'components/pages/realtime/RealtimeCountries';
 import WebsiteSelect from 'components/input/WebsiteSelect';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 import { percentFilter } from 'lib/filters';
-import { labels } from 'components/messages';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import styles from './RealtimeDashboard.module.css';
 
@@ -28,7 +26,7 @@ function mergeData(state = [], data = [], time) {
 }
 
 export default function RealtimeDashboard({ websiteId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
@@ -104,9 +102,7 @@ export default function RealtimeDashboard({ websiteId }) {
       <PageHeader title={formatMessage(labels.realtime)}>
         <WebsiteSelect websiteId={websiteId} onSelect={handleSelect} />
       </PageHeader>
-      <StickyHeader stickyClassName={styles.sticky}>
-        <RealtimeHeader websiteId={websiteId} data={currentData} />
-      </StickyHeader>
+      <RealtimeHeader websiteId={websiteId} data={currentData} />
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
       </div>

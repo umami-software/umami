@@ -1,17 +1,16 @@
 import { useState } from 'react';
 import { Loading } from 'react-basics';
-import { useIntl } from 'react-intl';
 import ErrorMessage from 'components/common/ErrorMessage';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import MetricCard from './MetricCard';
-import { labels } from 'components/messages';
 import styles from './MetricsBar.module.css';
+import useMessages from 'hooks/useMessages';
 
 export default function MetricsBar({ websiteId }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;

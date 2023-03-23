@@ -1,11 +1,10 @@
-import { useIntl } from 'react-intl';
 import { Button, Icon, Text, useToast, ModalTrigger, Modal } from 'react-basics';
 import PasswordEditForm from 'components/pages/settings/profile/PasswordEditForm';
 import Icons from 'components/icons';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function PasswordChangeButton() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { toast, showToast } = useToast();
 
   const handleSave = () => {

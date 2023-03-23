@@ -1,12 +1,11 @@
-import { useIntl } from 'react-intl';
 import { LoadingButton, Icon, Tooltip } from 'react-basics';
 import { setWebsiteDateRange } from 'store/websites';
 import useDateRange from 'hooks/useDateRange';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 function RefreshButton({ websiteId, isLoading }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const [dateRange] = useDateRange(websiteId);
 
   function handleClick() {

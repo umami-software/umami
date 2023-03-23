@@ -11,14 +11,13 @@ import {
   Flexbox,
   Text,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { ROLES } from 'lib/constants';
-import { labels } from 'components/messages';
 import useUser from 'hooks/useUser';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamMembersTable({ data = [], onSave, readOnly }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { del, useMutation } = useApi();
   const { mutate } = useMutation(data => del(`/teamUsers/${data.teamUserId}`));

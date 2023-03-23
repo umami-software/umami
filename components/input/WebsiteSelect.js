@@ -1,10 +1,9 @@
-import { useIntl } from 'react-intl';
 import { Dropdown, Item } from 'react-basics';
-import { labels } from 'components/messages';
 import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteSelect({ websiteId, onSelect }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { data } = useQuery(['websites:me'], () => get('/me/websites'));
 

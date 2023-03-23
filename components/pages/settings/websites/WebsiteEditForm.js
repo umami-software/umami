@@ -1,12 +1,11 @@
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
 import { useRef } from 'react';
-import { useIntl } from 'react-intl';
 import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteEditForm({ websiteId, data, onSave }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}`, data));
   const ref = useRef(null);

@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
-import { useIntl } from 'react-intl';
-import { labels } from 'components/messages';
 import DataTable from 'components/metrics/DataTable';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
+import useMessages from 'hooks/useMessages';
 
 export default function RealtimeCountries({ data }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 

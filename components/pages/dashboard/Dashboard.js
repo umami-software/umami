@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button, Icon, Icons, Text, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
@@ -9,16 +8,16 @@ import DashboardSettingsButton from 'components/pages/dashboard/DashboardSetting
 import DashboardEdit from 'components/pages/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useApi from 'hooks/useApi';
-import { labels, messages } from 'components/messages';
 import useDashboard from 'store/dashboard';
+import useMessages from 'hooks/useMessages';
 
 export default function Dashboard({ userId }) {
+  const { formatMessage, labels, messages } = useMessages();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites'], () => get('/websites', { userId }));
-  const { formatMessage } = useIntl();
   const hasData = data && data.length !== 0;
 
   function handleMore() {

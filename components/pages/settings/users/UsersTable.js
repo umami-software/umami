@@ -13,16 +13,15 @@ import {
   ModalTrigger,
   Modal,
 } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import useUser from 'hooks/useUser';
 import UserDeleteForm from './UserDeleteForm';
-import { labels } from 'components/messages';
 import { ROLES } from 'lib/constants';
+import useMessages from 'hooks/useMessages';
 
 export default function UsersTable({ data = [], onDelete }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
   const columns = [

@@ -1,14 +1,11 @@
 import { useTransition, animated } from 'react-spring';
-import { Button, Icon, Tooltip } from 'react-basics';
-import { useIntl } from 'react-intl';
+import { Button, Icon } from 'react-basics';
 import useTheme from 'hooks/useTheme';
 import Icons from 'components/icons';
-import { labels } from 'components/messages';
 import styles from './ThemeButton.module.css';
 
-export default function ThemeButton({ tooltipPosition = 'top' }) {
+export default function ThemeButton() {
   const [theme, setTheme] = useTheme();
-  const { formatMessage } = useIntl();
 
   const transitions = useTransition(theme, {
     initial: { opacity: 1 },
@@ -28,14 +25,12 @@ export default function ThemeButton({ tooltipPosition = 'top' }) {
   }
 
   return (
-    <Tooltip label={formatMessage(labels.theme)} position={tooltipPosition}>
-      <Button variant="quiet" className={styles.button} onClick={handleClick}>
-        {transitions((style, item) => (
-          <animated.div key={item} style={style}>
-            <Icon className={styles.icon}>{item === 'light' ? <Icons.Sun /> : <Icons.Moon />}</Icon>
-          </animated.div>
-        ))}
-      </Button>
-    </Tooltip>
+    <Button variant="quiet" className={styles.button} onClick={handleClick}>
+      {transitions((style, item) => (
+        <animated.div key={item} style={style}>
+          <Icon className={styles.icon}>{item === 'light' ? <Icons.Sun /> : <Icons.Moon />}</Icon>
+        </animated.div>
+      ))}
+    </Button>
   );
 }

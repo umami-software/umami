@@ -1,11 +1,10 @@
 import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
-import { useIntl } from 'react-intl';
 import WebsiteDeleteForm from 'components/pages/settings/websites/WebsiteDeleteForm';
 import WebsiteResetForm from 'components/pages/settings/websites/WebsiteResetForm';
-import { labels, messages } from 'components/messages';
+import useMessages from 'hooks/useMessages';
 
 export default function WebsiteData({ websiteId, onSave }) {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
 
   const handleReset = async () => {
     onSave('reset');

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Calendar } from 'react-basics';
-import { useIntl } from 'react-intl';
 import { isAfter, isBefore, isSameDay } from 'date-fns';
 import useLocale from 'hooks/useLocale';
 import { getDateRangeValues } from 'lib/date';
 import { getDateLocale } from 'lib/lang';
-import { labels } from 'components/messages';
-import styles from './DatePickerForm.module.css';
 import { FILTER_DAY, FILTER_RANGE } from 'lib/constants';
+import useMessages from 'hooks/useMessages';
+import styles from './DatePickerForm.module.css';
 
 export default function DatePickerForm({
   startDate: defaultStartDate,
@@ -24,7 +23,7 @@ export default function DatePickerForm({
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const { locale } = useLocale();
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels } = useMessages();
 
   const disabled =
     selected === FILTER_DAY

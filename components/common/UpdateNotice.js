@@ -1,14 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useIntl } from 'react-intl';
-import { Button, Banner, Row, Column, Flexbox } from 'react-basics';
+import { Button, Row, Column } from 'react-basics';
 import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
-import { labels, messages } from 'components/messages';
 import styles from './UpdateNotice.module.css';
+import useMessages from 'hooks/useMessages';
 
 export default function UpdateNotice() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
   const [dismissed, setDismissed] = useState(false);
 

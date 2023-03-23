@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import { Button, Icon, Modal, ModalTrigger, useToast, Text, Flexbox } from 'react-basics';
-import { useIntl } from 'react-intl';
-import useApi from 'hooks/useApi';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import TeamAddForm from 'components/pages/settings/teams/TeamAddForm';
 import PageHeader from 'components/layout/PageHeader';
 import TeamsTable from 'components/pages/settings/teams/TeamsTable';
 import Page from 'components/layout/Page';
-import { labels, messages } from 'components/messages';
 import Icons from 'components/icons';
 import TeamJoinForm from './JoinTeamForm';
+import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 
 export default function TeamsList() {
-  const { formatMessage } = useIntl();
+  const { formatMessage, labels, messages } = useMessages();
   const [update, setUpdate] = useState(0);
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['teams', update], () => get(`/teams`));
