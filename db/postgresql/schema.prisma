@@ -58,7 +58,7 @@ model Website {
 
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
-  EventData   EventData[]
+  eventData   EventData[]
 
   @@index([userId])
   @@index([createdAt])
