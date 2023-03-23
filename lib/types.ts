@@ -1,10 +1,19 @@
 import { NextApiRequest } from 'next';
-import { ROLES } from './constants';
+import { EVENT_DATA_TYPE, EVENT_TYPE, KAFKA_TOPIC, ROLES } from './constants';
 
 type ObjectValues<T> = T[keyof T];
 
 export type Roles = ObjectValues<typeof ROLES>;
 
+export type EventTypes = ObjectValues<typeof EVENT_TYPE>;
+
+export type EventDataTypes = ObjectValues<typeof EVENT_DATA_TYPE>;
+
+export type KafkaTopics = ObjectValues<typeof KAFKA_TOPIC>;
+
+export interface EventData {
+  [key: string]: number | string | EventData | number[] | string[] | EventData[];
+}
 export interface Auth {
   user?: {
     id: string;
@@ -64,6 +73,13 @@ export interface WebsiteEventMetric {
   x: string;
   t: string;
   y: number;
+}
+
+export interface WebsiteEventDataMetric {
+  x: string;
+  t: string;
+  eventName?: string;
+  urlPath?: string;
 }
 
 export interface WebsitePageviews {

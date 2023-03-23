@@ -106,16 +106,15 @@ CREATE TABLE umami.event_data
     event_name String,
     event_key String,
     event_string_value Nullable(String),
-    event_numeric_value Nullable(Decimal64(4)),
+    event_numeric_value Nullable(Decimal64(4)), --922337203685477.5625
     event_date_value Nullable(DateTime('UTC')),
     event_data_type UInt32,
     created_at DateTime('UTC')
 )
     engine = MergeTree
-        ORDER BY (website_id, session_id, event_id, event_key, created_at)
+        ORDER BY (website_id, event_id, event_key, created_at)
         SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_data_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
@@ -124,7 +123,7 @@ CREATE TABLE umami.event_data_queue (
     event_name String,
     event_key String,
     event_string_value Nullable(String),
-    event_numeric_value Nullable(Decimal64(4)),
+    event_numeric_value Nullable(Decimal64(4)), --922337203685477.5625
     event_date_value Nullable(DateTime('UTC')),
     event_data_type UInt32,
     created_at DateTime('UTC')

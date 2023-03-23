@@ -2,6 +2,7 @@ import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { FILTER_IGNORED } from 'lib/constants';
+import { getEventDataType } from './eventData';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -62,6 +63,47 @@ function getTimestampInterval(field: string): string {
   if (db === MYSQL) {
     return `floor(unix_timestamp(max(${field})) - unix_timestamp(min(${field})))`;
   }
+}
+
+function getEventDataFilterQuery(
+  filters: {
+    eventKey?: string;
+    eventValue?: string | number | boolean | Date;
+  }[],
+  params: any[],
+) {
+  const query = filters.reduce((ac, cv) => {
+    const type = getEventDataType(cv.eventValue);
+
+    let value = cv.eventValue;
+
+    ac.push(`and (event_key = $${params.length + 1}`);
+    params.push(cv.eventKey);
+
+    switch (type) {
+      case 'number':
+        ac.push(`and event_numeric_value = $${params.length + 1})`);
+        params.push(value);
+        break;
+      case 'string':
+        ac.push(`and event_string_value = $${params.length + 1})`);
+        params.push(decodeURIComponent(cv.eventValue as string));
+        break;
+      case 'boolean':
+        ac.push(`and event_string_value = $${params.length + 1})`);
+        params.push(decodeURIComponent(cv.eventValue as string));
+        value = cv ? 'true' : 'false';
+        break;
+      case 'date':
+        ac.push(`and event_date_value = $${params.length + 1})`);
+        params.push(cv.eventValue);
+        break;
+    }
+
+    return ac;
+  }, []);
+
+  return query.join('\n');
 }
 
 function getFilterQuery(filters = {}, params = []): string {
@@ -173,6 +215,7 @@ export default {
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
+  getEventDataFilterQuery,
   toUuid,
   parseFilters,
   rawQuery,

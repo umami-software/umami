@@ -109,6 +109,7 @@ async function clickhouseQuery(data: {
   const message = {
     website_id: websiteId,
     session_id: sessionId,
+    event_id: uuid(),
     rev_id: website?.revId || 0,
     country: country ? country : null,
     subdivision1: subdivision1 ? subdivision1 : null,

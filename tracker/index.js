@@ -73,7 +73,7 @@
   let cache;
 
   if (currentRef.substring(0, 4) === 'http') {
-    if ((currentRef = currentRef.split('/')[2].split(':')[0] === hostname)) {
+    if (currentRef.split('/')[2].split(':')[0] === hostname) {
       currentRef = '/' + currentRef.split('/').splice(3).join('/');
     }
   }
@@ -118,6 +118,7 @@
 
   const trackEvent = (
     eventName,
+    eventData,
     url = currentUrl,
     websiteId = website,
     pageTitle = currentPageTitle,
@@ -128,7 +129,8 @@
         website: websiteId,
         url,
         pageTitle,
-        eventName: eventName,
+        eventName,
+        eventData,
       }),
     );
 

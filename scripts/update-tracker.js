@@ -12,7 +12,7 @@ if (endPoint) {
 
   fs.writeFileSync(
     path.resolve(file),
-    tracker.toString().replace(/"\/api\/collect"/g, `"${endPoint}"`),
+    tracker.toString().replace(/"\/api\/send"/g, `"${endPoint}"`),
   );
 
   console.log(`Updated tracker endpoint: ${endPoint}.`);
