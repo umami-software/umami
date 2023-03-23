@@ -1,4 +1,4 @@
-import AppLayout from 'components/layout/AppLayout';
+import SettingsLayout from 'components/layout/SettingsLayout';
 import WebsitesList from 'components/pages/settings/websites/WebsitesList';
 
 export default function WebsitesPage({ disabled }) {
@@ -7,9 +7,9 @@ export default function WebsitesPage({ disabled }) {
   }
 
   return (
-    <AppLayout>
+    <SettingsLayout>
       <WebsitesList />
-    </AppLayout>
+    </SettingsLayout>
   );
 }
 

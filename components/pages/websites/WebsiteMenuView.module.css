@@ -1,17 +1,3 @@
-.menu {
-  gap: 20px;
-}
-
-.item a {
-  color: var(--font-color100);
-  flex: 1;
-  padding: var(--size300) var(--size600);
-}
-
-.item {
-  padding: 0;
-}
-
 .data {
   min-height: 600px;
 }
