@@ -79,6 +79,31 @@ CREATE TABLE `website_event` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `event_data` (
+    `event_id` VARCHAR(36) NOT NULL,
+    `website_event_id` VARCHAR(36) NOT NULL,
+    `website_id` VARCHAR(36) NOT NULL,
+    `session_id` VARCHAR(36) NOT NULL,
+    `url_path` VARCHAR(500) NOT NULL,
+    `event_name` VARCHAR(500) NOT NULL,
+    `event_key` VARCHAR(500) NOT NULL,
+    `event_string_value` VARCHAR(500) NOT NULL,
+    `event_numeric_value` DECIMAL(19, 4) NOT NULL,
+    `event_date_value` TIMESTAMP(0) NULL,
+    `event_data_type` INTEGER UNSIGNED NOT NULL,
+    `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+
+    INDEX `event_data_created_at_idx`(`created_at`),
+    INDEX `event_data_session_id_idx`(`session_id`),
+    INDEX `event_data_website_id_idx`(`website_id`),
+    INDEX `event_data_website_event_id_idx`(`website_event_id`),
+    INDEX `event_data_website_id_website_event_id_created_at_idx`(`website_id`, `website_event_id`, `created_at`),
+    INDEX `event_data_website_id_session_id_created_at_idx`(`website_id`, `session_id`, `created_at`),
+    INDEX `event_data_website_id_session_id_website_event_id_created_at_idx`(`website_id`, `session_id`, `website_event_id`, `created_at`),
+    PRIMARY KEY (`event_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `team` (
     `team_id` VARCHAR(36) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
@@ -119,6 +144,3 @@ CREATE TABLE `team_website` (
     INDEX `team_website_website_id_idx`(`website_id`),
     PRIMARY KEY (`team_website_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddSystemUser
-INSERT INTO "user" (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');
