@@ -1,18 +1,21 @@
+import { Prisma } from '@prisma/client';
 import { EVENT_DATA_TYPE } from 'lib/constants';
+import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { flattenJSON } from 'lib/eventData';
 import kafka from 'lib/kafka';
+import prisma from 'lib/prisma';
 import { EventData } from 'lib/types';
 
 export async function saveEventData(args: {
   websiteId: string;
-  sessionId: string;
   eventId: string;
-  revId: number;
-  urlPath: string;
-  eventName: string;
+  sessionId?: string;
+  revId?: number;
+  urlPath?: string;
+  eventName?: string;
   eventData: EventData;
-  createdAt: string;
+  createdAt?: string;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
@@ -22,25 +25,44 @@ export async function saveEventData(args: {
 
 async function relationalQuery(data: {
   websiteId: string;
-  sessionId: string;
   eventId: string;
-  revId: number;
-  eventName: string;
   eventData: EventData;
-  createdAt: string;
-}) {
-  return data;
+}): Promise<Prisma.BatchPayload> {
+  const { websiteId, eventId, eventData } = data;
+
+  const jsonKeys = flattenJSON(eventData);
+
+  //id, websiteEventId, eventStringValue
+  const flattendData = jsonKeys.map(a => ({
+    id: uuid(),
+    websiteEventId: eventId,
+    websiteId,
+    eventKey: a.key,
+    eventStringValue:
+      a.eventDataType === EVENT_DATA_TYPE.string ||
+      a.eventDataType === EVENT_DATA_TYPE.boolean ||
+      a.eventDataType === EVENT_DATA_TYPE.array
+        ? a.value
+        : null,
+    eventNumericValue: a.eventDataType === EVENT_DATA_TYPE.number ? a.value : null,
+    eventDateValue: a.eventDataType === EVENT_DATA_TYPE.date ? new Date(a.value) : null,
+    eventDataType: a.eventDataType,
+  }));
+
+  return prisma.client.eventData.createMany({
+    data: flattendData,
+  });
 }
 
 async function clickhouseQuery(data: {
   websiteId: string;
-  sessionId: string;
   eventId: string;
-  revId: number;
-  urlPath: string;
-  eventName: string;
+  sessionId?: string;
+  revId?: number;
+  urlPath?: string;
+  eventName?: string;
   eventData: EventData;
-  createdAt: string;
+  createdAt?: string;
 }) {
   const { websiteId, sessionId, eventId, revId, urlPath, eventName, eventData, createdAt } = data;
 
@@ -67,7 +89,6 @@ async function clickhouseQuery(data: {
     event_data_type: a.eventDataType,
     created_at: createdAt,
   }));
-  ``;
 
   await sendMessages(messages, 'event_data');
 

@@ -99,8 +99,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     referrerDomain = newRef.hostname;
     referrerQuery = newRef.search.substring(1);
   } catch {
-    referrerPath = referrer.split('?')[0];
-    referrerQuery = referrer.split('?')[1];
+    referrerPath = referrer?.split('?')[0];
+    referrerQuery = referrer?.split('?')[1];
   }
 
   if (process.env.REMOVE_TRAILING_SLASH) {

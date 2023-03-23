@@ -48,7 +48,7 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate, eventName];
+  const params: any = [websiteId, startDate, endDate, eventName || ''];
 
   return rawQuery(
     `select
@@ -59,6 +59,11 @@ async function relationalQuery(
           timeSeries ? `,${getDateQuery('created_at', timeSeries.unit, timeSeries.timezone)} t` : ''
         }
     from event_data
+      ${
+        eventName || urlPath
+          ? 'join website_event on event_data.id = website_event.website_event_id'
+          : ''
+      }
     where website_id = $1${toUuid()}
       and created_at between $2 and $3
       ${eventName ? `and eventName = $4` : ''}

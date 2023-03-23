@@ -72,32 +72,33 @@ function getEventDataFilterQuery(
   }[],
   params: any[],
 ) {
-  const query = filters.reduce((ac, cv, i) => {
-    const type = getEventDataType(cv);
+  const query = filters.reduce((ac, cv) => {
+    const type = getEventDataType(cv.eventValue);
 
     let value = cv.eventValue;
 
+    ac.push(`and (event_key = $${params.length + 1}`);
+    params.push(cv.eventKey);
+
     switch (type) {
       case 'number':
-        ac.push(`and event_numeric_value = {${cv.eventKey}${i}:UInt64}`);
-        params.push(cv.eventValue);
+        ac.push(`and event_numeric_value = $${params.length + 1})`);
+        params.push(value);
         break;
       case 'string':
-        ac.push(`and event_string_value = {${cv.eventKey}${i}:String}`);
+        ac.push(`and event_string_value = $${params.length + 1})`);
         params.push(decodeURIComponent(cv.eventValue as string));
         break;
       case 'boolean':
-        ac.push(`and event_string_value = {${cv.eventKey}${i}:String}`);
+        ac.push(`and event_string_value = $${params.length + 1})`);
         params.push(decodeURIComponent(cv.eventValue as string));
         value = cv ? 'true' : 'false';
         break;
       case 'date':
-        ac.push(`and event_date_value = {${cv.eventKey}${i}:DateTime('UTC')}`);
+        ac.push(`and event_date_value = $${params.length + 1})`);
         params.push(cv.eventValue);
         break;
     }
-
-    params[`${cv.eventKey}${i}`] = value;
 
     return ac;
   }, []);

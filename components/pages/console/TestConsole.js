@@ -30,7 +30,16 @@ export default function TestConsole() {
     window.umami.trackEvent('track-event-with-data', {
       test: 'test-data',
       time: new Date(),
+      number: 1,
       time2: new Date().toISOString(),
+      nested: {
+        test: 'test-data',
+        number: 1,
+        object: {
+          test: 'test-data',
+        },
+      },
+      array: [1, 2, 3],
     });
   }
 
@@ -49,7 +58,7 @@ export default function TestConsole() {
             async
             defer
             data-website-id={website.id}
-            src={`${basePath}/umami.js`}
+            src={`${basePath}/script.js`}
             data-cache="true"
           />
         )}
