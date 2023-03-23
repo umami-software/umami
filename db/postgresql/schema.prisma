@@ -17,7 +17,7 @@ model User {
   updatedAt DateTime? @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  Website  Website[]
+  website  Website[]
   teamUser TeamUser[]
 
   @@map("user")
@@ -38,6 +38,9 @@ model Session {
   city         String?   @db.VarChar(50)
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
+  websiteEvent WebsiteEvent[]
+  eventData    EventData[]
+
   @@index([createdAt])
   @@index([websiteId])
   @@map("session")
@@ -56,6 +59,7 @@ model Website {
 
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
+  eventData   EventData[]
 
   @@index([userId])
   @@index([createdAt])
@@ -77,12 +81,43 @@ model WebsiteEvent {
   eventType      Int       @default(1) @map("event_type") @db.Integer
   eventName      String?   @map("event_name") @db.VarChar(50)
 
+  eventData EventData[]
+  session   Session     @relation(fields: [sessionId], references: [id])
+
   @@index([createdAt])
   @@index([sessionId])
   @@index([websiteId])
   @@index([websiteId, createdAt])
   @@index([websiteId, sessionId, createdAt])
   @@map("website_event")
+}
+
+model EventData {
+  id                String    @id() @map("event_id") @db.Uuid
+  websiteEventId    String    @map("website_event_id") @db.Uuid
+  websiteId         String    @map("website_id") @db.Uuid
+  sessionId         String    @map("session_id") @db.Uuid
+  urlPath           String    @map("url_path") @db.VarChar(500)
+  eventName         String    @map("event_name") @db.VarChar(500)
+  eventKey          String    @map("event_key") @db.VarChar(500)
+  eventStringValue  String    @map("event_string_value") @db.VarChar(500)
+  eventNumericValue Decimal   @map("event_numeric_value") @db.Decimal(19,4)
+  eventDateValue    DateTime? @map("event_date_value") @db.Timestamptz(6)
+  eventDataType     Int       @map("event_data_type") @db.Integer
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website      Website      @relation(fields: [websiteId], references: [id])
+  websiteEvent WebsiteEvent @relation(fields: [websiteEventId], references: [id])
+  session      Session      @relation(fields: [sessionId], references: [id])
+
+  @@index([createdAt])
+  @@index([sessionId])
+  @@index([websiteId])
+  @@index([websiteEventId])
+  @@index([websiteId, websiteEventId, createdAt])
+  @@index([websiteId, sessionId, createdAt])
+  @@index([websiteId, sessionId, websiteEventId, createdAt])
+  @@map("event_data")
 }
 
 model Team {

@@ -1,11 +1,11 @@
 SET allow_experimental_object_type = 1;
 
 -- Create Event
-CREATE TABLE event
+CREATE TABLE umami.event
 (
     website_id UUID,
     session_id UUID,
-    event_id Nullable(UUID),
+    event_id UUID,
     rev_id UInt32,
     --session
     hostname LowCardinality(String),
@@ -34,10 +34,10 @@ CREATE TABLE event
         ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
-CREATE TABLE event_queue (
+CREATE TABLE umami.event_queue (
     website_id UUID,
     session_id UUID,
-    event_id Nullable(UUID),
+    event_id UUID,
     rev_id UInt32,
     --session
     hostname LowCardinality(String),
@@ -70,7 +70,7 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_max_block_size = 1048576,
        kafka_skip_broken_messages = 1;
 
-CREATE MATERIALIZED VIEW event_queue_mv TO event AS
+CREATE MATERIALIZED VIEW umami.event_queue_mv TO umami.event AS
 SELECT website_id,
     session_id,
     event_id,
@@ -94,4 +94,60 @@ SELECT website_id,
     event_type,
     event_name,
     created_at
-FROM event_queue;
+FROM umami.event_queue;
+
+CREATE TABLE umami.event_data
+(
+    website_id UUID,
+    session_id UUID,
+    event_id UUID,
+    rev_id UInt32,
+    url_path String,
+    event_name String,
+    event_key String,
+    event_string_value Nullable(String),
+    event_numeric_value Nullable(Decimal64(4)),
+    event_date_value Nullable(DateTime('UTC')),
+    event_data_type UInt32,
+    created_at DateTime('UTC')
+)
+    engine = MergeTree
+        ORDER BY (website_id, session_id, event_id, event_key, created_at)
+        SETTINGS index_granularity = 8192;
+
+CREATE TABLE umami.event_data_queue (
+    website_id UUID,
+    session_id UUID,
+    event_id UUID,
+    rev_id UInt32,
+    url_path String,
+    event_name String,
+    event_key String,
+    event_string_value Nullable(String),
+    event_numeric_value Nullable(Decimal64(4)),
+    event_date_value Nullable(DateTime('UTC')),
+    event_data_type UInt32,
+    created_at DateTime('UTC')
+)
+ENGINE = Kafka
+SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
+       kafka_topic_list = 'event_data',
+       kafka_group_name = 'event_data_consumer_group',
+       kafka_format = 'JSONEachRow',
+       kafka_max_block_size = 1048576,
+       kafka_skip_broken_messages = 1;
+
+CREATE MATERIALIZED VIEW umami.event_data_queue_mv TO umami.event_data AS
+SELECT website_id,
+    session_id,
+    event_id,
+    rev_id,
+    url_path,
+    event_name,
+    event_key,
+    event_string_value,
+    event_numeric_value,
+    event_date_value,
+    event_data_type,
+    created_at
+FROM umami.event_data_queue;
