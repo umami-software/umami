@@ -3,12 +3,15 @@ import TimezoneSetting from 'components/pages/settings/profile/TimezoneSetting';
 import DateRangeSetting from 'components/pages/settings/profile/DateRangeSetting';
 import LanguageSetting from 'components/pages/settings/profile/LanguageSetting';
 import ThemeSetting from 'components/pages/settings/profile/ThemeSetting';
+import PasswordChangeButton from './PasswordChangeButton';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
+import useConfig from 'hooks/useConfig';
 
 export default function ProfileDetails() {
   const { user } = useUser();
   const { formatMessage, labels } = useMessages();
+  const { cloudMode } = useConfig();
 
   if (!user) {
     return null;
@@ -22,6 +25,11 @@ export default function ProfileDetails() {
       <FormRow label={formatMessage(labels.role)}>
         {formatMessage(labels[role] || labels.unknown)}
       </FormRow>
+      {!cloudMode && (
+        <FormRow label={formatMessage(labels.password)}>
+          <PasswordChangeButton />
+        </FormRow>
+      )}
       <FormRow label={formatMessage(labels.defaultDateRange)}>
         <DateRangeSetting />
       </FormRow>

@@ -1,5 +1,5 @@
 .login {
-  width: 300px;
+  width: 400px;
   margin: auto;
   transform: translateY(-25%);
 }
@@ -7,6 +7,8 @@
 .form {
   display: flex;
   flex-direction: column;
+  margin: 0 auto;
+  width: 300px;
 }
 
 .title {

@@ -2,9 +2,9 @@ import { Menu, Item } from 'react-basics';
 import Link from 'next/link';
 import styles from './SideNav.module.css';
 
-export default function SideNav({ selectedKey, items, shallow }) {
+export default function SideNav({ selectedKey, items, shallow, onSelect = () => {} }) {
   return (
-    <Menu items={items} selectedKey={selectedKey} className={styles.menu}>
+    <Menu items={items} selectedKey={selectedKey} className={styles.menu} onSelect={onSelect}>
       {({ key, label, url }) => (
         <Item key={key} className={styles.item}>
           <Link href={url} shallow={shallow}>

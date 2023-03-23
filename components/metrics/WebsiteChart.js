@@ -71,7 +71,7 @@ export default function WebsiteChart({
       <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
         {showDetailsButton && (
           <Link href={`/websites/${websiteId}`}>
-            <Button>
+            <Button variant="primary">
               <Text>{formatMessage(labels.viewDetails)}</Text>
               <Icon>
                 <Icons.ArrowRight />

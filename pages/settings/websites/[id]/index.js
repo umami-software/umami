@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import WebsiteSettings from 'components/pages/settings/websites/WebsiteSettings';
-import AppLayout from 'components/layout/AppLayout';
+import SettingsLayout from 'components/layout/SettingsLayout';
 
 export default function WebsiteSettingsPage({ disabled }) {
   const router = useRouter();
@@ -11,9 +11,9 @@ export default function WebsiteSettingsPage({ disabled }) {
   }
 
   return (
-    <AppLayout>
+    <SettingsLayout>
       <WebsiteSettings websiteId={id} />
-    </AppLayout>
+    </SettingsLayout>
   );
 }
 
