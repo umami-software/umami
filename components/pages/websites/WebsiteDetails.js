@@ -35,7 +35,7 @@ export default function WebsiteDetails({ websiteId }) {
         showLink={false}
         stickyHeader={true}
       />
-      {!chartLoaded && <Loading icon="dots" />}
+      {!chartLoaded && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {chartLoaded && (
         <>
           {!view && <WebsiteTableView websiteId={websiteId} />}

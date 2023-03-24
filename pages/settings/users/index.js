@@ -1,3 +1,4 @@
+import AppLayout from 'components/layout/AppLayout';
 import SettingsLayout from 'components/layout/SettingsLayout';
 import UsersList from 'components/pages/settings/users/UsersList';
 
@@ -7,9 +8,11 @@ export default function UsersPage({ disabled }) {
   }
 
   return (
-    <SettingsLayout>
-      <UsersList />
-    </SettingsLayout>
+    <AppLayout>
+      <SettingsLayout>
+        <UsersList />
+      </SettingsLayout>
+    </AppLayout>
   );
 }
 

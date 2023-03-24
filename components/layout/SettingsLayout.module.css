@@ -1,23 +1,13 @@
-.container {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  grid-template-rows: 1fr;
-}
-
 .menu {
   display: flex;
   flex-direction: column;
-  width: 200px;
-  padding: 40px 0;
-  margin-right: 20px;
+  padding-top: 40px;
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
+  min-height: 50vh;
 }
 
-.menu.hidden {
-  visibility: hidden;
-  width: 0;
+.hideMenu .content {
+  margin: 0 auto;
 }

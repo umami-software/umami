@@ -9,10 +9,21 @@
   padding: 0 20px;
 }
 
+.left,
+.right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
 .logo {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
   gap: 10px;
   font-size: 16px;
   font-weight: 700;
@@ -54,4 +65,11 @@
   align-items: center;
   justify-content: flex-end;
   min-width: 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .links,
+  .actions {
+    display: none;
+  }
 }

@@ -1,3 +1,4 @@
+import AppLayout from 'components/layout/AppLayout';
 import SettingsLayout from 'components/layout/SettingsLayout';
 import TeamsList from 'components/pages/settings/teams/TeamsList';
 
@@ -7,9 +8,11 @@ export default function TeamsPage({ disabled }) {
   }
 
   return (
-    <SettingsLayout>
-      <TeamsList />
-    </SettingsLayout>
+    <AppLayout>
+      <SettingsLayout>
+        <TeamsList />
+      </SettingsLayout>
+    </AppLayout>
   );
 }
 

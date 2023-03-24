@@ -1,3 +1,4 @@
+import AppLayout from 'components/layout/AppLayout';
 import { useRouter } from 'next/router';
 import WebsiteSettings from 'components/pages/settings/websites/WebsiteSettings';
 import SettingsLayout from 'components/layout/SettingsLayout';
@@ -11,9 +12,11 @@ export default function WebsiteSettingsPage({ disabled }) {
   }
 
   return (
-    <SettingsLayout>
-      <WebsiteSettings websiteId={id} />
-    </SettingsLayout>
+    <AppLayout>
+      <SettingsLayout>
+        <WebsiteSettings websiteId={id} />
+      </SettingsLayout>
+    </AppLayout>
   );
 }
 

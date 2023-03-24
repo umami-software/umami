@@ -1,3 +1,4 @@
+import AppLayout from 'components/layout/AppLayout';
 import SettingsLayout from 'components/layout/SettingsLayout';
 import TeamSettings from 'components/pages/settings/teams/TeamSettings';
 import { useRouter } from 'next/router';
@@ -11,9 +12,11 @@ export default function TeamDetailPage({ disabled }) {
   }
 
   return (
-    <SettingsLayout>
-      <TeamSettings teamId={id} />
-    </SettingsLayout>
+    <AppLayout>
+      <SettingsLayout>
+        <TeamSettings teamId={id} />
+      </SettingsLayout>
+    </AppLayout>
   );
 }
 

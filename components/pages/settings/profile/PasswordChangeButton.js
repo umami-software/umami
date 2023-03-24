@@ -14,14 +14,16 @@ export default function PasswordChangeButton() {
   return (
     <>
       {toast}
-      <ModalTrigger modalProps={{ title: formatMessage(labels.changePassword) }}>
+      <ModalTrigger>
         <Button>
           <Icon>
             <Icons.Lock />
           </Icon>
           <Text>{formatMessage(labels.changePassword)}</Text>
         </Button>
-        <Modal>{close => <PasswordEditForm onSave={handleSave} onClose={close} />}</Modal>
+        <Modal title={formatMessage(labels.changePassword)}>
+          {close => <PasswordEditForm onSave={handleSave} onClose={close} />}
+        </Modal>
       </ModalTrigger>
     </>
   );

@@ -1,6 +1,6 @@
+import { Row, Column } from 'react-basics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
-import AppLayout from './AppLayout';
 import SideNav from './SideNav';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
@@ -23,13 +23,15 @@ export default function SettingsLayout({ children }) {
   const getKey = () => items.find(({ url }) => pathname.startsWith(url))?.key;
 
   return (
-    <AppLayout>
-      <div className={styles.container}>
-        <div className={classNames(styles.menu, { [styles.hidden]: cloudMode })}>
+    <Row className={classNames({ [styles.hideMenu]: cloudMode })}>
+      {!cloudMode && (
+        <Column className={styles.menu} defaultSize={12} md={3} lg={2} xl={2}>
           <SideNav items={items} shallow={true} selectedKey={getKey()} />
-        </div>
-        <div className={styles.content}>{children}</div>
-      </div>
-    </AppLayout>
+        </Column>
+      )}
+      <Column className={styles.content} defaultSize={12} md={9} lg={10} xl={10}>
+        {children}
+      </Column>
+    </Row>
   );
 }
