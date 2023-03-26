@@ -9,7 +9,6 @@ export * from './analytics/event/saveEvent';
 export * from './analytics/pageview/getPageviewMetrics';
 export * from './analytics/pageview/getPageviews';
 export * from './analytics/pageview/getPageviewStats';
-export * from './analytics/pageview/savePageView';
 export * from './analytics/session/createSession';
 export * from './analytics/session/getSession';
 export * from './analytics/session/getSessionMetrics';

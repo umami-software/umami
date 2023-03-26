@@ -1,13 +1,13 @@
+import { Button, Column, Row } from 'react-basics';
+import Script from 'next/script';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import useApi from 'hooks/useApi';
-import Head from 'next/head';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { Button, Column, Row } from 'react-basics';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
@@ -24,22 +24,23 @@ export default function TestConsole() {
   }
 
   function handleClick() {
-    window.umami('umami-default');
-    window.umami.trackView('/page-view', 'https://www.google.com');
-    window.umami.trackEvent('track-event-no-data');
-    window.umami.trackEvent('track-event-with-data', {
-      test: 'test-data',
-      time: new Date(),
-      number: 1,
-      time2: new Date().toISOString(),
-      nested: {
+    window.umami.track({ url: '/page-view', referrer: 'https://www.google.com' });
+    window.umami.track('track-event-no-data');
+    window.umami.track('track-event-with-data', {
+      data: {
         test: 'test-data',
+        time: new Date(),
         number: 1,
-        object: {
+        time2: new Date().toISOString(),
+        nested: {
           test: 'test-data',
+          number: 1,
+          object: {
+            test: 'test-data',
+          },
         },
+        array: [1, 2, 3],
       },
-      array: [1, 2, 3],
     });
   }
 
@@ -52,22 +53,17 @@ export default function TestConsole() {
 
   return (
     <Page loading={isLoading} error={error}>
-      <Head>
-        {typeof window !== 'undefined' && website && (
-          <script
-            async
-            defer
-            data-website-id={website.id}
-            src={`${basePath}/script.js`}
-            data-cache="true"
-          />
-        )}
-      </Head>
       <PageHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
       </PageHeader>
       {website && (
         <>
+          <Script
+            async
+            data-website-id={website.id}
+            src={`${basePath}/script.js`}
+            data-cache="true"
+          />
           <Row className={styles.test}>
             <Column xs="4">
               <div className={styles.header}>Page links</div>
@@ -78,14 +74,14 @@ export default function TestConsole() {
                 <Link href={`/console/${websiteId}?page=2`}>page two</Link>
               </div>
               <div>
-                <a href="https://www.google.com" className="umami--click--external-link-direct">
+                <a href="https://www.google.com" data-umami-event="external-link-direct">
                   external link (direct)
                 </a>
               </div>
               <div>
                 <a
                   href="https://www.google.com"
-                  className="umami--click--external-link-tab"
+                  data-umami-event="external-link-tab"
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -94,9 +90,19 @@ export default function TestConsole() {
               </div>
             </Column>
             <Column xs="4">
-              <div className={styles.header}>CSS events</div>
-              <Button id="primary-button" className="umami--click--button-click" variant="action">
+              <div className={styles.header}>Click events</div>
+              <Button id="send-event-button" data-umami-event="button-click" variant="action">
                 Send event
+              </Button>
+              <p />
+              <Button
+                id="send-event-data-button"
+                data-umami-event="button-click"
+                data-umami-event-name="bob"
+                data-umami-event-id="123"
+                variant="action"
+              >
+                Send event with data
               </Button>
             </Column>
             <Column xs="4">
@@ -108,14 +114,12 @@ export default function TestConsole() {
           </Row>
           <Row>
             <Column>
-              <div className={styles.header}>Statistics</div>
               <WebsiteChart
                 websiteId={website.id}
                 title={website.name}
                 domain={website.domain}
                 showLink
               />
-              <div className={styles.header}>Events</div>
               <EventsChart websiteId={website.id} />
             </Column>
           </Row>

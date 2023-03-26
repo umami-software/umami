@@ -17,7 +17,7 @@ export default function EventsChart({ websiteId, className, token }) {
     query: { url, eventName },
   } = usePageQuery();
 
-  const { data, isLoading } = useQuery(['events', { websiteId, modified, eventName }], () =>
+  const { data, isLoading } = useQuery(['events', websiteId, modified, eventName], () =>
     get(`/websites/${websiteId}/events`, {
       startAt: +startDate,
       endAt: +endDate,
@@ -33,12 +33,12 @@ export default function EventsChart({ websiteId, className, token }) {
     if (!data) return [];
     if (isLoading) return data;
 
-    const map = data.reduce((obj, { x, y }) => {
+    const map = data.reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
         obj[x] = [];
       }
 
-      obj[x].push({ x, y });
+      obj[x].push({ x: t, y });
 
       return obj;
     }, {});
@@ -58,20 +58,10 @@ export default function EventsChart({ websiteId, className, token }) {
         borderWidth: 1,
       };
     });
-  }, [data, isLoading]);
-
-  function handleUpdate(chart) {
-    chart.data.datasets = datasets;
-
-    chart.update();
-  }
+  }, [data, isLoading, startDate, endDate, unit]);
 
   if (isLoading) {
     return <Loading icon="dots" />;
-  }
-
-  if (!data) {
-    return null;
   }
 
   return (
@@ -81,7 +71,6 @@ export default function EventsChart({ websiteId, className, token }) {
       unit={unit}
       height={300}
       records={getDateLength(startDate, endDate, unit)}
-      onUpdate={handleUpdate}
       loading={isLoading}
       stacked
     />

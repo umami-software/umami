@@ -36,7 +36,7 @@
           ["store", "./store"],
           ["styles", "./styles"]
         ],
-        "extensions": [".ts", ".js", ".jsx", ".json"]
+        "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
       }
     }
   },

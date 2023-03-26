@@ -3,14 +3,16 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
-import cache from 'lib/cache';
-import { saveEventData } from '../eventData/saveEventData';
+import { saveEventData } from 'queries/analytics/eventData/saveEventData';
 
 export async function saveEvent(args: {
-  id: string;
+  sessionId: string;
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
+  referrerPath?: string;
+  referrerQuery?: string;
+  referrerDomain?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -32,7 +34,7 @@ export async function saveEvent(args: {
 }
 
 async function relationalQuery(data: {
-  id: string;
+  sessionId: string;
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
@@ -40,8 +42,7 @@ async function relationalQuery(data: {
   eventName?: string;
   eventData?: any;
 }) {
-  const { websiteId, id: sessionId, urlPath, urlQuery, eventName, eventData, pageTitle } = data;
-  const website = await cache.fetchWebsite(websiteId);
+  const { websiteId, sessionId, urlPath, urlQuery, eventName, eventData, pageTitle } = data;
   const websiteEventId = uuid();
 
   const websiteEvent = prisma.client.websiteEvent.create({
@@ -51,9 +52,9 @@ async function relationalQuery(data: {
       sessionId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       urlQuery: urlQuery?.substring(0, URL_LENGTH),
-      pageTitle: pageTitle,
-      eventType: EVENT_TYPE.customEvent,
-      eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
+      pageTitle,
+      eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+      eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     },
   });
 
@@ -62,7 +63,6 @@ async function relationalQuery(data: {
       websiteId,
       sessionId,
       eventId: websiteEventId,
-      revId: website?.revId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
@@ -73,7 +73,7 @@ async function relationalQuery(data: {
 }
 
 async function clickhouseQuery(data: {
-  id: string;
+  sessionId: string;
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
@@ -93,7 +93,7 @@ async function clickhouseQuery(data: {
 }) {
   const {
     websiteId,
-    id: sessionId,
+    sessionId,
     urlPath,
     urlQuery,
     pageTitle,
@@ -103,10 +103,8 @@ async function clickhouseQuery(data: {
     subdivision1,
     subdivision2,
     city,
-    ...args
   } = data;
   const { getDateFormat, sendMessage } = kafka;
-  const website = await cache.fetchWebsite(websiteId);
   const eventId = uuid();
   const createdAt = getDateFormat(new Date());
 
@@ -121,11 +119,9 @@ async function clickhouseQuery(data: {
     url_path: urlPath?.substring(0, URL_LENGTH),
     url_query: urlQuery?.substring(0, URL_LENGTH),
     page_title: pageTitle,
-    event_type: EVENT_TYPE.customEvent,
-    event_name: eventName?.substring(0, EVENT_NAME_LENGTH),
-    rev_id: website?.revId || 0,
+    event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     created_at: createdAt,
-    ...args,
   };
 
   await sendMessage(message, 'event');
@@ -135,7 +131,6 @@ async function clickhouseQuery(data: {
       websiteId,
       sessionId,
       eventId,
-      revId: website?.revId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
