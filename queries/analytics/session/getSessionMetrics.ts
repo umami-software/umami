@@ -3,6 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { EVENT_TYPE } from 'lib/constants';
+import { getWebsite } from 'queries';
 
 export async function getSessionMetrics(
   ...args: [
@@ -20,9 +21,11 @@ async function relationalQuery(
   websiteId: string,
   data: { startDate: Date; endDate: Date; field: string; filters: object },
 ) {
+  const website = await getWebsite({ id: websiteId });
+  const resetDate = website?.resetAt || website?.createdAt;
   const { startDate, endDate, field, filters = {} } = data;
   const { toUuid, parseFilters, rawQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate];
+  const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -35,7 +38,8 @@ async function relationalQuery(
           on website_event.website_id = website.website_id
         ${joinSession}
       where website.website_id = $1${toUuid()}
-      and website_event.created_at between $2 and $3
+        and website_event.created_at >= $2
+        and website_event.created_at between $3 and $4
       ${filterQuery}
     )
     group by 1
@@ -50,17 +54,18 @@ async function clickhouseQuery(
   data: { startDate: Date; endDate: Date; field: string; filters: object },
 ) {
   const { startDate, endDate, field, filters = {} } = data;
-  const { parseFilters, getBetweenDates, rawQuery } = clickhouse;
+  const { getDateFormat, parseFilters, getBetweenDates, rawQuery } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = { websiteId, revId: website?.revId || 0 };
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params = { websiteId };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
     `select ${field} x, count(distinct session_id) y
     from event as x
     where website_id = {websiteId:UUID}
-    and rev_id = {revId:UInt32}
     and event_type = ${EVENT_TYPE.pageView}
+      and created_at >= ${getDateFormat(resetDate)}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x

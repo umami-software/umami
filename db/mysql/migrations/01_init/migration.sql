@@ -41,7 +41,7 @@ CREATE TABLE `website` (
     `name` VARCHAR(100) NOT NULL,
     `domain` VARCHAR(500) NULL,
     `share_id` VARCHAR(50) NULL,
-    `rev_id` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+    `reset_at` TIMESTAMP(0) NULL,
     `user_id` VARCHAR(36) NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL,

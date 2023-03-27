@@ -50,7 +50,6 @@ async function clickhouseQuery(data: {
     city,
   } = data;
   const { getDateFormat, sendMessage } = kafka;
-  const website = await cache.fetchWebsite(websiteId);
 
   const msg = {
     session_id: id,
@@ -65,7 +64,6 @@ async function clickhouseQuery(data: {
     subdivision1,
     subdivision2,
     city,
-    rev_id: website?.revId || 0,
     created_at: getDateFormat(new Date()),
   };
 

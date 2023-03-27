@@ -3,6 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { WebsiteEventDataMetric } from 'lib/types';
+import { getWebsite } from 'queries';
 
 export async function getEventData(
   ...args: [
@@ -48,7 +49,9 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate, eventName || ''];
+  const website = await getWebsite({ id: websiteId });
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params: any = [websiteId, resetDate, startDate, endDate, eventName || ''];
 
   return rawQuery(
     `select
@@ -65,8 +68,9 @@ async function relationalQuery(
           : ''
       }
     where website_id = $1${toUuid()}
-      and created_at between $2 and $3
-      ${eventName ? `and eventName = $4` : ''}
+      and created_at >= $2
+      and created_at between $3 and $4
+      ${eventName ? `and eventName = $5` : ''}
       ${getEventDataFilterQuery(filters, params)}
       ${timeSeries ? 'group by t' : ''}`,
     params,
@@ -93,9 +97,11 @@ async function clickhouseQuery(
   },
 ) {
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
-  const { rawQuery, getBetweenDates, getDateQuery, getEventDataFilterQuery } = clickhouse;
+  const { rawQuery, getDateFormat, getBetweenDates, getDateQuery, getEventDataFilterQuery } =
+    clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = { websiteId, revId: website?.revId || 0 };
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params = { websiteId };
 
   return rawQuery(
     `select
@@ -107,8 +113,8 @@ async function clickhouseQuery(
         }
     from event_data
     where website_id = {websiteId:UUID}
-      and rev_id = {revId:UInt32}
       ${eventName ? `and eventName = ${eventName}` : ''}
+      and created_at >= ${getDateFormat(resetDate)}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${getEventDataFilterQuery(filters, params)}
       ${timeSeries ? 'group by t' : ''}`,

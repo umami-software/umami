@@ -48,7 +48,7 @@ export interface User {
 export interface Website {
   id: string;
   userId: string;
-  revId: number;
+  resetAt: Date;
   name: string;
   domain: string;
   shareId: string;

@@ -50,7 +50,7 @@ model Website {
   name      String    @db.VarChar(100)
   domain    String?   @db.VarChar(500)
   shareId   String?   @unique @map("share_id") @db.VarChar(50)
-  revId     Int       @default(0) @map("rev_id") @db.UnsignedInt
+  resetAt   DateTime? @map("reset_at") @db.Timestamp(0)
   userId    String?   @map("user_id") @db.VarChar(36)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   updatedAt DateTime? @map("updated_at") @db.Timestamp(0)

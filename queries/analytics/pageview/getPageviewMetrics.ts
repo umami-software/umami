@@ -4,6 +4,7 @@ import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { Prisma } from '@prisma/client';
 import { EVENT_TYPE } from 'lib/constants';
+import { getWebsite } from 'queries';
 
 export async function getPageviewMetrics(
   ...args: [
@@ -35,8 +36,11 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, column, filters = {}, type } = data;
   const { rawQuery, parseFilters, toUuid } = prisma;
+  const website = await getWebsite({ id: websiteId });
+  const resetDate = website?.resetAt || website?.createdAt;
   const params: any = [
     websiteId,
+    resetDate,
     startDate,
     endDate,
     type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
@@ -48,8 +52,9 @@ async function relationalQuery(
     from website_event
       ${joinSession}
     where website_event.website_id = $1${toUuid()}
-      and website_event.created_at between $2 and $3
-      and event_type = $4
+      and website_event.created_at >= $2
+      and website_event.created_at between $3 and $4
+      and event_type = $5
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -69,11 +74,11 @@ async function clickhouseQuery(
   },
 ) {
   const { startDate, endDate, column, filters = {}, type } = data;
-  const { rawQuery, parseFilters, getBetweenDates } = clickhouse;
+  const { rawQuery, getDateFormat, parseFilters, getBetweenDates } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
+  const resetDate = website?.resetAt || website?.createdAt;
   const params = {
     websiteId,
-    revId: website?.revId || 0,
     eventType: type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   };
   const { filterQuery } = parseFilters(filters, params);
@@ -82,8 +87,8 @@ async function clickhouseQuery(
     `select ${column} x, count(*) y
     from event
     where website_id = {websiteId:UUID}
-      and rev_id = {revId:UInt32}
       and event_type = {eventType:UInt32}
+      and created_at >= ${getDateFormat(resetDate)}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${filterQuery}
     group by x

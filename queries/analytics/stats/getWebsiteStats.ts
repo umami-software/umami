@@ -3,6 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { EVENT_TYPE } from 'lib/constants';
+import { getWebsite } from 'queries';
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, data: { startDate: Date; endDate: Date; filters: object }]
@@ -19,7 +20,9 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, filters = {} } = data;
   const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate];
+  const website = await getWebsite({ id: websiteId });
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -37,7 +40,8 @@ async function relationalQuery(
             on website_event.website_id = website.website_id
           ${joinSession}
         where website.website_id = $1${toUuid()}
-          and website_event.created_at between $2 and $3
+          and website_event.created_at >= $2
+          and website_event.created_at between $3 and $4
           ${filterQuery}
         group by 1, 2
      ) t`,
@@ -50,9 +54,10 @@ async function clickhouseQuery(
   data: { startDate: Date; endDate: Date; filters: object },
 ) {
   const { startDate, endDate, filters = {} } = data;
-  const { rawQuery, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
+  const { rawQuery, getDateFormat, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = { websiteId, revId: website?.revId || 0 };
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params = { websiteId };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -70,8 +75,8 @@ async function clickhouseQuery(
        from event
        where event_type = ${EVENT_TYPE.pageView}
         and website_id = {websiteId:UUID}
-        and rev_id = {revId:UInt32}
-         and ${getBetweenDates('created_at', startDate, endDate)}
+          and created_at >= ${getDateFormat(resetDate)}
+          and ${getBetweenDates('created_at', startDate, endDate)}
          ${filterQuery}
        group by session_id, time_series
      ) t;`,

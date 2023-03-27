@@ -6,7 +6,6 @@ CREATE TABLE umami.event
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    rev_id UInt32,
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -38,7 +37,6 @@ CREATE TABLE umami.event_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    rev_id UInt32,
     --session
     hostname LowCardinality(String),
     browser LowCardinality(String),
@@ -68,13 +66,12 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_skip_broken_messages = 1;
+       kafka_skip_broken_messages = 100;
 
 CREATE MATERIALIZED VIEW umami.event_queue_mv TO umami.event AS
 SELECT website_id,
     session_id,
     event_id,
-    rev_id,
     hostname,
     browser,
     os,
@@ -101,7 +98,6 @@ CREATE TABLE umami.event_data
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    rev_id UInt32,
     url_path String,
     event_name String,
     event_key String,
@@ -119,7 +115,6 @@ CREATE TABLE umami.event_data_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    rev_id UInt32,
     url_path String,
     event_name String,
     event_key String,
@@ -135,13 +130,12 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_group_name = 'event_data_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_skip_broken_messages = 1;
+       kafka_skip_broken_messages = 100;
 
 CREATE MATERIALIZED VIEW umami.event_data_queue_mv TO umami.event_data AS
 SELECT website_id,
     session_id,
     event_id,
-    rev_id,
     url_path,
     event_name,
     event_key,
