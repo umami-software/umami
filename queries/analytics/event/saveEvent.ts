@@ -10,9 +10,6 @@ export async function saveEvent(args: {
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
-  referrerPath?: string;
-  referrerQuery?: string;
-  referrerDomain?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
