@@ -4,6 +4,7 @@ import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
 import { Prisma } from '@prisma/client';
 import { EVENT_TYPE } from 'lib/constants';
+import { getWebsite } from 'queries';
 
 export async function getPageviewMetrics(
   ...args: [
@@ -35,7 +36,7 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, column, filters = {}, type } = data;
   const { rawQuery, parseFilters, toUuid } = prisma;
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await getWebsite({ id: websiteId });
   const resetDate = website?.resetAt || website?.createdAt;
   const params: any = [
     websiteId,
