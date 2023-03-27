@@ -52,7 +52,7 @@ export default function BarChart({
         millisecond: 'T',
         second: 'pp',
         minute: 'p',
-        hour: 'h aaa',
+        hour: 'h:mm aaa - PP',
         day: 'PPPP',
         week: 'PPPP',
         month: 'LLLL yyyy',
@@ -135,14 +135,12 @@ export default function BarChart({
         },
       },
     };
-  }, [animationDuration, renderTooltip, stacked, colors]);
+  }, [animationDuration, renderTooltip, stacked, colors, unit]);
 
   const createChart = () => {
     Chart.defaults.font.family = 'Inter';
 
     const options = getOptions();
-
-    onCreate(options);
 
     chart.current = new Chart(canvas.current, {
       type: 'bar',
@@ -151,6 +149,8 @@ export default function BarChart({
       },
       options,
     });
+
+    onCreate(chart.current);
   };
 
   const updateChart = () => {
@@ -158,9 +158,11 @@ export default function BarChart({
 
     chart.current.options = getOptions();
 
-    onUpdate(chart.current);
+    chart.current.data.datasets = datasets;
 
     chart.current.update();
+
+    onUpdate(chart.current);
   };
 
   useEffect(() => {

@@ -12,12 +12,24 @@
 
   if (!currentScript) return;
 
-  const assign = (a, b) => {
-    Object.keys(b).forEach(key => {
-      if (b[key] !== undefined) a[key] = b[key];
-    });
-    return a;
-  };
+  const delayDuration = 300;
+  const _data = 'data-';
+  const _false = 'false';
+  const attr = currentScript.getAttribute.bind(currentScript);
+  const website = attr(_data + 'website-id');
+  const hostUrl = attr(_data + 'host-url');
+  const autoTrack = attr(_data + 'auto-track') !== _false;
+  const dnt = attr(_data + 'do-not-track');
+  const domain = attr(_data + 'domains') || '';
+  const domains = domain.split(',').map(n => n.trim());
+  const root = hostUrl
+    ? hostUrl.replace(/\/$/, '')
+    : currentScript.src.split('/').slice(0, -1).join('/');
+  const endpoint = `${root}/api/send`;
+  const screen = `${width}x${height}`;
+  const eventRegex = /data-umami-event-([\w-_]+)/;
+
+  /* Helper functions */
 
   const hook = (_this, method, callback) => {
     const orig = _this[method];
@@ -28,6 +40,25 @@
       return orig.apply(_this, args);
     };
   };
+
+  const getPath = url => {
+    if (url.substring(0, 4) === 'http') {
+      return '/' + url.split('/').splice(3).join('/');
+    }
+    return url;
+  };
+
+  const getPayload = () => ({
+    website,
+    hostname,
+    screen,
+    language,
+    title,
+    url: currentUrl,
+    referrer: currentRef,
+  });
+
+  /* Tracking functions */
 
   const doNotTrack = () => {
     const { doNotTrack, navigator, external } = window;
@@ -47,212 +78,121 @@
     (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
 
-  const delayDuration = 300;
-  const _data = 'data-';
-  const _false = 'false';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const website = attr(_data + 'website-id');
-  const hostUrl = attr(_data + 'host-url');
-  const autoTrack = attr(_data + 'auto-track') !== _false;
-  const dnt = attr(_data + 'do-not-track');
-  const cssEvents = attr(_data + 'css-events') !== _false;
-  const domain = attr(_data + 'domains') || '';
-  const domains = domain.split(',').map(n => n.trim());
-  const root = hostUrl
-    ? hostUrl.replace(/\/$/, '')
-    : currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${root}/api/send`;
-  const screen = `${width}x${height}`;
-  const eventClass = /^umami--([a-z]+)--([\w]+[\w-]*)$/;
-  const eventSelect = "[class*='umami--']";
+  const handlePush = (state, title, url) => {
+    if (!url) return;
 
-  let listeners = {};
-  let currentUrl = `${pathname}${search}`;
-  let currentRef = document.referrer;
-  let currentPageTitle = document.title;
-  let cache;
+    currentRef = currentUrl;
+    currentUrl = getPath(url.toString());
 
-  if (currentRef.substring(0, 4) === 'http') {
-    if (currentRef.split('/')[2].split(':')[0] === hostname) {
-      currentRef = '/' + currentRef.split('/').splice(3).join('/');
+    if (currentUrl !== currentRef) {
+      setTimeout(track, delayDuration);
     }
-  }
+  };
 
-  /* Collect metrics */
+  const handleClick = () => {
+    const callback = e => {
+      const t = e.target;
+      const attr = t.getAttribute.bind(t);
+      const eventName = attr(_data + 'umami-event');
 
-  const getPayload = () => ({
-    website,
-    hostname,
-    screen,
-    language,
-    url: currentUrl,
-  });
+      if (eventName) {
+        const eventData = {};
 
-  const collect = (type, payload) => {
+        t.getAttributeNames().forEach(name => {
+          const match = name.match(eventRegex);
+
+          if (match) {
+            eventData[match[1]] = attr(name);
+          }
+        });
+
+        if (t.tagName === 'A') {
+          const href = attr('href');
+          const target = attr('target');
+
+          if (
+            href &&
+            target !== '_blank' &&
+            !(e.ctrlKey || e.shiftKey || e.metaKey || (e.button && e.button === 1))
+          ) {
+            e.preventDefault();
+            track(eventName, { data: eventData }).then(() => {
+              location.href = href;
+            });
+            return;
+          }
+        }
+
+        track(eventName, { data: eventData });
+      }
+    };
+
+    document.addEventListener('click', callback, true);
+  };
+
+  const observeTitle = () => {
+    const callback = ([entry]) => {
+      title = entry.target.data;
+    };
+
+    const observer = new MutationObserver(callback);
+
+    observer.observe(document.querySelector('head > title'), {
+      subtree: true,
+      characterData: true,
+    });
+  };
+
+  const send = payload => {
     if (trackingDisabled()) return;
 
     return fetch(endpoint, {
       method: 'POST',
-      body: JSON.stringify({ type, payload }),
-      headers: assign({ 'Content-Type': 'application/json' }, { ['x-umami-cache']: cache }),
+      body: JSON.stringify({ type: 'event', payload }),
+      headers: { 'Content-Type': 'application/json', ['x-umami-cache']: cache },
     })
       .then(res => res.text())
       .then(text => (cache = text));
   };
 
-  const trackView = (
-    url = currentUrl,
-    referrer = currentRef,
-    websiteId = website,
-    pageTitle = currentPageTitle,
-  ) =>
-    collect(
-      'pageview',
-      assign(getPayload(), {
-        website: websiteId,
-        url,
-        referrer,
-        pageTitle,
-      }),
-    );
-
-  const trackEvent = (
-    eventName,
-    eventData,
-    url = currentUrl,
-    websiteId = website,
-    pageTitle = currentPageTitle,
-  ) =>
-    collect(
-      'event',
-      assign(getPayload(), {
-        website: websiteId,
-        url,
-        pageTitle,
-        eventName,
-        eventData,
-      }),
-    );
-
-  /* Handle events */
-
-  const addEvents = node => {
-    const elements = node.querySelectorAll(eventSelect);
-    Array.prototype.forEach.call(elements, addEvent);
-  };
-
-  const addEvent = element => {
-    const get = element.getAttribute.bind(element);
-    (get('class') || '').split(' ').forEach(className => {
-      if (!eventClass.test(className)) return;
-
-      const [, event, name] = className.split('--');
-
-      const listener = listeners[className]
-        ? listeners[className]
-        : (listeners[className] = e => {
-            if (
-              event === 'click' &&
-              element.tagName === 'A' &&
-              !(
-                e.ctrlKey ||
-                e.shiftKey ||
-                e.metaKey ||
-                (e.button && e.button === 1) ||
-                get('target')
-              )
-            ) {
-              e.preventDefault();
-              trackEvent(name).then(() => {
-                const href = get('href');
-                if (href) {
-                  location.href = href;
-                }
-              });
-            } else {
-              trackEvent(name);
-            }
-          });
-
-      element.addEventListener(event, listener, true);
-    });
-  };
-
-  /* Handle history changes */
-
-  const handlePush = (state, title, url) => {
-    if (!url) return;
-
-    observeTitle();
-    currentRef = currentUrl;
-    const newUrl = url.toString();
-
-    if (newUrl.substring(0, 4) === 'http') {
-      currentUrl = '/' + newUrl.split('/').splice(3).join('/');
-    } else {
-      currentUrl = newUrl;
+  const track = (name = {}, data = {}) => {
+    if (typeof name === 'string') {
+      return send({ ...getPayload(), ...data, name });
+    } else if (typeof name === 'object') {
+      return send({ ...getPayload(), ...name });
     }
-
-    if (currentUrl !== currentRef) {
-      setTimeout(() => trackView(), delayDuration);
-    }
+    return Promise.reject();
   };
-
-  const observeDocument = () => {
-    const monitorMutate = mutations => {
-      mutations.forEach(mutation => {
-        const element = mutation.target;
-        addEvent(element);
-        addEvents(element);
-      });
-    };
-
-    const observer = new MutationObserver(monitorMutate);
-    observer.observe(document, { childList: true, subtree: true });
-  };
-
-  const observeTitle = () => {
-    const monitorMutate = mutations => {
-      currentPageTitle = mutations[0].target.text;
-    };
-
-    const observer = new MutationObserver(monitorMutate);
-    observer.observe(document.querySelector('title'), {
-      subtree: true,
-      characterData: true,
-      childList: true,
-    });
-  };
-
-  /* Global */
-
-  if (!window.umami) {
-    const umami = eventValue => trackEvent(eventValue);
-    umami.trackView = trackView;
-    umami.trackEvent = trackEvent;
-
-    window.umami = umami;
-  }
 
   /* Start */
+
+  if (!window.umami) {
+    window.umami = {
+      track,
+    };
+  }
+
+  let currentUrl = `${pathname}${search}`;
+  let currentRef = getPath(document.referrer);
+  let title = document.title;
+  let cache;
+  let initialized;
 
   if (autoTrack && !trackingDisabled()) {
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
+    handleClick();
+    observeTitle();
 
-    const update = () => {
-      if (document.readyState === 'complete') {
-        trackView();
-
-        if (cssEvents) {
-          addEvents(document);
-          observeDocument();
-        }
+    const init = () => {
+      if (document.readyState === 'complete' && !initialized) {
+        track();
+        initialized = true;
       }
     };
 
-    document.addEventListener('readystatechange', update, true);
+    document.addEventListener('readystatechange', init, true);
 
-    update();
+    init();
   }
 })(window);

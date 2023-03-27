@@ -38,35 +38,24 @@ export default function PageviewsChart({
     };
   }, [theme]);
 
-  const handleUpdate = chart => {
-    const {
-      data: { datasets },
-    } = chart;
+  const datasets = useMemo(() => {
+    if (!data) return [];
 
-    datasets[0].data = data.sessions;
-    datasets[0].label = formatMessage(labels.uniqueVisitors);
-    datasets[1].data = data.pageviews;
-    datasets[1].label = formatMessage(labels.pageViews);
-  };
-
-  if (!data) {
-    return null;
-  }
-
-  const datasets = [
-    {
-      label: formatMessage(labels.uniqueVisitors),
-      data: data.sessions,
-      borderWidth: 1,
-      ...colors.visitors,
-    },
-    {
-      label: formatMessage(labels.pageViews),
-      data: data.pageviews,
-      borderWidth: 1,
-      ...colors.views,
-    },
-  ];
+    return [
+      {
+        label: formatMessage(labels.uniqueVisitors),
+        data: data.sessions,
+        borderWidth: 1,
+        ...colors.visitors,
+      },
+      {
+        label: formatMessage(labels.pageViews),
+        data: data.pageviews,
+        borderWidth: 1,
+        ...colors.views,
+      },
+    ];
+  }, [data]);
 
   return (
     <div ref={ref}>
@@ -78,7 +67,6 @@ export default function PageviewsChart({
         unit={unit}
         records={records}
         animationDuration={visible ? animationDuration : 0}
-        onUpdate={handleUpdate}
         loading={loading}
       />
     </div>

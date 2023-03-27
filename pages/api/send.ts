@@ -1,7 +1,7 @@
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
 import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
-import { savePageView, saveEvent } from 'queries';
+import { saveEvent } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
@@ -34,11 +34,15 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody(req);
 
-  const { url, referrer, eventName, eventData, pageTitle } = payload;
+  if (type !== 'event') {
+    return badRequest(res);
+  }
+
+  const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
 
   // Validate eventData is JSON
   if (eventData && !(typeof eventData === 'object' && !Array.isArray(eventData))) {
-    return badRequest(res, 'Event Data must be in the form of a JSON Object.');
+    return badRequest(res, 'Invalid event data.');
   }
 
   const ignoreIps = process.env.IGNORE_IP;
@@ -87,48 +91,34 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const session = req.session;
 
-  let urlPath = url.split('?')[0];
-  const urlQuery = url.split('?')[1];
-  let referrerPath;
-  let referrerQuery;
+  // eslint-disable-next-line prefer-const
+  let [urlPath, urlQuery] = url?.split('?') || [];
+  let [referrerPath, referrerQuery] = referrer?.split('?') || [];
   let referrerDomain;
 
-  try {
-    const newRef = new URL(referrer);
-    referrerPath = newRef.pathname;
-    referrerDomain = newRef.hostname;
-    referrerQuery = newRef.search.substring(1);
-  } catch {
-    referrerPath = referrer?.split('?')[0];
-    referrerQuery = referrer?.split('?')[1];
+  if (referrerPath.startsWith('http')) {
+    const refUrl = new URL(referrer);
+    referrerPath = refUrl.pathname;
+    referrerQuery = refUrl.search.substring(1);
+    referrerDomain = refUrl.hostname;
   }
 
   if (process.env.REMOVE_TRAILING_SLASH) {
     urlPath = urlPath.replace(/\/$/, '');
   }
 
-  if (type === 'pageview') {
-    await savePageView({
-      ...session,
-      urlPath,
-      urlQuery,
-      referrerPath,
-      referrerQuery,
-      referrerDomain,
-      pageTitle,
-    });
-  } else if (type === 'event') {
-    await saveEvent({
-      ...session,
-      urlPath,
-      urlQuery,
-      pageTitle,
-      eventName,
-      eventData,
-    });
-  } else {
-    return badRequest(res);
-  }
+  await saveEvent({
+    urlPath,
+    urlQuery,
+    referrerPath,
+    referrerQuery,
+    referrerDomain,
+    pageTitle,
+    eventName,
+    eventData,
+    ...session,
+    sessionId: session.id,
+  });
 
   const token = createToken(session, secret());
 
