@@ -2,7 +2,6 @@ import { URL_LENGTH, EVENT_TYPE } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import cache from 'lib/cache';
 import { uuid } from 'lib/crypto';
 
 export async function savePageView(args: {
@@ -104,13 +103,11 @@ async function clickhouseQuery(data: {
     ...args
   } = data;
   const { getDateFormat, sendMessage } = kafka;
-  const website = await cache.fetchWebsite(websiteId);
 
   const message = {
     website_id: websiteId,
     session_id: sessionId,
     event_id: uuid(),
-    rev_id: website?.revId || 0,
     country: country ? country : null,
     subdivision1: subdivision1 ? subdivision1 : null,
     subdivision2: subdivision2 ? subdivision2 : null,

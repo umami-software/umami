@@ -46,7 +46,9 @@ async function relationalQuery(
     sessionKey = 'session_id',
   } = data;
   const { toUuid, getDateQuery, parseFilters, rawQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate];
+  const website = await cache.fetchWebsite(websiteId);
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -55,7 +57,8 @@ async function relationalQuery(
       from website_event
         ${joinSession}
       where website_event.website_id = $1${toUuid()}
-        and website_event.created_at between $2 and $3
+        and website_event.created_at >= $2
+        and website_event.created_at between $3 and $4
         and event_type = ${EVENT_TYPE.pageView}
         ${filterQuery}
       group by 1`,
@@ -76,9 +79,17 @@ async function clickhouseQuery(
   },
 ) {
   const { startDate, endDate, timezone = 'UTC', unit = 'day', count = '*', filters = {} } = data;
-  const { parseFilters, rawQuery, getDateStringQuery, getDateQuery, getBetweenDates } = clickhouse;
+  const {
+    parseFilters,
+    getDateFormat,
+    rawQuery,
+    getDateStringQuery,
+    getDateQuery,
+    getBetweenDates,
+  } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = { websiteId, revId: website?.revId || 0 };
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params = { websiteId };
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -91,8 +102,8 @@ async function clickhouseQuery(
         count(${count !== '*' ? 'distinct session_id' : count}) y
       from event
       where website_id = {websiteId:UUID}
-        and rev_id = {revId:UInt32}
         and event_type = ${EVENT_TYPE.pageView}
+        and created_at >= ${getDateFormat(resetDate)}
         and ${getBetweenDates('created_at', startDate, endDate)}
         ${filterQuery}
       group by t) g

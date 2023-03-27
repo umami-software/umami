@@ -46,7 +46,9 @@ async function relationalQuery(
   },
 ) {
   const { toUuid, rawQuery, getDateQuery, getFilterQuery } = prisma;
-  const params: any = [websiteId, startDate, endDate];
+  const website = await cache.fetchWebsite(websiteId);
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params: any = [websiteId, resetDate, startDate, endDate];
 
   return rawQuery(
     `select
@@ -55,7 +57,8 @@ async function relationalQuery(
       count(*) y
     from website_event
     where website_id = $1${toUuid()}
-      and created_at between $2 and $3
+      and created_at >= $2
+      and created_at between $3 and $4
       and event_type = ${EVENT_TYPE.customEvent}
       ${getFilterQuery(filters, params)}
     group by 1, 2
@@ -83,9 +86,10 @@ async function clickhouseQuery(
     };
   },
 ) {
-  const { rawQuery, getDateQuery, getBetweenDates, getFilterQuery } = clickhouse;
+  const { rawQuery, getDateQuery, getDateFormat, getBetweenDates, getFilterQuery } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
-  const params = { websiteId, revId: website?.revId || 0 };
+  const resetDate = website?.resetAt || website?.createdAt;
+  const params = { websiteId };
 
   return rawQuery(
     `select
@@ -94,8 +98,8 @@ async function clickhouseQuery(
       count(*) y
     from event
     where website_id = {websiteId:UUID}
-    and rev_id = {revId:UInt32}
       and event_type = ${EVENT_TYPE.customEvent}
+      and created_at >= ${getDateFormat(resetDate)}
       and ${getBetweenDates('created_at', startDate, endDate)}
       ${getFilterQuery(filters, params)}
     group by x, t

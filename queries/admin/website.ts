@@ -49,8 +49,6 @@ export async function resetWebsite(
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 
-  const { revId } = await getWebsite({ id: websiteId });
-
   return transaction([
     client.websiteEvent.deleteMany({
       where: { websiteId },
@@ -58,7 +56,12 @@ export async function resetWebsite(
     client.session.deleteMany({
       where: { websiteId },
     }),
-    client.website.update({ where: { id: websiteId }, data: { revId: revId + 1 } }),
+    client.website.update({
+      where: { id: websiteId },
+      data: {
+        resetAt: new Date(),
+      },
+    }),
   ]).then(async data => {
     if (cache.enabled) {
       await cache.storeWebsite(data[2]);
