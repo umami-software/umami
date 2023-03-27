@@ -66,7 +66,7 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_skip_broken_messages = 1;
+       kafka_skip_broken_messages = 100;
 
 CREATE MATERIALIZED VIEW umami.event_queue_mv TO umami.event AS
 SELECT website_id,
@@ -130,7 +130,7 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_group_name = 'event_data_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_skip_broken_messages = 1;
+       kafka_skip_broken_messages = 100;
 
 CREATE MATERIALIZED VIEW umami.event_data_queue_mv TO umami.event_data AS
 SELECT website_id,
