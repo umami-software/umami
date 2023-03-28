@@ -10,6 +10,9 @@ export async function saveEvent(args: {
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
+  referrerPath?: string;
+  referrerQuery?: string;
+  referrerDomain?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -35,11 +38,25 @@ async function relationalQuery(data: {
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
+  referrerPath?: string;
+  referrerQuery?: string;
+  referrerDomain?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
 }) {
-  const { websiteId, sessionId, urlPath, urlQuery, eventName, eventData, pageTitle } = data;
+  const {
+    websiteId,
+    sessionId,
+    urlPath,
+    urlQuery,
+    referrerPath,
+    referrerQuery,
+    referrerDomain,
+    eventName,
+    eventData,
+    pageTitle,
+  } = data;
   const websiteEventId = uuid();
 
   const websiteEvent = prisma.client.websiteEvent.create({
@@ -49,6 +66,9 @@ async function relationalQuery(data: {
       sessionId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       urlQuery: urlQuery?.substring(0, URL_LENGTH),
+      referrerPath: referrerPath?.substring(0, URL_LENGTH),
+      referrerQuery: referrerQuery?.substring(0, URL_LENGTH),
+      referrerDomain: referrerDomain?.substring(0, URL_LENGTH),
       pageTitle,
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
@@ -74,6 +94,9 @@ async function clickhouseQuery(data: {
   websiteId: string;
   urlPath: string;
   urlQuery?: string;
+  referrerPath?: string;
+  referrerQuery?: string;
+  referrerDomain?: string;
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
@@ -93,6 +116,9 @@ async function clickhouseQuery(data: {
     sessionId,
     urlPath,
     urlQuery,
+    referrerPath,
+    referrerQuery,
+    referrerDomain,
     pageTitle,
     eventName,
     eventData,
@@ -115,6 +141,9 @@ async function clickhouseQuery(data: {
     city: city ? city : null,
     url_path: urlPath?.substring(0, URL_LENGTH),
     url_query: urlQuery?.substring(0, URL_LENGTH),
+    referrer_path: referrerPath?.substring(0, URL_LENGTH),
+    referrer_query: referrerQuery?.substring(0, URL_LENGTH),
+    referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
     page_title: pageTitle,
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
