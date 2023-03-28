@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -26,6 +26,14 @@ export default function AccountSettings() {
   const [saved, setSaved] = useState(0);
   const [message, setMessage] = useState();
   const { data } = useFetch(`/accounts`, {}, [saved]);
+  const [formattedData, setFormattedData] = useState([]);
+
+  useEffect(() => {
+    if (data)
+      setFormattedData(
+        data.map(d => ({ ...d, websiteIds: d.viewwebsites.map(vw => vw.websiteId.toString()) })),
+      );
+  }, [data]);
 
   const Checkmark = ({ isAdmin }) => (isAdmin ? <Icon icon={<Check />} size="medium" /> : null);
 
@@ -103,7 +111,7 @@ export default function AccountSettings() {
           <FormattedMessage id="label.add-account" defaultMessage="Add account" />
         </Button>
       </PageHeader>
-      <Table columns={columns} rows={data} />
+      <Table columns={columns} rows={formattedData} />
       {editAccount && (
         <Modal title={<FormattedMessage id="label.edit-account" defaultMessage="Edit account" />}>
           <AccountEditForm

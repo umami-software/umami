@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, useFormikContext, useField } from 'formik';
 import Button from 'components/common/Button';
+import Checkbox from 'components/common/Checkbox';
 import FormLayout, {
   FormButtons,
   FormError,
@@ -9,10 +10,13 @@ import FormLayout, {
   FormRow,
 } from 'components/layout/FormLayout';
 import useApi from 'hooks/useApi';
+import useFetch from 'hooks/useFetch';
 
 const initialValues = {
   username: '',
   password: '',
+  isViewer: false,
+  websiteIds: [],
 };
 
 const validate = ({ id, username, password }) => {
@@ -26,6 +30,44 @@ const validate = ({ id, username, password }) => {
   }
 
   return errors;
+};
+
+const WebsiteSelect = props => {
+  const { data } = useFetch(`/websites`);
+  const [field, meta] = useField(props);
+  const {
+    values: { websiteIds },
+  } = useFormikContext();
+
+  return (
+    <>
+      {data && data.length > 0 && (
+        <div
+          style={{
+            maxHeight: '20vh',
+            overflowY: 'auto',
+            padding: '0 1rem',
+            margin: '0 20px',
+            background: 'var(--gray100)',
+            border: '1px solid var(--gray500)',
+            borderRadius: '5px',
+          }}
+        >
+          {data.map(item => (
+            <div key={`websiteIds-${item.id}`}>
+              <Checkbox
+                {...field}
+                value={item.id.toString()}
+                label={item.name}
+                valueArray={websiteIds}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+      {!!meta.touched && !!meta.error && <div>{meta.error}</div>}
+    </>
+  );
 };
 
 export default function AccountEditForm({ values, onSave, onClose }) {
@@ -52,7 +94,7 @@ export default function AccountEditForm({ values, onSave, onClose }) {
         validate={validate}
         onSubmit={handleSubmit}
       >
-        {() => (
+        {values => (
           <Form>
             <FormRow>
               <label htmlFor="username">
@@ -72,6 +114,20 @@ export default function AccountEditForm({ values, onSave, onClose }) {
                 <FormError name="password" />
               </div>
             </FormRow>
+            {!values.values.isAdmin && (
+              <FormRow>
+                <label />
+                <Field name="isViewer">
+                  {({ field }) => (
+                    <Checkbox
+                      {...field}
+                      label={<FormattedMessage id="label.is-viewer" defaultMessage="Viewer" />}
+                    />
+                  )}
+                </Field>
+              </FormRow>
+            )}
+            {values.values.isViewer && <WebsiteSelect name="websiteIds" />}
             <FormButtons>
               <Button type="submit" variant="action">
                 <FormattedMessage id="label.save" defaultMessage="Save" />

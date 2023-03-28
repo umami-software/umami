@@ -9,6 +9,7 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { id: websiteUuid } = req.query;
+  const { accountUuid, isViewer } = req.auth;
 
   if (req.method === 'GET') {
     if (!(await allowQuery(req, TYPE_WEBSITE))) {
@@ -21,12 +22,11 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req, TYPE_WEBSITE, false))) {
+    if (!(await allowQuery(req, TYPE_WEBSITE, false)) || isViewer) {
       return unauthorized(res);
     }
 
     const { name, domain, owner, enableShareUrl, shareId } = req.body;
-    const { accountUuid } = req.auth;
 
     let account;
 
@@ -62,7 +62,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'DELETE') {
-    if (!(await allowQuery(req, TYPE_WEBSITE, false))) {
+    if (!(await allowQuery(req, TYPE_WEBSITE, false)) || isViewer) {
       return unauthorized(res);
     }
 

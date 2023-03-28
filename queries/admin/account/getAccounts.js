@@ -12,9 +12,11 @@ export async function getAccounts() {
       id: true,
       username: true,
       isAdmin: true,
+      isViewer: true,
       createdAt: true,
       updatedAt: true,
       accountUuid: true,
+      viewwebsites: true,
     },
   });
 }

@@ -19,7 +19,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { username, password, account_uuid } = req.body;
+    const { username, password, account_uuid, websiteIds, isViewer } = req.body;
 
     const account = await getAccount({ username });
 
@@ -31,6 +31,14 @@ export default async (req, res) => {
       username,
       password: hashPassword(password),
       accountUuid: account_uuid || uuid(),
+      isViewer,
+      viewwebsites: {
+        create: websiteIds
+          .map(id => parseInt(id))
+          .map(id => ({
+            website: { connect: { id } },
+          })),
+      },
     });
 
     return ok(res, created);

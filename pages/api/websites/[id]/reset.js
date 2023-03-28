@@ -9,9 +9,10 @@ export default async (req, res) => {
   await useAuth(req, res);
 
   const { id: websiteId } = req.query;
+  const { isViewer } = req.auth;
 
   if (req.method === 'POST') {
-    if (!(await allowQuery(req, TYPE_WEBSITE, false))) {
+    if (!(await allowQuery(req, TYPE_WEBSITE, false)) || isViewer) {
       return unauthorized(res);
     }
 

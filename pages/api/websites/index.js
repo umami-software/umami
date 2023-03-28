@@ -8,7 +8,8 @@ export default async (req, res) => {
 
   const { user_id, include_all } = req.query;
 
-  const { userId: currentUserId, isAdmin } = req.auth;
+  const { userId: currentUserId, isAdmin, isViewer } = req.auth;
+
   const accountUuid = user_id || req.auth.accountUuid;
   let account;
 
@@ -26,7 +27,9 @@ export default async (req, res) => {
     const websites =
       isAdmin && include_all
         ? await getAllWebsites()
-        : await getUserWebsites({ userId: account?.id });
+        : await getUserWebsites({
+            OR: [{ userId: account?.id }, { viewers: { some: { userId: account?.id } } }],
+          });
 
     return ok(res, websites);
   }
@@ -36,7 +39,7 @@ export default async (req, res) => {
 
     const website_owner = account ? account.id : +owner;
 
-    if (website_owner !== currentUserId && !isAdmin) {
+    if ((website_owner !== currentUserId && !isAdmin) || isViewer) {
       return unauthorized(res);
     }
 

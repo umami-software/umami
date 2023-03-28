@@ -5,6 +5,9 @@ export async function getWebsite(where) {
   return prisma.client.website
     .findUnique({
       where,
+      include: {
+        viewers: true,
+      },
     })
     .then(async data => {
       if (redis.enabled && data) {

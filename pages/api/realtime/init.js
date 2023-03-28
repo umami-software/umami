@@ -14,7 +14,9 @@ export default async (req, res) => {
       return unauthorized(res);
     }
 
-    const websites = await getUserWebsites({ userId });
+    const websites = await getUserWebsites({
+      OR: [{ userId }, { viewers: { some: { userId } } }],
+    });
     const ids = websites.map(({ websiteUuid }) => websiteUuid);
     const token = createToken({ websites: ids }, secret());
     const data = await getRealtimeData(ids, subMinutes(new Date(), 30));

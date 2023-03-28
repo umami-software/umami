@@ -8,14 +8,16 @@ datasource db {
 }
 
 model account {
-  id          Int       @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
-  username    String    @unique() @db.VarChar(255)
-  password    String    @db.VarChar(60)
-  isAdmin     Boolean   @default(false) @map("is_admin")
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamp(0)
-  accountUuid String    @unique() @map("account_uuid") @db.VarChar(36)
-  website     website[]
+  id           Int                @id @default(autoincrement()) @map("user_id") @db.UnsignedInt
+  username     String             @unique() @db.VarChar(255)
+  password     String             @db.VarChar(60)
+  isAdmin      Boolean            @default(false) @map("is_admin")
+  isViewer     Boolean            @default(false) @map("is_viewer")
+  createdAt    DateTime?          @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt    DateTime?          @default(now()) @map("updated_at") @db.Timestamp(0)
+  accountUuid  String             @unique() @map("account_uuid") @db.VarChar(36)
+  website      website[]
+  viewwebsites viewerforwebsite[]
 
   @@index([accountUuid])
 }
@@ -86,18 +88,29 @@ model session {
 }
 
 model website {
-  id          Int        @id @default(autoincrement()) @map("website_id") @db.UnsignedInt
-  websiteUuid String     @unique() @map("website_uuid") @db.VarChar(36)
-  userId      Int        @map("user_id") @db.UnsignedInt
-  name        String     @db.VarChar(100)
-  domain      String?    @db.VarChar(500)
-  shareId     String?    @unique() @map("share_id") @db.VarChar(64)
-  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamp(0)
-  account     account    @relation(fields: [userId], references: [id])
+  id          Int                @id @default(autoincrement()) @map("website_id") @db.UnsignedInt
+  websiteUuid String             @unique() @map("website_uuid") @db.VarChar(36)
+  userId      Int                @map("user_id") @db.UnsignedInt
+  name        String             @db.VarChar(100)
+  domain      String?            @db.VarChar(500)
+  shareId     String?            @unique() @map("share_id") @db.VarChar(64)
+  createdAt   DateTime?          @default(now()) @map("created_at") @db.Timestamp(0)
+  account     account            @relation(fields: [userId], references: [id])
   event       event[]
   pageview    pageview[]
   session     session[]
+  viewers     viewerforwebsite[]
 
   @@index([userId])
   @@index([websiteUuid])
+}
+
+model viewerforwebsite {
+  userId    Int @map("user_id") @db.UnsignedInt
+  websiteId Int @map("website_id") @db.UnsignedInt
+
+  account account @relation(fields: [userId], references: [id])
+  website website @relation(fields: [websiteId], references: [id])
+
+  @@id([userId, websiteId])
 }

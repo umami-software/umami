@@ -19,7 +19,7 @@ export default async (req, res) => {
   }
 
   if (req.method === 'POST') {
-    const { username, password } = req.body;
+    const { username, password, isViewer, websiteIds } = req.body;
 
     if (id !== userId && !isAdmin) {
       return unauthorized(res);
@@ -29,6 +29,8 @@ export default async (req, res) => {
 
     const data = {};
 
+    data.isViewer = isViewer;
+
     if (password) {
       data.password = hashPassword(password);
     }
@@ -36,6 +38,24 @@ export default async (req, res) => {
     // Only admin can change these fields
     if (isAdmin) {
       data.username = username;
+
+      const existingWebsiteIds = websiteIds.map(id => parseInt(id));
+
+      const websitesToDisconnect = account.viewwebsites
+        .map(vw => vw.websiteId)
+        .filter(id => !existingWebsiteIds.includes(id));
+
+      const websitesToConnect = existingWebsiteIds.filter(
+        id => !account.viewwebsites.map(vw => vw.websiteId).includes(id),
+      );
+
+      data.viewwebsites = {
+        create: websitesToConnect.map(id => ({ website: { connect: { id } } })),
+        deleteMany: websitesToDisconnect.map(id => ({
+          websiteId: id,
+          userId: account.id,
+        })),
+      };
     }
 
     // Check when username changes

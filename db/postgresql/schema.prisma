@@ -12,10 +12,12 @@ model account {
   username    String    @unique @db.VarChar(255)
   password    String    @db.VarChar(60)
   isAdmin     Boolean   @default(false) @map("is_admin")
+  isViewer    Boolean   @default(false) @map("is_viewer")
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
   accountUuid String    @unique @map("account_uuid") @db.Uuid
   website     website[]
+  viewwebsites viewerforwebsite[]
 
   @@index([accountUuid])
 }
@@ -97,7 +99,18 @@ model website {
   event       event[]
   pageview    pageview[]
   session     session[]
+  viewers     viewerforwebsite[]
 
   @@index([userId])
   @@index([websiteUuid])
+}
+
+model viewerforwebsite {
+  userId    Int @map("user_id")
+  websiteId Int @map("website_id")
+
+  account account @relation(fields: [userId], references: [id])
+  website website @relation(fields: [websiteId], references: [id])
+
+  @@id([userId, websiteId])
 }

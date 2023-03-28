@@ -50,36 +50,44 @@ export default function WebsiteSettings() {
           onClick={() => setShowUrl(row)}
         />
       )}
-      <Button
-        icon={<Code />}
-        size="small"
-        tooltip={
-          <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
-        }
-        tooltipId={`button-code-${row.websiteUuid}`}
-        onClick={() => setShowCode(row)}
-      />
-      <Button
-        icon={<Pen />}
-        size="small"
-        tooltip={<FormattedMessage id="label.edit" defaultMessage="Edit" />}
-        tooltipId={`button-edit-${row.websiteUuid}`}
-        onClick={() => setEditWebsite(row)}
-      />
-      <Button
-        icon={<Reset />}
-        size="small"
-        tooltip={<FormattedMessage id="label.reset" defaultMessage="Reset" />}
-        tooltipId={`button-reset-${row.websiteUuid}`}
-        onClick={() => setResetWebsite(row)}
-      />
-      <Button
-        icon={<Trash />}
-        size="small"
-        tooltip={<FormattedMessage id="label.delete" defaultMessage="Delete" />}
-        tooltipId={`button-delete-${row.websiteUuid}`}
-        onClick={() => setDeleteWebsite(row)}
-      />
+      {!user.isViewer && (
+        <Button
+          icon={<Code />}
+          size="small"
+          tooltip={
+            <FormattedMessage id="message.get-tracking-code" defaultMessage="Get tracking code" />
+          }
+          tooltipId={`button-code-${row.websiteUuid}`}
+          onClick={() => setShowCode(row)}
+        />
+      )}
+      {!user.isViewer && (
+        <Button
+          icon={<Pen />}
+          size="small"
+          tooltip={<FormattedMessage id="label.edit" defaultMessage="Edit" />}
+          tooltipId={`button-edit-${row.websiteUuid}`}
+          onClick={() => setEditWebsite(row)}
+        />
+      )}
+      {!user.isViewer && (
+        <Button
+          icon={<Reset />}
+          size="small"
+          tooltip={<FormattedMessage id="label.reset" defaultMessage="Reset" />}
+          tooltipId={`button-reset-${row.websiteUuid}`}
+          onClick={() => setResetWebsite(row)}
+        />
+      )}
+      {!user.isViewer && (
+        <Button
+          icon={<Trash />}
+          size="small"
+          tooltip={<FormattedMessage id="label.delete" defaultMessage="Delete" />}
+          tooltipId={`button-delete-${row.websiteUuid}`}
+          onClick={() => setDeleteWebsite(row)}
+        />
+      )}
     </ButtonLayout>
   );
 
