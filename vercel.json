@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "pages/api/**/*": {
+      "includeFiles": "node_modules/.geo/**"
+    }
+  }
+}
