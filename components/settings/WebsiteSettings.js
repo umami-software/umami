@@ -187,14 +187,16 @@ export default function WebsiteSettings() {
 
   return (
     <>
-      <PageHeader>
-        <div>
-          <FormattedMessage id="label.websites" defaultMessage="Websites" />
-        </div>
-        <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
-          <FormattedMessage id="label.add-website" defaultMessage="Add website" />
-        </Button>
-      </PageHeader>
+      {!user.isViewer && (
+        <PageHeader>
+          <div>
+            <FormattedMessage id="label.websites" defaultMessage="Websites" />
+          </div>
+          <Button icon={<Plus />} size="small" onClick={() => setAddWebsite(true)}>
+            <FormattedMessage id="label.add-website" defaultMessage="Add website" />
+          </Button>
+        </PageHeader>
+      )}
       <Table columns={user.isAdmin ? adminColumns : columns} rows={data} empty={empty} />
       {editWebsite && (
         <Modal title={<FormattedMessage id="label.edit-website" defaultMessage="Edit website" />}>
