@@ -101,7 +101,7 @@ async function clickhouseQuery(
       (select 
         ${getDateQuery('created_at', unit, timezone)} t,
         count(${count !== '*' ? 'distinct session_id' : count}) y
-      from event
+      from website_event
       where website_id = {websiteId:UUID}
         and event_type = ${EVENT_TYPE.pageView}
         and created_at >= ${getDateFormat(resetDate)}

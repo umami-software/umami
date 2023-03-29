@@ -1,7 +1,7 @@
 SET allow_experimental_object_type = 1;
 
 -- Create Event
-CREATE TABLE umami.event
+CREATE TABLE umami.website_event
 (
     website_id UUID,
     session_id UUID,
@@ -33,7 +33,7 @@ CREATE TABLE umami.event
         ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_queue (
+CREATE TABLE umami.website_event_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
@@ -68,7 +68,7 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_max_block_size = 1048576,
        kafka_skip_broken_messages = 100;
 
-CREATE MATERIALIZED VIEW umami.event_queue_mv TO umami.event AS
+CREATE MATERIALIZED VIEW umami.website_event_queue_mv TO umami.website_event AS
 SELECT website_id,
     session_id,
     event_id,
@@ -91,7 +91,7 @@ SELECT website_id,
     event_type,
     event_name,
     created_at
-FROM umami.event_queue;
+FROM umami.website_event_queue;
 
 CREATE TABLE umami.event_data
 (

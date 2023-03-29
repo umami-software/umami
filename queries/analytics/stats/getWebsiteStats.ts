@@ -72,7 +72,7 @@ async function clickhouseQuery(
          count(*) c,
          min(created_at) min_time,
          max(created_at) max_time
-       from event
+       from website_event
        where event_type = ${EVENT_TYPE.pageView}
         and website_id = {websiteId:UUID}
           and created_at >= ${getDateFormat(resetDate)}

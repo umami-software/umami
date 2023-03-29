@@ -62,7 +62,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `select ${field} x, count(distinct session_id) y
-    from event as x
+    from website_event as x
     where website_id = {websiteId:UUID}
     and event_type = ${EVENT_TYPE.pageView}
       and created_at >= ${getDateFormat(resetDate)}

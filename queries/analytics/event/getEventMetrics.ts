@@ -97,7 +97,7 @@ async function clickhouseQuery(
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
-    from event
+    from website_event
     where website_id = {websiteId:UUID}
       and event_type = ${EVENT_TYPE.customEvent}
       and created_at >= ${getDateFormat(resetDate)}

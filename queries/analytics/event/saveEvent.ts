@@ -126,6 +126,7 @@ async function clickhouseQuery(data: {
     subdivision1,
     subdivision2,
     city,
+    ...args
   } = data;
   const { getDateFormat, sendMessage } = kafka;
   const eventId = uuid();
@@ -148,6 +149,7 @@ async function clickhouseQuery(data: {
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     created_at: createdAt,
+    ...args,
   };
 
   await sendMessage(message, 'event');

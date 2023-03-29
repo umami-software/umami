@@ -33,7 +33,7 @@ async function clickhouseQuery(websiteId: string) {
 
   return rawQuery(
     `select count(distinct session_id) x
-    from event
+    from website_event
     where website_id = {websiteId:UUID}
     and created_at >= {startAt:DateTime('UTC')}`,
     params,
