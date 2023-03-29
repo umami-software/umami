@@ -5,7 +5,7 @@ import {
   TableRow,
   TableCell,
   TableColumn,
-  Button,
+  LoadingButton,
   Icon,
   Icons,
   Flexbox,
@@ -15,12 +15,14 @@ import { ROLES } from 'lib/constants';
 import useUser from 'hooks/useUser';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
+import { useState } from 'react';
 
 export default function TeamMembersTable({ data = [], onSave, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { del, useMutation } = useApi();
-  const { mutate } = useMutation(data => del(`/teamUsers/${data.teamUserId}`));
+  const { mutate, isLoading } = useMutation(data => del(`/teamUsers/${data.teamUserId}`));
+  const [loadingIds, setLoadingIds] = useState([]);
 
   const columns = [
     { name: 'username', label: formatMessage(labels.username), style: { flex: 2 } },
@@ -29,11 +31,17 @@ export default function TeamMembersTable({ data = [], onSave, readOnly }) {
   ];
 
   const handleRemoveTeamMember = teamUserId => {
+    setLoadingIds(prev => [...prev, teamUserId]);
+
     mutate(
       { teamUserId },
       {
-        onSuccess: async () => {
+        onSuccess: () => {
+          setLoadingIds(loadingIds.filter(a => a !== teamUserId));
           onSave();
+        },
+        onError: () => {
+          setLoadingIds(loadingIds.filter(a => a !== teamUserId));
         },
       },
     );
@@ -59,15 +67,16 @@ export default function TeamMembersTable({ data = [], onSave, readOnly }) {
             ),
             action: !readOnly && (
               <Flexbox flex={1} justifyContent="end">
-                <Button
+                <LoadingButton
                   onClick={() => handleRemoveTeamMember(row.id)}
                   disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
+                  loading={isLoading && loadingIds.some(a => a === row.id)}
                 >
                   <Icon>
                     <Icons.Close />
                   </Icon>
                   <Text>{formatMessage(labels.remove)}</Text>
-                </Button>
+                </LoadingButton>
               </Flexbox>
             ),
           };

@@ -175,6 +175,10 @@ export async function canDeleteTeamUser({ user }: Auth, teamUserId: string) {
   if (validate(teamUserId)) {
     const removeUser = await getTeamUserById(teamUserId);
 
+    if (removeUser.userId === user.id) {
+      return true;
+    }
+
     const teamUser = await getTeamUser(removeUser.teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);

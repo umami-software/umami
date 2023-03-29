@@ -3,7 +3,7 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, notFound } from 'next-basics';
-import { createTeamUser, getTeam } from 'queries';
+import { createTeamUser, getTeam, getTeamUser } from 'queries';
 import { ROLES } from 'lib/constants';
 
 export interface TeamsJoinRequestBody {
@@ -23,6 +23,12 @@ export default async (
 
     if (!team) {
       return notFound(res, 'message.team-not-found');
+    }
+
+    const teamUser = await getTeamUser(team.id, req.auth.user.id);
+
+    if (teamUser) {
+      return methodNotAllowed(res, 'message.team-already-member');
     }
 
     await createTeamUser(req.auth.user.id, team.id, ROLES.teamMember);

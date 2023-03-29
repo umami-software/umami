@@ -7,6 +7,7 @@ export const labels = defineMessages({
   cancel: { id: 'label.cancel', defaultMessage: 'Cancel' },
   continue: { id: 'label.continue', defaultMessage: 'Continue' },
   delete: { id: 'label.delete', defaultMessage: 'Delete' },
+  leave: { id: 'label.leave', defaultMessage: 'Leave' },
   users: { id: 'label.users', defaultMessage: 'Users' },
   createUser: { id: 'label.create-user', defaultMessage: 'Create user' },
   username: { id: 'label.username', defaultMessage: 'Username' },
@@ -67,6 +68,7 @@ export const labels = defineMessages({
   dateRange: { id: 'label.date-range', defaultMessage: 'Date range' },
   viewDetails: { id: 'label.view-details', defaultMessage: 'View details' },
   deleteTeam: { id: 'label.delete-team', defaultMessage: 'Delete team' },
+  leaveTeam: { id: 'label.leave-team', defaultMessage: 'Leave team' },
   refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
   pages: { id: 'label.pages', defaultMessage: 'Pages' },
   referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
@@ -122,6 +124,10 @@ export const messages = defineMessages({
   deleteUserWarning: {
     id: 'message.delete-user-warning',
     defaultMessage: 'Are you sure you want to delete the user {username}?',
+  },
+  leaveTeamWarning: {
+    id: 'message.leave-team-warning',
+    defaultMessage: 'Are you sure you want to leave the team {name}?',
   },
   deleteTeamWarning: {
     id: 'message.delete-team-warning',

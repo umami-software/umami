@@ -6,7 +6,7 @@ import useMessages from 'hooks/useMessages';
 export default function TeamMembers({ teamId, readOnly }) {
   const { toast, showToast } = useToast();
   const { get, useQuery } = useApi();
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, messages } = useMessages();
   const { data, isLoading, refetch } = useQuery(['teams:users', teamId], () =>
     get(`/teams/${teamId}/users`),
   );
@@ -17,7 +17,7 @@ export default function TeamMembers({ teamId, readOnly }) {
 
   const handleSave = async () => {
     await refetch();
-    showToast({ message: formatMessage(labels.saved), variant: 'success' });
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
   return (

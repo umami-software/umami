@@ -15,6 +15,7 @@ import {
   Text,
 } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';
+import TeamLeaveForm from './TeamLeaveForm';
 import useMessages from 'hooks/useMessages';
 import useUser from 'hooks/useUser';
 import { ROLES } from 'lib/constants';
@@ -42,9 +43,10 @@ export default function TeamsTable({ data = [], onDelete }) {
       </TableHeader>
       <TableBody>
         {(row, keys, rowIndex) => {
-          const { id } = row;
+          const { id, teamUser } = row;
           const owner = row.teamUser.find(({ role }) => role === ROLES.teamOwner);
           const showDelete = user.id === owner?.userId;
+          const teamUserId = teamUser.find(a => a.userId === user.id).id;
 
           const rowData = {
             ...row,
@@ -54,9 +56,9 @@ export default function TeamsTable({ data = [], onDelete }) {
                 <Link href={`/settings/teams/${id}`}>
                   <Button>
                     <Icon>
-                      <Icons.Edit />
+                      <Icons.Show />
                     </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
+                    <Text>{formatMessage(labels.view)}</Text>
                   </Button>
                 </Link>
                 {showDelete && (
@@ -71,6 +73,26 @@ export default function TeamsTable({ data = [], onDelete }) {
                       {close => (
                         <TeamDeleteForm
                           teamId={row.id}
+                          teamName={row.name}
+                          onSave={onDelete}
+                          onClose={close}
+                        />
+                      )}
+                    </Modal>
+                  </ModalTrigger>
+                )}
+                {!showDelete && (
+                  <ModalTrigger>
+                    <Button>
+                      <Icon>
+                        <Icons.ArrowRight />
+                      </Icon>
+                      <Text>{formatMessage(labels.leave)}</Text>
+                    </Button>
+                    <Modal title={formatMessage(labels.leaveTeam)}>
+                      {close => (
+                        <TeamLeaveForm
+                          teamUserId={teamUserId}
                           teamName={row.name}
                           onSave={onDelete}
                           onClose={close}
