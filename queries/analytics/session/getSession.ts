@@ -35,7 +35,7 @@ async function clickhouseQuery({ id: sessionId }: { id: string }) {
       subdivision1,
       subdivision2,
       city
-    from event
+    from website_event
       where session_id = {sessionId:UUID}
     limit 1`,
     params,

@@ -33,7 +33,7 @@ function clickhouseQuery(websiteId: string, startAt: Date) {
       toUnixTimestamp(created_at) as timestamp,
       url_path,
       event_name as eventName
-    from event
+    from website_event
     where event_type = ${EVENT_TYPE.customEvent}
       and website_id = {websiteId:UUID}
       and created_at >= {startAt:DateTime('UTC')}`,

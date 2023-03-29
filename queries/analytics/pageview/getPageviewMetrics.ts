@@ -85,7 +85,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `select ${column} x, count(*) y
-    from event
+    from website_event
     where website_id = {websiteId:UUID}
       and event_type = {eventType:UInt32}
       and created_at >= ${getDateFormat(resetDate)}
