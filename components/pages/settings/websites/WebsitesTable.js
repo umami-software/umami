@@ -13,9 +13,11 @@ import {
   Flexbox,
 } from 'react-basics';
 import useMessages from 'hooks/useMessages';
+import useConfig from 'hooks/useConfig';
 
 export default function WebsitesTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
+  const { openExternal } = useConfig();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
@@ -48,7 +50,7 @@ export default function WebsitesTable({ data = [] }) {
                   <Text>{formatMessage(labels.edit)}</Text>
                 </Button>
               </Link>
-              <Link href={`/websites/${id}`}>
+              <Link href={`/websites/${id}`} target={openExternal ? '_blank' : null}>
                 <Button>
                   <Icon>
                     <Icons.External />

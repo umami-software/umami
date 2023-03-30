@@ -44,7 +44,7 @@ async function relationalQuery(
     )
     group by 1
     order by 2 desc
-    limit 200`,
+    limit 100`,
     params,
   );
 }
@@ -70,7 +70,7 @@ async function clickhouseQuery(
       ${filterQuery}
     group by x
     order by y desc
-    limit 200`,
+    limit 100`,
     params,
   );
 }

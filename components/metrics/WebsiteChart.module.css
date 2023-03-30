@@ -24,12 +24,12 @@
   min-height: 90px;
   margin-bottom: 20px;
   background: var(--base50);
+  z-index: var(--z-index300);
 }
 
 .sticky {
   position: sticky;
   top: -1px;
-  z-index: 2;
 }
 
 .isSticky {

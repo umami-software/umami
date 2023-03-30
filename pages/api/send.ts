@@ -96,6 +96,10 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   let [referrerPath, referrerQuery] = referrer?.split('?') || [];
   let referrerDomain;
 
+  if (!urlPath) {
+    urlPath = '/';
+  }
+
   if (referrerPath.startsWith('http')) {
     const refUrl = new URL(referrer);
     referrerPath = refUrl.pathname;
@@ -104,7 +108,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   }
 
   if (process.env.REMOVE_TRAILING_SLASH) {
-    urlPath = urlPath.replace(/\/$/, '');
+    urlPath = urlPath.replace(/.+\/$/, '');
   }
 
   await saveEvent({
