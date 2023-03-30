@@ -1,13 +1,14 @@
-import { Button, Column, Row } from 'react-basics';
-import Script from 'next/script';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
 import WebsiteChart from 'components/metrics/WebsiteChart';
 import useApi from 'hooks/useApi';
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import Script from 'next/script';
+import { Button, Column, Row } from 'react-basics';
 import styles from './TestConsole.module.css';
 
 export default function TestConsole() {
@@ -53,6 +54,11 @@ export default function TestConsole() {
 
   return (
     <Page loading={isLoading} error={error}>
+      <Head>
+        <title>
+          {router.query.id[2] ? `Umami Console page ${router.query.id[2]}` : 'Umami Console Select'}
+        </title>
+      </Head>
       <PageHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
       </PageHeader>
@@ -68,10 +74,10 @@ export default function TestConsole() {
             <Column xs="4">
               <div className={styles.header}>Page links</div>
               <div>
-                <Link href={`/console/${websiteId}?page=1`}>page one</Link>
+                <Link href={`/console/${websiteId}/page/1/?q=123`}>page one</Link>
               </div>
               <div>
-                <Link href={`/console/${websiteId}?page=2`}>page two</Link>
+                <Link href={`/console/${websiteId}/page/2/?q=456 `}>page two</Link>
               </div>
               <div>
                 <a href="https://www.google.com" data-umami-event="external-link-direct">
