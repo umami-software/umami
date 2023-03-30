@@ -1,4 +1,4 @@
-import { Prisma, Team } from '@prisma/client';
+import { Prisma, Team, TeamUser } from '@prisma/client';
 import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
@@ -40,7 +40,13 @@ export async function getUsers(): Promise<User[]> {
   });
 }
 
-export async function getUserTeams(userId: string): Promise<Team[]> {
+export async function getUserTeams(userId: string): Promise<
+  (Team & {
+    teamUser: (TeamUser & {
+      user: { id: string; username: string };
+    })[];
+  })[]
+> {
   return prisma.client.team.findMany({
     where: {
       teamUser: {
@@ -52,7 +58,12 @@ export async function getUserTeams(userId: string): Promise<Team[]> {
     include: {
       teamUser: {
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
         },
       },
     },

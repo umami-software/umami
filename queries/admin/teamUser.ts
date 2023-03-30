@@ -19,13 +19,20 @@ export async function getTeamUser(teamId: string, userId: string): Promise<TeamU
   });
 }
 
-export async function getTeamUsers(teamId: string): Promise<TeamUser[]> {
+export async function getTeamUsers(
+  teamId: string,
+): Promise<(TeamUser & { user: { id: string; username: string } })[]> {
   return prisma.client.teamUser.findMany({
     where: {
       teamId,
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
     },
   });
 }
