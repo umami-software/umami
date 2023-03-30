@@ -1,4 +1,4 @@
-import { TeamWebsite, Prisma, Website, Team, User } from '@prisma/client';
+import { TeamWebsite, Prisma, Website, Team, User, TeamUser } from '@prisma/client';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
@@ -38,9 +38,9 @@ export async function getTeamWebsiteByTeamMemberId(
 
 export async function getTeamWebsites(teamId: string): Promise<
   (TeamWebsite & {
-    team: Team;
+    team: Team & { teamUser: TeamUser[] };
     website: Website & {
-      user: User;
+      user: { id: string; username: string };
     };
   })[]
 > {
@@ -60,7 +60,12 @@ export async function getTeamWebsites(teamId: string): Promise<
       },
       website: {
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
         },
       },
     },
