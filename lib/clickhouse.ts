@@ -190,8 +190,8 @@ function parseFilters(filters: any = {}, params: any = {}) {
 
 async function rawQuery(query, params = {}) {
   if (process.env.LOG_QUERY) {
-    log(query);
-    log(params);
+    log('QUERY:\n', query);
+    log('PARAMETERS:\n', params);
   }
 
   await connect();

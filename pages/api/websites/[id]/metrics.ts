@@ -89,6 +89,7 @@ export default async (
     subdivision1,
     subdivision2,
     city,
+    query,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -162,7 +163,7 @@ export default async (
         subdivision2: type !== 'subdivision2' ? subdivision2 : undefined,
         city: type !== 'city' ? city : undefined,
         eventUrl: type !== 'url' && table === 'event' ? url : undefined,
-        query: type === 'query' && table !== 'event' ? true : undefined,
+        query: type !== 'query' && table !== 'event' ? query : undefined,
       };
 
       const data = await getPageviewMetrics(websiteId, {
