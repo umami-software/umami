@@ -8,7 +8,23 @@ import { secret } from 'lib/crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Resolver } from 'dns/promises';
 
+export interface CollectRequestBody {
+  payload: {
+    data: { [key: string]: any };
+    hostname: string;
+    language: string;
+    referrer: string;
+    screen: string;
+    title: string;
+    url: string;
+    website: string;
+    name: string;
+  };
+  type: string;
+}
+
 export interface NextApiRequestCollect extends NextApiRequest {
+  body: CollectRequestBody;
   session: {
     id: string;
     websiteId: string;
@@ -23,6 +39,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
     subdivision2: string;
     city: string;
   };
+  headers: { [key: string]: any };
 }
 
 export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
@@ -32,7 +49,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     return ok(res);
   }
 
-  const { type, payload } = getJsonBody(req);
+  const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
   if (type !== 'event') {
     return badRequest(res);

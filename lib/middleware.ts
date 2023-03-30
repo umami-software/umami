@@ -8,6 +8,7 @@ import { getAuthToken, parseShareToken } from 'lib/auth';
 import { secret } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
 import { getUser } from '../queries';
+import { NextApiRequestCollect } from 'pages/api/send';
 
 const log = debug('umami:middleware');
 
@@ -19,7 +20,7 @@ export const useCors = createMiddleware(
 );
 
 export const useSession = createMiddleware(async (req, res, next) => {
-  const session = await findSession(req);
+  const session = await findSession(req as NextApiRequestCollect);
 
   if (!session) {
     log('useSession: Session not found');

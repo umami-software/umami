@@ -1,13 +1,14 @@
-import { parseToken } from 'next-basics';
-import { validate } from 'uuid';
-import { secret, uuid } from 'lib/crypto';
 import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
+import { secret, uuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
+import { parseToken } from 'next-basics';
+import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession, getSession, getWebsite } from 'queries';
+import { validate } from 'uuid';
 
-export async function findSession(req) {
-  const { payload } = getJsonBody(req);
+export async function findSession(req: NextApiRequestCollect) {
+  const { payload } = getJsonBody<CollectRequestBody>(req);
 
   if (!payload) {
     return null;
@@ -92,7 +93,7 @@ export async function findSession(req) {
         subdivision2,
         city,
       });
-    } catch (e) {
+    } catch (e: any) {
       if (!e.message.toLowerCase().includes('unique constraint')) {
         throw e;
       }

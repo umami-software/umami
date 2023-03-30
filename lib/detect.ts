@@ -11,6 +11,7 @@ import {
   LAPTOP_SCREEN_WIDTH,
   MOBILE_SCREEN_WIDTH,
 } from './constants';
+import { NextApiRequestCollect } from 'pages/api/send';
 
 let lookup;
 
@@ -77,7 +78,7 @@ export async function getLocation(ip) {
   return { country, subdivision1, subdivision2, city };
 }
 
-export async function getClientInfo(req, { screen }) {
+export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const userAgent = req.headers['user-agent'];
   const ip = getIpAddress(req);
   const location = await getLocation(ip);
@@ -87,12 +88,12 @@ export async function getClientInfo(req, { screen }) {
   const city = location?.city;
   const browser = browserName(userAgent);
   const os = detectOS(userAgent);
-  const device = getDevice(screen, browser, os);
+  const device = getDevice(screen, os);
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
 }
 
-export function getJsonBody(req) {
+export function getJsonBody<T>(req): T {
   if ((req.headers['content-type'] || '').indexOf('text/plain') !== -1) {
     return JSON.parse(req.body);
   }
