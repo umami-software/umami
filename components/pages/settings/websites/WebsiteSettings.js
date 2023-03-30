@@ -10,23 +10,21 @@ import TrackingCode from 'components/pages/settings/websites/TrackingCode';
 import ShareUrl from 'components/pages/settings/websites/ShareUrl';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
+import useConfig from 'hooks/useConfig';
 
 export default function WebsiteSettings({ websiteId }) {
   const router = useRouter();
   const { formatMessage, labels, messages } = useMessages();
-  const [values, setValues] = useState(null);
-  const [tab, setTab] = useState('details');
+  const { openExternal } = useConfig();
   const { get, useQuery } = useApi();
   const { toast, showToast } = useToast();
   const { data, isLoading } = useQuery(
     ['website', websiteId],
-    () => {
-      if (websiteId) {
-        return get(`/websites/${websiteId}`);
-      }
-    },
-    { cacheTime: 0 },
+    () => get(`/websites/${websiteId}`),
+    { enabled: !!websiteId, cacheTime: 0 },
   );
+  const [values, setValues] = useState(null);
+  const [tab, setTab] = useState('details');
 
   const handleSave = data => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
@@ -58,7 +56,7 @@ export default function WebsiteSettings({ websiteId }) {
           </Breadcrumbs>
         }
       >
-        <Link href={`/analytics/websites/${websiteId}`} target="_blank">
+        <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>
               <Icons.External />
