@@ -132,7 +132,7 @@
 
   const observeTitle = () => {
     const callback = ([entry]) => {
-      title = entry.target.data;
+      title = entry.target.text;
     };
 
     const observer = new MutationObserver(callback);
@@ -140,6 +140,7 @@
     observer.observe(document.querySelector('head > title'), {
       subtree: true,
       characterData: true,
+      childList: true,
     });
   };
 
