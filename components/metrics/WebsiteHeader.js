@@ -3,12 +3,12 @@ import Favicon from 'components/common/Favicon';
 import ActiveUsers from './ActiveUsers';
 import styles from './WebsiteHeader.module.css';
 
-export default function WebsiteHeader({ websiteId, title, domain, children }) {
+export default function WebsiteHeader({ websiteId, name, domain, children }) {
   return (
     <Row className={styles.header} justifyContent="center">
-      <Column className={styles.title} variant="two">
+      <Column className={styles.name} variant="two">
         <Favicon domain={domain} />
-        <Text>{title}</Text>
+        <Text>{name}</Text>
       </Column>
       <Column className={styles.body} variant="two">
         <ActiveUsers websiteId={websiteId} />

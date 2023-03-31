@@ -113,6 +113,8 @@ export const labels = defineMessages({
   mobile: { id: 'label.mobile', defaultMessage: 'Mobile' },
   toggleCharts: { id: 'label.toggle-charts', defaultMessage: 'Toggle charts' },
   editDashboard: { id: 'label.edit-dashboard', defaultMessage: 'Edit dashboard' },
+  title: { id: 'label.title', defaultMessage: 'Title' },
+  url: { id: 'label.url', defaultMessage: 'URL' },
 });
 
 export const messages = defineMessages({

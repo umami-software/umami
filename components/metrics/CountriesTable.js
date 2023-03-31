@@ -13,11 +13,7 @@ export default function CountriesTable({ websiteId, onDataLoad, ...props }) {
   function renderLink({ x: code }) {
     return (
       <div className={locale}>
-        <FilterLink
-          id="country"
-          value={code}
-          label={countryNames[code] ?? formatMessage(labels.unknown)}
-        />
+        <FilterLink id="country" value={countryNames[code] && code} label={countryNames[code]} />
       </div>
     );
   }

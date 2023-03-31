@@ -30,3 +30,7 @@
 .icon {
   cursor: pointer;
 }
+
+.empty {
+  color: var(--base400);
+}

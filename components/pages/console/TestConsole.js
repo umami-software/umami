@@ -122,7 +122,7 @@ export default function TestConsole() {
             <Column>
               <WebsiteChart
                 websiteId={website.id}
-                title={website.name}
+                name={website.name}
                 domain={website.domain}
                 showLink
               />

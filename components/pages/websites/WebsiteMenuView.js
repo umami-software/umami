@@ -1,4 +1,4 @@
-import { Menu, Item, Icon, Button, Flexbox, Text } from 'react-basics';
+import { Icon, Button, Flexbox, Text } from 'react-basics';
 import Link from 'next/link';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -19,6 +19,7 @@ import styles from './WebsiteMenuView.module.css';
 
 const views = {
   url: PagesTable,
+  title: PagesTable,
   referrer: ReferrersTable,
   browser: BrowsersTable,
   os: OSTable,

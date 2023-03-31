@@ -17,7 +17,7 @@ const sessionColumns = [
   'subdivision2',
   'city',
 ];
-const pageviewColumns = ['url', 'referrer', 'query', 'pageTitle'];
+const pageviewColumns = ['url', 'referrer', 'query', 'title'];
 
 function getTable(type) {
   if (type === 'event') {
@@ -45,6 +45,8 @@ function getColumn(type) {
       return 'event_name';
     case 'query':
       return 'url_query';
+    case 'title':
+      return 'page_title';
   }
 
   return type;
@@ -57,7 +59,7 @@ export interface WebsiteMetricsRequestQuery {
   endAt: number;
   url: string;
   referrer: string;
-  pageTitle: string;
+  title: string;
   os: string;
   browser: string;
   device: string;
@@ -81,7 +83,7 @@ export default async (
     endAt,
     url,
     referrer,
-    pageTitle,
+    title,
     os,
     browser,
     device,
@@ -154,7 +156,7 @@ export default async (
         domain,
         url: type !== 'url' && table !== 'event' ? url : undefined,
         referrer: type !== 'referrer' && table !== 'event' ? referrer : FILTER_IGNORED,
-        pageTitle: type !== 'pageTitle' && table !== 'event' ? pageTitle : undefined,
+        title: type !== 'title' && table !== 'event' ? title : undefined,
         os: type !== 'os' ? os : undefined,
         browser: type !== 'browser' ? browser : undefined,
         device: type !== 'device' ? device : undefined,

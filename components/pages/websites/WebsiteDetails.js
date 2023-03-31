@@ -29,7 +29,7 @@ export default function WebsiteDetails({ websiteId }) {
     <Page loading={isLoading} error={error}>
       <WebsiteChart
         websiteId={websiteId}
-        title={data?.name}
+        name={data?.name}
         domain={data?.domain}
         onDataLoad={handleDataLoad}
         showLink={false}
