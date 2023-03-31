@@ -104,11 +104,15 @@ function getEventDataFilterQuery(
   return query.join('\n');
 }
 
-function getFilterQuery(filters = {}, params = {}) {
+function getFilterQuery(filters = {}, params = {}, field: string) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
     if (filter === undefined || filter === FILTER_IGNORED) {
+      return arr;
+    }
+
+    if (key === field) {
       return arr;
     }
 
@@ -157,7 +161,7 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
-function parseFilters(filters: any = {}, params: any = {}) {
+function parseFilters(filters: any = {}, params: any = {}, field?: string) {
   const {
     domain,
     url,
@@ -184,7 +188,7 @@ function parseFilters(filters: any = {}, params: any = {}) {
     sessionFilters,
     eventFilters,
     event: { eventName },
-    filterQuery: getFilterQuery(filters, params),
+    filterQuery: getFilterQuery(filters, params, field),
   };
 }
 

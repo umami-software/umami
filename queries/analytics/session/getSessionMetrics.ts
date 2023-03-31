@@ -58,7 +58,7 @@ async function clickhouseQuery(
   const website = await cache.fetchWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params = { websiteId };
-  const { filterQuery } = parseFilters(filters, params);
+  const { filterQuery } = parseFilters(filters, params, field);
 
   return rawQuery(
     `select ${field} x, count(distinct session_id) y
