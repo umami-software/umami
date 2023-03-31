@@ -22,7 +22,7 @@ export default function WebsiteChartList({ websites, showCharts, limit }) {
           <div key={id} className={styles.website}>
             <WebsiteChart
               websiteId={id}
-              title={name}
+              name={name}
               domain={domain}
               showChart={showCharts}
               showDetailsButton={true}

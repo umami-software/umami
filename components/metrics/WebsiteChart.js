@@ -21,7 +21,7 @@ import useMessages from 'hooks/useMessages';
 
 export default function WebsiteChart({
   websiteId,
-  title,
+  name,
   domain,
   stickyHeader = false,
   showChart = true,
@@ -33,7 +33,7 @@ export default function WebsiteChart({
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
   const {
-    query: { url, referrer, os, browser, device, country },
+    query: { url, referrer, os, browser, device, country, title },
   } = usePageQuery();
   const { get, useQuery } = useApi();
   const { ref, isSticky } = useSticky({ enabled: stickyHeader });
@@ -68,7 +68,7 @@ export default function WebsiteChart({
 
   return (
     <>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain}>
+      <WebsiteHeader websiteId={websiteId} name={name} domain={domain}>
         {showDetailsButton && (
           <Link href={`/websites/${websiteId}`}>
             <Button variant="primary">
@@ -80,7 +80,10 @@ export default function WebsiteChart({
           </Link>
         )}
       </WebsiteHeader>
-      <FilterTags websiteId={websiteId} params={{ url, referrer, os, browser, device, country }} />
+      <FilterTags
+        websiteId={websiteId}
+        params={{ url, referrer, os, browser, device, country, title }}
+      />
       <Row
         ref={ref}
         className={classNames(styles.header, {

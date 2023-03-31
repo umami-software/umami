@@ -9,7 +9,7 @@ export default function DevicesTable({ websiteId, ...props }) {
     return (
       <FilterLink
         id="device"
-        value={device}
+        value={labels[device] && device}
         label={formatMessage(labels[device] || labels.unknown)}
       />
     );

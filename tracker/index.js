@@ -116,10 +116,9 @@
             !(e.ctrlKey || e.shiftKey || e.metaKey || (e.button && e.button === 1))
           ) {
             e.preventDefault();
-            track(eventName, { data: eventData }).then(() => {
+            return track(eventName, { data: eventData }).then(() => {
               location.href = href;
             });
-            return;
           }
         }
 

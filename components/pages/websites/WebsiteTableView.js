@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { GridRow, GridColumn } from 'components/layout/Grid';
-//import { Row as GridRow, Column as GridColumn } from 'react-basics';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';

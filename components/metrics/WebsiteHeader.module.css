@@ -2,7 +2,7 @@
   height: 100px;
 }
 
-.title {
+.name {
   display: flex;
   flex-direction: row;
   align-items: center;
