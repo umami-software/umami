@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { safeDecodeURI } from 'next-basics';
-import Tag from 'components/common/Tag';
 import FilterButtons from 'components/common/FilterButtons';
 import { paramFilter } from 'lib/filters';
 import { FILTER_RAW, FILTER_COMBINED } from 'lib/constants';
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
+import styles from './QueryParametersTable.module.css';
 
 const filters = {
   [FILTER_RAW]: null,
@@ -38,10 +38,10 @@ export default function QueryParametersTable({ websiteId, showFilters, ...props 
           filter === FILTER_RAW ? (
             x
           ) : (
-            <>
-              <Tag>{safeDecodeURI(p)}</Tag>
-              {safeDecodeURI(v)}
-            </>
+            <div className={styles.item}>
+              <div className={styles.param}>{safeDecodeURI(p)}</div>
+              <div className={styles.value}>{safeDecodeURI(v)}</div>
+            </div>
           )
         }
         delay={0}
