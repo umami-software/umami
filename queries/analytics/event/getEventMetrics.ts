@@ -14,6 +14,7 @@ export async function getEventMetrics(
       endDate: Date;
       timezone: string;
       unit: string;
+      column: string;
       filters: {
         url: string;
         eventName: string;
@@ -40,6 +41,7 @@ async function relationalQuery(
     endDate: Date;
     timezone: string;
     unit: string;
+    column: string;
     filters: {
       url: string;
       eventName: string;
@@ -50,6 +52,7 @@ async function relationalQuery(
   const website = await getWebsite({ id: websiteId });
   const resetDate = website?.resetAt || website?.createdAt;
   const params: any = [websiteId, resetDate, startDate, endDate];
+  const filterQuery = getFilterQuery(filters, params);
 
   return rawQuery(
     `select
@@ -61,7 +64,7 @@ async function relationalQuery(
       and created_at >= $2
       and created_at between $3 and $4
       and event_type = ${EVENT_TYPE.customEvent}
-      ${getFilterQuery(filters, params)}
+      ${filterQuery}
     group by 1, 2
     order by 2`,
     params,

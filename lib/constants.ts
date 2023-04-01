@@ -27,11 +27,32 @@ export const UI_LAYOUT_BODY = 'ui-layout-body';
 
 export const FILTER_COMBINED = 'filter-combined';
 export const FILTER_RAW = 'filter-raw';
-export const FILTER_IGNORED = 'filter-ignored';
 export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
+
+export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
+
+export const SESSION_COLUMNS = [
+  'browser',
+  'os',
+  'device',
+  'screen',
+  'country',
+  'language',
+  'subdivision1',
+  'subdivision2',
+  'city',
+];
+
+export const FILTER_COLUMNS = {
+  url: 'url_path',
+  referrer: 'referrer_domain',
+  title: 'page_title',
+  query: 'url_query',
+  event: 'event_name',
+};
 
 export const EVENT_TYPE = {
   pageView: 1,

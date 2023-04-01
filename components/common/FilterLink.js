@@ -14,7 +14,7 @@ export default function FilterLink({ id, value, label, externalUrl }) {
 
   return (
     <div className={styles.row}>
-      {!value && <span className={styles.empty}>{label || formatMessage(labels.unknown)}</span>}
+      {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
         <Link
           href={resolveUrl({ [id]: value })}

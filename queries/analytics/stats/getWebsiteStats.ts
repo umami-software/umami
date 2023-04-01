@@ -6,7 +6,10 @@ import { EVENT_TYPE } from 'lib/constants';
 import { getWebsite } from 'queries';
 
 export async function getWebsiteStats(
-  ...args: [websiteId: string, data: { startDate: Date; endDate: Date; filters: object }]
+  ...args: [
+    websiteId: string,
+    data: { startDate: Date; endDate: Date; type?: string; filters: object },
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -16,9 +19,9 @@ export async function getWebsiteStats(
 
 async function relationalQuery(
   websiteId: string,
-  data: { startDate: Date; endDate: Date; filters: object },
+  criteria: { startDate: Date; endDate: Date; filters: object },
 ) {
-  const { startDate, endDate, filters = {} } = data;
+  const { startDate, endDate, filters = {} } = criteria;
   const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
   const website = await getWebsite({ id: websiteId });
   const resetDate = website?.resetAt || website?.createdAt;
@@ -51,9 +54,9 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  data: { startDate: Date; endDate: Date; filters: object },
+  criteria: { startDate: Date; endDate: Date; filters: object },
 ) {
-  const { startDate, endDate, filters = {} } = data;
+  const { startDate, endDate, filters = {} } = criteria;
   const { rawQuery, getDateFormat, getDateQuery, getBetweenDates, parseFilters } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;

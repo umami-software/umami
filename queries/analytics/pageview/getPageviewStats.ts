@@ -8,7 +8,7 @@ import { getWebsite } from 'queries';
 export async function getPageviewStats(
   ...args: [
     websiteId: string,
-    data: {
+    criteria: {
       startDate: Date;
       endDate: Date;
       timezone?: string;
@@ -27,7 +27,7 @@ export async function getPageviewStats(
 
 async function relationalQuery(
   websiteId: string,
-  data: {
+  criteria: {
     startDate: Date;
     endDate: Date;
     timezone?: string;
@@ -45,7 +45,7 @@ async function relationalQuery(
     count = '*',
     filters = {},
     sessionKey = 'session_id',
-  } = data;
+  } = criteria;
   const { toUuid, getDateQuery, parseFilters, rawQuery } = prisma;
   const website = await getWebsite({ id: websiteId });
   const resetDate = website?.resetAt || website?.createdAt;
@@ -69,7 +69,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  data: {
+  criteria: {
     startDate: Date;
     endDate: Date;
     timezone?: string;
@@ -79,7 +79,14 @@ async function clickhouseQuery(
     sessionKey?: string;
   },
 ) {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', count = '*', filters = {} } = data;
+  const {
+    startDate,
+    endDate,
+    timezone = 'UTC',
+    unit = 'day',
+    count = '*',
+    filters = {},
+  } = criteria;
   const {
     parseFilters,
     getDateFormat,

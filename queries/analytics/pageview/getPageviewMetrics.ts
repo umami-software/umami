@@ -1,20 +1,17 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import cache from 'lib/cache';
-import { Prisma } from '@prisma/client';
-import { EVENT_TYPE } from 'lib/constants';
-import { getWebsite } from 'queries';
+import { EVENT_TYPE, FILTER_COLUMNS } from 'lib/constants';
+import { loadWebsite } from 'lib/query';
 
 export async function getPageviewMetrics(
   ...args: [
     websiteId: string,
-    data: {
+    criteria: {
       startDate: Date;
       endDate: Date;
-      column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
+      column: string;
       filters: object;
-      type: string;
     },
   ]
 ) {
@@ -26,25 +23,32 @@ export async function getPageviewMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  data: {
+  criteria: {
     startDate: Date;
     endDate: Date;
-    column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
+    column: string;
     filters: object;
-    type: string;
   },
 ) {
-  const { startDate, endDate, column, filters = {}, type } = data;
+  const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, parseFilters, toUuid } = prisma;
-  const website = await getWebsite({ id: websiteId });
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params: any = [
     websiteId,
     resetDate,
     startDate,
     endDate,
-    type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   ];
+
+  let domainFilter = '';
+
+  if (column === 'referrer_domain') {
+    domainFilter = 'and website_event.referrer_domain != $6';
+    params.push(website.domain);
+  }
+
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
@@ -55,6 +59,7 @@ async function relationalQuery(
       and website_event.created_at >= $2
       and website_event.created_at between $3 and $4
       and event_type = $5
+      ${domainFilter}
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -65,22 +70,30 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  data: {
+  criteria: {
     startDate: Date;
     endDate: Date;
-    column: Prisma.WebsiteEventScalarFieldEnum | Prisma.SessionScalarFieldEnum;
+    column: string;
     filters: object;
-    type: string;
   },
 ) {
-  const { startDate, endDate, column, filters = {}, type } = data;
+  const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, getDateFormat, parseFilters, getBetweenDates } = clickhouse;
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params = {
     websiteId,
-    eventType: type === 'event' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    domain: undefined,
   };
+
+  let excludeDomain = '';
+
+  if (column === 'referrer_domain') {
+    excludeDomain = 'and referrer_domain != {domain:String}';
+    params.domain = website.domain;
+  }
+
   const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
@@ -89,7 +102,8 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and event_type = {eventType:UInt32}
       and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}
+      and ${getBetweenDates('created_at', startDate, endDate)} 
+      ${excludeDomain}
       ${filterQuery}
     group by x
     order by y desc

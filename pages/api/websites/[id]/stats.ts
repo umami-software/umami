@@ -12,7 +12,9 @@ export interface WebsiteStatsRequestQuery {
   endAt: number;
   url: string;
   referrer: string;
-  pageTitle: string;
+  title: string;
+  query: string;
+  event: string;
   os: string;
   browser: string;
   device: string;
@@ -35,7 +37,9 @@ export default async (
     endAt,
     url,
     referrer,
-    pageTitle,
+    title,
+    query,
+    event,
     os,
     browser,
     device,
@@ -63,7 +67,9 @@ export default async (
       filters: {
         url,
         referrer,
-        pageTitle,
+        title,
+        query,
+        event,
         os,
         browser,
         device,
@@ -79,7 +85,9 @@ export default async (
       filters: {
         url,
         referrer,
-        pageTitle,
+        title,
+        query,
+        event,
         os,
         browser,
         device,

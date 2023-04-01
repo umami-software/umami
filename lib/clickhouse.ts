@@ -1,9 +1,10 @@
 import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
-import { FILTER_IGNORED } from 'lib/constants';
 import { CLICKHOUSE } from 'lib/db';
 import { getEventDataType } from './eventData';
+import { WebsiteMetricFilter } from './types';
+import { FILTER_COLUMNS } from './constants';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%M:00',
@@ -104,55 +105,14 @@ function getEventDataFilterQuery(
   return query.join('\n');
 }
 
-function getFilterQuery(filters = {}, params = {}, field: string) {
+function getFilterQuery(filters = {}, params = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
-    if (filter === undefined || filter === FILTER_IGNORED) {
-      return arr;
-    }
-
-    if (key === field) {
-      return arr;
-    }
-
-    switch (key) {
-      case 'url':
-        arr.push(`and url_path = {${key}:String}`);
-        params[key] = filter;
-        break;
-      case 'pageTitle':
-      case 'os':
-      case 'browser':
-      case 'device':
-      case 'subdivision1':
-      case 'subdivision2':
-      case 'city':
-      case 'country':
-        arr.push(`and ${key} = {${key}:String}`);
-        params[key] = filter;
-        break;
-
-      case 'eventName':
-        arr.push(`and event_name = {${key}:String}`);
-        params[key] = filter;
-        break;
-
-      case 'referrer':
-        arr.push(`and referrer_domain= {${key}:String}`);
-        params[key] = filter;
-        break;
-
-      case 'domain':
-        arr.push(`and referrer_domain NOT ILIKE {${key}:String}`);
-        arr.push(`and referrer_domain NOT ILIKE '/%'`);
-        params[key] = `%://${filter}/%`;
-        break;
-
-      case 'query':
-        arr.push(`and url_query= {${key}:String}`);
-        params[key] = filter;
-        break;
+    if (filter !== undefined) {
+      const column = FILTER_COLUMNS[key] || key;
+      arr.push(`and ${column} = {${key}:String}`);
+      params[key] = decodeURIComponent(filter);
     }
 
     return arr;
@@ -161,34 +121,9 @@ function getFilterQuery(filters = {}, params = {}, field: string) {
   return query.join('\n');
 }
 
-function parseFilters(filters: any = {}, params: any = {}, field?: string) {
-  const {
-    domain,
-    url,
-    eventUrl,
-    referrer,
-    pageTitle,
-    os,
-    browser,
-    device,
-    country,
-    subdivision1,
-    subdivision2,
-    city,
-    eventName,
-    query,
-  } = filters;
-
-  const pageviewFilters = { domain, url, referrer, query, pageTitle };
-  const sessionFilters = { os, browser, device, country, subdivision1, subdivision2, city };
-  const eventFilters = { url: eventUrl, eventName };
-
+function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   return {
-    pageviewFilters,
-    sessionFilters,
-    eventFilters,
-    event: { eventName },
-    filterQuery: getFilterQuery(filters, params, field),
+    filterQuery: getFilterQuery(filters, params),
   };
 }
 

@@ -5,13 +5,13 @@ import useMessages from 'hooks/useMessages';
 export default function ReferrersTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
-  const renderLink = ({ w: link, x: referrer }) => {
+  const renderLink = ({ x: referrer }) => {
     return (
       <FilterLink
         id="referrer"
         value={referrer}
-        externalUrl={link}
-        label={!referrer && `(${formatMessage(labels.none)})`}
+        externalUrl={`https://${referrer}`}
+        label={!referrer && formatMessage(labels.none)}
       />
     );
   };

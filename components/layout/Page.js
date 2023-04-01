@@ -1,10 +1,13 @@
 import classNames from 'classnames';
 import { Banner, Loading } from 'react-basics';
+import useMessages from 'hooks/useMessages';
 import styles from './Page.module.css';
 
 export default function Page({ className, error, loading, children }) {
+  const { formatMessage, messages } = useMessages();
+
   if (error) {
-    return <Banner variant="error">Something went wrong.</Banner>;
+    return <Banner variant="error">{formatMessage(messages.error)}</Banner>;
   }
 
   if (loading) {

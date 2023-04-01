@@ -1,8 +1,8 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_IGNORED } from 'lib/constants';
 import { getEventDataType } from './eventData';
+import { FILTER_COLUMNS } from './constants';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -106,55 +106,14 @@ function getEventDataFilterQuery(
   return query.join('\n');
 }
 
-function getFilterQuery(filters = {}, params = [], field: string): string {
+function getFilterQuery(filters = {}, params = []): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
-    if (filter === undefined || filter === FILTER_IGNORED) {
-      return arr;
-    }
-
-    if (key === field) {
-      return arr;
-    }
-
-    switch (key) {
-      case 'url':
-        arr.push(`and url_path=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
-        break;
-      case 'os':
-      case 'pageTitle':
-      case 'browser':
-      case 'device':
-      case 'subdivision1':
-      case 'subdivision2':
-      case 'city':
-      case 'country':
-        arr.push(`and ${key}=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
-        break;
-
-      case 'eventName':
-        arr.push(`and event_name=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
-        break;
-
-      case 'referrer':
-        arr.push(`and referrer_domain=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
-        break;
-
-      case 'domain':
-        arr.push(`and referrer_domain not like $${params.length + 1}`);
-        arr.push(`and referrer_domain not like '/%'`);
-        params.push(`%://${filter}/%`);
-        break;
-
-      case 'query':
-        arr.push(`and url_query=$${params.length + 1}`);
-        params.push(decodeURIComponent(filter));
-        break;
+    if (filter !== undefined) {
+      const column = FILTER_COLUMNS[key] || key;
+      arr.push(`and ${column}=$${params.length + 1}`);
+      params.push(decodeURIComponent(filter));
     }
 
     return arr;
@@ -166,40 +125,16 @@ function getFilterQuery(filters = {}, params = [], field: string): string {
 function parseFilters(
   filters: { [key: string]: any } = {},
   params = [],
-  field?: string,
   sessionKey = 'session_id',
 ) {
-  const {
-    domain,
-    url,
-    eventUrl,
-    referrer,
-    pageTitle,
-    os,
-    browser,
-    device,
-    country,
-    subdivision1,
-    subdivision2,
-    city,
-    eventName,
-    query,
-  } = filters;
-
-  const pageviewFilters = { domain, url, referrer, query, pageTitle };
-  const sessionFilters = { os, browser, device, country, subdivision1, subdivision2, city };
-  const eventFilters = { url: eventUrl, eventName };
+  const { os, browser, device, country, subdivision1, subdivision2, city } = filters;
 
   return {
-    pageviewFilters,
-    sessionFilters,
-    eventFilters,
-    event: { eventName },
     joinSession:
       os || browser || device || country || subdivision1 || subdivision2 || city
         ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
         : '',
-    filterQuery: getFilterQuery(filters, params, field),
+    filterQuery: getFilterQuery(filters, params),
   };
 }
 

@@ -1,56 +1,10 @@
+import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { FILTER_IGNORED } from 'lib/constants';
 import { useAuth, useCors } from 'lib/middleware';
-import { NextApiResponse } from 'next';
-import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getPageviewMetrics, getSessionMetrics, getWebsite } from 'queries';
-
-const sessionColumns = [
-  'browser',
-  'os',
-  'device',
-  'screen',
-  'country',
-  'language',
-  'subdivision1',
-  'subdivision2',
-  'city',
-];
-const pageviewColumns = ['url', 'referrer', 'query', 'title'];
-
-function getTable(type) {
-  if (type === 'event') {
-    return 'event';
-  }
-
-  if (sessionColumns.includes(type)) {
-    return 'session';
-  }
-
-  if (pageviewColumns.includes(type)) {
-    return 'pageview';
-  }
-
-  throw new Error('Invalid type');
-}
-
-function getColumn(type) {
-  switch (type) {
-    case 'url':
-      return 'url_path';
-    case 'referrer':
-      return 'referrer_domain';
-    case 'event':
-      return 'event_name';
-    case 'query':
-      return 'url_query';
-    case 'title':
-      return 'page_title';
-  }
-
-  return type;
-}
+import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
+import { getPageviewMetrics, getSessionMetrics } from 'queries';
 
 export interface WebsiteMetricsRequestQuery {
   id: string;
@@ -60,6 +14,8 @@ export interface WebsiteMetricsRequestQuery {
   url: string;
   referrer: string;
   title: string;
+  query: string;
+  event: string;
   os: string;
   browser: string;
   device: string;
@@ -84,6 +40,8 @@ export default async (
     url,
     referrer,
     title,
+    query,
+    event,
     os,
     browser,
     device,
@@ -91,7 +49,6 @@ export default async (
     subdivision1,
     subdivision2,
     city,
-    query,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -102,20 +59,25 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    if (sessionColumns.includes(type)) {
+    if (SESSION_COLUMNS.includes(type)) {
+      const column = FILTER_COLUMNS[type] || type;
+      const filters = {
+        os,
+        browser,
+        device,
+        country,
+        subdivision1,
+        subdivision2,
+        city,
+      };
+
+      filters[type] = undefined;
+
       let data = await getSessionMetrics(websiteId, {
         startDate,
         endDate,
-        field: type,
-        filters: {
-          os,
-          browser,
-          device,
-          country,
-          subdivision1,
-          subdivision2,
-          city,
-        },
+        column,
+        filters,
       });
 
       if (type === 'language') {
@@ -124,8 +86,8 @@ export default async (
         for (const { x, y } of data) {
           const key = String(x).toLowerCase().split('-')[0];
 
-          if (!combined[key]) {
-            combined[key] = { x, y };
+          if (combined[key] === undefined) {
+            combined[key] = { x: key, y };
           } else {
             combined[key].y += y;
           }
@@ -137,43 +99,30 @@ export default async (
       return ok(res, data);
     }
 
-    if (pageviewColumns.includes(type) || type === 'event') {
-      let domain;
-
-      if (type === 'referrer') {
-        const website = await getWebsite({ id: websiteId });
-
-        if (!website) {
-          return badRequest(res);
-        }
-
-        domain = website.domain;
-      }
-
-      const column = getColumn(type);
-      const table = getTable(type);
+    if (EVENT_COLUMNS.includes(type)) {
+      const column = FILTER_COLUMNS[type] || type;
       const filters = {
-        domain,
-        url: type !== 'url' && table !== 'event' ? url : undefined,
-        referrer: type !== 'referrer' && table !== 'event' ? referrer : FILTER_IGNORED,
-        title: type !== 'title' && table !== 'event' ? title : undefined,
-        os: type !== 'os' ? os : undefined,
-        browser: type !== 'browser' ? browser : undefined,
-        device: type !== 'device' ? device : undefined,
-        country: type !== 'country' ? country : undefined,
-        subdivision1: type !== 'subdivision1' ? subdivision1 : undefined,
-        subdivision2: type !== 'subdivision2' ? subdivision2 : undefined,
-        city: type !== 'city' ? city : undefined,
-        eventUrl: type !== 'url' && table === 'event' ? url : undefined,
-        query: type !== 'query' && table !== 'event' ? query : undefined,
+        url,
+        referrer,
+        title,
+        query,
+        event,
+        os,
+        browser,
+        device,
+        country,
+        subdivision1,
+        subdivision2,
+        city,
       };
+
+      filters[type] = undefined;
 
       const data = await getPageviewMetrics(websiteId, {
         startDate,
         endDate,
         column,
         filters,
-        type,
       });
 
       return ok(res, data);

@@ -69,6 +69,22 @@ export interface WebsiteMetric {
   y: number;
 }
 
+export interface WebsiteMetricFilter {
+  domain?: string;
+  url?: string;
+  referrer?: string;
+  title?: string;
+  query?: string;
+  event?: string;
+  os?: string;
+  browser?: string;
+  device?: string;
+  country?: string;
+  subdivision1?: string;
+  subdivision2?: string;
+  city?: string;
+}
+
 export interface WebsiteEventMetric {
   x: string;
   t: string;

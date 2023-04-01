@@ -2,13 +2,13 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import cache from 'lib/cache';
-import { EVENT_TYPE } from 'lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS } from 'lib/constants';
 import { getWebsite } from 'queries';
 
 export async function getSessionMetrics(
   ...args: [
     websiteId: string,
-    data: { startDate: Date; endDate: Date; field: string; filters: object },
+    criteria: { startDate: Date; endDate: Date; column: string; filters: object },
   ]
 ) {
   return runQuery({
@@ -19,17 +19,17 @@ export async function getSessionMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  data: { startDate: Date; endDate: Date; field: string; filters: object },
+  criteria: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
   const website = await getWebsite({ id: websiteId });
   const resetDate = website?.resetAt || website?.createdAt;
-  const { startDate, endDate, field, filters = {} } = data;
+  const { startDate, endDate, column, filters = {} } = criteria;
   const { toUuid, parseFilters, rawQuery } = prisma;
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
   return rawQuery(
-    `select ${field} x, count(*) y
+    `select ${column} x, count(*) y
     from session as x
     where x.session_id in (
       select website_event.session_id
@@ -51,17 +51,17 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  data: { startDate: Date; endDate: Date; field: string; filters: object },
+  data: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
-  const { startDate, endDate, field, filters = {} } = data;
+  const { startDate, endDate, column, filters = {} } = data;
   const { getDateFormat, parseFilters, getBetweenDates, rawQuery } = clickhouse;
   const website = await cache.fetchWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params = { websiteId };
-  const { filterQuery } = parseFilters(filters, params, field);
+  const { filterQuery } = parseFilters(filters, params);
 
   return rawQuery(
-    `select ${field} x, count(distinct session_id) y
+    `select ${column} x, count(distinct session_id) y
     from website_event as x
     where website_id = {websiteId:UUID}
     and event_type = ${EVENT_TYPE.pageView}

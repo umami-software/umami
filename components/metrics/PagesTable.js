@@ -28,7 +28,7 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
   ];
 
   const renderLink = ({ x }) => {
-    return <FilterLink id={view} value={x || `(${formatMessage(labels.none)})`} />;
+    return <FilterLink id={view} value={x || formatMessage(labels.none)} />;
   };
 
   return (
