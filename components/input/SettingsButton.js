@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
+import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
 import TimezoneSetting from 'components/pages/settings/profile/TimezoneSetting';
 import DateRangeSetting from 'components/pages/settings/profile/DateRangeSetting';
 import Icons from 'components/icons';
@@ -10,13 +10,11 @@ export default function SettingsButton() {
 
   return (
     <PopupTrigger>
-      <Tooltip label={formatMessage(labels.settings)} position="bottom">
-        <Button variant="quiet">
-          <Icon>
-            <Icons.Gear />
-          </Icon>
-        </Button>
-      </Tooltip>
+      <Button variant="quiet">
+        <Icon>
+          <Icons.Gear />
+        </Icon>
+      </Button>
       <Popup
         className={styles.popup}
         position="bottom"

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
@@ -18,6 +19,7 @@ export default function DataTable({
   virtualize = false,
   showPercentage = true,
 }) {
+  const [ref, bounds] = useMeasure();
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
 
@@ -56,10 +58,10 @@ export default function DataTable({
           {metric}
         </div>
       </div>
-      <div className={styles.body} style={{ height }}>
+      <div ref={ref} className={styles.body}>
         {data?.length === 0 && <NoData />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList height={height} itemCount={data.length} itemSize={30}>
+          <FixedSizeList height={bounds.height} itemCount={data.length} itemSize={30}>
             {Row}
           </FixedSizeList>
         ) : (

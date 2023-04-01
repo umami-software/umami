@@ -63,3 +63,36 @@ svg {
   width: 100%;
   height: 100%;
 }
+
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-right: 2px solid var(--base200);
+}
+
+::-webkit-scrollbar-track:hover {
+  border-right: 2px solid var(--base300);
+}
+
+::-webkit-scrollbar-thumb {
+  position: relative;
+  border-right: 2px solid var(--base600);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-right: 8px solid var(--base700);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  position: relative;
+  border-bottom: 2px solid var(--base600);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  border-bottom: 8px solid var(--base700);
+}

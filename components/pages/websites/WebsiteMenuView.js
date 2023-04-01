@@ -108,11 +108,10 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
         </Link>
         <SideNav items={items} selectedKey={view} shallow={true} />
       </GridColumn>
-      <GridColumn xs={12} sm={12} md={12} defaultSize={9} className={styles.data}>
+      <GridColumn xs={12} sm={12} md={12} defaultSize={9} className={styles.content}>
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}
-          height={500}
           limit={false}
           animate={false}
           showFilters={true}

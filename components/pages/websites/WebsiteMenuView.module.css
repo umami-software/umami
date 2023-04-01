@@ -1,3 +1,7 @@
-.data {
-  min-height: 600px;
+.menu {
+  position: relative;
+}
+
+.content {
+  min-height: 800px;
 }

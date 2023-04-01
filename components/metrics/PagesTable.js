@@ -35,12 +35,12 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
     <>
       {showFilters && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
       <MetricsTable
+        {...props}
         title={formatMessage(labels.pages)}
         type={view}
         metric={formatMessage(labels.views)}
         websiteId={websiteId}
         renderLabel={renderLink}
-        {...props}
       />
     </>
   );
