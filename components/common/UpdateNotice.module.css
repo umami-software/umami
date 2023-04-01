@@ -8,7 +8,7 @@
   padding: 20px;
   border: 1px solid var(--base300);
   border-radius: var(--border-radius);
-  z-index: 1000;
+  z-index: var(--z-index-popup);
 }
 
 .message {

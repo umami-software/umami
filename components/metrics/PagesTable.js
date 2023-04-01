@@ -8,7 +8,7 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
   const {
     router,
     resolveUrl,
-    query: { view },
+    query: { view = 'url' },
   } = usePageQuery();
   const { formatMessage, labels } = useMessages();
 

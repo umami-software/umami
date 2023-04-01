@@ -1,5 +1,6 @@
 .menu {
   width: 200px;
+  z-index: var(--z-index-popup);
 }
 
 .item {

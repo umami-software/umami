@@ -11,6 +11,6 @@
   top: 0;
   background: var(--base50);
   border-bottom: 1px solid var(--base300);
-  z-index: 3;
+  z-index: var(--z-index-overlay);
   padding: 10px 0;
 }
