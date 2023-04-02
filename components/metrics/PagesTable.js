@@ -3,6 +3,7 @@ import FilterButtons from 'components/common/FilterButtons';
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
 import usePageQuery from 'hooks/usePageQuery';
+import { emptyFilter } from '../../lib/filters';
 
 export default function PagesTable({ websiteId, showFilters, ...props }) {
   const {
@@ -28,7 +29,7 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
   ];
 
   const renderLink = ({ x }) => {
-    return <FilterLink id={view} value={x || formatMessage(labels.none)} />;
+    return <FilterLink id={view} value={x} label={!x && formatMessage(labels.none)} />;
   };
 
   return (
@@ -40,6 +41,7 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
         type={view}
         metric={formatMessage(labels.views)}
         websiteId={websiteId}
+        dataFilter={emptyFilter}
         renderLabel={renderLink}
       />
     </>

@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { safeDecodeURI } from 'next-basics';
 import FilterButtons from 'components/common/FilterButtons';
-import { paramFilter } from 'lib/filters';
+import { emptyFilter, paramFilter } from 'lib/filters';
 import { FILTER_RAW, FILTER_COMBINED } from 'lib/constants';
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
 import styles from './QueryParametersTable.module.css';
 
 const filters = {
-  [FILTER_RAW]: null,
+  [FILTER_RAW]: emptyFilter,
   [FILTER_COMBINED]: paramFilter,
 };
 

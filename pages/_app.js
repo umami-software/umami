@@ -53,10 +53,13 @@ export default function App({ Component, pageProps }) {
           <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
           <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <style>{`
+            html {
+              font-family: ${inter.style.fontFamily};
+            }
+          `}</style>
         </Head>
-        <div className={inter.className}>
-          <Component {...pageProps} />
-        </div>
+        <Component {...pageProps} />
         {!pathname.includes('/share/') && <Script src={`${basePath}/telemetry.js`} />}
       </IntlProvider>
     </QueryClientProvider>

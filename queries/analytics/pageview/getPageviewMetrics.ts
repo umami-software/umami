@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE, FILTER_COLUMNS } from 'lib/constants';
+import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
 export async function getPageviewMetrics(
@@ -42,10 +42,10 @@ async function relationalQuery(
     column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   ];
 
-  let domainFilter = '';
+  let excludeDomain = '';
 
   if (column === 'referrer_domain') {
-    domainFilter = 'and website_event.referrer_domain != $6';
+    excludeDomain = 'and website_event.referrer_domain != $6';
     params.push(website.domain);
   }
 
@@ -59,7 +59,7 @@ async function relationalQuery(
       and website_event.created_at >= $2
       and website_event.created_at between $3 and $4
       and event_type = $5
-      ${domainFilter}
+      ${excludeDomain}
       ${filterQuery}
     group by 1
     order by 2 desc

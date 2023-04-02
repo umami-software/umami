@@ -1,7 +1,7 @@
 .item {
   display: inline-flex;
   align-items: center;
-  margin-bottom: 1px;
+  line-height: 26px;
 }
 
 .param {
