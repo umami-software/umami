@@ -23,8 +23,8 @@ export default function usePageQuery() {
     }, {});
   }, [search]);
 
-  function resolveUrl(params) {
-    return buildUrl(asPath.split('?')[0], { ...query, ...params });
+  function resolveUrl(params, reset) {
+    return buildUrl(asPath.split('?')[0], { ...(reset ? {} : query), ...params });
   }
 
   return { pathname, query, resolveUrl, router };
