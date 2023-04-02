@@ -52,7 +52,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
   if (type !== 'event') {
-    return badRequest(res);
+    return badRequest(res, 'Wrong payload type.');
   }
 
   const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
