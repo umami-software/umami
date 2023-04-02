@@ -1,51 +1,26 @@
+import useMessages from 'hooks/useMessages';
+import useUser from 'hooks/useUser';
+import { ROLES } from 'lib/constants';
 import {
+  Flexbox,
   Table,
-  TableHeader,
   TableBody,
-  TableRow,
   TableCell,
   TableColumn,
-  LoadingButton,
-  Icon,
-  Icons,
-  Flexbox,
-  Text,
+  TableHeader,
+  TableRow,
 } from 'react-basics';
-import { ROLES } from 'lib/constants';
-import useUser from 'hooks/useUser';
-import useApi from 'hooks/useApi';
-import useMessages from 'hooks/useMessages';
-import { useState } from 'react';
+import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 
 export default function TeamMembersTable({ data = [], onSave, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
-  const { del, useMutation } = useApi();
-  const { mutate, isLoading } = useMutation(data => del(`/teamUsers/${data.teamUserId}`));
-  const [loadingIds, setLoadingIds] = useState([]);
 
   const columns = [
     { name: 'username', label: formatMessage(labels.username), style: { flex: 2 } },
     { name: 'role', label: formatMessage(labels.role), style: { flex: 1 } },
     { name: 'action', label: '', style: { flex: 1 } },
   ];
-
-  const handleRemoveTeamMember = teamUserId => {
-    setLoadingIds(prev => [...prev, teamUserId]);
-
-    mutate(
-      { teamUserId },
-      {
-        onSuccess: () => {
-          setLoadingIds(loadingIds.filter(a => a !== teamUserId));
-          onSave();
-        },
-        onError: () => {
-          setLoadingIds(loadingIds.filter(a => a !== teamUserId));
-        },
-      },
-    );
-  };
 
   return (
     <Table columns={columns} rows={data}>
@@ -67,16 +42,11 @@ export default function TeamMembersTable({ data = [], onSave, readOnly }) {
             ),
             action: !readOnly && (
               <Flexbox flex={1} justifyContent="end">
-                <LoadingButton
-                  onClick={() => handleRemoveTeamMember(row.id)}
+                <TeamMemberRemoveButton
+                  teamUserId={row.id}
                   disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
-                  loading={isLoading && loadingIds.some(a => a === row.id)}
-                >
-                  <Icon>
-                    <Icons.Close />
-                  </Icon>
-                  <Text>{formatMessage(labels.remove)}</Text>
-                </LoadingButton>
+                  onSave={onSave}
+                ></TeamMemberRemoveButton>
               </Flexbox>
             ),
           };

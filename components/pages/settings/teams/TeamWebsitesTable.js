@@ -1,43 +1,29 @@
+import useMessages from 'hooks/useMessages';
+import useUser from 'hooks/useUser';
 import Link from 'next/link';
 import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableColumn,
   Button,
-  Text,
+  Flexbox,
   Icon,
   Icons,
-  Flexbox,
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+  Text,
 } from 'react-basics';
-import useUser from 'hooks/useUser';
-import useApi from 'hooks/useApi';
-import useMessages from 'hooks/useMessages';
+import TeamWebsiteRemoveButton from './TeamWebsiteRemoveButton';
 
 export default function TeamWebsitesTable({ data = [], onSave }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
-  const { del, useMutation } = useApi();
-  const { mutate } = useMutation(({ teamWebsiteId }) => del(`/teamWebsites/${teamWebsiteId}`));
-
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
     { name: 'domain', label: formatMessage(labels.domain) },
     { name: 'action', label: ' ' },
   ];
-
-  const handleRemoveWebsite = teamWebsiteId => {
-    mutate(
-      { teamWebsiteId },
-      {
-        onSuccess: async () => {
-          onSave();
-        },
-      },
-    );
-  };
 
   return (
     <Table columns={columns} rows={data}>
@@ -72,12 +58,10 @@ export default function TeamWebsitesTable({ data = [], onSave }) {
                 </Button>
               </Link>
               {canRemove && (
-                <Button onClick={() => handleRemoveWebsite(teamWebsiteId)}>
-                  <Icon>
-                    <Icons.Trash />
-                  </Icon>
-                  <Text>{formatMessage(labels.remove)}</Text>
-                </Button>
+                <TeamWebsiteRemoveButton
+                  teamWebsiteId={teamWebsiteId}
+                  onSave={onSave}
+                ></TeamWebsiteRemoveButton>
               )}
             </Flexbox>
           );
