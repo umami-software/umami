@@ -19,7 +19,3 @@
   height: calc(100vh - 60px);
   overflow-y: auto;
 }
-
-.body::-webkit-scrollbar-track {
-  border: 0;
-}

@@ -6,7 +6,7 @@ export default function ShareLayout({ children }) {
   return (
     <Container>
       <Header />
-      {children}
+      <main>{children}</main>
       <Footer />
     </Container>
   );
