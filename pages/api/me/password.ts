@@ -1,5 +1,4 @@
 import { NextApiRequestQueryBody, User } from 'lib/types';
-import { canUpdateUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import {
@@ -9,7 +8,6 @@ import {
   methodNotAllowed,
   forbidden,
   ok,
-  unauthorized,
 } from 'next-basics';
 import { getUser, updateUser } from 'queries';
 
@@ -33,13 +31,9 @@ export default async (
   await useAuth(req, res);
 
   const { currentPassword, newPassword } = req.body;
-  const { id } = req.query;
+  const { id } = req.auth.user;
 
   if (req.method === 'POST') {
-    if (!(await canUpdateUser(req.auth, id))) {
-      return unauthorized(res);
-    }
-
     const user = await getUser({ id }, { includePassword: true });
 
     if (!checkPassword(currentPassword, user.password)) {
