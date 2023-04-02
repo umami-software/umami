@@ -7,6 +7,7 @@ import { getTeamUser, getTeamUserById } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
 import { Auth } from './types';
+import { loadWebsite } from './query';
 
 const log = debug('umami:auth');
 
@@ -66,7 +67,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
@@ -98,7 +99,7 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return false;
   }
 
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
@@ -112,7 +113,7 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;

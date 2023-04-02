@@ -14,6 +14,7 @@ export type KafkaTopics = ObjectValues<typeof KAFKA_TOPIC>;
 export interface EventData {
   [key: string]: number | string | EventData | number[] | string[] | EventData[];
 }
+
 export interface Auth {
   user?: {
     id: string;

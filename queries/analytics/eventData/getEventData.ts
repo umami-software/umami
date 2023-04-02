@@ -1,9 +1,8 @@
-import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { WebsiteEventDataMetric } from 'lib/types';
-import { getWebsite } from 'queries';
+import { loadWebsite } from 'lib/query';
 
 export async function getEventData(
   ...args: [
@@ -49,7 +48,7 @@ async function relationalQuery(
 ) {
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
-  const website = await getWebsite({ id: websiteId });
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params: any = [websiteId, resetDate, startDate, endDate, eventName || ''];
 
@@ -99,7 +98,7 @@ async function clickhouseQuery(
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { rawQuery, getDateFormat, getBetweenDates, getDateQuery, getEventDataFilterQuery } =
     clickhouse;
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params = { websiteId };
 

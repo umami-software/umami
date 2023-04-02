@@ -1,11 +1,11 @@
-import cache from 'lib/cache';
 import clickhouse from 'lib/clickhouse';
 import { secret, uuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
-import { createSession, getSession, getWebsite } from 'queries';
+import { createSession } from 'queries';
 import { validate } from 'uuid';
+import { loadSession, loadWebsite } from './query';
 
 export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);
@@ -33,15 +33,9 @@ export async function findSession(req: NextApiRequestCollect) {
   }
 
   // Find website
-  let website;
+  const website = await loadWebsite(websiteId);
 
-  if (cache.enabled) {
-    website = await cache.fetchWebsite(websiteId);
-  } else {
-    website = await getWebsite({ id: websiteId });
-  }
-
-  if (!website || website.deletedAt) {
+  if (!website) {
     throw new Error(`Website not found: ${websiteId}`);
   }
 
@@ -68,13 +62,7 @@ export async function findSession(req: NextApiRequestCollect) {
   }
 
   // Find session
-  let session;
-
-  if (cache.enabled) {
-    session = await cache.fetchSession(sessionId);
-  } else {
-    session = await getSession({ id: sessionId });
-  }
+  let session = await loadSession(websiteId);
 
   // Create a session if not found
   if (!session) {

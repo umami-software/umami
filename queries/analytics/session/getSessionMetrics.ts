@@ -1,9 +1,8 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import cache from 'lib/cache';
-import { EVENT_TYPE, FILTER_COLUMNS } from 'lib/constants';
-import { getWebsite } from 'queries';
+import { EVENT_TYPE } from 'lib/constants';
+import { loadWebsite } from 'lib/query';
 
 export async function getSessionMetrics(
   ...args: [
@@ -21,7 +20,7 @@ async function relationalQuery(
   websiteId: string,
   criteria: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
-  const website = await getWebsite({ id: websiteId });
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const { startDate, endDate, column, filters = {} } = criteria;
   const { toUuid, parseFilters, rawQuery } = prisma;
@@ -55,7 +54,7 @@ async function clickhouseQuery(
 ) {
   const { startDate, endDate, column, filters = {} } = data;
   const { getDateFormat, parseFilters, getBetweenDates, rawQuery } = clickhouse;
-  const website = await cache.fetchWebsite(websiteId);
+  const website = await loadWebsite(websiteId);
   const resetDate = website?.resetAt || website?.createdAt;
   const params = { websiteId };
   const { filterQuery } = parseFilters(filters, params);
