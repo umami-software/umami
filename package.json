@@ -58,7 +58,6 @@
     ".next/cache"
   ],
   "dependencies": {
-    "@fontsource/inter": "4.5.7",
     "@prisma/client": "4.11.0",
     "@tanstack/react-query": "^4.16.1",
     "@umami/prisma-client": "^0.2.0",

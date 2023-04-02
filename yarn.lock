@@ -1274,11 +1274,6 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.36.0.tgz#9837f768c03a1e4a30bd304a64fb8844f0e72efe"
   integrity sha512-lxJ9R5ygVm8ZWgYdUweoq5ownDlJ4upvoWmO4eLxBYHdMo+vZ/Rx0EN6MbKWDJOSUGrqJy2Gt+Dyv/VKml0fjg==
 
-"@fontsource/inter@4.5.7":
-  version "4.5.7"
-  resolved "https://registry.npmjs.org/@fontsource/inter/-/inter-4.5.7.tgz"
-  integrity sha512-25k3thupaOEBexuU+jAkGqieKPbuhSuA+sinDwp1iBNhqQPiJ9QHDvsXgoCgCbZ4sGlE8aCwZmSlDJrPdJHNkw==
-
 "@formatjs/cli@^4.2.29":
   version "4.8.4"
   resolved "https://registry.npmjs.org/@formatjs/cli/-/cli-4.8.4.tgz"

@@ -5,7 +5,6 @@ import NavBar from 'components/layout/NavBar';
 import UpdateNotice from 'components/common/UpdateNotice';
 import useRequireLogin from 'hooks/useRequireLogin';
 import useConfig from 'hooks/useConfig';
-import { UI_LAYOUT_BODY } from 'lib/constants';
 import styles from './AppLayout.module.css';
 
 export default function AppLayout({ title, children }) {
@@ -25,14 +24,12 @@ export default function AppLayout({ title, children }) {
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
       </Head>
-      <div className={styles.nav}>
+      <nav className={styles.nav}>
         <NavBar />
-      </div>
-      <div className={styles.body} id={UI_LAYOUT_BODY}>
-        <Container>
-          <main>{children}</main>
-        </Container>
-      </div>
+      </nav>
+      <main className={styles.body}>
+        <Container>{children}</Container>
+      </main>
     </div>
   );
 }

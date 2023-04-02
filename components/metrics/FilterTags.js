@@ -17,8 +17,8 @@ export default function FilterTags({ websiteId, params }) {
   }
 
   function handleCloseFilter(param) {
-    if (param === null) {
-      router.push(`/websites/${websiteId}/?view=${view}`);
+    if (!param) {
+      router.push(`/websites/${websiteId}${view ? `?view=${view}` : ''}`);
     } else {
       router.push(resolveUrl({ [param]: undefined }));
     }
@@ -41,7 +41,7 @@ export default function FilterTags({ websiteId, params }) {
           </div>
         );
       })}
-      <Button size="sm" variant="quiet" onClick={() => handleCloseFilter(null)}>
+      <Button size="sm" variant="quiet" onClick={() => handleCloseFilter()}>
         <Icon>
           <Icons.Close />
         </Icon>

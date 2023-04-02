@@ -23,8 +23,6 @@ export const DEFAULT_WEBSITE_LIMIT = 10;
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
 
-export const UI_LAYOUT_BODY = 'ui-layout-body';
-
 export const FILTER_COMBINED = 'filter-combined';
 export const FILTER_RAW = 'filter-raw';
 export const FILTER_DAY = 'filter-day';
