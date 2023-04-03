@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { useVisible } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from './BarChart';
-import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { THEME_COLORS } from 'lib/constants';
 import useTheme from 'hooks/useTheme';
 import useMessages from 'hooks/useMessages';
 
@@ -13,12 +12,10 @@ export default function PageviewsChart({
   records,
   className,
   loading,
-  animationDuration = DEFAULT_ANIMATION_DURATION,
   ...props
 }) {
   const { formatMessage, labels } = useMessages();
   const [theme] = useTheme();
-  const { ref, visible } = useVisible();
 
   const colors = useMemo(() => {
     const primaryColor = colord(THEME_COLORS[theme].primary);
@@ -58,17 +55,14 @@ export default function PageviewsChart({
   }, [data]);
 
   return (
-    <div ref={ref}>
-      <BarChart
-        {...props}
-        key={websiteId}
-        className={className}
-        datasets={datasets}
-        unit={unit}
-        records={records}
-        animationDuration={visible ? animationDuration : 0}
-        loading={loading}
-      />
-    </div>
+    <BarChart
+      {...props}
+      key={websiteId}
+      className={className}
+      datasets={datasets}
+      unit={unit}
+      records={records}
+      loading={loading}
+    />
   );
 }
