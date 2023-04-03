@@ -117,7 +117,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     urlPath = '/';
   }
 
-  if (referrerPath.startsWith('http')) {
+  if (referrerPath?.startsWith('http')) {
     const refUrl = new URL(referrer);
     referrerPath = refUrl.pathname;
     referrerQuery = refUrl.search.substring(1);
