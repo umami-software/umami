@@ -1,18 +1,17 @@
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Head from 'next/head';
-import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import { useRouter } from 'next/router';
 import useLocale from 'hooks/useLocale';
 import useConfig from 'hooks/useConfig';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/700.css';
 import 'react-basics/dist/styles.css';
 import 'styles/variables.css';
 import 'styles/locale.css';
 import 'styles/index.css';
 import 'chartjs-adapter-date-fns';
-import Script from 'next/script';
-
-const inter = Inter({ subsets: ['latin'] });
 
 const client = new QueryClient({
   defaultOptions: {
@@ -53,11 +52,6 @@ export default function App({ Component, pageProps }) {
           <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
           <meta name="theme-color" content="#2f2f2f" media="(prefers-color-scheme: dark)" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <style>{`
-            html {
-              font-family: ${inter.style.fontFamily};
-            }
-          `}</style>
         </Head>
         <Component {...pageProps} />
         {!pathname.includes('/share/') && <Script src={`${basePath}/telemetry.js`} />}
