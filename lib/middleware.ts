@@ -24,7 +24,7 @@ export const useSession = createMiddleware(async (req, res, next) => {
 
   if (!session) {
     log('useSession: Session not found');
-    return badRequest(res);
+    return badRequest(res, 'Session not found.');
   }
 
   (req as any).session = session;

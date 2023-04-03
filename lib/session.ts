@@ -62,7 +62,7 @@ export async function findSession(req: NextApiRequestCollect) {
   }
 
   // Find session
-  let session = await loadSession(websiteId);
+  let session = await loadSession(sessionId);
 
   // Create a session if not found
   if (!session) {
