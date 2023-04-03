@@ -1,6 +1,6 @@
 import cache from 'lib/cache';
 import { getWebsite, getSession, getUser } from 'queries';
-import { Website } from './types';
+import { User, Website, Session } from '@prisma/client';
 
 export async function loadWebsite(websiteId: string): Promise<Website> {
   let website;
@@ -18,7 +18,7 @@ export async function loadWebsite(websiteId: string): Promise<Website> {
   return website;
 }
 
-export async function loadSession(sessionId: string): Promise<Website> {
+export async function loadSession(sessionId: string): Promise<Session> {
   let session;
 
   if (cache.enabled) {
@@ -34,7 +34,7 @@ export async function loadSession(sessionId: string): Promise<Website> {
   return session;
 }
 
-export async function loadUser(userId: string): Promise<Website> {
+export async function loadUser(userId: string): Promise<User> {
   let user;
 
   if (cache.enabled) {
