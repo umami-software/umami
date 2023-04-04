@@ -49,15 +49,13 @@ export default function TestConsole() {
     return null;
   }
 
-  const websiteId = id?.[0];
+  const [websiteId] = id || [];
   const website = data.find(({ id }) => websiteId === id);
 
   return (
     <Page loading={isLoading} error={error}>
       <Head>
-        <title>
-          {router.query.id[2] ? `Umami Console page ${router.query.id[2]}` : 'Umami Console Select'}
-        </title>
+        <title>{website ? `${website.name} | Umami Console` : 'Umami Console'}</title>
       </Head>
       <PageHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
@@ -74,10 +72,10 @@ export default function TestConsole() {
             <Column xs="4">
               <div className={styles.header}>Page links</div>
               <div>
-                <Link href={`/console/${websiteId}/page/1/?q=123`}>page one</Link>
+                <Link href={`/console/${websiteId}/page/1/?q=abc`}>page one</Link>
               </div>
               <div>
-                <Link href={`/console/${websiteId}/page/2/?q=456 `}>page two</Link>
+                <Link href={`/console/${websiteId}/page/2/?q=123 `}>page two</Link>
               </div>
               <div>
                 <a href="https://www.google.com" data-umami-event="external-link-direct">
