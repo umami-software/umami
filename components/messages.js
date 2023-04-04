@@ -152,6 +152,10 @@ export const messages = defineMessages({
     defaultMessage:
       'To track stats for this website, place the following code in the <head>...</head> section of your HTML.',
   },
+  joinTeamWarning: {
+    id: 'message.team-already-member',
+    defaultMessage: 'You are already a member of the team.',
+  },
   deleteWebsite: {
     id: 'message.delete-website',
     defaultMessage: 'To delete this website, type {confirmation} in the box below to confirm.',
