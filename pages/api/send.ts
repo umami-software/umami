@@ -121,7 +121,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     const refUrl = new URL(referrer);
     referrerPath = refUrl.pathname;
     referrerQuery = refUrl.search.substring(1);
-    referrerDomain = refUrl.hostname;
+    referrerDomain = refUrl.hostname.replace(/www\./, '');
   }
 
   if (process.env.REMOVE_TRAILING_SLASH) {
