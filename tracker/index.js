@@ -173,7 +173,7 @@
   }
 
   let currentUrl = `${pathname}${search}`;
-  let currentRef = getPath(document.referrer);
+  let currentRef = document.referrer;
   let title = document.title;
   let cache;
   let initialized;

@@ -64,7 +64,7 @@ export default function WebsiteChart({
       };
     }
     return { pageviews: [], sessions: [] };
-  }, [data, startDate, endDate, unit]);
+  }, [data, modified]);
 
   return (
     <>
