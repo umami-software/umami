@@ -28,6 +28,7 @@
   const endpoint = `${root}/api/send`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
+  const eventNameAttribute = _data + 'umami-event';
 
   /* Helper functions */
 
@@ -90,15 +91,14 @@
   };
 
   const handleClick = () => {
-    const callback = e => {
-      const t = e.target;
-      const attr = t.getAttribute.bind(t);
-      const eventName = attr(_data + 'umami-event');
+    const trackElement = el => {
+      const attr = el.getAttribute.bind(el);
+      const eventName = attr(eventNameAttribute);
 
       if (eventName) {
         const eventData = {};
 
-        t.getAttributeNames().forEach(name => {
+        el.getAttributeNames().forEach(name => {
           const match = name.match(eventRegex);
 
           if (match) {
@@ -106,23 +106,40 @@
           }
         });
 
-        if (t.tagName === 'A') {
-          const href = attr('href');
-          const target = attr('target');
+        return track(eventName, { data: eventData });
+      }
+      return Promise.resolve();
+    };
 
-          if (
-            href &&
-            target !== '_blank' &&
-            !(e.ctrlKey || e.shiftKey || e.metaKey || (e.button && e.button === 1))
-          ) {
+    const callback = e => {
+      const el = e.target;
+      const anchor =
+        el.tagName === 'A'
+          ? el
+          : el.parentElement && el.parentElement.tagName === 'A'
+          ? el.parentElement
+          : null;
+
+      if (anchor) {
+        const { href, target } = anchor;
+        const external =
+          target === '_blank' ||
+          e.ctrlKey ||
+          e.shiftKey ||
+          e.metaKey ||
+          (e.button && e.button === 1);
+        const eventName = anchor.getAttribute(eventNameAttribute);
+
+        if (eventName && href) {
+          if (!external) {
             e.preventDefault();
-            return track(eventName, { data: eventData }).then(() => {
-              location.href = href;
-            });
           }
+          return trackElement(anchor).then(() => {
+            if (!external) location.href = href;
+          });
         }
-
-        track(eventName, { data: eventData });
+      } else {
+        trackElement(el);
       }
     };
 
