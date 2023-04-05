@@ -1,3 +1,4 @@
+import { NextApiResponse } from 'next';
 import {
   ok,
   unauthorized,
@@ -5,13 +6,12 @@ import {
   checkPassword,
   createSecureToken,
   methodNotAllowed,
-  getRandomChars,
 } from 'next-basics';
 import redis from '@umami/redis-client';
 import { getUser } from 'queries';
 import { secret } from 'lib/crypto';
 import { NextApiRequestQueryBody, User } from 'lib/types';
-import { NextApiResponse } from 'next';
+import { setAuthKey } from 'lib/auth';
 
 export interface LoginRequestBody {
   username: string;
@@ -38,11 +38,7 @@ export default async (
 
     if (user && checkPassword(password, user.password)) {
       if (redis.enabled) {
-        const authKey = `auth:${getRandomChars(32)}`;
-
-        await redis.set(authKey, user);
-
-        const token = createSecureToken({ authKey }, secret());
+        const token = await setAuthKey(user);
 
         return ok(res, { token, user });
       }
