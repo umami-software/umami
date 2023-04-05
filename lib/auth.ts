@@ -1,8 +1,15 @@
 import debug from 'debug';
+import redis from '@umami/redis-client';
 import cache from 'lib/cache';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { ensureArray, parseSecureToken, parseToken } from 'next-basics';
+import {
+  createSecureToken,
+  ensureArray,
+  getRandomChars,
+  parseSecureToken,
+  parseToken,
+} from 'next-basics';
 import { getTeamUser, getTeamUserById } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
@@ -10,6 +17,18 @@ import { Auth } from './types';
 import { loadWebsite } from './query';
 
 const log = debug('umami:auth');
+
+export async function setAuthKey(user, expire = 0) {
+  const authKey = `auth:${getRandomChars(32)}`;
+
+  await redis.set(authKey, user);
+
+  if (expire) {
+    await redis.expire(authKey, expire);
+  }
+
+  return createSecureToken({ authKey }, secret());
+}
 
 export function getAuthToken(req) {
   try {
