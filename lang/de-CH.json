@@ -82,7 +82,7 @@
   "message.powered-by": "Betribe dur {name}",
   "message.reset-warning": "Alli Date für die Websiite werdet glöscht, nur de Tracking Code blibt bestah.",
   "message.save-success": "Erfolgrich gspeichert.",
-  "message.share-url": "Das isch d'Öffentlichi URL zum Teile für {target}.",
+  "message.share-url": "Das isch die öffentlichi URL zum Teile für {target}.",
   "message.toggle-charts": "Schaubilder umschalte",
   "message.track-stats": "Um d'Statistike für {target} z'übermittle, platziered Sie bitte de folgendi Quelltext im {head} ihrere Websiite.",
   "message.type-delete": "Gebed Sie {delete} is Feld une ine um z'bestätige.",
