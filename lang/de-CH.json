@@ -67,7 +67,7 @@
   "message.confirm-delete": "Sind Sie sich sicher, {target} zlösche?",
   "message.confirm-reset": "Sind Sie sicher, dass Sie dStatistike vo {target} zruggsetze wend?",
   "message.copied": "Id Zwischeablag kopiert!",
-  "message.delete-warning": "Alli dezueghörigi Date werdet ebefalls glöscht.",
+  "message.delete-warning": "Alli dezueghörige Date werdet ebefalls glöscht.",
   "message.edit-dashboard": "Dashboard bearbeite",
   "message.failure": "Es isch en Fehler uftrete.",
   "message.get-share-url": "Freigab-URL abrüefe",
