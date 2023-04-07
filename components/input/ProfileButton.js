@@ -3,11 +3,13 @@ import { useRouter } from 'next/router';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 import useUser from 'hooks/useUser';
+import useConfig from 'hooks/useConfig';
 import styles from './ProfileButton.module.css';
 
 export default function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const { cloudMode } = useConfig();
   const router = useRouter();
 
   const handleSelect = key => {
@@ -40,12 +42,14 @@ export default function ProfileButton() {
             </Icon>
             <Text>{formatMessage(labels.profile)}</Text>
           </Item>
-          <Item key="logout" className={styles.item}>
-            <Icon>
-              <Icons.Logout />
-            </Icon>
-            <Text>{formatMessage(labels.logout)}</Text>
-          </Item>
+          {!cloudMode && (
+            <Item key="logout" className={styles.item}>
+              <Icon>
+                <Icons.Logout />
+              </Icon>
+              <Text>{formatMessage(labels.logout)}</Text>
+            </Item>
+          )}
         </Menu>
       </Popup>
     </PopupTrigger>

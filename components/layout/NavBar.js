@@ -50,7 +50,7 @@ export default function NavBar() {
           <div className={styles.actions}>
             <ThemeButton />
             <LanguageButton />
-            {!cloudMode && <ProfileButton />}
+            <ProfileButton />
           </div>
         </Column>
       </Row>

@@ -26,14 +26,20 @@ export default function WebsiteSettings({ websiteId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
 
-  const handleSave = data => {
+  const showSuccess = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
+
+  const handleSave = data => {
+    showSuccess();
     setValues(state => ({ ...state, ...data }));
   };
 
   const handleReset = async value => {
     if (value === 'delete') {
-      await router.push('/websites');
+      await router.push('/settings/websites');
+    } else if (value === 'reset') {
+      showSuccess();
     }
   };
 

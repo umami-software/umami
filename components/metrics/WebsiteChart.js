@@ -39,7 +39,7 @@ export default function WebsiteChart({
   const { ref, isSticky } = useSticky({ enabled: stickyHeader });
 
   const { data, isLoading, error } = useQuery(
-    ['websites:pageviews', websiteId, modified, url, referrer, os, browser, device, country],
+    ['websites:pageviews', { websiteId, modified, url, referrer, os, browser, device, country }],
     () =>
       get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
