@@ -35,7 +35,10 @@ export default function MetricsTable({
   const { get, useQuery } = useApi();
 
   const { data, isLoading, isFetched, error } = useQuery(
-    ['websites:metrics', websiteId, type, modified, url, referrer, os, browser, device, country],
+    [
+      'websites:metrics',
+      { websiteId, type, modified, url, referrer, os, browser, device, country },
+    ],
     () =>
       get(`/websites/${websiteId}/metrics`, {
         type,
