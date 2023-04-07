@@ -53,14 +53,12 @@ export default function RealtimeUrls({ websiteDomain, data = {} }) {
       const pages = percentFilter(
         pageviews
           .reduce((arr, { urlPath }) => {
-            if (urlPath?.startsWith('/')) {
-              const row = arr.find(({ x }) => x === urlPath);
+            const row = arr.find(({ x }) => x === urlPath);
 
-              if (!row) {
-                arr.push({ x: urlPath, y: 1 });
-              } else {
-                row.y += 1;
-              }
+            if (!row) {
+              arr.push({ x: urlPath, y: 1 });
+            } else {
+              row.y += 1;
             }
             return arr;
           }, [])
