@@ -57,7 +57,7 @@ export default function RealtimeLog({ data, websiteDomain }) {
   const getIcon = ({ __type }) => icons[__type];
 
   const getDetail = log => {
-    const { __type, eventName, url, browser, os, country, device } = log;
+    const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
       return (
