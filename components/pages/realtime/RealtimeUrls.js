@@ -35,18 +35,14 @@ export default function RealtimeUrls({ websiteDomain, data = {} }) {
     if (pageviews) {
       const referrers = percentFilter(
         pageviews
-          .reduce((arr, { referrer }) => {
-            if (referrer?.startsWith('http')) {
-              const hostname = new URL(referrer).hostname.replace(/^www\./, '');
+          .reduce((arr, { referrerDomain }) => {
+            if (referrerDomain) {
+              const row = arr.find(({ x }) => x === referrerDomain);
 
-              if (hostname) {
-                const row = arr.find(({ x }) => x === hostname);
-
-                if (!row) {
-                  arr.push({ x: hostname, y: 1 });
-                } else {
-                  row.y += 1;
-                }
+              if (!row) {
+                arr.push({ x: referrerDomain, y: 1 });
+              } else {
+                row.y += 1;
               }
             }
             return arr;
@@ -56,15 +52,13 @@ export default function RealtimeUrls({ websiteDomain, data = {} }) {
 
       const pages = percentFilter(
         pageviews
-          .reduce((arr, { url }) => {
-            if (url?.startsWith('/')) {
-              const row = arr.find(({ x }) => x === url);
+          .reduce((arr, { urlPath }) => {
+            const row = arr.find(({ x }) => x === urlPath);
 
-              if (!row) {
-                arr.push({ x: url, y: 1 });
-              } else {
-                row.y += 1;
-              }
+            if (!row) {
+              arr.push({ x: urlPath, y: 1 });
+            } else {
+              row.y += 1;
             }
             return arr;
           }, [])

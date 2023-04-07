@@ -3,17 +3,18 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
 
-export function getEvents(...args: [websiteId: string, startAt: Date]) {
+export function getEvents(...args: [websiteId: string, startAt: Date, eventType: number]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-function relationalQuery(websiteId: string, startAt: Date) {
+function relationalQuery(websiteId: string, startAt: Date, eventType: number) {
   return prisma.client.websiteEvent.findMany({
     where: {
       websiteId,
+      eventType,
       createdAt: {
         gte: startAt,
       },
@@ -21,7 +22,7 @@ function relationalQuery(websiteId: string, startAt: Date) {
   });
 }
 
-function clickhouseQuery(websiteId: string, startAt: Date) {
+function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
@@ -34,12 +35,13 @@ function clickhouseQuery(websiteId: string, startAt: Date) {
       url_path,
       event_name as eventName
     from website_event
-    where event_type = ${EVENT_TYPE.customEvent}
+    where event_type = {eventType:Uint32}
       and website_id = {websiteId:UUID}
       and created_at >= {startAt:DateTime('UTC')}`,
     {
       websiteId,
       startAt,
+      eventType,
     },
   );
 }
