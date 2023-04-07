@@ -35,7 +35,7 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
       url_path,
       event_name as eventName
     from website_event
-    where event_type = {eventType:Uint32}
+    where event_type = {eventType:UInt32}
       and website_id = {websiteId:UUID}
       and created_at >= {startAt:DateTime('UTC')}`,
     {

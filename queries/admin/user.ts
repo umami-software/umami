@@ -161,6 +161,9 @@ export async function deleteUser(
 
   return prisma
     .transaction([
+      client.eventData.deleteMany({
+        where: { websiteId: { in: websiteIds } },
+      }),
       client.websiteEvent.deleteMany({
         where: { websiteId: { in: websiteIds } },
       }),
