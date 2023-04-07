@@ -78,6 +78,9 @@ export async function deleteWebsite(
   const cloudMode = process.env.CLOUD_MODE;
 
   return transaction([
+    client.eventData.deleteMany({
+      where: { websiteId },
+    }),
     client.websiteEvent.deleteMany({
       where: { websiteId },
     }),
