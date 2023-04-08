@@ -6,7 +6,9 @@ function NoData({ className }) {
   const { formatMessage, messages } = useMessages();
 
   return (
-    <div className={classNames(styles.container, className)}>{formatMessage(messages.noData)}</div>
+    <div className={classNames(styles.container, className)}>
+      {formatMessage(messages.noDataAvailable)}
+    </div>
   );
 }
 

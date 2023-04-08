@@ -51,7 +51,7 @@ export default function WebsiteAddTeamForm({ teamId, onSave, onClose }) {
         <WebsiteTags items={websites} websites={newWebsites} onClick={handleRemoveWebsite} />
         <FormButtons flex>
           <SubmitButton disabled={newWebsites && newWebsites.length === 0}>
-            {formatMessage(labels.addWebsites)}
+            {formatMessage(labels.addWebsite)}
           </SubmitButton>
           <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
         </FormButtons>

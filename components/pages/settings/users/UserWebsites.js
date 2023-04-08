@@ -18,7 +18,7 @@ export default function UserWebsites({ userId }) {
   return (
     <div>
       {hasData && <WebsitesTable data={data} />}
-      {!hasData && formatMessage(messages.noData)}
+      {!hasData && formatMessage(messages.noDataAvailable)}
     </div>
   );
 }

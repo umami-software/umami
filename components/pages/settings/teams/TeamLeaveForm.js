@@ -19,7 +19,7 @@ export default function TeamLeaveForm({ teamUserId, teamName, onSave, onClose })
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <p>
-        <FormattedMessage {...messages.leaveTeamWarning} values={{ name: <b>{teamName}</b> }} />
+        <FormattedMessage {...messages.confirmLeave} values={{ name: <b>{teamName}</b> }} />
       </p>
       <FormButtons flex>
         <SubmitButton variant="danger" disabled={isLoading}>

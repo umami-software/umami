@@ -51,7 +51,7 @@ export default function TeamWebsites({ teamId }) {
     <div>
       {toast}
       {hasData && (
-        <ActionForm description={formatMessage(messages.websitesAreShared)}>{addButton}</ActionForm>
+        <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
       )}
       {hasData && <TeamWebsitesTable teamId={teamId} data={data} onSave={handleSave} />}
       {!hasData && (
