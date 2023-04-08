@@ -8,7 +8,7 @@
   "label.actions": [
     {
       "type": 0,
-      "value": "Accions"
+      "value": "Дзеянні"
     }
   ],
   "label.activity-log": [
@@ -20,25 +20,25 @@
   "label.add-website": [
     {
       "type": 0,
-      "value": "Afegeix lloc web"
+      "value": "Дадаць сайт"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrador"
+      "value": "Адміністратар"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Tots"
+      "value": "Усё"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Sempre"
+      "value": "Увесь час"
     }
   ],
   "label.analytics": [
@@ -50,37 +50,37 @@
   "label.average-visit-time": [
     {
       "type": 0,
-      "value": "Temps mitjà de visita"
+      "value": "Сярэдняя даўжыня наведвання"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Enrere"
+      "value": "Назад"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Percentatge de rebot"
+      "value": "Паказчык адмоваў"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Navegadors"
+      "value": "Браўзеры"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Cancel·la"
+      "value": "Адмена"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Canvia la contrasenya"
+      "value": "Змяніць пароль"
     }
   ],
   "label.clear-all": [
@@ -98,7 +98,7 @@
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirma la contrasenya"
+      "value": "Падцвердзіць пароль"
     }
   ],
   "label.continue": [
@@ -110,7 +110,7 @@
   "label.countries": [
     {
       "type": 0,
-      "value": "Països"
+      "value": "Краіны"
     }
   ],
   "label.create-team": [
@@ -134,19 +134,19 @@
   "label.current-password": [
     {
       "type": 0,
-      "value": "Contrasenya actual"
+      "value": "Бягучы пароль"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Rang personalitzat"
+      "value": "Карыстацкі дыяпазон"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Panell"
+      "value": "Інфармацыйная панэль"
     }
   ],
   "label.data": [
@@ -158,19 +158,19 @@
   "label.date-range": [
     {
       "type": 0,
-      "value": "Interval de dates"
+      "value": "Дыяпазон дат"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Interval de dates per defecte"
+      "value": "Дыяпазон дат па змаўчанню"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Esborra"
+      "value": "Выдаліць"
     }
   ],
   "label.delete-team": [
@@ -182,13 +182,13 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "Выдаліць сайт"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "Escriptori"
+      "value": "Настольны ПК"
     }
   ],
   "label.details": [
@@ -200,55 +200,55 @@
   "label.devices": [
     {
       "type": 0,
-      "value": "Dispositius"
+      "value": "Прылады"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Descarta"
+      "value": "Адмена"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domini"
+      "value": "Дамен"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Edita"
+      "value": "Змяніць"
     }
   ],
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Змяніць інфармацыйную панэль"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Activa l'enllaç per compartir"
+      "value": "Дазволіць дзяліцца спасылкай"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "Esdeveniments"
+      "value": "Падзеі"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "Combinat"
+      "value": "Камбініаваны"
     }
   ],
   "label.filter-raw": [
     {
       "type": 0,
-      "value": "En cru"
+      "value": "Сырыя"
     }
   ],
   "label.join": [
@@ -266,25 +266,25 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Мова"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Llengües"
+      "value": "Мовы"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
-      "value": "Portàtil"
+      "value": "Ноўтбук"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "Últims "
+      "value": "Апошнія "
     },
     {
       "type": 1,
@@ -292,13 +292,13 @@
     },
     {
       "type": 0,
-      "value": " dies"
+      "value": " дні"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "Últimes "
+      "value": "Апошнія "
     },
     {
       "type": 1,
@@ -306,7 +306,7 @@
     },
     {
       "type": 0,
-      "value": " hores"
+      "value": " гадзіны"
     }
   ],
   "label.leave": [
@@ -324,7 +324,7 @@
   "label.logout": [
     {
       "type": 0,
-      "value": "Desconnecta't"
+      "value": "Выйсці"
     }
   ],
   "label.members": [
@@ -336,67 +336,67 @@
   "label.mobile": [
     {
       "type": 0,
-      "value": "Mòbil"
+      "value": "Мабільны"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Més"
+      "value": "Болей"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nom"
+      "value": "Імя"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Contrasenya nova"
+      "value": "Новы пароль"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Няма"
     }
   ],
   "label.operating-systems": [
     {
       "type": 0,
-      "value": "Sistemes operatius"
+      "value": "Аперацыонныя сістэмы"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Propietari"
+      "value": "Уласнік"
     }
   ],
   "label.page-views": [
     {
       "type": 0,
-      "value": "Pàgines vistes"
+      "value": "Прагляды старонкі"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "Pàgines"
+      "value": "Старонкі"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Contrasenya"
+      "value": "Пароль"
     }
   ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "Funciona amb "
+      "value": "Зроблена "
     },
     {
       "type": 1,
@@ -406,7 +406,7 @@
   "label.profile": [
     {
       "type": 0,
-      "value": "Perfil"
+      "value": "Профіль"
     }
   ],
   "label.queries": [
@@ -424,19 +424,19 @@
   "label.realtime": [
     {
       "type": 0,
-      "value": "Temps real"
+      "value": "У рэяльным часе"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referents"
+      "value": "Referrers"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Refresca"
+      "value": "Аднавіць"
     }
   ],
   "label.regenerate": [
@@ -454,19 +454,19 @@
   "label.required": [
     {
       "type": 0,
-      "value": "Obligatori"
+      "value": "Абавязкова"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Restableix"
+      "value": "Скінуць"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "Скінуць статыстыку"
     }
   ],
   "label.role": [
@@ -478,13 +478,13 @@
   "label.save": [
     {
       "type": 0,
-      "value": "Desa"
+      "value": "Захаваць"
     }
   ],
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Экраны"
     }
   ],
   "label.select-website": [
@@ -502,25 +502,25 @@
   "label.settings": [
     {
       "type": 0,
-      "value": "Configuració"
+      "value": "Налады"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Enllaç per compartir"
+      "value": "Падзяліцца спасылкай"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Un sol dia"
+      "value": "Адзін дзень"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
-      "value": "Tauleta"
+      "value": "Планшэт"
     }
   ],
   "label.team": [
@@ -562,31 +562,31 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Тэма"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Aquest mes"
+      "value": "Гэты месяц"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Aquesta setmana"
+      "value": "Гэты тыдзень"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Aquest any"
+      "value": "Гэты год"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Zona horària"
+      "value": "Таймзона"
     }
   ],
   "label.title": [
@@ -598,31 +598,31 @@
   "label.today": [
     {
       "type": 0,
-      "value": "Avui"
+      "value": "Сёння"
     }
   ],
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Mostra/amaga gràfics"
+      "value": "Пераключыць графікі"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "Код адсочвання"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Visitants únics"
+      "value": "Унікальныя наведвальнікі"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Desconegut"
+      "value": "Невядома"
     }
   ],
   "label.user": [
@@ -634,7 +634,7 @@
   "label.username": [
     {
       "type": 0,
-      "value": "Nom d'usuari"
+      "value": "Імя карыстальніка"
     }
   ],
   "label.users": [
@@ -646,19 +646,19 @@
   "label.view-details": [
     {
       "type": 0,
-      "value": "Veure els detalls"
+      "value": "Пабачыць дэталі"
     }
   ],
   "label.views": [
     {
       "type": 0,
-      "value": "Vistes"
+      "value": "Прагляды"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "Visitants"
+      "value": "Наведвальнікі"
     }
   ],
   "label.website-id": [
@@ -670,13 +670,13 @@
   "label.websites": [
     {
       "type": 0,
-      "value": "Llocs web"
+      "value": "Сайты"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Ahir"
+      "value": "Учора"
     }
   ],
   "message.active-users": [
@@ -686,7 +686,7 @@
     },
     {
       "type": 0,
-      "value": " "
+      "value": " тякучых "
     },
     {
       "offset": 0,
@@ -695,7 +695,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitant actual"
+              "value": "наведвальнік"
             }
           ]
         },
@@ -703,7 +703,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitants actuals"
+              "value": "наведвальнікаў"
             }
           ]
         }
@@ -716,7 +716,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Segur que vols esborrar "
+      "value": "Вы дакладна хочаце выдаліць "
     },
     {
       "type": 1,
@@ -744,7 +744,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Segur que vols restablir les estadístiques de "
+      "value": "Вы дакладна хочаце скінуць "
     },
     {
       "type": 1,
@@ -752,25 +752,25 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " статыстыку?"
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "Выдаліць сайт"
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "També s'esborraran totes les dades relacionades."
+      "value": "Усе асацыяваныя дадзеныя будуць таксама выдалены."
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "S'ha produït un error."
+      "value": "Нешта пайшло не так."
     }
   ],
   "message.event-log": [
@@ -790,19 +790,19 @@
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Vés a la configuració"
+      "value": "Да налад"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nom d'usuari o contrasenya incorrectes."
+      "value": "Некарэктны username/password."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "Domini invàlid"
+      "value": "Некарэктны дамен"
     }
   ],
   "message.min-password-length": [
@@ -822,13 +822,13 @@
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "No hi ha dades disponibles."
+      "value": "Няма дадзеных."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Les contrasenyes no coincideixen"
+      "value": "Паролі не супадаюць"
     }
   ],
   "message.no-teams": [
@@ -846,31 +846,31 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "No s'ha trobat la pàgina."
+      "value": "Старонка не знойдзена."
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "Скінуць статыстыку"
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
+      "value": "Уся статыстыка для гэтага сайту будзе выдалена, але код адсочвання будзе працягваць працаваць."
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "S'ha desat amb èxit."
+      "value": "Захавана паспяхова."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Aquest és l'enllaç públic per compartir de "
+      "value": "Гэта публічная спасылка для "
     },
     {
       "type": 1,
@@ -896,7 +896,7 @@
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "Код адсочвання"
     }
   ],
   "message.user-deleted": [
@@ -908,7 +908,7 @@
   "message.visitor-log": [
     {
       "type": 0,
-      "value": "Visitant de "
+      "value": "Наведвальнік з "
     },
     {
       "type": 1,
@@ -916,7 +916,7 @@
     },
     {
       "type": 0,
-      "value": " usant "
+      "value": " праз "
     },
     {
       "type": 1,
@@ -924,7 +924,7 @@
     },
     {
       "type": 0,
-      "value": " a "
+      "value": " на "
     },
     {
       "type": 1,
@@ -948,7 +948,7 @@
   "messages.no-websites-configured": [
     {
       "type": 0,
-      "value": "No hi ha cap lloc web configurat."
+      "value": "Вы не наладзілі ніводнага сайту."
     }
   ],
   "messages.team-websites-info": [

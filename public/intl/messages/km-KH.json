@@ -8,7 +8,7 @@
   "label.actions": [
     {
       "type": 0,
-      "value": "Accions"
+      "value": "សកម្មភាព"
     }
   ],
   "label.activity-log": [
@@ -20,25 +20,25 @@
   "label.add-website": [
     {
       "type": 0,
-      "value": "Afegeix lloc web"
+      "value": "បន្ថែមគេហទំព័រ"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrador"
+      "value": "អ្នកគ្រប់គ្រង"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Tots"
+      "value": "ទាំងអស់"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Sempre"
+      "value": "គ្រប់ពេល"
     }
   ],
   "label.analytics": [
@@ -50,37 +50,37 @@
   "label.average-visit-time": [
     {
       "type": 0,
-      "value": "Temps mitjà de visita"
+      "value": "មើលជាមធ្យម"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Enrere"
+      "value": "ថយក្រោយ"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Percentatge de rebot"
+      "value": "ចំនួនវិលត្រឡប់"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Navegadors"
+      "value": "កម្មវិធី"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Cancel·la"
+      "value": "បោះបង់"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Canvia la contrasenya"
+      "value": "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
     }
   ],
   "label.clear-all": [
@@ -98,7 +98,7 @@
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirma la contrasenya"
+      "value": "បញ្ជាក់ពាក្យសម្ងាត់"
     }
   ],
   "label.continue": [
@@ -110,7 +110,7 @@
   "label.countries": [
     {
       "type": 0,
-      "value": "Països"
+      "value": "ប្រទេស"
     }
   ],
   "label.create-team": [
@@ -134,19 +134,19 @@
   "label.current-password": [
     {
       "type": 0,
-      "value": "Contrasenya actual"
+      "value": "ពាក្យសម្ងាត់បច្ចុប្បន្ន"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Rang personalitzat"
+      "value": "កំណត់ដោយខ្លួនឯង"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Panell"
+      "value": "ផ្ទាំងគ្រប់គ្រង"
     }
   ],
   "label.data": [
@@ -158,19 +158,19 @@
   "label.date-range": [
     {
       "type": 0,
-      "value": "Interval de dates"
+      "value": "ចន្លោះកាលបរិច្ឆេទ"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Interval de dates per defecte"
+      "value": "ចន្លោះកាលបរិច្ឆេទស្រាប់"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Esborra"
+      "value": "លុប"
     }
   ],
   "label.delete-team": [
@@ -182,13 +182,13 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "លុបគេហទំព័រ"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "Escriptori"
+      "value": "កុំព្យូទ័រលើតុ"
     }
   ],
   "label.details": [
@@ -200,55 +200,55 @@
   "label.devices": [
     {
       "type": 0,
-      "value": "Dispositius"
+      "value": "ឧបករណ៍"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Descarta"
+      "value": "បដិសេធ"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domini"
+      "value": "ឈ្មោះគេហទំព័រ"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Edita"
+      "value": "កែប្រែ"
     }
   ],
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "កែផ្ទាំងគ្រប់គ្រង"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Activa l'enllaç per compartir"
+      "value": "បើកការចែករំលែក URL"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "Esdeveniments"
+      "value": "ព្រឹត្តិការណ៍"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "Combinat"
+      "value": "រួមបញ្ចូលគ្នា"
     }
   ],
   "label.filter-raw": [
     {
       "type": 0,
-      "value": "En cru"
+      "value": "ដើម"
     }
   ],
   "label.join": [
@@ -266,47 +266,39 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "ភាសា"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Llengües"
+      "value": "ភាសា"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
-      "value": "Portàtil"
+      "value": "កុំព្យូទ័រយួរដៃ"
     }
   ],
   "label.last-days": [
     {
-      "type": 0,
-      "value": "Últims "
-    },
-    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " dies"
+      "value": " ថ្ងៃមុន"
     }
   ],
   "label.last-hours": [
     {
-      "type": 0,
-      "value": "Últimes "
-    },
-    {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " hores"
+      "value": " ម៉ោងមុន"
     }
   ],
   "label.leave": [
@@ -324,7 +316,7 @@
   "label.logout": [
     {
       "type": 0,
-      "value": "Desconnecta't"
+      "value": "ចេញ"
     }
   ],
   "label.members": [
@@ -336,67 +328,67 @@
   "label.mobile": [
     {
       "type": 0,
-      "value": "Mòbil"
+      "value": "ទូរស័ព្ទចល័ត"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Més"
+      "value": "បន្ថែម"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nom"
+      "value": "ឈ្មោះ"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Contrasenya nova"
+      "value": "ពាក្យសម្ងាត់​ថ្មី"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "មិនមាន"
     }
   ],
   "label.operating-systems": [
     {
       "type": 0,
-      "value": "Sistemes operatius"
+      "value": "ប្រព័ន្ធប្រតិបត្តិការ"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Propietari"
+      "value": "ម្ចាស់"
     }
   ],
   "label.page-views": [
     {
       "type": 0,
-      "value": "Pàgines vistes"
+      "value": "អ្នកមើលទំព័រ"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "Pàgines"
+      "value": "ទំព័រ"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Contrasenya"
+      "value": "ពាក្យសម្ងាត់​"
     }
   ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "Funciona amb "
+      "value": "ដំណើរការដោយ "
     },
     {
       "type": 1,
@@ -406,7 +398,7 @@
   "label.profile": [
     {
       "type": 0,
-      "value": "Perfil"
+      "value": "ប្រវត្តិរូប"
     }
   ],
   "label.queries": [
@@ -418,25 +410,25 @@
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "ប៉ារ៉ាម៉ែត្រ Query"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Temps real"
+      "value": "ឥលូវនេះ"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referents"
+      "value": "អ្នកណែនាំ"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Refresca"
+      "value": "ផ្ទុកឡើងវិញ"
     }
   ],
   "label.regenerate": [
@@ -454,19 +446,19 @@
   "label.required": [
     {
       "type": 0,
-      "value": "Obligatori"
+      "value": "ទាមទារ"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Restableix"
+      "value": "កំណត់ឡើងវិញ"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "កំណត់ស្ថិតិឡើងវិញ"
     }
   ],
   "label.role": [
@@ -478,13 +470,13 @@
   "label.save": [
     {
       "type": 0,
-      "value": "Desa"
+      "value": "រក្សាទុក"
     }
   ],
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "ប្រភេទឧបករណ៍"
     }
   ],
   "label.select-website": [
@@ -502,25 +494,25 @@
   "label.settings": [
     {
       "type": 0,
-      "value": "Configuració"
+      "value": "ការកំណត់"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Enllaç per compartir"
+      "value": "ចែករំលែក URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Un sol dia"
+      "value": "ថ្ងៃតែមួយ"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
-      "value": "Tauleta"
+      "value": "ថេប្លេត"
     }
   ],
   "label.team": [
@@ -562,31 +554,31 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "រូបរាង"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Aquest mes"
+      "value": "ខែនេះ"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Aquesta setmana"
+      "value": "ស​ប្តា​ហ៍​នេះ"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Aquest any"
+      "value": "ឆ្នាំ​នេះ"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Zona horària"
+      "value": "តំបន់ម៉ោង"
     }
   ],
   "label.title": [
@@ -598,31 +590,31 @@
   "label.today": [
     {
       "type": 0,
-      "value": "Avui"
+      "value": "ថ្ងៃនេះ"
     }
   ],
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Mostra/amaga gràfics"
+      "value": "បិទ/បើកតារាង"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "លេខកូដតាមដាន"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Visitants únics"
+      "value": "អ្នកចូលមើលម្នាក់ៗ"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Desconegut"
+      "value": "មិនស្គាល់"
     }
   ],
   "label.user": [
@@ -634,7 +626,7 @@
   "label.username": [
     {
       "type": 0,
-      "value": "Nom d'usuari"
+      "value": "ឈ្មោះ​អ្នកប្រើប្រាស់"
     }
   ],
   "label.users": [
@@ -646,19 +638,19 @@
   "label.view-details": [
     {
       "type": 0,
-      "value": "Veure els detalls"
+      "value": "មើលព័ត៌មានលម្អិត"
     }
   ],
   "label.views": [
     {
       "type": 0,
-      "value": "Vistes"
+      "value": "អ្នកចូលមើល"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "Visitants"
+      "value": "អ្នកទស្សនា"
     }
   ],
   "label.website-id": [
@@ -670,53 +662,33 @@
   "label.websites": [
     {
       "type": 0,
-      "value": "Llocs web"
+      "value": "គេហទំព័រ"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Ahir"
+      "value": "ម្សិលមិញ"
     }
   ],
   "message.active-users": [
+    {
+      "type": 0,
+      "value": "មានអ្នកមើល "
+    },
     {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitant actual"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "visitants actuals"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
+      "value": " នាក់ ឥលូវនេះ"
     }
   ],
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Segur que vols esborrar "
+      "value": "តើអ្នកប្រាកដថាចង់លុប "
     },
     {
       "type": 1,
@@ -724,7 +696,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ទេ?"
     }
   ],
   "message.confirm-leave": [
@@ -744,7 +716,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Segur que vols restablir les estadístiques de "
+      "value": "តើអ្នកប្រាកដថាចង់កំណត់ស្ថិតិរបស់ "
     },
     {
       "type": 1,
@@ -752,25 +724,25 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ឡើងវិញទេ?"
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "លុបគេហទំព័រ"
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "També s'esborraran totes les dades relacionades."
+      "value": "ទិន្នន័យដែលពាក់ព័ន្ធទាំងអស់នឹងត្រូវបានលុបផងដែរ។"
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "S'ha produït un error."
+      "value": "មាន​អ្វីមួយ​មិន​ប្រក្រតី។"
     }
   ],
   "message.event-log": [
@@ -790,19 +762,19 @@
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Vés a la configuració"
+      "value": "ការកំណត់"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nom d'usuari o contrasenya incorrectes."
+      "value": "ឈ្មោះអ្នកប្រើ/ពាក្យសម្ងាត់មិនត្រឹមត្រូវ។"
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "Domini invàlid"
+      "value": "ឈ្មោះគេហទំព័រមិន​ត្រឹមត្រូវ"
     }
   ],
   "message.min-password-length": [
@@ -822,13 +794,13 @@
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "No hi ha dades disponibles."
+      "value": "មិនមានទិន្នន័យទេ។"
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Les contrasenyes no coincideixen"
+      "value": "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ"
     }
   ],
   "message.no-teams": [
@@ -846,31 +818,31 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "No s'ha trobat la pàgina."
+      "value": "រកមិនឃើញទំព័រ។"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "កំណត់ស្ថិតិឡើងវិញ"
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
+      "value": "ស្ថិតិទាំងអស់សម្រាប់គេហទំព័រនេះនឹងត្រូវបានលុប ប៉ុន្តែកូដតាមដានរបស់អ្នកនឹងនៅដដែល។"
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "S'ha desat amb èxit."
+      "value": "រក្សាទុកដោយជោគជ័យ។"
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Aquest és l'enllaç públic per compartir de "
+      "value": "នេះគឺជា URL ដែលបានចែករំលែកជាសាធារណៈសម្រាប់ "
     },
     {
       "type": 1,
@@ -878,7 +850,7 @@
     },
     {
       "type": 0,
-      "value": "."
+      "value": "។"
     }
   ],
   "message.team-already-member": [
@@ -896,7 +868,7 @@
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "លេខកូដតាមដាន"
     }
   ],
   "message.user-deleted": [
@@ -908,7 +880,7 @@
   "message.visitor-log": [
     {
       "type": 0,
-      "value": "Visitant de "
+      "value": "អ្នកមើលពីប្រទេស "
     },
     {
       "type": 1,
@@ -916,7 +888,7 @@
     },
     {
       "type": 0,
-      "value": " usant "
+      "value": " ប្រើប្រាស់កម្មវិធី "
     },
     {
       "type": 1,
@@ -924,7 +896,7 @@
     },
     {
       "type": 0,
-      "value": " a "
+      "value": " លើឧបករណ៍ "
     },
     {
       "type": 1,
@@ -948,7 +920,7 @@
   "messages.no-websites-configured": [
     {
       "type": 0,
-      "value": "No hi ha cap lloc web configurat."
+      "value": "អ្នកមិនទាន់បានដាក់គេហទំព័រណាមួយចូលទេ។"
     }
   ],
   "messages.team-websites-info": [

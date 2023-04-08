@@ -8,7 +8,7 @@
   "label.actions": [
     {
       "type": 0,
-      "value": "Accions"
+      "value": "Aktione"
     }
   ],
   "label.activity-log": [
@@ -20,25 +20,25 @@
   "label.add-website": [
     {
       "type": 0,
-      "value": "Afegeix lloc web"
+      "value": "Websiite hinzuefüege"
     }
   ],
   "label.administrator": [
     {
       "type": 0,
-      "value": "Administrador"
+      "value": "Administrator"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "Tots"
+      "value": "Alli"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "Sempre"
+      "value": "Gesamte Zitruum"
     }
   ],
   "label.analytics": [
@@ -50,37 +50,37 @@
   "label.average-visit-time": [
     {
       "type": 0,
-      "value": "Temps mitjà de visita"
+      "value": "Durchschn. Bsuechsziit"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "Enrere"
+      "value": "Zrugg"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "Percentatge de rebot"
+      "value": "Absprungsrate"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Navegadors"
+      "value": "Browser"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "Cancel·la"
+      "value": "Abbreche"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "Canvia la contrasenya"
+      "value": "Passwort ändere"
     }
   ],
   "label.clear-all": [
@@ -98,7 +98,7 @@
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "Confirma la contrasenya"
+      "value": "Passwort widerhole"
     }
   ],
   "label.continue": [
@@ -110,7 +110,7 @@
   "label.countries": [
     {
       "type": 0,
-      "value": "Països"
+      "value": "Länder"
     }
   ],
   "label.create-team": [
@@ -134,19 +134,19 @@
   "label.current-password": [
     {
       "type": 0,
-      "value": "Contrasenya actual"
+      "value": "Jetzigs Passwort"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Rang personalitzat"
+      "value": "Benutzerdefinierte Bereich"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "Panell"
+      "value": "Übersicht"
     }
   ],
   "label.data": [
@@ -158,19 +158,19 @@
   "label.date-range": [
     {
       "type": 0,
-      "value": "Interval de dates"
+      "value": "Datumsbereich"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Interval de dates per defecte"
+      "value": "Vorigstellte Datumsbereich"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "Esborra"
+      "value": "Lösche"
     }
   ],
   "label.delete-team": [
@@ -182,13 +182,13 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "Websiite lösche"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "Escriptori"
+      "value": "Desktop"
     }
   ],
   "label.details": [
@@ -200,55 +200,55 @@
   "label.devices": [
     {
       "type": 0,
-      "value": "Dispositius"
+      "value": "Grät"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Descarta"
+      "value": "Verwerfe"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "Domini"
+      "value": "Domain"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "Edita"
+      "value": "Bearbeite"
     }
   ],
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Dashboard bearbeite"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "Activa l'enllaç per compartir"
+      "value": "Freigab-URL aktiviere"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "Esdeveniments"
+      "value": "Ereigniss"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "Combinat"
+      "value": "Kombiniert"
     }
   ],
   "label.filter-raw": [
     {
       "type": 0,
-      "value": "En cru"
+      "value": "Rohdate"
     }
   ],
   "label.join": [
@@ -266,25 +266,25 @@
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Sprach"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Llengües"
+      "value": "Sprache"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
-      "value": "Portàtil"
+      "value": "Laptop"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "Últims "
+      "value": "Letzti "
     },
     {
       "type": 1,
@@ -292,13 +292,13 @@
     },
     {
       "type": 0,
-      "value": " dies"
+      "value": " Täg"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "Últimes "
+      "value": "Letzti "
     },
     {
       "type": 1,
@@ -306,7 +306,7 @@
     },
     {
       "type": 0,
-      "value": " hores"
+      "value": " Stunde"
     }
   ],
   "label.leave": [
@@ -324,7 +324,7 @@
   "label.logout": [
     {
       "type": 0,
-      "value": "Desconnecta't"
+      "value": "Abmelde"
     }
   ],
   "label.members": [
@@ -336,67 +336,67 @@
   "label.mobile": [
     {
       "type": 0,
-      "value": "Mòbil"
+      "value": "Handy"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "Més"
+      "value": "Meh"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "Nom"
+      "value": "Name"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "Contrasenya nova"
+      "value": "Neus Passwort"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Keis"
     }
   ],
   "label.operating-systems": [
     {
       "type": 0,
-      "value": "Sistemes operatius"
+      "value": "Betriebssystem"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Propietari"
+      "value": "Bsitzer"
     }
   ],
   "label.page-views": [
     {
       "type": 0,
-      "value": "Pàgines vistes"
+      "value": "Siitenufrüef"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "Pàgines"
+      "value": "Siite"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "Contrasenya"
+      "value": "Passwort"
     }
   ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "Funciona amb "
+      "value": "Betribe dur "
     },
     {
       "type": 1,
@@ -406,7 +406,7 @@
   "label.profile": [
     {
       "type": 0,
-      "value": "Perfil"
+      "value": "Profil"
     }
   ],
   "label.queries": [
@@ -418,25 +418,25 @@
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Abfragparameter"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "Temps real"
+      "value": "Echtzit"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referents"
+      "value": "Referrer"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "Refresca"
+      "value": "Aktualisiere"
     }
   ],
   "label.regenerate": [
@@ -454,19 +454,19 @@
   "label.required": [
     {
       "type": 0,
-      "value": "Obligatori"
+      "value": "Erforderlich"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "Restableix"
+      "value": "Zruggsetze"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "Statistik zruggsetze"
     }
   ],
   "label.role": [
@@ -478,13 +478,13 @@
   "label.save": [
     {
       "type": 0,
-      "value": "Desa"
+      "value": "Speichere"
     }
   ],
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Bildschirmuflösige"
     }
   ],
   "label.select-website": [
@@ -502,25 +502,25 @@
   "label.settings": [
     {
       "type": 0,
-      "value": "Configuració"
+      "value": "Istellige"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "Enllaç per compartir"
+      "value": "Freigab-URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "Un sol dia"
+      "value": "Ein Tag"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
-      "value": "Tauleta"
+      "value": "Tablet"
     }
   ],
   "label.team": [
@@ -562,31 +562,31 @@
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "Thema"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "Aquest mes"
+      "value": "De Monet"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Aquesta setmana"
+      "value": "Die Wuche"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Aquest any"
+      "value": "Das Jahr"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "Zona horària"
+      "value": "Zitzone"
     }
   ],
   "label.title": [
@@ -598,31 +598,31 @@
   "label.today": [
     {
       "type": 0,
-      "value": "Avui"
+      "value": "Hüt"
     }
   ],
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Mostra/amaga gràfics"
+      "value": "Schaubilder umschalte"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "Tracking Code"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Visitants únics"
+      "value": "Eidütigi Bsuecher"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "Desconegut"
+      "value": "Unbekannt"
     }
   ],
   "label.user": [
@@ -634,7 +634,7 @@
   "label.username": [
     {
       "type": 0,
-      "value": "Nom d'usuari"
+      "value": "Benutzername"
     }
   ],
   "label.users": [
@@ -646,19 +646,19 @@
   "label.view-details": [
     {
       "type": 0,
-      "value": "Veure els detalls"
+      "value": "Details azeige"
     }
   ],
   "label.views": [
     {
       "type": 0,
-      "value": "Vistes"
+      "value": "Ufrüef"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "Visitants"
+      "value": "Bsuecher"
     }
   ],
   "label.website-id": [
@@ -670,13 +670,13 @@
   "label.websites": [
     {
       "type": 0,
-      "value": "Llocs web"
+      "value": "Websiite"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Ahir"
+      "value": "Gester"
     }
   ],
   "message.active-users": [
@@ -695,7 +695,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitant actual"
+              "value": "aktive Bsuecher"
             }
           ]
         },
@@ -703,7 +703,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitants actuals"
+              "value": "aktivi Bsuecher"
             }
           ]
         }
@@ -716,7 +716,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "Segur que vols esborrar "
+      "value": "Sind Sie sich sicher, "
     },
     {
       "type": 1,
@@ -724,7 +724,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " zlösche?"
     }
   ],
   "message.confirm-leave": [
@@ -744,7 +744,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "Segur que vols restablir les estadístiques de "
+      "value": "Sind Sie sicher, dass Sie dStatistike vo "
     },
     {
       "type": 1,
@@ -752,25 +752,25 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " zruggsetze wend?"
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Esborra el lloc web"
+      "value": "Websiite lösche"
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "També s'esborraran totes les dades relacionades."
+      "value": "Alli dezueghörige Date werdet ebefalls glöscht."
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "S'ha produït un error."
+      "value": "Es isch en Fehler uftrete."
     }
   ],
   "message.event-log": [
@@ -790,19 +790,19 @@
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "Vés a la configuració"
+      "value": "Zu de Istellige"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Nom d'usuari o contrasenya incorrectes."
+      "value": "Falschs Passwort oder Benutzername."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "Domini invàlid"
+      "value": "Ungültigi Domain"
     }
   ],
   "message.min-password-length": [
@@ -822,13 +822,13 @@
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "No hi ha dades disponibles."
+      "value": "Kei Date vorhande."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Les contrasenyes no coincideixen"
+      "value": "Passwörter stimmed ned überi"
     }
   ],
   "message.no-teams": [
@@ -846,31 +846,31 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "No s'ha trobat la pàgina."
+      "value": "Siite ned gfunde."
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Restableix estadístiques"
+      "value": "Statistik zruggsetze"
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
+      "value": "Alli Date für die Websiite werdet glöscht, nur de Tracking Code blibt bestah."
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "S'ha desat amb èxit."
+      "value": "Erfolgrich gspeichert."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "Aquest és l'enllaç públic per compartir de "
+      "value": "Das isch die öffentlichi URL zum Teile für "
     },
     {
       "type": 1,
@@ -896,7 +896,7 @@
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Codi de seguiment"
+      "value": "Tracking Code"
     }
   ],
   "message.user-deleted": [
@@ -908,7 +908,7 @@
   "message.visitor-log": [
     {
       "type": 0,
-      "value": "Visitant de "
+      "value": "Bsuecher us "
     },
     {
       "type": 1,
@@ -916,7 +916,7 @@
     },
     {
       "type": 0,
-      "value": " usant "
+      "value": " benutzt "
     },
     {
       "type": 1,
@@ -924,7 +924,7 @@
     },
     {
       "type": 0,
-      "value": " a "
+      "value": " uf "
     },
     {
       "type": 1,
@@ -948,7 +948,7 @@
   "messages.no-websites-configured": [
     {
       "type": 0,
-      "value": "No hi ha cap lloc web configurat."
+      "value": "Es isch kei Websiite vorhande."
     }
   ],
   "messages.team-websites-info": [
