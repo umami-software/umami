@@ -19,7 +19,7 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
 
   const buttons = [
     {
-      label: formatMessage(labels.url),
+      label: 'URL',
       key: 'url',
     },
     {
