@@ -337,6 +337,12 @@
       "value": "Tema"
     }
   ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Ontem"
+    }
+  ],
   "label.this-month": [
     {
       "type": 0,
@@ -395,6 +401,66 @@
     {
       "type": 0,
       "value": "Sites"
+    }
+  ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Evento"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Dados de evento"
+    }
+  ],
+  "label.query-event-data": [
+    {
+      "type": 0,
+      "value": "Consultar dados do evento"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Buscar"
+    }
+  ],
+  "label.results": [
+    {
+      "type": 0,
+      "value": "Resultados"
+    }
+  ],
+  "label.add-filter": [
+    {
+      "type": 0,
+      "value": "Adicionar filtro"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Valor"
+    }
+  ],
+  "label.field-name": [
+    {
+      "type": 0,
+      "value": "Nome do campo"
+    }
+  ],
+  "label.add-column": [
+    {
+      "type": 0,
+      "value": "Adicionar coluna"
+    }
+  ],
+  "label.label.type": [
+    {
+      "type": 0,
+      "value": "Tipo"
     }
   ],
   "message.active-users": [
@@ -478,7 +544,7 @@
   "message.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Editar painel"
     }
   ],
   "message.failure": [
@@ -774,7 +840,7 @@
   "metrics.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Parâmetros de Consulta"
     }
   ],
   "metrics.referrers": [
@@ -786,7 +852,7 @@
   "metrics.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Telas"
     }
   ],
   "metrics.unique-visitors": [

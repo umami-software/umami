@@ -246,7 +246,7 @@ export default function EventDataForm({ websiteId, onClose, className }) {
           </FormLayout>
         </div>
         <div>
-          <DataTable className={styles.table} data={data} title="Results" showPercentage={false} />
+          <DataTable className={styles.table} data={data} title={<FormattedMessage id="label.results" defaultMessage="Results" />} />
         </div>
       </div>
       <FormButtons>
