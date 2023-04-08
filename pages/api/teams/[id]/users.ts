@@ -1,5 +1,5 @@
 import { NextApiRequestQueryBody } from 'lib/types';
-import { canUpdateTeam, canViewTeam } from 'lib/auth';
+import { canDeleteTeamUser, canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -12,7 +12,7 @@ export interface TeamUserRequestQuery {
 export interface TeamUserRequestBody {
   email: string;
   roleId: string;
-  teamUserId?: string;
+  userId?: string;
 }
 
 export default async (
@@ -53,12 +53,13 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    if (await canUpdateTeam(req.auth, teamId)) {
+    const { userId } = req.body;
+
+    if (await canDeleteTeamUser(req.auth, teamId, userId)) {
       return unauthorized(res, 'You must be the owner of this team.');
     }
-    const { teamUserId } = req.body;
 
-    await deleteTeamUser(teamUserId);
+    await deleteTeamUser(teamId, userId);
 
     return ok(res);
   }

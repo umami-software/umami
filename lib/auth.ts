@@ -187,19 +187,17 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
   return false;
 }
 
-export async function canDeleteTeamUser({ user }: Auth, teamUserId: string) {
+export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUserId: string) {
   if (user.isAdmin) {
     return true;
   }
 
-  if (validate(teamUserId)) {
-    const removeUser = await getTeamUserById(teamUserId);
-
-    if (removeUser.userId === user.id) {
+  if (validate(teamId) && validate(removeUserId)) {
+    if (removeUserId === user.id) {
       return true;
     }
 
-    const teamUser = await getTeamUser(removeUser.teamId, user.id);
+    const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
   }
