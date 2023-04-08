@@ -1,29 +1,30 @@
 import { Button, Icon } from 'react-basics';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import MobileMenu from './MobileMenu';
 import Icons from 'components/icons';
+import useMessages from 'hooks/useMessages';
 import styles from './HamburgerButton.module.css';
 
-const menuItems = [
-  {
-    label: <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />,
-    value: '/dashboard',
-  },
-  { label: <FormattedMessage id="label.realtime" defaultMessage="Realtime" />, value: '/realtime' },
-  {
-    label: <FormattedMessage id="label.settings" defaultMessage="AppLayout" />,
-    value: '/input',
-  },
-  {
-    label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
-    value: '/input/profile',
-  },
-  { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: '/logout' },
-];
-
 export default function HamburgerButton() {
+  const { formatMessage, labels } = useMessages();
   const [active, setActive] = useState(false);
+
+  const menuItems = [
+    {
+      label: formatMessage(labels.dashboard),
+      value: '/dashboard',
+    },
+    { label: formatMessage(labels.realtime), value: '/realtime' },
+    {
+      label: formatMessage(labels.settings),
+      value: '/settings',
+    },
+    {
+      label: formatMessage(labels.profile),
+      value: '/settings/profile',
+    },
+    { label: formatMessage(labels.logout), value: '/logout' },
+  ];
 
   function handleClick() {
     setActive(state => !state);

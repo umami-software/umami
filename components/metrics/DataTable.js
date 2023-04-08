@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import NoData from 'components/common/NoData';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './DataTable.module.css';
+import useMessages from '../../hooks/useMessages';
 
 export default function DataTable({
   data = [],
@@ -14,11 +15,11 @@ export default function DataTable({
   metric,
   className,
   renderLabel,
-  height,
   animate = true,
   virtualize = false,
   showPercentage = true,
 }) {
+  const { formatMessage, labels } = useMessages();
   const [ref, bounds] = useMeasure();
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
@@ -31,11 +32,7 @@ export default function DataTable({
     return (
       <AnimatedRow
         key={label}
-        label={
-          renderLabel
-            ? renderLabel(row)
-            : label ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />
-        }
+        label={renderLabel ? renderLabel(row) : label ?? formatMessage(labels.unknown)}
         value={value}
         percent={percent}
         animate={animate && !virtualize}
