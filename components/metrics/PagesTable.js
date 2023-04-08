@@ -3,7 +3,7 @@ import FilterButtons from 'components/common/FilterButtons';
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
 import usePageQuery from 'hooks/usePageQuery';
-import { emptyFilter } from '../../lib/filters';
+import { emptyFilter } from 'lib/filters';
 
 export default function PagesTable({ websiteId, showFilters, ...props }) {
   const {
