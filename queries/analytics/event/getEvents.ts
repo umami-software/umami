@@ -32,7 +32,8 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
       session_id as sessionId,
       created_at as createdAt,
       toUnixTimestamp(created_at) as timestamp,
-      url_path,
+      url_path as urlPath,
+      referrer_domain as referrerDomain,
       event_name as eventName
     from website_event
     where event_type = {eventType:UInt32}
