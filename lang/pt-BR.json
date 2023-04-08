@@ -108,7 +108,7 @@
   "label.visitors": "Visitantes",
   "label.website-id": "Website ID",
   "label.websites": "Sites",
-  "label.yesterday": "Yesterday",
+  "label.yesterday": "Ontem",
   "message.active-users": "{x} {x, plural, one {visitante} other {visitantes}} neste momento",
   "message.confirm-delete": "Deseja realmente remover {target}?",
   "message.confirm-leave": "Are you sure you want to leave {target}?",
