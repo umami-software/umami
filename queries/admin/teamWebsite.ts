@@ -1,16 +1,20 @@
-import { TeamWebsite, Prisma, Website, Team, User, TeamUser } from '@prisma/client';
+import { Prisma, Team, TeamUser, TeamWebsite, Website } from '@prisma/client';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
-export async function getTeamWebsite(teamWebsiteId: string): Promise<
+export async function getTeamWebsite(
+  teamId: string,
+  websiteId: string,
+): Promise<
   TeamWebsite & {
     website: Website;
   }
 > {
   return prisma.client.teamWebsite.findFirst({
     where: {
-      id: teamWebsiteId,
+      teamId,
+      websiteId,
     },
     include: {
       website: true,
@@ -110,10 +114,14 @@ export async function createTeamWebsites(teamId: string, websiteIds: string[]) {
   });
 }
 
-export async function deleteTeamWebsite(teamWebsiteId: string): Promise<TeamWebsite> {
-  return prisma.client.teamWebsite.delete({
+export async function deleteTeamWebsite(
+  teamId: string,
+  websiteId: string,
+): Promise<Prisma.BatchPayload> {
+  return prisma.client.teamWebsite.deleteMany({
     where: {
-      id: teamWebsiteId,
+      teamId,
+      websiteId,
     },
   });
 }

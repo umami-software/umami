@@ -205,13 +205,13 @@ export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUs
   return false;
 }
 
-export async function canDeleteTeamWebsite({ user }: Auth, teamWebsiteId: string) {
+export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websiteId: string) {
   if (user.isAdmin) {
     return true;
   }
 
-  if (validate(teamWebsiteId)) {
-    const teamWebsite = await getTeamWebsite(teamWebsiteId);
+  if (validate(teamId) && validate(websiteId)) {
+    const teamWebsite = await getTeamWebsite(teamId, websiteId);
 
     if (teamWebsite.website.userId === user.id) {
       return true;
@@ -219,7 +219,7 @@ export async function canDeleteTeamWebsite({ user }: Auth, teamWebsiteId: string
 
     const teamUser = await getTeamUser(teamWebsite.teamId, user.id);
 
-    return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
+    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
   }
 
   return false;
