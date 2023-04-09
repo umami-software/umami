@@ -14,6 +14,7 @@ export const labels = defineMessages({
   password: { id: 'label.password', defaultMessage: 'Password' },
   role: { id: 'label.role', defaultMessage: 'Role' },
   user: { id: 'label.user', defaultMessage: 'User' },
+  admin: { id: 'label.admin', defaultMessage: 'Admin' },
   administrator: { id: 'label.administrator', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
