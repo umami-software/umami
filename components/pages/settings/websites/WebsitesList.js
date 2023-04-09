@@ -45,7 +45,7 @@ export default function WebsitesList() {
       <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>
       {hasData && <WebsitesTable data={data} />}
       {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noWebsites)}>
+        <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           {addButton}
         </EmptyPlaceholder>
       )}
