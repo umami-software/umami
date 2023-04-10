@@ -1,9 +1,9 @@
-import { NextApiRequestQueryBody } from 'lib/types';
 import { canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeamUser, deleteTeamUser, getUser, getTeamUsers } from 'queries';
+import { createTeamUser, getTeamUsers, getUser } from 'queries';
 
 export interface TeamUserRequestQuery {
   id: string;
@@ -12,7 +12,6 @@ export interface TeamUserRequestQuery {
 export interface TeamUserRequestBody {
   email: string;
   roleId: string;
-  teamUserId?: string;
 }
 
 export default async (
@@ -50,17 +49,6 @@ export default async (
     const updated = await createTeamUser(user.id, teamId, roleId);
 
     return ok(res, updated);
-  }
-
-  if (req.method === 'DELETE') {
-    if (await canUpdateTeam(req.auth, teamId)) {
-      return unauthorized(res, 'You must be the owner of this team.');
-    }
-    const { teamUserId } = req.body;
-
-    await deleteTeamUser(teamUserId);
-
-    return ok(res);
   }
 
   return methodNotAllowed(res);

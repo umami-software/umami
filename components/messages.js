@@ -14,7 +14,7 @@ export const labels = defineMessages({
   password: { id: 'label.password', defaultMessage: 'Password' },
   role: { id: 'label.role', defaultMessage: 'Role' },
   user: { id: 'label.user', defaultMessage: 'User' },
-  admin: { id: 'label.admin', defaultMessage: 'Admin' },
+  admin: { id: 'label.admin', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
@@ -40,14 +40,12 @@ export const labels = defineMessages({
   trackingCode: { id: 'label.tracking-code', defaultMessage: 'Tracking code' },
   shareUrl: { id: 'label.share-url', defaultMessage: 'Share URL' },
   actions: { id: 'label.actions', defaultMessage: 'Actions' },
-  view: { id: 'label.view', defaultMessage: 'View' },
   domain: { id: 'label.domain', defaultMessage: 'Domain' },
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },
   resetWebsite: { id: 'label.reset-website', defaultMessage: 'Reset website' },
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
-  addWebsites: { id: 'label.add-websites', defaultMessage: 'Add websites' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },
@@ -114,7 +112,7 @@ export const labels = defineMessages({
   toggleCharts: { id: 'label.toggle-charts', defaultMessage: 'Toggle charts' },
   editDashboard: { id: 'label.edit-dashboard', defaultMessage: 'Edit dashboard' },
   title: { id: 'label.title', defaultMessage: 'Title' },
-  url: { id: 'label.url', defaultMessage: 'URL' },
+  view: { id: 'label.view', defaultMessage: 'View' },
 });
 
 export const messages = defineMessages({
@@ -122,22 +120,22 @@ export const messages = defineMessages({
   saved: { id: 'message.saved', defaultMessage: 'Saved.' },
   noUsers: { id: 'message.no-users', defaultMessage: 'There are no users.' },
   userDeleted: { id: 'message.user-deleted', defaultMessage: 'User deleted.' },
-  noData: { id: 'message.no-data', defaultMessage: 'No data available.' },
-  deleteUserWarning: {
-    id: 'message.delete-user-warning',
-    defaultMessage: 'Are you sure you want to delete the user {username}?',
+  noDataAvailable: { id: 'message.no-data-available', defaultMessage: 'No data available.' },
+  confirmReset: {
+    id: 'message.confirm-reset',
+    defaultMessage: 'Are you sure you want to reset {target}?',
   },
-  leaveTeamWarning: {
-    id: 'message.leave-team-warning',
-    defaultMessage: 'Are you sure you want to leave the team {name}?',
+  confirmDelete: {
+    id: 'message.confirm-delete',
+    defaultMessage: 'Are you sure you want to delete {target}?',
   },
-  deleteTeamWarning: {
-    id: 'message.delete-team-warning',
-    defaultMessage: 'Are you sure you want to delete the team {name}?',
+  confirmLeave: {
+    id: 'message.confirm-leave',
+    defaultMessage: 'Are you sure you want to leave {target}?',
   },
   minPasswordLength: {
     id: 'message.min-password-length',
-    defaultMessage: 'Minimum length of 8 characters',
+    defaultMessage: 'Minimum length of {n} characters',
   },
   noTeams: {
     id: 'message.no-teams',
@@ -164,10 +162,6 @@ export const messages = defineMessages({
     id: 'message.reset-website',
     defaultMessage: 'To reset this website, type {confirmation} in the box below to confirm.',
   },
-  websitesShared: {
-    id: 'message.shared-website',
-    defaultMessage: 'Websites can be viewed by the entire team.',
-  },
   invalidDomain: {
     id: 'message.invalid-domain',
     defaultMessage: 'Invalid domain. Do not include http/https.',
@@ -181,16 +175,16 @@ export const messages = defineMessages({
     id: 'message.delete-website-warning',
     defaultMessage: 'All website data will be deleted.',
   },
-  noWebsites: {
-    id: 'messages.no-websites',
+  noWebsitesConfigured: {
+    id: 'messages.no-websites-configured',
     defaultMessage: 'You do not have any websites configured.',
   },
   noTeamWebsites: {
     id: 'messages.no-team-websites',
     defaultMessage: 'This team does not have any websites.',
   },
-  websitesAreShared: {
-    id: 'messages.websites-are-shared',
+  teamWebsitesInfo: {
+    id: 'messages.team-websites-info',
     defaultMessage: 'Websites can be viewed by anyone on the team.',
   },
   noMatchPassword: { id: 'message.no-match-password', defaultMessage: 'Passwords do not match.' },
@@ -213,5 +207,9 @@ export const messages = defineMessages({
   eventLog: {
     id: 'message.event-log',
     defaultMessage: '{event} on {url}',
+  },
+  incorrectUsernamePassword: {
+    id: 'message.incorrect-username-password',
+    defaultMessage: 'Incorrect username and/or password.',
   },
 });

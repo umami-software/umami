@@ -12,7 +12,7 @@ export default function useCountryNames(locale) {
   const { basePath } = useRouter();
 
   async function loadData(locale) {
-    const data = await get(`${basePath}/intl/country/${locale}.json`);
+    const { data } = await get(`${basePath}/intl/country/${locale}.json`);
 
     if (data) {
       countryNames[locale] = data;

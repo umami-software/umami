@@ -6,11 +6,11 @@ import styles from './WebsiteHeader.module.css';
 export default function WebsiteHeader({ websiteId, name, domain, children }) {
   return (
     <Row className={styles.header} justifyContent="center">
-      <Column className={styles.name} variant="two">
+      <Column className={styles.title} variant="two">
         <Favicon domain={domain} />
         <Text>{name}</Text>
       </Column>
-      <Column className={styles.body} variant="two">
+      <Column className={styles.info} variant="two">
         <ActiveUsers websiteId={websiteId} />
         {children}
       </Column>

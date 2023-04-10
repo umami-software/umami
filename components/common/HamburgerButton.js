@@ -1,41 +1,38 @@
 import { Button, Icon } from 'react-basics';
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
 import MobileMenu from './MobileMenu';
 import Icons from 'components/icons';
-import styles from './HamburgerButton.module.css';
-
-const menuItems = [
-  {
-    label: <FormattedMessage id="label.dashboard" defaultMessage="Dashboard" />,
-    value: '/dashboard',
-  },
-  { label: <FormattedMessage id="label.realtime" defaultMessage="Realtime" />, value: '/realtime' },
-  {
-    label: <FormattedMessage id="label.settings" defaultMessage="AppLayout" />,
-    value: '/input',
-  },
-  {
-    label: <FormattedMessage id="label.profile" defaultMessage="Profile" />,
-    value: '/input/profile',
-  },
-  { label: <FormattedMessage id="label.logout" defaultMessage="Logout" />, value: '/logout' },
-];
+import useMessages from 'hooks/useMessages';
+import useConfig from 'hooks/useConfig';
 
 export default function HamburgerButton() {
+  const { formatMessage, labels } = useMessages();
   const [active, setActive] = useState(false);
+  const { cloudMode } = useConfig();
 
-  function handleClick() {
-    setActive(state => !state);
-  }
+  const menuItems = [
+    {
+      label: formatMessage(labels.dashboard),
+      value: '/dashboard',
+    },
+    { label: formatMessage(labels.realtime), value: '/realtime' },
+    !cloudMode && {
+      label: formatMessage(labels.settings),
+      value: '/settings',
+    },
+    {
+      label: formatMessage(labels.profile),
+      value: '/settings/profile',
+    },
+    !cloudMode && { label: formatMessage(labels.logout), value: '/logout' },
+  ].filter(n => n);
 
-  function handleClose() {
-    setActive(false);
-  }
+  const handleClick = () => setActive(state => !state);
+  const handleClose = () => setActive(false);
 
   return (
     <>
-      <Button className={styles.button} onClick={handleClick}>
+      <Button variant="quiet" onClick={handleClick}>
         <Icon>{active ? <Icons.Close /> : <Icons.Menu />}</Icon>
       </Button>
       {active && <MobileMenu items={menuItems} onClose={handleClose} />}

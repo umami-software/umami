@@ -50,7 +50,7 @@ export default function UsersTable({ data = [], onDelete }) {
               addSuffix: true,
             }),
             role: formatMessage(
-              labels[Object.keys(ROLES).find(key => ROLES[key] === row.role) || labels.unknown],
+              labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
             ),
             action: (
               <>

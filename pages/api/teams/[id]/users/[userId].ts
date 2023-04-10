@@ -3,25 +3,26 @@ import { useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteTeamUser } from 'queries/admin/teamUser';
+import { deleteTeamUser } from 'queries';
 
 export interface TeamUserRequestQuery {
   id: string;
+  userId: string;
 }
 
 export default async (req: NextApiRequestQueryBody<TeamUserRequestQuery>, res: NextApiResponse) => {
   await useAuth(req, res);
 
-  const { id: teamUserId } = req.query;
-
   if (req.method === 'DELETE') {
-    if (!(await canDeleteTeamUser(req.auth, teamUserId))) {
-      return unauthorized(res);
+    const { id: teamId, userId } = req.query;
+
+    if (!(await canDeleteTeamUser(req.auth, teamId, userId))) {
+      return unauthorized(res, 'You must be the owner of this team.');
     }
 
-    const websites = await deleteTeamUser(teamUserId);
+    await deleteTeamUser(teamId, userId);
 
-    return ok(res, websites);
+    return ok(res);
   }
 
   return methodNotAllowed(res);

@@ -13,10 +13,12 @@ import { useRouter } from 'next/router';
 import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
 import { setClientAuthToken } from 'lib/client';
+import useMessages from 'hooks/useMessages';
 import Logo from 'assets/logo.svg';
 import styles from './LoginForm.module.css';
 
 export default function LoginForm() {
+  const { formatMessage, labels, getMessage } = useMessages();
   const router = useRouter();
   const { post } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/auth/login', data));
@@ -38,14 +40,14 @@ export default function LoginForm() {
         <Logo />
       </Icon>
       <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
-        <FormRow label="Username">
-          <FormInput name="username" rules={{ required: 'Required' }}>
+      <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
+        <FormRow label={formatMessage(labels.username)}>
+          <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
             <TextField autoComplete="off" />
           </FormInput>
         </FormRow>
-        <FormRow label="Password">
-          <FormInput name="password" rules={{ required: 'Required' }}>
+        <FormRow label={formatMessage(labels.password)}>
+          <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
             <PasswordField />
           </FormInput>
         </FormRow>

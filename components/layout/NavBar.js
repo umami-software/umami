@@ -10,6 +10,7 @@ import styles from './NavBar.module.css';
 import useConfig from 'hooks/useConfig';
 import useMessages from 'hooks/useMessages';
 import { useRouter } from 'next/router';
+import HamburgerButton from '../common/HamburgerButton';
 
 export default function NavBar() {
   const { pathname } = useRouter();
@@ -51,6 +52,9 @@ export default function NavBar() {
             <ThemeButton />
             <LanguageButton />
             <ProfileButton />
+          </div>
+          <div className={styles.mobile}>
+            <HamburgerButton />
           </div>
         </Column>
       </Row>

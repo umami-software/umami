@@ -10,12 +10,13 @@ const MetricCard = ({
   reverseColors = false,
   format = formatNumber,
   hideComparison = false,
+  className,
 }) => {
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(change) || 0, from: { x: 0 } });
 
   return (
-    <div className={styles.card}>
+    <div className={classNames(styles.card, className)}>
       <animated.div className={styles.value}>{props.x.to(x => format(x))}</animated.div>
       <div className={styles.label}>
         {label}

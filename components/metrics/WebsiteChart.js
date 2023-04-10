@@ -15,9 +15,9 @@ import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { getDateArray, getDateLength } from 'lib/date';
 import Icons from 'components/icons';
-import styles from './WebsiteChart.module.css';
 import useSticky from 'hooks/useSticky';
 import useMessages from 'hooks/useMessages';
+import styles from './WebsiteChart.module.css';
 
 export default function WebsiteChart({
   websiteId,
@@ -91,12 +91,14 @@ export default function WebsiteChart({
           [styles.isSticky]: isSticky,
         })}
       >
-        <Column>
+        <Column defaultSize={12} xl={8}>
           <MetricsBar websiteId={websiteId} />
         </Column>
-        <Column className={styles.actions}>
-          <RefreshButton websiteId={websiteId} isLoading={isLoading} />
-          <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
+        <Column defaultSize={12} xl={4}>
+          <div className={styles.actions}>
+            <RefreshButton websiteId={websiteId} isLoading={isLoading} />
+            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
+          </div>
         </Column>
       </Row>
       <Row>

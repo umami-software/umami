@@ -48,7 +48,7 @@ export default async (
       return ok(res, { token, user });
     }
 
-    return unauthorized(res, 'Incorrect username and/or password.');
+    return unauthorized(res, 'message.incorrect-username-password');
   }
 
   return methodNotAllowed(res);

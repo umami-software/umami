@@ -11,7 +11,7 @@ import {
 } from 'react-basics';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import TeamWebsitesTable from 'components/pages/settings/teams/TeamWebsitesTable';
-import WebsiteAddTeamForm from 'components/pages/settings/teams/WebsiteAddTeamForm';
+import TeamAddWebsiteForm from 'components/pages/settings/teams/TeamAddWebsiteForm';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
@@ -42,7 +42,7 @@ export default function TeamWebsites({ teamId }) {
         <Text>{formatMessage(labels.addWebsite)}</Text>
       </Button>
       <Modal title={formatMessage(labels.addWebsite)}>
-        {close => <WebsiteAddTeamForm teamId={teamId} onSave={handleSave} onClose={close} />}
+        {close => <TeamAddWebsiteForm teamId={teamId} onSave={handleSave} onClose={close} />}
       </Modal>
     </ModalTrigger>
   );
@@ -51,7 +51,7 @@ export default function TeamWebsites({ teamId }) {
     <div>
       {toast}
       {hasData && (
-        <ActionForm description={formatMessage(messages.websitesAreShared)}>{addButton}</ActionForm>
+        <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
       )}
       {hasData && <TeamWebsitesTable teamId={teamId} data={data} onSave={handleSave} />}
       {!hasData && (

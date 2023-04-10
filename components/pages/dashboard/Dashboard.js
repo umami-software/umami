@@ -30,7 +30,7 @@ export default function Dashboard({ userId }) {
         {!editing && hasData && <DashboardSettingsButton />}
       </PageHeader>
       {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noWebsites)}>
+        <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           <Link href="/settings/websites">
             <Button>
               <Icon>

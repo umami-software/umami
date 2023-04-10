@@ -21,7 +21,9 @@ export default function RealtimeHome() {
   return (
     <Page loading={isLoading || data?.length > 0} error={error}>
       <PageHeader title={formatMessage(labels.realtime)} />
-      {data?.length === 0 && <EmptyPlaceholder message={formatMessage(messages.noWebsites)} />}
+      {data?.length === 0 && (
+        <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)} />
+      )}
     </Page>
   );
 }

@@ -11,6 +11,7 @@ import {
   Icon,
   Icons,
   Flexbox,
+  useBreakpoint,
 } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
@@ -18,11 +19,12 @@ import useConfig from 'hooks/useConfig';
 export default function WebsitesTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
+  const breakPoint = useBreakpoint();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name), style: { flex: 2 } },
     { name: 'domain', label: formatMessage(labels.domain) },
-    { name: 'action', label: ' ' },
+    { name: 'action', label: ' ', style: { flexBasis: '100%' } },
   ];
 
   return (

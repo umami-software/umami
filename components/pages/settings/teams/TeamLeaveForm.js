@@ -2,24 +2,27 @@ import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamLeaveForm({ teamUserId, teamName, onSave, onClose }) {
+export default function TeamLeaveForm({ teamId, userId, teamName, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
-  const { mutate, error, isLoading } = useMutation(data => del(`/teamUsers/${teamUserId}`, data));
+  const { mutate, error, isLoading } = useMutation(() => del(`/team/${teamId}/users/${userId}`));
 
-  const handleSubmit = async data => {
-    mutate(data, {
-      onSuccess: async () => {
-        onSave();
-        onClose();
+  const handleSubmit = async () => {
+    mutate(
+      {},
+      {
+        onSuccess: async () => {
+          onSave();
+          onClose();
+        },
       },
-    });
+    );
   };
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <p>
-        <FormattedMessage {...messages.leaveTeamWarning} values={{ name: <b>{teamName}</b> }} />
+        <FormattedMessage {...messages.confirmLeave} values={{ name: <b>{teamName}</b> }} />
       </p>
       <FormButtons flex>
         <SubmitButton variant="danger" disabled={isLoading}>

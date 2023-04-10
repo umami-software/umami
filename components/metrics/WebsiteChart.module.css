@@ -27,23 +27,31 @@
   z-index: var(--z-index-above);
 }
 
-.sticky {
-  position: sticky;
-  top: -1px;
-}
-
-.isSticky {
-  border-bottom: 1px solid var(--base300);
-}
-
 .actions {
   display: flex;
+  align-items: center;
   flex-direction: row;
   justify-content: flex-end;
   gap: 10px;
-  flex: 1;
 }
 
 .dropdown {
   min-width: 200px;
+}
+
+@media only screen and (min-width: 992px) {
+  .sticky {
+    position: sticky;
+    top: -1px;
+  }
+
+  .isSticky {
+    border-bottom: 1px solid var(--base300);
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .actions {
+    margin-top: 40px;
+  }
 }

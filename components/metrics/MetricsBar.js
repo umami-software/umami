@@ -6,8 +6,8 @@ import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import MetricCard from './MetricCard';
-import styles from './MetricsBar.module.css';
 import useMessages from 'hooks/useMessages';
+import styles from './MetricsBar.module.css';
 
 export default function MetricsBar({ websiteId }) {
   const { formatMessage, labels } = useMessages();
@@ -58,18 +58,21 @@ export default function MetricsBar({ websiteId }) {
       {data && !error && isFetched && (
         <>
           <MetricCard
+            className={styles.card}
             label={formatMessage(labels.views)}
             value={pageviews.value}
             change={pageviews.change}
             format={formatFunc}
           />
           <MetricCard
+            className={styles.card}
             label={formatMessage(labels.visitors)}
             value={uniques.value}
             change={uniques.change}
             format={formatFunc}
           />
           <MetricCard
+            className={styles.card}
             label={formatMessage(labels.bounceRate)}
             value={uniques.value ? (num / uniques.value) * 100 : 0}
             change={
@@ -82,6 +85,7 @@ export default function MetricsBar({ websiteId }) {
             reverseColors
           />
           <MetricCard
+            className={styles.card}
             label={formatMessage(labels.averageVisitTime)}
             value={
               totaltime.value && pageviews.value

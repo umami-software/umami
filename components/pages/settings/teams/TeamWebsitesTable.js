@@ -38,7 +38,7 @@ export default function TeamWebsitesTable({ data = [], onSave }) {
       </TableHeader>
       <TableBody>
         {(row, keys, rowIndex) => {
-          const { id: teamWebsiteId } = row;
+          const { teamId } = row;
           const { id: websiteId, name, domain, userId } = row.website;
           const { teamUser } = row.team;
           const owner = teamUser[0];
@@ -59,7 +59,8 @@ export default function TeamWebsitesTable({ data = [], onSave }) {
               </Link>
               {canRemove && (
                 <TeamWebsiteRemoveButton
-                  teamWebsiteId={teamWebsiteId}
+                  teamId={teamId}
+                  websiteId={websiteId}
                   onSave={onSave}
                 ></TeamWebsiteRemoveButton>
               )}

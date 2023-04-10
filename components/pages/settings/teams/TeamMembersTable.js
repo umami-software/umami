@@ -43,7 +43,8 @@ export default function TeamMembersTable({ data = [], onSave, readOnly }) {
             action: !readOnly && (
               <Flexbox flex={1} justifyContent="end">
                 <TeamMemberRemoveButton
-                  teamUserId={row.id}
+                  teamId={row.teamId}
+                  userId={row.userId}
                   disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
                   onSave={onSave}
                 ></TeamMemberRemoveButton>

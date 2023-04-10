@@ -4,7 +4,7 @@ import { Button, Dropdown, Form, FormButtons, FormRow, Item, SubmitButton } from
 import WebsiteTags from './WebsiteTags';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteAddTeamForm({ teamId, onSave, onClose }) {
+export default function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
@@ -51,7 +51,7 @@ export default function WebsiteAddTeamForm({ teamId, onSave, onClose }) {
         <WebsiteTags items={websites} websites={newWebsites} onClick={handleRemoveWebsite} />
         <FormButtons flex>
           <SubmitButton disabled={newWebsites && newWebsites.length === 0}>
-            {formatMessage(labels.addWebsites)}
+            {formatMessage(labels.addWebsite)}
           </SubmitButton>
           <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
         </FormButtons>

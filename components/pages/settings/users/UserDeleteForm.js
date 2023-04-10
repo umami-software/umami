@@ -20,10 +20,7 @@ export default function UserDeleteForm({ userId, username, onSave, onClose }) {
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <p>
-        <FormattedMessage
-          {...messages.deleteUserWarning}
-          values={{ username: <b>{username}</b> }}
-        />
+        <FormattedMessage {...messages.confirmDelete} values={{ target: <b>{username}</b> }} />
       </p>
       <FormButtons flex>
         <SubmitButton variant="danger" disabled={isLoading}>
