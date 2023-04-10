@@ -92,7 +92,8 @@ export default function TeamsTable({ data = [], onDelete }) {
                     <Modal title={formatMessage(labels.leaveTeam)}>
                       {close => (
                         <TeamLeaveForm
-                          teamUserId={teamUserId}
+                          teamId={id}
+                          userId={user.id}
                           teamName={row.name}
                           onSave={onDelete}
                           onClose={close}
