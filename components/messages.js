@@ -14,7 +14,7 @@ export const labels = defineMessages({
   password: { id: 'label.password', defaultMessage: 'Password' },
   role: { id: 'label.role', defaultMessage: 'Role' },
   user: { id: 'label.user', defaultMessage: 'User' },
-  administrator: { id: 'label.administrator', defaultMessage: 'Administrator' },
+  admin: { id: 'label.administrator', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
@@ -112,6 +112,7 @@ export const labels = defineMessages({
   toggleCharts: { id: 'label.toggle-charts', defaultMessage: 'Toggle charts' },
   editDashboard: { id: 'label.edit-dashboard', defaultMessage: 'Edit dashboard' },
   title: { id: 'label.title', defaultMessage: 'Title' },
+  view: { id: 'label.view', defaultMessage: 'View' },
 });
 
 export const messages = defineMessages({

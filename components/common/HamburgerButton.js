@@ -3,11 +3,12 @@ import { useState } from 'react';
 import MobileMenu from './MobileMenu';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
-import styles from './HamburgerButton.module.css';
+import useConfig from 'hooks/useConfig';
 
 export default function HamburgerButton() {
   const { formatMessage, labels } = useMessages();
   const [active, setActive] = useState(false);
+  const { cloudMode } = useConfig();
 
   const menuItems = [
     {
@@ -15,7 +16,7 @@ export default function HamburgerButton() {
       value: '/dashboard',
     },
     { label: formatMessage(labels.realtime), value: '/realtime' },
-    {
+    !cloudMode && {
       label: formatMessage(labels.settings),
       value: '/settings',
     },
@@ -23,20 +24,15 @@ export default function HamburgerButton() {
       label: formatMessage(labels.profile),
       value: '/settings/profile',
     },
-    { label: formatMessage(labels.logout), value: '/logout' },
-  ];
+    !cloudMode && { label: formatMessage(labels.logout), value: '/logout' },
+  ].filter(n => n);
 
-  function handleClick() {
-    setActive(state => !state);
-  }
-
-  function handleClose() {
-    setActive(false);
-  }
+  const handleClick = () => setActive(state => !state);
+  const handleClose = () => setActive(false);
 
   return (
     <>
-      <Button className={styles.button} onClick={handleClick}>
+      <Button variant="quiet" onClick={handleClick}>
         <Icon>{active ? <Icons.Close /> : <Icons.Menu />}</Icon>
       </Button>
       {active && <MobileMenu items={menuItems} onClose={handleClose} />}

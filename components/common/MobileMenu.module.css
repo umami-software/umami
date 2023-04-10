@@ -1,6 +1,6 @@
 .menu {
   position: fixed;
-  top: 0;
+  top: 60px;
   left: 0;
   right: 0;
   bottom: 0;
@@ -13,29 +13,17 @@
 }
 
 .items {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .item {
   font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 80px;
+  padding: 0 40px;
 }
 
-.item + .item {
-  margin-top: 20px;
-}
-
-.item:last-child {
-  margin-top: 60px;
-}
-
-.header {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  height: 100px;
-  padding: 0 30px;
+a.item {
+  color: var(--base900);
 }
