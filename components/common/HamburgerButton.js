@@ -19,6 +19,20 @@ export default function HamburgerButton() {
     !cloudMode && {
       label: formatMessage(labels.settings),
       value: '/settings',
+      children: [
+        {
+          label: formatMessage(labels.websites),
+          value: '/settings/websites',
+        },
+        {
+          label: formatMessage(labels.teams),
+          value: '/settings/teams',
+        },
+        {
+          label: formatMessage(labels.users),
+          value: '/settings/users',
+        },
+      ],
     },
     {
       label: formatMessage(labels.profile),

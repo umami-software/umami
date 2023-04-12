@@ -16,6 +16,10 @@
   color: var(--base900);
 }
 
+.header > div {
+  line-height: 60px;
+}
+
 .title {
   display: flex;
   align-items: center;
@@ -25,7 +29,22 @@
   line-height: 50px;
 }
 
-.xs .actions,
-.sm .actions {
-  flex-basis: 100%;
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 992px) {
+  .header {
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .actions {
+    flex-basis: 100%;
+    order: -1;
+  }
 }

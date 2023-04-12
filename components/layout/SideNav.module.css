@@ -13,10 +13,3 @@
   padding: 0;
   border-radius: var(--border-radius);
 }
-
-@media only screen and (max-width: 768px) {
-  .menu {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-}
