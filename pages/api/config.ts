@@ -16,7 +16,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ConfigResponse>)
       trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
       updatesDisabled: !!process.env.DISABLE_UPDATES,
       telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
-      cloudMode: false, //!!process.env.CLOUD_MODE,
+      cloudMode: !!process.env.CLOUD_MODE,
     });
   }
 
