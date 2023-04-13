@@ -16,7 +16,9 @@ import useMessages from 'hooks/useMessages';
 export default function UserEditForm({ userId, data, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation(({ username }) => post(`/users/${userId}`, { username }));
+  const { mutate, error } = useMutation(({ username, password, role }) =>
+    post(`/users/${userId}`, { username, password, role }),
+  );
 
   const handleSubmit = async data => {
     mutate(data, {
