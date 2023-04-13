@@ -1,3 +1,7 @@
+.cell {
+  align-items: center;
+}
+
 .row .cell:last-child {
   gap: 10px;
   justify-content: flex-end;

@@ -8,14 +8,14 @@ export default function MobileMenu({ items = [], onClose }) {
 
   const Items = ({ items, className }) => (
     <div className={classNames(styles.items, className)}>
-      {items.map(({ label, value, children }) => {
-        const selected = pathname === value;
+      {items.map(({ label, url, children }) => {
+        const selected = pathname.startsWith(url);
 
         return (
           <>
             <Link
-              key={value}
-              href={value}
+              key={url}
+              href={url}
               className={classNames(styles.item, { [styles.selected]: selected })}
               onClick={onClose}
             >

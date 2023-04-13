@@ -12,7 +12,7 @@ export default function TeamMembers({ teamId, readOnly }) {
   );
 
   if (isLoading) {
-    return <Loading icon="dots" position="block" />;
+    return <Loading icon="dots" style={{ minHeight: 300 }} />;
   }
 
   const handleSave = async () => {

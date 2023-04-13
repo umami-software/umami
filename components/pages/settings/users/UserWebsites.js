@@ -12,7 +12,7 @@ export default function UserWebsites({ userId }) {
   const hasData = data && data.length !== 0;
 
   if (isLoading) {
-    return <Loading icon="dots" position="block" />;
+    return <Loading icon="dots" style={{ minHeight: 300 }} />;
   }
 
   return (

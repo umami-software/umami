@@ -20,7 +20,7 @@ export default function WebsiteEditForm({ websiteId, data, onSave }) {
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data} style={{ width: 600 }}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data}>
       <FormRow label={formatMessage(labels.websiteId)}>
         <TextField value={websiteId} readOnly allowCopy />
       </FormRow>

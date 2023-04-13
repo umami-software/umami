@@ -12,12 +12,13 @@ export default function TimezoneSetting() {
   const handleReset = () => saveTimezone(getTimezone());
 
   return (
-    <Flexbox width={400} gap={10}>
+    <Flexbox gap={10}>
       <Dropdown
         items={options}
         value={timezone}
         onChange={saveTimezone}
-        menuProps={{ style: { height: 300, width: 300 } }}
+        style={{ flex: 1 }}
+        menuProps={{ style: { height: 300 } }}
       >
         {item => <Item key={item}>{item}</Item>}
       </Dropdown>

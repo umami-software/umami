@@ -1,23 +1,14 @@
 import useMessages from 'hooks/useMessages';
 import useUser from 'hooks/useUser';
 import Link from 'next/link';
-import {
-  Button,
-  Flexbox,
-  Icon,
-  Icons,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-  Text,
-} from 'react-basics';
+import { Button, Icon, Icons, Text } from 'react-basics';
 import TeamWebsiteRemoveButton from './TeamWebsiteRemoveButton';
+import SettingsTable from 'components/common/SettingsTable';
+import useConfig from 'hooks/useConfig';
 
 export default function TeamWebsitesTable({ data = [], onSave }) {
   const { formatMessage, labels } = useMessages();
+  const { openExternal } = useConfig();
   const { user } = useUser();
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
@@ -26,62 +17,37 @@ export default function TeamWebsitesTable({ data = [], onSave }) {
   ];
 
   return (
-    <Table columns={columns} rows={data}>
-      <TableHeader>
-        {(column, index) => {
-          return (
-            <TableColumn key={index} style={{ ...column.style }}>
-              {column.label}
-            </TableColumn>
-          );
-        }}
-      </TableHeader>
-      <TableBody>
-        {(row, keys, rowIndex) => {
-          const { teamId } = row;
-          const { id: websiteId, name, domain, userId } = row.website;
-          const { teamUser } = row.team;
-          const owner = teamUser[0];
-          const canRemove = user.id === userId || user.id === owner.userId;
+    <SettingsTable columns={columns} data={data}>
+      {row => {
+        const { teamId } = row;
+        const { id: websiteId, name, domain, userId } = row.website;
+        const { teamUser } = row.team;
+        const owner = teamUser[0];
+        const canRemove = user.id === userId || user.id === owner.userId;
 
-          row.name = name;
-          row.domain = domain;
+        row.name = name;
+        row.domain = domain;
 
-          row.action = (
-            <Flexbox flex={1} justifyContent="end" gap={10}>
-              <Link href={`/websites/${websiteId}`} target="_blank">
-                <Button>
-                  <Icon>
-                    <Icons.External />
-                  </Icon>
-                  <Text>{formatMessage(labels.view)}</Text>
-                </Button>
-              </Link>
-              {canRemove && (
-                <TeamWebsiteRemoveButton
-                  teamId={teamId}
-                  websiteId={websiteId}
-                  onSave={onSave}
-                ></TeamWebsiteRemoveButton>
-              )}
-            </Flexbox>
-          );
-
-          return (
-            <TableRow key={rowIndex} data={row} keys={keys}>
-              {(data, key, colIndex) => {
-                return (
-                  <TableCell key={colIndex} style={{ ...columns[colIndex]?.style }}>
-                    <Flexbox flex={1} alignItems="center">
-                      {data[key]}
-                    </Flexbox>
-                  </TableCell>
-                );
-              }}
-            </TableRow>
-          );
-        }}
-      </TableBody>
-    </Table>
+        return (
+          <>
+            <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
+              <Button>
+                <Icon>
+                  <Icons.External />
+                </Icon>
+                <Text>{formatMessage(labels.view)}</Text>
+              </Button>
+            </Link>
+            {canRemove && (
+              <TeamWebsiteRemoveButton
+                teamId={teamId}
+                websiteId={websiteId}
+                onSave={onSave}
+              ></TeamWebsiteRemoveButton>
+            )}
+          </>
+        );
+      }}
+    </SettingsTable>
   );
 }

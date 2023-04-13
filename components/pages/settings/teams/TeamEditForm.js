@@ -41,7 +41,7 @@ export default function TeamEditForm({ teamId, data, onSave, readOnly }) {
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data} style={{ width: 600 }}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data}>
       <FormRow label={formatMessage(labels.teamId)}>
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>

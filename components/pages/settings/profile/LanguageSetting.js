@@ -14,7 +14,7 @@ export default function LanguageSetting() {
   const renderValue = value => languages[value].label;
 
   return (
-    <Flexbox width={400} gap={10}>
+    <Flexbox gap={10}>
       <Dropdown
         items={options}
         value={locale}
