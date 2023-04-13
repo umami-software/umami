@@ -16,10 +16,6 @@
   color: var(--base900);
 }
 
-.header > div {
-  line-height: 60px;
-}
-
 .title {
   display: flex;
   align-items: center;
