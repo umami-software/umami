@@ -11,7 +11,7 @@ function mapData(data) {
   data?.reduce((obj, { timestamp }) => {
     const t = startOfMinute(new Date(timestamp));
     if (t.getTime() > last) {
-      obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
+      obj = { x: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
       arr.push(obj);
       last = t.getTime();
     } else {
