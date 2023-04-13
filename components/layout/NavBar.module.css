@@ -49,6 +49,10 @@
   border-bottom: 2px solid transparent;
 }
 
+.links span {
+  white-space: nowrap;
+}
+
 .links a:hover {
   color: var(--font-color100);
   border-bottom: 2px solid var(--primary400);

@@ -9,7 +9,6 @@ import {
   Text,
   useToast,
 } from 'react-basics';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import TeamWebsitesTable from 'components/pages/settings/teams/TeamWebsitesTable';
 import TeamAddWebsiteForm from 'components/pages/settings/teams/TeamAddWebsiteForm';
 import useApi from 'hooks/useApi';
@@ -25,7 +24,7 @@ export default function TeamWebsites({ teamId }) {
   const hasData = data && data.length !== 0;
 
   if (isLoading) {
-    return <Loading icon="dots" position="block" />;
+    return <Loading icon="dots" style={{ minHeight: 300 }} />;
   }
 
   const handleSave = async () => {
@@ -50,15 +49,8 @@ export default function TeamWebsites({ teamId }) {
   return (
     <div>
       {toast}
-      {hasData && (
-        <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
-      )}
+      <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
       {hasData && <TeamWebsitesTable teamId={teamId} data={data} onSave={handleSave} />}
-      {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noTeamWebsites)}>
-          {addButton}
-        </EmptyPlaceholder>
-      )}
     </div>
   );
 }

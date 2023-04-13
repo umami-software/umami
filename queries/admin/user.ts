@@ -23,6 +23,7 @@ export async function getUser(
 
 export async function getUsers(): Promise<User[]> {
   return prisma.client.user.findMany({
+    take: 100,
     where: {
       deletedAt: null,
     },

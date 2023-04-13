@@ -13,18 +13,32 @@ export default function HamburgerButton() {
   const menuItems = [
     {
       label: formatMessage(labels.dashboard),
-      value: '/dashboard',
+      url: '/dashboard',
     },
-    { label: formatMessage(labels.realtime), value: '/realtime' },
+    { label: formatMessage(labels.realtime), url: '/realtime' },
     !cloudMode && {
       label: formatMessage(labels.settings),
-      value: '/settings',
+      url: '/settings',
+      children: [
+        {
+          label: formatMessage(labels.websites),
+          url: '/settings/websites',
+        },
+        {
+          label: formatMessage(labels.teams),
+          url: '/settings/teams',
+        },
+        {
+          label: formatMessage(labels.users),
+          url: '/settings/users',
+        },
+      ],
     },
     {
       label: formatMessage(labels.profile),
-      value: '/settings/profile',
+      url: '/settings/profile',
     },
-    !cloudMode && { label: formatMessage(labels.logout), value: '/logout' },
+    !cloudMode && { label: formatMessage(labels.logout), url: '/logout' },
   ].filter(n => n);
 
   const handleClick = () => setActive(state => !state);

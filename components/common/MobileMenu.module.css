@@ -25,5 +25,15 @@
 }
 
 a.item {
+  color: var(--base600);
+}
+
+a.item.selected,
+.submenu a.item.selected {
   color: var(--base900);
+}
+
+.submenu a.item {
+  color: var(--base600);
+  margin-left: 40px;
 }

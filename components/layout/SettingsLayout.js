@@ -20,16 +20,16 @@ export default function SettingsLayout({ children }) {
     { key: 'profile', label: formatMessage(labels.profile), url: '/settings/profile' },
   ].filter(n => n);
 
-  const getKey = () => items.find(({ url }) => pathname.startsWith(url))?.key;
+  const getKey = () => items.find(({ url }) => pathname === url)?.key;
 
   return (
-    <Row className={classNames({ [styles.hideMenu]: cloudMode })}>
+    <Row>
       {!cloudMode && (
-        <Column className={styles.menu} defaultSize={12} md={3} lg={2} xl={2}>
+        <Column className={styles.menu} defaultSize={12} md={4} lg={3} xl={2}>
           <SideNav items={items} shallow={true} selectedKey={getKey()} />
         </Column>
       )}
-      <Column className={styles.content} defaultSize={12} md={9} lg={10} xl={10}>
+      <Column className={styles.content} defaultSize={12} md={8} lg={9} xl={10}>
         {children}
       </Column>
     </Row>
