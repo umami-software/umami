@@ -20,8 +20,7 @@ export interface WebsiteMetricsRequestQuery {
   browser: string;
   device: string;
   country: string;
-  subdivision1: string;
-  subdivision2: string;
+  region: string;
   city: string;
 }
 
@@ -46,8 +45,7 @@ export default async (
     browser,
     device,
     country,
-    subdivision1,
-    subdivision2,
+    region,
     city,
   } = req.query;
 
@@ -66,8 +64,7 @@ export default async (
         browser,
         device,
         country,
-        subdivision1,
-        subdivision2,
+        region,
         city,
       };
 
@@ -111,8 +108,7 @@ export default async (
         browser,
         device,
         country,
-        subdivision1,
-        subdivision2,
+        region,
         city,
       };
 

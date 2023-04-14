@@ -33,13 +33,16 @@ export default function WebsiteChart({
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
   const {
-    query: { url, referrer, os, browser, device, country, title },
+    query: { url, referrer, os, browser, device, country, region, city, title },
   } = usePageQuery();
   const { get, useQuery } = useApi();
   const { ref, isSticky } = useSticky({ enabled: stickyHeader });
 
   const { data, isLoading, error } = useQuery(
-    ['websites:pageviews', { websiteId, modified, url, referrer, os, browser, device, country }],
+    [
+      'websites:pageviews',
+      { websiteId, modified, url, referrer, os, browser, device, country, region, city, title },
+    ],
     () =>
       get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
@@ -52,6 +55,9 @@ export default function WebsiteChart({
         browser,
         device,
         country,
+        region,
+        city,
+        title,
       }),
     { onSuccess: onDataLoad },
   );
@@ -82,7 +88,7 @@ export default function WebsiteChart({
       </WebsiteHeader>
       <FilterTags
         websiteId={websiteId}
-        params={{ url, referrer, os, browser, device, country, title }}
+        params={{ url, referrer, os, browser, device, country, region, city, title }}
       />
       <Row
         ref={ref}

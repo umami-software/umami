@@ -10,7 +10,6 @@ const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export interface WebsitePageviewRequestQuery {
   id: string;
-  websiteId: string;
   startAt: number;
   endAt: number;
   unit: string;

@@ -9,7 +9,8 @@ import styles from './WorldMap.module.css';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 import HoverTooltip from './HoverTooltip';
-import { formatLongNumber } from '../../lib/format';
+import { formatLongNumber } from 'lib/format';
+import { percentFilter } from 'lib/filters';
 
 function WorldMap({ data, className }) {
   const { basePath } = useRouter();
@@ -26,10 +27,11 @@ function WorldMap({ data, className }) {
   );
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
+  const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
 
   function getFillColor(code) {
     if (code === 'AQ') return;
-    const country = data?.find(({ x }) => x === code);
+    const country = metrics?.find(({ x }) => x === code);
 
     if (!country) {
       return colors.fillColor;
@@ -46,7 +48,7 @@ function WorldMap({ data, className }) {
 
   function handleHover(code) {
     if (code === 'AQ') return;
-    const country = data?.find(({ x }) => x === code);
+    const country = metrics?.find(({ x }) => x === code);
     setTooltip(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
   }
 

@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
+import RegionsTable from 'components/metrics/RegionsTable';
+import CitiesTable from 'components/metrics/CitiesTable';
 import DevicesTable from 'components/metrics/DevicesTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
 import OSTable from 'components/metrics/OSTable';
@@ -26,6 +28,8 @@ const views = {
   device: DevicesTable,
   screen: ScreenTable,
   country: CountriesTable,
+  region: RegionsTable,
+  city: CitiesTable,
   language: LanguagesTable,
   event: EventsTable,
   query: QueryParametersTable,
@@ -68,6 +72,16 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
       key: 'country',
       label: formatMessage(labels.countries),
       url: resolveUrl({ view: 'country' }),
+    },
+    {
+      key: 'region',
+      label: formatMessage(labels.regions),
+      url: resolveUrl({ view: 'region' }),
+    },
+    {
+      key: 'city',
+      label: formatMessage(labels.cities),
+      url: resolveUrl({ view: 'city' }),
     },
     {
       key: 'language',

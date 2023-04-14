@@ -13,7 +13,6 @@ export async function getEventMetrics(
       endDate: Date;
       timezone: string;
       unit: string;
-      column: string;
       filters: {
         url: string;
         eventName: string;
@@ -40,7 +39,6 @@ async function relationalQuery(
     endDate: Date;
     timezone: string;
     unit: string;
-    column: string;
     filters: {
       url: string;
       eventName: string;

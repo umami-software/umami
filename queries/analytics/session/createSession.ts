@@ -18,7 +18,37 @@ export async function createSession(args: Prisma.SessionCreateInput) {
 }
 
 async function relationalQuery(data: Prisma.SessionCreateInput) {
-  return prisma.client.session.create({ data });
+  const {
+    id,
+    websiteId,
+    hostname,
+    browser,
+    os,
+    device,
+    screen,
+    language,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+  } = data;
+
+  return prisma.client.session.create({
+    data: {
+      id,
+      websiteId,
+      hostname,
+      browser,
+      os,
+      device,
+      screen,
+      language,
+      country,
+      subdivision1: country && subdivision1 ? `${country}-${subdivision1}` : null,
+      subdivision2,
+      city,
+    },
+  });
 }
 
 async function clickhouseQuery(data: {

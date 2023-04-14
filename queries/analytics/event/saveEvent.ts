@@ -137,7 +137,7 @@ async function clickhouseQuery(data: {
     session_id: sessionId,
     event_id: eventId,
     country: country ? country : null,
-    subdivision1: subdivision1 ? subdivision1 : null,
+    subdivision1: country && subdivision1 ? `${country}-${subdivision1}` : null,
     subdivision2: subdivision2 ? subdivision2 : null,
     city: city ? city : null,
     url_path: urlPath?.substring(0, URL_LENGTH),

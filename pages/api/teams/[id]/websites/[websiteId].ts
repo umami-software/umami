@@ -23,9 +23,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await deleteTeamWebsite(teamId, websiteId);
+    await deleteTeamWebsite(teamId, websiteId);
 
-    return ok(res, websites);
+    return ok(res);
   }
 
   return methodNotAllowed(res);

@@ -19,7 +19,7 @@ export default function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <p>
-        <FormattedMessage {...messages.confirmDelete} values={{ name: <b>{teamName}</b> }} />
+        <FormattedMessage {...messages.confirmDelete} values={{ target: <b>{teamName}</b> }} />
       </p>
       <FormButtons flex>
         <SubmitButton variant="danger" disabled={isLoading}>
