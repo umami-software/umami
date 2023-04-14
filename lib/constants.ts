@@ -37,10 +37,9 @@ export const SESSION_COLUMNS = [
   'os',
   'device',
   'screen',
-  'country',
   'language',
-  'subdivision1',
-  'subdivision2',
+  'country',
+  'region',
   'city',
 ];
 
@@ -50,6 +49,7 @@ export const FILTER_COLUMNS = {
   title: 'page_title',
   query: 'url_query',
   event: 'event_name',
+  region: 'subdivision1',
 };
 
 export const EVENT_TYPE = {

@@ -1,18 +1,17 @@
 import MetricsTable from './MetricsTable';
+import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
-import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 import useMessages from 'hooks/useMessages';
 
-export default function CountriesTable({ websiteId, ...props }) {
+export default function CitiesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
   const { formatMessage, labels } = useMessages();
 
-  function renderLink({ x: code }) {
+  function renderLink({ x }) {
     return (
       <div className={locale}>
-        <FilterLink id="country" value={countryNames[code] && code} label={countryNames[code]} />
+        <FilterLink id="city" value={x} />
       </div>
     );
   }
@@ -20,10 +19,11 @@ export default function CountriesTable({ websiteId, ...props }) {
   return (
     <MetricsTable
       {...props}
-      title={formatMessage(labels.countries)}
-      type="country"
+      title={formatMessage(labels.cities)}
+      type="city"
       metric={formatMessage(labels.visitors)}
       websiteId={websiteId}
+      dataFilter={emptyFilter}
       renderLabel={renderLink}
     />
   );

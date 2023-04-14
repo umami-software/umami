@@ -32,9 +32,13 @@ export default function HamburgerButton() {
           label: formatMessage(labels.users),
           url: '/settings/users',
         },
+        {
+          label: formatMessage(labels.profile),
+          url: '/settings/profile',
+        },
       ],
     },
-    {
+    cloudMode && {
       label: formatMessage(labels.profile),
       url: '/settings/profile',
     },
