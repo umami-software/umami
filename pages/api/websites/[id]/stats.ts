@@ -7,7 +7,6 @@ import { getWebsiteStats } from 'queries';
 
 export interface WebsiteStatsRequestQuery {
   id: string;
-  type: string;
   startAt: number;
   endAt: number;
   url: string;
