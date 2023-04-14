@@ -44,7 +44,7 @@ async function relationalQuery(data: Prisma.SessionCreateInput) {
       screen,
       language,
       country,
-      subdivision1: subdivision1 ? country.concat('-', subdivision1) : null,
+      subdivision1: country && subdivision1 ? `${country}-${subdivision1}` : null,
       subdivision2,
       city,
     },
