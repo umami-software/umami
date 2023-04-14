@@ -95,15 +95,9 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   return false;
 }
 
-export async function canCreateWebsite({ user }: Auth, teamId?: string) {
+export async function canCreateWebsite({ user }: Auth) {
   if (user.isAdmin) {
     return true;
-  }
-
-  if (teamId) {
-    const teamUser = await getTeamUser(teamId, user.id);
-
-    return hasPermission(teamUser?.role, PERMISSIONS.websiteCreate);
   }
 
   return hasPermission(user.role, PERMISSIONS.websiteCreate);

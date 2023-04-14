@@ -10,7 +10,6 @@ export interface WebsitesRequestBody {
   name: string;
   domain: string;
   shareId: string;
-  teamId?: string;
 }
 
 export default async (
@@ -31,9 +30,9 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name, domain, shareId, teamId } = req.body;
+    const { name, domain, shareId } = req.body;
 
-    if (!(await canCreateWebsite(req.auth, teamId))) {
+    if (!(await canCreateWebsite(req.auth))) {
       return unauthorized(res);
     }
 
@@ -44,11 +43,7 @@ export default async (
       shareId,
     };
 
-    if (teamId) {
-      data.teamId = teamId;
-    } else {
-      data.userId = userId;
-    }
+    data.userId = userId;
 
     const website = await createWebsite(data);
 
