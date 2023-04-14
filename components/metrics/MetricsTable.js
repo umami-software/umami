@@ -29,7 +29,7 @@ export default function MetricsTable({
   const {
     resolveUrl,
     router,
-    query: { url, referrer, os, browser, device, country },
+    query: { url, referrer, os, browser, device, country, region, city },
   } = usePageQuery();
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
@@ -37,7 +37,7 @@ export default function MetricsTable({
   const { data, isLoading, isFetched, error } = useQuery(
     [
       'websites:metrics',
-      { websiteId, type, modified, url, referrer, os, browser, device, country },
+      { websiteId, type, modified, url, referrer, os, browser, device, country, region, city },
     ],
     () =>
       get(`/websites/${websiteId}/metrics`, {
@@ -50,6 +50,8 @@ export default function MetricsTable({
         browser,
         device,
         country,
+        region,
+        city,
       }),
     { onSuccess: onDataLoad, retryDelay: delay || DEFAULT_ANIMATION_DURATION },
   );

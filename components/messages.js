@@ -113,6 +113,8 @@ export const labels = defineMessages({
   editDashboard: { id: 'label.edit-dashboard', defaultMessage: 'Edit dashboard' },
   title: { id: 'label.title', defaultMessage: 'Title' },
   view: { id: 'label.view', defaultMessage: 'View' },
+  cities: { id: 'label.cities', defaultMessage: 'Cities' },
+  regions: { id: 'label.regions', defaultMessage: 'Regions' },
 });
 
 export const messages = defineMessages({
