@@ -29,7 +29,10 @@ export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <p>
-        <FormattedMessage {...messages.deleteWebsite} values={{ confirmation: CONFIRM_VALUE }} />
+        <FormattedMessage
+          {...messages.deleteWebsite}
+          values={{ confirmation: <b>{CONFIRM_VALUE}</b> }}
+        />
       </p>
       <FormRow label={formatMessage(labels.confirm)}>
         <FormInput name="confirmation" rules={{ validate: value => value === CONFIRM_VALUE }}>
