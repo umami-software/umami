@@ -10,6 +10,7 @@ export const labels = defineMessages({
   leave: { id: 'label.leave', defaultMessage: 'Leave' },
   users: { id: 'label.users', defaultMessage: 'Users' },
   createUser: { id: 'label.create-user', defaultMessage: 'Create user' },
+  deleteUser: { id: 'label.delete-users', defaultMessage: 'Delete user' },
   username: { id: 'label.username', defaultMessage: 'Username' },
   password: { id: 'label.password', defaultMessage: 'Password' },
   role: { id: 'label.role', defaultMessage: 'Role' },

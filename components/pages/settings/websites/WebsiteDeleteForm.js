@@ -13,7 +13,7 @@ import useMessages from 'hooks/useMessages';
 const CONFIRM_VALUE = 'DELETE';
 
 export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error } = useMutation(data => del(`/websites/${websiteId}`, data));
 
@@ -28,7 +28,12 @@ export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <p>{formatMessage(messages.deleteWebsite, { confirmation: CONFIRM_VALUE })}</p>
+      <p>
+        <FormattedMessage
+          {...messages.deleteWebsite}
+          values={{ confirmation: <b>{CONFIRM_VALUE}</b> }}
+        />
+      </p>
       <FormRow label={formatMessage(labels.confirm)}>
         <FormInput name="confirmation" rules={{ validate: value => value === CONFIRM_VALUE }}>
           <TextField autoComplete="off" />
