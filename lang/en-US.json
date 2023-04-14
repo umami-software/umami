@@ -116,7 +116,7 @@
   "message.confirm-delete": "Are you sure you want to delete {target}?",
   "message.confirm-leave": "Are you sure you want to leave {target}?",
   "message.confirm-reset": "Are you sure you want to reset {target}'s statistics?",
-  "message.delete-website": "Delete website",
+  "message.delete-website": "To delete this website, type {confirmation} in the box below to confirm.",
   "message.delete-website-warning": "All associated data will be deleted as well.",
   "message.error": "Something went wrong.",
   "message.event-log": "{event} on {url}",

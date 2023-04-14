@@ -10,7 +10,7 @@ export default function LogoutPage({ disabled }) {
 
   useEffect(() => {
     async function logout() {
-      await post('/logout');
+      await post('/auth/logout');
     }
 
     if (!disabled) {

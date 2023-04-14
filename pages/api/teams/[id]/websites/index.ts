@@ -10,7 +10,6 @@ export interface TeamWebsiteRequestQuery {
 }
 
 export interface TeamWebsiteRequestBody {
-  teamWebsiteId?: string;
   websiteIds?: string[];
 }
 
@@ -21,9 +20,6 @@ export default async (
   await useAuth(req, res);
 
   const { id: teamId } = req.query;
-  const {
-    user: { id: userId },
-  } = req.auth;
 
   if (req.method === 'GET') {
     if (!(await canViewTeam(req.auth, teamId))) {

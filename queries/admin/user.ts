@@ -17,6 +17,7 @@ export async function getUser(
       username: true,
       password: includePassword,
       role: true,
+      createdAt: true,
     },
   });
 }

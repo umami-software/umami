@@ -758,7 +758,15 @@
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Delete website"
+      "value": "To delete this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.delete-website-warning": [

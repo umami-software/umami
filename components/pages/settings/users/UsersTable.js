@@ -52,7 +52,7 @@ export default function UsersTable({ data = [], onDelete }) {
                 </Icon>
                 <Text>{formatMessage(labels.delete)}</Text>
               </Button>
-              <Modal>
+              <Modal title={formatMessage(labels.deleteUser)}>
                 {close => (
                   <UserDeleteForm
                     userId={row.id}
