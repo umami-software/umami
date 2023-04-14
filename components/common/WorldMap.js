@@ -27,7 +27,7 @@ function WorldMap({ data, className }) {
   );
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
-  const metrics = useMemo(() => percentFilter(data), [data]);
+  const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
 
   function getFillColor(code) {
     if (code === 'AQ') return;
