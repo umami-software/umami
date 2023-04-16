@@ -23,7 +23,7 @@
       "value": "Weboldal hozzáadása"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Adminisztrátor"
@@ -81,6 +81,12 @@
     {
       "type": 0,
       "value": "Jelszó módosítása"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
     }
   ],
   "label.clear-all": [
@@ -177,6 +183,12 @@
     {
       "type": 0,
       "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
@@ -445,6 +457,12 @@
       "value": "Regenerate"
     }
   ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
   "label.remove": [
     {
       "type": 0,
@@ -641,6 +659,12 @@
     {
       "type": 0,
       "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
     }
   ],
   "label.view-details": [

@@ -16,7 +16,11 @@ files.forEach(file => {
   const merged = keys.reduce((obj, key) => {
     const message = lang[key];
 
-    obj[key] = message || messages[key].defaultMessage;
+    if (file === 'en-US.json') {
+      obj[key] = messages[key].defaultMessage;
+    } else {
+      obj[key] = message || messages[key].defaultMessage;
+    }
 
     if (!message) {
       console.log(`* Added key ${key}`);

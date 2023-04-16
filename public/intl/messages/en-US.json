@@ -23,7 +23,7 @@
       "value": "Add website"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Administrator"
@@ -83,6 +83,12 @@
       "value": "Change password"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
   "label.clear-all": [
     {
       "type": 0,
@@ -140,7 +146,7 @@
   "label.custom-range": [
     {
       "type": 0,
-      "value": "Custom range"
+      "value": "Custom-range"
     }
   ],
   "label.dashboard": [
@@ -177,6 +183,12 @@
     {
       "type": 0,
       "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
@@ -445,6 +457,12 @@
       "value": "Regenerate"
     }
   ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
   "label.remove": [
     {
       "type": 0,
@@ -466,7 +484,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Reset website"
     }
   ],
   "label.role": [
@@ -643,6 +661,12 @@
       "value": "Users"
     }
   ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
@@ -752,7 +776,7 @@
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "?"
     }
   ],
   "message.delete-website": [
@@ -772,7 +796,7 @@
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "All associated data will be deleted as well."
+      "value": "All website data will be deleted."
     }
   ],
   "message.error": [
@@ -804,13 +828,13 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Incorrect username/password."
+      "value": "Incorrect username and/or password."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "Invalid domain"
+      "value": "Invalid domain. Do not include http/https."
     }
   ],
   "message.min-password-length": [
@@ -836,7 +860,7 @@
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Passwords don't match"
+      "value": "Passwords do not match."
     }
   ],
   "message.no-teams": [
@@ -854,39 +878,39 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "Page not found."
+      "value": "Page not found"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "To reset this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
+      "value": "All statistics for this website will be deleted, but your settings will remain intact."
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "Saved successfully."
+      "value": "Saved."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "This is the publicly shared URL for "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
+      "value": "Your website stats are publically available at the following URL:"
     }
   ],
   "message.team-already-member": [
@@ -904,7 +928,21 @@
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Tracking code"
+      "value": "To track stats for this website, place the following code in the "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " section of your HTML."
     }
   ],
   "message.user-deleted": [
@@ -956,7 +994,7 @@
   "messages.no-websites-configured": [
     {
       "type": 0,
-      "value": "You don't have any websites configured."
+      "value": "You do not have any websites configured."
     }
   ],
   "messages.team-websites-info": [
