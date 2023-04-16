@@ -68,10 +68,10 @@ async function checkV1Tables() {
   try {
     await prisma.$queryRaw`select * from account limit 1`;
 
-    console.log('Umami v1 tables detected. To upgrade from v1 to v2 run');
-    console.log('npx @umami/migrate-v1-v2');
-
-    process.exit(0);
+    error(
+      'Umami v1 tables detected. For how to upgrade from v1 to v2 go to https://umami.is/docs/migrate-v1-v2.',
+    );
+    process.exit(1);
   } catch (e) {
     // Ignore
   }
