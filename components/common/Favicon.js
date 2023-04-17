@@ -1,5 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import styles from './Favicon.module.css';
 
 function getHostName(url) {
@@ -20,9 +18,5 @@ function Favicon({ domain, ...props }) {
     />
   ) : null;
 }
-
-Favicon.propTypes = {
-  domain: PropTypes.string,
-};
 
 export default Favicon;

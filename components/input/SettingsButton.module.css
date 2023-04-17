@@ -1,0 +1,11 @@
+.popup {
+  background: var(--base50);
+  border: 1px solid var(--base500);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  padding: 20px;
+}

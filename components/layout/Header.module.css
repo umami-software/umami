@@ -1,40 +1,25 @@
 .header {
   display: flex;
   align-items: center;
-  min-height: 100px;
   width: 100%;
+  padding: 30px 30px 0 30px;
 }
 
 .title {
-  flex: 1;
-  font-size: var(--font-size-large);
   display: flex;
+  flex-direction: row;
   align-items: center;
-  line-height: 1.4;
-}
-
-.logo {
-  margin-right: 12px;
-}
-
-.links {
-  flex: 2;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: var(--font-size-normal);
-  font-weight: 600;
-}
-
-.links a + a {
-  margin-left: 40px;
+  gap: 10px;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--font-color100) !important;
 }
 
 .buttons {
-  flex: 1;
   display: flex;
-  justify-content: flex-end;
+  flex-direction: row;
   align-items: center;
+  justify-content: flex-end;
 }
 
 @media only screen and (max-width: 992px) {

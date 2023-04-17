@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-console */
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
@@ -5,16 +7,17 @@ const https = require('https');
 const zlib = require('zlib');
 const tar = require('tar');
 
-let url =
-  'https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/GeoLite2-Country.tar.gz';
+const db = 'GeoLite2-City';
+
+let url = `https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/${db}.tar.gz`;
 
 if (process.env.MAXMIND_LICENSE_KEY) {
   url =
     `https://download.maxmind.com/app/geoip_download` +
-    `?edition_id=GeoLite2-Country&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
+    `?edition_id=${db}&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`;
 }
 
-const dest = path.resolve(__dirname, '../node_modules/.geo');
+const dest = path.resolve(__dirname, '../geo');
 
 if (!fs.existsSync(dest)) {
   fs.mkdirSync(dest);

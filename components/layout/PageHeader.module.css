@@ -3,7 +3,44 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
-  min-height: 80px;
   align-self: stretch;
-  font-weight: bold;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+}
+
+.header a {
+  color: var(--base600);
+}
+
+.header a:hover {
+  color: var(--base900);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  gap: 20px;
+  height: 60px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 992px) {
+  .header {
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .actions {
+    flex-basis: 100%;
+    order: -1;
+  }
 }

@@ -23,9 +23,9 @@ export default function usePageQuery() {
     }, {});
   }, [search]);
 
-  function resolve(params) {
-    return buildUrl(asPath.split('?')[0], { ...query, ...params });
+  function resolveUrl(params, reset) {
+    return buildUrl(asPath.split('?')[0], { ...(reset ? {} : query), ...params });
   }
 
-  return { pathname, query, resolve, router };
+  return { pathname, query, resolveUrl, router };
 }

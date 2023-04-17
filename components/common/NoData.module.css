@@ -1,6 +1,6 @@
 .container {
-  color: var(--gray500);
-  font-size: var(--font-size-normal);
+  color: var(--base500);
+  font-size: var(--font-size-md);
   position: relative;
   display: flex;
   align-items: center;

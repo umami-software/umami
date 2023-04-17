@@ -1,11 +1,15 @@
 import create from 'zustand';
 import produce from 'immer';
 import app from './app';
-import { getDateRange } from '../lib/date';
+import { parseDateRange } from 'lib/date';
 
 const store = create(() => ({}));
 
-export function setDateRange(websiteId, value) {
+export function getWebsiteDateRange(websiteId) {
+  return store.getState()?.[websiteId];
+}
+
+export function setWebsiteDateRange(websiteId, value) {
   store.setState(
     produce(state => {
       if (!state[websiteId]) {
@@ -16,7 +20,7 @@ export function setDateRange(websiteId, value) {
 
       if (typeof value === 'string') {
         const { locale } = app.getState();
-        dateRange = getDateRange(value, locale);
+        dateRange = parseDateRange(value, locale);
       }
 
       state[websiteId].dateRange = { ...dateRange, modified: Date.now() };

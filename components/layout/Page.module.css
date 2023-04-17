@@ -2,6 +2,13 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 30px;
-  background: var(--gray50);
+  background: var(--base50);
+  position: relative;
+  padding: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+  .page {
+    padding: 10px 0;
+  }
 }

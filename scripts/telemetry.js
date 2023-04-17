@@ -5,7 +5,7 @@ const isCI = require('is-ci');
 const pkg = require('../package.json');
 
 const dest = path.resolve(__dirname, '../.next/cache/umami.json');
-const url = 'https://telemetry.umami.is/api/collect';
+const url = 'https://telemetry.umami.is/api/send';
 
 async function sendTelemetry(action) {
   let json = {};

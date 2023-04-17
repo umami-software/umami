@@ -1,0 +1,85 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--base600);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.body {
+  display: none;
+}
+
+.expanded .body {
+  display: block;
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-right: 2px solid var(--base200);
+  padding: 1rem 2rem;
+  gap: var(--size500);
+  font-weight: 600;
+  width: 200px;
+  margin-right: -2px;
+}
+
+a.item {
+  color: var(--base700);
+}
+
+.item.selected {
+  color: var(--base900);
+  border-right-color: var(--primary400);
+  background: var(--blue100);
+}
+
+.item:hover {
+  color: var(--base900);
+}
+
+.item.disabled {
+  color: var(--base500) !important;
+  pointer-events: none;
+}
+
+.minimized .text,
+.minimized .header {
+  display: none;
+}
+
+.minimized .item {
+  width: 60px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.divider:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  border-top: 1px solid var(--base300);
+  width: 160px;
+}
+
+.minimized .divider:before {
+  width: 60px;
+}
