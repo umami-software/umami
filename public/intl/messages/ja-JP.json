@@ -23,7 +23,7 @@
       "value": "Webサイトの追加"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "管理者"
@@ -81,6 +81,12 @@
     {
       "type": 0,
       "value": "パスワード変更"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
     }
   ],
   "label.clear-all": [
@@ -177,6 +183,12 @@
     {
       "type": 0,
       "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
@@ -449,6 +461,12 @@
       "value": "Regenerate"
     }
   ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
   "label.remove": [
     {
       "type": 0,
@@ -645,6 +663,12 @@
     {
       "type": 0,
       "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
     }
   ],
   "label.view-details": [
