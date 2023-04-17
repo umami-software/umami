@@ -9,15 +9,15 @@
   align-items: center;
   justify-content: space-between;
   font-size: var(--font-size-md);
-  line-height: 40px;
-  font-weight: 600;
+  line-height: 50px;
+  font-weight: 700;
 }
 
 .row {
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 40px;
+  height: 50px;
   border-bottom: 1px solid var(--base300);
 }
 
@@ -47,6 +47,15 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+
+.detail > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .row .link {
