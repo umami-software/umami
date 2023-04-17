@@ -82,8 +82,7 @@ export interface WebsiteMetricFilter {
   browser?: string;
   device?: string;
   country?: string;
-  subdivision1?: string;
-  subdivision2?: string;
+  region?: string;
   city?: string;
 }
 
