@@ -53,7 +53,7 @@ async function checkDatabaseVersion(databaseType) {
   const query = await prisma.$queryRaw`select version() version`;
   const version = semver.valid(semver.coerce(query[0].version));
 
-  const minVersion = databaseType === 'postgresql' ? '9.4.0' : '5.6.0';
+  const minVersion = databaseType === 'postgresql' ? '9.4.0' : '5.7.0';
 
   if (semver.lt(version, minVersion)) {
     throw new Error(
