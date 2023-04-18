@@ -49,7 +49,7 @@ export default function TeamSettings({ teamId }) {
         title={
           <Breadcrumbs>
             <Item>
-              <Link href="/settings/teams">Teams</Link>
+              <Link href="/settings/teams">{formatMessage(labels.teams)}</Link>
             </Item>
             <Item>{values?.name}</Item>
           </Breadcrumbs>
