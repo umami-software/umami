@@ -37,7 +37,7 @@ export default function PasswordEditForm({ onSave, onClose }) {
           name="newPassword"
           rules={{
             required: 'Required',
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
           }}
         >
           <PasswordField autoComplete="new-password" />
@@ -48,7 +48,7 @@ export default function PasswordEditForm({ onSave, onClose }) {
           name="confirmPassword"
           rules={{
             required: formatMessage(labels.required),
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
             validate: samePassword,
           }}
         >

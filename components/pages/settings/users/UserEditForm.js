@@ -48,7 +48,7 @@ export default function UserEditForm({ userId, data, onSave }) {
         <FormInput
           name="newPassword"
           rules={{
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength) },
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
           }}
         >
           <PasswordField autoComplete="new-password" />
