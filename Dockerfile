@@ -12,6 +12,7 @@ RUN yarn install --frozen-lockfile
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
+COPY docker/middleware.js .
 COPY . .
 
 ARG DATABASE_TYPE
