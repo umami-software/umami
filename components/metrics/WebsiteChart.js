@@ -18,6 +18,7 @@ import Icons from 'components/icons';
 import useSticky from 'hooks/useSticky';
 import useMessages from 'hooks/useMessages';
 import styles from './WebsiteChart.module.css';
+import useLocale from 'hooks/useLocale';
 
 export default function WebsiteChart({
   websiteId,
@@ -72,6 +73,7 @@ export default function WebsiteChart({
     return { pageviews: [], sessions: [] };
   }, [data, modified]);
 
+  const { dir } = useLocale();
   return (
     <>
       <WebsiteHeader websiteId={websiteId} name={name} domain={domain}>
@@ -80,7 +82,9 @@ export default function WebsiteChart({
             <Button variant="primary">
               <Text>{formatMessage(labels.viewDetails)}</Text>
               <Icon>
-                <Icons.ArrowRight />
+                <Icon rotate={dir === 'rtl' ? 180 : 0}>
+                  <Icons.ArrowRight />
+                </Icon>
               </Icon>
             </Button>
           </Link>
