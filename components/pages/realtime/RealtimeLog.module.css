@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: space-between;
   font-size: var(--font-size-md);
-  line-height: 50px;
+  line-height: 40px;
   font-weight: 700;
 }
 
@@ -42,6 +42,7 @@
 
 .detail {
   display: flex;
+  align-items: center;
   flex: 1;
   gap: 10px;
   white-space: nowrap;
