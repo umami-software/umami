@@ -44,6 +44,17 @@ if (process.env.COLLECT_API_ENDPOINT) {
   });
 }
 
+if (process.env.TRACKER_SCRIPT_NAME) {
+  const scriptNames = process.env.TRACKER_SCRIPT_NAME.split(',');
+
+  rewrites.push(
+    ...scriptNames.map(scriptName => ({
+      source: `/${scriptName.trim()}.js`,
+      destination: '/script.js',
+    })),
+  );
+}
+
 const redirects = [];
 
 if (process.env.CLOUD_MODE) {
