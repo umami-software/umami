@@ -18,6 +18,7 @@ import SideNav from 'components/layout/SideNav';
 import usePageQuery from 'hooks/usePageQuery';
 import useMessages from 'hooks/useMessages';
 import styles from './WebsiteMenuView.module.css';
+import useLocale from 'hooks/useLocale';
 
 const views = {
   url: PagesTable,
@@ -37,6 +38,7 @@ const views = {
 
 export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   const { formatMessage, labels } = useMessages();
+  const { dir } = useLocale();
   const {
     resolveUrl,
     query: { view },
@@ -113,7 +115,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
         <Link href={resolveUrl({ view: undefined })}>
           <Flexbox justifyContent="center">
             <Button variant="quiet">
-              <Icon rotate={180}>
+              <Icon rotate={dir === 'rtl' ? 0 : 180}>
                 <Icons.ArrowRight />
               </Icon>
               <Text>{formatMessage(labels.back)}</Text>
