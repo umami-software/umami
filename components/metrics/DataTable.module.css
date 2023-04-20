@@ -68,8 +68,8 @@
 
 .value {
   width: 50px;
-  text-align: right;
-  margin-right: 10px;
+  text-align: end;
+  margin-inline-end: 10px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -79,7 +79,7 @@
   width: 50px;
   color: var(--base600);
   border-left: 1px solid var(--base600);
-  padding-left: 10px;
+  padding-inline-start: 10px;
   z-index: 1;
 }
 
