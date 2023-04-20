@@ -115,7 +115,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
         <Link href={resolveUrl({ view: undefined })}>
           <Flexbox justifyContent="center">
             <Button variant="quiet">
-              <Icon rotate={dir === 'rtl' ? 0 : 1800}>
+              <Icon rotate={dir === 'rtl' ? 0 : 180}>
                 <Icons.ArrowRight />
               </Icon>
               <Text>{formatMessage(labels.back)}</Text>
