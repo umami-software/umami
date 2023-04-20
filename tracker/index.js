@@ -112,13 +112,21 @@
     };
 
     const callback = e => {
+      const findATagParent = (rootElem, maxSearchDepth) => {
+        let currentElement = rootElem;
+        for (let i = 0; i < maxSearchDepth; i++) {
+          if (currentElement.tagName === 'A') 
+            return currentElement;
+          currentElement = currentElement.parentElement;
+        }
+        return null;
+      };
+
       const el = e.target;
       const anchor =
         el.tagName === 'A'
           ? el
-          : el.parentElement && el.parentElement.tagName === 'A'
-          ? el.parentElement
-          : null;
+          : findATagParent(el, 5);
 
       if (anchor) {
         const { href, target } = anchor;
