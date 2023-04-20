@@ -63,7 +63,7 @@ export default function RealtimeDashboard({ websiteId }) {
     currentData.countries = percentFilter(
       currentData.sessions
         .reduce((arr, data) => {
-          if (!arr.find(({ sessionId }) => sessionId === data.sessionId)) {
+          if (!arr.find(({ id }) => id === data.id)) {
             return arr.concat(data);
           }
           return arr;
@@ -84,7 +84,7 @@ export default function RealtimeDashboard({ websiteId }) {
     );
 
     currentData.visitors = currentData.sessions.reduce((arr, val) => {
-      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
+      if (!arr.find(({ id }) => id === val.id)) {
         return arr.concat(val);
       }
       return arr;
