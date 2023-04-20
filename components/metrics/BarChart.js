@@ -45,7 +45,7 @@ export default function BarChart({
 
       switch (unit) {
         case 'minute':
-          return dateFormat(d, 'H:mm', locale);
+          return dateFormat(d, 'h:mm', locale);
         case 'hour':
           return dateFormat(d, 'p', locale);
         case 'day':
@@ -177,15 +177,16 @@ export default function BarChart({
   const updateChart = () => {
     setTooltip(null);
 
+    datasets.forEach((dataset, index) => {
+      chart.current.data.datasets[index].data = dataset.data;
+      chart.current.data.datasets[index].label = dataset.label;
+    });
+
     chart.current.options = getOptions();
 
-    if (datasets.length) {
-      chart.current.data.datasets = datasets;
-    }
+    onUpdate(chart.current);
 
     chart.current.update();
-
-    onUpdate(chart.current);
   };
 
   useEffect(() => {
