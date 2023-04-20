@@ -345,6 +345,12 @@
       "value": "الأعضاء"
     }
   ],
+  "label.minutes": [
+    {
+      "type": 0,
+      "value": "د"
+    }
+  ],
   "label.mobile": [
     {
       "type": 0,
@@ -503,6 +509,12 @@
     {
       "type": 0,
       "value": "الشاشات"
+    }
+  ],
+  "label.seconds": [
+    {
+      "type": 0,
+      "value": "ث"
     }
   ],
   "label.select-website": [

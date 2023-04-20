@@ -116,6 +116,8 @@ export const labels = defineMessages({
   view: { id: 'label.view', defaultMessage: 'View' },
   cities: { id: 'label.cities', defaultMessage: 'Cities' },
   regions: { id: 'label.regions', defaultMessage: 'Regions' },
+  minutes: { id: 'label.minutes', defaultMessage: 'm' },
+  seconds: { id: 'label.seconds', defaultMessage: 's' },
 });
 
 export const messages = defineMessages({

@@ -113,6 +113,8 @@
   "label.website-id": "معرف الموقع",
   "label.websites": "المواقع",
   "label.yesterday": "الأمس",
+  "label.minutes": "د",
+  "label.seconds": "ث",
   "message.active-users": "{x} حاليا {x, plural, one {زائر واحد} other {زوار}}",
   "message.confirm-delete": "هل أنت متأكد من حذف {target}?",
   "message.confirm-leave": "هل أنت متأكد من مغادرة {target}?",

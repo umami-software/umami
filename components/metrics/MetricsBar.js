@@ -104,7 +104,13 @@ export default function MetricsBar({ websiteId }) {
                     -1 || 0
                 : 0
             }
-            format={n => `${n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
+            format={n =>
+              `${n < 0 ? '-' : ''}${formatShortTime(
+                Math.abs(~~n),
+                [formatMessage(labels.minutes), formatMessage(labels.seconds)],
+                ' ',
+              )}`
+            }
           />
         </>
       )}
