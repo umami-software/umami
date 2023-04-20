@@ -23,7 +23,7 @@ async function relationalQuery(
   const { startDate, endDate, filters = {} } = criteria;
   const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = website?.resetAt || website?.createdAt;
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
