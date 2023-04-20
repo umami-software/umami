@@ -49,10 +49,8 @@ if (process.env.TRACKER_SCRIPT_NAME) {
 
   if (names) {
     names.forEach(name => {
-      const slash = name.substring(0, 1) === '/' ? '' : '/';
-
       rewrites.push({
-        source: `${slash}${name}`,
+        source: `/${name.replace(/^\/+/, '')}`,
         destination: '/script.js',
       });
     });
