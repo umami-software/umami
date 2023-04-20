@@ -13,6 +13,7 @@ import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 import styles from './MetricsTable.module.css';
+import useLocale from 'hooks/useLocale';
 
 export default function MetricsTable({
   websiteId,
@@ -69,6 +70,7 @@ export default function MetricsTable({
     }
     return [];
   }, [data, error, dataFilter, filterOptions]);
+  const { dir } = useLocale();
 
   return (
     <div className={classNames(styles.container, className)}>
@@ -80,7 +82,7 @@ export default function MetricsTable({
           <Link href={router.pathname} as={resolveUrl({ view: type })}>
             <Button variant="quiet">
               <Text>{formatMessage(labels.more)}</Text>
-              <Icon size="sm">
+              <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
                 <Icons.ArrowRight />
               </Icon>
             </Button>
