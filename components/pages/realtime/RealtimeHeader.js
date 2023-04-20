@@ -9,14 +9,26 @@ export default function RealtimeHeader({ data = {} }) {
   return (
     <div className={styles.header}>
       <div className={styles.metrics}>
-        <MetricCard label={formatMessage(labels.views)} value={pageviews?.length} hideComparison />
         <MetricCard
+          className={styles.card}
+          label={formatMessage(labels.views)}
+          value={pageviews?.length}
+          hideComparison
+        />
+        <MetricCard
+          className={styles.card}
           label={formatMessage(labels.visitors)}
           value={visitors?.length}
           hideComparison
         />
-        <MetricCard label={formatMessage(labels.events)} value={events?.length} hideComparison />
         <MetricCard
+          className={styles.card}
+          label={formatMessage(labels.events)}
+          value={events?.length}
+          hideComparison
+        />
+        <MetricCard
+          className={styles.card}
           label={formatMessage(labels.countries)}
           value={countries?.length}
           hideComparison

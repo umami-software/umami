@@ -34,7 +34,7 @@ export default function WebsiteData({ websiteId, onSave }) {
         description={formatMessage(messages.deleteWebsiteWarning)}
       >
         <ModalTrigger>
-          <Button variant="danger">Delete</Button>
+          <Button variant="danger">{formatMessage(labels.delete)}</Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
             {close => (
               <WebsiteDeleteForm websiteId={websiteId} onSave={handleDelete} onClose={close} />

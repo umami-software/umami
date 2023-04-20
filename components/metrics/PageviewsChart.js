@@ -4,6 +4,7 @@ import BarChart from './BarChart';
 import { THEME_COLORS } from 'lib/constants';
 import useTheme from 'hooks/useTheme';
 import useMessages from 'hooks/useMessages';
+import useLocale from 'hooks/useLocale';
 
 export default function PageviewsChart({
   websiteId,
@@ -16,6 +17,7 @@ export default function PageviewsChart({
 }) {
   const { formatMessage, labels } = useMessages();
   const [theme] = useTheme();
+  const { locale } = useLocale();
 
   const colors = useMemo(() => {
     const primaryColor = colord(THEME_COLORS[theme].primary);
@@ -52,7 +54,7 @@ export default function PageviewsChart({
         ...colors.views,
       },
     ];
-  }, [data]);
+  }, [data, locale, colors]);
 
   return (
     <BarChart

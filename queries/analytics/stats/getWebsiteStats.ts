@@ -41,7 +41,8 @@ async function relationalQuery(
           join website 
             on website_event.website_id = website.website_id
           ${joinSession}
-        where website.website_id = $1${toUuid()}
+        where event_type = ${EVENT_TYPE.pageView}
+          and website.website_id = $1${toUuid()}
           and website_event.created_at >= $2
           and website_event.created_at between $3 and $4
           ${filterQuery}

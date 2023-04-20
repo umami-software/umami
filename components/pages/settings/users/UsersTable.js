@@ -6,10 +6,12 @@ import UserDeleteForm from './UserDeleteForm';
 import { ROLES } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 import SettingsTable from 'components/common/SettingsTable';
+import useLocale from 'hooks/useLocale';
 
 export default function UsersTable({ data = [], onDelete }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const { dateLocale } = useLocale();
 
   const columns = [
     { name: 'username', label: formatMessage(labels.username), style: { flex: 1.5 } },
@@ -22,6 +24,7 @@ export default function UsersTable({ data = [], onDelete }) {
     if (key === 'created') {
       return formatDistance(new Date(row.createdAt), new Date(), {
         addSuffix: true,
+        locale: dateLocale,
       });
     }
     if (key === 'role') {

@@ -6,7 +6,7 @@ import Icons from 'components/icons';
 import styles from './LanguageButton.module.css';
 
 export default function LanguageButton() {
-  const { locale, saveLocale } = useLocale();
+  const { locale, saveLocale, dir } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
   function handleSelect(value) {
@@ -20,7 +20,7 @@ export default function LanguageButton() {
           <Icons.Globe />
         </Icon>
       </Button>
-      <Popup position="bottom" alignment="end">
+      <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
         <div className={styles.menu}>
           {items.map(({ value, label }) => {
             return (

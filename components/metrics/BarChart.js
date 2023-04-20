@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { StatusLight } from 'react-basics';
+import { StatusLight, Loading } from 'react-basics';
 import classNames from 'classnames';
 import Chart from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
@@ -38,6 +38,26 @@ export default function BarChart({
   const renderYLabel = label => {
     return +label > 1000 ? formatLongNumber(label) : label;
   };
+
+  const renderXLabel = useCallback(
+    (label, index, values) => {
+      const d = new Date(values[index].value);
+
+      switch (unit) {
+        case 'minute':
+          return dateFormat(d, 'H:mm', locale);
+        case 'hour':
+          return dateFormat(d, 'p', locale);
+        case 'day':
+          return dateFormat(d, 'MMM d', locale);
+        case 'month':
+          return dateFormat(d, 'MMM', locale);
+        default:
+          return label;
+      }
+    },
+    [locale, unit],
+  );
 
   const renderTooltip = useCallback(
     model => {
@@ -115,6 +135,7 @@ export default function BarChart({
             color: colors.text,
             autoSkip: false,
             maxRotation: 0,
+            callback: renderXLabel,
           },
         },
         y: {
@@ -135,7 +156,7 @@ export default function BarChart({
         },
       },
     };
-  }, [animationDuration, renderTooltip, stacked, colors, unit]);
+  }, [animationDuration, renderTooltip, renderXLabel, stacked, colors, unit, locale]);
 
   const createChart = () => {
     Chart.defaults.font.family = 'Inter';
@@ -158,7 +179,9 @@ export default function BarChart({
 
     chart.current.options = getOptions();
 
-    chart.current.data.datasets = datasets;
+    if (datasets.length) {
+      chart.current.data.datasets = datasets;
+    }
 
     chart.current.update();
 
@@ -173,11 +196,12 @@ export default function BarChart({
         updateChart();
       }
     }
-  }, [datasets, unit, theme, animationDuration, locale, loading]);
+  }, [datasets, unit, theme, animationDuration, locale]);
 
   return (
     <>
       <div className={classNames(styles.chart, className)}>
+        {loading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
       </div>
       <Legend chart={chart.current} />
