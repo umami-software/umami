@@ -7,43 +7,51 @@
 
 .chart {
   position: relative;
+  overflow: hidden;
 }
 
 .title {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-lg);
   line-height: 60px;
   font-weight: 600;
 }
 
 .header {
-  min-height: 90px;
-}
-
-.metrics {
-  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
+  min-height: 90px;
+  margin-bottom: 20px;
+  background: var(--base50);
+  z-index: var(--z-index-above);
 }
 
-.sticky {
-  position: fixed;
-  top: 0;
-  margin: auto;
-  background: var(--gray50);
-  border-bottom: 1px solid var(--gray300);
-  z-index: 3;
-}
-
-.filter {
+.actions {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
-@media only screen and (max-width: 992px) {
-  .filter {
-    display: block;
+.dropdown {
+  min-width: 200px;
+}
+
+@media only screen and (min-width: 992px) {
+  .sticky {
+    position: sticky;
+    top: -1px;
+  }
+
+  .isSticky {
+    border-bottom: 1px solid var(--base300);
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .actions {
+    margin-top: 40px;
   }
 }

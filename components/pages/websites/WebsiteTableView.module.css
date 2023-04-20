@@ -1,0 +1,35 @@
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  border-top: 1px solid var(--base300);
+  min-height: 430px;
+}
+
+.row > .col {
+  border-left: 1px solid var(--base300);
+  padding: 20px;
+}
+
+.row > .col:first-child {
+  border-left: 0;
+  padding-left: 0;
+}
+
+.row > .col:last-child {
+  padding-right: 0;
+}
+
+@media only screen and (max-width: 992px) {
+  .row {
+    border: 0;
+  }
+
+  .row > .col {
+    border-top: 1px solid var(--base300);
+    border-left: 0;
+    padding: 20px 0;
+  }
+}

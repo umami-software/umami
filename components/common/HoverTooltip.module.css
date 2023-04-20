@@ -1,0 +1,43 @@
+.chart {
+  position: relative;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: var(--z-index-popup);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.metric {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.dot {
+  position: relative;
+  overflow: hidden;
+  border-radius: 100%;
+  margin-right: 8px;
+  background: var(--base50);
+}
+
+.color {
+  width: 10px;
+  height: 10px;
+}

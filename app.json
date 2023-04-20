@@ -6,7 +6,7 @@
   "repository": "https://github.com/umami-software/umami",
   "addons": ["heroku-postgresql"],
   "env": {
-    "HASH_SALT": {
+    "APP_SECRET": {
       "description": "Used to generate unique values for your installation",
       "required": true,
       "generator": "secret"

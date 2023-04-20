@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
 const pkg = require('./package.json');
+
+const CLOUD_URL = 'https://cloud.umami.is';
 
 const contentSecurityPolicy = `
   default-src 'self';
@@ -32,21 +35,53 @@ if (process.env.FORCE_SSL) {
   });
 }
 
-module.exports = {
+const rewrites = [];
+
+if (process.env.COLLECT_API_ENDPOINT) {
+  rewrites.push({
+    source: process.env.COLLECT_API_ENDPOINT,
+    destination: '/api/send',
+  });
+}
+
+if (process.env.TRACKER_SCRIPT_NAME) {
+  const match = process.env.TRACKER_SCRIPT_NAME?.match(/\/?(\w+)(\.js)?/);
+
+  if (match) {
+    rewrites.push({
+      source: `/${match[0]}.js`,
+      destination: '/script.js',
+    });
+  }
+}
+
+const redirects = [];
+
+if (process.env.CLOUD_MODE) {
+  redirects.push({
+    source: '/login',
+    destination: CLOUD_URL,
+    permanent: false,
+  });
+}
+
+const config = {
   env: {
     currentVersion: pkg.version,
     isProduction: process.env.NODE_ENV === 'production',
-    isCloudMode: process.env.CLOUD_MODE,
   },
   basePath: process.env.BASE_PATH,
   output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.js$/,
+      issuer: /\.{js|jsx|ts|tsx}$/,
       use: ['@svgr/webpack'],
     });
 
@@ -62,10 +97,16 @@ module.exports = {
   },
   async rewrites() {
     return [
+      ...rewrites,
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
       },
     ];
   },
+  async redirects() {
+    return [...redirects];
+  },
 };
+
+module.exports = config;

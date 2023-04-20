@@ -1,0 +1,13 @@
+@media screen and (max-width: 992px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .header .actions {
+    display: none;
+  }
+
+  .actions {
+    flex-basis: 100%;
+  }
+}

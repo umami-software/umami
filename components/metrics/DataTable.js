@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
@@ -6,18 +7,20 @@ import { FormattedMessage } from 'react-intl';
 import NoData from 'components/common/NoData';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './DataTable.module.css';
+import useMessages from '../../hooks/useMessages';
 
 export default function DataTable({
-  data,
+  data = [],
   title,
   metric,
   className,
   renderLabel,
-  height,
   animate = true,
   virtualize = false,
   showPercentage = true,
 }) {
+  const { formatMessage, labels } = useMessages();
+  const [ref, bounds] = useMeasure();
   const [format, setFormat] = useState(true);
   const formatFunc = format ? formatLongNumber : formatNumber;
 
@@ -29,11 +32,7 @@ export default function DataTable({
     return (
       <AnimatedRow
         key={label}
-        label={
-          renderLabel
-            ? renderLabel(row)
-            : label ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />
-        }
+        label={renderLabel ? renderLabel(row) : label ?? formatMessage(labels.unknown)}
         value={value}
         percent={percent}
         animate={animate && !virtualize}
@@ -56,10 +55,10 @@ export default function DataTable({
           {metric}
         </div>
       </div>
-      <div className={styles.body} style={{ height }}>
+      <div ref={ref} className={styles.body}>
         {data?.length === 0 && <NoData />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList height={height} itemCount={data.length} itemSize={30}>
+          <FixedSizeList height={bounds.height} itemCount={data.length} itemSize={30}>
             {Row}
           </FixedSizeList>
         ) : (
@@ -90,16 +89,13 @@ const AnimatedRow = ({
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
       <div className={styles.value} onClick={onClick}>
-        <animated.div className={styles.value}>{props.y?.interpolate(format)}</animated.div>
+        <animated.div className={styles.value}>{props.y?.to(format)}</animated.div>
       </div>
       {showPercentage && (
         <div className={styles.percent}>
-          <animated.div
-            className={styles.bar}
-            style={{ width: props.width.interpolate(n => `${n}%`) }}
-          />
+          <animated.div className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
           <animated.span className={styles.percentValue}>
-            {props.width.interpolate(n => `${n.toFixed(0)}%`)}
+            {props.width.to(n => `${n.toFixed(0)}%`)}
           </animated.span>
         </div>
       )}

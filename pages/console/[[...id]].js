@@ -1,26 +1,22 @@
-import React from 'react';
-import Layout from 'components/layout/Layout';
-import TestConsole from 'components/pages/TestConsole';
-import useRequireLogin from 'hooks/useRequireLogin';
-import useUser from 'hooks/useUser';
+import AppLayout from 'components/layout/AppLayout';
+import TestConsole from 'components/pages/console/TestConsole';
 
-export default function ConsolePage({ enabled }) {
-  const { loading } = useRequireLogin();
-  const { user } = useUser();
-
-  if (loading || !enabled || !user?.isAdmin) {
+export default function ConsolePage({ disabled }) {
+  if (disabled) {
     return null;
   }
 
   return (
-    <Layout>
+    <AppLayout>
       <TestConsole />
-    </Layout>
+    </AppLayout>
   );
 }
 
 export async function getServerSideProps() {
   return {
-    props: { enabled: !!process.env.ENABLE_TEST_CONSOLE },
+    props: {
+      disabled: !process.env.ENABLE_TEST_CONSOLE,
+    },
   };
 }

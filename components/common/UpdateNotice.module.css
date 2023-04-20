@@ -1,18 +1,33 @@
 .notice {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 20px;
+  position: absolute;
+  max-width: 800px;
+  gap: 20px;
+  margin: 20px auto;
+  justify-self: center;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid var(--base300);
+  border-radius: var(--border-radius);
+  z-index: var(--z-index-popup);
 }
 
 .message {
-  font-size: var(--font-size-small);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 600;
-  flex: 1;
-  text-align: center;
-  margin-right: 20px;
 }
 
 .buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 10px;
   flex: 0;
+}
+
+@media only screen and (max-width: 992px) {
+  .message {
+    height: 80px;
+  }
 }

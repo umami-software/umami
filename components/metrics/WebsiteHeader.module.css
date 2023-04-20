@@ -1,32 +1,19 @@
 .title {
-  color: var(--gray900);
-  font-size: var(--font-size-large);
-  line-height: var(--font-size-xlarge);
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  display: flex;
-  max-width: 100%;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 700;
   overflow: hidden;
+  height: 100px;
 }
 
-.titleLink {
-  max-width: 100%;
-}
-
-.link {
-  font-weight: 600;
-}
-
-.active {
+.info {
   display: flex;
-  justify-content: center;
-}
-
-@media only screen and (max-width: 992px) {
-  .active {
-    justify-content: flex-start;
-  }
-
-  a.link {
-    display: none;
-  }
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+  min-height: 0;
 }

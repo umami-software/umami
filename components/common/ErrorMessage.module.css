@@ -5,9 +5,9 @@
   transform: translate(-50%, -50%);
   margin: auto;
   display: flex;
-  z-index: 1;
-  background-color: var(--gray50);
+  background-color: var(--base50);
   padding: 10px;
+  z-index: 1;
 }
 
 .icon {

@@ -1,0 +1,11 @@
+.filters {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.tag {
+  text-align: center;
+  margin-bottom: 10px;
+  margin-right: 20px;
+}

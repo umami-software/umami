@@ -1,0 +1,10 @@
+.menu {
+  width: 200px;
+  z-index: var(--z-index-popup);
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  background: var(--base50);
+}

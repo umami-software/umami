@@ -1,7 +1,7 @@
-import React from 'react';
+import { useEffect } from 'react';
+import { StatusLight } from 'react-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
-import Dot from 'components/common/Dot';
 import useLocale from 'hooks/useLocale';
 import useForceUpdate from 'hooks/useForceUpdate';
 import styles from './Legend.module.css';
@@ -10,7 +10,7 @@ export default function Legend({ chart }) {
   const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
 
-  function handleClick(index) {
+  const handleClick = index => {
     const meta = chart.getDatasetMeta(index);
 
     meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
@@ -18,7 +18,11 @@ export default function Legend({ chart }) {
     chart.update();
 
     forceUpdate();
-  }
+  };
+
+  useEffect(() => {
+    forceUpdate();
+  }, [locale]);
 
   if (!chart?.legend?.legendItems.find(({ text }) => text)) {
     return null;
@@ -35,8 +39,9 @@ export default function Legend({ chart }) {
             className={classNames(styles.label, { [styles.hidden]: hidden })}
             onClick={() => handleClick(datasetIndex)}
           >
-            <Dot color={color.alpha(color.alpha() + 0.2).toHex()} />
-            <span className={locale}>{text}</span>
+            <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
+              <span className={locale}>{text}</span>
+            </StatusLight>
           </div>
         );
       })}

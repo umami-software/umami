@@ -1,18 +1,12 @@
-import React from 'react';
-import Layout from 'components/layout/Layout';
-import Settings from 'components/pages/Settings';
-import useRequireLogin from 'hooks/useRequireLogin';
+export default () => null;
 
-export default function SettingsPage() {
-  const { loading } = useRequireLogin();
+export async function getServerSideProps() {
+  const dest = process.env.CLOUD_MODE ? 'profile' : 'websites';
 
-  if (process.env.isCloudMode || loading) {
-    return null;
-  }
-
-  return (
-    <Layout>
-      <Settings />
-    </Layout>
-  );
+  return {
+    redirect: {
+      destination: `/settings/${dest}`,
+      permanent: true,
+    },
+  };
 }
