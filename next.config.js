@@ -44,6 +44,17 @@ if (process.env.COLLECT_API_ENDPOINT) {
   });
 }
 
+if (process.env.TRACKER_SCRIPT_NAME) {
+  const match = process.env.TRACKER_SCRIPT_NAME?.match(/\/?(\w+)(\.js)?/);
+
+  if (match) {
+    rewrites.push({
+      source: `/${match[0]}.js`,
+      destination: '/script.js',
+    });
+  }
+}
+
 const redirects = [];
 
 if (process.env.CLOUD_MODE) {

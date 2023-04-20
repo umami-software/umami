@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { StatusLight } from 'react-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
@@ -9,7 +10,7 @@ export default function Legend({ chart }) {
   const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
 
-  function handleClick(index) {
+  const handleClick = index => {
     const meta = chart.getDatasetMeta(index);
 
     meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
@@ -17,7 +18,11 @@ export default function Legend({ chart }) {
     chart.update();
 
     forceUpdate();
-  }
+  };
+
+  useEffect(() => {
+    forceUpdate();
+  }, [locale]);
 
   if (!chart?.legend?.legendItems.find(({ text }) => text)) {
     return null;
