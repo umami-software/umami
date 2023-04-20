@@ -14,7 +14,7 @@
   "label.activity-log": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "活动日志"
     }
   ],
   "label.add-website": [
@@ -86,7 +86,7 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "城市"
+      "value": "市/县"
     }
   ],
   "label.clear-all": [
@@ -200,7 +200,7 @@
   "label.desktop": [
     {
       "type": 0,
-      "value": "桌面电脑"
+      "value": "台式机"
     }
   ],
   "label.details": [
@@ -254,7 +254,7 @@
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "总和"
+      "value": "合并"
     }
   ],
   "label.filter-raw": [
@@ -464,7 +464,7 @@
   "label.regions": [
     {
       "type": 0,
-      "value": "地区"
+      "value": "州/省"
     }
   ],
   "label.remove": [
