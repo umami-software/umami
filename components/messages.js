@@ -94,7 +94,7 @@ export const labels = defineMessages({
   thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
   thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
-  customRange: { id: 'label.custom-range', defaultMessage: 'Custom-range' },
+  customRange: { id: 'label.custom-range', defaultMessage: 'Custom range' },
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
