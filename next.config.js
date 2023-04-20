@@ -45,12 +45,16 @@ if (process.env.COLLECT_API_ENDPOINT) {
 }
 
 if (process.env.TRACKER_SCRIPT_NAME) {
-  const match = process.env.TRACKER_SCRIPT_NAME?.match(/\/?(\w+)(\.js)?/);
+  const names = process.env.TRACKER_SCRIPT_NAME?.split(',').map(name => name.trim());
 
-  if (match) {
-    rewrites.push({
-      source: `/${match[0]}.js`,
-      destination: '/script.js',
+  if (names) {
+    names.forEach(name => {
+      const slash = name.substring(0, 1) === '/' ? '' : '/';
+
+      rewrites.push({
+        source: `${slash}${name}`,
+        destination: '/script.js',
+      });
     });
   }
 }
