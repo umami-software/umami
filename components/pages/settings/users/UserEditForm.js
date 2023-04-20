@@ -46,7 +46,7 @@ export default function UserEditForm({ userId, data, onSave }) {
       </FormRow>
       <FormRow label={formatMessage(labels.password)}>
         <FormInput
-          name="newPassword"
+          name="password"
           rules={{
             minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
           }}

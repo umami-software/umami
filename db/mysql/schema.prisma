@@ -14,7 +14,7 @@ model User {
   password  String    @db.VarChar(60)
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @db.Timestamp(0)
+  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
 
   website  Website[]
@@ -53,7 +53,7 @@ model Website {
   resetAt   DateTime? @map("reset_at") @db.Timestamp(0)
   userId    String?   @map("user_id") @db.VarChar(36)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @db.Timestamp(0)
+  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
 
   user        User?         @relation(fields: [userId], references: [id])
@@ -117,7 +117,7 @@ model Team {
   name       String    @db.VarChar(50)
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt  DateTime? @map("updated_at") @db.Timestamp(0)
+  updatedAt  DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
 
   teamUser    TeamUser[]
   teamWebsite TeamWebsite[]
@@ -132,7 +132,7 @@ model TeamUser {
   userId    String    @map("user_id") @db.VarChar(36)
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @db.Timestamp(0)
+  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
 
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])

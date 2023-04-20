@@ -44,7 +44,7 @@ export default function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
     <>
       <Form onSubmit={handleSubmit} error={error} ref={formRef}>
         <FormRow label={formatMessage(labels.websites)}>
-          <Dropdown items={websites} onChange={handleAddWebsite}>
+          <Dropdown items={websites} onChange={handleAddWebsite} style={{ width: 300 }}>
             {({ id, name }) => <Item key={id}>{name}</Item>}
           </Dropdown>
         </FormRow>
