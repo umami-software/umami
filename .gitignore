@@ -17,6 +17,7 @@ node_modules
 /build
 /public/script.js
 /geo
+/dist
 
 # misc
 .DS_Store
