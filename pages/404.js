@@ -6,7 +6,7 @@ export default function Custom404() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <AppLayout>
+    <AppLayout title={formatMessage(labels.pageNotFound)}>
       <Row>
         <Column>
           <Flexbox alignItems="center" justifyContent="center" flex={1} style={{ minHeight: 600 }}>
