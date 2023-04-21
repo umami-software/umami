@@ -14,7 +14,7 @@ export function UsersTable({ data = [], onDelete }) {
   const { dateLocale } = useLocale();
 
   const columns = [
-    { name: 'username', label: formatMessage(labels.username), style: { flex: 1.5 } },
+    { name: 'username', label: formatMessage(labels.username) },
     { name: 'role', label: formatMessage(labels.role) },
     { name: 'created', label: formatMessage(labels.created) },
     { name: 'action', label: ' ' },

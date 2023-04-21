@@ -25,7 +25,7 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
 
   return rawQuery(
     `select distinct
-      session_id as sessionId,
+      session_id as id,
       website_id as websiteId,
       created_at as createdAt,
       toUnixTimestamp(created_at) as timestamp,
