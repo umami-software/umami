@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -8,15 +8,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/umami-software/umami.git"
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "publishConfig": {
-    "access": "public"
   },
   "scripts": {
     "dev": "next dev -p 3000",
