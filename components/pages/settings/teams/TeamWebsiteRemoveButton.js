@@ -2,7 +2,7 @@ import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
 
-export default function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
+export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isLoading } = useMutation(() => del(`/teams/${teamId}/websites/${websiteId}`));
@@ -27,3 +27,5 @@ export default function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
     </LoadingButton>
   );
 }
+
+export default TeamWebsiteRemoveButton;

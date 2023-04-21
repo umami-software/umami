@@ -12,7 +12,6 @@
 
   if (!currentScript) return;
 
-  const delayDuration = 300;
   const _data = 'data-';
   const _false = 'false';
   const attr = currentScript.getAttribute.bind(currentScript);
@@ -29,6 +28,7 @@
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
+  const delayDuration = 300;
 
   /* Helper functions */
 
@@ -115,18 +115,16 @@
       const findATagParent = (rootElem, maxSearchDepth) => {
         let currentElement = rootElem;
         for (let i = 0; i < maxSearchDepth; i++) {
-          if (currentElement.tagName === 'A') 
+          if (currentElement.tagName === 'A') {
             return currentElement;
+          }
           currentElement = currentElement.parentElement;
         }
         return null;
       };
 
       const el = e.target;
-      const anchor =
-        el.tagName === 'A'
-          ? el
-          : findATagParent(el, 5);
+      const anchor = el.tagName === 'A' ? el : findATagParent(el, 5);
 
       if (anchor) {
         const { href, target } = anchor;

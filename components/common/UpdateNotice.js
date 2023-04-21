@@ -6,7 +6,7 @@ import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import styles from './UpdateNotice.module.css';
 import useMessages from 'hooks/useMessages';
 
-export default function UpdateNotice() {
+export function UpdateNotice() {
   const { formatMessage, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
   const [dismissed, setDismissed] = useState(false);
@@ -50,3 +50,5 @@ export default function UpdateNotice() {
     </Row>
   );
 }
+
+export default UpdateNotice;

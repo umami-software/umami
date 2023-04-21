@@ -3,7 +3,7 @@ import PageHeader from 'components/layout/PageHeader';
 import ProfileDetails from './ProfileDetails';
 import useMessages from 'hooks/useMessages';
 
-export default function ProfileSettings() {
+export function ProfileSettings() {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -13,3 +13,5 @@ export default function ProfileSettings() {
     </Page>
   );
 }
+
+export default ProfileSettings;

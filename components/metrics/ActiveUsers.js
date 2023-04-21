@@ -4,7 +4,7 @@ import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 import styles from './ActiveUsers.module.css';
 
-export default function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
+export function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
   const { formatMessage, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { data } = useQuery(
@@ -34,3 +34,5 @@ export default function ActiveUsers({ websiteId, value, refetchInterval = 60000 
     </StatusLight>
   );
 }
+
+export default ActiveUsers;

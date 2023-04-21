@@ -12,7 +12,7 @@ import useMessages from 'hooks/useMessages';
 
 const CONFIRM_VALUE = 'RESET';
 
-export default function WebsiteResetForm({ websiteId, onSave, onClose }) {
+export function WebsiteResetForm({ websiteId, onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}/reset`, data));
@@ -41,3 +41,5 @@ export default function WebsiteResetForm({ websiteId, onSave, onClose }) {
     </Form>
   );
 }
+
+export default WebsiteResetForm;

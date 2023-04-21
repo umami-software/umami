@@ -3,7 +3,7 @@ import WebsiteDeleteForm from 'components/pages/settings/websites/WebsiteDeleteF
 import WebsiteResetForm from 'components/pages/settings/websites/WebsiteResetForm';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteData({ websiteId, onSave }) {
+export function WebsiteData({ websiteId, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
 
   const handleReset = async () => {
@@ -45,3 +45,5 @@ export default function WebsiteData({ websiteId, onSave }) {
     </>
   );
 }
+
+export default WebsiteData;

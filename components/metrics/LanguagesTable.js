@@ -4,7 +4,7 @@ import useLanguageNames from 'hooks/useLanguageNames';
 import useLocale from 'hooks/useLocale';
 import useMessages from 'hooks/useMessages';
 
-export default function LanguagesTable({ websiteId, onDataLoad, ...props }) {
+export function LanguagesTable({ websiteId, onDataLoad, ...props }) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const languageNames = useLanguageNames(locale);
@@ -25,3 +25,5 @@ export default function LanguagesTable({ websiteId, onDataLoad, ...props }) {
     />
   );
 }
+
+export default LanguagesTable;

@@ -12,7 +12,7 @@ const filters = {
   [FILTER_COMBINED]: paramFilter,
 };
 
-export default function QueryParametersTable({ websiteId, showFilters, ...props }) {
+export function QueryParametersTable({ websiteId, showFilters, ...props }) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const { formatMessage, labels } = useMessages();
 
@@ -49,3 +49,5 @@ export default function QueryParametersTable({ websiteId, showFilters, ...props 
     </>
   );
 }
+
+export default QueryParametersTable;

@@ -1,5 +1,4 @@
 import { Row, Column } from 'react-basics';
-import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import SideNav from './SideNav';
 import useUser from 'hooks/useUser';
@@ -7,7 +6,7 @@ import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 import styles from './SettingsLayout.module.css';
 
-export default function SettingsLayout({ children }) {
+export function SettingsLayout({ children }) {
   const { user } = useUser();
   const { pathname } = useRouter();
   const { formatMessage, labels } = useMessages();
@@ -35,3 +34,5 @@ export default function SettingsLayout({ children }) {
     </Row>
   );
 }
+
+export default SettingsLayout;

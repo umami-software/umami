@@ -2,7 +2,7 @@ import { Dropdown, Item } from 'react-basics';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteSelect({ websiteId, onSelect }) {
+export function WebsiteSelect({ websiteId, onSelect }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { data } = useQuery(['websites:me'], () => get('/me/websites'));
@@ -25,3 +25,5 @@ export default function WebsiteSelect({ websiteId, onSelect }) {
     </Dropdown>
   );
 }
+
+export default WebsiteSelect;

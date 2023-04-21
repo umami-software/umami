@@ -1,7 +1,7 @@
 import { Table, TableHeader, TableBody, TableRow, TableCell, TableColumn } from 'react-basics';
 import styles from './SettingsTable.module.css';
 
-export default function SettingsTable({ columns = [], data = [], children, cellRender }) {
+export function SettingsTable({ columns = [], data = [], children, cellRender }) {
   return (
     <Table columns={columns} rows={data}>
       <TableHeader className={styles.header}>
@@ -34,3 +34,5 @@ export default function SettingsTable({ columns = [], data = [], children, cellR
     </Table>
   );
 }
+
+export default SettingsTable;

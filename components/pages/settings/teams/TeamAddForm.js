@@ -11,7 +11,7 @@ import {
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamAddForm({ onSave, onClose }) {
+export function TeamAddForm({ onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/teams', data));
@@ -44,3 +44,5 @@ export default function TeamAddForm({ onSave, onClose }) {
     </Form>
   );
 }
+
+export default TeamAddForm;

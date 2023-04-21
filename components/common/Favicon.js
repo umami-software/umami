@@ -5,7 +5,7 @@ function getHostName(url) {
   return match && match.length > 1 ? match[1] : null;
 }
 
-function Favicon({ domain, ...props }) {
+export function Favicon({ domain, ...props }) {
   const hostName = domain ? getHostName(domain) : null;
 
   return hostName ? (

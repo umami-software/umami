@@ -6,7 +6,7 @@ import useApi from 'hooks/useApi';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useMessages from 'hooks/useMessages';
 
-export default function RealtimeHome() {
+export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const router = useRouter();
@@ -27,3 +27,5 @@ export default function RealtimeHome() {
     </Page>
   );
 }
+
+export default RealtimeHome;

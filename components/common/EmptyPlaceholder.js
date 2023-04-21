@@ -1,7 +1,7 @@
 import { Icon, Text, Flexbox } from 'react-basics';
 import Logo from 'assets/logo.svg';
 
-function EmptyPlaceholder({ message, children }) {
+export function EmptyPlaceholder({ message, children }) {
   return (
     <Flexbox direction="column" alignItems="center" justifyContent="center" gap={60} height={600}>
       <Icon size="xl">

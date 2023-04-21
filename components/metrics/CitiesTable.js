@@ -4,7 +4,7 @@ import FilterLink from 'components/common/FilterLink';
 import useLocale from 'hooks/useLocale';
 import useMessages from 'hooks/useMessages';
 
-export default function CitiesTable({ websiteId, ...props }) {
+export function CitiesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
 
@@ -28,3 +28,5 @@ export default function CitiesTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default CitiesTable;

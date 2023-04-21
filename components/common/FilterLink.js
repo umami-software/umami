@@ -6,7 +6,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import useMessages from 'hooks/useMessages';
 import styles from './FilterLink.module.css';
 
-export default function FilterLink({ id, value, label, externalUrl }) {
+export function FilterLink({ id, value, label, externalUrl }) {
   const { formatMessage, labels } = useMessages();
   const { resolveUrl, query } = usePageQuery();
   const active = query[id] !== undefined;
@@ -37,3 +37,5 @@ export default function FilterLink({ id, value, label, externalUrl }) {
     </div>
   );
 }
+
+export default FilterLink;

@@ -12,7 +12,7 @@ import useDashboard from 'store/dashboard';
 import useMessages from 'hooks/useMessages';
 import useLocale from 'hooks/useLocale';
 
-export default function Dashboard({ userId }) {
+export function Dashboard({ userId }) {
   const { formatMessage, labels, messages } = useMessages();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
@@ -62,3 +62,5 @@ export default function Dashboard({ userId }) {
     </Page>
   );
 }
+
+export default Dashboard;

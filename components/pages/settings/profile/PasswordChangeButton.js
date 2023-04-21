@@ -3,7 +3,7 @@ import PasswordEditForm from 'components/pages/settings/profile/PasswordEditForm
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 
-export default function PasswordChangeButton() {
+export function PasswordChangeButton() {
   const { formatMessage, labels, messages } = useMessages();
   const { toast, showToast } = useToast();
 
@@ -28,3 +28,5 @@ export default function PasswordChangeButton() {
     </>
   );
 }
+
+export default PasswordChangeButton;

@@ -1,28 +1,32 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "outDir": "./build",
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "incremental": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "skipLibCheck": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "strict": true,
+    "outDir": "dist/types",
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "skipLibCheck": true,
     "baseUrl": ".",
-    "strictNullChecks": false,
+    "paths": {
+      "*": ["./*"]
+    },
+    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }

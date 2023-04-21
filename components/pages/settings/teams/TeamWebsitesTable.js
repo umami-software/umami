@@ -6,7 +6,7 @@ import TeamWebsiteRemoveButton from './TeamWebsiteRemoveButton';
 import SettingsTable from 'components/common/SettingsTable';
 import useConfig from 'hooks/useConfig';
 
-export default function TeamWebsitesTable({ data = [], onSave }) {
+export function TeamWebsitesTable({ data = [], onSave }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
   const { user } = useUser();
@@ -51,3 +51,5 @@ export default function TeamWebsitesTable({ data = [], onSave }) {
     </SettingsTable>
   );
 }
+
+export default TeamWebsitesTable;

@@ -8,7 +8,7 @@ import useApi from 'hooks/useApi';
 import UserWebsites from './UserWebsites';
 import useMessages from 'hooks/useMessages';
 
-export default function UserSettings({ userId }) {
+export function UserSettings({ userId }) {
   const { formatMessage, labels, messages } = useMessages();
   const [edit, setEdit] = useState(false);
   const [values, setValues] = useState(null);
@@ -64,3 +64,5 @@ export default function UserSettings({ userId }) {
     </Page>
   );
 }
+
+export default UserSettings;

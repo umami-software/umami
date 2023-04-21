@@ -6,15 +6,7 @@ import useTheme from 'hooks/useTheme';
 import useMessages from 'hooks/useMessages';
 import useLocale from 'hooks/useLocale';
 
-export default function PageviewsChart({
-  websiteId,
-  data,
-  unit,
-  records,
-  className,
-  loading,
-  ...props
-}) {
+export function PageviewsChart({ websiteId, data, unit, records, className, loading, ...props }) {
   const { formatMessage, labels } = useMessages();
   const [theme] = useTheme();
   const { locale } = useLocale();
@@ -68,3 +60,5 @@ export default function PageviewsChart({
     />
   );
 }
+
+export default PageviewsChart;

@@ -13,7 +13,7 @@ import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function UserEditForm({ userId, data, onSave }) {
+export function UserEditForm({ userId, data, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(({ username, password, role }) =>
@@ -68,3 +68,5 @@ export default function UserEditForm({ userId, data, onSave }) {
     </Form>
   );
 }
+
+export default UserEditForm;

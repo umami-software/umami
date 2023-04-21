@@ -2,7 +2,7 @@ import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
 
-export default function TeamMemberRemoveButton({ teamId, userId, disabled, onSave }) {
+export function TeamMemberRemoveButton({ teamId, userId, disabled, onSave }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isLoading } = useMutation(() => del(`/team/${teamId}/users/${userId}`));
@@ -27,3 +27,5 @@ export default function TeamMemberRemoveButton({ teamId, userId, disabled, onSav
     </LoadingButton>
   );
 }
+
+export default TeamMemberRemoveButton;

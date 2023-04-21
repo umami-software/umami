@@ -8,7 +8,7 @@ import { ROLES } from 'lib/constants';
 import SettingsTable from 'components/common/SettingsTable';
 import useLocale from 'hooks/useLocale';
 
-export default function TeamsTable({ data = [], onDelete }) {
+export function TeamsTable({ data = [], onDelete }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { dir } = useLocale();
@@ -90,3 +90,5 @@ export default function TeamsTable({ data = [], onDelete }) {
     </SettingsTable>
   );
 }
+
+export default TeamsTable;

@@ -3,7 +3,7 @@ import { useSpring, animated } from 'react-spring';
 import { formatNumber } from 'lib/format';
 import styles from './MetricCard.module.css';
 
-const MetricCard = ({
+export const MetricCard = ({
   value = 0,
   change = 0,
   label,

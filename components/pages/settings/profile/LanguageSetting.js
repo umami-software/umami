@@ -4,7 +4,7 @@ import { DEFAULT_LOCALE } from 'lib/constants';
 import { languages } from 'lib/lang';
 import useMessages from 'hooks/useMessages';
 
-export default function LanguageSetting() {
+export function LanguageSetting() {
   const { formatMessage, labels } = useMessages();
   const { locale, saveLocale } = useLocale();
   const options = Object.keys(languages);
@@ -28,3 +28,5 @@ export default function LanguageSetting() {
     </Flexbox>
   );
 }
+
+export default LanguageSetting;

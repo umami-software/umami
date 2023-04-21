@@ -6,7 +6,7 @@ import SettingsButton from 'components/input/SettingsButton';
 import Icons from 'components/icons';
 import styles from './Header.module.css';
 
-export default function Header() {
+export function Header() {
   return (
     <header className={styles.header}>
       <Row>
@@ -27,3 +27,5 @@ export default function Header() {
     </header>
   );
 }
+
+export default Header;

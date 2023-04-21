@@ -3,7 +3,7 @@ import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 're
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function PasswordEditForm({ onSave, onClose }) {
+export function PasswordEditForm({ onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/me/password', data));
@@ -64,3 +64,5 @@ export default function PasswordEditForm({ onSave, onClose }) {
     </Form>
   );
 }
+
+export default PasswordEditForm;

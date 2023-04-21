@@ -17,7 +17,7 @@ import useMessages from 'hooks/useMessages';
 import Logo from 'assets/logo.svg';
 import styles from './LoginForm.module.css';
 
-export default function LoginForm() {
+export function LoginForm() {
   const { formatMessage, labels, getMessage } = useMessages();
   const router = useRouter();
   const { post } = useApi();
@@ -60,3 +60,5 @@ export default function LoginForm() {
     </div>
   );
 }
+
+export default LoginForm;

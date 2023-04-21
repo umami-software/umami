@@ -5,7 +5,7 @@ import useLocale from 'hooks/useLocale';
 import Icons from 'components/icons';
 import styles from './LanguageButton.module.css';
 
-export default function LanguageButton() {
+export function LanguageButton() {
   const { locale, saveLocale, dir } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
@@ -43,3 +43,5 @@ export default function LanguageButton() {
     </PopupTrigger>
   );
 }
+
+export default LanguageButton;

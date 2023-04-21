@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Tooltip } from 'react-basics';
 import styles from './HoverTooltip.module.css';
 
-export default function HoverTooltip({ tooltip }) {
+export function HoverTooltip({ tooltip }) {
   const [position, setPosition] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {
@@ -23,3 +23,5 @@ export default function HoverTooltip({ tooltip }) {
     </div>
   );
 }
+
+export default HoverTooltip;

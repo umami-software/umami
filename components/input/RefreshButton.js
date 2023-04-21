@@ -4,7 +4,7 @@ import useDateRange from 'hooks/useDateRange';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 
-function RefreshButton({ websiteId, isLoading }) {
+export function RefreshButton({ websiteId, isLoading }) {
   const { formatMessage, labels } = useMessages();
   const [dateRange] = useDateRange(websiteId);
 
