@@ -14,7 +14,7 @@ export default function TeamDetailPage({ disabled }) {
   }
 
   return (
-    <AppLayout title={formatMessage(labels.users)}>
+    <AppLayout title={`${formatMessage(labels.settings)} - ${formatMessage(labels.users)}`}>
       <SettingsLayout>
         <UserSettings userId={id} />
       </SettingsLayout>

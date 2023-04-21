@@ -10,7 +10,7 @@ export default function TeamsPage({ disabled }) {
   }
 
   return (
-    <AppLayout title={formatMessage(labels.teams)}>
+    <AppLayout title={`${formatMessage(labels.settings)} - ${formatMessage(labels.teams)}`}>
       <SettingsLayout>
         <TeamsList />
       </SettingsLayout>

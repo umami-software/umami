@@ -14,7 +14,7 @@ export default function WebsiteSettingsPage({ disabled }) {
   }
 
   return (
-    <AppLayout title={formatMessage(labels.websites)}>
+    <AppLayout title={`${formatMessage(labels.settings)} - ${formatMessage(labels.websites)}`}>
       <SettingsLayout>
         <WebsiteSettings websiteId={id} />
       </SettingsLayout>

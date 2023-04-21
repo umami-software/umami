@@ -6,7 +6,7 @@ import useMessages from 'hooks/useMessages';
 export default function ProfilePage() {
   const { formatMessage, labels } = useMessages();
   return (
-    <AppLayout title={formatMessage(labels.profile)}>
+    <AppLayout title={`${formatMessage(labels.settings)} - ${formatMessage(labels.profile)}`}>
       <SettingsLayout>
         <ProfileSettings />
       </SettingsLayout>
