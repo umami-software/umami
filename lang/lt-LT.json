@@ -52,6 +52,7 @@
   "label.last-hours": "{x, plural, =0 {Paskutinės # valandų} zero {Paskutinės # valandų} one {Paskutinė # valanda} other {Paskutinės # valandos}}",
   "label.leave": "Leave",
   "label.leave-team": "Leave team",
+  "label.login": "Prisijungti",
   "label.logout": "Atsijungti",
   "label.members": "Members",
   "label.mobile": "Mobilusis",

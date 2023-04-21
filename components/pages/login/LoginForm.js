@@ -53,7 +53,7 @@ export function LoginForm() {
         </FormRow>
         <FormButtons>
           <SubmitButton className={styles.button} variant="primary" disabled={isLoading}>
-            Log in
+            {formatMessage(labels.login)}
           </SubmitButton>
         </FormButtons>
       </Form>
