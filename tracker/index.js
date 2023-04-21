@@ -168,11 +168,16 @@
 
   const send = payload => {
     if (trackingDisabled()) return;
-
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if (typeof cache !== 'undefined') {
+      headers['x-umami-cache'] = cache;
+    }
     return fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify({ type: 'event', payload }),
-      headers: { 'Content-Type': 'application/json', ['x-umami-cache']: cache },
+      headers: headers
     })
       .then(res => res.text())
       .then(text => (cache = text));
