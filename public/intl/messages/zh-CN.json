@@ -333,6 +333,12 @@
       "value": "离开团队"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "登录"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,

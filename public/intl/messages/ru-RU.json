@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Код доступа"
     }
   ],
   "label.actions": [
@@ -14,7 +14,7 @@
   "label.activity-log": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Журнал активности"
     }
   ],
   "label.add-website": [
@@ -44,7 +44,7 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Аналитика"
     }
   ],
   "label.average-visit-time": [
@@ -86,19 +86,19 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Города"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Очистить все"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Подтвердить"
     }
   ],
   "label.confirm-password": [
@@ -110,7 +110,7 @@
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Продолжить"
     }
   ],
   "label.countries": [
@@ -122,19 +122,19 @@
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Создать команду"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Создать пользователя"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Создано"
     }
   ],
   "label.current-password": [
@@ -158,7 +158,7 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Данные"
     }
   ],
   "label.date-range": [
@@ -182,13 +182,13 @@
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Удалить команду"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Удалить пользователя"
     }
   ],
   "label.delete-website": [
@@ -206,7 +206,7 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Подробности"
     }
   ],
   "label.devices": [
@@ -236,7 +236,7 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Редактировать дашборд"
     }
   ],
   "label.enable-share-url": [
@@ -266,13 +266,13 @@
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Присоединиться"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Присоединиться к команде"
     }
   ],
   "label.language": [
@@ -324,13 +324,19 @@
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Уйти"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Покинуть команду"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Войти"
     }
   ],
   "label.logout": [
@@ -342,7 +348,7 @@
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Участники"
     }
   ],
   "label.mobile": [
@@ -372,7 +378,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Не указано"
     }
   ],
   "label.operating-systems": [
@@ -424,13 +430,13 @@
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Запросы"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Параметры запроса"
     }
   ],
   "label.realtime": [
@@ -454,19 +460,19 @@
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "Обновить"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "Регионы"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "Удалить"
     }
   ],
   "label.required": [
@@ -490,7 +496,7 @@
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "Роль"
     }
   ],
   "label.save": [
@@ -502,19 +508,19 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "Screens"
+      "value": "Экраны"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "Выбрать сайт"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Сессии"
     }
   ],
   "label.settings": [
@@ -544,37 +550,37 @@
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "Команда"
     }
   ],
   "label.team-guest": [
     {
       "type": 0,
-      "value": "Team guest"
+      "value": "Гость команды"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "ID команды"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "Член команды"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "Владелец команды"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "Команды"
     }
   ],
   "label.theme": [
@@ -610,7 +616,7 @@
   "label.title": [
     {
       "type": 0,
-      "value": "Title"
+      "value": "Заголовок"
     }
   ],
   "label.today": [
@@ -646,7 +652,7 @@
   "label.user": [
     {
       "type": 0,
-      "value": "User"
+      "value": "Пользователь"
     }
   ],
   "label.username": [
@@ -658,13 +664,13 @@
   "label.users": [
     {
       "type": 0,
-      "value": "Users"
+      "value": "Пользователи"
     }
   ],
   "label.view": [
     {
       "type": 0,
-      "value": "View"
+      "value": "Просмотреть"
     }
   ],
   "label.view-details": [
@@ -688,7 +694,7 @@
   "label.website-id": [
     {
       "type": 0,
-      "value": "Website ID"
+      "value": "ID сайта"
     }
   ],
   "label.websites": [
@@ -700,7 +706,7 @@
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Yesterday"
+      "value": "Вчера"
     }
   ],
   "message.active-users": [
@@ -730,7 +736,7 @@
   "message.confirm-leave": [
     {
       "type": 0,
-      "value": "Are you sure you want to leave "
+      "value": "Вы уверены, что хотите уйти "
     },
     {
       "type": 1,
@@ -808,7 +814,7 @@
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Minimum length of "
+      "value": "Минимальная длина "
     },
     {
       "type": 1,
@@ -816,7 +822,7 @@
     },
     {
       "type": 0,
-      "value": " characters"
+      "value": " символов"
     }
   ],
   "message.no-data-available": [
@@ -834,13 +840,13 @@
   "message.no-teams": [
     {
       "type": 0,
-      "value": "You have not created any teams."
+      "value": "Вы не создали ни одной команды."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "There are no users."
+      "value": "Нет пользователей."
     }
   ],
   "message.page-not-found": [
@@ -884,13 +890,13 @@
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "You are already a member of the team."
+      "value": "Вы уже состоите в команде."
     }
   ],
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "Team not found."
+      "value": "Команда не найдена."
     }
   ],
   "message.tracking-code": [
@@ -902,7 +908,7 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User deleted."
+      "value": "Пользователь удален."
     }
   ],
   "message.visitor-log": [
@@ -942,7 +948,7 @@
   "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "This team does not have any websites."
+      "value": "У этой команды нет ни одного сайта."
     }
   ],
   "messages.no-websites-configured": [
@@ -954,7 +960,7 @@
   "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
+      "value": "Сайты могут просматривать все члены команды."
     }
   ]
 }

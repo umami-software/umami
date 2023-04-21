@@ -438,6 +438,12 @@
       "value": "Leave team"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Prisijungti"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,

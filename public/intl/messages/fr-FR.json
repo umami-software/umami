@@ -325,6 +325,12 @@
       "value": "Quitter l'équipe"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Connexion"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,
