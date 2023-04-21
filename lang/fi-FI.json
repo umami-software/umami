@@ -52,6 +52,7 @@
   "label.last-hours": "Viimeisimmät {x} tuntia",
   "label.leave": "Leave",
   "label.leave-team": "Leave team",
+  "label.login": "Kirjaudu sisään",
   "label.logout": "Kirjaudu ulos",
   "label.members": "Members",
   "label.mobile": "Puhelin",
