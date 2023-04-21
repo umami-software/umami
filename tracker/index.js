@@ -169,7 +169,7 @@
   const send = payload => {
     if (trackingDisabled()) return;
     const headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
     if (typeof cache !== 'undefined') {
       headers['x-umami-cache'] = cache;
@@ -177,17 +177,23 @@
     return fetch(endpoint, {
       method: 'POST',
       body: JSON.stringify({ type: 'event', payload }),
-      headers: headers
+      headers,
     })
       .then(res => res.text())
       .then(text => (cache = text));
   };
 
-  const track = (name = {}, data = {}) => {
-    if (typeof name === 'string') {
-      return send({ ...getPayload(), ...data, name });
-    } else if (typeof name === 'object') {
-      return send({ ...getPayload(), ...name });
+  const track = (obj, data) => {
+    if (typeof obj === 'string') {
+      return send({
+        ...getPayload(),
+        name: obj,
+        data: typeof data === 'object' ? data : undefined,
+      });
+    } else if (typeof obj === 'object') {
+      return send(obj);
+    } else if (typeof obj === 'function') {
+      return send(obj(getPayload()));
     }
     return Promise.reject();
   };
