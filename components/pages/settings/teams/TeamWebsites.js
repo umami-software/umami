@@ -14,7 +14,7 @@ import TeamAddWebsiteForm from 'components/pages/settings/teams/TeamAddWebsiteFo
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamWebsites({ teamId }) {
+export function TeamWebsites({ teamId }) {
   const { toast, showToast } = useToast();
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
@@ -54,3 +54,5 @@ export default function TeamWebsites({ teamId }) {
     </div>
   );
 }
+
+export default TeamWebsites;

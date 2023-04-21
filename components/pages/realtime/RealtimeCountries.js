@@ -4,7 +4,7 @@ import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import useMessages from 'hooks/useMessages';
 
-export default function RealtimeCountries({ data }) {
+export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
@@ -23,3 +23,5 @@ export default function RealtimeCountries({ data }) {
     />
   );
 }
+
+export default RealtimeCountries;

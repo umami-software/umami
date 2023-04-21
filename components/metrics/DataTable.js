@@ -3,13 +3,12 @@ import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
 import NoData from 'components/common/NoData';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import styles from './DataTable.module.css';
 import useMessages from '../../hooks/useMessages';
 
-export default function DataTable({
+export function DataTable({
   data = [],
   title,
   metric,
@@ -102,3 +101,5 @@ const AnimatedRow = ({
     </div>
   );
 };
+
+export default DataTable;

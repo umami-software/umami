@@ -8,7 +8,7 @@ import useConfig from 'hooks/useConfig';
 import { CURRENT_VERSION } from 'lib/constants';
 import styles from './AppLayout.module.css';
 
-export default function AppLayout({ title, children }) {
+export function AppLayout({ title, children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
   const { pathname } = useRouter();
@@ -34,3 +34,5 @@ export default function AppLayout({ title, children }) {
     </div>
   );
 }
+
+export default AppLayout;

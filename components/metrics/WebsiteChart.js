@@ -20,7 +20,7 @@ import useMessages from 'hooks/useMessages';
 import styles from './WebsiteChart.module.css';
 import useLocale from 'hooks/useLocale';
 
-export default function WebsiteChart({
+export function WebsiteChart({
   websiteId,
   name,
   domain,
@@ -128,3 +128,5 @@ export default function WebsiteChart({
     </>
   );
 }
+
+export default WebsiteChart;

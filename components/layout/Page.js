@@ -3,7 +3,7 @@ import { Banner, Loading } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import styles from './Page.module.css';
 
-export default function Page({ className, error, loading, children }) {
+export function Page({ className, error, loading, children }) {
   const { formatMessage, messages } = useMessages();
 
   if (error) {
@@ -16,3 +16,5 @@ export default function Page({ className, error, loading, children }) {
 
   return <div className={classNames(styles.page, className)}>{children}</div>;
 }
+
+export default Page;

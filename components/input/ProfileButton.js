@@ -7,7 +7,7 @@ import useConfig from 'hooks/useConfig';
 import styles from './ProfileButton.module.css';
 import useLocale from 'hooks/useLocale';
 
-export default function ProfileButton() {
+export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { cloudMode } = useConfig();
@@ -57,3 +57,5 @@ export default function ProfileButton() {
     </PopupTrigger>
   );
 }
+
+export default ProfileButton;

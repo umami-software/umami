@@ -1,6 +1,6 @@
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 
-export default function FilterButtons({ items, selectedKey, onSelect }) {
+export function FilterButtons({ items, selectedKey, onSelect }) {
   return (
     <Flexbox justifyContent="center">
       <ButtonGroup items={items} selectedKey={selectedKey} onSelect={onSelect}>
@@ -9,3 +9,5 @@ export default function FilterButtons({ items, selectedKey, onSelect }) {
     </Flexbox>
   );
 }
+
+export default FilterButtons;

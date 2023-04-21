@@ -4,7 +4,7 @@ import { Button, Dropdown, Form, FormButtons, FormRow, Item, SubmitButton } from
 import WebsiteTags from './WebsiteTags';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
+export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
@@ -59,3 +59,5 @@ export default function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
     </>
   );
 }
+
+export default TeamAddWebsiteForm;

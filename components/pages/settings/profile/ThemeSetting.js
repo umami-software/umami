@@ -5,7 +5,7 @@ import Sun from 'assets/sun.svg';
 import Moon from 'assets/moon.svg';
 import styles from './ThemeSetting.module.css';
 
-export default function ThemeSetting() {
+export function ThemeSetting() {
   const [theme, setTheme] = useTheme();
 
   return (
@@ -29,3 +29,5 @@ export default function ThemeSetting() {
     </div>
   );
 }
+
+export default ThemeSetting;

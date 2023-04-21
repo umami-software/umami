@@ -2,7 +2,7 @@ import { TextArea } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export default function TrackingCode({ websiteId }) {
+export function TrackingCode({ websiteId }) {
   const { formatMessage, messages } = useMessages();
   const { trackerScriptName } = useConfig();
   const url = trackerScriptName.startsWith('http')
@@ -18,3 +18,5 @@ export default function TrackingCode({ websiteId }) {
     </>
   );
 }
+
+export default TrackingCode;

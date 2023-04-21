@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Icons from 'components/icons';
 import styles from './NavGroup.module.css';
 
-export default function NavGroup({
+export function NavGroup({
   title,
   items,
   defaultExpanded = true,
@@ -54,3 +54,5 @@ export default function NavGroup({
     </div>
   );
 }
+
+export default NavGroup;

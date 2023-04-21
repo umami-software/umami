@@ -23,7 +23,7 @@ function mapData(data) {
   return arr;
 }
 
-export default function RealtimeChart({ data, unit, ...props }) {
+export function RealtimeChart({ data, unit, ...props }) {
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
@@ -58,3 +58,5 @@ export default function RealtimeChart({ data, unit, ...props }) {
     />
   );
 }
+
+export default RealtimeChart;

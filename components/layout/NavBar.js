@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Icon, Text, Row, Column } from 'react-basics';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -12,7 +11,7 @@ import useMessages from 'hooks/useMessages';
 import { useRouter } from 'next/router';
 import HamburgerButton from '../common/HamburgerButton';
 
-export default function NavBar() {
+export function NavBar() {
   const { pathname } = useRouter();
   const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
@@ -61,3 +60,5 @@ export default function NavBar() {
     </div>
   );
 }
+
+export default NavBar;

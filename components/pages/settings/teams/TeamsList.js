@@ -6,7 +6,7 @@ import PageHeader from 'components/layout/PageHeader';
 import TeamsTable from 'components/pages/settings/teams/TeamsTable';
 import Page from 'components/layout/Page';
 import Icons from 'components/icons';
-import TeamJoinForm from './JoinTeamForm';
+import TeamJoinForm from './TeamJoinForm';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 

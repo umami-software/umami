@@ -9,7 +9,7 @@ import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useMessages from 'hooks/useMessages';
 
-function DateFilter({ websiteId, value, className }) {
+export function DateFilter({ websiteId, value, className }) {
   const { formatMessage, labels } = useMessages();
   const { get } = useApi();
   const [dateRange, setDateRange] = useDateRange(websiteId);

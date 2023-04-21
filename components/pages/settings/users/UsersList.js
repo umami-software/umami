@@ -8,7 +8,7 @@ import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
 
-export default function UsersList() {
+export function UsersList() {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get, useQuery } = useApi();
@@ -38,3 +38,5 @@ export default function UsersList() {
     </Page>
   );
 }
+
+export default UsersList;

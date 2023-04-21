@@ -3,7 +3,7 @@ import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function UserDeleteForm({ userId, username, onSave, onClose }) {
+export function UserDeleteForm({ userId, username, onSave, onClose }) {
   const { formatMessage, FormattedMessage, labels, messages } = useMessages();
   const { del } = useApi();
   const { mutate, error, isLoading } = useMutation(() => del(`/users/${userId}`));
@@ -33,3 +33,5 @@ export default function UserDeleteForm({ userId, username, onSave, onClose }) {
     </Form>
   );
 }
+
+export default UserDeleteForm;

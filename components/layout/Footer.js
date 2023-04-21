@@ -4,7 +4,7 @@ import { CURRENT_VERSION, HOMEPAGE_URL, REPO_URL } from 'lib/constants';
 import { labels } from 'components/messages';
 import styles from './Footer.module.css';
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className={styles.footer}>
       <Row>
@@ -29,3 +29,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default Footer;

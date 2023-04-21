@@ -4,7 +4,7 @@ import useDateRange from 'hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function DateRangeSetting() {
+export function DateRangeSetting() {
   const { formatMessage, labels } = useMessages();
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
@@ -18,3 +18,5 @@ export default function DateRangeSetting() {
     </Flexbox>
   );
 }
+
+export default DateRangeSetting;

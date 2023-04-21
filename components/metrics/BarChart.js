@@ -11,7 +11,7 @@ import useTheme from 'hooks/useTheme';
 import { DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
 import styles from './BarChart.module.css';
 
-export default function BarChart({
+export function BarChart({
   datasets,
   unit,
   animationDuration = DEFAULT_ANIMATION_DURATION,
@@ -210,3 +210,5 @@ export default function BarChart({
     </>
   );
 }
+
+export default BarChart;

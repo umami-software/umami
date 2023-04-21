@@ -5,7 +5,7 @@ import useLocale from 'hooks/useLocale';
 import useMessages from 'hooks/useMessages';
 import regions from 'public/iso-3166-2.json';
 
-export default function RegionsTable({ websiteId, ...props }) {
+export function RegionsTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
 
@@ -29,3 +29,5 @@ export default function RegionsTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default RegionsTable;

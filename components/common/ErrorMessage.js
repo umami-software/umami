@@ -2,7 +2,7 @@ import { Icon, Icons, Text } from 'react-basics';
 import styles from './ErrorMessage.module.css';
 import useMessages from 'hooks/useMessages';
 
-export default function ErrorMessage() {
+export function ErrorMessage() {
   const { formatMessage, messages } = useMessages();
 
   return (
@@ -14,3 +14,5 @@ export default function ErrorMessage() {
     </div>
   );
 }
+
+export default ErrorMessage;

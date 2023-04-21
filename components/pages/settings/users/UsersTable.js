@@ -8,7 +8,7 @@ import useMessages from 'hooks/useMessages';
 import SettingsTable from 'components/common/SettingsTable';
 import useLocale from 'hooks/useLocale';
 
-export default function UsersTable({ data = [], onDelete }) {
+export function UsersTable({ data = [], onDelete }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { dateLocale } = useLocale();
@@ -72,3 +72,5 @@ export default function UsersTable({ data = [], onDelete }) {
     </SettingsTable>
   );
 }
+
+export default UsersTable;

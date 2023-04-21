@@ -1,7 +1,7 @@
 import { Button, Icon, Icons, Text } from 'react-basics';
 import styles from './WebsiteTags.module.css';
 
-export default function WebsiteTags({ items = [], websites = [], onClick }) {
+export function WebsiteTags({ items = [], websites = [], onClick }) {
   if (websites.length === 0) {
     return null;
   }
@@ -27,3 +27,5 @@ export default function WebsiteTags({ items = [], websites = [], onClick }) {
     </div>
   );
 }
+
+export default WebsiteTags;

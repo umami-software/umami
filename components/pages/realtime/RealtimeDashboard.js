@@ -25,7 +25,7 @@ function mergeData(state = [], data = [], time) {
     .filter(({ timestamp }) => timestamp >= time);
 }
 
-export default function RealtimeDashboard({ websiteId }) {
+export function RealtimeDashboard({ websiteId }) {
   const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const [currentData, setCurrentData] = useState();
@@ -125,3 +125,5 @@ export default function RealtimeDashboard({ websiteId }) {
     </Page>
   );
 }
+
+export default RealtimeDashboard;

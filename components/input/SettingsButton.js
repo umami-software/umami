@@ -5,7 +5,7 @@ import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 import styles from './SettingsButton.module.css';
 
-export default function SettingsButton() {
+export function SettingsButton() {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -33,3 +33,5 @@ export default function SettingsButton() {
     </PopupTrigger>
   );
 }
+
+export default SettingsButton;

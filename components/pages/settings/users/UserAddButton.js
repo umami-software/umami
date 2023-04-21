@@ -2,7 +2,7 @@ import { Button, Icon, Text, Modal, Icons, ModalTrigger } from 'react-basics';
 import UserAddForm from './UserAddForm';
 import useMessages from 'hooks/useMessages';
 
-export default function UserAddButton({ onSave }) {
+export function UserAddButton({ onSave }) {
   const { formatMessage, labels } = useMessages();
 
   const handleSave = () => {
@@ -23,3 +23,5 @@ export default function UserAddButton({ onSave }) {
     </ModalTrigger>
   );
 }
+
+export default UserAddButton;

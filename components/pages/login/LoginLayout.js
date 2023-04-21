@@ -2,7 +2,7 @@ import Head from 'next/head';
 import useLocale from 'hooks/useLocale';
 import styles from './LoginLayout.module.css';
 
-export default function LoginLayout({ children }) {
+export function LoginLayout({ children }) {
   const { dir } = useLocale();
 
   return (
@@ -14,3 +14,5 @@ export default function LoginLayout({ children }) {
     </div>
   );
 }
+
+export default LoginLayout;

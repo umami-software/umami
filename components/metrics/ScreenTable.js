@@ -1,7 +1,7 @@
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
 
-export default function ScreenTable({ websiteId, ...props }) {
+export function ScreenTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -14,3 +14,5 @@ export default function ScreenTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default ScreenTable;

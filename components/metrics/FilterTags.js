@@ -4,7 +4,7 @@ import usePageQuery from 'hooks/usePageQuery';
 import styles from './FilterTags.module.css';
 import useMessages from 'hooks/useMessages';
 
-export default function FilterTags({ params }) {
+export function FilterTags({ params }) {
   const { formatMessage, labels } = useMessages();
   const {
     router,
@@ -50,3 +50,5 @@ export default function FilterTags({ params }) {
     </div>
   );
 }
+
+export default FilterTags;

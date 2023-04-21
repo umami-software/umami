@@ -9,7 +9,7 @@ import MetricCard from './MetricCard';
 import useMessages from 'hooks/useMessages';
 import styles from './MetricsBar.module.css';
 
-export default function MetricsBar({ websiteId }) {
+export function MetricsBar({ websiteId }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
@@ -111,3 +111,5 @@ export default function MetricsBar({ websiteId }) {
     </div>
   );
 }
+
+export default MetricsBar;

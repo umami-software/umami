@@ -2,7 +2,7 @@ import MetricsTable from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import useMessages from 'hooks/useMessages';
 
-export default function OSTable({ websiteId, ...props }) {
+export function OSTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: os }) {
@@ -20,3 +20,5 @@ export default function OSTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default OSTable;

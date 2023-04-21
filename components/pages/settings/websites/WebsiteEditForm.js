@@ -4,7 +4,7 @@ import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteEditForm({ websiteId, data, onSave }) {
+export function WebsiteEditForm({ websiteId, data, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/websites/${websiteId}`, data));
@@ -49,3 +49,5 @@ export default function WebsiteEditForm({ websiteId, data, onSave }) {
     </Form>
   );
 }
+
+export default WebsiteEditForm;

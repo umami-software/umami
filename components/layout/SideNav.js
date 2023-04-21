@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from './SideNav.module.css';
 
-export default function SideNav({ selectedKey, items, shallow, onSelect = () => {} }) {
+export function SideNav({ selectedKey, items, shallow, onSelect = () => {} }) {
   const { asPath } = useRouter();
   return (
     <Menu items={items} selectedKey={selectedKey} className={styles.menu} onSelect={onSelect}>
@@ -21,3 +21,5 @@ export default function SideNav({ selectedKey, items, shallow, onSelect = () => 
     </Menu>
   );
 }
+
+export default SideNav;

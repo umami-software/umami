@@ -4,7 +4,7 @@ import SettingsTable from 'components/common/SettingsTable';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export default function WebsitesTable({ data = [] }) {
+export function WebsitesTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
 
@@ -43,3 +43,5 @@ export default function WebsitesTable({ data = [] }) {
     </SettingsTable>
   );
 }
+
+export default WebsitesTable;

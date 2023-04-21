@@ -15,7 +15,7 @@ import useMessages from 'hooks/useMessages';
 import styles from './MetricsTable.module.css';
 import useLocale from 'hooks/useLocale';
 
-export default function MetricsTable({
+export function MetricsTable({
   websiteId,
   type,
   className,
@@ -92,3 +92,5 @@ export default function MetricsTable({
     </div>
   );
 }
+
+export default MetricsTable;
