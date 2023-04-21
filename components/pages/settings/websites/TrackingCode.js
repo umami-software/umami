@@ -7,7 +7,7 @@ export function TrackingCode({ websiteId }) {
   const { trackerScriptName } = useConfig();
   const url = trackerScriptName.startsWith('http')
     ? trackerScriptName
-    : `${location.origin}/${trackerScriptName}.js`;
+    : `${location.origin}/${trackerScriptName?.split(',')?.map(n => n.trim())?.[0]}`;
 
   const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
 
