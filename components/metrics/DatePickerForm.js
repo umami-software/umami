@@ -8,7 +8,7 @@ import { FILTER_DAY, FILTER_RANGE } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 import styles from './DatePickerForm.module.css';
 
-export default function DatePickerForm({
+export function DatePickerForm({
   startDate: defaultStartDate,
   endDate: defaultEndDate,
   minDate,
@@ -78,3 +78,5 @@ export default function DatePickerForm({
     </div>
   );
 }
+
+export default DatePickerForm;

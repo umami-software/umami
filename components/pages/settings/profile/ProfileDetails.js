@@ -8,7 +8,7 @@ import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export default function ProfileDetails() {
+export function ProfileDetails() {
   const { user } = useUser();
   const { formatMessage, labels } = useMessages();
   const { cloudMode } = useConfig();
@@ -45,3 +45,5 @@ export default function ProfileDetails() {
     </Form>
   );
 }
+
+export default ProfileDetails;

@@ -6,7 +6,7 @@ import useLocale from 'hooks/useLocale';
 import useForceUpdate from 'hooks/useForceUpdate';
 import styles from './Legend.module.css';
 
-export default function Legend({ chart }) {
+export function Legend({ chart }) {
   const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
 
@@ -48,3 +48,5 @@ export default function Legend({ chart }) {
     </div>
   );
 }
+
+export default Legend;

@@ -25,7 +25,7 @@ const icons = {
   [TYPE_EVENT]: <Icons.Bolt />,
 };
 
-export default function RealtimeLog({ data, websiteDomain }) {
+export function RealtimeLog({ data, websiteDomain }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
@@ -142,7 +142,7 @@ export default function RealtimeLog({ data, websiteDomain }) {
   return (
     <div className={styles.table}>
       <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
-      <div className={styles.header}>{formatMessage(labels.logs)}</div>
+      <div className={styles.header}>{formatMessage(labels.activityLog)}</div>
       <div className={styles.body}>
         {logs?.length === 0 && <NoData />}
         {logs?.length > 0 && (
@@ -154,3 +154,5 @@ export default function RealtimeLog({ data, websiteDomain }) {
     </div>
   );
 }
+
+export default RealtimeLog;

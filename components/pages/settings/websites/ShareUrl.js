@@ -15,7 +15,7 @@ import useMessages from 'hooks/useMessages';
 
 const generateId = () => getRandomChars(16);
 
-export default function ShareUrl({ websiteId, data, onSave }) {
+export function ShareUrl({ websiteId, data, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
@@ -85,3 +85,5 @@ export default function ShareUrl({ websiteId, data, onSave }) {
     </>
   );
 }
+
+export default ShareUrl;

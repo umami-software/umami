@@ -3,7 +3,7 @@ import MetricsTable from 'components/metrics/MetricsTable';
 import { BROWSERS } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function BrowsersTable({ websiteId, ...props }) {
+export function BrowsersTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: browser }) {
@@ -21,3 +21,5 @@ export default function BrowsersTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default BrowsersTable;

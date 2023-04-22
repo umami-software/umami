@@ -4,7 +4,7 @@ import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
 import useMessages from 'hooks/useMessages';
 
-export default function CountriesTable({ websiteId, ...props }) {
+export function CountriesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const { formatMessage, labels } = useMessages();
@@ -28,3 +28,5 @@ export default function CountriesTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default CountriesTable;

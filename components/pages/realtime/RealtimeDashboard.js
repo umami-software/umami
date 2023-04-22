@@ -25,7 +25,7 @@ function mergeData(state = [], data = [], time) {
     .filter(({ timestamp }) => timestamp >= time);
 }
 
-export default function RealtimeDashboard({ websiteId }) {
+export function RealtimeDashboard({ websiteId }) {
   const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const [currentData, setCurrentData] = useState();
@@ -63,7 +63,7 @@ export default function RealtimeDashboard({ websiteId }) {
     currentData.countries = percentFilter(
       currentData.sessions
         .reduce((arr, data) => {
-          if (!arr.find(({ sessionId }) => sessionId === data.sessionId)) {
+          if (!arr.find(({ id }) => id === data.id)) {
             return arr.concat(data);
           }
           return arr;
@@ -84,7 +84,7 @@ export default function RealtimeDashboard({ websiteId }) {
     );
 
     currentData.visitors = currentData.sessions.reduce((arr, val) => {
-      if (!arr.find(({ sessionId }) => sessionId === val.sessionId)) {
+      if (!arr.find(({ id }) => id === val.id)) {
         return arr.concat(val);
       }
       return arr;
@@ -125,3 +125,5 @@ export default function RealtimeDashboard({ websiteId }) {
     </Page>
   );
 }
+
+export default RealtimeDashboard;

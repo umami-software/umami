@@ -8,13 +8,13 @@ import useMessages from 'hooks/useMessages';
 import SettingsTable from 'components/common/SettingsTable';
 import useLocale from 'hooks/useLocale';
 
-export default function UsersTable({ data = [], onDelete }) {
+export function UsersTable({ data = [], onDelete }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { dateLocale } = useLocale();
 
   const columns = [
-    { name: 'username', label: formatMessage(labels.username), style: { flex: 1.5 } },
+    { name: 'username', label: formatMessage(labels.username) },
     { name: 'role', label: formatMessage(labels.role) },
     { name: 'created', label: formatMessage(labels.created) },
     { name: 'action', label: ' ' },
@@ -72,3 +72,5 @@ export default function UsersTable({ data = [], onDelete }) {
     </SettingsTable>
   );
 }
+
+export default UsersTable;

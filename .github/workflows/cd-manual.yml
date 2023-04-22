@@ -18,7 +18,7 @@ jobs:
         db-type: [postgresql, mysql]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image for ${{ matrix.db-type }}

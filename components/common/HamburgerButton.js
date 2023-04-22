@@ -5,7 +5,7 @@ import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export default function HamburgerButton() {
+export function HamburgerButton() {
   const { formatMessage, labels } = useMessages();
   const [active, setActive] = useState(false);
   const { cloudMode } = useConfig();
@@ -57,3 +57,5 @@ export default function HamburgerButton() {
     </>
   );
 }
+
+export default HamburgerButton;

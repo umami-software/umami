@@ -6,10 +6,12 @@ import useMessages from 'hooks/useMessages';
 import useUser from 'hooks/useUser';
 import { ROLES } from 'lib/constants';
 import SettingsTable from 'components/common/SettingsTable';
+import useLocale from 'hooks/useLocale';
 
-export default function TeamsTable({ data = [], onDelete }) {
+export function TeamsTable({ data = [], onDelete }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const { dir } = useLocale();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
@@ -64,7 +66,7 @@ export default function TeamsTable({ data = [], onDelete }) {
             {!showDelete && (
               <ModalTrigger>
                 <Button>
-                  <Icon>
+                  <Icon rotate={dir === 'rtl' ? 180 : 0}>
                     <Icons.ArrowRight />
                   </Icon>
                   <Text>{formatMessage(labels.leave)}</Text>
@@ -88,3 +90,5 @@ export default function TeamsTable({ data = [], onDelete }) {
     </SettingsTable>
   );
 }
+
+export default TeamsTable;

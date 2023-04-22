@@ -333,6 +333,12 @@
       "value": "Leave team"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "लॉग इन"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,

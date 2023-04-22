@@ -12,7 +12,7 @@ import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export default function WebsiteSettings({ websiteId }) {
+export function WebsiteSettings({ websiteId }) {
   const router = useRouter();
   const { formatMessage, labels, messages } = useMessages();
   const { openExternal } = useConfig();
@@ -86,3 +86,5 @@ export default function WebsiteSettings({ websiteId }) {
     </Page>
   );
 }
+
+export default WebsiteSettings;

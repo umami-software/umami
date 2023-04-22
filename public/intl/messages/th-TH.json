@@ -325,6 +325,12 @@
       "value": "Leave team"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "เข้าสู่ระบบ"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,

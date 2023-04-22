@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './PageHeader.module.css';
 
-export default function PageHeader({ title, children }) {
+export function PageHeader({ title, children }) {
   return (
     <div className={styles.header}>
       <div className={styles.title}>{title}</div>
@@ -9,3 +9,5 @@ export default function PageHeader({ title, children }) {
     </div>
   );
 }
+
+export default PageHeader;

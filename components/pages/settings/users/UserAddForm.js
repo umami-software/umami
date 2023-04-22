@@ -14,7 +14,7 @@ import useApi from 'hooks/useApi';
 import { ROLES } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function UserAddForm({ onSave, onClose }) {
+export function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post(`/users`, data));
   const { formatMessage, labels } = useMessages();
@@ -68,3 +68,5 @@ export default function UserAddForm({ onSave, onClose }) {
     </Form>
   );
 }
+
+export default UserAddForm;

@@ -3,7 +3,7 @@ import TeamMembersTable from 'components/pages/settings/teams/TeamMembersTable';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamMembers({ teamId, readOnly }) {
+export function TeamMembers({ teamId, readOnly }) {
   const { toast, showToast } = useToast();
   const { get, useQuery } = useApi();
   const { formatMessage, messages } = useMessages();
@@ -27,3 +27,5 @@ export default function TeamMembers({ teamId, readOnly }) {
     </>
   );
 }
+
+export default TeamMembers;

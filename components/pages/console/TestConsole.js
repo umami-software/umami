@@ -11,7 +11,7 @@ import Script from 'next/script';
 import { Button, Column, Row } from 'react-basics';
 import styles from './TestConsole.module.css';
 
-export default function TestConsole() {
+export function TestConsole() {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites:me'], () => get('/me/websites'));
   const router = useRouter();
@@ -132,3 +132,5 @@ export default function TestConsole() {
     </Page>
   );
 }
+
+export default TestConsole;

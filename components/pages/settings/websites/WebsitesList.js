@@ -8,7 +8,7 @@ import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsitesList() {
+export function WebsitesList() {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get, useQuery } = useApi();
@@ -52,3 +52,5 @@ export default function WebsitesList() {
     </Page>
   );
 }
+
+export default WebsitesList;

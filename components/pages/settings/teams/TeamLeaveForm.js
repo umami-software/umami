@@ -2,7 +2,7 @@ import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamLeaveForm({ teamId, userId, teamName, onSave, onClose }) {
+export function TeamLeaveForm({ teamId, userId, teamName, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(() => del(`/team/${teamId}/users/${userId}`));
@@ -33,3 +33,5 @@ export default function TeamLeaveForm({ teamId, userId, teamName, onSave, onClos
     </Form>
   );
 }
+
+export default TeamLeaveForm;

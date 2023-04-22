@@ -3,7 +3,7 @@ import Icons from 'components/icons';
 import { saveDashboard } from 'store/dashboard';
 import useMessages from 'hooks/useMessages';
 
-export default function DashboardSettingsButton() {
+export function DashboardSettingsButton() {
   const { formatMessage, labels } = useMessages();
 
   const menuOptions = [
@@ -42,3 +42,5 @@ export default function DashboardSettingsButton() {
     </PopupTrigger>
   );
 }
+
+export default DashboardSettingsButton;

@@ -11,7 +11,7 @@ import TeamEditForm from './TeamEditForm';
 import TeamMembers from './TeamMembers';
 import TeamWebsites from './TeamWebsites';
 
-export default function TeamSettings({ teamId }) {
+export function TeamSettings({ teamId }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const [values, setValues] = useState(null);
@@ -68,3 +68,5 @@ export default function TeamSettings({ teamId }) {
     </Page>
   );
 }
+
+export default TeamSettings;

@@ -3,7 +3,7 @@ import useApi from 'hooks/useApi';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useMessages from 'hooks/useMessages';
 
-export default function UserWebsites({ userId }) {
+export function UserWebsites({ userId }) {
   const { formatMessage, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { data, isLoading } = useQuery(['user:websites', userId], () =>
@@ -22,3 +22,5 @@ export default function UserWebsites({ userId }) {
     </div>
   );
 }
+
+export default UserWebsites;

@@ -2,7 +2,7 @@ import { Container } from 'react-basics';
 import Header from './Header';
 import Footer from './Footer';
 
-export default function ShareLayout({ children }) {
+export function ShareLayout({ children }) {
   return (
     <Container>
       <Header />
@@ -11,3 +11,5 @@ export default function ShareLayout({ children }) {
     </Container>
   );
 }
+
+export default ShareLayout;

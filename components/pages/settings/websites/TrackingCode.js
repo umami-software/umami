@@ -1,12 +1,13 @@
 import { TextArea } from 'react-basics';
-import { TRACKER_SCRIPT_URL } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
+import useConfig from 'hooks/useConfig';
 
-export default function TrackingCode({ websiteId }) {
+export function TrackingCode({ websiteId }) {
   const { formatMessage, messages } = useMessages();
-  const url = TRACKER_SCRIPT_URL.startsWith('http')
-    ? TRACKER_SCRIPT_URL
-    : `${location.origin}${TRACKER_SCRIPT_URL}`;
+  const { trackerScriptName } = useConfig();
+  const url = trackerScriptName?.startsWith('http')
+    ? trackerScriptName
+    : `${location.origin}/${trackerScriptName?.split(',')?.map(n => n.trim())?.[0] || 'script.js'}`;
 
   const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
 
@@ -17,3 +18,5 @@ export default function TrackingCode({ websiteId }) {
     </>
   );
 }
+
+export default TrackingCode;

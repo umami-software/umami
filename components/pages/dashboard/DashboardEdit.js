@@ -9,7 +9,7 @@ import styles from './DashboardEdit.module.css';
 
 const dragId = 'dashboard-website-ordering';
 
-export default function DashboardEdit({ websites }) {
+export function DashboardEdit({ websites }) {
   const settings = useDashboard();
   const { websiteOrder } = settings;
   const { formatMessage, labels } = useMessages();
@@ -98,3 +98,5 @@ export default function DashboardEdit({ websites }) {
     </>
   );
 }
+
+export default DashboardEdit;

@@ -12,7 +12,7 @@ import useMessages from 'hooks/useMessages';
 
 const CONFIRM_VALUE = 'DELETE';
 
-export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
+export function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error } = useMutation(data => del(`/websites/${websiteId}`, data));
@@ -46,3 +46,5 @@ export default function WebsiteDeleteForm({ websiteId, onSave, onClose }) {
     </Form>
   );
 }
+
+export default WebsiteDeleteForm;

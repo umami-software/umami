@@ -10,8 +10,9 @@ import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useApi from 'hooks/useApi';
 import useDashboard from 'store/dashboard';
 import useMessages from 'hooks/useMessages';
+import useLocale from 'hooks/useLocale';
 
-export default function Dashboard({ userId }) {
+export function Dashboard({ userId }) {
   const { formatMessage, labels, messages } = useMessages();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
@@ -19,6 +20,7 @@ export default function Dashboard({ userId }) {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites'], () => get('/websites', { userId }));
   const hasData = data && data.length !== 0;
+  const { dir } = useLocale();
 
   function handleMore() {
     setMax(max + limit);
@@ -33,7 +35,7 @@ export default function Dashboard({ userId }) {
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           <Link href="/settings/websites">
             <Button>
-              <Icon>
+              <Icon rotate={dir === 'rtl' ? 180 : 0}>
                 <Icons.ArrowRight />
               </Icon>
               <Text>{formatMessage(messages.goToSettings)}</Text>
@@ -48,7 +50,7 @@ export default function Dashboard({ userId }) {
           {max < data.length && (
             <Flexbox justifyContent="center">
               <Button onClick={handleMore}>
-                <Icon>
+                <Icon rotate={dir === 'rtl' ? 180 : 0}>
                   <Icons.More />
                 </Icon>
                 <Text>{formatMessage(labels.more)}</Text>
@@ -60,3 +62,5 @@ export default function Dashboard({ userId }) {
     </Page>
   );
 }
+
+export default Dashboard;

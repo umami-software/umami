@@ -4,7 +4,7 @@ import useTimezone from 'hooks/useTimezone';
 import useMessages from 'hooks/useMessages';
 import { getTimezone } from 'lib/date';
 
-export default function TimezoneSetting() {
+export function TimezoneSetting() {
   const { formatMessage, labels } = useMessages();
   const [timezone, saveTimezone] = useTimezone();
   const options = listTimeZones();
@@ -26,3 +26,5 @@ export default function TimezoneSetting() {
     </Flexbox>
   );
 }
+
+export default TimezoneSetting;

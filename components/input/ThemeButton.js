@@ -4,7 +4,7 @@ import useTheme from 'hooks/useTheme';
 import Icons from 'components/icons';
 import styles from './ThemeButton.module.css';
 
-export default function ThemeButton() {
+export function ThemeButton() {
   const [theme, setTheme] = useTheme();
 
   const transitions = useTransition(theme, {
@@ -34,3 +34,5 @@ export default function ThemeButton() {
     </Button>
   );
 }
+
+export default ThemeButton;

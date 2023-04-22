@@ -2,7 +2,7 @@ import MetricsTable from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import useMessages from 'hooks/useMessages';
 
-export default function ReferrersTable({ websiteId, ...props }) {
+export function ReferrersTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   const renderLink = ({ x: referrer }) => {
@@ -29,3 +29,5 @@ export default function ReferrersTable({ websiteId, ...props }) {
     </>
   );
 }
+
+export default ReferrersTable;

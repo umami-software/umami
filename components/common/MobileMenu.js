@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import styles from './MobileMenu.module.css';
 
-export default function MobileMenu({ items = [], onClose }) {
+export function MobileMenu({ items = [], onClose }) {
   const { pathname } = useRouter();
 
   const Items = ({ items, className }) => (
@@ -34,3 +34,5 @@ export default function MobileMenu({ items = [], onClose }) {
     </div>
   );
 }
+
+export default MobileMenu;

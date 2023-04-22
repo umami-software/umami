@@ -49,7 +49,7 @@ async function relationalQuery(
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = website?.resetAt || website?.createdAt;
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate, eventName || ''];
 
   return rawQuery(
@@ -99,7 +99,7 @@ async function clickhouseQuery(
   const { rawQuery, getDateFormat, getBetweenDates, getDateQuery, getEventDataFilterQuery } =
     clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = website?.resetAt || website?.createdAt;
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params = { websiteId };
 
   return rawQuery(

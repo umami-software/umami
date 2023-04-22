@@ -5,7 +5,7 @@ import useMessages from 'hooks/useMessages';
 import usePageQuery from 'hooks/usePageQuery';
 import { emptyFilter } from 'lib/filters';
 
-export default function PagesTable({ websiteId, showFilters, ...props }) {
+export function PagesTable({ websiteId, showFilters, ...props }) {
   const {
     router,
     resolveUrl,
@@ -47,3 +47,5 @@ export default function PagesTable({ websiteId, showFilters, ...props }) {
     </>
   );
 }
+
+export default PagesTable;

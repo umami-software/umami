@@ -2,7 +2,7 @@ import MetricCard from 'components/metrics/MetricCard';
 import useMessages from 'hooks/useMessages';
 import styles from './RealtimeHeader.module.css';
 
-export default function RealtimeHeader({ data = {} }) {
+export function RealtimeHeader({ data = {} }) {
   const { formatMessage, labels } = useMessages();
   const { pageviews, visitors, events, countries } = data;
 
@@ -37,3 +37,5 @@ export default function RealtimeHeader({ data = {} }) {
     </div>
   );
 }
+
+export default RealtimeHeader;

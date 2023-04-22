@@ -5,12 +5,14 @@ import useMessages from 'hooks/useMessages';
 import useUser from 'hooks/useUser';
 import useConfig from 'hooks/useConfig';
 import styles from './ProfileButton.module.css';
+import useLocale from 'hooks/useLocale';
 
-export default function ProfileButton() {
+export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { cloudMode } = useConfig();
   const router = useRouter();
+  const { dir } = useLocale();
 
   const handleSelect = key => {
     if (key === 'profile') {
@@ -31,7 +33,7 @@ export default function ProfileButton() {
           <Icons.ChevronDown />
         </Icon>
       </Button>
-      <Popup position="bottom" alignment="end">
+      <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
         <Menu variant="popup" onSelect={handleSelect} className={styles.menu}>
           <Item key="user" className={styles.item}>
             <Text>{user.username}</Text>
@@ -55,3 +57,5 @@ export default function ProfileButton() {
     </PopupTrigger>
   );
 }
+
+export default ProfileButton;

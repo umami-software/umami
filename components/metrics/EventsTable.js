@@ -1,7 +1,7 @@
 import MetricsTable from './MetricsTable';
 import useMessages from 'hooks/useMessages';
 
-export default function EventsTable({ websiteId, ...props }) {
+export function EventsTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   function handleDataLoad(data) {
@@ -19,3 +19,5 @@ export default function EventsTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default EventsTable;

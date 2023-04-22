@@ -4,7 +4,7 @@ import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 import SettingsTable from 'components/common/SettingsTable';
 
-export default function TeamMembersTable({ data = [], onSave, readOnly }) {
+export function TeamMembersTable({ data = [], onSave, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -43,3 +43,5 @@ export default function TeamMembersTable({ data = [], onSave, readOnly }) {
     </SettingsTable>
   );
 }
+
+export default TeamMembersTable;

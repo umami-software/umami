@@ -5,9 +5,10 @@ import NavBar from 'components/layout/NavBar';
 import UpdateNotice from 'components/common/UpdateNotice';
 import useRequireLogin from 'hooks/useRequireLogin';
 import useConfig from 'hooks/useConfig';
+import { CURRENT_VERSION } from 'lib/constants';
 import styles from './AppLayout.module.css';
 
-export default function AppLayout({ title, children }) {
+export function AppLayout({ title, children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
   const { pathname } = useRouter();
@@ -19,7 +20,7 @@ export default function AppLayout({ title, children }) {
   const allowUpdate = user?.isAdmin && !config?.updatesDisabled && !pathname.includes('/share/');
 
   return (
-    <div className={styles.layout}>
+    <div className={styles.layout} data-app-version={CURRENT_VERSION}>
       {allowUpdate && <UpdateNotice />}
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
@@ -33,3 +34,5 @@ export default function AppLayout({ title, children }) {
     </div>
   );
 }
+
+export default AppLayout;

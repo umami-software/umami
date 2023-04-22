@@ -11,7 +11,7 @@ import useApi from 'hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteAddForm({ onSave, onClose }) {
+export function WebsiteAddForm({ onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/websites', data));
@@ -54,3 +54,5 @@ export default function WebsiteAddForm({ onSave, onClose }) {
     </Form>
   );
 }
+
+export default WebsiteAddForm;

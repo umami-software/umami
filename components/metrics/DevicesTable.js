@@ -2,7 +2,7 @@ import MetricsTable from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import useMessages from 'hooks/useMessages';
 
-export default function DevicesTable({ websiteId, ...props }) {
+export function DevicesTable({ websiteId, ...props }) {
   const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: device }) {
@@ -26,3 +26,5 @@ export default function DevicesTable({ websiteId, ...props }) {
     />
   );
 }
+
+export default DevicesTable;

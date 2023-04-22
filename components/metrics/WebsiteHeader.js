@@ -3,7 +3,7 @@ import Favicon from 'components/common/Favicon';
 import ActiveUsers from './ActiveUsers';
 import styles from './WebsiteHeader.module.css';
 
-export default function WebsiteHeader({ websiteId, name, domain, children }) {
+export function WebsiteHeader({ websiteId, name, domain, children }) {
   return (
     <Row className={styles.header} justifyContent="center">
       <Column className={styles.title} variant="two">
@@ -17,3 +17,5 @@ export default function WebsiteHeader({ websiteId, name, domain, children }) {
     </Row>
   );
 }
+
+export default WebsiteHeader;

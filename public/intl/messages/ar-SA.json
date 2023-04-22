@@ -333,6 +333,12 @@
       "value": "مغادرة المجموعة"
     }
   ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "تسجيل الدخول"
+    }
+  ],
   "label.logout": [
     {
       "type": 0,

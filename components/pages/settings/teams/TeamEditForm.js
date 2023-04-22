@@ -15,7 +15,7 @@ import useMessages from 'hooks/useMessages';
 
 const generateId = () => getRandomChars(16);
 
-export default function TeamEditForm({ teamId, data, onSave, readOnly }) {
+export function TeamEditForm({ teamId, data, onSave, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
@@ -69,3 +69,5 @@ export default function TeamEditForm({ teamId, data, onSave, readOnly }) {
     </Form>
   );
 }
+
+export default TeamEditForm;

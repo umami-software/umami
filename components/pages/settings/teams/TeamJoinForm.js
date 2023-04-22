@@ -11,7 +11,7 @@ import {
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamJoinForm({ onSave, onClose }) {
+export function TeamJoinForm({ onSave, onClose }) {
   const { formatMessage, labels, getMessage } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post('/teams/join', data));
@@ -40,3 +40,5 @@ export default function TeamJoinForm({ onSave, onClose }) {
     </Form>
   );
 }
+
+export default TeamJoinForm;

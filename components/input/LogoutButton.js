@@ -2,7 +2,7 @@ import { Button, Icon, Icons, Tooltip } from 'react-basics';
 import Link from 'next/link';
 import useMessages from 'hooks/useMessages';
 
-export default function LogoutButton({ tooltipPosition = 'top' }) {
+export function LogoutButton({ tooltipPosition = 'top' }) {
   const { formatMessage, labels } = useMessages();
   return (
     <Link href="/logout">
@@ -16,3 +16,5 @@ export default function LogoutButton({ tooltipPosition = 'top' }) {
     </Link>
   );
 }
+
+export default LogoutButton;

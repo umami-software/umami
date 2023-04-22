@@ -3,16 +3,16 @@ import { useRouter } from 'next/router';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
-import useTheme from 'hooks/useTheme';
+import HoverTooltip from 'components/common/HoverTooltip';
 import { ISO_COUNTRIES, THEME_COLORS, MAP_FILE } from 'lib/constants';
-import styles from './WorldMap.module.css';
+import useTheme from 'hooks/useTheme';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
-import HoverTooltip from './HoverTooltip';
 import { formatLongNumber } from 'lib/format';
 import { percentFilter } from 'lib/filters';
+import styles from './WorldMap.module.css';
 
-function WorldMap({ data, className }) {
+export function WorldMap({ data, className }) {
   const { basePath } = useRouter();
   const [tooltip, setTooltip] = useState();
   const [theme] = useTheme();

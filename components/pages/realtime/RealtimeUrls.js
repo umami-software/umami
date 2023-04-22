@@ -6,7 +6,7 @@ import DataTable from 'components/metrics/DataTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import useMessages from 'hooks/useMessages';
 
-export default function RealtimeUrls({ websiteDomain, data = {} }) {
+export function RealtimeUrls({ websiteDomain, data = {} }) {
   const { formatMessage, labels } = useMessages();
   const { pageviews } = data;
   const [filter, setFilter] = useState(FILTER_REFERRERS);
@@ -97,3 +97,5 @@ export default function RealtimeUrls({ websiteDomain, data = {} }) {
     </>
   );
 }
+
+export default RealtimeUrls;

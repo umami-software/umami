@@ -2,7 +2,7 @@ import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
+export function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error, isLoading } = useMutation(data => del(`/teams/${teamId}`, data));
@@ -30,3 +30,5 @@ export default function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
     </Form>
   );
 }
+
+export default TeamDeleteForm;

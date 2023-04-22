@@ -9,7 +9,7 @@ import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import { EVENT_COLORS } from 'lib/constants';
 
-export default function EventsChart({ websiteId, className, token }) {
+export function EventsChart({ websiteId, className, token }) {
   const { get, useQuery } = useApi();
   const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
   const [timezone] = useTimezone();
@@ -76,3 +76,5 @@ export default function EventsChart({ websiteId, className, token }) {
     />
   );
 }
+
+export default EventsChart;
