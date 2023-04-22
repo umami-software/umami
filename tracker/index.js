@@ -154,7 +154,7 @@
 
   const observeTitle = () => {
     const callback = ([entry]) => {
-      title = entry.target.text;
+      title = entry && entry.target ? entry.target.text : undefined;
     };
 
     const observer = new MutationObserver(callback);
