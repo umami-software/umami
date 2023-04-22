@@ -20,14 +20,19 @@ export const useCors = createMiddleware(
 );
 
 export const useSession = createMiddleware(async (req, res, next) => {
-  const session = await findSession(req as NextApiRequestCollect);
+  try {
+    const session = await findSession(req as NextApiRequestCollect);
 
-  if (!session) {
-    log('useSession: Session not found');
-    return badRequest(res, 'Session not found.');
+    if (!session) {
+      log('useSession: Session not found');
+      return badRequest(res, 'Session not found.');
+    }
+
+    (req as any).session = session;
+  } catch (e: any) {
+    return badRequest(res, e.message);
   }
 
-  (req as any).session = session;
   next();
 });
 
