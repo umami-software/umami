@@ -32,7 +32,7 @@
     "merge-messages": "node scripts/merge-messages.js",
     "generate-lang": "npm-run-all extract-messages merge-messages",
     "format-lang": "node scripts/format-lang.js",
-    "compile-lang": "formatjs compile-folder --ast build public/intl/messages",
+    "compile-lang": "formatjs compile-folder --ast build/messages public/intl/messages",
     "check-lang": "node scripts/check-lang.js",
     "download-country-names": "node scripts/download-country-names.js",
     "download-language-names": "node scripts/download-language-names.js",
