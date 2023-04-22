@@ -195,7 +195,7 @@
     } else if (typeof obj === 'function') {
       return send(obj(getPayload()));
     }
-    return Promise.reject();
+    return send(getPayload());
   };
 
   /* Start */
