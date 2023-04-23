@@ -18,10 +18,15 @@ export function UsersList() {
   const { toast, showToast } = useToast();
   const hasData = data && data.length !== 0;
 
-  const handleSave = () => refetch();
+  const handleSave = () => {
+    refetch().then(() => showToast({ message: formatMessage(messages.saved), variant: 'success' }));
+  };
 
-  const handleDelete = () =>
-    showToast({ message: formatMessage(messages.userDeleted), variant: 'success' });
+  const handleDelete = () => {
+    refetch().then(() =>
+      showToast({ message: formatMessage(messages.userDeleted), variant: 'success' }),
+    );
+  };
 
   return (
     <Page loading={isLoading} error={error}>
