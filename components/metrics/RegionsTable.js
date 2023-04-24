@@ -15,11 +15,11 @@ export function RegionsTable({ websiteId, ...props }) {
     return regions[x] ? `${regions[x]}, ${countryNames[x.split('-')[0]]}` : x;
   };
 
-  const renderLink = ({ x }) => {
+  const renderLink = ({ x: code }) => {
     return (
-      <div className={locale}>
-        <FilterLink id="region" value={x} label={renderLabel(x)} />
-      </div>
+      <FilterLink id="region" className={locale} value={code} label={renderLabel(code)}>
+        <img src={`/images/flags/${code.split('-')[0].toLowerCase()}.png`} alt={code} />
+      </FilterLink>
     );
   };
 
