@@ -6,14 +6,15 @@ import usePageQuery from 'hooks/usePageQuery';
 import useMessages from 'hooks/useMessages';
 import styles from './FilterLink.module.css';
 
-export function FilterLink({ id, value, label, externalUrl }) {
+export function FilterLink({ id, value, label, externalUrl, children, className }) {
   const { formatMessage, labels } = useMessages();
   const { resolveUrl, query } = usePageQuery();
   const active = query[id] !== undefined;
   const selected = query[id] === value;
 
   return (
-    <div className={styles.row}>
+    <div className={classNames(styles.row, className)}>
+      {children}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
         <Link

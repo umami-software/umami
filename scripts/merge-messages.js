@@ -8,6 +8,11 @@ const dest = path.resolve(__dirname, '../lang');
 const files = fs.readdirSync(dest);
 const keys = Object.keys(messages).sort();
 
+/*
+This script takes extracted messages and merges them
+with the existing files under `lang`. Any newly added
+keys will be printed to the console.
+ */
 files.forEach(file => {
   const lang = require(`../lang/${file}`);
 

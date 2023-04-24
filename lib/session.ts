@@ -11,7 +11,7 @@ export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);
 
   if (!payload) {
-    return null;
+    throw new Error('Invalid payload.');
   }
 
   // Check if cache token is passed
@@ -29,14 +29,14 @@ export async function findSession(req: NextApiRequestCollect) {
   const { website: websiteId, hostname, screen, language } = payload;
 
   if (!validate(websiteId)) {
-    return null;
+    throw new Error('Invalid website ID.');
   }
 
   // Find website
   const website = await loadWebsite(websiteId);
 
   if (!website) {
-    throw new Error(`Website not found: ${websiteId}`);
+    throw new Error(`Website not found: ${websiteId}.`);
   }
 
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
