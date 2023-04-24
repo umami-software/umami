@@ -11,9 +11,14 @@ export function CountriesTable({ websiteId, ...props }) {
 
   function renderLink({ x: code }) {
     return (
-      <div className={locale}>
-        <FilterLink id="country" value={countryNames[code] && code} label={countryNames[code]} />
-      </div>
+      <FilterLink
+        id="country"
+        className={locale}
+        value={countryNames[code] && code}
+        label={countryNames[code]}
+      >
+        <img src={`/images/flags/${code.toLowerCase()}.png`} alt={code} />
+      </FilterLink>
     );
   }
 
