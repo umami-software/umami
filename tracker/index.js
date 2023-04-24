@@ -119,6 +119,8 @@
             return currentElement;
           }
           currentElement = currentElement.parentElement;
+          if (currentElement === null) // if there is no parent element 
+            return null;
         }
         return null;
       };
