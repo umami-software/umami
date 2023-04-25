@@ -54,7 +54,7 @@ export default async (
       });
     }
 
-    log('Login failed:', { user, username, password });
+    log('Login failed:', { username, user });
 
     return unauthorized(res, 'message.incorrect-username-password');
   }
