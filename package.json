@@ -97,6 +97,7 @@
     "react-basics": "^0.77.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.2.0",
+    "react-error-boundary": "^4.0.4",
     "react-intl": "^5.24.7",
     "react-simple-maps": "^2.3.0",
     "react-spring": "^9.4.4",
