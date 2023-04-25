@@ -1,3 +1,4 @@
+import debug from 'debug';
 import { NextApiResponse } from 'next';
 import {
   ok,
@@ -12,6 +13,8 @@ import { getUser } from 'queries';
 import { secret } from 'lib/crypto';
 import { NextApiRequestQueryBody, User } from 'lib/types';
 import { setAuthKey } from 'lib/auth';
+
+const log = debug('umami:auth');
 
 export interface LoginRequestBody {
   username: string;
@@ -50,6 +53,8 @@ export default async (
         user: { id: user.id, username: user.username, createdAt: user.createdAt },
       });
     }
+
+    log('Login failed:', { user, username, password });
 
     return unauthorized(res, 'message.incorrect-username-password');
   }
