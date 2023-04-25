@@ -18,7 +18,7 @@ export function RegionsTable({ websiteId, ...props }) {
   const renderLink = ({ x: code }) => {
     return (
       <FilterLink id="region" className={locale} value={code} label={renderLabel(code)}>
-        <img src={`/images/flags/${code.split('-')[0].toLowerCase()}.png`} alt={code} />
+        <img src={`/images/flags/${code?.split('-')?.[0]?.toLowerCase() || 'xx'}.png`} alt={code} />
       </FilterLink>
     );
   };
