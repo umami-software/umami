@@ -70,7 +70,7 @@ export async function getLocation(ip, req) {
     return {
       country,
       subdivision1: region,
-      city: decodeURIComponent(city),
+      city: city ? decodeURIComponent(city) : undefined,
     };
   }
 
