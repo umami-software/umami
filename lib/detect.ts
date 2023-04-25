@@ -62,11 +62,11 @@ export async function getLocation(ip, req) {
     return;
   }
 
-  if (process.env.VERCEL) {
+  if (req.headers['x-vercel-ip-country']) {
     return {
-      country: req.headers['x-vercel-ip-city'],
-      subdivision1: req.headers['x-vercel-ip-country-region'],
-      city: req.headers['x-vercel-ip-country'],
+      country: req.headers['x-vercel-ip-country'],
+      subdivision1: `${req.headers['x-vercel-ip-country']}-${req.headers['x-vercel-ip-country-region']}`,
+      city: req.headers['x-vercel-ip-city'],
     };
   }
 
