@@ -65,10 +65,10 @@ const redirects = [
   },
 ];
 
-if (process.env.CLOUD_MODE) {
+if (process.env.CLOUD_MODE && process.env.DISABLE_LOGIN && process.env.CLOUD_URL) {
   redirects.push({
     source: '/login',
-    destination: CLOUD_URL,
+    destination: process.env.CLOUD_URL,
     permanent: false,
   });
 }
