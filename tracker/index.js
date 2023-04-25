@@ -159,11 +159,15 @@
 
     const observer = new MutationObserver(callback);
 
-    observer.observe(document.querySelector('head > title'), {
-      subtree: true,
-      characterData: true,
-      childList: true,
-    });
+    const node = document.querySelector('head > title');
+
+    if (node) {
+      observer.observe(node, {
+        subtree: true,
+        characterData: true,
+        childList: true,
+      });
+    }
   };
 
   const send = payload => {
