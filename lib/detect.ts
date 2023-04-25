@@ -63,10 +63,15 @@ export async function getLocation(ip, req) {
   }
 
   if (req.headers['x-vercel-ip-country']) {
+    const country = req.headers['x-vercel-ip-country'];
+    const region = req.headers['x-vercel-ip-country-region'];
+    const city = req.headers['x-vercel-ip-city'];
+
     return {
-      country: req.headers['x-vercel-ip-country'],
-      subdivision1: req.headers['x-vercel-ip-country-region'],
-      city: decodeURIComponent(req.headers['x-vercel-ip-city']),
+      country,
+      // Vercel documentation says they return only region, but that is not always the case
+      subdivision1: region.includes('-') ? region : `${country}-${region}`,
+      city: decodeURIComponent(city),
     };
   }
 
