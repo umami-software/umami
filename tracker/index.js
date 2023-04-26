@@ -119,7 +119,7 @@
             return currentElement;
           }
           currentElement = currentElement.parentElement;
-          if (currentElement === null) {
+          if (!currentElement) {
             return null;
           }
         }
@@ -127,7 +127,7 @@
       };
 
       const el = e.target;
-      const anchor = el.tagName === 'A' ? el : findATagParent(el, 5);
+      const anchor = el.tagName === 'A' ? el : findATagParent(el, 10);
 
       if (anchor) {
         const { href, target } = anchor;
