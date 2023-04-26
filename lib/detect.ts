@@ -56,10 +56,22 @@ export function getDevice(screen, os) {
   }
 }
 
-export async function getLocation(ip) {
+export async function getLocation(ip, req) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
     return;
+  }
+
+  if (req.headers['x-vercel-ip-country']) {
+    const country = req.headers['x-vercel-ip-country'];
+    const region = req.headers['x-vercel-ip-country-region'];
+    const city = req.headers['x-vercel-ip-city'];
+
+    return {
+      country,
+      subdivision1: region,
+      city: city ? decodeURIComponent(city) : undefined,
+    };
   }
 
   // Database lookup
@@ -70,18 +82,21 @@ export async function getLocation(ip) {
   }
 
   const result = lookup.get(ip);
-  const country = result?.country?.iso_code ?? result?.registered_country?.iso_code;
-  const subdivision1 = result?.subdivisions?.[0]?.iso_code;
-  const subdivision2 = result?.subdivisions?.[1]?.names?.en;
-  const city = result?.city?.names?.en;
 
-  return { country, subdivision1, subdivision2, city };
+  if (result) {
+    return {
+      country: result.country?.iso_code ?? result?.registered_country?.iso_code,
+      subdivision1: result.subdivisions?.[0]?.iso_code,
+      subdivision2: result.subdivisions?.[1]?.names?.en,
+      city: result.city?.names?.en,
+    };
+  }
 }
 
 export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const userAgent = req.headers['user-agent'];
   const ip = getIpAddress(req);
-  const location = await getLocation(ip);
+  const location = await getLocation(ip, req);
   const country = location?.country;
   const subdivision1 = location?.subdivision1;
   const subdivision2 = location?.subdivision2;

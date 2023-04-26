@@ -2,13 +2,13 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "كود الدعوة"
     }
   ],
   "label.actions": [
     {
       "type": 0,
-      "value": "اجراءات"
+      "value": "الإجراءات"
     }
   ],
   "label.activity-log": [
@@ -378,7 +378,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "لا شيء"
+      "value": "غير معرف"
     }
   ],
   "label.operating-systems": [
@@ -682,13 +682,13 @@
   "label.views": [
     {
       "type": 0,
-      "value": "مشاهدات"
+      "value": "المشاهدات"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "زوار"
+      "value": "الزوار"
     }
   ],
   "label.website-id": [
@@ -920,7 +920,7 @@
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "لم يتم العثور على المجموعة found."
+      "value": "لم يتم العثور على المجموعة"
     }
   ],
   "message.tracking-code": [

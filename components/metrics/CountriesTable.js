@@ -17,7 +17,7 @@ export function CountriesTable({ websiteId, ...props }) {
         value={countryNames[code] && code}
         label={countryNames[code]}
       >
-        <img src={`/images/flags/${code.toLowerCase()}.png`} alt={code} />
+        <img src={`/images/flags/${code?.toLowerCase() || 'xx'}.png`} alt={code} />
       </FilterLink>
     );
   }

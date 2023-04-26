@@ -119,12 +119,15 @@
             return currentElement;
           }
           currentElement = currentElement.parentElement;
+          if (!currentElement) {
+            return null;
+          }
         }
         return null;
       };
 
       const el = e.target;
-      const anchor = el.tagName === 'A' ? el : findATagParent(el, 5);
+      const anchor = el.tagName === 'A' ? el : findATagParent(el, 10);
 
       if (anchor) {
         const { href, target } = anchor;
@@ -159,11 +162,15 @@
 
     const observer = new MutationObserver(callback);
 
-    observer.observe(document.querySelector('head > title'), {
-      subtree: true,
-      characterData: true,
-      childList: true,
-    });
+    const node = document.querySelector('head > title');
+
+    if (node) {
+      observer.observe(node, {
+        subtree: true,
+        characterData: true,
+        childList: true,
+      });
+    }
   };
 
   const send = payload => {

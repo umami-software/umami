@@ -23,7 +23,7 @@ export function DateFilter({ websiteId, value, className }) {
       if (data) {
         setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
       }
-    } else {
+    } else if (value !== 'all') {
       setDateRange(value);
     }
   }
@@ -61,7 +61,7 @@ export function DateFilter({ websiteId, value, className }) {
       value: '90day',
     },
     { label: formatMessage(labels.thisYear), value: '1year' },
-    {
+    websiteId && {
       label: formatMessage(labels.allTime),
       value: 'all',
       divider: true,
@@ -71,7 +71,7 @@ export function DateFilter({ websiteId, value, className }) {
       value: 'custom',
       divider: true,
     },
-  ];
+  ].filter(n => n);
 
   const renderValue = value => {
     return value === 'custom' ? (
