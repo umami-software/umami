@@ -4,11 +4,15 @@
   gap: 10px;
 }
 
-.row .inactive {
+.row.inactive {
   color: var(--base500);
 }
 
-.row .active {
+.row.inactive img {
+  opacity: 0.35;
+}
+
+.row.active {
   color: var(--base900);
   font-weight: 600;
 }
