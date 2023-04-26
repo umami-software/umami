@@ -13,18 +13,16 @@ export function FilterLink({ id, value, label, externalUrl, children, className 
   const selected = query[id] === value;
 
   return (
-    <div className={classNames(styles.row, className)}>
+    <div
+      className={classNames(styles.row, className, {
+        [styles.inactive]: active && !selected,
+        [styles.active]: active && selected,
+      })}
+    >
       {children}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link
-          href={resolveUrl({ [id]: value })}
-          className={classNames(styles.label, {
-            [styles.inactive]: active && !selected,
-            [styles.active]: active && selected,
-          })}
-          replace
-        >
+        <Link href={resolveUrl({ [id]: value })} className={styles.label} replace>
           {safeDecodeURI(label || value)}
         </Link>
       )}
