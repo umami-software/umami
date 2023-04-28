@@ -17,15 +17,6 @@ body:
         - v2
     validations:
       required: true
-    - type: checkboxes
-    attributes:
-      label: Product
-      description: Is this related to Umami Cloud?
-      options:
-        - v1
-        - v2
-    validations:
-      required: true
   - type: textarea
     attributes:
       label: Relevant log output
