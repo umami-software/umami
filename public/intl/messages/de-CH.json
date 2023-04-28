@@ -900,15 +900,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Das isch die öffentlichi URL zum Teile für "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
+      "value": "Ihri Websiitestatistik isch under de folgende URL öffentlich zuegänglich:"
     }
   ],
   "message.team-already-member": [

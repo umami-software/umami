@@ -134,7 +134,7 @@
   "message.reset-website": "Statistik zurücksetzen",
   "message.reset-website-warning": "Alle Daten für diese Webseite werden gelöscht, jedoch bleibt der Tracking Code bestehen.",
   "message.saved": "Erfolgreich gespeichert.",
-  "message.share-url": "Dies ist die öffentliche URL zum Teilen für {target}.",
+  "message.share-url": "Ihre Webseitenstatistik ist unter der folgenden URL öffentlich zugänglich:",
   "message.team-already-member": "Sie sind bereits Mitglied des Teams.",
   "message.team-not-found": "Team nicht gefunden.",
   "message.tracking-code": "Tracking Code",

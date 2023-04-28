@@ -134,7 +134,7 @@
   "message.reset-website": "Statistik zruggsetze",
   "message.reset-website-warning": "Alli Date für die Websiite werdet glöscht, nur de Tracking Code blibt bestah.",
   "message.saved": "Erfolgrich gspeichert.",
-  "message.share-url": "Das isch die öffentlichi URL zum Teile für {target}.",
+  "message.share-url": "Ihri Websiitestatistik isch under de folgende URL öffentlich zuegänglich:",
   "message.team-already-member": "Sie sind bereits es Mitglied vo dem Team.",
   "message.team-not-found": "Team nöd gfunde.",
   "message.tracking-code": "Tracking Code",
