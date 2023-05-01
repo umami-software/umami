@@ -49,6 +49,7 @@ function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
       break;
     case 'boolean':
       eventDataType = EVENT_DATA_TYPE.boolean;
+      value = value ? 'true' : 'false';
       break;
     case 'date':
       eventDataType = EVENT_DATA_TYPE.date;

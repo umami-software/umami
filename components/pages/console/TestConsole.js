@@ -30,6 +30,8 @@ export function TestConsole() {
     window.umami.track('track-event-with-data', {
       data: {
         test: 'test-data',
+        boolean: true,
+        booleanError: 'true',
         time: new Date(),
         number: 1,
         time2: new Date().toISOString(),
