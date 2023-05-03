@@ -22,12 +22,15 @@
   ],
   "nb-NO": ["label.administrator", "label.dashboard"],
   "nl-NL": [
-    "label.administrator",
-    "label.websites",
-    "metrics.browsers",
-    "metrics.device.desktop",
-    "metrics.device.laptop",
-    "metrics.device.tablet"
+    "label.analytics",
+    "label.browsers",
+    "label.laptop",
+    "label.tablet",
+    "label.team",
+    "label.team-id",
+    "label.teams",
+    "label.website-id",
+    "label.websites"
   ],
   "it-IT": [
     "label.password",
@@ -37,9 +40,5 @@
     "metrics.device.tablet",
     "metrics.filter.raw"
   ],
-  "pt-PT": [
-    "label.websites",
-    "metrics.device.desktop",
-    "metrics.device.tablet"
-  ]
+  "pt-PT": ["label.websites", "metrics.device.desktop", "metrics.device.tablet"]
 }
