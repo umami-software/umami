@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Código de acesso"
     }
   ],
   "label.actions": [
@@ -14,7 +14,7 @@
   "label.activity-log": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Log de atividade"
     }
   ],
   "label.add-website": [
@@ -44,7 +44,7 @@
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Estatísticas"
     }
   ],
   "label.average-visit-time": [
@@ -86,19 +86,19 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Cidades"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Limpar tudo"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Confirmar"
     }
   ],
   "label.confirm-password": [
@@ -110,7 +110,7 @@
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Continuar"
     }
   ],
   "label.countries": [
@@ -122,19 +122,19 @@
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Criar time"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Criar usuário"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Criado"
     }
   ],
   "label.current-password": [
@@ -182,13 +182,13 @@
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Remover time"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Remover usuário"
     }
   ],
   "label.delete-website": [
@@ -206,7 +206,7 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Detalhes"
     }
   ],
   "label.devices": [
@@ -236,7 +236,7 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Editar painel"
     }
   ],
   "label.enable-share-url": [
@@ -266,13 +266,13 @@
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Entrar"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Entrar no time"
     }
   ],
   "label.language": [
@@ -324,13 +324,13 @@
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Sair"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Sair do time"
     }
   ],
   "label.login": [
@@ -348,7 +348,7 @@
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Membros"
     }
   ],
   "label.mobile": [
@@ -378,7 +378,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Nenhum"
     }
   ],
   "label.operating-systems": [
@@ -430,7 +430,7 @@
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Parâmetros"
     }
   ],
   "label.query-parameters": [
@@ -460,19 +460,19 @@
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "Regerar"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "Regiões"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "Remover"
     }
   ],
   "label.required": [
@@ -496,7 +496,7 @@
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "Papel"
     }
   ],
   "label.save": [
@@ -514,13 +514,13 @@
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "Selecionar site"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Sessões"
     }
   ],
   "label.settings": [
@@ -550,37 +550,37 @@
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "Time"
     }
   ],
   "label.team-guest": [
     {
       "type": 0,
-      "value": "Team guest"
+      "value": "Convidado"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "ID do Time"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "Membro"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "Proprietário"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "Times"
     }
   ],
   "label.theme": [
@@ -616,7 +616,7 @@
   "label.title": [
     {
       "type": 0,
-      "value": "Title"
+      "value": "Título"
     }
   ],
   "label.today": [
@@ -652,7 +652,7 @@
   "label.user": [
     {
       "type": 0,
-      "value": "User"
+      "value": "Usuário"
     }
   ],
   "label.username": [
@@ -664,13 +664,13 @@
   "label.users": [
     {
       "type": 0,
-      "value": "Users"
+      "value": "Usuários"
     }
   ],
   "label.view": [
     {
       "type": 0,
-      "value": "View"
+      "value": "Ver"
     }
   ],
   "label.view-details": [
@@ -694,7 +694,7 @@
   "label.website-id": [
     {
       "type": 0,
-      "value": "Website ID"
+      "value": "ID do Site"
     }
   ],
   "label.websites": [
@@ -764,7 +764,7 @@
   "message.confirm-leave": [
     {
       "type": 0,
-      "value": "Are you sure you want to leave "
+      "value": "Você tem certeza que deseja sair de "
     },
     {
       "type": 1,
@@ -814,7 +814,7 @@
     },
     {
       "type": 0,
-      "value": " on "
+      "value": " em "
     },
     {
       "type": 1,
@@ -842,7 +842,7 @@
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Minimum length of "
+      "value": "Quantidade mínima de "
     },
     {
       "type": 1,
@@ -850,7 +850,7 @@
     },
     {
       "type": 0,
-      "value": " characters"
+      "value": " caracteres"
     }
   ],
   "message.no-data-available": [
@@ -868,13 +868,13 @@
   "message.no-teams": [
     {
       "type": 0,
-      "value": "You have not created any teams."
+      "value": "Você não criou nenhum time."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "There are no users."
+      "value": "Não há nenhum usuário."
     }
   ],
   "message.page-not-found": [
@@ -918,13 +918,13 @@
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "You are already a member of the team."
+      "value": "Você já um membro do time."
     }
   ],
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "Team not found."
+      "value": "Time não encontrado."
     }
   ],
   "message.tracking-code": [
@@ -936,7 +936,7 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User deleted."
+      "value": "Usuário removido."
     }
   ],
   "message.visitor-log": [
@@ -976,7 +976,7 @@
   "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "This team does not have any websites."
+      "value": "Este time não possui nenhum site."
     }
   ],
   "messages.no-websites-configured": [
@@ -988,7 +988,7 @@
   "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
+      "value": "Os sites podem ser visualizados por qualquer membro da equipe."
     }
   ]
 }
