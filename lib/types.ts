@@ -69,6 +69,7 @@ export interface WebsiteActive {
 export interface WebsiteMetric {
   x: string;
   y: number;
+  d?: unknown;
 }
 
 export interface WebsiteMetricFilter {
@@ -90,6 +91,7 @@ export interface WebsiteEventMetric {
   x: string;
   t: string;
   y: number;
+  d?: unknown;
 }
 
 export interface WebsiteEventDataMetric {

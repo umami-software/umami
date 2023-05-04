@@ -54,6 +54,7 @@ async function relationalQuery(
   return rawQuery(
     `select
       event_name x,
+      event_data d,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from website_event
@@ -62,8 +63,8 @@ async function relationalQuery(
       and created_at between $3 and $4
       and event_type = ${EVENT_TYPE.customEvent}
       ${filterQuery}
-    group by 1, 2
-    order by 2`,
+    group by 1, 3
+    order by 3`,
     params,
   );
 }
@@ -95,6 +96,7 @@ async function clickhouseQuery(
   return rawQuery(
     `select
       event_name x,
+      event_data d,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from website_event
