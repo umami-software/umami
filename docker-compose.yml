@@ -10,7 +10,8 @@ services:
       DATABASE_TYPE: postgresql
       APP_SECRET: replace-me-with-a-random-string
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
   db:
     image: postgres:15-alpine
@@ -22,5 +23,10 @@ services:
       - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
       - umami-db-data:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 volumes:
   umami-db-data:
