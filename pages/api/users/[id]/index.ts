@@ -51,11 +51,11 @@ export default async (
       data.password = hashPassword(password);
     }
 
+    // Only admin can change these fields
     if (role && isAdmin) {
       data.role = role;
     }
 
-    // Only admin can change these fields
     if (username && isAdmin) {
       data.username = username;
     }

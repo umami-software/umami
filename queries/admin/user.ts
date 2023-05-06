@@ -1,4 +1,5 @@
 import { Prisma, Team, TeamUser } from '@prisma/client';
+import { getRandomChars } from 'next-basics';
 import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
@@ -222,6 +223,7 @@ export async function deleteUser(
       cloudMode
         ? client.user.update({
             data: {
+              username: getRandomChars(32),
               deletedAt: new Date(),
             },
             where: {

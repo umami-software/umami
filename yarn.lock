@@ -3272,10 +3272,10 @@
   dependencies:
     debug "^4.3.4"
 
-"@umami/redis-client@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.2.0.tgz#bdb1cd8b5c99afc5230621f19296c6d3559d68af"
-  integrity sha512-TONWhkuC//K2hRo3Psk7FHsuvu3XkQIYMY62/CERPtlIJz4Ac7DqsmYw4jO9/RkljA9XLl/5u+OggD4ARhMV8A==
+"@umami/redis-client@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.5.0.tgz#09b15458001bc172fc856d65316efbe5ff749461"
+  integrity sha512-x7wx/pMjyg3AAYzgjGOw031bNhyZ81h6tRMAl60RQQI9xlJaJEA1r0TEUrWfFi21gHAvdBLJGYCsvHzpix4LKQ==
   dependencies:
     debug "^4.3.4"
     redis "^4.5.1"
