@@ -38,13 +38,12 @@ async function relationalQuery(data: {
     websiteId,
     eventKey: a.key,
     eventStringValue:
-      a.eventDataType === EVENT_DATA_TYPE.string ||
-      a.eventDataType === EVENT_DATA_TYPE.boolean ||
-      a.eventDataType === EVENT_DATA_TYPE.array
+      a.eventDataType === EVENT_DATA_TYPE.string || a.eventDataType === EVENT_DATA_TYPE.array
         ? a.value
         : null,
     eventNumericValue: a.eventDataType === EVENT_DATA_TYPE.number ? a.value : null,
     eventDateValue: a.eventDataType === EVENT_DATA_TYPE.date ? new Date(a.value) : null,
+    eventBoolValue: a.eventDataType === EVENT_DATA_TYPE.boolean ? a.value : null,
     eventDataType: a.eventDataType,
   }));
 
@@ -76,13 +75,12 @@ async function clickhouseQuery(data: {
     event_name: eventName,
     event_key: a.key,
     event_string_value:
-      a.eventDataType === EVENT_DATA_TYPE.string ||
-      a.eventDataType === EVENT_DATA_TYPE.boolean ||
-      a.eventDataType === EVENT_DATA_TYPE.array
+      a.eventDataType === EVENT_DATA_TYPE.string || a.eventDataType === EVENT_DATA_TYPE.array
         ? a.value
         : null,
     event_numeric_value: a.eventDataType === EVENT_DATA_TYPE.number ? a.value : null,
     event_date_value: a.eventDataType === EVENT_DATA_TYPE.date ? getDateFormat(a.value) : null,
+    event_bool_value: a.eventDataType === EVENT_DATA_TYPE.boolean ? a.value : null,
     event_data_type: a.eventDataType,
     created_at: createdAt,
   }));

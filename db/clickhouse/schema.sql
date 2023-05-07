@@ -104,6 +104,7 @@ CREATE TABLE umami.event_data
     event_string_value Nullable(String),
     event_numeric_value Nullable(Decimal64(4)), --922337203685477.5625
     event_date_value Nullable(DateTime('UTC')),
+    event_bool_value Nullable(Boolean),
     event_data_type UInt32,
     created_at DateTime('UTC')
 )
