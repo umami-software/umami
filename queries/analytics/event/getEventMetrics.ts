@@ -52,18 +52,37 @@ async function relationalQuery(
   const filterQuery = getFilterQuery(filters, params);
 
   return rawQuery(
-    `select
-      event_name x,
-      event_data d,
-      ${getDateQuery('created_at', unit, timezone)} t,
+    `with event_data as (
+      select d.website_event_id,
+        jsonb_object_agg(
+          d.event_key,
+          case
+            d.event_data_type
+            when 1 then to_jsonb(d.event_string_value) -- string
+            when 2 then to_jsonb(d.event_numeric_value) -- number
+            when 3 then to_jsonb(d.event_bool_value) -- boolean
+            when 4 then to_jsonb(d.event_date_value) -- date
+            when 5 then d.event_string_value::jsonb -- array
+          end
+        ) filter (
+          where d.event_key is not null
+        ) as event_data
+      from event_data d
+      group by d.website_event_id
+    )
+    select
+      w.event_name x,
+      e.event_data d,
+      ${getDateQuery('w.created_at', unit, timezone)} t,
       count(*) y
-    from website_event
+    from website_event w
+      left join event_data d on w.event_id = d.website_event_id
     where website_id = $1${toUuid()}
       and created_at >= $2
       and created_at between $3 and $4
       and event_type = ${EVENT_TYPE.customEvent}
       ${filterQuery}
-    group by 1, 3
+    group by 1, 2, 3
     order by 3`,
     params,
   );
@@ -94,18 +113,37 @@ async function clickhouseQuery(
   const params = { websiteId };
 
   return rawQuery(
-    `select
-      event_name x,
-      event_data d,
-      ${getDateQuery('created_at', unit, timezone)} t,
+    `with event_data as (
+      select d.website_event_id,
+        jsonb_object_agg(
+          d.event_key,
+          case
+            d.event_data_type
+            when 1 then to_jsonb(d.event_string_value) -- string
+            when 2 then to_jsonb(d.event_numeric_value) -- number
+            when 3 then to_jsonb(d.event_bool_value) -- boolean
+            when 4 then to_jsonb(d.event_date_value) -- date
+            when 5 then d.event_string_value::jsonb -- array
+          end
+        ) filter (
+          where d.event_key is not null
+        ) as event_data
+      from event_data d
+      group by d.website_event_id
+    )
+    select
+      w.event_name x,
+      d.event_data d,
+      ${getDateQuery('w.created_at', unit, timezone)} t,
       count(*) y
-    from website_event
+    from website_event w
+      left join event_data d on w.event_id = d.website_event_id
     where website_id = {websiteId:UUID}
-      and event_type = ${EVENT_TYPE.customEvent}
-      and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}
+      and w.event_type = ${EVENT_TYPE.customEvent}
+      and w.created_at >= ${getDateFormat(resetDate)}
+      and ${getBetweenDates('w.created_at', startDate, endDate)}
       ${getFilterQuery(filters, params)}
-    group by x, t
+    group by x, d, t
     order by t`,
     params,
   );
