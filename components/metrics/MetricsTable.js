@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import useApi from 'hooks/useApi';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'hooks/useDateRange';
+import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
 import ErrorMessage from 'components/common/ErrorMessage';
 import DataTable from './DataTable';
@@ -26,7 +27,8 @@ export function MetricsTable({
   delay = null,
   ...props
 }) {
-  const [{ startDate, endDate, modified }] = useDateRange(websiteId);
+  const [{ startDate, endDate, modified, unit }] = useDateRange(websiteId);
+  const [timezone] = useTimezone();
   const {
     resolveUrl,
     router,
@@ -53,6 +55,9 @@ export function MetricsTable({
         country,
         region,
         city,
+        unit,
+        timezone,
+        includeEventData: type === 'event',
       }),
     { onSuccess: onDataLoad, retryDelay: delay || DEFAULT_ANIMATION_DURATION },
   );
@@ -69,7 +74,7 @@ export function MetricsTable({
       return items.sort(firstBy('y', -1).thenBy('x'));
     }
     return [];
-  }, [data, error, dataFilter, filterOptions]);
+  }, [data, dataFilter, filterOptions, limit]);
   const { dir } = useLocale();
 
   return (

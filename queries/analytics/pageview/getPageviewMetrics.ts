@@ -102,7 +102,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and event_type = {eventType:UInt32}
       and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)} 
+      and ${getBetweenDates('created_at', startDate, endDate)}
       ${excludeDomain}
       ${filterQuery}
     group by x

@@ -1,10 +1,12 @@
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized, badRequest } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
-import { getPageviewMetrics, getSessionMetrics } from 'queries';
+import { getEventMetrics, getPageviewMetrics, getSessionMetrics } from 'queries';
+import moment from 'moment-timezone';
+const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export interface WebsiteMetricsRequestQuery {
   id: string;
@@ -47,11 +49,23 @@ export default async (
     country,
     region,
     city,
+    includeEventData,
+    timezone,
+    unit,
   } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
+    }
+
+    if (
+      typeof timezone !== 'string' ||
+      typeof unit !== 'string' ||
+      !moment.tz.zone(String(timezone)) ||
+      !unitTypes.includes(String(unit))
+    ) {
+      return badRequest(res);
     }
 
     const startDate = new Date(+startAt);
@@ -114,6 +128,17 @@ export default async (
 
       filters[type] = undefined;
 
+      if (type === 'event' && includeEventData) {
+        const data = await getEventMetrics(websiteId, {
+          startDate,
+          endDate,
+          timezone,
+          unit,
+          filters: { url: filters.url, eventName: undefined },
+        });
+
+        return ok(res, data);
+      }
       const data = await getPageviewMetrics(websiteId, {
         startDate,
         endDate,
