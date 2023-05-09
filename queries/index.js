@@ -8,6 +8,7 @@ export * from './analytics/event/getEvents';
 export * from './analytics/eventData/getEventData';
 export * from './analytics/eventData/getEventDataUsage';
 export * from './analytics/event/saveEvent';
+export * from './analytics/pageview/getPageviewFunnel';
 export * from './analytics/pageview/getPageviewMetrics';
 export * from './analytics/pageview/getPageviewStats';
 export * from './analytics/session/createSession';

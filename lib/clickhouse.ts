@@ -121,6 +121,29 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
+function getFunnelQuery(urls: string[]): {
+  columnsQuery: string;
+  conditionQuery: string;
+  urlParams: { [key: string]: string };
+} {
+  return urls.reduce(
+    (pv, cv, i) => {
+      pv.columnsQuery += `\n,url_path = {url${i}:String}${
+        i > 0 && urls[i - 1] ? ` AND request_url = {url${i - 1}:String}` : ''
+      },'`;
+      pv.conditionQuery += `${i > 0 ? ',' : ''} {url${i}:String}`;
+      pv.urlParams[`url${i}`] = cv;
+
+      return pv;
+    },
+    {
+      columnsQuery: '',
+      conditionQuery: '',
+      urlParams: {},
+    },
+  );
+}
+
 function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   return {
     filterQuery: getFilterQuery(filters, params),
@@ -168,6 +191,7 @@ export default {
   getDateFormat,
   getBetweenDates,
   getFilterQuery,
+  getFunnelQuery,
   getEventDataFilterQuery,
   parseFilters,
   findUnique,

@@ -32,6 +32,18 @@ function toUuid(): string {
   }
 }
 
+function getAddMinutesQuery(field: string, minutes: number) {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field} + interval '${minutes} minute'`;
+  }
+
+  if (db === MYSQL) {
+    return `DATE_ADD(${field}, interval ${minutes} minute)`;
+  }
+}
+
 function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -122,6 +134,48 @@ function getFilterQuery(filters = {}, params = []): string {
   return query.join('\n');
 }
 
+function getFunnelQuery(
+  urls: string[],
+  windowMinutes: number,
+  initParamLength = 3,
+): {
+  levelQuery: string;
+  sumQuery: string;
+  urlFilterQuery: string;
+} {
+  return urls.reduce(
+    (pv, cv, i) => {
+      const levelNumber = i + 1;
+      const start = i > 0 ? ',' : '';
+
+      pv.levelQuery += `\n
+        , level${levelNumber} AS (
+          select cl.*,
+            l0.created_at level_${levelNumber}_created_at,
+            l0.url_path as level_${levelNumber}_url
+          from level${i} cl
+              left join level0 l0
+                  on cl.session_id = l0.session_id
+                  and l0.created_at between cl.level_${levelNumber}_created_at 
+                    and ${getAddMinutesQuery(`cl.level_${levelNumber}_created_at`, windowMinutes)}
+                  and l0.referrer_path = $${i + initParamLength}
+                  and l0.url_path = $${i + initParamLength}
+        )`;
+
+      pv.sumQuery += `\n${start}SUM(CASE WHEN l1_url is not null THEN 1 ELSE 0 END) AS level1`;
+
+      pv.urlFilterQuery += `\n${start}$${levelNumber + initParamLength} `;
+
+      return pv;
+    },
+    {
+      levelQuery: '',
+      sumQuery: '',
+      urlFilterQuery: '',
+    },
+  );
+}
+
 function parseFilters(
   filters: { [key: string]: any } = {},
   params = [],
@@ -152,9 +206,11 @@ async function rawQuery(query: string, params: never[] = []): Promise<any> {
 
 export default {
   ...prisma,
+  getAddMinutesQuery,
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
+  getFunnelQuery,
   getEventDataFilterQuery,
   toUuid,
   parseFilters,
