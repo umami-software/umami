@@ -2,35 +2,7 @@ import { User, Website } from '@prisma/client';
 import redis from '@umami/redis-client';
 import { getSession, getUser, getWebsite } from '../queries';
 
-const DELETED = 'DELETED';
-
-async function fetchObject(key, query) {
-  const obj = await redis.get(key);
-
-  if (obj === DELETED) {
-    return null;
-  }
-
-  if (!obj) {
-    return query().then(async data => {
-      if (data) {
-        await redis.set(key, data);
-      }
-
-      return data;
-    });
-  }
-
-  return obj;
-}
-
-async function storeObject(key, data) {
-  return redis.set(key, data);
-}
-
-async function deleteObject(key, soft = false) {
-  return soft ? redis.set(key, DELETED) : redis.del(key);
-}
+const { fetchObject, storeObject, deleteObject } = redis;
 
 async function fetchWebsite(id): Promise<Website> {
   return fetchObject(`website:${id}`, () => getWebsite({ id }));
