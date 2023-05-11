@@ -9,6 +9,7 @@ import useConfig from 'hooks/useConfig';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/700.css';
 import 'react-basics/dist/styles.css';
+import 'styles/funnelChart.css';
 import 'styles/variables.css';
 import 'styles/locale.css';
 import 'styles/index.css';

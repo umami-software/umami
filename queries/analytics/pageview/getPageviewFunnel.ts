@@ -27,7 +27,13 @@ async function relationalQuery(
     endDate: Date;
     urls: string[];
   },
-) {
+): Promise<
+  {
+    level: number;
+    url: string;
+    count: any;
+  }[]
+> {
   const { windowMinutes, startDate, endDate, urls } = criteria;
   const { rawQuery, getFunnelQuery, toUuid } = prisma;
   const { levelQuery, sumQuery, urlFilterQuery } = getFunnelQuery(urls, windowMinutes);
@@ -36,21 +42,24 @@ async function relationalQuery(
 
   return rawQuery(
     `WITH level0 AS (
-        select session_id, url_path, created_at
-        from website_event
-        where url_path in (${urlFilterQuery})
-            website_event.website_id = $1${toUuid()}
-            and created_at between $2 and $3
-    ),level1 AS (
-        select session_id, url_path as level1_url, created_at as level1_created_at
-        from level0
-    )${levelQuery}
-    
-    SELECT ${sumQuery}
-    from level3;
-    `,
+      select session_id, url_path, referrer_path, created_at
+      from website_event
+      where url_path in (${urlFilterQuery})
+          and website_id = $1${toUuid()}
+          and created_at between $2 and $3
+  ),level1 AS (
+      select session_id, url_path as level_1_url, created_at as level_1_created_at
+      from level0
+      where url_path = $4
+  )${levelQuery}
+  
+  SELECT ${sumQuery}
+  from level3;
+  `,
     params,
-  );
+  ).then((a: { [key: string]: number }) => {
+    return urls.map((b, i) => ({ level: i + 1, url: b, count: a[`level${i + 1}`] || 0 }));
+  });
 }
 
 async function clickhouseQuery(
@@ -61,7 +70,13 @@ async function clickhouseQuery(
     endDate: Date;
     urls: string[];
   },
-) {
+): Promise<
+  {
+    level: number;
+    url: string;
+    count: any;
+  }[]
+> {
   const { windowMinutes, startDate, endDate, urls } = criteria;
   const { rawQuery, getBetweenDates, getFunnelQuery } = clickhouse;
   const { columnsQuery, conditionQuery, urlParams } = getFunnelQuery(urls);
@@ -72,7 +87,7 @@ async function clickhouseQuery(
     ...urlParams,
   };
 
-  return rawQuery(
+  return rawQuery<{ level: number; count: number }[]>(
     `
     SELECT level,
         count(*) AS count
@@ -80,7 +95,7 @@ async function clickhouseQuery(
     SELECT session_id,
             windowFunnel({window:UInt32}, 'strict_order')
             (
-                created_at,
+                created_at
                 ${columnsQuery}
             ) AS level
         FROM website_event
@@ -93,5 +108,9 @@ async function clickhouseQuery(
     ORDER BY level ASC;
     `,
     params,
-  );
+  ).then(a => {
+    return a
+      .filter(b => b.level !== 0)
+      .map((c, i) => ({ level: c.level, url: urls[i], count: c.count }));
+  });
 }

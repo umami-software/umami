@@ -107,7 +107,12 @@ export function WebsiteChart({
         <Column defaultSize={12} xl={4}>
           <div className={styles.actions}>
             <RefreshButton websiteId={websiteId} isLoading={isLoading} />
-            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
+            <DateFilter
+              websiteId={websiteId}
+              value={value}
+              className={styles.dropdown}
+              updateSettings={true}
+            />
           </div>
         </Column>
       </Row>

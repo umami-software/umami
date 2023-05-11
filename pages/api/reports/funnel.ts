@@ -36,14 +36,14 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const data = getPageviewFunnel(websiteId, {
+    const data = await getPageviewFunnel(websiteId, {
       startDate,
       endDate,
       urls,
       windowMinutes: window,
     });
 
-    return ok(res);
+    return ok(res, data);
   }
 
   return methodNotAllowed(res);

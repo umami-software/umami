@@ -148,7 +148,8 @@ function getFunnelQuery(
       const levelNumber = i + 1;
       const start = i > 0 ? ',' : '';
 
-      pv.levelQuery += `\n
+      if (levelNumber >= 2) {
+        pv.levelQuery += `\n
         , level${levelNumber} AS (
           select cl.*,
             l0.created_at level_${levelNumber}_created_at,
@@ -156,13 +157,14 @@ function getFunnelQuery(
           from level${i} cl
               left join level0 l0
                   on cl.session_id = l0.session_id
-                  and l0.created_at between cl.level_${levelNumber}_created_at 
-                    and ${getAddMinutesQuery(`cl.level_${levelNumber}_created_at`, windowMinutes)}
+                  and l0.created_at between cl.level_${i}_created_at 
+                    and ${getAddMinutesQuery(`cl.level_${i}_created_at`, windowMinutes)}
                   and l0.referrer_path = $${i + initParamLength}
-                  and l0.url_path = $${i + initParamLength}
+                  and l0.url_path = $${levelNumber + initParamLength}
         )`;
+      }
 
-      pv.sumQuery += `\n${start}SUM(CASE WHEN l1_url is not null THEN 1 ELSE 0 END) AS level1`;
+      pv.sumQuery += `\n${start}SUM(CASE WHEN level_${levelNumber}_url is not null THEN 1 ELSE 0 END) AS level${levelNumber}`;
 
       pv.urlFilterQuery += `\n${start}$${levelNumber + initParamLength} `;
 

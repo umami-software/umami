@@ -80,6 +80,7 @@
     "dotenv": "^10.0.0",
     "formik": "^2.2.9",
     "fs-extra": "^10.0.1",
+    "funnel-graph-js": "^1.3.7",
     "immer": "^9.0.12",
     "ipaddr.js": "^2.0.1",
     "is-ci": "^3.0.1",

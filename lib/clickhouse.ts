@@ -129,8 +129,8 @@ function getFunnelQuery(urls: string[]): {
   return urls.reduce(
     (pv, cv, i) => {
       pv.columnsQuery += `\n,url_path = {url${i}:String}${
-        i > 0 && urls[i - 1] ? ` AND request_url = {url${i - 1}:String}` : ''
-      },'`;
+        i > 0 && urls[i - 1] ? ` AND referrer_path = {url${i - 1}:String}` : ''
+      }`;
       pv.conditionQuery += `${i > 0 ? ',' : ''} {url${i}:String}`;
       pv.urlParams[`url${i}`] = cv;
 
@@ -150,7 +150,7 @@ function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   };
 }
 
-async function rawQuery(query, params = {}) {
+async function rawQuery<T>(query, params = {}): Promise<T> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);
@@ -158,7 +158,7 @@ async function rawQuery(query, params = {}) {
 
   await connect();
 
-  return clickhouse.query(query, { params }).toPromise();
+  return clickhouse.query(query, { params }).toPromise() as Promise<T>;
 }
 
 async function findUnique(data) {

@@ -19,7 +19,7 @@ model User {
 
   website        Website[]
   teamUser       TeamUser[]
-  ReportTemplate ReportTemplate[]
+  ReportTemplate UserReport[]
 
   @@map("user")
 }
@@ -156,9 +156,10 @@ model TeamWebsite {
   @@map("team_website")
 }
 
-model ReportTemplate {
+model UserReport {
   id           String    @id() @unique() @map("report_id") @db.Uuid
   userId       String    @map("user_id") @db.Uuid
+  websiteId    String    @map("website_id") @db.Uuid
   reportName   String    @map("report_name") @db.VarChar(200)
   templateName String    @map("template_name") @db.VarChar(200)
   parameters   String    @map("parameters") @db.VarChar(6000)
@@ -168,5 +169,5 @@ model ReportTemplate {
   user User @relation(fields: [userId], references: [id])
 
   @@index([userId])
-  @@map("report")
+  @@map("user_report")
 }

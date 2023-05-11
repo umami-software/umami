@@ -7,13 +7,15 @@ import useMessages from 'hooks/useMessages';
 export function DateRangeSetting() {
   const { formatMessage, labels } = useMessages();
   const [dateRange, setDateRange] = useDateRange();
-  const { startDate, endDate, value } = dateRange;
+  const { value } = dateRange;
 
-  const handleReset = () => setDateRange(DEFAULT_DATE_RANGE);
+  const handleReset = () => {
+    setDateRange(DEFAULT_DATE_RANGE);
+  };
 
   return (
     <Flexbox gap={10}>
-      <DateFilter value={value} startDate={startDate} endDate={endDate} />
+      <DateFilter value={value} />
       <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );
