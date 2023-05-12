@@ -59,7 +59,10 @@ export function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
+      const dataWithoutNullValues = data.filter(val => val.x !== null);
+      let items = percentFilter(
+        dataFilter ? dataFilter(dataWithoutNullValues, filterOptions) : dataWithoutNullValues,
+      );
       if (limit) {
         items = items.filter((e, i) => i < limit);
       }
