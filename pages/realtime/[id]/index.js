@@ -10,7 +10,7 @@ export default function RealtimeDetailsPage() {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { data: website } = useQuery(['websites', websiteId], () =>
-    get(`/websites/${websiteId}`, { enabled: !!websiteId }),
+    websiteId ? get(`/websites/${websiteId}`, { enabled: !!websiteId }) : null,
   );
   const title = `${formatMessage(labels.realtime)}${website?.name ? ` - ${website.name}` : ''}`;
 
