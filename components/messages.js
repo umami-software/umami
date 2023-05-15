@@ -18,7 +18,9 @@ export const labels = defineMessages({
   admin: { id: 'label.admin', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
+  website: { id: 'label.website', defaultMessage: 'Website' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
+  reports: { id: 'label.reports', defaultMessage: 'Reports' },
   created: { id: 'label.created', defaultMessage: 'Created' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
@@ -182,6 +184,10 @@ export const messages = defineMessages({
   deleteWebsiteWarning: {
     id: 'message.delete-website-warning',
     defaultMessage: 'All website data will be deleted.',
+  },
+  noResultsFound: {
+    id: 'messages.no-results-found',
+    defaultMessage: 'No results were found.',
   },
   noWebsitesConfigured: {
     id: 'messages.no-websites-configured',

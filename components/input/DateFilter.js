@@ -9,7 +9,7 @@ import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useMessages from 'hooks/useMessages';
 
-export function DateFilter({ websiteId, value, className, onChange, isForm, alignment }) {
+export function DateFilter({ websiteId, value, className, onChange, alignment }) {
   const { formatMessage, labels } = useMessages();
   const { get } = useApi();
   const [dateRange, setDateRange] = useDateRange(websiteId);
@@ -23,7 +23,7 @@ export function DateFilter({ websiteId, value, className, onChange, isForm, alig
       if (data) {
         const websiteRange = { value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) };
 
-        if (!isForm) {
+        if (!onChange) {
           setDateRange(websiteRange);
         }
 
@@ -32,15 +32,13 @@ export function DateFilter({ websiteId, value, className, onChange, isForm, alig
         }
       }
     } else if (value !== 'all') {
-      if (!isForm) {
+      if (!onChange) {
         setDateRange(value);
       }
 
       if (onChange) {
         onChange(value);
       }
-
-      console.log(value);
     }
   }
 

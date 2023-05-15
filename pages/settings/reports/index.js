@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
 import FunnelPage from 'components/pages/reports/FunnelPage';
 import useMessages from 'hooks/useMessages';
+import SettingsLayout from 'components/layout/SettingsLayout';
 
 export default function DetailsPage() {
   //   const { formatMessage, labels } = useMessages();
@@ -15,8 +16,10 @@ export default function DetailsPage() {
   //   return <AppLayout title={formatMessage(labels.websites)}>{/* <FunnelPage /> */}</AppLayout>;
 
   return (
-    <div>
-      <FunnelPage />
-    </div>
+    <AppLayout>
+      <SettingsLayout>
+        <FunnelPage />
+      </SettingsLayout>
+    </AppLayout>
   );
 }

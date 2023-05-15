@@ -17,3 +17,12 @@
   min-height: 0px;
   max-height: 0px;
 }
+
+.urlFormRow {
+  flex-direction: row;
+  gap: 0em;
+}
+
+.urlFormRow label {
+  min-width: 80px;
+}

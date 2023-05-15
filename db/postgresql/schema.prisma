@@ -17,9 +17,9 @@ model User {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  website        Website[]
-  teamUser       TeamUser[]
-  ReportTemplate UserReport[]
+  website  Website[]
+  teamUser TeamUser[]
+  Report   Report[]
 
   @@map("user")
 }
@@ -60,6 +60,7 @@ model Website {
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
   eventData   EventData[]
+  Report      Report[]
 
   @@index([userId])
   @@index([createdAt])
@@ -156,18 +157,21 @@ model TeamWebsite {
   @@map("team_website")
 }
 
-model UserReport {
-  id           String    @id() @unique() @map("report_id") @db.Uuid
-  userId       String    @map("user_id") @db.Uuid
-  websiteId    String    @map("website_id") @db.Uuid
-  reportName   String    @map("report_name") @db.VarChar(200)
-  templateName String    @map("template_name") @db.VarChar(200)
-  parameters   String    @map("parameters") @db.VarChar(6000)
-  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+model Report {
+  id          String    @id() @unique() @map("report_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  type        String    @map("type") @db.VarChar(200)
+  name        String    @map("name") @db.VarChar(200)
+  description String    @map("description") @db.VarChar(500)
+  parameters  String    @map("parameters") @db.VarChar(6000)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  user User @relation(fields: [userId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
 
   @@index([userId])
-  @@map("user_report")
+  @@index([websiteId])
+  @@map("report")
 }

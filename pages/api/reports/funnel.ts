@@ -40,7 +40,7 @@ export default async (
       startDate,
       endDate,
       urls,
-      windowMinutes: window,
+      windowMinutes: +window,
     });
 
     return ok(res, data);

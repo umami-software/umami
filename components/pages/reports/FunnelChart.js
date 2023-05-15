@@ -1,43 +1,40 @@
 import FunnelGraph from 'funnel-graph-js/dist/js/funnel-graph';
 import { useEffect, useRef } from 'react';
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import useMessages from 'hooks/useMessages';
 
-export default function FunnelChart() {
+export default function FunnelChart({ data }) {
+  const { formatMessage, labels, messages } = useMessages();
   const funnel = useRef(null);
 
   useEffect(() => {
-    funnel.current.innerHTML = '';
+    if (data && data.length > 0) {
+      funnel.current.innerHTML = '';
 
-    const data = {
-      labels: ['Cv Sent', '1st  Interview', '2nd Interview', '3rd Interview', 'Offer'],
-      subLabels: ['Cv Sent', '1st  Interview', '2nd Interview', '3rd Interview', 'Offer'],
-      colors: [
-        ['#FFB178', '#FF78B1', '#FF3C8E'],
-        ['#FFB178', '#FF78B1', '#FF3C8E'],
-        ['#A0BBFF', '#EC77FF'],
-        ['#A0F9FF', '#7795FF'],
-        ['#FFB178', '#FF78B1', '#FF3C8E'],
-      ],
-      values: [[3500], [3300], [2000], [600], [330]],
-    };
+      const chartData = {
+        labels: data.map(a => a.url),
+        colors: ['#147af3', '#e0f2ff'],
+        values: data.map(a => a.count),
+      };
 
-    const graph = new FunnelGraph({
-      container: '.funnel',
-      gradientDirection: 'horizontal',
-      data: data,
-      displayPercent: true,
-      direction: 'Vertical',
-      width: 1000,
-      height: 350,
-      subLabelValue: 'values',
-    });
+      const graph = new FunnelGraph({
+        container: '.funnel',
+        gradientDirection: 'horizontal',
+        data: chartData,
+        displayPercent: true,
+        direction: 'Vertical',
+        width: 1000,
+        height: 350,
+      });
 
-    graph.draw();
-  }, []);
+      graph.draw();
+    }
+  }, [data]);
 
   return (
-    <div>
-      FunnelChart
-      <div className="funnel" ref={funnel} />
-    </div>
+    <>
+      {data?.length > 0 && <div className="funnel" ref={funnel} />}
+      {data?.length === 0 && <EmptyPlaceholder message={formatMessage(messages.noResultsFound)} />}
+    </>
   );
 }
