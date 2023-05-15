@@ -78,6 +78,7 @@ async function checkDatabaseVersion(databaseType) {
 async function checkV1Tables() {
   if (databaseType === 'mongodb') {
     // Ignore
+    return;
   }
 
   try {
