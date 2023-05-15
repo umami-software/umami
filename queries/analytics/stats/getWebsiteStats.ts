@@ -21,14 +21,89 @@ async function relationalQuery(
   criteria: { startDate: Date; endDate: Date; filters: object },
 ) {
   const { startDate, endDate, filters = {} } = criteria;
-  const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
+  const {
+    getDatabaseType,
+    toUuid,
+    getDateQuery,
+    getTimestampInterval,
+    parseFilters,
+    rawQuery,
+    client,
+  } = prisma;
+  const db = getDatabaseType();
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  return rawQuery(
-    `select sum(t.c) as "pageviews",
+  if (db === 'mongodb') {
+    return await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $project: {
+            session_id: '$session_id',
+            hour: {
+              $toString: { $hour: '$created_at' },
+            },
+            created_at: '$created_at',
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $concat: ['$session_id', ':', '$hour'],
+            },
+            session_id: { $first: '$session_id' },
+            hour: { $first: '$hour' },
+            count: { $sum: 1 },
+            timeMax: { $max: '$created_at' },
+            timeMin: { $min: '$created_at' },
+          },
+        },
+        {
+          $project: {
+            _id: '$_id',
+            session_id: '$session_id',
+            hour: '$hour',
+            count: '$count',
+            time: {
+              $dateDiff: {
+                endDate: '$timeMax',
+                startDate: '$timeMin',
+                unit: 'second',
+              },
+            },
+            bounce: {
+              $cond: {
+                if: { $eq: ['$count', 1] },
+                then: 1,
+                else: 0,
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$session_id',
+            pageviews: { $sum: '$count' },
+            bounces: { $sum: '$bounce' },
+            totaltime: { $sum: '$time' },
+          },
+        },
+        {
+          $group: {
+            _id: '',
+            pageviews: { $sum: '$pageviews' },
+            uniques: { $sum: 1 },
+            bounces: { $sum: '$bounces' },
+            totaltime: { $sum: '$totaltime' },
+          },
+        },
+      ],
+    });
+  } else {
+    return rawQuery(
+      `select sum(t.c) as "pageviews",
         count(distinct t.session_id) as "uniques",
         sum(case when t.c = 1 then 1 else 0 end) as "bounces",
         sum(t.time) as "totaltime"
@@ -48,8 +123,9 @@ async function relationalQuery(
           ${filterQuery}
         group by 1, 2
      ) t`,
-    params,
-  );
+      params,
+    );
+  }
 }
 
 async function clickhouseQuery(

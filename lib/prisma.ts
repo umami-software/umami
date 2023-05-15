@@ -1,6 +1,6 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
-import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
+import { MYSQL, POSTGRESQL, getDatabaseType, MONGODB } from 'lib/db';
 import { getEventDataType } from './eventData';
 import { FILTER_COLUMNS } from './constants';
 
@@ -50,6 +50,10 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
     }
 
     return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
+  }
+
+  if (db === MONGODB) {
+    return MYSQL_DATE_FORMATS[unit];
   }
 }
 
@@ -152,6 +156,7 @@ async function rawQuery(query: string, params: never[] = []): Promise<any> {
 
 export default {
   ...prisma,
+  getDatabaseType: () => getDatabaseType(process.env.DATABASE_URL),
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,

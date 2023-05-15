@@ -45,14 +45,34 @@ async function relationalQuery(
     filters = {},
     sessionKey = 'session_id',
   } = criteria;
-  const { toUuid, getDateQuery, parseFilters, rawQuery } = prisma;
+  const { getDatabaseType, toUuid, getDateQuery, parseFilters, rawQuery, client } = prisma;
+  const db = getDatabaseType();
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  return rawQuery(
-    `select ${getDateQuery('website_event.created_at', unit, timezone)} x,
+  //TODO: 구현해야 함
+
+  if (db === 'mongodb') {
+    return await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $project: {
+            x: {
+              $dateToString: {
+                date: '$created_at',
+                timezone: timezone,
+                format: getDateQuery('website_event.created_at', unit, timezone),
+              },
+            },
+          },
+        },
+      ],
+    });
+  } else {
+    return rawQuery(
+      `select ${getDateQuery('website_event.created_at', unit, timezone)} x,
         count(${count !== '*' ? `${count}${sessionKey}` : count}) y
       from website_event
         ${joinSession}
@@ -62,8 +82,9 @@ async function relationalQuery(
         and event_type = ${EVENT_TYPE.pageView}
         ${filterQuery}
       group by 1`,
-    params,
-  );
+      params,
+    );
+  }
 }
 
 async function clickhouseQuery(

@@ -11,20 +11,62 @@ export async function getActiveVisitors(...args: [websiteId: string]) {
 }
 
 async function relationalQuery(websiteId: string) {
-  const { toUuid, rawQuery } = prisma;
+  const { getDatabaseType, toUuid, rawQuery, client } = prisma;
+  const db = getDatabaseType();
 
   const date = subMinutes(new Date(), 5);
   const params: any = [websiteId, date];
 
-  return rawQuery(
-    `select count(distinct session_id) x
-    from website_event
-      join website 
-        on website_event.website_id = website.website_id
-    where website.website_id = $1${toUuid()}
-    and website_event.created_at >= $2`,
-    params,
-  );
+  if (db === 'mongodb') {
+    const result: any = await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: date.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$session_id',
+          },
+        },
+        {
+          $count: 'x',
+        },
+      ],
+    });
+    if (result.length > 0) {
+      return { x: result[0].x };
+    } else {
+      return { x: 0 };
+    }
+  } else {
+    return rawQuery(
+      `select count(distinct session_id) x
+      from website_event
+        join website
+          on website_event.website_id = website.website_id
+      where website.website_id = $1${toUuid()}
+      and website_event.created_at >= $2`,
+      params,
+    );
+  }
 }
 
 async function clickhouseQuery(websiteId: string) {

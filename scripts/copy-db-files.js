@@ -9,6 +9,8 @@ function getDatabaseType(url = process.env.DATABASE_URL) {
 
   if (type === 'postgres') {
     return 'postgresql';
+  } else if (type === 'mongodb+srv') {
+    return 'mongodb';
   }
 
   return type;
@@ -16,7 +18,7 @@ function getDatabaseType(url = process.env.DATABASE_URL) {
 
 const databaseType = getDatabaseType();
 
-if (!databaseType || !['mysql', 'postgresql'].includes(databaseType)) {
+if (!databaseType || !['mysql', 'postgresql', 'mongodb'].includes(databaseType)) {
   throw new Error('Missing or invalid database');
 }
 
