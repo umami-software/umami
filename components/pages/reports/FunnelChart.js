@@ -2,6 +2,8 @@ import FunnelGraph from 'funnel-graph-js/dist/js/funnel-graph';
 import { useEffect, useRef } from 'react';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import useMessages from 'hooks/useMessages';
+import styles from './FunnelChart.module.css';
+import classNames from 'classnames';
 
 export default function FunnelChart({ data }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -33,7 +35,7 @@ export default function FunnelChart({ data }) {
 
   return (
     <>
-      {data?.length > 0 && <div className="funnel" ref={funnel} />}
+      {data?.length > 0 && <div className={classNames(styles.funnel, 'funnel')} ref={funnel} />}
       {data?.length === 0 && <EmptyPlaceholder message={formatMessage(messages.noResultsFound)} />}
     </>
   );

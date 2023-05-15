@@ -1,0 +1,7 @@
+.funnel div {
+  color: var(--font-color100) !important;
+}
+
+.funnel svg {
+  max-width: 100%;
+}

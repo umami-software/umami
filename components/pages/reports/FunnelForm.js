@@ -19,7 +19,7 @@ export function FunnelForm({ onSearch }) {
   const [dateRange, setDateRange] = useState('');
   const [startAt, setStartAt] = useState();
   const [endAt, setEndAt] = useState();
-  const [urls, setUrls] = useState(['']);
+  const [urls, setUrls] = useState(['/', '/docs/getting-started', '/docs/intall']);
   const [websiteId, setWebsiteId] = useState('');
   const [window, setWindow] = useState(60);
 

@@ -74,7 +74,7 @@ async function clickhouseQuery(
   {
     level: number;
     url: string;
-    count: any;
+    count: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -108,9 +108,11 @@ async function clickhouseQuery(
     ORDER BY level ASC;
     `,
     params,
-  ).then(a => {
-    return a
-      .filter(b => b.level !== 0)
-      .map((c, i) => ({ level: c.level, url: urls[i], count: c.count }));
+  ).then(results => {
+    return urls.map((a, i) => ({
+      level: i + 1,
+      url: a,
+      count: results[i + 1]?.count || 0,
+    }));
   });
 }

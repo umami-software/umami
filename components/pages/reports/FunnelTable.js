@@ -9,8 +9,6 @@ export function DevicesTable({ ...props }) {
   const tableData =
     data?.map(a => ({ x: a.url, y: a.count, z: (a.count / data[0].count) * 100 })) || [];
 
-  console.log(tableData);
-
   return <DataTable data={tableData} title="Url" type="device" />;
 }
 

@@ -12,10 +12,11 @@ export default function FunnelPage() {
   const { post } = useApi();
   const { mutate, error, isLoading } = useMutation(data => post('/reports/funnel', data));
   const [data, setData] = useState();
+  const [formData, setFormData] = useState();
 
   function handleOnSearch(data) {
-    // do API CALL to api/reports/funnel to get funnelData
-    // Get DATA
+    setFormData(data);
+
     mutate(data, {
       onSuccess: async data => {
         setData(data);
@@ -28,7 +29,6 @@ export default function FunnelPage() {
       <PageHeader title="Funnel Report"></PageHeader>
       <FunnelChart data={data} />
       <FunnelTable data={data} />
-      {/* <ReportForm /> */}
       <div>
         <h2>Filters</h2>
         <FunnelForm onSearch={handleOnSearch} />
