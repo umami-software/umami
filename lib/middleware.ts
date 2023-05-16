@@ -1,4 +1,10 @@
-import { createMiddleware, unauthorized, badRequest, parseSecureToken } from 'next-basics';
+import {
+  createMiddleware,
+  unauthorized,
+  badRequest,
+  parseSecureToken,
+  tooManyRequest,
+} from 'next-basics';
 import debug from 'debug';
 import cors from 'cors';
 import { validate } from 'uuid';
@@ -30,6 +36,9 @@ export const useSession = createMiddleware(async (req, res, next) => {
 
     (req as any).session = session;
   } catch (e: any) {
+    if (e.message === 'Usage Limit.') {
+      return tooManyRequest(res, e.message);
+    }
     return badRequest(res, e.message);
   }
 

@@ -28,6 +28,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
   session: {
     id: string;
     websiteId: string;
+    ownerId: string;
     hostname: string;
     browser: string;
     os: string;
