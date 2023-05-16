@@ -6,6 +6,7 @@ import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import { validate } from 'uuid';
 import { loadSession, loadWebsite } from './query';
+import cache from './cache';
 
 export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);
@@ -21,6 +22,8 @@ export async function findSession(req: NextApiRequestCollect) {
     const result = await parseToken(cacheToken, secret());
 
     if (result) {
+      await checkUserBlock(result?.ownerId);
+
       return result;
     }
   }
@@ -38,6 +41,8 @@ export async function findSession(req: NextApiRequestCollect) {
   if (!website) {
     throw new Error(`Website not found: ${websiteId}.`);
   }
+
+  await checkUserBlock(website.userId);
 
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
     await getClientInfo(req, payload);
@@ -88,5 +93,11 @@ export async function findSession(req: NextApiRequestCollect) {
     }
   }
 
-  return session;
+  return { ...session, ownerId: website.userId };
+}
+
+async function checkUserBlock(userId: string) {
+  if (process.env.ENABLE_BLOCKER && (await cache.fetchUserBlock(userId))) {
+    throw new Error('Usage Limit.');
+  }
 }

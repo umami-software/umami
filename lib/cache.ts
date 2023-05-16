@@ -49,6 +49,11 @@ async function deleteSession(id) {
   return deleteObject(`session:${id}`);
 }
 
+async function fetchUserBlock(userId: string) {
+  const key = `user:block:${userId}`;
+  return redis.get(key);
+}
+
 export default {
   fetchWebsite,
   storeWebsite,
@@ -59,5 +64,6 @@ export default {
   fetchSession,
   storeSession,
   deleteSession,
+  fetchUserBlock,
   enabled: redis.enabled,
 };
