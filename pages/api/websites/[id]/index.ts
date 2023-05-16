@@ -1,8 +1,8 @@
+import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { Website, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite, canUpdateWebsite, canDeleteWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 
 export interface WebsiteRequestQuery {
