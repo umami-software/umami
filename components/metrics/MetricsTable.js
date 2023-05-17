@@ -73,16 +73,27 @@ export function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      const dataWithoutNullValues = data.filter(val => val.x !== null);
-      let items = percentFilter(
-        dataFilter ? dataFilter(dataWithoutNullValues, filterOptions) : dataWithoutNullValues,
-      );
+      let items;
+
+      if (dataFilter) {
+        if (Array.isArray(dataFilter)) {
+          items = dataFilter.reduce((arr, filter) => {
+            return filter(arr);
+          }, data);
+        } else {
+          items = dataFilter(data);
+        }
+      }
+
+      items = percentFilter(items);
+
       if (limit) {
         items = items.filter((e, i) => i < limit);
       }
       if (filterOptions?.sort === false) {
         return items;
       }
+
       return items.sort(firstBy('y', -1).thenBy('x'));
     }
     return [];
