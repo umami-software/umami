@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "next dev -p 3000",
-    "build": "npm-run-all build-db check-db build-tracker build-geo build-app",
+    "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
     "start-docker": "npm-run-all check-db update-tracker start-server",
@@ -27,6 +27,7 @@
     "update-tracker": "node scripts/update-tracker.js",
     "update-db": "prisma migrate deploy",
     "check-db": "node scripts/check-db.js",
+    "check-env": "node scripts/check-env.js",
     "copy-db-files": "node scripts/copy-db-files.js",
     "extract-messages": "formatjs extract \"{pages,components}/**/*.js\" --out-file build/messages.json",
     "merge-messages": "node scripts/merge-messages.js",
