@@ -197,9 +197,16 @@ export async function deleteUser(
       }),
       client.teamUser.deleteMany({
         where: {
-          teamId: {
-            in: teamIds,
-          },
+          OR: [
+            {
+              teamId: {
+                in: teamIds,
+              },
+            },
+            {
+              userId,
+            },
+          ],
         },
       }),
       client.team.deleteMany({
