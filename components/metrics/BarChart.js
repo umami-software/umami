@@ -52,6 +52,8 @@ export function BarChart({
           return dateFormat(d, 'MMM d', locale);
         case 'month':
           return dateFormat(d, 'MMM', locale);
+        case 'year':
+          return dateFormat(d, 'YYY', locale);
         default:
           return label;
       }
