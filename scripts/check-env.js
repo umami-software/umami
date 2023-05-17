@@ -6,6 +6,7 @@ function checkMissing(vars) {
     if (!process.env[key]) {
       arr.push(key);
     }
+    return arr;
   }, []);
 
   if (missing.length) {
