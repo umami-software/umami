@@ -73,13 +73,13 @@ export function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items;
+      let items = data;
 
       if (dataFilter) {
         if (Array.isArray(dataFilter)) {
           items = dataFilter.reduce((arr, filter) => {
             return filter(arr);
-          }, data);
+          }, items);
         } else {
           items = dataFilter(data);
         }
