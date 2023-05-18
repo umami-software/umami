@@ -92,6 +92,11 @@ export async function deleteWebsite(
         websiteId,
       },
     }),
+    client.userReport.deleteMany({
+      where: {
+        websiteId,
+      },
+    }),
     cloudMode
       ? prisma.client.website.update({
           data: {

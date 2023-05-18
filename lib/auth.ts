@@ -15,6 +15,7 @@ import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/team
 import { validate } from 'uuid';
 import { Auth } from './types';
 import { loadWebsite } from './query';
+import { UserReport } from '@prisma/client';
 
 const log = debug('umami:auth');
 
@@ -135,7 +136,34 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
   return false;
 }
 
-// To-do: Implement when payments are setup.
+export async function canViewUserReport(auth: Auth, userReport: UserReport) {
+  if (auth.user.isAdmin) {
+    return true;
+  }
+
+  if ((auth.user.id = userReport.userId)) {
+    return true;
+  }
+
+  if (await canViewWebsite(auth, userReport.websiteId)) {
+    return true;
+  }
+
+  return false;
+}
+
+export async function canUpdateUserReport(auth: Auth, userReport: UserReport) {
+  if (auth.user.isAdmin) {
+    return true;
+  }
+
+  if ((auth.user.id = userReport.userId)) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function canCreateTeam({ user }: Auth) {
   if (user.isAdmin) {
     return true;
@@ -144,7 +172,6 @@ export async function canCreateTeam({ user }: Auth) {
   return !!user;
 }
 
-// To-do: Implement when payments are setup.
 export async function canViewTeam({ user }: Auth, teamId: string) {
   if (user.isAdmin) {
     return true;

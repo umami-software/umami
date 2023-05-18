@@ -210,6 +210,20 @@ export async function deleteUser(
           },
         },
       }),
+      client.userReport.deleteMany({
+        where: {
+          OR: [
+            {
+              websiteId: {
+                in: websiteIds,
+              },
+            },
+            {
+              userId,
+            },
+          ],
+        },
+      }),
       cloudMode
         ? client.website.updateMany({
             data: {
