@@ -9,11 +9,12 @@ export function DateRangeSetting() {
   const [dateRange, setDateRange] = useDateRange();
   const { startDate, endDate, value } = dateRange;
 
+  const handleChange = value => setDateRange(value);
   const handleReset = () => setDateRange(DEFAULT_DATE_RANGE);
 
   return (
     <Flexbox gap={10}>
-      <DateFilter value={value} startDate={startDate} endDate={endDate} />
+      <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={handleChange} />
       <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );

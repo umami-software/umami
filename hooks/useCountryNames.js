@@ -7,7 +7,7 @@ const countryNames = {
   'en-US': enUS,
 };
 
-export default function useCountryNames(locale) {
+export function useCountryNames(locale) {
   const [list, setList] = useState(countryNames[locale] || enUS);
   const { basePath } = useRouter();
 
@@ -32,3 +32,5 @@ export default function useCountryNames(locale) {
 
   return list;
 }
+
+export default useCountryNames;

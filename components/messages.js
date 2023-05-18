@@ -97,6 +97,7 @@ export const labels = defineMessages({
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
   customRange: { id: 'label.custom-range', defaultMessage: 'Custom range' },
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
@@ -117,6 +118,8 @@ export const labels = defineMessages({
   view: { id: 'label.view', defaultMessage: 'View' },
   cities: { id: 'label.cities', defaultMessage: 'Cities' },
   regions: { id: 'label.regions', defaultMessage: 'Regions' },
+  reports: { id: 'label.reports', defaultMessage: 'Reports' },
+  eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
 });
 
 export const messages = defineMessages({

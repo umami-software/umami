@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: max-content 1fr;
+}
+
+.menu {
+  width: 300px;
+  grid-column: 1 / 2;
+}
+
+.content {
+  grid-column: 2 / 3;
+}

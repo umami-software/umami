@@ -5,7 +5,7 @@ import { THEME_CONFIG } from 'lib/constants';
 
 const selector = state => state.theme;
 
-export default function useTheme() {
+export function useTheme() {
   const defaultTheme =
     typeof window !== 'undefined'
       ? window?.matchMedia('(prefers-color-scheme: dark)')?.matches
@@ -34,3 +34,5 @@ export default function useTheme() {
 
   return [theme, saveTheme];
 }
+
+export default useTheme;

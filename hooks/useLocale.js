@@ -13,7 +13,7 @@ const messages = {
 
 const selector = state => state.locale;
 
-export default function useLocale() {
+export function useLocale() {
   const locale = useStore(selector);
   const { basePath } = useRouter();
   const forceUpdate = useForceUpdate();
@@ -61,3 +61,5 @@ export default function useLocale() {
 
   return { locale, saveLocale, messages, dir, dateLocale };
 }
+
+export default useLocale;

@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react';
 
-export default function useForceUpdate() {
+export function useForceUpdate() {
   const [, update] = useState(Object.create(null));
 
   return useCallback(() => {
     update(Object.create(null));
   }, [update]);
 }
+
+export default useForceUpdate;

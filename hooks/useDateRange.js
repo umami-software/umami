@@ -5,7 +5,7 @@ import useLocale from './useLocale';
 import websiteStore, { setWebsiteDateRange } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';
 
-export default function useDateRange(websiteId) {
+export function useDateRange(websiteId) {
   const { locale } = useLocale();
   const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
   const defaultConfig = DEFAULT_DATE_RANGE;
@@ -23,3 +23,5 @@ export default function useDateRange(websiteId) {
 
   return [dateRange, saveDateRange];
 }
+
+export default useDateRange;
