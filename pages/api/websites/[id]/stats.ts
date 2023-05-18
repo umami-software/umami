@@ -92,14 +92,22 @@ export default async (
         city,
       },
     });
-
-    const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-      obj[key] = {
-        value: Number(metrics[0][key]) || 0,
-        change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
-      };
-      return obj;
-    }, {});
+    let stats: object = {
+      _id: '',
+      pageviews: 0,
+      uniques: 0,
+      bounces: 0,
+      totaltime: 0,
+    };
+    if (metrics.length != 0) {
+      stats = Object.keys(metrics[0]).reduce((obj, key) => {
+        obj[key] = {
+          value: Number(metrics[0][key]) || 0,
+          change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
+        };
+        return obj;
+      }, {});
+    }
 
     return ok(res, stats);
   }

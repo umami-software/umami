@@ -52,20 +52,112 @@ async function relationalQuery(
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  //TODO: 구현해야 함
-
+  let sessionInclude = '';
+  let sessionGroupAggregation: any = { $match: {} };
+  let sessionProjectAggregation: any = { $match: {} };
+  if (count !== '*') {
+    sessionInclude = 'session_id : 1';
+    sessionGroupAggregation = {
+      $group: {
+        _id: {
+          t: '$t',
+          session_id: '$session_id',
+        },
+      },
+    };
+    sessionProjectAggregation = {
+      $project: {
+        t: '$_id.t',
+      },
+    };
+  }
   if (db === 'mongodb') {
     return await client.websiteEvent.aggregateRaw({
       pipeline: [
         {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$event_type', EVENT_TYPE.pageView],
+                },
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: resetDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: startDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  lte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: endDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $project: {
+            t: {
+              $dateTrunc: {
+                date: '$created_at',
+                unit: unit,
+              },
+            },
+            sessionInclude,
+          },
+        },
+        sessionGroupAggregation,
+        sessionProjectAggregation,
+        {
+          $group: {
+            _id: {
+              t: '$t',
+              session_id: '$session_id',
+            },
+            y: {
+              $sum: 1,
+            },
+          },
+        },
+        {
           $project: {
             x: {
               $dateToString: {
-                date: '$created_at',
+                date: '$_id.t',
+                format: getDateQuery('', unit, timezone),
                 timezone: timezone,
-                format: getDateQuery('website_event.created_at', unit, timezone),
               },
             },
+            y: 1,
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            x: 1,
           },
         },
       ],

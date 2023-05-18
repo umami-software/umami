@@ -23,12 +23,103 @@ async function relationalQuery(
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const { startDate, endDate, column, filters = {} } = criteria;
-  const { toUuid, parseFilters, rawQuery } = prisma;
+  const { getDatabaseType, toUuid, parseFilters, rawQuery, client } = prisma;
+  const db = getDatabaseType();
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  return rawQuery(
-    `select ${column} x, count(*) y
+  if (db === 'mongodb') {
+    return await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: resetDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: startDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  lte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: endDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$session_id',
+          },
+        },
+        {
+          $lookup: {
+            from: 'session',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'session',
+          },
+        },
+        {
+          $project: {
+            session: {
+              $arrayElemAt: ['$session', 0],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$session.' + column,
+            sum: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $project: {
+            x: '$_id',
+            y: '$sum',
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            sum: -1,
+          },
+        },
+        {
+          $limit: 100,
+        },
+      ],
+    });
+  } else {
+    return rawQuery(
+      `select ${column} x, count(*) y
     from session as x
     where x.session_id in (
       select website_event.session_id
@@ -44,10 +135,10 @@ async function relationalQuery(
     group by 1
     order by 2 desc
     limit 100`,
-    params,
-  );
+      params,
+    );
+  }
 }
-
 async function clickhouseQuery(
   websiteId: string,
   data: { startDate: Date; endDate: Date; column: string; filters: object },

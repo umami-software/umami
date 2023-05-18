@@ -40,6 +40,50 @@ async function relationalQuery(
     return await client.websiteEvent.aggregateRaw({
       pipeline: [
         {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$event_type', EVENT_TYPE.pageView],
+                },
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: resetDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: startDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  lte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: endDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
           $project: {
             session_id: '$session_id',
             hour: {

@@ -31,7 +31,8 @@ async function relationalQuery(
   },
 ) {
   const { startDate, endDate, filters = {}, column } = criteria;
-  const { rawQuery, parseFilters, toUuid } = prisma;
+  const { getDatabaseType, rawQuery, parseFilters, toUuid, client } = prisma;
+  const db = getDatabaseType();
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [
@@ -43,16 +44,99 @@ async function relationalQuery(
   ];
 
   let excludeDomain = '';
+  let excludeDomainMongo = {};
 
   if (column === 'referrer_domain') {
     excludeDomain = 'and website_event.referrer_domain != $6';
+    excludeDomainMongo = {
+      $ne: ['$referrer_domain', website.domain],
+    };
     params.push(website.domain);
   }
 
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  return rawQuery(
-    `select ${column} x, count(*) y
+  if (db === 'mongodb') {
+    return await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$event_type', params[4]],
+                },
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: resetDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: startDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  lte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: endDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                excludeDomainMongo,
+              ],
+            },
+          },
+        },
+        {
+          $group: {
+            _id: '$' + column,
+            y: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $project: {
+            x: '$_id',
+            y: 1,
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            x: 1,
+          },
+        },
+        {
+          $sort: {
+            y: -1,
+          },
+        },
+        {
+          $limit: 100,
+        },
+      ],
+    });
+  } else {
+    return rawQuery(
+      `select ${column} x, count(*) y
     from website_event
       ${joinSession}
     where website_event.website_id = $1${toUuid()}
@@ -64,8 +148,9 @@ async function relationalQuery(
     group by 1
     order by 2 desc
     limit 100`,
-    params,
-  );
+      params,
+    );
+  }
 }
 
 async function clickhouseQuery(

@@ -45,14 +45,107 @@ async function relationalQuery(
     };
   },
 ) {
-  const { toUuid, rawQuery, getDateQuery, getFilterQuery } = prisma;
+  const { getDatabaseType, toUuid, rawQuery, getDateQuery, getFilterQuery, client } = prisma;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const filterQuery = getFilterQuery(filters, params);
+  const db = getDatabaseType();
 
-  return rawQuery(
-    `select
+  if (db === 'mongodb') {
+    return await client.websiteEvent.aggregateRaw({
+      pipeline: [
+        {
+          $match: {
+            $expr: {
+              $and: [
+                {
+                  $eq: ['$event_type', EVENT_TYPE.customEvent],
+                },
+                {
+                  $eq: ['$website_id', websiteId],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: resetDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  $gte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: startDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+                {
+                  lte: [
+                    '$created_at',
+                    {
+                      $dateFromString: {
+                        dateString: endDate.toISOString(),
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+        {
+          $project: {
+            t: {
+              $dateTrunc: {
+                date: '$created_at',
+                unit: unit,
+                timezone: timezone,
+              },
+            },
+            event_name: 1,
+          },
+        },
+        {
+          $group: {
+            _id: {
+              t: '$t',
+              name: '$event_name',
+            },
+            y: {
+              $sum: 1,
+            },
+          },
+        },
+        {
+          $project: {
+            x: '$_id.name',
+            t: {
+              $dateToString: {
+                date: '$_id.t',
+                format: getDateQuery('', unit, timezone),
+                timezone: timezone,
+              },
+            },
+            y: 1,
+            _id: 0,
+          },
+        },
+        {
+          $sort: {
+            t: 1,
+          },
+        },
+      ],
+    });
+  } else {
+    return rawQuery(
+      `select
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
@@ -64,8 +157,9 @@ async function relationalQuery(
       ${filterQuery}
     group by 1, 2
     order by 2`,
-    params,
-  );
+      params,
+    );
+  }
 }
 
 async function clickhouseQuery(
