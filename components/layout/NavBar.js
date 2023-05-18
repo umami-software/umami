@@ -20,6 +20,7 @@ export function NavBar() {
     { label: formatMessage(labels.dashboard), url: '/dashboard' },
     { label: formatMessage(labels.reports), url: '/reports' },
     { label: formatMessage(labels.realtime), url: '/realtime' },
+    { label: formatMessage(labels.reports), url: '/reports/funnel' },
     !cloudMode && { label: formatMessage(labels.settings), url: '/settings' },
   ].filter(n => n);
 

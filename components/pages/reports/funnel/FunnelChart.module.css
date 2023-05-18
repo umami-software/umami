@@ -1,0 +1,23 @@
+.chart {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tooltip .value {
+  display: flex;
+  flex-direction: column;
+  text-transform: lowercase;
+}
+
+@media only screen and (max-width: 992px) {
+  .chart {
+    /*height: 200px;*/
+  }
+}

@@ -1,6 +1,7 @@
 export * from './admin/team';
 export * from './admin/teamUser';
 export * from './admin/user';
+export * from './admin/userReport';
 export * from './admin/website';
 export * from './analytics/event/getEventMetrics';
 export * from './analytics/event/getEventUsage';
@@ -8,6 +9,7 @@ export * from './analytics/event/getEvents';
 export * from './analytics/eventData/getEventData';
 export * from './analytics/eventData/getEventDataUsage';
 export * from './analytics/event/saveEvent';
+export * from './analytics/pageview/getPageviewFunnel';
 export * from './analytics/pageview/getPageviewMetrics';
 export * from './analytics/pageview/getPageviewStats';
 export * from './analytics/session/createSession';
