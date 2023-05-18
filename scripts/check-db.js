@@ -55,7 +55,7 @@ async function checkDatabaseVersion(databaseType) {
   let version;
   if (databaseType === 'mongodb') {
     const query = await prisma.$runCommandRaw({
-      serverStatus: 1,
+      buildInfo: 1,
     });
     version = semver.valid(query.version);
   } else {
