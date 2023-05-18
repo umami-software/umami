@@ -29,9 +29,8 @@ async function relationalQuery(
   },
 ): Promise<
   {
-    level: number;
-    url: string;
-    count: any;
+    x: string;
+    y: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -58,7 +57,7 @@ async function relationalQuery(
   `,
     params,
   ).then((a: { [key: string]: number }) => {
-    return urls.map((b, i) => ({ level: i + 1, url: b, count: a[`level${i + 1}`] || 0 }));
+    return urls.map((b, i) => ({ x: b, y: a[`level${i + 1}`] || 0 }));
   });
 }
 
@@ -72,9 +71,8 @@ async function clickhouseQuery(
   },
 ): Promise<
   {
-    level: number;
-    url: string;
-    count: number;
+    x: string;
+    y: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -110,9 +108,8 @@ async function clickhouseQuery(
     params,
   ).then(results => {
     return urls.map((a, i) => ({
-      level: i + 1,
-      url: a,
-      count: results[i + 1]?.count || 0,
+      x: a,
+      y: results[i + 1]?.count || 0,
     }));
   });
 }

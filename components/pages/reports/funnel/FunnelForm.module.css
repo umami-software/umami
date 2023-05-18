@@ -1,0 +1,23 @@
+.filter {
+  min-width: 200px;
+}
+
+.hiddenInput {
+  max-height: 100px;
+}
+
+.hiddenInput {
+  visibility: hidden;
+  min-height: 0px;
+  max-height: 0px;
+}
+
+.hidden {
+  visibility: hidden;
+  min-height: 0px;
+  max-height: 0px;
+}
+
+.urlFormRow label {
+  min-width: 80px;
+}

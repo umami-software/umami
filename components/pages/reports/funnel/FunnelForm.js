@@ -37,7 +37,11 @@ export function FunnelForm({ onSearch }) {
 
   const handleAddUrl = () => setUrls([...urls, '']);
 
-  const handleRemoveUrl = i => setUrls(urls.splice(i, 1));
+  const handleRemoveUrl = i => {
+    const nextUrls = [...urls];
+    nextUrls.splice(i, 1);
+    setUrls(nextUrls);
+  };
 
   const handleWindowChange = value => setWindow(value.target.value);
 
@@ -103,7 +107,7 @@ export function FunnelForm({ onSearch }) {
 
         <FormButtons>
           <SubmitButton variant="primary" disabled={false}>
-            Search
+            Query
           </SubmitButton>
         </FormButtons>
       </Form>

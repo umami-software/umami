@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
-import FunnelPage from 'components/pages/reports/FunnelPage';
+import FunnelPage from 'components/pages/reports/funnel/FunnelPage';
 import useMessages from 'hooks/useMessages';
 import SettingsLayout from 'components/layout/SettingsLayout';
 
