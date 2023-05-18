@@ -86,7 +86,7 @@ async function relationalQuery(
                   ],
                 },
                 {
-                  lte: [
+                  $lte: [
                     '$created_at',
                     {
                       $dateFromString: {

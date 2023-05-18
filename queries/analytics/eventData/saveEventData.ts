@@ -30,7 +30,9 @@ async function relationalQuery(data: {
   const { websiteId, eventId, eventData } = data;
 
   const jsonKeys = flattenJSON(eventData);
-
+  if (jsonKeys.length == 0) {
+    return Promise.resolve({ count: 0 });
+  }
   //id, websiteEventId, eventStringValue
   const flattendData = jsonKeys.map(a => ({
     id: uuid(),
