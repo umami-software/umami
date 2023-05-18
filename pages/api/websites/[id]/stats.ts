@@ -75,7 +75,7 @@ export default async (
         city,
       },
     });
-    const prevPeriod = await getWebsiteStats(websiteId, {
+    let prevPeriod = await getWebsiteStats(websiteId, {
       startDate: prevStartDate,
       endDate: prevEndDate,
       filters: {
@@ -92,8 +92,17 @@ export default async (
         city,
       },
     });
+    if (prevPeriod.length === 0) {
+      prevPeriod = [
+        {
+          pageviews: 0,
+          uniques: 0,
+          bounces: 0,
+          totaltime: 0,
+        },
+      ];
+    }
     let stats: object = {
-      _id: '',
       pageviews: 0,
       uniques: 0,
       bounces: 0,
