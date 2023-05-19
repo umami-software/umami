@@ -142,6 +142,25 @@ function parseFilters(
   };
 }
 
+function parseMongoFilter(filters: { [key: string]: any } = {}) {
+  const query = {};
+
+  for (let k in filters) {
+    const v = filters[k];
+    if (v !== undefined) {
+      const tempK = FILTER_COLUMNS[k];
+      if (tempK !== undefined) {
+        k = tempK;
+      }
+      if (k === 'browser' || k === 'os' || k === 'device' || k === 'language') {
+        k = 'session.' + k;
+      }
+      query[k] = v;
+    }
+  }
+  return { $match: query };
+}
+
 async function rawQuery(query: string, params: never[] = []): Promise<any> {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -163,5 +182,6 @@ export default {
   getEventDataFilterQuery,
   toUuid,
   parseFilters,
+  parseMongoFilter,
   rawQuery,
 };

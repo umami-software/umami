@@ -1,6 +1,6 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import { runQuery, CLICKHOUSE, PRISMA, MONGODB } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
@@ -12,6 +12,7 @@ export async function getSessionMetrics(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [MONGODB]: () => mongodbQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -23,103 +24,12 @@ async function relationalQuery(
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const { startDate, endDate, column, filters = {} } = criteria;
-  const { getDatabaseType, toUuid, parseFilters, rawQuery, client } = prisma;
-  const db = getDatabaseType();
+  const { toUuid, parseFilters, rawQuery } = prisma;
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
 
-  if (db === 'mongodb') {
-    return await client.websiteEvent.aggregateRaw({
-      pipeline: [
-        {
-          $match: {
-            $expr: {
-              $and: [
-                {
-                  $eq: ['$website_id', websiteId],
-                },
-                {
-                  $gte: [
-                    '$created_at',
-                    {
-                      $dateFromString: {
-                        dateString: resetDate.toISOString(),
-                      },
-                    },
-                  ],
-                },
-                {
-                  $gte: [
-                    '$created_at',
-                    {
-                      $dateFromString: {
-                        dateString: startDate.toISOString(),
-                      },
-                    },
-                  ],
-                },
-                {
-                  $lte: [
-                    '$created_at',
-                    {
-                      $dateFromString: {
-                        dateString: endDate.toISOString(),
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        },
-        {
-          $group: {
-            _id: '$session_id',
-          },
-        },
-        {
-          $lookup: {
-            from: 'session',
-            localField: '_id',
-            foreignField: '_id',
-            as: 'session',
-          },
-        },
-        {
-          $project: {
-            session: {
-              $arrayElemAt: ['$session', 0],
-            },
-          },
-        },
-        {
-          $group: {
-            _id: '$session.' + column,
-            sum: {
-              $sum: 1,
-            },
-          },
-        },
-        {
-          $project: {
-            x: '$_id',
-            y: '$sum',
-            _id: 0,
-          },
-        },
-        {
-          $sort: {
-            sum: -1,
-          },
-        },
-        {
-          $limit: 100,
-        },
-      ],
-    });
-  } else {
-    return rawQuery(
-      `select ${column} x, count(*) y
+  return rawQuery(
+    `select ${column} x, count(*) y
     from session as x
     where x.session_id in (
       select website_event.session_id
@@ -135,9 +45,8 @@ async function relationalQuery(
     group by 1
     order by 2 desc
     limit 100`,
-      params,
-    );
-  }
+    params,
+  );
 }
 async function clickhouseQuery(
   websiteId: string,
@@ -163,4 +72,104 @@ async function clickhouseQuery(
     limit 100`,
     params,
   );
+}
+
+async function mongodbQuery(
+  websiteId: string,
+  criteria: { startDate: Date; endDate: Date; column: string; filters: object },
+) {
+  const website = await loadWebsite(websiteId);
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const { startDate, endDate, column, filters = {} } = criteria;
+  const { parseMongoFilter, client } = prisma;
+  const mongoFilter = parseMongoFilter(filters);
+  return await client.websiteEvent.aggregateRaw({
+    pipeline: [
+      mongoFilter,
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ['$website_id', websiteId],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: resetDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: startDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $lte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: endDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$session_id',
+        },
+      },
+      {
+        $lookup: {
+          from: 'session',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'session',
+        },
+      },
+      {
+        $project: {
+          session: {
+            $arrayElemAt: ['$session', 0],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$session.' + column,
+          sum: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $project: {
+          x: '$_id',
+          y: '$sum',
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          sum: -1,
+        },
+      },
+      {
+        $limit: 100,
+      },
+    ],
+  });
 }

@@ -1,11 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE } from 'lib/constants';
+import { runQuery, CLICKHOUSE, PRISMA, MONGODB } from 'lib/db';
 
 export function getEvents(...args: [websiteId: string, startAt: Date, eventType: number]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [MONGODB]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }

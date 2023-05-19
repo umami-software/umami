@@ -1,4 +1,4 @@
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, MONGODB, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import cache from 'lib/cache';
@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client';
 export async function createSession(args: Prisma.SessionCreateInput) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
+    [MONGODB]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),
   }).then(async data => {
     if (cache.enabled) {

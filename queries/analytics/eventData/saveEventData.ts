@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import { EVENT_DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, MONGODB, PRISMA, runQuery } from 'lib/db';
 import { flattenJSON } from 'lib/eventData';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
@@ -18,6 +18,7 @@ export async function saveEventData(args: {
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
+    [MONGODB]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),
   });
 }
