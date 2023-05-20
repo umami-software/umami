@@ -1,5 +1,5 @@
 import AppLayout from 'components/layout/AppLayout';
-import ReportsList from 'components/pages/reports/ReportsList';
+import ReportList from 'components/pages/reports/ReportList';
 import useMessages from 'hooks/useMessages';
 
 export default function ReportsPage() {
@@ -7,7 +7,7 @@ export default function ReportsPage() {
 
   return (
     <AppLayout title={formatMessage(labels.reports)}>
-      <ReportsList />
+      <ReportList />
     </AppLayout>
   );
 }

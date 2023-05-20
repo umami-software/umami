@@ -18,9 +18,8 @@ export function NavBar() {
 
   const links = [
     { label: formatMessage(labels.dashboard), url: '/dashboard' },
-    { label: formatMessage(labels.reports), url: '/reports' },
     { label: formatMessage(labels.realtime), url: '/realtime' },
-    { label: formatMessage(labels.reports), url: '/reports/funnel' },
+    { label: formatMessage(labels.reports), url: '/reports' },
     !cloudMode && { label: formatMessage(labels.settings), url: '/settings' },
   ].filter(n => n);
 

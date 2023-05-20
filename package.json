@@ -110,7 +110,7 @@
     "timezone-support": "^2.0.2",
     "uuid": "^8.3.2",
     "yup": "^0.32.11",
-    "zustand": "^3.7.2"
+    "zustand": "^4.3.8"
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",

@@ -9,6 +9,7 @@ export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
 export * from './usePageQuery';
+export * from './useReport';
 export * from './useRequireLogin';
 export * from './useShareToken';
 export * from './useSticky';
