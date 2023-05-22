@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "অ্যাকাউন্ট"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "অ্যাকাউন্ট যুক্ত করুন"
+      "value": "অ্যাকশনস"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
     }
   ],
   "label.add-website": [
@@ -17,7 +23,7 @@
       "value": "ওয়েবসাইট যুক্ত করুন"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "অ্যাডমিন"
@@ -35,16 +41,34 @@
       "value": "সব সময়"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "সবগুলো ওয়েবসাইট"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "গড় পরিদর্শনের সময়"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "পেছনে"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "বহিষ্কারের হার"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "ব্রাউজার"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "পাসওয়ার্ড পরিবর্তন করুন"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "পাসওয়ার্ড নিশ্চিত করুন"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "কপি করুন"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "দেশ"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "ড্যাশবোর্ড"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "মুছে ফেলুন"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "অ্যাকাউন্ট মুছুন"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "ওয়েবসাইট মুছুন"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "ডেস্কটপ"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "ডিভাইস গুলো"
     }
   ],
   "label.dismiss": [
@@ -137,16 +233,10 @@
       "value": "সম্পাদনা করুন"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "অ্যাকাউন্ট সম্পাদনা করুন"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "ওয়েবসাইট সম্পাদনা করুন"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "শেয়ার ইউআরএল শেয়ার করুন"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "ভুল"
+      "value": "ঘটনা"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "ভুল ডোমেন"
+      "value": "সম্মিলিত"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "অপরিশোধিত"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "ভাষা"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "ভাষা"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "ল্যাপটপ"
     }
   ],
   "label.last-days": [
@@ -201,14 +321,16 @@
       "value": " ঘন্টা"
     }
   ],
-  "label.logged-in-as": [
-    {
-      "type": 1,
-      "value": "username"
-    },
+  "label.leave": [
     {
       "type": 0,
-      "value": " অ্যাকাউন্টে লগ ইন"
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -221,6 +343,18 @@
     {
       "type": 0,
       "value": "লগ আউট"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "মুঠোফোন"
     }
   ],
   "label.more": [
@@ -247,10 +381,28 @@
       "value": "কিছুই না"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "অপারেটিং সিস্টেম গুলো"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "মালিক"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "পৃষ্ঠা পরিদর্শন গুলো"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "পৃষ্ঠাগুলি"
     }
   ],
   "label.password": [
@@ -259,10 +411,14 @@
       "value": "পাসওয়ার্ড"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
+    {
+      "type": 1,
+      "value": "name"
+    },
     {
       "type": 0,
-      "value": "পাসওয়ার্ড মেলে না"
+      "value": " দ্বারা চালিত"
     }
   ],
   "label.profile": [
@@ -271,22 +427,52 @@
       "value": "প্রোফাইল"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "সরাসরি"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "সরাসরি লগ"
+      "value": "রেফারার্স"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "রিফ্রেশ"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
     }
   ],
   "label.required": [
@@ -307,10 +493,34 @@
       "value": "ওয়েবসাইট রিসেট করুন"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "সংরক্ষণ"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "স্ক্রিনগুলি"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -329,6 +539,48 @@
     {
       "type": 0,
       "value": "একদিন"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "ট্যাবলেট"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -361,10 +613,22 @@
       "value": "সময়স্থান"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "আজ"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "চার্ট পরিবর্তন করুন"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +637,22 @@
       "value": "ট্র্যাকিং কোড"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "অনন্য ভিজিটর"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "অজানা"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
     }
   ],
   "label.username": [
@@ -385,16 +661,52 @@
       "value": "ব্যবহারকারীর নাম"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "বিস্তারিত দেখুন"
     }
   ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "ভিউস"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "পরিদর্শনার্থী"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "সবগুলো ওয়েবসাইট"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Yesterday"
     }
   ],
   "message.active-users": [
@@ -445,6 +757,20 @@
       "value": " মুছতে চান?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -459,40 +785,36 @@
       "value": " এর পরিসংখ্যান পুনরায় সেট করতে চান?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "কপি হয়েছে"
+      "value": "ওয়েবসাইট মুছুন"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।"
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "কিছু ভুল হয়েছে।"
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "শেয়ার ইউআরএল"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "ট্র্যাকিং কোড পান"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -507,7 +829,113 @@
       "value": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।"
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "ভুল ডোমেন"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "কোন তথ্য নেই।"
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "পাসওয়ার্ড মেলে না"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।"
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "ওয়েবসাইট রিসেট করুন"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।"
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "সংরক্ষিত হয়েছে।"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "এটি "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "ট্র্যাকিং কোড"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 1,
       "value": "country"
@@ -541,262 +969,22 @@
       "value": " এর মধ্যে।"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "নতুন সংস্করণ "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " পাওয়া গিয়েছে।"
+      "value": "This team does not have any websites."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "কোন তথ্য নেই।"
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "কোনও ওয়েবসাইট কনফিগার করা নেই।"
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।"
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " দ্বারা চালিত"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।"
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "সংরক্ষিত হয়েছে।"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "এটি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "চার্ট পরিবর্তন করুন"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর জন্য পরিসংখ্যানগুলি ট্র্যাক করতে, আপনার ওয়েবসাইটের "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " বিভাগে নিম্নলিখিত কোডটি রাখুন।"
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "নিশ্চিত করতে নীচের বাক্সে "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " টাইপ করুন।"
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "নিশ্চিত করতে নীচের বাক্সে "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " টাইপ করুন।"
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "অ্যাকশনস"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "গড় পরিদর্শনের সময়"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "বহিষ্কারের হার"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "ব্রাউজার"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "দেশ"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "ডেস্কটপ"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "ল্যাপটপ"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "মুঠোফোন"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "ট্যাবলেট"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "ডিভাইস গুলো"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "ঘটনা"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "সম্মিলিত"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "অপরিশোধিত"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "ভাষা"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "অপারেটিং সিস্টেম গুলো"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠা পরিদর্শন গুলো"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "পৃষ্ঠাগুলি"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "রেফারার্স"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "স্ক্রিনগুলি"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "অনন্য ভিজিটর"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "ভিউস"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "পরিদর্শনার্থী"
+      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

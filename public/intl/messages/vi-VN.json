@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "Tài khoản"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "Thêm tài khoản"
+      "value": "Hành động"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
     }
   ],
   "label.add-website": [
@@ -17,7 +23,7 @@
       "value": "Thêm website"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Quản trị"
@@ -35,16 +41,34 @@
       "value": "Toàn thời gian"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "Tất cả website"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Thời gian truy cập trung bình"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "Quay về"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Tỷ lệ thoát trang"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Trình duyệt"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "Đổi mật khẩu"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "Xác nhận mật khẩu"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "Lưu vào bộ nhớ tạm"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Quốc gia"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "Bảng điều khiển"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "Xoá"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "Xóa tài khoản"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "Xóa website"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Máy bàn"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Thiết bị"
     }
   ],
   "label.dismiss": [
@@ -137,16 +233,10 @@
       "value": "Chỉnh sửa"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Chỉnh sửa tài khoản"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "Chỉnh sửa website"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "Bật khả năng chia sẻ URL"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "Không hợp lệ"
+      "value": "Sự kiện"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "Tên miền không hợp lệ"
+      "value": "Kết hợp"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Gốc"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "Language"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Ngôn ngữ"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
     }
   ],
   "label.last-days": [
@@ -193,14 +313,16 @@
       "value": " giờ gần nhất"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "Đăng nhập như "
-    },
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -213,6 +335,18 @@
     {
       "type": 0,
       "value": "Đăng xuất"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Di động"
     }
   ],
   "label.more": [
@@ -239,10 +373,28 @@
       "value": "None"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Hệ điều hành"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "Chủ sở hữu"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Lượt xem"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Trang"
     }
   ],
   "label.password": [
@@ -251,10 +403,14 @@
       "value": "Mật khẩu"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "Mật khẩu không đồng nhất"
+      "value": "Bản quyền thuộc về "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -263,22 +419,52 @@
       "value": "Hồ sơ"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Thời gian thực"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "Nhật ký thời gian thực"
+      "value": "Liên kết giới thiệu"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "Làm mới"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
     }
   ],
   "label.required": [
@@ -299,10 +485,34 @@
       "value": "Tái thiết lập thống kê"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "Lưu"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -321,6 +531,48 @@
     {
       "type": 0,
       "value": "Trong ngày"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Máy tính bảng"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -353,10 +605,22 @@
       "value": "Múi giờ"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "Hôm nay"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Bật/tắt biểu đồ"
     }
   ],
   "label.tracking-code": [
@@ -365,10 +629,22 @@
       "value": "Mã theo dõi"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Khách truy cập một lần"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "Không rõ"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
     }
   ],
   "label.username": [
@@ -377,16 +653,52 @@
       "value": "Tên đăng nhập"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "Xem chi tiết"
     }
   ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Xem"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Khách"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "Websites"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Yesterday"
     }
   ],
   "message.active-users": [
@@ -437,6 +749,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -451,40 +777,36 @@
       "value": "?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "Đã sao chép!"
+      "value": "Xóa website"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "Tất cả các dữ liệu liên quan cũng sẽ bị xoá."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "Đã xảy ra lỗi."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "Lấy URL chia sẻ"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "Lấy mã theo dõi"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -499,7 +821,113 @@
       "value": "Sai tên đăng nhập/mật khẩu."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Tên miền không hợp lệ"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Không có dữ liệu."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Mật khẩu không đồng nhất"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Trang không tìm thấy."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Tái thiết lập thống kê"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Tất cả số liệu thống kê của website này sẽ bị xoá, nhưng mã theo dõi sẽ vẫn giữ nguyên."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Đã lưu thành công."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Đây là đường dẫn URL cho "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Mã theo dõi"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "Khách từ "
@@ -533,258 +961,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "Có một phiên bản mới của umami!"
+      "value": "This team does not have any websites."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Không có dữ liệu."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "Bạn chưa có bất cứ website nào."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Trang không tìm thấy."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "Bản quyền thuộc về "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "Tất cả số liệu thống kê của website này sẽ bị xoá, nhưng mã theo dõi sẽ vẫn giữ nguyên."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "Đã lưu thành công."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Đây là đường dẫn URL cho "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Bật/tắt biểu đồ"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "Để theo dõi "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": ", dán mã theo dõi vào "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " của website bạn."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "Nhập "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " bên dưới để xác nhận."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "Nhập "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " bên dưới để xác nhận."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "Hành động"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Thời gian truy cập trung bình"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Tỷ lệ thoát trang"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "Trình duyệt"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "Quốc gia"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "Máy bàn"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "Laptop"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "Di động"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "Máy tính bảng"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "Thiết bị"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "Sự kiện"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "Kết hợp"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "Gốc"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Ngôn ngữ"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "Hệ điều hành"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "Lượt xem"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "Trang"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "Liên kết giới thiệu"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Khách truy cập một lần"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "Xem"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "Khách"
+      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

@@ -1,0 +1,44 @@
+.cell {
+  align-items: center;
+}
+
+.row .cell:last-child {
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.label {
+  display: none;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 992px) {
+  .header .cell {
+    display: none;
+  }
+
+  .label {
+    display: block;
+    min-width: 100px;
+  }
+
+  .row .cell {
+    padding-left: 0;
+    flex-basis: 100%;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .row {
+    flex-wrap: wrap;
+  }
+
+  .header .cell:last-child {
+    display: none;
+  }
+
+  .row .cell:last-child {
+    padding-left: 0;
+    flex-basis: 100%;
+  }
+}

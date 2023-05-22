@@ -1,57 +1,66 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+import { Button, Icon, Text, Row, Column } from 'react-basics';
+import Link from 'next/link';
 import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
-import DateFilter from 'components/common/DateFilter';
-import StickyHeader from 'components/helpers/StickyHeader';
+import DateFilter from 'components/input/DateFilter';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
-import useFetch from 'hooks/useFetch';
+import RefreshButton from 'components/input/RefreshButton';
+import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import useTimezone from 'hooks/useTimezone';
 import usePageQuery from 'hooks/usePageQuery';
-import { getDateArray, getDateLength, getDateRangeValues } from 'lib/date';
-import useApi from 'hooks/useApi';
+import { getDateArray, getDateLength } from 'lib/date';
+import Icons from 'components/icons';
+import useSticky from 'hooks/useSticky';
+import useMessages from 'hooks/useMessages';
 import styles from './WebsiteChart.module.css';
+import useLocale from 'hooks/useLocale';
 
-export default function WebsiteChart({
+export function WebsiteChart({
   websiteId,
-  title,
+  name,
   domain,
   stickyHeader = false,
-  showLink = false,
   showChart = true,
+  showDetailsButton = false,
   onDataLoad = () => {},
 }) {
-  const [dateRange, setDateRange] = useDateRange(websiteId);
+  const { formatMessage, labels } = useMessages();
+  const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, value, modified } = dateRange;
   const [timezone] = useTimezone();
   const {
-    router,
-    resolve,
-    query: { url, referrer, os, browser, device, country },
+    query: { url, referrer, os, browser, device, country, region, city, title },
   } = usePageQuery();
-  const { get } = useApi();
+  const { get, useQuery } = useApi();
+  const { ref, isSticky } = useSticky({ enabled: stickyHeader });
 
-  const { data, loading, error } = useFetch(
-    `/websites/${websiteId}/pageviews`,
-    {
-      params: {
-        start_at: +startDate,
-        end_at: +endDate,
+  const { data, isLoading, error } = useQuery(
+    [
+      'websites:pageviews',
+      { websiteId, modified, url, referrer, os, browser, device, country, region, city, title },
+    ],
+    () =>
+      get(`/websites/${websiteId}/pageviews`, {
+        startAt: +startDate,
+        endAt: +endDate,
         unit,
-        tz: timezone,
+        timezone,
         url,
         referrer,
         os,
         browser,
         device,
         country,
-      },
-      onDataLoad,
-    },
-    [modified, url, referrer, os, browser, device, country],
+        region,
+        city,
+        title,
+      }),
+    { onSuccess: onDataLoad },
   );
 
   const chartData = useMemo(() => {
@@ -62,51 +71,48 @@ export default function WebsiteChart({
       };
     }
     return { pageviews: [], sessions: [] };
-  }, [data, startDate, endDate, unit]);
+  }, [data, modified]);
 
-  function handleCloseFilter(param) {
-    router.push(resolve({ [param]: undefined }));
-  }
-
-  async function handleDateChange(value) {
-    if (value === 'all') {
-      const { data, ok } = await get(`/websites/${websiteId}`);
-      if (ok) {
-        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
-      }
-    } else {
-      setDateRange(value);
-    }
-  }
-
+  const { dir } = useLocale();
   return (
-    <div className={styles.container}>
-      <WebsiteHeader websiteId={websiteId} title={title} domain={domain} showLink={showLink} />
-      <div className={classNames(styles.header, 'row')}>
-        <StickyHeader
-          className={classNames(styles.metrics, 'col row')}
-          stickyClassName={styles.sticky}
-          enabled={stickyHeader}
-        >
-          <FilterTags
-            params={{ url, referrer, os, browser, device, country }}
-            onClick={handleCloseFilter}
-          />
-          <div className="col-12 col-lg-9">
-            <MetricsBar websiteId={websiteId} />
+    <>
+      <WebsiteHeader websiteId={websiteId} name={name} domain={domain}>
+        {showDetailsButton && (
+          <Link href={`/websites/${websiteId}`}>
+            <Button variant="primary">
+              <Text>{formatMessage(labels.viewDetails)}</Text>
+              <Icon>
+                <Icon rotate={dir === 'rtl' ? 180 : 0}>
+                  <Icons.ArrowRight />
+                </Icon>
+              </Icon>
+            </Button>
+          </Link>
+        )}
+      </WebsiteHeader>
+      <FilterTags
+        websiteId={websiteId}
+        params={{ url, referrer, os, browser, device, country, region, city, title }}
+      />
+      <Row
+        ref={ref}
+        className={classNames(styles.header, {
+          [styles.sticky]: stickyHeader,
+          [styles.isSticky]: isSticky,
+        })}
+      >
+        <Column defaultSize={12} xl={8}>
+          <MetricsBar websiteId={websiteId} />
+        </Column>
+        <Column defaultSize={12} xl={4}>
+          <div className={styles.actions}>
+            <RefreshButton websiteId={websiteId} isLoading={isLoading} />
+            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
           </div>
-          <div className={classNames(styles.filter, 'col-12 col-lg-3')}>
-            <DateFilter
-              value={value}
-              startDate={startDate}
-              endDate={endDate}
-              onChange={handleDateChange}
-            />
-          </div>
-        </StickyHeader>
-      </div>
-      <div className="row">
-        <div className={classNames(styles.chart, 'col')}>
+        </Column>
+      </Row>
+      <Row>
+        <Column className={styles.chart}>
           {error && <ErrorMessage />}
           {showChart && (
             <PageviewsChart
@@ -114,11 +120,13 @@ export default function WebsiteChart({
               data={chartData}
               unit={unit}
               records={getDateLength(startDate, endDate, unit)}
-              loading={loading}
+              loading={isLoading}
             />
           )}
-        </div>
-      </div>
-    </div>
+        </Column>
+      </Row>
+    </>
   );
 }
+
+export default WebsiteChart;

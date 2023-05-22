@@ -1,10 +1,9 @@
 html,
 body {
-  font-family: Inter, -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
-    Ubuntu, Cantrell, 'Helvetica Neue', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol';
-  font-weight: 400;
-  line-height: 1.8;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.5rem;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
@@ -12,48 +11,8 @@ body {
   display: flex;
   flex-direction: column;
   flex: 1;
-
-  font-size: var(--font-size-normal);
-  overflow-y: overlay;
-}
-
-body {
-  color: var(--gray900);
-  background: var(--gray75);
-}
-
-.zh-CN {
-  font-family: '方体', 'PingFang SC', '黑体', 'Heiti SC', 'Microsoft JhengHei UI',
-    'Microsoft JhengHei', Roboto, Noto, 'Noto Sans CJK SC', sans-serif !important;
-}
-
-.zh-TW {
-  font-family: '方體', 'PingFang TC', '黑體', 'Heiti TC', 'Microsoft JhengHei UI',
-    'Microsoft JhengHei', Roboto, Noto, 'Noto Sans CJK TC', sans-serif !important;
-}
-
-.ja-JP {
-  font-family: '游ゴシック体', YuGothic, 'ヒラギノ丸ゴ', 'Hiragino Sans', 'Yu Gothic UI',
-    'Meiryo UI', 'MS Gothic', Roboto, Noto, 'Noto Sans CJK JP', sans-serif !important;
-}
-
-.ko-KR {
-  font-family: 'Nanum Gothic', 'Apple SD Gothic Neo', 'Malgun Gothic', Roboto, Noto,
-    'Noto Sans CJK KR', sans-serif !important;
-}
-
-.ar-SA {
-  font-family: 'Geeza Pro', 'Arabic Typesetting', Roboto, Noto, 'Noto Naskh Arabic',
-    'Times New Roman', serif !important;
-}
-
-.si-LK {
-  font-family: 'Noto Sans Sinhala', Roboto, Noto, 'Times New Roman', sans-serif !important;
-}
-
-.he-IL {
-  font-family: 'New Peninim MT', 'Arial Hebrew', Gisha, 'Times New Roman', Roboto, Noto,
-    'Noto Sans Hebrew', sans-serif !important;
+  color: var(--font-color100);
+  background: var(--base50);
 }
 
 *,
@@ -74,54 +33,15 @@ h6 {
   margin: 0;
 }
 
-button,
-input,
-select {
-  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
 a,
 a:active,
 a:visited {
   color: var(--primary400);
+  text-decoration: none;
 }
 
-input[type='text'],
-input[type='password'],
-select,
-textarea {
-  color: var(--gray900);
-  background: var(--gray50);
-  padding: 4px 8px;
-  font-size: var(--font-size-normal);
-  line-height: 1.8;
-  border: 1px solid var(--gray500);
-  border-radius: 4px;
-  outline: none;
-  resize: none;
-  flex: 1;
-}
-
-input[type='checkbox'] + label {
-  margin-left: 10px;
-}
-
-label {
-  flex: 1;
-  margin-right: 20px;
-}
-
-label:empty {
-  flex: 0;
-}
-
-dt {
-  font-weight: 600;
-  margin: 0 0 5px 0;
-}
-
-dd {
-  margin: 0 0 30px 0;
+p {
+  line-height: 1.8rem;
 }
 
 main {
@@ -137,32 +57,35 @@ svg {
 #__next {
   display: flex;
   flex-direction: column;
+  flex: 1;
   width: 100%;
   height: 100%;
-  flex: 1;
 }
 
-#__modals {
-  z-index: 10;
+::-webkit-scrollbar {
+  width: 15px;
+  background: var(--base50);
 }
 
-.container {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
+::-webkit-scrollbar-track {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--base300);
+  background-clip: padding-box;
 }
 
-.row {
-  margin-right: 0;
-  margin-left: 0;
-}
-.row > .col,
-.row > [class*='col-'] {
-  padding-right: 0;
-  padding-left: 0;
+body::-webkit-scrollbar-track,
+main::-webkit-scrollbar-track {
+  background-color: var(--base50);
 }
 
-.center {
-  text-align: center;
+::-webkit-scrollbar-thumb {
+  border: 7px solid rgba(0, 0, 0, 0);
+  background-color: var(--base600);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-color: var(--base800);
+  background-clip: padding-box;
 }

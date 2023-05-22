@@ -2,9 +2,9 @@
   position: relative;
   min-height: 430px;
   height: 100%;
-  font-size: var(--font-size-small);
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .footer {

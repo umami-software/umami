@@ -2,14 +2,25 @@
 require('dotenv').config();
 const { PrismaClient } = require('@prisma/client');
 const chalk = require('chalk');
-const spawn = require('cross-spawn');
 const { execSync } = require('child_process');
+const semver = require('semver');
 
 if (process.env.SKIP_DB_CHECK) {
   console.log('Skipping database check.');
   process.exit(0);
 }
 
+function getDatabaseType(url = process.env.DATABASE_URL) {
+  const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
+
+  if (type === 'postgres') {
+    return 'postgresql';
+  }
+
+  return type;
+}
+
+const databaseType = getDatabaseType();
 const prisma = new PrismaClient();
 
 function success(msg) {
@@ -38,64 +49,47 @@ async function checkConnection() {
   }
 }
 
-async function checkTables() {
+async function checkDatabaseVersion(databaseType) {
+  const query = await prisma.$queryRaw`select version() as version`;
+  const version = semver.valid(semver.coerce(query[0].version));
+
+  const minVersion = databaseType === 'postgresql' ? '9.4.0' : '5.7.0';
+
+  if (semver.lt(version, minVersion)) {
+    throw new Error(
+      `Database version is not compatible. Please upgrade ${databaseType} version to ${minVersion} or greater`,
+    );
+  }
+
+  success('Database version check successful.');
+}
+
+async function checkV1Tables() {
   try {
     await prisma.$queryRaw`select * from account limit 1`;
 
-    success('Database tables found.');
+    error(
+      'Umami v1 tables detected. For how to upgrade from v1 to v2 go to https://umami.is/docs/migrate-v1-v2.',
+    );
+    process.exit(1);
   } catch (e) {
-    error('Database tables not found.');
-    console.log('Adding tables...');
-
-    console.log(execSync('prisma migrate deploy').toString());
+    // Ignore
   }
 }
 
-async function run(cmd, args) {
-  const buffer = [];
-  const proc = spawn(cmd, args);
-
-  return new Promise((resolve, reject) => {
-    proc.stdout.on('data', data => buffer.push(data));
-
-    proc.on('error', () => {
-      reject(new Error('Failed to run Prisma.'));
-    });
-
-    proc.on('exit', () => resolve(buffer.join('')));
-  });
-}
-
-async function checkMigrations() {
-  const output = await run('prisma', ['migrate', 'status']);
-
-  console.log(output);
-
-  const missingMigrations = output.includes('have not yet been applied');
-  const missingInitialMigration =
-    output.includes('01_init') && !output.includes('The last common migration is: 01_init');
-  const notManaged = output.includes('The current database is not managed');
-
-  if (notManaged || missingMigrations) {
-    console.log('Running update...');
-
-    if (missingInitialMigration) {
-      console.log(execSync('prisma migrate resolve --applied "01_init"').toString());
-    }
-
-    console.log(execSync('prisma migrate deploy').toString());
-  }
+async function applyMigration() {
+  console.log(execSync('prisma migrate deploy').toString());
 
   success('Database is up to date.');
 }
 
 (async () => {
   let err = false;
-  for (let fn of [checkEnv, checkConnection, checkTables, checkMigrations]) {
+  for (let fn of [checkEnv, checkConnection, checkDatabaseVersion, checkV1Tables, applyMigration]) {
     try {
-      await fn();
+      fn.name === 'checkDatabaseVersion' ? await fn(databaseType) : await fn();
     } catch (e) {
-      console.log(chalk.red(`✗ ${e.message}`));
+      error(e.message);
       err = true;
     } finally {
       await prisma.$disconnect();

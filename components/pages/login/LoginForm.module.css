@@ -1,0 +1,33 @@
+.login {
+  width: 400px;
+  margin: auto;
+  transform: translateY(-25%);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 300px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.icon {
+  width: 100%;
+}
+
+.icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+.button {
+  flex: 1;
+  justify-content: center;
+}

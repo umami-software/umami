@@ -1,0 +1,19 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.item a {
+  color: var(--font-color100);
+  flex: 1;
+  padding: var(--size300) var(--size600);
+}
+
+.item {
+  padding: 0;
+  border-radius: var(--border-radius);
+}
+
+.selected {
+  font-weight: 700;
+}

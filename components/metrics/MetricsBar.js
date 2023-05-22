@@ -1,38 +1,42 @@
-import React, { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import Loading from 'components/common/Loading';
+import { useState } from 'react';
+import { Loading } from 'react-basics';
 import ErrorMessage from 'components/common/ErrorMessage';
-import useFetch from 'hooks/useFetch';
+import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import usePageQuery from 'hooks/usePageQuery';
 import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
 import MetricCard from './MetricCard';
+import useMessages from 'hooks/useMessages';
 import styles from './MetricsBar.module.css';
 
-export default function MetricsBar({ websiteId, className }) {
+export function MetricsBar({ websiteId }) {
+  const { formatMessage, labels } = useMessages();
+  const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const [format, setFormat] = useState(true);
   const {
-    query: { url, referrer, os, browser, device, country },
+    query: { url, referrer, os, browser, device, country, region, city },
   } = usePageQuery();
 
-  const { data, error, loading } = useFetch(
-    `/websites/${websiteId}/stats`,
-    {
-      params: {
-        start_at: +startDate,
-        end_at: +endDate,
+  const { data, error, isLoading, isFetched } = useQuery(
+    [
+      'websites:stats',
+      { websiteId, modified, url, referrer, os, browser, device, country, region, city },
+    ],
+    () =>
+      get(`/websites/${websiteId}/stats`, {
+        startAt: +startDate,
+        endAt: +endDate,
         url,
         referrer,
         os,
         browser,
         device,
         country,
-      },
-    },
-    [modified, url, referrer, os, browser, device, country],
+        region,
+        city,
+      }),
   );
 
   const formatFunc = format
@@ -53,25 +57,28 @@ export default function MetricsBar({ websiteId, className }) {
   };
 
   return (
-    <div className={classNames(styles.bar, className)} onClick={handleSetFormat}>
-      {!data && loading && <Loading />}
+    <div className={styles.bar} onClick={handleSetFormat}>
+      {isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
-      {data && !error && (
+      {data && !error && isFetched && (
         <>
           <MetricCard
-            label={<FormattedMessage id="metrics.views" defaultMessage="Views" />}
+            className={styles.card}
+            label={formatMessage(labels.views)}
             value={pageviews.value}
             change={pageviews.change}
             format={formatFunc}
           />
           <MetricCard
-            label={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+            className={styles.card}
+            label={formatMessage(labels.visitors)}
             value={uniques.value}
             change={uniques.change}
             format={formatFunc}
           />
           <MetricCard
-            label={<FormattedMessage id="metrics.bounce-rate" defaultMessage="Bounce rate" />}
+            className={styles.card}
+            label={formatMessage(labels.bounceRate)}
             value={uniques.value ? (num / uniques.value) * 100 : 0}
             change={
               uniques.value && uniques.change
@@ -83,12 +90,8 @@ export default function MetricsBar({ websiteId, className }) {
             reverseColors
           />
           <MetricCard
-            label={
-              <FormattedMessage
-                id="metrics.average-visit-time"
-                defaultMessage="Average visit time"
-              />
-            }
+            className={styles.card}
+            label={formatMessage(labels.averageVisitTime)}
             value={
               totaltime.value && pageviews.value
                 ? totaltime.value / (pageviews.value - bounces.value)
@@ -108,3 +111,5 @@ export default function MetricsBar({ websiteId, className }) {
     </div>
   );
 }
+
+export default MetricsBar;

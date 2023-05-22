@@ -1,15 +1,21 @@
-import React, { useMemo } from 'react';
-import { FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import useFetch from 'hooks/useFetch';
-import Dot from 'components/common/Dot';
+import { useMemo } from 'react';
+import { StatusLight } from 'react-basics';
+import useApi from 'hooks/useApi';
+import useMessages from 'hooks/useMessages';
 import styles from './ActiveUsers.module.css';
 
-export default function ActiveUsers({ websiteId, className, value, interval = 60000 }) {
-  const url = websiteId ? `/websites/${websiteId}/active` : null;
-  const { data } = useFetch(url, {
-    interval,
-  });
+export function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
+  const { formatMessage, messages } = useMessages();
+  const { get, useQuery } = useApi();
+  const { data } = useQuery(
+    ['websites:active', websiteId],
+    () => get(`/websites/${websiteId}/active`),
+    {
+      refetchInterval,
+      enabled: !!websiteId,
+    },
+  );
+
   const count = useMemo(() => {
     if (websiteId) {
       return data?.[0]?.x || 0;
@@ -23,17 +29,10 @@ export default function ActiveUsers({ websiteId, className, value, interval = 60
   }
 
   return (
-    <div className={classNames(styles.container, className)}>
-      <Dot />
-      <div className={styles.text}>
-        <div>
-          <FormattedMessage
-            id="message.active-users"
-            defaultMessage="{x} current {x, plural, one {visitor} other {visitors}}"
-            values={{ x: count }}
-          />
-        </div>
-      </div>
-    </div>
+    <StatusLight variant="success">
+      <div className={styles.text}>{formatMessage(messages.activeUsers, { x: count })}</div>
+    </StatusLight>
   );
 }
+
+export default ActiveUsers;

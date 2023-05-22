@@ -8,12 +8,12 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
-      HASH_SALT: replace-me-with-a-random-string
+      APP_SECRET: replace-me-with-a-random-string
     depends_on:
       - db
     restart: always
   db:
-    image: postgres:12-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami

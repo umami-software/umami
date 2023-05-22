@@ -1,3 +1,4 @@
+/* eslint-disable no-console, @typescript-eslint/no-var-requires */
 const fs = require('fs-extra');
 const path = require('path');
 const https = require('https');

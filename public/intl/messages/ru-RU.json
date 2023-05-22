@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "Аккаунты"
+      "value": "Код доступа"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "Добавить аккаунт"
+      "value": "Действия"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Журнал активности"
     }
   ],
   "label.add-website": [
@@ -17,7 +23,7 @@
       "value": "Добавить сайт"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Администратор"
@@ -35,16 +41,34 @@
       "value": "Все время"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "Все сайты"
+      "value": "Аналитика"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Среднее время посещения"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "Назад"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Отказы"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Браузеры"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "Изменить пароль"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Города"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Очистить все"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Подтвердить"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "Подтвердить пароль"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "Скопировать в буфер обмена"
+      "value": "Продолжить"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Страны"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Создать команду"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Создать пользователя"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Создано"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "Информационная панель"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Данные"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "Удалить"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "Удалить аккаунт"
+      "value": "Удалить команду"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Удалить пользователя"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "Удалить сайт"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Настольный компьютер"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Подробности"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Устройства"
     }
   ],
   "label.dismiss": [
@@ -137,16 +233,10 @@
       "value": "Редактировать"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Редактировать аккаунт"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "Редактировать сайт"
+      "value": "Редактировать дашборд"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "Разрешить делиться ссылкой"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "Некорректный"
+      "value": "События"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "Некорректный домен"
+      "value": "Объединенные"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Сырые данные"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Присоединиться"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Присоединиться к команде"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "Язык"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Языки"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Ноутбук"
     }
   ],
   "label.last-days": [
@@ -201,14 +321,16 @@
       "value": " часа"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "Вы вошли как "
-    },
+      "value": "Уйти"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Покинуть команду"
     }
   ],
   "label.login": [
@@ -221,6 +343,18 @@
     {
       "type": 0,
       "value": "Выйти"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Участники"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Смартфон"
     }
   ],
   "label.more": [
@@ -244,7 +378,13 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "Не указано"
+    }
+  ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Операционные системы"
     }
   ],
   "label.owner": [
@@ -253,16 +393,32 @@
       "value": "Владелец"
     }
   ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Просмотры страниц"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Страницы"
+    }
+  ],
   "label.password": [
     {
       "type": 0,
       "value": "Пароль"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "Пароли не совпадают"
+      "value": "На движке "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -271,22 +427,52 @@
       "value": "Профиль"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Запросы"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Параметры запроса"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Реальное время"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "Логи в реальном времени"
+      "value": "Источники"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "Обновить"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Обновить"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Регионы"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Удалить"
     }
   ],
   "label.required": [
@@ -307,10 +493,34 @@
       "value": "Сбросить статистику"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Роль"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "Сохранить"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Экраны"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Выбрать сайт"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Сессии"
     }
   ],
   "label.settings": [
@@ -329,6 +539,48 @@
     {
       "type": 0,
       "value": "Один день"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Планшет"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Команда"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Гость команды"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "ID команды"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Член команды"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Владелец команды"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Команды"
     }
   ],
   "label.theme": [
@@ -361,10 +613,22 @@
       "value": "Часовой пояс"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Заголовок"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "Сегодня"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Показать/скрыть графики"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +637,22 @@
       "value": "Код отслеживания"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Уникальные посетители"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "Неизвестно"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "Пользователь"
     }
   ],
   "label.username": [
@@ -385,16 +661,52 @@
       "value": "Имя пользователя"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Пользователи"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "Просмотреть"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "Посмотреть детали"
     }
   ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Просмотры"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Посетители"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "ID сайта"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "Сайты"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Вчера"
     }
   ],
   "message.active-users": [
@@ -421,6 +733,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Вы уверены, что хотите уйти "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -435,40 +761,36 @@
       "value": "?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "Скопировано!"
+      "value": "Удалить сайт"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "Все связанные данные будут также удалены."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "Что-то пошло не так."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "Получить публичную ссылку"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "Получить код отслеживания"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -483,7 +805,113 @@
       "value": "Неверное имя пользователя/пароль."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Некорректный домен"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Минимальная длина "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " символов"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Нет данных."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Пароли не совпадают"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "Вы не создали ни одной команды."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "Нет пользователей."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Страница не найдена."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Сбросить статистику"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Вся статистика для этого сайта будет удалена, но ваш код отслеживания останется нетронутым."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Успешно сохранено."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Это публичная ссылка для "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "Вы уже состоите в команде."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Команда не найдена."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Код отслеживания"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "Пользователь удален."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "Посетитель из "
@@ -517,262 +945,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "Доступна новая версия umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
+      "value": "У этой команды нет ни одного сайта."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Нет данных."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "У вас нет настроенных сайтов."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Страница не найдена."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "На движке "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "Вся статистика для этого сайта будет удалена, но ваш код отслеживания останется нетронутым."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "Успешно сохранено."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Это публичная ссылка для "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Показать/скрыть графики"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "Чтобы отслеживать статистику для "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": ", поместите следующий код в раздел "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " вашего сайта."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "Напишите "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " в поле ниже, чтобы подтвердить."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "Введите "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " в поле ниже, чтобы подтвердить."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "Действия"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Среднее время посещения"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Отказы"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "Браузеры"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "Страны"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "Настольный компьютер"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "Ноутбук"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "Смартфон"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "Планшет"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "Устройства"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "События"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "Объединенные"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "Сырые данные"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Языки"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "Операционные системы"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "Просмотры страниц"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "Страницы"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "Источники"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Уникальные посетители"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "Просмотры"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "Посетители"
+      "value": "Сайты могут просматривать все члены команды."
     }
   ]
 }

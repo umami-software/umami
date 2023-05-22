@@ -1,22 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Icon from 'components/common/Icon';
+import { Icon, Text, Flexbox } from 'react-basics';
 import Logo from 'assets/logo.svg';
-import styles from './EmptyPlaceholder.module.css';
 
-function EmptyPlaceholder({ msg, children }) {
+export function EmptyPlaceholder({ message, children }) {
   return (
-    <div className={styles.placeholder}>
-      <Icon className={styles.icon} icon={<Logo />} size="xlarge" />
-      <h2 className={styles.msg}>{msg}</h2>
-      {children}
-    </div>
+    <Flexbox direction="column" alignItems="center" justifyContent="center" gap={60} height={600}>
+      <Icon size="xl">
+        <Logo />
+      </Icon>
+      <Text size="lg">{message}</Text>
+      <div>{children}</div>
+    </Flexbox>
   );
 }
-
-EmptyPlaceholder.propTypes = {
-  msg: PropTypes.node,
-  children: PropTypes.node,
-};
 
 export default EmptyPlaceholder;

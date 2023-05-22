@@ -1,10 +1,18 @@
 import create from 'zustand';
-import { DEFAULT_LOCALE, DEFAULT_THEME, LOCALE_CONFIG, THEME_CONFIG } from 'lib/constants';
+import {
+  DATE_RANGE_CONFIG,
+  DEFAULT_DATE_RANGE,
+  DEFAULT_LOCALE,
+  DEFAULT_THEME,
+  LOCALE_CONFIG,
+  THEME_CONFIG,
+} from 'lib/constants';
 import { getItem } from 'next-basics';
 
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
   theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
+  dateRange: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE,
   shareToken: null,
   user: null,
   config: null,
@@ -30,6 +38,10 @@ export function setUser(user) {
 
 export function setConfig(config) {
   store.setState({ config });
+}
+
+export function setDateRange(dateRange) {
+  store.setState({ dateRange });
 }
 
 export default store;

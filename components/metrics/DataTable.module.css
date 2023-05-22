@@ -1,7 +1,6 @@
 .table {
   position: relative;
   height: 100%;
-  font-size: var(--font-size-small);
   display: grid;
   grid-template-rows: fit-content(100%) auto;
   overflow: hidden;
@@ -23,11 +22,9 @@
 .title {
   display: flex;
   font-weight: 600;
-  font-size: var(--font-size-normal);
 }
 
 .metric {
-  font-size: var(--font-size-small);
   font-weight: 600;
   text-align: center;
   width: 100px;
@@ -71,8 +68,8 @@
 
 .value {
   width: 50px;
-  text-align: right;
-  margin-right: 10px;
+  text-align: end;
+  margin-inline-end: 10px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -80,9 +77,9 @@
 .percent {
   position: relative;
   width: 50px;
-  color: var(--gray600);
-  border-left: 1px solid var(--gray600);
-  padding-left: 10px;
+  color: var(--base600);
+  border-left: 1px solid var(--base600);
+  padding-inline-start: 10px;
   z-index: 1;
 }
 

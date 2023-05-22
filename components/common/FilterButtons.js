@@ -1,25 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ButtonLayout from 'components/layout/ButtonLayout';
-import ButtonGroup from './ButtonGroup';
+import { ButtonGroup, Button, Flexbox } from 'react-basics';
 
-function FilterButtons({ buttons, selected, onClick }) {
+export function FilterButtons({ items, selectedKey, onSelect }) {
   return (
-    <ButtonLayout>
-      <ButtonGroup size="xsmall" items={buttons} selectedItem={selected} onClick={onClick} />
-    </ButtonLayout>
+    <Flexbox justifyContent="center">
+      <ButtonGroup items={items} selectedKey={selectedKey} onSelect={onSelect}>
+        {({ key, label }) => <Button key={key}>{label}</Button>}
+      </ButtonGroup>
+    </Flexbox>
   );
 }
-
-FilterButtons.propTypes = {
-  buttons: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.node,
-      value: PropTypes.any.isRequired,
-    }),
-  ),
-  selected: PropTypes.any,
-  onClick: PropTypes.func,
-};
 
 export default FilterButtons;

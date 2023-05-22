@@ -1,34 +1,33 @@
-import { useRouter } from 'next/router';
-import Script from 'next/script';
-import classNames from 'classnames';
+import { Row, Column } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
-import Link from 'components/common/Link';
-import styles from './Footer.module.css';
 import { CURRENT_VERSION, HOMEPAGE_URL, REPO_URL } from 'lib/constants';
+import { labels } from 'components/messages';
+import styles from './Footer.module.css';
 
-export default function Footer() {
-  const { pathname } = useRouter();
-
+export function Footer() {
   return (
-    <footer className={classNames(styles.footer, 'row')}>
-      <div className="col-12 col-md-4" />
-      <div className="col-12 col-md-4">
-        <FormattedMessage
-          id="message.powered-by"
-          defaultMessage="Powered by {name}"
-          values={{
-            name: (
-              <Link href={HOMEPAGE_URL}>
-                <b>umami</b>
-              </Link>
-            ),
-          }}
-        />
-      </div>
-      <div className={classNames(styles.version, 'col-12 col-md-4')}>
-        <Link href={REPO_URL}>{`v${CURRENT_VERSION}`}</Link>
-      </div>
-      {!pathname.includes('/share/') && <Script src={`/telemetry.js`} />}
+    <footer className={styles.footer}>
+      <Row>
+        <Column defaultSize={12} lg={11} xl={11}>
+          <div>
+            <FormattedMessage
+              {...labels.poweredBy}
+              values={{
+                name: (
+                  <a href={HOMEPAGE_URL}>
+                    <b>umami</b>
+                  </a>
+                ),
+              }}
+            />
+          </div>
+        </Column>
+        <Column className={styles.version} defaultSize={12} lg={1} xl={1}>
+          <a href={REPO_URL}>{`v${CURRENT_VERSION}`}</a>
+        </Column>
+      </Row>
     </footer>
   );
 }
+
+export default Footer;

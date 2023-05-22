@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "الحسابات"
+      "value": "كود الدعوة"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "إضافة حساب"
+      "value": "الإجراءات"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "سجل الأحداث"
     }
   ],
   "label.add-website": [
@@ -17,10 +23,10 @@
       "value": "إضافة موقع"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
-      "value": "مدير عام؟"
+      "value": "مدير"
     }
   ],
   "label.all": [
@@ -32,19 +38,37 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "كل الوقت"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "كافة المواقع"
+      "value": "تحليلات"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "متوسط وقت الزيارة"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "للخلف"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "معدل الارتداد"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "المتصفحات"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "تغيير كلمة المرور"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "المدن"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "مسح الكل"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "تأكيد"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "تأكيد كلمة المرور"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "نسخ للحافظة"
+      "value": "متابعة"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "الدول"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "انشاء مجموعة"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "انشاء مستخدم"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "تم الانشاء"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "الشاشة الرئيسية"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "البيانات"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "حذف"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "حذف الحساب"
+      "value": "حذف مجموعة"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "جذف مستخدم"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "حذف الموقع"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "كمبيوتر"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "تفاصيل"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "الأجهزة"
     }
   ],
   "label.dismiss": [
@@ -128,7 +224,7 @@
   "label.domain": [
     {
       "type": 0,
-      "value": "نطاق"
+      "value": "النطاق"
     }
   ],
   "label.edit": [
@@ -137,16 +233,10 @@
       "value": "تعديل"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "تعديل الحساب"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "تعديل الموقع"
+      "value": "تعديل لوحة التحكم"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "تفعيل مشاركة الرابط"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "غير صحيح"
+      "value": "الأحداث"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "النطاق غير صحيح"
+      "value": "مجمعة"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "مفصلة"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "انضمام"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "الانضمام للمجموعة"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "اللغة"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "اللغات"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "لابتوب"
     }
   ],
   "label.last-days": [
@@ -201,14 +321,16 @@
       "value": " ساعة/ساعات"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "تم تسجيل الدخول كـ "
-    },
+      "value": "مغادرة"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "مغادرة المجموعة"
     }
   ],
   "label.login": [
@@ -221,6 +343,18 @@
     {
       "type": 0,
       "value": "تسجيل الخروج"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "الأعضاء"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "جوال"
     }
   ],
   "label.more": [
@@ -244,13 +378,31 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "غير معرف"
+    }
+  ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "نظام التشغيل"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "المالك"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "مشاهدات الصفحة"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "الصفحات"
     }
   ],
   "label.password": [
@@ -259,10 +411,14 @@
       "value": "كلمة المرور"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "كلمة المرور غير متطابقة"
+      "value": "مشغل بواسطة "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -271,22 +427,52 @@
       "value": "الملف الشخصي"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "استعلامات"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "متغيرات الرابط"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "الوقت الفعلي"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "سجلات الوقت الفعلي"
+      "value": "التحويلات"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "تحديث"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "اعادة انشاء"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "المناطق"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "إزالة"
     }
   ],
   "label.required": [
@@ -307,10 +493,34 @@
       "value": "اعادة تعيين الإحصائيات"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "الصلاحية"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "حفظ"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "الشاشات"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "اختيار موقع"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "الزيارات"
     }
   ],
   "label.settings": [
@@ -331,10 +541,52 @@
       "value": "يوم واحد"
     }
   ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "تابلت"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "مجموعة"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "زائر للمجموعة"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "معرف المجموعة"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "عضو المجموعة"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "مدير المجموعة"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "المجموعات"
+    }
+  ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "المظهر"
     }
   ],
   "label.this-month": [
@@ -361,10 +613,22 @@
       "value": "المنطقة الزمنية"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "العنوان"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "اليوم"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "تغيير الإحصائيات"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +637,22 @@
       "value": "كود التتبع"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "زائرون فريدون"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "غير معروف"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "مستخدم"
     }
   ],
   "label.username": [
@@ -385,16 +661,52 @@
       "value": "اسم المستخدم"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "المستخدمين"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "عرض"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "عرض التفاصيل"
     }
   ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "المشاهدات"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "الزوار"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "معرف الموقع"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "المواقع"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "الأمس"
     }
   ],
   "message.active-users": [
@@ -445,6 +757,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "هل أنت متأكد من مغادرة "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -459,40 +785,36 @@
       "value": "؟"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "تم النسخ!"
+      "value": "حذف الموقع"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "كافة البيانات المرتبطة سيم حذفها ايضا."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "حدث خطأ ما."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "احصل على رابط المشاركة"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " في "
+    },
     {
-      "type": 0,
-      "value": "احصل على كود التتبع"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -507,7 +829,113 @@
       "value": "اسم المستخدم او كلمة المرور غير صحيحة."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "النطاق غير صحيح"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "اقل عدد مسموح به "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " حرف/أحرف"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "لا توجد بيانات متاحة."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "كلمة المرور غير متطابقة"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "لم تقم بإنشاء اي مجموعة."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "لا يوجد مستخدمين."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "الصفحة غير موجودة."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "اعادة تعيين الإحصائيات"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "سيتم اعادة تعيين كافة الإحصائيات لهذا الموقع، لكن لن يتم تعيير كود التتبع"
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "تم الحفظ بنجاح."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "هذا الرابط الذي تم مشاركته بشكل عام لـ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "أنت عضو في المجموعة"
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "لم يتم العثور على المجموعة"
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "كود التتبع"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "تم حذف المستخدم."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "زائر من "
@@ -541,266 +969,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "توجد نسخة جديدة من umami رقم "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " سارع بالتحديث!"
+      "value": "هذه المجموعة ليس لديه اي موقع."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "لا توجد بيانات متاحة."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "لم تقم بإعداد اي موقع."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "الصفحة غير موجودة."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "مشغل بواسطة "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "سيتم اعادة تعيين كافة الإحصائيات لهذا الموقع، لكن لن يتم تعيير كود التتبع"
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "تم الحفظ بنجاح."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "هذا الرابط الذي تم مشاركته بشكل عام لـ "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Toggle charts"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "لتتبع الاحصاىيات لـ "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": ", ضع الكود التالي في منطقة "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " في موقعك."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "اكتب "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " في الحقل التالي لتأكيد الحذف."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "اكتب "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " في الحقل التالي لتأكيد الحذف."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "اجراءات"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "متوسط وقت الزيارة"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "معدل الارتداد"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "المتصفحات"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "الدول"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "كمبيوتر"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "لابتوب"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "جوال"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "تابلت"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "الأجهزة"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "الأحداث"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "مجمعة"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "مفصلة"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Languages"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "نظام التشغيل"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "مشاهدات الصفحة"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "الصفحات"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "التحويلات"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "زائرون فريدون"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "مشاهدات"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "زوار"
+      "value": "يمكن مشاهدة الموقع من اي عضو في المجموعة."
     }
   ]
 }

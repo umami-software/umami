@@ -1,5 +1,5 @@
-import React, { useMemo, useRef } from 'react';
-import { format, parseISO, startOfMinute, subMinutes, isBefore } from 'date-fns';
+import { useMemo, useRef } from 'react';
+import { format, startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
 import { getDateArray } from 'lib/date';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from 'lib/constants';
@@ -8,13 +8,12 @@ function mapData(data) {
   let last = 0;
   const arr = [];
 
-  data.reduce((obj, val) => {
-    const { createdAt } = val;
-    const t = startOfMinute(parseISO(createdAt));
+  data?.reduce((obj, { timestamp }) => {
+    const t = startOfMinute(new Date(timestamp));
     if (t.getTime() > last) {
-      obj = { t: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
+      obj = { x: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
       arr.push(obj);
-      last = t;
+      last = t.getTime();
     } else {
       obj.y += 1;
     }
@@ -24,20 +23,21 @@ function mapData(data) {
   return arr;
 }
 
-export default function RealtimeChart({ data, unit, ...props }) {
+export function RealtimeChart({ data, unit, ...props }) {
   const endDate = startOfMinute(new Date());
   const startDate = subMinutes(endDate, REALTIME_RANGE);
   const prevEndDate = useRef(endDate);
 
   const chartData = useMemo(() => {
-    if (data) {
-      return {
-        pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
-        sessions: getDateArray(mapData(data.sessions), startDate, endDate, unit),
-      };
+    if (!data) {
+      return { pageviews: [], sessions: [] };
     }
-    return { pageviews: [], sessions: [] };
-  }, [data]);
+
+    return {
+      pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
+      sessions: getDateArray(mapData(data.visitors), startDate, endDate, unit),
+    };
+  }, [data, startDate, endDate, unit]);
 
   // Don't animate the bars shifting over because it looks weird
   const animationDuration = useMemo(() => {
@@ -46,7 +46,7 @@ export default function RealtimeChart({ data, unit, ...props }) {
       return 0;
     }
     return DEFAULT_ANIMATION_DURATION;
-  }, [data]);
+  }, [data, endDate]);
 
   return (
     <PageviewsChart
@@ -58,3 +58,5 @@ export default function RealtimeChart({ data, unit, ...props }) {
     />
   );
 }
+
+export default RealtimeChart;

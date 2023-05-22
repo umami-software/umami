@@ -1,26 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "บัญชี"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "เพิ่มบัญชี"
+      "value": "การกระทำ"
     }
   ],
-  "label.add-column": [
+  "label.activity-log": [
     {
       "type": 0,
-      "value": "สร้างคอลัมน์"
-    }
-  ],
-  "label.add-filter": [
-    {
-      "type": 0,
-      "value": "สร้างตัวกรอง"
+      "value": "Activity log"
     }
   ],
   "label.add-website": [
@@ -29,7 +23,7 @@
       "value": "เพิ่มเว็บไซต์"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "ผู้ดูแลระบบ"
@@ -47,16 +41,34 @@
       "value": "ทุกช่วงเวลา"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "เว็บไซต์ทั้งหมด"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "ระยะเวลาเข้าชมเฉลี่ย"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "ย้อนกลับ"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "อัตราตีกลับ"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "เบราว์เซอร์"
     }
   ],
   "label.cancel": [
@@ -71,16 +83,58 @@
       "value": "เปลี่ยนรหัสผ่าน"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "ยืนยันรหัสผ่าน"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "คัดลอกไปยังคลิปบอร์ด"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "ประเทศ"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -101,6 +155,12 @@
       "value": "แดชบอร์ด"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -119,16 +179,40 @@
       "value": "ลบ"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "ลบบัญชี"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "ลบเว็บไซต์"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "เดสก์ท็อป"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "อุปกรณ์"
     }
   ],
   "label.dismiss": [
@@ -149,16 +233,10 @@
       "value": "แก้ไข"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "แก้ไขบัญชี"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "แก้ไขเว็บไซต์"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -167,22 +245,52 @@
       "value": "เปิดใช้งานการแชร์ลิงก์"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "ไม่ถูกต้อง"
+      "value": "เหตุการณ์"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "โดเมนไม่ถูกต้อง"
+      "value": "ข้อมูลรวม"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "ข้อมูลดิบ"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "ภาษา"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "ภาษา"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "แล็ปท็อป"
     }
   ],
   "label.last-days": [
@@ -205,14 +313,16 @@
       "value": " ชั่วโมงที่ผ่านมา"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "เข้าสู่ระบบโดย "
-    },
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -225,6 +335,18 @@
     {
       "type": 0,
       "value": "ออกจากระบบ"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "โทรศัพท์มือถือ"
     }
   ],
   "label.more": [
@@ -251,10 +373,28 @@
       "value": "ไม่ได้กำหนด"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "ระบบปฏิบัติการ"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "เจ้าของ"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "การเข้าชม"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "หน้าเพจ"
     }
   ],
   "label.password": [
@@ -263,10 +403,14 @@
       "value": "รหัสผ่าน"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "รหัสผ่านไม่ตรงกัน"
+      "value": "ขับเคลื่อนโดย "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -275,16 +419,28 @@
       "value": "โปรไฟล์"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "เรียลไทม์"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "Log แบบเรียลไทม์"
+      "value": "แหล่งที่มา"
     }
   ],
   "label.refresh": [
@@ -293,10 +449,28 @@
       "value": "รีเฟรช"
     }
   ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
   "label.required": [
     {
       "type": 0,
-      "value": "จำเป็น"
+      "value": "ต้องการ"
     }
   ],
   "label.reset": [
@@ -311,16 +485,34 @@
       "value": "รีเซตข้อมูลสถิติ"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "บันทึก"
     }
   ],
-  "label.search": [
+  "label.screens": [
     {
       "type": 0,
-      "value": "ค้นหา"
+      "value": "ขนาดหน้าจอ"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -339,6 +531,48 @@
     {
       "type": 0,
       "value": "วันที่"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "แท็บเล็ต"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -371,10 +605,22 @@
       "value": "เขตเวลา"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "วันนี้"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "เปิด/ปิดแผนภูมิ"
     }
   ],
   "label.tracking-code": [
@@ -383,10 +629,22 @@
       "value": "โค้ดสำหรับใช้ติดตาม"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "ผู้เข้าชม"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "ไม่รู้จัก"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
     }
   ],
   "label.username": [
@@ -395,10 +653,40 @@
       "value": "ชื่อผู้ใช้"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "แสดงรายละเอียด"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "การเข้าชม"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "ผู้เข้าชม"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
     }
   ],
   "label.websites": [
@@ -410,7 +698,7 @@
   "label.yesterday": [
     {
       "type": 0,
-      "value": "เมื่อวาน"
+      "value": "Yesterday"
     }
   ],
   "message.active-users": [
@@ -465,10 +753,24 @@
       "value": " ?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลสถิติของ "
+      "value": "คุณแน่ใจหรือไม่ว่าต้องการรีเซตข้อมูลสถิติของ "
     },
     {
       "type": 1,
@@ -479,40 +781,36 @@
       "value": " ?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "คัดลอกแล้ว!"
+      "value": "ลบเว็บไซต์"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "ข้อมูลที่เกี่ยวข้องทั้งหมดจะถูกลบ."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "แก้ไขแดชบอร์ด"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "เกิดข้อผิดพลาด."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "รับลิงก์สำหรับแชร์"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "รับโค้ดสำหรับใช้ติดตาม"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -527,7 +825,113 @@
       "value": "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "โดเมนไม่ถูกต้อง"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "ไม่มีข้อมูล."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "รหัสผ่านไม่ตรงกัน"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "ไม่พบหน้านี้."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "รีเซตข้อมูลสถิติ"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "สถิติทั้งหมดสำหรับเว็บไซต์นี้จะถูกลบออก แต่โค้ดสำหรับใช้ติดตามของคุณจะยังคงอยู่เหมือนเดิม."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "บันทึกข้อมูลเรียบร้อย."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "นี่คือลิงก์ที่แชร์แบบสาธารณะสำหรับ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "โค้ดสำหรับใช้ติดตาม"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "ผู้เข้าชมจาก "
@@ -561,266 +965,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "umami เวอร์ชันใหม่ ("
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": ") มาแล้ว!"
+      "value": "This team does not have any websites."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "ไม่มีข้อมูล."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "คุณยังไม่ได้ตั้งค่าเว็บไซต์ใด ๆ ไว้."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "ไม่พบหน้านี้."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "ขับเคลื่อนโดย "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "สถิติทั้งหมดสำหรับเว็บไซต์นี้จะถูกลบออก แต่โค้ดสำหรับใช้ติดตามของคุณจะยังคงอยู่เหมือนเดิม."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "บันทึกข้อมูลเรียบร้อย."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "นี่คือลิงก์ที่แชร์แบบสาธารณะสำหรับ "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "เปิด/ปิดแผนภูมิ"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "หากต้องการติดตามสถิติสำหรับ "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " ให้วางโค้ดต่อไปนี้ในส่วน "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " ของเว็บไซต์ของคุณ."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "พิมพ์ข้อความ "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " ในช่องด้านล่างเพื่อยืนยัน."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "พิมพ์ข้อความ "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " ในช่องด้านล่างเพื่อยืนยัน."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "การกระทำ"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "ระยะเวลาเข้าชมเฉลี่ย"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "อัตราตีกลับ"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "เบราว์เซอร์"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "ประเทศ"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "เดสก์ท็อป"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "แล็ปท็อป"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "โทรศัพท์มือถือ"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "แท็บเล็ต"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "อุปกรณ์"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "เหตุการณ์"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "ข้อมูลรวม"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "ข้อมูลดิบ"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "ภาษา"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "ระบบปฏิบัติการ"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "การเข้าชม"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "หน้าเพจ"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "พารามิเตอร์ URL"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "แหล่งที่มา"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "ขนาดหน้าจอ"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "ผู้เข้าชม"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "การเข้าชม"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "ผู้เข้าชม"
+      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

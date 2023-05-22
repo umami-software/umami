@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "Tilit"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "Lisää tili"
+      "value": "Toiminnat"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
     }
   ],
   "label.add-website": [
@@ -17,7 +23,7 @@
       "value": "Lisää verkkosivu"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Järjestelmänvalvoja"
@@ -35,16 +41,34 @@
       "value": "Alusta lähtien"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "Kaikki verkkosivut"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Keskimääräinen vierailuaika"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "Takaisin"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Välitön poistuminen"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Selaimet"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "Vaihda salasana"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "Vahvista salasana"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "Kopioi leikepöydälle"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Maat"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "Ohjauspaneeli"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "Poista"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "Poista tili"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "Poista verkkosivu"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Pöytäkone"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Laitteet"
     }
   ],
   "label.dismiss": [
@@ -137,16 +233,10 @@
       "value": "Muokkaa"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Muokkaa tiliä"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "Muokkaa verkkosivua"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "Ota jakamisen URL-osoite käyttöön"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "Virheellinen"
+      "value": "Tapahtumat"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "Virheellinen verkkotunnus"
+      "value": "Yhdistetty"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Käsittelemätön"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "Kieli"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Kielet"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Kannettava tietokone"
     }
   ],
   "label.last-days": [
@@ -201,14 +321,16 @@
       "value": " tuntia"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "Kirjautuneena sisään nimellä "
-    },
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -221,6 +343,18 @@
     {
       "type": 0,
       "value": "Kirjaudu ulos"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Puhelin"
     }
   ],
   "label.more": [
@@ -247,10 +381,28 @@
       "value": "None"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Käyttöjärjestelmät"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "Omistaja"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Sivun näyttökerrat"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Sivut"
     }
   ],
   "label.password": [
@@ -259,10 +411,14 @@
       "value": "Salasana"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "Salasanat eivät täsmää"
+      "value": "Voimanlähteenä "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -271,22 +427,52 @@
       "value": "Profiili"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Juuri nyt"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "Reaaliaikaiset lokit"
+      "value": "Viittaajat"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "Päivitä"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
     }
   ],
   "label.required": [
@@ -307,10 +493,34 @@
       "value": "Nollaa tilastot"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "Tallenna"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -329,6 +539,48 @@
     {
       "type": 0,
       "value": "Yksi päivä"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Tabletti"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -361,10 +613,22 @@
       "value": "Aikavyöhyke"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "Tänään"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Kytke kaaviot päälle/pois"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +637,22 @@
       "value": "Seurantakoodi"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Yksittäiset kävijät"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "Tuntematon"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
     }
   ],
   "label.username": [
@@ -385,16 +661,52 @@
       "value": "Käyttäjänimi"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "Katso tiedot"
     }
   ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Näyttökerrat"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Vierailijat"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "Verkkosivut"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Yesterday"
     }
   ],
   "message.active-users": [
@@ -445,6 +757,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -459,40 +785,36 @@
       "value": " tilastot?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "Kopioitu!"
+      "value": "Poista verkkosivu"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "Kaikki siihen liittyvät tiedot poistetaan."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "Jotain meni pieleen."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "Hanki jakamisen URL-osoite"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "Hanki seurantakoodi"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -507,7 +829,113 @@
       "value": "Väärä käyttäjänimi/salasana."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Virheellinen verkkotunnus"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Tietoja ei ole käytettävissä."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Salasanat eivät täsmää"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Sivua ei löydetty."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Nollaa tilastot"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Tallennettu onnistuneesti."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Tämä on julkisesti jaettu URL sivustolle "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Seurantakoodi"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "Vierailija maasta "
@@ -541,266 +969,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "Uusi versio umamista "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " on käytettävissä!"
+      "value": "This team does not have any websites."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "Tietoja ei ole käytettävissä."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "Sinulla ei ole määritettyjä verkkosivustoja."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Sivua ei löydetty."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "Voimanlähteenä "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "Tallennettu onnistuneesti."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Tämä on julkisesti jaettu URL sivustolle "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Kytke kaaviot päälle/pois"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "Jos haluat seurata sivuston "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " tilastoja, aseta seuraava koodi verkkosivustosi "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": "-osioon."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "Kirjoita "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " alla olevaan kenttään vahvistaaksesi."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "Kirjoita "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " alla olevaan kenttään vahvistaaksesi."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "Toiminnat"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Keskimääräinen vierailuaika"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Välitön poistuminen"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "Selaimet"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "Maat"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "Pöytäkone"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "Kannettava tietokone"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "Puhelin"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "Tabletti"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "Laitteet"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "Tapahtumat"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "Yhdistetty"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "Käsittelemätön"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Kielet"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "Käyttöjärjestelmät"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "Sivun näyttökerrat"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "Sivut"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "Viittaajat"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Yksittäiset kävijät"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "Näyttökerrat"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "Vierailijat"
+      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

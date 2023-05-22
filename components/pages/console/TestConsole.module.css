@@ -1,0 +1,11 @@
+.test {
+  border: 1px solid var(--base400);
+  border-radius: 5px;
+  padding: 0 20px 20px 20px;
+}
+
+.header {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 20px 0;
+}

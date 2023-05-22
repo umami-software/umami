@@ -1,14 +1,20 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "Comptes"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "Afegeix compte"
+      "value": "Accions"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
     }
   ],
   "label.add-website": [
@@ -17,7 +23,7 @@
       "value": "Afegeix lloc web"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Administrador"
@@ -35,16 +41,34 @@
       "value": "Sempre"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "Tots els llocs web"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Temps mitjà de visita"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "Enrere"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Percentatge de rebot"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Navegadors"
     }
   ],
   "label.cancel": [
@@ -59,16 +83,58 @@
       "value": "Canvia la contrasenya"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "Confirma la contrasenya"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "Copia al porta-retalls"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Països"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -89,6 +155,12 @@
       "value": "Panell"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -107,16 +179,40 @@
       "value": "Esborra"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "Esborra el compte"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "Esborra el lloc web"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Escriptori"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Dispositius"
     }
   ],
   "label.dismiss": [
@@ -137,16 +233,10 @@
       "value": "Edita"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edita el compte"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "Edita el lloc web"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -155,22 +245,52 @@
       "value": "Activa l'enllaç per compartir"
     }
   ],
-  "label.invalid": [
+  "label.events": [
     {
       "type": 0,
-      "value": "Invàlid"
+      "value": "Esdeveniments"
     }
   ],
-  "label.invalid-domain": [
+  "label.filter-combined": [
     {
       "type": 0,
-      "value": "Domini invàlid"
+      "value": "Combinat"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "En cru"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "Language"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Llengües"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Portàtil"
     }
   ],
   "label.last-days": [
@@ -201,14 +321,16 @@
       "value": " hores"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "Connectat com "
-    },
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -221,6 +343,18 @@
     {
       "type": 0,
       "value": "Desconnecta't"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Mòbil"
     }
   ],
   "label.more": [
@@ -247,10 +381,28 @@
       "value": "None"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Sistemes operatius"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "Propietari"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Pàgines vistes"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Pàgines"
     }
   ],
   "label.password": [
@@ -259,10 +411,14 @@
       "value": "Contrasenya"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "Les contrasenyes no coincideixen"
+      "value": "Funciona amb "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -271,22 +427,52 @@
       "value": "Perfil"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "Temps real"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "Registres a temps real"
+      "value": "Referents"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "Refresca"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
     }
   ],
   "label.required": [
@@ -307,10 +493,34 @@
       "value": "Restableix estadístiques"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "Desa"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Screens"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -329,6 +539,48 @@
     {
       "type": 0,
       "value": "Un sol dia"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Tauleta"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -361,10 +613,22 @@
       "value": "Zona horària"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "Avui"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Mostra/amaga gràfics"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +637,22 @@
       "value": "Codi de seguiment"
     }
   ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Visitants únics"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "Desconegut"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
     }
   ],
   "label.username": [
@@ -385,10 +661,40 @@
       "value": "Nom d'usuari"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
       "value": "Veure els detalls"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Vistes"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Visitants"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
     }
   ],
   "label.websites": [
@@ -451,6 +757,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -465,40 +785,36 @@
       "value": "?"
     }
   ],
-  "message.copied": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "S'ha copiat"
+      "value": "Esborra el lloc web"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website-warning": [
     {
       "type": 0,
       "value": "També s'esborraran totes les dades relacionades."
     }
   ],
-  "message.edit-dashboard": [
-    {
-      "type": 0,
-      "value": "Edit dashboard"
-    }
-  ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
       "value": "S'ha produït un error."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "Obté l'enllaç per compartir"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "Obté el codi de seguiment"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -513,7 +829,113 @@
       "value": "Nom d'usuari o contrasenya incorrectes."
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Domini invàlid"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "No hi ha dades disponibles."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Les contrasenyes no coincideixen"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "No s'ha trobat la pàgina."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Restableix estadístiques"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "S'ha desat amb èxit."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Aquest és l'enllaç públic per compartir de "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Codi de seguiment"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 0,
       "value": "Visitant de "
@@ -547,266 +969,22 @@
       "value": "device"
     }
   ],
-  "message.new-version-available": [
+  "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "Hi ha disponible una nova versió d'umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": "!"
+      "value": "This team does not have any websites."
     }
   ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "No hi ha dades disponibles."
-    }
-  ],
-  "message.no-websites-configured": [
+  "messages.no-websites-configured": [
     {
       "type": 0,
       "value": "No hi ha cap lloc web configurat."
     }
   ],
-  "message.page-not-found": [
+  "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "No s'ha trobat la pàgina."
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "Funciona amb "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "S'ha desat amb èxit."
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "Aquest és l'enllaç públic per compartir de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Mostra/amaga gràfics"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 0,
-      "value": "Per seguir les estadístiques de "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": ", col·loca el codi següent a la secció "
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": " del teu lloc web."
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "Escriu "
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": " al quadre de sota per confirmar."
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "Escriu "
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": " al quadre de sota per confirmar."
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "Accions"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Temps mitjà de visita"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "Percentatge de rebot"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "Navegadors"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "Països"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "Escriptori"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "Portàtil"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "Mòbil"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "Tauleta"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "Dispositius"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "Esdeveniments"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "Combinat"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "En cru"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Llengües"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "Sistemes operatius"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "Pàgines vistes"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "Pàgines"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "Referents"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "Visitants únics"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "Vistes"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "Visitants"
+      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

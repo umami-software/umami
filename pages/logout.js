@@ -1,18 +1,36 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { removeItem } from 'next-basics';
-import { AUTH_TOKEN } from 'lib/constants';
+import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
+import { removeClientAuthToken } from 'lib/client';
 
-export default function LogoutPage() {
+export default function LogoutPage({ disabled }) {
   const router = useRouter();
+  const { post } = useApi();
 
   useEffect(() => {
-    removeItem(AUTH_TOKEN);
-    router.push('/login');
+    async function logout() {
+      await post('/auth/logout');
+    }
 
-    return () => setUser(null);
-  }, []);
+    if (!disabled) {
+      removeClientAuthToken();
+
+      logout();
+
+      router.push('/login');
+
+      return () => setUser(null);
+    }
+  }, [disabled, router, post]);
 
   return null;
+}
+
+export async function getServerSideProps() {
+  return {
+    props: {
+      disabled: !!(process.env.DISABLE_LOGIN || process.env.CLOUD_MODE),
+    },
+  };
 }

@@ -1,8 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
@@ -15,15 +15,16 @@
 
 # production
 /build
-/public/umami.js
-/public/geo
+/public/script.js
+/geo
+/dist
 
 # misc
 .DS_Store
 .idea
 *.iml
 *.log
-/.vscode/
+.vscode
 
 # debug
 npm-debug.log*

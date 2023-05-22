@@ -1,31 +1,29 @@
-import React from 'react';
 import MetricsTable from './MetricsTable';
 import { percentFilter } from 'lib/filters';
-import { FormattedMessage } from 'react-intl';
 import useLanguageNames from 'hooks/useLanguageNames';
 import useLocale from 'hooks/useLocale';
+import useMessages from 'hooks/useMessages';
 
-export default function LanguagesTable({ websiteId, onDataLoad, ...props }) {
+export function LanguagesTable({ websiteId, onDataLoad, ...props }) {
+  const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const languageNames = useLanguageNames(locale);
 
-  function renderLabel({ x }) {
-    return (
-      <div className={locale}>
-        {languageNames[x] ?? <FormattedMessage id="label.unknown" defaultMessage="Unknown" />}{' '}
-      </div>
-    );
-  }
+  const renderLabel = ({ x }) => {
+    return <div className={locale}>{languageNames[x?.split('-')[0]] ?? x}</div>;
+  };
 
   return (
     <MetricsTable
       {...props}
-      title={<FormattedMessage id="metrics.languages" defaultMessage="Languages" />}
+      title={formatMessage(labels.languages)}
       type="language"
-      metric={<FormattedMessage id="metrics.visitors" defaultMessage="Visitors" />}
+      metric={formatMessage(labels.visitors)}
       websiteId={websiteId}
       onDataLoad={data => onDataLoad?.(percentFilter(data))}
       renderLabel={renderLabel}
     />
   );
 }
+
+export default LanguagesTable;

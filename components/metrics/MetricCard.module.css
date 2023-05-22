@@ -2,40 +2,43 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 90px;
   min-width: 140px;
 }
 
 .value {
-  font-size: var(--font-size-xlarge);
-  line-height: 40px;
-  min-height: 40px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  font-size: 36px;
+  font-weight: 700;
   white-space: nowrap;
+  min-height: 60px;
 }
 
 .label {
-  font-size: var(--font-size-normal);
-  white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 5px;
+  font-weight: 700;
+  gap: 10px;
+  white-space: nowrap;
+  min-height: 30px;
 }
 
 .change {
   font-size: 12px;
   padding: 0 5px;
   border-radius: 5px;
-  margin-left: 4px;
-  border: 1px solid var(--gray200);
-  color: var(--gray500);
+  color: var(--base500);
 }
 
 .change.positive {
-  color: var(--green500);
+  color: var(--green700);
+  background: var(--green100);
 }
 
 .change.negative {
-  color: var(--red500);
+  color: var(--red700);
+  background: var(--red100);
 }
 
 .change.plusSign::before {

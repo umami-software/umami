@@ -1,94 +1,64 @@
-import React from 'react';
-import { useIntl } from 'react-intl';
+import { useMemo } from 'react';
 import { colord } from 'colord';
-import CheckVisible from 'components/helpers/CheckVisible';
 import BarChart from './BarChart';
+import { THEME_COLORS } from 'lib/constants';
 import useTheme from 'hooks/useTheme';
-import { THEME_COLORS, DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import useMessages from 'hooks/useMessages';
+import useLocale from 'hooks/useLocale';
 
-export default function PageviewsChart({
-  websiteId,
-  data,
-  unit,
-  records,
-  className,
-  loading,
-  animationDuration = DEFAULT_ANIMATION_DURATION,
-  ...props
-}) {
-  const intl = useIntl();
+export function PageviewsChart({ websiteId, data, unit, records, className, loading, ...props }) {
+  const { formatMessage, labels } = useMessages();
   const [theme] = useTheme();
-  const primaryColor = colord(THEME_COLORS[theme].primary);
-  const colors = {
-    views: {
-      background: primaryColor.alpha(0.4).toRgbString(),
-      border: primaryColor.alpha(0.5).toRgbString(),
-    },
-    visitors: {
-      background: primaryColor.alpha(0.6).toRgbString(),
-      border: primaryColor.alpha(0.7).toRgbString(),
-    },
-  };
+  const { locale } = useLocale();
 
-  const handleUpdate = chart => {
-    const {
-      data: { datasets },
-    } = chart;
+  const colors = useMemo(() => {
+    const primaryColor = colord(THEME_COLORS[theme].primary);
+    return {
+      views: {
+        hoverBackgroundColor: primaryColor.alpha(0.7).toRgbString(),
+        backgroundColor: primaryColor.alpha(0.4).toRgbString(),
+        borderColor: primaryColor.alpha(0.7).toRgbString(),
+        hoverBorderColor: primaryColor.toRgbString(),
+      },
+      visitors: {
+        hoverBackgroundColor: primaryColor.alpha(0.9).toRgbString(),
+        backgroundColor: primaryColor.alpha(0.6).toRgbString(),
+        borderColor: primaryColor.alpha(0.9).toRgbString(),
+        hoverBorderColor: primaryColor.toRgbString(),
+      },
+    };
+  }, [theme]);
 
-    datasets[0].data = data.sessions;
-    datasets[0].label = intl.formatMessage({
-      id: 'metrics.unique-visitors',
-      defaultMessage: 'Unique visitors',
-    });
-    datasets[1].data = data.pageviews;
-    datasets[1].label = intl.formatMessage({
-      id: 'metrics.page-views',
-      defaultMessage: 'Page views',
-    });
-  };
+  const datasets = useMemo(() => {
+    if (!data) return [];
 
-  if (!data) {
-    return null;
-  }
+    return [
+      {
+        label: formatMessage(labels.uniqueVisitors),
+        data: data.sessions,
+        borderWidth: 1,
+        ...colors.visitors,
+      },
+      {
+        label: formatMessage(labels.pageViews),
+        data: data.pageviews,
+        borderWidth: 1,
+        ...colors.views,
+      },
+    ];
+  }, [data, locale, colors]);
 
   return (
-    <CheckVisible>
-      {visible => (
-        <BarChart
-          {...props}
-          className={className}
-          chartId={websiteId}
-          datasets={[
-            {
-              label: intl.formatMessage({
-                id: 'metrics.unique-visitors',
-                defaultMessage: 'Unique visitors',
-              }),
-              data: data.sessions,
-              lineTension: 0,
-              backgroundColor: colors.visitors.background,
-              borderColor: colors.visitors.border,
-              borderWidth: 1,
-            },
-            {
-              label: intl.formatMessage({
-                id: 'metrics.page-views',
-                defaultMessage: 'Page views',
-              }),
-              data: data.pageviews,
-              lineTension: 0,
-              backgroundColor: colors.views.background,
-              borderColor: colors.views.border,
-              borderWidth: 1,
-            },
-          ]}
-          unit={unit}
-          records={records}
-          animationDuration={visible ? animationDuration : 0}
-          onUpdate={handleUpdate}
-          loading={loading}
-        />
-      )}
-    </CheckVisible>
+    <BarChart
+      {...props}
+      key={websiteId}
+      className={className}
+      datasets={datasets}
+      unit={unit}
+      records={records}
+      loading={loading}
+    />
   );
 }
+
+export default PageviewsChart;

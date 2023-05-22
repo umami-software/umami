@@ -1,19 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FormattedMessage } from 'react-intl';
 import styles from './NoData.module.css';
+import useMessages from 'hooks/useMessages';
 
-function NoData({ className }) {
+export function NoData({ className }) {
+  const { formatMessage, messages } = useMessages();
+
   return (
     <div className={classNames(styles.container, className)}>
-      <FormattedMessage id="message.no-data-available" defaultMessage="No data available." />
+      {formatMessage(messages.noDataAvailable)}
     </div>
   );
 }
-
-NoData.propTypes = {
-  className: PropTypes.string,
-};
 
 export default NoData;

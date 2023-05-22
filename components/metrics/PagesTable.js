@@ -1,51 +1,51 @@
-import React, { useState } from 'react';
-import { useIntl, defineMessage } from 'react-intl';
 import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';
-import { urlFilter } from 'lib/filters';
 import MetricsTable from './MetricsTable';
+import useMessages from 'hooks/useMessages';
+import usePageQuery from 'hooks/usePageQuery';
+import { emptyFilter } from 'lib/filters';
 
-export const FILTER_COMBINED = 0;
-export const FILTER_RAW = 1;
+export function PagesTable({ websiteId, showFilters, ...props }) {
+  const {
+    router,
+    resolveUrl,
+    query: { view = 'url' },
+  } = usePageQuery();
+  const { formatMessage, labels } = useMessages();
 
-const messages = defineMessage({
-  combined: { id: 'metrics.filter.combined', defaultMessage: 'Combined' },
-  raw: { id: 'metrics.filter.raw', defaultMessage: 'Raw' },
-  pages: { id: 'metrics.pages', defaultMessage: 'Pages' },
-  views: { id: 'metrics.views', defaultMessage: 'View' },
-});
-
-export default function PagesTable({ websiteId, showFilters, ...props }) {
-  const [filter, setFilter] = useState(FILTER_COMBINED);
-  const { formatMessage } = useIntl();
+  const handleSelect = key => {
+    router.push(resolveUrl({ view: key }), null, { shallow: true });
+  };
 
   const buttons = [
     {
-      label: formatMessage(messages.combined),
-      value: FILTER_COMBINED,
+      label: 'URL',
+      key: 'url',
     },
     {
-      label: formatMessage(messages.raw),
-      value: FILTER_RAW,
+      label: formatMessage(labels.title),
+      key: 'title',
     },
   ];
 
-  const renderLink = ({ x: url }) => {
-    return <FilterLink id="url" value={url} />;
+  const renderLink = ({ x }) => {
+    return <FilterLink id={view} value={x} label={!x && formatMessage(labels.none)} />;
   };
 
   return (
     <>
-      {showFilters && <FilterButtons buttons={buttons} selected={filter} onClick={setFilter} />}
+      {showFilters && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
       <MetricsTable
-        title={formatMessage(messages.pages)}
-        type="url"
-        metric={formatMessage(messages.views)}
-        websiteId={websiteId}
-        dataFilter={filter !== FILTER_RAW ? urlFilter : null}
-        renderLabel={renderLink}
         {...props}
+        title={formatMessage(labels.pages)}
+        type={view}
+        metric={formatMessage(labels.views)}
+        websiteId={websiteId}
+        dataFilter={emptyFilter}
+        renderLabel={renderLink}
       />
     </>
   );
 }
+
+export default PagesTable;

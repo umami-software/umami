@@ -1,0 +1,990 @@
+{
+  "label.access-code": [
+    {
+      "type": 0,
+      "value": "Access code"
+    }
+  ],
+  "label.actions": [
+    {
+      "type": 0,
+      "value": "Дзеянні"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Дадаць сайт"
+    }
+  ],
+  "label.admin": [
+    {
+      "type": 0,
+      "value": "Адміністратар"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Усё"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "Увесь час"
+    }
+  ],
+  "label.analytics": [
+    {
+      "type": 0,
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Сярэдняя даўжыня наведвання"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Назад"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Паказчык адмоваў"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Браўзеры"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Адмена"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Змяніць пароль"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Падцвердзіць пароль"
+    }
+  ],
+  "label.continue": [
+    {
+      "type": 0,
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Краіны"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Бягучы пароль"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Карыстацкі дыяпазон"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Інфармацыйная панэль"
+    }
+  ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Дыяпазон дат"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Дыяпазон дат па змаўчанню"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Выдаліць"
+    }
+  ],
+  "label.delete-team": [
+    {
+      "type": 0,
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Выдаліць сайт"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Настольны ПК"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Прылады"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Адмена"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Дамен"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Змяніць"
+    }
+  ],
+  "label.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Змяніць інфармацыйную панэль"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Дазволіць дзяліцца спасылкай"
+    }
+  ],
+  "label.events": [
+    {
+      "type": 0,
+      "value": "Падзеі"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "Камбініаваны"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Сырыя"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Мова"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Мовы"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Ноўтбук"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Апошнія "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " дні"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Апошнія "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " гадзіны"
+    }
+  ],
+  "label.leave": [
+    {
+      "type": 0,
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "Leave team"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Выйсці"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Мабільны"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Болей"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Імя"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Новы пароль"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "Няма"
+    }
+  ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Аперацыонныя сістэмы"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Уласнік"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Прагляды старонкі"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Старонкі"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Пароль"
+    }
+  ],
+  "label.powered-by": [
+    {
+      "type": 0,
+      "value": "Зроблена "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Профіль"
+    }
+  ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "У рэяльным часе"
+    }
+  ],
+  "label.referrers": [
+    {
+      "type": 0,
+      "value": "Referrers"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Аднавіць"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Абавязкова"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Скінуць"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Скінуць статыстыку"
+    }
+  ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Захаваць"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Экраны"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Налады"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Падзяліцца спасылкай"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Адзін дзень"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Планшэт"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Тэма"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Гэты месяц"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Гэты тыдзень"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Гэты год"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Таймзона"
+    }
+  ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Сёння"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Пераключыць графікі"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Код адсочвання"
+    }
+  ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Унікальныя наведвальнікі"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Невядома"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Імя карыстальніка"
+    }
+  ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Пабачыць дэталі"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Прагляды"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Наведвальнікі"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Сайты"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Учора"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " тякучых "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "наведвальнік"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "наведвальнікаў"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Вы дакладна хочаце выдаліць "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Вы дакладна хочаце скінуць "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " статыстыку?"
+    }
+  ],
+  "message.delete-website": [
+    {
+      "type": 0,
+      "value": "Выдаліць сайт"
+    }
+  ],
+  "message.delete-website-warning": [
+    {
+      "type": 0,
+      "value": "Усе асацыяваныя дадзеныя будуць таксама выдалены."
+    }
+  ],
+  "message.error": [
+    {
+      "type": 0,
+      "value": "Нешта пайшло не так."
+    }
+  ],
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "url"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Да налад"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Некарэктны username/password."
+    }
+  ],
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Некарэктны дамен"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Няма дадзеных."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Паролі не супадаюць"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Старонка не знойдзена."
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "Скінуць статыстыку"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Уся статыстыка для гэтага сайту будзе выдалена, але код адсочвання будзе працягваць працаваць."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Захавана паспяхова."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Гэта публічная спасылка для "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "Код адсочвання"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
+    {
+      "type": 0,
+      "value": "Наведвальнік з "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " праз "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " на "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "messages.no-team-websites": [
+    {
+      "type": 0,
+      "value": "This team does not have any websites."
+    }
+  ],
+  "messages.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Вы не наладзілі ніводнага сайту."
+    }
+  ],
+  "messages.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites can be viewed by anyone on the team."
+    }
+  ]
+}

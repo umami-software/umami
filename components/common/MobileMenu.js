@@ -1,22 +1,38 @@
 import classNames from 'classnames';
-import Link from './Link';
-import Button from './Button';
-import XMark from 'assets/xmark.svg';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import styles from './MobileMenu.module.css';
 
-export default function MobileMenu({ items = [], onClose }) {
+export function MobileMenu({ items = [], onClose }) {
+  const { pathname } = useRouter();
+
+  const Items = ({ items, className }) => (
+    <div className={classNames(styles.items, className)}>
+      {items.map(({ label, url, children }) => {
+        const selected = pathname.startsWith(url);
+
+        return (
+          <>
+            <Link
+              key={url}
+              href={url}
+              className={classNames(styles.item, { [styles.selected]: selected })}
+              onClick={onClose}
+            >
+              {label}
+            </Link>
+            {children && <Items items={children} className={styles.submenu} />}
+          </>
+        );
+      })}
+    </div>
+  );
+
   return (
-    <div className={classNames(styles.menu, 'container')}>
-      <div className={styles.header}>
-        <Button icon={<XMark />} onClick={onClose} />
-      </div>
-      <div className={styles.items}>
-        {items.map(({ label, value }) => (
-          <Link key={value} href={value} className={styles.item} onClick={onClose}>
-            {label}
-          </Link>
-        ))}
-      </div>
+    <div className={classNames(styles.menu)}>
+      <Items items={items} />
     </div>
   );
 }
+
+export default MobileMenu;

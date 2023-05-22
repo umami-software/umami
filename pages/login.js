@@ -1,21 +1,22 @@
-import React from 'react';
-import Layout from 'components/layout/Layout';
-import LoginForm from 'components/forms/LoginForm';
+import LoginLayout from 'components/pages/login/LoginLayout';
+import LoginForm from 'components/pages/login/LoginForm';
 
-export default function LoginPage({ loginDisabled }) {
-  if (loginDisabled) {
+export default function LoginPage({ disabled }) {
+  if (disabled) {
     return null;
   }
 
   return (
-    <Layout title="login" header={false} footer={false} center>
+    <LoginLayout title="login">
       <LoginForm />
-    </Layout>
+    </LoginLayout>
   );
 }
 
 export async function getServerSideProps() {
   return {
-    props: { loginDisabled: !!process.env.DISABLE_LOGIN || !!process.env.isCloudMode },
+    props: {
+      disabled: !!process.env.DISABLE_LOGIN,
+    },
   };
 }

@@ -1,0 +1,962 @@
+{
+  "label.access-code": [
+    {
+      "type": 0,
+      "value": "Access code"
+    }
+  ],
+  "label.actions": [
+    {
+      "type": 0,
+      "value": "សកម្មភាព"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "Activity log"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "បន្ថែមគេហទំព័រ"
+    }
+  ],
+  "label.admin": [
+    {
+      "type": 0,
+      "value": "អ្នកគ្រប់គ្រង"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "ទាំងអស់"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "គ្រប់ពេល"
+    }
+  ],
+  "label.analytics": [
+    {
+      "type": 0,
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "មើលជាមធ្យម"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "ថយក្រោយ"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "ចំនួនវិលត្រឡប់"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "កម្មវិធី"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "បោះបង់"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "ផ្លាស់ប្តូរពាក្យសម្ងាត់"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "បញ្ជាក់ពាក្យសម្ងាត់"
+    }
+  ],
+  "label.continue": [
+    {
+      "type": 0,
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "ប្រទេស"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "ពាក្យសម្ងាត់បច្ចុប្បន្ន"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "កំណត់ដោយខ្លួនឯង"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "ផ្ទាំងគ្រប់គ្រង"
+    }
+  ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "ចន្លោះកាលបរិច្ឆេទ"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "ចន្លោះកាលបរិច្ឆេទស្រាប់"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "លុប"
+    }
+  ],
+  "label.delete-team": [
+    {
+      "type": 0,
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "លុបគេហទំព័រ"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "កុំព្យូទ័រលើតុ"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "ឧបករណ៍"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "បដិសេធ"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "ឈ្មោះគេហទំព័រ"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "កែប្រែ"
+    }
+  ],
+  "label.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "កែផ្ទាំងគ្រប់គ្រង"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "បើកការចែករំលែក URL"
+    }
+  ],
+  "label.events": [
+    {
+      "type": 0,
+      "value": "ព្រឹត្តិការណ៍"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "រួមបញ្ចូលគ្នា"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "ដើម"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "ភាសា"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "ភាសា"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "កុំព្យូទ័រយួរដៃ"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ថ្ងៃមុន"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " ម៉ោងមុន"
+    }
+  ],
+  "label.leave": [
+    {
+      "type": 0,
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "Leave team"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Login"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "ចេញ"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "ទូរស័ព្ទចល័ត"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "បន្ថែម"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "ឈ្មោះ"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "ពាក្យសម្ងាត់​ថ្មី"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "មិនមាន"
+    }
+  ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "ប្រព័ន្ធប្រតិបត្តិការ"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "ម្ចាស់"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "អ្នកមើលទំព័រ"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "ទំព័រ"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "ពាក្យសម្ងាត់​"
+    }
+  ],
+  "label.powered-by": [
+    {
+      "type": 0,
+      "value": "ដំណើរការដោយ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "ប្រវត្តិរូប"
+    }
+  ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "ប៉ារ៉ាម៉ែត្រ Query"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "ឥលូវនេះ"
+    }
+  ],
+  "label.referrers": [
+    {
+      "type": 0,
+      "value": "អ្នកណែនាំ"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "ផ្ទុកឡើងវិញ"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "ទាមទារ"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "កំណត់ឡើងវិញ"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "កំណត់ស្ថិតិឡើងវិញ"
+    }
+  ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "រក្សាទុក"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "ប្រភេទឧបករណ៍"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "ការកំណត់"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "ចែករំលែក URL"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "ថ្ងៃតែមួយ"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "ថេប្លេត"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "រូបរាង"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "ខែនេះ"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "ស​ប្តា​ហ៍​នេះ"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "ឆ្នាំ​នេះ"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "តំបន់ម៉ោង"
+    }
+  ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "ថ្ងៃនេះ"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "បិទ/បើកតារាង"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "លេខកូដតាមដាន"
+    }
+  ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "អ្នកចូលមើលម្នាក់ៗ"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "មិនស្គាល់"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "ឈ្មោះ​អ្នកប្រើប្រាស់"
+    }
+  ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "មើលព័ត៌មានលម្អិត"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "អ្នកចូលមើល"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "អ្នកទស្សនា"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "គេហទំព័រ"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "ម្សិលមិញ"
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 0,
+      "value": "មានអ្នកមើល "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " នាក់ ឥលូវនេះ"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "តើអ្នកប្រាកដថាចង់លុប "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " ទេ?"
+    }
+  ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "តើអ្នកប្រាកដថាចង់កំណត់ស្ថិតិរបស់ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": " ឡើងវិញទេ?"
+    }
+  ],
+  "message.delete-website": [
+    {
+      "type": 0,
+      "value": "លុបគេហទំព័រ"
+    }
+  ],
+  "message.delete-website-warning": [
+    {
+      "type": 0,
+      "value": "ទិន្នន័យដែលពាក់ព័ន្ធទាំងអស់នឹងត្រូវបានលុបផងដែរ។"
+    }
+  ],
+  "message.error": [
+    {
+      "type": 0,
+      "value": "មាន​អ្វីមួយ​មិន​ប្រក្រតី។"
+    }
+  ],
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "url"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "ការកំណត់"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "ឈ្មោះអ្នកប្រើ/ពាក្យសម្ងាត់មិនត្រឹមត្រូវ។"
+    }
+  ],
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "ឈ្មោះគេហទំព័រមិន​ត្រឹមត្រូវ"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Minimum length of "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " characters"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "មិនមានទិន្នន័យទេ។"
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "ពាក្យសម្ងាត់មិនត្រូវគ្នាទេ"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "រកមិនឃើញទំព័រ។"
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "កំណត់ស្ថិតិឡើងវិញ"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "ស្ថិតិទាំងអស់សម្រាប់គេហទំព័រនេះនឹងត្រូវបានលុប ប៉ុន្តែកូដតាមដានរបស់អ្នកនឹងនៅដដែល។"
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "រក្សាទុកដោយជោគជ័យ។"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "នេះគឺជា URL ដែលបានចែករំលែកជាសាធារណៈសម្រាប់ "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "។"
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "You are already a member of the team."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Team not found."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "លេខកូដតាមដាន"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
+    {
+      "type": 0,
+      "value": "អ្នកមើលពីប្រទេស "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": " ប្រើប្រាស់កម្មវិធី "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " លើឧបករណ៍ "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "messages.no-team-websites": [
+    {
+      "type": 0,
+      "value": "This team does not have any websites."
+    }
+  ],
+  "messages.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "អ្នកមិនទាន់បានដាក់គេហទំព័រណាមួយចូលទេ។"
+    }
+  ],
+  "messages.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites can be viewed by anyone on the team."
+    }
+  ]
+}

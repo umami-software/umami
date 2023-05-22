@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { Button, Row, Column } from 'react-basics';
 import { setItem } from 'next-basics';
-import ButtonLayout from 'components/layout/ButtonLayout';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
-import Button from './Button';
 import styles from './UpdateNotice.module.css';
+import useMessages from 'hooks/useMessages';
 
-export default function UpdateNotice() {
+export function UpdateNotice() {
+  const { formatMessage, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
   const [dismissed, setDismissed] = useState(false);
 
@@ -37,22 +37,18 @@ export default function UpdateNotice() {
   }
 
   return (
-    <div className={styles.notice}>
-      <div className={styles.message}>
-        <FormattedMessage
-          id="message.new-version-available"
-          defaultMessage="A new version of umami {version} is available!"
-          values={{ version: `v${latest}` }}
-        />
-      </div>
-      <ButtonLayout className={styles.buttons}>
-        <Button size="xsmall" variant="action" onClick={handleViewClick}>
-          <FormattedMessage id="label.view-details" defaultMessage="View details" />
+    <Row className={styles.notice}>
+      <Column variant="two" className={styles.message}>
+        {formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}
+      </Column>
+      <Column className={styles.buttons}>
+        <Button variant="primary" onClick={handleViewClick}>
+          {formatMessage(labels.viewDetails)}
         </Button>
-        <Button size="xsmall" onClick={handleDismissClick}>
-          <FormattedMessage id="label.dismiss" defaultMessage="Dismiss" />
-        </Button>
-      </ButtonLayout>
-    </div>
+        <Button onClick={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
+      </Column>
+    </Row>
   );
 }
+
+export default UpdateNotice;

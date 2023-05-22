@@ -24,7 +24,7 @@ export default function useTheme() {
   }, [theme]);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
+    const url = new URL(window?.location?.href);
     const theme = url.searchParams.get('theme');
 
     if (['light', 'dark'].includes(theme)) {

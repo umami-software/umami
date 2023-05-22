@@ -1,13 +1,8 @@
-import { defineMessages, useIntl } from 'react-intl';
 import MetricsTable from './MetricsTable';
+import useMessages from 'hooks/useMessages';
 
-const messages = defineMessages({
-  events: { id: 'metrics.events', defaultMessage: 'Events' },
-  actions: { id: 'metrics.actions', defaultMessage: 'Actions' },
-});
-
-export default function EventsTable({ websiteId, ...props }) {
-  const { formatMessage } = useIntl();
+export function EventsTable({ websiteId, ...props }) {
+  const { formatMessage, labels } = useMessages();
 
   function handleDataLoad(data) {
     props.onDataLoad?.(data);
@@ -16,11 +11,13 @@ export default function EventsTable({ websiteId, ...props }) {
   return (
     <MetricsTable
       {...props}
-      title={formatMessage(messages.events)}
+      title={formatMessage(labels.events)}
       type="event"
-      metric={formatMessage(messages.actions)}
+      metric={formatMessage(labels.actions)}
       websiteId={websiteId}
       onDataLoad={handleDataLoad}
     />
   );
 }
+
+export default EventsTable;
