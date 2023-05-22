@@ -10,7 +10,8 @@ export function LanguageButton() {
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
   function handleSelect(value) {
-    saveLocale(value);
+    //saveLocale(value);
+    console.log('WTFFFF');
   }
 
   return (

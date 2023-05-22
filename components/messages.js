@@ -80,7 +80,8 @@ export const labels = defineMessages({
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
   events: { id: 'label.events', defaultMessage: 'Events' },
-  query: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
+  query: { id: 'label.query', defaultMessage: 'Query' },
+  queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
   back: { id: 'label.back', defaultMessage: 'Back' },
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
   filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
@@ -121,6 +122,8 @@ export const labels = defineMessages({
   regions: { id: 'label.regions', defaultMessage: 'Regions' },
   reports: { id: 'label.reports', defaultMessage: 'Reports' },
   eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
+  funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
+  urls: { id: 'label.urls', defaultMessage: 'URLs' },
 });
 
 export const messages = defineMessages({

@@ -5,7 +5,7 @@ import PageHeader from 'components/layout/PageHeader';
 import Funnel from 'assets/funnel.svg';
 import Nodes from 'assets/nodes.svg';
 import Lightbulb from 'assets/lightbulb.svg';
-import styles from './ReportsList.module.css';
+import styles from './ReportList.module.css';
 
 const reports = [
   {
@@ -28,7 +28,7 @@ const reports = [
   },
 ];
 
-function Report({ title, description, url, icon }) {
+function ReportItem({ title, description, url, icon }) {
   return (
     <div className={styles.report}>
       <div className={styles.title}>
@@ -50,17 +50,19 @@ function Report({ title, description, url, icon }) {
   );
 }
 
-export default function ReportsList() {
+export function ReportList() {
   return (
     <Page>
       <PageHeader title="Reports" />
       <div className={styles.reports}>
         {reports.map(({ title, description, url, icon }) => {
           return (
-            <Report key={title} icon={icon} title={title} description={description} url={url} />
+            <ReportItem key={title} icon={icon} title={title} description={description} url={url} />
           );
         })}
       </div>
     </Page>
   );
 }
+
+export default ReportList;

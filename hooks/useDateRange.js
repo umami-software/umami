@@ -12,14 +12,14 @@ export function useDateRange(websiteId) {
   const globalConfig = appStore(state => state.dateRange);
   const dateRange = parseDateRange(websiteConfig || globalConfig || defaultConfig, locale);
 
-  function saveDateRange(value) {
+  const saveDateRange = value => {
     if (websiteId) {
       setWebsiteDateRange(websiteId, value);
     } else {
       setItem(DATE_RANGE_CONFIG, value);
       setDateRange(value);
     }
-  }
+  };
 
   return [dateRange, saveDateRange];
 }
