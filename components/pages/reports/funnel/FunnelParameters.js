@@ -11,6 +11,7 @@ import {
   SubmitButton,
   Text,
   TextField,
+  Tooltip,
 } from 'react-basics';
 import Icons from 'components/icons';
 import { updateReport } from 'store/reports';
@@ -91,28 +92,30 @@ function AddURLButton({ onAdd }) {
   };
 
   return (
-    <ModalTrigger>
-      <Icon>
-        <Icons.Plus />
-      </Icon>
-      <Modal>
-        {close => {
-          return (
-            <Form>
-              <FormRow label={formatMessage(labels.url)}>
-                <TextField name="url" value={url} onChange={handleChange} autoComplete="off" />
-              </FormRow>
-              <FormButtons align="center" flex>
-                <Button variant="primary" onClick={() => handleAdd(close)}>
-                  {formatMessage(labels.add)}
-                </Button>
-                <Button onClick={() => handleClose(close)}>{formatMessage(labels.cancel)}</Button>
-              </FormButtons>
-            </Form>
-          );
-        }}
-      </Modal>
-    </ModalTrigger>
+    <Tooltip label={formatMessage(labels.addUrl)}>
+      <ModalTrigger>
+        <Icon>
+          <Icons.Plus />
+        </Icon>
+        <Modal>
+          {close => {
+            return (
+              <Form>
+                <FormRow label={formatMessage(labels.url)}>
+                  <TextField name="url" value={url} onChange={handleChange} autoComplete="off" />
+                </FormRow>
+                <FormButtons align="center" flex>
+                  <Button variant="primary" onClick={() => handleAdd(close)}>
+                    {formatMessage(labels.add)}
+                  </Button>
+                  <Button onClick={() => handleClose(close)}>{formatMessage(labels.cancel)}</Button>
+                </FormButtons>
+              </Form>
+            );
+          }}
+        </Modal>
+      </ModalTrigger>
+    </Tooltip>
   );
 }
 

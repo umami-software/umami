@@ -4,15 +4,11 @@ import classNames from 'classnames';
 import Chart from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
-import { formatLongNumber } from 'lib/format';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { renderNumberLabels } from 'lib/charts';
 import styles from './BarChart.module.css';
-
-function defaultRenderYLabel(label) {
-  return +label > 1000 ? formatLongNumber(label) : label;
-}
 
 export function BarChart({
   datasets,
@@ -90,7 +86,7 @@ export function BarChart({
           },
           ticks: {
             color: colors.text,
-            callback: renderYLabel || defaultRenderYLabel,
+            callback: renderYLabel || renderNumberLabels,
           },
         },
       },

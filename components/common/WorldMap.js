@@ -86,7 +86,7 @@ export function WorldMap({ data, className }) {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {tooltip && <HoverTooltip tooltip={tooltip} />}
+      {tooltip && <HoverTooltip>{tooltip}</HoverTooltip>}
     </div>
   );
 }
