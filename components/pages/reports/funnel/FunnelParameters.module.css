@@ -1,12 +1,3 @@
-.popup {
-  background: var(--base50);
-  padding: 20px;
-  margin-left: 10px;
-  border: 1px solid var(--base400);
-  border-radius: var(--border-radius);
-  width: 400px;
-}
-
 .urls {
   display: flex;
   flex-direction: column;

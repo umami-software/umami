@@ -6,8 +6,8 @@ import {
   FormButtons,
   FormInput,
   FormRow,
-  PopupTrigger,
-  Popup,
+  ModalTrigger,
+  Modal,
   SubmitButton,
   Text,
   TextField,
@@ -85,29 +85,34 @@ function AddURLButton({ onAdd }) {
   const handleChange = e => {
     setUrl(e.target.value);
   };
+  const handleClose = close => {
+    setUrl('');
+    close();
+  };
 
   return (
-    <PopupTrigger>
+    <ModalTrigger>
       <Icon>
         <Icons.Plus />
       </Icon>
-      <Popup className={styles.popup} position="right" alignment="start">
+      <Modal>
         {close => {
           return (
             <Form>
               <FormRow label={formatMessage(labels.url)}>
                 <TextField name="url" value={url} onChange={handleChange} autoComplete="off" />
               </FormRow>
-              <FormButtons>
+              <FormButtons align="center" flex>
                 <Button variant="primary" onClick={() => handleAdd(close)}>
                   {formatMessage(labels.add)}
                 </Button>
+                <Button onClick={() => handleClose(close)}>{formatMessage(labels.cancel)}</Button>
               </FormButtons>
             </Form>
           );
         }}
-      </Popup>
-    </PopupTrigger>
+      </Modal>
+    </ModalTrigger>
   );
 }
 
