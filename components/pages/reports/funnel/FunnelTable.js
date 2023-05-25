@@ -1,12 +1,17 @@
 import DataTable from 'components/metrics/DataTable';
+import { useMessages } from 'hooks';
 
-export function FunnelTable({ ...props }) {
-  const { data } = props;
+export function FunnelTable({ data }) {
+  const { formatMessage, labels } = useMessages();
 
-  const tableData =
-    data?.map(a => ({ x: a.x, y: a.y, z: Math.floor(a.y / data[0].y) * 100 })) || [];
-
-  return <DataTable data={tableData} title="Url" type="device" />;
+  return (
+    <DataTable
+      data={data}
+      title={formatMessage(labels.url)}
+      metric={formatMessage(labels.visitors)}
+      showPercentage={false}
+    />
+  );
 }
 
 export default FunnelTable;

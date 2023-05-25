@@ -15,8 +15,6 @@ const store = create(() => ({ ...initialState }));
 export function updateReport(id, data) {
   const report = store.getState()[id];
 
-  console.log('UPDATE STORE START', id, report);
-
   if (report) {
     store.setState(
       produce(state => {
@@ -37,9 +35,9 @@ export function updateReport(id, data) {
   }
 }
 
-export function createReport() {
+export function createReport(parameters) {
   const id = `new_${getRandomChars(16)}`;
-  const report = { ...emptyReport, id };
+  const report = { ...emptyReport, id, parameters };
 
   store.setState(
     produce(state => {
@@ -48,8 +46,6 @@ export function createReport() {
       return state;
     }),
   );
-
-  console.log('CREATE STORE', report);
 
   return report;
 }

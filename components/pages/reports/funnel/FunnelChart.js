@@ -1,184 +1,60 @@
-import Chart from 'chart.js/auto';
-import classNames from 'classnames';
-import { colord } from 'colord';
-import HoverTooltip from 'components/common/HoverTooltip';
-import Legend from 'components/metrics/Legend';
-import useLocale from 'hooks/useLocale';
+import { useCallback, useMemo } from 'react';
+import { Loading } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import useTheme from 'hooks/useTheme';
-import { DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
+import BarChart from 'components/metrics/BarChart';
 import { formatLongNumber } from 'lib/format';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Loading, StatusLight } from 'react-basics';
 import styles from './FunnelChart.module.css';
 
-export function FunnelChart({
-  data,
-  animationDuration = DEFAULT_ANIMATION_DURATION,
-  stacked = false,
-  loading = false,
-  onCreate = () => {},
-  onUpdate = () => {},
-  className,
-}) {
+export function FunnelChart({ report, data, loading, className }) {
   const { formatMessage, labels } = useMessages();
-  const canvas = useRef();
-  const chart = useRef(null);
-  const [tooltip, setTooltip] = useState(null);
-  const { locale } = useLocale();
-  const [theme] = useTheme();
+  const { colors } = useTheme();
 
-  const datasets = useMemo(() => {
-    const primaryColor = colord(THEME_COLORS[theme].primary);
-    return [
-      {
-        label: formatMessage(labels.uniqueVisitors),
-        data: data,
-        borderWidth: 1,
-        hoverBackgroundColor: primaryColor.alpha(0.9).toRgbString(),
-        backgroundColor: primaryColor.alpha(0.6).toRgbString(),
-        borderColor: primaryColor.alpha(0.9).toRgbString(),
-        hoverBorderColor: primaryColor.toRgbString(),
-      },
-    ];
-  }, [data]);
+  const { parameters } = report || {};
 
-  const colors = useMemo(
-    () => ({
-      text: THEME_COLORS[theme].gray700,
-      line: THEME_COLORS[theme].gray200,
-    }),
-    [theme],
+  const renderXLabel = useCallback(
+    (label, index) => {
+      return parameters.urls[index];
+    },
+    [parameters],
   );
 
-  const renderYLabel = label => {
-    return +label > 1000 ? formatLongNumber(label) : label;
-  };
-
-  const renderTooltip = useCallback(model => {
-    const { opacity, labelColors, dataPoints } = model.tooltip;
+  const renderTooltip = useCallback((setTooltip, model) => {
+    const { opacity, dataPoints } = model.tooltip;
 
     if (!dataPoints?.length || !opacity) {
       setTooltip(null);
       return;
     }
 
-    setTooltip(
-      <div className={styles.tooltip}>
-        <div>
-          <StatusLight color={labelColors?.[0]?.backgroundColor}>
-            <div className={styles.value}>
-              <div>{dataPoints[0].raw.x}</div>
-              <div>{formatLongNumber(dataPoints[0].raw.y)}</div>
-            </div>
-          </StatusLight>
-        </div>
-      </div>,
-    );
+    setTooltip(`${formatLongNumber(dataPoints[0].raw.y)} ${formatMessage(labels.visitors)}`);
   }, []);
 
-  const getOptions = useCallback(() => {
-    return {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: animationDuration,
-        resize: {
-          duration: 0,
-        },
-        active: {
-          duration: 0,
-        },
+  const datasets = useMemo(() => {
+    return [
+      {
+        label: formatMessage(labels.uniqueVisitors),
+        data: data,
+        borderWidth: 1,
+        ...colors.chart.visitors,
       },
-      plugins: {
-        legend: {
-          display: false,
-        },
-        tooltip: {
-          enabled: false,
-          external: renderTooltip,
-        },
-      },
-      scales: {
-        x: {
-          grid: {
-            display: false,
-          },
-          border: {
-            color: colors.line,
-          },
-          ticks: {
-            color: colors.text,
-            autoSkip: false,
-            maxRotation: 0,
-          },
-        },
-        y: {
-          type: 'linear',
-          min: 0,
-          beginAtZero: true,
-          stacked,
-          grid: {
-            color: colors.line,
-          },
-          border: {
-            color: colors.line,
-          },
-          ticks: {
-            color: colors.text,
-            callback: renderYLabel,
-          },
-        },
-      },
-    };
-  }, [animationDuration, renderTooltip, stacked, colors, locale]);
+    ];
+  }, [data]);
 
-  const createChart = () => {
-    Chart.defaults.font.family = 'Inter';
-
-    const options = getOptions();
-
-    chart.current = new Chart(canvas.current, {
-      type: 'bar',
-      data: { datasets },
-      options,
-    });
-
-    onCreate(chart.current);
-  };
-
-  const updateChart = () => {
-    setTooltip(null);
-
-    chart.current.data.datasets[0].data = datasets[0].data;
-    chart.current.data.datasets[0].label = datasets[0].label;
-
-    chart.current.options = getOptions();
-
-    onUpdate(chart.current);
-
-    chart.current.update();
-  };
-
-  useEffect(() => {
-    if (datasets) {
-      if (!chart.current) {
-        createChart();
-      } else {
-        updateChart();
-      }
-    }
-  }, [datasets, theme, animationDuration, locale]);
+  if (loading) {
+    return <Loading icon="dots" className={styles.loading} />;
+  }
 
   return (
-    <>
-      <div className={classNames(styles.chart, className)}>
-        {loading && <Loading position="page" icon="dots" />}
-        <canvas ref={canvas} />
-      </div>
-      <Legend chart={chart.current} />
-      {tooltip && <HoverTooltip tooltip={tooltip} />}
-    </>
+    <BarChart
+      className={className}
+      datasets={datasets}
+      unit="day"
+      loading={loading}
+      renderXLabel={renderXLabel}
+      renderTooltip={renderTooltip}
+      XAxisType="category"
+    />
   );
 }
 

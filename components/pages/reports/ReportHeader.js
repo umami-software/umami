@@ -16,8 +16,6 @@ export function ReportHeader({ report, icon }) {
   const { id, websiteId, name, parameters } = report || {};
   const { value, startDate, endDate } = parameters?.dateRange || {};
 
-  console.log('REPORT HEADER', report);
-
   const handleSelect = websiteId => {
     updateReport(id, { websiteId });
   };

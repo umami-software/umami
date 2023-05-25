@@ -15,7 +15,7 @@ import styles from './WorldMap.module.css';
 export function WorldMap({ data, className }) {
   const { basePath } = useRouter();
   const [tooltip, setTooltip] = useState();
-  const [theme] = useTheme();
+  const { theme } = useTheme();
   const colors = useMemo(
     () => ({
       baseColor: THEME_COLORS[theme].primary,

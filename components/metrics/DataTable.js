@@ -5,8 +5,8 @@ import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
 import NoData from 'components/common/NoData';
 import { formatNumber, formatLongNumber } from 'lib/format';
+import useMessages from 'hooks/useMessages';
 import styles from './DataTable.module.css';
-import useMessages from '../../hooks/useMessages';
 
 export function DataTable({
   data = [],
