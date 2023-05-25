@@ -1,8 +1,7 @@
 import useStore, { createReport } from 'store/reports';
 import { useCallback, useEffect, useState } from 'react';
-import { useForceUpdate } from 'hooks';
 
-export function useReport(reportId) {
+export function useReport(reportId, defaultParameters) {
   const [id, setId] = useState(reportId);
 
   const selector = useCallback(state => state[id], [id]);
@@ -10,11 +9,10 @@ export function useReport(reportId) {
 
   useEffect(() => {
     if (!report) {
-      setId(createReport().id);
+      const newReport = createReport(defaultParameters);
+      setId(newReport.id);
     }
   }, []);
-
-  console.log('USE REPORT', report);
 
   return report;
 }

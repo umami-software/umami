@@ -123,7 +123,11 @@ export const labels = defineMessages({
   reports: { id: 'label.reports', defaultMessage: 'Reports' },
   eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
   funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
+  url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
+  add: { id: 'label.add', defaultMessage: 'Add' },
+  window: { id: 'label.window', defaultMessage: 'Window' },
+  addUrl: { id: 'label.add-url', defaultMessage: 'Add URL' },
 });
 
 export const messages = defineMessages({

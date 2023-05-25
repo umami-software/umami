@@ -1,7 +1,16 @@
-.popup {
-  background: var(--base50);
-  padding: 20px;
-  margin-left: 10px;
+.urls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.url {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
   border: 1px solid var(--base400);
   border-radius: var(--border-radius);
+  box-shadow: 1px 1px 1px var(--base400);
 }

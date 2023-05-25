@@ -29,6 +29,7 @@ export default async (
 
   if (req.method === 'POST') {
     const { websiteId, urls, window, startAt, endAt } = req.body;
+
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
