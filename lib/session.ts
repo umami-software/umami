@@ -63,6 +63,7 @@ export async function findSession(req: NextApiRequestCollect) {
       subdivision1,
       subdivision2,
       city,
+      ownerId: website.userId,
     };
   }
 
