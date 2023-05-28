@@ -173,5 +173,7 @@ model Report {
 
   @@index([userId])
   @@index([websiteId])
+  @@index([type])
+  @@index([name])
   @@map("report")
 }
