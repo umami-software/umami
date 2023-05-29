@@ -65,7 +65,7 @@ export function DateFilter({
   ].filter(n => n);
 
   const renderValue = value => {
-    return value === 'custom' ? (
+    return value.startsWith('range') ? (
       <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
     ) : (
       options.find(e => e.value === value).label

@@ -1,4 +1,3 @@
-import { getDateRangeValues } from 'lib/date';
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import DateFilter from './DateFilter';
@@ -13,7 +12,7 @@ export default function WebsiteDateFilter({ websiteId, value }) {
       const data = await get(`/websites/${websiteId}`);
 
       if (data) {
-        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
+        setDateRange(`range:${new Date(data.createdAt)}:${Date.now()}`);
       }
     } else if (value !== 'all') {
       setDateRange(value);
