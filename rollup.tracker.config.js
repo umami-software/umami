@@ -4,7 +4,7 @@ import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
 export default {
-  input: 'tracker/index.js',
+  input: 'tracker/[id].js',
   output: {
     file: 'public/script.js',
     format: 'iife',

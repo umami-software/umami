@@ -1,11 +1,19 @@
+import { createContext } from 'react';
 import Page from 'components/layout/Page';
 import styles from './reports.module.css';
+import { useReport } from 'hooks';
 
-export function Report({ children, ...props }) {
+export const ReportContext = createContext(null);
+
+export function Report({ reportId, defaultParameters, children, ...props }) {
+  const report = useReport(reportId, defaultParameters);
+
   return (
-    <Page {...props} className={styles.container}>
-      {children}
-    </Page>
+    <ReportContext.Provider value={{ ...report }}>
+      <Page {...props} className={styles.container}>
+        {children}
+      </Page>
+    </ReportContext.Provider>
   );
 }
 

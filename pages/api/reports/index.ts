@@ -3,17 +3,21 @@ import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
-import { createUserReport, getUserReports } from 'queries';
+import { createReport, getReports } from 'queries';
 
-export interface UserReportRequestBody {
+export interface ReportRequestBody {
   websiteId: string;
-  reportName: string;
-  templateName: string;
-  parameters: string;
+  name: string;
+  type: string;
+  description: string;
+  parameters: {
+    window: string;
+    urls: string[];
+  };
 }
 
 export default async (
-  req: NextApiRequestQueryBody<any, UserReportRequestBody>,
+  req: NextApiRequestQueryBody<any, ReportRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
@@ -24,19 +28,25 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const data = await getUserReports(userId);
+    const data = await getReports(userId);
 
     return ok(res, data);
   }
 
   if (req.method === 'POST') {
-    const data = await createUserReport({
+    const { websiteId, type, name, description, parameters } = req.body;
+
+    const result = await createReport({
       id: uuid(),
       userId,
-      ...req.body,
-    });
+      websiteId,
+      type,
+      name,
+      description,
+      parameters: JSON.stringify(parameters),
+    } as any);
 
-    return ok(res, data);
+    return ok(res, result);
   }
 
   return methodNotAllowed(res);

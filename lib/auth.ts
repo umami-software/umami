@@ -1,4 +1,4 @@
-import { UserReport } from '@prisma/client';
+import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
@@ -135,28 +135,28 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
   return false;
 }
 
-export async function canViewUserReport(auth: Auth, userReport: UserReport) {
+export async function canViewReport(auth: Auth, report: Report) {
   if (auth.user.isAdmin) {
     return true;
   }
 
-  if ((auth.user.id = userReport.userId)) {
+  if ((auth.user.id = report.userId)) {
     return true;
   }
 
-  if (await canViewWebsite(auth, userReport.websiteId)) {
+  if (await canViewWebsite(auth, report.websiteId)) {
     return true;
   }
 
   return false;
 }
 
-export async function canUpdateUserReport(auth: Auth, userReport: UserReport) {
+export async function canUpdateReport(auth: Auth, report: Report) {
   if (auth.user.isAdmin) {
     return true;
   }
 
-  if ((auth.user.id = userReport.userId)) {
+  if ((auth.user.id = report.userId)) {
     return true;
   }
 

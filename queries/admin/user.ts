@@ -210,7 +210,7 @@ export async function deleteUser(
           },
         },
       }),
-      client.userReport.deleteMany({
+      client.report.deleteMany({
         where: {
           OR: [
             {

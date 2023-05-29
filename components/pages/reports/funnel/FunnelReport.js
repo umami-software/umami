@@ -1,41 +1,29 @@
+import { useContext } from 'react';
 import FunnelChart from './FunnelChart';
 import FunnelTable from './FunnelTable';
 import FunnelParameters from './FunnelParameters';
-import Report from '../Report';
+import Report, { ReportContext } from '../Report';
 import ReportHeader from '../ReportHeader';
 import ReportMenu from '../ReportMenu';
 import ReportBody from '../ReportBody';
 import Funnel from 'assets/funnel.svg';
 import { useReport } from 'hooks';
-import useApi from 'hooks/useApi';
+
+const defaultParameters = {
+  type: 'funnel',
+  parameters: { window: 60, urls: ['/', '/docs'] },
+};
 
 export default function FunnelReport({ reportId }) {
-  const report = useReport(reportId, { window: 60, urls: ['/', '/docs'] });
-  const { post, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(
-    ['report:funnel', report?.update],
-    () => {
-      const { websiteId, parameters } = report || {};
-
-      return post(`/reports/funnel`, {
-        websiteId: websiteId,
-        ...parameters,
-        startAt: +parameters.dateRange.startDate,
-        endAt: +parameters.dateRange.endDate,
-      });
-    },
-    { enabled: !!report?.update },
-  );
-
   return (
-    <Report error={error} loading={data && isLoading}>
-      <ReportHeader icon={<Funnel />} report={report} />
+    <Report reportId={reportId} defaultParameters={defaultParameters}>
+      <ReportHeader icon={<Funnel />} />
       <ReportMenu>
-        <FunnelParameters report={report} />
+        <FunnelParameters />
       </ReportMenu>
       <ReportBody>
-        <FunnelChart report={report} data={data} />
-        <FunnelTable data={data} />
+        <FunnelChart />
+        <FunnelTable />
       </ReportBody>
     </Report>
   );

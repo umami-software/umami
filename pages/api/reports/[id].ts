@@ -1,59 +1,68 @@
-import { canUpdateUserReport, canViewUserReport } from 'lib/auth';
+import { canUpdateReport, canViewReport } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getUserReportById, updateUserReport } from 'queries';
+import { getReportById, updateReport } from 'queries';
 
-export interface UserReportRequestQuery {
+export interface ReportRequestQuery {
   id: string;
 }
 
-export interface UserReportRequestBody {
+export interface ReportRequestBody {
   websiteId: string;
-  reportName: string;
-  templateName: string;
+  type: string;
+  name: string;
+  description: string;
   parameters: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<UserReportRequestQuery, UserReportRequestBody>,
+  req: NextApiRequestQueryBody<ReportRequestQuery, ReportRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    const { id: userReportId } = req.query;
+    const { id: reportId } = req.query;
 
-    const data = await getUserReportById(userReportId);
+    const data = await getReportById(reportId);
 
-    if (!(await canViewUserReport(req.auth, data))) {
+    if (!(await canViewReport(req.auth, data))) {
       return unauthorized(res);
     }
+
+    data.parameters = JSON.parse(data.parameters);
 
     return ok(res, data);
   }
 
   if (req.method === 'POST') {
-    const { id: userReportId } = req.query;
+    const { id: reportId } = req.query;
 
-    const data = await getUserReportById(userReportId);
+    const { websiteId, type, name, description, parameters } = req.body;
 
-    if (!(await canUpdateUserReport(req.auth, data))) {
+    const data = await getReportById(reportId);
+
+    if (!(await canUpdateReport(req.auth, data))) {
       return unauthorized(res);
     }
 
-    const updated = await updateUserReport(
+    const result = await updateReport(
       {
-        ...req.body,
-      },
+        websiteId,
+        type,
+        name,
+        description,
+        parameters: JSON.stringify(parameters),
+      } as any,
       {
-        id: userReportId,
+        id: reportId,
       },
     );
 
-    return ok(res, updated);
+    return ok(res, result);
   }
 
   return methodNotAllowed(res);

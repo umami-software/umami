@@ -1,12 +1,11 @@
+import { useContext, useRef, useState } from 'react';
 import { useMessages } from 'hooks';
 import {
-  Button,
   Icon,
   Form,
   FormButtons,
   FormInput,
   FormRow,
-  ModalTrigger,
   Modal,
   SubmitButton,
   Text,
@@ -14,29 +13,35 @@ import {
   Tooltip,
 } from 'react-basics';
 import Icons from 'components/icons';
-import { updateReport } from 'store/reports';
-import { useRef, useState } from 'react';
+import AddUrlForm from './AddUrlForm';
+import { ReportContext } from 'components/pages/reports/Report';
 import styles from './FunnelParameters.module.css';
 
-export function FunnelParameters({ report }) {
+export function FunnelParameters() {
+  const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
+  const [show, setShow] = useState(false);
   const ref = useRef(null);
-  const { id, websiteId, parameters, isLoading } = report || {};
+  const { websiteId, parameters } = report || {};
   const queryDisabled = !websiteId || parameters?.urls?.length < 2;
 
   const handleSubmit = values => {
-    updateReport(id, { parameters: values, isLoading: false, update: Date.now() });
+    runReport(values);
   };
 
-  const handleAdd = url => {
-    updateReport(id, { parameters: { ...parameters, urls: parameters.urls.concat(url) } });
+  const handleAddUrl = url => {
+    updateReport({ parameters: { ...parameters, urls: parameters.urls.concat(url) } });
   };
 
-  const handleRemove = index => {
+  const handleRemoveUrl = (index, e) => {
+    e.stopPropagation();
     const urls = [...parameters.urls];
     urls.splice(index, 1);
-    updateReport(id, { parameters: { ...parameters, urls } });
+    updateReport({ parameters: { ...parameters, urls } });
   };
+
+  const showAddForm = () => setShow(true);
+  const hideAddForm = () => setShow(false);
 
   return (
     <>
@@ -49,72 +54,49 @@ export function FunnelParameters({ report }) {
             <TextField autoComplete="off" />
           </FormInput>
         </FormRow>
-        <FormRow label={formatMessage(labels.urls)} action={<AddURLButton onAdd={handleAdd} />}>
+        <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton onClick={showAddForm} />}>
           <div className={styles.urls}>
-            {parameters?.urls.map((url, index) => {
+            {parameters?.urls?.map((url, index) => {
               return (
                 <div key={index} className={styles.url}>
                   <Text>{url}</Text>
-                  <Icon onClick={() => handleRemove(index)}>
-                    <Icons.Close />
-                  </Icon>
+                  <Tooltip
+                    className={styles.icon}
+                    label={formatMessage(labels.remove)}
+                    position="right"
+                  >
+                    <Icon onClick={handleRemoveUrl.bind(null, index)}>
+                      <Icons.Close />
+                    </Icon>
+                  </Tooltip>
                 </div>
               );
             })}
           </div>
         </FormRow>
         <FormButtons>
-          <SubmitButton variant="primary" disabled={queryDisabled} loading={isLoading}>
-            {formatMessage(labels.query)}
+          <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
+            {formatMessage(labels.runQuery)}
           </SubmitButton>
         </FormButtons>
       </Form>
+      {show && (
+        <Modal onClose={hideAddForm}>
+          <AddUrlForm onSave={handleAddUrl} onClose={hideAddForm} />
+        </Modal>
+      )}
     </>
   );
 }
 
-function AddURLButton({ onAdd }) {
-  const [url, setUrl] = useState('');
+function AddUrlButton({ onClick }) {
   const { formatMessage, labels } = useMessages();
-
-  const handleAdd = close => {
-    onAdd?.(url);
-    setUrl('');
-    close();
-  };
-
-  const handleChange = e => {
-    setUrl(e.target.value);
-  };
-  const handleClose = close => {
-    setUrl('');
-    close();
-  };
 
   return (
     <Tooltip label={formatMessage(labels.addUrl)}>
-      <ModalTrigger>
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-        <Modal>
-          {close => {
-            return (
-              <Form>
-                <FormRow label={formatMessage(labels.url)}>
-                  <TextField name="url" value={url} onChange={handleChange} autoComplete="off" />
-                </FormRow>
-                <FormButtons align="center" flex>
-                  <Button variant="primary" onClick={() => handleAdd(close)}>
-                    {formatMessage(labels.add)}
-                  </Button>
-                  <Button onClick={() => handleClose(close)}>{formatMessage(labels.cancel)}</Button>
-                </FormButtons>
-              </Form>
-            );
-          }}
-        </Modal>
-      </ModalTrigger>
+      <Icon onClick={onClick}>
+        <Icons.Plus />
+      </Icon>
     </Tooltip>
   );
 }

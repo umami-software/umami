@@ -92,7 +92,7 @@ export async function deleteWebsite(
         websiteId,
       },
     }),
-    client.userReport.deleteMany({
+    client.report.deleteMany({
       where: {
         websiteId,
       },

@@ -1,16 +1,18 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { Loading } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import useTheme from 'hooks/useTheme';
 import BarChart from 'components/metrics/BarChart';
 import { formatLongNumber } from 'lib/format';
 import styles from './FunnelChart.module.css';
+import { ReportContext } from '../Report';
 
-export function FunnelChart({ report, data, loading, className }) {
+export function FunnelChart({ className, loading }) {
+  const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
 
-  const { parameters } = report || {};
+  const { parameters, data } = report || {};
 
   const renderXLabel = useCallback(
     (label, index) => {

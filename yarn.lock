@@ -3715,11 +3715,6 @@ balanced-match@^2.0.0:
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-2.0.0.tgz#dc70f920d78db8b858535795867bf48f820633d9"
   integrity sha512-1ugUSr8BHXRnK23KfuYS+gVMC3LB8QGH9W1iGtDPsNWoQbgtXSExkBu2aDR4epiGWZOjZsj6lDl/N/AqqTC3UA==
 
-base-x@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/base-x/-/base-x-4.0.0.tgz#d0e3b7753450c73f8ad2389b5c018a4af7b2224a"
-  integrity sha512-FuwxlW4H5kh37X/oW59pwTzzTKRzfrrQwhmyspRM7swOEZcHtDZSCt45U6oKgtuFE+WYPblePMVIPR4RZrh/hw==
-
 base64-js@^1.3.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
@@ -7019,14 +7014,14 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-basics@^0.27.0:
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.27.0.tgz#7d46c88de4b53cadfef86230f8cbe7dba6f10dc6"
-  integrity sha512-ZviF4O4/14eBjGG7fK83oswuM/rur37TRxcjXCKPJN4kOTUgrzn9Sz+vpzkB8PZ2WaHv5ONQ7TkBEwnhMCEyMQ==
+next-basics@^0.30.0:
+  version "0.30.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.30.0.tgz#1d5f1b3bd3cd66218f00ab0390659a819ed274fa"
+  integrity sha512-IWNrBsxM8watkvWHWkUp5PC0WypqeHMEaj5rCufjEfwuIe++ePtDrYgUKY6Se6y6QJWbyHliozCpa1KpVyZHnQ==
   dependencies:
-    base-x "^4.0.0"
     bcryptjs "^2.4.3"
     jsonwebtoken "^9.0.0"
+    pure-rand "^6.0.2"
 
 next@13.3.1:
   version "13.3.1"
@@ -8143,6 +8138,11 @@ punycode@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
+
+pure-rand@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/pure-rand/-/pure-rand-6.0.2.tgz#a9c2ddcae9b68d736a8163036f088a2781c8b306"
+  integrity sha512-6Yg0ekpKICSjPswYOuC5sku/TSWaRYlA0qsXqJgM/d/4pLPHPuTxK7Nbf7jFKzAeedUhR8C7K9Uv63FBsSo8xQ==
 
 qs@~6.5.2:
   version "6.5.3"
