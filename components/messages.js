@@ -128,6 +128,7 @@ export const labels = defineMessages({
   add: { id: 'label.add', defaultMessage: 'Add' },
   window: { id: 'label.window', defaultMessage: 'Window' },
   addUrl: { id: 'label.add-url', defaultMessage: 'Add URL' },
+  runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
 });
 
 export const messages = defineMessages({

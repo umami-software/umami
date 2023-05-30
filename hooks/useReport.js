@@ -1,20 +1,80 @@
-import useStore, { createReport } from 'store/reports';
+import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
+import useApi from './useApi';
+
+const baseParameters = {
+  name: 'Untitled',
+  description: '',
+  parameters: {},
+};
 
 export function useReport(reportId, defaultParameters) {
-  const [id, setId] = useState(reportId);
+  const [report, setReport] = useState(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const { get, post } = useApi();
 
-  const selector = useCallback(state => state[id], [id]);
-  const report = useStore(selector);
+  const loadReport = async id => {
+    const data = await get(`/reports/${id}`);
+
+    setReport(data);
+  };
+
+  const runReport = useCallback(
+    async parameters => {
+      const { websiteId, type, dateRange } = report;
+      setIsRunning(true);
+
+      const data = await post(`/reports/${type}`, {
+        websiteId: websiteId,
+        ...parameters,
+        startAt: +dateRange?.startDate,
+        endAt: +dateRange?.endDate,
+      });
+
+      setReport(
+        produce(state => {
+          state.parameters = parameters;
+          state.data = data;
+
+          return state;
+        }),
+      );
+
+      setIsRunning(false);
+    },
+    [report],
+  );
+
+  const updateReport = useCallback(
+    async data => {
+      setReport(
+        produce(state => {
+          const { parameters, ...rest } = data;
+
+          if (parameters) {
+            state.parameters = { ...state.parameters, ...parameters };
+          }
+
+          for (const key in rest) {
+            state[key] = rest[key];
+          }
+
+          return state;
+        }),
+      );
+    },
+    [report],
+  );
 
   useEffect(() => {
-    if (!report) {
-      const newReport = createReport(defaultParameters);
-      setId(newReport.id);
+    if (!reportId) {
+      setReport({ ...baseParameters, ...defaultParameters });
+    } else {
+      loadReport(reportId);
     }
   }, []);
 
-  return report;
+  return { report, runReport, updateReport, isRunning };
 }
 
 export default useReport;

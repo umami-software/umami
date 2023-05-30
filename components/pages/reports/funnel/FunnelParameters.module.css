@@ -1,7 +1,7 @@
 .urls {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .url {
@@ -13,4 +13,8 @@
   border: 1px solid var(--base400);
   border-radius: var(--border-radius);
   box-shadow: 1px 1px 1px var(--base400);
+}
+
+.icon {
+  align-self: center;
 }

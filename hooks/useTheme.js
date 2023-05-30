@@ -17,6 +17,9 @@ export function useTheme() {
   const primaryColor = colord(THEME_COLORS[theme].primary);
 
   const colors = {
+    theme: {
+      ...THEME_COLORS[theme],
+    },
     chart: {
       text: THEME_COLORS[theme].gray700,
       line: THEME_COLORS[theme].gray200,
@@ -32,6 +35,12 @@ export function useTheme() {
         borderColor: primaryColor.alpha(0.9).toRgbString(),
         hoverBorderColor: primaryColor.toRgbString(),
       },
+    },
+    map: {
+      baseColor: THEME_COLORS[theme].primary,
+      fillColor: THEME_COLORS[theme].gray100,
+      strokeColor: THEME_COLORS[theme].primary,
+      hoverColor: THEME_COLORS[theme].primary,
     },
   };
 
