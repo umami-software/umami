@@ -20,15 +20,16 @@ export function ReportHeader({ icon }) {
     post(`/reports/${data.id}`, data),
   );
 
-  const { websiteId, name, dateRange } = report || {};
+  const { name, parameters } = report || {};
+  const { websiteId, dateRange } = parameters || {};
   const { value, startDate, endDate } = dateRange || {};
 
-  const handleSelect = websiteId => {
-    updateReport({ websiteId });
+  const handleWebsiteSelect = websiteId => {
+    updateReport({ parameters: { websiteId } });
   };
 
   const handleDateChange = value => {
-    updateReport({ dateRange: { ...parseDateRange(value) } });
+    updateReport({ parameters: { dateRange: { ...parseDateRange(value) } } });
   };
 
   const handleSave = async () => {
@@ -71,7 +72,7 @@ export function ReportHeader({ icon }) {
           onChange={handleDateChange}
           showAllTime
         />
-        <WebsiteSelect websiteId={websiteId} onSelect={handleSelect} />
+        <WebsiteSelect websiteId={websiteId} onSelect={handleWebsiteSelect} />
         <LoadingButton
           variant="primary"
           loading={isCreating || isUpdating}

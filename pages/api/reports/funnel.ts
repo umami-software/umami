@@ -9,8 +9,10 @@ export interface FunnelRequestBody {
   websiteId: string;
   urls: string[];
   window: number;
-  startAt: number;
-  endAt: number;
+  dateRange: {
+    startDate: string;
+    endDate: string;
+  };
 }
 
 export interface FunnelResponse {
@@ -28,18 +30,20 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'POST') {
-    const { websiteId, urls, window, startAt, endAt } = req.body;
+    const {
+      websiteId,
+      urls,
+      window,
+      dateRange: { startDate, endDate },
+    } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const startDate = new Date(+startAt);
-    const endDate = new Date(+endAt);
-
     const data = await getPageviewFunnel(websiteId, {
-      startDate,
-      endDate,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       urls,
       windowMinutes: +window,
     });
