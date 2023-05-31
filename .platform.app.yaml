@@ -23,7 +23,7 @@ hooks:
         yarn build
     deploy: |
         set -e
-        yarn build-db
+        yarn update-db
 
 # The following block defines a single writable directory, 'web/uploads'
 # The 'source' specifies where the writable mount is. The 'local' source
