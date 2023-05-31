@@ -21,15 +21,11 @@ export function useReport(reportId, defaultParameters) {
 
   const runReport = useCallback(
     async parameters => {
-      const { websiteId, type, dateRange } = report;
       setIsRunning(true);
 
-      const data = await post(`/reports/${type}`, {
-        websiteId: websiteId,
-        ...parameters,
-        startAt: +dateRange?.startDate,
-        endAt: +dateRange?.endDate,
-      });
+      const { type } = report;
+
+      const data = await post(`/reports/${type}`, parameters);
 
       setReport(
         produce(state => {

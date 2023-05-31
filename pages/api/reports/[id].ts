@@ -40,6 +40,9 @@ export default async (
 
   if (req.method === 'POST') {
     const { id: reportId } = req.query;
+    const {
+      user: { id: userId },
+    } = req.auth;
 
     const { websiteId, type, name, description, parameters } = req.body;
 
@@ -52,6 +55,7 @@ export default async (
     const result = await updateReport(
       {
         websiteId,
+        userId,
         type,
         name,
         description,
