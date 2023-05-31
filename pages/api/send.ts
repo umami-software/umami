@@ -7,6 +7,9 @@ import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { Resolver } from 'dns/promises';
+import { CollectionType } from 'lib/types';
+import { COLLECTION_TYPE } from 'lib/constants';
+import { saveSessionData } from 'queries/analytics/session/saveSessionData';
 
 export interface CollectRequestBody {
   payload: {
@@ -20,7 +23,7 @@ export interface CollectRequestBody {
     website: string;
     name: string;
   };
-  type: string;
+  type: CollectionType;
 }
 
 export interface NextApiRequestCollect extends NextApiRequest {
@@ -52,17 +55,81 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
-  if (type !== 'event') {
+  validateBody(res, { type, payload });
+
+  if (await hasBlockedIp(req)) {
+    return forbidden(res);
+  }
+
+  const { url, referrer, name: eventName, data: dynamicData, title: pageTitle } = payload;
+
+  await useSession(req, res);
+
+  const session = req.session;
+
+  if (type === COLLECTION_TYPE.event) {
+    // eslint-disable-next-line prefer-const
+    let [urlPath, urlQuery] = url?.split('?') || [];
+    let [referrerPath, referrerQuery] = referrer?.split('?') || [];
+    let referrerDomain;
+
+    if (!urlPath) {
+      urlPath = '/';
+    }
+
+    if (referrerPath?.startsWith('http')) {
+      const refUrl = new URL(referrer);
+      referrerPath = refUrl.pathname;
+      referrerQuery = refUrl.search.substring(1);
+      referrerDomain = refUrl.hostname.replace(/www\./, '');
+    }
+
+    if (process.env.REMOVE_TRAILING_SLASH) {
+      urlPath = urlPath.replace(/.+\/$/, '');
+    }
+
+    await saveEvent({
+      urlPath,
+      urlQuery,
+      referrerPath,
+      referrerQuery,
+      referrerDomain,
+      pageTitle,
+      eventName,
+      eventData: dynamicData,
+      ...session,
+      sessionId: session.id,
+    });
+  }
+
+  if (type === COLLECTION_TYPE.identify) {
+    if (!dynamicData) {
+      return badRequest(res, 'Data required.');
+    }
+
+    await saveSessionData({ ...session, sessionData: dynamicData, sessionId: session.id });
+  }
+
+  const token = createToken(session, secret());
+
+  return send(res, token);
+};
+
+function validateBody(res: NextApiResponse, { type, payload }: CollectRequestBody) {
+  const { data } = payload;
+
+  // Validate type
+  if (type !== COLLECTION_TYPE.event && type !== COLLECTION_TYPE.identify) {
     return badRequest(res, 'Wrong payload type.');
   }
 
-  const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
-
   // Validate eventData is JSON
-  if (eventData && !(typeof eventData === 'object' && !Array.isArray(eventData))) {
+  if (data && !(typeof data === 'object' && !Array.isArray(data))) {
     return badRequest(res, 'Invalid event data.');
   }
+}
 
+async function hasBlockedIp(req: NextApiRequestCollect) {
   const ignoreIps = process.env.IGNORE_IP;
   const ignoreHostnames = process.env.IGNORE_HOSTNAME;
 
@@ -100,49 +167,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       return false;
     });
 
-    if (blocked) {
-      return forbidden(res);
-    }
+    return blocked;
   }
-
-  await useSession(req, res);
-
-  const session = req.session;
-
-  // eslint-disable-next-line prefer-const
-  let [urlPath, urlQuery] = url?.split('?') || [];
-  let [referrerPath, referrerQuery] = referrer?.split('?') || [];
-  let referrerDomain;
-
-  if (!urlPath) {
-    urlPath = '/';
-  }
-
-  if (referrerPath?.startsWith('http')) {
-    const refUrl = new URL(referrer);
-    referrerPath = refUrl.pathname;
-    referrerQuery = refUrl.search.substring(1);
-    referrerDomain = refUrl.hostname.replace(/www\./, '');
-  }
-
-  if (process.env.REMOVE_TRAILING_SLASH) {
-    urlPath = urlPath.replace(/.+\/$/, '');
-  }
-
-  await saveEvent({
-    urlPath,
-    urlQuery,
-    referrerPath,
-    referrerQuery,
-    referrerDomain,
-    pageTitle,
-    eventName,
-    eventData,
-    ...session,
-    sessionId: session.id,
-  });
-
-  const token = createToken(session, secret());
-
-  return send(res, token);
-};
+}

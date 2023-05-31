@@ -2,7 +2,7 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { getEventDataType } from './eventData';
+import { getDynamicDataType } from './dynamicData';
 import { WebsiteMetricFilter } from './types';
 import { FILTER_COLUMNS } from './constants';
 
@@ -74,7 +74,7 @@ function getEventDataFilterQuery(
   params: any,
 ) {
   const query = filters.reduce((ac, cv, i) => {
-    const type = getEventDataType(cv.eventValue);
+    const type = getDynamicDataType(cv.eventValue);
 
     let value = cv.eventValue;
 
