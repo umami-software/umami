@@ -19,6 +19,7 @@ model User {
 
   website  Website[]
   teamUser TeamUser[]
+  Report      Report[]
 
   @@map("user")
 }
@@ -59,6 +60,7 @@ model Website {
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
   eventData   EventData[]
+  Report      Report[]
 
   @@index([userId])
   @@index([createdAt])
@@ -154,4 +156,25 @@ model TeamWebsite {
   @@index([teamId])
   @@index([websiteId])
   @@map("team_website")
+}
+
+model Report {
+  id          String    @id() @unique() @map("report_id") @db.VarChar(36)
+  userId      String    @map("user_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  type        String    @map("type") @db.VarChar(200)
+  name        String    @map("name") @db.VarChar(200)
+  description String    @map("description") @db.VarChar(500)
+  parameters  String    @map("parameters") @db.VarChar(6000)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  user    User    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([userId])
+  @@index([websiteId])
+  @@index([type])
+  @@index([name])
+  @@map("report")
 }
