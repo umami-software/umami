@@ -54,6 +54,11 @@ async function fetchUserBlock(userId: string) {
   return redis.get(key);
 }
 
+async function incrementUserBlock(userId: string) {
+  const key = `user:block:${userId}`;
+  return redis.incr(key);
+}
+
 export default {
   fetchWebsite,
   storeWebsite,
@@ -65,5 +70,6 @@ export default {
   storeSession,
   deleteSession,
   fetchUserBlock,
+  incrementUserBlock,
   enabled: redis.enabled,
 };

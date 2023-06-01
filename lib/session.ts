@@ -80,6 +80,8 @@ export async function findSession(req: NextApiRequestCollect) {
 
 async function checkUserBlock(userId: string) {
   if (process.env.ENABLE_BLOCKER && (await cache.fetchUserBlock(userId))) {
+    await cache.incrementUserBlock(userId);
+
     throw new Error('Usage Limit.');
   }
 }
