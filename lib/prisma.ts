@@ -1,7 +1,7 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { getEventDataType } from './eventData';
+import { getDynamicDataType } from './dynamicData';
 import { FILTER_COLUMNS } from './constants';
 
 const MYSQL_DATE_FORMATS = {
@@ -85,7 +85,7 @@ function getEventDataFilterQuery(
   params: any[],
 ) {
   const query = filters.reduce((ac, cv) => {
-    const type = getEventDataType(cv.eventValue);
+    const type = getDynamicDataType(cv.eventValue);
 
     let value = cv.eventValue;
 

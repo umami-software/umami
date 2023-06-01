@@ -3,7 +3,7 @@ import { getRandomChars } from 'next-basics';
 import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
-import { Website, User, Roles } from 'lib/types';
+import { Website, User, Role } from 'lib/types';
 
 export async function getUser(
   where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
@@ -91,7 +91,7 @@ export async function createUser(data: {
   id: string;
   username: string;
   password: string;
-  role: Roles;
+  role: Role;
 }): Promise<{
   id: string;
   username: string;

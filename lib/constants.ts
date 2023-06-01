@@ -42,6 +42,11 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
+};
+
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
@@ -56,7 +61,7 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
-export const EVENT_DATA_TYPE = {
+export const DYNAMIC_DATA_TYPE = {
   string: 1,
   number: 2,
   boolean: 3,

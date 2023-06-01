@@ -1,12 +1,12 @@
 import { isValid, parseISO } from 'date-fns';
-import { EVENT_DATA_TYPE } from './constants';
-import { EventDataTypes } from './types';
+import { DYNAMIC_DATA_TYPE } from './constants';
+import { DynamicDataType } from './types';
 
 export function flattenJSON(
   eventData: { [key: string]: any },
-  keyValues: { key: string; value: any; eventDataType: EventDataTypes }[] = [],
+  keyValues: { key: string; value: any; dynamicDataType: DynamicDataType }[] = [],
   parentKey = '',
-): { key: string; value: any; eventDataType: EventDataTypes }[] {
+): { key: string; value: any; dynamicDataType: DynamicDataType }[] {
   return Object.keys(eventData).reduce(
     (acc, key) => {
       const value = eventData[key];
@@ -25,7 +25,7 @@ export function flattenJSON(
   ).keyValues;
 }
 
-export function getEventDataType(value: any): string {
+export function getDynamicDataType(value: any): string {
   let type: string = typeof value;
 
   if ((type === 'string' && isValid(value)) || isValid(parseISO(value))) {
@@ -36,34 +36,34 @@ export function getEventDataType(value: any): string {
 }
 
 function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
-  const type = getEventDataType(value);
+  const type = getDynamicDataType(value);
 
-  let eventDataType = null;
+  let dynamicDataType = null;
 
   switch (type) {
     case 'number':
-      eventDataType = EVENT_DATA_TYPE.number;
+      dynamicDataType = DYNAMIC_DATA_TYPE.number;
       break;
     case 'string':
-      eventDataType = EVENT_DATA_TYPE.string;
+      dynamicDataType = DYNAMIC_DATA_TYPE.string;
       break;
     case 'boolean':
-      eventDataType = EVENT_DATA_TYPE.boolean;
+      dynamicDataType = DYNAMIC_DATA_TYPE.boolean;
       value = value ? 'true' : 'false';
       break;
     case 'date':
-      eventDataType = EVENT_DATA_TYPE.date;
+      dynamicDataType = DYNAMIC_DATA_TYPE.date;
       break;
     case 'object':
-      eventDataType = EVENT_DATA_TYPE.array;
+      dynamicDataType = DYNAMIC_DATA_TYPE.array;
       value = JSON.stringify(value);
       break;
     default:
-      eventDataType = EVENT_DATA_TYPE.string;
+      dynamicDataType = DYNAMIC_DATA_TYPE.string;
       break;
   }
 
-  acc.keyValues.push({ key, value, eventDataType });
+  acc.keyValues.push({ key, value, dynamicDataType });
 }
 
 function getKeyName(key, parentKey) {
