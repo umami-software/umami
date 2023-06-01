@@ -19,7 +19,7 @@ model User {
 
   website  Website[]
   teamUser TeamUser[]
-  Report   Report[]
+  report   Report[]
 
   @@map("user")
 }
@@ -40,7 +40,7 @@ model Session {
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   websiteEvent WebsiteEvent[]
-  SessionData  SessionData[]
+  sessionData  SessionData[]
 
   @@index([createdAt])
   @@index([websiteId])
@@ -61,8 +61,8 @@ model Website {
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
   eventData   EventData[]
-  Report      Report[]
-  SessionData SessionData[]
+  report      Report[]
+  sessionData SessionData[]
 
   @@index([userId])
   @@index([createdAt])
