@@ -69,6 +69,14 @@ export const DYNAMIC_DATA_TYPE = {
   array: 5,
 } as const;
 
+export const DATA_TYPES = {
+  [DYNAMIC_DATA_TYPE.string]: 'string',
+  [DYNAMIC_DATA_TYPE.number]: 'number',
+  [DYNAMIC_DATA_TYPE.boolean]: 'boolean',
+  [DYNAMIC_DATA_TYPE.date]: 'date',
+  [DYNAMIC_DATA_TYPE.array]: 'array',
+};
+
 export const KAFKA_TOPIC = {
   event: 'event',
   eventData: 'event_data',

@@ -37,7 +37,7 @@ export async function saveSessionData(data: {
       },
     }),
     client.sessionData.createMany({
-      data: flattendData,
+      data: flattendData as any,
     }),
   ]);
 }

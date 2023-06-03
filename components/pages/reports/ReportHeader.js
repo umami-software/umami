@@ -64,24 +64,14 @@ export function ReportHeader({ icon }) {
 
   return (
     <PageHeader title={<Title />} className={styles.header}>
-      <Flexbox gap={20}>
-        <DateFilter
-          value={value}
-          startDate={startDate}
-          endDate={endDate}
-          onChange={handleDateChange}
-          showAllTime
-        />
-        <WebsiteSelect websiteId={websiteId} onSelect={handleWebsiteSelect} />
-        <LoadingButton
-          variant="primary"
-          loading={isCreating || isUpdating}
-          disabled={!websiteId || !value}
-          onClick={handleSave}
-        >
-          {formatMessage(labels.save)}
-        </LoadingButton>
-      </Flexbox>
+      <LoadingButton
+        variant="primary"
+        loading={isCreating || isUpdating}
+        disabled={!websiteId || !value}
+        onClick={handleSave}
+      >
+        {formatMessage(labels.save)}
+      </LoadingButton>
       {toast}
     </PageHeader>
   );

@@ -10,7 +10,7 @@ import styles from './ReportList.module.css';
 const reports = [
   {
     title: 'Event data',
-    description: 'Query your event data.',
+    description: 'Query your custom event data.',
     url: '/reports/event-data',
     icon: <Nodes />,
   },

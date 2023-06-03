@@ -8191,10 +8191,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.82.0:
-  version "0.82.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.82.0.tgz#1df241f4ef97a8d0c7c81d4954d065efc2c415a5"
-  integrity sha512-DrHuRJqncx7cWYFz4rAahEsCsF3s5W1CJyJY276EUphfn0NDKZcvnrSnr6G+KTUAEkvksvlAm1t3nDv85coUxg==
+react-basics@^0.83.0:
+  version "0.83.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.83.0.tgz#bc4a962967383ecec20a0eb49b88c004c67a7f3a"
+  integrity sha512-3P74I1Tp8Ih8gw3xG65mB0aTzG0oTOYg72Gpfbd3igKjg/L1wgN6stWjIwzNP7mgWFc0FQ63BB13P7pL025bNQ==
   dependencies:
     classnames "^2.3.1"
     date-fns "^2.29.3"

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useMessages } from 'hooks';
 import { Button, Form, FormButtons, FormRow, TextField } from 'react-basics';
+import styles from './UrlAddForm.module.css';
 
-export function AddUrlForm({ defaultValue = '', onSave, onClose }) {
+export function UrlAddForm({ defaultValue = '', onSave, onClose }) {
   const [url, setUrl] = useState(defaultValue);
   const { formatMessage, labels } = useMessages();
 
@@ -22,7 +23,7 @@ export function AddUrlForm({ defaultValue = '', onSave, onClose }) {
   };
 
   return (
-    <Form>
+    <Form className={styles.form}>
       <FormRow label={formatMessage(labels.url)}>
         <TextField
           name="url"
@@ -42,4 +43,4 @@ export function AddUrlForm({ defaultValue = '', onSave, onClose }) {
   );
 }
 
-export default AddUrlForm;
+export default UrlAddForm;
