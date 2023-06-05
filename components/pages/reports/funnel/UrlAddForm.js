@@ -17,13 +17,8 @@ export function UrlAddForm({ defaultValue = '', onSave, onClose }) {
     setUrl(e.target.value);
   };
 
-  const handleClose = () => {
-    setUrl('');
-    onClose();
-  };
-
   return (
-    <Form className={styles.form}>
+    <Form className={styles.form} onSubmit={handleSave}>
       <FormRow label={formatMessage(labels.url)}>
         <TextField
           name="url"
@@ -37,7 +32,6 @@ export function UrlAddForm({ defaultValue = '', onSave, onClose }) {
         <Button variant="primary" onClick={handleSave}>
           {formatMessage(labels.save)}
         </Button>
-        <Button onClick={handleClose}>{formatMessage(labels.cancel)}</Button>
       </FormButtons>
     </Form>
   );

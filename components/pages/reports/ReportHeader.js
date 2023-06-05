@@ -1,13 +1,11 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Flexbox, Icon, LoadingButton, InlineEditField, useToast } from 'react-basics';
-import WebsiteSelect from 'components/input/WebsiteSelect';
+import { Icon, LoadingButton, InlineEditField, useToast } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
-import DateFilter from 'components/input/DateFilter';
-import { parseDateRange } from 'lib/date';
 import { useMessages, useApi } from 'hooks';
 import { ReportContext } from './Report';
-import styles from './reports.module.css';
+import styles from './ReportHeader.module.css';
+import reportStyles from './reports.module.css';
 
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
@@ -20,17 +18,8 @@ export function ReportHeader({ icon }) {
     post(`/reports/${data.id}`, data),
   );
 
-  const { name, parameters } = report || {};
+  const { name, description, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
-  const { value, startDate, endDate } = dateRange || {};
-
-  const handleWebsiteSelect = websiteId => {
-    updateReport({ parameters: { websiteId } });
-  };
-
-  const handleDateChange = value => {
-    updateReport({ parameters: { dateRange: { ...parseDateRange(value) } } });
-  };
 
   const handleSave = async () => {
     if (!report.id) {
@@ -53,27 +42,41 @@ export function ReportHeader({ icon }) {
     updateReport({ name });
   };
 
+  const handleDescriptionChange = description => {
+    updateReport({ description });
+  };
+
   const Title = () => {
     return (
       <>
         <Icon size="lg">{icon}</Icon>
-        <InlineEditField value={name} onCommit={handleNameChange} />
+        <InlineEditField name="name" value={name} onCommit={handleNameChange} />
       </>
     );
   };
 
   return (
-    <PageHeader title={<Title />} className={styles.header}>
-      <LoadingButton
-        variant="primary"
-        loading={isCreating || isUpdating}
-        disabled={!websiteId || !value}
-        onClick={handleSave}
-      >
-        {formatMessage(labels.save)}
-      </LoadingButton>
+    <div className={reportStyles.header}>
+      <PageHeader title={<Title />}>
+        <LoadingButton
+          variant="primary"
+          loading={isCreating || isUpdating}
+          disabled={!websiteId || !dateRange?.value || !name}
+          onClick={handleSave}
+        >
+          {formatMessage(labels.save)}
+        </LoadingButton>
+      </PageHeader>
+      <div className={styles.description}>
+        <InlineEditField
+          name="description"
+          value={description}
+          placeholder={`+ ${formatMessage(labels.addDescription)}`}
+          onCommit={handleDescriptionChange}
+        />
+      </div>
       {toast}
-    </PageHeader>
+    </div>
   );
 }
 

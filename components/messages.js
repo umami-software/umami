@@ -48,6 +48,8 @@ export const labels = defineMessages({
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
+  addField: { id: 'label.add-field', defaultMessage: 'Add field' },
+  addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },
@@ -129,8 +131,8 @@ export const labels = defineMessages({
   window: { id: 'label.window', defaultMessage: 'Window' },
   addUrl: { id: 'label.add-url', defaultMessage: 'Add URL' },
   runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
+  field: { id: 'label.field', defaultMessage: 'Field' },
   fields: { id: 'label.fields', defaultMessage: 'Fields' },
-  addField: { id: 'label.add-field', defaultMessage: 'Add field' },
 });
 
 export const messages = defineMessages({

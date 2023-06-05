@@ -28,8 +28,10 @@ export function FunnelParameters() {
   const { websiteId, dateRange, urls } = parameters || {};
   const queryDisabled = !websiteId || !dateRange || urls?.length < 2;
 
-  const handleSubmit = values => {
-    runReport(values);
+  const handleSubmit = data => {
+    if (!queryDisabled) {
+      runReport(data);
+    }
   };
 
   const handleAddUrl = url => {

@@ -15,7 +15,7 @@ export function BaseParameters() {
   const { value, startDate, endDate } = dateRange || {};
 
   const handleWebsiteSelect = websiteId => {
-    updateReport({ parameters: { websiteId } });
+    updateReport({ websiteId, parameters: { websiteId } });
   };
 
   const handleDateChange = value => {
