@@ -106,7 +106,7 @@
           }
         });
 
-        return track(eventName, { data: eventData });
+        return track(eventName, eventData);
       }
       return Promise.resolve();
     };
