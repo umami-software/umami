@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { Icon, LoadingButton, InlineEditField, useToast } from 'react-basics';
+import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
 import { useMessages, useApi } from 'hooks';
 import { ReportContext } from './Report';
@@ -10,7 +10,7 @@ import reportStyles from './reports.module.css';
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
   const { post, useMutation } = useApi();
   const router = useRouter();
   const { mutate: create, isLoading: isCreating } = useMutation(data => post(`/reports`, data));
@@ -75,7 +75,6 @@ export function ReportHeader({ icon }) {
           onCommit={handleDescriptionChange}
         />
       </div>
-      {toast}
     </div>
   );
 }
