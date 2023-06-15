@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useRef } from 'react';
 import { useMessages } from 'hooks';
 import {
   Icon,

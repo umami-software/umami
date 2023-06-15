@@ -25,8 +25,8 @@ export function ReportHeader({ icon }) {
     if (!report.id) {
       create(report, {
         onSuccess: async ({ id }) => {
-          router.push(`/reports/${id}`, null, { shallow: true });
           showToast({ message: formatMessage(messages.saved), variant: 'success' });
+          router.push(`/reports/${id}`, null, { shallow: true });
         },
       });
     } else {

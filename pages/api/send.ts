@@ -61,7 +61,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     return forbidden(res);
   }
 
-  const { url, referrer, name: eventName, data: dynamicData, title: pageTitle } = payload;
+  const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
 
   await useSession(req, res);
 
@@ -96,18 +96,18 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       referrerDomain,
       pageTitle,
       eventName,
-      eventData: dynamicData,
+      eventData,
       ...session,
       sessionId: session.id,
     });
   }
 
   if (type === COLLECTION_TYPE.identify) {
-    if (!dynamicData) {
+    if (!eventData) {
       return badRequest(res, 'Data required.');
     }
 
-    await saveSessionData({ ...session, sessionData: dynamicData, sessionId: session.id });
+    await saveSessionData({ ...session, sessionData: eventData, sessionId: session.id });
   }
 
   const token = createToken(session, secret());
@@ -153,7 +153,7 @@ async function hasBlockedIp(req: NextApiRequestCollect) {
 
     const clientIp = getIpAddress(req);
 
-    const blocked = ips.find(ip => {
+    return ips.find(ip => {
       if (ip === clientIp) return true;
 
       // CIDR notation
@@ -166,7 +166,5 @@ async function hasBlockedIp(req: NextApiRequestCollect) {
 
       return false;
     });
-
-    return blocked;
   }
 }

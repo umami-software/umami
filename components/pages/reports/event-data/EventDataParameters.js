@@ -5,6 +5,7 @@ import { ReportContext } from 'components/pages/reports/Report';
 import NoData from 'components/common/NoData';
 import styles from './EventDataParameters.module.css';
 import { DATA_TYPES } from 'lib/constants';
+import BaseParameters from '../BaseParameters';
 
 function useFields(websiteId, startDate, endDate) {
   const { get, useQuery } = useApi();
@@ -31,16 +32,9 @@ export function EventDataParameters() {
     runReport(values);
   };
 
-  if (!websiteId || !dateRange) {
-    return null;
-  }
-
-  if (isLoading) {
-    return <Loading icon="dots" />;
-  }
-
   return (
     <Form ref={ref} values={parameters} error={error} onSubmit={handleSubmit}>
+      <BaseParameters />
       <FormRow label={formatMessage(labels.fields)}>
         <div className={styles.fields}>
           {!data?.length && <NoData />}
