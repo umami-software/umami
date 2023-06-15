@@ -1,13 +1,13 @@
 import AppLayout from 'components/layout/AppLayout';
-import useMessages from 'hooks/useMessages';
-import ReportsList from 'components/pages/reports/ReportsList';
+import ReportTemplates from 'components/pages/reports/ReportTemplates';
+import { useMessages } from 'hooks';
 
 export default function ReportsPage() {
   const { formatMessage, labels } = useMessages();
 
   return (
     <AppLayout title={formatMessage(labels.reports)}>
-      <ReportsList />
+      <ReportTemplates />
     </AppLayout>
   );
 }

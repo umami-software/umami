@@ -133,6 +133,8 @@ export const labels = defineMessages({
   runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
   field: { id: 'label.field', defaultMessage: 'Field' },
   fields: { id: 'label.fields', defaultMessage: 'Fields' },
+  createReport: { id: 'labels.create-report', defaultMessage: 'Create report' },
+  description: { id: 'labels.description', defaultMessage: 'Description' },
 });
 
 export const messages = defineMessages({

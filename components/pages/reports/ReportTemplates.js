@@ -5,7 +5,8 @@ import PageHeader from 'components/layout/PageHeader';
 import Funnel from 'assets/funnel.svg';
 import Nodes from 'assets/nodes.svg';
 import Lightbulb from 'assets/lightbulb.svg';
-import styles from './ReportList.module.css';
+import styles from './ReportTemplates.module.css';
+import { useMessages } from 'hooks';
 
 const reports = [
   {
@@ -50,10 +51,12 @@ function ReportItem({ title, description, url, icon }) {
   );
 }
 
-export function ReportList() {
+export function ReportTemplates() {
+  const { formatMessage, labels } = useMessages();
+
   return (
     <Page>
-      <PageHeader title="Reports" />
+      <PageHeader title={formatMessage(labels.reports)} />
       <div className={styles.reports}>
         {reports.map(({ title, description, url, icon }) => {
           return (
@@ -65,4 +68,4 @@ export function ReportList() {
   );
 }
 
-export default ReportList;
+export default ReportTemplates;
