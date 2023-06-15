@@ -131,7 +131,7 @@
   "message.no-teams": "Nie stworzyłeś żadnych zespołów.",
   "message.no-users": "Nie ma żadnych użytkowników.",
   "message.page-not-found": "Strona nie znaleziona.",
-  "message.reset-website": "Zresetuj statystyki",
+  "message.reset-website": "Aby zresetować tę witrynę, wpisz {confirmation} w polu poniżej, aby potwierdzić.",
   "message.reset-website-warning": "Wszystkie statystyki tej witryny zostaną usunięte, ale kod śledzenia pozostanie nienaruszony.",
   "message.saved": "Zapisano pomyślnie.",
   "message.share-url": "To jest publicznie udostępniany adres URL dla {target}.",
