@@ -131,7 +131,7 @@
   "message.no-teams": "You have not created any teams.",
   "message.no-users": "There are no users.",
   "message.page-not-found": "Page not found.",
-  "message.reset-website": "Reset statistics",
+  "message.reset-website": "To reset this website, type {confirmation} in the box below to confirm.",
   "message.reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
   "message.saved": "Saved successfully.",
   "message.share-url": "This is the publicly shared URL for {target}.",
