@@ -18,9 +18,9 @@ export function HoverTooltip({ children }) {
   }, []);
 
   return (
-    <div className={styles.tooltip} style={{ left: position.x, top: position.y - 16 }}>
-      <Tooltip position="top" action="none" label={children} />
-    </div>
+    <Tooltip className={styles.tooltip} style={{ left: position.x, top: position.y }}>
+      {children}
+    </Tooltip>
   );
 }
 

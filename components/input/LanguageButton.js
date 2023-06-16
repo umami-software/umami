@@ -9,7 +9,8 @@ export function LanguageButton() {
   const { locale, saveLocale, dir } = useLocale();
   const items = Object.keys(languages).map(key => ({ ...languages[key], value: key }));
 
-  function handleSelect(value, close) {
+  function handleSelect(value, close, e) {
+    e.stopPropagation();
     saveLocale(value);
     close();
   }

@@ -20,14 +20,14 @@ export function BarChart({
   renderYLabel,
   XAxisType = 'time',
   YAxisType = 'linear',
-  renderTooltip,
+  renderTooltipPopup,
   onCreate,
   onUpdate,
   className,
 }) {
   const canvas = useRef();
   const chart = useRef(null);
-  const [tooltip, setTooltip] = useState(null);
+  const [tooltip, setTooltipPopup] = useState(null);
   const { locale } = useLocale();
   const { theme, colors } = useTheme();
 
@@ -50,7 +50,7 @@ export function BarChart({
         },
         tooltip: {
           enabled: false,
-          external: renderTooltip ? renderTooltip.bind(null, setTooltip) : undefined,
+          external: renderTooltipPopup ? renderTooltipPopup.bind(null, setTooltipPopup) : undefined,
         },
       },
       scales: {
@@ -93,7 +93,7 @@ export function BarChart({
     };
   }, [
     animationDuration,
-    renderTooltip,
+    renderTooltipPopup,
     renderXLabel,
     XAxisType,
     YAxisType,
@@ -120,7 +120,7 @@ export function BarChart({
   };
 
   const updateChart = () => {
-    setTooltip(null);
+    setTooltipPopup(null);
 
     datasets.forEach((dataset, index) => {
       chart.current.data.datasets[index].data = dataset.data;

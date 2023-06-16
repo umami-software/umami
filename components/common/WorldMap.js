@@ -14,7 +14,7 @@ import styles from './WorldMap.module.css';
 
 export function WorldMap({ data, className }) {
   const { basePath } = useRouter();
-  const [tooltip, setTooltip] = useState();
+  const [tooltip, setTooltipPopup] = useState();
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
@@ -40,7 +40,7 @@ export function WorldMap({ data, className }) {
   function handleHover(code) {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
-    setTooltip(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
+    setTooltipPopup(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
   }
 
   return (
@@ -69,7 +69,7 @@ export function WorldMap({ data, className }) {
                       pressed: { outline: 'none' },
                     }}
                     onMouseOver={() => handleHover(code)}
-                    onMouseOut={() => setTooltip(null)}
+                    onMouseOut={() => setTooltipPopup(null)}
                   />
                 );
               });

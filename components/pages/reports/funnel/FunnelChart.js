@@ -21,15 +21,15 @@ export function FunnelChart({ className, loading }) {
     [parameters],
   );
 
-  const renderTooltip = useCallback((setTooltip, model) => {
+  const renderTooltipPopup = useCallback((setTooltipPopup, model) => {
     const { opacity, dataPoints } = model.tooltip;
 
     if (!dataPoints?.length || !opacity) {
-      setTooltip(null);
+      setTooltipPopup(null);
       return;
     }
 
-    setTooltip(`${formatLongNumber(dataPoints[0].raw.y)} ${formatMessage(labels.visitors)}`);
+    setTooltipPopup(`${formatLongNumber(dataPoints[0].raw.y)} ${formatMessage(labels.visitors)}`);
   }, []);
 
   const datasets = useMemo(() => {
@@ -54,7 +54,7 @@ export function FunnelChart({ className, loading }) {
       unit="day"
       loading={loading}
       renderXLabel={renderXLabel}
-      renderTooltip={renderTooltip}
+      renderTooltipPopup={renderTooltipPopup}
       XAxisType="category"
     />
   );

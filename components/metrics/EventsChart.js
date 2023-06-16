@@ -5,7 +5,7 @@ import BarChart from './BarChart';
 import { getDateArray } from 'lib/date';
 import { useApi, useLocale, useDateRange, useTimezone, usePageQuery } from 'hooks';
 import { EVENT_COLORS } from 'lib/constants';
-import { renderDateLabels, renderStatusTooltip } from 'lib/charts';
+import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
 
 export function EventsChart({ websiteId, className, token }) {
   const { get, useQuery } = useApi();
@@ -72,7 +72,7 @@ export function EventsChart({ websiteId, className, token }) {
       loading={isLoading}
       stacked
       renderXLabel={renderDateLabels(unit, locale)}
-      renderTooltip={renderStatusTooltip(unit, locale)}
+      renderTooltipPopup={renderStatusTooltipPopup(unit, locale)}
     />
   );
 }

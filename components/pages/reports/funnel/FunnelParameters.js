@@ -11,7 +11,7 @@ import {
   SubmitButton,
   Text,
   TextField,
-  Tooltip,
+  TooltipPopup,
 } from 'react-basics';
 import Icons from 'components/icons';
 import UrlAddForm from './UrlAddForm';
@@ -62,7 +62,7 @@ export function FunnelParameters() {
             return (
               <div key={index} className={styles.url}>
                 <Text>{url}</Text>
-                <Tooltip
+                <TooltipPopup
                   className={styles.icon}
                   label={formatMessage(labels.remove)}
                   position="right"
@@ -70,7 +70,7 @@ export function FunnelParameters() {
                   <Icon onClick={handleRemoveUrl.bind(null, index)}>
                     <Icons.Close />
                   </Icon>
-                </Tooltip>
+                </TooltipPopup>
               </div>
             );
           })}
@@ -90,11 +90,11 @@ function AddUrlButton({ onAdd }) {
 
   return (
     <PopupTrigger>
-      <Tooltip label={formatMessage(labels.addUrl)}>
+      <TooltipPopup label={formatMessage(labels.addUrl)}>
         <Icon>
           <Icons.Plus />
         </Icon>
-      </Tooltip>
+      </TooltipPopup>
       <Popup position="bottom" alignment="start">
         {close => {
           return <UrlAddForm onSave={onAdd} onClose={close} />;

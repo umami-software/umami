@@ -1,7 +1,7 @@
 .menu {
   display: flex;
   flex-flow: row wrap;
-  max-width: 640px;
+  min-width: 640px;
   padding: 10px;
   background: var(--base50);
   z-index: var(--z-index-popup);

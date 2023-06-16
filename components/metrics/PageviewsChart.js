@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import BarChart from './BarChart';
 import { useLocale, useTheme, useMessages } from 'hooks';
-import { renderDateLabels, renderStatusTooltip } from 'lib/charts';
+import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
 
 export function PageviewsChart({ websiteId, data, unit, className, loading, ...props }) {
   const { formatMessage, labels } = useMessages();
@@ -36,7 +36,7 @@ export function PageviewsChart({ websiteId, data, unit, className, loading, ...p
       unit={unit}
       loading={loading}
       renderXLabel={renderDateLabels(unit, locale)}
-      renderTooltip={renderStatusTooltip(unit, locale)}
+      renderTooltipPopup={renderStatusTooltipPopup(unit, locale)}
     />
   );
 }

@@ -39,7 +39,7 @@ export function ReportHeader({ icon }) {
   };
 
   const handleNameChange = name => {
-    updateReport({ name });
+    updateReport({ name: name || 'Untitled' });
   };
 
   const handleDescriptionChange = description => {
