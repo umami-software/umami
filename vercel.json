@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/stats/:match*",
+      "destination": "https://analytics.codeclarity.ai/:match*"
+    }
+  ]
+}
