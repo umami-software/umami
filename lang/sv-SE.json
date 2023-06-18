@@ -131,7 +131,7 @@
   "message.no-teams": "Du har inte skapat några team.",
   "message.no-users": "Det finns inga användare.",
   "message.page-not-found": "Sidan kan inte hittas.",
-  "message.reset-website": "Återställ statistik",
+  "message.reset-website": "För att återställa statistiken skriv {confirmation} i rutan nedan.",
   "message.reset-website-warning": "All statistik för webbsajten tas bort men spårningskoden förblir oförändrad.",
   "message.saved": "Sparades!",
   "message.share-url": "Det här är den offentliga delnings-URL:en för {target}.",
