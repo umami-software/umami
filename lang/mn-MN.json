@@ -126,7 +126,7 @@
   "message.confirm-leave": "Та {target}-с гарахдаа итгэлтэй байна уу?",
   "message.confirm-reset": "Та {target}-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?",
   "message.delete-account": "To delete this account, type {confirmation} in the box below to confirm.",
-  "message.delete-website": "Веб устгахын тулд доорх хэсэгт {confirmation} гэж бичиж, баталгаажуулна уу.",
+  "message.delete-website": "To delete this website, type {confirmation} in the box below to confirm.",
   "message.delete-website-warning": "Энэ вебтэй холбоотой бүх өгөгдөл устах болно.",
   "message.error": "Ямар нэг зүйл буруу боллоо.",
   "message.event-log": "{url}-д {event}",

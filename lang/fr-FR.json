@@ -139,7 +139,7 @@
   "message.no-teams": "Vous n'avez créé aucune équipe.",
   "message.no-users": "Il n'y aucun utilisateur.",
   "message.page-not-found": "Page non trouvée.",
-  "message.reset-website": "Réinitialiser les statistiques",
+  "message.reset-website": "To reset this website, type {confirmation} in the box below to confirm.",
   "message.reset-website-warning": "Toutes les statistiques pour ce site seront supprimées, mais votre code de suivi restera intact.",
   "message.saved": "Enregistré avec succès.",
   "message.share-url": "Les statistiques de votre site sont accessibles publiquement sur cette URL :",
