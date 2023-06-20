@@ -41,23 +41,23 @@ async function relationalQuery(
 
   return rawQuery(
     `WITH level0 AS (
-      select session_id, url_path, referrer_path, created_at
+      select distinct session_id, url_path, referrer_path, created_at
       from website_event
       where url_path in (${urlFilterQuery})
           and website_id = $1${toUuid()}
           and created_at between $2 and $3
   ),level1 AS (
-      select session_id, url_path as level_1_url, created_at as level_1_created_at
+      select distinct session_id, url_path as level_1_url, created_at as level_1_created_at
       from level0
       where url_path = $4
   )${levelQuery}
   
   SELECT ${sumQuery}
-  from level3;
+  from level${urls.length};
   `,
     params,
   ).then((a: { [key: string]: number }) => {
-    return urls.map((b, i) => ({ x: b, y: a[`level${i + 1}`] || 0 }));
+    return urls.map((b, i) => ({ x: b, y: a[0][`level${i + 1}`] || 0 }));
   });
 }
 
@@ -91,7 +91,7 @@ async function clickhouseQuery(
         count(*) AS count
     FROM (
     SELECT session_id,
-            windowFunnel({window:UInt32}, 'strict_order')
+            windowFunnel({window:UInt32})
             (
                 created_at
                 ${columnsQuery}
@@ -99,7 +99,6 @@ async function clickhouseQuery(
         FROM website_event
         WHERE website_id = {websiteId:UUID}
             and ${getBetweenDates('created_at', startDate, endDate)}             
-            AND (url_path in [${conditionQuery}])
         GROUP BY 1
         )
     GROUP BY level

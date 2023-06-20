@@ -137,12 +137,13 @@ function getFilterQuery(filters = {}, params = []): string {
 function getFunnelQuery(
   urls: string[],
   windowMinutes: number,
-  initParamLength = 3,
 ): {
   levelQuery: string;
   sumQuery: string;
   urlFilterQuery: string;
 } {
+  const initParamLength = 3;
+
   return urls.reduce(
     (pv, cv, i) => {
       const levelNumber = i + 1;
@@ -155,12 +156,14 @@ function getFunnelQuery(
             l0.created_at level_${levelNumber}_created_at,
             l0.url_path as level_${levelNumber}_url
           from level${i} cl
-              left join level0 l0
+              left join website_event l0
                   on cl.session_id = l0.session_id
                   and l0.created_at between cl.level_${i}_created_at 
                     and ${getAddMinutesQuery(`cl.level_${i}_created_at`, windowMinutes)}
                   and l0.referrer_path = $${i + initParamLength}
                   and l0.url_path = $${levelNumber + initParamLength}
+                  and created_at between $2 and $3
+                  and website_id = $1${toUuid()}
         )`;
       }
 
