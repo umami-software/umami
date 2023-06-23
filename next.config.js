@@ -4,7 +4,8 @@ const pkg = require('./package.json');
 
 const CLOUD_URL = 'https://cloud.umami.is';
 
-const EMBED_HOSTED_URL = process.env.EMBED_HOSTED_URL
+// Space-separated list of URLs that can load the "Share" dashboard, i.e. http://app.localhost:7000 https://*.vercel.app
+const EMBED_HOSTED_URL = process.env.EMBED_HOSTED_URL;
 
 const contentSecurityPolicy = `
   default-src 'self';
