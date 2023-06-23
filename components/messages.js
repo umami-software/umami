@@ -135,6 +135,8 @@ export const labels = defineMessages({
   fields: { id: 'label.fields', defaultMessage: 'Fields' },
   createReport: { id: 'labels.create-report', defaultMessage: 'Create report' },
   description: { id: 'labels.description', defaultMessage: 'Description' },
+  untitled: { id: 'labels.untitled', defaultMessage: 'Untitled' },
+  type: { id: 'labels.type', defaultMessage: 'Type' },
 });
 
 export const messages = defineMessages({

@@ -2,15 +2,14 @@ import Link from 'next/link';
 import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
 import useMessages from 'hooks/useMessages';
-import useConfig from 'hooks/useConfig';
 
 export function ReportsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { openExternal } = useConfig();
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
     { name: 'description', label: formatMessage(labels.description) },
+    { name: 'type', label: formatMessage(labels.type) },
     { name: 'action', label: ' ' },
   ];
 

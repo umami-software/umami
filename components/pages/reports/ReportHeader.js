@@ -50,7 +50,13 @@ export function ReportHeader({ icon }) {
     return (
       <>
         <Icon size="lg">{icon}</Icon>
-        <InlineEditField name="name" value={name} onCommit={handleNameChange} />
+        <InlineEditField
+          key={name}
+          name="name"
+          value={name}
+          placeholder={formatMessage(labels.untitled)}
+          onCommit={handleNameChange}
+        />
       </>
     );
   };
@@ -69,6 +75,7 @@ export function ReportHeader({ icon }) {
       </PageHeader>
       <div className={styles.description}>
         <InlineEditField
+          key={description}
           name="description"
           value={description}
           placeholder={`+ ${formatMessage(labels.addDescription)}`}

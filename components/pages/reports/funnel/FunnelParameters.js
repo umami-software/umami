@@ -96,8 +96,10 @@ function AddUrlButton({ onAdd }) {
         </Icon>
       </TooltipPopup>
       <Popup position="bottom" alignment="start">
-        {close => {
-          return <UrlAddForm onSave={onAdd} onClose={close} />;
+        {(close, element) => {
+          const { right, bottom } = element.getBoundingClientRect();
+
+          return <UrlAddForm onSave={onAdd} onClose={close} style={{ left: right, top: bottom }} />;
         }}
       </Popup>
     </PopupTrigger>
