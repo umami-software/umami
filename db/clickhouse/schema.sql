@@ -28,7 +28,7 @@ CREATE TABLE umami.website_event
     event_type UInt32,
     event_name String,
     created_at DateTime('UTC'),
-    upload_id UUID
+    job_id UUID
 )
     engine = MergeTree
         ORDER BY (website_id, session_id, created_at)
@@ -123,7 +123,7 @@ CREATE TABLE umami.event_data
     date_value Nullable(DateTime('UTC')),
     data_type UInt32,
     created_at DateTime('UTC'),
-    upload_id UUID
+    job_id UUID
 )
     engine = MergeTree
         ORDER BY (website_id, event_id, event_key, created_at)
