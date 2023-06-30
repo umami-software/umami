@@ -2,7 +2,7 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { getEventDataType } from './eventData';
+import { getDynamicDataType } from './dynamicData';
 import { WebsiteMetricFilter } from './types';
 import { FILTER_COLUMNS } from './constants';
 
@@ -74,7 +74,7 @@ function getEventDataFilterQuery(
   params: any,
 ) {
   const query = filters.reduce((ac, cv, i) => {
-    const type = getEventDataType(cv.eventValue);
+    const type = getDynamicDataType(cv.eventValue);
 
     let value = cv.eventValue;
 
@@ -121,13 +121,36 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
+function getFunnelQuery(urls: string[]): {
+  columnsQuery: string;
+  conditionQuery: string;
+  urlParams: { [key: string]: string };
+} {
+  return urls.reduce(
+    (pv, cv, i) => {
+      pv.columnsQuery += `\n,url_path = {url${i}:String}${
+        i > 0 && urls[i - 1] ? ` AND referrer_path = {url${i - 1}:String}` : ''
+      }`;
+      pv.conditionQuery += `${i > 0 ? ',' : ''} {url${i}:String}`;
+      pv.urlParams[`url${i}`] = cv;
+
+      return pv;
+    },
+    {
+      columnsQuery: '',
+      conditionQuery: '',
+      urlParams: {},
+    },
+  );
+}
+
 function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   return {
     filterQuery: getFilterQuery(filters, params),
   };
 }
 
-async function rawQuery(query, params = {}) {
+async function rawQuery<T>(query, params = {}): Promise<T> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);
@@ -135,7 +158,7 @@ async function rawQuery(query, params = {}) {
 
   await connect();
 
-  return clickhouse.query(query, { params }).toPromise();
+  return clickhouse.query(query, { params }).toPromise() as Promise<T>;
 }
 
 async function findUnique(data) {
@@ -168,6 +191,7 @@ export default {
   getDateFormat,
   getBetweenDates,
   getFilterQuery,
+  getFunnelQuery,
   getEventDataFilterQuery,
   parseFilters,
   findUnique,

@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { get } from 'next-basics';
+import { httpGet } from 'next-basics';
 import enUS from 'public/intl/country/en-US.json';
 
 const countryNames = {
   'en-US': enUS,
 };
 
-export default function useCountryNames(locale) {
+export function useCountryNames(locale) {
   const [list, setList] = useState(countryNames[locale] || enUS);
   const { basePath } = useRouter();
 
   async function loadData(locale) {
-    const { data } = await get(`${basePath}/intl/country/${locale}.json`);
+    const { data } = await httpGet(`${basePath}/intl/country/${locale}.json`);
 
     if (data) {
       countryNames[locale] = data;
@@ -32,3 +32,5 @@ export default function useCountryNames(locale) {
 
   return list;
 }
+
+export default useCountryNames;

@@ -9,9 +9,9 @@ export default function RealtimeDetailsPage() {
   const { id: websiteId } = router.query;
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
-  const { data: website } = useQuery(['websites', websiteId], () =>
-    get(`/websites/${websiteId}`, { enabled: !!websiteId }),
-  );
+  const { data: website } = useQuery(['websites', websiteId], () => get(`/websites/${websiteId}`), {
+    enabled: !!websiteId,
+  });
   const title = `${formatMessage(labels.realtime)}${website?.name ? ` - ${website.name}` : ''}`;
 
   if (!websiteId) {

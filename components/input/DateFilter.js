@@ -3,30 +3,21 @@ import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
-import { dateFormat, getDateRangeValues } from 'lib/date';
+import { dateFormat } from 'lib/date';
 import Icons from 'components/icons';
-import useApi from 'hooks/useApi';
-import useDateRange from 'hooks/useDateRange';
 import useMessages from 'hooks/useMessages';
 
-export function DateFilter({ websiteId, value, className }) {
+export function DateFilter({
+  value,
+  startDate,
+  endDate,
+  className,
+  onChange,
+  showAllTime = false,
+  alignment = 'end',
+}) {
   const { formatMessage, labels } = useMessages();
-  const { get } = useApi();
-  const [dateRange, setDateRange] = useDateRange(websiteId);
-  const { startDate, endDate } = dateRange;
   const [showPicker, setShowPicker] = useState(false);
-
-  async function handleDateChange(value) {
-    if (value === 'all' && websiteId) {
-      const data = await get(`/websites/${websiteId}`);
-
-      if (data) {
-        setDateRange({ value, ...getDateRangeValues(new Date(data.createdAt), Date.now()) });
-      }
-    } else if (value !== 'all') {
-      setDateRange(value);
-    }
-  }
 
   const options = [
     { label: formatMessage(labels.today), value: '1day' },
@@ -61,7 +52,7 @@ export function DateFilter({ websiteId, value, className }) {
       value: '90day',
     },
     { label: formatMessage(labels.thisYear), value: '1year' },
-    websiteId && {
+    showAllTime && {
       label: formatMessage(labels.allTime),
       value: 'all',
       divider: true,
@@ -74,7 +65,7 @@ export function DateFilter({ websiteId, value, className }) {
   ].filter(n => n);
 
   const renderValue = value => {
-    return value === 'custom' ? (
+    return value.startsWith('range') ? (
       <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
     ) : (
       options.find(e => e.value === value).label
@@ -86,12 +77,12 @@ export function DateFilter({ websiteId, value, className }) {
       setShowPicker(true);
       return;
     }
-    handleDateChange(value);
+    onChange(value);
   };
 
   const handlePickerChange = value => {
     setShowPicker(false);
-    handleDateChange(value);
+    onChange(value);
   };
 
   const handleClose = () => setShowPicker(false);
@@ -103,7 +94,8 @@ export function DateFilter({ websiteId, value, className }) {
         items={options}
         renderValue={renderValue}
         value={value}
-        alignment="end"
+        alignment={alignment}
+        placeholder={formatMessage(labels.selectDate)}
         onChange={handleChange}
       >
         {({ label, value, divider }) => (

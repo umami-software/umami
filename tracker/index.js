@@ -106,7 +106,7 @@
           }
         });
 
-        return track(eventName, { data: eventData });
+        return track(eventName, eventData);
       }
       return Promise.resolve();
     };
@@ -173,7 +173,7 @@
     }
   };
 
-  const send = payload => {
+  const send = (payload, type = 'event') => {
     if (trackingDisabled()) return;
     const headers = {
       'Content-Type': 'application/json',
@@ -183,7 +183,7 @@
     }
     return fetch(endpoint, {
       method: 'POST',
-      body: JSON.stringify({ type: 'event', payload }),
+      body: JSON.stringify({ type, payload }),
       headers,
     })
       .then(res => res.text())
@@ -205,11 +205,14 @@
     return send(getPayload());
   };
 
+  const identify = data => send({ ...getPayload(), data }, 'identify');
+
   /* Start */
 
   if (!window.umami) {
     window.umami = {
       track,
+      identify,
     };
   }
 
