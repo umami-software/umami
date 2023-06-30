@@ -1,9 +1,9 @@
 .table {
   position: relative;
-  height: 100%;
   display: grid;
   grid-template-rows: fit-content(100%) auto;
   overflow: hidden;
+  flex: 1;
 }
 
 .body {

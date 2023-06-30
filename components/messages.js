@@ -18,6 +18,7 @@ export const labels = defineMessages({
   admin: { id: 'label.admin', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
+  website: { id: 'label.website', defaultMessage: 'Website' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
   created: { id: 'label.created', defaultMessage: 'Created' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
@@ -47,6 +48,8 @@ export const labels = defineMessages({
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
+  addField: { id: 'label.add-field', defaultMessage: 'Add field' },
+  addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
   newPassword: { id: 'label.new-password', defaultMessage: 'New password' },
@@ -79,7 +82,8 @@ export const labels = defineMessages({
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
   events: { id: 'label.events', defaultMessage: 'Events' },
-  query: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
+  query: { id: 'label.query', defaultMessage: 'Query' },
+  queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
   back: { id: 'label.back', defaultMessage: 'Back' },
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
   filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
@@ -97,6 +101,7 @@ export const labels = defineMessages({
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
   customRange: { id: 'label.custom-range', defaultMessage: 'Custom range' },
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
@@ -117,6 +122,21 @@ export const labels = defineMessages({
   view: { id: 'label.view', defaultMessage: 'View' },
   cities: { id: 'label.cities', defaultMessage: 'Cities' },
   regions: { id: 'label.regions', defaultMessage: 'Regions' },
+  reports: { id: 'label.reports', defaultMessage: 'Reports' },
+  eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
+  funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
+  url: { id: 'label.url', defaultMessage: 'URL' },
+  urls: { id: 'label.urls', defaultMessage: 'URLs' },
+  add: { id: 'label.add', defaultMessage: 'Add' },
+  window: { id: 'label.window', defaultMessage: 'Window' },
+  addUrl: { id: 'label.add-url', defaultMessage: 'Add URL' },
+  runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
+  field: { id: 'label.field', defaultMessage: 'Field' },
+  fields: { id: 'label.fields', defaultMessage: 'Fields' },
+  createReport: { id: 'labels.create-report', defaultMessage: 'Create report' },
+  description: { id: 'labels.description', defaultMessage: 'Description' },
+  untitled: { id: 'labels.untitled', defaultMessage: 'Untitled' },
+  type: { id: 'labels.type', defaultMessage: 'Type' },
 });
 
 export const messages = defineMessages({
@@ -158,6 +178,10 @@ export const messages = defineMessages({
     id: 'message.team-already-member',
     defaultMessage: 'You are already a member of the team.',
   },
+  deleteAccount: {
+    id: 'message.delete-account',
+    defaultMessage: 'To delete this account, type {confirmation} in the box below to confirm.',
+  },
   deleteWebsite: {
     id: 'message.delete-website',
     defaultMessage: 'To delete this website, type {confirmation} in the box below to confirm.',
@@ -178,6 +202,10 @@ export const messages = defineMessages({
   deleteWebsiteWarning: {
     id: 'message.delete-website-warning',
     defaultMessage: 'All website data will be deleted.',
+  },
+  noResultsFound: {
+    id: 'messages.no-results-found',
+    defaultMessage: 'No results were found.',
   },
   noWebsitesConfigured: {
     id: 'messages.no-websites-configured',

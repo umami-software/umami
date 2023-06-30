@@ -2,7 +2,7 @@ import { canCreateUser, canViewUsers } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
-import { NextApiRequestQueryBody, Roles, User } from 'lib/types';
+import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUser, getUsers } from 'queries';
@@ -11,7 +11,7 @@ export interface UsersRequestBody {
   username: string;
   password: string;
   id: string;
-  role?: Roles;
+  role?: Role;
 }
 
 export default async (

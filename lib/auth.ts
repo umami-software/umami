@@ -1,6 +1,6 @@
-import debug from 'debug';
+import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
-import cache from 'lib/cache';
+import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import {
@@ -10,11 +10,11 @@ import {
   parseSecureToken,
   parseToken,
 } from 'next-basics';
-import { getTeamUser, getTeamUserById } from 'queries';
+import { getTeamUser } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
-import { Auth } from './types';
 import { loadWebsite } from './query';
+import { Auth } from './types';
 
 const log = debug('umami:auth');
 
@@ -135,7 +135,34 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
   return false;
 }
 
-// To-do: Implement when payments are setup.
+export async function canViewReport(auth: Auth, report: Report) {
+  if (auth.user.isAdmin) {
+    return true;
+  }
+
+  if ((auth.user.id = report.userId)) {
+    return true;
+  }
+
+  if (await canViewWebsite(auth, report.websiteId)) {
+    return true;
+  }
+
+  return false;
+}
+
+export async function canUpdateReport(auth: Auth, report: Report) {
+  if (auth.user.isAdmin) {
+    return true;
+  }
+
+  if ((auth.user.id = report.userId)) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function canCreateTeam({ user }: Auth) {
   if (user.isAdmin) {
     return true;
@@ -144,7 +171,6 @@ export async function canCreateTeam({ user }: Auth) {
   return !!user;
 }
 
-// To-do: Implement when payments are setup.
 export async function canViewTeam({ user }: Auth, teamId: string) {
   if (user.isAdmin) {
     return true;

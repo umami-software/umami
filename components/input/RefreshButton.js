@@ -1,4 +1,4 @@
-import { LoadingButton, Icon, Tooltip } from 'react-basics';
+import { LoadingButton, Icon, TooltipPopup } from 'react-basics';
 import { setWebsiteDateRange } from 'store/websites';
 import useDateRange from 'hooks/useDateRange';
 import Icons from 'components/icons';
@@ -19,13 +19,13 @@ export function RefreshButton({ websiteId, isLoading }) {
   }
 
   return (
-    <Tooltip label={formatMessage(labels.refresh)}>
+    <TooltipPopup label={formatMessage(labels.refresh)}>
       <LoadingButton loading={isLoading} onClick={handleClick}>
         <Icon>
           <Icons.Refresh />
         </Icon>
       </LoadingButton>
-    </Tooltip>
+    </TooltipPopup>
   );
 }
 

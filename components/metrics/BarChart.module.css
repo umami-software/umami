@@ -13,9 +13,3 @@
 .tooltip .value {
   text-transform: lowercase;
 }
-
-@media only screen and (max-width: 992px) {
-  .chart {
-    /*height: 200px;*/
-  }
-}

@@ -1,10 +1,10 @@
-import clickhouse from 'lib/clickhouse';
 import { secret, uuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import { validate } from 'uuid';
+import cache from './cache';
 import { loadSession, loadWebsite } from './query';
 
 export async function findSession(req: NextApiRequestCollect) {
@@ -21,6 +21,8 @@ export async function findSession(req: NextApiRequestCollect) {
     const result = await parseToken(cacheToken, secret());
 
     if (result) {
+      await checkUserBlock(result?.ownerId);
+
       return result;
     }
   }
@@ -39,27 +41,12 @@ export async function findSession(req: NextApiRequestCollect) {
     throw new Error(`Website not found: ${websiteId}.`);
   }
 
+  await checkUserBlock(website.userId);
+
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
     await getClientInfo(req, payload);
-  const sessionId = uuid(websiteId, hostname, ip, userAgent);
 
-  // Clickhouse does not require session lookup
-  if (clickhouse.enabled) {
-    return {
-      id: sessionId,
-      websiteId,
-      hostname,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      subdivision1,
-      subdivision2,
-      city,
-    };
-  }
+  const sessionId = uuid(websiteId, hostname, ip, userAgent);
 
   // Find session
   let session = await loadSession(sessionId);
@@ -88,5 +75,13 @@ export async function findSession(req: NextApiRequestCollect) {
     }
   }
 
-  return session;
+  return { ...session, ownerId: website.userId };
+}
+
+async function checkUserBlock(userId: string) {
+  if (process.env.ENABLE_BLOCKER && (await cache.fetchUserBlock(userId))) {
+    await cache.incrementUserBlock(userId);
+
+    throw new Error('Usage Limit.');
+  }
 }

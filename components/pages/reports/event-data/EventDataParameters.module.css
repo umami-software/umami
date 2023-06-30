@@ -1,0 +1,27 @@
+.fields {
+  max-height: 300px;
+  overflow: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--border-radius);
+}
+
+.field:hover {
+  background: var(--base75);
+}
+
+.key {
+  font-weight: 400;
+}
+
+.type {
+  color: var(--font-color300);
+}

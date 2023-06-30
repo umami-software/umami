@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import {
   DATE_RANGE_CONFIG,
   DEFAULT_DATE_RANGE,

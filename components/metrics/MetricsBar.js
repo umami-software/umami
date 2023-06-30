@@ -16,13 +16,13 @@ export function MetricsBar({ websiteId }) {
   const { startDate, endDate, modified } = dateRange;
   const [format, setFormat] = useState(true);
   const {
-    query: { url, referrer, os, browser, device, country, region, city },
+    query: { url, referrer, title, os, browser, device, country, region, city },
   } = usePageQuery();
 
   const { data, error, isLoading, isFetched } = useQuery(
     [
       'websites:stats',
-      { websiteId, modified, url, referrer, os, browser, device, country, region, city },
+      { websiteId, modified, url, referrer, title, os, browser, device, country, region, city },
     ],
     () =>
       get(`/websites/${websiteId}/stats`, {
@@ -30,6 +30,7 @@ export function MetricsBar({ websiteId }) {
         endAt: +endDate,
         url,
         referrer,
+        title,
         os,
         browser,
         device,

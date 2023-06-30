@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { buildUrl } from 'next-basics';
 
-export default function usePageQuery() {
+export function usePageQuery() {
   const router = useRouter();
   const { pathname, search } = location;
   const { asPath } = router;
@@ -29,3 +29,5 @@ export default function usePageQuery() {
 
   return { pathname, query, resolveUrl, router };
 }
+
+export default usePageQuery;
