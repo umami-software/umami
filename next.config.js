@@ -2,18 +2,13 @@
 require('dotenv').config();
 const pkg = require('./package.json');
 
-const CLOUD_URL = 'https://cloud.umami.is';
-
-// Space-separated list of URLs that can load the "Share" dashboard, i.e. http://app.localhost:7000 https://*.vercel.app
-const EMBED_HOSTED_URL = process.env.EMBED_HOSTED_URL;
-
 const contentSecurityPolicy = `
   default-src 'self';
   img-src *;
   script-src 'self' 'unsafe-eval';
   style-src 'self' 'unsafe-inline';
   connect-src 'self' api.umami.is;
-  frame-ancestors `self ${EMBED_HOSTED_URL}`;
+  frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS};
 `;
 
 const headers = [
@@ -68,7 +63,7 @@ const redirects = [
   },
 ];
 
-if (process.env.CLOUD_MODE && process.env.DISABLE_LOGIN && process.env.CLOUD_URL) {
+if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN) {
   redirects.push({
     source: '/login',
     destination: process.env.CLOUD_URL,
