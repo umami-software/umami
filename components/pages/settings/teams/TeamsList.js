@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Icon, Modal, ModalTrigger, useToast, Text, Flexbox } from 'react-basics';
+import { Button, Icon, Modal, ModalTrigger, useToasts, Text, Flexbox } from 'react-basics';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import TeamAddForm from 'components/pages/settings/teams/TeamAddForm';
 import PageHeader from 'components/layout/PageHeader';
@@ -16,7 +16,7 @@ export default function TeamsList() {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['teams', update], () => get(`/teams`));
   const hasData = data && data.length !== 0;
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
 
   const handleSave = () => {
     setUpdate(state => state + 1);
@@ -63,7 +63,6 @@ export default function TeamsList() {
 
   return (
     <Page loading={isLoading} error={error}>
-      {toast}
       <PageHeader title={formatMessage(labels.teams)}>
         {hasData && (
           <Flexbox gap={10}>

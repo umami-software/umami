@@ -11,7 +11,7 @@ if (process.env.SKIP_DB_CHECK) {
 }
 
 function getDatabaseType(url = process.env.DATABASE_URL) {
-  const type = process.env.DATABASE_TYPE || (url && url.split(':')[0]);
+  const type = url && url.split(':')[0];
 
   if (type === 'postgres') {
     return 'postgresql';
@@ -20,7 +20,6 @@ function getDatabaseType(url = process.env.DATABASE_URL) {
   return type;
 }
 
-const databaseType = getDatabaseType();
 const prisma = new PrismaClient();
 
 function success(msg) {
@@ -49,10 +48,11 @@ async function checkConnection() {
   }
 }
 
-async function checkDatabaseVersion(databaseType) {
+async function checkDatabaseVersion() {
   const query = await prisma.$queryRaw`select version() as version`;
   const version = semver.valid(semver.coerce(query[0].version));
 
+  const databaseType = getDatabaseType();
   const minVersion = databaseType === 'postgresql' ? '9.4.0' : '5.7.0';
 
   if (semver.lt(version, minVersion)) {
@@ -87,7 +87,7 @@ async function applyMigration() {
   let err = false;
   for (let fn of [checkEnv, checkConnection, checkDatabaseVersion, checkV1Tables, applyMigration]) {
     try {
-      fn.name === 'checkDatabaseVersion' ? await fn(databaseType) : await fn();
+      await fn();
     } catch (e) {
       error(e.message);
       err = true;

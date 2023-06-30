@@ -1,16 +1,32 @@
 {
   "cs-CZ": ["label.reset", "metrics.device.tablet"],
-  "de-DE": [
-    "label.administrator",
-    "label.name",
+  "de-CH": [
+    "label.admin",
+    "label.analytics",
+    "label.desktop",
+    "label.details",
     "label.domain",
-    "label.theme",
-    "metrics.device.desktop",
-    "metrics.device.laptop",
-    "metrics.device.tablet",
-    "metrics.referrers",
-    "metrics.utm",
-    "metrics.utm_medium"
+    "label.laptop",
+    "label.tablet",
+    "label.name",
+    "label.sessions",
+    "label.team",
+    "label.team-id",
+    "label.teams"
+  ],
+  "de-DE": [
+    "label.admin",
+    "label.analytics",
+    "label.desktop",
+    "label.details",
+    "label.domain",
+    "label.laptop",
+    "label.tablet",
+    "label.name",
+    "label.sessions",
+    "label.team",
+    "label.team-id",
+    "label.teams"
   ],
   "en-GB": "*",
   "fr-FR": ["metrics.actions", "metrics.pages"],
@@ -22,12 +38,15 @@
   ],
   "nb-NO": ["label.administrator", "label.dashboard"],
   "nl-NL": [
-    "label.administrator",
-    "label.websites",
-    "metrics.browsers",
-    "metrics.device.desktop",
-    "metrics.device.laptop",
-    "metrics.device.tablet"
+    "label.analytics",
+    "label.browsers",
+    "label.laptop",
+    "label.tablet",
+    "label.team",
+    "label.team-id",
+    "label.teams",
+    "label.website-id",
+    "label.websites"
   ],
   "it-IT": [
     "label.password",
@@ -37,9 +56,5 @@
     "metrics.device.tablet",
     "metrics.filter.raw"
   ],
-  "pt-PT": [
-    "label.websites",
-    "metrics.device.desktop",
-    "metrics.device.tablet"
-  ]
+  "pt-PT": ["label.websites", "metrics.device.desktop", "metrics.device.tablet"]
 }

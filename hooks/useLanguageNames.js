@@ -7,7 +7,7 @@ const languageNames = {
   'en-US': enUS,
 };
 
-export default function useLanguageNames(locale) {
+export function useLanguageNames(locale) {
   const [list, setList] = useState(languageNames[locale] || enUS);
   const { basePath } = useRouter();
 
@@ -32,3 +32,5 @@ export default function useLanguageNames(locale) {
 
   return list;
 }
+
+export default useLanguageNames;

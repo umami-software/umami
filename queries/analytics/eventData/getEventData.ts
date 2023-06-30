@@ -3,6 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { WebsiteEventDataMetric } from 'lib/types';
 import { loadWebsite } from 'lib/query';
+import { DEFAULT_CREATED_AT } from 'lib/constants';
 
 export async function getEventData(
   ...args: [
@@ -49,7 +50,7 @@ async function relationalQuery(
   const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
   const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
   const params: any = [websiteId, resetDate, startDate, endDate, eventName || ''];
 
   return rawQuery(
@@ -99,7 +100,7 @@ async function clickhouseQuery(
   const { rawQuery, getDateFormat, getBetweenDates, getDateQuery, getEventDataFilterQuery } =
     clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
   const params = { websiteId };
 
   return rawQuery(

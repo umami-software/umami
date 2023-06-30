@@ -1,4 +1,4 @@
-import { Button, Icon, Text, Modal, ModalTrigger, useToast, Icons } from 'react-basics';
+import { Button, Icon, Text, Modal, ModalTrigger, useToasts, Icons } from 'react-basics';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -17,7 +17,7 @@ export function WebsitesList() {
     () => get(`/users/${user?.id}/websites`),
     { enabled: !!user },
   );
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
   const hasData = data && data.length !== 0;
 
   const handleSave = async () => {
@@ -41,7 +41,6 @@ export function WebsitesList() {
 
   return (
     <Page loading={isLoading} error={error}>
-      {toast}
       <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>
       {hasData && <WebsitesTable data={data} />}
       {!hasData && (
