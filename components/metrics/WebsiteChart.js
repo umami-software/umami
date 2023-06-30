@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import PageviewsChart from './PageviewsChart';
 import MetricsBar from './MetricsBar';
 import WebsiteHeader from './WebsiteHeader';
-import DateFilter from 'components/input/DateFilter';
+import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import ErrorMessage from 'components/common/ErrorMessage';
 import FilterTags from 'components/metrics/FilterTags';
 import RefreshButton from 'components/input/RefreshButton';
@@ -107,7 +107,7 @@ export function WebsiteChart({
         <Column defaultSize={12} xl={4}>
           <div className={styles.actions}>
             <RefreshButton websiteId={websiteId} isLoading={isLoading} />
-            <DateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
+            <WebsiteDateFilter websiteId={websiteId} value={value} className={styles.dropdown} />
           </div>
         </Column>
       </Row>

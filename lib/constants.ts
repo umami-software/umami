@@ -18,6 +18,7 @@ export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
+export const DEFAULT_CREATED_AT = '2000-01-01';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -42,6 +43,11 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
+};
+
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
@@ -56,13 +62,21 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
-export const EVENT_DATA_TYPE = {
+export const DYNAMIC_DATA_TYPE = {
   string: 1,
   number: 2,
   boolean: 3,
   date: 4,
   array: 5,
 } as const;
+
+export const DATA_TYPES = {
+  [DYNAMIC_DATA_TYPE.string]: 'string',
+  [DYNAMIC_DATA_TYPE.number]: 'number',
+  [DYNAMIC_DATA_TYPE.boolean]: 'boolean',
+  [DYNAMIC_DATA_TYPE.date]: 'date',
+  [DYNAMIC_DATA_TYPE.array]: 'array',
+};
 
 export const KAFKA_TOPIC = {
   event: 'event',
@@ -146,6 +160,8 @@ export const EVENT_COLORS = [
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63})$/;
+
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;

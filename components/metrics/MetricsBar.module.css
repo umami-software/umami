@@ -1,7 +1,7 @@
 .bar {
   display: flex;
   cursor: pointer;
-  min-height: 80px;
+  min-height: 110px;
   gap: 20px;
   flex-wrap: wrap;
 }

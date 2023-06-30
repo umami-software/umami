@@ -1,9 +1,10 @@
+import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { Website, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite, canUpdateWebsite, canDeleteWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
+import { SHARE_ID_REGEX } from 'lib/constants';
 
 export interface WebsiteRequestQuery {
   id: string;
@@ -42,6 +43,10 @@ export default async (
     const { name, domain, shareId } = req.body;
 
     let website;
+
+    if (shareId && !shareId.match(SHARE_ID_REGEX)) {
+      return serverError(res, 'Invalid share ID.');
+    }
 
     try {
       website = await updateWebsite(websiteId, { name, domain, shareId });

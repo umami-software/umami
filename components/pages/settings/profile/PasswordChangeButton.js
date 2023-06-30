@@ -1,11 +1,11 @@
-import { Button, Icon, Text, useToast, ModalTrigger, Modal } from 'react-basics';
+import { Button, Icon, Text, useToasts, ModalTrigger, Modal } from 'react-basics';
 import PasswordEditForm from 'components/pages/settings/profile/PasswordEditForm';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 
 export function PasswordChangeButton() {
   const { formatMessage, labels, messages } = useMessages();
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
 
   const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
@@ -13,7 +13,6 @@ export function PasswordChangeButton() {
 
   return (
     <>
-      {toast}
       <ModalTrigger>
         <Button>
           <Icon>

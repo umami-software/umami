@@ -50,7 +50,7 @@ export default async (
 
       return ok(res, {
         token,
-        user: { id: user.id, username: user.username, createdAt: user.createdAt },
+        user: { id: user.id, username: user.username, role: user.role, createdAt: user.createdAt },
       });
     }
 
