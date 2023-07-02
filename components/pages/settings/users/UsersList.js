@@ -1,4 +1,4 @@
-import { useToast } from 'react-basics';
+import { useToasts } from 'react-basics';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -15,7 +15,7 @@ export function UsersList() {
   const { data, isLoading, error, refetch } = useQuery(['user'], () => get(`/users`), {
     enabled: !!user,
   });
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
   const hasData = data && data.length !== 0;
 
   const handleSave = () => {
@@ -30,7 +30,6 @@ export function UsersList() {
 
   return (
     <Page loading={isLoading} error={error}>
-      {toast}
       <PageHeader title={formatMessage(labels.users)}>
         <UserAddButton onSave={handleSave} />
       </PageHeader>

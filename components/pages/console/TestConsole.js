@@ -28,20 +28,41 @@ export function TestConsole() {
     window.umami.track({ url: '/page-view', referrer: 'https://www.google.com' });
     window.umami.track('track-event-no-data');
     window.umami.track('track-event-with-data', {
-      data: {
+      test: 'test-data',
+      boolean: true,
+      booleanError: 'true',
+      time: new Date(),
+      number: 1,
+      time2: new Date().toISOString(),
+      nested: {
         test: 'test-data',
-        time: new Date(),
         number: 1,
-        time2: new Date().toISOString(),
-        nested: {
+        object: {
           test: 'test-data',
-          number: 1,
-          object: {
-            test: 'test-data',
-          },
         },
-        array: [1, 2, 3],
       },
+      array: [1, 2, 3],
+    });
+  }
+
+  function handleIdentifyClick() {
+    window.umami.identify({
+      userId: 123,
+      name: 'brian',
+      number: Math.random() * 100,
+      test: 'test-data',
+      boolean: true,
+      booleanError: 'true',
+      time: new Date(),
+      time2: new Date().toISOString(),
+      nested: {
+        test: 'test-data',
+        number: 1,
+        object: {
+          test: 'test-data',
+        },
+      },
+      array: [1, 2, 3],
     });
   }
 
@@ -113,6 +134,10 @@ export function TestConsole() {
               <div className={styles.header}>Javascript events</div>
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
+              </Button>
+              <p />
+              <Button id="manual-button" variant="action" onClick={handleIdentifyClick}>
+                Run identify
               </Button>
             </Column>
           </Row>

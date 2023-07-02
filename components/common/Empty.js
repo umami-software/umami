@@ -1,15 +1,15 @@
 import classNames from 'classnames';
-import styles from './NoData.module.css';
+import styles from './Empty.module.css';
 import useMessages from 'hooks/useMessages';
 
-export function NoData({ className }) {
+export function Empty({ message, className }) {
   const { formatMessage, messages } = useMessages();
 
   return (
     <div className={classNames(styles.container, className)}>
-      {formatMessage(messages.noDataAvailable)}
+      {message || formatMessage(messages.noDataAvailable)}
     </div>
   );
 }
 
-export default NoData;
+export default Empty;

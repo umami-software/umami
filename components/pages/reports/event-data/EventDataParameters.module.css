@@ -1,0 +1,8 @@
+.parameter {
+  display: flex;
+  gap: 10px;
+}
+
+.op {
+  font-weight: bold;
+}
