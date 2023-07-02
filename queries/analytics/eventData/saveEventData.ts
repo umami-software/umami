@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { DYNAMIC_DATA_TYPE } from 'lib/constants';
+import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { flattenJSON } from 'lib/dynamicData';
@@ -38,13 +38,13 @@ async function relationalQuery(data: {
     websiteId,
     key: a.key,
     stringValue:
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.string ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.boolean ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.array
+      a.dynamicDataType === DATA_TYPE.string ||
+      a.dynamicDataType === DATA_TYPE.boolean ||
+      a.dynamicDataType === DATA_TYPE.array
         ? a.value
         : null,
-    numericValue: a.dynamicDataType === DYNAMIC_DATA_TYPE.number ? a.value : null,
-    dateValue: a.dynamicDataType === DYNAMIC_DATA_TYPE.date ? new Date(a.value) : null,
+    numericValue: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    dateValue: a.dynamicDataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dynamicDataType,
   }));
 
@@ -76,13 +76,13 @@ async function clickhouseQuery(data: {
     event_name: eventName,
     event_key: a.key,
     string_value:
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.string ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.boolean ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.array
+      a.dynamicDataType === DATA_TYPE.string ||
+      a.dynamicDataType === DATA_TYPE.boolean ||
+      a.dynamicDataType === DATA_TYPE.array
         ? a.value
         : null,
-    numeric_value: a.dynamicDataType === DYNAMIC_DATA_TYPE.number ? a.value : null,
-    date_value: a.dynamicDataType === DYNAMIC_DATA_TYPE.date ? getDateFormat(a.value) : null,
+    numeric_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
     data_type: a.dynamicDataType,
     created_at: createdAt,
   }));

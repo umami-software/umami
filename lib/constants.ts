@@ -62,7 +62,7 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
-export const DYNAMIC_DATA_TYPE = {
+export const DATA_TYPE = {
   string: 1,
   number: 2,
   boolean: 3,
@@ -71,11 +71,11 @@ export const DYNAMIC_DATA_TYPE = {
 } as const;
 
 export const DATA_TYPES = {
-  [DYNAMIC_DATA_TYPE.string]: 'string',
-  [DYNAMIC_DATA_TYPE.number]: 'number',
-  [DYNAMIC_DATA_TYPE.boolean]: 'boolean',
-  [DYNAMIC_DATA_TYPE.date]: 'date',
-  [DYNAMIC_DATA_TYPE.array]: 'array',
+  [DATA_TYPE.string]: 'string',
+  [DATA_TYPE.number]: 'number',
+  [DATA_TYPE.boolean]: 'boolean',
+  [DATA_TYPE.date]: 'date',
+  [DATA_TYPE.array]: 'array',
 };
 
 export const KAFKA_TOPIC = {

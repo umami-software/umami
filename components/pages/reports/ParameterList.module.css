@@ -1,10 +1,10 @@
-.urls {
+.list {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
-.url {
+.item {
   display: flex;
   flex-direction: row;
   align-items: center;

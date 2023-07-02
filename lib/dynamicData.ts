@@ -1,5 +1,5 @@
 import { isValid, parseISO } from 'date-fns';
-import { DYNAMIC_DATA_TYPE } from './constants';
+import { DATA_TYPE } from './constants';
 import { DynamicDataType } from './types';
 
 export function flattenJSON(
@@ -42,24 +42,24 @@ function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
 
   switch (type) {
     case 'number':
-      dynamicDataType = DYNAMIC_DATA_TYPE.number;
+      dynamicDataType = DATA_TYPE.number;
       break;
     case 'string':
-      dynamicDataType = DYNAMIC_DATA_TYPE.string;
+      dynamicDataType = DATA_TYPE.string;
       break;
     case 'boolean':
-      dynamicDataType = DYNAMIC_DATA_TYPE.boolean;
+      dynamicDataType = DATA_TYPE.boolean;
       value = value ? 'true' : 'false';
       break;
     case 'date':
-      dynamicDataType = DYNAMIC_DATA_TYPE.date;
+      dynamicDataType = DATA_TYPE.date;
       break;
     case 'object':
-      dynamicDataType = DYNAMIC_DATA_TYPE.array;
+      dynamicDataType = DATA_TYPE.array;
       value = JSON.stringify(value);
       break;
     default:
-      dynamicDataType = DYNAMIC_DATA_TYPE.string;
+      dynamicDataType = DATA_TYPE.string;
       break;
   }
 

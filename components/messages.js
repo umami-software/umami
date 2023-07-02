@@ -129,7 +129,6 @@ export const labels = defineMessages({
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
   add: { id: 'label.add', defaultMessage: 'Add' },
   window: { id: 'label.window', defaultMessage: 'Window' },
-  addUrl: { id: 'label.add-url', defaultMessage: 'Add URL' },
   runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
   field: { id: 'label.field', defaultMessage: 'Field' },
   fields: { id: 'label.fields', defaultMessage: 'Fields' },
@@ -137,6 +136,20 @@ export const labels = defineMessages({
   description: { id: 'labels.description', defaultMessage: 'Description' },
   untitled: { id: 'labels.untitled', defaultMessage: 'Untitled' },
   type: { id: 'labels.type', defaultMessage: 'Type' },
+  filters: { id: 'labels.filters', defaultMessage: 'Filters' },
+  groupBy: { id: 'labels.group-by', defaultMessage: 'Group by' },
+  true: { id: 'labels.true', defaultMessage: 'True' },
+  false: { id: 'labels.false', defaultMessage: 'False' },
+  equals: { id: 'labels.equals', defaultMessage: 'Equals' },
+  doesNotEqual: { id: 'labels.does-not-equal', defaultMessage: 'Does not equal' },
+  greaterThan: { id: 'labels.greater-than', defaultMessage: 'Greater than' },
+  lessThan: { id: 'labels.less-than', defaultMessage: 'Less than' },
+  greaterThanEquals: { id: 'labels.greater-than-equals', defaultMessage: 'Greater than or equals' },
+  lessThanEquals: { id: 'labels.less-than-equals', defaultMessage: 'Less than or equals' },
+  contains: { id: 'labels.contains', defaultMessage: 'Contains' },
+  doesNotContain: { id: 'labels.does-not-contain', defaultMessage: 'Does not contain' },
+  before: { id: 'labels.before', defaultMessage: 'Before' },
+  after: { id: 'labels.after', defaultMessage: 'After' },
 });
 
 export const messages = defineMessages({
@@ -243,5 +256,9 @@ export const messages = defineMessages({
   incorrectUsernamePassword: {
     id: 'message.incorrect-username-password',
     defaultMessage: 'Incorrect username and/or password.',
+  },
+  noEventData: {
+    id: 'message.no-event-data',
+    defaultMessage: 'No event data is available.',
   },
 });

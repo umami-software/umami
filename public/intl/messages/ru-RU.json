@@ -230,7 +230,7 @@
   "label.edit": [
     {
       "type": 0,
-      "value": "Редактировать"
+      "value": "Изменить"
     }
   ],
   "label.edit-dashboard": [
@@ -820,15 +820,7 @@
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
+      "value": "Для удаления введите DELETE"
     }
   ],
   "message.delete-website-warning": [
@@ -922,15 +914,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
+      "value": "Для сброса введите RESET"
     }
   ],
   "message.reset-website-warning": [

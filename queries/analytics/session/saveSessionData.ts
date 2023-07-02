@@ -1,4 +1,4 @@
-import { DYNAMIC_DATA_TYPE } from 'lib/constants';
+import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { flattenJSON } from 'lib/dynamicData';
 import prisma from 'lib/prisma';
@@ -20,13 +20,13 @@ export async function saveSessionData(data: {
     sessionId,
     key: a.key,
     stringValue:
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.string ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.boolean ||
-      a.dynamicDataType === DYNAMIC_DATA_TYPE.array
+      a.dynamicDataType === DATA_TYPE.string ||
+      a.dynamicDataType === DATA_TYPE.boolean ||
+      a.dynamicDataType === DATA_TYPE.array
         ? a.value
         : null,
-    numericValue: a.dynamicDataType === DYNAMIC_DATA_TYPE.number ? a.value : null,
-    dateValue: a.dynamicDataType === DYNAMIC_DATA_TYPE.date ? new Date(a.value) : null,
+    numericValue: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    dateValue: a.dynamicDataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dynamicDataType,
   }));
 

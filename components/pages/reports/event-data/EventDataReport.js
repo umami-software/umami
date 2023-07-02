@@ -4,10 +4,11 @@ import ReportMenu from '../ReportMenu';
 import ReportBody from '../ReportBody';
 import EventDataParameters from './EventDataParameters';
 import Nodes from 'assets/nodes.svg';
+import EventDataTable from './EventDataTable';
 
 const defaultParameters = {
   type: 'event-data',
-  parameters: { fields: [], filters: [] },
+  parameters: { fields: [], filters: [], groups: [] },
 };
 
 export default function EventDataReport({ reportId }) {
@@ -17,7 +18,9 @@ export default function EventDataReport({ reportId }) {
       <ReportMenu>
         <EventDataParameters />
       </ReportMenu>
-      <ReportBody>hi.</ReportBody>
+      <ReportBody>
+        <EventDataTable />
+      </ReportBody>
     </Report>
   );
 }

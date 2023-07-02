@@ -9,15 +9,13 @@ import {
   PopupTrigger,
   Popup,
   SubmitButton,
-  Text,
   TextField,
-  TooltipPopup,
 } from 'react-basics';
 import Icons from 'components/icons';
 import UrlAddForm from './UrlAddForm';
 import { ReportContext } from 'components/pages/reports/Report';
-import styles from './FunnelParameters.module.css';
 import BaseParameters from '../BaseParameters';
+import ParameterList from '../ParameterList';
 
 export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
@@ -28,7 +26,9 @@ export function FunnelParameters() {
   const { websiteId, dateRange, urls } = parameters || {};
   const queryDisabled = !websiteId || !dateRange || urls?.length < 2;
 
-  const handleSubmit = data => {
+  const handleSubmit = (data, e) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (!queryDisabled) {
       runReport(data);
     }
@@ -45,8 +45,23 @@ export function FunnelParameters() {
     updateReport({ parameters: { urls } });
   };
 
+  const AddUrlButton = () => {
+    return (
+      <PopupTrigger>
+        <Icon>
+          <Icons.Plus />
+        </Icon>
+        <Popup position="bottom" alignment="start">
+          {(close, element) => {
+            return <UrlAddForm element={element} onAdd={handleAddUrl} onClose={close} />;
+          }}
+        </Popup>
+      </PopupTrigger>
+    );
+  };
+
   return (
-    <Form ref={ref} values={parameters} onSubmit={handleSubmit}>
+    <Form ref={ref} values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters />
       <FormRow label={formatMessage(labels.window)}>
         <FormInput
@@ -56,25 +71,8 @@ export function FunnelParameters() {
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton onAdd={handleAddUrl} />}>
-        <div className={styles.urls}>
-          {parameters?.urls?.map((url, index) => {
-            return (
-              <div key={index} className={styles.url}>
-                <Text>{url}</Text>
-                <TooltipPopup
-                  className={styles.icon}
-                  label={formatMessage(labels.remove)}
-                  position="right"
-                >
-                  <Icon onClick={handleRemoveUrl.bind(null, index)}>
-                    <Icons.Close />
-                  </Icon>
-                </TooltipPopup>
-              </div>
-            );
-          })}
-        </div>
+      <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton />}>
+        <ParameterList items={urls} onRemove={handleRemoveUrl} />
       </FormRow>
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
@@ -82,27 +80,6 @@ export function FunnelParameters() {
         </SubmitButton>
       </FormButtons>
     </Form>
-  );
-}
-
-function AddUrlButton({ onAdd }) {
-  const { formatMessage, labels } = useMessages();
-
-  return (
-    <PopupTrigger>
-      <TooltipPopup label={formatMessage(labels.addUrl)}>
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-      </TooltipPopup>
-      <Popup position="bottom" alignment="start">
-        {(close, element) => {
-          const { right, bottom } = element.getBoundingClientRect();
-
-          return <UrlAddForm onSave={onAdd} onClose={close} style={{ left: right, top: bottom }} />;
-        }}
-      </Popup>
-    </PopupTrigger>
   );
 }
 

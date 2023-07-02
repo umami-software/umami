@@ -1,27 +1,35 @@
-import { useMessages } from 'hooks';
-import { Button, Form, FormButtons, FormRow } from 'react-basics';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import PopupForm from '../PopupForm';
+import FieldSelectForm from '../FieldSelectForm';
+import FieldAggregateForm from '../FieldAggregateForm';
+import FieldFilterForm from '../FieldFilterForm';
+import styles from './FieldAddForm.module.css';
 
-export function FieldAddForm({ onClose }) {
-  const { formatMessage, labels } = useMessages();
+export function FieldAddForm({ fields = [], type, element, onAdd, onClose }) {
+  const [selected, setSelected] = useState();
 
-  const handleSave = () => {
+  const handleSelect = value => {
+    if (type === 'groups') {
+      handleSave(value);
+      return;
+    }
+
+    setSelected(value);
+  };
+
+  const handleSave = value => {
+    onAdd(type, value);
     onClose();
   };
 
-  const handleClose = () => {
-    onClose();
-  };
-
-  return (
-    <Form>
-      <FormRow label={formatMessage(labels.url)}></FormRow>
-      <FormButtons align="center" flex>
-        <Button variant="primary" onClick={handleSave}>
-          {formatMessage(labels.save)}
-        </Button>
-        <Button onClick={handleClose}>{formatMessage(labels.cancel)}</Button>
-      </FormButtons>
-    </Form>
+  return createPortal(
+    <PopupForm className={styles.popup} element={element} onClose={onClose}>
+      {!selected && <FieldSelectForm fields={fields} type={type} onSelect={handleSelect} />}
+      {selected && type === 'fields' && <FieldAggregateForm {...selected} onSelect={handleSave} />}
+      {selected && type === 'filters' && <FieldFilterForm {...selected} onSelect={handleSave} />}
+    </PopupForm>,
+    document.body,
   );
 }
 

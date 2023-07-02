@@ -1,5 +1,5 @@
 import { NextApiRequest } from 'next';
-import { COLLECTION_TYPE, DYNAMIC_DATA_TYPE, EVENT_TYPE, KAFKA_TOPIC, ROLES } from './constants';
+import { COLLECTION_TYPE, DATA_TYPE, EVENT_TYPE, KAFKA_TOPIC, ROLES } from './constants';
 
 type ObjectValues<T> = T[keyof T];
 
@@ -9,7 +9,7 @@ export type Role = ObjectValues<typeof ROLES>;
 
 export type EventType = ObjectValues<typeof EVENT_TYPE>;
 
-export type DynamicDataType = ObjectValues<typeof DYNAMIC_DATA_TYPE>;
+export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 

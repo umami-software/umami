@@ -16,6 +16,14 @@ export function useReport(reportId, defaultParameters) {
   const loadReport = async id => {
     const data = await get(`/reports/${id}`);
 
+    const { dateRange } = data?.parameters || {};
+    const { startDate, endDate } = dateRange || {};
+
+    if (startDate && endDate) {
+      dateRange.startDate = new Date(startDate);
+      dateRange.endDate = new Date(endDate);
+    }
+
     setReport(data);
   };
 

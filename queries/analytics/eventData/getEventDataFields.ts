@@ -26,7 +26,8 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
     from event_data
     where website_id = $1${toUuid()}
       and created_at >= $2
-      and created_at between $3 and $4`,
+      and created_at between $3 and $4
+    order by event_key asc`,
     params,
   );
 }
@@ -43,7 +44,8 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
     from event_data
     where website_id = {websiteId:UUID}
       and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}`,
+      and ${getBetweenDates('created_at', startDate, endDate)}
+    order by event_key asc`,
     params,
   );
 }
