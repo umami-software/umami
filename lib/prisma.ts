@@ -111,9 +111,16 @@ function getFilterQuery(filters = {}, params = []): string {
     const filter = filters[key];
 
     if (filter !== undefined) {
+      let filterValue = decodeURIComponent(filter),
+        op = '=';
       const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column}=$${params.length + 1}`);
-      params.push(decodeURIComponent(filter));
+
+      if (filterValue.indexOf('*') > -1) {
+        op = 'LIKE';
+        filterValue = filterValue.replaceAll(/\*+/g, '%');
+      }
+      arr.push(`and ${column} ${op} $${params.length + 1}`);
+      params.push(filterValue);
     }
 
     return arr;
