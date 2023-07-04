@@ -29,6 +29,7 @@
 
   .row > .col {
     border-top: 1px solid var(--base300);
+    border-inline-start: 0;
     border-inline-end: 0;
     padding: 20px 0;
   }
