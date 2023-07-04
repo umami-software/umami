@@ -1,6 +1,6 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import { runQuery, CLICKHOUSE, PRISMA, MONGODB } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
@@ -12,6 +12,7 @@ export async function getWebsiteStats(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [MONGODB]: () => mongodbQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -26,7 +27,6 @@ async function relationalQuery(
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const { filterQuery, joinSession } = parseFilters(filters, params);
-
   return rawQuery(
     `select sum(t.c) as "pageviews",
         count(distinct t.session_id) as "uniques",
@@ -85,4 +85,125 @@ async function clickhouseQuery(
      ) t;`,
     params,
   );
+}
+
+async function mongodbQuery(
+  websiteId: string,
+  criteria: { startDate: Date; endDate: Date; filters: object },
+) {
+  const { startDate, endDate, filters = {} } = criteria;
+  const { parseMongoFilter, client } = prisma;
+  const website = await loadWebsite(websiteId);
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const mongoFilter = parseMongoFilter(filters);
+
+  return await client.websiteEvent.aggregateRaw({
+    pipeline: [
+      mongoFilter,
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ['$event_type', EVENT_TYPE.pageView],
+              },
+              {
+                $eq: ['$website_id', websiteId],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: resetDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: startDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $lte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: endDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          session_id: '$session_id',
+          hour: {
+            $toString: { $hour: '$created_at' },
+          },
+          created_at: '$created_at',
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $concat: ['$session_id', ':', '$hour'],
+          },
+          session_id: { $first: '$session_id' },
+          hour: { $first: '$hour' },
+          count: { $sum: 1 },
+          timeMax: { $max: '$created_at' },
+          timeMin: { $min: '$created_at' },
+        },
+      },
+      {
+        $project: {
+          _id: '$_id',
+          session_id: '$session_id',
+          hour: '$hour',
+          count: '$count',
+          time: {
+            $dateDiff: {
+              endDate: '$timeMax',
+              startDate: '$timeMin',
+              unit: 'second',
+            },
+          },
+          bounce: {
+            $cond: {
+              if: { $eq: ['$count', 1] },
+              then: 1,
+              else: 0,
+            },
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$session_id',
+          pageviews: { $sum: '$count' },
+          bounces: { $sum: '$bounce' },
+          totaltime: { $sum: '$time' },
+        },
+      },
+      {
+        $group: {
+          _id: '',
+          pageviews: { $sum: '$pageviews' },
+          uniques: { $sum: 1 },
+          bounces: { $sum: '$bounces' },
+          totaltime: { $sum: '$totaltime' },
+        },
+      },
+    ],
+  });
 }

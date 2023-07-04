@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mongodb"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String    @id @map("_id") @db.String
+  username  String    @unique @db.String
+  password  String    @db.String
+  role      String    @map("role") @db.String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Date
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Date
+  deletedAt DateTime? @map("deleted_at") @db.Date
+
+  website  Website[]
+  teamUser TeamUser[]
+
+  @@map("user")
+}
+
+model Session {
+  id           String    @id @map("_id") @db.String
+  websiteId    String    @map("website_id") @db.String
+  hostname     String?   @db.String
+  browser      String?   @db.String
+  os           String?   @db.String
+  device       String?   @db.String
+  screen       String?   @db.String
+  language     String?   @db.String
+  country      String?   @db.String
+  subdivision1 String?   @db.String
+  subdivision2 String?   @db.String
+  city         String?   @db.String
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Date
+
+  websiteEvent WebsiteEvent[]
+
+  @@index([createdAt])
+  @@index([websiteId])
+  @@map("session")
+}
+
+model Website {
+  id        String    @id @map("_id") @db.String
+  name      String    @db.String
+  domain    String?   @db.String
+  shareId   String?   @unique @map("share_id") @db.String
+  resetAt   DateTime? @map("reset_at") @db.Date
+  userId    String?   @map("user_id") @db.String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Date
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Date
+  deletedAt DateTime? @map("deleted_at") @db.Date
+
+  user        User?         @relation(fields: [userId], references: [id])
+  teamWebsite TeamWebsite[]
+  eventData   EventData[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("website")
+}
+
+model WebsiteEvent {
+  id             String    @id() @map("_id") @db.String
+  websiteId      String    @map("website_id") @db.String
+  sessionId      String    @map("session_id") @db.String
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Date
+  urlPath        String    @map("url_path") @db.String
+  urlQuery       String?   @map("url_query") @db.String
+  referrerPath   String?   @map("referrer_path") @db.String
+  referrerQuery  String?   @map("referrer_query") @db.String
+  referrerDomain String?   @map("referrer_domain") @db.String
+  pageTitle      String?   @map("page_title") @db.String
+  eventType      Int       @default(1) @map("event_type") @db.Int
+  eventName      String?   @map("event_name") @db.String
+
+  eventData EventData[]
+  session   Session     @relation(fields: [sessionId], references: [id])
+
+  @@index([createdAt])
+  @@index([sessionId])
+  @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, sessionId, createdAt])
+  @@map("website_event")
+}
+
+model EventData {
+  id                String    @id() @map("_id") @db.String
+  websiteEventId    String    @map("website_event_id") @db.String
+  websiteId         String    @map("website_id") @db.String
+  eventKey          String    @map("event_key") @db.String
+  eventStringValue  String?   @map("event_string_value") @db.String
+  eventNumericValue Float?    @map("event_numeric_value") @db.Double // (19, 4)
+  eventDateValue    DateTime? @map("event_date_value") @db.Date
+  eventDataType     Int       @map("event_data_type") @db.Int
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Date
+
+  website      Website      @relation(fields: [websiteId], references: [id])
+  websiteEvent WebsiteEvent @relation(fields: [websiteEventId], references: [id])
+
+  @@index([createdAt])
+  @@index([websiteId])
+  @@index([websiteEventId])
+  @@index([websiteId, websiteEventId, createdAt])
+  @@map("event_data")
+}
+
+model Team {
+  id         String    @id() @map("_id") @db.String
+  name       String    @db.String
+  accessCode String?   @unique @map("access_code") @db.String
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Date
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Date
+
+  teamUser    TeamUser[]
+  teamWebsite TeamWebsite[]
+
+  @@map("team")
+}
+
+model TeamUser {
+  id        String    @id() @map("_id") @db.String
+  teamId    String    @map("team_id") @db.String
+  userId    String    @map("user_id") @db.String
+  role      String    @map("role") @db.String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Date
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Date
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([teamId])
+  @@index([userId])
+  @@map("team_user")
+}
+
+model TeamWebsite {
+  id        String    @id() @map("_id") @db.String
+  teamId    String    @map("team_id") @db.String
+  websiteId String    @map("website_id") @db.String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Date
+
+  team    Team    @relation(fields: [teamId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([teamId])
+  @@index([websiteId])
+  @@map("team_website")
+}

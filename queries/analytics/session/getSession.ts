@@ -1,11 +1,12 @@
 import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, MONGODB, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { Prisma } from '@prisma/client';
 
 export async function getSession(args: { id: string }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
+    [MONGODB]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),
   });
 }

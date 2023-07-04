@@ -3,6 +3,16 @@ import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { Website, User, Roles } from 'lib/types';
+import { getDatabaseType } from '../../lib/db';
+
+function whereDeletedAtNotNull() {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+  if (db === 'mongodb') {
+    return { isSet: false };
+  } else {
+    return null;
+  }
+}
 
 export async function getUser(
   where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
@@ -11,7 +21,14 @@ export async function getUser(
   const { includePassword = false, showDeleted = false } = options;
 
   return prisma.client.user.findFirst({
-    where: { ...where, ...(showDeleted ? {} : { deletedAt: null }) },
+    where: {
+      ...where,
+      ...(showDeleted
+        ? {}
+        : {
+            deletedAt: whereDeletedAtNotNull(),
+          }),
+    },
     select: {
       id: true,
       username: true,
@@ -26,7 +43,7 @@ export async function getUsers(): Promise<User[]> {
   return prisma.client.user.findMany({
     take: 100,
     where: {
-      deletedAt: null,
+      deletedAt: whereDeletedAtNotNull(),
     },
     orderBy: [
       {
@@ -76,7 +93,7 @@ export async function getUserWebsites(userId: string): Promise<Website[]> {
   return prisma.client.website.findMany({
     where: {
       userId,
-      deletedAt: null,
+      deletedAt: whereDeletedAtNotNull(),
     },
     orderBy: [
       {

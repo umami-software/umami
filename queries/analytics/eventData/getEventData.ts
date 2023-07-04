@@ -1,5 +1,5 @@
 import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, MONGODB, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { WebsiteEventDataMetric } from 'lib/types';
 import { loadWebsite } from 'lib/query';
@@ -23,6 +23,7 @@ export async function getEventData(
 ): Promise<WebsiteEventDataMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [MONGODB]: () => mongoQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -119,4 +120,138 @@ async function clickhouseQuery(
       ${timeSeries ? 'group by t' : ''}`,
     params,
   );
+}
+
+async function mongoQuery(
+  websiteId: string,
+  data: {
+    startDate: Date;
+    endDate: Date;
+    timeSeries?: {
+      unit: string;
+      timezone: string;
+    };
+    eventName: string;
+    urlPath?: string;
+    filters: [
+      {
+        eventKey?: string;
+        eventValue?: string | number | boolean | Date;
+      },
+    ];
+  },
+) {
+  const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
+  const { client, parseMongoFilter } = prisma;
+  const website = await loadWebsite(websiteId);
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const mongoFilter = parseMongoFilter(filters);
+
+  let joinAggregation: any = { match: {} };
+  let matchAggregation: any = { match: {} };
+  let eventTypeProjectProperty = '';
+  let urlProjectProperty = '';
+  if (eventName || urlPath) {
+    joinAggregation = {
+      $lookup: {
+        from: 'website_event',
+        localField: 'website_event_id',
+        foreignField: '_id',
+        as: 'result',
+      },
+    };
+    eventTypeProjectProperty = 'event_name: {$arrayElemAt: ["$result.event_name", 0]}';
+  }
+  if (eventName) {
+    matchAggregation = {
+      $match: {
+        'result.event_name': eventName,
+      },
+    };
+  }
+  if (urlPath) {
+    urlProjectProperty = 'url_path: {$arrayElemAt: ["$result.url_path", 0],}';
+  }
+  let timeProjectProperty = '';
+  if (timeSeries) {
+    timeProjectProperty = `t: $dateTrunc: {date: "$created_at",unit: ${timeSeries.unit}, timezone : ${timeSeries.timezone}`;
+  }
+  return await client.websiteEvent.aggregateRaw({
+    pipeline: [
+      mongoFilter,
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ['$website_id', websiteId],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: resetDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: startDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $lte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: endDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      joinAggregation,
+      matchAggregation,
+      {
+        $project: {
+          eventTypeProjectProperty,
+          timeProjectProperty,
+          urlProjectProperty,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            url_path: '$url_path',
+            event_name: '$event_name',
+            t: '$t',
+          },
+          x: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $project: {
+          url_path: '$_id.url_path',
+          urlPath: '$_id.url_path',
+          event_name: '$_id.event_name',
+          eventName: '$_id.event_name',
+          x: 1,
+          t: '$_id.t',
+          _id: 0,
+        },
+      },
+    ],
+  });
 }

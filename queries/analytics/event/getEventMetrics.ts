@@ -1,6 +1,6 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import { runQuery, CLICKHOUSE, PRISMA, MONGODB } from 'lib/db';
 import { WebsiteEventMetric } from 'lib/types';
 import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
@@ -23,6 +23,7 @@ export async function getEventMetrics(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [MONGODB]: () => mongodbQuery(...args),
   });
 }
 
@@ -50,7 +51,6 @@ async function relationalQuery(
   const resetDate = new Date(website?.resetAt || website?.createdAt);
   const params: any = [websiteId, resetDate, startDate, endDate];
   const filterQuery = getFilterQuery(filters, params);
-
   return rawQuery(
     `select
       event_name x,
@@ -107,4 +107,121 @@ async function clickhouseQuery(
     order by t`,
     params,
   );
+}
+
+async function mongodbQuery(
+  websiteId: string,
+  {
+    startDate,
+    endDate,
+    timezone = 'utc',
+    unit = 'day',
+    filters,
+  }: {
+    startDate: Date;
+    endDate: Date;
+    timezone: string;
+    unit: string;
+    filters: {
+      url: string;
+      eventName: string;
+    };
+  },
+) {
+  const { getDateQuery, parseMongoFilter, client } = prisma;
+  const website = await loadWebsite(websiteId);
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const mongoFilter = parseMongoFilter(filters);
+
+  return await client.websiteEvent.aggregateRaw({
+    pipeline: [
+      mongoFilter,
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ['$event_type', EVENT_TYPE.customEvent],
+              },
+              {
+                $eq: ['$website_id', websiteId],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: resetDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: startDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $lte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: endDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      },
+      {
+        $project: {
+          t: {
+            $dateTrunc: {
+              date: '$created_at',
+              unit: unit,
+              timezone: timezone,
+            },
+          },
+          event_name: 1,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            t: '$t',
+            name: '$event_name',
+          },
+          y: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $project: {
+          x: '$_id.name',
+          t: {
+            $dateToString: {
+              date: '$_id.t',
+              format: getDateQuery('', unit, timezone),
+              timezone: timezone,
+            },
+          },
+          y: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          t: 1,
+        },
+      },
+    ],
+  });
 }

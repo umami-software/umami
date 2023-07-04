@@ -75,7 +75,7 @@ export default async (
         city,
       },
     });
-    const prevPeriod = await getWebsiteStats(websiteId, {
+    let prevPeriod = await getWebsiteStats(websiteId, {
       startDate: prevStartDate,
       endDate: prevEndDate,
       filters: {
@@ -92,14 +92,31 @@ export default async (
         city,
       },
     });
-
-    const stats = Object.keys(metrics[0]).reduce((obj, key) => {
-      obj[key] = {
-        value: Number(metrics[0][key]) || 0,
-        change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
-      };
-      return obj;
-    }, {});
+    if (prevPeriod.length === 0) {
+      prevPeriod = [
+        {
+          pageviews: 0,
+          uniques: 0,
+          bounces: 0,
+          totaltime: 0,
+        },
+      ];
+    }
+    let stats: object = {
+      pageviews: 0,
+      uniques: 0,
+      bounces: 0,
+      totaltime: 0,
+    };
+    if (metrics.length != 0) {
+      stats = Object.keys(metrics[0]).reduce((obj, key) => {
+        obj[key] = {
+          value: Number(metrics[0][key]) || 0,
+          change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
+        };
+        return obj;
+      }, {});
+    }
 
     return ok(res, stats);
   }

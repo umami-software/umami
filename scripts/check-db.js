@@ -15,6 +15,8 @@ function getDatabaseType(url = process.env.DATABASE_URL) {
 
   if (type === 'postgres') {
     return 'postgresql';
+  } else if (type === 'mongodb+srv') {
+    return 'mongodb';
   }
 
   return type;
@@ -50,10 +52,19 @@ async function checkConnection() {
 }
 
 async function checkDatabaseVersion(databaseType) {
-  const query = await prisma.$queryRaw`select version() as version`;
-  const version = semver.valid(semver.coerce(query[0].version));
+  let version;
+  if (databaseType === 'mongodb') {
+    const query = await prisma.$runCommandRaw({
+      buildInfo: 1,
+    });
+    version = semver.valid(query.version);
+  } else {
+    const query = await prisma.$queryRaw`select version() as version`;
+    version = semver.valid(semver.coerce(query[0].version));
+  }
 
-  const minVersion = databaseType === 'postgresql' ? '9.4.0' : '5.7.0';
+  const minVersion =
+    databaseType === 'postgresql' ? '9.4.0' : databaseType === 'mongodb' ? '3.0.0' : '5.7.0';
 
   if (semver.lt(version, minVersion)) {
     throw new Error(
@@ -65,6 +76,11 @@ async function checkDatabaseVersion(databaseType) {
 }
 
 async function checkV1Tables() {
+  if (databaseType === 'mongodb') {
+    // Ignore
+    return;
+  }
+
   try {
     await prisma.$queryRaw`select * from account limit 1`;
 
@@ -78,7 +94,11 @@ async function checkV1Tables() {
 }
 
 async function applyMigration() {
-  console.log(execSync('prisma migrate deploy').toString());
+  if (databaseType === 'mongodb') {
+    console.log(execSync('prisma db push').toString());
+  } else {
+    console.log(execSync('prisma migrate deploy').toString());
+  }
 
   success('Database is up to date.');
 }

@@ -1,5 +1,5 @@
 import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE } from 'lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, MONGODB, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
@@ -29,6 +29,7 @@ export async function saveEvent(args: {
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
+    [MONGODB]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),
   });
 }

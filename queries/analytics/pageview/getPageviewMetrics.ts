@@ -1,6 +1,6 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import { runQuery, CLICKHOUSE, PRISMA, MONGODB } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
@@ -17,6 +17,7 @@ export async function getPageviewMetrics(
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
+    [MONGODB]: () => mongodbQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
@@ -50,7 +51,6 @@ async function relationalQuery(
   }
 
   const { filterQuery, joinSession } = parseFilters(filters, params);
-
   return rawQuery(
     `select ${column} x, count(*) y
     from website_event
@@ -110,4 +110,114 @@ async function clickhouseQuery(
     limit 100`,
     params,
   );
+}
+
+async function mongodbQuery(
+  websiteId: string,
+  criteria: {
+    startDate: Date;
+    endDate: Date;
+    column: string;
+    filters: object;
+  },
+) {
+  const { startDate, endDate, filters = {}, column } = criteria;
+  const { parseMongoFilter, client } = prisma;
+  const website = await loadWebsite(websiteId);
+  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const params: any = [
+    websiteId,
+    resetDate,
+    startDate,
+    endDate,
+    column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+  ];
+
+  let excludeDomainMongo: any = '';
+
+  if (column === 'referrer_domain') {
+    excludeDomainMongo = {
+      $ne: ['$referrer_domain', website.domain],
+    };
+    params.push(website.domain);
+  }
+  const mongoFilter = parseMongoFilter(filters);
+  return await client.websiteEvent.aggregateRaw({
+    pipeline: [
+      mongoFilter,
+      {
+        $match: {
+          $expr: {
+            $and: [
+              {
+                $eq: ['$event_type', params[4]],
+              },
+              {
+                $eq: ['$website_id', websiteId],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: resetDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $gte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: startDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              {
+                $lte: [
+                  '$created_at',
+                  {
+                    $dateFromString: {
+                      dateString: endDate.toISOString(),
+                    },
+                  },
+                ],
+              },
+              excludeDomainMongo,
+            ],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: '$' + column,
+          y: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $project: {
+          x: '$_id',
+          y: 1,
+          _id: 0,
+        },
+      },
+      {
+        $sort: {
+          x: 1,
+        },
+      },
+      {
+        $sort: {
+          y: -1,
+        },
+      },
+      {
+        $limit: 100,
+      },
+    ],
+  });
 }
