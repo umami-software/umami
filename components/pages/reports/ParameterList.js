@@ -1,4 +1,4 @@
-import { Icon, Text, TooltipPopup } from 'react-basics';
+import { Icon, TooltipPopup } from 'react-basics';
 import Icons from 'components/icons';
 import Empty from 'components/common/Empty';
 import { useMessages } from 'hooks';
@@ -13,7 +13,7 @@ export function ParameterList({ items = [], children, onRemove }) {
       {items.map((item, index) => {
         return (
           <div key={index} className={styles.item}>
-            <Text>{typeof children === 'function' ? children(item) : item}</Text>
+            {typeof children === 'function' ? children(item) : item}
             <TooltipPopup
               className={styles.icon}
               label={formatMessage(labels.remove)}

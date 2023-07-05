@@ -1,26 +1,28 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
 import { WebsiteEventDataMetric } from 'lib/types';
 import { loadWebsite } from 'lib/query';
 import { DEFAULT_CREATED_AT } from 'lib/constants';
 
-export async function getEventData(
-  ...args: [
-    websiteId: string,
-    data: {
-      startDate: Date;
-      endDate: Date;
-      eventName: string;
-      urlPath?: string;
-      filters: [
-        {
-          eventKey?: string;
-          eventValue?: string | number | boolean | Date;
-        },
-      ];
+export interface EventDataCriteria {
+  fields: [{ name: string; type: string; value: string }];
+  filters: [
+    {
+      name: string;
+      type: string;
+      value: [string, string];
     },
-  ]
+  ];
+  groups: [
+    {
+      name: string;
+      type: string;
+    },
+  ];
+}
+
+export async function getEventData(
+  ...args: [websiteId: string, startDate: Date, endDate: Date, criteria: EventDataCriteria]
 ): Promise<WebsiteEventDataMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -28,96 +30,70 @@ export async function getEventData(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  data: {
-    startDate: Date;
-    endDate: Date;
-    timeSeries?: {
-      unit: string;
-      timezone: string;
-    };
-    eventName: string;
-    urlPath?: string;
-    filters: [
-      {
-        eventKey?: string;
-        eventValue?: string | number | boolean | Date;
-      },
-    ];
-  },
-) {
-  const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
-  const { toUuid, rawQuery, getEventDataFilterQuery, getDateQuery } = prisma;
-  const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
-  const params: any = [websiteId, resetDate, startDate, endDate, eventName || ''];
-
-  return rawQuery(
-    `select
-        count(*) x
-        ${eventName ? `,event_name eventName` : ''}
-        ${urlPath ? `,url_path urlPath` : ''}
-        ${
-          timeSeries ? `,${getDateQuery('created_at', timeSeries.unit, timeSeries.timezone)} t` : ''
-        }
-    from event_data
-      ${
-        eventName || urlPath
-          ? 'join website_event on event_data.id = website_event.website_event_id'
-          : ''
-      }
-    where website_id = $1${toUuid()}
-      and created_at >= $2
-      and created_at between $3 and $4
-      ${eventName ? `and eventName = $5` : ''}
-      ${getEventDataFilterQuery(filters, params)}
-      ${timeSeries ? 'group by t' : ''}`,
-    params,
-  );
+async function relationalQuery() {
+  return null;
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  data: {
-    startDate: Date;
-    endDate: Date;
-    timeSeries?: {
-      unit: string;
-      timezone: string;
-    };
-    eventName?: string;
-    urlPath?: string;
-    filters: [
-      {
-        eventKey?: string;
-        eventValue?: string | number | boolean | Date;
-      },
-    ];
-  },
+  startDate: Date,
+  endDate: Date,
+  criteria: EventDataCriteria,
 ) {
-  const { startDate, endDate, timeSeries, eventName, urlPath, filters } = data;
-  const { rawQuery, getDateFormat, getBetweenDates, getDateQuery, getEventDataFilterQuery } =
-    clickhouse;
+  const { fields } = criteria;
+  const { rawQuery, getDateFormat, getBetweenDates } = clickhouse;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
-  const params = { websiteId };
 
-  return rawQuery(
-    `select
-        count(*) x
-        ${eventName ? `,event_name eventName` : ''}
-        ${urlPath ? `,url_path urlPath` : ''}
-        ${
-          timeSeries ? `,${getDateQuery('created_at', timeSeries.unit, timeSeries.timezone)} t` : ''
-        }
-    from event_data
-    where website_id = {websiteId:UUID}
-      ${eventName ? `and eventName = ${eventName}` : ''}
-      and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}
-      ${getEventDataFilterQuery(filters, params)}
-      ${timeSeries ? 'group by t' : ''}`,
-    params,
-  );
+  const uniqueFields = fields.reduce((obj, { name, type }) => {
+    if (!obj[name]) {
+      obj[name] = {
+        columns: ['event_key as field', `count(*) as total`, `${type}_value as value`],
+        groups: ['event_key', `${type}_value`],
+      };
+    }
+    return obj;
+  }, {});
+
+  const queries = Object.keys(uniqueFields).reduce((arr, key) => {
+    const field = uniqueFields[key];
+    const params = { websiteId, name: key };
+
+    return arr.concat(
+      rawQuery(
+        `select
+             ${field.columns.join(',')}
+        from event_data
+        where website_id = {websiteId:UUID}
+          and event_key = {name:String}
+          and created_at >= ${getDateFormat(resetDate)}
+          and ${getBetweenDates('created_at', startDate, endDate)}
+        group by ${field.groups.join(',')}
+        limit 20
+    `,
+        params,
+      ),
+    );
+  }, []);
+
+  const results = (await Promise.all(queries)).flatMap(n => n);
+
+  const columns = results.reduce((arr, row) => {
+    const keys = Object.keys(row);
+    for (const key of keys) {
+      if (!arr.includes(key)) {
+        arr.push(key);
+      }
+    }
+    return arr;
+  }, []);
+
+  return results.reduce((arr, row) => {
+    return arr.concat(
+      columns.reduce((obj, key) => {
+        obj[key] = row[key];
+        return obj;
+      }, {}),
+    );
+  }, []);
 }

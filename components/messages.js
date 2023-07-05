@@ -137,7 +137,7 @@ export const labels = defineMessages({
   untitled: { id: 'labels.untitled', defaultMessage: 'Untitled' },
   type: { id: 'labels.type', defaultMessage: 'Type' },
   filters: { id: 'labels.filters', defaultMessage: 'Filters' },
-  groupBy: { id: 'labels.group-by', defaultMessage: 'Group by' },
+  breakdown: { id: 'labels.breakdown', defaultMessage: 'Breakdown' },
   true: { id: 'labels.true', defaultMessage: 'True' },
   false: { id: 'labels.false', defaultMessage: 'False' },
   equals: { id: 'labels.equals', defaultMessage: 'Equals' },
@@ -150,6 +150,13 @@ export const labels = defineMessages({
   doesNotContain: { id: 'labels.does-not-contain', defaultMessage: 'Does not contain' },
   before: { id: 'labels.before', defaultMessage: 'Before' },
   after: { id: 'labels.after', defaultMessage: 'After' },
+  total: { id: 'labels.total', defaultMessage: 'Total' },
+  sum: { id: 'labels.sum', defaultMessage: 'Sum' },
+  average: { id: 'labels.average', defaultMessage: 'Average' },
+  min: { id: 'labels.min', defaultMessage: 'Min' },
+  max: { id: 'labels.max', defaultMessage: 'Max' },
+  unique: { id: 'labels.unique', defaultMessage: 'Unique' },
+  value: { id: 'labels.value', defaultMessage: 'Value' },
 });
 
 export const messages = defineMessages({
