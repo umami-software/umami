@@ -3,11 +3,11 @@ import { useApi, useMessages } from 'hooks';
 import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
 import { ReportContext } from 'components/pages/reports/Report';
 import Empty from 'components/common/Empty';
-import { DATA_TYPES } from 'lib/constants';
-import BaseParameters from '../BaseParameters';
-import FieldAddForm from './FieldAddForm';
-import ParameterList from '../ParameterList';
+import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
 import Icons from 'components/icons';
+import FieldAddForm from './FieldAddForm';
+import BaseParameters from '../BaseParameters';
+import ParameterList from '../ParameterList';
 import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {
@@ -33,15 +33,15 @@ export function EventDataParameters() {
   const { parameters } = report || {};
   const { websiteId, dateRange, fields, filters, groups } = parameters || {};
   const { startDate, endDate } = dateRange || {};
-  const queryDisabled = !websiteId || !dateRange;
+  const queryEnabled = websiteId && dateRange && fields?.length;
   const { data, error } = useFields(websiteId, startDate, endDate);
   const parametersSelected = websiteId && startDate && endDate;
   const hasData = data?.length !== 0;
 
   const parameterGroups = [
-    { label: formatMessage(labels.fields), type: 'fields' },
-    { label: formatMessage(labels.filters), type: 'filters' },
-    { label: formatMessage(labels.groupBy), type: 'groups' },
+    { label: formatMessage(labels.fields), group: REPORT_PARAMETERS.fields },
+    { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
+    { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
   ];
 
   const parameterData = {
@@ -54,18 +54,21 @@ export function EventDataParameters() {
     runReport(values);
   };
 
-  const handleAdd = (type, value) => {
-    const data = parameterData[type];
-    updateReport({ parameters: { [type]: data.concat(value) } });
+  const handleAdd = (group, value) => {
+    const data = parameterData[group];
+
+    if (!data.find(({ name }) => name === value.name)) {
+      updateReport({ parameters: { [group]: data.concat(value) } });
+    }
   };
 
-  const handleRemove = (type, index) => {
-    const data = [...parameterData[type]];
+  const handleRemove = (group, index) => {
+    const data = [...parameterData[group]];
     data.splice(index, 1);
-    updateReport({ parameters: { [type]: data } });
+    updateReport({ parameters: { [group]: data } });
   };
 
-  const AddButton = ({ type }) => {
+  const AddButton = ({ group }) => {
     return (
       <PopupTrigger>
         <Icon>
@@ -75,11 +78,11 @@ export function EventDataParameters() {
           {(close, element) => {
             return (
               <FieldAddForm
-                type={type}
                 fields={data.map(({ eventKey, eventDataType }) => ({
                   name: eventKey,
                   type: DATA_TYPES[eventDataType],
                 }))}
+                group={group}
                 element={element}
                 onAdd={handleAdd}
                 onClose={close}
@@ -97,30 +100,34 @@ export function EventDataParameters() {
       {!hasData && <Empty message={formatMessage(messages.noEventData)} />}
       {parametersSelected &&
         hasData &&
-        parameterGroups.map(({ label, type }) => {
+        parameterGroups.map(({ label, group }) => {
           return (
-            <FormRow key={label} label={label} action={<AddButton type={type} onAdd={handleAdd} />}>
+            <FormRow
+              key={label}
+              label={label}
+              action={<AddButton group={group} onAdd={handleAdd} />}
+            >
               <ParameterList
-                items={parameterData[type]}
-                onRemove={index => handleRemove(type, index)}
+                items={parameterData[group]}
+                onRemove={index => handleRemove(group, index)}
               >
                 {({ name, value }) => {
                   return (
                     <div className={styles.parameter}>
-                      {type === 'fields' && (
+                      {group === REPORT_PARAMETERS.fields && (
                         <>
-                          <div className={styles.op}>{value}</div>
                           <div>{name}</div>
+                          <div className={styles.op}>{value}</div>
                         </>
                       )}
-                      {type === 'filters' && (
+                      {group === REPORT_PARAMETERS.filters && (
                         <>
                           <div>{name}</div>
                           <div className={styles.op}>{value[0]}</div>
                           <div>{value[1]}</div>
                         </>
                       )}
-                      {type === 'groups' && (
+                      {group === REPORT_PARAMETERS.groups && (
                         <>
                           <div>{name}</div>
                         </>
@@ -133,7 +140,7 @@ export function EventDataParameters() {
           );
         })}
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
+        <SubmitButton variant="primary" disabled={!queryEnabled} loading={isRunning}>
           {formatMessage(labels.runQuery)}
         </SubmitButton>
       </FormButtons>

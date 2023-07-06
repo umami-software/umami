@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import DataTable from 'components/metrics/DataTable';
+import { GridTable, GridColumn } from 'react-basics';
 import { useMessages } from 'hooks';
 import { ReportContext } from '../Report';
 
@@ -8,12 +8,11 @@ export function EventDataTable() {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <DataTable
-      data={report?.data}
-      title={formatMessage(labels.eventData)}
-      metric="#"
-      showPercentage={true}
-    />
+    <GridTable data={report?.data || []}>
+      <GridColumn name="field" label={formatMessage(labels.field)} />
+      <GridColumn name="value" label={formatMessage(labels.value)} />
+      <GridColumn name="total" label={formatMessage(labels.total)} />
+    </GridTable>
   );
 }
 

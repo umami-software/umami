@@ -17,7 +17,7 @@ export default function FieldFilterForm({ name, type, onSelect }) {
     return (
       <Form>
         <FormRow label={name}>
-          <Menu onSelect={value => onSelect({ name, value: ['eq', value] })}>
+          <Menu onSelect={value => onSelect({ name, type, value: ['eq', value] })}>
             {items.map(value => {
               return <Item key={value}>{filters[value]}</Item>;
             })}
@@ -46,7 +46,7 @@ export default function FieldFilterForm({ name, type, onSelect }) {
         </Flexbox>
         <Button
           variant="primary"
-          onClick={() => onSelect({ name, value: [filter, value] })}
+          onClick={() => onSelect({ name, type, value: [filter, value] })}
           disabled={!filter || !value}
         >
           Add

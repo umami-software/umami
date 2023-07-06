@@ -4,27 +4,39 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { ok, methodNotAllowed, unauthorized } from 'next-basics';
 import { getEventDataFields } from 'queries/analytics/eventData/getEventDataFields';
+import { getEventData } from 'queries';
 
 export interface EventDataRequestBody {
   websiteId: string;
-  urls: string[];
-  window: number;
   dateRange: {
     startDate: string;
     endDate: string;
   };
-}
-
-export interface EventDataResponse {
-  urls: string[];
-  window: number;
-  startAt: number;
-  endAt: number;
+  fields: [
+    {
+      name: string;
+      type: string;
+      value: string;
+    },
+  ];
+  filters: [
+    {
+      name: string;
+      type: string;
+      value: string;
+    },
+  ];
+  groups: [
+    {
+      name: string;
+      type: string;
+    },
+  ];
 }
 
 export default async (
   req: NextApiRequestQueryBody<any, EventDataRequestBody>,
-  res: NextApiResponse<EventDataResponse>,
+  res: NextApiResponse<any>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
@@ -45,13 +57,19 @@ export default async (
     const {
       websiteId,
       dateRange: { startDate, endDate },
+      ...criteria
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = {};
+    const data = await getEventData(
+      websiteId,
+      new Date(startDate),
+      new Date(endDate),
+      criteria as any,
+    );
 
     return ok(res, data);
   }

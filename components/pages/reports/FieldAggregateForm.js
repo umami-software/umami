@@ -1,27 +1,30 @@
 import { Form, FormRow, Menu, Item } from 'react-basics';
-
-const options = {
-  number: [
-    { label: 'SUM', value: 'sum' },
-    { label: 'AVERAGE', value: 'average' },
-    { label: 'MIN', value: 'min' },
-    { label: 'MAX', value: 'max' },
-  ],
-  date: [
-    { label: 'MIN', value: 'min' },
-    { label: 'MAX', value: 'max' },
-  ],
-  string: [
-    { label: 'COUNT', value: 'count' },
-    { label: 'DISTINCT', value: 'distinct' },
-  ],
-};
+import { useMessages } from 'hooks';
 
 export default function FieldAggregateForm({ name, type, onSelect }) {
+  const { formatMessage, labels } = useMessages();
+
+  const options = {
+    number: [
+      { label: formatMessage(labels.sum), value: 'sum' },
+      { label: formatMessage(labels.average), value: 'average' },
+      { label: formatMessage(labels.min), value: 'min' },
+      { label: formatMessage(labels.max), value: 'max' },
+    ],
+    date: [
+      { label: formatMessage(labels.min), value: 'min' },
+      { label: formatMessage(labels.max), value: 'max' },
+    ],
+    string: [
+      { label: formatMessage(labels.total), value: 'total' },
+      { label: formatMessage(labels.unique), value: 'unique' },
+    ],
+  };
+
   const items = options[type];
 
   const handleSelect = value => {
-    onSelect({ name, value });
+    onSelect({ name, type, value });
   };
 
   return (

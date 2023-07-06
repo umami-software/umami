@@ -78,6 +78,12 @@ export const DATA_TYPES = {
   [DATA_TYPE.array]: 'array',
 };
 
+export const REPORT_PARAMETERS = {
+  fields: 'fields',
+  filters: 'filters',
+  groups: 'groups',
+} as const;
+
 export const KAFKA_TOPIC = {
   event: 'event',
   eventData: 'event_data',
