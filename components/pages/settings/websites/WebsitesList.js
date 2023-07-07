@@ -7,6 +7,7 @@ import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
+import { ROLES } from 'lib/constants';
 
 export function WebsitesList() {
   const { formatMessage, labels, messages } = useMessages();
@@ -26,17 +27,21 @@ export function WebsitesList() {
   };
 
   const addButton = (
-    <ModalTrigger>
-      <Button variant="primary">
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-        <Text>{formatMessage(labels.addWebsite)}</Text>
-      </Button>
-      <Modal title={formatMessage(labels.addWebsite)}>
-        {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
-      </Modal>
-    </ModalTrigger>
+    <>
+      {user.role !== ROLES.viewOnly && (
+        <ModalTrigger>
+          <Button variant="primary">
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            <Text>{formatMessage(labels.addWebsite)}</Text>
+          </Button>
+          <Modal title={formatMessage(labels.addWebsite)}>
+            {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
+          </Modal>
+        </ModalTrigger>
+      )}
+    </>
   );
 
   return (
