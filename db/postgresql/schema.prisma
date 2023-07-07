@@ -101,7 +101,7 @@ model EventData {
   websiteEventId String    @map("website_event_id") @db.Uuid
   eventKey       String    @map("event_key") @db.VarChar(500)
   stringValue    String?   @map("string_value") @db.VarChar(500)
-  numericValue   Decimal?  @map("numeric_value") @db.Decimal(19, 4)
+  numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue      DateTime? @map("date_value") @db.Timestamptz(6)
   dataType       Int       @map("data_type") @db.Integer
   createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -116,16 +116,16 @@ model EventData {
 }
 
 model SessionData {
-  id           String    @id() @map("session_data_id") @db.Uuid
-  websiteId    String    @map("website_id") @db.Uuid
-  sessionId    String    @map("session_id") @db.Uuid
-  sessionKey   String    @map("session_key") @db.VarChar(500)
-  stringValue  String?   @map("string_value") @db.VarChar(500)
-  numericValue Decimal?  @map("numeric_value") @db.Decimal(19, 4)
-  dateValue    DateTime? @map("date_value") @db.Timestamptz(6)
-  dataType     Int       @map("data_type") @db.Integer
-  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  deletedAt    DateTime? @default(now()) @map("deleted_at") @db.Timestamptz(6)
+  id          String    @id() @map("session_data_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  sessionKey  String    @map("session_key") @db.VarChar(500)
+  stringValue String?   @map("string_value") @db.VarChar(500)
+  numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue   DateTime? @map("date_value") @db.Timestamptz(6)
+  dataType    Int       @map("data_type") @db.Integer
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @default(now()) @map("deleted_at") @db.Timestamptz(6)
 
   website Website @relation(fields: [websiteId], references: [id])
   session Session @relation(fields: [sessionId], references: [id])
