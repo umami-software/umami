@@ -40,16 +40,22 @@ async function clickhouseQuery(
   endDate: Date,
   criteria: EventDataCriteria,
 ) {
-  const { fields } = criteria;
+  const { fields, filters } = criteria;
   const { rawQuery, getDateFormat, getBetweenDates } = clickhouse;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
 
-  const uniqueFields = fields.reduce((obj, { name, type }) => {
+  const uniqueFields = fields.reduce((obj, { name, type, value }) => {
+    const prefix = type === 'array' ? 'string' : type;
+
     if (!obj[name]) {
       obj[name] = {
-        columns: ['event_key as field', `count(*) as total`, `${type}_value as value`],
-        groups: ['event_key', `${type}_value`],
+        columns: [
+          'event_key as field',
+          `count(*) as total`,
+          value === 'unique' ? `${prefix}_value as value` : null,
+        ].filter(n => n),
+        groups: ['event_key', value === 'unique' ? `${prefix}_value` : null].filter(n => n),
       };
     }
     return obj;
@@ -69,7 +75,7 @@ async function clickhouseQuery(
           and created_at >= ${getDateFormat(resetDate)}
           and ${getBetweenDates('created_at', startDate, endDate)}
         group by ${field.groups.join(',')}
-        limit 20
+        limit 100
     `,
         params,
       ),

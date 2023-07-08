@@ -8,7 +8,7 @@ import Icons from 'components/icons';
 import FieldAddForm from './FieldAddForm';
 import BaseParameters from '../BaseParameters';
 import ParameterList from '../ParameterList';
-import styles from './EventDataParameters.module.css';
+import styles from './InsightsParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {
   const { get, useQuery } = useApi();
@@ -26,7 +26,7 @@ function useFields(websiteId, startDate, endDate) {
   return { data, error, isLoading };
 }
 
-export function EventDataParameters() {
+export function InsightsParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
   const ref = useRef(null);
@@ -41,6 +41,7 @@ export function EventDataParameters() {
   const parameterGroups = [
     { label: formatMessage(labels.fields), group: REPORT_PARAMETERS.fields },
     { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
+    { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
   ];
 
   const parameterData = {
@@ -54,9 +55,11 @@ export function EventDataParameters() {
   };
 
   const handleAdd = (group, value) => {
-    const data = parameterData[group].filter(({ name }) => name !== value.name);
+    const data = parameterData[group];
 
-    updateReport({ parameters: { [group]: data.concat(value) } });
+    if (!data.find(({ name }) => name === value.name)) {
+      updateReport({ parameters: { [group]: data.concat(value) } });
+    }
   };
 
   const handleRemove = (group, index) => {
@@ -75,9 +78,9 @@ export function EventDataParameters() {
           {(close, element) => {
             return (
               <FieldAddForm
-                fields={data.map(({ eventKey, eventDataType }) => ({
+                fields={data.map(({ eventKey, InsightsType }) => ({
                   name: eventKey,
-                  type: DATA_TYPES[eventDataType],
+                  type: DATA_TYPES[InsightsType],
                 }))}
                 group={group}
                 element={element}
@@ -94,7 +97,7 @@ export function EventDataParameters() {
   return (
     <Form ref={ref} values={parameters} error={error} onSubmit={handleSubmit}>
       <BaseParameters />
-      {!hasData && <Empty message={formatMessage(messages.noEventData)} />}
+      {!hasData && <Empty message={formatMessage(messages.noInsights)} />}
       {parametersSelected &&
         hasData &&
         parameterGroups.map(({ label, group }) => {
@@ -124,6 +127,11 @@ export function EventDataParameters() {
                           <div>{value[1]}</div>
                         </>
                       )}
+                      {group === REPORT_PARAMETERS.groups && (
+                        <>
+                          <div>{name}</div>
+                        </>
+                      )}
                     </div>
                   );
                 }}
@@ -140,4 +148,4 @@ export function EventDataParameters() {
   );
 }
 
-export default EventDataParameters;
+export default InsightsParameters;
