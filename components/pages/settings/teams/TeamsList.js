@@ -9,8 +9,11 @@ import Icons from 'components/icons';
 import TeamJoinForm from './TeamJoinForm';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
+import { ROLES } from 'lib/constants';
+import useUser from 'hooks/useUser';
 
 export default function TeamsList() {
+  const { user } = useUser();
   const { formatMessage, labels, messages } = useMessages();
   const [update, setUpdate] = useState(0);
   const { get, useQuery } = useApi();
@@ -48,17 +51,21 @@ export default function TeamsList() {
   );
 
   const createButton = (
-    <ModalTrigger>
-      <Button variant="primary">
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-        <Text>{formatMessage(labels.createTeam)}</Text>
-      </Button>
-      <Modal title={formatMessage(labels.createTeam)}>
-        {close => <TeamAddForm onSave={handleSave} onClose={close} />}
-      </Modal>
-    </ModalTrigger>
+    <>
+      {user.role !== ROLES.viewOnly && (
+        <ModalTrigger>
+          <Button variant="primary">
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            <Text>{formatMessage(labels.createTeam)}</Text>
+          </Button>
+          <Modal title={formatMessage(labels.createTeam)}>
+            {close => <TeamAddForm onSave={handleSave} onClose={close} />}
+          </Modal>
+        </ModalTrigger>
+      )}
+    </>
   );
 
   return (

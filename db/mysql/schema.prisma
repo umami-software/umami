@@ -101,7 +101,7 @@ model EventData {
   websiteId      String    @map("website_id") @db.VarChar(36)
   eventKey       String    @map("event_key") @db.VarChar(500)
   stringValue    String?   @map("string_value") @db.VarChar(500)
-  numericValue   Decimal?  @map("numeric_value") @db.Decimal(19, 4)
+  numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue      DateTime? @map("date_value") @db.Timestamp(0)
   dataType       Int       @map("data_type") @db.UnsignedInt
   createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
@@ -117,15 +117,15 @@ model EventData {
 }
 
 model SessionData {
-  id                String    @id() @map("session_data_id") @db.VarChar(36)
-  websiteId         String    @map("website_id") @db.VarChar(36)
-  sessionId         String    @map("session_id") @db.VarChar(36)
-  eventKey          String    @map("event_key") @db.VarChar(500)
-  eventStringValue  String?   @map("event_string_value") @db.VarChar(500)
-  eventNumericValue Decimal?  @map("event_numeric_value") @db.Decimal(19, 4)
-  eventDateValue    DateTime? @map("event_date_value") @db.Timestamp(0)
-  eventDataType     Int       @map("event_data_type") @db.UnsignedInt
-  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  id          String    @id() @map("session_data_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  sessionId   String    @map("session_id") @db.VarChar(36)
+  eventKey    String    @map("event_key") @db.VarChar(500)
+  stringValue String?   @map("string_value") @db.VarChar(500)
+  numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue   DateTime? @map("date_value") @db.Timestamp(0)
+  dataType    Int       @map("data_type") @db.UnsignedInt
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   website Website @relation(fields: [websiteId], references: [id])
   session Session @relation(fields: [sessionId], references: [id])

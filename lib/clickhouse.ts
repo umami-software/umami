@@ -82,17 +82,17 @@ function getEventDataFilterQuery(
 
     switch (type) {
       case 'number':
-        ac.push(`and event_numeric_value = {eventValue${i}:UInt64})`);
+        ac.push(`and number_value = {eventValue${i}:UInt64})`);
         break;
       case 'string':
-        ac.push(`and event_string_value = {eventValue${i}:String})`);
+        ac.push(`and string_value = {eventValue${i}:String})`);
         break;
       case 'boolean':
-        ac.push(`and event_string_value = {eventValue${i}:String})`);
+        ac.push(`and string_value = {eventValue${i}:String})`);
         value = cv ? 'true' : 'false';
         break;
       case 'date':
-        ac.push(`and event_date_value = {eventValue${i}:DateTime('UTC')})`);
+        ac.push(`and date_value = {eventValue${i}:DateTime('UTC')})`);
         break;
     }
 

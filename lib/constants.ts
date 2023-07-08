@@ -92,6 +92,7 @@ export const KAFKA_TOPIC = {
 export const ROLES = {
   admin: 'admin',
   user: 'user',
+  viewOnly: 'view-only',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
 } as const;
@@ -114,6 +115,7 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
     PERMISSIONS.teamCreate,
   ],
+  [ROLES.viewOnly]: [],
   [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
   [ROLES.teamMember]: [],
 } as const;

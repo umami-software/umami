@@ -94,20 +94,20 @@ function getEventDataFilterQuery(
 
     switch (type) {
       case 'number':
-        ac.push(`and event_numeric_value = $${params.length + 1})`);
+        ac.push(`and number_value = $${params.length + 1})`);
         params.push(value);
         break;
       case 'string':
-        ac.push(`and event_string_value = $${params.length + 1})`);
+        ac.push(`and string_value = $${params.length + 1})`);
         params.push(decodeURIComponent(cv.eventValue as string));
         break;
       case 'boolean':
-        ac.push(`and event_string_value = $${params.length + 1})`);
+        ac.push(`and string_value = $${params.length + 1})`);
         params.push(decodeURIComponent(cv.eventValue as string));
         value = cv ? 'true' : 'false';
         break;
       case 'date':
-        ac.push(`and event_date_value = $${params.length + 1})`);
+        ac.push(`and date_value = $${params.length + 1})`);
         params.push(cv.eventValue);
         break;
     }

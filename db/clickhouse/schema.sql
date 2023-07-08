@@ -119,7 +119,7 @@ CREATE TABLE umami.event_data
     event_name String,
     event_key String,
     string_value Nullable(String),
-    numeric_value Nullable(Decimal64(4)), --922337203685477.5625
+    number_value Nullable(Decimal64(4)), --922337203685477.5625
     date_value Nullable(DateTime('UTC')),
     data_type UInt32,
     created_at DateTime('UTC'),
@@ -137,7 +137,7 @@ CREATE TABLE umami.event_data_queue (
     event_name String,
     event_key String,
     string_value Nullable(String),
-    numeric_value Nullable(Decimal64(4)), --922337203685477.5625
+    number_value Nullable(Decimal64(4)), --922337203685477.5625
     date_value Nullable(DateTime('UTC')),
     data_type UInt32,
     created_at DateTime('UTC'),
@@ -161,7 +161,7 @@ SELECT website_id,
     event_name,
     event_key,
     string_value,
-    numeric_value,
+    number_value,
     date_value,
     data_type,
     created_at

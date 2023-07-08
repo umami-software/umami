@@ -81,7 +81,7 @@ async function clickhouseQuery(data: {
       a.dynamicDataType === DATA_TYPE.array
         ? a.value
         : null,
-    numeric_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
     date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
     data_type: a.dynamicDataType,
     created_at: createdAt,

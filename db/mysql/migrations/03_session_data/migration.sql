@@ -15,7 +15,7 @@
 ALTER TABLE `event_data` RENAME COLUMN `event_data_type` TO `data_type`;
 ALTER TABLE `event_data` RENAME COLUMN `event_date_value` TO `date_value`;
 ALTER TABLE `event_data` RENAME COLUMN `event_id` TO `event_data_id`;
-ALTER TABLE `event_data` RENAME COLUMN `event_numeric_value` TO `numeric_value`;
+ALTER TABLE `event_data` RENAME COLUMN `event_numeric_value` TO `number_value`;
 ALTER TABLE `event_data` RENAME COLUMN `event_string_value` TO `string_value`;
 
 -- CreateTable
@@ -24,10 +24,10 @@ CREATE TABLE `session_data` (
     `website_id` VARCHAR(36) NOT NULL,
     `session_id` VARCHAR(36) NOT NULL,
     `event_key` VARCHAR(500) NOT NULL,
-    `event_string_value` VARCHAR(500) NULL,
-    `event_numeric_value` DECIMAL(19, 4) NULL,
-    `event_date_value` TIMESTAMP(0) NULL,
-    `event_data_type` INTEGER UNSIGNED NOT NULL,
+    `string_value` VARCHAR(500) NULL,
+    `number_value` DECIMAL(19, 4) NULL,
+    `date_value` TIMESTAMP(0) NULL,
+    `data_type` INTEGER UNSIGNED NOT NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
 
     INDEX `session_data_created_at_idx`(`created_at`),
