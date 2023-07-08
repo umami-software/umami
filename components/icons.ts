@@ -10,7 +10,10 @@ import Globe from 'assets/globe.svg';
 import Lock from 'assets/lock.svg';
 import Logo from 'assets/logo.svg';
 import Moon from 'assets/moon.svg';
+import Nodes from 'assets/nodes.svg';
+import Overview from 'assets/overview.svg';
 import Profile from 'assets/profile.svg';
+import Reports from 'assets/reports.svg';
 import Sun from 'assets/sun.svg';
 import User from 'assets/user.svg';
 import Users from 'assets/users.svg';
@@ -29,7 +32,10 @@ const icons = {
   Lock,
   Logo,
   Moon,
+  Nodes,
+  Overview,
   Profile,
+  Reports,
   Sun,
   User,
   Users,
