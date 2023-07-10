@@ -4,7 +4,7 @@ import WebsiteSettings from 'components/pages/settings/websites/WebsiteSettings'
 import SettingsLayout from 'components/layout/SettingsLayout';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsiteSettingsPage({ disabled }) {
+export default function ({ disabled }) {
   const router = useRouter();
   const { id } = router.query;
   const { formatMessage, labels } = useMessages();
