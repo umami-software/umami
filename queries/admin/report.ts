@@ -13,7 +13,7 @@ export async function getReportById(reportId: string): Promise<Report> {
   });
 }
 
-export async function getReports(where: Prisma.ReportWhereUniqueInput): Promise<Report[]> {
+export async function getReports(where: Prisma.ReportWhereInput): Promise<Report[]> {
   return prisma.client.report.findMany({
     where,
   });
