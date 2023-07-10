@@ -23,7 +23,7 @@ export function EventDataMetricsBar({ websiteId }) {
   );
 
   return (
-    <Row>
+    <Row className={styles.row}>
       <Column defaultSize={12} xl={8}>
         <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
           {!error && isFetched && (

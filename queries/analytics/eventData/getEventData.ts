@@ -1,9 +1,9 @@
+import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { WebsiteEventDataMetric } from 'lib/types';
 import { loadWebsite } from 'lib/query';
 import { DEFAULT_CREATED_AT } from 'lib/constants';
-import prisma from '../../../lib/prisma';
 
 export async function getEventData(
   ...args: [websiteId: string, startDate: Date, endDate: Date, field?: string]
@@ -22,15 +22,16 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
   if (field) {
     return rawQuery(
       `select event_key as field,
+              string_value as value,
               count(*)  as total
        from event_data
        where website_id = $1${toUuid()}
           and event_key = $2
          and created_at >= $3
          and created_at between $4 and $5
-       group by event_key
-       order by 2 desc, 1 asc
-           limit 1000
+       group by event_key, string_value
+       order by 3 desc, 2 desc, 1 asc
+           limit 100
       `,
       [websiteId, field, resetDate, startDate, endDate] as any,
     );
@@ -46,7 +47,7 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
           and created_at between $3 and $4
         group by event_key
         order by 2 desc, 1 asc
-        limit 1000
+        limit 100
     `,
     [websiteId, resetDate, startDate, endDate] as any,
   );
@@ -61,15 +62,16 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
     return rawQuery(
       `select
         event_key as field,
+        string_value as value,
         count(*) as total
         from event_data
         where website_id = {websiteId:UUID}
           and event_key = {field:String}
           and created_at >= ${getDateFormat(resetDate)}
           and ${getBetweenDates('created_at', startDate, endDate)}
-        group by event_key
-        order by 2 desc, 1 asc
-        limit 1000
+        group by event_key, string_value
+        order by 3 desc, 2 desc, 1 asc
+        limit 100
     `,
       { websiteId, field },
     );
@@ -85,7 +87,7 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
           and ${getBetweenDates('created_at', startDate, endDate)}
         group by event_key
         order by 2 desc, 1 asc
-        limit 1000
+        limit 100
     `,
     { websiteId },
   );

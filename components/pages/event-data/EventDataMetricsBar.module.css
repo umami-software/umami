@@ -40,3 +40,7 @@
     flex-basis: calc(50% - 20px);
   }
 }
+
+.row {
+  border-bottom: 1px solid var(--border-color);
+}

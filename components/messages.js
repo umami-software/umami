@@ -159,6 +159,7 @@ export const labels = defineMessages({
   unique: { id: 'labels.unique', defaultMessage: 'Unique' },
   value: { id: 'labels.value', defaultMessage: 'Value' },
   overview: { id: 'labels.overview', defaultMessage: 'Overview' },
+  totalRecords: { id: 'labels.total-records', defaultMessage: 'Total records' },
 });
 
 export const messages = defineMessages({
