@@ -5,13 +5,13 @@ import { Button, Icon, Icons, Text } from 'react-basics';
 import { useMessages, useReports } from 'hooks';
 import ReportsTable from './ReportsTable';
 
-export function ReportsList() {
+export function ReportsPage() {
   const { formatMessage, labels } = useMessages();
   const { reports, error, isLoading } = useReports();
 
   return (
     <Page loading={isLoading} error={error}>
-      <PageHeader title="Reports">
+      <PageHeader title={formatMessage(labels.reports)}>
         <Link href="/reports/create">
           <Button variant="primary">
             <Icon>
@@ -26,4 +26,4 @@ export function ReportsList() {
   );
 }
 
-export default ReportsList;
+export default ReportsPage;

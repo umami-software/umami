@@ -1,22 +1,4 @@
 .container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-self: stretch;
-}
-
-.chart {
-  position: relative;
-  overflow: hidden;
-}
-
-.title {
-  font-size: var(--font-size-lg);
-  line-height: 60px;
-  font-weight: 600;
-}
-
-.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -35,8 +17,10 @@
   gap: 10px;
 }
 
-.dropdown {
-  min-width: 200px;
+@media only screen and (max-width: 1200px) {
+  .actions {
+    margin-top: 40px;
+  }
 }
 
 @media only screen and (min-width: 992px) {
@@ -47,11 +31,5 @@
 
   .isSticky {
     border-bottom: 1px solid var(--base300);
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .actions {
-    margin-top: 40px;
   }
 }

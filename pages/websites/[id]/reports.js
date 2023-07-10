@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
-import WebsiteReports from 'components/pages/websites/WebsiteReports';
+import WebsiteReportsPage from 'components/pages/websites/WebsiteReportsPage';
 
 export default function () {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function () {
 
   return (
     <AppLayout>
-      <WebsiteReports websiteId={websiteId} />
+      <WebsiteReportsPage websiteId={websiteId} />
     </AppLayout>
   );
 }

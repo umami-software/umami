@@ -23,3 +23,7 @@
   gap: 30px;
   min-height: 0;
 }
+
+.selected {
+  font-weight: bold;
+}

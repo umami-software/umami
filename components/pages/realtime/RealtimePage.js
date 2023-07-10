@@ -1,22 +1,20 @@
 import { useState, useEffect, useMemo } from 'react';
 import { subMinutes, startOfMinute } from 'date-fns';
-import { useRouter } from 'next/router';
 import firstBy from 'thenby';
 import { GridRow, GridColumn } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import PageHeader from 'components/layout/PageHeader';
 import WorldMap from 'components/common/WorldMap';
 import RealtimeLog from 'components/pages/realtime/RealtimeLog';
 import RealtimeHeader from 'components/pages/realtime/RealtimeHeader';
 import RealtimeUrls from 'components/pages/realtime/RealtimeUrls';
 import RealtimeCountries from 'components/pages/realtime/RealtimeCountries';
-import WebsiteSelect from 'components/input/WebsiteSelect';
+import WebsiteHeader from 'components/pages/websites/WebsiteHeader';
 import useApi from 'hooks/useApi';
-import useMessages from 'hooks/useMessages';
 import { percentFilter } from 'lib/filters';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
-import styles from './RealtimeDashboard.module.css';
+import styles from './RealtimePage.module.css';
+import { useWebsite } from 'hooks';
 
 function mergeData(state = [], data = [], time) {
   const ids = state.map(({ __id }) => __id);
@@ -25,12 +23,10 @@ function mergeData(state = [], data = [], time) {
     .filter(({ timestamp }) => timestamp >= time);
 }
 
-export function RealtimeDashboard({ websiteId }) {
-  const { formatMessage, labels } = useMessages();
-  const router = useRouter();
+export function RealtimePage({ websiteId }) {
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
-  const { data: website } = useQuery(['websites', websiteId], () => get(`/websites/${websiteId}`));
+  const { data: website } = useWebsite(websiteId);
   const { data, isLoading, error } = useQuery(
     ['realtime', websiteId],
     () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
@@ -93,15 +89,9 @@ export function RealtimeDashboard({ websiteId }) {
     return currentData;
   }, [currentData]);
 
-  const handleSelect = id => {
-    router.push(`/realtime/${id}`);
-  };
-
   return (
     <Page loading={isLoading} error={error}>
-      <PageHeader title={formatMessage(labels.realtime)}>
-        <WebsiteSelect websiteId={websiteId} onSelect={handleSelect} />
-      </PageHeader>
+      <WebsiteHeader websiteId={websiteId} />
       <RealtimeHeader websiteId={websiteId} data={currentData} />
       <div className={styles.chart}>
         <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
@@ -126,4 +116,4 @@ export function RealtimeDashboard({ websiteId }) {
   );
 }
 
-export default RealtimeDashboard;
+export default RealtimePage;

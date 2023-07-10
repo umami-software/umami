@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
-import RealtimeDashboard from 'components/pages/realtime/RealtimeDashboard';
+import RealtimePage from 'components/pages/realtime/RealtimePage';
 
 export default function () {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function () {
 
   return (
     <AppLayout>
-      <RealtimeDashboard websiteId={websiteId} />
+      <RealtimePage websiteId={websiteId} />
     </AppLayout>
   );
 }

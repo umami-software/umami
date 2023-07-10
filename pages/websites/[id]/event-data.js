@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
-import WebsiteEventData from 'components/pages/websites/WebsiteEventData';
+import WebsiteEventDataPage from 'components/pages/websites/WebsiteEventDataPage';
 import useMessages from 'hooks/useMessages';
 
 export default function () {
@@ -14,7 +14,7 @@ export default function () {
 
   return (
     <AppLayout title={formatMessage(labels.websites)}>
-      <WebsiteEventData websiteId={id} />
+      <WebsiteEventDataPage websiteId={id} />
     </AppLayout>
   );
 }

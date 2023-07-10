@@ -2,8 +2,9 @@ import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createReport, getReports } from 'queries';
+import { canViewWebsite } from 'lib/auth';
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -23,12 +24,18 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
+  const { websiteId } = req.query;
+
   const {
     user: { id: userId },
   } = req.auth;
 
   if (req.method === 'GET') {
-    const data = await getReports(userId);
+    if (!(websiteId && (await canViewWebsite(req.auth, websiteId)))) {
+      return unauthorized(res);
+    }
+
+    const data = await getReports({ websiteId });
 
     return ok(res, data);
   }
