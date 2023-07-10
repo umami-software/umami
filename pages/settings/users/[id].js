@@ -4,7 +4,7 @@ import UserSettings from 'components/pages/settings/users/UserSettings';
 import { useRouter } from 'next/router';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamDetailPage({ disabled }) {
+export default function ({ disabled }) {
   const router = useRouter();
   const { id } = router.query;
   const { formatMessage, labels } = useMessages();

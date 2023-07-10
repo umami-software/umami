@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.chart {
+  position: relative;
+  overflow: hidden;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  line-height: 60px;
+  font-weight: 600;
+}

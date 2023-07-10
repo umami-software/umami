@@ -1,11 +1,12 @@
 import useApi from 'hooks/useApi';
 import useDateRange from 'hooks/useDateRange';
 import DateFilter from './DateFilter';
+import styles from './WebsiteDateFilter.module.css';
 
-export default function WebsiteDateFilter({ websiteId, value }) {
+export default function WebsiteDateFilter({ websiteId }) {
   const { get } = useApi();
   const [dateRange, setDateRange] = useDateRange(websiteId);
-  const { startDate, endDate } = dateRange;
+  const { value, startDate, endDate } = dateRange;
 
   const handleChange = async value => {
     if (value === 'all' && websiteId) {
@@ -20,6 +21,12 @@ export default function WebsiteDateFilter({ websiteId, value }) {
   };
 
   return (
-    <DateFilter value={value} startDate={startDate} endDate={endDate} onChange={handleChange} />
+    <DateFilter
+      className={styles.dropdown}
+      value={value}
+      startDate={startDate}
+      endDate={endDate}
+      onChange={handleChange}
+    />
   );
 }

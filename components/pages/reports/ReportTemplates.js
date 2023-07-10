@@ -10,22 +10,10 @@ import { useMessages } from 'hooks';
 
 const reports = [
   {
-    title: 'Event data',
-    description: 'Query your custom event data.',
-    url: '/reports/event-data',
-    icon: <Nodes />,
-  },
-  {
     title: 'Funnel',
     description: 'Understand the conversion and drop-off rate of users.',
     url: '/reports/funnel',
     icon: <Funnel />,
-  },
-  {
-    title: 'Insights',
-    description: 'Explore your data by applying segments and filters.',
-    url: '/reports/insights',
-    icon: <Lightbulb />,
   },
 ];
 

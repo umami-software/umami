@@ -2,7 +2,7 @@ import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
-import WebsiteChart from 'components/metrics/WebsiteChart';
+import WebsiteChart from 'components/pages/websites/WebsiteChart';
 import useApi from 'hooks/useApi';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -143,12 +143,7 @@ export function TestConsole() {
           </Row>
           <Row>
             <Column>
-              <WebsiteChart
-                websiteId={website.id}
-                name={website.name}
-                domain={website.domain}
-                showLink
-              />
+              <WebsiteChart websiteId={website.id} />
               <EventsChart websiteId={website.id} />
             </Column>
           </Row>

@@ -41,7 +41,6 @@ export function EventDataParameters() {
   const parameterGroups = [
     { label: formatMessage(labels.fields), group: REPORT_PARAMETERS.fields },
     { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
-    { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
   ];
 
   const parameterData = {
@@ -55,11 +54,9 @@ export function EventDataParameters() {
   };
 
   const handleAdd = (group, value) => {
-    const data = parameterData[group];
+    const data = parameterData[group].filter(({ name }) => name !== value.name);
 
-    if (!data.find(({ name }) => name === value.name)) {
-      updateReport({ parameters: { [group]: data.concat(value) } });
-    }
+    updateReport({ parameters: { [group]: data.concat(value) } });
   };
 
   const handleRemove = (group, index) => {
@@ -125,11 +122,6 @@ export function EventDataParameters() {
                           <div>{name}</div>
                           <div className={styles.op}>{value[0]}</div>
                           <div>{value[1]}</div>
-                        </>
-                      )}
-                      {group === REPORT_PARAMETERS.groups && (
-                        <>
-                          <div>{name}</div>
                         </>
                       )}
                     </div>
