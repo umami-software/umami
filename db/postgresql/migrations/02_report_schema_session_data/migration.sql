@@ -66,5 +66,5 @@ SET string_value = number_value
 WHERE data_type = 2;
 
 UPDATE "event_data"
-SET string_value = CONCAT(REPLACE(TO_CHAR(date_value, 'YYYY-MM-DD HH24:MI:SS:MS'), ' ', 'T'), 'Z')
+SET string_value = CONCAT(REPLACE(TO_CHAR(date_value, 'YYYY-MM-DD HH24:MI:SS'), ' ', 'T'), 'Z')
 WHERE data_type = 4;
