@@ -36,13 +36,8 @@ async function relationalQuery(data: {
     id: uuid(),
     websiteEventId: eventId,
     websiteId,
-    key: a.key,
-    stringValue:
-      a.dynamicDataType === DATA_TYPE.string ||
-      a.dynamicDataType === DATA_TYPE.boolean ||
-      a.dynamicDataType === DATA_TYPE.array
-        ? a.value
-        : null,
+    eventKey: a.key,
+    stringValue: a.value.toString(),
     numericValue: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dynamicDataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dynamicDataType,
@@ -76,11 +71,7 @@ async function clickhouseQuery(data: {
     event_name: eventName,
     event_key: a.key,
     string_value:
-      a.dynamicDataType === DATA_TYPE.string ||
-      a.dynamicDataType === DATA_TYPE.boolean ||
-      a.dynamicDataType === DATA_TYPE.array
-        ? a.value
-        : null,
+      a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value, 'isoUtcDateTime') : a.value,
     number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
     date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
     data_type: a.dynamicDataType,

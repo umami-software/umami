@@ -61,8 +61,8 @@ async function getProducer(): Promise<Producer> {
   return producer;
 }
 
-function getDateFormat(date): string {
-  return dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss');
+function getDateFormat(date, format?): string {
+  return dateFormat(date, format ? format : 'UTC:yyyy-mm-dd HH:MM:ss');
 }
 
 async function sendMessage(
