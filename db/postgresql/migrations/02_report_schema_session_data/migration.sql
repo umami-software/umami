@@ -21,6 +21,21 @@ CREATE TABLE "session_data" (
     CONSTRAINT "session_data_pkey" PRIMARY KEY ("session_data_id")
 );
 
+-- CreateTable
+CREATE TABLE "report" (
+    "report_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+    "website_id" UUID NOT NULL,
+    "type" VARCHAR(200) NOT NULL,
+    "name" VARCHAR(200) NOT NULL,
+    "description" VARCHAR(500) NOT NULL,
+    "parameters" VARCHAR(6000) NOT NULL,
+    "created_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
+
+    CONSTRAINT "report_pkey" PRIMARY KEY ("report_id")
+);
+
 -- CreateIndex
 CREATE INDEX "session_data_created_at_idx" ON "session_data"("created_at");
 
@@ -29,3 +44,27 @@ CREATE INDEX "session_data_website_id_idx" ON "session_data"("website_id");
 
 -- CreateIndex
 CREATE INDEX "session_data_session_id_idx" ON "session_data"("session_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "report_report_id_key" ON "report"("report_id");
+
+-- CreateIndex
+CREATE INDEX "report_user_id_idx" ON "report"("user_id");
+
+-- CreateIndex
+CREATE INDEX "report_website_id_idx" ON "report"("website_id");
+
+-- CreateIndex
+CREATE INDEX "report_type_idx" ON "report"("type");
+
+-- CreateIndex
+CREATE INDEX "report_name_idx" ON "report"("name");
+
+-- EventData migration
+UPDATE "event_data"
+SET string_value = number_value
+WHERE data_type = 2;
+
+UPDATE "event_data"
+SET string_value = CONCAT(REPLACE(TO_CHAR(date_value, 'YYYY-MM-DD HH24:MI:SS:MS'), ' ', 'T'), 'Z')
+WHERE data_type = 4;

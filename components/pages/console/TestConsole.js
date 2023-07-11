@@ -33,6 +33,7 @@ export function TestConsole() {
       booleanError: 'true',
       time: new Date(),
       number: 1,
+      number2: Math.random() * 100,
       time2: new Date().toISOString(),
       nested: {
         test: 'test-data',
