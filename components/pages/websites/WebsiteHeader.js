@@ -48,10 +48,7 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
         {showLinks && (
           <Flexbox alignItems="center">
             {links.map(({ label, icon, path }) => {
-              const query = path.indexOf('?');
-              const selected = path
-                ? asPath.endsWith(query >= 0 ? path.substring(0, query) : path)
-                : pathname === '/websites/[id]';
+              const selected = path ? pathname.endsWith(path) : pathname === '/websites/[id]';
 
               return (
                 <Link key={label} href={`/websites/${websiteId}${path}`} shallow={true}>

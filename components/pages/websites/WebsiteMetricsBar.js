@@ -14,7 +14,6 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
-  const [format, setFormat] = useState(true);
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const {
     query: { url, referrer, title, os, browser, device, country, region, city },
@@ -41,14 +40,6 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
       }),
   );
 
-  const formatFunc = format
-    ? n => (n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`)
-    : formatNumber;
-
-  function handleSetFormat() {
-    setFormat(state => !state);
-  }
-
   const { pageviews, uniques, bounces, totaltime } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);
   const diffs = data && {
@@ -67,12 +58,7 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
       })}
     >
       <Column defaultSize={12} xl={8}>
-        <MetricsBar
-          isLoading={isLoading}
-          isFetched={isFetched}
-          error={error}
-          onClick={handleSetFormat}
-        >
+        <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
           {!error && isFetched && (
             <>
               <MetricCard
@@ -80,14 +66,12 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
                 label={formatMessage(labels.views)}
                 value={pageviews.value}
                 change={pageviews.change}
-                format={formatFunc}
               />
               <MetricCard
                 className={styles.card}
                 label={formatMessage(labels.visitors)}
                 value={uniques.value}
                 change={uniques.change}
-                format={formatFunc}
               />
               <MetricCard
                 className={styles.card}

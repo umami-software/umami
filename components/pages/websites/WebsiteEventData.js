@@ -3,6 +3,7 @@ import EventDataTable from 'components/pages/event-data/EventDataTable';
 import EventDataValueTable from 'components/pages/event-data/EventDataValueTable';
 import { EventDataMetricsBar } from 'components/pages/event-data/EventDataMetricsBar';
 import { useDateRange, useApi, usePageQuery } from 'hooks';
+import styles from './WebsiteEventData.module.css';
 
 function useFields(websiteId, field) {
   const [dateRange] = useDateRange(websiteId);
@@ -11,7 +12,7 @@ function useFields(websiteId, field) {
   const { data, error, isLoading } = useQuery(
     ['event-data:fields', { websiteId, startDate, endDate, field }],
     () =>
-      get('/event-data', {
+      get('/event-data/fields', {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
@@ -30,7 +31,7 @@ export default function WebsiteEventData({ websiteId }) {
   const { data } = useFields(websiteId, view);
 
   return (
-    <Flexbox direction="column" gap={20}>
+    <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
       {!view && <EventDataTable data={data} />}
       {view && <EventDataValueTable field={view} data={data} />}

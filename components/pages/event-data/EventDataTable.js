@@ -3,7 +3,7 @@ import { GridTable, GridColumn } from 'react-basics';
 import { useMessages, usePageQuery } from 'hooks';
 import Empty from 'components/common/Empty';
 
-export function EventDataTable({ data = [], showValue }) {
+export function EventDataTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { resolveUrl } = usePageQuery();
 
