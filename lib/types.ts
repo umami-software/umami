@@ -94,11 +94,17 @@ export interface WebsiteEventMetric {
   y: number;
 }
 
-export interface WebsiteEventDataMetric {
-  x: string;
-  t: string;
-  eventName?: string;
-  urlPath?: string;
+export interface WebsiteEventDataStats {
+  field: string;
+  type: number;
+  total: number;
+}
+
+export interface WebsiteEventDataFields {
+  field: string;
+  type: number;
+  value?: string;
+  total: number;
 }
 
 export interface WebsitePageviews {

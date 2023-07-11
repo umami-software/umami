@@ -79,7 +79,6 @@
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
     "dotenv": "^10.0.0",
-    "formik": "^2.2.9",
     "fs-extra": "^10.0.1",
     "immer": "^9.0.12",
     "ipaddr.js": "^2.0.1",

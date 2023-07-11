@@ -6,7 +6,6 @@ export * from './admin/website';
 export * from './analytics/event/getEventMetrics';
 export * from './analytics/event/getEventUsage';
 export * from './analytics/event/getEvents';
-export * from './analytics/eventData/getEventData';
 export * from './analytics/eventData/getEventDataFields';
 export * from './analytics/eventData/getEventDataUsage';
 export * from './analytics/event/saveEvent';

@@ -3,7 +3,7 @@ import { useCors, useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { ok, methodNotAllowed, unauthorized } from 'next-basics';
-import { getEventData } from 'queries';
+import { getEventDataFields } from 'queries';
 
 export interface EventDataRequestBody {
   websiteId: string;
@@ -22,13 +22,21 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, startAt, endAt, field } = req.query;
+    const { websiteId, startAt, endAt } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getEventData(websiteId, new Date(+startAt), new Date(+endAt), field);
+    const results = await getEventDataFields(websiteId, new Date(+startAt), new Date(+endAt));
+
+    const data = results.reduce(
+      (obj, row) => {
+        obj.records += row.total;
+        return obj;
+      },
+      { fields: results.length, records: 0 },
+    );
 
     return ok(res, data);
   }

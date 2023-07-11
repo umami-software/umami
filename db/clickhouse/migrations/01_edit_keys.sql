@@ -11,10 +11,8 @@ ALTER TABLE "event_data" ADD COLUMN "job_id" UUID AFTER "created_at";
 -- update event_data string
 alter table umami.event_data
 update string_value = number_value
-where number_value is not null
-    and string_value is null;
+where data_type = 2
 
 alter table umami.event_data
 update string_value = replaceOne(concat(CAST(toDateTime(date_value, 'UTC'), 'String'),'Z'), ' ', 'T')
-where date_value is not null
-    and string_value is null;
+where data_type = 4

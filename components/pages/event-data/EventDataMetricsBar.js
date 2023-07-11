@@ -13,9 +13,9 @@ export function EventDataMetricsBar({ websiteId }) {
   const { startDate, endDate, modified } = dateRange;
 
   const { data, error, isLoading, isFetched } = useQuery(
-    ['event-data:fields', { websiteId, startDate, endDate, modified }],
+    ['event-data:stats', { websiteId, startDate, endDate, modified }],
     () =>
-      get(`/event-data/fields`, {
+      get(`/event-data/stats`, {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
@@ -27,11 +27,18 @@ export function EventDataMetricsBar({ websiteId }) {
       <Column defaultSize={12} xl={8}>
         <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
           {!error && isFetched && (
-            <MetricCard
-              className={styles.card}
-              label={formatMessage(labels.fields)}
-              value={data?.length}
-            />
+            <>
+              <MetricCard
+                className={styles.card}
+                label={formatMessage(labels.fields)}
+                value={data?.fields}
+              />
+              <MetricCard
+                className={styles.card}
+                label={formatMessage(labels.totalRecords)}
+                value={data?.records}
+              />
+            </>
           )}
         </MetricsBar>
       </Column>
