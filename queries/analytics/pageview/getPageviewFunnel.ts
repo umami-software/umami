@@ -91,7 +91,7 @@ async function clickhouseQuery(
         count(*) AS count
     FROM (
     SELECT session_id,
-            windowFunnel({window:UInt32}, 'strict_order')
+            windowFunnel({window:UInt32}, 'strict_increase')
             (
                 created_at
                 ${columnsQuery}
