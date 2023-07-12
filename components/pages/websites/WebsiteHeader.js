@@ -10,7 +10,7 @@ import { useMessages, useWebsite } from 'hooks';
 
 export function WebsiteHeader({ websiteId, showLinks = true, children }) {
   const { formatMessage, labels } = useMessages();
-  const { asPath, pathname } = useRouter();
+  const { pathname } = useRouter();
   const { data: website } = useWebsite(websiteId);
   const { name, domain } = website || {};
 
