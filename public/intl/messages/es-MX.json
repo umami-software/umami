@@ -245,6 +245,12 @@
       "value": "Habilitar compartir URL"
     }
   ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Event data"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
@@ -261,6 +267,12 @@
     {
       "type": 0,
       "value": "Personalizado"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Funnel"
     }
   ],
   "label.join": [
@@ -433,6 +445,12 @@
       "value": "Consultas"
     }
   ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Query"
+    }
+  ],
   "label.query-parameters": [
     {
       "type": 0,
@@ -475,6 +493,12 @@
       "value": "Quitar"
     }
   ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Reports"
+    }
+  ],
   "label.required": [
     {
       "type": 0,
@@ -509,6 +533,12 @@
     {
       "type": 0,
       "value": "Pantallas"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Select date"
     }
   ],
   "label.select-website": [
@@ -649,6 +679,12 @@
       "value": "Desconocida"
     }
   ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URLs"
+    }
+  ],
   "label.user": [
     {
       "type": 0,
@@ -689,6 +725,12 @@
     {
       "type": 0,
       "value": "Visitantes"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Website"
     }
   ],
   "label.website-id": [
@@ -785,10 +827,32 @@
       "value": "?"
     }
   ],
+  "message.delete-account": [
+    {
+      "type": 0,
+      "value": "To delete this account, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
+    }
+  ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Eliminar sitio web"
+      "value": "To delete this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.delete-website-warning": [
@@ -882,7 +946,15 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Reiniciar estadísticas"
+      "value": "To reset this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.reset-website-warning": [
@@ -967,6 +1039,12 @@
     {
       "type": 1,
       "value": "device"
+    }
+  ],
+  "messages.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
     }
   ],
   "messages.no-team-websites": [

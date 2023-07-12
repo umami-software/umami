@@ -1,4 +1,4 @@
-import { NextApiRequestQueryBody, Roles, User } from 'lib/types';
+import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
@@ -12,7 +12,7 @@ export interface UserRequestQuery {
 export interface UserRequestBody {
   username: string;
   password: string;
-  role: Roles;
+  role: Role;
 }
 
 export default async (
@@ -51,11 +51,11 @@ export default async (
       data.password = hashPassword(password);
     }
 
+    // Only admin can change these fields
     if (role && isAdmin) {
       data.role = role;
     }
 
-    // Only admin can change these fields
     if (username && isAdmin) {
       data.username = username;
     }

@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Хандалтын код"
     }
   ],
   "label.actions": [
@@ -14,7 +14,7 @@
   "label.activity-log": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Үйл ажиллагааны бүртгэл"
     }
   ],
   "label.add-website": [
@@ -86,19 +86,19 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Хотууд"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Бүгдийг арилгах"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Батлах"
     }
   ],
   "label.confirm-password": [
@@ -110,7 +110,7 @@
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Үргэлжлүүлэх"
     }
   ],
   "label.countries": [
@@ -122,19 +122,19 @@
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Баг үүсгэх"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Хэрэглэгч үүсгэх"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Үүсгэсэн"
     }
   ],
   "label.current-password": [
@@ -158,13 +158,13 @@
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Өгөгдөл"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Хугацааны мужид"
+      "value": "Хугацааны муж"
     }
   ],
   "label.default-date-range": [
@@ -182,13 +182,13 @@
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Баг устгах"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Хэрэглэгч устгах"
     }
   ],
   "label.delete-website": [
@@ -206,7 +206,7 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Мэдээлэл"
     }
   ],
   "label.devices": [
@@ -245,6 +245,12 @@
       "value": "Хуваалцах холбоос идэвхжүүлэх"
     }
   ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Event data"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
@@ -263,16 +269,22 @@
       "value": "Түүхий"
     }
   ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Funnel"
+    }
+  ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Нэгдэх"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Багт нэгдэх"
     }
   ],
   "label.language": [
@@ -324,13 +336,13 @@
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Гарах"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Багаас гарах"
     }
   ],
   "label.login": [
@@ -348,7 +360,7 @@
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Гишүүд"
     }
   ],
   "label.mobile": [
@@ -430,7 +442,13 @@
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Query-нүүд"
+    }
+  ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Query"
     }
   ],
   "label.query-parameters": [
@@ -460,19 +478,25 @@
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "Дахин үүсгэх"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "Бүсүүд"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "Устгах"
+    }
+  ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Reports"
     }
   ],
   "label.required": [
@@ -484,7 +508,7 @@
   "label.reset": [
     {
       "type": 0,
-      "value": "Хуучин хэвд нь оруулах"
+      "value": "Дахин эхлүүлэх"
     }
   ],
   "label.reset-website": [
@@ -496,7 +520,7 @@
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "Эрх"
     }
   ],
   "label.save": [
@@ -511,10 +535,16 @@
       "value": "Дэлгэц"
     }
   ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Select date"
+    }
+  ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "Веб сонгох"
     }
   ],
   "label.sessions": [
@@ -550,37 +580,37 @@
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "Баг"
     }
   ],
   "label.team-guest": [
     {
       "type": 0,
-      "value": "Team guest"
+      "value": "Багийн зочин"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "Багийн ID"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "Багийн гишүүн"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "Багийн эзэмшигч"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "Багууд"
     }
   ],
   "label.theme": [
@@ -616,7 +646,7 @@
   "label.title": [
     {
       "type": 0,
-      "value": "Title"
+      "value": "Гарчиг"
     }
   ],
   "label.today": [
@@ -649,10 +679,16 @@
       "value": "Тодорхойгүй"
     }
   ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URLs"
+    }
+  ],
   "label.user": [
     {
       "type": 0,
-      "value": "User"
+      "value": "Хэрэглэгч"
     }
   ],
   "label.username": [
@@ -664,13 +700,13 @@
   "label.users": [
     {
       "type": 0,
-      "value": "Users"
+      "value": "Хэрэглэгчид"
     }
   ],
   "label.view": [
     {
       "type": 0,
-      "value": "View"
+      "value": "Харах"
     }
   ],
   "label.view-details": [
@@ -691,10 +727,16 @@
       "value": "Зочин"
     }
   ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Website"
+    }
+  ],
   "label.website-id": [
     {
       "type": 0,
-      "value": "Website ID"
+      "value": "Вебийн ID"
     }
   ],
   "label.websites": [
@@ -768,7 +810,7 @@
   "message.confirm-leave": [
     {
       "type": 0,
-      "value": "Are you sure you want to leave "
+      "value": "Та "
     },
     {
       "type": 1,
@@ -776,7 +818,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "-с гарахдаа итгэлтэй байна уу?"
     }
   ],
   "message.confirm-reset": [
@@ -793,16 +835,38 @@
       "value": "-н тоон үзүүлэлтүүдийг устгахдаа итгэлтэй байна уу?"
     }
   ],
+  "message.delete-account": [
+    {
+      "type": 0,
+      "value": "To delete this account, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
+    }
+  ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "Веб устгах"
+      "value": "To delete this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "Үүнтэй холбоотой бүх өгөгдөл устах болно."
+      "value": "Энэ вебтэй холбоотой бүх өгөгдөл устах болно."
     }
   ],
   "message.error": [
@@ -814,15 +878,15 @@
   "message.event-log": [
     {
       "type": 1,
-      "value": "event"
+      "value": "url"
     },
     {
       "type": 0,
-      "value": " on "
+      "value": "-д "
     },
     {
       "type": 1,
-      "value": "url"
+      "value": "event"
     }
   ],
   "message.go-to-settings": [
@@ -846,7 +910,7 @@
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Minimum length of "
+      "value": "Хамгийн багадаа "
     },
     {
       "type": 1,
@@ -854,7 +918,7 @@
     },
     {
       "type": 0,
-      "value": " characters"
+      "value": " тэмдэгт"
     }
   ],
   "message.no-data-available": [
@@ -866,19 +930,19 @@
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "Нууц үг тохирохгүй байна"
+      "value": "Нууц үг тохирохгүй байна."
     }
   ],
   "message.no-teams": [
     {
       "type": 0,
-      "value": "You have not created any teams."
+      "value": "Та ямар ч баг үүсгээгүй байна."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "There are no users."
+      "value": "Хэрэглэгч байхгүй байна."
     }
   ],
   "message.page-not-found": [
@@ -890,7 +954,15 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "Тоон үзүүлэлтийг дахин эхлүүлэх"
+      "value": "Тоон үзүүлэлийг дахин эхлүүлэхийн тулд доорх хэсэгт "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " гэж бичиж, баталгаажуулна уу."
     }
   ],
   "message.reset-website-warning": [
@@ -902,41 +974,51 @@
   "message.saved": [
     {
       "type": 0,
-      "value": "Амжилттай хадгаллаа."
+      "value": "Хадгалсан."
     }
   ],
   "message.share-url": [
     {
-      "type": 1,
-      "value": "target"
-    },
-    {
       "type": 0,
-      "value": "-г нийтэд хуваалцах холбоос."
+      "value": "Таны вебийн тоон үзүүлэлтүүд доорх URL дээр нийтэд харагдах болно:"
     }
   ],
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "You are already a member of the team."
+      "value": "Та аль хэдийн энэ багийн гишүүн болсон байна."
     }
   ],
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "Team not found."
+      "value": "Баг олдсонгүй."
     }
   ],
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "Мөрдөх код"
+      "value": "Энэ вебийн хандалтуудыг мөрдөхийн тулд доорх кодыг HTML-нхээ "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " хэсэгт байрлуулна уу."
     }
   ],
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User deleted."
+      "value": "Хэрэглэгч устсан."
     }
   ],
   "message.visitor-log": [
@@ -973,10 +1055,16 @@
       "value": " хөтөч ашиглан орсон"
     }
   ],
+  "messages.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
   "messages.no-team-websites": [
     {
       "type": 0,
-      "value": "This team does not have any websites."
+      "value": "Энэ багт ямар ч веб алга."
     }
   ],
   "messages.no-websites-configured": [
@@ -988,7 +1076,7 @@
   "messages.team-websites-info": [
     {
       "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
+      "value": "Вебийг багийн бүх гишүүд үзэж болно."
     }
   ]
 }

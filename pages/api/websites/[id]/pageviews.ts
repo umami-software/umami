@@ -16,7 +16,7 @@ export interface WebsitePageviewRequestQuery {
   timezone: string;
   url?: string;
   referrer?: string;
-  pageTitle?: string;
+  title?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -40,7 +40,7 @@ export default async (
     timezone,
     url,
     referrer,
-    pageTitle,
+    title,
     os,
     browser,
     device,
@@ -71,7 +71,7 @@ export default async (
         filters: {
           url,
           referrer,
-          pageTitle,
+          title,
           os,
           browser,
           device,
@@ -88,7 +88,7 @@ export default async (
         count: 'distinct website_event.',
         filters: {
           url,
-          pageTitle,
+          title,
           os,
           browser,
           device,

@@ -2,16 +2,15 @@ import { useMemo } from 'react';
 import { Loading } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from './BarChart';
-import { getDateArray, getDateLength } from 'lib/date';
-import useApi from 'hooks/useApi';
-import useDateRange from 'hooks/useDateRange';
-import useTimezone from 'hooks/useTimezone';
-import usePageQuery from 'hooks/usePageQuery';
+import { getDateArray } from 'lib/date';
+import { useApi, useLocale, useDateRange, useTimezone, usePageQuery } from 'hooks';
 import { EVENT_COLORS } from 'lib/constants';
+import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
 
 export function EventsChart({ websiteId, className, token }) {
   const { get, useQuery } = useApi();
   const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
+  const { locale } = useLocale();
   const [timezone] = useTimezone();
   const {
     query: { url, eventName },
@@ -70,9 +69,10 @@ export function EventsChart({ websiteId, className, token }) {
       datasets={datasets}
       unit={unit}
       height={300}
-      records={getDateLength(startDate, endDate, unit)}
       loading={isLoading}
       stacked
+      renderXLabel={renderDateLabels(unit, locale)}
+      renderTooltipPopup={renderStatusTooltipPopup(unit, locale)}
     />
   );
 }
