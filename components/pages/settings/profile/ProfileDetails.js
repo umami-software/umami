@@ -7,6 +7,7 @@ import PasswordChangeButton from './PasswordChangeButton';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
+import { ROLES } from 'lib/constants';
 
 export function ProfileDetails() {
   const { user } = useUser();
@@ -19,12 +20,24 @@ export function ProfileDetails() {
 
   const { username, role } = user;
 
+  const renderRole = value => {
+    if (value === ROLES.user) {
+      return formatMessage(labels.user);
+    }
+    if (value === ROLES.admin) {
+      return formatMessage(labels.admin);
+    }
+    if (value === ROLES.viewOnly) {
+      return formatMessage(labels.viewOnly);
+    }
+
+    return formatMessage(labels.unknown);
+  };
+
   return (
     <Form>
       <FormRow label={formatMessage(labels.username)}>{username}</FormRow>
-      <FormRow label={formatMessage(labels.role)}>
-        {formatMessage(labels[role] || labels.unknown)}
-      </FormRow>
+      <FormRow label={formatMessage(labels.role)}>{renderRole(role)}</FormRow>
       {!cloudMode && (
         <FormRow label={formatMessage(labels.password)}>
           <PasswordChangeButton />

@@ -14,11 +14,12 @@ model User {
   password  String    @db.VarChar(60)
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
 
   website  Website[]
   teamUser TeamUser[]
+  report   Report[]
 
   @@map("user")
 }
@@ -39,6 +40,7 @@ model Session {
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   websiteEvent WebsiteEvent[]
+  sessionData  SessionData[]
 
   @@index([createdAt])
   @@index([websiteId])
@@ -53,12 +55,14 @@ model Website {
   resetAt   DateTime? @map("reset_at") @db.Timestamp(0)
   userId    String?   @map("user_id") @db.VarChar(36)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt DateTime? @map("deleted_at") @db.Timestamp(0)
 
   user        User?         @relation(fields: [userId], references: [id])
   teamWebsite TeamWebsite[]
   eventData   EventData[]
+  report      Report[]
+  sessionData SessionData[]
 
   @@index([userId])
   @@index([createdAt])
@@ -92,15 +96,15 @@ model WebsiteEvent {
 }
 
 model EventData {
-  id                String    @id() @map("event_id") @db.VarChar(36)
-  websiteEventId    String    @map("website_event_id") @db.VarChar(36)
-  websiteId         String    @map("website_id") @db.VarChar(36)
-  eventKey          String    @map("event_key") @db.VarChar(500)
-  eventStringValue  String?   @map("event_string_value") @db.VarChar(500)
-  eventNumericValue Decimal?  @map("event_numeric_value") @db.Decimal(19, 4)
-  eventDateValue    DateTime? @map("event_date_value") @db.Timestamp(0)
-  eventDataType     Int       @map("event_data_type") @db.UnsignedInt
-  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  id             String    @id() @map("event_data_id") @db.VarChar(36)
+  websiteEventId String    @map("website_event_id") @db.VarChar(36)
+  websiteId      String    @map("website_id") @db.VarChar(36)
+  eventKey       String    @map("event_key") @db.VarChar(500)
+  stringValue    String?   @map("string_value") @db.VarChar(500)
+  numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue      DateTime? @map("date_value") @db.Timestamp(0)
+  dataType       Int       @map("data_type") @db.UnsignedInt
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   website      Website      @relation(fields: [websiteId], references: [id])
   websiteEvent WebsiteEvent @relation(fields: [websiteEventId], references: [id])
@@ -112,12 +116,32 @@ model EventData {
   @@map("event_data")
 }
 
+model SessionData {
+  id          String    @id() @map("session_data_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  sessionId   String    @map("session_id") @db.VarChar(36)
+  eventKey    String    @map("event_key") @db.VarChar(500)
+  stringValue String?   @map("string_value") @db.VarChar(500)
+  numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue   DateTime? @map("date_value") @db.Timestamp(0)
+  dataType    Int       @map("data_type") @db.UnsignedInt
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+
+  website Website @relation(fields: [websiteId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
+
+  @@index([createdAt])
+  @@index([websiteId])
+  @@index([sessionId])
+  @@map("session_data")
+}
+
 model Team {
   id         String    @id() @unique() @map("team_id") @db.VarChar(36)
   name       String    @db.VarChar(50)
   accessCode String?   @unique @map("access_code") @db.VarChar(50)
   createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt  DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
 
   teamUser    TeamUser[]
   teamWebsite TeamWebsite[]
@@ -132,7 +156,7 @@ model TeamUser {
   userId    String    @map("user_id") @db.VarChar(36)
   role      String    @map("role") @db.VarChar(50)
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
-  updatedAt DateTime? @map("updated_at") @updatedAt @db.Timestamp(0)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
 
   team Team @relation(fields: [teamId], references: [id])
   user User @relation(fields: [userId], references: [id])
@@ -154,4 +178,25 @@ model TeamWebsite {
   @@index([teamId])
   @@index([websiteId])
   @@map("team_website")
+}
+
+model Report {
+  id          String    @id() @unique() @map("report_id") @db.VarChar(36)
+  userId      String    @map("user_id") @db.VarChar(36)
+  websiteId   String    @map("website_id") @db.VarChar(36)
+  type        String    @map("type") @db.VarChar(200)
+  name        String    @map("name") @db.VarChar(200)
+  description String    @map("description") @db.VarChar(500)
+  parameters  String    @map("parameters") @db.VarChar(6000)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
+
+  user    User    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([userId])
+  @@index([websiteId])
+  @@index([type])
+  @@index([name])
+  @@map("report")
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
+import { Breadcrumbs, Item, Tabs, useToasts } from 'react-basics';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
@@ -17,7 +17,7 @@ export function TeamSettings({ teamId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
   const { data, isLoading } = useQuery(
     ['team', teamId],
     () => {
@@ -44,7 +44,6 @@ export function TeamSettings({ teamId }) {
 
   return (
     <Page loading={isLoading || !values}>
-      {toast}
       <PageHeader
         title={
           <Breadcrumbs>

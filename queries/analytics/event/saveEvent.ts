@@ -133,9 +133,10 @@ async function clickhouseQuery(data: {
   const createdAt = getDateFormat(new Date());
 
   const message = {
+    ...args,
     website_id: websiteId,
     session_id: sessionId,
-    event_id: eventId,
+    event_id: uuid(),
     country: country ? country : null,
     subdivision1: country && subdivision1 ? `${country}-${subdivision1}` : null,
     subdivision2: subdivision2 ? subdivision2 : null,
@@ -149,7 +150,6 @@ async function clickhouseQuery(data: {
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     created_at: createdAt,
-    ...args,
   };
 
   await sendMessage(message, 'event');
