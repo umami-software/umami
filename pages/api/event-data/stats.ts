@@ -32,10 +32,10 @@ export default async (
 
     const data = results.reduce(
       (obj, row) => {
-        obj.records += row.total;
+        obj.records += Number(row.total);
         return obj;
       },
-      { fields: results.length, records: BigInt(0) },
+      { fields: results.length, records: 0 },
     );
 
     return ok(res, data);

@@ -104,7 +104,7 @@ export interface WebsiteEventDataFields {
   field: string;
   type: number;
   value?: string;
-  total: bigint;
+  total: number;
 }
 
 export interface WebsitePageviews {
