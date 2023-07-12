@@ -1,16 +1,3 @@
-/*
-  Warnings:
-
-  - The primary key for the `event_data` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `event_data_type` on the `event_data` table. All the data in the column will be lost.
-  - You are about to drop the column `event_date_value` on the `event_data` table. All the data in the column will be lost.
-  - You are about to drop the column `event_id` on the `event_data` table. All the data in the column will be lost.
-  - You are about to drop the column `event_numeric_value` on the `event_data` table. All the data in the column will be lost.
-  - You are about to drop the column `event_string_value` on the `event_data` table. All the data in the column will be lost.
-  - Added the required column `data_type` to the `event_data` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `event_data_id` to the `event_data` table without a default value. This is not possible if the table is not empty.
-
-*/
 -- AlterTable
 ALTER TABLE `event_data` RENAME COLUMN `event_data_type` TO `data_type`;
 ALTER TABLE `event_data` RENAME COLUMN `event_date_value` TO `date_value`;
@@ -35,3 +22,32 @@ CREATE TABLE `session_data` (
     INDEX `session_data_session_id_idx`(`session_id`),
     PRIMARY KEY (`session_data_id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `report` (
+    `report_id` VARCHAR(36) NOT NULL,
+    `user_id` VARCHAR(36) NOT NULL,
+    `website_id` VARCHAR(36) NOT NULL,
+    `type` VARCHAR(200) NOT NULL,
+    `name` VARCHAR(200) NOT NULL,
+    `description` VARCHAR(500) NOT NULL,
+    `parameters` VARCHAR(6000) NOT NULL,
+    `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
+    `updated_at` TIMESTAMP(0) NULL,
+
+    UNIQUE INDEX `report_report_id_key`(`report_id`),
+    INDEX `report_user_id_idx`(`user_id`),
+    INDEX `report_website_id_idx`(`website_id`),
+    INDEX `report_type_idx`(`type`),
+    INDEX `report_name_idx`(`name`),
+    PRIMARY KEY (`report_id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- EventData migration
+UPDATE event_data
+SET string_value = number_value
+WHERE data_type = 2;
+
+UPDATE event_data
+SET string_value = CONCAT(REPLACE(DATE_FORMAT(date_value, '%Y-%m-%d %T'), ' ', 'T'), 'Z')
+WHERE data_type = 4;
