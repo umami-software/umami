@@ -12,7 +12,7 @@ export function OSTable({ websiteId, ...props }) {
       <FilterLink id="os" value={os}>
         <img
           src={`${basePath}/images/os/${
-            os.toLowerCase().replaceAll(/[^\w]+/g, '-') || 'unknown'
+            os?.toLowerCase().replaceAll(/[^\w]+/g, '-') || 'unknown'
           }.png`}
           alt={os}
           width={16}

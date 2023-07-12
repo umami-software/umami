@@ -15,7 +15,7 @@ export function DevicesTable({ websiteId, ...props }) {
         label={formatMessage(labels[device] || labels.unknown)}
       >
         <img
-          src={`${basePath}/images/device/${device.toLowerCase() || 'unknown'}.png`}
+          src={`${basePath}/images/device/${device?.toLowerCase() || 'unknown'}.png`}
           alt={device}
           width={16}
           height={16}
