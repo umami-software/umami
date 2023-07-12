@@ -33,7 +33,6 @@ export function BaseParameters() {
           startDate={startDate}
           endDate={endDate}
           onChange={handleDateChange}
-          showAllTime
         />
       </FormRow>
     </>

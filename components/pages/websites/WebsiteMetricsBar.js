@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import classNames from 'classnames';
 import { Row, Column } from 'react-basics';
-import { formatShortTime, formatNumber, formatLongNumber } from 'lib/format';
+import { formatShortTime } from 'lib/format';
 import MetricCard from 'components/metrics/MetricCard';
 import RefreshButton from 'components/input/RefreshButton';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';

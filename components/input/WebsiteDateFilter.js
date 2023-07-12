@@ -13,7 +13,9 @@ export default function WebsiteDateFilter({ websiteId }) {
       const data = await get(`/websites/${websiteId}`);
 
       if (data) {
-        setDateRange(`range:${new Date(data.createdAt)}:${Date.now()}`);
+        const start = new Date(data.createdAt).getTime();
+        const end = Date.now();
+        setDateRange(`range:${start}:${end}`);
       }
     } else if (value !== 'all') {
       setDateRange(value);
@@ -27,6 +29,7 @@ export default function WebsiteDateFilter({ websiteId }) {
       startDate={startDate}
       endDate={endDate}
       onChange={handleChange}
+      showAllTime={true}
     />
   );
 }
