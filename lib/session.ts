@@ -1,12 +1,11 @@
-import clickhouse from 'lib/clickhouse';
 import { secret, uuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import { validate } from 'uuid';
-import { loadSession, loadWebsite } from './query';
 import cache from './cache';
+import { loadSession, loadWebsite } from './query';
 
 export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);
@@ -46,26 +45,8 @@ export async function findSession(req: NextApiRequestCollect) {
 
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
     await getClientInfo(req, payload);
-  const sessionId = uuid(websiteId, hostname, ip, userAgent);
 
-  // Clickhouse does not require session lookup
-  if (clickhouse.enabled) {
-    return {
-      id: sessionId,
-      websiteId,
-      hostname,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      subdivision1,
-      subdivision2,
-      city,
-      ownerId: website.userId,
-    };
-  }
+  const sessionId = uuid(websiteId, hostname, ip, userAgent);
 
   // Find session
   let session = await loadSession(sessionId);

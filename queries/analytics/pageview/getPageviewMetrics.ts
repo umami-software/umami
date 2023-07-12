@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE } from 'lib/constants';
+import { DEFAULT_CREATED_AT, EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
 export async function getPageviewMetrics(
@@ -33,7 +33,7 @@ async function relationalQuery(
   const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, parseFilters, toUuid } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
   const params: any = [
     websiteId,
     resetDate,
@@ -80,7 +80,7 @@ async function clickhouseQuery(
   const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, getDateFormat, parseFilters, getBetweenDates } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || website?.createdAt);
+  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
   const params = {
     websiteId,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,

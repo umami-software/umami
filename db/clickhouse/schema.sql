@@ -27,7 +27,8 @@ CREATE TABLE umami.website_event
     --event
     event_type UInt32,
     event_name String,
-    created_at DateTime('UTC')
+    created_at DateTime('UTC'),
+    job_id UUID
 )
     engine = MergeTree
         ORDER BY (website_id, session_id, created_at)
@@ -117,11 +118,12 @@ CREATE TABLE umami.event_data
     url_path String,
     event_name String,
     event_key String,
-    event_string_value Nullable(String),
-    event_numeric_value Nullable(Decimal64(4)), --922337203685477.5625
-    event_date_value Nullable(DateTime('UTC')),
-    event_data_type UInt32,
-    created_at DateTime('UTC')
+    string_value Nullable(String),
+    number_value Nullable(Decimal64(4)), --922337203685477.5625
+    date_value Nullable(DateTime('UTC')),
+    data_type UInt32,
+    created_at DateTime('UTC'),
+    job_id UUID
 )
     engine = MergeTree
         ORDER BY (website_id, event_id, event_key, created_at)
@@ -134,10 +136,10 @@ CREATE TABLE umami.event_data_queue (
     url_path String,
     event_name String,
     event_key String,
-    event_string_value Nullable(String),
-    event_numeric_value Nullable(Decimal64(4)), --922337203685477.5625
-    event_date_value Nullable(DateTime('UTC')),
-    event_data_type UInt32,
+    string_value Nullable(String),
+    number_value Nullable(Decimal64(4)), --922337203685477.5625
+    date_value Nullable(DateTime('UTC')),
+    data_type UInt32,
     created_at DateTime('UTC'),
     --virtual columns
     _error String,
@@ -158,10 +160,10 @@ SELECT website_id,
     url_path,
     event_name,
     event_key,
-    event_string_value,
-    event_numeric_value,
-    event_date_value,
-    event_data_type,
+    string_value,
+    number_value,
+    date_value,
+    data_type,
     created_at
 FROM umami.event_data_queue;
 

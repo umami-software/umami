@@ -35,6 +35,9 @@ export function UserAddForm({ onSave, onClose }) {
     if (value === ROLES.admin) {
       return formatMessage(labels.admin);
     }
+    if (value === ROLES.viewOnly) {
+      return formatMessage(labels.viewOnly);
+    }
   };
 
   return (
@@ -52,6 +55,7 @@ export function UserAddForm({ onSave, onClose }) {
       <FormRow label={formatMessage(labels.role)}>
         <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
           <Dropdown renderValue={renderValue}>
+            <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
             <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
             <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
           </Dropdown>
