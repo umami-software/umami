@@ -3,7 +3,7 @@ import { StatusLight, Icon, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import firstBy from 'thenby';
 import FilterButtons from 'components/common/FilterButtons';
-import NoData from 'components/common/NoData';
+import Empty from 'components/common/Empty';
 import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
@@ -144,7 +144,7 @@ export function RealtimeLog({ data, websiteDomain }) {
       <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
       <div className={styles.header}>{formatMessage(labels.activityLog)}</div>
       <div className={styles.body}>
-        {logs?.length === 0 && <NoData />}
+        {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (
           <FixedSizeList height={500} itemCount={logs.length} itemSize={50}>
             {Row}

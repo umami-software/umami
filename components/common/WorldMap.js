@@ -4,7 +4,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 import classNames from 'classnames';
 import { colord } from 'colord';
 import HoverTooltip from 'components/common/HoverTooltip';
-import { ISO_COUNTRIES, THEME_COLORS, MAP_FILE } from 'lib/constants';
+import { ISO_COUNTRIES, MAP_FILE } from 'lib/constants';
 import useTheme from 'hooks/useTheme';
 import useCountryNames from 'hooks/useCountryNames';
 import useLocale from 'hooks/useLocale';
@@ -14,17 +14,8 @@ import styles from './WorldMap.module.css';
 
 export function WorldMap({ data, className }) {
   const { basePath } = useRouter();
-  const [tooltip, setTooltip] = useState();
-  const [theme] = useTheme();
-  const colors = useMemo(
-    () => ({
-      baseColor: THEME_COLORS[theme].primary,
-      fillColor: THEME_COLORS[theme].gray100,
-      strokeColor: THEME_COLORS[theme].primary,
-      hoverColor: THEME_COLORS[theme].primary,
-    }),
-    [theme],
-  );
+  const [tooltip, setTooltipPopup] = useState();
+  const { theme, colors } = useTheme();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
@@ -34,10 +25,10 @@ export function WorldMap({ data, className }) {
     const country = metrics?.find(({ x }) => x === code);
 
     if (!country) {
-      return colors.fillColor;
+      return colors.map.fillColor;
     }
 
-    return colord(colors.baseColor)
+    return colord(colors.map.baseColor)
       [theme === 'light' ? 'lighten' : 'darken'](0.4 * (1.0 - country.z / 100))
       .toHex();
   }
@@ -49,7 +40,7 @@ export function WorldMap({ data, className }) {
   function handleHover(code) {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
-    setTooltip(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
+    setTooltipPopup(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
   }
 
   return (
@@ -70,15 +61,15 @@ export function WorldMap({ data, className }) {
                     key={geo.rsmKey}
                     geography={geo}
                     fill={getFillColor(code)}
-                    stroke={colors.strokeColor}
+                    stroke={colors.map.strokeColor}
                     opacity={getOpacity(code)}
                     style={{
                       default: { outline: 'none' },
-                      hover: { outline: 'none', fill: colors.hoverColor },
+                      hover: { outline: 'none', fill: colors.map.hoverColor },
                       pressed: { outline: 'none' },
                     }}
                     onMouseOver={() => handleHover(code)}
-                    onMouseOut={() => setTooltip(null)}
+                    onMouseOut={() => setTooltipPopup(null)}
                   />
                 );
               });
@@ -86,7 +77,7 @@ export function WorldMap({ data, className }) {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {tooltip && <HoverTooltip tooltip={tooltip} />}
+      {tooltip && <HoverTooltip>{tooltip}</HoverTooltip>}
     </div>
   );
 }

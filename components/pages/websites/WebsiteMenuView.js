@@ -102,7 +102,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
     },
     {
       key: 'query',
-      label: formatMessage(labels.query),
+      label: formatMessage(labels.queryParameters),
       url: resolveUrl({ view: 'query' }),
     },
   ];

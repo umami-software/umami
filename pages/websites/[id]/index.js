@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import AppLayout from 'components/layout/AppLayout';
-import WebsiteDetails from 'components/pages/websites/WebsiteDetails';
+import WebsiteDetailsPage from 'components/pages/websites/WebsiteDetailsPage';
 import useMessages from 'hooks/useMessages';
 
-export default function DetailsPage() {
+export default function () {
   const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const { id } = router.query;
@@ -14,7 +14,7 @@ export default function DetailsPage() {
 
   return (
     <AppLayout title={formatMessage(labels.websites)}>
-      <WebsiteDetails websiteId={id} />
+      <WebsiteDetailsPage websiteId={id} />
     </AppLayout>
   );
 }

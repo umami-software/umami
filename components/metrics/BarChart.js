@@ -1,14 +1,13 @@
-import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
-import { StatusLight, Loading } from 'react-basics';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Loading } from 'react-basics';
 import classNames from 'classnames';
 import Chart from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
-import { formatLongNumber } from 'lib/format';
-import { dateFormat } from 'lib/date';
 import useLocale from 'hooks/useLocale';
 import useTheme from 'hooks/useTheme';
-import { DEFAULT_ANIMATION_DURATION, THEME_COLORS } from 'lib/constants';
+import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { renderNumberLabels } from 'lib/charts';
 import styles from './BarChart.module.css';
 
 export function BarChart({
@@ -17,84 +16,20 @@ export function BarChart({
   animationDuration = DEFAULT_ANIMATION_DURATION,
   stacked = false,
   loading = false,
-  onCreate = () => {},
-  onUpdate = () => {},
+  renderXLabel,
+  renderYLabel,
+  XAxisType = 'time',
+  YAxisType = 'linear',
+  renderTooltipPopup,
+  onCreate,
+  onUpdate,
   className,
 }) {
   const canvas = useRef();
   const chart = useRef(null);
-  const [tooltip, setTooltip] = useState(null);
+  const [tooltip, setTooltipPopup] = useState(null);
   const { locale } = useLocale();
-  const [theme] = useTheme();
-
-  const colors = useMemo(
-    () => ({
-      text: THEME_COLORS[theme].gray700,
-      line: THEME_COLORS[theme].gray200,
-    }),
-    [theme],
-  );
-
-  const renderYLabel = label => {
-    return +label > 1000 ? formatLongNumber(label) : label;
-  };
-
-  const renderXLabel = useCallback(
-    (label, index, values) => {
-      const d = new Date(values[index].value);
-
-      switch (unit) {
-        case 'minute':
-          return dateFormat(d, 'h:mm', locale);
-        case 'hour':
-          return dateFormat(d, 'p', locale);
-        case 'day':
-          return dateFormat(d, 'MMM d', locale);
-        case 'month':
-          return dateFormat(d, 'MMM', locale);
-        default:
-          return label;
-      }
-    },
-    [locale, unit],
-  );
-
-  const renderTooltip = useCallback(
-    model => {
-      const { opacity, labelColors, dataPoints } = model.tooltip;
-
-      if (!dataPoints?.length || !opacity) {
-        setTooltip(null);
-        return;
-      }
-
-      const formats = {
-        millisecond: 'T',
-        second: 'pp',
-        minute: 'p',
-        hour: 'h:mm aaa - PP',
-        day: 'PPPP',
-        week: 'PPPP',
-        month: 'LLLL yyyy',
-        quarter: 'qqq',
-        year: 'yyyy',
-      };
-
-      setTooltip(
-        <div className={styles.tooltip}>
-          <div>{dateFormat(new Date(dataPoints[0].raw.x), formats[unit], locale)}</div>
-          <div>
-            <StatusLight color={labelColors?.[0]?.backgroundColor}>
-              <div className={styles.value}>
-                {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}
-              </div>
-            </StatusLight>
-          </div>
-        </div>,
-      );
-    },
-    [unit],
-  );
+  const { theme, colors } = useTheme();
 
   const getOptions = useCallback(() => {
     return {
@@ -115,12 +50,12 @@ export function BarChart({
         },
         tooltip: {
           enabled: false,
-          external: renderTooltip,
+          external: renderTooltipPopup ? renderTooltipPopup.bind(null, setTooltipPopup) : undefined,
         },
       },
       scales: {
         x: {
-          type: 'time',
+          type: XAxisType,
           stacked: true,
           time: {
             unit,
@@ -129,34 +64,44 @@ export function BarChart({
             display: false,
           },
           border: {
-            color: colors.line,
+            color: colors.chart.line,
           },
           ticks: {
-            color: colors.text,
+            color: colors.chart.text,
             autoSkip: false,
             maxRotation: 0,
             callback: renderXLabel,
           },
         },
         y: {
-          type: 'linear',
+          type: YAxisType,
           min: 0,
           beginAtZero: true,
           stacked,
           grid: {
-            color: colors.line,
+            color: colors.chart.line,
           },
           border: {
-            color: colors.line,
+            color: colors.chart.line,
           },
           ticks: {
             color: colors.text,
-            callback: renderYLabel,
+            callback: renderYLabel || renderNumberLabels,
           },
         },
       },
     };
-  }, [animationDuration, renderTooltip, renderXLabel, stacked, colors, unit, locale]);
+  }, [
+    animationDuration,
+    renderTooltipPopup,
+    renderXLabel,
+    XAxisType,
+    YAxisType,
+    stacked,
+    colors,
+    unit,
+    locale,
+  ]);
 
   const createChart = () => {
     Chart.defaults.font.family = 'Inter';
@@ -171,11 +116,11 @@ export function BarChart({
       options,
     });
 
-    onCreate(chart.current);
+    onCreate?.(chart.current);
   };
 
   const updateChart = () => {
-    setTooltip(null);
+    setTooltipPopup(null);
 
     datasets.forEach((dataset, index) => {
       chart.current.data.datasets[index].data = dataset.data;
@@ -184,7 +129,7 @@ export function BarChart({
 
     chart.current.options = getOptions();
 
-    onUpdate(chart.current);
+    onUpdate?.(chart.current);
 
     chart.current.update();
   };
@@ -206,7 +151,11 @@ export function BarChart({
         <canvas ref={canvas} />
       </div>
       <Legend chart={chart.current} />
-      {tooltip && <HoverTooltip tooltip={tooltip} />}
+      {tooltip && (
+        <HoverTooltip>
+          <div className={styles.tooltip}>{tooltip}</div>
+        </HoverTooltip>
+      )}
     </>
   );
 }

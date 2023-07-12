@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  overflow: hidden;
+  height: 100px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 30px;
+  min-height: 0;
+}
+
+.selected {
+  font-weight: bold;
+}
