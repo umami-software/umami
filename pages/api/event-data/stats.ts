@@ -35,7 +35,7 @@ export default async (
         obj.records += row.total;
         return obj;
       },
-      { fields: results.length, records: 0 },
+      { fields: results.length, records: BigInt(0) },
     );
 
     return ok(res, data);
