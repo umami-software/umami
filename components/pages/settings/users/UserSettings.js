@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToast } from 'react-basics';
+import { Breadcrumbs, Item, Tabs, useToasts } from 'react-basics';
 import Link from 'next/link';
 import UserEditForm from 'components/pages/settings/users//UserEditForm';
 import Page from 'components/layout/Page';
@@ -14,7 +14,7 @@ export function UserSettings({ userId }) {
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
-  const { toast, showToast } = useToast();
+  const { showToast } = useToasts();
   const { data, isLoading } = useQuery(
     ['user', userId],
     () => {
@@ -44,7 +44,6 @@ export function UserSettings({ userId }) {
 
   return (
     <Page loading={isLoading || !values}>
-      {toast}
       <PageHeader
         title={
           <Breadcrumbs>

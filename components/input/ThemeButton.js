@@ -5,7 +5,7 @@ import Icons from 'components/icons';
 import styles from './ThemeButton.module.css';
 
 export function ThemeButton() {
-  const [theme, setTheme] = useTheme();
+  const { theme, saveTheme } = useTheme();
 
   const transitions = useTransition(theme, {
     initial: { opacity: 1 },
@@ -21,7 +21,7 @@ export function ThemeButton() {
   });
 
   function handleClick() {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    saveTheme(theme === 'light' ? 'dark' : 'light');
   }
 
   return (

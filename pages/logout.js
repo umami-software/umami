@@ -4,7 +4,7 @@ import useApi from 'hooks/useApi';
 import { setUser } from 'store/app';
 import { removeClientAuthToken } from 'lib/client';
 
-export default function LogoutPage({ disabled }) {
+export default function ({ disabled }) {
   const router = useRouter();
   const { post } = useApi();
 

@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  min-height: 90px;
+  margin-bottom: 20px;
+  background: var(--base50);
+  z-index: var(--z-index-above);
+}
+
+.metrics {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.bar {
+  display: flex;
+  cursor: pointer;
+  min-height: 110px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card {
+  justify-self: flex-start;
+}
+
+@media only screen and (max-width: 992px) {
+  .card {
+    flex-basis: calc(50% - 20px);
+  }
+}
+
+.row {
+  border-bottom: 1px solid var(--border-color);
+}

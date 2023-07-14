@@ -3,7 +3,7 @@ import SettingsLayout from 'components/layout/SettingsLayout';
 import UsersList from 'components/pages/settings/users/UsersList';
 import useMessages from 'hooks/useMessages';
 
-export default function UsersPage({ disabled }) {
+export default function ({ disabled }) {
   const { formatMessage, labels } = useMessages();
   if (disabled) {
     return null;

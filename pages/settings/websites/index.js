@@ -3,7 +3,7 @@ import SettingsLayout from 'components/layout/SettingsLayout';
 import WebsitesList from 'components/pages/settings/websites/WebsitesList';
 import useMessages from 'hooks/useMessages';
 
-export default function WebsitesPage({ disabled }) {
+export default function ({ disabled }) {
   const { formatMessage, labels } = useMessages();
   if (disabled) {
     return null;

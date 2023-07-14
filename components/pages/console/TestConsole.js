@@ -2,7 +2,7 @@ import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
-import WebsiteChart from 'components/metrics/WebsiteChart';
+import WebsiteChart from 'components/pages/websites/WebsiteChart';
 import useApi from 'hooks/useApi';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -28,20 +28,42 @@ export function TestConsole() {
     window.umami.track({ url: '/page-view', referrer: 'https://www.google.com' });
     window.umami.track('track-event-no-data');
     window.umami.track('track-event-with-data', {
-      data: {
+      test: 'test-data',
+      boolean: true,
+      booleanError: 'true',
+      time: new Date(),
+      number: 1,
+      number2: Math.random() * 100,
+      time2: new Date().toISOString(),
+      nested: {
         test: 'test-data',
-        time: new Date(),
         number: 1,
-        time2: new Date().toISOString(),
-        nested: {
+        object: {
           test: 'test-data',
-          number: 1,
-          object: {
-            test: 'test-data',
-          },
         },
-        array: [1, 2, 3],
       },
+      array: [1, 2, 3],
+    });
+  }
+
+  function handleIdentifyClick() {
+    window.umami.identify({
+      userId: 123,
+      name: 'brian',
+      number: Math.random() * 100,
+      test: 'test-data',
+      boolean: true,
+      booleanError: 'true',
+      time: new Date(),
+      time2: new Date().toISOString(),
+      nested: {
+        test: 'test-data',
+        number: 1,
+        object: {
+          test: 'test-data',
+        },
+      },
+      array: [1, 2, 3],
     });
   }
 
@@ -114,16 +136,15 @@ export function TestConsole() {
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
               </Button>
+              <p />
+              <Button id="manual-button" variant="action" onClick={handleIdentifyClick}>
+                Run identify
+              </Button>
             </Column>
           </Row>
           <Row>
             <Column>
-              <WebsiteChart
-                websiteId={website.id}
-                name={website.name}
-                domain={website.domain}
-                showLink
-              />
+              <WebsiteChart websiteId={website.id} />
               <EventsChart websiteId={website.id} />
             </Column>
           </Row>
