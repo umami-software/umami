@@ -17,6 +17,7 @@ function useFields(websiteId, field, event) {
         startAt: +startDate,
         endAt: +endDate,
         field,
+        event,
         withEventNames: true,
       }),
     { enabled: !!(websiteId && startDate && endDate) },

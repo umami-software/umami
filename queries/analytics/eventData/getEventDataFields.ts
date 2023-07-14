@@ -11,6 +11,7 @@ export async function getEventDataFields(
     startDate: Date,
     endDate: Date,
     field?: string,
+    event?: string,
     withEventNames?: boolean,
   ]
 ): Promise<WebsiteEventDataFields[]> {
@@ -25,6 +26,7 @@ async function relationalQuery(
   startDate: Date,
   endDate: Date,
   field: string,
+  event: string,
   withEventNames: boolean,
 ) {
   const { toUuid, rawQuery } = prisma;
@@ -32,6 +34,24 @@ async function relationalQuery(
   const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
 
   if (field) {
+    if (event) {
+      return rawQuery(
+        `select ed.event_key as field,
+                ed.string_value as value,
+                count(ed.*) as total
+                from event_data as ed
+         join website_event as e on e.event_id = ed.website_event_id
+         where ed.website_id = $1${toUuid()}
+           and ed.event_key = $2
+           and ed.created_at >= $3
+           and ed.created_at between $4 and $5
+           and e.event_name = $6
+         group by ed.event_key, ed.string_value
+         order by 3 desc, 2 desc, 1 asc
+        `,
+        [websiteId, field, resetDate, startDate, endDate, event] as any,
+      );
+    }
     return rawQuery(
       `select event_key as field,
               string_value as value,
@@ -88,6 +108,7 @@ async function clickhouseQuery(
   startDate: Date,
   endDate: Date,
   field: string,
+  event: string,
   withEventNames: boolean,
 ) {
   const { rawQuery, getDateFormat, getBetweenDates } = clickhouse;
@@ -95,6 +116,25 @@ async function clickhouseQuery(
   const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
 
   if (field) {
+    if (event) {
+      return rawQuery(
+        `select
+          ed.event_key as field,
+          ed.string_value as value,
+          count(ed.*) as total
+          from event_data as ed
+          join website_event as e on e.event_id = ed.website_event_id
+          where ed.website_id = {websiteId:UUID}
+            and ed.event_key = {field:String}
+            and ed.created_at >= ${getDateFormat(resetDate)}
+            and ${getBetweenDates('ed.created_at', startDate, endDate)}
+            and e.event_name = {event:String}
+          group by event_key, string_value
+          order by 3 desc, 2 desc, 1 asc
+      `,
+        { websiteId, field, event },
+      );
+    }
     return rawQuery(
       `select
         event_key as field,
@@ -121,9 +161,9 @@ async function clickhouseQuery(
           e.event_name as event
         from event_data as ed
         join website_event as e on e.event_id = ed.website_event_id
-        where website_id = {websiteId:UUID}
-          and created_at >= ${getDateFormat(resetDate)}
-          and ${getBetweenDates('created_at', startDate, endDate)}
+        where ed.website_id = {websiteId:UUID}
+          and ed.created_at >= ${getDateFormat(resetDate)}
+          and ${getBetweenDates('ed.created_at', startDate, endDate)}
         group by e.event_name, ed.event_key, ed.data_type
         order by 3 desc, 2 asc, 1 asc
       `,
