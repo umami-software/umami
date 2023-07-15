@@ -5,7 +5,7 @@ import { EventDataMetricsBar } from 'components/pages/event-data/EventDataMetric
 import { useDateRange, useApi, usePageQuery } from 'hooks';
 import styles from './WebsiteEventData.module.css';
 
-function useFields(websiteId, field) {
+function useFields(websiteId, field, event) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();
@@ -17,6 +17,8 @@ function useFields(websiteId, field) {
         startAt: +startDate,
         endAt: +endDate,
         field,
+        event,
+        withEventNames: true,
       }),
     { enabled: !!(websiteId && startDate && endDate) },
   );
@@ -26,15 +28,15 @@ function useFields(websiteId, field) {
 
 export default function WebsiteEventData({ websiteId }) {
   const {
-    query: { view },
+    query: { view, event },
   } = usePageQuery();
-  const { data } = useFields(websiteId, view);
+  const { data } = useFields(websiteId, view, event);
 
   return (
     <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
       {!view && <EventDataTable data={data} />}
-      {view && <EventDataValueTable field={view} data={data} />}
+      {view && <EventDataValueTable field={view} event={event} data={data} />}
     </Flexbox>
   );
 }
