@@ -45,7 +45,7 @@ async function relationalQuery(
   let excludeDomain = '';
 
   if (column === 'referrer_domain') {
-    excludeDomain = 'and website_event.referrer_domain != $6';
+    excludeDomain = 'and (website_event.referrer_domain != $6 or website_event.referrer_domain is null)';
     params.push(website.domain);
   }
 
