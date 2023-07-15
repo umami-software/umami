@@ -270,4 +270,8 @@ export const messages = defineMessages({
     id: 'message.no-event-data',
     defaultMessage: 'No event data is available.',
   },
+  newVersionAvailable: {
+    id: 'new-version-available',
+    defaultMessage: 'A new version of Umami {version} is available!',
+  },
 });
