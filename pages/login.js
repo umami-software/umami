@@ -1,7 +1,7 @@
 import LoginLayout from 'components/pages/login/LoginLayout';
 import LoginForm from 'components/pages/login/LoginForm';
 
-export default function LoginPage({ disabled }) {
+export default function ({ disabled }) {
   if (disabled) {
     return null;
   }

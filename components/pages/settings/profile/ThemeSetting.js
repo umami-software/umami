@@ -6,13 +6,13 @@ import Moon from 'assets/moon.svg';
 import styles from './ThemeSetting.module.css';
 
 export function ThemeSetting() {
-  const [theme, setTheme] = useTheme();
+  const { theme, saveTheme } = useTheme();
 
   return (
     <div className={styles.buttons}>
       <Button
         className={classNames({ [styles.active]: theme === 'light' })}
-        onClick={() => setTheme('light')}
+        onClick={() => saveTheme('light')}
       >
         <Icon>
           <Sun />
@@ -20,7 +20,7 @@ export function ThemeSetting() {
       </Button>
       <Button
         className={classNames({ [styles.active]: theme === 'dark' })}
-        onClick={() => setTheme('dark')}
+        onClick={() => saveTheme('dark')}
       >
         <Icon>
           <Moon />

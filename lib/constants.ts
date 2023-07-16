@@ -18,6 +18,7 @@ export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
+export const DEFAULT_CREATED_AT = '2000-01-01';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -42,6 +43,11 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
+};
+
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
@@ -56,12 +62,26 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
-export const EVENT_DATA_TYPE = {
+export const DATA_TYPE = {
   string: 1,
   number: 2,
   boolean: 3,
   date: 4,
   array: 5,
+} as const;
+
+export const DATA_TYPES = {
+  [DATA_TYPE.string]: 'string',
+  [DATA_TYPE.number]: 'number',
+  [DATA_TYPE.boolean]: 'boolean',
+  [DATA_TYPE.date]: 'date',
+  [DATA_TYPE.array]: 'array',
+};
+
+export const REPORT_PARAMETERS = {
+  fields: 'fields',
+  filters: 'filters',
+  groups: 'groups',
 } as const;
 
 export const KAFKA_TOPIC = {
@@ -72,6 +92,7 @@ export const KAFKA_TOPIC = {
 export const ROLES = {
   admin: 'admin',
   user: 'user',
+  viewOnly: 'view-only',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
 } as const;
@@ -94,6 +115,7 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
     PERMISSIONS.teamCreate,
   ],
+  [ROLES.viewOnly]: [],
   [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
   [ROLES.teamMember]: [],
 } as const;
@@ -144,8 +166,11 @@ export const EVENT_COLORS = [
   '#ffec16',
 ];
 
-export const DOMAIN_REGEX =
-  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63})$/;
+export const DOMAIN_REGEX = 
+  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
+
+
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;
@@ -158,7 +183,7 @@ export const DESKTOP_OS = [
   'BeOS',
   'Chrome OS',
   'Linux',
-  'macOS',
+  'Mac OS',
   'Open BSD',
   'OS/2',
   'QNX',
@@ -180,33 +205,34 @@ export const DESKTOP_OS = [
 export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
 
 export const BROWSERS = {
+  android: 'Android',
   aol: 'AOL',
-  edge: 'Edge',
-  'edge-ios': 'Edge (iOS)',
-  yandexbrowser: 'Yandex',
-  kakaotalk: 'KaKaoTalk',
-  samsung: 'Samsung',
-  silk: 'Silk',
-  miui: 'MIUI',
   beaker: 'Beaker',
-  'edge-chromium': 'Edge (Chromium)',
+  bb10: 'BlackBerry 10',
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
-  phantomjs: 'PhantomJS',
   crios: 'Chrome (iOS)',
+  curl: 'Curl',
+  edge: 'Edge',
+  'edge-chromium': 'Edge (Chromium)',
+  'edge-ios': 'Edge (iOS)',
+  facebook: 'Facebook',
   firefox: 'Firefox',
   fxios: 'Firefox (iOS)',
-  'opera-mini': 'Opera Mini',
-  opera: 'Opera',
   ie: 'IE',
-  bb10: 'BlackBerry 10',
-  android: 'Android',
-  ios: 'iOS',
-  safari: 'Safari',
-  facebook: 'Facebook',
   instagram: 'Instagram',
+  ios: 'iOS',
   'ios-webview': 'iOS (webview)',
+  kakaotalk: 'KaKaoTalk',
+  miui: 'MIUI',
+  opera: 'Opera',
+  'opera-mini': 'Opera Mini',
+  phantomjs: 'PhantomJS',
+  safari: 'Safari',
+  samsung: 'Samsung',
+  silk: 'Silk',
   searchbot: 'Searchbot',
+  yandexbrowser: 'Yandex',
 };
 
 export const MAP_FILE = '/datamaps.world.json';

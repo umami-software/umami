@@ -1,11 +1,11 @@
 import { Prisma } from '@prisma/client';
-import { EVENT_DATA_TYPE } from 'lib/constants';
+import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { flattenJSON } from 'lib/eventData';
+import { flattenJSON } from 'lib/dynamicData';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import { EventData } from 'lib/types';
+import { DynamicData } from 'lib/types';
 
 export async function saveEventData(args: {
   websiteId: string;
@@ -13,7 +13,7 @@ export async function saveEventData(args: {
   sessionId?: string;
   urlPath?: string;
   eventName?: string;
-  eventData: EventData;
+  eventData: DynamicData;
   createdAt?: string;
 }) {
   return runQuery({
@@ -25,7 +25,7 @@ export async function saveEventData(args: {
 async function relationalQuery(data: {
   websiteId: string;
   eventId: string;
-  eventData: EventData;
+  eventData: DynamicData;
 }): Promise<Prisma.BatchPayload> {
   const { websiteId, eventId, eventData } = data;
 
@@ -37,15 +37,15 @@ async function relationalQuery(data: {
     websiteEventId: eventId,
     websiteId,
     eventKey: a.key,
-    eventStringValue:
-      a.eventDataType === EVENT_DATA_TYPE.string ||
-      a.eventDataType === EVENT_DATA_TYPE.boolean ||
-      a.eventDataType === EVENT_DATA_TYPE.array
-        ? a.value
-        : null,
-    eventNumericValue: a.eventDataType === EVENT_DATA_TYPE.number ? a.value : null,
-    eventDateValue: a.eventDataType === EVENT_DATA_TYPE.date ? new Date(a.value) : null,
-    eventDataType: a.eventDataType,
+    stringValue:
+      a.dynamicDataType === DATA_TYPE.number
+        ? parseFloat(a.value).toFixed(4)
+        : a.dynamicDataType === DATA_TYPE.date
+        ? a.value.split('.')[0] + 'Z'
+        : a.value.toString(),
+    numberValue: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    dateValue: a.dynamicDataType === DATA_TYPE.date ? new Date(a.value) : null,
+    dataType: a.dynamicDataType,
   }));
 
   return prisma.client.eventData.createMany({
@@ -59,7 +59,7 @@ async function clickhouseQuery(data: {
   sessionId?: string;
   urlPath?: string;
   eventName?: string;
-  eventData: EventData;
+  eventData: DynamicData;
   createdAt?: string;
 }) {
   const { websiteId, sessionId, eventId, urlPath, eventName, eventData, createdAt } = data;
@@ -75,15 +75,11 @@ async function clickhouseQuery(data: {
     url_path: urlPath,
     event_name: eventName,
     event_key: a.key,
-    event_string_value:
-      a.eventDataType === EVENT_DATA_TYPE.string ||
-      a.eventDataType === EVENT_DATA_TYPE.boolean ||
-      a.eventDataType === EVENT_DATA_TYPE.array
-        ? a.value
-        : null,
-    event_numeric_value: a.eventDataType === EVENT_DATA_TYPE.number ? a.value : null,
-    event_date_value: a.eventDataType === EVENT_DATA_TYPE.date ? getDateFormat(a.value) : null,
-    event_data_type: a.eventDataType,
+    string_value:
+      a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value, 'isoUtcDateTime') : a.value,
+    number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
+    date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
+    data_type: a.dynamicDataType,
     created_at: createdAt,
   }));
 

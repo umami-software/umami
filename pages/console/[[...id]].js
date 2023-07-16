@@ -1,7 +1,7 @@
 import AppLayout from 'components/layout/AppLayout';
 import TestConsole from 'components/pages/console/TestConsole';
 
-export default function ConsolePage({ disabled }) {
+export default function ({ disabled }) {
   if (disabled) {
     return null;
   }

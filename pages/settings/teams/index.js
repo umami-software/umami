@@ -3,7 +3,7 @@ import SettingsLayout from 'components/layout/SettingsLayout';
 import TeamsList from 'components/pages/settings/teams/TeamsList';
 import useMessages from 'hooks/useMessages';
 
-export default function TeamsPage({ disabled }) {
+export default function ({ disabled }) {
   const { formatMessage, labels } = useMessages();
   if (disabled) {
     return null;

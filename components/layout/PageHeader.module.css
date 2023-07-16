@@ -4,7 +4,6 @@
   align-items: center;
   align-content: center;
   align-self: stretch;
-  margin-bottom: 40px;
   flex-wrap: wrap;
 }
 
@@ -23,6 +22,7 @@
   font-weight: 700;
   gap: 20px;
   height: 60px;
+  flex: 1;
 }
 
 .actions {

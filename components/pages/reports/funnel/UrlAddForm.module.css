@@ -1,0 +1,14 @@
+.form {
+  position: absolute;
+  background: var(--base50);
+  width: 300px;
+  padding: 30px;
+  margin-top: 10px;
+  border: 1px solid var(--base400);
+  border-radius: var(--border-radius);
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+  width: 100%;
+}

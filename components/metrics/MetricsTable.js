@@ -30,7 +30,7 @@ export function MetricsTable({
   const {
     resolveUrl,
     router,
-    query: { url, referrer, os, browser, device, country, region, city },
+    query: { url, referrer, title, os, browser, device, country, region, city },
   } = usePageQuery();
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
@@ -38,7 +38,20 @@ export function MetricsTable({
   const { data, isLoading, isFetched, error } = useQuery(
     [
       'websites:metrics',
-      { websiteId, type, modified, url, referrer, os, browser, device, country, region, city },
+      {
+        websiteId,
+        type,
+        modified,
+        url,
+        referrer,
+        os,
+        title,
+        browser,
+        device,
+        country,
+        region,
+        city,
+      },
     ],
     () =>
       get(`/websites/${websiteId}/metrics`, {
@@ -46,6 +59,7 @@ export function MetricsTable({
         startAt: +startDate,
         endAt: +endDate,
         url,
+        title,
         referrer,
         os,
         browser,
@@ -59,13 +73,27 @@ export function MetricsTable({
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items = percentFilter(dataFilter ? dataFilter(data, filterOptions) : data);
+      let items = data;
+
+      if (dataFilter) {
+        if (Array.isArray(dataFilter)) {
+          items = dataFilter.reduce((arr, filter) => {
+            return filter(arr);
+          }, items);
+        } else {
+          items = dataFilter(data);
+        }
+      }
+
+      items = percentFilter(items);
+
       if (limit) {
         items = items.filter((e, i) => i < limit);
       }
       if (filterOptions?.sort === false) {
         return items;
       }
+
       return items.sort(firstBy('y', -1).thenBy('x'));
     }
     return [];
