@@ -62,6 +62,14 @@ export async function getLocation(ip, req) {
     return;
   }
 
+  // Cloudflare headers
+  if (req.headers['cf-ipcountry']) {
+    return {
+      country: req.headers['cf-ipcountry'],
+    };
+  }
+
+  // Vercel headers
   if (req.headers['x-vercel-ip-country']) {
     const country = req.headers['x-vercel-ip-country'];
     const region = req.headers['x-vercel-ip-country-region'];
