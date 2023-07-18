@@ -81,6 +81,7 @@ export const labels = defineMessages({
   devices: { id: 'label.devices', defaultMessage: 'Devices' },
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
+  event: { id: 'label.event', defaultMessage: 'Event' },
   events: { id: 'label.events', defaultMessage: 'Events' },
   query: { id: 'label.query', defaultMessage: 'Query' },
   queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
@@ -269,5 +270,9 @@ export const messages = defineMessages({
   noEventData: {
     id: 'message.no-event-data',
     defaultMessage: 'No event data is available.',
+  },
+  newVersionAvailable: {
+    id: 'new-version-available',
+    defaultMessage: 'A new version of Umami {version} is available!',
   },
 });
