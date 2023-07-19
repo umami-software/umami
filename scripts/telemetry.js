@@ -5,7 +5,7 @@ const isCI = require('is-ci');
 const pkg = require('../package.json');
 
 const dest = path.resolve(__dirname, '../.next/cache/umami.json');
-const url = 'https://telemetry.umami.is/api/send';
+const url = 'https://api.umami.is/v1/telemetry';
 
 async function sendTelemetry(action) {
   let json = {};
@@ -24,7 +24,6 @@ async function sendTelemetry(action) {
 
   const { default: isDocker } = await import('is-docker');
   const { default: fetch } = await import('node-fetch');
-  const upgrade = json.version !== undefined && json.version !== pkg.version;
 
   const payload = {
     action,
@@ -33,10 +32,9 @@ async function sendTelemetry(action) {
     platform: os.platform(),
     arch: os.arch(),
     os: `${os.type()} (${os.version()})`,
-    docker: isDocker(),
-    ci: isCI,
-    prev: json.version,
-    upgrade,
+    isDocker: isDocker(),
+    isCi: isCI,
+    prevVersion: json.version,
   };
 
   try {
