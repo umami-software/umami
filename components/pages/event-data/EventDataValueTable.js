@@ -5,7 +5,7 @@ import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
 import Empty from 'components/common/Empty';
 
-export function EventDataTable({ data = [], field }) {
+export function EventDataTable({ data = [], field, event }) {
   const { formatMessage, labels } = useMessages();
   const { resolveUrl } = usePageQuery();
 
@@ -20,7 +20,9 @@ export function EventDataTable({ data = [], field }) {
             <Text>{formatMessage(labels.back)}</Text>
           </Button>
         </Link>
-        <Text>{field}</Text>
+        <Text>
+          {event} - {field}
+        </Text>
       </>
     );
   };

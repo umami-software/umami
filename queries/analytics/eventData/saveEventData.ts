@@ -76,7 +76,9 @@ async function clickhouseQuery(data: {
     event_name: eventName,
     event_key: a.key,
     string_value:
-      a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value, 'isoUtcDateTime') : a.value,
+      a.dynamicDataType === DATA_TYPE.date
+        ? getDateFormat(a.value, 'isoUtcDateTime')
+        : a.value.toString(),
     number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
     date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
     data_type: a.dynamicDataType,
