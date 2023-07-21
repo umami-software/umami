@@ -44,6 +44,18 @@ function getAddMinutesQuery(field: string, minutes: number) {
   }
 }
 
+function getDropoffQuery() {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `round((1.0 - count::numeric/lag(count, 1) over ()),2)`;
+  }
+
+  if (db === MYSQL) {
+    return `round((1.0 - count/LAG(count, 1) OVER (ORDER BY level)),2)`;
+  }
+}
+
 function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -147,29 +159,27 @@ function getFunnelQuery(
   return urls.reduce(
     (pv, cv, i) => {
       const levelNumber = i + 1;
-      const start = i > 0 ? ',' : '';
+      const startSum = i > 0 ? 'union ' : '';
+      const startFilter = i > 0 ? ', ' : '';
 
       if (levelNumber >= 2) {
         pv.levelQuery += `\n
         , level${levelNumber} AS (
-          select cl.*,
-            l0.created_at level_${levelNumber}_created_at,
-            l0.url_path as level_${levelNumber}_url
-          from level${i} cl
-              left join website_event l0
-                  on cl.session_id = l0.session_id
-                  and l0.created_at between cl.level_${i}_created_at 
-                    and ${getAddMinutesQuery(`cl.level_${i}_created_at`, windowMinutes)}
-                  and l0.referrer_path = $${i + initParamLength}
-                  and l0.url_path = $${levelNumber + initParamLength}
-                  and created_at between $2 and $3
-                  and website_id = $1${toUuid()}
+          select distinct l.session_id, we.created_at
+          from level${i} l
+          join website_event we
+              on l.session_id = we.session_id
+          where we.created_at between l.created_at 
+              and ${getAddMinutesQuery(`l.created_at `, windowMinutes)}
+              and we.referrer_path = $${i + initParamLength}
+              and we.url_path = $${levelNumber + initParamLength}
+              and we.website_id = $1${toUuid()}
         )`;
       }
 
-      pv.sumQuery += `\n${start}SUM(CASE WHEN level_${levelNumber}_url is not null THEN 1 ELSE 0 END) AS level${levelNumber}`;
+      pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
 
-      pv.urlFilterQuery += `\n${start}$${levelNumber + initParamLength} `;
+      pv.urlFilterQuery += `${startFilter}$${levelNumber + initParamLength} `;
 
       return pv;
     },
@@ -212,6 +222,7 @@ async function rawQuery(query: string, params: never[] = []): Promise<any> {
 export default {
   ...prisma,
   getAddMinutesQuery,
+  getDropoffQuery,
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
