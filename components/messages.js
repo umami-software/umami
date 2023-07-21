@@ -161,6 +161,7 @@ export const labels = defineMessages({
   overview: { id: 'labels.overview', defaultMessage: 'Overview' },
   totalRecords: { id: 'labels.total-records', defaultMessage: 'Total records' },
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
+  dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
 });
 
 export const messages = defineMessages({

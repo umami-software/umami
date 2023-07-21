@@ -31,6 +31,7 @@ async function relationalQuery(
   {
     x: string;
     y: number;
+    z: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -60,8 +61,12 @@ async function relationalQuery(
     from levelCount;
     `,
     params,
-  ).then((a: { [key: string]: number }) => {
-    return urls.map((b, i) => ({ x: b, y: a[0][`level${i + 1}`] || 0 }));
+  ).then(results => {
+    return urls.map((a, i) => ({
+      x: a,
+      y: results[i]?.count || 0,
+      z: results[i]?.drop_off || 0,
+    }));
   });
 }
 
