@@ -116,7 +116,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 };
 
 function validateBody(res: NextApiResponse, { type, payload }: CollectRequestBody) {
-  const { data } = payload;
+  const { data } = payload || {};
 
   // Validate type
   if (type !== COLLECTION_TYPE.event && type !== COLLECTION_TYPE.identify) {
