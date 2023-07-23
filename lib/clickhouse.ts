@@ -62,10 +62,6 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getBetweenDates(field, startAt, endAt) {
-  return `${field} between ${getDateFormat(startAt)} and ${getDateFormat(endAt)}`;
-}
-
 function getEventDataFilterQuery(
   filters: {
     eventKey?: string;
@@ -150,7 +146,22 @@ function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   };
 }
 
-async function rawQuery<T>(query, params = {}): Promise<T> {
+function formatField(field, type, value) {
+  switch (type) {
+    case 'date':
+      return getDateFormat(value);
+    default:
+      return field;
+  }
+}
+
+async function rawQuery<T>(sql, params = {}): Promise<T> {
+  const query = sql.replaceAll(/\{\{\w+:\w+}}/g, token => {
+    const [, field, type] = token.match(/\{\{(\w+):(\w+)}}/);
+
+    return formatField(field, type, params[field]);
+  });
+
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);
@@ -189,7 +200,6 @@ export default {
   getDateStringQuery,
   getDateQuery,
   getDateFormat,
-  getBetweenDates,
   getFilterQuery,
   getFunnelQuery,
   getEventDataFilterQuery,

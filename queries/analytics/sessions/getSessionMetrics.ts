@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { DEFAULT_CREATED_AT, EVENT_TYPE } from 'lib/constants';
+import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
 export async function getSessionMetrics(
@@ -21,7 +21,7 @@ async function relationalQuery(
   criteria: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
+  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { startDate, endDate, column, filters = {} } = criteria;
   const { toUuid, parseFilters, rawQuery } = prisma;
   const params: any = [websiteId, resetDate, startDate, endDate];
@@ -53,9 +53,9 @@ async function clickhouseQuery(
   data: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
   const { startDate, endDate, column, filters = {} } = data;
-  const { getDateFormat, parseFilters, getBetweenDates, rawQuery } = clickhouse;
+  const { getDateFormat, parseFilters, rawQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
+  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const params = { websiteId };
   const { filterQuery } = parseFilters(filters, params);
 
@@ -65,7 +65,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
     and event_type = ${EVENT_TYPE.pageView}
       and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}
+      and created_at between ${getDateFormat(startDate)} and ${getDateFormat(endDate)}
       ${filterQuery}
     group by x
     order by y desc

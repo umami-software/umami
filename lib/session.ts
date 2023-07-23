@@ -1,6 +1,6 @@
-import { secret, uuid } from 'lib/crypto';
+import { secret } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
-import { parseToken } from 'next-basics';
+import { parseToken, uuid } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import { validate } from 'uuid';
@@ -29,7 +29,6 @@ export async function findSession(req: NextApiRequestCollect) {
 
   // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
-
 
   // Check the hostname value for legality to eliminate dirty data
   const validHostnameRegex = /^[\w-.]+$/;

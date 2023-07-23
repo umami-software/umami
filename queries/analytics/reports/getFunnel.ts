@@ -2,7 +2,7 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
-export async function getPageviewFunnel(
+export async function getFunnel(
   ...args: [
     websiteId: string,
     criteria: {
@@ -76,14 +76,8 @@ async function clickhouseQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getBetweenDates, getFunnelQuery } = clickhouse;
-  const { columnsQuery, conditionQuery, urlParams } = getFunnelQuery(urls);
-
-  const params = {
-    websiteId,
-    window: windowMinutes * 60,
-    ...urlParams,
-  };
+  const { rawQuery, getFunnelQuery } = clickhouse;
+  const { columnsQuery, urlParams } = getFunnelQuery(urls);
 
   return rawQuery<{ level: number; count: number }[]>(
     `
@@ -98,13 +92,19 @@ async function clickhouseQuery(
             ) AS level
         FROM website_event
         WHERE website_id = {websiteId:UUID}
-            and ${getBetweenDates('created_at', startDate, endDate)}             
+        AND created_at BETWEEN {startDate:DateTime} AND {endDate:DateTime}       
         GROUP BY 1
         )
     GROUP BY level
     ORDER BY level ASC;
     `,
-    params,
+    {
+      websiteId,
+      startDate,
+      endDate,
+      window: windowMinutes * 60,
+      ...urlParams,
+    },
   ).then(results => {
     return urls.map((a, i) => ({
       x: a,

@@ -9,7 +9,7 @@ export function getEventUsage(...args: [websiteIds: string[], startDate: Date, e
 }
 
 function relationalQuery(websiteIds: string[], startDate: Date, endDate: Date) {
-  throw new Error('Not Implemented');
+  throw new Error('Not implemented.');
 }
 
 function clickhouseQuery(websiteIds: string[], startDate: Date, endDate: Date) {

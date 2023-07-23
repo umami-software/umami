@@ -1,7 +1,7 @@
 import { Team } from '@prisma/client';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { canCreateTeam } from 'lib/auth';
-import { uuid } from 'lib/crypto';
+import { uuid } from 'next-basics';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';

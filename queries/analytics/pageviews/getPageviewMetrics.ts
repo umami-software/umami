@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { DEFAULT_CREATED_AT, EVENT_TYPE } from 'lib/constants';
+import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
 
 export async function getPageviewMetrics(
@@ -33,7 +33,7 @@ async function relationalQuery(
   const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, parseFilters, toUuid } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
+  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const params: any = [
     websiteId,
     resetDate,
@@ -45,7 +45,8 @@ async function relationalQuery(
   let excludeDomain = '';
 
   if (column === 'referrer_domain') {
-    excludeDomain = 'and (website_event.referrer_domain != $6 or website_event.referrer_domain is null)';
+    excludeDomain =
+      'and (website_event.referrer_domain != $6 or website_event.referrer_domain is null)';
     params.push(website.domain);
   }
 
@@ -78,9 +79,9 @@ async function clickhouseQuery(
   },
 ) {
   const { startDate, endDate, filters = {}, column } = criteria;
-  const { rawQuery, getDateFormat, parseFilters, getBetweenDates } = clickhouse;
+  const { rawQuery, getDateFormat, parseFilters } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
+  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const params = {
     websiteId,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
@@ -102,7 +103,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and event_type = {eventType:UInt32}
       and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)} 
+      and created_at between ${getDateFormat(startDate)} and ${getDateFormat(endDate)} 
       ${excludeDomain}
       ${filterQuery}
     group by x
