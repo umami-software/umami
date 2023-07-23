@@ -14,7 +14,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<ConfigResponse>)
     return ok(res, {
       basePath: process.env.BASE_PATH || '',
       trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
-      updatesDisabled: !!process.env.DISABLE_UPDATES,
+      updatesDisabled: process.env?.DISABLE_UPDATES === 'true' ? true : false,
       telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
       cloudMode: !!process.env.CLOUD_MODE,
     });
