@@ -35,7 +35,7 @@ async function relationalQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getFunnelQuery, toUuid, getDropoffQuery } = prisma;
+  const { rawQuery, getFunnelQuery, toUuid } = prisma;
   const { levelQuery, sumQuery, urlFilterQuery } = getFunnelQuery(urls, windowMinutes);
 
   const params: any = [websiteId, startDate, endDate, ...urls];
@@ -47,25 +47,19 @@ async function relationalQuery(
       where url_path in (${urlFilterQuery})
           and website_id = $1${toUuid()}
           and created_at between $2 and $3
-  ),level1 AS (
-      select distinct session_id, created_at
-      from level0
-      where url_path = $4
-  )${levelQuery}, levelCount as (
-      ${sumQuery}
-      order by level)
-    select
-      level,
-      count,
-      ${getDropoffQuery()} as drop_off
-    from levelCount;
-    `,
+    ),level1 AS (
+        select distinct session_id, created_at
+        from level0
+        where url_path = $4
+    )${levelQuery}
+    ${sumQuery}
+    ORDER BY level;`,
     params,
   ).then(results => {
     return urls.map((a, i) => ({
       x: a,
       y: results[i]?.count || 0,
-      z: results[i]?.drop_off || 0,
+      z: (1 - (Number(results[i]?.count) * 1.0) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
     }));
   });
 }
@@ -96,7 +90,7 @@ async function clickhouseQuery(
 
   return rawQuery<{ level: number; count: number }[]>(
     `
-    select level,
+    WITH funnel as (select level,
         count(*) AS count
     from (
     select session_id,
@@ -111,13 +105,15 @@ async function clickhouseQuery(
         group by 1
         )
     group by level
-    order by level asc;
+    order by level asc)
+    select * from funnel where level > 0;
     `,
     params,
   ).then(results => {
     return urls.map((a, i) => ({
       x: a,
-      y: results[i + 1]?.count || 0,
+      y: results[i]?.count || 0,
+      z: (1 - (Number(results[i]?.count) * 1.0) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
     }));
   });
 }

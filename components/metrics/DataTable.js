@@ -78,7 +78,7 @@ const AnimatedRow = ({
   showPercentage = true,
 }) => {
   const props = useSpring({
-    width: Number(percent),
+    width: percent,
     y: value,
     from: { width: 0, y: 0 },
     config: animate ? config.default : { duration: 0 },

@@ -44,18 +44,6 @@ function getAddMinutesQuery(field: string, minutes: number) {
   }
 }
 
-function getDropoffQuery() {
-  const db = getDatabaseType(process.env.DATABASE_URL);
-
-  if (db === POSTGRESQL) {
-    return `round((1.0 - count::numeric/lag(nullif(count, 0), 1) over ()),2) * 100`;
-  }
-
-  if (db === MYSQL) {
-    return `round((1.0 - count/LAG(nullif(count, 0), 1) OVER (ORDER BY level)),2) * 100`;
-  }
-}
-
 function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -217,15 +205,12 @@ async function rawQuery(query: string, params: never[] = []): Promise<any> {
 
   const sql = db === MYSQL ? query.replace(/\$[0-9]+/g, '?') : query;
 
-  // console.log(sql);
-  // console.log(params);
   return prisma.rawQuery(sql, params);
 }
 
 export default {
   ...prisma,
   getAddMinutesQuery,
-  getDropoffQuery,
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
