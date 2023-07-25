@@ -41,17 +41,14 @@ async function relationalQuery(
   const params: any = [websiteId, startDate, endDate, ...urls];
 
   return rawQuery(
-    `WITH level0 AS (
-      select distinct session_id, url_path, referrer_path, created_at
+    `WITH level1 AS (
+      select distinct session_id, created_at
       from website_event
       where url_path in (${urlFilterQuery})
           and website_id = $1${toUuid()}
           and created_at between $2 and $3
-    ),level1 AS (
-        select distinct session_id, created_at
-        from level0
-        where url_path = $4
-    )${levelQuery}
+          and url_path = $4)
+    ${levelQuery}
     ${sumQuery}
     ORDER BY level;`,
     params,
@@ -76,38 +73,35 @@ async function clickhouseQuery(
   {
     x: string;
     y: number;
+    z: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
   const { rawQuery, getBetweenDates, getFunnelQuery } = clickhouse;
-  const { columnsQuery, urlParams } = getFunnelQuery(urls);
+  const { levelQuery, sumQuery, urlFilterQuery, urlParams } = getFunnelQuery(urls, windowMinutes);
 
   const params = {
     websiteId,
-    window: windowMinutes * 60,
     ...urlParams,
   };
 
   return rawQuery<{ level: number; count: number }[]>(
     `
-    WITH funnel as (select level,
-        count(*) AS count
+    WITH level0 AS (
+      select distinct session_id, url_path, referrer_path, created_at
+      from umami.website_event
+      where url_path in (${urlFilterQuery})
+          and website_id = {websiteId:UUID}
+          and ${getBetweenDates('created_at', startDate, endDate)} 
+    ), level1 AS (
+      select *
+      from level0
+      where url_path = {url0:String})
+    ${levelQuery}
+    select *
     from (
-    select session_id,
-            windowFunnel({window:UInt32}, 'strict_increase')
-            (
-                created_at
-                ${columnsQuery}
-            ) AS level
-        from website_event
-        where website_id = {websiteId:UUID}
-            and ${getBetweenDates('created_at', startDate, endDate)}             
-        group by 1
-        )
-    group by level
-    order by level asc)
-    select * from funnel where level > 0;
-    `,
+    ${sumQuery} 
+    ) ORDER BY level;`,
     params,
   ).then(results => {
     return urls.map((a, i) => ({

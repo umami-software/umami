@@ -153,7 +153,7 @@ function getFunnelQuery(
       if (levelNumber >= 2) {
         pv.levelQuery += `\n
         , level${levelNumber} AS (
-          select distinct l.session_id, we.created_at
+          select distinct we.session_id, we.created_at
           from level${i} l
           join website_event we
               on l.session_id = we.session_id
@@ -161,7 +161,7 @@ function getFunnelQuery(
               and ${getAddMinutesQuery(`l.created_at `, windowMinutes)}
               and we.referrer_path = $${i + initParamLength}
               and we.url_path = $${levelNumber + initParamLength}
-              and we.created_at between $2 and $3
+              and we.created_at <= $3
               and we.website_id = $1${toUuid()}
         )`;
       }
