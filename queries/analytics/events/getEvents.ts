@@ -36,9 +36,9 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
       referrer_domain as referrerDomain,
       event_name as eventName
     from website_event
-    where event_type = {eventType:UInt32}
-      and website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime('UTC')}
+    where website_id = {websiteId:UUID}
+      and created_at >= {startAt:DateTime}
+      and event_type = {eventType:UInt32}
     `,
     {
       websiteId,

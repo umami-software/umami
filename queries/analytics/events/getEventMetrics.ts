@@ -60,12 +60,12 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and created_at >= {{resetDate}}
       and created_at between {{startDate}} and {{endDate}}
-      and event_type = ${EVENT_TYPE.customEvent}
+      and event_type = {{eventType}}
       ${filterQuery}
     group by 1, 2
     order by 2
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate },
+    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.customEvent },
   );
 }
 
@@ -101,13 +101,13 @@ async function clickhouseQuery(
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and event_type = ${EVENT_TYPE.customEvent}
       and created_at >= {resetDate:DateTIme}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and event_type = {eventType:UInt32}
       ${filterQuery}
     group by x, t
     order by t
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate },
+    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.customEvent },
   );
 }

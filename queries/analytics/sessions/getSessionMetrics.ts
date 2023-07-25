@@ -65,12 +65,12 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at >= {resetDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
-      and event_type = ${EVENT_TYPE.pageView}
+      and event_type = {eventType:UInt32}
       ${filterQuery}
     group by x
     order by y desc
     limit 100
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate },
+    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.pageView },
   );
 }

@@ -43,7 +43,7 @@ async function relationalQuery(
       join website 
         on website_event.website_id = website.website_id
         ${joinSession}
-      where event_type = ${EVENT_TYPE.pageView}
+      where event_type = {{eventType}}
         and website.website_id = {{websiteId::uuid}}
         and website_event.created_at >= {{resetDate}}
         and website_event.created_at between {{startDate}} and {{endDate}}
@@ -51,7 +51,7 @@ async function relationalQuery(
       group by 1, 2
     ) as t
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate },
+    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.pageView },
   );
 }
 
@@ -83,11 +83,11 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at >= {resetDate:DateTime}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
-        and event_type = ${EVENT_TYPE.pageView}
+        and event_type = {eventType:UInt32}
         ${filterQuery}
       group by session_id, time_series
     ) as t;
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate },
+    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.pageView },
   );
 }
