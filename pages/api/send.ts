@@ -1,7 +1,7 @@
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
 import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
-import { saveEvent } from 'queries';
+import { saveEvent, saveSessionData } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
@@ -9,7 +9,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Resolver } from 'dns/promises';
 import { CollectionType } from 'lib/types';
 import { COLLECTION_TYPE } from 'lib/constants';
-import { saveSessionData } from 'queries/analytics/session/saveSessionData';
 
 export interface CollectRequestBody {
   payload: {
