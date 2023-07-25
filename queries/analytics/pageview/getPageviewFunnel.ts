@@ -36,16 +36,20 @@ async function relationalQuery(
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
   const { rawQuery, getFunnelQuery, toUuid } = prisma;
-  const { levelQuery, sumQuery, urlFilterQuery } = getFunnelQuery(urls, windowMinutes);
+  const { levelQuery, sumQuery, urlParams } = getFunnelQuery(
+    urls,
+    endDate,
+    websiteId,
+    windowMinutes,
+  );
 
-  const params: any = [websiteId, startDate, endDate, ...urls];
+  const params: any = [websiteId, startDate, endDate, ...urlParams];
 
   return rawQuery(
     `WITH level1 AS (
       select distinct session_id, created_at
       from website_event
-      where url_path in (${urlFilterQuery})
-          and website_id = $1${toUuid()}
+      where website_id = $1${toUuid()}
           and created_at between $2 and $3
           and url_path = $4)
     ${levelQuery}

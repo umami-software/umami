@@ -32,7 +32,7 @@ function toUuid(): string {
   }
 }
 
-function getAddMinutesQuery(field: string, minutes: number) {
+function getAddMinutesQuery(field: string, minutes: number): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -134,13 +134,49 @@ function getFilterQuery(filters = {}, params = []): string {
   return query.join('\n');
 }
 
+function parseFilters(
+  filters: { [key: string]: any } = {},
+  params = [],
+  sessionKey = 'session_id',
+) {
+  const { os, browser, device, country, region, city } = filters;
+
+  return {
+    joinSession:
+      os || browser || device || country || region || city
+        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
+        : '',
+    filterQuery: getFilterQuery(filters, params),
+  };
+}
+
+function getFunnelParams(endDate: Date, websiteId: string, urls: string[]): any[] {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return urls;
+  }
+
+  if (db === MYSQL) {
+    let params = [];
+    params.push(urls[0]);
+    for (let i = 0; i < urls.length - 1; i++) {
+      params = params.concat([urls[i], urls[i + 1], endDate, websiteId]);
+    }
+
+    return params;
+  }
+}
+
 function getFunnelQuery(
   urls: string[],
+  endDate: Date,
+  websiteId: string,
   windowMinutes: number,
 ): {
   levelQuery: string;
   sumQuery: string;
-  urlFilterQuery: string;
+  urlParams: any[];
 } {
   const initParamLength = 3;
 
@@ -148,7 +184,6 @@ function getFunnelQuery(
     (pv, cv, i) => {
       const levelNumber = i + 1;
       const startSum = i > 0 ? 'union ' : '';
-      const startFilter = i > 0 ? ', ' : '';
 
       if (levelNumber >= 2) {
         pv.levelQuery += `\n
@@ -167,33 +202,16 @@ function getFunnelQuery(
       }
 
       pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-
-      pv.urlFilterQuery += `${startFilter}$${levelNumber + initParamLength} `;
+      pv.urlParams = getFunnelParams(endDate, websiteId, urls);
 
       return pv;
     },
     {
       levelQuery: '',
       sumQuery: '',
-      urlFilterQuery: '',
+      urlParams: [],
     },
   );
-}
-
-function parseFilters(
-  filters: { [key: string]: any } = {},
-  params = [],
-  sessionKey = 'session_id',
-) {
-  const { os, browser, device, country, region, city } = filters;
-
-  return {
-    joinSession:
-      os || browser || device || country || region || city
-        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
-        : '',
-    filterQuery: getFilterQuery(filters, params),
-  };
 }
 
 async function rawQuery(query: string, params: never[] = []): Promise<any> {
@@ -214,9 +232,10 @@ export default {
   getDateQuery,
   getTimestampInterval,
   getFilterQuery,
-  getFunnelQuery,
   getEventDataFilterQuery,
   toUuid,
   parseFilters,
+  getFunnelParams,
+  getFunnelQuery,
   rawQuery,
 };
