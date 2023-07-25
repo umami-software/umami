@@ -45,24 +45,26 @@ async function relationalQuery(
     filters = {},
     sessionKey = 'session_id',
   } = criteria;
-  const { toUuid, getDateQuery, parseFilters, rawQuery } = prisma;
+  const { getDateQuery, parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
-  const params: any = [websiteId, resetDate, startDate, endDate];
-  const { filterQuery, joinSession } = parseFilters(filters, params);
+  const { filterQuery, joinSession } = parseFilters(filters);
 
   return rawQuery(
-    `select ${getDateQuery('website_event.created_at', unit, timezone)} x,
-        count(${count !== '*' ? `${count}${sessionKey}` : count}) y
-      from website_event
-        ${joinSession}
-      where website_event.website_id = $1${toUuid()}
-        and website_event.created_at >= $2
-        and website_event.created_at between $3 and $4
-        and event_type = ${EVENT_TYPE.pageView}
-        ${filterQuery}
-      group by 1`,
-    params,
+    `
+    select
+      ${getDateQuery('website_event.created_at', unit, timezone)} x,
+      count(${count !== '*' ? `${count}${sessionKey}` : count}) y
+    from website_event
+      ${joinSession}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at >= {{resetDate}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and event_type = ${EVENT_TYPE.pageView}
+      ${filterQuery}
+    group by 1
+    `,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }
 
@@ -86,28 +88,30 @@ async function clickhouseQuery(
     count = '*',
     filters = {},
   } = criteria;
-  const { parseFilters, getDateFormat, rawQuery, getDateStringQuery, getDateQuery } = clickhouse;
+  const { parseFilters, rawQuery, getDateStringQuery, getDateQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
-  const params = { websiteId };
-  const { filterQuery } = parseFilters(filters, params);
+  const { filterQuery } = parseFilters(filters);
 
   return rawQuery(
-    `select
+    `
+    select
       ${getDateStringQuery('g.t', unit)} as x, 
       g.y as y
-    from
-      (select 
-        ${getDateQuery('created_at', unit, timezone)} t,
-        count(${count !== '*' ? 'distinct session_id' : count}) y
+    from (
+      select 
+        ${getDateQuery('created_at', unit, timezone)} as t,
+        count(${count !== '*' ? 'distinct session_id' : count}) as y
       from website_event
       where website_id = {websiteId:UUID}
+        and created_at >= {resetDate:DateTime}
+        and created_at between {startDate:DateTime} and {endDate:DateTime}
         and event_type = ${EVENT_TYPE.pageView}
-        and created_at >= ${getDateFormat(resetDate)}
-        and created_at between ${getDateFormat(startDate)} and ${getDateFormat(endDate)}
         ${filterQuery}
-      group by t) g
-    order by t`,
-    params,
+      group by t
+    ) as g
+    order by t
+    `,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }

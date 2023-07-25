@@ -23,9 +23,8 @@ async function relationalQuery(
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { startDate, endDate, column, filters = {} } = criteria;
-  const { toUuid, parseFilters, rawQuery } = prisma;
-  const params: any = [websiteId, resetDate, startDate, endDate];
-  const { filterQuery, joinSession } = parseFilters(filters, params);
+  const { parseFilters, rawQuery } = prisma;
+  const { filterQuery, joinSession } = parseFilters(filters);
 
   return rawQuery(
     `select ${column} x, count(*) y
@@ -36,15 +35,15 @@ async function relationalQuery(
         join website 
           on website_event.website_id = website.website_id
         ${joinSession}
-      where website.website_id = $1${toUuid()}
-        and website_event.created_at >= $2
-        and website_event.created_at between $3 and $4
+      where website.website_id = {{websiteId::uuid}}
+        and website_event.created_at >= {{resetDate}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     )
     group by 1
     order by 2 desc
     limit 100`,
-    params,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }
 
@@ -53,23 +52,25 @@ async function clickhouseQuery(
   data: { startDate: Date; endDate: Date; column: string; filters: object },
 ) {
   const { startDate, endDate, column, filters = {} } = data;
-  const { getDateFormat, parseFilters, rawQuery } = clickhouse;
+  const { parseFilters, rawQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
-  const params = { websiteId };
-  const { filterQuery } = parseFilters(filters, params);
+  const { filterQuery } = parseFilters(filters);
 
   return rawQuery(
-    `select ${column} x, count(distinct session_id) y
+    `
+    select
+      ${column} x, count(distinct session_id) y
     from website_event as x
     where website_id = {websiteId:UUID}
-    and event_type = ${EVENT_TYPE.pageView}
-      and created_at >= ${getDateFormat(resetDate)}
-      and created_at between ${getDateFormat(startDate)} and ${getDateFormat(endDate)}
+      and created_at >= {resetDate:DateTime}
+      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and event_type = ${EVENT_TYPE.pageView}
       ${filterQuery}
     group by x
     order by y desc
-    limit 100`,
-    params,
+    limit 100
+    `,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }

@@ -2,7 +2,6 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { getDynamicDataType } from './dynamicData';
 import { WebsiteMetricFilter } from './types';
 import { FILTER_COLUMNS } from './constants';
 
@@ -62,45 +61,6 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getEventDataFilterQuery(
-  filters: {
-    eventKey?: string;
-    eventValue?: string | number | boolean | Date;
-  }[] = [],
-  params: any,
-) {
-  const query = filters.reduce((ac, cv, i) => {
-    const type = getDynamicDataType(cv.eventValue);
-
-    let value = cv.eventValue;
-
-    ac.push(`and (event_key = {eventKey${i}:String}`);
-
-    switch (type) {
-      case 'number':
-        ac.push(`and number_value = {eventValue${i}:UInt64})`);
-        break;
-      case 'string':
-        ac.push(`and string_value = {eventValue${i}:String})`);
-        break;
-      case 'boolean':
-        ac.push(`and string_value = {eventValue${i}:String})`);
-        value = cv ? 'true' : 'false';
-        break;
-      case 'date':
-        ac.push(`and date_value = {eventValue${i}:DateTime('UTC')})`);
-        break;
-    }
-
-    params[`eventKey${i}`] = cv.eventKey;
-    params[`eventValue${i}`] = value;
-
-    return ac;
-  }, []);
-
-  return query.join('\n');
-}
-
 function getFilterQuery(filters = {}, params = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
@@ -146,22 +106,7 @@ function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   };
 }
 
-function formatField(field, type, value) {
-  switch (type) {
-    case 'date':
-      return getDateFormat(value);
-    default:
-      return field;
-  }
-}
-
-async function rawQuery<T>(sql, params = {}): Promise<T> {
-  const query = sql.replaceAll(/\{\{\w+:\w+}}/g, token => {
-    const [, field, type] = token.match(/\{\{(\w+):(\w+)}}/);
-
-    return formatField(field, type, params[field]);
-  });
-
+async function rawQuery<T>(query: string, params: object = {}): Promise<T> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);
@@ -202,7 +147,6 @@ export default {
   getDateFormat,
   getFilterQuery,
   getFunnelQuery,
-  getEventDataFilterQuery,
   parseFilters,
   findUnique,
   findFirst,

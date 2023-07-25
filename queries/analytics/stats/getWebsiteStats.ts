@@ -21,34 +21,37 @@ async function relationalQuery(
   criteria: { startDate: Date; endDate: Date; filters: object },
 ) {
   const { startDate, endDate, filters = {} } = criteria;
-  const { toUuid, getDateQuery, getTimestampInterval, parseFilters, rawQuery } = prisma;
+  const { getDateQuery, getTimestampIntervalQuery, parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
-  const params: any = [websiteId, resetDate, startDate, endDate];
-  const { filterQuery, joinSession } = parseFilters(filters, params);
+  const { filterQuery, joinSession } = parseFilters(filters);
 
   return rawQuery(
-    `select sum(t.c) as "pageviews",
-        count(distinct t.session_id) as "uniques",
-        sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-        sum(t.time) as "totaltime"
-      from (
-        select website_event.session_id,
-          ${getDateQuery('website_event.created_at', 'hour')},
-          count(*) c,
-          ${getTimestampInterval('website_event.created_at')} as "time"
-        from website_event
-          join website 
-            on website_event.website_id = website.website_id
-          ${joinSession}
-        where event_type = ${EVENT_TYPE.pageView}
-          and website.website_id = $1${toUuid()}
-          and website_event.created_at >= $2
-          and website_event.created_at between $3 and $4
-          ${filterQuery}
-        group by 1, 2
-     ) t`,
-    params,
+    `
+    select
+      sum(t.c) as "pageviews",
+      count(distinct t.session_id) as "uniques",
+      sum(case when t.c = 1 then 1 else 0 end) as "bounces",
+      sum(t.time) as "totaltime"
+    from (
+      select
+        website_event.session_id,
+        ${getDateQuery('website_event.created_at', 'hour')},
+        count(*) as c,
+        ${getTimestampIntervalQuery('website_event.created_at')} as "time"
+      from website_event
+      join website 
+        on website_event.website_id = website.website_id
+        ${joinSession}
+      where event_type = ${EVENT_TYPE.pageView}
+        and website.website_id = {{websiteId::uuid}}
+        and website_event.created_at >= {{resetDate}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        ${filterQuery}
+      group by 1, 2
+    ) as t
+    `,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }
 
@@ -57,32 +60,34 @@ async function clickhouseQuery(
   criteria: { startDate: Date; endDate: Date; filters: object },
 ) {
   const { startDate, endDate, filters = {} } = criteria;
-  const { rawQuery, getDateFormat, getDateQuery, parseFilters } = clickhouse;
+  const { rawQuery, getDateQuery, parseFilters } = clickhouse;
   const website = await loadWebsite(websiteId);
   const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
-  const params = { websiteId };
-  const { filterQuery } = parseFilters(filters, params);
+  const { filterQuery } = parseFilters(filters);
 
   return rawQuery(
-    `select 
-       sum(t.c) as "pageviews",
-       count(distinct t.session_id) as "uniques",
-       sum(if(t.c = 1, 1, 0)) as "bounces",
-       sum(if(max_time < min_time + interval 1 hour, max_time-min_time, 0)) as "totaltime"
-     from (
-       select session_id,
-         ${getDateQuery('created_at', 'day')} time_series,
-         count(*) c,
-         min(created_at) min_time,
-         max(created_at) max_time
-       from website_event
-       where event_type = ${EVENT_TYPE.pageView}
-        and website_id = {websiteId:UUID}
-          and created_at >= ${getDateFormat(resetDate)}
-          and created_at between ${getDateFormat(startDate)} and ${getDateFormat(endDate)}
-         ${filterQuery}
-       group by session_id, time_series
-     ) t;`,
-    params,
+    `
+    select 
+      sum(t.c) as "pageviews",
+      count(distinct t.session_id) as "uniques",
+      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sum(if(max_time < min_time + interval 1 hour, max_time-min_time, 0)) as "totaltime"
+    from (
+      select
+        session_id,
+        ${getDateQuery('created_at', 'day')} time_series,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at >= {resetDate:DateTime}
+        and created_at between {startDate:DateTime} and {endDate:DateTime}
+        and event_type = ${EVENT_TYPE.pageView}
+        ${filterQuery}
+      group by session_id, time_series
+    ) as t;
+    `,
+    { ...filters, websiteId, resetDate, startDate, endDate },
   );
 }

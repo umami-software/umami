@@ -25,7 +25,8 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
-    `select
+    `
+    select
       event_id as id,
       website_id as websiteId, 
       session_id as sessionId,
@@ -37,7 +38,8 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
     from website_event
     where event_type = {eventType:UInt32}
       and website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime('UTC')}`,
+      and created_at >= {startAt:DateTime('UTC')}
+    `,
     {
       websiteId,
       startAt,

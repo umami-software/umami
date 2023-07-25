@@ -24,7 +24,8 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
-    `select distinct
+    `
+    select distinct
       session_id as id,
       website_id as websiteId,
       created_at as createdAt,
@@ -41,7 +42,8 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
       city
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime('UTC')}`,
+    and created_at >= {startAt:DateTime}
+    `,
     {
       websiteId,
       startAt,

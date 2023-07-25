@@ -31,7 +31,7 @@ async function relationalQuery(data: {
 
   const jsonKeys = flattenJSON(eventData);
 
-  //id, websiteEventId, eventStringValue
+  // id, websiteEventId, eventStringValue
   const flattendData = jsonKeys.map(a => ({
     id: uuid(),
     websiteEventId: eventId,
