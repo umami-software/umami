@@ -25,7 +25,7 @@ export function ShareUrl({ websiteId, data, onSave }) {
   );
   const ref = useRef(null);
   const url = useMemo(
-    () => `${process.env.analyticsUrl || location.origin}/share/${id}/${encodeURIComponent(name)}`,
+    () => `${process.env.analyticsUrl || location.origin}${process.env.BASE_PATH || ''}/share/${id}/${encodeURIComponent(name)}`,
     [id, name],
   );
 
