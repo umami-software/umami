@@ -47,7 +47,6 @@ async function relationalQuery(
 ) {
   const { rawQuery, getDateQuery, getFilterQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const filterQuery = getFilterQuery(filters);
 
   return rawQuery(
@@ -58,14 +57,21 @@ async function relationalQuery(
       count(*) y
     from website_event
     where website_id = {{websiteId::uuid}}
-      and created_at >= {{resetDate}}
+      and created_at >= {{dataStartDate}}
       and created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
       ${filterQuery}
     group by 1, 2
     order by 2
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.customEvent },
+    {
+      ...filters,
+      websiteId,
+      startDate,
+      endDate,
+      dataStartDate: website.dataStartDate,
+      eventType: EVENT_TYPE.customEvent,
+    },
   );
 }
 
@@ -90,7 +96,6 @@ async function clickhouseQuery(
 ) {
   const { rawQuery, getDateQuery, getFilterQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const filterQuery = getFilterQuery(filters);
 
   return rawQuery(
@@ -101,13 +106,20 @@ async function clickhouseQuery(
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {resetDate:DateTIme}
+      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
     group by x, t
     order by t
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.customEvent },
+    {
+      ...filters,
+      websiteId,
+      startDate,
+      endDate,
+      dataStartDate: website.dataStartDate,
+      eventType: EVENT_TYPE.customEvent,
+    },
   );
 }

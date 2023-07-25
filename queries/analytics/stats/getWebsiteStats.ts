@@ -23,7 +23,6 @@ async function relationalQuery(
   const { startDate, endDate, filters = {} } = criteria;
   const { getDateQuery, getTimestampIntervalQuery, parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { filterQuery, joinSession } = parseFilters(filters);
 
   return rawQuery(
@@ -45,13 +44,20 @@ async function relationalQuery(
         ${joinSession}
       where event_type = {{eventType}}
         and website.website_id = {{websiteId::uuid}}
-        and website_event.created_at >= {{resetDate}}
+        and website_event.created_at >= {{dataStartDate}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
       group by 1, 2
     ) as t
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.pageView },
+    {
+      ...filters,
+      websiteId,
+      startDate,
+      endDate,
+      dataStartDate: website.dataStartDate,
+      eventType: EVENT_TYPE.pageView,
+    },
   );
 }
 
@@ -62,7 +68,6 @@ async function clickhouseQuery(
   const { startDate, endDate, filters = {} } = criteria;
   const { rawQuery, getDateQuery, parseFilters } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { filterQuery } = parseFilters(filters);
 
   return rawQuery(
@@ -81,13 +86,20 @@ async function clickhouseQuery(
         max(created_at) max_time
       from website_event
       where website_id = {websiteId:UUID}
-        and created_at >= {resetDate:DateTime}
+        and created_at >= {dataStartDate:DateTime}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
         and event_type = {eventType:UInt32}
         ${filterQuery}
       group by session_id, time_series
     ) as t;
     `,
-    { ...filters, websiteId, resetDate, startDate, endDate, eventType: EVENT_TYPE.pageView },
+    {
+      ...filters,
+      websiteId,
+      startDate,
+      endDate,
+      dataStartDate: website.dataStartDate,
+      eventType: EVENT_TYPE.pageView,
+    },
   );
 }

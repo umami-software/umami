@@ -27,7 +27,6 @@ async function relationalQuery(
 ) {
   const { rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { field, event } = filters;
 
   if (event) {
@@ -43,13 +42,13 @@ async function relationalQuery(
         on we.event_id = ed.website_event_id
       where ed.website_id = {{websiteId:uuid}}
         and ed.event_key = {{field}}
-        and ed.created_at >= {{resetDate}}
+        and ed.created_at >= {{dataStartDate}}
         and ed.created_at between {{startDate}} and {{endDate}}
         and we.event_name = {{event}}
       group by ed.event_key, ed.string_value
       order by 3 desc, 2 desc, 1 asc
       `,
-      { ...filters, websiteId, resetDate, startDate, endDate },
+      { ...filters, websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
     );
   }
   return rawQuery(
@@ -64,12 +63,12 @@ async function relationalQuery(
       on we.event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
       and ed.event_key = {{field}}
-      and ed.created_at >= {{resetDate}}
+      and ed.created_at >= {{dataStartDate}}
       and ed.created_at between {{startDate}} and {{endDate}}
     group by we.event_name, ed.event_key, ed.string_value
     order by 3 desc, 2 desc, 1 asc
     `,
-    { websiteId, field, resetDate, startDate, endDate },
+    { websiteId, field, startDate, endDate, dataStartDate: website.dataStartDate },
   );
 }
 
@@ -81,7 +80,6 @@ async function clickhouseQuery(
 ) {
   const { rawQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const { event } = filters;
 
   if (event) {
@@ -95,14 +93,14 @@ async function clickhouseQuery(
         count(*) as total
       from event_data
       where website_id = {websiteId:UUID}
-        and created_at >= {resetDate:DateTime}
+        and created_at >= {dataStartDate:DateTime}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
         and event_name = {event:String}
       group by event_key, data_type, string_value, event_name
       order by 1 asc, 2 asc, 3 asc, 4 desc
       limit 100
       `,
-      { ...filters, websiteId, resetDate, startDate, endDate },
+      { ...filters, websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
     );
   }
 
@@ -115,12 +113,12 @@ async function clickhouseQuery(
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
-      and created_at >= {resetDate:DateTime}
+      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
     group by event_key, data_type, event_name
     order by 1 asc, 2 asc
     limit 100
     `,
-    { websiteId, resetDate, startDate, endDate },
+    { websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
   );
 }

@@ -3,10 +3,9 @@ import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
+import { getAllowedUnits } from 'lib/date';
 import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
-
-const unitTypes = ['year', 'month', 'hour', 'day'];
 
 export interface WebsitePageviewRequestQuery {
   id: string;
@@ -57,7 +56,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone) || !getAllowedUnits(unit).includes(unit)) {
       return badRequest(res);
     }
 

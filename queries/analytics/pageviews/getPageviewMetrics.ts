@@ -33,12 +33,11 @@ async function relationalQuery(
   const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, parseFilters } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const params: any = {
     websiteId,
-    resetDate,
     startDate,
     endDate,
+    dataStartDate: website.dataStartDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   };
 
@@ -59,7 +58,7 @@ async function relationalQuery(
     from website_event
       ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at >= {{resetDate}}
+      and website_event.created_at >= {{dataStartDate}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
       ${excludeDomain}
@@ -84,12 +83,11 @@ async function clickhouseQuery(
   const { startDate, endDate, filters = {}, column } = criteria;
   const { rawQuery, parseFilters } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
   const params = {
     websiteId,
-    resetDate,
     startDate,
     endDate,
+    dataStartDate: website.dataStartDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     domain: undefined,
   };
@@ -108,7 +106,7 @@ async function clickhouseQuery(
     select ${column} x, count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {resetDate:DateTime}
+      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${excludeDomain}

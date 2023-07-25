@@ -21,4 +21,5 @@ export * from './analytics/sessions/getSessions';
 export * from './analytics/sessions/saveSessionData';
 export * from './analytics/stats/getActiveVisitors';
 export * from './analytics/stats/getRealtimeData';
+export * from './analytics/stats/getWebsiteDateRange';
 export * from './analytics/stats/getWebsiteStats';
