@@ -4,6 +4,7 @@ import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { WebsiteEventMetric } from 'lib/types';
 import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
+import { max } from 'date-fns';
 
 export async function getEventMetrics(
   ...args: [
@@ -57,7 +58,6 @@ async function relationalQuery(
       count(*) y
     from website_event
     where website_id = {{websiteId::uuid}}
-      and created_at >= {{dataStartDate}}
       and created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
       ${filterQuery}
@@ -67,9 +67,8 @@ async function relationalQuery(
     {
       ...filters,
       websiteId,
-      startDate,
+      startDate: max([startDate, website.resetAt]),
       endDate,
-      dataStartDate: website.dataStartDate,
       eventType: EVENT_TYPE.customEvent,
     },
   );
@@ -106,7 +105,6 @@ async function clickhouseQuery(
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
@@ -116,9 +114,8 @@ async function clickhouseQuery(
     {
       ...filters,
       websiteId,
-      startDate,
+      startDate: max([startDate, website.resetAt]),
       endDate,
-      dataStartDate: website.dataStartDate,
       eventType: EVENT_TYPE.customEvent,
     },
   );

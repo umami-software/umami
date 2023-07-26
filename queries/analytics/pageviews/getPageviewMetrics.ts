@@ -1,8 +1,9 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
+import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
+import { max } from 'date-fns';
 
 export async function getPageviewMetrics(
   ...args: [
@@ -35,9 +36,8 @@ async function relationalQuery(
   const website = await loadWebsite(websiteId);
   const params: any = {
     websiteId,
-    startDate,
+    startDate: max([startDate, website.resetAt]),
     endDate,
-    dataStartDate: website.dataStartDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   };
 
@@ -58,7 +58,6 @@ async function relationalQuery(
     from website_event
       ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at >= {{dataStartDate}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
       ${excludeDomain}
@@ -85,9 +84,8 @@ async function clickhouseQuery(
   const website = await loadWebsite(websiteId);
   const params = {
     websiteId,
-    startDate,
+    startDate: max([startDate, website.resetAt]),
     endDate,
-    dataStartDate: website.dataStartDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     domain: undefined,
   };
@@ -106,7 +104,6 @@ async function clickhouseQuery(
     select ${column} x, count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${excludeDomain}

@@ -1,9 +1,8 @@
 import cache from 'lib/cache';
 import { getWebsite, getSession, getUser } from 'queries';
 import { User, Website, Session } from '@prisma/client';
-import { DEFAULT_RESET_DATE } from './constants';
 
-export async function loadWebsite(websiteId: string): Promise<Website & { dataStartDate: Date }> {
+export async function loadWebsite(websiteId: string): Promise<Website> {
   let website;
 
   if (cache.enabled) {
@@ -11,8 +10,6 @@ export async function loadWebsite(websiteId: string): Promise<Website & { dataSt
   } else {
     website = await getWebsite({ id: websiteId });
   }
-
-  website.dataStartDate = new Date(website?.resetAt || DEFAULT_RESET_DATE);
 
   if (!website || website.deletedAt) {
     return null;

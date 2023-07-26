@@ -3,6 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/query';
+import { max } from 'date-fns';
 
 export async function getSessionMetrics(
   ...args: [
@@ -35,14 +36,13 @@ async function relationalQuery(
           on website_event.website_id = website.website_id
         ${joinSession}
       where website.website_id = {{websiteId::uuid}}
-        and website_event.created_at >= {{dataStartDate}}
         and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     )
     group by 1
     order by 2 desc
     limit 100`,
-    { ...filters, websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
+    { ...filters, websiteId, startDate: max([startDate, website.resetAt]), endDate },
   );
 }
 
@@ -61,7 +61,6 @@ async function clickhouseQuery(
       ${column} x, count(distinct session_id) y
     from website_event as x
     where website_id = {websiteId:UUID}
-      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
@@ -72,9 +71,8 @@ async function clickhouseQuery(
     {
       ...filters,
       websiteId,
-      startDate,
+      startDate: max([startDate, website.resetAt]),
       endDate,
-      dataStartDate: website.dataStartDate,
       eventType: EVENT_TYPE.pageView,
     },
   );

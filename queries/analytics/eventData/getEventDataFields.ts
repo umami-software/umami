@@ -3,7 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { WebsiteEventDataFields } from 'lib/types';
 import { loadWebsite } from 'lib/query';
-import { DEFAULT_RESET_DATE } from 'lib/constants';
+import { max } from 'date-fns';
 
 export async function getEventDataFields(
   ...args: [websiteId: string, startDate: Date, endDate: Date, field?: string]
@@ -28,13 +28,12 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
       from event_data
       where website_id = {{websiteId::uuid}}
         and event_key = {{field}}
-        and created_at >= {{dataStartDate}}
         and created_at between {{startDate}} and {{endDate}}
       group by event_key, string_value
       order by 3 desc, 2 desc, 1 asc
       limit 100
       `,
-      { websiteId, field, startDate, endDate, dataStartDate: website.dataStartDate },
+      { websiteId, field, startDate: max([startDate, website.resetAt]), endDate },
     );
   }
 
@@ -46,13 +45,12 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
       count(*) as total
     from event_data
     where website_id = {{websiteId::uuid}}
-      and created_at >= {{dataStartDate}}
       and created_at between {{startDate}} and {{endDate}}
     group by event_key, data_type
     order by 3 desc, 2 asc, 1 asc
     limit 100
     `,
-    { websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
+    { websiteId, startDate: max([startDate, website.resetAt]), endDate },
   );
 }
 
@@ -70,13 +68,12 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
       from event_data
       where website_id = {websiteId:UUID}
         and event_key = {field:String}
-        and created_at >= {dataStartDate:DateTime}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
       group by event_key, string_value
       order by 3 desc, 2 desc, 1 asc
       limit 100
       `,
-      { websiteId, field, startDate, endDate, dataStartDate: website.dataStartDate },
+      { websiteId, field, startDate: max([startDate, website.resetAt]), endDate },
     );
   }
 
@@ -88,12 +85,11 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
-      and created_at >= {dataStartDate:DateTime}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
     group by event_key, data_type
     order by 3 desc, 2 asc, 1 asc
     limit 100
     `,
-    { websiteId, startDate, endDate, dataStartDate: website.dataStartDate },
+    { websiteId, startDate: max([startDate, website.resetAt]), endDate },
   );
 }
