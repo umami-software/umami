@@ -10,7 +10,6 @@ export async function parseDateRangeQuery(req: NextApiRequest) {
     const { min, max } = await getWebsiteDateRange(websiteId as string);
 
     return {
-      websiteId,
       startDate: min,
       endDate: max,
       unit: getMinimumUnit(min, max),
@@ -22,9 +21,8 @@ export async function parseDateRangeQuery(req: NextApiRequest) {
   const minUnit = getMinimumUnit(startDate, endDate);
 
   return {
-    websiteId,
     startDate,
     endDate,
-    unit: getAllowedUnits(startDate, endDate).includes(unit as string) ? unit : minUnit,
+    unit: (getAllowedUnits(startDate, endDate).includes(unit as string) ? unit : minUnit) as string,
   };
 }

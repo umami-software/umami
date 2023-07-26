@@ -1,23 +1,22 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
+import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/load';
 import { maxDate } from 'lib/date';
 
+export interface PageviewStatsCriteria {
+  startDate: Date;
+  endDate: Date;
+  timezone?: string;
+  unit?: string;
+  count?: string;
+  filters: object;
+  sessionKey?: string;
+}
+
 export async function getPageviewStats(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      startDate: Date;
-      endDate: Date;
-      timezone?: string;
-      unit?: string;
-      count?: string;
-      filters: object;
-      sessionKey?: string;
-    },
-  ]
+  ...args: [websiteId: string, criteria: PageviewStatsCriteria]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -25,18 +24,7 @@ export async function getPageviewStats(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-    unit?: string;
-    count?: string;
-    filters: object;
-    sessionKey?: string;
-  },
-) {
+async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteria) {
   const {
     startDate,
     endDate,
@@ -73,18 +61,7 @@ async function relationalQuery(
   );
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    timezone?: string;
-    unit?: string;
-    count?: string;
-    filters: object;
-    sessionKey?: string;
-  },
-) {
+async function clickhouseQuery(websiteId: string, criteria: PageviewStatsCriteria) {
   const {
     startDate,
     endDate,

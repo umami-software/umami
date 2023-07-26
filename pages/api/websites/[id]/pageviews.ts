@@ -3,9 +3,9 @@ import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { getAllowedUnits } from 'lib/date';
 import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
+import { parseDateRangeQuery } from 'lib/query';
 
 export interface WebsitePageviewRequestQuery {
   id: string;
@@ -33,9 +33,6 @@ export default async (
 
   const {
     id: websiteId,
-    startAt,
-    endAt,
-    unit,
     timezone,
     url,
     referrer,
@@ -53,10 +50,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const startDate = new Date(+startAt);
-    const endDate = new Date(+endAt);
+    const { startDate, endDate, unit } = await parseDateRangeQuery(req);
 
-    if (!moment.tz.zone(timezone) || !getAllowedUnits(unit).includes(unit)) {
+    if (!moment.tz.zone(timezone)) {
       return badRequest(res);
     }
 
