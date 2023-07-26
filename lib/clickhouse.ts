@@ -122,7 +122,7 @@ async function findUnique(data) {
     throw `${data.length} records found when expecting 1.`;
   }
 
-  return data[0] ?? null;
+  return findFirst(data);
 }
 
 async function findFirst(data) {

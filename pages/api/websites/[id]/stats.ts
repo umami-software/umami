@@ -73,6 +73,7 @@ export default async (
         city,
       },
     });
+
     const prevPeriod = await getWebsiteStats(websiteId, {
       startDate: prevStartDate,
       endDate: prevEndDate,

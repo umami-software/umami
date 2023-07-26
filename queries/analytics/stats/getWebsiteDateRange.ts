@@ -16,32 +16,36 @@ async function relationalQuery(websiteId: string) {
   const { rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
 
-  return rawQuery(
+  const result = await rawQuery(
     `
     select
-      min(created_at) as min,
-      max(created_at) as max
+      min(created_at) as mindate,
+      max(created_at) as maxdate
     from website_event
     where website_id = {{websiteId::uuid}}
       and created_at >= {{startDate}}
     `,
     { websiteId, startDate: maxDate(new Date(DEFAULT_RESET_DATE), new Date(website.resetAt)) },
   );
+
+  return result[0] ?? null;
 }
 
 async function clickhouseQuery(websiteId: string) {
   const { rawQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
 
-  return rawQuery(
+  const result = await rawQuery(
     `
     select
-      min(created_at) as min,
-      max(created_at) as max
+      min(created_at) as mindate,
+      max(created_at) as maxdate
     from website_event
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime}
     `,
     { websiteId, startDate: maxDate(new Date(DEFAULT_RESET_DATE), new Date(website.resetAt)) },
   );
+
+  return result[0] ?? null;
 }
