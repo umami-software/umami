@@ -2,8 +2,8 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/query';
-import { max } from 'date-fns';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getPageviewMetrics(
   ...args: [
@@ -36,7 +36,7 @@ async function relationalQuery(
   const website = await loadWebsite(websiteId);
   const params: any = {
     websiteId,
-    startDate: max([startDate, website.resetAt]),
+    startDate: maxDate(startDate, website.resetAt),
     endDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   };
@@ -84,7 +84,7 @@ async function clickhouseQuery(
   const website = await loadWebsite(websiteId);
   const params = {
     websiteId,
-    startDate: max([startDate, website.resetAt]),
+    startDate: maxDate(startDate, website.resetAt),
     endDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     domain: undefined,

@@ -2,8 +2,8 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/query';
-import { max } from 'date-fns';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getPageviewStats(
   ...args: [
@@ -66,7 +66,7 @@ async function relationalQuery(
     {
       ...filters,
       websiteId,
-      startDate: max([startDate, website.resetAt]),
+      startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
     },
@@ -118,7 +118,7 @@ async function clickhouseQuery(
     {
       ...filters,
       websiteId,
-      startDate: max([startDate, website.resetAt]),
+      startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
     },

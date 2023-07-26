@@ -2,8 +2,8 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/query';
-import { max } from 'date-fns';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getSessionMetrics(
   ...args: [
@@ -42,7 +42,7 @@ async function relationalQuery(
     group by 1
     order by 2 desc
     limit 100`,
-    { ...filters, websiteId, startDate: max([startDate, website.resetAt]), endDate },
+    { ...filters, websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
   );
 }
 
@@ -71,7 +71,7 @@ async function clickhouseQuery(
     {
       ...filters,
       websiteId,
-      startDate: max([startDate, website.resetAt]),
+      startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
     },

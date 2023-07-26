@@ -1,9 +1,9 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { loadWebsite } from 'lib/query';
+import { loadWebsite } from 'lib/load';
 import { DEFAULT_RESET_DATE } from 'lib/constants';
-import { max } from 'date-fns';
+import { maxDate } from 'lib/date';
 
 export async function getWebsiteDateRange(...args: [websiteId: string]) {
   return runQuery({
@@ -43,6 +43,6 @@ async function clickhouseQuery(websiteId: string) {
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime}
     `,
-    { websiteId, startDate: max([new Date('2000-01-01'), website.resetAt]) },
+    { websiteId, startDate: maxDate(new Date(DEFAULT_RESET_DATE), website.resetAt) },
   );
 }

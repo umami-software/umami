@@ -2,9 +2,8 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { WebsiteEventDataFields } from 'lib/types';
-import { loadWebsite } from 'lib/query';
-import { DEFAULT_RESET_DATE } from 'lib/constants';
-import { max } from 'date-fns';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getEventDataEvents(
   ...args: [
@@ -48,7 +47,7 @@ async function relationalQuery(
       group by ed.event_key, ed.string_value
       order by 3 desc, 2 desc, 1 asc
       `,
-      { ...filters, websiteId, startDate: max([startDate, website.resetAt]), endDate },
+      { ...filters, websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
     );
   }
   return rawQuery(
@@ -67,7 +66,7 @@ async function relationalQuery(
     group by we.event_name, ed.event_key, ed.string_value
     order by 3 desc, 2 desc, 1 asc
     `,
-    { websiteId, field, startDate: max([startDate, website.resetAt]), endDate },
+    { websiteId, field, startDate: maxDate(startDate, website.resetAt), endDate },
   );
 }
 
@@ -98,7 +97,7 @@ async function clickhouseQuery(
       order by 1 asc, 2 asc, 3 asc, 4 desc
       limit 100
       `,
-      { ...filters, websiteId, startDate: max([startDate, website.resetAt]), endDate },
+      { ...filters, websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
     );
   }
 
@@ -116,6 +115,6 @@ async function clickhouseQuery(
     order by 1 asc, 2 asc
     limit 100
     `,
-    { websiteId, startDate: max([startDate, website.resetAt]), endDate },
+    { websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
   );
 }

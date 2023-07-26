@@ -3,8 +3,8 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { WebsiteEventMetric } from 'lib/types';
 import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/query';
-import { max } from 'date-fns';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getEventMetrics(
   ...args: [
@@ -67,7 +67,7 @@ async function relationalQuery(
     {
       ...filters,
       websiteId,
-      startDate: max([startDate, website.resetAt]),
+      startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.customEvent,
     },
@@ -114,7 +114,7 @@ async function clickhouseQuery(
     {
       ...filters,
       websiteId,
-      startDate: max([startDate, website.resetAt]),
+      startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.customEvent,
     },

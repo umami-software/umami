@@ -5,7 +5,7 @@ import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import { validate } from 'uuid';
 import cache from './cache';
-import { loadSession, loadWebsite } from './query';
+import { loadSession, loadWebsite } from './load';
 
 export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);

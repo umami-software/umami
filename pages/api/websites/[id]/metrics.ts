@@ -5,6 +5,7 @@ import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
+import { parseDateRangeQuery } from 'lib/query';
 
 export interface WebsiteMetricsRequestQuery {
   id: string;
@@ -34,8 +35,6 @@ export default async (
   const {
     id: websiteId,
     type,
-    startAt,
-    endAt,
     url,
     referrer,
     title,
@@ -54,8 +53,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const startDate = new Date(+startAt);
-    const endDate = new Date(+endAt);
+    const { startDate, endDate } = await parseDateRangeQuery(req);
 
     if (SESSION_COLUMNS.includes(type)) {
       const column = FILTER_COLUMNS[type] || type;
