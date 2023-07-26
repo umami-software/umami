@@ -1,7 +1,7 @@
 import { Prisma, Team, TeamWebsite } from '@prisma/client';
 import prisma from 'lib/prisma';
-import { uuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
+import { uuid } from 'next-basics';
 
 export async function getTeam(where: Prisma.TeamWhereInput): Promise<Team> {
   return prisma.client.team.findFirst({

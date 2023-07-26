@@ -13,7 +13,7 @@ import {
 import { getTeamUser } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
 import { validate } from 'uuid';
-import { loadWebsite } from './query';
+import { loadWebsite } from './load';
 import { Auth } from './types';
 
 const log = debug('umami:auth');

@@ -18,7 +18,7 @@ export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
-export const DEFAULT_CREATED_AT = '2000-01-01';
+export const DEFAULT_RESET_DATE = '2000-01-01';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
