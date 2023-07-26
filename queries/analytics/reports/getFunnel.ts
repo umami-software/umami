@@ -2,7 +2,7 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
-export async function getPageviewFunnel(
+export async function getFunnel(
   ...args: [
     websiteId: string,
     criteria: {
@@ -34,18 +34,16 @@ async function relationalQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getFunnelQuery, toUuid } = prisma;
+  const { rawQuery, getFunnelQuery } = prisma;
   const { levelQuery, sumQuery, urlFilterQuery } = getFunnelQuery(urls, windowMinutes);
-
-  const params: any = [websiteId, startDate, endDate, ...urls];
 
   return rawQuery(
     `WITH level0 AS (
       select distinct session_id, url_path, referrer_path, created_at
       from website_event
       where url_path in (${urlFilterQuery})
-          and website_id = $1${toUuid()}
-          and created_at between $2 and $3
+          and website_id = {{websiteId::uuid}}
+          and created_at between {{startDate}} and {{endDate}}
   ),level1 AS (
       select distinct session_id, url_path as level_1_url, created_at as level_1_created_at
       from level0
@@ -55,7 +53,7 @@ async function relationalQuery(
   SELECT ${sumQuery}
   from level${urls.length};
   `,
-    params,
+    { websiteId, startDate, endDate, ...urls },
   ).then((a: { [key: string]: number }) => {
     return urls.map((b, i) => ({ x: b, y: a[0][`level${i + 1}`] || 0 }));
   });
@@ -76,14 +74,8 @@ async function clickhouseQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getBetweenDates, getFunnelQuery } = clickhouse;
-  const { columnsQuery, conditionQuery, urlParams } = getFunnelQuery(urls);
-
-  const params = {
-    websiteId,
-    window: windowMinutes * 60,
-    ...urlParams,
-  };
+  const { rawQuery, getFunnelQuery } = clickhouse;
+  const { columnsQuery, urlParams } = getFunnelQuery(urls);
 
   return rawQuery<{ level: number; count: number }[]>(
     `
@@ -98,13 +90,19 @@ async function clickhouseQuery(
             ) AS level
         FROM website_event
         WHERE website_id = {websiteId:UUID}
-            and ${getBetweenDates('created_at', startDate, endDate)}             
+        AND created_at BETWEEN {startDate:DateTime} AND {endDate:DateTime}       
         GROUP BY 1
         )
     GROUP BY level
     ORDER BY level ASC;
     `,
-    params,
+    {
+      websiteId,
+      startDate,
+      endDate,
+      window: windowMinutes * 60,
+      ...urlParams,
+    },
   ).then(results => {
     return urls.map((a, i) => ({
       x: a,

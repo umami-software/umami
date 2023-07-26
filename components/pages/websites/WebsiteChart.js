@@ -45,15 +45,7 @@ export function WebsiteChart({ websiteId }) {
     return { pageviews: [], sessions: [] };
   }, [data, startDate, endDate, unit, modified]);
 
-  return (
-    <PageviewsChart
-      websiteId={websiteId}
-      data={chartData}
-      unit={unit}
-      records={getDateLength(startDate, endDate, unit)}
-      loading={isLoading}
-    />
-  );
+  return <PageviewsChart websiteId={websiteId} data={chartData} unit={unit} loading={isLoading} />;
 }
 
 export default WebsiteChart;

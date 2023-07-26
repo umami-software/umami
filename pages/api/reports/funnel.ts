@@ -3,7 +3,7 @@ import { useCors, useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { ok, methodNotAllowed, unauthorized } from 'next-basics';
-import { getPageviewFunnel } from 'queries';
+import { getFunnel } from 'queries';
 
 export interface FunnelRequestBody {
   websiteId: string;
@@ -41,7 +41,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getPageviewFunnel(websiteId, {
+    const data = await getFunnel(websiteId, {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       urls,

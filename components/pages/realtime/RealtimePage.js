@@ -94,7 +94,7 @@ export function RealtimePage({ websiteId }) {
       <WebsiteHeader websiteId={websiteId} />
       <RealtimeHeader websiteId={websiteId} data={currentData} />
       <div className={styles.chart}>
-        <RealtimeChart data={realtimeData} unit="minute" records={REALTIME_RANGE} />
+        <RealtimeChart data={realtimeData} unit="minute" />
       </div>
       <GridRow>
         <GridColumn xs={12} sm={12} md={12} lg={4} xl={4}>
