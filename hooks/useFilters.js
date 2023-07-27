@@ -24,6 +24,7 @@ export function useFilters() {
     boolean: ['t', 'f'],
     number: ['eq', 'neq', 'gt', 'lt', 'gte', 'lte'],
     date: ['be', 'af'],
+    uuid: ['eq'],
   };
 
   return { filters, types };

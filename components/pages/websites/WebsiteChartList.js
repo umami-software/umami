@@ -41,7 +41,7 @@ export default function WebsiteChartList({ websites, showCharts, limit }) {
               </Link>
             </WebsiteHeader>
             <WebsiteMetricsBar websiteId={id} />
-            <WebsiteChart websiteId={id} showChart={showCharts} />
+            {showCharts && <WebsiteChart websiteId={id} />}
           </div>
         ) : null;
       })}

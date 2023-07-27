@@ -2,30 +2,31 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
-export function getEvents(...args: [websiteId: string, startAt: Date, eventType: number]) {
+export function getEvents(...args: [websiteId: string, startDate: Date, eventType: number]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-function relationalQuery(websiteId: string, startAt: Date, eventType: number) {
+function relationalQuery(websiteId: string, startDate: Date, eventType: number) {
   return prisma.client.websiteEvent.findMany({
     where: {
       websiteId,
       eventType,
       createdAt: {
-        gte: startAt,
+        gte: startDate,
       },
     },
   });
 }
 
-function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
+function clickhouseQuery(websiteId: string, startDate: Date, eventType: number) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
-    `select
+    `
+    select
       event_id as id,
       website_id as websiteId, 
       session_id as sessionId,
@@ -35,12 +36,13 @@ function clickhouseQuery(websiteId: string, startAt: Date, eventType: number) {
       referrer_domain as referrerDomain,
       event_name as eventName
     from website_event
-    where event_type = {eventType:UInt32}
-      and website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime('UTC')}`,
+    where website_id = {websiteId:UUID}
+      and created_at >= {startDate:DateTime}
+      and event_type = {eventType:UInt32}
+    `,
     {
       websiteId,
-      startAt,
+      startDate,
       eventType,
     },
   );
