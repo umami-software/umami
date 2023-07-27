@@ -11,17 +11,14 @@ import styles from './AppLayout.module.css';
 export function AppLayout({ title, children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
-  const { pathname } = useRouter();
 
   if (!user || !config) {
     return null;
   }
 
-  const allowUpdate = user?.isAdmin && !config?.updatesDisabled && !pathname.includes('/share/');
-
   return (
     <div className={styles.layout} data-app-version={CURRENT_VERSION}>
-      {allowUpdate && <UpdateNotice />}
+      <UpdateNotice user={user} config={config} />
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
       </Head>
