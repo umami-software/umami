@@ -4,7 +4,8 @@ import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite, getUserWebsites } from 'queries';
+import { createWebsite } from 'queries';
+import userWebsites from 'pages/api/users/[id]/websites';
 
 export interface WebsitesRequestBody {
   name: string;
@@ -24,9 +25,9 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const websites = await getUserWebsites(userId);
+    req.query.id = userId;
 
-    return ok(res, websites);
+    return userWebsites(req, res);
   }
 
   if (req.method === 'POST') {
