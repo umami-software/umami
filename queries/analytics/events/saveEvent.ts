@@ -2,7 +2,7 @@ import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import { uuid } from 'lib/crypto';
+import { uuid } from 'next-basics';
 import { saveEventData } from 'queries/analytics/eventData/saveEventData';
 
 export async function saveEvent(args: {

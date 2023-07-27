@@ -73,5 +73,6 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   }
 
   (req as any).auth = { user, token, shareToken, authKey };
+
   next();
 });

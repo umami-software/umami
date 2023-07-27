@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import { DATA_TYPE } from 'lib/constants';
-import { uuid } from 'lib/crypto';
+import { uuid } from 'next-basics';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { flattenJSON } from 'lib/dynamicData';
 import kafka from 'lib/kafka';
@@ -31,7 +31,7 @@ async function relationalQuery(data: {
 
   const jsonKeys = flattenJSON(eventData);
 
-  //id, websiteEventId, eventStringValue
+  // id, websiteEventId, eventStringValue
   const flattendData = jsonKeys.map(a => ({
     id: uuid(),
     websiteEventId: eventId,
@@ -76,7 +76,9 @@ async function clickhouseQuery(data: {
     event_name: eventName,
     event_key: a.key,
     string_value:
-      a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value, 'isoUtcDateTime') : a.value,
+      a.dynamicDataType === DATA_TYPE.date
+        ? getDateFormat(a.value, 'isoUtcDateTime')
+        : a.value.toString(),
     number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
     date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
     data_type: a.dynamicDataType,

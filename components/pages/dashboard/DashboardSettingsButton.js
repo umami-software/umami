@@ -1,4 +1,4 @@
-import { Menu, Icon, Text, PopupTrigger, Popup, Item, Button } from 'react-basics';
+import { TooltipPopup, Icon, Text, Flexbox, Popup, Item, Button } from 'react-basics';
 import Icons from 'components/icons';
 import { saveDashboard } from 'store/dashboard';
 import useMessages from 'hooks/useMessages';
@@ -6,40 +6,30 @@ import useMessages from 'hooks/useMessages';
 export function DashboardSettingsButton() {
   const { formatMessage, labels } = useMessages();
 
-  const menuOptions = [
-    {
-      label: formatMessage(labels.toggleCharts),
-      value: 'charts',
-    },
-    {
-      label: formatMessage(labels.editDashboard),
-      value: 'order',
-    },
-  ];
+  const handleToggleCharts = () => {
+    saveDashboard(state => ({ showCharts: !state.showCharts }));
+  };
 
-  function handleSelect(value) {
-    if (value === 'charts') {
-      saveDashboard(state => ({ showCharts: !state.showCharts }));
-    }
-    if (value === 'order') {
-      saveDashboard({ editing: true });
-    }
-  }
+  const handleEdit = () => {
+    saveDashboard({ editing: true });
+  };
 
   return (
-    <PopupTrigger>
-      <Button>
+    <Flexbox gap={10}>
+      <TooltipPopup label={formatMessage(labels.toggleCharts)} position="bottom">
+        <Button onClick={handleToggleCharts}>
+          <Icon>
+            <Icons.BarChart />
+          </Icon>
+        </Button>
+      </TooltipPopup>
+      <Button onClick={handleEdit}>
         <Icon>
           <Icons.Edit />
         </Icon>
         <Text>{formatMessage(labels.edit)}</Text>
       </Button>
-      <Popup alignment="end">
-        <Menu variant="popup" items={menuOptions} onSelect={handleSelect}>
-          {({ label, value }) => <Item key={value}>{label}</Item>}
-        </Menu>
-      </Popup>
-    </PopupTrigger>
+    </Flexbox>
   );
 }
 

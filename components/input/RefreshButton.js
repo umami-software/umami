@@ -10,11 +10,7 @@ export function RefreshButton({ websiteId, isLoading }) {
 
   function handleClick() {
     if (!isLoading && dateRange) {
-      if (/^\d+/.test(dateRange.value)) {
-        setWebsiteDateRange(websiteId, dateRange.value);
-      } else {
-        setWebsiteDateRange(websiteId, dateRange);
-      }
+      setWebsiteDateRange(websiteId, dateRange);
     }
   }
 
