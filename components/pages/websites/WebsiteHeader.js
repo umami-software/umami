@@ -42,9 +42,9 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
       <Column className={styles.title} variant="two">
         <Favicon domain={domain} />
         <Text>{name}</Text>
+        <ActiveUsers websiteId={websiteId} />
       </Column>
       <Column className={styles.actions} variant="two">
-        <ActiveUsers websiteId={websiteId} />
         {showLinks && (
           <Flexbox alignItems="center">
             {links.map(({ label, icon, path }) => {

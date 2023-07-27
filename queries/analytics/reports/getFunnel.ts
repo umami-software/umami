@@ -2,7 +2,7 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
-export async function getPageviewFunnel(
+export async function getFunnel(
   ...args: [
     websiteId: string,
     criteria: {
@@ -49,8 +49,8 @@ async function relationalQuery(
     `WITH level1 AS (
       select distinct session_id, created_at
       from website_event
-      where website_id = $1${toUuid()}
-          and created_at between $2 and $3
+      where website_id = {{websiteId}}${toUuid()}
+          and created_at between {{startDate}} and {{endDate}}
           and url_path = $4)
     ${levelQuery}
     ${sumQuery}
@@ -81,11 +81,13 @@ async function clickhouseQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getBetweenDates, getFunnelQuery } = clickhouse;
+  const { rawQuery, getFunnelQuery } = clickhouse;
   const { levelQuery, sumQuery, urlFilterQuery, urlParams } = getFunnelQuery(urls, windowMinutes);
 
   const params = {
     websiteId,
+    startDate,
+    endDate,
     ...urlParams,
   };
 
@@ -96,7 +98,7 @@ async function clickhouseQuery(
       from umami.website_event
       where url_path in (${urlFilterQuery})
           and website_id = {websiteId:UUID}
-          and ${getBetweenDates('created_at', startDate, endDate)} 
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ), level1 AS (
       select *
       from level0

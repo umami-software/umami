@@ -1,6 +1,5 @@
-import { md5 } from 'lib/crypto';
-import { getSessions } from '../session/getSessions';
-import { getEvents } from '../event/getEvents';
+import { md5 } from 'next-basics';
+import { getSessions, getEvents } from 'queries';
 import { EVENT_TYPE } from 'lib/constants';
 
 export async function getRealtimeData(websiteId, time) {
@@ -20,7 +19,7 @@ export async function getRealtimeData(websiteId, time) {
   };
 
   return {
-    pageviews: decorate('pageview', pageviews),
+    pageviews: decorate('pageviews', pageviews),
     sessions: decorate('session', sessions),
     events: decorate('event', events),
     timestamp: Date.now(),

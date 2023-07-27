@@ -2,7 +2,7 @@ import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getUserWebsites } from 'queries';
+import { getUserTeams } from 'queries';
 
 export interface UserWebsitesRequestBody {
   name: string;
@@ -16,6 +16,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
   const { user } = req.auth;
   const { id: userId } = req.query;
 
@@ -24,9 +25,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getUserWebsites(userId);
+    const teams = await getUserTeams(userId);
 
-    return ok(res, websites);
+    return ok(res, teams);
   }
 
   return methodNotAllowed(res);

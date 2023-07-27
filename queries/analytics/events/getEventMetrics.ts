@@ -2,8 +2,9 @@ import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { WebsiteEventMetric } from 'lib/types';
-import { DEFAULT_CREATED_AT, EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/query';
+import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
+import { loadWebsite } from 'lib/load';
+import { maxDate } from 'lib/date';
 
 export async function getEventMetrics(
   ...args: [
@@ -45,26 +46,31 @@ async function relationalQuery(
     };
   },
 ) {
-  const { toUuid, rawQuery, getDateQuery, getFilterQuery } = prisma;
+  const { rawQuery, getDateQuery, getFilterQuery } = prisma;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
-  const params: any = [websiteId, resetDate, startDate, endDate];
-  const filterQuery = getFilterQuery(filters, params);
+  const filterQuery = getFilterQuery(filters);
 
   return rawQuery(
-    `select
+    `
+    select
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from website_event
-    where website_id = $1${toUuid()}
-      and created_at >= $2
-      and created_at between $3 and $4
-      and event_type = ${EVENT_TYPE.customEvent}
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
+      and event_type = {{eventType}}
       ${filterQuery}
     group by 1, 2
-    order by 2`,
-    params,
+    order by 2
+    `,
+    {
+      ...filters,
+      websiteId,
+      startDate: maxDate(startDate, website.resetAt),
+      endDate,
+      eventType: EVENT_TYPE.customEvent,
+    },
   );
 }
 
@@ -87,24 +93,30 @@ async function clickhouseQuery(
     };
   },
 ) {
-  const { rawQuery, getDateQuery, getDateFormat, getBetweenDates, getFilterQuery } = clickhouse;
+  const { rawQuery, getDateQuery, getFilterQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
-  const resetDate = new Date(website?.resetAt || DEFAULT_CREATED_AT);
-  const params = { websiteId };
+  const filterQuery = getFilterQuery(filters);
 
   return rawQuery(
-    `select
+    `
+    select
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and event_type = ${EVENT_TYPE.customEvent}
-      and created_at >= ${getDateFormat(resetDate)}
-      and ${getBetweenDates('created_at', startDate, endDate)}
-      ${getFilterQuery(filters, params)}
+      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and event_type = {eventType:UInt32}
+      ${filterQuery}
     group by x, t
-    order by t`,
-    params,
+    order by t
+    `,
+    {
+      ...filters,
+      websiteId,
+      startDate: maxDate(startDate, website.resetAt),
+      endDate,
+      eventType: EVENT_TYPE.customEvent,
+    },
   );
 }
