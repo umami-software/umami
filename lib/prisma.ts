@@ -108,24 +108,6 @@ function parseFilters(
   };
 }
 
-function getFunnelParams(endDate: Date, websiteId: string, urls: string[]): any[] {
-  const db = getDatabaseType(process.env.DATABASE_URL);
-
-  if (db === POSTGRESQL) {
-    return urls;
-  }
-
-  if (db === MYSQL) {
-    let params = [];
-    params.push(urls[0]);
-    for (let i = 0; i < urls.length - 1; i++) {
-      params = params.concat([urls[i], urls[i + 1], endDate, websiteId]);
-    }
-
-    return params;
-  }
-}
-
 function getFunnelQuery(
   urls: string[],
   endDate: Date,
@@ -134,10 +116,7 @@ function getFunnelQuery(
 ): {
   levelQuery: string;
   sumQuery: string;
-  urlParams: any[];
 } {
-  const initParamLength = 3;
-
   return urls.reduce(
     (pv, cv, i) => {
       const levelNumber = i + 1;
@@ -152,22 +131,20 @@ function getFunnelQuery(
               on l.session_id = we.session_id
           where we.created_at between l.created_at 
               and ${getAddMinutesQuery(`l.created_at `, windowMinutes)}
-              and we.referrer_path = $${i + initParamLength}
-              and we.url_path = $${levelNumber + initParamLength}
+              and we.referrer_path = {{${i - 1}}}
+              and we.url_path = {{${i}}}
               and we.created_at <= {{endDate}}
               and we.website_id = {{websiteId}}${toUuid()}
         )`;
       }
 
       pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-      pv.urlParams = getFunnelParams(endDate, websiteId, urls);
 
       return pv;
     },
     {
       levelQuery: '',
       sumQuery: '',
-      urlParams: [],
     },
   );
 }
@@ -179,10 +156,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   if (db !== POSTGRESQL && db !== MYSQL) {
     return Promise.reject(new Error('Unknown database.'));
   }
-
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
-
     params.push(data[name]);
 
     return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
@@ -199,7 +174,6 @@ export default {
   getFilterQuery,
   toUuid,
   parseFilters,
-  getFunnelParams,
   getFunnelQuery,
   rawQuery,
 };
