@@ -24,7 +24,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getUserWebsites(userId);
+    const { includeTeams } = req.query;
+
+    const websites = await getUserWebsites(userId, { includeTeams });
 
     return ok(res, websites);
   }
