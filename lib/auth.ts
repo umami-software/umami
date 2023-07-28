@@ -9,10 +9,10 @@ import {
   getRandomChars,
   parseSecureToken,
   parseToken,
+  isUuid,
 } from 'next-basics';
 import { getTeamUser } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
-import { validate } from 'uuid';
 import { loadWebsite } from './load';
 import { Auth } from './types';
 
@@ -108,7 +108,7 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  if (!validate(websiteId)) {
+  if (!isUuid(websiteId)) {
     return false;
   }
 
@@ -184,7 +184,7 @@ export async function canUpdateTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (validate(teamId)) {
+  if (isUuid(teamId)) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
@@ -198,7 +198,7 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (validate(teamId)) {
+  if (isUuid(teamId)) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
@@ -212,7 +212,7 @@ export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUs
     return true;
   }
 
-  if (validate(teamId) && validate(removeUserId)) {
+  if (isUuid(teamId) && isUuid(removeUserId)) {
     if (removeUserId === user.id) {
       return true;
     }
@@ -230,7 +230,7 @@ export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websi
     return true;
   }
 
-  if (validate(teamId) && validate(websiteId)) {
+  if (isUuid(teamId) && isUuid(websiteId)) {
     const teamWebsite = await getTeamWebsite(teamId, websiteId);
 
     if (teamWebsite.website.userId === user.id) {

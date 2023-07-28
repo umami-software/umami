@@ -4,10 +4,10 @@ import {
   badRequest,
   parseSecureToken,
   tooManyRequest,
+  isUuid,
 } from 'next-basics';
 import debug from 'debug';
 import cors from 'cors';
-import { validate } from 'uuid';
 import redis from '@umami/redis-client';
 import { findSession } from 'lib/session';
 import { getAuthToken, parseShareToken } from 'lib/auth';
@@ -53,7 +53,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   let user = null;
   const { userId, authKey } = payload || {};
 
-  if (validate(userId)) {
+  if (isUuid(userId)) {
     user = await getUser({ id: userId });
   } else if (redis.enabled && authKey) {
     user = await redis.get(authKey);
