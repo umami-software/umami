@@ -77,52 +77,6 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
-function getFunnelQuery(
-  urls: string[],
-  windowMinutes: number,
-): {
-  levelQuery: string;
-  sumQuery: string;
-  urlFilterQuery: string;
-  urlParams: { [key: string]: string };
-} {
-  return urls.reduce(
-    (pv, cv, i) => {
-      const levelNumber = i + 1;
-      const startSum = i > 0 ? 'union all ' : '';
-      const startFilter = i > 0 ? ', ' : '';
-
-      if (levelNumber >= 2) {
-        pv.levelQuery += `\n
-        , level${levelNumber} AS (
-          select distinct y.session_id as session_id,
-              y.url_path as url_path,
-              y.referrer_path as referrer_path,
-              y.created_at as created_at
-          from level${i} x
-          join level0 y
-          on x.session_id = y.session_id
-          where y.created_at between x.created_at and x.created_at + interval ${windowMinutes} minute
-              and y.referrer_path = {url${i - 1}:String}
-              and y.url_path = {url${i}:String}
-        )`;
-      }
-
-      pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-      pv.urlFilterQuery += `${startFilter}{url${i}:String} `;
-      pv.urlParams[`url${i}`] = cv;
-
-      return pv;
-    },
-    {
-      levelQuery: '',
-      sumQuery: '',
-      urlFilterQuery: '',
-      urlParams: {},
-    },
-  );
-}
-
 function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
   return {
     filterQuery: getFilterQuery(filters, params),
@@ -169,7 +123,6 @@ export default {
   getDateQuery,
   getDateFormat,
   getFilterQuery,
-  getFunnelQuery,
   parseFilters,
   findUnique,
   findFirst,

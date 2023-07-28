@@ -19,18 +19,6 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-function toUuid(): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
-
-  if (db === POSTGRESQL) {
-    return '::uuid';
-  }
-
-  if (db === MYSQL) {
-    return '';
-  }
-}
-
 function getAddMinutesQuery(field: string, minutes: number): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
@@ -108,47 +96,6 @@ function parseFilters(
   };
 }
 
-function getFunnelQuery(
-  urls: string[],
-  endDate: Date,
-  websiteId: string,
-  windowMinutes: number,
-): {
-  levelQuery: string;
-  sumQuery: string;
-} {
-  return urls.reduce(
-    (pv, cv, i) => {
-      const levelNumber = i + 1;
-      const startSum = i > 0 ? 'union ' : '';
-
-      if (levelNumber >= 2) {
-        pv.levelQuery += `\n
-        , level${levelNumber} AS (
-          select distinct we.session_id, we.created_at
-          from level${i} l
-          join website_event we
-              on l.session_id = we.session_id
-          where we.created_at between l.created_at 
-              and ${getAddMinutesQuery(`l.created_at `, windowMinutes)}
-              and we.referrer_path = {{${i - 1}}}
-              and we.url_path = {{${i}}}
-              and we.created_at <= {{endDate}}
-              and we.website_id = {{websiteId}}${toUuid()}
-        )`;
-      }
-
-      pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
-
-      return pv;
-    },
-    {
-      levelQuery: '',
-      sumQuery: '',
-    },
-  );
-}
-
 async function rawQuery(sql: string, data: object): Promise<any> {
   const db = getDatabaseType();
   const params = [];
@@ -172,8 +119,6 @@ export default {
   getDateQuery,
   getTimestampIntervalQuery,
   getFilterQuery,
-  toUuid,
   parseFilters,
-  getFunnelQuery,
   rawQuery,
 };
