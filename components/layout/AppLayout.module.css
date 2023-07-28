@@ -8,7 +8,6 @@
 .nav {
   height: 60px;
   width: 100vw;
-  z-index: var(--z-index-overlay);
   grid-column: 1;
   grid-row: 1 / 2;
 }
