@@ -74,7 +74,7 @@ if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN
 const config = {
   env: {
     currentVersion: pkg.version,
-    defaultLang: process.env.DEFAULT_LANG,
+    defaultLocale: process.env.DEFAULT_LOCALE,
     isProduction: process.env.NODE_ENV === 'production',
   },
   basePath: process.env.BASE_PATH,
