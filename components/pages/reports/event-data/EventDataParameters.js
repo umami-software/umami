@@ -5,7 +5,7 @@ import { ReportContext } from 'components/pages/reports/Report';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
 import Icons from 'components/icons';
-import FieldAddForm from './FieldAddForm';
+import FieldAddForm from '../FieldAddForm';
 import BaseParameters from '../BaseParameters';
 import ParameterList from '../ParameterList';
 import styles from './EventDataParameters.module.css';
@@ -54,9 +54,11 @@ export function EventDataParameters() {
   };
 
   const handleAdd = (group, value) => {
-    const data = parameterData[group].filter(({ name }) => name !== value.name);
+    const data = parameterData[group];
 
-    updateReport({ parameters: { [group]: data.concat(value) } });
+    if (!data.find(({ name }) => name === value.name)) {
+      updateReport({ parameters: { [group]: data.concat(value) } });
+    }
   };
 
   const handleRemove = (group, index) => {

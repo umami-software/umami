@@ -13,14 +13,15 @@ export function EventDataTable({ data = [] }) {
 
   return (
     <GridTable data={data}>
+      <GridColumn name="event" label={formatMessage(labels.event)}>
+        {row => (
+          <Link href={resolveUrl({ event: row.event })} shallow={true}>
+            {row.event}
+          </Link>
+        )}
+      </GridColumn>
       <GridColumn name="field" label={formatMessage(labels.field)}>
-        {row => {
-          return (
-            <Link href={resolveUrl({ view: row.field })} shallow={true}>
-              {row.field}
-            </Link>
-          );
-        }}
+        {row => row.field}
       </GridColumn>
       <GridColumn name="total" label={formatMessage(labels.totalRecords)}>
         {({ total }) => total.toLocaleString()}

@@ -1,51 +1,31 @@
-import cache from 'lib/cache';
-import { getWebsite, getSession, getUser } from 'queries';
-import { User, Website, Session } from '@prisma/client';
+import { NextApiRequest } from 'next';
+import { getAllowedUnits, getMinimumUnit } from './date';
+import { getWebsiteDateRange } from '../queries';
 
-export async function loadWebsite(websiteId: string): Promise<Website> {
-  let website;
+export async function parseDateRangeQuery(req: NextApiRequest) {
+  const { id: websiteId, startAt, endAt, unit } = req.query;
 
-  if (cache.enabled) {
-    website = await cache.fetchWebsite(websiteId);
-  } else {
-    website = await getWebsite({ id: websiteId });
+  // All-time
+  if (+startAt === 0 && +endAt === 1) {
+    const result = await getWebsiteDateRange(websiteId as string);
+    const { min, max } = result[0];
+    const startDate = new Date(min);
+    const endDate = new Date(max);
+
+    return {
+      startDate,
+      endDate,
+      unit: getMinimumUnit(startDate, endDate),
+    };
   }
 
-  if (!website || website.deletedAt) {
-    return null;
-  }
+  const startDate = new Date(+startAt);
+  const endDate = new Date(+endAt);
+  const minUnit = getMinimumUnit(startDate, endDate);
 
-  return website;
-}
-
-export async function loadSession(sessionId: string): Promise<Session> {
-  let session;
-
-  if (cache.enabled) {
-    session = await cache.fetchSession(sessionId);
-  } else {
-    session = await getSession({ id: sessionId });
-  }
-
-  if (!session) {
-    return null;
-  }
-
-  return session;
-}
-
-export async function loadUser(userId: string): Promise<User> {
-  let user;
-
-  if (cache.enabled) {
-    user = await cache.fetchUser(userId);
-  } else {
-    user = await getUser({ id: userId });
-  }
-
-  if (!user || user.deletedAt) {
-    return null;
-  }
-
-  return user;
+  return {
+    startDate,
+    endDate,
+    unit: (getAllowedUnits(startDate, endDate).includes(unit as string) ? unit : minUnit) as string,
+  };
 }

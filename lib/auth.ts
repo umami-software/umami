@@ -2,7 +2,7 @@ import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret } from 'lib/crypto';
+import { secret, isUuid } from 'lib/crypto';
 import {
   createSecureToken,
   ensureArray,
@@ -12,8 +12,7 @@ import {
 } from 'next-basics';
 import { getTeamUser } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
-import { validate } from 'uuid';
-import { loadWebsite } from './query';
+import { loadWebsite } from './load';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
@@ -108,7 +107,7 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  if (!validate(websiteId)) {
+  if (!isUuid(websiteId)) {
     return false;
   }
 
@@ -184,7 +183,7 @@ export async function canUpdateTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (validate(teamId)) {
+  if (isUuid(teamId)) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
@@ -198,7 +197,7 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (validate(teamId)) {
+  if (isUuid(teamId)) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
@@ -212,7 +211,7 @@ export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUs
     return true;
   }
 
-  if (validate(teamId) && validate(removeUserId)) {
+  if (isUuid(teamId) && isUuid(removeUserId)) {
     if (removeUserId === user.id) {
       return true;
     }
@@ -230,7 +229,7 @@ export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websi
     return true;
   }
 
-  if (validate(teamId) && validate(websiteId)) {
+  if (isUuid(teamId) && isUuid(websiteId)) {
     const teamWebsite = await getTeamWebsite(teamId, websiteId);
 
     if (teamWebsite.website.userId === user.id) {

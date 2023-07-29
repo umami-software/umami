@@ -1,11 +1,10 @@
-import { secret, uuid } from 'lib/crypto';
+import { secret, uuid, isUuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
-import { validate } from 'uuid';
 import cache from './cache';
-import { loadSession, loadWebsite } from './query';
+import { loadSession, loadWebsite } from './load';
 
 export async function findSession(req: NextApiRequestCollect) {
   const { payload } = getJsonBody<CollectRequestBody>(req);
@@ -30,7 +29,13 @@ export async function findSession(req: NextApiRequestCollect) {
   // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
 
-  if (!validate(websiteId)) {
+  // Check the hostname value for legality to eliminate dirty data
+  const validHostnameRegex = /^[\w-.]+$/;
+  if (!validHostnameRegex.test(hostname)) {
+    throw new Error('Invalid hostname.');
+  }
+
+  if (!isUuid(websiteId)) {
     throw new Error('Invalid website ID.');
   }
 

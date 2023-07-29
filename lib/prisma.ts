@@ -1,7 +1,6 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { getDynamicDataType } from './dynamicData';
 import { FILTER_COLUMNS } from './constants';
 
 const MYSQL_DATE_FORMATS = {
@@ -20,19 +19,7 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-function toUuid(): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
-
-  if (db === POSTGRESQL) {
-    return '::uuid';
-  }
-
-  if (db === MYSQL) {
-    return '';
-  }
-}
-
-function getAddMinutesQuery(field: string, minutes: number) {
+function getAddMinutesQuery(field: string, minutes: number): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
@@ -45,7 +32,7 @@ function getAddMinutesQuery(field: string, minutes: number) {
 }
 
 function getDateQuery(field: string, unit: string, timezone?: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     if (timezone) {
@@ -65,8 +52,8 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   }
 }
 
-function getTimestampInterval(field: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+function getTimestampIntervalQuery(field: string): string {
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `floor(extract(epoch from max(${field}) - min(${field})))`;
@@ -75,47 +62,6 @@ function getTimestampInterval(field: string): string {
   if (db === MYSQL) {
     return `floor(unix_timestamp(max(${field})) - unix_timestamp(min(${field})))`;
   }
-}
-
-function getEventDataFilterQuery(
-  filters: {
-    eventKey?: string;
-    eventValue?: string | number | boolean | Date;
-  }[],
-  params: any[],
-) {
-  const query = filters.reduce((ac, cv) => {
-    const type = getDynamicDataType(cv.eventValue);
-
-    let value = cv.eventValue;
-
-    ac.push(`and (event_key = $${params.length + 1}`);
-    params.push(cv.eventKey);
-
-    switch (type) {
-      case 'number':
-        ac.push(`and number_value = $${params.length + 1})`);
-        params.push(value);
-        break;
-      case 'string':
-        ac.push(`and string_value = $${params.length + 1})`);
-        params.push(decodeURIComponent(cv.eventValue as string));
-        break;
-      case 'boolean':
-        ac.push(`and string_value = $${params.length + 1})`);
-        params.push(decodeURIComponent(cv.eventValue as string));
-        value = cv ? 'true' : 'false';
-        break;
-      case 'date':
-        ac.push(`and date_value = $${params.length + 1})`);
-        params.push(cv.eventValue);
-        break;
-    }
-
-    return ac;
-  }, []);
-
-  return query.join('\n');
 }
 
 function getFilterQuery(filters = {}, params = []): string {
@@ -134,53 +80,6 @@ function getFilterQuery(filters = {}, params = []): string {
   return query.join('\n');
 }
 
-function getFunnelQuery(
-  urls: string[],
-  windowMinutes: number,
-): {
-  levelQuery: string;
-  sumQuery: string;
-  urlFilterQuery: string;
-} {
-  const initParamLength = 3;
-
-  return urls.reduce(
-    (pv, cv, i) => {
-      const levelNumber = i + 1;
-      const start = i > 0 ? ',' : '';
-
-      if (levelNumber >= 2) {
-        pv.levelQuery += `\n
-        , level${levelNumber} AS (
-          select cl.*,
-            l0.created_at level_${levelNumber}_created_at,
-            l0.url_path as level_${levelNumber}_url
-          from level${i} cl
-              left join website_event l0
-                  on cl.session_id = l0.session_id
-                  and l0.created_at between cl.level_${i}_created_at 
-                    and ${getAddMinutesQuery(`cl.level_${i}_created_at`, windowMinutes)}
-                  and l0.referrer_path = $${i + initParamLength}
-                  and l0.url_path = $${levelNumber + initParamLength}
-                  and created_at between $2 and $3
-                  and website_id = $1${toUuid()}
-        )`;
-      }
-
-      pv.sumQuery += `\n${start}SUM(CASE WHEN level_${levelNumber}_url is not null THEN 1 ELSE 0 END) AS level${levelNumber}`;
-
-      pv.urlFilterQuery += `\n${start}$${levelNumber + initParamLength} `;
-
-      return pv;
-    },
-    {
-      levelQuery: '',
-      sumQuery: '',
-      urlFilterQuery: '',
-    },
-  );
-}
-
 function parseFilters(
   filters: { [key: string]: any } = {},
   params = [],
@@ -197,27 +96,30 @@ function parseFilters(
   };
 }
 
-async function rawQuery(query: string, params: never[] = []): Promise<any> {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+async function rawQuery(sql: string, data: object): Promise<any> {
+  const db = getDatabaseType();
+  const params = [];
 
   if (db !== POSTGRESQL && db !== MYSQL) {
     return Promise.reject(new Error('Unknown database.'));
   }
 
-  const sql = db === MYSQL ? query.replace(/\$[0-9]+/g, '?') : query;
+  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
+    const [, name, type] = args;
+    params.push(data[name]);
 
-  return prisma.rawQuery(sql, params);
+    return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
+  });
+
+  return prisma.rawQuery(query, params);
 }
 
 export default {
   ...prisma,
   getAddMinutesQuery,
   getDateQuery,
-  getTimestampInterval,
+  getTimestampIntervalQuery,
   getFilterQuery,
-  getFunnelQuery,
-  getEventDataFilterQuery,
-  toUuid,
   parseFilters,
   rawQuery,
 };
