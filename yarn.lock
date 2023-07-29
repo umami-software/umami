@@ -6371,15 +6371,14 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-basics@^0.34.0:
-  version "0.34.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.34.0.tgz#ad4163059bfbfddbd3d7cbbf56bacae9d5c68bc3"
-  integrity sha512-0mCWP1PHWjUmQXEktcO553VfvBAOI47M9fDqJt1BDeS4uiY2GzTEEzd1xEpvk5koBjkb7mPKzsTI7ucs1DT6NQ==
+next-basics@^0.35.0:
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.35.0.tgz#aa68fd35a0e3fbabfdaf570cd092b6a7cf8df6f5"
+  integrity sha512-yqXZMLe109hSJ8sebI/f2m1XNnVuQowpELOhZSGOFOmLfvUyFBAEi0ULdqX1eb8xbttLgjcrumrZfMgmEwuCPw==
   dependencies:
     bcryptjs "^2.4.3"
     jsonwebtoken "^9.0.0"
     pure-rand "^6.0.2"
-    uuid "^8.3.2"
 
 next@13.3.1:
   version "13.3.1"
@@ -9185,11 +9184,6 @@ uuid@3.4.0, uuid@^3.3.2:
   version "3.4.0"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-uuid@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 uuid@^9.0.0:
   version "9.0.0"
