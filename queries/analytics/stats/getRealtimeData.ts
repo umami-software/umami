@@ -19,7 +19,7 @@ export async function getRealtimeData(websiteId, time) {
   };
 
   return {
-    pageviews: decorate('pageviews', pageviews),
+    pageviews: decorate('pageview', pageviews),
     sessions: decorate('session', sessions),
     events: decorate('event', events),
     timestamp: Date.now(),
