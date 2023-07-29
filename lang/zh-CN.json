@@ -39,6 +39,7 @@
   "label.devices": "设备",
   "label.dismiss": "关闭",
   "label.domain": "域名",
+  "label.dropoff": "Dropoff",
   "label.edit": "编辑",
   "label.edit-dashboard": "编辑仪表板",
   "label.enable-share-url": "启用共享链接",
@@ -50,6 +51,7 @@
   "label.filter-combined": "合并",
   "label.filter-raw": "原始",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "加入",
   "label.join-team": "加入团队",
   "label.language": "语言",
@@ -188,5 +190,6 @@
   "messages.no-results-found": "没有找到任何结果。",
   "messages.no-team-websites": "这个团队没有任何网站。",
   "messages.no-websites-configured": "你还没有设置任何网站。",
-  "messages.team-websites-info": "团队中的任何人都可查看网站。"
+  "messages.team-websites-info": "团队中的任何人都可查看网站。",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

@@ -39,6 +39,7 @@
   "label.devices": "Urządzenia",
   "label.dismiss": "Odrzuć",
   "label.domain": "Domena",
+  "label.dropoff": "Dropoff",
   "label.edit": "Edytuj",
   "label.edit-dashboard": "Edytuj panel",
   "label.enable-share-url": "Włącz udostępnianie adresu URL",
@@ -50,6 +51,7 @@
   "label.filter-combined": "Połączone",
   "label.filter-raw": "Surowe dane",
   "label.funnel": "Lejek",
+  "label.insights": "Insights",
   "label.join": "Dołącz",
   "label.join-team": "Dołącz do zespołu",
   "label.language": "Język",
@@ -157,7 +159,7 @@
   "labels.unique": "Unikalne",
   "labels.untitled": "Bez tytułu",
   "labels.value": "Wartość",
-  "message.active-users": "{x} aktualnie {x, liczba mnoga, jeden {odwiedzający} inne {odwiedzających}}",
+  "message.active-users": "{x} aktualnie {x, plural, one {odwiedzający} other {odwiedzających}}",
   "message.confirm-delete": "Czy na pewno chcesz usunąć {target}?",
   "message.confirm-leave": "Czy na pewno chcesz opuścić {target}?",
   "message.confirm-reset": "Czy na pewno chcesz zresetować statystyki {target}?",
@@ -188,5 +190,6 @@
   "messages.no-results-found": "Nie znaleziono wyników.",
   "messages.no-team-websites": "Ten zespół nie ma żadnych witryn internetowych.",
   "messages.no-websites-configured": "Nie masz skonfigurowanych żadnych witryn internetowych.",
-  "messages.team-websites-info": "Strony internetowe mogą być przeglądane przez każdego członka zespołu."
+  "messages.team-websites-info": "Strony internetowe mogą być przeglądane przez każdego członka zespołu.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }
