@@ -1,5 +1,5 @@
 import { DATA_TYPE } from 'lib/constants';
-import { uuid } from 'next-basics';
+import { uuid } from 'lib/crypto';
 import { flattenJSON } from 'lib/dynamicData';
 import prisma from 'lib/prisma';
 import { DynamicData } from 'lib/types';

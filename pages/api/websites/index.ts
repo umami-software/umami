@@ -1,5 +1,5 @@
 import { canCreateWebsite } from 'lib/auth';
-import { uuid } from 'next-basics';
+import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';

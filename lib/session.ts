@@ -1,6 +1,6 @@
-import { secret } from 'lib/crypto';
+import { secret, uuid, isUuid } from 'lib/crypto';
 import { getClientInfo, getJsonBody } from 'lib/detect';
-import { parseToken, uuid, isUuid } from 'next-basics';
+import { parseToken } from 'next-basics';
 import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import cache from './cache';

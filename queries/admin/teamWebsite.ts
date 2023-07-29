@@ -1,6 +1,6 @@
 import { Prisma, Team, TeamUser, TeamWebsite, Website } from '@prisma/client';
 import { ROLES } from 'lib/constants';
-import { uuid } from 'next-basics';
+import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
 export async function getTeamWebsite(

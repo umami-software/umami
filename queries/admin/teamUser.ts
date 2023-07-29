@@ -1,5 +1,5 @@
 import { Prisma, TeamUser } from '@prisma/client';
-import { uuid } from 'next-basics';
+import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
 
 export async function getTeamUserById(teamUserId: string): Promise<TeamUser> {

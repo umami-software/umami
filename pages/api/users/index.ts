@@ -1,6 +1,6 @@
 import { canCreateUser, canViewUsers } from 'lib/auth';
 import { ROLES } from 'lib/constants';
-import { uuid } from 'next-basics';
+import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';

@@ -2,14 +2,13 @@ import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret } from 'lib/crypto';
+import { secret, isUuid } from 'lib/crypto';
 import {
   createSecureToken,
   ensureArray,
   getRandomChars,
   parseSecureToken,
   parseToken,
-  isUuid,
 } from 'next-basics';
 import { getTeamUser } from 'queries';
 import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';

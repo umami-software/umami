@@ -4,14 +4,13 @@ import {
   badRequest,
   parseSecureToken,
   tooManyRequest,
-  isUuid,
 } from 'next-basics';
 import debug from 'debug';
 import cors from 'cors';
 import redis from '@umami/redis-client';
 import { findSession } from 'lib/session';
 import { getAuthToken, parseShareToken } from 'lib/auth';
-import { secret } from 'lib/crypto';
+import { secret, isUuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
 import { getUser } from '../queries';
 import { NextApiRequestCollect } from 'pages/api/send';
