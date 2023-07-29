@@ -239,6 +239,12 @@
       "value": "Domein"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -303,6 +309,12 @@
     {
       "type": 0,
       "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -1285,6 +1297,20 @@
     {
       "type": 0,
       "value": "Websites kunnen door iedereen in het team worden bekeken."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }

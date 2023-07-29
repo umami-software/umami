@@ -39,6 +39,7 @@
   "label.devices": "Geräte",
   "label.dismiss": "Verwerfen",
   "label.domain": "Domain",
+  "label.dropoff": "Dropoff",
   "label.edit": "Bearbeiten",
   "label.edit-dashboard": "Dashboard bearbeiten",
   "label.enable-share-url": "Freigabe-URL aktivieren",
@@ -50,6 +51,7 @@
   "label.filter-combined": "Kombiniert",
   "label.filter-raw": "Rohdaten",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Beitreten",
   "label.join-team": "Team beitreten",
   "label.language": "Sprache",
@@ -188,5 +190,6 @@
   "messages.no-results-found": "Keine Ergebnisse gefunden.",
   "messages.no-team-websites": "Diesem Team sind keine Websites zugeordnet.",
   "messages.no-websites-configured": "Es ist keine Webseite vorhanden.",
-  "messages.team-websites-info": "Webseiten können von jedem im Team eingesehen werden."
+  "messages.team-websites-info": "Webseiten können von jedem im Team eingesehen werden.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

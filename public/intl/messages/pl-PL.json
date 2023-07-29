@@ -20,13 +20,13 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Dodaj"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Dodaj opis"
     }
   ],
   "label.add-website": [
@@ -239,6 +239,12 @@
       "value": "Domena"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -266,7 +272,7 @@
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Dane zdarzenia"
     }
   ],
   "label.events": [
@@ -278,13 +284,13 @@
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Pole"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Pola"
     }
   ],
   "label.filter-combined": [
@@ -302,7 +308,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Lejek"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -478,13 +490,13 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Zapytanie"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Parametry query"
+      "value": "Parametry zapytania"
     }
   ],
   "label.realtime": [
@@ -526,7 +538,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Raporty"
     }
   ],
   "label.required": [
@@ -556,7 +568,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Uruchom zapytanie"
     }
   ],
   "label.save": [
@@ -574,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Wybierz datę"
     }
   ],
   "label.select-website": [
@@ -718,13 +730,13 @@
   "label.url": [
     {
       "type": 0,
-      "value": "URL"
+      "value": "Link"
     }
   ],
   "label.urls": [
     {
       "type": 0,
-      "value": "URLs"
+      "value": "Linki"
     }
   ],
   "label.user": [
@@ -760,7 +772,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Tylko do odczytu"
     }
   ],
   "label.views": [
@@ -778,7 +790,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Witryna"
     }
   ],
   "label.website-id": [
@@ -796,7 +808,7 @@
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Okno"
     }
   ],
   "label.yesterday": [
@@ -808,103 +820,103 @@
   "labels.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Po"
     }
   ],
   "labels.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Średnia"
     }
   ],
   "labels.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Przed"
     }
   ],
   "labels.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Rozbicie"
     }
   ],
   "labels.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Zawiera"
     }
   ],
   "labels.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Stwórz raport"
     }
   ],
   "labels.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Opis"
     }
   ],
   "labels.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Nie zawiera"
     }
   ],
   "labels.does-not-equal": [
     {
       "type": 0,
-      "value": "Does not equal"
+      "value": "Nie jest równe"
     }
   ],
   "labels.equals": [
     {
       "type": 0,
-      "value": "Equals"
+      "value": "Równe"
     }
   ],
   "labels.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Fałsz"
     }
   ],
   "labels.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filtry"
     }
   ],
   "labels.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Większe niż"
     }
   ],
   "labels.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Większe niż lub równe"
     }
   ],
   "labels.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Mniejsze niż"
     }
   ],
   "labels.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Mniejsze niż lub równe"
     }
   ],
   "labels.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Maks"
     }
   ],
   "labels.min": [
@@ -916,55 +928,55 @@
   "labels.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Przegląd"
     }
   ],
   "labels.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Suma"
     }
   ],
   "labels.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "W sumie"
     }
   ],
   "labels.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Suma rekordów"
     }
   ],
   "labels.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Prawda"
     }
   ],
   "labels.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Typ"
     }
   ],
   "labels.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Unikalne"
     }
   ],
   "labels.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Bez tytułu"
     }
   ],
   "labels.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Wartość"
     }
   ],
   "message.active-users": [
@@ -1046,7 +1058,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Aby usunąć to konto, wpisz "
     },
     {
       "type": 1,
@@ -1054,13 +1066,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " w polu poniżej, aby potwierdzić."
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
+      "value": "Aby usunąć tę stronę, wpisz "
     },
     {
       "type": 1,
@@ -1068,7 +1080,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " w polu poniżej, aby potwierdzić."
     }
   ],
   "message.delete-website-warning": [
@@ -1138,7 +1150,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Brak dostępnych danych o zdarzeniach."
     }
   ],
   "message.no-match-password": [
@@ -1266,7 +1278,7 @@
   "messages.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Nie znaleziono wyników."
     }
   ],
   "messages.no-team-websites": [
@@ -1285,6 +1297,20 @@
     {
       "type": 0,
       "value": "Strony internetowe mogą być przeglądane przez każdego członka zespołu."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }

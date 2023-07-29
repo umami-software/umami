@@ -26,7 +26,7 @@
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Beschreibung hinzufügen"
     }
   ],
   "label.add-website": [
@@ -239,6 +239,12 @@
       "value": "Domain"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -266,7 +272,7 @@
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Event daten"
     }
   ],
   "label.events": [
@@ -303,6 +309,12 @@
     {
       "type": 0,
       "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -478,7 +490,7 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Abfrage"
     }
   ],
   "label.query-parameters": [
@@ -526,7 +538,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Reporte"
     }
   ],
   "label.required": [
@@ -556,7 +568,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Abfrage starten"
     }
   ],
   "label.save": [
@@ -574,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Datum auswählen"
     }
   ],
   "label.select-website": [
@@ -778,7 +790,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Webseite"
     }
   ],
   "label.website-id": [
@@ -814,7 +826,7 @@
   "labels.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Durchschnitt"
     }
   ],
   "labels.before": [
@@ -838,13 +850,13 @@
   "labels.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Report erstellen"
     }
   ],
   "labels.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Beschreibung"
     }
   ],
   "labels.does-not-contain": [
@@ -880,25 +892,25 @@
   "labels.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Größer als"
     }
   ],
   "labels.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Größer oder gleich"
     }
   ],
   "labels.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Kleiner als"
     }
   ],
   "labels.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Kleiner oder gleich"
     }
   ],
   "labels.max": [
@@ -916,13 +928,13 @@
   "labels.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Übersicht"
     }
   ],
   "labels.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Summe"
     }
   ],
   "labels.total": [
@@ -1258,7 +1270,7 @@
   "messages.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Keine Ergebnisse gefunden."
     }
   ],
   "messages.no-team-websites": [
@@ -1277,6 +1289,20 @@
     {
       "type": 0,
       "value": "Webseiten können von jedem im Team eingesehen werden."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }
