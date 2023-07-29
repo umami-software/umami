@@ -13,7 +13,11 @@ export function UpdateNotice({ user, config }) {
   const { pathname } = useRouter();
   const [dismissed, setDismissed] = useState(checked);
   const allowUpdate =
-    user?.isAdmin && !config?.updatesDisabled && !pathname.includes('/share/') && !dismissed;
+    user?.isAdmin &&
+    !config?.updatesDisabled &&
+    !config?.cloudMode &&
+    !pathname.includes('/share/') &&
+    !dismissed;
 
   const updateCheck = useCallback(() => {
     setItem(VERSION_CHECK, { version: latest, time: Date.now() });

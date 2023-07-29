@@ -1,4 +1,4 @@
-import { addMinutes, differenceInMinutes } from 'date-fns';
+import { subMinutes, differenceInMinutes } from 'date-fns';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { canViewWebsite } from 'lib/auth';
@@ -53,8 +53,8 @@ export default async (
 
     const { startDate, endDate } = await parseDateRangeQuery(req);
     const diff = differenceInMinutes(endDate, startDate);
-    const prevStartDate = addMinutes(startDate, -diff);
-    const prevEndDate = addMinutes(endDate, -diff);
+    const prevStartDate = subMinutes(startDate, diff);
+    const prevEndDate = subMinutes(endDate, diff);
 
     const metrics = await getWebsiteStats(websiteId, {
       startDate,
