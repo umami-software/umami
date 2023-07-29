@@ -103,6 +103,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   if (db !== POSTGRESQL && db !== MYSQL) {
     return Promise.reject(new Error('Unknown database.'));
   }
+
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
     params.push(data[name]);

@@ -78,15 +78,18 @@ async function relationalQuery(
   }
 
   return rawQuery(
-    `WITH level1 AS (
+    `
+    WITH level1 AS (
       select distinct session_id, created_at
       from website_event
       where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-          and url_path = {{0}})
+        and created_at between {{startDate}} and {{endDate}}
+        and url_path = {{0}}
+    )
     ${levelQuery}
     ${sumQuery}
-    ORDER BY level;`,
+    ORDER BY level;
+    `,
     {
       websiteId,
       startDate,
@@ -97,7 +100,7 @@ async function relationalQuery(
     return urls.map((a, i) => ({
       x: a,
       y: results[i]?.count || 0,
-      z: (1 - (Number(results[i]?.count) * 1.0) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
+      z: (1 - Number(results[i]?.count) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
     }));
   });
 }
@@ -173,17 +176,20 @@ async function clickhouseQuery(
       select distinct session_id, url_path, referrer_path, created_at
       from umami.website_event
       where url_path in (${urlFilterQuery})
-          and website_id = {websiteId:UUID}
-          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    ), level1 AS (
+        and website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    ),
+    level1 AS (
       select *
       from level0
-      where url_path = {url0:String})
+      where url_path = {url0:String}
+    )
     ${levelQuery}
     select *
     from (
-    ${sumQuery} 
-    ) ORDER BY level;`,
+      ${sumQuery} 
+    ) ORDER BY level;
+    `,
     {
       websiteId,
       startDate,
@@ -194,7 +200,7 @@ async function clickhouseQuery(
     return urls.map((a, i) => ({
       x: a,
       y: results[i]?.count || 0,
-      z: (1 - (Number(results[i]?.count) * 1.0) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
+      z: (1 - Number(results[i]?.count) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
     }));
   });
 }
