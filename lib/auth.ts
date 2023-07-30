@@ -2,14 +2,8 @@ import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret, isUuid } from 'lib/crypto';
-import {
-  createSecureToken,
-  ensureArray,
-  getRandomChars,
-  parseSecureToken,
-  parseToken,
-} from 'next-basics';
+import { secret } from 'lib/crypto';
+import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
 import { getTeamUser, getTeamWebsite, findTeamWebsiteByUserId } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
@@ -36,15 +30,6 @@ export function getAuthToken(req) {
   }
 }
 
-export function parseAuthToken(req) {
-  try {
-    return parseSecureToken(getAuthToken(req), secret());
-  } catch (e) {
-    log(e);
-    return null;
-  }
-}
-
 export function parseShareToken(req) {
   try {
     return parseToken(req.headers[SHARE_TOKEN_HEADER], secret());
@@ -52,21 +37,6 @@ export function parseShareToken(req) {
     log(e);
     return null;
   }
-}
-
-export function isValidToken(token, validation) {
-  try {
-    if (typeof validation === 'object') {
-      return !Object.keys(validation).find(key => token[key] !== validation[key]);
-    } else if (typeof validation === 'function') {
-      return validation(token);
-    }
-  } catch (e) {
-    log(e);
-    return false;
-  }
-
-  return false;
 }
 
 export async function canViewWebsite({ user, shareToken }: Auth, websiteId: string) {
@@ -80,7 +50,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
   const website = await loadWebsite(websiteId);
 
-  if (user.id === website.userId) {
+  if (user.id === website?.userId) {
     return true;
   }
 
@@ -100,17 +70,9 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  if (!isUuid(websiteId)) {
-    return false;
-  }
-
   const website = await loadWebsite(websiteId);
 
-  if (website.userId) {
-    return user.id === website.userId;
-  }
-
-  return false;
+  return user.id === website?.userId;
 }
 
 export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
@@ -120,11 +82,7 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 
   const website = await loadWebsite(websiteId);
 
-  if (website.userId) {
-    return user.id === website.userId;
-  }
-
-  return false;
+  return user.id === website?.userId;
 }
 
 export async function canViewReport(auth: Auth, report: Report) {
@@ -139,12 +97,12 @@ export async function canViewReport(auth: Auth, report: Report) {
   return !!(await canViewWebsite(auth, report.websiteId));
 }
 
-export async function canUpdateReport(auth: Auth, report: Report) {
-  if (auth.user.isAdmin) {
+export async function canUpdateReport({ user }: Auth, report: Report) {
+  if (user.isAdmin) {
     return true;
   }
 
-  return auth.user.id == report.userId;
+  return user.id == report.userId;
 }
 
 export async function canCreateTeam({ user }: Auth) {
@@ -168,13 +126,9 @@ export async function canUpdateTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (isUuid(teamId)) {
-    const teamUser = await getTeamUser(teamId, user.id);
+  const teamUser = await getTeamUser(teamId, user.id);
 
-    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
-  }
-
-  return false;
+  return teamUser && hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
 }
 
 export async function canDeleteTeam({ user }: Auth, teamId: string) {
@@ -182,13 +136,9 @@ export async function canDeleteTeam({ user }: Auth, teamId: string) {
     return true;
   }
 
-  if (isUuid(teamId)) {
-    const teamUser = await getTeamUser(teamId, user.id);
+  const teamUser = await getTeamUser(teamId, user.id);
 
-    return hasPermission(teamUser.role, PERMISSIONS.teamDelete);
-  }
-
-  return false;
+  return teamUser && hasPermission(teamUser.role, PERMISSIONS.teamDelete);
 }
 
 export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUserId: string) {
@@ -196,17 +146,13 @@ export async function canDeleteTeamUser({ user }: Auth, teamId: string, removeUs
     return true;
   }
 
-  if (isUuid(teamId) && isUuid(removeUserId)) {
-    if (removeUserId === user.id) {
-      return true;
-    }
-
-    const teamUser = await getTeamUser(teamId, user.id);
-
-    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
+  if (removeUserId === user.id) {
+    return true;
   }
 
-  return false;
+  const teamUser = await getTeamUser(teamId, user.id);
+
+  return teamUser && hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
 }
 
 export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websiteId: string) {
@@ -214,13 +160,13 @@ export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websi
     return true;
   }
 
-  if (isUuid(teamId) && isUuid(websiteId)) {
-    const teamWebsite = await getTeamWebsite(teamId, websiteId);
+  const teamWebsite = await getTeamWebsite(teamId, websiteId);
 
-    if (teamWebsite.website.userId === user.id) {
-      return true;
-    }
+  if (teamWebsite?.website?.userId === user.id) {
+    return true;
+  }
 
+  if (teamWebsite) {
     const teamUser = await getTeamUser(teamWebsite.teamId, user.id);
 
     return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
