@@ -1,11 +1,11 @@
 import { User, Website } from '@prisma/client';
 import redis from '@umami/redis-client';
-import { getSession, getUser, getWebsite } from '../queries';
+import { getSession, getUserById, getWebsiteById } from '../queries';
 
 const { fetchObject, storeObject, deleteObject } = redis;
 
 async function fetchWebsite(id): Promise<Website> {
-  return fetchObject(`website:${id}`, () => getWebsite({ id }));
+  return fetchObject(`website:${id}`, () => getWebsiteById(id));
 }
 
 async function storeWebsite(data) {
@@ -20,7 +20,7 @@ async function deleteWebsite(id) {
 }
 
 async function fetchUser(id): Promise<User> {
-  return fetchObject(`user:${id}`, () => getUser({ id }, { includePassword: true }));
+  return fetchObject(`user:${id}`, () => getUserById(id, { includePassword: true }));
 }
 
 async function storeUser(data) {
@@ -35,7 +35,7 @@ async function deleteUser(id) {
 }
 
 async function fetchSession(id) {
-  return fetchObject(`session:${id}`, () => getSession({ id }));
+  return fetchObject(`session:${id}`, () => getSession(id));
 }
 
 async function storeSession(data) {

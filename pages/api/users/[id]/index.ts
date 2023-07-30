@@ -3,7 +3,7 @@ import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteUser, getUser, updateUser } from 'queries';
+import { deleteUser, getUserById, getUserByUsername, updateUser } from 'queries';
 
 export interface UserRequestQuery {
   id: string;
@@ -31,7 +31,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getUser({ id });
+    const user = await getUserById(id);
 
     return ok(res, user);
   }
@@ -43,7 +43,7 @@ export default async (
 
     const { username, password, role } = req.body;
 
-    const user = await getUser({ id });
+    const user = await getUserById(id);
 
     const data: any = {};
 
@@ -62,9 +62,9 @@ export default async (
 
     // Check when username changes
     if (data.username && user.username !== data.username) {
-      const userByUsername = await getUser({ username });
+      const user = await getUserByUsername(username);
 
-      if (userByUsername) {
+      if (user) {
         return badRequest(res, 'User already exists');
       }
     }

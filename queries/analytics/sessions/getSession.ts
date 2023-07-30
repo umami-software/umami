@@ -1,8 +1,9 @@
-import { Prisma } from '@prisma/client';
 import prisma from 'lib/prisma';
 
-export async function getSession(where: Prisma.SessionWhereUniqueInput) {
+export async function getSession(id: string) {
   return prisma.client.session.findUnique({
-    where,
+    where: {
+      id,
+    },
   });
 }
