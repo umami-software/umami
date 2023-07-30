@@ -12,7 +12,7 @@ import { findSession } from 'lib/session';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { secret, isUuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
-import { getUser } from '../queries';
+import { getUserById } from '../queries';
 import { NextApiRequestCollect } from 'pages/api/send';
 
 const log = debug('umami:middleware');
@@ -53,7 +53,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const { userId, authKey } = payload || {};
 
   if (isUuid(userId)) {
-    user = await getUser({ id: userId });
+    user = await getUserById(userId);
   } else if (redis.enabled && authKey) {
     user = await redis.get(authKey);
   }

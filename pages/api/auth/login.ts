@@ -9,7 +9,7 @@ import {
   methodNotAllowed,
 } from 'next-basics';
 import redis from '@umami/redis-client';
-import { getUser } from 'queries';
+import { getUserByUsername } from 'queries';
 import { secret } from 'lib/crypto';
 import { NextApiRequestQueryBody, User } from 'lib/types';
 import { setAuthKey } from 'lib/auth';
@@ -37,7 +37,7 @@ export default async (
       return badRequest(res);
     }
 
-    const user = await getUser({ username }, { includePassword: true });
+    const user = await getUserByUsername(username, { includePassword: true });
 
     if (user && checkPassword(password, user.password)) {
       if (redis.enabled) {

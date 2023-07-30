@@ -10,8 +10,7 @@ import {
   parseSecureToken,
   parseToken,
 } from 'next-basics';
-import { getTeamUser } from 'queries';
-import { getTeamWebsite, getTeamWebsiteByTeamMemberId } from 'queries/admin/teamWebsite';
+import { getTeamUser, getTeamWebsite, findTeamWebsiteByUserId } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
 
@@ -79,19 +78,13 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  const teamWebsite = await getTeamWebsiteByTeamMemberId(websiteId, user.id);
-
-  if (teamWebsite) {
-    return true;
-  }
-
   const website = await loadWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
   }
 
-  return false;
+  return !!(await findTeamWebsiteByUserId(websiteId, user.id));
 }
 
 export async function canCreateWebsite({ user }: Auth) {
@@ -139,15 +132,11 @@ export async function canViewReport(auth: Auth, report: Report) {
     return true;
   }
 
-  if ((auth.user.id = report.userId)) {
+  if (auth.user.id == report.userId) {
     return true;
   }
 
-  if (await canViewWebsite(auth, report.websiteId)) {
-    return true;
-  }
-
-  return false;
+  return !!(await canViewWebsite(auth, report.websiteId));
 }
 
 export async function canUpdateReport(auth: Auth, report: Report) {
@@ -155,11 +144,7 @@ export async function canUpdateReport(auth: Auth, report: Report) {
     return true;
   }
 
-  if ((auth.user.id = report.userId)) {
-    return true;
-  }
-
-  return false;
+  return auth.user.id == report.userId;
 }
 
 export async function canCreateTeam({ user }: Auth) {

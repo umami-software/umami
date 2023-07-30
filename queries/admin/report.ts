@@ -13,19 +13,29 @@ export async function getReportById(reportId: string): Promise<Report> {
   });
 }
 
-export async function getReports(where: Prisma.ReportWhereInput): Promise<Report[]> {
+export async function getUserReports(userId: string): Promise<Report[]> {
   return prisma.client.report.findMany({
-    where,
+    where: {
+      userId,
+    },
+  });
+}
+
+export async function getWebsiteReports(websiteId: string): Promise<Report[]> {
+  return prisma.client.report.findMany({
+    where: {
+      websiteId,
+    },
   });
 }
 
 export async function updateReport(
+  reportId: string,
   data: Prisma.ReportUpdateInput,
-  where: Prisma.ReportWhereUniqueInput,
 ): Promise<Report> {
-  return prisma.client.report.update({ data, where });
+  return prisma.client.report.update({ where: { id: reportId }, data });
 }
 
-export async function deleteReport(where: Prisma.ReportWhereUniqueInput): Promise<Report> {
-  return prisma.client.report.delete({ where });
+export async function deleteReport(reportId: string): Promise<Report> {
+  return prisma.client.report.delete({ where: { id: reportId } });
 }

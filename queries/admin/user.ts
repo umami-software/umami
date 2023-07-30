@@ -5,9 +5,14 @@ import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { Website, User, Role } from 'lib/types';
 
-export async function getUser(
+export interface GetUserOptions {
+  includePassword?: boolean;
+  showDeleted?: boolean;
+}
+
+async function getUser(
   where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
-  options: { includePassword?: boolean; showDeleted?: boolean } = {},
+  options: GetUserOptions = {},
 ): Promise<User> {
   const { includePassword = false, showDeleted = false } = options;
 
@@ -21,6 +26,14 @@ export async function getUser(
       createdAt: true,
     },
   });
+}
+
+export async function getUserById(userId: string, options: GetUserOptions = {}) {
+  return getUser({ id: userId }, options);
+}
+
+export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
+  return getUser({ username }, options);
 }
 
 export async function getUsers(): Promise<User[]> {

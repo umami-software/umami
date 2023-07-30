@@ -52,19 +52,14 @@ export default async (
       return unauthorized(res);
     }
 
-    const result = await updateReport(
-      {
-        websiteId,
-        userId,
-        type,
-        name,
-        description,
-        parameters: JSON.stringify(parameters),
-      } as any,
-      {
-        id: reportId,
-      },
-    );
+    const result = await updateReport(reportId, {
+      websiteId,
+      userId,
+      type,
+      name,
+      description,
+      parameters: JSON.stringify(parameters),
+    } as any);
 
     return ok(res, result);
   }

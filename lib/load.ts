@@ -1,5 +1,5 @@
 import cache from 'lib/cache';
-import { getWebsite, getSession, getUser } from 'queries';
+import { getSession, getUserById, getWebsiteById } from 'queries';
 import { User, Website, Session } from '@prisma/client';
 
 export async function loadWebsite(websiteId: string): Promise<Website> {
@@ -8,7 +8,7 @@ export async function loadWebsite(websiteId: string): Promise<Website> {
   if (cache.enabled) {
     website = await cache.fetchWebsite(websiteId);
   } else {
-    website = await getWebsite({ id: websiteId });
+    website = await getWebsiteById(websiteId);
   }
 
   if (!website || website.deletedAt) {
@@ -24,7 +24,7 @@ export async function loadSession(sessionId: string): Promise<Session> {
   if (cache.enabled) {
     session = await cache.fetchSession(sessionId);
   } else {
-    session = await getSession({ id: sessionId });
+    session = await getSession(sessionId);
   }
 
   if (!session) {
@@ -40,7 +40,7 @@ export async function loadUser(userId: string): Promise<User> {
   if (cache.enabled) {
     user = await cache.fetchUser(userId);
   } else {
-    user = await getUser({ id: userId });
+    user = await getUserById(userId);
   }
 
   if (!user || user.deletedAt) {

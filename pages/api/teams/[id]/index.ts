@@ -4,7 +4,7 @@ import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteTeam, getTeam, updateTeam } from 'queries';
+import { deleteTeam, getTeamById, updateTeam } from 'queries';
 
 export interface TeamRequestQuery {
   id: string;
@@ -28,7 +28,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getTeam({ id: teamId });
+    const user = await getTeamById(teamId, { includeTeamUser: true });
 
     return ok(res, user);
   }
@@ -41,7 +41,7 @@ export default async (
     const { name, accessCode } = req.body;
     const data = { name, accessCode };
 
-    const updated = await updateTeam(data, { id: teamId });
+    const updated = await updateTeam(teamId, data);
 
     return ok(res, updated);
   }
