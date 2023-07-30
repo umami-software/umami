@@ -105,6 +105,10 @@ export async function canUpdateReport({ user }: Auth, report: Report) {
   return user.id == report.userId;
 }
 
+export async function canDeleteReport(auth: Auth, report: Report) {
+  return canUpdateReport(auth, report);
+}
+
 export async function canCreateTeam({ user }: Auth) {
   if (user.isAdmin) {
     return true;
