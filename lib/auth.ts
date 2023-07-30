@@ -80,8 +80,8 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
   const website = await loadWebsite(websiteId);
 
-  if (website.userId) {
-    return user.id === website.userId;
+  if (user.id === website.userId) {
+    return true;
   }
 
   return !!(await findTeamWebsiteByUserId(websiteId, user.id));
