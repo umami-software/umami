@@ -37,7 +37,7 @@ async function relationalQuery(
         ed.event_key as field,
         ed.data_type as type,
         ed.string_value as value,
-        count(ed.*) as total
+        count(*) as total
       from event_data as ed
       inner join website_event as we
         on we.event_id = ed.website_event_id
@@ -56,7 +56,7 @@ async function relationalQuery(
       we.event_name as event,
       ed.event_key as field,
       ed.data_type as type,
-      count(ed.*) as total
+      count(*) as total
     from event_data as ed
     inner join website_event as we
       on we.event_id = ed.website_event_id
