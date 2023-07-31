@@ -39,9 +39,11 @@
   "label.devices": "Cihazlar",
   "label.dismiss": "Reddet",
   "label.domain": "Alan adı",
+  "label.dropoff": "Dropoff",
   "label.edit": "Düzenle",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Anonim paylaşım URL'i aktif",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Olaylar",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Birleşik",
   "label.filter-raw": "Ham",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "Henüz hiç web sitesi tanımlamadınız",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

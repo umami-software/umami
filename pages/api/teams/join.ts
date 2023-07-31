@@ -3,7 +3,7 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, notFound } from 'next-basics';
-import { createTeamUser, getTeam, getTeamUser } from 'queries';
+import { createTeamUser, getTeamByAccessCode, getTeamUser } from 'queries';
 import { ROLES } from 'lib/constants';
 
 export interface TeamsJoinRequestBody {
@@ -19,7 +19,7 @@ export default async (
   if (req.method === 'POST') {
     const { accessCode } = req.body;
 
-    const team = await getTeam({ accessCode });
+    const team = await getTeamByAccessCode(accessCode);
 
     if (!team) {
       return notFound(res, 'message.team-not-found');

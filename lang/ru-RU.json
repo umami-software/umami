@@ -39,9 +39,11 @@
   "label.devices": "Устройства",
   "label.dismiss": "Отклонить",
   "label.domain": "Домен",
+  "label.dropoff": "Dropoff",
   "label.edit": "Изменить",
   "label.edit-dashboard": "Редактировать дашборд",
   "label.enable-share-url": "Разрешить делиться ссылкой",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "События",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Объединенные",
   "label.filter-raw": "Сырые данные",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Присоединиться",
   "label.join-team": "Присоединиться к команде",
   "label.language": "Язык",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "У этой команды нет ни одного сайта.",
   "messages.no-websites-configured": "У вас нет настроенных сайтов.",
-  "messages.team-websites-info": "Сайты могут просматривать все члены команды."
+  "messages.team-websites-info": "Сайты могут просматривать все члены команды.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

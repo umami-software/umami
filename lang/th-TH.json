@@ -39,9 +39,11 @@
   "label.devices": "อุปกรณ์",
   "label.dismiss": "ยกเลิก",
   "label.domain": "โดเมน",
+  "label.dropoff": "Dropoff",
   "label.edit": "แก้ไข",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "เปิดใช้งานการแชร์ลิงก์",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "เหตุการณ์",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "ข้อมูลรวม",
   "label.filter-raw": "ข้อมูลดิบ",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "ภาษา",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "คุณยังไม่ได้ตั้งค่าเว็บไซต์ใด ๆ ไว้.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

@@ -97,8 +97,8 @@ model WebsiteEvent {
 
 model EventData {
   id             String    @id() @map("event_data_id") @db.VarChar(36)
-  websiteEventId String    @map("website_event_id") @db.VarChar(36)
   websiteId      String    @map("website_id") @db.VarChar(36)
+  websiteEventId String    @map("website_event_id") @db.VarChar(36)
   eventKey       String    @map("event_key") @db.VarChar(500)
   stringValue    String?   @map("string_value") @db.VarChar(500)
   numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)

@@ -137,3 +137,10 @@ export interface RealtimeUpdate {
   events: any[];
   timestamp: number;
 }
+
+export interface DateRange {
+  startDate: Date;
+  endDate: Date;
+  unit: string;
+  value: string;
+}

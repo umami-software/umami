@@ -1,42 +1,22 @@
 import { useContext, useRef } from 'react';
-import { useApi, useMessages } from 'hooks';
+import { useMessages } from 'hooks';
 import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
 import { ReportContext } from 'components/pages/reports/Report';
-import Empty from 'components/common/Empty';
-import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
+import { REPORT_PARAMETERS, WEBSITE_EVENT_FIELDS } from 'lib/constants';
 import Icons from 'components/icons';
-import FieldAddForm from './FieldAddForm';
 import BaseParameters from '../BaseParameters';
+import FieldAddForm from '../FieldAddForm';
 import ParameterList from '../ParameterList';
 import styles from './InsightsParameters.module.css';
 
-function useFields(websiteId, startDate, endDate) {
-  const { get, useQuery } = useApi();
-  const { data, error, isLoading } = useQuery(
-    ['fields', websiteId, startDate, endDate],
-    () =>
-      get('/reports/event-data', {
-        websiteId,
-        startAt: +startDate,
-        endAt: +endDate,
-      }),
-    { enabled: !!(websiteId && startDate && endDate) },
-  );
-
-  return { data, error, isLoading };
-}
-
 export function InsightsParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const ref = useRef(null);
   const { parameters } = report || {};
   const { websiteId, dateRange, fields, filters, groups } = parameters || {};
-  const { startDate, endDate } = dateRange || {};
   const queryEnabled = websiteId && dateRange && fields?.length;
-  const { data, error } = useFields(websiteId, startDate, endDate);
-  const parametersSelected = websiteId && startDate && endDate;
-  const hasData = data?.length !== 0;
+  const fieldOptions = Object.keys(WEBSITE_EVENT_FIELDS).map(key => WEBSITE_EVENT_FIELDS[key]);
 
   const parameterGroups = [
     { label: formatMessage(labels.fields), group: REPORT_PARAMETERS.fields },
@@ -78,10 +58,7 @@ export function InsightsParameters() {
           {(close, element) => {
             return (
               <FieldAddForm
-                fields={data.map(({ eventKey, InsightsType }) => ({
-                  name: eventKey,
-                  type: DATA_TYPES[InsightsType],
-                }))}
+                fields={fieldOptions}
                 group={group}
                 element={element}
                 onAdd={handleAdd}
@@ -95,50 +72,43 @@ export function InsightsParameters() {
   };
 
   return (
-    <Form ref={ref} values={parameters} error={error} onSubmit={handleSubmit}>
+    <Form ref={ref} values={parameters} onSubmit={handleSubmit}>
       <BaseParameters />
-      {!hasData && <Empty message={formatMessage(messages.noInsights)} />}
-      {parametersSelected &&
-        hasData &&
-        parameterGroups.map(({ label, group }) => {
-          return (
-            <FormRow
-              key={label}
-              label={label}
-              action={<AddButton group={group} onAdd={handleAdd} />}
+      {parameterGroups.map(({ label, group }) => {
+        return (
+          <FormRow key={label} label={label} action={<AddButton group={group} onAdd={handleAdd} />}>
+            <ParameterList
+              items={parameterData[group]}
+              onRemove={index => handleRemove(group, index)}
             >
-              <ParameterList
-                items={parameterData[group]}
-                onRemove={index => handleRemove(group, index)}
-              >
-                {({ name, value }) => {
-                  return (
-                    <div className={styles.parameter}>
-                      {group === REPORT_PARAMETERS.fields && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value}</div>
-                        </>
-                      )}
-                      {group === REPORT_PARAMETERS.filters && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value[0]}</div>
-                          <div>{value[1]}</div>
-                        </>
-                      )}
-                      {group === REPORT_PARAMETERS.groups && (
-                        <>
-                          <div>{name}</div>
-                        </>
-                      )}
-                    </div>
-                  );
-                }}
-              </ParameterList>
-            </FormRow>
-          );
-        })}
+              {({ name, value }) => {
+                return (
+                  <div className={styles.parameter}>
+                    {group === REPORT_PARAMETERS.fields && (
+                      <>
+                        <div>{name}</div>
+                        <div className={styles.op}>{value}</div>
+                      </>
+                    )}
+                    {group === REPORT_PARAMETERS.filters && (
+                      <>
+                        <div>{name}</div>
+                        <div className={styles.op}>{value[0]}</div>
+                        <div>{value[1]}</div>
+                      </>
+                    )}
+                    {group === REPORT_PARAMETERS.groups && (
+                      <>
+                        <div>{name}</div>
+                      </>
+                    )}
+                  </div>
+                );
+              }}
+            </ParameterList>
+          </FormRow>
+        );
+      })}
       <FormButtons>
         <SubmitButton variant="primary" disabled={!queryEnabled} loading={isRunning}>
           {formatMessage(labels.runQuery)}

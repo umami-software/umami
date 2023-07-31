@@ -7,13 +7,12 @@ import {
 } from 'next-basics';
 import debug from 'debug';
 import cors from 'cors';
-import { validate } from 'uuid';
 import redis from '@umami/redis-client';
 import { findSession } from 'lib/session';
 import { getAuthToken, parseShareToken } from 'lib/auth';
-import { secret } from 'lib/crypto';
+import { secret, isUuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
-import { getUser } from '../queries';
+import { getUserById } from '../queries';
 import { NextApiRequestCollect } from 'pages/api/send';
 
 const log = debug('umami:middleware');
@@ -53,8 +52,8 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   let user = null;
   const { userId, authKey } = payload || {};
 
-  if (validate(userId)) {
-    user = await getUser({ id: userId });
+  if (isUuid(userId)) {
+    user = await getUserById(userId);
   } else if (redis.enabled && authKey) {
     user = await redis.get(authKey);
   }
@@ -73,5 +72,6 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   }
 
   (req as any).auth = { user, token, shareToken, authKey };
+
   next();
 });

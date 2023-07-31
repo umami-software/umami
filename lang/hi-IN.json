@@ -39,9 +39,11 @@
   "label.devices": "उपकरण",
   "label.dismiss": "खारिज कीजिये",
   "label.domain": "डोमेन",
+  "label.dropoff": "Dropoff",
   "label.edit": "संपादित करें",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "शेयर URL सक्षम करें",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "स्पर्धाएँ",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "संयुक्त",
   "label.filter-raw": "रॉ",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "आपके पास कोई वेबसाइट कॉन्फ़िगर नहीं है।",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

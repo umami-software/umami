@@ -1,5 +1,5 @@
 import path from 'path';
-import requestIp from 'request-ip';
+import { getClientIp } from 'request-ip';
 import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
@@ -25,7 +25,7 @@ export function getIpAddress(req) {
     return req.headers['cf-connecting-ip'];
   }
 
-  return requestIp.getClientIp(req);
+  return getClientIp(req);
 }
 
 export function getDevice(screen, os) {
@@ -62,6 +62,14 @@ export async function getLocation(ip, req) {
     return;
   }
 
+  // Cloudflare headers
+  if (req.headers['cf-ipcountry']) {
+    return {
+      country: req.headers['cf-ipcountry'],
+    };
+  }
+
+  // Vercel headers
   if (req.headers['x-vercel-ip-country']) {
     const country = req.headers['x-vercel-ip-country'];
     const region = req.headers['x-vercel-ip-country-region'];

@@ -16,7 +16,6 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
   const { user } = req.auth;
   const { id: userId } = req.query;
 
@@ -25,7 +24,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getUserWebsites(userId);
+    const { includeTeams } = req.query;
+
+    const websites = await getUserWebsites(userId, { includeTeams });
 
     return ok(res, websites);
   }

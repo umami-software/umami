@@ -1,0 +1,28 @@
+.button {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  white-space: nowrap;
+  gap: var(--size200);
+  font-family: inherit;
+  color: var(--base900);
+  background: var(--base100);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  min-height: var(--base-height);
+  padding: 0 var(--size600);
+  position: relative;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--base200);
+}
+
+.button:active {
+  background: var(--base300);
+}
+
+.button:visited {
+  color: var(--base900);
+}

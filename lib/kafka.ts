@@ -61,7 +61,7 @@ async function getProducer(): Promise<Producer> {
   return producer;
 }
 
-function getDateFormat(date, format?): string {
+function getDateFormat(date: Date, format?: string): string {
   return dateFormat(date, format ? format : 'UTC:yyyy-mm-dd HH:MM:ss');
 }
 

@@ -9,22 +9,23 @@ export async function getSessions(...args: [websiteId: string, startAt: Date]) {
   });
 }
 
-async function relationalQuery(websiteId: string, startAt: Date) {
+async function relationalQuery(websiteId: string, startDate: Date) {
   return prisma.client.session.findMany({
     where: {
       websiteId,
       createdAt: {
-        gte: startAt,
+        gte: startDate,
       },
     },
   });
 }
 
-async function clickhouseQuery(websiteId: string, startAt: Date) {
+async function clickhouseQuery(websiteId: string, startDate: Date) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
-    `select distinct
+    `
+    select distinct
       session_id as id,
       website_id as websiteId,
       created_at as createdAt,
@@ -41,10 +42,11 @@ async function clickhouseQuery(websiteId: string, startAt: Date) {
       city
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime('UTC')}`,
+    and created_at >= {startDate:DateTime}
+    `,
     {
       websiteId,
-      startAt,
+      startDate,
     },
   );
 }
