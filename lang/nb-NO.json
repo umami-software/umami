@@ -39,9 +39,11 @@
   "label.devices": "Enheter",
   "label.dismiss": "Avbryt",
   "label.domain": "Domene",
+  "label.dropoff": "Dropoff",
   "label.edit": "Rediger",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Aktiver delings-URL",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Arrangementer",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Kombinert",
   "label.filter-raw": "Rå",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Språk",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "Du har ikke satt opp noen nettsteder.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

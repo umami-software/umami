@@ -39,9 +39,11 @@
   "label.devices": "Dispositivos",
   "label.dismiss": "Ignorar",
   "label.domain": "Dominio",
+  "label.dropoff": "Dropoff",
   "label.edit": "Editar",
   "label.edit-dashboard": "Editar panel",
   "label.enable-share-url": "Habilitar compartir URL",
+  "label.event": "Evento",
   "label.event-data": "Event data",
   "label.events": "Eventos",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Combinado",
   "label.filter-raw": "Personalizado",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Unir",
   "label.join-team": "Unir a equipo",
   "label.language": "Idioma",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "Este equipo no tiene ningún sitio web configurado.",
   "messages.no-websites-configured": "No tienes ningún sitio configurado.",
-  "messages.team-websites-info": "Las analíticas de tus sitios pueden verse por cualquier miembro del equipo."
+  "messages.team-websites-info": "Las analíticas de tus sitios pueden verse por cualquier miembro del equipo.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

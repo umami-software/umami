@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Mike Cao <mike@mikecao.com>",
   "license": "MIT",
@@ -60,7 +60,7 @@
   ],
   "dependencies": {
     "@fontsource/inter": "^4.5.15",
-    "@prisma/client": "4.15.0",
+    "@prisma/client": "5.0.0",
     "@tanstack/react-query": "^4.16.1",
     "@umami/prisma-client": "^0.2.0",
     "@umami/redis-client": "^0.5.0",
@@ -90,7 +90,7 @@
     "maxmind": "^4.3.6",
     "moment-timezone": "^0.5.35",
     "next": "13.3.1",
-    "next-basics": "^0.31.0",
+    "next-basics": "^0.35.0",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
     "react": "^18.2.0",
@@ -107,7 +107,7 @@
     "semver": "^7.5.2",
     "thenby": "^1.3.4",
     "timezone-support": "^2.0.2",
-    "uuid": "^8.3.2",
+    "uuid": "^9.0.0",
     "yup": "^0.32.11",
     "zustand": "^4.3.8"
   },
@@ -141,7 +141,7 @@
     "postcss-preset-env": "7.8.3",
     "postcss-rtlcss": "^4.0.1",
     "prettier": "^2.6.2",
-    "prisma": "4.15.0",
+    "prisma": "5.0.0",
     "prompts": "2.4.2",
     "rollup": "^2.70.1",
     "rollup-plugin-delete": "^2.0.0",

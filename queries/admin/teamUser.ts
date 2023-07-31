@@ -53,12 +53,14 @@ export async function createTeamUser(
 }
 
 export async function updateTeamUser(
+  teamUserId: string,
   data: Prisma.TeamUserUpdateInput,
-  where: Prisma.TeamUserWhereUniqueInput,
 ): Promise<TeamUser> {
   return prisma.client.teamUser.update({
+    where: {
+      id: teamUserId,
+    },
     data,
-    where,
   });
 }
 

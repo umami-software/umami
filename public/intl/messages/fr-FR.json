@@ -17,6 +17,18 @@
       "value": "Journal d'activité"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Ajouter"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Ajouter une description"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "Domaine"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,16 +263,34 @@
       "value": "Activer l'URL de partage"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Données d'événements"
     }
   ],
   "label.events": [
     {
       "type": 0,
       "value": "Événements"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Champ"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Champs"
     }
   ],
   "label.filter-combined": [
@@ -272,7 +308,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Entonnoir"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -434,13 +476,13 @@
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Requêtes"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Requête"
     }
   ],
   "label.query-parameters": [
@@ -458,7 +500,7 @@
   "label.referrers": [
     {
       "type": 0,
-      "value": "Sources"
+      "value": "Sites référents"
     }
   ],
   "label.refresh": [
@@ -488,7 +530,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Rapports"
     }
   ],
   "label.required": [
@@ -515,6 +557,12 @@
       "value": "Rôle"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Éxécuter la requête"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -530,7 +578,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Choisir une période"
     }
   ],
   "label.select-website": [
@@ -671,6 +719,12 @@
       "value": "Inconnu"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
   "label.urls": [
     {
       "type": 0,
@@ -707,6 +761,12 @@
       "value": "Voir les détails"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "Consultation"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -737,10 +797,178 @@
       "value": "Sites"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Fenêtre"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Hier"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "Après"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Moyenne"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Avant"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Répartition"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contient"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Créer un rapport"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Ne contient pas"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "N'est pas égal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Est égal"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "Faux"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filtres"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Supérieur à"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Supérieur ou égal à"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Inférieur à"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Inférieur ou égal à"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Vue d'ensemble"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Somme"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Nombre d'enregistrements"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "Vrai"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Sans titre"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Valeur"
     }
   ],
   "message.active-users": [
@@ -826,7 +1054,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Pour supprimer ce compte, taper "
     },
     {
       "type": 1,
@@ -834,7 +1062,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " ci-dessous pour confirmer."
     }
   ],
   "message.delete-website": [
@@ -915,6 +1143,12 @@
       "value": "Aucune donnée disponible."
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "Aucune donnée d'événement disponible."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
@@ -924,13 +1158,13 @@
   "message.no-teams": [
     {
       "type": 0,
-      "value": "Vous n'avez créé aucune équipe."
+      "value": "Vous n'avez pas créé d'équipe."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "Il n'y aucun utilisateur."
+      "value": "Aucun utilisateur."
     }
   ],
   "message.page-not-found": [
@@ -942,7 +1176,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Pour réinitialiser ce site, taper "
     },
     {
       "type": 1,
@@ -950,7 +1184,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " ci-dessous pour confirmer."
     }
   ],
   "message.reset-website-warning": [
@@ -1032,7 +1266,7 @@
   "messages.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Aucun résultat n'a été trouvé."
     }
   ],
   "messages.no-team-websites": [
@@ -1044,13 +1278,27 @@
   "messages.no-websites-configured": [
     {
       "type": 0,
-      "value": "Vous n'avez configuré aucun site."
+      "value": "Vous n'avez pas configuré de site."
     }
   ],
   "messages.team-websites-info": [
     {
       "type": 0,
       "value": "Les sites peuvent être vus par tout utilisateur dans l'équipe."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }

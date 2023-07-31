@@ -39,9 +39,11 @@
   "label.devices": "دستگاه‌ها",
   "label.dismiss": "رد کردن",
   "label.domain": "دامنه",
+  "label.dropoff": "Dropoff",
   "label.edit": "ویرایش",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "فعال کردن اشتراک گذاری URL",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "رویدادها",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "ترکیب شده",
   "label.filter-raw": "خام",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "زبان",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "شما هیچ وب‌سایتی را پیکربندی نکرده‌اید.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

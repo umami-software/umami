@@ -5,8 +5,7 @@ import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
-
-const unitTypes = ['year', 'month', 'hour', 'day'];
+import { parseDateRangeQuery } from 'lib/query';
 
 export interface WebsitePageviewRequestQuery {
   id: string;
@@ -34,9 +33,6 @@ export default async (
 
   const {
     id: websiteId,
-    startAt,
-    endAt,
-    unit,
     timezone,
     url,
     referrer,
@@ -54,10 +50,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const startDate = new Date(+startAt);
-    const endDate = new Date(+endAt);
+    const { startDate, endDate, unit } = await parseDateRangeQuery(req);
 
-    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
+    if (!moment.tz.zone(timezone)) {
       return badRequest(res);
     }
 

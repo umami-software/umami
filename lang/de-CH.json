@@ -39,9 +39,11 @@
   "label.devices": "Grät",
   "label.dismiss": "Verwerfe",
   "label.domain": "Domain",
+  "label.dropoff": "Dropoff",
   "label.edit": "Bearbeite",
   "label.edit-dashboard": "Dashboard bearbeite",
   "label.enable-share-url": "Freigab-URL aktiviere",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Ereigniss",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Kombiniert",
   "label.filter-raw": "Rohdate",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Biträte",
   "label.join-team": "Team biträte",
   "label.language": "Sprach",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "Dem Team sind kei Websiite zuegordnet.",
   "messages.no-websites-configured": "Es isch kei Websiite vorhande.",
-  "messages.team-websites-info": "Websiite chönd vo jedem im Team agluegt werde"
+  "messages.team-websites-info": "Websiite chönd vo jedem im Team agluegt werde",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

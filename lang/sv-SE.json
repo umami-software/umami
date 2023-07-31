@@ -39,9 +39,11 @@
   "label.devices": "Enheter",
   "label.dismiss": "Avbryt",
   "label.domain": "Domän",
+  "label.dropoff": "Dropoff",
   "label.edit": "Redigera",
   "label.edit-dashboard": "Redigera översikt",
   "label.enable-share-url": "Aktivera delnings-URL",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Händelser",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Kombinerade",
   "label.filter-raw": "Rådata",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Gå med",
   "label.join-team": "gå med i team",
   "label.language": "Språk",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "Det här teamet har inga webbsajter.",
   "messages.no-websites-configured": "Du har inga webbsajter.",
-  "messages.team-websites-info": "Websajter kan ses av alla i teamet."
+  "messages.team-websites-info": "Websajter kan ses av alla i teamet.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

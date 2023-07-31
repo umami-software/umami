@@ -18,7 +18,9 @@ export function Dashboard({ userId }) {
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);
   const { get, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(['websites'], () => get('/websites', { userId }));
+  const { data, isLoading, error } = useQuery(['websites'], () =>
+    get('/websites', { userId, includeTeams: 1 }),
+  );
   const hasData = data && data.length !== 0;
   const { dir } = useLocale();
 

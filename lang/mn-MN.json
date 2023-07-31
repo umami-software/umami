@@ -39,9 +39,11 @@
   "label.devices": "Төхөөрөмж",
   "label.dismiss": "Үл хэргэсэх",
   "label.domain": "Домэйн",
+  "label.dropoff": "Dropoff",
   "label.edit": "Засах",
   "label.edit-dashboard": "Хянах самбар засах",
   "label.enable-share-url": "Хуваалцах холбоос идэвхжүүлэх",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Үйлдэл",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Нэгтгэсэн",
   "label.filter-raw": "Түүхий",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Нэгдэх",
   "label.join-team": "Багт нэгдэх",
   "label.language": "Хэл",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "Энэ багт ямар ч веб алга.",
   "messages.no-websites-configured": "Та ямар нэгэн веб тохируулаагүй байна.",
-  "messages.team-websites-info": "Вебийг багийн бүх гишүүд үзэж болно."
+  "messages.team-websites-info": "Вебийг багийн бүх гишүүд үзэж болно.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

@@ -39,9 +39,11 @@
   "label.devices": "Apparaten",
   "label.dismiss": "Negeren",
   "label.domain": "Domein",
+  "label.dropoff": "Dropoff",
   "label.edit": "Bewerken",
   "label.edit-dashboard": "Dashboard aanpassen",
   "label.enable-share-url": "Sta delen via openbare URL toe",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Gebeurtenissen",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Gecombineerd",
   "label.filter-raw": "Ruw",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Lid worden",
   "label.join-team": "Word lid van een team",
   "label.language": "Taal",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "Er zijn geen websites gekoppeld aan dit team.",
   "messages.no-websites-configured": "Je hebt geen websites ingesteld.",
-  "messages.team-websites-info": "Websites kunnen door iedereen in het team worden bekeken."
+  "messages.team-websites-info": "Websites kunnen door iedereen in het team worden bekeken.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

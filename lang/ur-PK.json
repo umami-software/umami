@@ -39,9 +39,11 @@
   "label.devices": "آلات",
   "label.dismiss": "مسترد کریں",
   "label.domain": "ڈومین",
+  "label.dropoff": "Dropoff",
   "label.edit": "ترمیم",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "شیئر یو آر ایل کو فعال کریں",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "واقعات",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "مشترکہ",
   "label.filter-raw": "خام",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "آپ کے پاس کوئی ویب سائٹ کنفیگر نہیں ہے۔",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

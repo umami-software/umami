@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import PageviewsChart from 'components/metrics/PageviewsChart';
 import { useApi, useDateRange, useTimezone, usePageQuery } from 'hooks';
-import { getDateArray, getDateLength } from 'lib/date';
+import { getDateArray } from 'lib/date';
 
 export function WebsiteChart({ websiteId }) {
   const [dateRange] = useDateRange(websiteId);
@@ -43,17 +43,9 @@ export function WebsiteChart({ websiteId }) {
       };
     }
     return { pageviews: [], sessions: [] };
-  }, [data, startDate, endDate, unit, modified]);
+  }, [data, startDate, endDate, unit]);
 
-  return (
-    <PageviewsChart
-      websiteId={websiteId}
-      data={chartData}
-      unit={unit}
-      records={getDateLength(startDate, endDate, unit)}
-      loading={isLoading}
-    />
-  );
+  return <PageviewsChart websiteId={websiteId} data={chartData} unit={unit} loading={isLoading} />;
 }
 
 export default WebsiteChart;

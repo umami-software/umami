@@ -19,6 +19,10 @@ export default function FieldAggregateForm({ name, type, onSelect }) {
       { label: formatMessage(labels.total), value: 'total' },
       { label: formatMessage(labels.unique), value: 'unique' },
     ],
+    uuid: [
+      { label: formatMessage(labels.total), value: 'total' },
+      { label: formatMessage(labels.unique), value: 'unique' },
+    ],
   };
 
   const items = options[type];

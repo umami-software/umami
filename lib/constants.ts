@@ -13,12 +13,12 @@ export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
 
-export const DEFAULT_LOCALE = 'en-US';
+export const DEFAULT_LOCALE = process.env.defaultLocale ?? 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
-export const DEFAULT_CREATED_AT = '2000-01-01';
+export const DEFAULT_RESET_DATE = '2000-01-01';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -120,6 +120,37 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamMember]: [],
 } as const;
 
+export const WEBSITE_EVENT_FIELDS = {
+  eventId: { name: 'event_id', type: 'uuid', label: 'Event ID' },
+  websiteId: { name: 'website_id', type: 'uuid', label: 'Website ID' },
+  sessionId: { name: 'session_id', type: 'uuid', label: 'Session ID' },
+  createdAt: { name: 'created_at', type: 'date', label: 'Created date' },
+  urlPath: { name: 'url_path', type: 'string', label: 'URL path' },
+  urlQuery: { name: 'url_query', type: 'string', label: 'URL query' },
+  referrerPath: { name: 'referrer_path', type: 'string', label: 'Referrer path' },
+  referrerQuery: { name: 'referrer_query', type: 'string', label: 'Referrer query' },
+  referrerDomain: { name: 'referrer_domain', type: 'string', label: 'Referrer domain' },
+  pageTitle: { name: 'page_title', type: 'string', label: 'Page title' },
+  eventType: { name: 'event_type', type: 'string', label: 'Event type' },
+  eventName: { name: 'event_name', type: 'string', label: 'Event name' },
+};
+
+export const SESSION_FIELDS = {
+  sessionId: { name: 'session_id', type: 'uuid' },
+  websiteId: { name: 'website_id', type: 'uuid' },
+  hostname: { name: 'hostname', type: 'string' },
+  browser: { name: 'browser', type: 'string' },
+  os: { name: 'os', type: 'string' },
+  device: { name: 'device', type: 'string' },
+  screen: { name: 'screen', type: 'string' },
+  language: { name: 'language', type: 'string' },
+  country: { name: 'country', type: 'string' },
+  subdivision1: { name: 'subdivision1', type: 'string' },
+  subdivision2: { name: 'subdivision2', type: 'string' },
+  city: { name: 'city', type: 'string' },
+  createdAt: { name: 'created_at', type: 'date' },
+};
+
 export const THEME_COLORS = {
   light: {
     primary: '#2680eb',
@@ -166,9 +197,8 @@ export const EVENT_COLORS = [
   '#ffec16',
 ];
 
-export const DOMAIN_REGEX = 
+export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
-
 
 export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
 
