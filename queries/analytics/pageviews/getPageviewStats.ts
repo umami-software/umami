@@ -52,11 +52,11 @@ async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteri
     group by 1
     `,
     {
-      ...filters,
       websiteId,
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
+      ...filters,
     },
   );
 }

@@ -39,6 +39,7 @@ async function relationalQuery(
     startDate: maxDate(startDate, website.resetAt),
     endDate,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    ...filters,
   };
 
   let excludeDomain = '';
