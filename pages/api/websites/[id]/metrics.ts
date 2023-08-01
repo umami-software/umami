@@ -1,5 +1,5 @@
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
@@ -121,6 +121,8 @@ export default async (
 
       return ok(res, data);
     }
+
+    return badRequest(res);
   }
 
   return methodNotAllowed(res);
