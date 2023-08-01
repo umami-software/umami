@@ -17,6 +17,18 @@
       "value": "Aktivitätsverlauf"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Beschreibung hinzufügen"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "Domain"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,16 +263,34 @@
       "value": "Freigabe-URL aktivieren"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Event daten"
     }
   ],
   "label.events": [
     {
       "type": 0,
       "value": "Ereignisse"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Field"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Fields"
     }
   ],
   "label.filter-combined": [
@@ -273,6 +309,12 @@
     {
       "type": 0,
       "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -448,7 +490,7 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Abfrage"
     }
   ],
   "label.query-parameters": [
@@ -496,7 +538,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Reporte"
     }
   ],
   "label.required": [
@@ -523,6 +565,12 @@
       "value": "Rolle"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Abfrage starten"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -538,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Datum auswählen"
     }
   ],
   "label.select-website": [
@@ -679,6 +727,12 @@
       "value": "Unbekannt"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
   "label.urls": [
     {
       "type": 0,
@@ -715,6 +769,12 @@
       "value": "Details anzeigen"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "View only"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -730,7 +790,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Webseite"
     }
   ],
   "label.website-id": [
@@ -745,10 +805,178 @@
       "value": "Webseiten"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Window"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Gestern"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "After"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Durchschnitt"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Before"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Report erstellen"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Beschreibung"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Does not equal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Equals"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Größer als"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Größer oder gleich"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Kleiner als"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Kleiner oder gleich"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Übersicht"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Summe"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "message.active-users": [
@@ -919,6 +1147,12 @@
       "value": "Keine Daten vorhanden."
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "No event data is available."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
@@ -1036,7 +1270,7 @@
   "messages.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Keine Ergebnisse gefunden."
     }
   ],
   "messages.no-team-websites": [
@@ -1055,6 +1289,20 @@
     {
       "type": 0,
       "value": "Webseiten können von jedem im Team eingesehen werden."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }

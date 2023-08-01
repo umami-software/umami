@@ -39,9 +39,11 @@
   "label.devices": "Zariadenie",
   "label.dismiss": "Odísť",
   "label.domain": "Doména",
+  "label.dropoff": "Dropoff",
   "label.edit": "Upraviť",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Povoliť zdielanie URL",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Udalosti",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Kombinácie",
   "label.filter-raw": "Nezpracované",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "Nemáte nastavený žiadny web.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

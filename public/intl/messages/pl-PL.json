@@ -17,6 +17,18 @@
       "value": "Dziennik aktywności"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Dodaj"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Dodaj opis"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "Domena"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,16 +263,34 @@
       "value": "Włącz udostępnianie adresu URL"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Dane zdarzenia"
     }
   ],
   "label.events": [
     {
       "type": 0,
       "value": "Zdarzenia"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Pole"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Pola"
     }
   ],
   "label.filter-combined": [
@@ -272,7 +308,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Lejek"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -448,13 +490,13 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Zapytanie"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Parametry query"
+      "value": "Parametry zapytania"
     }
   ],
   "label.realtime": [
@@ -496,7 +538,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Raporty"
     }
   ],
   "label.required": [
@@ -523,6 +565,12 @@
       "value": "Role"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Uruchom zapytanie"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -538,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Wybierz datę"
     }
   ],
   "label.select-website": [
@@ -679,10 +727,16 @@
       "value": "Nieznany"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "Link"
+    }
+  ],
   "label.urls": [
     {
       "type": 0,
-      "value": "URLs"
+      "value": "Linki"
     }
   ],
   "label.user": [
@@ -715,6 +769,12 @@
       "value": "Pokaż szczegóły"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "Tylko do odczytu"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -730,7 +790,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Witryna"
     }
   ],
   "label.website-id": [
@@ -745,10 +805,178 @@
       "value": "Witryny"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Okno"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Wczoraj"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "Po"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Średnia"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Przed"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Rozbicie"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Zawiera"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Stwórz raport"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Opis"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Nie zawiera"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Nie jest równe"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Równe"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "Fałsz"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filtry"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Większe niż"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Większe niż lub równe"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Mniejsze niż"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Mniejsze niż lub równe"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Maks"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Przegląd"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Suma"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "W sumie"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Suma rekordów"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "Prawda"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Typ"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unikalne"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Bez tytułu"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Wartość"
     }
   ],
   "message.active-users": [
@@ -830,7 +1058,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Aby usunąć to konto, wpisz "
     },
     {
       "type": 1,
@@ -838,13 +1066,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " w polu poniżej, aby potwierdzić."
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
+      "value": "Aby usunąć tę stronę, wpisz "
     },
     {
       "type": 1,
@@ -852,7 +1080,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " w polu poniżej, aby potwierdzić."
     }
   ],
   "message.delete-website-warning": [
@@ -919,6 +1147,12 @@
       "value": "Brak dostępnych danych."
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "Brak dostępnych danych o zdarzeniach."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
@@ -946,7 +1180,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Aby zresetować tę witrynę, wpisz "
     },
     {
       "type": 1,
@@ -954,7 +1188,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " w polu poniżej, aby potwierdzić."
     }
   ],
   "message.reset-website-warning": [
@@ -1044,7 +1278,7 @@
   "messages.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Nie znaleziono wyników."
     }
   ],
   "messages.no-team-websites": [
@@ -1063,6 +1297,20 @@
     {
       "type": 0,
       "value": "Strony internetowe mogą być przeglądane przez każdego członka zespołu."
+    }
+  ],
+  "new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
     }
   ]
 }

@@ -3,7 +3,7 @@ import { useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeamUser, getTeamUsers, getUser } from 'queries';
+import { createTeamUser, getTeamUsers, getUserByUsername } from 'queries';
 
 export interface TeamUserRequestQuery {
   id: string;
@@ -40,7 +40,7 @@ export default async (
     const { email, roleId: roleId } = req.body;
 
     // Check for User
-    const user = await getUser({ username: email });
+    const user = await getUserByUsername(email);
 
     if (!user) {
       return badRequest(res, 'The User does not exists.');

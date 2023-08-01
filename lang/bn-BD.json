@@ -39,9 +39,11 @@
   "label.devices": "ডিভাইস গুলো",
   "label.dismiss": "বাতিল",
   "label.domain": "ডোমেইন",
+  "label.dropoff": "Dropoff",
   "label.edit": "সম্পাদনা করুন",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "শেয়ার ইউআরএল শেয়ার করুন",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "ঘটনা",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "সম্মিলিত",
   "label.filter-raw": "অপরিশোধিত",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "ভাষা",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "কোনও ওয়েবসাইট কনফিগার করা নেই।",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

@@ -2,7 +2,7 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { secret } from 'lib/crypto';
 import { NextApiResponse } from 'next';
 import { createToken, methodNotAllowed, notFound, ok } from 'next-basics';
-import { getWebsite } from 'queries';
+import { getWebsiteByShareId } from 'queries';
 
 export interface ShareRequestQuery {
   id: string;
@@ -20,7 +20,7 @@ export default async (
   const { id: shareId } = req.query;
 
   if (req.method === 'GET') {
-    const website = await getWebsite({ shareId });
+    const website = await getWebsiteByShareId(shareId);
 
     if (website) {
       const data = { websiteId: website.id };

@@ -29,7 +29,7 @@ export function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
   }
 
   return (
-    <StatusLight variant="success">
+    <StatusLight className={styles.container} variant="success">
       <div className={styles.text}>{formatMessage(messages.activeUsers, { x: count })}</div>
     </StatusLight>
   );

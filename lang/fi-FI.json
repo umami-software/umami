@@ -39,9 +39,11 @@
   "label.devices": "Laitteet",
   "label.dismiss": "Hylkää",
   "label.domain": "Verkkotunnus",
+  "label.dropoff": "Dropoff",
   "label.edit": "Muokkaa",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Ota jakamisen URL-osoite käyttöön",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Tapahtumat",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Yhdistetty",
   "label.filter-raw": "Käsittelemätön",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Kieli",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "Sinulla ei ole määritettyjä verkkosivustoja.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

@@ -1,15 +1,29 @@
-import { Prisma, Team, TeamWebsite } from '@prisma/client';
+import { Prisma, Team } from '@prisma/client';
 import prisma from 'lib/prisma';
-import { uuid } from 'lib/crypto';
 import { ROLES } from 'lib/constants';
+import { uuid } from 'lib/crypto';
 
-export async function getTeam(where: Prisma.TeamWhereInput): Promise<Team> {
+export interface GetTeamOptions {
+  includeTeamUser?: boolean;
+}
+
+async function getTeam(where: Prisma.TeamWhereInput, options: GetTeamOptions = {}): Promise<Team> {
+  const { includeTeamUser = false } = options;
+
   return prisma.client.team.findFirst({
     where,
     include: {
-      teamUser: true,
+      teamUser: includeTeamUser,
     },
   });
+}
+
+export function getTeamById(teamId: string, options: GetTeamOptions = {}) {
+  return getTeam({ id: teamId }, options);
+}
+
+export function getTeamByAccessCode(accessCode: string, options: GetTeamOptions = {}) {
+  return getTeam({ accessCode }, options);
 }
 
 export async function getTeams(where: Prisma.TeamWhereInput): Promise<Team[]> {
@@ -36,16 +50,15 @@ export async function createTeam(data: Prisma.TeamCreateInput, userId: string): 
   ]);
 }
 
-export async function updateTeam(
-  data: Prisma.TeamUpdateInput,
-  where: Prisma.TeamWhereUniqueInput,
-): Promise<Team> {
+export async function updateTeam(teamId: string, data: Prisma.TeamUpdateInput): Promise<Team> {
   return prisma.client.team.update({
+    where: {
+      id: teamId,
+    },
     data: {
       ...data,
       updatedAt: new Date(),
     },
-    where,
   });
 }
 

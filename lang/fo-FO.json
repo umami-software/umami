@@ -39,9 +39,11 @@
   "label.devices": "Tóleindir",
   "label.dismiss": "Lat fara",
   "label.domain": "Økisnavn",
+  "label.dropoff": "Dropoff",
   "label.edit": "Ger broyting",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Virkja deili leinki",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Hendingar/tiltøk",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Samansett",
   "label.filter-raw": "Óviðgjørt",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "Tú hevur ongar heimasíður stillaða til.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

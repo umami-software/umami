@@ -39,9 +39,11 @@
   "label.devices": "Пристрої",
   "label.dismiss": "Відхилити",
   "label.domain": "Домен",
+  "label.dropoff": "Dropoff",
   "label.edit": "Редагувати",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "Дозволити ділитися посиланням",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "Події",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "Об'єднані",
   "label.filter-raw": "Сирі дані",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "У вас немає налаштованих сайтів.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

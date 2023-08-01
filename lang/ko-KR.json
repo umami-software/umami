@@ -39,9 +39,11 @@
   "label.devices": "기기",
   "label.dismiss": "무시하기",
   "label.domain": "도메인",
+  "label.dropoff": "Dropoff",
   "label.edit": "편집",
   "label.edit-dashboard": "Edit dashboard",
   "label.enable-share-url": "URL 공유 활성화",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "이벤트",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "합쳐서 보기",
   "label.filter-raw": "전체 보기",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "Join",
   "label.join-team": "Join team",
   "label.language": "Language",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "This team does not have any websites.",
   "messages.no-websites-configured": "구성된 웹 사이트가 없습니다.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team."
+  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }

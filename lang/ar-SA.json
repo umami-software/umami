@@ -39,9 +39,11 @@
   "label.devices": "الأجهزة",
   "label.dismiss": "اخفاء",
   "label.domain": "النطاق",
+  "label.dropoff": "Dropoff",
   "label.edit": "تعديل",
   "label.edit-dashboard": "تعديل لوحة التحكم",
   "label.enable-share-url": "تفعيل مشاركة الرابط",
+  "label.event": "Event",
   "label.event-data": "Event data",
   "label.events": "الأحداث",
   "label.field": "Field",
@@ -49,6 +51,7 @@
   "label.filter-combined": "مجمعة",
   "label.filter-raw": "مفصلة",
   "label.funnel": "Funnel",
+  "label.insights": "Insights",
   "label.join": "انضمام",
   "label.join-team": "الانضمام للمجموعة",
   "label.language": "اللغة",
@@ -187,5 +190,6 @@
   "messages.no-results-found": "No results were found.",
   "messages.no-team-websites": "هذه المجموعة ليس لديه اي موقع.",
   "messages.no-websites-configured": "لم تقم بإعداد اي موقع.",
-  "messages.team-websites-info": "يمكن مشاهدة الموقع من اي عضو في المجموعة."
+  "messages.team-websites-info": "يمكن مشاهدة الموقع من اي عضو في المجموعة.",
+  "new-version-available": "A new version of Umami {version} is available!"
 }
