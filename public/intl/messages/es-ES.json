@@ -1141,6 +1141,20 @@
       "value": " caracteres"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1159,6 +1173,18 @@
       "value": "Las contraseñas no coinciden"
     }
   ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No se encontraron resultados."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Este equipo no tiene ningún sitio web configurado."
+    }
+  ],
   "message.no-teams": [
     {
       "type": 0,
@@ -1169,6 +1195,12 @@
     {
       "type": 0,
       "value": "No hay usuarios."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "No tienes ningún sitio web configurado."
     }
   ],
   "message.page-not-found": [
@@ -1229,6 +1261,12 @@
       "value": "Equipo no encontrado."
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Las analíticas de tus sitios web pueden ser vistas por cualquier miembro del equipo."
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -1273,44 +1311,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No se encontraron resultados."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Este equipo no tiene ningún sitio web configurado."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "No tienes ningún sitio web configurado."
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Las analíticas de tus sitios web pueden ser vistas por cualquier miembro del equipo."
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }

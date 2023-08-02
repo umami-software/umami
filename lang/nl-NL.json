@@ -187,9 +187,9 @@
   "message.tracking-code": "Volgcode",
   "message.user-deleted": "Gebruiker verwijderd.",
   "message.visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "Er zijn geen websites gekoppeld aan dit team.",
-  "messages.no-websites-configured": "Je hebt geen websites ingesteld.",
-  "messages.team-websites-info": "Websites kunnen door iedereen in het team worden bekeken.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "Er zijn geen websites gekoppeld aan dit team.",
+  "message.no-websites-configured": "Je hebt geen websites ingesteld.",
+  "message.team-websites-info": "Websites kunnen door iedereen in het team worden bekeken.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

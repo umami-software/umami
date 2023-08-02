@@ -187,9 +187,9 @@
   "message.tracking-code": "Tracking Code",
   "message.user-deleted": "Benutzer glöscht.",
   "message.visitor-log": "Bsuecher us {country} benutzt {browser} uf {os} {device}",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "Dem Team sind kei Websiite zuegordnet.",
-  "messages.no-websites-configured": "Es isch kei Websiite vorhande.",
-  "messages.team-websites-info": "Websiite chönd vo jedem im Team agluegt werde",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "Dem Team sind kei Websiite zuegordnet.",
+  "message.no-websites-configured": "Es isch kei Websiite vorhande.",
+  "message.team-websites-info": "Websiite chönd vo jedem im Team agluegt werde",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

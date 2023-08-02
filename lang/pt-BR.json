@@ -187,9 +187,9 @@
   "message.tracking-code": "Código de rastreamento",
   "message.user-deleted": "Usuário removido.",
   "message.visitor-log": "Visitante de {country} usando {browser} no {device} {os}",
-  "messages.no-results-found": "Nenhum resultado foi encontrado.",
-  "messages.no-team-websites": "Este time não possui nenhum site.",
-  "messages.no-websites-configured": "Nenhum site foi configurado ainda.",
-  "messages.team-websites-info": "Os sites podem ser visualizados por qualquer membro da equipe.",
-  "new-version-available": "Uma nova versão do Umami {version} está disponível!"
+  "message.no-results-found": "Nenhum resultado foi encontrado.",
+  "message.no-team-websites": "Este time não possui nenhum site.",
+  "message.no-websites-configured": "Nenhum site foi configurado ainda.",
+  "message.team-websites-info": "Os sites podem ser visualizados por qualquer membro da equipe.",
+  "message.new-version-available": "Uma nova versão do Umami {version} está disponível!"
 }

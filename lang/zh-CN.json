@@ -185,11 +185,11 @@
   "message.team-already-member": "你已经是该团队的成员。",
   "message.team-not-found": "未找到团队。",
   "message.tracking-code": "跟踪代码",
-  "message.user-deleted": "User detected.",
+  "message.user-deleted": "User deleted.",
   "message.visitor-log": "来自{country}的访客在搭载 {os} 的{device}上使用 {browser} 浏览器进行访问。",
-  "messages.no-results-found": "没有找到任何结果。",
-  "messages.no-team-websites": "这个团队没有任何网站。",
-  "messages.no-websites-configured": "你还没有设置任何网站。",
-  "messages.team-websites-info": "团队中的任何人都可查看网站。",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "没有找到任何结果。",
+  "message.no-team-websites": "这个团队没有任何网站。",
+  "message.no-websites-configured": "你还没有设置任何网站。",
+  "message.team-websites-info": "团队中的任何人都可查看网站。",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

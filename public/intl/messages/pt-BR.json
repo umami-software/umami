@@ -284,13 +284,13 @@
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Campo"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Campos"
     }
   ],
   "label.filter-combined": [
@@ -308,7 +308,7 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Funil"
     }
   ],
   "label.insights": [
@@ -568,7 +568,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Executar query"
     }
   ],
   "label.save": [
@@ -586,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Selecionar data"
     }
   ],
   "label.select-website": [
@@ -772,7 +772,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Somente visualização"
     }
   ],
   "label.views": [
@@ -808,7 +808,7 @@
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Janela"
     }
   ],
   "label.yesterday": [
@@ -820,7 +820,7 @@
   "labels.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Depois"
     }
   ],
   "labels.average": [
@@ -832,7 +832,7 @@
   "labels.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Antes"
     }
   ],
   "labels.breakdown": [
@@ -850,13 +850,13 @@
   "labels.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Criar relatório"
     }
   ],
   "labels.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Descrição"
     }
   ],
   "labels.does-not-contain": [
@@ -892,25 +892,25 @@
   "labels.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Maior que"
     }
   ],
   "labels.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Maior que ou igual"
     }
   ],
   "labels.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Menor que"
     }
   ],
   "labels.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Menor que ou igual"
     }
   ],
   "labels.max": [
@@ -958,25 +958,25 @@
   "labels.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Tipo"
     }
   ],
   "labels.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Único"
     }
   ],
   "labels.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Sem título"
     }
   ],
   "labels.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Valor"
     }
   ],
   "message.active-users": [
@@ -1062,7 +1062,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Para excluir esta conta, digite "
     },
     {
       "type": 1,
@@ -1070,13 +1070,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
+      "value": "Para excluir este website, digite "
     },
     {
       "type": 1,
@@ -1084,7 +1084,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.delete-website-warning": [
@@ -1145,6 +1145,20 @@
       "value": " caracteres"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Uma nova versão do Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " está disponível!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1154,13 +1168,25 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Nenhum dado de evento está disponível."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
       "value": "As senhas não correspondem"
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "Nenhum resultado foi encontrado."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Este time não possui nenhum site."
     }
   ],
   "message.no-teams": [
@@ -1175,6 +1201,12 @@
       "value": "Não há nenhum usuário."
     }
   ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Nenhum site foi configurado ainda."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -1184,7 +1216,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Para redefinir este site, digite "
     },
     {
       "type": 1,
@@ -1192,7 +1224,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.reset-website-warning": [
@@ -1231,6 +1263,12 @@
     {
       "type": 0,
       "value": "Time não encontrado."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Os sites podem ser visualizados por qualquer membro da equipe."
     }
   ],
   "message.tracking-code": [
@@ -1277,44 +1315,6 @@
     {
       "type": 1,
       "value": "os"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Este time não possui nenhum site."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Nenhum site foi configurado ainda."
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Os sites podem ser visualizados por qualquer membro da equipe."
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }
