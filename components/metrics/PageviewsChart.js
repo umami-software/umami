@@ -3,7 +3,7 @@ import BarChart from './BarChart';
 import { useLocale, useTheme, useMessages } from 'hooks';
 import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
 
-export function PageviewsChart({ websiteId, data, unit, className, loading, ...props }) {
+export function PageviewsChart({ websiteId, data, unit, loading, ...props }) {
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
   const { locale } = useLocale();
@@ -31,7 +31,6 @@ export function PageviewsChart({ websiteId, data, unit, className, loading, ...p
     <BarChart
       {...props}
       key={websiteId}
-      className={className}
       datasets={datasets}
       unit={unit}
       loading={loading}

@@ -1,21 +1,18 @@
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok } from 'next-basics';
-import { getUserWebsites } from 'queries';
+import { methodNotAllowed } from 'next-basics';
+
+import userWebsites from 'pages/api/users/[id]/websites';
 
 export default async (req: NextApiRequestQueryBody, res: NextApiResponse) => {
   await useCors(req, res);
   await useAuth(req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
-
   if (req.method === 'GET') {
-    const websites = await getUserWebsites(userId);
+    req.query.id = req.auth.user.id;
 
-    return ok(res, websites);
+    return userWebsites(req, res);
   }
 
   return methodNotAllowed(res);

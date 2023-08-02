@@ -1,6 +1,5 @@
 import { Container } from 'react-basics';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import NavBar from 'components/layout/NavBar';
 import UpdateNotice from 'components/common/UpdateNotice';
 import useRequireLogin from 'hooks/useRequireLogin';
@@ -11,17 +10,14 @@ import styles from './AppLayout.module.css';
 export function AppLayout({ title, children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
-  const { pathname } = useRouter();
 
   if (!user || !config) {
     return null;
   }
 
-  const allowUpdate = user?.isAdmin && !config?.updatesDisabled && !pathname.includes('/share/');
-
   return (
     <div className={styles.layout} data-app-version={CURRENT_VERSION}>
-      {allowUpdate && <UpdateNotice />}
+      <UpdateNotice user={user} config={config} />
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>
       </Head>

@@ -1,10 +1,10 @@
-import { uuid } from 'lib/crypto';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createReport, getReports } from 'queries';
+import { createReport, getWebsiteReports } from 'queries';
 import { canViewWebsite } from 'lib/auth';
+import { uuid } from 'lib/crypto';
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -35,7 +35,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getReports({ websiteId });
+    const data = await getWebsiteReports(websiteId);
 
     return ok(res, data);
   }

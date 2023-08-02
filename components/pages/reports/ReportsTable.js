@@ -1,9 +1,12 @@
-import Link from 'next/link';
-import { Button, Text, Icon, Icons } from 'react-basics';
+import { useState } from 'react';
+import { Flexbox, Icon, Icons, Text, Button, Modal } from 'react-basics';
+import LinkButton from 'components/common/LinkButton';
 import SettingsTable from 'components/common/SettingsTable';
-import useMessages from 'hooks/useMessages';
+import ConfirmDeleteForm from 'components/common/ConfirmDeleteForm';
+import { useMessages } from 'hooks';
 
-export function ReportsTable({ data = [] }) {
+export function ReportsTable({ data = [], onDelete = () => {} }) {
+  const [report, setReport] = useState(null);
   const { formatMessage, labels } = useMessages();
 
   const columns = [
@@ -13,23 +16,39 @@ export function ReportsTable({ data = [] }) {
     { name: 'action', label: ' ' },
   ];
 
-  return (
-    <SettingsTable columns={columns} data={data}>
-      {row => {
-        const { id } = row;
+  const handleConfirm = () => {
+    onDelete(report.id);
+  };
 
-        return (
-          <Link href={`/reports/${id}`}>
-            <Button>
-              <Icon>
-                <Icons.ArrowRight />
-              </Icon>
-              <Text>{formatMessage(labels.view)}</Text>
-            </Button>
-          </Link>
-        );
-      }}
-    </SettingsTable>
+  return (
+    <>
+      <SettingsTable columns={columns} data={data}>
+        {row => {
+          const { id } = row;
+
+          return (
+            <Flexbox gap={10}>
+              <LinkButton href={`/reports/${id}`}>{formatMessage(labels.view)}</LinkButton>
+              <Button onClick={() => setReport(row)}>
+                <Icon>
+                  <Icons.Trash />
+                </Icon>
+                <Text>{formatMessage(labels.delete)}</Text>
+              </Button>
+            </Flexbox>
+          );
+        }}
+      </SettingsTable>
+      {report && (
+        <Modal>
+          <ConfirmDeleteForm
+            name={report.name}
+            onConfirm={handleConfirm}
+            onClose={() => setReport(null)}
+          />
+        </Modal>
+      )}
+    </>
   );
 }
 

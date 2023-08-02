@@ -1,15 +1,23 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 import { Button, Row, Column } from 'react-basics';
 import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import styles from './UpdateNotice.module.css';
 import useMessages from 'hooks/useMessages';
+import { useRouter } from 'next/router';
 
-export function UpdateNotice() {
+export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
-  const [dismissed, setDismissed] = useState(false);
+  const { pathname } = useRouter();
+  const [dismissed, setDismissed] = useState(checked);
+  const allowUpdate =
+    user?.isAdmin &&
+    !config?.updatesDisabled &&
+    !config?.cloudMode &&
+    !pathname.includes('/share/') &&
+    !dismissed;
 
   const updateCheck = useCallback(() => {
     setItem(VERSION_CHECK, { version: latest, time: Date.now() });
@@ -27,12 +35,12 @@ export function UpdateNotice() {
   }
 
   useEffect(() => {
-    if (!checked) {
+    if (allowUpdate) {
       checkVersion();
     }
-  }, [checked]);
+  }, [allowUpdate]);
 
-  if (!hasUpdate || dismissed) {
+  if (!allowUpdate || !hasUpdate) {
     return null;
   }
 

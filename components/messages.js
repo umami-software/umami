@@ -81,6 +81,7 @@ export const labels = defineMessages({
   devices: { id: 'label.devices', defaultMessage: 'Devices' },
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
+  event: { id: 'label.event', defaultMessage: 'Event' },
   events: { id: 'label.events', defaultMessage: 'Events' },
   query: { id: 'label.query', defaultMessage: 'Query' },
   queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
@@ -159,6 +160,8 @@ export const labels = defineMessages({
   value: { id: 'labels.value', defaultMessage: 'Value' },
   overview: { id: 'labels.overview', defaultMessage: 'Overview' },
   totalRecords: { id: 'labels.total-records', defaultMessage: 'Total records' },
+  insights: { id: 'label.insights', defaultMessage: 'Insights' },
+  dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
 });
 
 export const messages = defineMessages({
@@ -226,19 +229,19 @@ export const messages = defineMessages({
     defaultMessage: 'All website data will be deleted.',
   },
   noResultsFound: {
-    id: 'messages.no-results-found',
+    id: 'message.no-results-found',
     defaultMessage: 'No results were found.',
   },
   noWebsitesConfigured: {
-    id: 'messages.no-websites-configured',
+    id: 'message.no-websites-configured',
     defaultMessage: 'You do not have any websites configured.',
   },
   noTeamWebsites: {
-    id: 'messages.no-team-websites',
+    id: 'message.no-team-websites',
     defaultMessage: 'This team does not have any websites.',
   },
   teamWebsitesInfo: {
-    id: 'messages.team-websites-info',
+    id: 'message.team-websites-info',
     defaultMessage: 'Websites can be viewed by anyone on the team.',
   },
   noMatchPassword: { id: 'message.no-match-password', defaultMessage: 'Passwords do not match.' },
@@ -269,5 +272,9 @@ export const messages = defineMessages({
   noEventData: {
     id: 'message.no-event-data',
     defaultMessage: 'No event data is available.',
+  },
+  newVersionAvailable: {
+    id: 'message.new-version-available',
+    defaultMessage: 'A new version of Umami {version} is available!',
   },
 });
