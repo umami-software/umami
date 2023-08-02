@@ -187,9 +187,9 @@
   "message.tracking-code": "Tracking Code",
   "message.user-deleted": "Benutzer gelöscht.",
   "message.visitor-log": "Besucher aus {country} benutzt {browser} auf {os} {device}",
-  "messages.no-results-found": "Keine Ergebnisse gefunden.",
-  "messages.no-team-websites": "Diesem Team sind keine Websites zugeordnet.",
-  "messages.no-websites-configured": "Es ist keine Webseite vorhanden.",
-  "messages.team-websites-info": "Webseiten können von jedem im Team eingesehen werden.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "Keine Ergebnisse gefunden.",
+  "message.no-team-websites": "Diesem Team sind keine Websites zugeordnet.",
+  "message.no-websites-configured": "Es ist keine Webseite vorhanden.",
+  "message.team-websites-info": "Webseiten können von jedem im Team eingesehen werden.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

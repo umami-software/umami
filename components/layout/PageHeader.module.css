@@ -1,10 +1,12 @@
 .header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   align-content: center;
   align-self: stretch;
   flex-wrap: wrap;
+  height: 100px;
 }
 
 .header a {

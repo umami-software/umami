@@ -70,7 +70,7 @@ function getFilterQuery(filters = {}, params = []): string {
 
     if (filter !== undefined) {
       const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column}=$${params.length + 1}`);
+      arr.push(`and ${column}={{${key}}}`);
       params.push(decodeURIComponent(filter));
     }
 

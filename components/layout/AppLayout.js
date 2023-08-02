@@ -1,6 +1,5 @@
 import { Container } from 'react-basics';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import NavBar from 'components/layout/NavBar';
 import UpdateNotice from 'components/common/UpdateNotice';
 import useRequireLogin from 'hooks/useRequireLogin';

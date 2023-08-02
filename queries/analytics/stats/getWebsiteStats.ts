@@ -51,11 +51,11 @@ async function relationalQuery(
     ) as t
     `,
     {
-      ...filters,
       websiteId,
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
+      ...filters,
     },
   );
 }

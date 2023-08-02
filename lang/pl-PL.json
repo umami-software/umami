@@ -187,9 +187,9 @@
   "message.tracking-code": "Kod śledzenia",
   "message.user-deleted": "Użytkownik usunięty.",
   "message.visitor-log": "Odwiedzający z {country} używa {browser} na {os} {device}",
-  "messages.no-results-found": "Nie znaleziono wyników.",
-  "messages.no-team-websites": "Ten zespół nie ma żadnych witryn internetowych.",
-  "messages.no-websites-configured": "Nie masz skonfigurowanych żadnych witryn internetowych.",
-  "messages.team-websites-info": "Strony internetowe mogą być przeglądane przez każdego członka zespołu.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "Nie znaleziono wyników.",
+  "message.no-team-websites": "Ten zespół nie ma żadnych witryn internetowych.",
+  "message.no-websites-configured": "Nie masz skonfigurowanych żadnych witryn internetowych.",
+  "message.team-websites-info": "Strony internetowe mogą być przeglądane przez każdego członka zespołu.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }
