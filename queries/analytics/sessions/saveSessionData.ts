@@ -1,6 +1,6 @@
 import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
-import { flattenJSON } from 'lib/dynamicData';
+import { flattenJSON } from 'lib/data';
 import prisma from 'lib/prisma';
 import { DynamicData } from 'lib/types';
 

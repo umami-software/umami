@@ -9,7 +9,7 @@ import styles from './Header.module.css';
 export function Header() {
   return (
     <header className={styles.header}>
-      <Row>
+      <Row className={styles.row}>
         <Column>
           <Link href="https://umami.is" target="_blank" className={styles.title}>
             <Icon size="lg">

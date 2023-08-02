@@ -17,6 +17,18 @@
       "value": "Log de atividade"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Add description"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "Domínio"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,6 +263,12 @@
       "value": "Ativar link de compartilhamento"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Evento"
+    }
+  ],
   "label.event-data": [
     {
       "type": 0,
@@ -255,6 +279,18 @@
     {
       "type": 0,
       "value": "Eventos"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Campo"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Campos"
     }
   ],
   "label.filter-combined": [
@@ -272,7 +308,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Funil"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -523,6 +565,12 @@
       "value": "Papel"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Executar query"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -538,7 +586,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Selecionar data"
     }
   ],
   "label.select-website": [
@@ -679,6 +727,12 @@
       "value": "Desconhecido"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
   "label.urls": [
     {
       "type": 0,
@@ -715,6 +769,12 @@
       "value": "Ver detalhes"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "Somente visualização"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -745,10 +805,178 @@
       "value": "Sites"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Janela"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Ontem"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "Depois"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Antes"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Criar relatório"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Descrição"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Does not equal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Equals"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Maior que"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Maior que ou igual"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Menor que"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Menor que ou igual"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Sum"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Tipo"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Único"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Sem título"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Valor"
     }
   ],
   "message.active-users": [
@@ -834,7 +1062,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Para excluir esta conta, digite "
     },
     {
       "type": 1,
@@ -842,13 +1070,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
+      "value": "Para excluir este website, digite "
     },
     {
       "type": 1,
@@ -856,7 +1084,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.delete-website-warning": [
@@ -917,16 +1145,48 @@
       "value": " caracteres"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Uma nova versão do Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " está disponível!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
       "value": "Sem dados disponíveis."
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "Nenhum dado de evento está disponível."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
       "value": "As senhas não correspondem"
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "Nenhum resultado foi encontrado."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Este time não possui nenhum site."
     }
   ],
   "message.no-teams": [
@@ -941,6 +1201,12 @@
       "value": "Não há nenhum usuário."
     }
   ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Nenhum site foi configurado ainda."
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -950,7 +1216,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Para redefinir este site, digite "
     },
     {
       "type": 1,
@@ -958,7 +1224,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " na caixa abaixo para confirmar."
     }
   ],
   "message.reset-website-warning": [
@@ -997,6 +1263,12 @@
     {
       "type": 0,
       "value": "Time não encontrado."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Os sites podem ser visualizados por qualquer membro da equipe."
     }
   ],
   "message.tracking-code": [
@@ -1043,30 +1315,6 @@
     {
       "type": 1,
       "value": "os"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Este time não possui nenhum site."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Nenhum site foi configurado ainda."
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Os sites podem ser visualizados por qualquer membro da equipe."
     }
   ]
 }

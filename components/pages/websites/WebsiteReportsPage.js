@@ -7,7 +7,11 @@ import WebsiteHeader from './WebsiteHeader';
 
 export function WebsiteReportsPage({ websiteId }) {
   const { formatMessage, labels } = useMessages();
-  const { reports, error, isLoading } = useReports(websiteId);
+  const { reports, error, isLoading, deleteReport } = useReports(websiteId);
+
+  const handleDelete = async id => {
+    await deleteReport(id);
+  };
 
   return (
     <Page loading={isLoading} error={error}>
@@ -22,7 +26,7 @@ export function WebsiteReportsPage({ websiteId }) {
           </Button>
         </Link>
       </Flexbox>
-      <ReportsTable websiteId={websiteId} data={reports} />
+      <ReportsTable data={reports} onDelete={handleDelete} />
     </Page>
   );
 }

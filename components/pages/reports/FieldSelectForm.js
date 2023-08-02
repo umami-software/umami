@@ -9,10 +9,10 @@ export default function FieldSelectForm({ fields, onSelect }) {
     <Form>
       <FormRow label={formatMessage(labels.fields)}>
         <Menu className={styles.menu} onSelect={key => onSelect(fields[key])}>
-          {fields.map(({ name, type }, index) => {
+          {fields.map(({ label, name, type }, index) => {
             return (
               <Item key={index} className={styles.item}>
-                <div>{name}</div>
+                <div>{label || name}</div>
                 <div className={styles.type}>{type}</div>
               </Item>
             );
