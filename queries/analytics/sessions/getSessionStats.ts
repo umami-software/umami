@@ -5,7 +5,7 @@ import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/load';
 import { maxDate } from 'lib/date';
 
-export interface PageviewStatsCriteria {
+export interface SessionStatsCriteria {
   startDate: Date;
   endDate: Date;
   timezone?: string;
@@ -25,8 +25,8 @@ export interface PageviewStatsCriteria {
   };
 }
 
-export async function getPageviewStats(
-  ...args: [websiteId: string, criteria: PageviewStatsCriteria]
+export async function getSessionStats(
+  ...args: [websiteId: string, criteria: SessionStatsCriteria]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -34,7 +34,7 @@ export async function getPageviewStats(
   });
 }
 
-async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteria) {
+async function relationalQuery(websiteId: string, criteria: SessionStatsCriteria) {
   const { startDate, endDate, timezone = 'utc', unit = 'day', filters = {} } = criteria;
   const { getDateQuery, parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
@@ -44,7 +44,7 @@ async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteri
     `
     select
       ${getDateQuery('website_event.created_at', unit, timezone)} x,
-      count(*) y
+      count(distinct website_event.session_id) y
     from website_event
       ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
@@ -63,7 +63,7 @@ async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteri
   );
 }
 
-async function clickhouseQuery(websiteId: string, criteria: PageviewStatsCriteria) {
+async function clickhouseQuery(websiteId: string, criteria: SessionStatsCriteria) {
   const { startDate, endDate, timezone = 'UTC', unit = 'day', filters = {} } = criteria;
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery } = clickhouse;
   const website = await loadWebsite(websiteId);
@@ -77,7 +77,7 @@ async function clickhouseQuery(websiteId: string, criteria: PageviewStatsCriteri
     from (
       select 
         ${getDateQuery('created_at', unit, timezone)} as t,
-        count(*) as y
+        count(distinct session_id) as y
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime} and {endDate:DateTime}

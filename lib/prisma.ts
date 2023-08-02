@@ -1,7 +1,7 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from './constants';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -64,14 +64,13 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
-function getFilterQuery(filters = {}, params = []): string {
+function getFilterQuery(filters = {}): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
     if (filter !== undefined) {
       const column = FILTER_COLUMNS[key] || key;
       arr.push(`and ${column}={{${key}}}`);
-      params.push(decodeURIComponent(filter));
     }
 
     return arr;
@@ -80,19 +79,12 @@ function getFilterQuery(filters = {}, params = []): string {
   return query.join('\n');
 }
 
-function parseFilters(
-  filters: { [key: string]: any } = {},
-  params = [],
-  sessionKey = 'session_id',
-) {
-  const { os, browser, device, country, region, city } = filters;
-
+function parseFilters(filters: { [key: string]: any } = {}) {
   return {
-    joinSession:
-      os || browser || device || country || region || city
-        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
-        : '',
-    filterQuery: getFilterQuery(filters, params),
+    joinSession: Object.keys(filters).find(key => SESSION_COLUMNS[key])
+      ? `inner join session on website_event.session_id = session.session_id`
+      : '',
+    filterQuery: getFilterQuery(filters),
   };
 }
 

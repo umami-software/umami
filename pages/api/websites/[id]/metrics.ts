@@ -68,7 +68,7 @@ export default async (
 
       filters[type] = undefined;
 
-      let data = await getSessionMetrics(websiteId, {
+      const data = await getSessionMetrics(websiteId, {
         startDate,
         endDate,
         column,
@@ -88,7 +88,7 @@ export default async (
           }
         }
 
-        data = Object.values(combined);
+        return ok(res, Object.values(combined));
       }
 
       return ok(res, data);

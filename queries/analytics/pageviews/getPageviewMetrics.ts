@@ -84,6 +84,7 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const website = await loadWebsite(websiteId);
   const params = {
+    ...filters,
     websiteId,
     startDate: maxDate(startDate, website.resetAt),
     endDate,
@@ -98,7 +99,7 @@ async function clickhouseQuery(
     params.domain = website.domain;
   }
 
-  const { filterQuery } = parseFilters(filters, params);
+  const { filterQuery } = parseFilters(filters);
 
   return rawQuery(
     `

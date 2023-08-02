@@ -6,6 +6,7 @@ import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { getPageviewStats } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
+import { getSessionStats } from '../../../../queries/analytics/sessions/getSessionStats';
 
 export interface WebsitePageviewRequestQuery {
   id: string;
@@ -62,7 +63,6 @@ export default async (
         endDate,
         timezone,
         unit,
-        count: '*',
         filters: {
           url,
           referrer,
@@ -75,14 +75,14 @@ export default async (
           city,
         },
       }),
-      getPageviewStats(websiteId, {
+      getSessionStats(websiteId, {
         startDate,
         endDate,
         timezone,
         unit,
-        count: 'distinct website_event.',
         filters: {
           url,
+          referrer,
           title,
           os,
           browser,
