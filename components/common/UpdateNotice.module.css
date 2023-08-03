@@ -4,7 +4,7 @@
   gap: 20px;
   margin: 20px auto;
   justify-self: center;
-  background: #fff;
+  background: var(--base50);
   padding: 20px;
   border: 1px solid var(--base300);
   border-radius: var(--border-radius);
@@ -15,7 +15,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
+  color: var(--font-color100);
+  font-weight: 700;
 }
 
 .buttons {

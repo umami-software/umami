@@ -21,7 +21,7 @@ export function useConfig() {
     }
   }, []);
 
-  return config || {};
+  return config;
 }
 
 export default useConfig;

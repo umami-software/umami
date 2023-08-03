@@ -25,6 +25,7 @@ node_modules
 *.iml
 *.log
 .vscode
+.tool-versions
 
 # debug
 npm-debug.log*

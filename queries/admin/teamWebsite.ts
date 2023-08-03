@@ -22,7 +22,7 @@ export async function getTeamWebsite(
   });
 }
 
-export async function getTeamWebsiteByTeamMemberId(
+export async function findTeamWebsiteByUserId(
   websiteId: string,
   userId: string,
 ): Promise<TeamWebsite> {

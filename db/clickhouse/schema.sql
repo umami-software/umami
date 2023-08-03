@@ -6,7 +6,7 @@ CREATE TABLE umami.website_event
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    --session
+    --sessions
     hostname LowCardinality(String),
     browser LowCardinality(String),
     os LowCardinality(String),
@@ -17,14 +17,14 @@ CREATE TABLE umami.website_event
     subdivision1 LowCardinality(String),
     subdivision2 LowCardinality(String),
     city String,
-    --pageview
+    --pageviews
     url_path String,
     url_query String,
     referrer_path String,
     referrer_query String,
     referrer_domain String,
     page_title String,
-    --event
+    --events
     event_type UInt32,
     event_name String,
     created_at DateTime('UTC'),
@@ -38,7 +38,7 @@ CREATE TABLE umami.website_event_queue (
     website_id UUID,
     session_id UUID,
     event_id UUID,
-    --session
+    --sessions
     hostname LowCardinality(String),
     browser LowCardinality(String),
     os LowCardinality(String),
@@ -49,14 +49,14 @@ CREATE TABLE umami.website_event_queue (
     subdivision1 LowCardinality(String),
     subdivision2 LowCardinality(String),
     city String,
-    --pageview
+    --pageviews
     url_path String,
     url_query String,
     referrer_path String,
     referrer_query String,
     referrer_domain String,
     page_title String,
-    --event
+    --events
     event_type UInt32,
     event_name String,
     created_at DateTime('UTC'),
@@ -66,11 +66,11 @@ CREATE TABLE umami.website_event_queue (
 )
 ENGINE = Kafka
 SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
-       kafka_topic_list = 'event',
+       kafka_topic_list = 'events',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_handle_error_mode = 'stream'
+       kafka_handle_error_mode = 'stream';
 
 CREATE MATERIALIZED VIEW umami.website_event_queue_mv TO umami.website_event AS
 SELECT website_id,
@@ -108,7 +108,7 @@ SETTINGS index_granularity = 8192 AS
 SELECT _error AS error,
     _raw_message AS raw
 FROM umami.website_event_queue
-WHERE length(_error) > 0
+WHERE length(_error) > 0;
 
 CREATE TABLE umami.event_data
 (
@@ -151,7 +151,7 @@ SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input bro
        kafka_group_name = 'event_data_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
-       kafka_handle_error_mode = 'stream'
+       kafka_handle_error_mode = 'stream';
 
 CREATE MATERIALIZED VIEW umami.event_data_queue_mv TO umami.event_data AS
 SELECT website_id,
@@ -178,4 +178,4 @@ SETTINGS index_granularity = 8192 AS
 SELECT _error AS error,
     _raw_message AS raw
 FROM umami.event_data_queue
-WHERE length(_error) > 0
+WHERE length(_error) > 0;
