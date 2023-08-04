@@ -5,18 +5,18 @@ import { EventDataMetricsBar } from 'components/pages/event-data/EventDataMetric
 import { useDateRange, useApi, usePageQuery } from 'hooks';
 import styles from './WebsiteEventData.module.css';
 
-function useData(websiteId, event) {
+function useData(websiteId, eventName) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();
   const { data, error, isLoading } = useQuery(
-    ['event-data:events', { websiteId, startDate, endDate, event }],
+    ['event-data:events', { websiteId, startDate, endDate, eventName }],
     () =>
       get('/event-data/events', {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
-        event,
+        eventName,
       }),
     { enabled: !!(websiteId && startDate && endDate) },
   );
@@ -26,15 +26,15 @@ function useData(websiteId, event) {
 
 export default function WebsiteEventData({ websiteId }) {
   const {
-    query: { event },
+    query: { eventName },
   } = usePageQuery();
-  const { data } = useData(websiteId, event);
+  const { data } = useData(websiteId, eventName);
 
   return (
     <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
-      {!event && <EventDataTable data={data} />}
-      {event && <EventDataValueTable event={event} data={data} />}
+      {!eventName && <EventDataTable data={data} />}
+      {eventName && <EventDataValueTable eventName={eventName} data={data} />}
     </Flexbox>
   );
 }
