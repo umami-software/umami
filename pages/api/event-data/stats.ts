@@ -28,7 +28,10 @@ export default async (
       return unauthorized(res);
     }
 
-    const results = await getEventDataFields(websiteId, new Date(+startAt), new Date(+endAt));
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
+
+    const results = await getEventDataFields(websiteId, { startDate, endDate });
 
     const data = results.reduce(
       (obj, row) => {
