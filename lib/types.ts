@@ -137,11 +137,11 @@ export interface QueryFilters {
   unit?: string;
   domain?: string;
   eventType?: number;
+  eventName?: string;
   url?: string;
   referrer?: string;
   title?: string;
   query?: string;
-  event?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -149,4 +149,8 @@ export interface QueryFilters {
   region?: string;
   city?: string;
   language?: string;
+}
+
+export interface QueryOptions {
+  joinSession?: boolean;
 }
