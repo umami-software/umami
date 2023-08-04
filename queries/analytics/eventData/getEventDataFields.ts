@@ -1,12 +1,10 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { WebsiteEventDataFields } from 'lib/types';
-import { loadWebsite } from 'lib/load';
-import { maxDate } from 'lib/date';
+import { QueryFilters, WebsiteEventDataFields } from 'lib/types';
 
 export async function getEventDataFields(
-  ...args: [websiteId: string, startDate: Date, endDate: Date, field?: string]
+  ...args: [websiteId: string, filters: QueryFilters & { field?: string }]
 ): Promise<WebsiteEventDataFields[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -14,9 +12,10 @@ export async function getEventDataFields(
   });
 }
 
-async function relationalQuery(websiteId: string, startDate: Date, endDate: Date, field: string) {
-  const { rawQuery } = prisma;
-  const website = await loadWebsite(websiteId);
+async function relationalQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
+  const { rawQuery, parseFilters } = prisma;
+  const { field } = filters;
+  const { params } = await parseFilters(websiteId, filters);
 
   if (field) {
     return rawQuery(
@@ -33,7 +32,7 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
       order by 3 desc, 2 desc, 1 asc
       limit 100
       `,
-      { websiteId, field, startDate: maxDate(startDate, website.resetAt), endDate },
+      params,
     );
   }
 
@@ -50,13 +49,14 @@ async function relationalQuery(websiteId: string, startDate: Date, endDate: Date
     order by 3 desc, 2 asc, 1 asc
     limit 100
     `,
-    { websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
+    params,
   );
 }
 
-async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date, field: string) {
-  const { rawQuery } = clickhouse;
-  const website = await loadWebsite(websiteId);
+async function clickhouseQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
+  const { rawQuery, parseFilters } = clickhouse;
+  const { field } = filters;
+  const { params } = await parseFilters(websiteId, filters);
 
   if (field) {
     return rawQuery(
@@ -73,7 +73,7 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
       order by 3 desc, 2 desc, 1 asc
       limit 100
       `,
-      { websiteId, field, startDate: maxDate(startDate, website.resetAt), endDate },
+      params,
     );
   }
 
@@ -90,6 +90,6 @@ async function clickhouseQuery(websiteId: string, startDate: Date, endDate: Date
     order by 3 desc, 2 asc, 1 asc
     limit 100
     `,
-    { websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
+    params,
   );
 }

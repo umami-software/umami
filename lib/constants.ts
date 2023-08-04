@@ -50,7 +50,10 @@ export const FILTER_COLUMNS = {
   query: 'url_query',
   event: 'event_name',
   region: 'subdivision1',
+  type: 'event_type',
 };
+
+export const IGNORED_FILTERS = ['startDate', 'endDate', 'timezone', 'unit', 'eventType'];
 
 export const COLLECTION_TYPE = {
   event: 'event',

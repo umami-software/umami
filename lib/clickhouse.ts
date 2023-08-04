@@ -2,8 +2,10 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { WebsiteMetricFilter } from './types';
-import { FILTER_COLUMNS } from './constants';
+import { QueryFilters } from './types';
+import { FILTER_COLUMNS, IGNORED_FILTERS } from './constants';
+import { loadWebsite } from './load';
+import { maxDate } from './date';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%M:00',
@@ -65,13 +67,13 @@ function getFilterQuery(filters = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
-    if (filter !== undefined) {
+    if (filter !== undefined && !IGNORED_FILTERS.includes(key)) {
       const column = FILTER_COLUMNS[key] || key;
       arr.push(`and ${column} = {${key}:String}`);
     }
 
     if (key === 'referrer') {
-      arr.push('and referrer_domain != {domain:String}');
+      arr.push('and referrer_domain != {websiteDomain:String}');
     }
 
     return arr;
@@ -80,9 +82,20 @@ function getFilterQuery(filters = {}) {
   return query.join('\n');
 }
 
-function parseFilters(filters: WebsiteMetricFilter = {}) {
+async function parseFilters(
+  websiteId: string,
+  filters: QueryFilters & { [key: string]: any } = {},
+) {
+  const website = await loadWebsite(websiteId);
+
   return {
     filterQuery: getFilterQuery(filters),
+    params: {
+      ...filters,
+      websiteId,
+      startDate: maxDate(filters.startDate, website.resetAt),
+      websiteDomain: website.domain,
+    },
   };
 }
 

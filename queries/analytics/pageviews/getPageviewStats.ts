@@ -2,43 +2,22 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/load';
-import { maxDate } from 'lib/date';
+import { QueryFilters } from 'lib/types';
 
-export interface PageviewStatsCriteria {
-  startDate: Date;
-  endDate: Date;
-  timezone?: string;
-  unit?: string;
-  filters: {
-    url?: string;
-    referrer?: string;
-    title?: string;
-    browser?: string;
-    os?: string;
-    device?: string;
-    screen?: string;
-    language?: string;
-    country?: string;
-    region?: string;
-    city?: string;
-  };
-}
-
-export async function getPageviewStats(
-  ...args: [websiteId: string, criteria: PageviewStatsCriteria]
-) {
+export async function getPageviewStats(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteria) {
-  const { startDate, endDate, timezone = 'utc', unit = 'day', filters = {} } = criteria;
+async function relationalQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'utc', unit = 'day' } = filters;
   const { getDateQuery, parseFilters, rawQuery } = prisma;
-  const website = await loadWebsite(websiteId);
-  const { filterQuery, joinSession } = parseFilters(filters);
+  const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
+    ...filters,
+    eventType: EVENT_TYPE.pageView,
+  });
 
   return rawQuery(
     `
@@ -53,22 +32,17 @@ async function relationalQuery(websiteId: string, criteria: PageviewStatsCriteri
       ${filterQuery}
     group by 1
     `,
-    {
-      ...filters,
-      websiteId,
-      startDate: maxDate(startDate, website.resetAt),
-      endDate,
-      eventType: EVENT_TYPE.pageView,
-      domain: website.domain,
-    },
+    params,
   );
 }
 
-async function clickhouseQuery(websiteId: string, criteria: PageviewStatsCriteria) {
-  const { startDate, endDate, timezone = 'UTC', unit = 'day', filters = {} } = criteria;
+async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'UTC', unit = 'day' } = filters;
   const { parseFilters, rawQuery, getDateStringQuery, getDateQuery } = clickhouse;
-  const website = await loadWebsite(websiteId);
-  const { filterQuery } = parseFilters(filters);
+  const { filterQuery, params } = await parseFilters(websiteId, {
+    ...filters,
+    eventType: EVENT_TYPE.pageView,
+  });
 
   return rawQuery(
     `
@@ -88,13 +62,6 @@ async function clickhouseQuery(websiteId: string, criteria: PageviewStatsCriteri
     ) as g
     order by t
     `,
-    {
-      ...filters,
-      websiteId,
-      startDate: maxDate(startDate, website.resetAt),
-      endDate,
-      eventType: EVENT_TYPE.pageView,
-      domain: website.domain,
-    },
+    params,
   );
 }

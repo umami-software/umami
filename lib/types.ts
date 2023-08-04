@@ -73,21 +73,6 @@ export interface WebsiteMetric {
   y: number;
 }
 
-export interface WebsiteMetricFilter {
-  domain?: string;
-  url?: string;
-  referrer?: string;
-  title?: string;
-  query?: string;
-  event?: string;
-  os?: string;
-  browser?: string;
-  device?: string;
-  country?: string;
-  region?: string;
-  city?: string;
-}
-
 export interface WebsiteEventMetric {
   x: string;
   t: string;
@@ -143,4 +128,25 @@ export interface DateRange {
   endDate: Date;
   unit: string;
   value: string;
+}
+
+export interface QueryFilters {
+  startDate?: Date;
+  endDate?: Date;
+  timezone?: string;
+  unit?: string;
+  domain?: string;
+  eventType?: number;
+  url?: string;
+  referrer?: string;
+  title?: string;
+  query?: string;
+  event?: string;
+  os?: string;
+  browser?: string;
+  device?: string;
+  country?: string;
+  region?: string;
+  city?: string;
+  language?: string;
 }
