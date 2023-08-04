@@ -4,11 +4,4 @@
   flex-direction: column;
   background: var(--base50);
   position: relative;
-  padding: 30px;
-}
-
-@media only screen and (max-width: 768px) {
-  .page {
-    padding: 10px 0;
-  }
 }

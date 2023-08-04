@@ -52,7 +52,7 @@ export function RealtimeLog({ data, websiteDomain }) {
 
   const getTime = ({ createdAt }) => dateFormat(new Date(createdAt), 'pp', locale);
 
-  const getColor = ({ sessionId }) => stringToColor(sessionId);
+  const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
   const getIcon = ({ __type }) => icons[__type];
 

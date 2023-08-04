@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Favicon from 'components/common/Favicon';
 import ActiveUsers from 'components/metrics/ActiveUsers';
-import styles from './WebsiteHeader.module.css';
 import Icons from 'components/icons';
 import { useMessages, useWebsite } from 'hooks';
+import styles from './WebsiteHeader.module.css';
 
 export function WebsiteHeader({ websiteId, showLinks = true, children }) {
   const { formatMessage, labels } = useMessages();
@@ -42,11 +42,11 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
       <Column className={styles.title} variant="two">
         <Favicon domain={domain} />
         <Text>{name}</Text>
+        <ActiveUsers websiteId={websiteId} />
       </Column>
       <Column className={styles.actions} variant="two">
-        <ActiveUsers websiteId={websiteId} />
         {showLinks && (
-          <Flexbox alignItems="center">
+          <div className={styles.links}>
             {links.map(({ label, icon, path }) => {
               const selected = path ? pathname.endsWith(path) : pathname === '/websites/[id]';
 
@@ -58,13 +58,13 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
                       [styles.selected]: selected,
                     })}
                   >
-                    <Icon>{icon}</Icon>
-                    <Text>{label}</Text>
+                    <Icon className={styles.icon}>{icon}</Icon>
+                    <Text className={styles.label}>{label}</Text>
                   </Button>
                 </Link>
               );
             })}
-          </Flexbox>
+          </div>
         )}
         {children}
       </Column>

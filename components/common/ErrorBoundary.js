@@ -12,7 +12,6 @@ export function ErrorBoundary({ children }) {
   const { formatMessage, messages } = useMessages();
 
   const fallbackRender = ({ error, resetErrorBoundary }) => {
-    console.log({ error });
     return (
       <div className={styles.error} role="alert">
         <h1>{formatMessage(messages.error)}</h1>

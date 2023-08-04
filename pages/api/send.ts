@@ -1,7 +1,7 @@
 import isbot from 'isbot';
 import ipaddr from 'ipaddr.js';
 import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
-import { saveEvent } from 'queries';
+import { saveEvent, saveSessionData } from 'queries';
 import { useCors, useSession } from 'lib/middleware';
 import { getJsonBody, getIpAddress } from 'lib/detect';
 import { secret } from 'lib/crypto';
@@ -9,7 +9,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { Resolver } from 'dns/promises';
 import { CollectionType } from 'lib/types';
 import { COLLECTION_TYPE } from 'lib/constants';
-import { saveSessionData } from 'queries/analytics/session/saveSessionData';
 
 export interface CollectRequestBody {
   payload: {
@@ -55,7 +54,11 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
-  validateBody(res, { type, payload });
+  const error = validateBody({ type, payload });
+
+  if (error) {
+    return badRequest(res, error);
+  }
 
   if (await hasBlockedIp(req)) {
     return forbidden(res);
@@ -115,17 +118,19 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   return send(res, token);
 };
 
-function validateBody(res: NextApiResponse, { type, payload }: CollectRequestBody) {
-  const { data } = payload;
-
-  // Validate type
-  if (type !== COLLECTION_TYPE.event && type !== COLLECTION_TYPE.identify) {
-    return badRequest(res, 'Wrong payload type.');
+function validateBody({ type, payload }: CollectRequestBody) {
+  if (!type || !payload) {
+    return 'Invalid payload.';
   }
 
-  // Validate eventData is JSON
+  if (type !== COLLECTION_TYPE.event && type !== COLLECTION_TYPE.identify) {
+    return 'Wrong payload type.';
+  }
+
+  const { data } = payload;
+
   if (data && !(typeof data === 'object' && !Array.isArray(data))) {
-    return badRequest(res, 'Invalid event data.');
+    return 'Invalid event data.';
   }
 }
 

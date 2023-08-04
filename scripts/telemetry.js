@@ -1,42 +1,24 @@
-const fs = require('fs-extra');
-const path = require('path');
 const os = require('os');
 const isCI = require('is-ci');
 const pkg = require('../package.json');
 
-const dest = path.resolve(__dirname, '../.next/cache/umami.json');
-const url = 'https://telemetry.umami.is/api/send';
+const url = 'https://api.umami.is/v1/telemetry';
 
-async function sendTelemetry(action) {
-  let json = {};
-
-  try {
-    json = await fs.readJSON(dest);
-  } catch {
-    // Ignore
-  }
-
-  try {
-    await fs.writeJSON(dest, { version: pkg.version });
-  } catch {
-    // Ignore
-  }
-
+async function sendTelemetry(type) {
   const { default: isDocker } = await import('is-docker');
   const { default: fetch } = await import('node-fetch');
-  const upgrade = json.version !== undefined && json.version !== pkg.version;
 
-  const payload = {
-    action,
-    version: pkg.version,
-    node: process.version,
-    platform: os.platform(),
-    arch: os.arch(),
-    os: `${os.type()} (${os.version()})`,
-    docker: isDocker(),
-    ci: isCI,
-    prev: json.version,
-    upgrade,
+  const data = {
+    type,
+    payload: {
+      version: pkg.version,
+      node: process.version,
+      platform: os.platform(),
+      arch: os.arch(),
+      os: `${os.type()} (${os.version()})`,
+      isDocker: isDocker(),
+      isCi: isCI,
+    },
   };
 
   try {
@@ -46,7 +28,7 @@ async function sendTelemetry(action) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(data),
     });
   } catch {
     // Ignore

@@ -5,7 +5,7 @@ import { useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createUser, getUser, getUsers } from 'queries';
+import { createUser, getUserByUsername, getUsers } from 'queries';
 
 export interface UsersRequestBody {
   username: string;
@@ -37,7 +37,7 @@ export default async (
 
     const { username, password, role, id } = req.body;
 
-    const existingUser = await getUser({ username }, { showDeleted: true });
+    const existingUser = await getUserByUsername(username, { showDeleted: true });
 
     if (existingUser) {
       return badRequest(res, 'User already exists');
