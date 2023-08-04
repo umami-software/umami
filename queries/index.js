@@ -19,6 +19,7 @@ export * from './analytics/sessions/createSession';
 export * from './analytics/sessions/getSession';
 export * from './analytics/sessions/getSessionMetrics';
 export * from './analytics/sessions/getSessions';
+export * from './analytics/sessions/getSessionStats';
 export * from './analytics/sessions/saveSessionData';
 export * from './analytics/stats/getActiveVisitors';
 export * from './analytics/stats/getRealtimeData';
