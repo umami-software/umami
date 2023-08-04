@@ -72,14 +72,14 @@ function getFilterQuery(filters = {}): string {
     const filter = filters[key];
 
     if (filter !== undefined && !IGNORED_FILTERS.includes(key)) {
-      const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column}={{${key}}}`);
-    }
-
-    if (key === 'referrer') {
-      arr.push(
-        'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
-      );
+      if (key === 'referrer') {
+        arr.push(
+          'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
+        );
+      } else {
+        const column = FILTER_COLUMNS[key] || key;
+        arr.push(`and ${column}={{${key}}}`);
+      }
     }
 
     return arr;
