@@ -4,9 +4,8 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { getPageviewStats } from 'queries';
+import { getPageviewStats, getSessionStats } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
-import { getSessionStats } from '../../../../queries/analytics/sessions/getSessionStats';
 
 export interface WebsitePageviewRequestQuery {
   id: string;
