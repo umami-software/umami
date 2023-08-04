@@ -11,7 +11,7 @@ export interface InsightsRequestBody {
     startDate: string;
     endDate: string;
   };
-  fields: string[];
+  fields: { name: string; type: string; value: string }[];
   filters: string[];
   groups: string[];
 }

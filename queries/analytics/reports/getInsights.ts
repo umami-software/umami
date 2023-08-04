@@ -29,7 +29,7 @@ async function relationalQuery(
     y: number;
   }[]
 > {
-  const { startDate, endDate, fields = [], filters = [], groups = [] } = criteria;
+  const { startDate, endDate, filters = [] } = criteria;
   const { parseFilters, rawQuery } = prisma;
   const website = await loadWebsite(websiteId);
   const params = {};
@@ -107,7 +107,7 @@ function parseFields(fields) {
 
     if (!count && value === 'total') {
       count = true;
-      arr = arr.concat(`count(*) as total`);
+      arr = arr.concat(`count(*) as views`);
     } else if (!distinct && value === 'unique') {
       distinct = true;
       //arr = arr.concat(`count(distinct ${name})`);

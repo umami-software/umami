@@ -59,6 +59,7 @@ async function relationalQuery(websiteId: string, criteria: SessionStatsCriteria
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
+      domain: website.domain,
     },
   );
 }
@@ -93,6 +94,7 @@ async function clickhouseQuery(websiteId: string, criteria: SessionStatsCriteria
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.pageView,
+      domain: website.domain,
     },
   );
 }

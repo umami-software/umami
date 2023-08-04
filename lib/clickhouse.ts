@@ -70,6 +70,10 @@ function getFilterQuery(filters = {}) {
       arr.push(`and ${column} = {${key}:String}`);
     }
 
+    if (key === 'referrer') {
+      arr.push('and referrer_domain != {domain:String}');
+    }
+
     return arr;
   }, []);
 

@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
+import { EVENT_TYPE } from 'lib/constants';
 import { loadWebsite } from 'lib/load';
 import { maxDate } from 'lib/date';
 
@@ -28,14 +28,9 @@ async function relationalQuery(
 
   return rawQuery(
     `select ${column} x, count(*) y
-    from session as s
-    where s.session_id in (
-      select website_event.session_id
       from website_event
-        join website 
-          on website_event.website_id = website.website_id
-        ${joinSession}
-      where website.website_id = {{websiteId::uuid}}
+      ${joinSession}
+      where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     ) as t

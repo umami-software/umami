@@ -43,11 +43,6 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
-export const COLLECTION_TYPE = {
-  event: 'event',
-  identify: 'identify',
-};
-
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
@@ -55,6 +50,11 @@ export const FILTER_COLUMNS = {
   query: 'url_query',
   event: 'event_name',
   region: 'subdivision1',
+};
+
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
 };
 
 export const EVENT_TYPE = {
@@ -119,37 +119,6 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
   [ROLES.teamMember]: [],
 } as const;
-
-export const WEBSITE_EVENT_FIELDS = {
-  eventId: { name: 'event_id', type: 'uuid', label: 'Event ID' },
-  websiteId: { name: 'website_id', type: 'uuid', label: 'Website ID' },
-  sessionId: { name: 'session_id', type: 'uuid', label: 'Session ID' },
-  createdAt: { name: 'created_at', type: 'date', label: 'Created date' },
-  urlPath: { name: 'url_path', type: 'string', label: 'URL path' },
-  urlQuery: { name: 'url_query', type: 'string', label: 'URL query' },
-  referrerPath: { name: 'referrer_path', type: 'string', label: 'Referrer path' },
-  referrerQuery: { name: 'referrer_query', type: 'string', label: 'Referrer query' },
-  referrerDomain: { name: 'referrer_domain', type: 'string', label: 'Referrer domain' },
-  pageTitle: { name: 'page_title', type: 'string', label: 'Page title' },
-  eventType: { name: 'event_type', type: 'string', label: 'Event type' },
-  eventName: { name: 'event_name', type: 'string', label: 'Event name' },
-};
-
-export const SESSION_FIELDS = {
-  sessionId: { name: 'session_id', type: 'uuid' },
-  websiteId: { name: 'website_id', type: 'uuid' },
-  hostname: { name: 'hostname', type: 'string' },
-  browser: { name: 'browser', type: 'string' },
-  os: { name: 'os', type: 'string' },
-  device: { name: 'device', type: 'string' },
-  screen: { name: 'screen', type: 'string' },
-  language: { name: 'language', type: 'string' },
-  country: { name: 'country', type: 'string' },
-  subdivision1: { name: 'subdivision1', type: 'string' },
-  subdivision2: { name: 'subdivision2', type: 'string' },
-  city: { name: 'city', type: 'string' },
-  createdAt: { name: 'created_at', type: 'date' },
-};
 
 export const THEME_COLORS = {
   light: {

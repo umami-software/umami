@@ -73,6 +73,12 @@ function getFilterQuery(filters = {}): string {
       arr.push(`and ${column}={{${key}}}`);
     }
 
+    if (key === 'referrer') {
+      arr.push(
+        'and (website_event.referrer_domain != {{domain}} or website_event.referrer_domain is null)',
+      );
+    }
+
     return arr;
   }, []);
 
