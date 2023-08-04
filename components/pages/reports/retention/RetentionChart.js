@@ -4,10 +4,10 @@ import useMessages from 'hooks/useMessages';
 import useTheme from 'hooks/useTheme';
 import BarChart from 'components/metrics/BarChart';
 import { formatLongNumber } from 'lib/format';
-import styles from './FunnelChart.module.css';
+import styles from './RetentionChart.module.css';
 import { ReportContext } from '../Report';
 
-export function FunnelChart({ className, loading }) {
+export function RetentionChart({ className, loading }) {
   const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
@@ -71,4 +71,4 @@ export function FunnelChart({ className, loading }) {
   );
 }
 
-export default FunnelChart;
+export default RetentionChart;

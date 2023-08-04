@@ -12,6 +12,7 @@ export * from './analytics/eventData/getEventDataFields';
 export * from './analytics/eventData/getEventDataUsage';
 export * from './analytics/events/saveEvent';
 export * from './analytics/reports/getFunnel';
+export * from './analytics/reports/getRetention';
 export * from './analytics/reports/getInsights';
 export * from './analytics/pageviews/getPageviewMetrics';
 export * from './analytics/pageviews/getPageviewStats';
