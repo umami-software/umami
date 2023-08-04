@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE } from 'lib/constants';
+import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
@@ -15,17 +15,22 @@ export async function getSessionMetrics(
 
 async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, {
-    ...filters,
-    eventType: EVENT_TYPE.pageView,
-  });
+  const { filterQuery, joinSession, params } = await parseFilters(
+    websiteId,
+    {
+      ...filters,
+      eventType: EVENT_TYPE.pageView,
+    },
+    {
+      joinSession: SESSION_COLUMNS.includes(column),
+    },
+  );
 
   return rawQuery(
     `
     select ${column} x, count(*) y
     from website_event
-    inner join session
-      on session.session_id = website_event.session_id
+    ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = {{eventType}}

@@ -4,7 +4,7 @@ import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { FILTER_COLUMNS, IGNORED_FILTERS, SESSION_COLUMNS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
-import { QueryFilters } from './types';
+import { QueryFilters, QueryOptions } from './types';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -88,13 +88,18 @@ function getFilterQuery(filters = {}): string {
   return query.join('\n');
 }
 
-async function parseFilters(websiteId, filters: QueryFilters & { [key: string]: any } = {}) {
+async function parseFilters(
+  websiteId,
+  filters: QueryFilters & { [key: string]: any } = {},
+  options: QueryOptions = {},
+) {
   const website = await loadWebsite(websiteId);
 
   return {
-    joinSession: Object.keys(filters).find(key => SESSION_COLUMNS[key])
-      ? `inner join session on website_event.session_id = session.session_id`
-      : '',
+    joinSession:
+      options?.joinSession || Object.keys(filters).find(key => SESSION_COLUMNS.includes(key))
+        ? `inner join session on website_event.session_id = session.session_id`
+        : '',
     filterQuery: getFilterQuery(filters),
     params: {
       ...filters,

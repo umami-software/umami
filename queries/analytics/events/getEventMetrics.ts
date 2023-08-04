@@ -5,7 +5,7 @@ import { WebsiteEventMetric, QueryFilters } from 'lib/types';
 import { EVENT_TYPE } from 'lib/constants';
 
 export async function getEventMetrics(
-  ...args: [websiteId: string, criteria: QueryFilters]
+  ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<WebsiteEventMetric[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -16,7 +16,7 @@ export async function getEventMetrics(
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { rawQuery, getDateQuery, parseFilters } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
   });
@@ -28,6 +28,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
     from website_event
+    ${joinSession}
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
