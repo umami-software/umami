@@ -57,41 +57,25 @@ export default async (
       return badRequest(res);
     }
 
+    const filters = {
+      startDate,
+      endDate,
+      timezone,
+      unit,
+      url,
+      referrer,
+      title,
+      os,
+      browser,
+      device,
+      country,
+      region,
+      city,
+    };
+
     const [pageviews, sessions] = await Promise.all([
-      getPageviewStats(websiteId, {
-        startDate,
-        endDate,
-        timezone,
-        unit,
-        filters: {
-          url,
-          referrer,
-          title,
-          os,
-          browser,
-          device,
-          country,
-          region,
-          city,
-        },
-      }),
-      getSessionStats(websiteId, {
-        startDate,
-        endDate,
-        timezone,
-        unit,
-        filters: {
-          url,
-          referrer,
-          title,
-          os,
-          browser,
-          device,
-          country,
-          region,
-          city,
-        },
-      }),
+      getPageviewStats(websiteId, filters),
+      getSessionStats(websiteId, filters),
     ]);
 
     return ok(res, { pageviews, sessions });

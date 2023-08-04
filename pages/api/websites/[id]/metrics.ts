@@ -23,6 +23,7 @@ export interface WebsiteMetricsRequestQuery {
   country: string;
   region: string;
   city: string;
+  language: string;
 }
 
 export default async (
@@ -57,6 +58,8 @@ export default async (
     const { startDate, endDate } = await parseDateRangeQuery(req);
 
     const filters = {
+      startDate,
+      endDate,
       url,
       referrer,
       title,
@@ -76,12 +79,7 @@ export default async (
     const column = FILTER_COLUMNS[type] || type;
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, {
-        startDate,
-        endDate,
-        column,
-        filters,
-      });
+      const data = await getSessionMetrics(websiteId, column, filters);
 
       if (type === 'language') {
         const combined = {};
@@ -103,12 +101,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(websiteId, {
-        startDate,
-        endDate,
-        column,
-        filters,
-      });
+      const data = await getPageviewMetrics(websiteId, column, filters);
 
       return ok(res, data);
     }
