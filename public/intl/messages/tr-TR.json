@@ -1113,6 +1113,20 @@
       "value": " characters"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1131,6 +1145,18 @@
       "value": "Parolalar uyuşmuyor"
     }
   ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "This team does not have any websites."
+    }
+  ],
   "message.no-teams": [
     {
       "type": 0,
@@ -1141,6 +1167,12 @@
     {
       "type": 0,
       "value": "There are no users."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Henüz hiç web sitesi tanımlamadınız"
     }
   ],
   "message.page-not-found": [
@@ -1197,6 +1229,12 @@
       "value": "Team not found."
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites can be viewed by anyone on the team."
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -1241,44 +1279,6 @@
     {
       "type": 1,
       "value": "browser"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Henüz hiç web sitesi tanımlamadınız"
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }

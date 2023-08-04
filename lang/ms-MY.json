@@ -187,9 +187,9 @@
   "message.tracking-code": "Kod penjejakan",
   "message.user-deleted": "User deleted.",
   "message.visitor-log": "Pelawat dari {country} mengguna {browser} pada {os} {device}",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "This team does not have any websites.",
-  "messages.no-websites-configured": "Anda tidak ada sebarang laman web yang telah dikonfigurasikan.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "This team does not have any websites.",
+  "message.no-websites-configured": "Anda tidak ada sebarang laman web yang telah dikonfigurasikan.",
+  "message.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

@@ -1,16 +1,12 @@
 .footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
   font-size: var(--font-size-sm);
-  text-align: center;
   line-height: 30px;
-  margin: 60px 0;
+  margin: 40px 0;
 }
 
 .footer a {
   color: var(--font-color100);
-}
-
-.version {
-  text-align: right;
-  padding-right: 10px;
-  white-space: nowrap;
 }

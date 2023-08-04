@@ -1141,6 +1141,20 @@
       "value": " tekens"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1159,6 +1173,18 @@
       "value": "Wachtwoorden komen niet overeen"
     }
   ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Er zijn geen websites gekoppeld aan dit team."
+    }
+  ],
   "message.no-teams": [
     {
       "type": 0,
@@ -1169,6 +1195,12 @@
     {
       "type": 0,
       "value": "Er zijn geen gebruikers."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Je hebt geen websites ingesteld."
     }
   ],
   "message.page-not-found": [
@@ -1229,6 +1261,12 @@
       "value": "Team niet gevonden."
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites kunnen door iedereen in het team worden bekeken."
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -1273,44 +1311,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Er zijn geen websites gekoppeld aan dit team."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Je hebt geen websites ingesteld."
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites kunnen door iedereen in het team worden bekeken."
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }

@@ -187,9 +187,9 @@
   "message.tracking-code": "Энэ вебийн хандалтуудыг мөрдөхийн тулд доорх кодыг HTML-нхээ <head>...</head> хэсэгт байрлуулна уу.",
   "message.user-deleted": "Хэрэглэгч устсан.",
   "message.visitor-log": "{country} улсаас {os} {device} дээр {browser} хөтөч ашиглан орсон",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "Энэ багт ямар ч веб алга.",
-  "messages.no-websites-configured": "Та ямар нэгэн веб тохируулаагүй байна.",
-  "messages.team-websites-info": "Вебийг багийн бүх гишүүд үзэж болно.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "Энэ багт ямар ч веб алга.",
+  "message.no-websites-configured": "Та ямар нэгэн веб тохируулаагүй байна.",
+  "message.team-websites-info": "Вебийг багийн бүх гишүүд үзэж болно.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

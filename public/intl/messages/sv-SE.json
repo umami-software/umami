@@ -1145,6 +1145,20 @@
       "value": " tecken"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1163,6 +1177,18 @@
       "value": "Lösenorden är inte samma"
     }
   ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Det här teamet har inga webbsajter."
+    }
+  ],
   "message.no-teams": [
     {
       "type": 0,
@@ -1173,6 +1199,12 @@
     {
       "type": 0,
       "value": "Det finns inga användare."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Du har inga webbsajter."
     }
   ],
   "message.page-not-found": [
@@ -1233,6 +1265,12 @@
       "value": "Team kan inte hittas."
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websajter kan ses av alla i teamet."
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -1277,44 +1315,6 @@
     {
       "type": 1,
       "value": "device"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "No results were found."
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "Det här teamet har inga webbsajter."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Du har inga webbsajter."
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websajter kan ses av alla i teamet."
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }

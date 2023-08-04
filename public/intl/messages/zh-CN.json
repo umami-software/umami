@@ -1125,6 +1125,20 @@
       "value": " 个字符"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
@@ -1143,6 +1157,18 @@
       "value": "密码不一致"
     }
   ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "没有找到任何结果。"
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "这个团队没有任何网站。"
+    }
+  ],
   "message.no-teams": [
     {
       "type": 0,
@@ -1153,6 +1179,12 @@
     {
       "type": 0,
       "value": "没有任何用户。"
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "你还没有设置任何网站。"
     }
   ],
   "message.page-not-found": [
@@ -1213,6 +1245,12 @@
       "value": "未找到团队。"
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "团队中的任何人都可查看网站。"
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -1222,7 +1260,7 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User detected."
+      "value": "User deleted."
     }
   ],
   "message.visitor-log": [
@@ -1261,44 +1299,6 @@
     {
       "type": 0,
       "value": " 浏览器进行访问。"
-    }
-  ],
-  "messages.no-results-found": [
-    {
-      "type": 0,
-      "value": "没有找到任何结果。"
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "这个团队没有任何网站。"
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "你还没有设置任何网站。"
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "团队中的任何人都可查看网站。"
-    }
-  ],
-  "new-version-available": [
-    {
-      "type": 0,
-      "value": "A new version of Umami "
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ]
 }

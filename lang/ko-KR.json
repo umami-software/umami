@@ -187,9 +187,9 @@
   "message.tracking-code": "추적 코드",
   "message.user-deleted": "User deleted.",
   "message.visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "This team does not have any websites.",
-  "messages.no-websites-configured": "구성된 웹 사이트가 없습니다.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "This team does not have any websites.",
+  "message.no-websites-configured": "구성된 웹 사이트가 없습니다.",
+  "message.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

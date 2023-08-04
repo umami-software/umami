@@ -42,7 +42,12 @@ async function relationalQuery(
     group by 1
     order by 2 desc
     limit 100`,
-    { ...filters, websiteId, startDate: maxDate(startDate, website.resetAt), endDate },
+    {
+      websiteId,
+      startDate: maxDate(startDate, website.resetAt),
+      endDate,
+      ...filters,
+    },
   );
 }
 

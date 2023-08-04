@@ -8,8 +8,6 @@ export const ReportContext = createContext(null);
 export function Report({ reportId, defaultParameters, children, ...props }) {
   const report = useReport(reportId, defaultParameters);
 
-  //console.log({ report });
-
   return (
     <ReportContext.Provider value={{ ...report }}>
       <Page {...props} className={styles.container}>

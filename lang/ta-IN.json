@@ -187,9 +187,9 @@
   "message.tracking-code": "கண்காணிப்பு குறியீடு",
   "message.user-deleted": "User deleted.",
   "message.visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்",
-  "messages.no-results-found": "No results were found.",
-  "messages.no-team-websites": "This team does not have any websites.",
-  "messages.no-websites-configured": "உங்களிடம் எந்த வலைத்தளங்களும் கட்டமைக்கப்படவில்லை.",
-  "messages.team-websites-info": "Websites can be viewed by anyone on the team.",
-  "new-version-available": "A new version of Umami {version} is available!"
+  "message.no-results-found": "No results were found.",
+  "message.no-team-websites": "This team does not have any websites.",
+  "message.no-websites-configured": "உங்களிடம் எந்த வலைத்தளங்களும் கட்டமைக்கப்படவில்லை.",
+  "message.team-websites-info": "Websites can be viewed by anyone on the team.",
+  "message.new-version-available": "A new version of Umami {version} is available!"
 }

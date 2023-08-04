@@ -47,11 +47,11 @@ async function relationalQuery(websiteId: string, criteria: GetEventMetricsCrite
     order by 2
     `,
     {
-      ...filters,
       websiteId,
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.customEvent,
+      ...filters,
     },
   );
 }

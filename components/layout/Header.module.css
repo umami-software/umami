@@ -1,8 +1,13 @@
 .header {
   display: flex;
+  flex-direction: row;
   align-items: center;
   width: 100%;
-  padding: 30px 30px 0 30px;
+  height: 100px;
+}
+
+.row {
+  align-items: center;
 }
 
 .title {
@@ -35,18 +40,8 @@
 }
 
 @media only screen and (max-width: 768px) {
-  .header {
-    padding: 0 30px;
-  }
-
   .buttons,
   .links {
     display: none;
-  }
-
-  .title {
-    flex: 1;
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 }
