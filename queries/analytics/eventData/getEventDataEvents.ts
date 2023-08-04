@@ -76,7 +76,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       from event_data
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
-        and event_name = {event:String}
+        and event_name = {eventName:String}
       group by event_key, data_type, string_value, event_name
       order by 1 asc, 2 asc, 3 asc, 4 desc
       limit 100
