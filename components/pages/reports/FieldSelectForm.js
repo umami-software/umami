@@ -13,7 +13,7 @@ export default function FieldSelectForm({ fields, onSelect }) {
             return (
               <Item key={index} className={styles.item}>
                 <div>{label || name}</div>
-                <div className={styles.type}>{type}</div>
+                {type && <div className={styles.type}>{type}</div>}
               </Item>
             );
           })}

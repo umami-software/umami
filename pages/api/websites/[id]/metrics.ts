@@ -46,6 +46,7 @@ export default async (
     country,
     region,
     city,
+    language,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -55,20 +56,27 @@ export default async (
 
     const { startDate, endDate } = await parseDateRangeQuery(req);
 
+    const filters = {
+      url,
+      referrer,
+      title,
+      query,
+      event,
+      os,
+      browser,
+      device,
+      country,
+      region,
+      city,
+      language,
+    };
+
+    filters[type] = undefined;
+
+    const column = FILTER_COLUMNS[type] || type;
+
     if (SESSION_COLUMNS.includes(type)) {
-      const column = FILTER_COLUMNS[type] || type;
-      const filters = {
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      };
-
-      filters[type] = undefined;
-
-      let data = await getSessionMetrics(websiteId, {
+      const data = await getSessionMetrics(websiteId, {
         startDate,
         endDate,
         column,
@@ -88,30 +96,13 @@ export default async (
           }
         }
 
-        data = Object.values(combined);
+        return ok(res, Object.values(combined));
       }
 
       return ok(res, data);
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const column = FILTER_COLUMNS[type] || type;
-      const filters = {
-        url,
-        referrer,
-        title,
-        query,
-        event,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      };
-
-      filters[type] = undefined;
-
       const data = await getPageviewMetrics(websiteId, {
         startDate,
         endDate,

@@ -47,11 +47,12 @@ async function relationalQuery(websiteId: string, criteria: GetEventMetricsCrite
     order by 2
     `,
     {
+      ...filters,
       websiteId,
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.customEvent,
-      ...filters,
+      domain: website.domain,
     },
   );
 }
@@ -82,6 +83,7 @@ async function clickhouseQuery(websiteId: string, criteria: GetEventMetricsCrite
       startDate: maxDate(startDate, website.resetAt),
       endDate,
       eventType: EVENT_TYPE.customEvent,
+      domain: website.domain,
     },
   );
 }

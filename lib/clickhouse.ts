@@ -61,14 +61,17 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getFilterQuery(filters = {}, params = {}) {
+function getFilterQuery(filters = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
     if (filter !== undefined) {
       const column = FILTER_COLUMNS[key] || key;
       arr.push(`and ${column} = {${key}:String}`);
-      params[key] = decodeURIComponent(filter);
+    }
+
+    if (key === 'referrer') {
+      arr.push('and referrer_domain != {domain:String}');
     }
 
     return arr;
@@ -77,9 +80,9 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
-function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
+function parseFilters(filters: WebsiteMetricFilter = {}) {
   return {
-    filterQuery: getFilterQuery(filters, params),
+    filterQuery: getFilterQuery(filters),
   };
 }
 

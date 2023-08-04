@@ -6,11 +6,13 @@ import { ReportContext } from '../Report';
 export function InsightsTable() {
   const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
+  const { fields = [] } = report?.parameters || {};
 
   return (
     <GridTable data={report?.data || []}>
-      <GridColumn name="field" label={formatMessage(labels.field)} />
-      <GridColumn name="value" label={formatMessage(labels.value)} />
+      {fields.map(({ name }) => {
+        return <GridColumn key={name} name={name} label={name} />;
+      })}
       <GridColumn name="total" label={formatMessage(labels.total)} />
     </GridTable>
   );
