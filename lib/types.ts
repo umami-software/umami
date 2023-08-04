@@ -153,4 +153,5 @@ export interface QueryFilters {
 
 export interface QueryOptions {
   joinSession?: boolean;
+  ignoreFilters?: string[];
 }

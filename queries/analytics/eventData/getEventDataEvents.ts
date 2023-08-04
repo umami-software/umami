@@ -4,7 +4,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import { QueryFilters, WebsiteEventDataFields } from 'lib/types';
 
 export async function getEventDataEvents(
-  ...args: [websiteId: string, filters: QueryFilters & { field?: string; event?: string }]
+  ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<WebsiteEventDataFields[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -12,20 +12,18 @@ export async function getEventDataEvents(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  filters: QueryFilters & { field?: string; event?: string },
-) {
+async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
+  const { eventName } = filters;
   const { params } = await parseFilters(websiteId, filters);
 
-  if (event) {
+  if (eventName) {
     return rawQuery(
       `
       select
-        website_event.event_name as event,
-        event_data.event_key as field,
-        event_data.data_type as type,
+        website_event.event_name as eventName,
+        event_data.event_key as fieldName,
+        event_data.data_type as dataType,
         event_data.string_value as value,
         count(*) as total
       from event_data
@@ -33,7 +31,7 @@ async function relationalQuery(
         on website_event.event_id = event_data.website_event_id
       where event_data.website_id = {{websiteId::uuid}}
         and event_data.created_at between {{startDate}} and {{endDate}}
-        and websit_event.event_name = {{event}}
+        and websit_event.event_name = {{eventName}}
       group by website_event.event_name, event_data.event_key, event_data.data_type, event_data.string_value
       order by 1 asc, 2 asc, 3 asc, 4 desc
       `,
@@ -44,9 +42,9 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      website_event.event_name as event,
-      event_data.event_key as field,
-      event_data.data_type as type,
+      website_event.event_name as eventName,
+      event_data.event_key as fieldName,
+      event_data.data_type as dataType,
       count(*) as total
     from event_data
     inner join website_event
@@ -61,21 +59,18 @@ async function relationalQuery(
   );
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  filters: QueryFilters & { field?: string; event?: string },
-) {
+async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = clickhouse;
-  const { event } = filters;
+  const { eventName } = filters;
   const { params } = await parseFilters(websiteId, filters);
 
-  if (event) {
+  if (eventName) {
     return rawQuery(
       `
       select
-        event_name as event,
-        event_key as field,
-        data_type as type,
+        event_name as eventName,
+        event_key as fieldName,
+        data_type as dataType,
         string_value as value,
         count(*) as total
       from event_data
@@ -93,9 +88,9 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      event_name as event,
-      event_key as field,
-      data_type as type,
+      event_name as eventName,
+      event_key as fieldName,
+      data_type as dataType,
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
