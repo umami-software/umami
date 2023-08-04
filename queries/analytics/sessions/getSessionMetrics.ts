@@ -21,15 +21,15 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
   });
 
   return rawQuery(
-    `select ${column} x, count(*) y
-      from website_event
-      inner join session
-        on session.session_id = website_event.session_id
-      where website_event.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
-        and website_event.event_type = {{eventType}}
-      ${filterQuery}
-    ) as t
+    `
+    select ${column} x, count(*) y
+    from website_event
+    inner join session
+      on session.session_id = website_event.session_id
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type = {{eventType}}
+    ${filterQuery}
     group by 1
     order by 2 desc
     limit 100`,

@@ -14,7 +14,7 @@ export async function getSessionStats(...args: [websiteId: string, filters: Quer
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
   const { getDateQuery, parseFilters, rawQuery } = prisma;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
@@ -25,8 +25,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       ${getDateQuery('website_event.created_at', unit, timezone)} x,
       count(distinct website_event.session_id) y
     from website_event
-    inner join session
-      on session.session_id = website_event.session_id
+      ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
