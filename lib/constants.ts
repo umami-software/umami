@@ -53,7 +53,16 @@ export const FILTER_COLUMNS = {
   eventName: 'event_name',
 };
 
-export const IGNORED_FILTERS = ['startDate', 'endDate', 'timezone', 'unit'];
+export const IGNORED_FILTERS = [
+  'startDate',
+  'endDate',
+  'timezone',
+  'unit',
+  'eventType',
+  'fields',
+  'filters',
+  'groups',
+];
 
 export const COLLECTION_TYPE = {
   event: 'event',

@@ -7,9 +7,9 @@ import Icons from 'components/icons';
 import BaseParameters from '../BaseParameters';
 import ParameterList from '../ParameterList';
 import styles from './InsightsParameters.module.css';
-import FieldSelectForm from '../FieldSelectForm';
 import PopupForm from '../PopupForm';
-import FieldFilterForm from '../FieldFilterForm';
+import FilterSelectForm from '../FilterSelectForm';
+import FieldSelectForm from '../FieldSelectForm';
 
 const fieldOptions = [
   { name: 'url', type: 'string' },
@@ -30,17 +30,15 @@ export function InsightsParameters() {
   const { formatMessage, labels } = useMessages();
   const ref = useRef(null);
   const { parameters } = report || {};
-  const { websiteId, dateRange, fields, filters, groups } = parameters || {};
-  const queryEnabled = websiteId && dateRange && fields?.length;
+  const { websiteId, dateRange, filters, groups } = parameters || {};
+  const queryEnabled = websiteId && dateRange && (filters?.length || groups?.length);
 
   const parameterGroups = [
-    { label: formatMessage(labels.fields), group: REPORT_PARAMETERS.fields },
     { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
     { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
   ];
 
   const parameterData = {
-    fields,
     filters,
     groups,
   };
@@ -73,11 +71,11 @@ export function InsightsParameters() {
           {(close, element) => {
             return (
               <PopupForm element={element} onClose={close}>
-                {group === REPORT_PARAMETERS.fields && (
-                  <FieldSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
-                )}
                 {group === REPORT_PARAMETERS.filters && (
-                  <FieldFilterForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
+                  <FilterSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
+                )}
+                {group === REPORT_PARAMETERS.groups && (
+                  <FieldSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
                 )}
               </PopupForm>
             );
@@ -100,12 +98,6 @@ export function InsightsParameters() {
               {({ name, value }) => {
                 return (
                   <div className={styles.parameter}>
-                    {group === REPORT_PARAMETERS.fields && (
-                      <>
-                        <div>{name}</div>
-                        <div className={styles.op}>{value}</div>
-                      </>
-                    )}
                     {group === REPORT_PARAMETERS.filters && (
                       <>
                         <div>{name}</div>

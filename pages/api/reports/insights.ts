@@ -36,13 +36,15 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getInsights(websiteId, {
-      startDate: new Date(startDate),
-      endDate: new Date(endDate),
-      fields,
-      filters,
+    const data = await getInsights(
+      websiteId,
+      {
+        ...filters,
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+      },
       groups,
-    });
+    );
 
     return ok(res, data);
   }
