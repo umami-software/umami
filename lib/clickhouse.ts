@@ -2,7 +2,7 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { QueryFilters } from './types';
+import { QueryFilters, QueryOptions } from './types';
 import { FILTER_COLUMNS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
@@ -63,10 +63,10 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getFilterQuery(filters = {}) {
+function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
-    const column = FILTER_COLUMNS[key];
+    const column = FILTER_COLUMNS[key] ?? options?.columns?.[key];
 
     if (filter !== undefined && column) {
       arr.push(`and ${column} = {${key}:String}`);
@@ -85,11 +85,12 @@ function getFilterQuery(filters = {}) {
 async function parseFilters(
   websiteId: string,
   filters: QueryFilters & { [key: string]: any } = {},
+  options?: QueryOptions,
 ) {
   const website = await loadWebsite(websiteId);
 
   return {
-    filterQuery: getFilterQuery(filters),
+    filterQuery: getFilterQuery(filters, options),
     params: {
       ...filters,
       websiteId,

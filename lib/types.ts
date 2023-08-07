@@ -80,15 +80,15 @@ export interface WebsiteEventMetric {
 }
 
 export interface WebsiteEventDataStats {
-  field: string;
-  type: number;
+  fieldName: string;
+  dataType: number;
   total: number;
 }
 
 export interface WebsiteEventDataFields {
-  field: string;
-  type: number;
-  value?: string;
+  fieldName: string;
+  dataType: number;
+  fieldValue?: string;
   total: number;
 }
 
@@ -152,5 +152,5 @@ export interface QueryFilters {
 
 export interface QueryOptions {
   joinSession?: boolean;
-  ignoreFilters?: string[];
+  columns?: { [key: string]: string };
 }

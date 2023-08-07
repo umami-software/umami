@@ -67,10 +67,10 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
-function getFilterQuery(filters = {}): string {
+function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
-    const column = FILTER_COLUMNS[key];
+    const column = FILTER_COLUMNS[key] ?? options?.columns?.[key];
 
     if (filter !== undefined && column) {
       arr.push(`and ${column}={{${key}}}`);
@@ -100,7 +100,7 @@ async function parseFilters(
       options?.joinSession || Object.keys(filters).find(key => SESSION_COLUMNS.includes(key))
         ? `inner join session on website_event.session_id = session.session_id`
         : '',
-    filterQuery: getFilterQuery(filters),
+    filterQuery: getFilterQuery(filters, options),
     params: {
       ...filters,
       websiteId,

@@ -14,39 +14,23 @@ export async function getEventDataFields(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
   const { rawQuery, parseFilters } = prisma;
-  const { field } = filters;
-  const { params } = await parseFilters(websiteId, filters);
-
-  if (field) {
-    return rawQuery(
-      `
-      select
-        event_key as field,
-        string_value as value,
-        count(*) as total
-      from event_data
-      where website_id = {{websiteId::uuid}}
-        and event_key = {{field}}
-        and created_at between {{startDate}} and {{endDate}}
-      group by event_key, string_value
-      order by 3 desc, 2 desc, 1 asc
-      limit 100
-      `,
-      params,
-    );
-  }
+  const { filterQuery, params } = await parseFilters(websiteId, filters, {
+    columns: { field: 'event_key' },
+  });
 
   return rawQuery(
     `
     select
-      event_key as field,
-      data_type as type,
+      event_key as fieldName,
+      data_type as dataType,
+      string_value as fieldValue,
       count(*) as total
     from event_data
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
-    group by event_key, data_type
-    order by 3 desc, 2 asc, 1 asc
+    ${filterQuery}
+    group by event_key, data_type, string_value
+    order by 3 desc, 2 desc, 1 asc
     limit 100
     `,
     params,
@@ -55,39 +39,23 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { fiel
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
   const { rawQuery, parseFilters } = clickhouse;
-  const { field } = filters;
-  const { params } = await parseFilters(websiteId, filters);
-
-  if (field) {
-    return rawQuery(
-      `
-      select
-        event_key as field,
-        string_value as value,
-        count(*) as total
-      from event_data
-      where website_id = {websiteId:UUID}
-        and event_key = {field:String}
-        and created_at between {startDate:DateTime} and {endDate:DateTime}
-      group by event_key, string_value
-      order by 3 desc, 2 desc, 1 asc
-      limit 100
-      `,
-      params,
-    );
-  }
+  const { filterQuery, params } = await parseFilters(websiteId, filters, {
+    columns: { field: 'event_key' },
+  });
 
   return rawQuery(
     `
     select
-      event_key as field,
-      data_type as type,
+      event_key as fieldName,
+      data_type as dataType,
+      string_value as fieldValue,
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
-    group by event_key, data_type
-    order by 3 desc, 2 asc, 1 asc
+    ${filterQuery}
+    group by event_key, data_type, string_value
+    order by 3 desc, 2 desc, 1 asc
     limit 100
     `,
     params,
