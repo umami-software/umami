@@ -21,7 +21,7 @@ export default async (
   await useAuth(req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, startAt, endAt, eventName } = req.query;
+    const { websiteId, startAt, endAt, event } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
@@ -33,7 +33,7 @@ export default async (
     const data = await getEventDataEvents(websiteId, {
       startDate,
       endDate,
-      eventName,
+      event,
     });
 
     return ok(res, data);

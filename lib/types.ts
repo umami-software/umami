@@ -135,9 +135,7 @@ export interface QueryFilters {
   endDate?: Date;
   timezone?: string;
   unit?: string;
-  domain?: string;
   eventType?: number;
-  eventName?: string;
   url?: string;
   referrer?: string;
   title?: string;
@@ -149,6 +147,7 @@ export interface QueryFilters {
   region?: string;
   city?: string;
   language?: string;
+  event?: string;
 }
 
 export interface QueryOptions {

@@ -3,7 +3,7 @@ import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { QueryFilters } from './types';
-import { FILTER_COLUMNS, IGNORED_FILTERS } from './constants';
+import { FILTER_COLUMNS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 
@@ -66,9 +66,9 @@ function getDateFormat(date) {
 function getFilterQuery(filters = {}) {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
+    const column = FILTER_COLUMNS[key];
 
-    if (filter !== undefined && !IGNORED_FILTERS.includes(key)) {
-      const column = FILTER_COLUMNS[key] || key;
+    if (filter !== undefined && column) {
       arr.push(`and ${column} = {${key}:String}`);
     }
 

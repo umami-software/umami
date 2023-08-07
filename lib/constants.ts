@@ -48,22 +48,15 @@ export const FILTER_COLUMNS = {
   referrer: 'referrer_domain',
   title: 'page_title',
   query: 'url_query',
+  os: 'os',
+  browser: 'browser',
+  device: 'device',
+  country: 'country',
   region: 'subdivision1',
-  eventType: 'event_type',
-  eventName: 'event_name',
+  city: 'city',
+  language: 'language',
   event: 'event_name',
 };
-
-export const IGNORED_FILTERS = [
-  'startDate',
-  'endDate',
-  'timezone',
-  'unit',
-  'eventType',
-  'fields',
-  'filters',
-  'groups',
-];
 
 export const COLLECTION_TYPE = {
   event: 'event',

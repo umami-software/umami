@@ -1,7 +1,7 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS, IGNORED_FILTERS, SESSION_COLUMNS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions } from './types';
@@ -70,9 +70,9 @@ function getTimestampIntervalQuery(field: string): string {
 function getFilterQuery(filters = {}): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
+    const column = FILTER_COLUMNS[key];
 
-    if (filter !== undefined && !IGNORED_FILTERS.includes(key)) {
-      const column = FILTER_COLUMNS[key] || key;
+    if (filter !== undefined && column) {
       arr.push(`and ${column}={{${key}}}`);
 
       if (key === 'referrer') {

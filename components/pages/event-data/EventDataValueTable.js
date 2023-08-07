@@ -6,14 +6,14 @@ import PageHeader from 'components/layout/PageHeader';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES } from 'lib/constants';
 
-export function EventDataValueTable({ data = [], eventName }) {
+export function EventDataValueTable({ data = [], event }) {
   const { formatMessage, labels } = useMessages();
   const { resolveUrl } = usePageQuery();
 
   const Title = () => {
     return (
       <>
-        <Link href={resolveUrl({ eventName: undefined })}>
+        <Link href={resolveUrl({ event: undefined })}>
           <Button>
             <Icon rotate={180}>
               <Icons.ArrowRight />
@@ -21,7 +21,7 @@ export function EventDataValueTable({ data = [], eventName }) {
             <Text>{formatMessage(labels.back)}</Text>
           </Button>
         </Link>
-        <Text>{eventName}</Text>
+        <Text>{event}</Text>
       </>
     );
   };
