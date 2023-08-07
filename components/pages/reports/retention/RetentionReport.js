@@ -8,8 +8,8 @@ import ReportBody from '../ReportBody';
 import Funnel from 'assets/funnel.svg';
 
 const defaultParameters = {
-  type: 'Retention',
-  parameters: { window: 60, urls: [] },
+  type: 'retention',
+  parameters: {},
 };
 
 export default function RetentionReport({ reportId }) {
@@ -20,7 +20,7 @@ export default function RetentionReport({ reportId }) {
         <RetentionParameters />
       </ReportMenu>
       <ReportBody>
-        <RetentionChart />
+        {/* <RetentionChart /> */}
         <RetentionTable />
       </ReportBody>
     </Report>

@@ -4,6 +4,11 @@ import { Form, FormButtons, FormInput, FormRow, SubmitButton, TextField } from '
 import { ReportContext } from 'components/pages/reports/Report';
 import BaseParameters from '../BaseParameters';
 
+const fieldOptions = [
+  { name: 'daily', type: 'string' },
+  { name: 'weekly', type: 'string' },
+];
+
 export function RetentionParameters() {
   const { report, runReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
@@ -24,14 +29,7 @@ export function RetentionParameters() {
   return (
     <Form ref={ref} values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters />
-      <FormRow label={formatMessage(labels.window)}>
-        <FormInput
-          name="window"
-          rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/ }}
-        >
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
+      <FormRow label={formatMessage(labels.window)} />
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
           {formatMessage(labels.runQuery)}
