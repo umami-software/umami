@@ -22,7 +22,7 @@ export function InsightsTable() {
         {row => row.views.toLocaleString()}
       </GridColumn>
       <GridColumn name="visitors" label={formatMessage(labels.visitors)} width="100px">
-        {row => row.views.toLocaleString()}
+        {row => row.visitors.toLocaleString()}
       </GridColumn>
     </GridTable>
   );
