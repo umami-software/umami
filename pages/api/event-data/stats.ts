@@ -32,16 +32,18 @@ export default async (
     const endDate = new Date(+endAt);
 
     const results = await getEventDataFields(websiteId, { startDate, endDate });
+    const events = new Set();
 
     const data = results.reduce(
       (obj, row) => {
+        events.add(row.fieldName);
         obj.records += Number(row.total);
         return obj;
       },
       { fields: results.length, records: 0 },
     );
 
-    return ok(res, data);
+    return ok(res, { ...data, events: events.size });
   }
 
   return methodNotAllowed(res);

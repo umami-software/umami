@@ -16,7 +16,7 @@ export function EventDataTable({ data = [] }) {
     <GridTable data={data}>
       <GridColumn name="eventName" label={formatMessage(labels.event)}>
         {row => (
-          <Link href={resolveUrl({ eventName: row.eventName })} shallow={true}>
+          <Link href={resolveUrl({ event: row.eventName })} shallow={true}>
             {row.eventName}
           </Link>
         )}

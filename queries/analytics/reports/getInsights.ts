@@ -4,7 +4,9 @@ import clickhouse from 'lib/clickhouse';
 import { EVENT_TYPE } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
-export async function getInsights(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getInsights(
+  ...args: [websiteId: string, groups: { name: string; type: string }[], filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -13,6 +15,7 @@ export async function getInsights(...args: [websiteId: string, filters: QueryFil
 
 async function relationalQuery(
   websiteId: string,
+  groups: { name: string; type: string }[],
   filters: QueryFilters,
 ): Promise<
   {
@@ -45,6 +48,7 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
+  groups: { name: string; type: string }[],
   filters: QueryFilters,
 ): Promise<
   {
@@ -53,7 +57,6 @@ async function clickhouseQuery(
   }[]
 > {
   const { parseFilters, rawQuery } = clickhouse;
-  const { fields } = filters;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -62,14 +65,14 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select 
-      ${parseFields(fields)}
+      ${parseFields(groups)}
     from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
-    group by ${fields.map(({ name }) => name).join(',')}
-    order by total desc
+    group by ${groups.map(({ name }) => name).join(',')}
+    order by 1 desc
     limit 500
     `,
     params,
@@ -77,22 +80,14 @@ async function clickhouseQuery(
 }
 
 function parseFields(fields) {
-  let count = false;
-  let distinct = false;
+  const query = fields.reduce(
+    (arr, field) => {
+      const { name } = field;
 
-  const query = fields.reduce((arr, field) => {
-    const { name, value } = field;
-
-    if (!count && value === 'total') {
-      count = true;
-      arr = arr.concat(`count(*) as views`);
-    } else if (!distinct && value === 'unique') {
-      distinct = true;
-      //arr = arr.concat(`count(distinct ${name})`);
-    }
-
-    return arr.concat(name);
-  }, []);
+      return arr.concat(name);
+    },
+    ['count(*) as views', 'count(distinct session_id) as visitors'],
+  );
 
   return query.join(',\n');
 }

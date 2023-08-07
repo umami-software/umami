@@ -11,6 +11,7 @@ export interface EventDataFieldsRequestBody {
     startDate: string;
     endDate: string;
   };
+  field?: string;
 }
 
 export default async (
@@ -27,7 +28,10 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getEventDataFields(websiteId, new Date(+startAt), new Date(+endAt), field);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
+
+    const data = await getEventDataFields(websiteId, { startDate, endDate, field });
 
     return ok(res, data);
   }

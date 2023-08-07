@@ -26,15 +26,15 @@ function useData(websiteId, eventName) {
 
 export default function WebsiteEventData({ websiteId }) {
   const {
-    query: { eventName },
+    query: { event },
   } = usePageQuery();
-  const { data } = useData(websiteId, eventName);
+  const { data } = useData(websiteId, event);
 
   return (
     <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
-      {!eventName && <EventDataTable data={data} />}
-      {eventName && <EventDataValueTable eventName={eventName} data={data} />}
+      {!event && <EventDataTable data={data} />}
+      {event && <EventDataValueTable event={event} data={data} />}
     </Flexbox>
   );
 }

@@ -163,6 +163,13 @@ export const labels = defineMessages({
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
   retention: { id: 'label.retention', defaultMessage: 'Retention' },
   dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
+  referrer: { id: 'label.referrer', defaultMessage: 'Referrer' },
+  country: { id: 'label.country', defaultMessage: 'Country' },
+  region: { id: 'label.region', defaultMessage: 'Region' },
+  city: { id: 'label.city', defaultMessage: 'City' },
+  browser: { id: 'label.browser', defaultMessage: 'Browser' },
+  device: { id: 'label.device', defaultMessage: 'Device' },
+  pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
 });
 
 export const messages = defineMessages({

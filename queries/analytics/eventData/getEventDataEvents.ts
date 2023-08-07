@@ -14,10 +14,10 @@ export async function getEventDataEvents(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const { eventName } = filters;
+  const { event } = filters;
   const { params } = await parseFilters(websiteId, filters);
 
-  if (eventName) {
+  if (event) {
     return rawQuery(
       `
       select
@@ -31,7 +31,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         on website_event.event_id = event_data.website_event_id
       where event_data.website_id = {{websiteId::uuid}}
         and event_data.created_at between {{startDate}} and {{endDate}}
-        and websit_event.event_name = {{eventName}}
+        and website_event.event_name = {{event}}
       group by website_event.event_name, event_data.event_key, event_data.data_type, event_data.string_value
       order by 1 asc, 2 asc, 3 asc, 4 desc
       `,
@@ -61,10 +61,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = clickhouse;
-  const { eventName } = filters;
+  const { event } = filters;
   const { params } = await parseFilters(websiteId, filters);
 
-  if (eventName) {
+  if (event) {
     return rawQuery(
       `
       select
@@ -76,7 +76,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       from event_data
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime} and {endDate:DateTime}
-        and event_name = {eventName:String}
+        and event_name = {event:String}
       group by event_key, data_type, string_value, event_name
       order by 1 asc, 2 asc, 3 asc, 4 desc
       limit 100
