@@ -13,7 +13,7 @@ export interface InsightsRequestBody {
   };
   fields: { name: string; type: string; value: string }[];
   filters: string[];
-  groups: string[];
+  groups: { name: string; type: string }[];
 }
 
 export default async (
@@ -27,24 +27,19 @@ export default async (
     const {
       websiteId,
       dateRange: { startDate, endDate },
-      fields,
-      filters,
       groups,
+      filters,
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getInsights(
-      websiteId,
-      {
-        ...filters,
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-      },
-      groups,
-    );
+    const data = await getInsights(websiteId, groups, {
+      ...filters,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    });
 
     return ok(res, data);
   }

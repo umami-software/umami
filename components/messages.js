@@ -162,6 +162,13 @@ export const labels = defineMessages({
   totalRecords: { id: 'labels.total-records', defaultMessage: 'Total records' },
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
   dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
+  referrer: { id: 'label.referrer', defaultMessage: 'Referrer' },
+  country: { id: 'label.country', defaultMessage: 'Country' },
+  region: { id: 'label.region', defaultMessage: 'Region' },
+  city: { id: 'label.city', defaultMessage: 'City' },
+  browser: { id: 'label.browser', defaultMessage: 'Browser' },
+  device: { id: 'label.device', defaultMessage: 'Device' },
+  pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
 });
 
 export const messages = defineMessages({

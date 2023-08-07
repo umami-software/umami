@@ -11,20 +11,6 @@ import PopupForm from '../PopupForm';
 import FilterSelectForm from '../FilterSelectForm';
 import FieldSelectForm from '../FieldSelectForm';
 
-const fieldOptions = [
-  { name: 'url', type: 'string' },
-  { name: 'title', type: 'string' },
-  { name: 'referrer', type: 'string' },
-  { name: 'query', type: 'string' },
-  { name: 'browser', type: 'string' },
-  { name: 'os', type: 'string' },
-  { name: 'device', type: 'string' },
-  { name: 'country', type: 'string' },
-  { name: 'region', type: 'string' },
-  { name: 'city', type: 'string' },
-  { name: 'language', type: 'string' },
-];
-
 export function InsightsParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
@@ -33,9 +19,23 @@ export function InsightsParameters() {
   const { websiteId, dateRange, filters, groups } = parameters || {};
   const queryEnabled = websiteId && dateRange && (filters?.length || groups?.length);
 
+  const fieldOptions = [
+    { name: 'url_path', type: 'string', label: formatMessage(labels.url) },
+    { name: 'page_title', type: 'string', label: formatMessage(labels.pageTitle) },
+    { name: 'referrer_domain', type: 'string', label: formatMessage(labels.referrer) },
+    { name: 'url_query', type: 'string', label: formatMessage(labels.query) },
+    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
+    { name: 'os', type: 'string', label: formatMessage(labels.os) },
+    { name: 'device', type: 'string', label: formatMessage(labels.device) },
+    { name: 'country', type: 'string', label: formatMessage(labels.country) },
+    { name: 'region', type: 'string', label: formatMessage(labels.region) },
+    { name: 'city', type: 'string', label: formatMessage(labels.city) },
+    { name: 'language', type: 'string', label: formatMessage(labels.language) },
+  ];
+
   const parameterGroups = [
-    { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
     { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
+    { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
   ];
 
   const parameterData = {
@@ -71,11 +71,11 @@ export function InsightsParameters() {
           {(close, element) => {
             return (
               <PopupForm element={element} onClose={close}>
-                {group === REPORT_PARAMETERS.filters && (
-                  <FilterSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
-                )}
                 {group === REPORT_PARAMETERS.groups && (
                   <FieldSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
+                )}
+                {group === REPORT_PARAMETERS.filters && (
+                  <FilterSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
                 )}
               </PopupForm>
             );
@@ -95,19 +95,19 @@ export function InsightsParameters() {
               items={parameterData[group]}
               onRemove={index => handleRemove(group, index)}
             >
-              {({ name, value }) => {
+              {({ value, label }) => {
                 return (
                   <div className={styles.parameter}>
-                    {group === REPORT_PARAMETERS.filters && (
-                      <>
-                        <div>{name}</div>
-                        <div className={styles.op}>{value[0]}</div>
-                        <div>{value[1]}</div>
-                      </>
-                    )}
                     {group === REPORT_PARAMETERS.groups && (
                       <>
-                        <div>{name}</div>
+                        <div>{label}</div>
+                      </>
+                    )}
+                    {group === REPORT_PARAMETERS.filters && (
+                      <>
+                        <div>{label}</div>
+                        <div className={styles.op}>{value[0]}</div>
+                        <div>{value[1]}</div>
                       </>
                     )}
                   </div>

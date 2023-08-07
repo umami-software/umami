@@ -5,7 +5,7 @@ import { EVENT_TYPE } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getInsights(
-  ...args: [websiteId: string, filters: QueryFilters, groups: { name: string; type: string }[]]
+  ...args: [websiteId: string, groups: { name: string; type: string }[], filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,8 +15,8 @@ export async function getInsights(
 
 async function relationalQuery(
   websiteId: string,
-  filters: QueryFilters,
   groups: { name: string; type: string }[],
+  filters: QueryFilters,
 ): Promise<
   {
     x: string;
@@ -48,8 +48,8 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  filters: QueryFilters,
   groups: { name: string; type: string }[],
+  filters: QueryFilters,
 ): Promise<
   {
     x: string;
