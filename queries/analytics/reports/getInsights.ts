@@ -41,6 +41,7 @@ async function relationalQuery(
       and website_event.event_type = {{eventType}}
       ${filterQuery}
     group by 1
+    limit 500
     `,
     params,
   );
