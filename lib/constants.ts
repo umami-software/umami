@@ -51,6 +51,7 @@ export const FILTER_COLUMNS = {
   region: 'subdivision1',
   eventType: 'event_type',
   eventName: 'event_name',
+  event: 'event_name',
 };
 
 export const IGNORED_FILTERS = [
