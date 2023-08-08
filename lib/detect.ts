@@ -110,7 +110,11 @@ export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const subdivision2 = location?.subdivision2;
   const city = location?.city;
   const browser = browserName(userAgent);
-  const os = detectOS(userAgent);
+  // ref https://learn.microsoft.com/en-us/microsoft-edge/web-platform/how-to-detect-win11
+  let os = detectOS(userAgent);
+  if (os === "Windows 10" && parseInt(req.headers['sec-ch-ua-platform-version'].split('.')[0], 10) >= 13) {
+      os = "Windows 11";
+  }
   const device = getDevice(screen, os);
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
