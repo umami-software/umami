@@ -2,7 +2,6 @@ import { useContext, useRef } from 'react';
 import { useMessages } from 'hooks';
 import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
 import { ReportContext } from 'components/pages/reports/Report';
-import { REPORT_PARAMETERS } from 'lib/constants';
 import Icons from 'components/icons';
 import BaseParameters from '../BaseParameters';
 import ParameterList from '../ParameterList';
@@ -16,52 +15,52 @@ export function InsightsParameters() {
   const { formatMessage, labels } = useMessages();
   const ref = useRef(null);
   const { parameters } = report || {};
-  const { websiteId, dateRange, filters, groups } = parameters || {};
-  const queryEnabled = websiteId && dateRange && (filters?.length || groups?.length);
+  const { websiteId, dateRange, fields, filters } = parameters || {};
+  const queryEnabled = websiteId && dateRange && (fields?.length || filters?.length);
 
   const fieldOptions = [
-    { name: 'url_path', type: 'string', label: formatMessage(labels.url) },
-    { name: 'page_title', type: 'string', label: formatMessage(labels.pageTitle) },
-    { name: 'referrer_domain', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'url_query', type: 'string', label: formatMessage(labels.query) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-    { name: 'language', type: 'string', label: formatMessage(labels.language) },
+    { name: 'url_path', label: formatMessage(labels.url) },
+    { name: 'page_title', label: formatMessage(labels.pageTitle) },
+    { name: 'referrer_domain', label: formatMessage(labels.referrer) },
+    { name: 'url_query', label: formatMessage(labels.query) },
+    { name: 'browser', label: formatMessage(labels.browser) },
+    { name: 'os', label: formatMessage(labels.os) },
+    { name: 'device', label: formatMessage(labels.device) },
+    { name: 'country', label: formatMessage(labels.country) },
+    { name: 'region', label: formatMessage(labels.region) },
+    { name: 'city', label: formatMessage(labels.city) },
+    { name: 'language', label: formatMessage(labels.language) },
   ];
 
   const parameterGroups = [
-    { label: formatMessage(labels.breakdown), group: REPORT_PARAMETERS.groups },
-    { label: formatMessage(labels.filters), group: REPORT_PARAMETERS.filters },
+    { id: 'fields', label: formatMessage(labels.fields) },
+    { id: 'filters', label: formatMessage(labels.filters) },
   ];
 
   const parameterData = {
+    fields,
     filters,
-    groups,
   };
 
   const handleSubmit = values => {
     runReport(values);
   };
 
-  const handleAdd = (group, value) => {
-    const data = parameterData[group];
+  const handleAdd = (id, value) => {
+    const data = parameterData[id];
 
     if (!data.find(({ name }) => name === value.name)) {
-      updateReport({ parameters: { [group]: data.concat(value) } });
+      updateReport({ parameters: { [id]: data.concat(value) } });
     }
   };
 
-  const handleRemove = (group, index) => {
-    const data = [...parameterData[group]];
+  const handleRemove = (id, index) => {
+    const data = [...parameterData[id]];
     data.splice(index, 1);
-    updateReport({ parameters: { [group]: data } });
+    updateReport({ parameters: { [id]: data } });
   };
 
-  const AddButton = ({ group }) => {
+  const AddButton = ({ id }) => {
     return (
       <PopupTrigger>
         <Icon>
@@ -71,11 +70,11 @@ export function InsightsParameters() {
           {(close, element) => {
             return (
               <PopupForm element={element} onClose={close}>
-                {group === REPORT_PARAMETERS.groups && (
-                  <FieldSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
+                {id === 'fields' && (
+                  <FieldSelectForm items={fieldOptions} onSelect={handleAdd.bind(null, id)} />
                 )}
-                {group === REPORT_PARAMETERS.filters && (
-                  <FilterSelectForm fields={fieldOptions} onSelect={handleAdd.bind(null, group)} />
+                {id === 'filters' && (
+                  <FilterSelectForm items={fieldOptions} onSelect={handleAdd.bind(null, id)} />
                 )}
               </PopupForm>
             );
@@ -88,22 +87,19 @@ export function InsightsParameters() {
   return (
     <Form ref={ref} values={parameters} onSubmit={handleSubmit}>
       <BaseParameters />
-      {parameterGroups.map(({ label, group }) => {
+      {parameterGroups.map(({ id, label }) => {
         return (
-          <FormRow key={label} label={label} action={<AddButton group={group} onAdd={handleAdd} />}>
-            <ParameterList
-              items={parameterData[group]}
-              onRemove={index => handleRemove(group, index)}
-            >
+          <FormRow key={label} label={label} action={<AddButton id={id} onAdd={handleAdd} />}>
+            <ParameterList items={parameterData[id]} onRemove={index => handleRemove(id, index)}>
               {({ value, label }) => {
                 return (
                   <div className={styles.parameter}>
-                    {group === REPORT_PARAMETERS.groups && (
+                    {id === 'fields' && (
                       <>
                         <div>{label}</div>
                       </>
                     )}
-                    {group === REPORT_PARAMETERS.filters && (
+                    {id === 'filters' && (
                       <>
                         <div>{label}</div>
                         <div className={styles.op}>{value[0]}</div>

@@ -25,7 +25,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         event_data.event_key as "fieldName",
         event_data.data_type as "dataType",
         event_data.string_value as "value",
-        count(*) as total
+        count(*) as "total"
       from event_data
       inner join website_event
         on website_event.event_id = event_data.website_event_id
