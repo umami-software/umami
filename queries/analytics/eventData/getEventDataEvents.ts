@@ -21,11 +21,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     return rawQuery(
       `
       select
-        website_event.event_name as eventName,
-        event_data.event_key as fieldName,
-        event_data.data_type as dataType,
-        event_data.string_value as value,
-        count(*) as total
+        website_event.event_name as "eventName",
+        event_data.event_key as "fieldName",
+        event_data.data_type as "dataType",
+        event_data.string_value as "value",
+        count(*) as "total"
       from event_data
       inner join website_event
         on website_event.event_id = event_data.website_event_id
@@ -42,10 +42,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-      website_event.event_name as eventName,
-      event_data.event_key as fieldName,
-      event_data.data_type as dataType,
-      count(*) as total
+      website_event.event_name as "eventName",
+      event_data.event_key as "fieldName",
+      event_data.data_type as "dataType",
+      count(*) as "total"
     from event_data
     inner join website_event
       on website_event.event_id = event_data.website_event_id
