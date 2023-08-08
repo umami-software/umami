@@ -29,7 +29,6 @@ export function RetentionParameters() {
   return (
     <Form ref={ref} values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters />
-      <FormRow label={formatMessage(labels.window)} />
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
           {formatMessage(labels.runQuery)}
