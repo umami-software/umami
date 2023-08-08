@@ -219,6 +219,7 @@ export const DESKTOP_OS = [
   'QNX',
   'Sun OS',
   'Windows 10',
+  'Windows 11',
   'Windows 2000',
   'Windows 3.11',
   'Windows 7',
