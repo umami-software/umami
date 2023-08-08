@@ -27,7 +27,7 @@ export default async (
     const {
       websiteId,
       dateRange: { startDate, endDate },
-      groups,
+      fields,
       filters,
     } = req.body;
 
@@ -35,7 +35,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getInsights(websiteId, groups, {
+    const data = await getInsights(websiteId, fields, {
       ...filters,
       startDate: new Date(startDate),
       endDate: new Date(endDate),
