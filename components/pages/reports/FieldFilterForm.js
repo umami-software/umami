@@ -1,48 +1,37 @@
 import { useState } from 'react';
-import { Form, FormRow, Menu, Item, Flexbox, Dropdown, TextField, Button } from 'react-basics';
+import { Form, FormRow, Item, Flexbox, Dropdown, Button } from 'react-basics';
 import { useFilters } from 'hooks';
 import styles from './FieldFilterForm.module.css';
 
-export default function FieldFilterForm({ name, type, onSelect }) {
-  const [filter, setFilter] = useState('');
-  const [value, setValue] = useState('');
-  const { filters, types } = useFilters();
-  const items = types[type];
+export default function FieldFilterForm({ label, type, values, onSelect }) {
+  const [filter, setFilter] = useState('eq');
+  const [value, setValue] = useState();
+  const filters = useFilters(type);
 
-  const renderValue = value => {
-    return filters[value];
+  const renderFilterValue = value => {
+    return filters.find(f => f.value === value)?.label;
   };
-
-  if (type === 'boolean') {
-    return (
-      <Form>
-        <FormRow label={name}>
-          <Menu onSelect={value => onSelect({ name, type, value: ['eq', value] })}>
-            {items.map(value => {
-              return <Item key={value}>{filters[value]}</Item>;
-            })}
-          </Menu>
-        </FormRow>
-      </Form>
-    );
-  }
 
   return (
     <Form>
-      <FormRow label={name} className={styles.filter}>
+      <FormRow label={label} className={styles.filter}>
         <Flexbox gap={10}>
           <Dropdown
             className={styles.dropdown}
-            items={items}
+            items={filters}
             value={filter}
-            renderValue={renderValue}
+            renderValue={renderFilterValue}
             onChange={setFilter}
           >
-            {value => {
-              return <Item key={value}>{filters[value]}</Item>;
+            {({ value, label }) => {
+              return <Item key={value}>{label}</Item>;
             }}
           </Dropdown>
-          <TextField value={value} onChange={e => setValue(e.target.value)} autoFocus={true} />
+          <Dropdown className={styles.values} items={values} value={value} onChange={setValue}>
+            {value => {
+              return <Item key={value}>{value}</Item>;
+            }}
+          </Dropdown>
         </Flexbox>
         <Button
           variant="primary"

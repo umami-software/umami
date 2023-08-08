@@ -1,6 +1,6 @@
 import { useMessages } from 'hooks';
 
-export function useFilters() {
+export function useFilters(type) {
   const { formatMessage, labels } = useMessages();
 
   const filters = {
@@ -27,7 +27,7 @@ export function useFilters() {
     uuid: ['eq'],
   };
 
-  return { filters, types };
+  return types[type]?.map(key => ({ type, value: key, label: filters[key] })) ?? [];
 }
 
 export default useFilters;

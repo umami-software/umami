@@ -74,7 +74,11 @@ export function InsightsParameters() {
                   <FieldSelectForm items={fieldOptions} onSelect={handleAdd.bind(null, id)} />
                 )}
                 {id === 'filters' && (
-                  <FilterSelectForm items={fieldOptions} onSelect={handleAdd.bind(null, id)} />
+                  <FilterSelectForm
+                    websiteId={websiteId}
+                    items={fieldOptions}
+                    onSelect={handleAdd.bind(null, id)}
+                  />
                 )}
               </PopupForm>
             );
