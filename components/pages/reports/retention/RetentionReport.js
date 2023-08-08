@@ -1,4 +1,3 @@
-import RetentionChart from './RetentionChart';
 import RetentionTable from './RetentionTable';
 import RetentionParameters from './RetentionParameters';
 import Report from '../Report';
@@ -20,7 +19,6 @@ export default function RetentionReport({ reportId }) {
         <RetentionParameters />
       </ReportMenu>
       <ReportBody>
-        {/* <RetentionChart /> */}
         <RetentionTable />
       </ReportBody>
     </Report>
