@@ -1,15 +1,26 @@
 import { useState } from 'react';
 import { Form, FormRow, Item, Flexbox, Dropdown, Button } from 'react-basics';
-import { useFilters } from 'hooks';
+import { useMessages, useFilters, useFormat } from 'hooks';
 import styles from './FieldFilterForm.module.css';
 
-export default function FieldFilterForm({ label, type, values, onSelect }) {
+export default function FieldFilterForm({ name, label, type, values, onSelect }) {
+  const { formatMessage, labels } = useMessages();
   const [filter, setFilter] = useState('eq');
   const [value, setValue] = useState();
-  const filters = useFilters(type);
+  const { getFilters } = useFilters();
+  const { formatValue } = useFormat();
+  const filters = getFilters(type);
 
   const renderFilterValue = value => {
     return filters.find(f => f.value === value)?.label;
+  };
+
+  const renderValue = value => {
+    return formatValue(value, name);
+  };
+
+  const handleAdd = () => {
+    onSelect({ name, type, filter, value });
   };
 
   return (
@@ -27,18 +38,20 @@ export default function FieldFilterForm({ label, type, values, onSelect }) {
               return <Item key={value}>{label}</Item>;
             }}
           </Dropdown>
-          <Dropdown className={styles.values} items={values} value={value} onChange={setValue}>
+          <Dropdown
+            className={styles.dropdown}
+            items={values}
+            value={value}
+            renderValue={renderValue}
+            onChange={setValue}
+          >
             {value => {
-              return <Item key={value}>{value}</Item>;
+              return <Item key={value}>{formatValue(value, name)}</Item>;
             }}
           </Dropdown>
         </Flexbox>
-        <Button
-          variant="primary"
-          onClick={() => onSelect({ name, type, value: [filter, value] })}
-          disabled={!filter || !value}
-        >
-          Add
+        <Button variant="primary" onClick={handleAdd} disabled={!filter || !value}>
+          {formatMessage(labels.add)}
         </Button>
       </FormRow>
     </Form>

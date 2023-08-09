@@ -3,7 +3,7 @@ import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { EVENT_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { getValues } from 'queries';
 
 export interface WebsiteResetRequestQuery {
@@ -28,7 +28,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const values = await getValues(websiteId, type as string);
+    const values = await getValues(websiteId, FILTER_COLUMNS[type as string]);
 
     return ok(
       res,

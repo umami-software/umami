@@ -1,11 +1,13 @@
 import { useMessages } from 'hooks';
 
-export function useFilters(type) {
+export function useFilters() {
   const { formatMessage, labels } = useMessages();
 
-  const filters = {
-    eq: formatMessage(labels.equals),
-    neq: formatMessage(labels.doesNotEqual),
+  const filterLabels = {
+    eq: formatMessage(labels.is),
+    neq: formatMessage(labels.isNot),
+    s: formatMessage(labels.isSet),
+    ns: formatMessage(labels.isNotSet),
     c: formatMessage(labels.contains),
     dnc: formatMessage(labels.doesNotContain),
     t: formatMessage(labels.true),
@@ -18,7 +20,7 @@ export function useFilters(type) {
     af: formatMessage(labels.after),
   };
 
-  const types = {
+  const typeFilters = {
     string: ['eq', 'neq'],
     array: ['c', 'dnc'],
     boolean: ['t', 'f'],
@@ -27,7 +29,11 @@ export function useFilters(type) {
     uuid: ['eq'],
   };
 
-  return types[type]?.map(key => ({ type, value: key, label: filters[key] })) ?? [];
+  const getFilters = type => {
+    return typeFilters[type]?.map(key => ({ type, value: key, label: filterLabels[key] })) ?? [];
+  };
+
+  return { getFilters, filterLabels, typeFilters };
 }
 
 export default useFilters;

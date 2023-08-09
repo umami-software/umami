@@ -1,6 +1,15 @@
 import { useContext, useRef } from 'react';
-import { useMessages } from 'hooks';
-import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
+import { useFormat, useMessages, useFilters } from 'hooks';
+import {
+  Form,
+  FormRow,
+  FormButtons,
+  SubmitButton,
+  PopupTrigger,
+  Icon,
+  Popup,
+  TooltipPopup,
+} from 'react-basics';
 import { ReportContext } from 'components/pages/reports/Report';
 import Icons from 'components/icons';
 import BaseParameters from '../BaseParameters';
@@ -13,23 +22,26 @@ import FieldSelectForm from '../FieldSelectForm';
 export function InsightsParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
+  const { formatValue } = useFormat();
+  const { filterLabels } = useFilters();
   const ref = useRef(null);
   const { parameters } = report || {};
   const { websiteId, dateRange, fields, filters } = parameters || {};
+  const { startDate, endDate } = dateRange || {};
+  const parametersSelected = websiteId && startDate && endDate;
   const queryEnabled = websiteId && dateRange && (fields?.length || filters?.length);
 
   const fieldOptions = [
-    { name: 'url_path', label: formatMessage(labels.url) },
-    { name: 'page_title', label: formatMessage(labels.pageTitle) },
-    { name: 'referrer_domain', label: formatMessage(labels.referrer) },
-    { name: 'url_query', label: formatMessage(labels.query) },
+    { name: 'url', label: formatMessage(labels.url) },
+    { name: 'title', label: formatMessage(labels.pageTitle) },
+    { name: 'referrer', label: formatMessage(labels.referrer) },
+    { name: 'query', label: formatMessage(labels.query) },
     { name: 'browser', label: formatMessage(labels.browser) },
     { name: 'os', label: formatMessage(labels.os) },
     { name: 'device', label: formatMessage(labels.device) },
     { name: 'country', label: formatMessage(labels.country) },
     { name: 'region', label: formatMessage(labels.region) },
     { name: 'city', label: formatMessage(labels.city) },
-    { name: 'language', label: formatMessage(labels.language) },
   ];
 
   const parameterGroups = [
@@ -63,9 +75,11 @@ export function InsightsParameters() {
   const AddButton = ({ id }) => {
     return (
       <PopupTrigger>
-        <Icon>
-          <Icons.Plus />
-        </Icon>
+        <TooltipPopup label={formatMessage(labels.add)} position="top">
+          <Icon>
+            <Icons.Plus />
+          </Icon>
+        </TooltipPopup>
         <Popup position="bottom" alignment="start">
           {(close, element) => {
             return (
@@ -91,32 +105,33 @@ export function InsightsParameters() {
   return (
     <Form ref={ref} values={parameters} onSubmit={handleSubmit}>
       <BaseParameters />
-      {parameterGroups.map(({ id, label }) => {
-        return (
-          <FormRow key={label} label={label} action={<AddButton id={id} onAdd={handleAdd} />}>
-            <ParameterList items={parameterData[id]} onRemove={index => handleRemove(id, index)}>
-              {({ value, label }) => {
-                return (
-                  <div className={styles.parameter}>
-                    {id === 'fields' && (
-                      <>
-                        <div>{label}</div>
-                      </>
-                    )}
-                    {id === 'filters' && (
-                      <>
-                        <div>{label}</div>
-                        <div className={styles.op}>{value[0]}</div>
-                        <div>{value[1]}</div>
-                      </>
-                    )}
-                  </div>
-                );
-              }}
-            </ParameterList>
-          </FormRow>
-        );
-      })}
+      {parametersSelected &&
+        parameterGroups.map(({ id, label }) => {
+          return (
+            <FormRow key={label} label={label} action={<AddButton id={id} onAdd={handleAdd} />}>
+              <ParameterList items={parameterData[id]} onRemove={index => handleRemove(id, index)}>
+                {({ name, filter, value, label }) => {
+                  return (
+                    <div className={styles.parameter}>
+                      {id === 'fields' && (
+                        <>
+                          <div>{label}</div>
+                        </>
+                      )}
+                      {id === 'filters' && (
+                        <>
+                          <div>{fieldOptions.find(f => f.name === name)?.label}</div>
+                          <div className={styles.op}>{filterLabels[filter]}</div>
+                          <div>{formatValue(value, name)}</div>
+                        </>
+                      )}
+                    </div>
+                  );
+                }}
+              </ParameterList>
+            </FormRow>
+          );
+        })}
       <FormButtons>
         <SubmitButton variant="primary" disabled={!queryEnabled} loading={isRunning}>
           {formatMessage(labels.runQuery)}

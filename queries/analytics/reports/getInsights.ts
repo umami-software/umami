@@ -45,7 +45,7 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = {{eventType}}
       ${filterQuery}
-    group by ${fields.map(({ name }) => name).join(',')}
+    ${parseGroupBy(fields)}
     order by 1 desc, 2 desc
     limit 500
     `,
@@ -78,7 +78,7 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
-    group by ${fields.map(({ name }) => name).join(',')}
+    ${parseGroupBy(fields)}
     order by 1 desc, 2 desc
     limit 500
     `,
@@ -97,4 +97,11 @@ function parseFields(fields) {
   );
 
   return query.join(',\n');
+}
+
+function parseGroupBy(fields) {
+  if (!fields.length) {
+    return '';
+  }
+  return `group by ${fields.map(({ name }) => name).join(',')}`;
 }

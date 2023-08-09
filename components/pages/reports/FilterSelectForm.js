@@ -27,8 +27,16 @@ export default function FilterSelectForm({ websiteId, items, onSelect }) {
   }
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading position="center" icon="dots" />;
   }
 
-  return <FieldFilterForm label={field?.label} type="string" values={data} onSelect={onSelect} />;
+  return (
+    <FieldFilterForm
+      name={field?.name}
+      label={field?.label}
+      type="string"
+      values={data}
+      onSelect={onSelect}
+    />
+  );
 }
