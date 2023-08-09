@@ -19,7 +19,7 @@ jobs:
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
       - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image for ${{ matrix.db-type }}
+        name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
@@ -29,3 +29,13 @@ jobs:
           platform: linux/amd64,linux/arm64
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
+        with:
+          image: umamisoftware/umami
+          tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
+          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
