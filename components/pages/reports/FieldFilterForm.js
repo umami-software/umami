@@ -40,6 +40,7 @@ export default function FieldFilterForm({ name, label, type, values, onSelect })
           </Dropdown>
           <Dropdown
             className={styles.dropdown}
+            menuProps={{ className: styles.menu }}
             items={values}
             value={value}
             renderValue={renderValue}

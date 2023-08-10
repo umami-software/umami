@@ -18,7 +18,7 @@ export function InsightsTable() {
     [report?.data],
   );
 
-  if (!fields) {
+  if (!fields || !report?.parameters) {
     return <EmptyPlaceholder />;
   }
 

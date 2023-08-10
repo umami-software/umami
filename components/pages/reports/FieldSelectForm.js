@@ -2,7 +2,7 @@ import { Menu, Item, Form, FormRow } from 'react-basics';
 import { useMessages } from 'hooks';
 import styles from './FieldSelectForm.module.css';
 
-export default function FieldSelectForm({ items, onSelect }) {
+export default function FieldSelectForm({ items, onSelect, showType = true }) {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -13,7 +13,7 @@ export default function FieldSelectForm({ items, onSelect }) {
             return (
               <Item key={index} className={styles.item}>
                 <div>{label || name}</div>
-                {type && <div className={styles.type}>{type}</div>}
+                {showType && type && <div className={styles.type}>{type}</div>}
               </Item>
             );
           })}

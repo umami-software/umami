@@ -23,7 +23,7 @@ export default function FilterSelectForm({ websiteId, items, onSelect }) {
   const { data, isLoading } = useValues(websiteId, field?.name);
 
   if (!field) {
-    return <FieldSelectForm items={items} onSelect={setField} />;
+    return <FieldSelectForm items={items} onSelect={setField} showType={false} />;
   }
 
   if (isLoading) {
@@ -34,7 +34,7 @@ export default function FilterSelectForm({ websiteId, items, onSelect }) {
     <FieldFilterForm
       name={field?.name}
       label={field?.label}
-      type="string"
+      type={field?.type}
       values={data}
       onSelect={onSelect}
     />

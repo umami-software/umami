@@ -32,16 +32,16 @@ export function InsightsParameters() {
   const queryEnabled = websiteId && dateRange && (fields?.length || filters?.length);
 
   const fieldOptions = [
-    { name: 'url', label: formatMessage(labels.url) },
-    { name: 'title', label: formatMessage(labels.pageTitle) },
-    { name: 'referrer', label: formatMessage(labels.referrer) },
-    { name: 'query', label: formatMessage(labels.query) },
-    { name: 'browser', label: formatMessage(labels.browser) },
-    { name: 'os', label: formatMessage(labels.os) },
-    { name: 'device', label: formatMessage(labels.device) },
-    { name: 'country', label: formatMessage(labels.country) },
-    { name: 'region', label: formatMessage(labels.region) },
-    { name: 'city', label: formatMessage(labels.city) },
+    { name: 'url', type: 'string', label: formatMessage(labels.url) },
+    { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
+    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
+    { name: 'query', type: 'string', label: formatMessage(labels.query) },
+    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
+    { name: 'os', type: 'string', label: formatMessage(labels.os) },
+    { name: 'device', type: 'string', label: formatMessage(labels.device) },
+    { name: 'country', type: 'string', label: formatMessage(labels.country) },
+    { name: 'region', type: 'string', label: formatMessage(labels.region) },
+    { name: 'city', type: 'string', label: formatMessage(labels.city) },
   ];
 
   const parameterGroups = [
@@ -85,7 +85,11 @@ export function InsightsParameters() {
             return (
               <PopupForm element={element} onClose={close}>
                 {id === 'fields' && (
-                  <FieldSelectForm items={fieldOptions} onSelect={handleAdd.bind(null, id)} />
+                  <FieldSelectForm
+                    items={fieldOptions}
+                    onSelect={handleAdd.bind(null, id)}
+                    showType={false}
+                  />
                 )}
                 {id === 'filters' && (
                   <FilterSelectForm
