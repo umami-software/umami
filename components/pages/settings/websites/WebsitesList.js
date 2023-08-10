@@ -8,14 +8,22 @@ import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
 import { ROLES } from 'lib/constants';
+import useApiFilter from 'hooks/useApiFilter';
 
 export function WebsitesList() {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
+  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
+    useApiFilter();
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(
-    ['websites', user?.id],
-    () => get(`/users/${user?.id}/websites`),
+    ['websites', user?.id, filter, page, pageSize],
+    () =>
+      get(`/users/${user?.id}/websites`, {
+        filter,
+        page,
+        pageSize,
+      }),
     { enabled: !!user },
   );
   const { showToast } = useToasts();
@@ -47,7 +55,15 @@ export function WebsitesList() {
   return (
     <Page loading={isLoading} error={error}>
       <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>
-      {hasData && <WebsitesTable data={data} />}
+      {hasData && (
+        <WebsitesTable
+          data={data}
+          onFilterChange={handleFilterChange}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          filterValue={filter}
+        />
+      )}
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           {addButton}

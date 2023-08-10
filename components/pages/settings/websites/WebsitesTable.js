@@ -4,7 +4,13 @@ import SettingsTable from 'components/common/SettingsTable';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 
-export function WebsitesTable({ data = [] }) {
+export function WebsitesTable({
+  data = [],
+  filterValue,
+  onFilterChange,
+  onPageChange,
+  onPageSizeChange,
+}) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
 
@@ -15,7 +21,16 @@ export function WebsitesTable({ data = [] }) {
   ];
 
   return (
-    <SettingsTable columns={columns} data={data}>
+    <SettingsTable
+      columns={columns}
+      data={data}
+      showSearch={true}
+      showPaging={true}
+      onFilterChange={onFilterChange}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      filterValue={filterValue}
+    >
       {row => {
         const { id } = row;
 
