@@ -1,7 +1,7 @@
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getInsights(
@@ -91,7 +91,7 @@ function parseFields(fields) {
     (arr, field) => {
       const { name } = field;
 
-      return arr.concat(name);
+      return arr.concat(`${FILTER_COLUMNS[name]} as "${name}"`);
     },
     ['count(*) as views', 'count(distinct website_event.session_id) as visitors'],
   );
@@ -103,5 +103,5 @@ function parseGroupBy(fields) {
   if (!fields.length) {
     return '';
   }
-  return `group by ${fields.map(({ name }) => name).join(',')}`;
+  return `group by ${fields.map(({ name }) => FILTER_COLUMNS[name]).join(',')}`;
 }

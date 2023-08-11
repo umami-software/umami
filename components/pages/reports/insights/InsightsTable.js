@@ -31,10 +31,15 @@ export function InsightsTable() {
           </GridColumn>
         );
       })}
-      <GridColumn name="visitors" label={formatMessage(labels.visitors)} width="100px">
+      <GridColumn
+        name="visitors"
+        label={formatMessage(labels.visitors)}
+        width="100px"
+        alignment="end"
+      >
         {row => row.visitors.toLocaleString()}
       </GridColumn>
-      <GridColumn name="views" label={formatMessage(labels.views)} width="100px">
+      <GridColumn name="views" label={formatMessage(labels.views)} width="100px" alignment="end">
         {row => row.views.toLocaleString()}
       </GridColumn>
     </GridTable>
