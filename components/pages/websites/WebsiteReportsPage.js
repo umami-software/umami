@@ -1,12 +1,13 @@
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Page from 'components/layout/Page';
-import Link from 'next/link';
-import { Button, Icon, Icons, Text, Flexbox } from 'react-basics';
-import { useMessages, useReports } from 'hooks';
 import ReportsTable from 'components/pages/reports/ReportsTable';
+import { useMessages, useReports } from 'hooks';
+import Link from 'next/link';
+import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
 import WebsiteHeader from './WebsiteHeader';
 
 export function WebsiteReportsPage({ websiteId }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const {
     reports,
     error,
@@ -17,6 +18,8 @@ export function WebsiteReportsPage({ websiteId }) {
     handlePageChange,
     handlePageSizeChange,
   } = useReports(websiteId);
+
+  const hasData = reports && reports.data.length !== 0;
 
   const handleDelete = async id => {
     await deleteReport(id);
@@ -35,14 +38,21 @@ export function WebsiteReportsPage({ websiteId }) {
           </Button>
         </Link>
       </Flexbox>
-      <ReportsTable
-        data={reports}
-        onDelete={handleDelete}
-        onFilterChange={handleFilterChange}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        filterValue={filter}
-      />
+      {hasData && (
+        <ReportsTable
+          data={reports}
+          onDelete={handleDelete}
+          onFilterChange={handleFilterChange}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          filterValue={filter}
+        />
+      )}
+      {!hasData && (
+        <EmptyPlaceholder message={formatMessage(messages.noReportsConfigured)}>
+          {/* {addButton} */}
+        </EmptyPlaceholder>
+      )}
     </Page>
   );
 }

@@ -246,6 +246,10 @@ export const messages = defineMessages({
     id: 'message.no-websites-configured',
     defaultMessage: 'You do not have any websites configured.',
   },
+  noReportsConfigured: {
+    id: 'message.no-reports-configured',
+    defaultMessage: 'You do not have any reports configured.',
+  },
   noTeamWebsites: {
     id: 'message.no-team-websites',
     defaultMessage: 'This team does not have any websites.',
