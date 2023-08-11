@@ -104,7 +104,7 @@ export async function getTeams(
             ...((filterType === TEAM_FILTER_TYPES.all ||
               filterType === TEAM_FILTER_TYPES['user:username']) && {
               teamUser: {
-                every: {
+                some: {
                   role: ROLES.teamOwner,
                   user: {
                     username: {

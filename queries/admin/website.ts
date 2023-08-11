@@ -57,31 +57,33 @@ export async function getWebsites(
         },
       },
     }),
-    AND: {
-      OR: [
-        {
-          ...(userId && {
-            userId,
-          }),
-        },
-        {
-          ...(includeTeams && {
-            teamWebsite: {
-              some: {
-                team: {
-                  teamUser: {
-                    some: {
-                      userId,
+    AND: [
+      {
+        OR: [
+          {
+            ...(userId && {
+              userId,
+            }),
+          },
+          {
+            ...(includeTeams && {
+              teamWebsite: {
+                some: {
+                  team: {
+                    teamUser: {
+                      some: {
+                        userId,
+                      },
                     },
                   },
                 },
               },
-            },
-          }),
-        },
-      ],
-    },
-    ...(filter && filterQuery),
+            }),
+          },
+        ],
+      },
+      { ...(filter && filterQuery) },
+    ],
   };
 
   const [pageFilters, getParameters] = prisma.getPageFilters({

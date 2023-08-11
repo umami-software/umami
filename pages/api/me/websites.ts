@@ -1,5 +1,5 @@
 import { useAuth, useCors } from 'lib/middleware';
-import { NextApiRequestQueryBody, WebsiteSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 
