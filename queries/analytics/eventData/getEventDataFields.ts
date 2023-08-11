@@ -21,10 +21,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { fiel
   return rawQuery(
     `
     select
-      event_key as fieldName,
-      data_type as dataType,
-      string_value as fieldValue,
-      count(*) as total
+      event_key as "fieldName",
+      data_type as "dataType",
+      string_value as "fieldValue",
+      count(*) as "total"
     from event_data
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}

@@ -163,6 +163,7 @@ export const labels = defineMessages({
   overview: { id: 'label.overview', defaultMessage: 'Overview' },
   totalRecords: { id: 'label.total-records', defaultMessage: 'Total records' },
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
+  retention: { id: 'label.retention', defaultMessage: 'Retention' },
   dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
   referrer: { id: 'label.referrer', defaultMessage: 'Referrer' },
   country: { id: 'label.country', defaultMessage: 'Country' },

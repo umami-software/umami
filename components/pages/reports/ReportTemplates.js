@@ -45,6 +45,12 @@ export function ReportTemplates() {
       url: '/reports/funnel',
       icon: <Funnel />,
     },
+    {
+      title: formatMessage(labels.retention),
+      description: 'Track your websites user retention',
+      url: '/reports/retention',
+      icon: <Funnel />,
+    },
   ];
 
   return (
