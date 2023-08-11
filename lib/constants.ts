@@ -92,6 +92,23 @@ export const DATA_TYPE = {
   array: 5,
 } as const;
 
+export const OPERATORS = {
+  equals: 'eq',
+  notEquals: 'neq',
+  set: 's',
+  notSet: 'ns',
+  contains: 'c',
+  doesNotContain: 'dnc',
+  true: 't',
+  false: 'f',
+  greaterThan: 'gt',
+  lessThan: 'lt',
+  greaterThanEquals: 'gte',
+  lessThanEquals: 'lte',
+  before: 'bf',
+  after: 'af',
+} as const;
+
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
@@ -99,6 +116,12 @@ export const DATA_TYPES = {
   [DATA_TYPE.date]: 'date',
   [DATA_TYPE.array]: 'array',
 };
+
+export const REPORT_TYPES = {
+  funnel: 'funnel',
+  insights: 'insights',
+  retention: 'retention',
+} as const;
 
 export const REPORT_PARAMETERS = {
   fields: 'fields',

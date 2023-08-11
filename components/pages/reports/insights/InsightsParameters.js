@@ -119,7 +119,7 @@ export function InsightsParameters() {
                     <div className={styles.parameter}>
                       {id === 'fields' && (
                         <>
-                          <div>{label}</div>
+                          <div>{fieldOptions.find(f => f.name === name)?.label}</div>
                         </>
                       )}
                       {id === 'filters' && (

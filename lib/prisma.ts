@@ -1,7 +1,7 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS, SESSION_COLUMNS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
@@ -67,15 +67,27 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
+function mapFilter(column, operator, name) {
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = {{${name}}}`;
+    case OPERATORS.notEquals:
+      return `${column} != {{${name}}}`;
+    default:
+      return '';
+  }
+}
+
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-    const column = FILTER_COLUMNS[key] ?? options?.columns?.[key];
+  const query = Object.keys(filters).reduce((arr, name) => {
+    const value = filters[name];
+    const operator = value?.filter ?? OPERATORS.equals;
+    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (filter !== undefined && column) {
-      arr.push(`and ${column}={{${key}}}`);
+    if (value !== undefined && column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
 
-      if (key === 'referrer') {
+      if (name === 'referrer') {
         arr.push(
           'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
         );
@@ -88,11 +100,17 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   return query.join('\n');
 }
 
-async function parseFilters(
-  websiteId,
-  filters: QueryFilters & { [key: string]: any } = {},
-  options: QueryOptions = {},
-) {
+function normalizeFilters(filters = {}) {
+  return Object.keys(filters).reduce((obj, key) => {
+    const value = filters[key];
+
+    obj[key] = value?.value ?? value;
+
+    return obj;
+  }, {});
+}
+
+async function parseFilters(websiteId, filters: QueryFilters = {}, options: QueryOptions = {}) {
   const website = await loadWebsite(websiteId);
 
   return {
@@ -102,7 +120,7 @@ async function parseFilters(
         : '',
     filterQuery: getFilterQuery(filters, options),
     params: {
-      ...filters,
+      ...normalizeFilters(filters),
       websiteId,
       startDate: maxDate(filters.startDate, website.resetAt),
       websiteDomain: website.domain,

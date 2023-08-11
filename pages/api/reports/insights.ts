@@ -16,6 +16,14 @@ export interface InsightsRequestBody {
   groups: { name: string; type: string }[];
 }
 
+function convertFilters(filters) {
+  return filters.reduce((obj, { name, ...value }) => {
+    obj[name] = value;
+
+    return obj;
+  }, {});
+}
+
 export default async (
   req: NextApiRequestQueryBody<any, InsightsRequestBody>,
   res: NextApiResponse,
@@ -36,7 +44,7 @@ export default async (
     }
 
     const data = await getInsights(websiteId, fields, {
-      ...filters,
+      ...convertFilters(filters),
       startDate: new Date(startDate),
       endDate: new Date(endDate),
     });

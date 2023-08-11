@@ -3,7 +3,7 @@ import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { QueryFilters, QueryOptions } from './types';
-import { FILTER_COLUMNS } from './constants';
+import { FILTER_COLUMNS, OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 
@@ -63,17 +63,29 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
+function mapFilter(column, operator, name) {
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = {${name}:String}`;
+    case OPERATORS.notEquals:
+      return `${column} != {${name}:String}`;
+    default:
+      return '';
+  }
+}
+
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-    const column = FILTER_COLUMNS[key] ?? options?.columns?.[key];
+  const query = Object.keys(filters).reduce((arr, name) => {
+    const value = filters[name];
+    const operator = value?.filter ?? OPERATORS.equals;
+    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (filter !== undefined && column) {
-      arr.push(`and ${column} = {${key}:String}`);
-    }
+    if (value !== undefined && column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
 
-    if (key === 'referrer') {
-      arr.push('and referrer_domain != {websiteDomain:String}');
+      if (name === 'referrer') {
+        arr.push('and referrer_domain != {websiteDomain:String}');
+      }
     }
 
     return arr;
@@ -82,11 +94,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
-async function parseFilters(
-  websiteId: string,
-  filters: QueryFilters & { [key: string]: any } = {},
-  options?: QueryOptions,
-) {
+async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
   const website = await loadWebsite(websiteId);
 
   return {
