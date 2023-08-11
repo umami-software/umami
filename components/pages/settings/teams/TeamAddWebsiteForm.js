@@ -12,6 +12,8 @@ export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
   const [newWebsites, setNewWebsites] = useState([]);
   const formRef = useRef();
 
+  const hasData = websites && websites.data.length > 0;
+
   const handleSubmit = () => {
     mutate(
       { websiteIds: newWebsites },
@@ -42,20 +44,22 @@ export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
 
   return (
     <>
-      <Form onSubmit={handleSubmit} error={error} ref={formRef}>
-        <FormRow label={formatMessage(labels.websites)}>
-          <Dropdown items={websites} onChange={handleAddWebsite} style={{ width: 300 }}>
-            {({ id, name }) => <Item key={id}>{name}</Item>}
-          </Dropdown>
-        </FormRow>
-        <WebsiteTags items={websites} websites={newWebsites} onClick={handleRemoveWebsite} />
-        <FormButtons flex>
-          <SubmitButton disabled={newWebsites && newWebsites.length === 0}>
-            {formatMessage(labels.addWebsite)}
-          </SubmitButton>
-          <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
-        </FormButtons>
-      </Form>
+      {hasData && (
+        <Form onSubmit={handleSubmit} error={error} ref={formRef}>
+          <FormRow label={formatMessage(labels.websites)}>
+            <Dropdown items={websites.data} onChange={handleAddWebsite} style={{ width: 300 }}>
+              {({ id, name }) => <Item key={id}>{name}</Item>}
+            </Dropdown>
+          </FormRow>
+          <WebsiteTags items={websites.data} websites={newWebsites} onClick={handleRemoveWebsite} />
+          <FormButtons flex>
+            <SubmitButton disabled={newWebsites && newWebsites.length === 0}>
+              {formatMessage(labels.addWebsite)}
+            </SubmitButton>
+            <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+          </FormButtons>
+        </Form>
+      )}
     </>
   );
 }

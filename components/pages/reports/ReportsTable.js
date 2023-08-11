@@ -5,7 +5,14 @@ import SettingsTable from 'components/common/SettingsTable';
 import ConfirmDeleteForm from 'components/common/ConfirmDeleteForm';
 import { useMessages } from 'hooks';
 
-export function ReportsTable({ data = [], onDelete = () => {} }) {
+export function ReportsTable({
+  data = [],
+  onDelete = () => {},
+  filterValue,
+  onFilterChange,
+  onPageChange,
+  onPageSizeChange,
+}) {
   const [report, setReport] = useState(null);
   const { formatMessage, labels } = useMessages();
 
@@ -22,7 +29,16 @@ export function ReportsTable({ data = [], onDelete = () => {} }) {
 
   return (
     <>
-      <SettingsTable columns={columns} data={data}>
+      <SettingsTable
+        columns={columns}
+        data={data}
+        showSearch={true}
+        showPaging={true}
+        onFilterChange={onFilterChange}
+        onPageChange={onPageChange}
+        onPageSizeChange={onPageSizeChange}
+        filterValue={filterValue}
+      >
         {row => {
           const { id } = row;
 

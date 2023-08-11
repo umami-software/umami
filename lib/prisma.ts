@@ -4,7 +4,7 @@ import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
-import { QueryFilters, QueryOptions } from './types';
+import { QueryFilters, QueryOptions, SearchFilter } from './types';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -146,6 +146,37 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
+function getPageFilters(filters: SearchFilter<any>): [
+  {
+    orderBy: {
+      [x: string]: string;
+    }[];
+    take: number;
+    skip: number;
+  },
+  {
+    pageSize: number;
+    page: number;
+    orderBy: string;
+  },
+] {
+  const { pageSize = 10, page = 1, orderBy } = filters;
+
+  return [
+    {
+      ...(pageSize > 0 && { take: pageSize, skip: pageSize * (page - 1) }),
+      ...(orderBy && {
+        orderBy: [
+          {
+            [orderBy]: 'asc',
+          },
+        ],
+      }),
+    },
+    { pageSize, page: +page, orderBy },
+  ];
+}
+
 export default {
   ...prisma,
   getAddMinutesQuery,
@@ -153,5 +184,6 @@ export default {
   getTimestampIntervalQuery,
   getFilterQuery,
   parseFilters,
+  getPageFilters,
   rawQuery,
 };
