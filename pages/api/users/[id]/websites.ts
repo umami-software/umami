@@ -19,6 +19,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
   const { user } = req.auth;
   const { id: userId, page, filter, pageSize, includeTeams } = req.query;
 

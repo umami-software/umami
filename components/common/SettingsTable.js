@@ -42,7 +42,7 @@ export function SettingsTable({
           delay={1000}
           value={filter}
           placeholder="Search"
-          style={{ maxWidth: '300px', 'margin-bottom': '10px' }}
+          style={{ maxWidth: '300px', marginBottom: '10px' }}
         />
       )}
       {value.length === 0 && filterValue && (
