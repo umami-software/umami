@@ -36,13 +36,13 @@ export async function getWebsites(
         {
           ...((filterType === WEBSITE_FILTER_TYPES.all ||
             filterType === WEBSITE_FILTER_TYPES.name) && {
-            name: { startsWith: filter },
+            name: { startsWith: filter, mode: 'insensitive' },
           }),
         },
         {
           ...((filterType === WEBSITE_FILTER_TYPES.all ||
             filterType === WEBSITE_FILTER_TYPES.domain) && {
-            domain: { startsWith: filter },
+            domain: { startsWith: filter, mode: 'insensitive' },
           }),
         },
       ],
