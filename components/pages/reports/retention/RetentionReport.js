@@ -4,17 +4,18 @@ import Report from '../Report';
 import ReportHeader from '../ReportHeader';
 import ReportMenu from '../ReportMenu';
 import ReportBody from '../ReportBody';
-import Funnel from 'assets/funnel.svg';
+import Magnet from 'assets/magnet.svg';
+import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
-  type: 'retention',
+  type: REPORT_TYPES.retention,
   parameters: {},
 };
 
 export default function RetentionReport({ reportId }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Funnel />} />
+      <ReportHeader icon={<Magnet />} />
       <ReportMenu>
         <RetentionParameters />
       </ReportMenu>

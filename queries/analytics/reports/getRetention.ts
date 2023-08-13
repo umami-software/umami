@@ -69,7 +69,6 @@ async function relationalQuery(
       from user_activities a
       join cohort_items c
       on a.session_id = c.session_id
-      where a.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
       group by 1, 2
     )
     select
@@ -81,6 +80,7 @@ async function relationalQuery(
     from cohort_date c
     join cohort_size s
     on c.cohort_date = s.cohort_date
+    where c.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
     order by 1, 2`,
     {
       websiteId,
@@ -144,7 +144,6 @@ async function clickhouseQuery(
       from user_activities a
       join cohort_items c
       on a.session_id = c.session_id
-      where a.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
       group by 1, 2
     )
     select
@@ -156,6 +155,7 @@ async function clickhouseQuery(
     from cohort_date c
     join cohort_size s
     on c.cohort_date = s.cohort_date
+    where c.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
     order by 1, 2`,
     {
       websiteId,

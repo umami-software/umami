@@ -4,6 +4,7 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import Funnel from 'assets/funnel.svg';
 import Lightbulb from 'assets/lightbulb.svg';
+import Magnet from 'assets/magnet.svg';
 import styles from './ReportTemplates.module.css';
 import { useMessages } from 'hooks';
 
@@ -47,9 +48,9 @@ export function ReportTemplates() {
     },
     {
       title: formatMessage(labels.retention),
-      description: 'Track your websites user retention',
+      description: 'Measure you website stickiness by tracking how often users return.',
       url: '/reports/retention',
-      icon: <Funnel />,
+      icon: <Magnet />,
     },
   ];
 
