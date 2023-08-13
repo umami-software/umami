@@ -1,0 +1,28 @@
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  margin-bottom: 1px;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--blue100);
+  border-radius: var(--border-radius);
+}
