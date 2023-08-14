@@ -3,7 +3,7 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import { useMessages, useReports } from 'hooks';
 import Link from 'next/link';
-import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
+import { Button, Icon, Icons, Text } from 'react-basics';
 import ReportsTable from './ReportsTable';
 
 export function ReportsPage() {
@@ -12,6 +12,7 @@ export function ReportsPage() {
     reports,
     error,
     isLoading,
+    deleteReport,
     filter,
     handleFilterChange,
     handlePageChange,
@@ -19,6 +20,10 @@ export function ReportsPage() {
   } = useReports();
 
   const hasData = (reports && reports?.data.length !== 0) || filter;
+
+  const handleDelete = async id => {
+    await deleteReport(id);
+  };
 
   return (
     <Page loading={isLoading} error={error}>
@@ -41,12 +46,13 @@ export function ReportsPage() {
           onFilterChange={handleFilterChange}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
+          onDelete={deleteReport}
           filterValue={filter}
           showDomain={true}
         />
       )}
       {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noReportsConfigured)}></EmptyPlaceholder>
+        <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)}></EmptyPlaceholder>
       )}
     </Page>
   );

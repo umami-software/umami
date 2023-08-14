@@ -243,15 +243,7 @@ export const messages = defineMessages({
   },
   noResultsFound: {
     id: 'message.no-results-found',
-    defaultMessage: 'No results were found.',
-  },
-  noWebsitesConfigured: {
-    id: 'message.no-websites-configured',
-    defaultMessage: 'You do not have any websites configured.',
-  },
-  noReportsConfigured: {
-    id: 'message.no-reports-configured',
-    defaultMessage: 'You do not have any reports configured.',
+    defaultMessage: 'No results found.',
   },
   noTeamWebsites: {
     id: 'message.no-team-websites',

@@ -48,7 +48,7 @@ export function WebsiteReportsPage({ websiteId }) {
           filterValue={filter}
         />
       )}
-      {!hasData && <EmptyPlaceholder message={formatMessage(messages.noReportsConfigured)} />}
+      {!hasData && <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)} />}
     </Page>
   );
 }

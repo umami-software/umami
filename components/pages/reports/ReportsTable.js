@@ -51,19 +51,15 @@ export function ReportsTable({
         filterValue={filterValue}
       >
         {row => {
-          const {
-            id,
-            userId: reportOwnerId,
-            website: { domain, userId: websiteOwnerId },
-          } = row;
+          const { id, userId: reportOwnerId, website } = row;
           if (showDomain) {
-            row.domain = domain;
+            row.domain = website.domain;
           }
 
           return (
             <Flexbox gap={10}>
               <LinkButton href={`/reports/${id}`}>{formatMessage(labels.view)}</LinkButton>
-              {!showDomain || user.id === reportOwnerId || user.id === websiteOwnerId}
+              {!showDomain || user.id === reportOwnerId || user.id === website?.userId}
               <Button onClick={() => setReport(row)}>
                 <Icon>
                   <Icons.Trash />

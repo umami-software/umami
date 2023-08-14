@@ -68,7 +68,7 @@ export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTe
         />
       )}
       {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
+        <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)}>
           {addButton}
         </EmptyPlaceholder>
       )}
