@@ -131,6 +131,7 @@ export async function getWebsitesByUserId(
         user: {
           select: {
             username: true,
+            id: true,
           },
         },
       },

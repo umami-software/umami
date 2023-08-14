@@ -3,6 +3,7 @@ import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
+import useUser from 'hooks/useUser';
 
 export function WebsitesTable({
   data = [],
@@ -14,6 +15,7 @@ export function WebsitesTable({
 }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
+  const { user } = useUser();
 
   const teamColumns = [
     { name: 'teamName', label: formatMessage(labels.teamName) },
@@ -42,7 +44,7 @@ export function WebsitesTable({
         const {
           id,
           teamWebsite,
-          user: { username },
+          user: { username, id: ownerId },
         } = row;
         if (showTeam) {
           row.teamName = teamWebsite[0]?.team.name;
@@ -51,14 +53,16 @@ export function WebsitesTable({
 
         return (
           <>
-            <Link href={`/settings/websites/${id}`}>
-              <Button>
-                <Icon>
-                  <Icons.Edit />
-                </Icon>
-                <Text>{formatMessage(labels.edit)}</Text>
-              </Button>
-            </Link>
+            {(!showTeam || ownerId === user.id) && (
+              <Link href={`/settings/websites/${id}`}>
+                <Button>
+                  <Icon>
+                    <Icons.Edit />
+                  </Icon>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </Button>
+              </Link>
+            )}
             <Link href={`/websites/${id}`} target={openExternal ? '_blank' : null}>
               <Button>
                 <Icon>
