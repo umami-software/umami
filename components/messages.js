@@ -245,6 +245,10 @@ export const messages = defineMessages({
     id: 'message.no-results-found',
     defaultMessage: 'No results found.',
   },
+  noWebsitesConfigured: {
+    id: 'message.no-websites-configured',
+    defaultMessage: 'You do not have any websites configured.',
+  },
   noTeamWebsites: {
     id: 'message.no-team-websites',
     defaultMessage: 'This team does not have any websites.',
