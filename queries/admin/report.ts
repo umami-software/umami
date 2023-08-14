@@ -28,13 +28,45 @@ export async function deleteReport(reportId: string): Promise<Report> {
 
 export async function getReports(
   ReportSearchFilter: ReportSearchFilter,
+  options?: { include?: Prisma.ReportInclude },
 ): Promise<FilterResult<Report[]>> {
-  const { userId, websiteId, filter, filterType = REPORT_FILTER_TYPES.all } = ReportSearchFilter;
+  const {
+    userId,
+    websiteId,
+    includeTeams,
+    filter,
+    filterType = REPORT_FILTER_TYPES.all,
+  } = ReportSearchFilter;
+
   const where: Prisma.ReportWhereInput = {
     ...(userId && { userId: userId }),
     ...(websiteId && { websiteId: websiteId }),
-    ...(filter && {
-      AND: {
+    AND: [
+      {
+        OR: [
+          {
+            ...(userId && { userId: userId }),
+          },
+          {
+            ...(includeTeams && {
+              website: {
+                teamWebsite: {
+                  some: {
+                    team: {
+                      teamUser: {
+                        some: {
+                          userId,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            }),
+          },
+        ],
+      },
+      {
         OR: [
           {
             ...((filterType === REPORT_FILTER_TYPES.all ||
@@ -98,7 +130,7 @@ export async function getReports(
           },
         ],
       },
-    }),
+    ],
   };
 
   const [pageFilters, getParameters] = prisma.getPageFilters(ReportSearchFilter);
@@ -106,6 +138,7 @@ export async function getReports(
   const reports = await prisma.client.report.findMany({
     where,
     ...pageFilters,
+    ...(options?.include && { include: options.include }),
   });
   const count = await prisma.client.report.count({
     where,
@@ -122,7 +155,18 @@ export async function getReportsByUserId(
   userId: string,
   filter: SearchFilter<ReportSearchFilterType>,
 ): Promise<FilterResult<Report[]>> {
-  return getReports({ userId, ...filter });
+  return getReports(
+    { userId, ...filter },
+    {
+      include: {
+        website: {
+          select: {
+            domain: true,
+          },
+        },
+      },
+    },
+  );
 }
 
 export async function getReportsByWebsiteId(

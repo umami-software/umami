@@ -21,7 +21,7 @@ export default async (
   await useAuth(req, res);
 
   const { user } = req.auth;
-  const { id: userId, page, filter, pageSize, includeTeams } = req.query;
+  const { id: userId, page, filter, pageSize, includeTeams, onlyTeams } = req.query;
 
   if (req.method === 'GET') {
     if (!user.isAdmin && user.id !== userId) {
@@ -33,6 +33,7 @@ export default async (
       filter,
       pageSize: +pageSize || null,
       includeTeams,
+      onlyTeams,
     });
 
     return ok(res, websites);

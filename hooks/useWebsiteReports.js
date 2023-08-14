@@ -2,15 +2,15 @@ import { useState } from 'react';
 import useApi from './useApi';
 import useApiFilter from 'hooks/useApiFilter';
 
-export function useReports() {
+export function useWebsiteReports(websiteId) {
   const [modified, setModified] = useState(Date.now());
   const { get, useQuery, del, useMutation } = useApi();
   const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
     useApiFilter();
   const { data, error, isLoading } = useQuery(
-    ['reports', { modified, filter, page, pageSize }],
-    () => get(`/reports`, { filter, page, pageSize }),
+    ['reports:website', { websiteId, modified, filter, page, pageSize }],
+    () => get(`/websites/${websiteId}/reports`, { websiteId, filter, page, pageSize }),
   );
 
   const deleteReport = id => {
@@ -35,4 +35,4 @@ export function useReports() {
   };
 }
 
-export default useReports;
+export default useWebsiteReports;

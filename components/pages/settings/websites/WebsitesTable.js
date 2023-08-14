@@ -10,13 +10,20 @@ export function WebsitesTable({
   onFilterChange,
   onPageChange,
   onPageSizeChange,
+  showTeam,
 }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
 
+  const teamColumns = [
+    { name: 'teamName', label: formatMessage(labels.teamName) },
+    { name: 'owner', label: formatMessage(labels.owner) },
+  ];
+
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
     { name: 'domain', label: formatMessage(labels.domain) },
+    ...(showTeam ? teamColumns : []),
     { name: 'action', label: ' ' },
   ];
 
@@ -32,7 +39,15 @@ export function WebsitesTable({
       filterValue={filterValue}
     >
       {row => {
-        const { id } = row;
+        const {
+          id,
+          teamWebsite,
+          user: { username },
+        } = row;
+        if (showTeam) {
+          row.teamName = teamWebsite[0]?.team.name;
+          row.owner = username;
+        }
 
         return (
           <>

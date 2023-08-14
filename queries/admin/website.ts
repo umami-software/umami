@@ -26,28 +26,10 @@ export async function getWebsites(
     userId,
     teamId,
     includeTeams,
+    onlyTeams,
     filter,
     filterType = WEBSITE_FILTER_TYPES.all,
   } = WebsiteSearchFilter;
-
-  const filterQuery = {
-    AND: {
-      OR: [
-        {
-          ...((filterType === WEBSITE_FILTER_TYPES.all ||
-            filterType === WEBSITE_FILTER_TYPES.name) && {
-            name: { startsWith: filter, mode: 'insensitive' },
-          }),
-        },
-        {
-          ...((filterType === WEBSITE_FILTER_TYPES.all ||
-            filterType === WEBSITE_FILTER_TYPES.domain) && {
-            domain: { startsWith: filter, mode: 'insensitive' },
-          }),
-        },
-      ],
-    },
-  };
 
   const where: Prisma.WebsiteWhereInput = {
     ...(teamId && {
@@ -61,28 +43,53 @@ export async function getWebsites(
       {
         OR: [
           {
-            ...(userId && {
-              userId,
-            }),
+            ...(userId &&
+              !onlyTeams && {
+                userId,
+              }),
           },
           {
-            ...(includeTeams && {
-              teamWebsite: {
-                some: {
-                  team: {
-                    teamUser: {
-                      some: {
-                        userId,
+            ...((includeTeams || onlyTeams) && {
+              AND: [
+                {
+                  teamWebsite: {
+                    some: {
+                      team: {
+                        teamUser: {
+                          some: {
+                            userId,
+                          },
+                        },
                       },
                     },
                   },
                 },
-              },
+                {
+                  userId: {
+                    not: userId,
+                  },
+                },
+              ],
             }),
           },
         ],
       },
-      { ...(filter && filterQuery) },
+      {
+        OR: [
+          {
+            ...((filterType === WEBSITE_FILTER_TYPES.all ||
+              filterType === WEBSITE_FILTER_TYPES.name) && {
+              name: { startsWith: filter, mode: 'insensitive' },
+            }),
+          },
+          {
+            ...((filterType === WEBSITE_FILTER_TYPES.all ||
+              filterType === WEBSITE_FILTER_TYPES.domain) && {
+              domain: { startsWith: filter, mode: 'insensitive' },
+            }),
+          },
+        ],
+      },
     ],
   };
 
@@ -108,7 +115,27 @@ export async function getWebsitesByUserId(
   userId: string,
   filter?: WebsiteSearchFilter,
 ): Promise<FilterResult<Website[]>> {
-  return getWebsites({ userId, ...filter });
+  return getWebsites(
+    { userId, ...filter },
+    {
+      include: {
+        teamWebsite: {
+          include: {
+            team: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    },
+  );
 }
 
 export async function getWebsitesByTeamId(

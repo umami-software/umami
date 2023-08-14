@@ -10,19 +10,21 @@ import useMessages from 'hooks/useMessages';
 import { ROLES } from 'lib/constants';
 import useApiFilter from 'hooks/useApiFilter';
 
-export function WebsitesList() {
+export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTeams, fetch }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
     useApiFilter();
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(
-    ['websites', user?.id, filter, page, pageSize],
+    ['websites', fetch, user?.id, filter, page, pageSize, includeTeams, onlyTeams],
     () =>
       get(`/users/${user?.id}/websites`, {
         filter,
         page,
         pageSize,
+        includeTeams,
+        onlyTeams,
       }),
     { enabled: !!user },
   );
@@ -54,10 +56,11 @@ export function WebsitesList() {
 
   return (
     <Page loading={isLoading} error={error}>
-      <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>
+      {showHeader && <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>}
       {hasData && (
         <WebsitesTable
           data={data}
+          showTeam={showTeam}
           onFilterChange={handleFilterChange}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}

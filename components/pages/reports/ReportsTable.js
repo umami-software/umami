@@ -12,14 +12,23 @@ export function ReportsTable({
   onFilterChange,
   onPageChange,
   onPageSizeChange,
+  showDomain,
 }) {
   const [report, setReport] = useState(null);
   const { formatMessage, labels } = useMessages();
+
+  const domainColumn = [
+    {
+      name: 'domain',
+      label: formatMessage(labels.domain),
+    },
+  ];
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
     { name: 'description', label: formatMessage(labels.description) },
     { name: 'type', label: formatMessage(labels.type) },
+    ...(showDomain ? domainColumn : []),
     { name: 'action', label: ' ' },
   ];
 
@@ -41,6 +50,9 @@ export function ReportsTable({
       >
         {row => {
           const { id } = row;
+          if (showDomain) {
+            row.domain = row.website.domain;
+          }
 
           return (
             <Flexbox gap={10}>
