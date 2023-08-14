@@ -162,6 +162,7 @@ export async function getReportsByUserId(
         website: {
           select: {
             domain: true,
+            userId: true,
           },
         },
       },

@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { Flexbox, Icon, Icons, Text, Button, Modal } from 'react-basics';
+import ConfirmDeleteForm from 'components/common/ConfirmDeleteForm';
 import LinkButton from 'components/common/LinkButton';
 import SettingsTable from 'components/common/SettingsTable';
-import ConfirmDeleteForm from 'components/common/ConfirmDeleteForm';
 import { useMessages } from 'hooks';
+import useUser from 'hooks/useUser';
+import { useState } from 'react';
+import { Button, Flexbox, Icon, Icons, Modal, Text } from 'react-basics';
 
 export function ReportsTable({
   data = [],
@@ -16,6 +17,7 @@ export function ReportsTable({
 }) {
   const [report, setReport] = useState(null);
   const { formatMessage, labels } = useMessages();
+  const { user } = useUser();
 
   const domainColumn = [
     {
@@ -49,14 +51,19 @@ export function ReportsTable({
         filterValue={filterValue}
       >
         {row => {
-          const { id } = row;
+          const {
+            id,
+            userId: reportOwnerId,
+            website: { domain, userId: websiteOwnerId },
+          } = row;
           if (showDomain) {
-            row.domain = row.website.domain;
+            row.domain = domain;
           }
 
           return (
             <Flexbox gap={10}>
               <LinkButton href={`/reports/${id}`}>{formatMessage(labels.view)}</LinkButton>
+              {!showDomain || user.id === reportOwnerId || user.id === websiteOwnerId}
               <Button onClick={() => setReport(row)}>
                 <Icon>
                   <Icons.Trash />
