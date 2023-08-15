@@ -43,7 +43,19 @@ function getDayDiffQuery(field1: string, field2: string): string {
   }
 
   if (db === MYSQL) {
-    return `DATEDIFF(${field1}, ${field2});`;
+    return `DATEDIFF(${field1}, ${field2})`;
+  }
+}
+
+function getCastColumnQuery(field: string, type: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field}::${type}`;
+  }
+
+  if (db === MYSQL) {
+    return `${field}`;
   }
 }
 
@@ -206,6 +218,7 @@ export default {
   ...prisma,
   getAddMinutesQuery,
   getDayDiffQuery,
+  getCastColumnQuery,
   getDateQuery,
   getTimestampIntervalQuery,
   getFilterQuery,
