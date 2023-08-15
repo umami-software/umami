@@ -41,6 +41,8 @@ export async function getUsers(
   options?: { include?: Prisma.UserInclude },
 ): Promise<FilterResult<User[]>> {
   const { teamId, filter, filterType = USER_FILTER_TYPES.all } = UserSearchFilter;
+  const mode = prisma.getSearchMode();
+
   const where: Prisma.UserWhereInput = {
     ...(teamId && {
       teamUser: {
@@ -57,7 +59,7 @@ export async function getUsers(
               filterType === USER_FILTER_TYPES.username) && {
               username: {
                 startsWith: filter,
-                mode: 'insensitive',
+                ...mode,
               },
             }),
           },
