@@ -21,6 +21,8 @@ export const labels = defineMessages({
   details: { id: 'label.details', defaultMessage: 'Details' },
   website: { id: 'label.website', defaultMessage: 'Website' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
+  myWebsites: { id: 'label.my-websites', defaultMessage: 'My Websites' },
+  teamWebsites: { id: 'label.team-websites', defaultMessage: 'Team Websites' },
   created: { id: 'label.created', defaultMessage: 'Created' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
@@ -28,6 +30,7 @@ export const labels = defineMessages({
   accessCode: { id: 'label.access-code', defaultMessage: 'Access code' },
   teamId: { id: 'label.team-id', defaultMessage: 'Team ID' },
   team: { id: 'label.team', defaultMessage: 'Team' },
+  teamName: { id: 'label.team-name', defaultMessage: 'Team Name' },
   regenerate: { id: 'label.regenerate', defaultMessage: 'Regenerate' },
   remove: { id: 'label.remove', defaultMessage: 'Remove' },
   join: { id: 'label.join', defaultMessage: 'Join' },
@@ -242,15 +245,11 @@ export const messages = defineMessages({
   },
   noResultsFound: {
     id: 'message.no-results-found',
-    defaultMessage: 'No results were found.',
+    defaultMessage: 'No results found.',
   },
   noWebsitesConfigured: {
     id: 'message.no-websites-configured',
     defaultMessage: 'You do not have any websites configured.',
-  },
-  noReportsConfigured: {
-    id: 'message.no-reports-configured',
-    defaultMessage: 'You do not have any reports configured.',
   },
   noTeamWebsites: {
     id: 'message.no-team-websites',

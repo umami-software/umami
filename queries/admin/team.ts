@@ -97,7 +97,7 @@ export async function getTeams(
         OR: [
           {
             ...((filterType === TEAM_FILTER_TYPES.all || filterType === TEAM_FILTER_TYPES.name) && {
-              name: { startsWith: filter },
+              name: { startsWith: filter, mode: 'insensitive' },
             }),
           },
           {
@@ -109,6 +109,7 @@ export async function getTeams(
                   user: {
                     username: {
                       startsWith: filter,
+                      mode: 'insensitive',
                     },
                   },
                 },

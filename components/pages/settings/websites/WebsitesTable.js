@@ -3,6 +3,7 @@ import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
+import useUser from 'hooks/useUser';
 
 export function WebsitesTable({
   data = [],
@@ -10,13 +11,21 @@ export function WebsitesTable({
   onFilterChange,
   onPageChange,
   onPageSizeChange,
+  showTeam,
 }) {
   const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
+  const { user } = useUser();
+
+  const teamColumns = [
+    { name: 'teamName', label: formatMessage(labels.teamName) },
+    { name: 'owner', label: formatMessage(labels.owner) },
+  ];
 
   const columns = [
     { name: 'name', label: formatMessage(labels.name) },
     { name: 'domain', label: formatMessage(labels.domain) },
+    ...(showTeam ? teamColumns : []),
     { name: 'action', label: ' ' },
   ];
 
@@ -32,18 +41,28 @@ export function WebsitesTable({
       filterValue={filterValue}
     >
       {row => {
-        const { id } = row;
+        const {
+          id,
+          teamWebsite,
+          user: { username, id: ownerId },
+        } = row;
+        if (showTeam) {
+          row.teamName = teamWebsite[0]?.team.name;
+          row.owner = username;
+        }
 
         return (
           <>
-            <Link href={`/settings/websites/${id}`}>
-              <Button>
-                <Icon>
-                  <Icons.Edit />
-                </Icon>
-                <Text>{formatMessage(labels.edit)}</Text>
-              </Button>
-            </Link>
+            {(!showTeam || ownerId === user.id) && (
+              <Link href={`/settings/websites/${id}`}>
+                <Button>
+                  <Icon>
+                    <Icons.Edit />
+                  </Icon>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </Button>
+              </Link>
+            )}
             <Link href={`/websites/${id}`} target={openExternal ? '_blank' : null}>
               <Button>
                 <Icon>

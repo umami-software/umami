@@ -27,6 +27,7 @@ export interface WebsiteSearchFilter extends SearchFilter<WebsiteSearchFilterTyp
   userId?: string;
   teamId?: string;
   includeTeams?: boolean;
+  onlyTeams?: boolean;
 }
 
 export interface UserSearchFilter extends SearchFilter<UserSearchFilterType> {
@@ -40,6 +41,7 @@ export interface TeamSearchFilter extends SearchFilter<TeamSearchFilterType> {
 export interface ReportSearchFilter extends SearchFilter<ReportSearchFilterType> {
   userId?: string;
   websiteId?: string;
+  includeTeams?: boolean;
 }
 
 export interface SearchFilter<T> {

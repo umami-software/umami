@@ -57,6 +57,7 @@ export async function getUsers(
               filterType === USER_FILTER_TYPES.username) && {
               username: {
                 startsWith: filter,
+                mode: 'insensitive',
               },
             }),
           },

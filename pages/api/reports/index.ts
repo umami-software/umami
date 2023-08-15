@@ -4,7 +4,7 @@ import { useAuth, useCors } from 'lib/middleware';
 import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createReport, getReportsByWebsiteId } from 'queries';
+import { createReport, getReportsByUserId, getReportsByWebsiteId } from 'queries';
 
 export interface ReportsRequestQuery extends SearchFilter<ReportSearchFilterType> {}
 
@@ -26,20 +26,14 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { websiteId } = req.query;
-
   const {
     user: { id: userId },
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (!(websiteId && (await canViewWebsite(req.auth, websiteId)))) {
-      return unauthorized(res);
-    }
-
     const { page, filter, pageSize } = req.query;
 
-    const data = await getReportsByWebsiteId(websiteId, {
+    const data = await getReportsByUserId(userId, {
       page,
       filter,
       pageSize: +pageSize || null,
