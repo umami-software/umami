@@ -26,3 +26,7 @@
   background: var(--blue100);
   border-radius: var(--border-radius);
 }
+
+.date {
+  min-width: 200px;
+}

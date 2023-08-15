@@ -172,6 +172,8 @@ export const labels = defineMessages({
   browser: { id: 'label.browser', defaultMessage: 'Browser' },
   device: { id: 'label.device', defaultMessage: 'Device' },
   pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
+  day: { id: 'label.day', defaultMessage: 'Day' },
+  date: { id: 'label.date', defaultMessage: 'Date' },
 });
 
 export const messages = defineMessages({
