@@ -33,7 +33,7 @@ async function relationalQuery(
   }[]
 > {
   const { startDate, endDate } = dateRange;
-  const { getDateQuery, rawQuery } = prisma;
+  const { getDateQuery, getDayDiffQuery, rawQuery } = prisma;
   const timezone = 'utc';
   const unit = 'day';
 
@@ -49,7 +49,10 @@ async function relationalQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        (${getDateQuery('created_at', unit, timezone)}::date - c.cohort_date::date) as day_number
+        (${getDayDiffQuery(
+          getDateQuery('created_at', unit, timezone),
+          'c.cohort_date',
+        )}) as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
