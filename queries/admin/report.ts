@@ -38,6 +38,8 @@ export async function getReports(
     filterType = REPORT_FILTER_TYPES.all,
   } = ReportSearchFilter;
 
+  const mode = prisma.getSearchMode();
+
   const where: Prisma.ReportWhereInput = {
     ...(userId && { userId: userId }),
     ...(websiteId && { websiteId: websiteId }),
@@ -73,7 +75,7 @@ export async function getReports(
               filterType === REPORT_FILTER_TYPES.name) && {
               name: {
                 startsWith: filter,
-                mode: 'insensitive',
+                ...mode,
               },
             }),
           },
@@ -82,7 +84,7 @@ export async function getReports(
               filterType === REPORT_FILTER_TYPES.description) && {
               description: {
                 startsWith: filter,
-                mode: 'insensitive',
+                ...mode,
               },
             }),
           },
@@ -91,7 +93,7 @@ export async function getReports(
               filterType === REPORT_FILTER_TYPES.type) && {
               type: {
                 startsWith: filter,
-                mode: 'insensitive',
+                ...mode,
               },
             }),
           },
@@ -101,7 +103,7 @@ export async function getReports(
               user: {
                 username: {
                   startsWith: filter,
-                  mode: 'insensitive',
+                  ...mode,
                 },
               },
             }),
@@ -112,7 +114,7 @@ export async function getReports(
               website: {
                 name: {
                   startsWith: filter,
-                  mode: 'insensitive',
+                  ...mode,
                 },
               },
             }),
@@ -123,7 +125,7 @@ export async function getReports(
               website: {
                 domain: {
                   startsWith: filter,
-                  mode: 'insensitive',
+                  ...mode,
                 },
               },
             }),

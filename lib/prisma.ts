@@ -5,6 +5,7 @@ import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
+import { Prisma } from '@prisma/client';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -189,6 +190,18 @@ function getPageFilters(filters: SearchFilter<any>): [
   ];
 }
 
+function getSearchMode(): { mode?: Prisma.QueryMode } {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return {
+      mode: 'insensitive',
+    };
+  }
+
+  return {};
+}
+
 export default {
   ...prisma,
   getAddMinutesQuery,
@@ -198,5 +211,6 @@ export default {
   getFilterQuery,
   parseFilters,
   getPageFilters,
+  getSearchMode,
   rawQuery,
 };
