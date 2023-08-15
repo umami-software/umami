@@ -29,7 +29,6 @@ export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTe
     { enabled: !!user },
   );
   const { showToast } = useToasts();
-  const hasData = data && data.length !== 0;
 
   const handleSave = async () => {
     await refetch();
@@ -57,21 +56,14 @@ export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTe
   return (
     <Page loading={isLoading} error={error}>
       {showHeader && <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>}
-      {hasData && (
-        <WebsitesTable
-          data={data}
-          showTeam={showTeam}
-          onFilterChange={handleFilterChange}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          filterValue={filter}
-        />
-      )}
-      {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)}>
-          {addButton}
-        </EmptyPlaceholder>
-      )}
+      <WebsitesTable
+        data={data}
+        showTeam={showTeam}
+        onFilterChange={handleFilterChange}
+        onPageChange={handlePageChange}
+        onPageSizeChange={handlePageSizeChange}
+        filterValue={filter}
+      />
     </Page>
   );
 }
