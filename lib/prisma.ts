@@ -35,6 +35,30 @@ function getAddMinutesQuery(field: string, minutes: number): string {
   }
 }
 
+function getDayDiffQuery(field1: string, field2: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field1}::date - ${field2}::date`;
+  }
+
+  if (db === MYSQL) {
+    return `DATEDIFF(${field1}, ${field2})`;
+  }
+}
+
+function getCastColumnQuery(field: string, type: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field}::${type}`;
+  }
+
+  if (db === MYSQL) {
+    return `${field}`;
+  }
+}
+
 function getDateQuery(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType();
 
@@ -193,6 +217,8 @@ function getSearchMode(): { mode?: Prisma.QueryMode } {
 export default {
   ...prisma,
   getAddMinutesQuery,
+  getDayDiffQuery,
+  getCastColumnQuery,
   getDateQuery,
   getTimestampIntervalQuery,
   getFilterQuery,
