@@ -41,7 +41,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
-  const { timezone = 'utc', unit = 'day' } = filters;
+  const { timezone = 'UTC', unit = 'day' } = filters;
   const { rawQuery, getDateQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
