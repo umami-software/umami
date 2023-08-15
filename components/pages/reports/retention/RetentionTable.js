@@ -2,9 +2,12 @@ import { useContext } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
 import { ReportContext } from '../Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import { useMessages } from 'hooks';
+import { dateFormat } from 'lib/date';
 import styles from './RetentionTable.module.css';
 
 export function RetentionTable() {
+  const { formatMessage, labels } = useMessages();
   const { report } = useContext(ReportContext);
   const { data } = report || {};
 
@@ -19,21 +22,27 @@ export function RetentionTable() {
     return arr;
   }, []);
 
-  const days = Array(14).fill(null);
+  const days = Array(32).fill(null);
 
   return (
     <>
       <div className={styles.table}>
         <div className={styles.row}>
+          <div className={styles.date}>{formatMessage(labels.date)}</div>
           {days.map((n, i) => (
             <div key={i} className={styles.header}>
-              Day {i}
+              {formatMessage(labels.day)} {i}
             </div>
           ))}
         </div>
         {dates.map((date, i) => {
           return (
             <div key={i} className={styles.row}>
+              <div className={styles.date}>
+                {dateFormat(date, 'P')}
+                <br />
+                {date}
+              </div>
               {days.map((n, day) => {
                 return (
                   <div key={day} className={styles.cell}>

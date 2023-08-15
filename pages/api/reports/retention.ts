@@ -8,6 +8,7 @@ import { getRetention } from 'queries';
 export interface RetentionRequestBody {
   websiteId: string;
   dateRange: { window; startDate: string; endDate: string };
+  timezone: string;
 }
 
 export interface RetentionResponse {
@@ -26,6 +27,7 @@ export default async (
     const {
       websiteId,
       dateRange: { startDate, endDate },
+      timezone,
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -35,6 +37,7 @@ export default async (
     const data = await getRetention(websiteId, {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
+      timezone,
     });
 
     return ok(res, data);
