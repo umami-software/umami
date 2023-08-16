@@ -1,11 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { QueryFilters, WebsiteEventDataFields } from 'lib/types';
+import { QueryFilters, WebsiteEventData } from 'lib/types';
 
 export async function getEventDataFields(
   ...args: [websiteId: string, filters: QueryFilters & { field?: string }]
-): Promise<WebsiteEventDataFields[]> {
+): Promise<WebsiteEventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

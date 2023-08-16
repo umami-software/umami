@@ -36,6 +36,7 @@ export function EventDataValueTable({ data = [], event }) {
           <GridColumn name="dataType" label={formatMessage(labels.type)}>
             {row => DATA_TYPES[row.dataType]}
           </GridColumn>
+          <GridColumn name="fieldValue" label={formatMessage(labels.value)} />
           <GridColumn name="total" label={formatMessage(labels.totalRecords)} width="200px">
             {({ total }) => total.toLocaleString()}
           </GridColumn>

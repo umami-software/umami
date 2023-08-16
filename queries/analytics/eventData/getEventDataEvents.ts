@@ -1,11 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { QueryFilters, WebsiteEventDataFields } from 'lib/types';
+import { QueryFilters, WebsiteEventData } from 'lib/types';
 
 export async function getEventDataEvents(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<WebsiteEventDataFields[]> {
+): Promise<WebsiteEventData[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         website_event.event_name as "eventName",
         event_data.event_key as "fieldName",
         event_data.data_type as "dataType",
-        event_data.string_value as "value",
+        event_data.string_value as "fieldValue",
         count(*) as "total"
       from event_data
       inner join website_event
@@ -71,7 +71,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
         event_name as eventName,
         event_key as fieldName,
         data_type as dataType,
-        string_value as value,
+        string_value as fieldValue,
         count(*) as total
       from event_data
       where website_id = {websiteId:UUID}
