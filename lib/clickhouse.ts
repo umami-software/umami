@@ -66,7 +66,7 @@ function getDateFormat(date) {
 function mapFilter(column, operator, name, type = 'String') {
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {${name}:${type}`;
+      return `${column} = {${name}:${type}}`;
     case OPERATORS.notEquals:
       return `${column} != {${name}:${type}}`;
     default:
