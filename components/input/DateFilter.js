@@ -3,7 +3,7 @@ import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import useLocale from 'hooks/useLocale';
-import { dateFormat } from 'lib/date';
+import { formatDate } from 'lib/date';
 import Icons from 'components/icons';
 import useMessages from 'hooks/useMessages';
 
@@ -135,8 +135,8 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
         <Icons.Calendar />
       </Icon>
       <Text>
-        {dateFormat(startDate, 'd LLL y', locale)}
-        {!isSameDay(startDate, endDate) && ` — ${dateFormat(endDate, 'd LLL y', locale)}`}
+        {formatDate(startDate, 'd LLL y', locale)}
+        {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'd LLL y', locale)}`}
       </Text>
     </Flexbox>
   );

@@ -5,9 +5,10 @@ import prisma from 'lib/prisma';
 export async function getRetention(
   ...args: [
     websiteId: string,
-    dateRange: {
+    filters: {
       startDate: Date;
       endDate: Date;
+      timezone: string;
     },
   ]
 ) {
@@ -19,9 +20,10 @@ export async function getRetention(
 
 async function relationalQuery(
   websiteId: string,
-  dateRange: {
+  filters: {
     startDate: Date;
     endDate: Date;
+    timezone: string;
   },
 ): Promise<
   {
@@ -32,9 +34,8 @@ async function relationalQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate } = dateRange;
+  const { startDate, endDate, timezone = 'UTC' } = filters;
   const { getDateQuery, rawQuery } = prisma;
-  const timezone = 'utc';
   const unit = 'day';
 
   return rawQuery(
@@ -94,9 +95,10 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  dateRange: {
+  filters: {
     startDate: Date;
     endDate: Date;
+    timezone: string;
   },
 ): Promise<
   {
@@ -107,9 +109,8 @@ async function clickhouseQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate } = dateRange;
+  const { startDate, endDate, timezone = 'UTC' } = filters;
   const { getDateQuery, getDateStringQuery, rawQuery } = clickhouse;
-  const timezone = 'UTC';
   const unit = 'day';
 
   return rawQuery(

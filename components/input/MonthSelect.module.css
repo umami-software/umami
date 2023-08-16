@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
