@@ -7557,10 +7557,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.92.0:
-  version "0.92.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.92.0.tgz#02bc6e88bdaf189c30cc6cbd8bbb1c9d12cd089b"
-  integrity sha512-BVUWg5a7R88konA9NedYMBx1hl50d6h/MD7qlKOEO/Cnm8cOC7AYTRKAKhO6kHMWjY4ZpUuvlg0UcF+SJP/uXA==
+react-basics@^0.94.0:
+  version "0.94.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.94.0.tgz#c15698148b959f40c6b451088f36f5735eb82815"
+  integrity sha512-OlUHWrGRctRGEm+yL9iWSC9HRnxZhlm3enP2iCKytVmt7LvaPtsK4RtZ27qp4irNvuzg79aqF+h5IFnG+Vi7WA==
   dependencies:
     classnames "^2.3.1"
     date-fns "^2.29.3"

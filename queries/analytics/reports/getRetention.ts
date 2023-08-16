@@ -5,9 +5,10 @@ import prisma from 'lib/prisma';
 export async function getRetention(
   ...args: [
     websiteId: string,
-    dateRange: {
+    filters: {
       startDate: Date;
       endDate: Date;
+      timezone: string;
     },
   ]
 ) {
@@ -19,9 +20,10 @@ export async function getRetention(
 
 async function relationalQuery(
   websiteId: string,
-  dateRange: {
+  filters: {
     startDate: Date;
     endDate: Date;
+    timezone: string;
   },
 ): Promise<
   {
@@ -32,9 +34,8 @@ async function relationalQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate } = dateRange;
+  const { startDate, endDate, timezone = 'UTC' } = filters;
   const { getDateQuery, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
-  const timezone = 'utc';
   const unit = 'day';
 
   return rawQuery(
@@ -85,7 +86,7 @@ async function relationalQuery(
     from cohort_date c
     join cohort_size s
     on c.cohort_date = s.cohort_date
-    where c.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
+    where c.day_number <= 31
     order by 1, 2`,
     {
       websiteId,
@@ -99,9 +100,10 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  dateRange: {
+  filters: {
     startDate: Date;
     endDate: Date;
+    timezone: string;
   },
 ): Promise<
   {
@@ -112,9 +114,8 @@ async function clickhouseQuery(
     percentage: number;
   }[]
 > {
-  const { startDate, endDate } = dateRange;
+  const { startDate, endDate, timezone = 'UTC' } = filters;
   const { getDateQuery, getDateStringQuery, rawQuery } = clickhouse;
-  const timezone = 'UTC';
   const unit = 'day';
 
   return rawQuery(
@@ -164,7 +165,7 @@ async function clickhouseQuery(
     from cohort_date c
     join cohort_size s
     on c.cohort_date = s.cohort_date
-    where c.day_number IN (0,1,2,3,4,5,6,7,14,21,30)
+    where c.day_number <= 31
     order by 1, 2`,
     {
       websiteId,

@@ -63,12 +63,12 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function mapFilter(column, operator, name) {
+function mapFilter(column, operator, name, type = 'String') {
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {${name}:String}`;
+      return `${column} = {${name}:${type}`;
     case OPERATORS.notEquals:
-      return `${column} != {${name}:String}`;
+      return `${column} != {${name}:${type}}`;
     default:
       return '';
   }

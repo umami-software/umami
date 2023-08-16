@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
+import classNames from 'classnames';
 import { ReportContext } from '../Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { useMessages } from 'hooks';
-import { dateFormat } from 'lib/date';
+import { formatDate } from 'lib/date';
 import styles from './RetentionTable.module.css';
 
 export function RetentionTable() {
@@ -15,34 +16,32 @@ export function RetentionTable() {
     return <EmptyPlaceholder />;
   }
 
-  const dates = data.reduce((arr, { date }) => {
-    if (!arr.includes(date)) {
-      return arr.concat(date);
+  const rows = data.reduce((arr, { date, visitors }) => {
+    if (!arr.find(a => a.date === date)) {
+      return arr.concat({ date, visitors });
     }
     return arr;
   }, []);
 
-  const days = Array(32).fill(null);
+  const days = [1, 2, 3, 4, 5, 6, 7, 14, 21, 30];
 
   return (
     <>
       <div className={styles.table}>
-        <div className={styles.row}>
+        <div className={classNames(styles.row, styles.header)}>
           <div className={styles.date}>{formatMessage(labels.date)}</div>
-          {days.map((n, i) => (
-            <div key={i} className={styles.header}>
-              {formatMessage(labels.day)} {i}
+          <div className={styles.visitors}>{formatMessage(labels.visitors)}</div>
+          {days.map(n => (
+            <div key={n} className={styles.day}>
+              {formatMessage(labels.day)} {n}
             </div>
           ))}
         </div>
-        {dates.map((date, i) => {
+        {rows.map(({ date, visitors }, i) => {
           return (
             <div key={i} className={styles.row}>
-              <div className={styles.date}>
-                {dateFormat(date, 'P')}
-                <br />
-                {date}
-              </div>
+              <div className={styles.date}>{formatDate(`${date} 00:00:00`, 'PP')}</div>
+              <div className={styles.visitors}>{visitors}</div>
               {days.map((n, day) => {
                 return (
                   <div key={day} className={styles.cell}>

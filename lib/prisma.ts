@@ -92,12 +92,12 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
-function mapFilter(column, operator, name) {
+function mapFilter(column, operator, name, type = 'String') {
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {{${name}}}`;
+      return `${column} = {${name}:${type}`;
     case OPERATORS.notEquals:
-      return `${column} != {{${name}}}`;
+      return `${column} != {${name}:${type}}`;
     default:
       return '';
   }

@@ -5,18 +5,18 @@ import { EventDataMetricsBar } from 'components/pages/event-data/EventDataMetric
 import { useDateRange, useApi, usePageQuery } from 'hooks';
 import styles from './WebsiteEventData.module.css';
 
-function useData(websiteId, eventName) {
+function useData(websiteId, event) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();
   const { data, error, isLoading } = useQuery(
-    ['event-data:events', { websiteId, startDate, endDate, eventName }],
+    ['event-data:events', { websiteId, startDate, endDate, event }],
     () =>
       get('/event-data/events', {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
-        eventName,
+        event,
       }),
     { enabled: !!(websiteId && startDate && endDate) },
   );

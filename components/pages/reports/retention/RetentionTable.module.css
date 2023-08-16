@@ -4,10 +4,7 @@
 }
 
 .header {
-  width: 60px;
-  height: 40px;
-  text-align: center;
-  font-size: var(--font-size-sm);
+  font-weight: 700;
 }
 
 .row {
@@ -28,5 +25,24 @@
 }
 
 .date {
-  min-width: 200px;
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+}
+
+.visitors {
+  display: flex;
+  align-items: center;
+  min-width: 80px;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
 }
