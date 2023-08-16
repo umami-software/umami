@@ -94,13 +94,23 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
+function normalizeFilters(filters = {}) {
+  return Object.keys(filters).reduce((obj, key) => {
+    const value = filters[key];
+
+    obj[key] = value?.value ?? value;
+
+    return obj;
+  }, {});
+}
+
 async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
   const website = await loadWebsite(websiteId);
 
   return {
     filterQuery: getFilterQuery(filters, options),
     params: {
-      ...filters,
+      ...normalizeFilters(filters),
       websiteId,
       startDate: maxDate(filters.startDate, website.resetAt),
       websiteDomain: website.domain,
