@@ -1,3 +1,4 @@
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
@@ -13,9 +14,11 @@ export function WebsitesTable({
   onPageSizeChange,
   showTeam,
 }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const { openExternal } = useConfig();
   const { user } = useUser();
+
+  const showTable = data && (filterValue || data?.data.length !== 0);
 
   const teamColumns = [
     { name: 'teamName', label: formatMessage(labels.teamName) },
@@ -30,51 +33,56 @@ export function WebsitesTable({
   ];
 
   return (
-    <SettingsTable
-      columns={columns}
-      data={data}
-      showSearch={true}
-      showPaging={true}
-      onFilterChange={onFilterChange}
-      onPageChange={onPageChange}
-      onPageSizeChange={onPageSizeChange}
-      filterValue={filterValue}
-    >
-      {row => {
-        const {
-          id,
-          teamWebsite,
-          user: { username, id: ownerId },
-        } = row;
-        if (showTeam) {
-          row.teamName = teamWebsite[0]?.team.name;
-          row.owner = username;
-        }
+    <>
+      {showTable && (
+        <SettingsTable
+          columns={columns}
+          data={data}
+          showSearch={true}
+          showPaging={true}
+          onFilterChange={onFilterChange}
+          onPageChange={onPageChange}
+          onPageSizeChange={onPageSizeChange}
+          filterValue={filterValue}
+        >
+          {row => {
+            const {
+              id,
+              teamWebsite,
+              user: { username, id: ownerId },
+            } = row;
+            if (showTeam) {
+              row.teamName = teamWebsite[0]?.team.name;
+              row.owner = username;
+            }
 
-        return (
-          <>
-            {(!showTeam || ownerId === user.id) && (
-              <Link href={`/settings/websites/${id}`}>
-                <Button>
-                  <Icon>
-                    <Icons.Edit />
-                  </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
-                </Button>
-              </Link>
-            )}
-            <Link href={`/websites/${id}`} target={openExternal ? '_blank' : null}>
-              <Button>
-                <Icon>
-                  <Icons.External />
-                </Icon>
-                <Text>{formatMessage(labels.view)}</Text>
-              </Button>
-            </Link>
-          </>
-        );
-      }}
-    </SettingsTable>
+            return (
+              <>
+                {(!showTeam || ownerId === user.id) && (
+                  <Link href={`/settings/websites/${id}`}>
+                    <Button>
+                      <Icon>
+                        <Icons.Edit />
+                      </Icon>
+                      <Text>{formatMessage(labels.edit)}</Text>
+                    </Button>
+                  </Link>
+                )}
+                <Link href={`/websites/${id}`} target={openExternal ? '_blank' : null}>
+                  <Button>
+                    <Icon>
+                      <Icons.External />
+                    </Icon>
+                    <Text>{formatMessage(labels.view)}</Text>
+                  </Button>
+                </Link>
+              </>
+            );
+          }}
+        </SettingsTable>
+      )}
+      {!showTable && <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)} />}
+    </>
   );
 }
 

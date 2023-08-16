@@ -30,6 +30,7 @@ export async function getWebsites(
     filter,
     filterType = WEBSITE_FILTER_TYPES.all,
   } = WebsiteSearchFilter;
+  const mode = prisma.getSearchMode();
 
   const where: Prisma.WebsiteWhereInput = {
     ...(teamId && {
@@ -79,13 +80,13 @@ export async function getWebsites(
           {
             ...((filterType === WEBSITE_FILTER_TYPES.all ||
               filterType === WEBSITE_FILTER_TYPES.name) && {
-              name: { startsWith: filter, mode: 'insensitive' },
+              name: { startsWith: filter, ...mode },
             }),
           },
           {
             ...((filterType === WEBSITE_FILTER_TYPES.all ||
               filterType === WEBSITE_FILTER_TYPES.domain) && {
-              domain: { startsWith: filter, mode: 'insensitive' },
+              domain: { startsWith: filter, ...mode },
             }),
           },
         ],

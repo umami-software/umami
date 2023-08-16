@@ -126,13 +126,8 @@ export interface WebsiteEventMetric {
   y: number;
 }
 
-export interface WebsiteEventDataStats {
-  fieldName: string;
-  dataType: number;
-  total: number;
-}
-
-export interface WebsiteEventDataFields {
+export interface WebsiteEventData {
+  eventName?: string;
   fieldName: string;
   dataType: number;
   fieldValue?: string;

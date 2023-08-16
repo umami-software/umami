@@ -5,6 +5,7 @@ import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
+import { Prisma } from '@prisma/client';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -31,6 +32,30 @@ function getAddMinutesQuery(field: string, minutes: number): string {
 
   if (db === MYSQL) {
     return `DATE_ADD(${field}, interval ${minutes} minute)`;
+  }
+}
+
+function getDayDiffQuery(field1: string, field2: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field1}::date - ${field2}::date`;
+  }
+
+  if (db === MYSQL) {
+    return `DATEDIFF(${field1}, ${field2})`;
+  }
+}
+
+function getCastColumnQuery(field: string, type: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field}::${type}`;
+  }
+
+  if (db === MYSQL) {
+    return `${field}`;
   }
 }
 
@@ -177,13 +202,28 @@ function getPageFilters(filters: SearchFilter<any>): [
   ];
 }
 
+function getSearchMode(): { mode?: Prisma.QueryMode } {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return {
+      mode: 'insensitive',
+    };
+  }
+
+  return {};
+}
+
 export default {
   ...prisma,
   getAddMinutesQuery,
+  getDayDiffQuery,
+  getCastColumnQuery,
   getDateQuery,
   getTimestampIntervalQuery,
   getFilterQuery,
   parseFilters,
   getPageFilters,
+  getSearchMode,
   rawQuery,
 };

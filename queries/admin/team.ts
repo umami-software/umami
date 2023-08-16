@@ -86,6 +86,8 @@ export async function getTeams(
   options?: { include?: Prisma.TeamInclude },
 ): Promise<FilterResult<Team[]>> {
   const { userId, filter, filterType = TEAM_FILTER_TYPES.all } = TeamSearchFilter;
+  const mode = prisma.getSearchMode();
+
   const where: Prisma.TeamWhereInput = {
     ...(userId && {
       teamUser: {
@@ -97,7 +99,7 @@ export async function getTeams(
         OR: [
           {
             ...((filterType === TEAM_FILTER_TYPES.all || filterType === TEAM_FILTER_TYPES.name) && {
-              name: { startsWith: filter, mode: 'insensitive' },
+              name: { startsWith: filter, ...mode },
             }),
           },
           {
@@ -109,7 +111,7 @@ export async function getTeams(
                   user: {
                     username: {
                       startsWith: filter,
-                      mode: 'insensitive',
+                      ...mode,
                     },
                   },
                 },

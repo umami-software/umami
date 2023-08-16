@@ -35,7 +35,7 @@ async function relationalQuery(
   }[]
 > {
   const { startDate, endDate, timezone = 'UTC' } = filters;
-  const { getDateQuery, rawQuery } = prisma;
+  const { getDateQuery, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
   const unit = 'day';
 
   return rawQuery(
@@ -50,7 +50,10 @@ async function relationalQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        (${getDateQuery('created_at', unit, timezone)}::date - c.cohort_date::date) as day_number
+        ${getDayDiffQuery(
+          getDateQuery('created_at', unit, timezone),
+          'c.cohort_date',
+        )} as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
@@ -79,7 +82,7 @@ async function relationalQuery(
       c.day_number as day,
       s.visitors,
       c.visitors as "returnVisitors",
-      c.visitors::float * 100 / s.visitors as percentage
+      ${getCastColumnQuery('c.visitors', 'float')} * 100 / s.visitors  as percentage
     from cohort_date c
     join cohort_size s
     on c.cohort_date = s.cohort_date
@@ -90,7 +93,9 @@ async function relationalQuery(
       startDate,
       endDate,
     },
-  );
+  ).then(results => {
+    return results.map(i => ({ ...i, percentage: Number(i.percentage) || 0 }));
+  });
 }
 
 async function clickhouseQuery(
