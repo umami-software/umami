@@ -1,18 +1,18 @@
-import { Button, Icon, Text, Modal, ModalTrigger, useToasts, Icons } from 'react-basics';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useApi from 'hooks/useApi';
-import useUser from 'hooks/useUser';
-import useMessages from 'hooks/useMessages';
-import { ROLES } from 'lib/constants';
 import useApiFilter from 'hooks/useApiFilter';
+import useMessages from 'hooks/useMessages';
+import useUser from 'hooks/useUser';
+import { ROLES } from 'lib/constants';
+import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 
 export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTeams, fetch }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
+
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
     useApiFilter();
   const { get, useQuery } = useApi();

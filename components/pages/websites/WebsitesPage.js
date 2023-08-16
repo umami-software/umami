@@ -4,6 +4,7 @@ import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
 import WebsiteList from 'components/pages/settings/websites/WebsitesList';
 import { useMessages } from 'hooks';
 import useUser from 'hooks/useUser';
+import useConfig from 'hooks/useConfig';
 import { ROLES } from 'lib/constants';
 import { useState } from 'react';
 import {
@@ -23,6 +24,7 @@ export function WebsitesPage() {
   const [tab, setTab] = useState('my-websites');
   const [fetch, setFetch] = useState(1);
   const { user } = useUser();
+  const { cloudMode } = useConfig();
   const { showToast } = useToasts();
 
   const handleSave = async () => {
@@ -50,7 +52,7 @@ export function WebsitesPage() {
 
   return (
     <Page>
-      <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>
+      <PageHeader title={formatMessage(labels.websites)}>{!cloudMode && addButton}</PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
         <Item key="my-websites">{formatMessage(labels.myWebsites)}</Item>
         <Item key="team-webaites">{formatMessage(labels.teamWebsites)}</Item>
