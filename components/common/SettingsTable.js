@@ -41,6 +41,7 @@ export function SettingsTable({
           onChange={handleFilterChange}
           delay={1000}
           value={filter}
+          autoFocus={true}
           placeholder="Search"
           style={{ maxWidth: '300px', marginBottom: '10px' }}
         />
