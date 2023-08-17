@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { GridTable, GridColumn } from 'react-basics';
 import classNames from 'classnames';
 import { ReportContext } from '../Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
@@ -16,14 +15,26 @@ export function RetentionTable() {
     return <EmptyPlaceholder />;
   }
 
-  const rows = data.reduce((arr, { date, visitors }) => {
-    if (!arr.find(a => a.date === date)) {
-      return arr.concat({ date, visitors });
+  const days = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
+
+  const rows = data.reduce((arr, row) => {
+    const { date, visitors, day } = row;
+    if (day === 0) {
+      return arr.concat({
+        date,
+        visitors,
+        records: days
+          .reduce((arr, day) => {
+            arr[day] = data.find(x => x.date === date && x.day === day);
+            return arr;
+          }, [])
+          .filter(n => n),
+      });
     }
     return arr;
   }, []);
 
-  const days = [1, 2, 3, 4, 5, 6, 7, 14, 21, 30];
+  const totalDays = rows.length;
 
   return (
     <>
@@ -37,15 +48,22 @@ export function RetentionTable() {
             </div>
           ))}
         </div>
-        {rows.map(({ date, visitors }, i) => {
+        {rows.map(({ date, visitors, records }, rowIndex) => {
           return (
-            <div key={i} className={styles.row}>
+            <div key={rowIndex} className={styles.row}>
               <div className={styles.date}>{formatDate(`${date} 00:00:00`, 'PP')}</div>
               <div className={styles.visitors}>{visitors}</div>
-              {days.map((n, day) => {
+              {days.map(day => {
+                if (totalDays - rowIndex < day) {
+                  return null;
+                }
+                const percentage = records[day]?.percentage;
                 return (
-                  <div key={day} className={styles.cell}>
-                    {data.find(row => row.date === date && row.day === day)?.percentage.toFixed(2)}
+                  <div
+                    key={day}
+                    className={classNames(styles.cell, { [styles.empty]: !percentage })}
+                  >
+                    {percentage ? `${percentage.toFixed(2)}%` : ''}
                   </div>
                 );
               })}
@@ -53,30 +71,7 @@ export function RetentionTable() {
           );
         })}
       </div>
-      <DataTable data={data} />
     </>
-  );
-}
-
-function DataTable({ data }) {
-  return (
-    <GridTable data={data || []}>
-      <GridColumn name="date" label={'Date'}>
-        {row => row.date}
-      </GridColumn>
-      <GridColumn name="day" label={'Day'}>
-        {row => row.day}
-      </GridColumn>
-      <GridColumn name="visitors" label={'Visitors'}>
-        {row => row.visitors}
-      </GridColumn>
-      <GridColumn name="returnVisitors" label={'Return Visitors'}>
-        {row => row.returnVisitors}
-      </GridColumn>
-      <GridColumn name="percentage" label={'Percentage'}>
-        {row => row.percentage}
-      </GridColumn>
-    </GridTable>
   );
 }
 

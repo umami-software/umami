@@ -20,7 +20,7 @@
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: var(--blue100);
+  background: var(--blue200);
   border-radius: var(--border-radius);
 }
 
@@ -45,4 +45,8 @@
   text-align: center;
   font-size: var(--font-size-sm);
   font-weight: 400;
+}
+
+.empty {
+  background: var(--blue100);
 }

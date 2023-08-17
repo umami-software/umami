@@ -6,10 +6,16 @@ import ReportMenu from '../ReportMenu';
 import ReportBody from '../ReportBody';
 import Magnet from 'assets/magnet.svg';
 import { REPORT_TYPES } from 'lib/constants';
+import { parseDateRange } from 'lib/date';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 const defaultParameters = {
   type: REPORT_TYPES.retention,
-  parameters: {},
+  parameters: {
+    dateRange: parseDateRange(
+      `range:${startOfMonth(new Date()).getTime()}:${endOfMonth(new Date()).getTime()}`,
+    ),
+  },
 };
 
 export default function RetentionReport({ reportId }) {

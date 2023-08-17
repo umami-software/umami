@@ -2,6 +2,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid var(--base400);
+  border-radius: var(--border-radius);
 }
 
 .input {
@@ -9,4 +11,12 @@
   align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+.popup {
+  border: 1px solid var(--base400);
+  background: var(--base50);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  margin-top: 5px;
 }
