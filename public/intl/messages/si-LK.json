@@ -1,26 +1,32 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "ගිණුම්"
+      "value": "Access code"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "ගිණුම එකතු කරන්න"
+      "value": "Actions"
     }
   ],
-  "label.add-column": [
+  "label.activity-log": [
     {
       "type": 0,
-      "value": "තීරුව එක් කරන්න"
+      "value": "Activity log"
     }
   ],
-  "label.add-filter": [
+  "label.add": [
     {
       "type": 0,
-      "value": "පෙරහන එකතු කරන්න"
+      "value": "Add"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Add description"
     }
   ],
   "label.add-website": [
@@ -29,10 +35,10 @@
       "value": "වෙබ් අඩවිය එක් කරන්න"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
-      "value": "පරිපාලක"
+      "value": "Administrator"
     }
   ],
   "label.all": [
@@ -47,16 +53,34 @@
       "value": "හැම වෙලාවෙම"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "සියලුම වෙබ් අඩවි"
+      "value": "Analytics"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Average visit time"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "ආපසු"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Bounce rate"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Browsers"
     }
   ],
   "label.cancel": [
@@ -71,16 +95,58 @@
       "value": "මුරපදය වෙනස් කරන්න"
     }
   ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Cities"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm"
+    }
+  ],
   "label.confirm-password": [
     {
       "type": 0,
       "value": "මුරපදය සත්‍යාපනය කරන්න"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.continue": [
     {
       "type": 0,
-      "value": "පසුරු පුවරුවට පිටපත් කරන්න"
+      "value": "Continue"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Countries"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Create team"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Create user"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Created"
     }
   ],
   "label.current-password": [
@@ -101,6 +167,12 @@
       "value": "උපකරණ පුවරුව"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Data"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
@@ -119,16 +191,40 @@
       "value": "මකන්න"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "ගිණුම මකන්න"
+      "value": "Delete team"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Delete user"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
       "value": "වෙබ් අඩවිය මකන්න"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Desktop"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Devices"
     }
   ],
   "label.dismiss": [
@@ -143,22 +239,22 @@
       "value": "වසම"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
       "value": "සංස්කරණය කරන්න"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "ගිණුම සංස්කරණය කරන්න"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "වෙබ් අඩවිය සංස්කරණය කරන්න"
+      "value": "Edit dashboard"
     }
   ],
   "label.enable-share-url": [
@@ -167,34 +263,88 @@
       "value": "බෙදාගැනීමේ URL සබල කරන්න"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
   "label.event-data": [
     {
       "type": 0,
       "value": "සිදුවීම් දත්ත"
     }
   ],
-  "label.field-name": [
+  "label.events": [
     {
       "type": 0,
-      "value": "ක්ෂේත්‍ර නාම"
+      "value": "Events"
     }
   ],
-  "label.invalid": [
+  "label.field": [
     {
       "type": 0,
-      "value": "වලංගු නැත"
+      "value": "Field"
     }
   ],
-  "label.invalid-domain": [
+  "label.fields": [
     {
       "type": 0,
-      "value": "වලංගු නොවන වසමක්"
+      "value": "Fields"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "Combined"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Raw"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Join"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Join team"
     }
   ],
   "label.language": [
     {
       "type": 0,
       "value": "භාෂාව"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Languages"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Laptop"
     }
   ],
   "label.last-days": [
@@ -225,14 +375,16 @@
       "value": " පැය"
     }
   ],
-  "label.logged-in-as": [
+  "label.leave": [
     {
       "type": 0,
-      "value": "ලොග් වී ඇත්තේ "
-    },
+      "value": "Leave"
+    }
+  ],
+  "label.leave-team": [
     {
-      "type": 1,
-      "value": "username"
+      "type": 0,
+      "value": "Leave team"
     }
   ],
   "label.login": [
@@ -245,6 +397,18 @@
     {
       "type": 0,
       "value": "පිටවීම"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Members"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Mobile"
     }
   ],
   "label.more": [
@@ -271,10 +435,28 @@
       "value": "කිසිවක් නැත"
     }
   ],
+  "label.operating-systems": [
+    {
+      "type": 0,
+      "value": "Operating systems"
+    }
+  ],
   "label.owner": [
     {
       "type": 0,
       "value": "හිමිකරු"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Page views"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Pages"
     }
   ],
   "label.password": [
@@ -283,10 +465,14 @@
       "value": "මුරපදය"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "මුරපද නොගැලපේ"
+      "value": "Powered by "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
@@ -295,22 +481,64 @@
       "value": "පැතිකඩ"
     }
   ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Queries"
+    }
+  ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Query"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Query parameters"
+    }
+  ],
   "label.realtime": [
     {
       "type": 0,
       "value": "තත්ය කාල"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrers": [
     {
       "type": 0,
-      "value": "තත්‍ය කාලීන ලොග්"
+      "value": "Referrers"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "නැවුම් කරන්න"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Regenerate"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Regions"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Remove"
+    }
+  ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Reports"
     }
   ],
   "label.required": [
@@ -331,16 +559,46 @@
       "value": "සංඛ්යා ලේඛන නැවත සකසන්න"
     }
   ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Role"
+    }
+  ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Run query"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
       "value": "සුරකින්න"
     }
   ],
-  "label.search": [
+  "label.screens": [
     {
       "type": 0,
-      "value": "සෙවීම"
+      "value": "Screens"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Select date"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Select website"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Sessions"
     }
   ],
   "label.settings": [
@@ -359,6 +617,48 @@
     {
       "type": 0,
       "value": "තනි දවස"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Tablet"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Team"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "Team guest"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "Team ID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Team member"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Team owner"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Teams"
     }
   ],
   "label.theme": [
@@ -391,10 +691,22 @@
       "value": "වේලා කලාපය"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Title"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "අද"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Toggle charts"
     }
   ],
   "label.tracking-code": [
@@ -403,10 +715,10 @@
       "value": "ලුහුබැඳීමේ කේතය"
     }
   ],
-  "label.type": [
+  "label.unique-visitors": [
     {
       "type": 0,
-      "value": "වර්ගය"
+      "value": "Unique visitors"
     }
   ],
   "label.unknown": [
@@ -415,16 +727,40 @@
       "value": "නොදනී"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URLs"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "User"
+    }
+  ],
   "label.username": [
     {
       "type": 0,
       "value": "පරිශීලක නාමය"
     }
   ],
-  "label.value": [
+  "label.users": [
     {
       "type": 0,
-      "value": "වටිනාකම"
+      "value": "Users"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "View"
     }
   ],
   "label.view-details": [
@@ -433,16 +769,214 @@
       "value": "තොරතුරු පෙන්වන්න"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "View only"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Views"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Visitors"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Website"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Website ID"
+    }
+  ],
   "label.websites": [
     {
       "type": 0,
       "value": "වෙබ් අඩවි"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Window"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "ඊයේ"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "After"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Before"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Create report"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Does not equal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Equals"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Greater than"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Greater than or equals"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Less than"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Less than or equals"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Sum"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "message.active-users": [
@@ -489,6 +1023,20 @@
       "value": " මකා දැමීම ගැන විශ්වාසද?"
     }
   ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to leave "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 1,
@@ -499,40 +1047,58 @@
       "value": " ට අදාල සංඛ්‍යාලේඛන නැවත පිහිටුවීමට අවශ්‍යද?"
     }
   ],
-  "message.copied": [
+  "message.delete-account": [
     {
       "type": 0,
-      "value": "පිටපත් කරගත්තා!"
+      "value": "To delete this account, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
-  "message.delete-warning": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "සියලුම ආශ්‍රිත දත්ත ද මකා දැමෙනු ඇත."
+      "value": "To delete this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
-  "message.edit-dashboard": [
+  "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "උපකරණ පුවරුව සංස්කරණය කරන්න"
+      "value": "All website data will be deleted."
     }
   ],
-  "message.failure": [
+  "message.error": [
     {
       "type": 0,
-      "value": "යම් ගැටලුවක් මතු වී ඇත."
+      "value": "Something went wrong."
     }
   ],
-  "message.get-share-url": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
     {
       "type": 0,
-      "value": "බෙදාගැනීමේ URL ලබා ගන්න"
-    }
-  ],
-  "message.get-tracking-code": [
+      "value": " on "
+    },
     {
-      "type": 0,
-      "value": "ලුහුබැඳීමේ කේතය ලබා ගන්න"
+      "type": 1,
+      "value": "url"
     }
   ],
   "message.go-to-settings": [
@@ -547,44 +1113,30 @@
       "value": "වැරදි පරිශීලක නාමය/මුරපදය."
     }
   ],
-  "message.log.visitor": [
-    {
-      "type": 1,
-      "value": "country"
-    },
+  "message.invalid-domain": [
     {
       "type": 0,
-      "value": " වලින් පැමිණි අමුත්තකු "
-    },
-    {
-      "type": 1,
-      "value": "device"
-    },
+      "value": "Invalid domain. Do not include http/https."
+    }
+  ],
+  "message.min-password-length": [
     {
       "type": 0,
-      "value": " එකේ, මේ "
+      "value": "Minimum length of "
     },
     {
       "type": 1,
-      "value": "os"
+      "value": "n"
     },
     {
       "type": 0,
-      "value": " එකේ, මේ "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " එකෙන් ඉන්නවා"
+      "value": " characters"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "umami අලුත්ම "
+      "value": "A new version of Umami "
     },
     {
       "type": 1,
@@ -592,7 +1144,7 @@
     },
     {
       "type": 0,
-      "value": " වන අනුවාදය නිකුත් උනා!"
+      "value": " is available!"
     }
   ],
   "message.no-data-available": [
@@ -601,10 +1153,46 @@
       "value": "පෙන්වීමට දත්ත නොමැත."
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "No event data is available."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Passwords do not match."
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "This team does not have any websites."
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "You have not created any teams."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "There are no users."
+    }
+  ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "ඔබට වින්‍යාස කර ඇති වෙබ් අඩවි කිසිවක් නොමැත."
+      "value": "You do not have any websites configured."
     }
   ],
   "message.page-not-found": [
@@ -613,26 +1201,30 @@
       "value": "පිටුව හමු නොවීය."
     }
   ],
-  "message.powered-by": [
+  "message.reset-website": [
     {
       "type": 0,
-      "value": "බල ගැන්වුයේ "
+      "value": "To reset this website, type "
     },
     {
       "type": 1,
-      "value": "name"
-    }
-  ],
-  "message.reset-warning": [
+      "value": "confirmation"
+    },
     {
       "type": 0,
-      "value": "සියලුම සංඛ්‍යාලේඛන මකා දමනු ඇත. නමුත් ඔබගේ නිරීක්ෂණ කේතය නොවෙනස්ව පවතිනු ඇත."
+      "value": " in the box below to confirm."
     }
   ],
-  "message.save-success": [
+  "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "සාර්තකව සුරැකිණි."
+      "value": "All statistics for this website will be deleted, but your settings will remain intact."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Saved."
     }
   ],
   "message.share-url": [
@@ -649,194 +1241,82 @@
       "value": " සඳහා ප්‍රසිද්ධියේ බෙදාගත් URL එකයි."
     }
   ],
-  "message.toggle-charts": [
+  "message.team-already-member": [
     {
       "type": 0,
-      "value": "ප්‍රස්ථාර ටොගල් කරන්න"
+      "value": "You are already a member of the team."
     }
   ],
-  "message.track-stats": [
-    {
-      "type": 1,
-      "value": "target"
-    },
+  "message.team-not-found": [
     {
       "type": 0,
-      "value": " හි සංඛ්යාලේඛන බැලීම සදහා, පහත කේතය "
+      "value": "Team not found."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites can be viewed by anyone on the team."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "To track stats for this website, place the following code in the "
     },
     {
-      "type": 1,
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
       "value": "head"
     },
     {
       "type": 0,
-      "value": " කොටසට ඇතුලත් කරන්න."
+      "value": " section of your HTML."
     }
   ],
-  "message.type-delete": [
+  "message.user-deleted": [
     {
       "type": 0,
-      "value": "සත්‍යාපනය සදහා "
+      "value": "User deleted."
+    }
+  ],
+  "message.visitor-log": [
+    {
+      "type": 0,
+      "value": "Visitor from "
     },
     {
       "type": 1,
-      "value": "delete"
+      "value": "country"
     },
     {
       "type": 0,
-      "value": " ලෙස පහල කොටුවේ ටයිප් කරන්න"
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "සත්‍යාපනය සදහා "
+      "value": " using "
     },
     {
       "type": 1,
-      "value": "reset"
+      "value": "browser"
     },
     {
       "type": 0,
-      "value": " ලෙස පහල කොටුවේ ටයිප් කරන්න"
-    }
-  ],
-  "metrics.actions": [
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
     {
       "type": 0,
-      "value": "ක්රියාවන්"
-    }
-  ],
-  "metrics.average-visit-time": [
+      "value": " "
+    },
     {
-      "type": 0,
-      "value": "සාමාන්‍ය සංචාර කාලය"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "හැරී යන ප්‍රමාණය"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "බ්‍රව්සර්"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "රටවල්"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "ඩෙස්ක්ටොප්"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "ලැප්ටොප්"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "ජංගම"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "ටැබ්ලට්"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "උපකරණ"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "සිද්ධීන්"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "ඒකාබද්ධ"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "අමු"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "භාෂා"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "මෙහෙයුම් පද්ධති"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "පිටු බැලීම්"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "පිටු"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "විමසුම් පරාමිතීන්"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "යොමු කරන්නන්"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "තිර"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "අලුත්ම අමුත්තන්"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "බැලූ ගණන"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "අමුත්තන්"
+      "type": 1,
+      "value": "device"
     }
   ]
 }

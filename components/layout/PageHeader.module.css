@@ -1,11 +1,12 @@
 .header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   align-content: center;
   align-self: stretch;
-  margin-bottom: 40px;
   flex-wrap: wrap;
+  height: 100px;
 }
 
 .header a {
@@ -23,6 +24,7 @@
   font-weight: 700;
   gap: 20px;
   height: 60px;
+  flex: 1;
 }
 
 .actions {

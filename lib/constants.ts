@@ -13,11 +13,12 @@ export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
 
-export const DEFAULT_LOCALE = 'en-US';
+export const DEFAULT_LOCALE = process.env.defaultLocale ?? 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
+export const DEFAULT_RESET_DATE = '2000-01-01';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -42,6 +43,11 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
+};
+
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
@@ -56,12 +62,26 @@ export const EVENT_TYPE = {
   customEvent: 2,
 } as const;
 
-export const EVENT_DATA_TYPE = {
+export const DATA_TYPE = {
   string: 1,
   number: 2,
   boolean: 3,
   date: 4,
   array: 5,
+} as const;
+
+export const DATA_TYPES = {
+  [DATA_TYPE.string]: 'string',
+  [DATA_TYPE.number]: 'number',
+  [DATA_TYPE.boolean]: 'boolean',
+  [DATA_TYPE.date]: 'date',
+  [DATA_TYPE.array]: 'array',
+};
+
+export const REPORT_PARAMETERS = {
+  fields: 'fields',
+  filters: 'filters',
+  groups: 'groups',
 } as const;
 
 export const KAFKA_TOPIC = {
@@ -72,6 +92,7 @@ export const KAFKA_TOPIC = {
 export const ROLES = {
   admin: 'admin',
   user: 'user',
+  viewOnly: 'view-only',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
 } as const;
@@ -94,9 +115,41 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteDelete,
     PERMISSIONS.teamCreate,
   ],
+  [ROLES.viewOnly]: [],
   [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
   [ROLES.teamMember]: [],
 } as const;
+
+export const WEBSITE_EVENT_FIELDS = {
+  eventId: { name: 'event_id', type: 'uuid', label: 'Event ID' },
+  websiteId: { name: 'website_id', type: 'uuid', label: 'Website ID' },
+  sessionId: { name: 'session_id', type: 'uuid', label: 'Session ID' },
+  createdAt: { name: 'created_at', type: 'date', label: 'Created date' },
+  urlPath: { name: 'url_path', type: 'string', label: 'URL path' },
+  urlQuery: { name: 'url_query', type: 'string', label: 'URL query' },
+  referrerPath: { name: 'referrer_path', type: 'string', label: 'Referrer path' },
+  referrerQuery: { name: 'referrer_query', type: 'string', label: 'Referrer query' },
+  referrerDomain: { name: 'referrer_domain', type: 'string', label: 'Referrer domain' },
+  pageTitle: { name: 'page_title', type: 'string', label: 'Page title' },
+  eventType: { name: 'event_type', type: 'string', label: 'Event type' },
+  eventName: { name: 'event_name', type: 'string', label: 'Event name' },
+};
+
+export const SESSION_FIELDS = {
+  sessionId: { name: 'session_id', type: 'uuid' },
+  websiteId: { name: 'website_id', type: 'uuid' },
+  hostname: { name: 'hostname', type: 'string' },
+  browser: { name: 'browser', type: 'string' },
+  os: { name: 'os', type: 'string' },
+  device: { name: 'device', type: 'string' },
+  screen: { name: 'screen', type: 'string' },
+  language: { name: 'language', type: 'string' },
+  country: { name: 'country', type: 'string' },
+  subdivision1: { name: 'subdivision1', type: 'string' },
+  subdivision2: { name: 'subdivision2', type: 'string' },
+  city: { name: 'city', type: 'string' },
+  createdAt: { name: 'created_at', type: 'date' },
+};
 
 export const THEME_COLORS = {
   light: {
@@ -145,7 +198,9 @@ export const EVENT_COLORS = [
 ];
 
 export const DOMAIN_REGEX =
-  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,63})$/;
+  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
+
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;
@@ -158,7 +213,7 @@ export const DESKTOP_OS = [
   'BeOS',
   'Chrome OS',
   'Linux',
-  'macOS',
+  'Mac OS',
   'Open BSD',
   'OS/2',
   'QNX',
@@ -180,33 +235,34 @@ export const DESKTOP_OS = [
 export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
 
 export const BROWSERS = {
+  android: 'Android',
   aol: 'AOL',
-  edge: 'Edge',
-  'edge-ios': 'Edge (iOS)',
-  yandexbrowser: 'Yandex',
-  kakaotalk: 'KaKaoTalk',
-  samsung: 'Samsung',
-  silk: 'Silk',
-  miui: 'MIUI',
   beaker: 'Beaker',
-  'edge-chromium': 'Edge (Chromium)',
+  bb10: 'BlackBerry 10',
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
-  phantomjs: 'PhantomJS',
   crios: 'Chrome (iOS)',
+  curl: 'Curl',
+  edge: 'Edge',
+  'edge-chromium': 'Edge (Chromium)',
+  'edge-ios': 'Edge (iOS)',
+  facebook: 'Facebook',
   firefox: 'Firefox',
   fxios: 'Firefox (iOS)',
-  'opera-mini': 'Opera Mini',
-  opera: 'Opera',
   ie: 'IE',
-  bb10: 'BlackBerry 10',
-  android: 'Android',
-  ios: 'iOS',
-  safari: 'Safari',
-  facebook: 'Facebook',
   instagram: 'Instagram',
+  ios: 'iOS',
   'ios-webview': 'iOS (webview)',
+  kakaotalk: 'KaKaoTalk',
+  miui: 'MIUI',
+  opera: 'Opera',
+  'opera-mini': 'Opera Mini',
+  phantomjs: 'PhantomJS',
+  safari: 'Safari',
+  samsung: 'Samsung',
+  silk: 'Silk',
   searchbot: 'Searchbot',
+  yandexbrowser: 'Yandex',
 };
 
 export const MAP_FILE = '/datamaps.world.json';

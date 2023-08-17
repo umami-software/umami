@@ -1,7 +1,6 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { getEventDataType } from './eventData';
 import { FILTER_COLUMNS } from './constants';
 
 const MYSQL_DATE_FORMATS = {
@@ -20,20 +19,20 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-function toUuid(): string {
+function getAddMinutesQuery(field: string, minutes: number): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
-    return '::uuid';
+    return `${field} + interval '${minutes} minute'`;
   }
 
   if (db === MYSQL) {
-    return '';
+    return `DATE_ADD(${field}, interval ${minutes} minute)`;
   }
 }
 
 function getDateQuery(field: string, unit: string, timezone?: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     if (timezone) {
@@ -53,8 +52,8 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   }
 }
 
-function getTimestampInterval(field: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+function getTimestampIntervalQuery(field: string): string {
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `floor(extract(epoch from max(${field}) - min(${field})))`;
@@ -65,54 +64,13 @@ function getTimestampInterval(field: string): string {
   }
 }
 
-function getEventDataFilterQuery(
-  filters: {
-    eventKey?: string;
-    eventValue?: string | number | boolean | Date;
-  }[],
-  params: any[],
-) {
-  const query = filters.reduce((ac, cv) => {
-    const type = getEventDataType(cv.eventValue);
-
-    let value = cv.eventValue;
-
-    ac.push(`and (event_key = $${params.length + 1}`);
-    params.push(cv.eventKey);
-
-    switch (type) {
-      case 'number':
-        ac.push(`and event_numeric_value = $${params.length + 1})`);
-        params.push(value);
-        break;
-      case 'string':
-        ac.push(`and event_string_value = $${params.length + 1})`);
-        params.push(decodeURIComponent(cv.eventValue as string));
-        break;
-      case 'boolean':
-        ac.push(`and event_string_value = $${params.length + 1})`);
-        params.push(decodeURIComponent(cv.eventValue as string));
-        value = cv ? 'true' : 'false';
-        break;
-      case 'date':
-        ac.push(`and event_date_value = $${params.length + 1})`);
-        params.push(cv.eventValue);
-        break;
-    }
-
-    return ac;
-  }, []);
-
-  return query.join('\n');
-}
-
 function getFilterQuery(filters = {}, params = []): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
 
     if (filter !== undefined) {
       const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column}=$${params.length + 1}`);
+      arr.push(`and ${column}={{${key}}}`);
       params.push(decodeURIComponent(filter));
     }
 
@@ -138,25 +96,30 @@ function parseFilters(
   };
 }
 
-async function rawQuery(query: string, params: never[] = []): Promise<any> {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+async function rawQuery(sql: string, data: object): Promise<any> {
+  const db = getDatabaseType();
+  const params = [];
 
   if (db !== POSTGRESQL && db !== MYSQL) {
     return Promise.reject(new Error('Unknown database.'));
   }
 
-  const sql = db === MYSQL ? query.replace(/\$[0-9]+/g, '?') : query;
+  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
+    const [, name, type] = args;
+    params.push(data[name]);
 
-  return prisma.rawQuery(sql, params);
+    return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
+  });
+
+  return prisma.rawQuery(query, params);
 }
 
 export default {
   ...prisma,
+  getAddMinutesQuery,
   getDateQuery,
-  getTimestampInterval,
+  getTimestampIntervalQuery,
   getFilterQuery,
-  getEventDataFilterQuery,
-  toUuid,
   parseFilters,
   rawQuery,
 };

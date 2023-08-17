@@ -17,6 +17,18 @@
       "value": "活动日志"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "添加"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "添加描述"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "域名"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,10 +263,34 @@
       "value": "启用共享链接"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Event data"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "行为类别"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Field"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Fields"
     }
   ],
   "label.filter-combined": [
@@ -261,6 +303,18 @@
     {
       "type": 0,
       "value": "原始"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -437,6 +491,12 @@
       "value": "查询"
     }
   ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Query"
+    }
+  ],
   "label.query-parameters": [
     {
       "type": 0,
@@ -479,6 +539,12 @@
       "value": "移除"
     }
   ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Reports"
+    }
+  ],
   "label.required": [
     {
       "type": 0,
@@ -503,6 +569,12 @@
       "value": "角色"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Run query"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -513,6 +585,12 @@
     {
       "type": 0,
       "value": "屏幕尺寸"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Select date"
     }
   ],
   "label.select-website": [
@@ -653,6 +731,18 @@
       "value": "未知"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URLs"
+    }
+  ],
   "label.user": [
     {
       "type": 0,
@@ -683,6 +773,12 @@
       "value": "查看更多"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "View only"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -693,6 +789,12 @@
     {
       "type": 0,
       "value": "访客"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Website"
     }
   ],
   "label.website-id": [
@@ -707,10 +809,178 @@
       "value": "网站"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "窗口"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "昨天"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "After"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Before"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "创建报告"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "描述"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Does not equal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Equals"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Greater than"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Greater than or equals"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Less than"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Less than or equals"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Sum"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "未命名"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "message.active-users": [
@@ -769,10 +1039,32 @@
       "value": " 的数据吗?"
     }
   ],
+  "message.delete-account": [
+    {
+      "type": 0,
+      "value": "确定删除该账户, 请在下面的输入框中输入 "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " 进行二次确认。"
+    }
+  ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "删除网站"
+      "value": "确定删除该网站, 请在下面的输入框中输入 "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " 进行二次确认。"
     }
   ],
   "message.delete-website-warning": [
@@ -833,16 +1125,48 @@
       "value": " 个字符"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
       "value": "无可用数据。"
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "No event data is available."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
       "value": "密码不一致"
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "没有找到任何结果。"
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "这个团队没有任何网站。"
     }
   ],
   "message.no-teams": [
@@ -857,6 +1181,12 @@
       "value": "没有任何用户。"
     }
   ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "你还没有设置任何网站。"
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -866,7 +1196,15 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "重置统计数据"
+      "value": "确定重置该网站, 请在下面的输入框中输入 "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " 进行二次确认。"
     }
   ],
   "message.reset-website-warning": [
@@ -907,6 +1245,12 @@
       "value": "未找到团队。"
     }
   ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "团队中的任何人都可查看网站。"
+    }
+  ],
   "message.tracking-code": [
     {
       "type": 0,
@@ -916,7 +1260,7 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User detected."
+      "value": "User deleted."
     }
   ],
   "message.visitor-log": [
@@ -955,24 +1299,6 @@
     {
       "type": 0,
       "value": " 浏览器进行访问。"
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "这个团队没有任何网站。"
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "你还没有设置任何网站。"
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "团队中的任何人都可查看网站。"
     }
   ]
 }

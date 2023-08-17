@@ -4,7 +4,7 @@ import useApi from 'hooks/useApi';
 
 let loading = false;
 
-export default function useConfig() {
+export function useConfig() {
   const { config } = useStore();
   const { get } = useApi();
 
@@ -21,5 +21,7 @@ export default function useConfig() {
     }
   }, []);
 
-  return config || {};
+  return config;
 }
+
+export default useConfig;

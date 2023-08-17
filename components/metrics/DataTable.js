@@ -3,10 +3,10 @@ import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from 'react-spring';
 import classNames from 'classnames';
-import NoData from 'components/common/NoData';
+import Empty from 'components/common/Empty';
 import { formatNumber, formatLongNumber } from 'lib/format';
+import useMessages from 'hooks/useMessages';
 import styles from './DataTable.module.css';
-import useMessages from '../../hooks/useMessages';
 
 export function DataTable({
   data = [],
@@ -55,7 +55,7 @@ export function DataTable({
         </div>
       </div>
       <div ref={ref} className={styles.body}>
-        {data?.length === 0 && <NoData />}
+        {data?.length === 0 && <Empty />}
         {virtualize && data.length > 0 ? (
           <FixedSizeList height={bounds.height} itemCount={data.length} itemSize={30}>
             {Row}

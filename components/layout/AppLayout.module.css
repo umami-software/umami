@@ -2,12 +2,12 @@
   display: grid;
   grid-template-rows: max-content 1fr;
   grid-template-columns: 1fr;
+  overflow: hidden;
 }
 
 .nav {
   height: 60px;
   width: 100vw;
-  z-index: var(--z-index-overlay);
   grid-column: 1;
   grid-row: 1 / 2;
 }
@@ -18,4 +18,5 @@
   min-height: 0;
   height: calc(100vh - 60px);
   overflow-y: auto;
+  padding-bottom: 60px;
 }

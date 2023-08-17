@@ -17,6 +17,18 @@
       "value": "Activity log"
     }
   ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Add description"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -227,6 +239,12 @@
       "value": "域名"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Dropoff"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
@@ -245,10 +263,34 @@
       "value": "啟用分享連結"
     }
   ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Event"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Event data"
+    }
+  ],
   "label.events": [
     {
       "type": 0,
       "value": "行為類別"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Field"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Fields"
     }
   ],
   "label.filter-combined": [
@@ -261,6 +303,18 @@
     {
       "type": 0,
       "value": "原始"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Funnel"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Insights"
     }
   ],
   "label.join": [
@@ -433,6 +487,12 @@
       "value": "Queries"
     }
   ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Query"
+    }
+  ],
   "label.query-parameters": [
     {
       "type": 0,
@@ -475,6 +535,12 @@
       "value": "Remove"
     }
   ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Reports"
+    }
+  ],
   "label.required": [
     {
       "type": 0,
@@ -499,6 +565,12 @@
       "value": "Role"
     }
   ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Run query"
+    }
+  ],
   "label.save": [
     {
       "type": 0,
@@ -509,6 +581,12 @@
     {
       "type": 0,
       "value": "屏幕尺寸"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Select date"
     }
   ],
   "label.select-website": [
@@ -649,6 +727,18 @@
       "value": "未知"
     }
   ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URLs"
+    }
+  ],
   "label.user": [
     {
       "type": 0,
@@ -679,6 +769,12 @@
       "value": "查看更多"
     }
   ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "View only"
+    }
+  ],
   "label.views": [
     {
       "type": 0,
@@ -689,6 +785,12 @@
     {
       "type": 0,
       "value": "獨立訪客"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Website"
     }
   ],
   "label.website-id": [
@@ -703,10 +805,178 @@
       "value": "網站"
     }
   ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Window"
+    }
+  ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Yesterday"
+    }
+  ],
+  "labels.after": [
+    {
+      "type": 0,
+      "value": "After"
+    }
+  ],
+  "labels.average": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
+  "labels.before": [
+    {
+      "type": 0,
+      "value": "Before"
+    }
+  ],
+  "labels.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "labels.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
+  "labels.create-report": [
+    {
+      "type": 0,
+      "value": "Create report"
+    }
+  ],
+  "labels.description": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
+  "labels.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
+    }
+  ],
+  "labels.does-not-equal": [
+    {
+      "type": 0,
+      "value": "Does not equal"
+    }
+  ],
+  "labels.equals": [
+    {
+      "type": 0,
+      "value": "Equals"
+    }
+  ],
+  "labels.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
+  "labels.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
+  "labels.greater-than": [
+    {
+      "type": 0,
+      "value": "Greater than"
+    }
+  ],
+  "labels.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Greater than or equals"
+    }
+  ],
+  "labels.less-than": [
+    {
+      "type": 0,
+      "value": "Less than"
+    }
+  ],
+  "labels.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Less than or equals"
+    }
+  ],
+  "labels.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
+  "labels.min": [
+    {
+      "type": 0,
+      "value": "Min"
+    }
+  ],
+  "labels.overview": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
+  "labels.sum": [
+    {
+      "type": 0,
+      "value": "Sum"
+    }
+  ],
+  "labels.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "labels.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
+  "labels.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "labels.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "labels.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
+    }
+  ],
+  "labels.untitled": [
+    {
+      "type": 0,
+      "value": "Untitled"
+    }
+  ],
+  "labels.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "message.active-users": [
@@ -765,10 +1035,32 @@
       "value": " 的數據嗎?"
     }
   ],
+  "message.delete-account": [
+    {
+      "type": 0,
+      "value": "To delete this account, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
+    }
+  ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "刪除網站"
+      "value": "To delete this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.delete-website-warning": [
@@ -829,16 +1121,48 @@
       "value": " characters"
     }
   ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "A new version of Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": " is available!"
+    }
+  ],
   "message.no-data-available": [
     {
       "type": 0,
       "value": "無可用數據。"
     }
   ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "No event data is available."
+    }
+  ],
   "message.no-match-password": [
     {
       "type": 0,
       "value": "密碼不一致"
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "No results were found."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "This team does not have any websites."
     }
   ],
   "message.no-teams": [
@@ -853,6 +1177,12 @@
       "value": "There are no users."
     }
   ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "目前無任何網站設定。"
+    }
+  ],
   "message.page-not-found": [
     {
       "type": 0,
@@ -862,7 +1192,15 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "重置統計數據"
+      "value": "To reset this website, type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.reset-website-warning": [
@@ -901,6 +1239,12 @@
     {
       "type": 0,
       "value": "Team not found."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Websites can be viewed by anyone on the team."
     }
   ],
   "message.tracking-code": [
@@ -951,24 +1295,6 @@
     {
       "type": 0,
       "value": " 進行訪問。"
-    }
-  ],
-  "messages.no-team-websites": [
-    {
-      "type": 0,
-      "value": "This team does not have any websites."
-    }
-  ],
-  "messages.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "目前無任何網站設定。"
-    }
-  ],
-  "messages.team-websites-info": [
-    {
-      "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
     }
   ]
 }

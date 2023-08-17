@@ -10,6 +10,7 @@ import {
 } from 'react-basics';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
+import { useRouter } from 'next/router';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
 
@@ -20,12 +21,16 @@ export function ShareUrl({ websiteId, data, onSave }) {
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
   const { post, useMutation } = useApi();
+  const { basePath } = useRouter();
   const { mutate, error } = useMutation(({ shareId }) =>
     post(`/websites/${websiteId}`, { shareId }),
   );
   const ref = useRef(null);
   const url = useMemo(
-    () => `${process.env.analyticsUrl || location.origin}/share/${id}/${encodeURIComponent(name)}`,
+    () =>
+      `${process.env.analyticsUrl || location.origin}${basePath}/share/${id}/${encodeURIComponent(
+        name,
+      )}`,
     [id, name],
   );
 

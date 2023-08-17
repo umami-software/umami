@@ -2,10 +2,18 @@ import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 
-export async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
+async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
   return prisma.client.website.findUnique({
     where,
   });
+}
+
+export async function getWebsiteById(id: string) {
+  return getWebsite({ id });
+}
+
+export async function getWebsiteByShareId(shareId: string) {
+  return getWebsite({ shareId });
 }
 
 export async function getWebsites(): Promise<Website[]> {
@@ -50,6 +58,9 @@ export async function resetWebsite(
   const { client, transaction } = prisma;
 
   return transaction([
+    client.eventData.deleteMany({
+      where: { websiteId },
+    }),
     client.websiteEvent.deleteMany({
       where: { websiteId },
     }),
@@ -88,6 +99,11 @@ export async function deleteWebsite(
       where: { websiteId },
     }),
     client.teamWebsite.deleteMany({
+      where: {
+        websiteId,
+      },
+    }),
+    client.report.deleteMany({
       where: {
         websiteId,
       },

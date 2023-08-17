@@ -1,6 +1,5 @@
-import { md5 } from 'lib/crypto';
-import { getSessions } from '../session/getSessions';
-import { getEvents } from '../event/getEvents';
+import { md5 } from 'next-basics';
+import { getSessions, getEvents } from 'queries';
 import { EVENT_TYPE } from 'lib/constants';
 
 export async function getRealtimeData(websiteId, time) {

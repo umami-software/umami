@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, Text, Tooltip } from 'react-basics';
+import { Icon, Text, TooltipPopup } from 'react-basics';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -36,7 +36,7 @@ export function NavGroup({
       <div className={styles.body}>
         {items.map(({ label, url, icon, divider }) => {
           return (
-            <Tooltip key={label} label={label} position="right" disabled={!minimized}>
+            <TooltipPopup key={label} label={label} position="right" disabled={!minimized}>
               <Link
                 href={url}
                 className={classNames(styles.item, {
@@ -47,7 +47,7 @@ export function NavGroup({
                 <Icon>{icon}</Icon>
                 <Text className={styles.text}>{label}</Text>
               </Link>
-            </Tooltip>
+            </TooltipPopup>
           );
         })}
       </div>
