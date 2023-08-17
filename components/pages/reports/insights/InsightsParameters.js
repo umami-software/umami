@@ -80,10 +80,10 @@ export function InsightsParameters() {
             <Icons.Plus />
           </Icon>
         </TooltipPopup>
-        <Popup position="bottom" alignment="start">
-          {(close, element) => {
+        <Popup position="bottom" alignment="start" className={styles.popup}>
+          {close => {
             return (
-              <PopupForm element={element} onClose={close}>
+              <PopupForm onClose={close}>
                 {id === 'fields' && (
                   <FieldSelectForm
                     items={fieldOptions}
@@ -114,7 +114,7 @@ export function InsightsParameters() {
           return (
             <FormRow key={label} label={label} action={<AddButton id={id} onAdd={handleAdd} />}>
               <ParameterList items={parameterData[id]} onRemove={index => handleRemove(id, index)}>
-                {({ name, filter, value, label }) => {
+                {({ name, filter, value }) => {
                   return (
                     <div className={styles.parameter}>
                       {id === 'fields' && (

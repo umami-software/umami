@@ -31,7 +31,7 @@ export function RetentionParameters() {
   return (
     <Form ref={ref} values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={false} />
-      <FormRow label={formatMessage(labels.dateRange)}>
+      <FormRow label={formatMessage(labels.date)}>
         <MonthSelect date={startDate} onChange={handleDateChange} />
       </FormRow>
       <FormButtons>

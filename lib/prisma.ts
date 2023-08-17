@@ -92,12 +92,12 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
-function mapFilter(column, operator, name, type = 'String') {
+function mapFilter(column, operator, name, type = 'varchar') {
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {${name}:${type}`;
+      return `${column} = {{${name}::${type}}}`;
     case OPERATORS.notEquals:
-      return `${column} != {${name}:${type}}`;
+      return `${column} != {{${name}::${type}}}`;
     default:
       return '';
   }
@@ -161,7 +161,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
     return Promise.reject(new Error('Unknown database.'));
   }
 
-  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
+  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*\}\}/g, (...args) => {
     const [, name, type] = args;
     params.push(data[name]);
 
