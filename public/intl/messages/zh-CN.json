@@ -227,10 +227,22 @@
       "value": "统计数据"
     }
   ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
       "value": "时间段"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Day"
     }
   ],
   "label.default-date-range": [
@@ -561,6 +573,12 @@
       "value": "更多"
     }
   ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "My websites"
+    }
+  ],
   "label.name": [
     {
       "type": 0,
@@ -595,6 +613,24 @@
     {
       "type": 0,
       "value": "所有者"
+    }
+  ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Page "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
     }
   ],
   "label.page-views": [
@@ -731,6 +767,12 @@
       "value": "重置统计数据"
     }
   ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Retention"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -827,10 +869,22 @@
       "value": "团队成员"
     }
   ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Team name"
+    }
+  ],
   "label.team-owner": [
     {
       "type": 0,
       "value": "团队所有者"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Team websites"
     }
   ],
   "label.teams": [

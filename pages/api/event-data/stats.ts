@@ -3,7 +3,7 @@ import { useCors, useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { ok, methodNotAllowed, unauthorized } from 'next-basics';
-import { getEventDataFields } from 'queries';
+import { getEventDataStats } from 'queries';
 
 export interface EventDataStatsRequestQuery {
   websiteId: string;
@@ -11,7 +11,6 @@ export interface EventDataStatsRequestQuery {
     startDate: string;
     endDate: string;
   };
-  field?: string;
 }
 
 export default async (
@@ -31,19 +30,9 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const results = await getEventDataFields(websiteId, { startDate, endDate });
-    const fields = new Set();
+    const data = await getEventDataStats(websiteId, { startDate, endDate });
 
-    const data = results.reduce(
-      (obj, row) => {
-        fields.add(row.fieldName);
-        obj.records += Number(row.total);
-        return obj;
-      },
-      { events: results.length, records: 0 },
-    );
-
-    return ok(res, { ...data, fields: fields.size });
+    return ok(res, data);
   }
 
   return methodNotAllowed(res);

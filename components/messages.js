@@ -21,8 +21,8 @@ export const labels = defineMessages({
   details: { id: 'label.details', defaultMessage: 'Details' },
   website: { id: 'label.website', defaultMessage: 'Website' },
   websites: { id: 'label.websites', defaultMessage: 'Websites' },
-  myWebsites: { id: 'label.my-websites', defaultMessage: 'My Websites' },
-  teamWebsites: { id: 'label.team-websites', defaultMessage: 'Team Websites' },
+  myWebsites: { id: 'label.my-websites', defaultMessage: 'My websites' },
+  teamWebsites: { id: 'label.team-websites', defaultMessage: 'Team websites' },
   created: { id: 'label.created', defaultMessage: 'Created' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
@@ -30,7 +30,7 @@ export const labels = defineMessages({
   accessCode: { id: 'label.access-code', defaultMessage: 'Access code' },
   teamId: { id: 'label.team-id', defaultMessage: 'Team ID' },
   team: { id: 'label.team', defaultMessage: 'Team' },
-  teamName: { id: 'label.team-name', defaultMessage: 'Team Name' },
+  teamName: { id: 'label.team-name', defaultMessage: 'Team name' },
   regenerate: { id: 'label.regenerate', defaultMessage: 'Regenerate' },
   remove: { id: 'label.remove', defaultMessage: 'Remove' },
   join: { id: 'label.join', defaultMessage: 'Join' },
@@ -177,6 +177,7 @@ export const labels = defineMessages({
   pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
   day: { id: 'label.day', defaultMessage: 'Day' },
   date: { id: 'label.date', defaultMessage: 'Date' },
+  pageOf: { id: 'label.page-of', defaultMessage: 'Page {current} of {total}' },
 });
 
 export const messages = defineMessages({

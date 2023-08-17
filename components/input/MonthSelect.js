@@ -21,8 +21,9 @@ export function MonthSelect({ date = new Date(), onChange }) {
   const year = date.getFullYear();
   const ref = useRef();
 
-  const handleChange = date => {
+  const handleChange = (close, date) => {
     onChange(`range:${startOfMonth(date).getTime()}:${endOfMonth(date).getTime()}`);
+    close();
   };
 
   return (
@@ -36,11 +37,13 @@ export function MonthSelect({ date = new Date(), onChange }) {
             </Icon>
           </Button>
           <Popup className={styles.popup} alignment="start">
-            <CalendarMonthSelect
-              date={date}
-              locale={getDateLocale(locale)}
-              onSelect={handleChange}
-            />
+            {close => (
+              <CalendarMonthSelect
+                date={date}
+                locale={getDateLocale(locale)}
+                onSelect={handleChange.bind(null, close)}
+              />
+            )}
           </Popup>
         </PopupTrigger>
         <PopupTrigger>
@@ -51,11 +54,13 @@ export function MonthSelect({ date = new Date(), onChange }) {
             </Icon>
           </Button>
           <Popup className={styles.popup} alignment="start">
-            <CalendarYearSelect
-              date={date}
-              locale={getDateLocale(locale)}
-              onSelect={handleChange}
-            />
+            {close => (
+              <CalendarYearSelect
+                date={date}
+                locale={getDateLocale(locale)}
+                onSelect={handleChange.bind(null, close)}
+              />
+            )}
           </Popup>
         </PopupTrigger>
       </div>
