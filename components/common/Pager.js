@@ -19,18 +19,22 @@ export function Pager({ page, pageSize, count, onPageChange }) {
     }
   };
 
+  if (maxPage === 1) {
+    return null;
+  }
+
   return (
     <Flexbox justifyContent="center" className={styles.container}>
       <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
-        <Icon size="lg" className={styles.icon} rotate={90}>
+        <Icon rotate={90}>
           <Icons.ChevronDown />
         </Icon>
       </Button>
       <Flexbox alignItems="center" className={styles.text}>
-        {formatMessage(labels.pageOf, { x: page, y: maxPage })}
+        {formatMessage(labels.pageOf, { current: page, total: maxPage })}
       </Flexbox>
       <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
-        <Icon size="lg" className={styles.icon} rotate={270}>
+        <Icon rotate={270}>
           <Icons.ChevronDown />
         </Icon>
       </Button>

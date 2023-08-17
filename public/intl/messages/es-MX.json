@@ -227,10 +227,22 @@
       "value": "Datos"
     }
   ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
       "value": "Intervalo de fechas"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Day"
     }
   ],
   "label.default-date-range": [
@@ -561,6 +573,12 @@
       "value": "Más"
     }
   ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "My websites"
+    }
+  ],
   "label.name": [
     {
       "type": 0,
@@ -595,6 +613,24 @@
     {
       "type": 0,
       "value": "Propietario"
+    }
+  ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Page "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
     }
   ],
   "label.page-views": [
@@ -727,6 +763,12 @@
       "value": "Reiniciar estadísticas"
     }
   ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Retention"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -823,10 +865,22 @@
       "value": "Miembro de equipo"
     }
   ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Team name"
+    }
+  ],
   "label.team-owner": [
     {
       "type": 0,
       "value": "Admin. del equipo"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Team websites"
     }
   ],
   "label.teams": [
