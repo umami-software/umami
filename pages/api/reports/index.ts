@@ -37,6 +37,7 @@ export default async (
       page,
       filter,
       pageSize: +pageSize || null,
+      includeTeams: true,
     });
 
     return ok(res, data);

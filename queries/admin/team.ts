@@ -1,8 +1,8 @@
 import { Prisma, Team } from '@prisma/client';
-import prisma from 'lib/prisma';
 import { ROLES, TEAM_FILTER_TYPES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
-import { FilterResult, TeamSearchFilter, TeamSearchFilterType, SearchFilter } from 'lib/types';
+import prisma from 'lib/prisma';
+import { FilterResult, TeamSearchFilter } from 'lib/types';
 
 export interface GetTeamOptions {
   includeTeamUser?: boolean;
@@ -142,7 +142,7 @@ export async function getTeams(
 
 export async function getTeamsByUserId(
   userId: string,
-  filter?: SearchFilter<TeamSearchFilterType>,
+  filter?: TeamSearchFilter,
 ): Promise<FilterResult<Team[]>> {
   return getTeams(
     { userId, ...filter },

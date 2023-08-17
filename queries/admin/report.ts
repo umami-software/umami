@@ -1,7 +1,7 @@
 import { Prisma, Report } from '@prisma/client';
 import { REPORT_FILTER_TYPES } from 'lib/constants';
 import prisma from 'lib/prisma';
-import { FilterResult, ReportSearchFilter, ReportSearchFilterType, SearchFilter } from 'lib/types';
+import { FilterResult, ReportSearchFilter } from 'lib/types';
 
 export async function createReport(data: Prisma.ReportUncheckedCreateInput): Promise<Report> {
   return prisma.client.report.create({ data });
@@ -155,7 +155,7 @@ export async function getReports(
 
 export async function getReportsByUserId(
   userId: string,
-  filter: SearchFilter<ReportSearchFilterType>,
+  filter: ReportSearchFilter,
 ): Promise<FilterResult<Report[]>> {
   return getReports(
     { userId, ...filter },
@@ -174,7 +174,7 @@ export async function getReportsByUserId(
 
 export async function getReportsByWebsiteId(
   websiteId: string,
-  filter: SearchFilter<ReportSearchFilterType>,
+  filter: ReportSearchFilter,
 ): Promise<FilterResult<Report[]>> {
   return getReports({ websiteId, ...filter });
 }
