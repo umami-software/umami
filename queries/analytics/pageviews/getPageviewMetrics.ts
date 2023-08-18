@@ -1,20 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/load';
-import { maxDate } from 'lib/date';
+import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
+import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
-  ...args: [
-    websiteId: string,
-    criteria: {
-      startDate: Date;
-      endDate: Date;
-      column: string;
-      filters: object;
-    },
-  ]
+  ...args: [websiteId: string, columns: string, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -22,46 +13,25 @@ export async function getPageviewMetrics(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    column: string;
-    filters: object;
-  },
-) {
-  const { startDate, endDate, filters = {}, column } = criteria;
+async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = prisma;
-  const website = await loadWebsite(websiteId);
-  const params: any = {
+  const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
-    startDate: maxDate(startDate, website.resetAt),
-    endDate,
-    eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
-    ...filters,
-  };
-
-  let excludeDomain = '';
-
-  if (column === 'referrer_domain') {
-    excludeDomain =
-      'and (website_event.referrer_domain != {{domain}} or website_event.referrer_domain is null)';
-
-    params.domain = website.domain;
-  }
-
-  const { filterQuery, joinSession } = parseFilters(filters);
+    {
+      ...filters,
+      eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+    },
+    { joinSession: SESSION_COLUMNS.includes(column) },
+  );
 
   return rawQuery(
     `
     select ${column} x, count(*) y
     from website_event
-      ${joinSession}
+    ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
-      ${excludeDomain}
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -71,34 +41,12 @@ async function relationalQuery(
   );
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  criteria: {
-    startDate: Date;
-    endDate: Date;
-    column: string;
-    filters: object;
-  },
-) {
-  const { startDate, endDate, filters = {}, column } = criteria;
+async function clickhouseQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { rawQuery, parseFilters } = clickhouse;
-  const website = await loadWebsite(websiteId);
-  const params = {
-    websiteId,
-    startDate: maxDate(startDate, website.resetAt),
-    endDate,
+  const { filterQuery, params } = await parseFilters(websiteId, {
+    ...filters,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
-    domain: undefined,
-  };
-
-  let excludeDomain = '';
-
-  if (column === 'referrer_domain') {
-    excludeDomain = 'and referrer_domain != {domain:String}';
-    params.domain = website.domain;
-  }
-
-  const { filterQuery } = parseFilters(filters, params);
+  });
 
   return rawQuery(
     `
@@ -107,7 +55,6 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
-      ${excludeDomain}
       ${filterQuery}
     group by x
     order by y desc

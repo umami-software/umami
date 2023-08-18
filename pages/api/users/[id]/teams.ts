@@ -1,17 +1,21 @@
 import { useAuth, useCors } from 'lib/middleware';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getUserTeams } from 'queries';
+import { getTeamsByUserId } from 'queries';
 
-export interface UserWebsitesRequestBody {
+export interface UserTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {
+  id: string;
+}
+
+export interface UserTeamsRequestBody {
   name: string;
   domain: string;
   shareId: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<any, UserWebsitesRequestBody>,
+  req: NextApiRequestQueryBody<any, UserTeamsRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
@@ -25,7 +29,13 @@ export default async (
       return unauthorized(res);
     }
 
-    const teams = await getUserTeams(userId);
+    const { page, filter, pageSize } = req.query;
+
+    const teams = await getTeamsByUserId(userId, {
+      page,
+      filter,
+      pageSize: +pageSize || null,
+    });
 
     return ok(res, teams);
   }
