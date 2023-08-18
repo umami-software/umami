@@ -37,7 +37,7 @@ export async function getUserByUsername(username: string, options: GetUserOption
 }
 
 export async function getUsers(
-  UserSearchFilter: UserSearchFilter = {},
+  UserSearchFilter: UserSearchFilter,
   options?: { include?: Prisma.UserInclude },
 ): Promise<FilterResult<User[]>> {
   const { teamId, filter, filterType = USER_FILTER_TYPES.all } = UserSearchFilter;
@@ -72,14 +72,22 @@ export async function getUsers(
     ...UserSearchFilter,
   });
 
-  const users = await prisma.client.user.findMany({
-    where: {
-      ...where,
-      deletedAt: null,
-    },
-    ...pageFilters,
-    ...(options?.include && { include: options.include }),
-  });
+  const users = await prisma.client.user
+    .findMany({
+      where: {
+        ...where,
+        deletedAt: null,
+      },
+      ...pageFilters,
+      ...(options?.include && { include: options.include }),
+    })
+    .then(a => {
+      return a.map(a => {
+        const { password, ...rest } = a;
+
+        return rest;
+      });
+    });
   const count = await prisma.client.user.count({
     where: {
       ...where,
