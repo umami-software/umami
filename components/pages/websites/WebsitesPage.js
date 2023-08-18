@@ -58,9 +58,17 @@ export function WebsitesPage() {
         <Item key="team-webaites">{formatMessage(labels.teamWebsites)}</Item>
       </Tabs>
 
-      {tab === 'my-websites' && <WebsiteList showHeader={false} fetch={fetch} />}
+      {tab === 'my-websites' && (
+        <WebsiteList showEditButton={!cloudMode} showHeader={false} fetch={fetch} />
+      )}
       {tab === 'team-webaites' && (
-        <WebsiteList showHeader={false} fetch={fetch} showTeam={true} onlyTeams={true} />
+        <WebsiteList
+          showEditButton={!cloudMode}
+          showHeader={false}
+          fetch={fetch}
+          showTeam={true}
+          onlyTeams={true}
+        />
       )}
     </Page>
   );

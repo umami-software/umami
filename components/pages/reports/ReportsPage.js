@@ -3,13 +3,11 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import { useMessages, useReports } from 'hooks';
 import Link from 'next/link';
-import useConfig from 'hooks/useConfig';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import ReportsTable from './ReportsTable';
 
 export function ReportsPage() {
   const { formatMessage, labels, messages } = useMessages();
-  const { cloudMode } = useConfig();
   const {
     reports,
     error,
@@ -26,16 +24,14 @@ export function ReportsPage() {
   return (
     <Page loading={isLoading} error={error}>
       <PageHeader title={formatMessage(labels.reports)}>
-        {!cloudMode && (
-          <Link href="/reports/create">
-            <Button variant="primary">
-              <Icon>
-                <Icons.Plus />
-              </Icon>
-              <Text>{formatMessage(labels.createReport)}</Text>
-            </Button>
-          </Link>
-        )}
+        <Link href="/reports/create">
+          <Button variant="primary">
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            <Text>{formatMessage(labels.createReport)}</Text>
+          </Button>
+        </Link>
       </PageHeader>
 
       {hasData && (
