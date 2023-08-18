@@ -1,17 +1,64 @@
 import { NextApiRequest } from 'next';
-import { COLLECTION_TYPE, DATA_TYPE, EVENT_TYPE, KAFKA_TOPIC, ROLES } from './constants';
+import {
+  COLLECTION_TYPE,
+  DATA_TYPE,
+  EVENT_TYPE,
+  KAFKA_TOPIC,
+  REPORT_FILTER_TYPES,
+  ROLES,
+  TEAM_FILTER_TYPES,
+  USER_FILTER_TYPES,
+  WEBSITE_FILTER_TYPES,
+} from './constants';
 
 type ObjectValues<T> = T[keyof T];
 
 export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
-
 export type Role = ObjectValues<typeof ROLES>;
-
 export type EventType = ObjectValues<typeof EVENT_TYPE>;
-
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
-
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
+export type ReportSearchFilterType = ObjectValues<typeof REPORT_FILTER_TYPES>;
+export type UserSearchFilterType = ObjectValues<typeof USER_FILTER_TYPES>;
+export type WebsiteSearchFilterType = ObjectValues<typeof WEBSITE_FILTER_TYPES>;
+export type TeamSearchFilterType = ObjectValues<typeof TEAM_FILTER_TYPES>;
+
+export interface WebsiteSearchFilter extends SearchFilter<WebsiteSearchFilterType> {
+  userId?: string;
+  teamId?: string;
+  includeTeams?: boolean;
+  onlyTeams?: boolean;
+}
+
+export interface UserSearchFilter extends SearchFilter<UserSearchFilterType> {
+  teamId?: string;
+}
+
+export interface TeamSearchFilter extends SearchFilter<TeamSearchFilterType> {
+  userId?: string;
+}
+
+export interface ReportSearchFilter extends SearchFilter<ReportSearchFilterType> {
+  userId?: string;
+  websiteId?: string;
+  includeTeams?: boolean;
+}
+
+export interface SearchFilter<T> {
+  filter?: string;
+  filterType?: T;
+  pageSize?: number;
+  page?: number;
+  orderBy?: string;
+}
+
+export interface FilterResult<T> {
+  data: T;
+  count: number;
+  pageSize: number;
+  page: number;
+  orderBy?: string;
+}
 
 export interface DynamicData {
   [key: string]: number | string | DynamicData | number[] | string[] | DynamicData[];
@@ -73,37 +120,17 @@ export interface WebsiteMetric {
   y: number;
 }
 
-export interface WebsiteMetricFilter {
-  domain?: string;
-  url?: string;
-  referrer?: string;
-  title?: string;
-  query?: string;
-  event?: string;
-  os?: string;
-  browser?: string;
-  device?: string;
-  country?: string;
-  region?: string;
-  city?: string;
-}
-
 export interface WebsiteEventMetric {
   x: string;
   t: string;
   y: number;
 }
 
-export interface WebsiteEventDataStats {
-  field: string;
-  type: number;
-  total: number;
-}
-
-export interface WebsiteEventDataFields {
-  field: string;
-  type: number;
-  value?: string;
+export interface WebsiteEventData {
+  eventName?: string;
+  fieldName: string;
+  dataType: number;
+  fieldValue?: string;
   total: number;
 }
 
@@ -143,4 +170,29 @@ export interface DateRange {
   endDate: Date;
   unit: string;
   value: string;
+}
+
+export interface QueryFilters {
+  startDate?: Date;
+  endDate?: Date;
+  timezone?: string;
+  unit?: string;
+  eventType?: number;
+  url?: string;
+  referrer?: string;
+  title?: string;
+  query?: string;
+  os?: string;
+  browser?: string;
+  device?: string;
+  country?: string;
+  region?: string;
+  city?: string;
+  language?: string;
+  event?: string;
+}
+
+export interface QueryOptions {
+  joinSession?: boolean;
+  columns?: { [key: string]: string };
 }

@@ -4,6 +4,7 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import Funnel from 'assets/funnel.svg';
 import Lightbulb from 'assets/lightbulb.svg';
+import Magnet from 'assets/magnet.svg';
 import styles from './ReportTemplates.module.css';
 import { useMessages } from 'hooks';
 
@@ -33,19 +34,23 @@ export function ReportTemplates() {
   const { formatMessage, labels } = useMessages();
 
   const reports = [
-    /*
     {
       title: formatMessage(labels.insights),
       description: 'Dive deeper into your data by using segments and filters.',
       url: '/reports/insights',
       icon: <Lightbulb />,
     },
-     */
     {
       title: formatMessage(labels.funnel),
       description: 'Understand the conversion and drop-off rate of users.',
       url: '/reports/funnel',
       icon: <Funnel />,
+    },
+    {
+      title: formatMessage(labels.retention),
+      description: 'Measure you website stickiness by tracking how often users return.',
+      url: '/reports/retention',
+      icon: <Magnet />,
     },
   ];
 

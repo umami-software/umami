@@ -2,9 +2,7 @@ import { Container } from 'react-basics';
 import Head from 'next/head';
 import NavBar from 'components/layout/NavBar';
 import UpdateNotice from 'components/common/UpdateNotice';
-import useRequireLogin from 'hooks/useRequireLogin';
-import useConfig from 'hooks/useConfig';
-import { CURRENT_VERSION } from 'lib/constants';
+import { useRequireLogin, useConfig } from 'hooks';
 import styles from './AppLayout.module.css';
 
 export function AppLayout({ title, children }) {
@@ -16,7 +14,7 @@ export function AppLayout({ title, children }) {
   }
 
   return (
-    <div className={styles.layout} data-app-version={CURRENT_VERSION}>
+    <div className={styles.layout}>
       <UpdateNotice user={user} config={config} />
       <Head>
         <title>{title ? `${title} | umami` : 'umami'}</title>

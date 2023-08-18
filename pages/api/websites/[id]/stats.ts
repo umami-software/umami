@@ -56,40 +56,26 @@ export default async (
     const prevStartDate = subMinutes(startDate, diff);
     const prevEndDate = subMinutes(endDate, diff);
 
-    const metrics = await getWebsiteStats(websiteId, {
-      startDate,
-      endDate,
-      filters: {
-        url,
-        referrer,
-        title,
-        query,
-        event,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      },
-    });
+    const filters = {
+      url,
+      referrer,
+      title,
+      query,
+      event,
+      os,
+      browser,
+      device,
+      country,
+      region,
+      city,
+    };
+
+    const metrics = await getWebsiteStats(websiteId, { ...filters, startDate, endDate });
 
     const prevPeriod = await getWebsiteStats(websiteId, {
+      ...filters,
       startDate: prevStartDate,
       endDate: prevEndDate,
-      filters: {
-        url,
-        referrer,
-        title,
-        query,
-        event,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      },
     });
 
     const stats = Object.keys(metrics[0]).reduce((obj, key) => {

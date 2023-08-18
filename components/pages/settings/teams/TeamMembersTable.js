@@ -4,7 +4,15 @@ import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 import SettingsTable from 'components/common/SettingsTable';
 
-export function TeamMembersTable({ data = [], onSave, readOnly }) {
+export function TeamMembersTable({
+  data = [],
+  onSave,
+  readOnly,
+  filterValue,
+  onFilterChange,
+  onPageChange,
+  onPageSizeChange,
+}) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -16,7 +24,7 @@ export function TeamMembersTable({ data = [], onSave, readOnly }) {
 
   const cellRender = (row, data, key) => {
     if (key === 'username') {
-      return row?.user?.username;
+      return row?.username;
     }
     if (key === 'role') {
       return formatMessage(
@@ -27,13 +35,23 @@ export function TeamMembersTable({ data = [], onSave, readOnly }) {
   };
 
   return (
-    <SettingsTable data={data} columns={columns} cellRender={cellRender}>
+    <SettingsTable
+      data={data}
+      columns={columns}
+      cellRender={cellRender}
+      showSearch={true}
+      showPaging={true}
+      onFilterChange={onFilterChange}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      filterValue={filterValue}
+    >
       {row => {
         return (
           !readOnly && (
             <TeamMemberRemoveButton
               teamId={row.teamId}
-              userId={row.userId}
+              userId={row.id}
               disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
               onSave={onSave}
             />

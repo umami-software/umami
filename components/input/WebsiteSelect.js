@@ -8,12 +8,12 @@ export function WebsiteSelect({ websiteId, onSelect }) {
   const { data } = useQuery(['websites:me'], () => get('/me/websites'));
 
   const renderValue = value => {
-    return data?.find(({ id }) => id === value)?.name;
+    return data?.data?.find(({ id }) => id === value)?.name;
   };
 
   return (
     <Dropdown
-      items={data}
+      items={data?.data}
       value={websiteId}
       renderValue={renderValue}
       onChange={onSelect}
