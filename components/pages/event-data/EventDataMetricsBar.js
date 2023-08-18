@@ -30,6 +30,11 @@ export function EventDataMetricsBar({ websiteId }) {
             <>
               <MetricCard
                 className={styles.card}
+                label={formatMessage(labels.events)}
+                value={data?.events}
+              />
+              <MetricCard
+                className={styles.card}
                 label={formatMessage(labels.fields)}
                 value={data?.fields}
               />

@@ -10,3 +10,8 @@
 .op {
   font-weight: bold;
 }
+
+.popup {
+  margin-top: -10px;
+  margin-left: 30px;
+}

@@ -2,8 +2,10 @@ import { ClickHouse } from 'clickhouse';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { WebsiteMetricFilter } from './types';
-import { FILTER_COLUMNS } from './constants';
+import { QueryFilters, QueryOptions } from './types';
+import { FILTER_COLUMNS, OPERATORS } from './constants';
+import { loadWebsite } from './load';
+import { maxDate } from './date';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%M:00',
@@ -61,14 +63,29 @@ function getDateFormat(date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function getFilterQuery(filters = {}, params = {}) {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
+function mapFilter(column, operator, name, type = 'String') {
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = {${name}:${type}}`;
+    case OPERATORS.notEquals:
+      return `${column} != {${name}:${type}}`;
+    default:
+      return '';
+  }
+}
 
-    if (filter !== undefined) {
-      const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column} = {${key}:String}`);
-      params[key] = decodeURIComponent(filter);
+function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const query = Object.keys(filters).reduce((arr, name) => {
+    const value = filters[name];
+    const operator = value?.filter ?? OPERATORS.equals;
+    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+
+    if (value !== undefined && column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
+
+      if (name === 'referrer') {
+        arr.push('and referrer_domain != {websiteDomain:String}');
+      }
     }
 
     return arr;
@@ -77,9 +94,27 @@ function getFilterQuery(filters = {}, params = {}) {
   return query.join('\n');
 }
 
-function parseFilters(filters: WebsiteMetricFilter = {}, params: any = {}) {
+function normalizeFilters(filters = {}) {
+  return Object.keys(filters).reduce((obj, key) => {
+    const value = filters[key];
+
+    obj[key] = value?.value ?? value;
+
+    return obj;
+  }, {});
+}
+
+async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
+  const website = await loadWebsite(websiteId);
+
   return {
-    filterQuery: getFilterQuery(filters, params),
+    filterQuery: getFilterQuery(filters, options),
+    params: {
+      ...normalizeFilters(filters),
+      websiteId,
+      startDate: maxDate(filters.startDate, website.resetAt),
+      websiteDomain: website.domain,
+    },
   };
 }
 

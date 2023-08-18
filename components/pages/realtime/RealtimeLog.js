@@ -8,7 +8,7 @@ import useLocale from 'hooks/useLocale';
 import useCountryNames from 'hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
-import { dateFormat } from 'lib/date';
+import { formatDate } from 'lib/date';
 import { safeDecodeURI } from 'next-basics';
 import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
@@ -50,7 +50,7 @@ export function RealtimeLog({ data, websiteDomain }) {
     },
   ];
 
-  const getTime = ({ createdAt }) => dateFormat(new Date(createdAt), 'pp', locale);
+  const getTime = ({ createdAt }) => formatDate(new Date(createdAt), 'pp', locale);
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 

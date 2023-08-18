@@ -7,14 +7,27 @@ import UserAddButton from './UserAddButton';
 import useApi from 'hooks/useApi';
 import useUser from 'hooks/useUser';
 import useMessages from 'hooks/useMessages';
+import useApiFilter from 'hooks/useApiFilter';
 
 export function UsersList() {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
+  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
+    useApiFilter();
+
   const { get, useQuery } = useApi();
-  const { data, isLoading, error, refetch } = useQuery(['user'], () => get(`/users`), {
-    enabled: !!user,
-  });
+  const { data, isLoading, error, refetch } = useQuery(
+    ['user', filter, page, pageSize],
+    () =>
+      get(`/users`, {
+        filter,
+        page,
+        pageSize,
+      }),
+    {
+      enabled: !!user,
+    },
+  );
   const { showToast } = useToasts();
   const hasData = data && data.length !== 0;
 
@@ -33,8 +46,17 @@ export function UsersList() {
       <PageHeader title={formatMessage(labels.users)}>
         <UserAddButton onSave={handleSave} />
       </PageHeader>
-      {hasData && <UsersTable data={data} onDelete={handleDelete} />}
-      {!hasData && (
+      {(hasData || filter) && (
+        <UsersTable
+          data={data}
+          onDelete={handleDelete}
+          onFilterChange={handleFilterChange}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          filterValue={filter}
+        />
+      )}
+      {!hasData && !filter && (
         <EmptyPlaceholder message={formatMessage(messages.noUsers)}>
           <UserAddButton onSave={handleSave} />
         </EmptyPlaceholder>

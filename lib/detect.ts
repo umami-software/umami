@@ -3,6 +3,7 @@ import { getClientIp } from 'request-ip';
 import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
+import { safeDecodeURIComponent } from 'next-basics';
 
 import {
   DESKTOP_OS,
@@ -65,20 +66,18 @@ export async function getLocation(ip, req) {
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
     return {
-      country: req.headers['cf-ipcountry'],
+      country: safeDecodeURIComponent(req.headers['cf-ipcountry']),
+      subdivision1: safeDecodeURIComponent(req.headers['cf-region-code']),
+      city: safeDecodeURIComponent(req.headers['cf-ipcity']),
     };
   }
 
   // Vercel headers
   if (req.headers['x-vercel-ip-country']) {
-    const country = req.headers['x-vercel-ip-country'];
-    const region = req.headers['x-vercel-ip-country-region'];
-    const city = req.headers['x-vercel-ip-city'];
-
     return {
-      country,
-      subdivision1: region,
-      city: city ? decodeURIComponent(city) : undefined,
+      country: safeDecodeURIComponent(req.headers['x-vercel-ip-country']),
+      subdivision1: safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']),
+      city: safeDecodeURIComponent(req.headers['x-vercel-ip-city']),
     };
   }
 
