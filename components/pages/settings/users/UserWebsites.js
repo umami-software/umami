@@ -1,4 +1,3 @@
-import { Loading } from 'react-basics';
 import useApi from 'hooks/useApi';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useMessages from 'hooks/useMessages';
@@ -17,10 +16,6 @@ export function UserWebsites({ userId }) {
     }),
   );
   const hasData = data && data.length !== 0;
-
-  if (isLoading) {
-    return <Loading icon="dots" style={{ minHeight: 300 }} />;
-  }
 
   return (
     <div>
