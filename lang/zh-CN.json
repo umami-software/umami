@@ -66,7 +66,7 @@
   "label.filter-combined": "合并",
   "label.filter-raw": "原始",
   "label.filters": "筛选",
-  "label.funnel": ""分析",
+  "label.funnel": "分析",
   "label.greater-than": "Greater than",
   "label.greater-than-equals": "Greater than or equals",
   "label.insights": "见解",
@@ -188,7 +188,7 @@
   "message.incorrect-username-password": "用户名或密码不正确。",
   "message.invalid-domain": "无效域名",
   "message.min-password-length": "密码最短长度为 {n} 个字符",
-  "message.new-version-available": "Umami的新版本{version}已推出！"
+  "message.new-version-available": "Umami的新版本{version}已推出！",
   "message.no-data-available": "无可用数据。",
   "message.no-event-data": "无可用事件。",
   "message.no-match-password": "密码不一致",
@@ -207,5 +207,5 @@
   "message.team-websites-info": "团队中的任何人都可查看网站。",
   "message.tracking-code": "跟踪代码",
   "message.user-deleted": "用户已删除。",
-  "message.visitor-log": "来自{country}的访客在搭载 {os} 的{device}上使用 {browser} 浏览器进行访问。",
+  "message.visitor-log": "来自{country}的访客在搭载 {os} 的{device}上使用 {browser} 浏览器进行访问。"
 }
