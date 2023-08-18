@@ -13,6 +13,7 @@ export function WebsitesTable({
   onPageChange,
   onPageSizeChange,
   showTeam,
+  showEditButton,
 }) {
   const { formatMessage, labels, messages } = useMessages();
   const { openExternal } = useConfig();
@@ -58,7 +59,7 @@ export function WebsitesTable({
 
             return (
               <>
-                {(!showTeam || ownerId === user.id) && (
+                {showEditButton && (!showTeam || ownerId === user.id) && (
                   <Link href={`/settings/websites/${id}`}>
                     <Button>
                       <Icon>

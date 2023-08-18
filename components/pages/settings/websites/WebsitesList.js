@@ -9,7 +9,14 @@ import useUser from 'hooks/useUser';
 import { ROLES } from 'lib/constants';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 
-export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTeams, fetch }) {
+export function WebsitesList({
+  showTeam,
+  showEditButton = true,
+  showHeader = true,
+  includeTeams,
+  onlyTeams,
+  fetch,
+}) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
 
@@ -59,6 +66,7 @@ export function WebsitesList({ showTeam, showHeader = true, includeTeams, onlyTe
       <WebsitesTable
         data={data}
         showTeam={showTeam}
+        showEditButton={showEditButton}
         onFilterChange={handleFilterChange}
         onPageChange={handlePageChange}
         onPageSizeChange={handlePageSizeChange}
