@@ -44,7 +44,7 @@
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "之后"
     }
   ],
   "label.all": [
@@ -68,7 +68,7 @@
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "平均"
     }
   ],
   "label.average-visit-time": [
@@ -86,7 +86,7 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "之前"
     }
   ],
   "label.bounce-rate": [
@@ -98,7 +98,7 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "故障"
     }
   ],
   "label.browser": [
@@ -158,7 +158,7 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "包含"
     }
   ],
   "label.continue": [
@@ -314,7 +314,7 @@
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "不包含"
     }
   ],
   "label.domain": [
@@ -326,7 +326,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "丢弃"
     }
   ],
   "label.edit": [
@@ -350,13 +350,13 @@
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "事件"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "事件数据"
     }
   ],
   "label.events": [
@@ -368,7 +368,7 @@
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "否"
     }
   ],
   "label.field": [
@@ -398,13 +398,13 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "筛选"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "分析"
     }
   ],
   "label.greater-than": [
@@ -422,19 +422,19 @@
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "见解"
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "等于"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "不等于"
     }
   ],
   "label.is-not-set": [
@@ -522,13 +522,13 @@
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "少于"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "少于等于"
     }
   ],
   "label.login": [
@@ -546,7 +546,7 @@
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "最大"
     }
   ],
   "label.members": [
@@ -558,7 +558,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "最小"
     }
   ],
   "label.mobile": [
@@ -606,7 +606,7 @@
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "概览"
     }
   ],
   "label.owner": [
@@ -686,7 +686,7 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "查询"
     }
   ],
   "label.query-parameters": [
@@ -746,7 +746,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "报告"
     }
   ],
   "label.required": [
@@ -782,7 +782,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "查询"
     }
   ],
   "label.save": [
@@ -800,7 +800,7 @@
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "选择数据"
     }
   ],
   "label.select-website": [
@@ -836,7 +836,7 @@
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "总和"
     }
   ],
   "label.tablet": [
@@ -944,13 +944,13 @@
   "label.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "总数"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "总记录数"
     }
   ],
   "label.tracking-code": [
@@ -962,13 +962,13 @@
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "是"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "类型"
     }
   ],
   "label.unique": [
@@ -1028,7 +1028,7 @@
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "值"
     }
   ],
   "label.view": [
@@ -1064,7 +1064,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "网站"
     }
   ],
   "label.website-id": [
@@ -1236,7 +1236,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Umami的新版本"
     },
     {
       "type": 1,
@@ -1244,7 +1244,7 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": "已推出！"
     }
   ],
   "message.no-data-available": [
@@ -1256,7 +1256,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "无可用事件。"
     }
   ],
   "message.no-match-password": [
@@ -1304,7 +1304,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "确定重置该网站, 请在下面的输入框中输入 "
+      "value": "如果确定重置该网站, 请在下面的输入框中输入 "
     },
     {
       "type": 1,
@@ -1368,7 +1368,7 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User deleted."
+      "value": "用户已删除。"
     }
   ],
   "message.visitor-log": [
