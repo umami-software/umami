@@ -1,9 +1,10 @@
-import { GridTable, GridColumn, Button, Icon, Text, Flexbox } from 'react-basics';
+import { GridTable, GridColumn, Button, Icon, Text } from 'react-basics';
 import { useMessages, usePageQuery } from 'hooks';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
 import Empty from 'components/common/Empty';
+import { DATA_TYPES } from 'lib/constants';
 
 export function EventDataValueTable({ data = [], event }) {
   const { formatMessage, labels } = useMessages();
@@ -31,8 +32,11 @@ export function EventDataValueTable({ data = [], event }) {
       {data.length <= 0 && <Empty />}
       {data.length > 0 && (
         <GridTable data={data}>
-          <GridColumn name="field" label={formatMessage(labels.field)} />
-          <GridColumn name="value" label={formatMessage(labels.value)} />
+          <GridColumn name="fieldName" label={formatMessage(labels.field)} />
+          <GridColumn name="dataType" label={formatMessage(labels.type)}>
+            {row => DATA_TYPES[row.dataType]}
+          </GridColumn>
+          <GridColumn name="fieldValue" label={formatMessage(labels.value)} />
           <GridColumn name="total" label={formatMessage(labels.totalRecords)} width="200px">
             {({ total }) => total.toLocaleString()}
           </GridColumn>

@@ -41,6 +41,12 @@
       "value": "ผู้ดูแลระบบ"
     }
   ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "After"
+    }
+  ],
   "label.all": [
     {
       "type": 0,
@@ -59,6 +65,12 @@
       "value": "Analytics"
     }
   ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "Average"
+    }
+  ],
   "label.average-visit-time": [
     {
       "type": 0,
@@ -71,10 +83,28 @@
       "value": "ย้อนกลับ"
     }
   ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "Before"
+    }
+  ],
   "label.bounce-rate": [
     {
       "type": 0,
       "value": "อัตราตีกลับ"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "Breakdown"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "Browser"
     }
   ],
   "label.browsers": [
@@ -101,6 +131,12 @@
       "value": "Cities"
     }
   ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "City"
+    }
+  ],
   "label.clear-all": [
     {
       "type": 0,
@@ -119,6 +155,12 @@
       "value": "ยืนยันรหัสผ่าน"
     }
   ],
+  "label.contains": [
+    {
+      "type": 0,
+      "value": "Contains"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
@@ -129,6 +171,18 @@
     {
       "type": 0,
       "value": "ประเทศ"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "Country"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "Create report"
     }
   ],
   "label.create-team": [
@@ -173,10 +227,22 @@
       "value": "Data"
     }
   ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
       "value": "ตั้งแต่วันที่"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Day"
     }
   ],
   "label.default-date-range": [
@@ -209,6 +275,12 @@
       "value": "ลบเว็บไซต์"
     }
   ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
   "label.desktop": [
     {
       "type": 0,
@@ -221,6 +293,12 @@
       "value": "Details"
     }
   ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "Device"
+    }
+  ],
   "label.devices": [
     {
       "type": 0,
@@ -231,6 +309,12 @@
     {
       "type": 0,
       "value": "ยกเลิก"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Does not contain"
     }
   ],
   "label.domain": [
@@ -281,6 +365,12 @@
       "value": "เหตุการณ์"
     }
   ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "False"
+    }
+  ],
   "label.field": [
     {
       "type": 0,
@@ -305,16 +395,58 @@
       "value": "ข้อมูลดิบ"
     }
   ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "Filters"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
       "value": "Funnel"
     }
   ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "Greater than"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Greater than or equals"
+    }
+  ],
   "label.insights": [
     {
       "type": 0,
       "value": "Insights"
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "Is"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "Is not"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "Is not set"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "Is set"
     }
   ],
   "label.join": [
@@ -379,6 +511,18 @@
       "value": "Leave team"
     }
   ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "Less than"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Less than or equals"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -391,10 +535,22 @@
       "value": "ออกจากระบบ"
     }
   ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
   "label.members": [
     {
       "type": 0,
       "value": "Members"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "Min"
     }
   ],
   "label.mobile": [
@@ -407,6 +563,12 @@
     {
       "type": 0,
       "value": "เพิ่มเติม"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "My websites"
     }
   ],
   "label.name": [
@@ -427,10 +589,16 @@
       "value": "ไม่ได้กำหนด"
     }
   ],
-  "label.operating-systems": [
+  "label.os": [
     {
       "type": 0,
-      "value": "ระบบปฏิบัติการ"
+      "value": "OS"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "Overview"
     }
   ],
   "label.owner": [
@@ -439,10 +607,34 @@
       "value": "เจ้าของ"
     }
   ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Page "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
   "label.page-views": [
     {
       "type": 0,
       "value": "การเข้าชม"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "Page title"
     }
   ],
   "label.pages": [
@@ -497,6 +689,12 @@
       "value": "เรียลไทม์"
     }
   ],
+  "label.referrer": [
+    {
+      "type": 0,
+      "value": "Referrer"
+    }
+  ],
   "label.referrers": [
     {
       "type": 0,
@@ -513,6 +711,12 @@
     {
       "type": 0,
       "value": "Regenerate"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "Region"
     }
   ],
   "label.regions": [
@@ -549,6 +753,12 @@
     {
       "type": 0,
       "value": "รีเซตข้อมูลสถิติ"
+    }
+  ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Retention"
     }
   ],
   "label.role": [
@@ -611,6 +821,12 @@
       "value": "วันที่"
     }
   ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "Sum"
+    }
+  ],
   "label.tablet": [
     {
       "type": 0,
@@ -641,10 +857,22 @@
       "value": "Team member"
     }
   ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Team name"
+    }
+  ],
   "label.team-owner": [
     {
       "type": 0,
       "value": "Team owner"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Team websites"
     }
   ],
   "label.teams": [
@@ -701,10 +929,40 @@
       "value": "เปิด/ปิดแผนภูมิ"
     }
   ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "Total records"
+    }
+  ],
   "label.tracking-code": [
     {
       "type": 0,
       "value": "โค้ดสำหรับใช้ติดตาม"
+    }
+  ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "True"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
     }
   ],
   "label.unique-visitors": [
@@ -717,6 +975,12 @@
     {
       "type": 0,
       "value": "ไม่รู้จัก"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "Untitled"
     }
   ],
   "label.url": [
@@ -747,6 +1011,12 @@
     {
       "type": 0,
       "value": "Users"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Value"
     }
   ],
   "label.view": [
@@ -807,168 +1077,6 @@
     {
       "type": 0,
       "value": "Yesterday"
-    }
-  ],
-  "labels.after": [
-    {
-      "type": 0,
-      "value": "After"
-    }
-  ],
-  "labels.average": [
-    {
-      "type": 0,
-      "value": "Average"
-    }
-  ],
-  "labels.before": [
-    {
-      "type": 0,
-      "value": "Before"
-    }
-  ],
-  "labels.breakdown": [
-    {
-      "type": 0,
-      "value": "Breakdown"
-    }
-  ],
-  "labels.contains": [
-    {
-      "type": 0,
-      "value": "Contains"
-    }
-  ],
-  "labels.create-report": [
-    {
-      "type": 0,
-      "value": "Create report"
-    }
-  ],
-  "labels.description": [
-    {
-      "type": 0,
-      "value": "Description"
-    }
-  ],
-  "labels.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Does not contain"
-    }
-  ],
-  "labels.does-not-equal": [
-    {
-      "type": 0,
-      "value": "Does not equal"
-    }
-  ],
-  "labels.equals": [
-    {
-      "type": 0,
-      "value": "Equals"
-    }
-  ],
-  "labels.false": [
-    {
-      "type": 0,
-      "value": "False"
-    }
-  ],
-  "labels.filters": [
-    {
-      "type": 0,
-      "value": "Filters"
-    }
-  ],
-  "labels.greater-than": [
-    {
-      "type": 0,
-      "value": "Greater than"
-    }
-  ],
-  "labels.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Greater than or equals"
-    }
-  ],
-  "labels.less-than": [
-    {
-      "type": 0,
-      "value": "Less than"
-    }
-  ],
-  "labels.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Less than or equals"
-    }
-  ],
-  "labels.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "labels.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "labels.overview": [
-    {
-      "type": 0,
-      "value": "Overview"
-    }
-  ],
-  "labels.sum": [
-    {
-      "type": 0,
-      "value": "Sum"
-    }
-  ],
-  "labels.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "labels.total-records": [
-    {
-      "type": 0,
-      "value": "Total records"
-    }
-  ],
-  "labels.true": [
-    {
-      "type": 0,
-      "value": "True"
-    }
-  ],
-  "labels.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "labels.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "labels.untitled": [
-    {
-      "type": 0,
-      "value": "Untitled"
-    }
-  ],
-  "labels.value": [
-    {
-      "type": 0,
-      "value": "Value"
     }
   ],
   "message.active-users": [

@@ -57,12 +57,14 @@ async function relationalQuery(
             from level${i} l
             join website_event we
                 on l.session_id = we.session_id
-            where we.created_at between l.created_at 
-                and ${getAddMinutesQuery(`l.created_at `, windowMinutes)}
+            where we.website_id = {{websiteId::uuid}}
+                and we.created_at between l.created_at and ${getAddMinutesQuery(
+                  `l.created_at `,
+                  windowMinutes,
+                )}
                 and we.referrer_path = {{${i - 1}}}
                 and we.url_path = {{${i}}}
                 and we.created_at <= {{endDate}}
-                and we.website_id = {{websiteId::uuid}}
           )`;
         }
 

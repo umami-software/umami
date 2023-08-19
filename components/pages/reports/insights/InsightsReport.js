@@ -5,10 +5,11 @@ import ReportBody from '../ReportBody';
 import InsightsParameters from './InsightsParameters';
 import InsightsTable from './InsightsTable';
 import Lightbulb from 'assets/lightbulb.svg';
+import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
-  type: 'insights',
-  parameters: { fields: [], filters: [], groups: [] },
+  type: REPORT_TYPES.insights,
+  parameters: { fields: [], filters: [] },
 };
 
 export default function InsightsReport({ reportId }) {

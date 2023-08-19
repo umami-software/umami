@@ -8,7 +8,14 @@ import useMessages from 'hooks/useMessages';
 import SettingsTable from 'components/common/SettingsTable';
 import useLocale from 'hooks/useLocale';
 
-export function UsersTable({ data = [], onDelete }) {
+export function UsersTable({
+  data = { data: [] },
+  onDelete,
+  filterValue,
+  onFilterChange,
+  onPageChange,
+  onPageSizeChange,
+}) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { dateLocale } = useLocale();
@@ -36,7 +43,17 @@ export function UsersTable({ data = [], onDelete }) {
   };
 
   return (
-    <SettingsTable data={data} columns={columns} cellRender={cellRender}>
+    <SettingsTable
+      data={data}
+      columns={columns}
+      cellRender={cellRender}
+      showSearch={true}
+      showPaging={true}
+      onFilterChange={onFilterChange}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      filterValue={filterValue}
+    >
       {(row, keys, rowIndex) => {
         return (
           <>

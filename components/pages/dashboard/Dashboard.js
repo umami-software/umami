@@ -12,16 +12,17 @@ import useDashboard from 'store/dashboard';
 import useMessages from 'hooks/useMessages';
 import useLocale from 'hooks/useLocale';
 
-export function Dashboard({ userId }) {
+export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
   const dashboard = useDashboard();
   const { showCharts, limit, editing } = dashboard;
   const [max, setMax] = useState(limit);
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites'], () =>
-    get('/websites', { userId, includeTeams: 1 }),
+    get('/websites', { includeTeams: 1 }),
   );
-  const hasData = data && data.length !== 0;
+  const hasData = data && data?.data.length !== 0;
+
   const { dir } = useLocale();
 
   function handleMore() {
@@ -47,8 +48,10 @@ export function Dashboard({ userId }) {
       )}
       {hasData && (
         <>
-          {editing && <DashboardEdit websites={data} />}
-          {!editing && <WebsiteChartList websites={data} showCharts={showCharts} limit={max} />}
+          {editing && <DashboardEdit websites={data?.data} />}
+          {!editing && (
+            <WebsiteChartList websites={data?.data} showCharts={showCharts} limit={max} />
+          )}
           {max < data.length && (
             <Flexbox justifyContent="center">
               <Button onClick={handleMore}>

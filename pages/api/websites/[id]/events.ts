@@ -43,10 +43,8 @@ export default async (
       endDate,
       timezone,
       unit,
-      filters: {
-        url,
-        eventName,
-      },
+      url,
+      eventName,
     });
 
     return ok(res, events);

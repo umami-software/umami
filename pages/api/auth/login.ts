@@ -7,6 +7,7 @@ import {
   checkPassword,
   createSecureToken,
   methodNotAllowed,
+  forbidden,
 } from 'next-basics';
 import redis from '@umami/redis-client';
 import { getUserByUsername } from 'queries';
@@ -30,6 +31,10 @@ export default async (
   req: NextApiRequestQueryBody<any, LoginRequestBody>,
   res: NextApiResponse<LoginResponse>,
 ) => {
+  if (process.env.DISABLE_LOGIN) {
+    return forbidden(res);
+  }
+
   if (req.method === 'POST') {
     const { username, password } = req.body;
 
