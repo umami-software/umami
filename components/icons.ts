@@ -1,5 +1,4 @@
 import { Icons } from 'react-basics';
-
 import AddUser from 'assets/add-user.svg';
 import Bars from 'assets/bars.svg';
 import BarChart from 'assets/bar-chart.svg';
