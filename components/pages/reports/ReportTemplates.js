@@ -30,7 +30,7 @@ function ReportItem({ title, description, url, icon }) {
   );
 }
 
-export function ReportTemplates() {
+export function ReportTemplates({ showHeader = true }) {
   const { formatMessage, labels } = useMessages();
 
   const reports = [
@@ -56,7 +56,7 @@ export function ReportTemplates() {
 
   return (
     <Page>
-      <PageHeader title={formatMessage(labels.reports)} />
+      {showHeader && <PageHeader title={formatMessage(labels.reports)} />}
       <div className={styles.reports}>
         {reports.map(({ title, description, url, icon }) => {
           return (

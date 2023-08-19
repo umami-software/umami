@@ -1,5 +1,5 @@
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Page from 'components/layout/Page';
+import Empty from 'components/common/Empty';
 import ReportsTable from 'components/pages/reports/ReportsTable';
 import { useMessages, useWebsiteReports } from 'hooks';
 import Link from 'next/link';
@@ -7,7 +7,7 @@ import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
 import WebsiteHeader from './WebsiteHeader';
 
 export function WebsiteReportsPage({ websiteId }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const {
     reports,
     error,
@@ -48,7 +48,7 @@ export function WebsiteReportsPage({ websiteId }) {
           filterValue={filter}
         />
       )}
-      {!hasData && <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)} />}
+      {!hasData && <Empty />}
     </Page>
   );
 }

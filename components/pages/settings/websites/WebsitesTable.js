@@ -1,7 +1,7 @@
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
+import Empty from 'components/common/Empty';
 import useMessages from 'hooks/useMessages';
 import useConfig from 'hooks/useConfig';
 import useUser from 'hooks/useUser';
@@ -15,7 +15,7 @@ export function WebsitesTable({
   showTeam,
   showEditButton,
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const { openExternal } = useConfig();
   const { user } = useUser();
 
@@ -82,7 +82,7 @@ export function WebsitesTable({
           }}
         </SettingsTable>
       )}
-      {!showTable && <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)} />}
+      {!showTable && <Empty />}
     </>
   );
 }

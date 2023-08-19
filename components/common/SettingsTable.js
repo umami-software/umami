@@ -1,4 +1,4 @@
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import Empty from 'components/common/Empty';
 import useMessages from 'hooks/useMessages';
 import { useState } from 'react';
 import {
@@ -36,7 +36,7 @@ export function SettingsTable({
 
   return (
     <>
-      {showSearch && (
+      {showSearch && !!value.length && (
         <SearchField
           onChange={handleFilterChange}
           delay={1000}
@@ -47,7 +47,7 @@ export function SettingsTable({
         />
       )}
       {value.length === 0 && filterValue && (
-        <EmptyPlaceholder message={formatMessage(messages.noResultsFound)}></EmptyPlaceholder>
+        <Empty message={formatMessage(messages.noResultsFound)} />
       )}
       {value.length > 0 && (
         <Table columns={columns} rows={value}>

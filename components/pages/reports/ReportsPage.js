@@ -7,7 +7,7 @@ import { Button, Icon, Icons, Text } from 'react-basics';
 import ReportsTable from './ReportsTable';
 
 export function ReportsPage() {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const {
     reports,
     error,
@@ -47,9 +47,7 @@ export function ReportsPage() {
           showDomain={true}
         />
       )}
-      {!hasData && (
-        <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)}></EmptyPlaceholder>
-      )}
+      {!hasData && <EmptyPlaceholder />}
     </Page>
   );
 }

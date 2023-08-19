@@ -55,11 +55,7 @@ export function TeamWebsitesTable({
               </Button>
             </Link>
             {canRemove && (
-              <TeamWebsiteRemoveButton
-                teamId={teamId}
-                websiteId={websiteId}
-                onSave={onSave}
-              ></TeamWebsiteRemoveButton>
+              <TeamWebsiteRemoveButton teamId={teamId} websiteId={websiteId} onSave={onSave} />
             )}
           </>
         );

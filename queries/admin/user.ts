@@ -37,10 +37,10 @@ export async function getUserByUsername(username: string, options: GetUserOption
 }
 
 export async function getUsers(
-  UserSearchFilter: UserSearchFilter,
+  searchFilter: UserSearchFilter,
   options?: { include?: Prisma.UserInclude },
 ): Promise<FilterResult<User[]>> {
-  const { teamId, filter, filterType = USER_FILTER_TYPES.all } = UserSearchFilter;
+  const { teamId, filter, filterType = USER_FILTER_TYPES.all } = searchFilter;
   const mode = prisma.getSearchMode();
 
   const where: Prisma.UserWhereInput = {
@@ -67,9 +67,10 @@ export async function getUsers(
       },
     }),
   };
+
   const [pageFilters, getParameters] = prisma.getPageFilters({
     orderBy: 'username',
-    ...UserSearchFilter,
+    ...searchFilter,
   });
 
   const users = await prisma.client.user
@@ -82,12 +83,9 @@ export async function getUsers(
       ...(options?.include && { include: options.include }),
     })
     .then(a => {
-      return a.map(a => {
-        const { password, ...rest } = a;
-
-        return rest;
-      });
+      return a.map(({ password, ...rest }) => rest);
     });
+
   const count = await prisma.client.user.count({
     where: {
       ...where,

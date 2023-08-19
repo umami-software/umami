@@ -185,9 +185,7 @@ function getPageFilters(filters: SearchFilter<any>): [
     orderBy: string;
   },
 ] {
-  const pageSize = filters?.pageSize || 10;
-  const page = filters?.page || 1;
-  const orderBy = filters?.orderBy;
+  const { pageSize = 10, page = 1, orderBy } = filters || {};
 
   return [
     {
