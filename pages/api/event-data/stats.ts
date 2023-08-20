@@ -1,17 +1,23 @@
 import { canViewWebsite } from 'lib/auth';
-import { useCors, useAuth } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { ok, methodNotAllowed, unauthorized } from 'next-basics';
-import { getEventDataStats } from 'queries';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import * as yup from 'yup';
 
 export interface EventDataStatsRequestQuery {
   websiteId: string;
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
+  startAt: string;
+  endAt: string;
 }
+
+const schema = {
+  GET: yup.object().shape({
+    websiteId: yup.string().uuid().required(),
+    startAt: yup.number().integer().required(),
+    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<EventDataStatsRequestQuery>,
@@ -19,6 +25,9 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   if (req.method === 'GET') {
     const { websiteId, startAt, endAt } = req.query;

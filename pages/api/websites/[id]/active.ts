@@ -1,13 +1,20 @@
 import { WebsiteActive, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getActiveVisitors } from 'queries';
+import * as yup from 'yup';
 
 export interface WebsiteActiveRequestQuery {
   id: string;
 }
+
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<WebsiteActiveRequestQuery>,
@@ -15,6 +22,9 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { id: websiteId } = req.query;
 

@@ -1,9 +1,10 @@
-import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
-import { useAuth } from 'lib/middleware';
+import { useAuth, useValidate } from 'lib/middleware';
+import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { deleteUser, getUserById, getUserByUsername, updateUser } from 'queries';
+import * as yup from 'yup';
 
 export interface UserRequestQuery {
   id: string;
@@ -15,11 +16,26 @@ export interface UserRequestBody {
   role: Role;
 }
 
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+  POST: yup.object().shape({
+    id: yup.string().uuid().required(),
+    username: yup.string().max(255),
+    password: yup.string(),
+    role: yup.string().matches(/admin|user|view-only/i),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<UserRequestQuery, UserRequestBody>,
   res: NextApiResponse<User>,
 ) => {
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const {
     user: { id: userId, isAdmin },

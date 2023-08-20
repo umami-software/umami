@@ -1,25 +1,36 @@
 import { canViewWebsite } from 'lib/auth';
-import { useCors, useAuth } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { ok, methodNotAllowed, unauthorized } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getEventDataEvents } from 'queries';
+import * as yup from 'yup';
 
-export interface EventDataEventsRequestQuery {
+export interface EventDataFieldsRequestQuery {
   websiteId: string;
-  dateRange: {
-    startDate: string;
-    endDate: string;
-  };
-  event?: string;
+  startAt: string;
+  endAt: string;
+  event: string;
 }
 
+const schema = {
+  GET: yup.object().shape({
+    websiteId: yup.string().uuid().required(),
+    startAt: yup.number().integer().required(),
+    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+    event: yup.string().required(),
+  }),
+};
+
 export default async (
-  req: NextApiRequestQueryBody<EventDataEventsRequestQuery>,
+  req: NextApiRequestQueryBody<EventDataFieldsRequestQuery, any>,
   res: NextApiResponse<any>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   if (req.method === 'GET') {
     const { websiteId, startAt, endAt, event } = req.query;

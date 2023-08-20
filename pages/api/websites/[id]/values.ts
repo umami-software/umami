@@ -1,6 +1,6 @@
 import { NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
@@ -10,12 +10,22 @@ export interface WebsiteResetRequestQuery {
   id: string;
 }
 
+import * as yup from 'yup';
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<WebsiteResetRequestQuery>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { id: websiteId, type } = req.query;
 

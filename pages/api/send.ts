@@ -1,14 +1,15 @@
-import isbot from 'isbot';
-import ipaddr from 'ipaddr.js';
-import { createToken, ok, send, badRequest, forbidden } from 'next-basics';
-import { saveEvent, saveSessionData } from 'queries';
-import { useCors, useSession } from 'lib/middleware';
-import { getJsonBody, getIpAddress } from 'lib/detect';
-import { secret } from 'lib/crypto';
-import { NextApiRequest, NextApiResponse } from 'next';
 import { Resolver } from 'dns/promises';
-import { CollectionType } from 'lib/types';
-import { COLLECTION_TYPE } from 'lib/constants';
+import ipaddr from 'ipaddr.js';
+import isbot from 'isbot';
+import { COLLECTION_TYPE, HOSTNAME_REGEX } from 'lib/constants';
+import { secret } from 'lib/crypto';
+import { getIpAddress, getJsonBody } from 'lib/detect';
+import { useCors, useSession, useValidate } from 'lib/middleware';
+import { CollectionType, YupRequest } from 'lib/types';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { badRequest, createToken, forbidden, ok, send } from 'next-basics';
+import { saveEvent, saveSessionData } from 'queries';
+import * as yup from 'yup';
 
 export interface CollectRequestBody {
   payload: {
@@ -43,7 +44,31 @@ export interface NextApiRequestCollect extends NextApiRequest {
     city: string;
   };
   headers: { [key: string]: any };
+  yup: YupRequest;
 }
+
+const schema = {
+  POST: yup.object().shape({
+    payload: yup
+      .object()
+      .shape({
+        data: yup.object(),
+        hostname: yup.string().matches(HOSTNAME_REGEX).max(100),
+        language: yup.string().max(35),
+        referrer: yup.string().max(500),
+        screen: yup.string().max(11),
+        title: yup.string().max(500),
+        url: yup.string().max(500),
+        website: yup.string().uuid().required(),
+        name: yup.string().max(50),
+      })
+      .required(),
+    type: yup
+      .string()
+      .matches(/event|identify/i)
+      .required(),
+  }),
+};
 
 export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
@@ -54,11 +79,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
-  const error = validateBody({ type, payload });
-
-  if (error) {
-    return badRequest(res, error);
-  }
+  req.yup = schema;
+  await useValidate(req, res);
 
   if (await hasBlockedIp(req)) {
     return forbidden(res);
@@ -117,22 +139,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   return send(res, token);
 };
-
-function validateBody({ type, payload }: CollectRequestBody) {
-  if (!type || !payload) {
-    return 'Invalid payload.';
-  }
-
-  if (type !== COLLECTION_TYPE.event && type !== COLLECTION_TYPE.identify) {
-    return 'Wrong payload type.';
-  }
-
-  const { data } = payload;
-
-  if (data && !(typeof data === 'object' && !Array.isArray(data))) {
-    return 'Invalid event data.';
-  }
-}
 
 async function hasBlockedIp(req: NextApiRequestCollect) {
   const ignoreIps = process.env.IGNORE_IP;

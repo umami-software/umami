@@ -1,21 +1,33 @@
 import { subMinutes } from 'date-fns';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth } from 'lib/middleware';
+import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, RealtimeInit } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRealtimeData } from 'queries';
-
+import * as yup from 'yup';
 export interface RealtimeRequestQuery {
   id: string;
   startAt: number;
 }
+
+const currentDate = new Date().getTime();
+
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+    startAt: yup.number().integer().max(currentDate).required(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<RealtimeRequestQuery>,
   res: NextApiResponse<RealtimeInit>,
 ) => {
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   if (req.method === 'GET') {
     const { id: websiteId, startAt } = req.query;

@@ -1,15 +1,16 @@
+import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, User } from 'lib/types';
-import { useAuth } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import {
   badRequest,
   checkPassword,
+  forbidden,
   hashPassword,
   methodNotAllowed,
-  forbidden,
   ok,
 } from 'next-basics';
 import { getUserById, updateUser } from 'queries';
+import * as yup from 'yup';
 
 export interface UserPasswordRequestQuery {
   id: string;
@@ -20,6 +21,14 @@ export interface UserPasswordRequestBody {
   newPassword: string;
 }
 
+const schema = {
+  POST: yup.object().shape({
+    id: yup.string().uuid().required(),
+    currentPassword: yup.string().required(),
+    newPassword: yup.string().min(8).required(),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<UserPasswordRequestQuery, UserPasswordRequestBody>,
   res: NextApiResponse<User>,
@@ -29,6 +38,9 @@ export default async (
   }
 
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { currentPassword, newPassword } = req.body;
   const { id } = req.auth.user;

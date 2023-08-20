@@ -1,19 +1,20 @@
+import redis from '@umami/redis-client';
 import debug from 'debug';
+import { setAuthKey } from 'lib/auth';
+import { secret } from 'lib/crypto';
+import { useValidate } from 'lib/middleware';
+import { NextApiRequestQueryBody, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import {
-  ok,
-  unauthorized,
-  badRequest,
   checkPassword,
   createSecureToken,
-  methodNotAllowed,
   forbidden,
+  methodNotAllowed,
+  ok,
+  unauthorized,
 } from 'next-basics';
-import redis from '@umami/redis-client';
 import { getUserByUsername } from 'queries';
-import { secret } from 'lib/crypto';
-import { NextApiRequestQueryBody, User } from 'lib/types';
-import { setAuthKey } from 'lib/auth';
+import * as yup from 'yup';
 
 const log = debug('umami:auth');
 
@@ -27,6 +28,13 @@ export interface LoginResponse {
   user: User;
 }
 
+const schema = {
+  POST: yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().required(),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<any, LoginRequestBody>,
   res: NextApiResponse<LoginResponse>,
@@ -35,12 +43,11 @@ export default async (
     return forbidden(res);
   }
 
+  req.yup = schema;
+  await useValidate(req, res);
+
   if (req.method === 'POST') {
     const { username, password } = req.body;
-
-    if (!username || !password) {
-      return badRequest(res);
-    }
 
     const user = await getUserByUsername(username, { includePassword: true });
 

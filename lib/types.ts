@@ -5,11 +5,13 @@ import {
   EVENT_TYPE,
   KAFKA_TOPIC,
   REPORT_FILTER_TYPES,
+  REPORT_TYPES,
   ROLES,
   TEAM_FILTER_TYPES,
   USER_FILTER_TYPES,
   WEBSITE_FILTER_TYPES,
 } from './constants';
+import * as yup from 'yup';
 
 type ObjectValues<T> = T[keyof T];
 
@@ -18,6 +20,8 @@ export type Role = ObjectValues<typeof ROLES>;
 export type EventType = ObjectValues<typeof EVENT_TYPE>;
 export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
+export type ReportType = ObjectValues<typeof REPORT_TYPES>;
+
 export type ReportSearchFilterType = ObjectValues<typeof REPORT_FILTER_TYPES>;
 export type UserSearchFilterType = ObjectValues<typeof USER_FILTER_TYPES>;
 export type WebsiteSearchFilterType = ObjectValues<typeof WEBSITE_FILTER_TYPES>;
@@ -47,8 +51,8 @@ export interface ReportSearchFilter extends SearchFilter<ReportSearchFilterType>
 export interface SearchFilter<T> {
   filter?: string;
   filterType?: T;
-  pageSize?: number;
-  page?: number;
+  pageSize: number;
+  page: number;
   orderBy?: string;
 }
 
@@ -76,11 +80,19 @@ export interface Auth {
   };
 }
 
+export interface YupRequest {
+  GET?: yup.ObjectSchema<any>;
+  POST?: yup.ObjectSchema<any>;
+  PUT?: yup.ObjectSchema<any>;
+  DELETE?: yup.ObjectSchema<any>;
+}
+
 export interface NextApiRequestQueryBody<TQuery = any, TBody = any> extends NextApiRequest {
   auth?: Auth;
   query: TQuery & { [key: string]: string | string[] };
   body: TBody;
   headers: any;
+  yup: YupRequest;
 }
 
 export interface NextApiRequestAuth extends NextApiRequest {
@@ -168,7 +180,6 @@ export interface RealtimeUpdate {
 export interface DateRange {
   startDate: Date;
   endDate: Date;
-  unit: string;
   value: string;
 }
 

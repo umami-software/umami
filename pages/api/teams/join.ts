@@ -1,20 +1,29 @@
 import { Team } from '@prisma/client';
-import { NextApiRequestQueryBody } from 'lib/types';
-import { useAuth } from 'lib/middleware';
-import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, notFound } from 'next-basics';
-import { createTeamUser, getTeamByAccessCode, getTeamUser } from 'queries';
 import { ROLES } from 'lib/constants';
-
+import { useAuth, useValidate } from 'lib/middleware';
+import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiResponse } from 'next';
+import { methodNotAllowed, notFound, ok } from 'next-basics';
+import { createTeamUser, getTeamByAccessCode, getTeamUser } from 'queries';
+import * as yup from 'yup';
 export interface TeamsJoinRequestBody {
   accessCode: string;
 }
+
+const schema = {
+  POST: yup.object().shape({
+    accessCode: yup.string().max(50).required(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<any, TeamsJoinRequestBody>,
   res: NextApiResponse<Team>,
 ) => {
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   if (req.method === 'POST') {
     const { accessCode } = req.body;

@@ -1,19 +1,20 @@
+import redis from '@umami/redis-client';
+import cors from 'cors';
+import debug from 'debug';
+import { getAuthToken, parseShareToken } from 'lib/auth';
+import { ROLES } from 'lib/constants';
+import { isUuid, secret } from 'lib/crypto';
+import { findSession } from 'lib/session';
 import {
-  createMiddleware,
-  unauthorized,
   badRequest,
+  createMiddleware,
   parseSecureToken,
   tooManyRequest,
+  unauthorized,
 } from 'next-basics';
-import debug from 'debug';
-import cors from 'cors';
-import redis from '@umami/redis-client';
-import { findSession } from 'lib/session';
-import { getAuthToken, parseShareToken } from 'lib/auth';
-import { secret, isUuid } from 'lib/crypto';
-import { ROLES } from 'lib/constants';
-import { getUserById } from '../queries';
 import { NextApiRequestCollect } from 'pages/api/send';
+import { getUserById } from '../queries';
+import { NextApiRequestQueryBody } from './types';
 
 const log = debug('umami:middleware');
 
@@ -72,6 +73,18 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   }
 
   (req as any).auth = { user, token, shareToken, authKey };
+
+  next();
+});
+
+export const useValidate = createMiddleware(async (req: any, res, next) => {
+  try {
+    const { yup } = req as NextApiRequestQueryBody;
+
+    yup[req.method].validateSync({ ...req.query, ...req.body });
+  } catch (e: any) {
+    return badRequest(res, e.message);
+  }
 
   next();
 });

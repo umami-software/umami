@@ -1,9 +1,10 @@
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
+import { getFilterValidation } from 'lib/yup';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getTeamsByUserId } from 'queries';
-
+import * as yup from 'yup';
 export interface UserTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {
   id: string;
 }
@@ -14,12 +15,22 @@ export interface UserTeamsRequestBody {
   shareId: string;
 }
 
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+    ...getFilterValidation('/All|Name|Owner/i'),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<any, UserTeamsRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { user } = req.auth;
   const { id: userId } = req.query;

@@ -2,7 +2,7 @@ import { subMinutes, differenceInMinutes } from 'date-fns';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, WebsiteStats } from 'lib/types';
 import { parseDateRangeQuery } from 'lib/query';
 import { getWebsiteStats } from 'queries';
@@ -24,12 +24,22 @@ export interface WebsiteStatsRequestQuery {
   city: string;
 }
 
+import * as yup from 'yup';
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<WebsiteStatsRequestQuery>,
   res: NextApiResponse<WebsiteStats>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const {
     id: websiteId,

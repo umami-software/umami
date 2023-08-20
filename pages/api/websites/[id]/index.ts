@@ -2,7 +2,7 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { Website, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite, canUpdateWebsite, canDeleteWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { deleteWebsite, getWebsiteById, updateWebsite } from 'queries';
 import { SHARE_ID_REGEX } from 'lib/constants';
 
@@ -16,12 +16,22 @@ export interface WebsiteRequestBody {
   shareId: string;
 }
 
+import * as yup from 'yup';
+
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
 export default async (
   req: NextApiRequestQueryBody<WebsiteRequestQuery, WebsiteRequestBody>,
   res: NextApiResponse<Website>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { id: websiteId } = req.query;
 

@@ -1,9 +1,10 @@
-import { canUpdateReport, canViewReport, canDeleteReport } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { canDeleteReport, canUpdateReport, canViewReport } from 'lib/auth';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
+import { NextApiRequestQueryBody, ReportType, YupRequest } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getReportById, updateReport, deleteReport } from 'queries';
+import { deleteReport, getReportById, updateReport } from 'queries';
+import * as yup from 'yup';
 
 export interface ReportRequestQuery {
   id: string;
@@ -11,11 +12,33 @@ export interface ReportRequestQuery {
 
 export interface ReportRequestBody {
   websiteId: string;
-  type: string;
+  type: ReportType;
   name: string;
   description: string;
   parameters: string;
 }
+
+const schema: YupRequest = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+  POST: yup.object().shape({
+    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
+    type: yup
+      .string()
+      .matches(/funnel|insights|retention/i)
+      .required(),
+    name: yup.string().max(200).required(),
+    description: yup.string().max(500),
+    parameters: yup
+      .object()
+      .test('len', 'Must not exceed 6000 characters.', val => JSON.stringify(val).length < 6000),
+  }),
+  DELETE: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<ReportRequestQuery, ReportRequestBody>,
@@ -23,6 +46,9 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const { id: reportId } = req.query;
   const {

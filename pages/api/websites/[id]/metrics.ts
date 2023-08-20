@@ -2,10 +2,11 @@ import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
+import * as yup from 'yup';
 
 export interface WebsiteMetricsRequestQuery {
   id: string;
@@ -26,12 +27,21 @@ export interface WebsiteMetricsRequestQuery {
   language: string;
 }
 
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+  }),
+};
+
 export default async (
   req: NextApiRequestQueryBody<WebsiteMetricsRequestQuery>,
   res: NextApiResponse<WebsiteMetric[]>,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
+
+  req.yup = schema;
+  await useValidate(req, res);
 
   const {
     id: websiteId,

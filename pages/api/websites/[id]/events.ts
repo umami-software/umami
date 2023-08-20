@@ -1,6 +1,6 @@
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
-import { useAuth, useCors } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import moment from 'moment-timezone';
 import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -16,8 +16,20 @@ export interface WebsiteEventsRequestQuery {
   unit: string;
   timezone: string;
   url: string;
-  eventName: string;
 }
+
+import * as yup from 'yup';
+
+const schema = {
+  GET: yup.object().shape({
+    id: yup.string().uuid().required(),
+    startAt: yup.number().integer().required(),
+    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+    unit: yup.string().required(),
+    timezone: yup.string().required(),
+    url: yup.string(),
+  }),
+};
 
 export default async (
   req: NextApiRequestQueryBody<WebsiteEventsRequestQuery>,
@@ -26,7 +38,10 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
 
-  const { id: websiteId, timezone, url, eventName } = req.query;
+  req.yup = schema;
+  await useValidate(req, res);
+
+  const { id: websiteId, timezone, url } = req.query;
   const { startDate, endDate, unit } = await parseDateRangeQuery(req);
 
   if (req.method === 'GET') {
@@ -44,7 +59,6 @@ export default async (
       timezone,
       unit,
       url,
-      eventName,
     });
 
     return ok(res, events);
