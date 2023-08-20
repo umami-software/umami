@@ -78,7 +78,6 @@ const config = {
     isProduction: process.env.NODE_ENV === 'production',
   },
   basePath: process.env.BASE_PATH,
-  output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
   },
