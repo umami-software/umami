@@ -5,7 +5,7 @@ import useLocale from 'components/hooks/useLocale';
 import useMessages from 'components/hooks/useMessages';
 import useCountryNames from 'components/hooks/useCountryNames';
 import MetricsTable from './MetricsTable';
-import regions from 'public/iso-3166-2.json';
+import regions from '../../../public/iso-3166-2.json';
 
 export function RegionsTable({ websiteId, ...props }) {
   const { locale } = useLocale();
