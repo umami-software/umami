@@ -1,3 +1,4 @@
+/*
 export * from 'components/common/ConfirmDeleteForm';
 export * from 'components/common/Empty';
 export * from 'components/common/EmptyPlaceholder';
@@ -14,6 +15,7 @@ export * from 'components/common/Pager';
 export * from 'components/common/SettingsTable';
 export * from 'components/common/UpdateNotice';
 export * from 'components/common/WorldMap';
+
 export * from 'components/hooks/useApi';
 export * from 'components/hooks/useConfig';
 export * from 'components/hooks/useCountryNames';
@@ -37,6 +39,7 @@ export * from 'components/hooks/useTimezone';
 export * from 'components/hooks/useUser';
 export * from 'components/hooks/useWebsite';
 export * from 'components/hooks/useWebsiteReports';
+
 export * from 'components/input/DateFilter';
 export * from 'components/input/LanguageButton';
 export * from 'components/input/LogoutButton';
@@ -47,6 +50,7 @@ export * from 'components/input/SettingsButton';
 export * from 'components/input/ThemeButton';
 export * from 'components/input/WebsiteDateFilter';
 export * from 'components/input/WebsiteSelect';
+
 export * from 'components/layout/AppLayout';
 export * from 'components/layout/Footer';
 export * from 'components/layout/Grid';
@@ -59,3 +63,30 @@ export * from 'components/layout/ReportsLayout';
 export * from 'components/layout/SettingsLayout';
 export * from 'components/layout/ShareLayout';
 export * from 'components/layout/SideNav';
+*/
+export * from 'components/pages/settings/teams/TeamAddForm';
+export * from 'components/pages/settings/teams/TeamAddWebsiteForm';
+export * from 'components/pages/settings/teams/TeamDeleteForm';
+export * from 'components/pages/settings/teams/TeamEditForm';
+export * from 'components/pages/settings/teams/TeamJoinForm';
+export * from 'components/pages/settings/teams/TeamLeaveForm';
+export * from 'components/pages/settings/teams/TeamMemberRemoveButton';
+export * from 'components/pages/settings/teams/TeamMembers';
+export * from 'components/pages/settings/teams/TeamMembersTable';
+export * from 'components/pages/settings/teams/TeamSettings';
+export * from 'components/pages/settings/teams/TeamsList';
+export * from 'components/pages/settings/teams/TeamsTable';
+export * from 'components/pages/settings/teams/TeamWebsiteRemoveButton';
+export * from 'components/pages/settings/teams/TeamWebsites';
+export * from 'components/pages/settings/teams/TeamWebsitesTable';
+export * from 'components/pages/settings/teams/WebsiteTags';
+
+export * from 'components/pages/settings/websites/ShareUrl';
+export * from 'components/pages/settings/websites/TrackingCode';
+export * from 'components/pages/settings/websites/WebsiteAddForm';
+export * from 'components/pages/settings/websites/WebsiteDeleteForm';
+export * from 'components/pages/settings/websites/WebsiteEditForm';
+export * from 'components/pages/settings/websites/WebsiteResetForm';
+export * from 'components/pages/settings/websites/WebsiteSettings';
+export * from 'components/pages/settings/websites/WebsitesList';
+export * from 'components/pages/settings/websites/WebsitesTable';

@@ -13,7 +13,7 @@ import { Button, Flexbox, Icon, Modal, ModalTrigger, Text, useToasts } from 'rea
 import TeamJoinForm from './TeamJoinForm';
 import useApiFilter from 'components/hooks/useApiFilter';
 
-export default function TeamsList() {
+export function TeamsList() {
   const { user } = useUser();
   const { formatMessage, labels, messages } = useMessages();
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
@@ -114,3 +114,5 @@ export default function TeamsList() {
     </Page>
   );
 }
+
+export default TeamsList;

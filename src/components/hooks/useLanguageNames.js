@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { httpGet } from 'next-basics';
-import enUS from 'public/intl/language/en-US.json';
+import enUS from '../../../public/intl/country/en-US.json';
 
 const languageNames = {
   'en-US': enUS,

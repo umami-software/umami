@@ -5,7 +5,7 @@ import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';
 import useForceUpdate from 'components/hooks/useForceUpdate';
-import enUS from 'public/intl/messages/en-US.json';
+import enUS from '../../../public/intl/country/en-US.json';
 
 const messages = {
   'en-US': enUS,
