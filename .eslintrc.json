@@ -19,22 +19,21 @@
     "plugin:@typescript-eslint/recommended",
     "next"
   ],
-
   "plugins": ["@typescript-eslint", "prettier"],
   "settings": {
     "import/resolver": {
       "alias": {
         "map": [
-          ["assets", "./assets"],
-          ["components", "./components"],
+          ["assets", "./src/assets"],
+          ["components", "./src/components"],
           ["db", "./db"],
-          ["hooks", "./hooks"],
-          ["lang", "./lang"],
-          ["lib", "./lib"],
+          ["hooks", "./src/components/hooks"],
+          ["lang", "./src/lang"],
+          ["lib", "./src/lib"],
           ["public", "./public"],
-          ["queries", "./queries"],
-          ["store", "./store"],
-          ["styles", "./styles"]
+          ["queries", "./src/queries"],
+          ["store", "./src/store"],
+          ["styles", "./src/styles"]
         ],
         "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
       }

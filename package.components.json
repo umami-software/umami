@@ -1,0 +1,10 @@
+{
+  "name": "@umami/components",
+  "version": "0.1.0",
+  "description": "Umami React components.",
+  "author": "Mike Cao <mike@mikecao.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts"
+}

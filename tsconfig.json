@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "incremental": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -18,10 +17,11 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "strict": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "strictNullChecks": false,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
