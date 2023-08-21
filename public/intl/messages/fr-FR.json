@@ -41,6 +41,12 @@
       "value": "Administrateur"
     }
   ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "Après"
+    }
+  ],
   "label.all": [
     {
       "type": 0,
@@ -59,6 +65,12 @@
       "value": "Analytics"
     }
   ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "Moyenne"
+    }
+  ],
   "label.average-visit-time": [
     {
       "type": 0,
@@ -71,10 +83,28 @@
       "value": "Retour"
     }
   ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "Avant"
+    }
+  ],
   "label.bounce-rate": [
     {
       "type": 0,
       "value": "Taux de rebond"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "Répartition"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "Browser"
     }
   ],
   "label.browsers": [
@@ -101,6 +131,12 @@
       "value": "Villes"
     }
   ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "City"
+    }
+  ],
   "label.clear-all": [
     {
       "type": 0,
@@ -119,6 +155,12 @@
       "value": "Confirmation du mot de passe"
     }
   ],
+  "label.contains": [
+    {
+      "type": 0,
+      "value": "Contient"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
@@ -129,6 +171,18 @@
     {
       "type": 0,
       "value": "Pays"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "Country"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "Créer un rapport"
     }
   ],
   "label.create-team": [
@@ -173,10 +227,22 @@
       "value": "Données"
     }
   ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
       "value": "Période"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Day"
     }
   ],
   "label.default-date-range": [
@@ -209,6 +275,12 @@
       "value": "Supprimer le site"
     }
   ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
   "label.desktop": [
     {
       "type": 0,
@@ -221,6 +293,12 @@
       "value": "Détails"
     }
   ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "Device"
+    }
+  ],
   "label.devices": [
     {
       "type": 0,
@@ -231,6 +309,12 @@
     {
       "type": 0,
       "value": "Ignorer"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Ne contient pas"
     }
   ],
   "label.domain": [
@@ -281,6 +365,12 @@
       "value": "Événements"
     }
   ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "Faux"
+    }
+  ],
   "label.field": [
     {
       "type": 0,
@@ -305,16 +395,58 @@
       "value": "Brut"
     }
   ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "Filtres"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
       "value": "Entonnoir"
     }
   ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "Supérieur à"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "Supérieur ou égal à"
+    }
+  ],
   "label.insights": [
     {
       "type": 0,
       "value": "Insights"
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "Est égal"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "N'est pas égal"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "Is not set"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "Is set"
     }
   ],
   "label.join": [
@@ -379,6 +511,18 @@
       "value": "Quitter l'équipe"
     }
   ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "Inférieur à"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "Inférieur ou égal à"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -391,10 +535,22 @@
       "value": "Déconnexion"
     }
   ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "Max"
+    }
+  ],
   "label.members": [
     {
       "type": 0,
       "value": "Membres"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "Min"
     }
   ],
   "label.mobile": [
@@ -407,6 +563,12 @@
     {
       "type": 0,
       "value": "Plus"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "My websites"
     }
   ],
   "label.name": [
@@ -427,10 +589,16 @@
       "value": "Aucun·e"
     }
   ],
-  "label.operating-systems": [
+  "label.os": [
     {
       "type": 0,
-      "value": "Systèmes d'exploitation"
+      "value": "OS"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "Vue d'ensemble"
     }
   ],
   "label.owner": [
@@ -439,10 +607,34 @@
       "value": "Propriétaire"
     }
   ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Page "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
   "label.page-views": [
     {
       "type": 0,
       "value": "Pages vues"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "Page title"
     }
   ],
   "label.pages": [
@@ -497,6 +689,12 @@
       "value": "Temps réel"
     }
   ],
+  "label.referrer": [
+    {
+      "type": 0,
+      "value": "Referrer"
+    }
+  ],
   "label.referrers": [
     {
       "type": 0,
@@ -513,6 +711,12 @@
     {
       "type": 0,
       "value": "Régénérer"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "Region"
     }
   ],
   "label.regions": [
@@ -549,6 +753,12 @@
     {
       "type": 0,
       "value": "Réinitialiser les statistiques"
+    }
+  ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Retention"
     }
   ],
   "label.role": [
@@ -611,6 +821,12 @@
       "value": "Journée"
     }
   ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "Somme"
+    }
+  ],
   "label.tablet": [
     {
       "type": 0,
@@ -641,10 +857,22 @@
       "value": "Membre de l'équipe"
     }
   ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Team name"
+    }
+  ],
   "label.team-owner": [
     {
       "type": 0,
       "value": "Propriétaire de l'équipe"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Team websites"
     }
   ],
   "label.teams": [
@@ -701,10 +929,40 @@
       "value": "Afficher/Masquer les graphiques"
     }
   ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "Nombre d'enregistrements"
+    }
+  ],
   "label.tracking-code": [
     {
       "type": 0,
       "value": "Code de suivi"
+    }
+  ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "Vrai"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
     }
   ],
   "label.unique-visitors": [
@@ -717,6 +975,12 @@
     {
       "type": 0,
       "value": "Inconnu"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "Sans titre"
     }
   ],
   "label.url": [
@@ -747,6 +1011,12 @@
     {
       "type": 0,
       "value": "Utilisateurs"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Valeur"
     }
   ],
   "label.view": [
@@ -807,168 +1077,6 @@
     {
       "type": 0,
       "value": "Hier"
-    }
-  ],
-  "labels.after": [
-    {
-      "type": 0,
-      "value": "Après"
-    }
-  ],
-  "labels.average": [
-    {
-      "type": 0,
-      "value": "Moyenne"
-    }
-  ],
-  "labels.before": [
-    {
-      "type": 0,
-      "value": "Avant"
-    }
-  ],
-  "labels.breakdown": [
-    {
-      "type": 0,
-      "value": "Répartition"
-    }
-  ],
-  "labels.contains": [
-    {
-      "type": 0,
-      "value": "Contient"
-    }
-  ],
-  "labels.create-report": [
-    {
-      "type": 0,
-      "value": "Créer un rapport"
-    }
-  ],
-  "labels.description": [
-    {
-      "type": 0,
-      "value": "Description"
-    }
-  ],
-  "labels.does-not-contain": [
-    {
-      "type": 0,
-      "value": "Ne contient pas"
-    }
-  ],
-  "labels.does-not-equal": [
-    {
-      "type": 0,
-      "value": "N'est pas égal"
-    }
-  ],
-  "labels.equals": [
-    {
-      "type": 0,
-      "value": "Est égal"
-    }
-  ],
-  "labels.false": [
-    {
-      "type": 0,
-      "value": "Faux"
-    }
-  ],
-  "labels.filters": [
-    {
-      "type": 0,
-      "value": "Filtres"
-    }
-  ],
-  "labels.greater-than": [
-    {
-      "type": 0,
-      "value": "Supérieur à"
-    }
-  ],
-  "labels.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "Supérieur ou égal à"
-    }
-  ],
-  "labels.less-than": [
-    {
-      "type": 0,
-      "value": "Inférieur à"
-    }
-  ],
-  "labels.less-than-equals": [
-    {
-      "type": 0,
-      "value": "Inférieur ou égal à"
-    }
-  ],
-  "labels.max": [
-    {
-      "type": 0,
-      "value": "Max"
-    }
-  ],
-  "labels.min": [
-    {
-      "type": 0,
-      "value": "Min"
-    }
-  ],
-  "labels.overview": [
-    {
-      "type": 0,
-      "value": "Vue d'ensemble"
-    }
-  ],
-  "labels.sum": [
-    {
-      "type": 0,
-      "value": "Somme"
-    }
-  ],
-  "labels.total": [
-    {
-      "type": 0,
-      "value": "Total"
-    }
-  ],
-  "labels.total-records": [
-    {
-      "type": 0,
-      "value": "Nombre d'enregistrements"
-    }
-  ],
-  "labels.true": [
-    {
-      "type": 0,
-      "value": "Vrai"
-    }
-  ],
-  "labels.type": [
-    {
-      "type": 0,
-      "value": "Type"
-    }
-  ],
-  "labels.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "labels.untitled": [
-    {
-      "type": 0,
-      "value": "Sans titre"
-    }
-  ],
-  "labels.value": [
-    {
-      "type": 0,
-      "value": "Valeur"
     }
   ],
   "message.active-users": [

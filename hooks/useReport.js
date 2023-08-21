@@ -1,5 +1,6 @@
 import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
+import { useTimezone } from './useTimezone';
 import useApi from './useApi';
 
 const baseParameters = {
@@ -12,6 +13,7 @@ export function useReport(reportId, defaultParameters) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();
+  const [timezone] = useTimezone();
 
   const loadReport = async id => {
     const data = await get(`/reports/${id}`);
@@ -33,7 +35,7 @@ export function useReport(reportId, defaultParameters) {
 
       const { type } = report;
 
-      const data = await post(`/reports/${type}`, parameters);
+      const data = await post(`/reports/${type}`, { ...parameters, timezone });
 
       setReport(
         produce(state => {

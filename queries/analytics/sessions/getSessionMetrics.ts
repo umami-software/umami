@@ -1,15 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { DEFAULT_RESET_DATE, EVENT_TYPE } from 'lib/constants';
-import { loadWebsite } from 'lib/load';
-import { maxDate } from 'lib/date';
+import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
+import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
-  ...args: [
-    websiteId: string,
-    criteria: { startDate: Date; endDate: Date; column: string; filters: object },
-  ]
+  ...args: [websiteId: string, column: string, filters: QueryFilters]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -17,54 +13,47 @@ export async function getSessionMetrics(
   });
 }
 
-async function relationalQuery(
-  websiteId: string,
-  criteria: { startDate: Date; endDate: Date; column: string; filters: object },
-) {
-  const website = await loadWebsite(websiteId);
-  const { startDate, endDate, column, filters = {} } = criteria;
+async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { parseFilters, rawQuery } = prisma;
-  const { filterQuery, joinSession } = parseFilters(filters);
+  const { filterQuery, joinSession, params } = await parseFilters(
+    websiteId,
+    {
+      ...filters,
+      eventType: EVENT_TYPE.pageView,
+    },
+    {
+      joinSession: SESSION_COLUMNS.includes(column),
+    },
+  );
 
   return rawQuery(
-    `select ${column} x, count(*) y
-    from session as x
-    where x.session_id in (
-      select website_event.session_id
-      from website_event
-        join website 
-          on website_event.website_id = website.website_id
-        ${joinSession}
-      where website.website_id = {{websiteId::uuid}}
-        and website_event.created_at between {{startDate}} and {{endDate}}
-      ${filterQuery}
-    )
+    `
+    select ${column} x, count(*) y
+    from website_event
+    ${joinSession}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_type = {{eventType}}
+    ${filterQuery}
     group by 1
     order by 2 desc
     limit 100`,
-    {
-      websiteId,
-      startDate: maxDate(startDate, website.resetAt),
-      endDate,
-      ...filters,
-    },
+    params,
   );
 }
 
-async function clickhouseQuery(
-  websiteId: string,
-  data: { startDate: Date; endDate: Date; column: string; filters: object },
-) {
-  const { startDate, endDate, column, filters = {} } = data;
+async function clickhouseQuery(websiteId: string, column: string, filters: QueryFilters) {
   const { parseFilters, rawQuery } = clickhouse;
-  const website = await loadWebsite(websiteId);
-  const { filterQuery } = parseFilters(filters);
+  const { filterQuery, params } = await parseFilters(websiteId, {
+    ...filters,
+    eventType: EVENT_TYPE.pageView,
+  });
 
   return rawQuery(
     `
     select
       ${column} x, count(distinct session_id) y
-    from website_event as x
+    from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
@@ -73,12 +62,6 @@ async function clickhouseQuery(
     order by y desc
     limit 100
     `,
-    {
-      ...filters,
-      websiteId,
-      startDate: maxDate(startDate, website.resetAt),
-      endDate,
-      eventType: EVENT_TYPE.pageView,
-    },
+    params,
   );
 }

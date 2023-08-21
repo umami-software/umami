@@ -13,13 +13,22 @@ import TeamWebsitesTable from 'components/pages/settings/teams/TeamWebsitesTable
 import TeamAddWebsiteForm from 'components/pages/settings/teams/TeamAddWebsiteForm';
 import useApi from 'hooks/useApi';
 import useMessages from 'hooks/useMessages';
+import useApiFilter from 'hooks/useApiFilter';
 
 export function TeamWebsites({ teamId }) {
   const { showToast } = useToasts();
   const { formatMessage, labels, messages } = useMessages();
+  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
+    useApiFilter();
   const { get, useQuery } = useApi();
-  const { data, isLoading, refetch } = useQuery(['teams:websites', teamId], () =>
-    get(`/teams/${teamId}/websites`),
+  const { data, isLoading, refetch } = useQuery(
+    ['teams:websites', teamId, filter, page, pageSize],
+    () =>
+      get(`/teams/${teamId}/websites`, {
+        filter,
+        page,
+        pageSize,
+      }),
   );
   const hasData = data && data.length !== 0;
 
@@ -49,7 +58,17 @@ export function TeamWebsites({ teamId }) {
   return (
     <div>
       <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
-      {hasData && <TeamWebsitesTable teamId={teamId} data={data} onSave={handleSave} />}
+      {hasData && (
+        <TeamWebsitesTable
+          teamId={teamId}
+          data={data}
+          onSave={handleSave}
+          onFilterChange={handleFilterChange}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          filterValue={filter}
+        />
+      )}
     </div>
   );
 }

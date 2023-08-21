@@ -1,0 +1,52 @@
+.table {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  font-weight: 700;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  margin-bottom: 1px;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: var(--blue200);
+  border-radius: var(--border-radius);
+}
+
+.date {
+  display: flex;
+  align-items: center;
+  min-width: 160px;
+}
+
+.visitors {
+  display: flex;
+  align-items: center;
+  min-width: 80px;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-weight: 400;
+}
+
+.empty {
+  background: var(--blue100);
+}

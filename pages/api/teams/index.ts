@@ -1,18 +1,19 @@
 import { Team } from '@prisma/client';
-import { NextApiRequestQueryBody } from 'lib/types';
 import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth } from 'lib/middleware';
+import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeam, getUserTeams } from 'queries';
+import { createTeam, getTeamsByUserId } from 'queries';
 
-export interface TeamsRequestBody {
+export interface TeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {}
+export interface TeamsRequestBody extends SearchFilter<TeamSearchFilterType> {
   name: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<any, TeamsRequestBody>,
+  req: NextApiRequestQueryBody<TeamsRequestQuery, TeamsRequestBody>,
   res: NextApiResponse<Team[] | Team>,
 ) => {
   await useAuth(req, res);
@@ -22,9 +23,11 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const teams = await getUserTeams(userId);
+    const { page, filter, pageSize } = req.query;
 
-    return ok(res, teams);
+    const results = await getTeamsByUserId(userId, { page, filter, pageSize: +pageSize || null });
+
+    return ok(res, results);
   }
 
   if (req.method === 'POST') {

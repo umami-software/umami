@@ -1,14 +1,21 @@
+import SettingsTable from 'components/common/SettingsTable';
+import useLocale from 'hooks/useLocale';
+import useMessages from 'hooks/useMessages';
+import useUser from 'hooks/useUser';
+import { ROLES } from 'lib/constants';
 import Link from 'next/link';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';
 import TeamLeaveForm from './TeamLeaveForm';
-import useMessages from 'hooks/useMessages';
-import useUser from 'hooks/useUser';
-import { ROLES } from 'lib/constants';
-import SettingsTable from 'components/common/SettingsTable';
-import useLocale from 'hooks/useLocale';
 
-export function TeamsTable({ data = [], onDelete }) {
+export function TeamsTable({
+  data = { data: [] },
+  onDelete,
+  filterValue,
+  onFilterChange,
+  onPageChange,
+  onPageSizeChange,
+}) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const { dir } = useLocale();
@@ -27,7 +34,17 @@ export function TeamsTable({ data = [], onDelete }) {
   };
 
   return (
-    <SettingsTable data={data} columns={columns} cellRender={cellRender}>
+    <SettingsTable
+      data={data}
+      columns={columns}
+      cellRender={cellRender}
+      showSearch={true}
+      showPaging={true}
+      onFilterChange={onFilterChange}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
+      filterValue={filterValue}
+    >
       {row => {
         const { id, teamUser } = row;
         const owner = teamUser.find(({ role }) => role === ROLES.teamOwner);

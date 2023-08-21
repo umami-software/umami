@@ -1,33 +1,47 @@
 import { useMessages } from 'hooks';
+import { OPERATORS } from 'lib/constants';
 
 export function useFilters() {
   const { formatMessage, labels } = useMessages();
 
-  const filters = {
-    eq: formatMessage(labels.equals),
-    neq: formatMessage(labels.doesNotEqual),
-    c: formatMessage(labels.contains),
-    dnc: formatMessage(labels.doesNotContain),
-    t: formatMessage(labels.true),
-    f: formatMessage(labels.false),
-    gt: formatMessage(labels.greaterThan),
-    lt: formatMessage(labels.lessThan),
-    gte: formatMessage(labels.greaterThanEquals),
-    lte: formatMessage(labels.lessThanEquals),
-    be: formatMessage(labels.before),
-    af: formatMessage(labels.after),
+  const filterLabels = {
+    [OPERATORS.equals]: formatMessage(labels.is),
+    [OPERATORS.notEquals]: formatMessage(labels.isNot),
+    [OPERATORS.set]: formatMessage(labels.isSet),
+    [OPERATORS.notSet]: formatMessage(labels.isNotSet),
+    [OPERATORS.contains]: formatMessage(labels.contains),
+    [OPERATORS.doesNotContain]: formatMessage(labels.doesNotContain),
+    [OPERATORS.true]: formatMessage(labels.true),
+    [OPERATORS.false]: formatMessage(labels.false),
+    [OPERATORS.greaterThan]: formatMessage(labels.greaterThan),
+    [OPERATORS.lessThan]: formatMessage(labels.lessThan),
+    [OPERATORS.greaterThanEquals]: formatMessage(labels.greaterThanEquals),
+    [OPERATORS.lessThanEquals]: formatMessage(labels.lessThanEquals),
+    [OPERATORS.before]: formatMessage(labels.before),
+    [OPERATORS.after]: formatMessage(labels.after),
   };
 
-  const types = {
-    string: ['eq', 'neq'],
-    array: ['c', 'dnc'],
-    boolean: ['t', 'f'],
-    number: ['eq', 'neq', 'gt', 'lt', 'gte', 'lte'],
-    date: ['be', 'af'],
-    uuid: ['eq'],
+  const typeFilters = {
+    string: [OPERATORS.equals, OPERATORS.notEquals],
+    array: [OPERATORS.contains, OPERATORS.doesNotContain],
+    boolean: [OPERATORS.true, OPERATORS.false],
+    number: [
+      OPERATORS.equals,
+      OPERATORS.notEquals,
+      OPERATORS.greaterThan,
+      OPERATORS.lessThan,
+      OPERATORS.greaterThanEquals,
+      OPERATORS.lessThanEquals,
+    ],
+    date: [OPERATORS.before, OPERATORS.after],
+    uuid: [OPERATORS.equals],
   };
 
-  return { filters, types };
+  const getFilters = type => {
+    return typeFilters[type]?.map(key => ({ type, value: key, label: filterLabels[key] })) ?? [];
+  };
+
+  return { getFilters, filterLabels, typeFilters };
 }
 
 export default useFilters;

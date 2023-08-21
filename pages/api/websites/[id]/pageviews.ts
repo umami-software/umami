@@ -4,7 +4,7 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors } from 'lib/middleware';
-import { getPageviewStats } from 'queries';
+import { getPageviewStats, getSessionStats } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
 
 export interface WebsitePageviewRequestQuery {
@@ -56,42 +56,25 @@ export default async (
       return badRequest(res);
     }
 
+    const filters = {
+      startDate,
+      endDate,
+      timezone,
+      unit,
+      url,
+      referrer,
+      title,
+      os,
+      browser,
+      device,
+      country,
+      region,
+      city,
+    };
+
     const [pageviews, sessions] = await Promise.all([
-      getPageviewStats(websiteId, {
-        startDate,
-        endDate,
-        timezone,
-        unit,
-        count: '*',
-        filters: {
-          url,
-          referrer,
-          title,
-          os,
-          browser,
-          device,
-          country,
-          region,
-          city,
-        },
-      }),
-      getPageviewStats(websiteId, {
-        startDate,
-        endDate,
-        timezone,
-        unit,
-        count: 'distinct website_event.',
-        filters: {
-          url,
-          title,
-          os,
-          browser,
-          device,
-          country,
-          region,
-          city,
-        },
-      }),
+      getPageviewStats(websiteId, filters),
+      getSessionStats(websiteId, filters),
     ]);
 
     return ok(res, { pageviews, sessions });

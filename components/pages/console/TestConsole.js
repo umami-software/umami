@@ -72,7 +72,7 @@ export function TestConsole() {
   }
 
   const [websiteId] = id || [];
-  const website = data.find(({ id }) => websiteId === id);
+  const website = data?.data.find(({ id }) => websiteId === id);
 
   return (
     <Page loading={isLoading} error={error}>

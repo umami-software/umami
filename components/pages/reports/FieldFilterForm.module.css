@@ -15,3 +15,8 @@
 .dropdown {
   min-width: 180px;
 }
+
+.menu {
+  min-width: 360px;
+  max-height: 300px;
+}

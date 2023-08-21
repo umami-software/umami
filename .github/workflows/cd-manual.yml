@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image for ${{ matrix.db-type }}
+        name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
@@ -31,3 +31,13 @@ jobs:
           platform: linux/amd64,linux/arm64
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
+        with:
+          image: umamisoftware/umami
+          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
+          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}

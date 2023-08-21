@@ -17,10 +17,8 @@ async function relationalQuery(websiteId: string) {
     `
     select count(distinct session_id) x
     from website_event
-    join website 
-        on website_event.website_id = website.website_id
-    where website.website_id = {{websiteId::uuid}}
-    and website_event.created_at >= {{startAt}}
+    where website_id = {{websiteId::uuid}}
+    and created_at >= {{startAt}}
     `,
     { websiteId, startAt: subMinutes(new Date(), 5) },
   );
