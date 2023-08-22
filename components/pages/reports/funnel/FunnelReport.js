@@ -6,9 +6,10 @@ import ReportHeader from '../ReportHeader';
 import ReportMenu from '../ReportMenu';
 import ReportBody from '../ReportBody';
 import Funnel from 'assets/funnel.svg';
+import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
-  type: 'funnel',
+  type: REPORT_TYPES.funnel,
   parameters: { window: 60, urls: [] },
 };
 

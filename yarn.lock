@@ -6371,10 +6371,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-basics@^0.35.0:
-  version "0.35.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.35.0.tgz#aa68fd35a0e3fbabfdaf570cd092b6a7cf8df6f5"
-  integrity sha512-yqXZMLe109hSJ8sebI/f2m1XNnVuQowpELOhZSGOFOmLfvUyFBAEi0ULdqX1eb8xbttLgjcrumrZfMgmEwuCPw==
+next-basics@^0.36.0:
+  version "0.36.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.36.0.tgz#b1675c3f2b98df2fec8df605095dab7d17f9dc7b"
+  integrity sha512-Nwou8pCjFuoD/ZxUw9iKC7hhZeWbo/ng0ze74yck3W89MNc/CepwCDziflAHY5XcmIVNmpXOCu9OfmzTdVRPWQ==
   dependencies:
     bcryptjs "^2.4.3"
     jsonwebtoken "^9.0.0"
@@ -7557,10 +7557,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.91.0:
-  version "0.91.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.91.0.tgz#2970529a22a455ec73a1be884eb93a109c9dafc0"
-  integrity sha512-vP8LYWiFwA+eguMEuHvHct4Jl5R/2GUjWc1tMujDG0CsAAUGhx68tAJr0K3gBrWjmpJrTPVfX8SdBNKSDAjQsw==
+react-basics@^0.98.0:
+  version "0.98.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.98.0.tgz#b207bedbd9dac749d28ea6de2197a0efe648b78c"
+  integrity sha512-ebUigu+s6Iusq14EZTFTTUzdDPYFQEZjeD4feeq3o7dE+ndOVnajEdQ2va/x6CsRBUsWgjLJipfQi0XIrxYupA==
   dependencies:
     classnames "^2.3.1"
     date-fns "^2.29.3"

@@ -11,9 +11,17 @@ export interface InsightsRequestBody {
     startDate: string;
     endDate: string;
   };
-  fields: string[];
+  fields: { name: string; type: string; value: string }[];
   filters: string[];
-  groups: string[];
+  groups: { name: string; type: string }[];
+}
+
+function convertFilters(filters) {
+  return filters.reduce((obj, { name, ...value }) => {
+    obj[name] = value;
+
+    return obj;
+  }, {});
 }
 
 export default async (
@@ -29,19 +37,16 @@ export default async (
       dateRange: { startDate, endDate },
       fields,
       filters,
-      groups,
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getInsights(websiteId, {
+    const data = await getInsights(websiteId, fields, {
+      ...convertFilters(filters),
       startDate: new Date(startDate),
       endDate: new Date(endDate),
-      fields,
-      filters,
-      groups,
     });
 
     return ok(res, data);

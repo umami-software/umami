@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo } from 'react';
-import { Loading } from 'react-basics';
+import { Loading, StatusLight } from 'react-basics';
 import useMessages from 'hooks/useMessages';
 import useTheme from 'hooks/useTheme';
 import BarChart from 'components/metrics/BarChart';
@@ -22,14 +22,25 @@ export function FunnelChart({ className, loading }) {
   );
 
   const renderTooltipPopup = useCallback((setTooltipPopup, model) => {
-    const { opacity, dataPoints } = model.tooltip;
+    const { opacity, labelColors, dataPoints } = model.tooltip;
 
     if (!dataPoints?.length || !opacity) {
       setTooltipPopup(null);
       return;
     }
 
-    setTooltipPopup(`${formatLongNumber(dataPoints[0].raw.y)} ${formatMessage(labels.visitors)}`);
+    setTooltipPopup(
+      <>
+        <div>
+          {formatLongNumber(dataPoints[0].raw.y)} {formatMessage(labels.visitors)}
+        </div>
+        <div>
+          <StatusLight color={labelColors?.[0]?.backgroundColor}>
+            {formatLongNumber(dataPoints[0].raw.z)}% {formatMessage(labels.dropoff)}
+          </StatusLight>
+        </div>
+      </>,
+    );
   }, []);
 
   const datasets = useMemo(() => {

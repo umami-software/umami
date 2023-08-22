@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { GridTable, GridColumn } from 'react-basics';
 import { useMessages, usePageQuery } from 'hooks';
 import Empty from 'components/common/Empty';
+import { DATA_TYPES } from 'lib/constants';
 
 export function EventDataTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
@@ -13,15 +14,18 @@ export function EventDataTable({ data = [] }) {
 
   return (
     <GridTable data={data}>
-      <GridColumn name="event" label={formatMessage(labels.event)}>
+      <GridColumn name="eventName" label={formatMessage(labels.event)}>
         {row => (
-          <Link href={resolveUrl({ event: row.event })} shallow={true}>
-            {row.event}
+          <Link href={resolveUrl({ event: row.eventName })} shallow={true}>
+            {row.eventName}
           </Link>
         )}
       </GridColumn>
-      <GridColumn name="field" label={formatMessage(labels.field)}>
-        {row => row.field}
+      <GridColumn name="fieldName" label={formatMessage(labels.field)}>
+        {row => row.fieldName}
+      </GridColumn>
+      <GridColumn name="dataType" label={formatMessage(labels.type)}>
+        {row => DATA_TYPES[row.dataType]}
       </GridColumn>
       <GridColumn name="total" label={formatMessage(labels.totalRecords)}>
         {({ total }) => total.toLocaleString()}

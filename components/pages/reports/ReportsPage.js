@@ -1,13 +1,25 @@
+import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
+import { useMessages, useReports } from 'hooks';
 import Link from 'next/link';
 import { Button, Icon, Icons, Text } from 'react-basics';
-import { useMessages, useReports } from 'hooks';
 import ReportsTable from './ReportsTable';
 
 export function ReportsPage() {
-  const { formatMessage, labels } = useMessages();
-  const { reports, error, isLoading } = useReports();
+  const { formatMessage, labels, messages } = useMessages();
+  const {
+    reports,
+    error,
+    isLoading,
+    deleteReport,
+    filter,
+    handleFilterChange,
+    handlePageChange,
+    handlePageSizeChange,
+  } = useReports();
+
+  const hasData = (reports && reports?.data.length !== 0) || filter;
 
   return (
     <Page loading={isLoading} error={error}>
@@ -21,7 +33,23 @@ export function ReportsPage() {
           </Button>
         </Link>
       </PageHeader>
-      <ReportsTable data={reports} />
+
+      {hasData && (
+        <ReportsTable
+          data={reports}
+          showSearch={true}
+          showPaging={true}
+          onFilterChange={handleFilterChange}
+          onPageChange={handlePageChange}
+          onPageSizeChange={handlePageSizeChange}
+          onDelete={deleteReport}
+          filterValue={filter}
+          showDomain={true}
+        />
+      )}
+      {!hasData && (
+        <EmptyPlaceholder message={formatMessage(messages.noDataAvailable)}></EmptyPlaceholder>
+      )}
     </Page>
   );
 }

@@ -44,6 +44,16 @@ model Session {
 
   @@index([createdAt])
   @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, hostname])
+  @@index([websiteId, createdAt, browser])
+  @@index([websiteId, createdAt, os])
+  @@index([websiteId, createdAt, device])
+  @@index([websiteId, createdAt, screen])
+  @@index([websiteId, createdAt, language])
+  @@index([websiteId, createdAt, country])
+  @@index([websiteId, createdAt, subdivision1])
+  @@index([websiteId, createdAt, city])
   @@map("session")
 }
 
@@ -91,6 +101,11 @@ model WebsiteEvent {
   @@index([sessionId])
   @@index([websiteId])
   @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, urlPath])
+  @@index([websiteId, createdAt, urlQuery])
+  @@index([websiteId, createdAt, referrerDomain])
+  @@index([websiteId, createdAt, pageTitle])
+  @@index([websiteId, createdAt, eventName])
   @@index([websiteId, sessionId, createdAt])
   @@map("website_event")
 }
@@ -112,6 +127,8 @@ model EventData {
   @@index([createdAt])
   @@index([websiteId])
   @@index([websiteEventId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, eventKey])
   @@map("event_data")
 }
 

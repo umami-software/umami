@@ -6,7 +6,12 @@ import { useContext } from 'react';
 import { ReportContext } from './Report';
 import { useMessages } from 'hooks';
 
-export function BaseParameters() {
+export function BaseParameters({
+  showWebsiteSelect = true,
+  allowWebsiteSelect = true,
+  showDateSelect = true,
+  allowDateSelect = true,
+}) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
 
@@ -24,17 +29,25 @@ export function BaseParameters() {
 
   return (
     <>
-      <FormRow label={formatMessage(labels.website)}>
-        <WebsiteSelect websiteId={websiteId} onSelect={handleWebsiteSelect} />
-      </FormRow>
-      <FormRow label={formatMessage(labels.dateRange)}>
-        <DateFilter
-          value={value}
-          startDate={startDate}
-          endDate={endDate}
-          onChange={handleDateChange}
-        />
-      </FormRow>
+      {showWebsiteSelect && (
+        <FormRow label={formatMessage(labels.website)}>
+          {allowWebsiteSelect && (
+            <WebsiteSelect websiteId={websiteId} onSelect={handleWebsiteSelect} />
+          )}
+        </FormRow>
+      )}
+      {showDateSelect && (
+        <FormRow label={formatMessage(labels.dateRange)}>
+          {allowDateSelect && (
+            <DateFilter
+              value={value}
+              startDate={startDate}
+              endDate={endDate}
+              onChange={handleDateChange}
+            />
+          )}
+        </FormRow>
+      )}
     </>
   );
 }
