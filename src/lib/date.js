@@ -195,6 +195,13 @@ export function incrementDateRange(value, increment) {
   const sub = num * increment;
 
   switch (unit) {
+    case 'hour':
+      return {
+        ...value,
+        startDate: subHours(startDate, sub),
+        endDate: subHours(endDate, sub),
+        value: 'range',
+      };
     case 'day':
       return {
         ...value,

@@ -9,7 +9,8 @@ export function WebsiteDateFilter({ websiteId }) {
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { value, startDate, endDate, selectedUnit } = dateRange;
 
-  const isFutureDate = isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
+  const isFutureDate =
+    value !== 'all' && isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
 
   const handleChange = async value => {
     setDateRange(value);
@@ -32,19 +33,21 @@ export function WebsiteDateFilter({ websiteId }) {
         onChange={handleChange}
         showAllTime={true}
       />
-      <Flexbox justifyContent="center" gap={10} className={styles.container}>
-        <Button onClick={() => handleIncrement(1)}>
-          <Icon rotate={90}>
-            <Icons.ChevronDown />
-          </Icon>
-        </Button>
+      {value !== 'all' && (
+        <Flexbox justifyContent="center" gap={10} className={styles.container}>
+          <Button onClick={() => handleIncrement(1)}>
+            <Icon rotate={90}>
+              <Icons.ChevronDown />
+            </Icon>
+          </Button>
 
-        <Button onClick={() => handleIncrement(-1)} disabled={isFutureDate}>
-          <Icon rotate={270}>
-            <Icons.ChevronDown />
-          </Icon>
-        </Button>
-      </Flexbox>
+          <Button onClick={() => handleIncrement(-1)} disabled={isFutureDate}>
+            <Icon rotate={270}>
+              <Icons.ChevronDown />
+            </Icon>
+          </Button>
+        </Flexbox>
+      )}
     </>
   );
 }
