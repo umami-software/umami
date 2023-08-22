@@ -4,6 +4,7 @@ import {
   DATA_TYPE,
   EVENT_TYPE,
   KAFKA_TOPIC,
+  PERMISSIONS,
   REPORT_FILTER_TYPES,
   REPORT_TYPES,
   ROLES,
@@ -17,6 +18,7 @@ import { TIME_UNIT } from './date';
 type ObjectValues<T> = T[keyof T];
 
 export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
+export type Permission = ObjectValues<typeof PERMISSIONS>;
 
 export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
 export type Role = ObjectValues<typeof ROLES>;
@@ -78,6 +80,7 @@ export interface Auth {
     role: string;
     isAdmin: boolean;
   };
+  grant?: Permission[];
   shareToken?: {
     websiteId: string;
   };

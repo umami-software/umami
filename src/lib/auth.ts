@@ -4,11 +4,12 @@ import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { getTeamUser, getTeamWebsite, findTeamWebsiteByUserId } from 'queries';
+import { findTeamWebsiteByUserId, getTeamUser, getTeamWebsite, getWebsitesByUserId } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
+const cloudMode = process.env.CLOUD_MODE;
 
 export async function setAuthKey(user, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
@@ -57,7 +58,15 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   return !!(await findTeamWebsiteByUserId(websiteId, user.id));
 }
 
-export async function canCreateWebsite({ user }: Auth) {
+export async function canCreateWebsite({ user, grant }: Auth) {
+  if (cloudMode) {
+    if (grant.find(a => a === PERMISSIONS.websiteCreate)) {
+      return true;
+    }
+
+    return (await getWebsitesByUserId(user.id)).count < Number(process.env.WEBSITE_LIMIT);
+  }
+
   if (user.isAdmin) {
     return true;
   }
@@ -109,7 +118,15 @@ export async function canDeleteReport(auth: Auth, report: Report) {
   return canUpdateReport(auth, report);
 }
 
-export async function canCreateTeam({ user }: Auth) {
+export async function canCreateTeam({ user, grant }: Auth) {
+  if (cloudMode) {
+    if (grant.find(a => a === PERMISSIONS.teamCreate)) {
+      return true;
+    }
+
+    return false;
+  }
+
   if (user.isAdmin) {
     return true;
   }

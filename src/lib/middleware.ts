@@ -51,7 +51,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const shareToken = await parseShareToken(req);
 
   let user = null;
-  const { userId, authKey } = payload || {};
+  const { userId, authKey, grant } = payload || {};
 
   if (isUuid(userId)) {
     user = await getUserById(userId);
@@ -72,7 +72,13 @@ export const useAuth = createMiddleware(async (req, res, next) => {
     user.isAdmin = user.role === ROLES.admin;
   }
 
-  (req as any).auth = { user, token, shareToken, authKey };
+  (req as any).auth = {
+    user,
+    grant,
+    token,
+    shareToken,
+    authKey,
+  };
 
   next();
 });
