@@ -12,8 +12,11 @@ import {
   WEBSITE_FILTER_TYPES,
 } from './constants';
 import * as yup from 'yup';
+import { TIME_UNIT } from './date';
 
 type ObjectValues<T> = T[keyof T];
+
+export type TimeUnit = ObjectValues<typeof TIME_UNIT>;
 
 export type CollectionType = ObjectValues<typeof COLLECTION_TYPE>;
 export type Role = ObjectValues<typeof ROLES>;
@@ -181,6 +184,8 @@ export interface DateRange {
   startDate: Date;
   endDate: Date;
   value: string;
+  unit?: TimeUnit;
+  selectedUnit?: TimeUnit;
 }
 
 export interface QueryFilters {

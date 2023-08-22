@@ -13,6 +13,7 @@ export function DateFilter({
   endDate,
   className,
   onChange,
+  selectedUnit,
   showAllTime = false,
   alignment = 'end',
 }) {
@@ -66,7 +67,12 @@ export function DateFilter({
 
   const renderValue = value => {
     return value.startsWith('range') ? (
-      <CustomRange startDate={startDate} endDate={endDate} onClick={() => handleChange('custom')} />
+      <CustomRange
+        startDate={startDate}
+        endDate={endDate}
+        selectedUnit={selectedUnit}
+        onClick={() => handleChange('custom')}
+      />
     ) : (
       options.find(e => e.value === value).label
     );
@@ -120,8 +126,10 @@ export function DateFilter({
   );
 }
 
-const CustomRange = ({ startDate, endDate, onClick }) => {
+const CustomRange = ({ startDate, endDate, selectedUnit, onClick }) => {
   const { locale } = useLocale();
+
+  const monthFormat = +selectedUnit?.num === 1 && selectedUnit?.unit === 'month';
 
   function handleClick(e) {
     e.stopPropagation();
@@ -135,8 +143,14 @@ const CustomRange = ({ startDate, endDate, onClick }) => {
         <Icons.Calendar />
       </Icon>
       <Text>
-        {formatDate(startDate, 'd LLL y', locale)}
-        {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'd LLL y', locale)}`}
+        {monthFormat ? (
+          <>{formatDate(startDate, 'MMMM yyyy', locale)}</>
+        ) : (
+          <>
+            {formatDate(startDate, 'd LLL y', locale)}
+            {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'd LLL y', locale)}`}
+          </>
+        )}
       </Text>
     </Flexbox>
   );

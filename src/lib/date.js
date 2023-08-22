@@ -29,8 +29,18 @@ import {
   max,
   min,
   isDate,
+  subWeeks,
 } from 'date-fns';
 import { getDateLocale } from 'lib/lang';
+
+export const TIME_UNIT = {
+  minute: 'minute',
+  hour: 'hour',
+  day: 'day',
+  week: 'week',
+  month: 'month',
+  year: 'year',
+};
 
 const dateFuncs = {
   minute: [differenceInMinutes, addMinutes, startOfMinute],
@@ -81,6 +91,7 @@ export function parseDateRange(value, locale = 'en-US') {
   if (!match) return null;
 
   const { num, unit } = match.groups;
+  const selectedUnit = { num, unit };
 
   if (+num === 1) {
     switch (unit) {
@@ -90,6 +101,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: endOfDay(now),
           unit: 'hour',
           value,
+          selectedUnit,
         };
       case 'week':
         return {
@@ -97,6 +109,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: endOfWeek(now, { locale: dateLocale }),
           unit: 'day',
           value,
+          selectedUnit,
         };
       case 'month':
         return {
@@ -104,6 +117,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: endOfMonth(now),
           unit: 'day',
           value,
+          selectedUnit,
         };
       case 'year':
         return {
@@ -111,6 +125,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: endOfYear(now),
           unit: 'month',
           value,
+          selectedUnit,
         };
     }
   }
@@ -123,6 +138,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: subDays(endOfDay(now), 1),
           unit: 'hour',
           value,
+          selectedUnit,
         };
       case 'week':
         return {
@@ -130,6 +146,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: subDays(endOfWeek(now, { locale: dateLocale }), 1),
           unit: 'day',
           value,
+          selectedUnit,
         };
       case 'month':
         return {
@@ -137,6 +154,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: subMonths(endOfMonth(now), 1),
           unit: 'day',
           value,
+          selectedUnit,
         };
       case 'year':
         return {
@@ -144,6 +162,7 @@ export function parseDateRange(value, locale = 'en-US') {
           endDate: subYears(endOfYear(now), 1),
           unit: 'month',
           value,
+          selectedUnit,
         };
     }
   }
@@ -155,6 +174,7 @@ export function parseDateRange(value, locale = 'en-US') {
         endDate: endOfDay(now),
         unit,
         value,
+        selectedUnit,
       };
     case 'hour':
       return {
@@ -162,6 +182,46 @@ export function parseDateRange(value, locale = 'en-US') {
         endDate: endOfHour(now),
         unit,
         value,
+        selectedUnit,
+      };
+  }
+}
+
+export function incrementDateRange(value, increment) {
+  const { startDate, endDate, selectedUnit } = value;
+
+  const { num, unit } = selectedUnit;
+
+  const sub = num * increment;
+
+  switch (unit) {
+    case 'day':
+      return {
+        ...value,
+        startDate: subDays(startDate, sub),
+        endDate: subDays(endDate, sub),
+        value: 'range',
+      };
+    case 'week':
+      return {
+        ...value,
+        startDate: subWeeks(startDate, sub),
+        endDate: subWeeks(endDate, sub),
+        value: 'range',
+      };
+    case 'month':
+      return {
+        ...value,
+        startDate: subMonths(startDate, sub),
+        endDate: subMonths(endDate, sub),
+        value: 'range',
+      };
+    case 'year':
+      return {
+        ...value,
+        startDate: subYears(startDate, sub),
+        endDate: subYears(endDate, sub),
+        value: 'range',
       };
   }
 }
@@ -237,7 +297,7 @@ export function getDateLength(startDate, endDate, unit) {
   return diff(endDate, startDate) + 1;
 }
 
-export const customFormats = {
+export const CUSTOM_FORMATS = {
   'en-US': {
     p: 'ha',
     pp: 'h:mm:ss',
@@ -252,7 +312,7 @@ export const customFormats = {
 export function formatDate(date, str, locale = 'en-US') {
   return format(
     typeof date === 'string' ? new Date(date) : date,
-    customFormats?.[locale]?.[str] || str,
+    CUSTOM_FORMATS?.[locale]?.[str] || str,
     {
       locale: getDateLocale(locale),
     },

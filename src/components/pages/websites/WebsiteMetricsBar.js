@@ -110,8 +110,8 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
       </Column>
       <Column defaultSize={12} xl={4}>
         <div className={styles.actions}>
-          <RefreshButton websiteId={websiteId} />
           <WebsiteDateFilter websiteId={websiteId} />
+          <RefreshButton websiteId={websiteId} />
         </div>
       </Column>
     </Row>

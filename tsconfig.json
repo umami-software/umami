@@ -20,7 +20,8 @@
     "baseUrl": "./src",
     "strictNullChecks": false,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
