@@ -21,7 +21,7 @@
     "strictNullChecks": false,
     "noEmit": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": false
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

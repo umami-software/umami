@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./src",
-    "paths": {
-      "public/*": ["./public/*"]
-    }
+    "baseUrl": "./src"
   }
 }
