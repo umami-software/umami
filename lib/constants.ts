@@ -30,6 +30,22 @@ export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
 
+export const USER_FILTER_TYPES = {
+  all: 'All',
+  username: 'Username',
+} as const;
+export const WEBSITE_FILTER_TYPES = { all: 'All', name: 'Name', domain: 'Domain' } as const;
+export const TEAM_FILTER_TYPES = { all: 'All', name: 'Name', 'user:username': 'Owner' } as const;
+export const REPORT_FILTER_TYPES = {
+  all: 'All',
+  name: 'Name',
+  description: 'Description',
+  type: 'Type',
+  'user:username': 'Username',
+  'website:name': 'Website Name',
+  'website:domain': 'Website Domain',
+} as const;
+
 export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
 
 export const SESSION_COLUMNS = [
@@ -43,18 +59,24 @@ export const SESSION_COLUMNS = [
   'city',
 ];
 
-export const COLLECTION_TYPE = {
-  event: 'event',
-  identify: 'identify',
-};
-
 export const FILTER_COLUMNS = {
   url: 'url_path',
   referrer: 'referrer_domain',
   title: 'page_title',
   query: 'url_query',
-  event: 'event_name',
+  os: 'os',
+  browser: 'browser',
+  device: 'device',
+  country: 'country',
   region: 'subdivision1',
+  city: 'city',
+  language: 'language',
+  event: 'event_name',
+};
+
+export const COLLECTION_TYPE = {
+  event: 'event',
+  identify: 'identify',
 };
 
 export const EVENT_TYPE = {
@@ -70,6 +92,23 @@ export const DATA_TYPE = {
   array: 5,
 } as const;
 
+export const OPERATORS = {
+  equals: 'eq',
+  notEquals: 'neq',
+  set: 's',
+  notSet: 'ns',
+  contains: 'c',
+  doesNotContain: 'dnc',
+  true: 't',
+  false: 'f',
+  greaterThan: 'gt',
+  lessThan: 'lt',
+  greaterThanEquals: 'gte',
+  lessThanEquals: 'lte',
+  before: 'bf',
+  after: 'af',
+} as const;
+
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
@@ -77,6 +116,12 @@ export const DATA_TYPES = {
   [DATA_TYPE.date]: 'date',
   [DATA_TYPE.array]: 'array',
 };
+
+export const REPORT_TYPES = {
+  funnel: 'funnel',
+  insights: 'insights',
+  retention: 'retention',
+} as const;
 
 export const REPORT_PARAMETERS = {
   fields: 'fields',
@@ -119,37 +164,6 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
   [ROLES.teamMember]: [],
 } as const;
-
-export const WEBSITE_EVENT_FIELDS = {
-  eventId: { name: 'event_id', type: 'uuid', label: 'Event ID' },
-  websiteId: { name: 'website_id', type: 'uuid', label: 'Website ID' },
-  sessionId: { name: 'session_id', type: 'uuid', label: 'Session ID' },
-  createdAt: { name: 'created_at', type: 'date', label: 'Created date' },
-  urlPath: { name: 'url_path', type: 'string', label: 'URL path' },
-  urlQuery: { name: 'url_query', type: 'string', label: 'URL query' },
-  referrerPath: { name: 'referrer_path', type: 'string', label: 'Referrer path' },
-  referrerQuery: { name: 'referrer_query', type: 'string', label: 'Referrer query' },
-  referrerDomain: { name: 'referrer_domain', type: 'string', label: 'Referrer domain' },
-  pageTitle: { name: 'page_title', type: 'string', label: 'Page title' },
-  eventType: { name: 'event_type', type: 'string', label: 'Event type' },
-  eventName: { name: 'event_name', type: 'string', label: 'Event name' },
-};
-
-export const SESSION_FIELDS = {
-  sessionId: { name: 'session_id', type: 'uuid' },
-  websiteId: { name: 'website_id', type: 'uuid' },
-  hostname: { name: 'hostname', type: 'string' },
-  browser: { name: 'browser', type: 'string' },
-  os: { name: 'os', type: 'string' },
-  device: { name: 'device', type: 'string' },
-  screen: { name: 'screen', type: 'string' },
-  language: { name: 'language', type: 'string' },
-  country: { name: 'country', type: 'string' },
-  subdivision1: { name: 'subdivision1', type: 'string' },
-  subdivision2: { name: 'subdivision2', type: 'string' },
-  city: { name: 'city', type: 'string' },
-  createdAt: { name: 'created_at', type: 'date' },
-};
 
 export const THEME_COLORS = {
   light: {
@@ -199,8 +213,11 @@ export const EVENT_COLORS = [
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
-
 export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
+export const UUID_REGEX =
+  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
+export const HOSTNAME_REGEX =
+  /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;

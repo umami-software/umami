@@ -1,7 +1,11 @@
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
+import { loadWebsite } from './load';
+import { maxDate } from './date';
+import { QueryFilters, QueryOptions, SearchFilter } from './types';
+import { Prisma } from '@prisma/client';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -28,6 +32,30 @@ function getAddMinutesQuery(field: string, minutes: number): string {
 
   if (db === MYSQL) {
     return `DATE_ADD(${field}, interval ${minutes} minute)`;
+  }
+}
+
+function getDayDiffQuery(field1: string, field2: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field1}::date - ${field2}::date`;
+  }
+
+  if (db === MYSQL) {
+    return `DATEDIFF(${field1}, ${field2})`;
+  }
+}
+
+function getCastColumnQuery(field: string, type: string): string {
+  const db = getDatabaseType(process.env.DATABASE_URL);
+
+  if (db === POSTGRESQL) {
+    return `${field}::${type}`;
+  }
+
+  if (db === MYSQL) {
+    return `${field}`;
   }
 }
 
@@ -64,14 +92,31 @@ function getTimestampIntervalQuery(field: string): string {
   }
 }
 
-function getFilterQuery(filters = {}, params = []): string {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
+function mapFilter(column, operator, name, type = 'varchar') {
+  switch (operator) {
+    case OPERATORS.equals:
+      return `${column} = {{${name}::${type}}}`;
+    case OPERATORS.notEquals:
+      return `${column} != {{${name}::${type}}}`;
+    default:
+      return '';
+  }
+}
 
-    if (filter !== undefined) {
-      const column = FILTER_COLUMNS[key] || key;
-      arr.push(`and ${column}={{${key}}}`);
-      params.push(decodeURIComponent(filter));
+function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
+  const query = Object.keys(filters).reduce((arr, name) => {
+    const value = filters[name];
+    const operator = value?.filter ?? OPERATORS.equals;
+    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+
+    if (value !== undefined && column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
+
+      if (name === 'referrer') {
+        arr.push(
+          'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
+        );
+      }
     }
 
     return arr;
@@ -80,19 +125,31 @@ function getFilterQuery(filters = {}, params = []): string {
   return query.join('\n');
 }
 
-function parseFilters(
-  filters: { [key: string]: any } = {},
-  params = [],
-  sessionKey = 'session_id',
-) {
-  const { os, browser, device, country, region, city } = filters;
+function normalizeFilters(filters = {}) {
+  return Object.keys(filters).reduce((obj, key) => {
+    const value = filters[key];
+
+    obj[key] = value?.value ?? value;
+
+    return obj;
+  }, {});
+}
+
+async function parseFilters(websiteId, filters: QueryFilters = {}, options: QueryOptions = {}) {
+  const website = await loadWebsite(websiteId);
 
   return {
     joinSession:
-      os || browser || device || country || region || city
-        ? `inner join session on website_event.${sessionKey} = session.${sessionKey}`
+      options?.joinSession || Object.keys(filters).find(key => SESSION_COLUMNS.includes(key))
+        ? `inner join session on website_event.session_id = session.session_id`
         : '',
-    filterQuery: getFilterQuery(filters, params),
+    filterQuery: getFilterQuery(filters, options),
+    params: {
+      ...normalizeFilters(filters),
+      websiteId,
+      startDate: maxDate(filters.startDate, website.resetAt),
+      websiteDomain: website.domain,
+    },
   };
 }
 
@@ -104,7 +161,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
     return Promise.reject(new Error('Unknown database.'));
   }
 
-  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
+  const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*\}\}/g, (...args) => {
     const [, name, type] = args;
     params.push(data[name]);
 
@@ -114,12 +171,59 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
+function getPageFilters(filters: SearchFilter<any>): [
+  {
+    orderBy: {
+      [x: string]: string;
+    }[];
+    take: number;
+    skip: number;
+  },
+  {
+    pageSize: number;
+    page: number;
+    orderBy: string;
+  },
+] {
+  const { pageSize = 10, page = 1, orderBy } = filters;
+
+  return [
+    {
+      ...(pageSize > 0 && { take: pageSize, skip: pageSize * (page - 1) }),
+      ...(orderBy && {
+        orderBy: [
+          {
+            [orderBy]: 'asc',
+          },
+        ],
+      }),
+    },
+    { pageSize, page: +page, orderBy },
+  ];
+}
+
+function getSearchMode(): { mode?: Prisma.QueryMode } {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return {
+      mode: 'insensitive',
+    };
+  }
+
+  return {};
+}
+
 export default {
   ...prisma,
   getAddMinutesQuery,
+  getDayDiffQuery,
+  getCastColumnQuery,
   getDateQuery,
   getTimestampIntervalQuery,
   getFilterQuery,
   parseFilters,
+  getPageFilters,
+  getSearchMode,
   rawQuery,
 };

@@ -3,19 +3,18 @@ import { useCors, useAuth } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { ok, methodNotAllowed, unauthorized } from 'next-basics';
-import { getEventDataFields } from 'queries';
+import { getEventDataStats } from 'queries';
 
-export interface EventDataRequestBody {
+export interface EventDataStatsRequestQuery {
   websiteId: string;
   dateRange: {
     startDate: string;
     endDate: string;
   };
-  field?: string;
 }
 
 export default async (
-  req: NextApiRequestQueryBody<any, EventDataRequestBody>,
+  req: NextApiRequestQueryBody<EventDataStatsRequestQuery>,
   res: NextApiResponse<any>,
 ) => {
   await useCors(req, res);
@@ -28,15 +27,10 @@ export default async (
       return unauthorized(res);
     }
 
-    const results = await getEventDataFields(websiteId, new Date(+startAt), new Date(+endAt));
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
-    const data = results.reduce(
-      (obj, row) => {
-        obj.records += Number(row.total);
-        return obj;
-      },
-      { fields: results.length, records: 0 },
-    );
+    const data = await getEventDataStats(websiteId, { startDate, endDate });
 
     return ok(res, data);
   }

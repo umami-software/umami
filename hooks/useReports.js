@@ -1,12 +1,16 @@
 import { useState } from 'react';
 import useApi from './useApi';
+import useApiFilter from 'hooks/useApiFilter';
 
-export function useReports(websiteId) {
+export function useReports() {
   const [modified, setModified] = useState(Date.now());
   const { get, useQuery, del, useMutation } = useApi();
   const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
-  const { data, error, isLoading } = useQuery(['reports:website', { websiteId, modified }], () =>
-    get(`/reports`, { websiteId }),
+  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
+    useApiFilter();
+  const { data, error, isLoading } = useQuery(
+    ['reports', { modified, filter, page, pageSize }],
+    () => get(`/reports`, { filter, page, pageSize }),
   );
 
   const deleteReport = id => {
@@ -17,7 +21,18 @@ export function useReports(websiteId) {
     });
   };
 
-  return { reports: data, error, isLoading, deleteReport };
+  return {
+    reports: data,
+    error,
+    isLoading,
+    deleteReport,
+    filter,
+    page,
+    pageSize,
+    handleFilterChange,
+    handlePageChange,
+    handlePageSizeChange,
+  };
 }
 
 export default useReports;

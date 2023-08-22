@@ -16,6 +16,7 @@ import UrlAddForm from './UrlAddForm';
 import { ReportContext } from 'components/pages/reports/Report';
 import BaseParameters from '../BaseParameters';
 import ParameterList from '../ParameterList';
+import PopupForm from '../PopupForm';
 
 export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
@@ -53,7 +54,11 @@ export function FunnelParameters() {
         </Icon>
         <Popup position="bottom" alignment="start">
           {(close, element) => {
-            return <UrlAddForm element={element} onAdd={handleAddUrl} onClose={close} />;
+            return (
+              <PopupForm element={element} onClose={close}>
+                <UrlAddForm onAdd={handleAddUrl} />
+              </PopupForm>
+            );
           }}
         </Popup>
       </PopupTrigger>

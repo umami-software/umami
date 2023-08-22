@@ -25,7 +25,7 @@ export function flattenJSON(
   ).keyValues;
 }
 
-export function getDynamicDataType(value: any): string {
+export function getDataType(value: any): string {
   let type: string = typeof value;
 
   if ((type === 'string' && isValid(value)) || isValid(parseISO(value))) {
@@ -36,7 +36,7 @@ export function getDynamicDataType(value: any): string {
 }
 
 function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
-  const type = getDynamicDataType(value);
+  const type = getDataType(value);
 
   let dynamicDataType = null;
 

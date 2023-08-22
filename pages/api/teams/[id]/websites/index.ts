@@ -1,11 +1,12 @@
 import { canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
-import { NextApiRequestQueryBody } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createTeamWebsites, getTeamWebsites } from 'queries/admin/teamWebsite';
+import { getWebsites, getWebsitesByTeamId } from 'queries';
+import { createTeamWebsites } from 'queries/admin/teamWebsite';
 
-export interface TeamWebsiteRequestQuery {
+export interface TeamWebsiteRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
   id: string;
 }
 
@@ -26,7 +27,13 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getTeamWebsites(teamId);
+    const { page, filter, pageSize } = req.query;
+
+    const websites = await getWebsitesByTeamId(teamId, {
+      page,
+      filter,
+      pageSize: +pageSize || null,
+    });
 
     return ok(res, websites);
   }
