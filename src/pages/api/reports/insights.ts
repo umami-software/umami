@@ -12,8 +12,8 @@ export interface InsightsRequestBody {
     startDate: string;
     endDate: string;
   };
-  fields: { name: string; type: string; value: string }[];
-  filters: string[];
+  fields: { name: string; type: string; label: string }[];
+  filters: { name: string; type: string; filter: string; value: string }[];
   groups: { name: string; type: string }[];
 }
 
@@ -33,12 +33,23 @@ const schema = {
         yup.object().shape({
           name: yup.string().required(),
           type: yup.string().required(),
+          label: yup.string().required(),
+        }),
+      )
+      .min(1)
+      .required(),
+    filters: yup
+      .array()
+      .of(
+        yup.object().shape({
+          name: yup.string().required(),
+          type: yup.string().required(),
+          filter: yup.string().required(),
           value: yup.string().required(),
         }),
       )
       .min(1)
       .required(),
-    filters: yup.array().of(yup.string()).min(1).required(),
     groups: yup.array().of(
       yup.object().shape({
         name: yup.string().required(),
