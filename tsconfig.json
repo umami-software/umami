@@ -21,15 +21,15 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": false,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "assets/*": ["./src/assets/*"],
-      "components/*": ["./src/components/*"],
-      "lib/*": ["./src/lib/*"],
-      "pages/*": ["./src/pages/*"],
-      "queries/*": ["./src/queries/*"],
-      "store/*": ["./src/store/*"],
-      "styles/*": ["./src/styles/*"]
+      "assets/*": ["./assets/*"],
+      "components/*": ["./components/*"],
+      "lib/*": ["./lib/*"],
+      "pages/*": ["./pages/*"],
+      "queries/*": ["./queries/*"],
+      "store/*": ["./store/*"],
+      "styles/*": ["./styles/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
