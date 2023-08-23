@@ -44,11 +44,6 @@ const jsBundle = {
   output: [
     {
       file: 'dist/index.js',
-      format: 'cjs',
-      sourcemap: true,
-    },
-    {
-      file: 'dist/index.mjs',
       format: 'es',
       sourcemap: true,
     },
@@ -78,7 +73,7 @@ const jsBundle = {
     alias(aliasConfig),
     esbuild({
       target: 'es6',
-      jsx: 'transform',
+      jsx: 'automatic',
       loaders: {
         '.js': 'jsx',
       },

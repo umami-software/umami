@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import produce from 'immer';
+import { produce } from 'immer';
 import { DateRange } from 'lib/types';
 
 const store = create(() => ({}));

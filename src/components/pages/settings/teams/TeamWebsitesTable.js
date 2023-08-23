@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import TeamWebsiteRemoveButton from './TeamWebsiteRemoveButton';
 import SettingsTable from 'components/common/SettingsTable';
-import useConfig from 'components/hooks/useConfig';
 
 export function TeamWebsitesTable({
   data = [],
@@ -13,9 +12,9 @@ export function TeamWebsitesTable({
   onFilterChange,
   onPageChange,
   onPageSizeChange,
+  openExternal = false,
 }) {
   const { formatMessage, labels } = useMessages();
-  const { openExternal } = useConfig();
 
   const { user } = useUser();
   const columns = [

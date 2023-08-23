@@ -12,14 +12,12 @@ export function WebsiteDateFilter({ websiteId }) {
   const isFutureDate =
     value !== 'all' && isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
 
-  const handleChange = async value => {
+  const handleChange = value => {
     setDateRange(value);
   };
 
-  const handleIncrement = async value => {
-    const newValue = incrementDateRange(dateRange, value);
-
-    setDateRange(newValue);
+  const handleIncrement = value => {
+    setDateRange(incrementDateRange(dateRange, value));
   };
 
   return (

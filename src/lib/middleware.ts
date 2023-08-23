@@ -60,7 +60,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   }
 
   if (process.env.NODE_ENV === 'development') {
-    log({ token, shareToken, payload, user });
+    log({ token, shareToken, payload, user, grant });
   }
 
   if (!user?.id && !shareToken) {

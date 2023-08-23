@@ -3,7 +3,6 @@ import { Button, Text, Icon, Icons } from 'react-basics';
 import SettingsTable from 'components/common/SettingsTable';
 import Empty from 'components/common/Empty';
 import useMessages from 'components/hooks/useMessages';
-import useConfig from 'components/hooks/useConfig';
 import useUser from 'components/hooks/useUser';
 
 export function WebsitesTable({
@@ -14,12 +13,12 @@ export function WebsitesTable({
   onPageSizeChange,
   showTeam,
   showEditButton,
+  openExternal = false,
 }) {
   const { formatMessage, labels } = useMessages();
-  const { openExternal } = useConfig();
   const { user } = useUser();
 
-  const showTable = data && (filterValue || data?.data.length !== 0);
+  const showTable = data && (filterValue || data?.data?.length !== 0);
 
   const teamColumns = [
     { name: 'teamName', label: formatMessage(labels.teamName) },

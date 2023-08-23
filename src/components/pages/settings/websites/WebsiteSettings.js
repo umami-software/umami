@@ -10,12 +10,10 @@ import TrackingCode from 'components/pages/settings/websites/TrackingCode';
 import ShareUrl from 'components/pages/settings/websites/ShareUrl';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
-import useConfig from 'components/hooks/useConfig';
 
-export function WebsiteSettings({ websiteId }) {
+export function WebsiteSettings({ websiteId, openExternal = false }) {
   const router = useRouter();
   const { formatMessage, labels, messages } = useMessages();
-  const { openExternal } = useConfig();
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
   const { data, isLoading } = useQuery(

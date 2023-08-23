@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import useApi from 'components/hooks/useApi';
 import useUser from 'components/hooks/useUser';
 
-export function useRequireLogin() {
+export function useRequireLogin(handler: (data?: object) => void) {
   const router = useRouter();
   const { get } = useApi();
   const { user, setUser } = useUser();
@@ -11,9 +11,9 @@ export function useRequireLogin() {
   useEffect(() => {
     async function loadUser() {
       try {
-        const { user } = await get('/auth/verify');
+        const data = await get('/auth/verify');
 
-        setUser(user);
+        setUser(typeof handler === 'function' ? handler(data) : (data as any)?.user);
       } catch {
         await router.push('/login');
       }
