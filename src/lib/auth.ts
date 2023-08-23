@@ -4,7 +4,7 @@ import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { findTeamWebsiteByUserId, getTeamUser, getTeamWebsite, getWebsitesByUserId } from 'queries';
+import { findTeamWebsiteByUserId, getTeamUser, getTeamWebsite } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
 
@@ -60,11 +60,11 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
 export async function canCreateWebsite({ user, grant }: Auth) {
   if (cloudMode) {
-    if (grant.find(a => a === PERMISSIONS.websiteCreate)) {
+    if (grant?.find(a => a === PERMISSIONS.websiteCreate)) {
       return true;
     }
 
-    return (await getWebsitesByUserId(user.id)).count < Number(process.env.WEBSITE_LIMIT);
+    return false;
   }
 
   if (user.isAdmin) {
@@ -120,7 +120,7 @@ export async function canDeleteReport(auth: Auth, report: Report) {
 
 export async function canCreateTeam({ user, grant }: Auth) {
   if (cloudMode) {
-    if (grant.find(a => a === PERMISSIONS.teamCreate)) {
+    if (grant?.find(a => a === PERMISSIONS.teamCreate)) {
       return true;
     }
 
