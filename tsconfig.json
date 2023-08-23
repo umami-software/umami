@@ -17,11 +17,20 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "strict": true,
-    "baseUrl": "./src",
     "strictNullChecks": false,
     "noEmit": true,
     "jsx": "preserve",
-    "incremental": false
+    "incremental": false,
+    "baseUrl": ".",
+    "paths": {
+      "assets/*": ["./src/assets/*"],
+      "components/*": ["./src/components/*"],
+      "lib/*": ["./src/lib/*"],
+      "pages/*": ["./src/pages/*"],
+      "queries/*": ["./src/queries/*"],
+      "store/*": ["./src/store/*"],
+      "styles/*": ["./src/styles/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts"],
   "exclude": ["node_modules"]
