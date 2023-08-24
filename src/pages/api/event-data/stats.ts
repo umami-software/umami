@@ -3,6 +3,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getEventDataStats } from 'queries/index';
 import * as yup from 'yup';
 
 export interface EventDataStatsRequestQuery {
