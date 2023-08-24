@@ -72,6 +72,7 @@ export const FILTER_COLUMNS = {
   city: 'city',
   language: 'language',
   event: 'event_name',
+  eventName: 'event_name',
 };
 
 export const COLLECTION_TYPE = {
