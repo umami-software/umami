@@ -10,7 +10,7 @@ export interface EventDataFieldsRequestQuery {
   websiteId: string;
   startAt: string;
   endAt: string;
-  event: string;
+  event?: string;
 }
 
 const schema = {
@@ -18,7 +18,7 @@ const schema = {
     websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
-    event: yup.string().required(),
+    event: yup.string(),
   }),
 };
 
