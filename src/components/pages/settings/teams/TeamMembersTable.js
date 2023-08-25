@@ -6,6 +6,7 @@ import SettingsTable from 'components/common/SettingsTable';
 
 export function TeamMembersTable({
   data = [],
+  teamId,
   onSave,
   readOnly,
   filterValue,
@@ -50,7 +51,7 @@ export function TeamMembersTable({
         return (
           !readOnly && (
             <TeamMemberRemoveButton
-              teamId={row.teamId}
+              teamId={teamId}
               userId={row.id}
               disabled={user.id === row?.user?.id || row.role === ROLES.teamOwner}
               onSave={onSave}
