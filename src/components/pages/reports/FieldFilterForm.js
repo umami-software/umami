@@ -3,7 +3,14 @@ import { Form, FormRow, Item, Flexbox, Dropdown, Button } from 'react-basics';
 import { useMessages, useFilters, useFormat } from 'components/hooks';
 import styles from './FieldFilterForm.module.css';
 
-export default function FieldFilterForm({ name, label, type, values, onSelect }) {
+export default function FieldFilterForm({
+  name,
+  label,
+  type,
+  values,
+  onSelect,
+  includeOnlyEquals,
+}) {
   const { formatMessage, labels } = useMessages();
   const [filter, setFilter] = useState('eq');
   const [value, setValue] = useState();
@@ -27,17 +34,19 @@ export default function FieldFilterForm({ name, label, type, values, onSelect })
     <Form>
       <FormRow label={label} className={styles.filter}>
         <Flexbox gap={10}>
-          <Dropdown
-            className={styles.dropdown}
-            items={filters}
-            value={filter}
-            renderValue={renderFilterValue}
-            onChange={setFilter}
-          >
-            {({ value, label }) => {
-              return <Item key={value}>{label}</Item>;
-            }}
-          </Dropdown>
+          {!includeOnlyEquals && (
+            <Dropdown
+              className={styles.dropdown}
+              items={filters}
+              value={filter}
+              renderValue={renderFilterValue}
+              onChange={setFilter}
+            >
+              {({ value, label }) => {
+                return <Item key={value}>{label}</Item>;
+              }}
+            </Dropdown>
+          )}
           <Dropdown
             className={styles.dropdown}
             menuProps={{ className: styles.menu }}
@@ -45,6 +54,9 @@ export default function FieldFilterForm({ name, label, type, values, onSelect })
             value={value}
             renderValue={renderValue}
             onChange={setValue}
+            style={{
+              minWidth: '250px',
+            }}
           >
             {value => {
               return <Item key={value}>{formatValue(value, name)}</Item>;

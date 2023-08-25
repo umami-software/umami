@@ -140,6 +140,7 @@ export const labels = defineMessages({
   description: { id: 'label.description', defaultMessage: 'Description' },
   untitled: { id: 'label.untitled', defaultMessage: 'Untitled' },
   type: { id: 'label.type', defaultMessage: 'Type' },
+  filter: { id: 'label.filter', defaultMessage: 'Filter' },
   filters: { id: 'label.filters', defaultMessage: 'Filters' },
   breakdown: { id: 'label.breakdown', defaultMessage: 'Breakdown' },
   true: { id: 'label.true', defaultMessage: 'True' },

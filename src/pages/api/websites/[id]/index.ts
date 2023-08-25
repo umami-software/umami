@@ -23,6 +23,7 @@ const schema = {
     id: yup.string().uuid().required(),
   }),
 };
+
 export default async (
   req: NextApiRequestQueryBody<WebsiteRequestQuery, WebsiteRequestBody>,
   res: NextApiResponse<Website>,

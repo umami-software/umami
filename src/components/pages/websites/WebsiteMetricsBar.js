@@ -1,20 +1,25 @@
 import classNames from 'classnames';
-import { Row, Column } from 'react-basics';
-import { formatShortTime } from 'lib/format';
-import MetricCard from 'components/metrics/MetricCard';
+import { useApi, useDateRange, useMessages, usePageQuery, useSticky } from 'components/hooks';
 import RefreshButton from 'components/input/RefreshButton';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
+import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { useApi, useDateRange, usePageQuery, useMessages, useSticky } from 'components/hooks';
+import FilterSelectForm from 'components/pages/reports/FilterSelectForm';
+import PopupForm from 'components/pages/reports/PopupForm';
+import { formatShortTime } from 'lib/format';
+import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row, TooltipPopup } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({ websiteId, sticky }) {
   const { formatMessage, labels } = useMessages();
+
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const {
+    resolveUrl,
+    router,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = usePageQuery();
 
@@ -39,6 +44,17 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
       }),
   );
 
+  const fieldOptions = [
+    { name: 'url', type: 'string', label: formatMessage(labels.url) },
+    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
+    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
+    { name: 'os', type: 'string', label: formatMessage(labels.os) },
+    { name: 'device', type: 'string', label: formatMessage(labels.device) },
+    { name: 'country', type: 'string', label: formatMessage(labels.country) },
+    { name: 'region', type: 'string', label: formatMessage(labels.region) },
+    { name: 'city', type: 'string', label: formatMessage(labels.city) },
+  ];
+
   const { pageviews, uniques, bounces, totaltime } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);
   const diffs = data && {
@@ -46,6 +62,42 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
     uniques: uniques.value - uniques.change,
     bounces: bounces.value - bounces.change,
     totaltime: totaltime.value - totaltime.change,
+  };
+
+  const handleAddFilter = ({ name, value }) => {
+    router.push(resolveUrl({ [name]: value }));
+  };
+
+  const WebsiteFilterButton = () => {
+    return (
+      <PopupTrigger>
+        <TooltipPopup label={formatMessage(labels.addFilter)} position="top">
+          <Button>
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            {formatMessage(labels.filter)}
+          </Button>
+        </TooltipPopup>
+        <Popup position="bottom" alignment="start" className={styles.popup}>
+          {close => {
+            return (
+              <PopupForm onClose={close}>
+                <FilterSelectForm
+                  websiteId={websiteId}
+                  items={fieldOptions}
+                  onSelect={value => {
+                    handleAddFilter(value);
+                    close();
+                  }}
+                  includeOnlyEquals={true}
+                />
+              </PopupForm>
+            );
+          }}
+        </Popup>
+      </PopupTrigger>
+    );
   };
 
   return (
@@ -110,6 +162,7 @@ export function WebsiteMetricsBar({ websiteId, sticky }) {
       </Column>
       <Column defaultSize={12} xl={4}>
         <div className={styles.actions}>
+          <WebsiteFilterButton />
           <WebsiteDateFilter websiteId={websiteId} />
           <RefreshButton websiteId={websiteId} />
         </div>
