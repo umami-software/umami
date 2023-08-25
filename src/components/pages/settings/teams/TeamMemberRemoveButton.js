@@ -19,7 +19,11 @@ export function TeamMemberRemoveButton({ teamId, userId, disabled, onSave }) {
   };
 
   return (
-    <LoadingButton onClick={() => handleRemoveTeamMember()} disabled={disabled} loading={isLoading}>
+    <LoadingButton
+      onClick={() => handleRemoveTeamMember()}
+      disabled={disabled}
+      isLoading={isLoading}
+    >
       <Icon>
         <Icons.Close />
       </Icon>

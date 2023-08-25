@@ -19,7 +19,7 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   };
 
   return (
-    <LoadingButton onClick={() => handleRemoveTeamMember()} loading={isLoading}>
+    <LoadingButton onClick={() => handleRemoveTeamMember()} isLoading={isLoading}>
       <Icon>
         <Icons.Close />
       </Icon>
