@@ -38,18 +38,14 @@ const schema = {
       )
       .min(1)
       .required(),
-    filters: yup
-      .array()
-      .of(
-        yup.object().shape({
-          name: yup.string().required(),
-          type: yup.string().required(),
-          filter: yup.string().required(),
-          value: yup.string().required(),
-        }),
-      )
-      .min(1)
-      .required(),
+    filters: yup.array().of(
+      yup.object().shape({
+        name: yup.string().required(),
+        type: yup.string().required(),
+        filter: yup.string().required(),
+        value: yup.string().required(),
+      }),
+    ),
     groups: yup.array().of(
       yup.object().shape({
         name: yup.string().required(),
