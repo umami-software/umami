@@ -7,7 +7,7 @@ import MetricsBar from 'components/metrics/MetricsBar';
 import FilterSelectForm from 'components/pages/reports/FilterSelectForm';
 import PopupForm from 'components/pages/reports/PopupForm';
 import { formatShortTime } from 'lib/format';
-import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row, TooltipPopup } from 'react-basics';
+import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
@@ -71,14 +71,12 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   const WebsiteFilterButton = () => {
     return (
       <PopupTrigger>
-        <TooltipPopup label={formatMessage(labels.addFilter)} position="top">
-          <Button>
-            <Icon>
-              <Icons.Plus />
-            </Icon>
-            {formatMessage(labels.filter)}
-          </Button>
-        </TooltipPopup>
+        <Button>
+          <Icon>
+            <Icons.Plus />
+          </Icon>
+          {formatMessage(labels.filter)}
+        </Button>
         <Popup position="bottom" alignment="start" className={styles.popup}>
           {close => {
             return (
