@@ -11,12 +11,10 @@ export interface RealtimeRequestQuery {
   startAt: number;
 }
 
-const currentDate = new Date().getTime();
-
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
-    startAt: yup.number().integer().max(currentDate).required(),
+    startAt: yup.number().integer().required(),
   }),
 };
 
