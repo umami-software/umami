@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-import DataTable from 'components/metrics/DataTable';
+import ListTable from 'components/metrics/ListTable';
 import useLocale from 'components/hooks/useLocale';
 import useCountryNames from 'components/hooks/useCountryNames';
 import useMessages from 'components/hooks/useMessages';
@@ -24,7 +24,7 @@ export function RealtimeCountries({ data }) {
   );
 
   return (
-    <DataTable
+    <ListTable
       title={formatMessage(labels.countries)}
       metric={formatMessage(labels.visitors)}
       data={data}

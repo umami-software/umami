@@ -3,11 +3,11 @@ import PageHeader from 'components/layout/PageHeader';
 import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
 import WebsitesTable from 'components/pages/settings/websites/WebsitesTable';
 import useApi from 'components/hooks/useApi';
-import useApiFilter from 'components/hooks/useApiFilter';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
+import { useState } from 'react';
 
 export function WebsitesList({
   showTeam,
@@ -15,27 +15,26 @@ export function WebsitesList({
   showHeader = true,
   includeTeams,
   onlyTeams,
-  fetch,
 }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
-
-  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
-    useApiFilter();
+  const [params, setParams] = useState({});
   const { get, useQuery } = useApi();
   const { data, isLoading, error, refetch } = useQuery(
-    ['websites', fetch, user?.id, filter, page, pageSize, includeTeams, onlyTeams],
+    ['websites', includeTeams, onlyTeams],
     () =>
       get(`/users/${user?.id}/websites`, {
-        filter,
-        page,
-        pageSize,
         includeTeams,
         onlyTeams,
+        ...params,
       }),
     { enabled: !!user },
   );
   const { showToast } = useToasts();
+
+  const handleChange = params => {
+    setParams(params);
+  };
 
   const handleSave = async () => {
     await refetch();
@@ -67,10 +66,7 @@ export function WebsitesList({
         data={data}
         showTeam={showTeam}
         showEditButton={showEditButton}
-        onFilterChange={handleFilterChange}
-        onPageChange={handlePageChange}
-        onPageSizeChange={handlePageSizeChange}
-        filterValue={filter}
+        onChange={handleChange}
       />
     </Page>
   );

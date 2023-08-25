@@ -19,16 +19,19 @@ import {
   useToasts,
 } from 'react-basics';
 
+const TABS = {
+  myWebsites: 'my-websites',
+  teamWebsites: 'team-websites',
+};
+
 export function WebsitesPage() {
   const { formatMessage, labels, messages } = useMessages();
-  const [tab, setTab] = useState('my-websites');
-  const [fetch, setFetch] = useState(1);
+  const [tab, setTab] = useState(TABS.myWebsites);
   const { user } = useUser();
   const { cloudMode } = useConfig();
   const { showToast } = useToasts();
 
-  const handleSave = async () => {
-    setFetch(fetch + 1);
+  const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
@@ -54,18 +57,16 @@ export function WebsitesPage() {
     <Page>
       <PageHeader title={formatMessage(labels.websites)}>{!cloudMode && addButton}</PageHeader>
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
-        <Item key="my-websites">{formatMessage(labels.myWebsites)}</Item>
-        <Item key="team-webaites">{formatMessage(labels.teamWebsites)}</Item>
+        <Item key={TABS.myWebsites}>{formatMessage(labels.myWebsites)}</Item>
+        <Item key={TABS.teamWebsites}>{formatMessage(labels.teamWebsites)}</Item>
       </Tabs>
-
-      {tab === 'my-websites' && (
+      {tab === TABS.myWebsites && (
         <WebsiteList showEditButton={!cloudMode} showHeader={false} fetch={fetch} />
       )}
-      {tab === 'team-webaites' && (
+      {tab === TABS.teamWebsites && (
         <WebsiteList
           showEditButton={!cloudMode}
           showHeader={false}
-          fetch={fetch}
           showTeam={true}
           onlyTeams={true}
         />

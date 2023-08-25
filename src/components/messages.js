@@ -178,6 +178,7 @@ export const labels = defineMessages({
   day: { id: 'label.day', defaultMessage: 'Day' },
   date: { id: 'label.date', defaultMessage: 'Date' },
   pageOf: { id: 'label.page-of', defaultMessage: 'Page {current} of {total}' },
+  search: { id: 'label.search', defaultMessage: 'Search' },
 });
 
 export const messages = defineMessages({

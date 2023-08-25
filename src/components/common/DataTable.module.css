@@ -1,0 +1,17 @@
+.search {
+  max-width: 300px;
+  margin: 20px 0;
+}
+
+.action {
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.body td {
+  align-items: center;
+}
+
+.pager {
+  margin-top: 20px;
+}
