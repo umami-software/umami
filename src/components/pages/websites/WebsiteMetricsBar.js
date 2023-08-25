@@ -10,7 +10,7 @@ import { formatShortTime } from 'lib/format';
 import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';
 
-export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
+export function WebsiteMetricsBar({ websiteId, showFilter = true, showRefresh = true, sticky }) {
   const { formatMessage, labels } = useMessages();
 
   const { get, useQuery } = useApi();
@@ -161,8 +161,8 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
       <Column defaultSize={12} xl={4}>
         <div className={styles.actions}>
           {showFilter && <WebsiteFilterButton />}
+          {showRefresh && <RefreshButton websiteId={websiteId} />}
           <WebsiteDateFilter websiteId={websiteId} />
-          <RefreshButton websiteId={websiteId} />
         </div>
       </Column>
     </Row>

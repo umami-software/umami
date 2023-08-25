@@ -8,7 +8,6 @@ import styles from './WebsiteDateFilter.module.css';
 export function WebsiteDateFilter({ websiteId }) {
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { value, startDate, endDate, selectedUnit } = dateRange;
-
   const isFutureDate =
     value !== 'all' && isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
 
@@ -21,7 +20,21 @@ export function WebsiteDateFilter({ websiteId }) {
   };
 
   return (
-    <>
+    <Flexbox justifyContent="center" gap={10}>
+      {value !== 'all' && (
+        <Flexbox justifyContent="center" className={styles.buttons}>
+          <Button onClick={() => handleIncrement(1)}>
+            <Icon rotate={90}>
+              <Icons.ChevronDown />
+            </Icon>
+          </Button>
+          <Button onClick={() => handleIncrement(-1)} disabled={isFutureDate}>
+            <Icon rotate={270}>
+              <Icons.ChevronDown />
+            </Icon>
+          </Button>
+        </Flexbox>
+      )}
       <DateFilter
         className={styles.dropdown}
         value={value}
@@ -31,22 +44,7 @@ export function WebsiteDateFilter({ websiteId }) {
         onChange={handleChange}
         showAllTime={true}
       />
-      {value !== 'all' && (
-        <Flexbox justifyContent="center" gap={10} className={styles.container}>
-          <Button onClick={() => handleIncrement(1)}>
-            <Icon rotate={90}>
-              <Icons.ChevronDown />
-            </Icon>
-          </Button>
-
-          <Button onClick={() => handleIncrement(-1)} disabled={isFutureDate}>
-            <Icon rotate={270}>
-              <Icons.ChevronDown />
-            </Icon>
-          </Button>
-        </Flexbox>
-      )}
-    </>
+    </Flexbox>
   );
 }
 
