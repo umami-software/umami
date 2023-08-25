@@ -29,16 +29,6 @@ const aliasConfig = {
   customResolver,
 };
 
-const external = [
-  'react',
-  'react-dom',
-  'react/jsx-runtime',
-  'react-intl',
-  'react-basics',
-  'classnames',
-  'next',
-];
-
 const jsBundle = {
   input: 'src/index.ts',
   output: [
