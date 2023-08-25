@@ -9,7 +9,9 @@ export function WebsiteDateFilter({ websiteId }) {
   const [dateRange, setDateRange] = useDateRange(websiteId);
   const { value, startDate, endDate, selectedUnit } = dateRange;
   const isFutureDate =
-    value !== 'all' && isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
+    value !== 'all' &&
+    selectedUnit &&
+    isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
 
   const handleChange = value => {
     setDateRange(value);
@@ -21,7 +23,7 @@ export function WebsiteDateFilter({ websiteId }) {
 
   return (
     <Flexbox justifyContent="center" gap={10}>
-      {value !== 'all' && (
+      {value !== 'all' && selectedUnit && (
         <Flexbox justifyContent="center" className={styles.buttons}>
           <Button onClick={() => handleIncrement(1)}>
             <Icon rotate={90}>
