@@ -66,7 +66,7 @@ export function ReportHeader({ icon }) {
       <PageHeader title={<Title />}>
         <LoadingButton
           variant="primary"
-          loading={isCreating || isUpdating}
+          isLoading={isCreating || isUpdating}
           disabled={!websiteId || !dateRange?.value || !name}
           onClick={handleSave}
         >

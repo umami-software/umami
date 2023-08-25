@@ -33,6 +33,7 @@ export function TeamMembers({ teamId, readOnly }) {
     <>
       <TeamMembersTable
         onSave={handleSave}
+        teamId={teamId}
         data={data}
         readOnly={readOnly}
         onFilterChange={handleFilterChange}
