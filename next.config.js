@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
+const path = require('path');
 const pkg = require('./package.json');
 
 const contentSecurityPolicy = `
@@ -91,6 +92,8 @@ const config = {
       issuer: /\.{js|jsx|ts|tsx}$/,
       use: ['@svgr/webpack'],
     });
+
+    config.resolve.alias['public'] = path.resolve('./public');
 
     return config;
   },
