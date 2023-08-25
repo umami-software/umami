@@ -16,7 +16,7 @@ export function RefreshButton({ websiteId, isLoading }) {
 
   return (
     <TooltipPopup label={formatMessage(labels.refresh)}>
-      <LoadingButton loading={isLoading} onClick={handleClick}>
+      <LoadingButton isLoading={isLoading} onClick={handleClick}>
         <Icon>
           <Icons.Refresh />
         </Icon>

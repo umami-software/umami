@@ -17,7 +17,7 @@ export function ConfirmDeleteForm({ name, onConfirm, onClose }) {
         <FormattedMessage {...messages.confirmDelete} values={{ target: <b>{name}</b> }} />
       </p>
       <FormButtons flex>
-        <LoadingButton loading={loading} onClick={handleConfirm} variant="danger">
+        <LoadingButton isLoading={loading} onClick={handleConfirm} variant="danger">
           {formatMessage(labels.delete)}
         </LoadingButton>
         <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
