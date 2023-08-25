@@ -71,7 +71,7 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   const WebsiteFilterButton = () => {
     return (
       <PopupTrigger>
-        <TooltipPopup label={formatMessage(labels.addFilter)} position="top">
+        <TooltipPopup label={formatMessage(labels.filter)} position="top">
           <Button>
             <Icon>
               <Icons.Plus />
