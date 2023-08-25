@@ -87,7 +87,7 @@ export const useValidate = createMiddleware(async (req: any, res, next) => {
   try {
     const { yup } = req as NextApiRequestQueryBody;
 
-    yup[req.method].validateSync({ ...req.query, ...req.body });
+    yup[req.method] && yup[req.method].validateSync({ ...req.query, ...req.body });
   } catch (e: any) {
     return badRequest(res, e.message);
   }
