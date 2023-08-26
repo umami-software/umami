@@ -8,7 +8,7 @@ import { formatNumber, formatLongNumber } from 'lib/format';
 import useMessages from 'components/hooks/useMessages';
 import styles from './DataTable.module.css';
 
-export function DataTable({
+export function ListTable({
   data = [],
   title,
   metric,
@@ -94,7 +94,7 @@ const AnimatedRow = ({
         <div className={styles.percent}>
           <animated.div className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
           <animated.span className={styles.percentValue}>
-            {props.width.to(n => `${n.toFixed(0)}%`)}
+            {props.width.to(n => `${n?.toFixed?.(0)}%`)}
           </animated.span>
         </div>
       )}
@@ -102,4 +102,4 @@ const AnimatedRow = ({
   );
 };
 
-export default DataTable;
+export default ListTable;

@@ -28,14 +28,18 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
 
   return rawQuery(
     `
-    select ${column} x, count(*) y
+    select 
+      ${column} x,
+      count(*) y
+      ${column === 'city' ? ', country' : ''}
     from website_event
     ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = {{eventType}}
     ${filterQuery}
-    group by 1
+    group by 1 
+    ${column === 'city' ? ', 3' : ''}
     order by 2 desc
     limit 100`,
     params,
@@ -52,13 +56,16 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
   return rawQuery(
     `
     select
-      ${column} x, count(distinct session_id) y
+      ${column} x,
+      count(distinct session_id) y
+      ${column === 'city' ? ', country' : ''}
     from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
       ${filterQuery}
-    group by x
+    group by x 
+    ${column === 'city' ? ', country' : ''}
     order by y desc
     limit 100
     `,

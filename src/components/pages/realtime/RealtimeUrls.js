@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import firstBy from 'thenby';
 import { percentFilter } from 'lib/filters';
-import DataTable from 'components/metrics/DataTable';
+import ListTable from 'components/metrics/ListTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import useMessages from 'components/hooks/useMessages';
 
@@ -82,7 +82,7 @@ export function RealtimeUrls({ websiteDomain, data = {} }) {
         </ButtonGroup>
       </Flexbox>
       {filter === FILTER_REFERRERS && (
-        <DataTable
+        <ListTable
           title={formatMessage(labels.referrers)}
           metric={formatMessage(labels.views)}
           renderLabel={renderLink}
@@ -90,7 +90,7 @@ export function RealtimeUrls({ websiteDomain, data = {} }) {
         />
       )}
       {filter === FILTER_PAGES && (
-        <DataTable
+        <ListTable
           title={formatMessage(labels.pages)}
           metric={formatMessage(labels.views)}
           renderLabel={renderLink}

@@ -8,7 +8,7 @@ import { percentFilter } from 'lib/filters';
 import useDateRange from 'components/hooks/useDateRange';
 import usePageQuery from 'components/hooks/usePageQuery';
 import ErrorMessage from 'components/common/ErrorMessage';
-import DataTable from './DataTable';
+import ListTable from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
@@ -104,7 +104,7 @@ export function MetricsTable({
     <div className={classNames(styles.container, className)}>
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
-      {data && !error && <DataTable {...props} data={filteredData} className={className} />}
+      {data && !error && <ListTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
           <Link href={router.pathname} as={resolveUrl({ view: type })}>

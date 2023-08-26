@@ -1,20 +1,36 @@
+import { useRouter } from 'next/router';
 import MetricsTable from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
 import useLocale from 'components/hooks/useLocale';
 import useMessages from 'components/hooks/useMessages';
+import useCountryNames from 'components/hooks/useCountryNames';
 
 export function CitiesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
+  const { basePath } = useRouter();
+  const countryNames = useCountryNames(locale);
 
-  function renderLink({ x }) {
+  const renderLabel = (city, country) => {
+    const name = countryNames[country];
+    return name ? `${city}, ${name}` : city;
+  };
+
+  const renderLink = ({ x: city, country }) => {
     return (
-      <div className={locale}>
-        <FilterLink id="city" value={x} />
-      </div>
+      <FilterLink id="city" value={city} label={renderLabel(city, country)}>
+        {country && (
+          <img
+            src={`${basePath}/images/flags/${
+              country?.split?.('-')?.[0]?.toLowerCase() || 'xx'
+            }.png`}
+            alt={country}
+          />
+        )}
+      </FilterLink>
     );
-  }
+  };
 
   return (
     <MetricsTable

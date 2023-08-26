@@ -30,7 +30,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
         screen,
         language,
         country,
-        subdivision1: country && subdivision1 ? `${country}-${subdivision1}` : null,
+        subdivision1,
         subdivision2,
         city,
       },
