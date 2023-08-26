@@ -1,4 +1,4 @@
-import { Flexbox } from 'react-basics';
+import { Flexbox, Loading } from 'react-basics';
 import EventDataTable from 'components/pages/event-data/EventDataTable';
 import EventDataValueTable from 'components/pages/event-data/EventDataValueTable';
 import { EventDataMetricsBar } from 'components/pages/event-data/EventDataMetricsBar';
@@ -28,13 +28,14 @@ export default function WebsiteEventData({ websiteId }) {
   const {
     query: { event },
   } = usePageQuery();
-  const { data } = useData(websiteId, event);
+  const { data, isLoading } = useData(websiteId, event);
 
   return (
     <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
       {!event && <EventDataTable data={data} />}
-      {event && <EventDataValueTable event={event} data={data} />}
+      {isLoading && <Loading position="page" />}
+      {event && data && <EventDataValueTable event={event} data={data} />}
     </Flexbox>
   );
 }

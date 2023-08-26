@@ -10,7 +10,7 @@
   width: 100vw;
   grid-column: 1;
   grid-row: 1 / 2;
-  z-index: 1;
+  z-index: var(--z-index-popup);
 }
 
 .body {

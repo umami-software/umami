@@ -22,12 +22,12 @@ export default function WebsiteDetailsPage({ websiteId }) {
   return (
     <Page loading={isLoading} error={error}>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
-      <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
-      <WebsiteChart websiteId={websiteId} />
       <FilterTags
         websiteId={websiteId}
         params={{ url, referrer, os, browser, device, country, region, city, title }}
       />
+      <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
+      <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (
         <>

@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -28,10 +29,11 @@ export function MobileMenu({ items = [], onClose }) {
     </div>
   );
 
-  return (
+  return createPortal(
     <div className={classNames(styles.menu)}>
       <Items items={items} />
-    </div>
+    </div>,
+    document.body,
   );
 }
 
