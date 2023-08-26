@@ -17,7 +17,7 @@ export interface ShareResponse {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    id: yup.string().required(),
   }),
 };
 
