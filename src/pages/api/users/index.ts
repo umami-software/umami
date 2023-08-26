@@ -25,7 +25,10 @@ const schema = {
     username: yup.string().max(255).required(),
     password: yup.string().required(),
     id: yup.string().uuid(),
-    role: yup.string().matches(/admin|user|view-only/i),
+    role: yup
+      .string()
+      .matches(/admin|user|view-only/i)
+      .required(),
   }),
 };
 
