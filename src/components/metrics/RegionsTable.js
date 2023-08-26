@@ -14,9 +14,7 @@ export function RegionsTable({ websiteId, ...props }) {
   const { basePath } = useRouter();
 
   const renderLabel = x => {
-    const [country, ...codes] = x.split('-');
-    const region = codes.join('-');
-    return regions[region] ? `${regions[region]}, ${countryNames[country]}` : x;
+    return regions[x] ? `${regions[x]}, ${countryNames[x.split('-')[0]]}` : x;
   };
 
   const renderLink = ({ x: code }) => {
