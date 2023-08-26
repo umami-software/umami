@@ -13,7 +13,7 @@ export interface UsersRequestBody {
   username: string;
   password: string;
   id: string;
-  role?: Role;
+  role: Role;
 }
 
 import * as yup from 'yup';
