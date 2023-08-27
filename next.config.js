@@ -59,7 +59,9 @@ if (process.env.TRACKER_SCRIPT_NAME) {
 const redirects = [
   {
     source: '/settings',
-    destination: process.env.CLOUD_MODE ? '/settings/profile' : '/settings/websites',
+    destination: process.env.CLOUD_MODE
+      ? `${process.env.CLOUD_URL}/settings/websites`
+      : '/settings/websites',
     permanent: true,
   },
 ];

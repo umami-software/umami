@@ -18,7 +18,7 @@ function useValues(websiteId, type) {
   return { data, error, isLoading };
 }
 
-export default function FilterSelectForm({ websiteId, items, onSelect, includeOnlyEquals }) {
+export default function FilterSelectForm({ websiteId, items, onSelect, allowFilterSelect }) {
   const [field, setField] = useState();
   const { data, isLoading } = useValues(websiteId, field?.name);
 
@@ -37,7 +37,7 @@ export default function FilterSelectForm({ websiteId, items, onSelect, includeOn
       type={field?.type}
       values={data}
       onSelect={onSelect}
-      includeOnlyEquals={includeOnlyEquals}
+      allowFilterSelect={allowFilterSelect}
     />
   );
 }

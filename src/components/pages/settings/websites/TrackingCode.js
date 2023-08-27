@@ -4,10 +4,10 @@ import useConfig from 'components/hooks/useConfig';
 
 export function TrackingCode({ websiteId }) {
   const { formatMessage, messages } = useMessages();
-  const { basePath, trackerScriptName } = useConfig();
+  const { basePath, trackerScriptName, trackerScriptOrigin } = useConfig();
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${location.origin}${basePath}/${
+    : `${trackerScriptOrigin || location.origin}${basePath}/${
         trackerScriptName?.split(',')?.map(n => n.trim())?.[0] || 'script.js'
       }`;
 

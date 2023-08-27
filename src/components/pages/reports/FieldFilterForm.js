@@ -9,7 +9,7 @@ export default function FieldFilterForm({
   type,
   values,
   onSelect,
-  includeOnlyEquals,
+  allowFilterSelect = true,
 }) {
   const { formatMessage, labels } = useMessages();
   const [filter, setFilter] = useState('eq');
@@ -34,7 +34,7 @@ export default function FieldFilterForm({
     <Form>
       <FormRow label={label} className={styles.filter}>
         <Flexbox gap={10}>
-          {!includeOnlyEquals && (
+          {allowFilterSelect && (
             <Dropdown
               className={styles.dropdown}
               items={filters}
