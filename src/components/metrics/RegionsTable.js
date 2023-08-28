@@ -13,17 +13,15 @@ export function RegionsTable({ websiteId, ...props }) {
   const countryNames = useCountryNames(locale);
   const { basePath } = useRouter();
 
-  const renderLabel = x => {
-    return regions[x] ? `${regions[x]}, ${countryNames[x.split('-')[0]]}` : x;
+  const renderLabel = (code, country) => {
+    const region = code.includes('-') ? code : `${country}-${code}`;
+    return regions[region] ? `${regions[region]}, ${countryNames[country]}` : region;
   };
 
-  const renderLink = ({ x: code }) => {
+  const renderLink = ({ x: code, country }) => {
     return (
-      <FilterLink id="region" className={locale} value={code} label={renderLabel(code)}>
-        <img
-          src={`${basePath}/images/flags/${code?.split('-')?.[0]?.toLowerCase() || 'xx'}.png`}
-          alt={code}
-        />
+      <FilterLink id="region" className={locale} value={code} label={renderLabel(code, country)}>
+        <img src={`${basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`} alt={code} />
       </FilterLink>
     );
   };
