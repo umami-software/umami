@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToasts } from 'react-basics';
-import Link from 'next/link';
+import { Item, Tabs, useToasts } from 'react-basics';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';
@@ -44,16 +43,7 @@ export function TeamSettings({ teamId }) {
 
   return (
     <Page loading={isLoading || !values}>
-      <PageHeader
-        title={
-          <Breadcrumbs>
-            <Item>
-              <Link href="/settings/teams">{formatMessage(labels.teams)}</Link>
-            </Item>
-            <Item>{values?.name}</Item>
-          </Breadcrumbs>
-        }
-      />
+      <PageHeader title={values?.name} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="members">{formatMessage(labels.members)}</Item>

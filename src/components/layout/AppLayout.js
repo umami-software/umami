@@ -9,7 +9,7 @@ export function AppLayout({ title, children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
 
-  if (!user || !config) {
+  if (!user || !config || config?.uiDisabled) {
     return null;
   }
 

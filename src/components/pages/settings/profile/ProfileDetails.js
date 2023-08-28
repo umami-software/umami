@@ -6,13 +6,12 @@ import ThemeSetting from 'components/pages/settings/profile/ThemeSetting';
 import PasswordChangeButton from './PasswordChangeButton';
 import useUser from 'components/hooks/useUser';
 import useMessages from 'components/hooks/useMessages';
-import useConfig from 'components/hooks/useConfig';
 import { ROLES } from 'lib/constants';
 
 export function ProfileDetails() {
   const { user } = useUser();
   const { formatMessage, labels } = useMessages();
-  const { cloudMode } = useConfig();
+  const cloudMode = Boolean(process.env.cloudMode);
 
   if (!user) {
     return null;

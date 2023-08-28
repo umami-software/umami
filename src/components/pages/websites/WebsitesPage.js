@@ -4,7 +4,6 @@ import WebsiteAddForm from 'components/pages/settings/websites/WebsiteAddForm';
 import WebsiteList from 'components/pages/settings/websites/WebsitesList';
 import { useMessages } from 'components/hooks';
 import useUser from 'components/hooks/useUser';
-import useConfig from 'components/hooks/useConfig';
 import { ROLES } from 'lib/constants';
 import { useState } from 'react';
 import {
@@ -24,8 +23,8 @@ export function WebsitesPage() {
   const [tab, setTab] = useState('my-websites');
   const [fetch, setFetch] = useState(1);
   const { user } = useUser();
-  const { cloudMode } = useConfig();
   const { showToast } = useToasts();
+  const cloudMode = Boolean(process.env.cloudMode);
 
   const handleSave = async () => {
     setFetch(fetch + 1);

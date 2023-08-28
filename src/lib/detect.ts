@@ -65,19 +65,27 @@ export async function getLocation(ip, req) {
 
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
+    const country = safeDecodeURIComponent(req.headers['cf-ipcountry']);
+    const subdivision1 = safeDecodeURIComponent(req.headers['cf-region-code']);
+    const city = safeDecodeURIComponent(req.headers['cf-ipcity']);
+
     return {
-      country: safeDecodeURIComponent(req.headers['cf-ipcountry']),
-      subdivision1: safeDecodeURIComponent(req.headers['cf-region-code']),
-      city: safeDecodeURIComponent(req.headers['cf-ipcity']),
+      country,
+      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      city,
     };
   }
 
   // Vercel headers
   if (req.headers['x-vercel-ip-country']) {
+    const country = safeDecodeURIComponent(req.headers['x-vercel-ip-country']);
+    const subdivision1 = safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']);
+    const city = safeDecodeURIComponent(req.headers['x-vercel-ip-city']);
+
     return {
-      country: safeDecodeURIComponent(req.headers['x-vercel-ip-country']),
-      subdivision1: safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']),
-      city: safeDecodeURIComponent(req.headers['x-vercel-ip-city']),
+      country,
+      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      city,
     };
   }
 

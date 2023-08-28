@@ -6,7 +6,6 @@ import Script from 'next/script';
 import { useRouter } from 'next/router';
 import ErrorBoundary from 'components/common/ErrorBoundary';
 import useLocale from 'components/hooks/useLocale';
-import useConfig from 'components/hooks/useConfig';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/700.css';
 import 'react-basics/dist/styles.css';
@@ -27,22 +26,10 @@ const client = new QueryClient({
 export default function App({ Component, pageProps }) {
   const { locale, messages } = useLocale();
   const { basePath, pathname } = useRouter();
-  const config = useConfig();
-
-  const Wrapper = ({ children }) => <span className={locale}>{children}</span>;
-
-  if (config?.uiDisabled) {
-    return null;
-  }
 
   return (
     <QueryClientProvider client={client}>
-      <IntlProvider
-        locale={locale}
-        messages={messages[locale]}
-        textComponent={Wrapper}
-        onError={() => null}
-      >
+      <IntlProvider locale={locale} messages={messages[locale]} onError={() => null}>
         <ReactBasicsProvider>
           <ErrorBoundary>
             <Head>

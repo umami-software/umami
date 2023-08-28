@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToasts } from 'react-basics';
-import Link from 'next/link';
+import { Item, Tabs, useToasts } from 'react-basics';
 import UserEditForm from 'components/pages/settings/users/UserEditForm';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
@@ -44,16 +43,7 @@ export function UserSettings({ userId }) {
 
   return (
     <Page loading={isLoading || !values}>
-      <PageHeader
-        title={
-          <Breadcrumbs>
-            <Item>
-              <Link href="/settings/users">{formatMessage(labels.users)}</Link>
-            </Item>
-            <Item>{values?.username}</Item>
-          </Breadcrumbs>
-        }
-      />
+      <PageHeader title={values?.username} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>
