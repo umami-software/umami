@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Breadcrumbs, Item, Tabs, useToasts, Button, Text, Icon, Icons } from 'react-basics';
+import { Item, Tabs, useToasts, Button, Text, Icon, Icons } from 'react-basics';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
@@ -49,16 +49,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
 
   return (
     <Page loading={isLoading || !values}>
-      <PageHeader
-        title={
-          <Breadcrumbs>
-            <Item>
-              <Link href="/settings/websites">{formatMessage(labels.websites)}</Link>
-            </Item>
-            <Item>{values?.name}</Item>
-          </Breadcrumbs>
-        }
-      >
+      <PageHeader title={values?.name}>
         <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>
