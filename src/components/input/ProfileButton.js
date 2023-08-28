@@ -3,16 +3,15 @@ import { useRouter } from 'next/router';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
-import useConfig from 'components/hooks/useConfig';
 import styles from './ProfileButton.module.css';
 import useLocale from 'components/hooks/useLocale';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
-  const { cloudMode } = useConfig();
   const router = useRouter();
   const { dir } = useLocale();
+  const cloudMode = Boolean(process.env.cloudMode);
 
   const handleSelect = key => {
     if (key === 'profile') {

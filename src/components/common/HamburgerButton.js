@@ -3,12 +3,11 @@ import { useState } from 'react';
 import MobileMenu from './MobileMenu';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
-import useConfig from 'components/hooks/useConfig';
 
 export function HamburgerButton() {
   const { formatMessage, labels } = useMessages();
   const [active, setActive] = useState(false);
-  const { cloudMode } = useConfig();
+  const cloudMode = Boolean(process.env.cloudMode);
 
   const menuItems = [
     {

@@ -1,15 +1,19 @@
 import { TextArea } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useConfig from 'components/hooks/useConfig';
+import { useRouter } from 'next/router';
 
 export function TrackingCode({ websiteId }) {
   const { formatMessage, messages } = useMessages();
-  const { basePath, trackerScriptName, trackerScriptOrigin } = useConfig();
+  const { basePath } = useRouter();
+  const config = useConfig();
+
+  const trackerScriptName =
+    config?.trackerScriptName?.split(',')?.map(n => n.trim())?.[0] || 'script.js';
+
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${trackerScriptOrigin || location.origin}${basePath}/${
-        trackerScriptName?.split(',')?.map(n => n.trim())?.[0] || 'script.js'
-      }`;
+    : `${process.env.analyticsUrl || location.origin}${basePath}/${trackerScriptName}`;
 
   const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
 
