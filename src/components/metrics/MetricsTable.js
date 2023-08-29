@@ -54,21 +54,18 @@ export function MetricsTable({
         city,
       },
     ],
-    () =>
-      get(`/websites/${websiteId}/metrics`, {
+    () => {
+      const filters = { url, title, referrer, os, browser, device, country, region, city };
+
+      filters[type] = undefined;
+
+      return get(`/websites/${websiteId}/metrics`, {
         type,
         startAt: +startDate,
         endAt: +endDate,
-        url,
-        title,
-        referrer,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      }),
+        ...filters,
+      });
+    },
     { onSuccess: onDataLoad, retryDelay: delay || DEFAULT_ANIMATION_DURATION },
   );
 
