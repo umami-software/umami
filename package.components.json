@@ -1,0 +1,23 @@
+{
+  "name": "@umami/components",
+  "version": "0.11.0",
+  "description": "Umami React components.",
+  "author": "Mike Cao <mike@mikecao.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "peerDependencies": {
+    "@tanstack/react-query": "^4.33.0",
+    "classnames": "^2.3.1",
+    "colord": "^2.9.2",
+    "immer": "^9.0.12",
+    "moment-timezone": "^0.5.35",
+    "next": "^13.4.0",
+    "next-basics": "^0.36.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-intl": "^5.24.7",
+    "zustand": "^4.3.8"
+  }
+}
