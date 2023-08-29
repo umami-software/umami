@@ -61,7 +61,7 @@
   ],
   "dependencies": {
     "@fontsource/inter": "^4.5.15",
-    "@prisma/client": "5.0.0",
+    "@prisma/client": "5.2.0",
     "@tanstack/react-query": "^4.33.0",
     "@umami/prisma-client": "^0.2.0",
     "@umami/redis-client": "^0.5.0",
@@ -145,7 +145,7 @@
     "postcss-preset-env": "7.8.3",
     "postcss-rtlcss": "^4.0.1",
     "prettier": "^2.6.2",
-    "prisma": "5.0.0",
+    "prisma": "5.2.0",
     "prompts": "2.4.2",
     "rollup": "^3.28.0",
     "rollup-plugin-copy": "^3.4.0",
