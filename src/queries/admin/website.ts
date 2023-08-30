@@ -107,7 +107,8 @@ export async function getWebsites(
     ...pageFilters,
     ...(options?.include && { include: options.include }),
   });
-  const count = await prisma.client.website.count({ where });
+
+  const count = await prisma.client.website.count({ where: { ...where, deletedAt: null } });
 
   return { data: websites, count, ...getParameters };
 }
