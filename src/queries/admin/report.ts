@@ -142,6 +142,7 @@ export async function getReports(
     ...pageFilters,
     ...(options?.include && { include: options.include }),
   });
+
   const count = await prisma.client.report.count({
     where,
   });

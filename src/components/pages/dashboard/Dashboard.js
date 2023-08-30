@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Button, Icon, Icons, Text, Flexbox } from 'react-basics';
+import { Button, Icon, Icons, Text } from 'react-basics';
 import Link from 'next/link';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
+import Pager from 'components/common/Pager';
 import WebsiteChartList from 'components/pages/websites/WebsiteChartList';
 import DashboardSettingsButton from 'components/pages/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'components/pages/dashboard/DashboardEdit';
@@ -11,23 +11,24 @@ import useApi from 'components/hooks/useApi';
 import useDashboard from 'store/dashboard';
 import useMessages from 'components/hooks/useMessages';
 import useLocale from 'components/hooks/useLocale';
+import useApiFilter from 'components/hooks/useApiFilter';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
-  const dashboard = useDashboard();
-  const { showCharts, limit, editing } = dashboard;
-  const [max, setMax] = useState(limit);
-  const { get, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(['websites'], () =>
-    get('/websites', { includeTeams: 1 }),
-  );
-  const hasData = data && data?.data.length !== 0;
-
+  const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
-
-  function handleMore() {
-    setMax(max + limit);
-  }
+  const { get, useQuery } = useApi();
+  const { page, handlePageChange } = useApiFilter();
+  const pageSize = 10;
+  const {
+    data: result,
+    isLoading,
+    error,
+  } = useQuery(['websites', page, pageSize], () =>
+    get('/websites', { includeTeams: 1, page, pageSize }),
+  );
+  const { data, count } = result || {};
+  const hasData = data && data?.length !== 0;
 
   return (
     <Page loading={isLoading} error={error}>
@@ -48,19 +49,17 @@ export function Dashboard() {
       )}
       {hasData && (
         <>
-          {editing && <DashboardEdit websites={data?.data} />}
+          {editing && <DashboardEdit />}
           {!editing && (
-            <WebsiteChartList websites={data?.data} showCharts={showCharts} limit={max} />
-          )}
-          {max < data.length && (
-            <Flexbox justifyContent="center">
-              <Button onClick={handleMore}>
-                <Icon rotate={dir === 'rtl' ? 180 : 0}>
-                  <Icons.More />
-                </Icon>
-                <Text>{formatMessage(labels.more)}</Text>
-              </Button>
-            </Flexbox>
+            <>
+              <WebsiteChartList websites={data} showCharts={showCharts} limit={pageSize} />
+              <Pager
+                page={page}
+                pageSize={pageSize}
+                count={count}
+                onPageChange={handlePageChange}
+              />
+            </>
           )}
         </>
       )}

@@ -79,6 +79,10 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   const { type, payload } = getJsonBody<CollectRequestBody>(req);
 
+  if (!type || !payload) {
+    return badRequest(res);
+  }
+
   req.yup = schema;
   await useValidate(req, res);
 
