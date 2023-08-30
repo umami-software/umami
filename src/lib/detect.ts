@@ -71,7 +71,7 @@ export async function getLocation(ip, req) {
 
     return {
       country,
-      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      subdivision1: subdivision1?.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
       city,
     };
   }
@@ -84,7 +84,7 @@ export async function getLocation(ip, req) {
 
     return {
       country,
-      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      subdivision1: subdivision1?.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
       city,
     };
   }
