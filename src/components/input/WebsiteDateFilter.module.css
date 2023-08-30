@@ -1,0 +1,14 @@
+.dropdown {
+  min-width: 200px;
+}
+
+.buttons button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.buttons button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-left: 1px solid var(--base400) !important;
+}
