@@ -135,6 +135,7 @@ export async function getTeams(
     ...pageFilters,
     ...(options?.include && { include: options?.include }),
   });
+
   const count = await prisma.client.team.count({ where });
 
   return { data: teams, count, ...getParameters };

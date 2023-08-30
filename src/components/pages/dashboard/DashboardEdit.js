@@ -5,23 +5,33 @@ import { Button } from 'react-basics';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
 import useMessages from 'components/hooks/useMessages';
+import useApi from 'components/hooks/useApi';
 import styles from './DashboardEdit.module.css';
+import Page from 'components/layout/Page';
 
 const dragId = 'dashboard-website-ordering';
 
-export function DashboardEdit({ websites }) {
+export function DashboardEdit() {
   const settings = useDashboard();
   const { websiteOrder } = settings;
   const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
+  const { get, useQuery } = useApi();
+  const {
+    data: result,
+    isLoading,
+    error,
+  } = useQuery(['websites'], () => get('/websites', { includeTeams: 1 }));
+  const { data: websites } = result || {};
 
-  const ordered = useMemo(
-    () =>
-      websites
+  const ordered = useMemo(() => {
+    if (websites) {
+      return websites
         .map(website => ({ ...website, order: order.indexOf(website.id) }))
-        .sort(firstBy('order')),
-    [websites, order],
-  );
+        .sort(firstBy('order'));
+    }
+    return [];
+  }, [websites, order]);
 
   function handleWebsiteDrag({ destination, source }) {
     if (!destination || destination.index === source.index) return;
@@ -49,7 +59,7 @@ export function DashboardEdit({ websites }) {
   }
 
   return (
-    <>
+    <Page loading={isLoading} error={error}>
       <div className={styles.buttons}>
         <Button onClick={handleSave} variant="action" size="small">
           {formatMessage(labels.save)}
@@ -95,7 +105,7 @@ export function DashboardEdit({ websites }) {
           </Droppable>
         </DragDropContext>
       </div>
-    </>
+    </Page>
   );
 }
 

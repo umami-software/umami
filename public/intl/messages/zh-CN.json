@@ -104,7 +104,7 @@
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "浏览器"
     }
   ],
   "label.browsers": [
@@ -134,7 +134,7 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "市/县"
     }
   ],
   "label.clear-all": [
@@ -176,7 +176,7 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "国家/地区"
     }
   ],
   "label.create-report": [
@@ -230,7 +230,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "日期"
     }
   ],
   "label.date-range": [
@@ -242,7 +242,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "日"
     }
   ],
   "label.default-date-range": [
@@ -296,7 +296,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "设备"
     }
   ],
   "label.devices": [
@@ -440,13 +440,13 @@
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "未设置"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "已设置"
     }
   ],
   "label.join": [
@@ -576,7 +576,7 @@
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "我的网站"
     }
   ],
   "label.name": [
@@ -618,7 +618,15 @@
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "总"
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": "中的第"
     },
     {
       "type": 1,
@@ -626,11 +634,7 @@
     },
     {
       "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "total"
+      "value": "页"
     }
   ],
   "label.page-views": [
@@ -642,7 +646,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "标题"
     }
   ],
   "label.pages": [
@@ -704,7 +708,7 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "来源"
     }
   ],
   "label.referrers": [
@@ -728,7 +732,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "州/省"
     }
   ],
   "label.regions": [
@@ -770,7 +774,7 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "保留"
     }
   ],
   "label.role": [
@@ -872,7 +876,7 @@
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "团队名称"
     }
   ],
   "label.team-owner": [
@@ -884,7 +888,7 @@
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "团队网站"
     }
   ],
   "label.teams": [
@@ -974,7 +978,7 @@
   "label.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "独立"
     }
   ],
   "label.unique-visitors": [
@@ -998,13 +1002,13 @@
   "label.url": [
     {
       "type": 0,
-      "value": "URL"
+      "value": "网址"
     }
   ],
   "label.urls": [
     {
       "type": 0,
-      "value": "URLs"
+      "value": "网址"
     }
   ],
   "label.user": [
@@ -1046,7 +1050,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "仅浏览量"
     }
   ],
   "label.views": [
@@ -1190,15 +1194,15 @@
   "message.event-log": [
     {
       "type": 1,
-      "value": "event"
+      "value": "url"
     },
     {
       "type": 0,
-      "value": " on "
+      "value": "上的"
     },
     {
       "type": 1,
-      "value": "url"
+      "value": "event"
     }
   ],
   "message.go-to-settings": [
