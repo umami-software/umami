@@ -1,7 +1,7 @@
 import { isUuid, secret, uuid } from 'lib/crypto';
-import { getClientInfo, getJsonBody } from 'lib/detect';
+import { getClientInfo } from 'lib/detect';
 import { parseToken } from 'next-basics';
-import { CollectRequestBody, NextApiRequestCollect } from 'pages/api/send';
+import { NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import cache from './cache';
 import clickhouse from './clickhouse';
@@ -22,7 +22,7 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   city: any;
   ownerId: string;
 }> {
-  const { payload } = getJsonBody<CollectRequestBody>(req);
+  const { payload } = req.body;
 
   if (!payload) {
     throw new Error('Invalid payload.');

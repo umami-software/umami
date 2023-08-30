@@ -3,7 +3,7 @@ import ipaddr from 'ipaddr.js';
 import isbot from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { getIpAddress, getJsonBody } from 'lib/detect';
+import { getIpAddress } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -77,7 +77,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     return ok(res);
   }
 
-  const { type, payload } = getJsonBody<CollectRequestBody>(req);
+  const { type, payload } = req.body;
 
   if (!type || !payload) {
     return badRequest(res);
