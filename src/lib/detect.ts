@@ -130,11 +130,3 @@ export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
 }
-
-export function getJsonBody<T>(req): T {
-  if ((req.headers['content-type'] || '').indexOf('text/plain') !== -1) {
-    return JSON.parse(req.body);
-  }
-
-  return req.body;
-}
