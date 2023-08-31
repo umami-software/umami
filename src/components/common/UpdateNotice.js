@@ -1,4 +1,5 @@
 import { useEffect, useCallback, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Button, Row, Column } from 'react-basics';
 import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
@@ -44,7 +45,7 @@ export function UpdateNotice({ user, config }) {
     return null;
   }
 
-  return (
+  return createPortal(
     <Row className={styles.notice}>
       <Column variant="two" className={styles.message}>
         {formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}
@@ -55,7 +56,8 @@ export function UpdateNotice({ user, config }) {
         </Button>
         <Button onClick={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
       </Column>
-    </Row>
+    </Row>,
+    document.body,
   );
 }
 
