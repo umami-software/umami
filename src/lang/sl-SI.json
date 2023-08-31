@@ -175,7 +175,7 @@
   "label.websites": "Spletnih mest",
   "label.window": "Okno",
   "label.yesterday": "Včeraj",
-  "message.active-users": "{x} trenutni {x, plural, one {visitor} ostali {visitors}}",
+  "message.active-users": "{x} trenutni {x, plural, one {obiskovalec} other {obiskovalcev}}",
   "message.confirm-delete": "Ste prepričani, da želite izbrisati {target}?",
   "message.confirm-leave": "Ste prepričani, da želite zapustiti {target}?",
   "message.confirm-reset": "Ste prepričani, da želite ponastaviti statistiko {target}?",
