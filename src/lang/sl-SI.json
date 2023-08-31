@@ -207,5 +207,5 @@
   "message.team-websites-info": "Spletne strani si lahko ogleda vsak član ekipe.",
   "message.tracking-code": "Koda za sledenje",
   "message.user-deleted": "Uporabnik je izbrisan.",
-  "message.visitor-log": "Obiskovalec iz {country} uporablja {browser} na {os}{device}"
+  "message.visitor-log": "Obiskovalec iz {country} uporablja {browser} na {os} {device}"
 }
