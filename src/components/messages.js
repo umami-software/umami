@@ -178,7 +178,7 @@ export const labels = defineMessages({
   retention: { id: 'label.retention', defaultMessage: 'Retention' },
   retentionDescription: {
     id: 'label.retention-description',
-    defaultMessage: 'Measure you website stickiness by tracking how often users return.',
+    defaultMessage: 'Measure your website stickiness by tracking how often users return.',
   },
   dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
   referrer: { id: 'label.referrer', defaultMessage: 'Referrer' },
