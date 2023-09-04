@@ -8,3 +8,11 @@
   gap: 12px;
   background: var(--base50);
 }
+
+.version {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--base600);
+  text-align: right;
+  margin-right: 10px;
+}
