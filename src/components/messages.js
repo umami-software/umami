@@ -129,6 +129,10 @@ export const labels = defineMessages({
   reports: { id: 'label.reports', defaultMessage: 'Reports' },
   eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
   funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
+  funnelDescription: {
+    id: 'label.funnel-description',
+    defaultMessage: 'Understand the conversion and drop-off rate of users.',
+  },
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
   add: { id: 'label.add', defaultMessage: 'Add' },
@@ -167,7 +171,15 @@ export const labels = defineMessages({
   overview: { id: 'label.overview', defaultMessage: 'Overview' },
   totalRecords: { id: 'label.total-records', defaultMessage: 'Total records' },
   insights: { id: 'label.insights', defaultMessage: 'Insights' },
+  insightsDescription: {
+    id: 'label.insights-description',
+    defaultMessage: 'Dive deeper into your data by using segments and filters.',
+  },
   retention: { id: 'label.retention', defaultMessage: 'Retention' },
+  retentionDescription: {
+    id: 'label.retention-description',
+    defaultMessage: 'Measure your website stickiness by tracking how often users return.',
+  },
   dropoff: { id: 'label.dropoff', defaultMessage: 'Dropoff' },
   referrer: { id: 'label.referrer', defaultMessage: 'Referrer' },
   country: { id: 'label.country', defaultMessage: 'Country' },
@@ -179,6 +191,8 @@ export const labels = defineMessages({
   day: { id: 'label.day', defaultMessage: 'Day' },
   date: { id: 'label.date', defaultMessage: 'Date' },
   pageOf: { id: 'label.page-of', defaultMessage: 'Page {current} of {total}' },
+  create: { id: 'label.create', defaultMessage: 'Create' },
+  search: { id: 'label.search', defaultMessage: 'Search' },
 });
 
 export const messages = defineMessages({
