@@ -32,7 +32,7 @@ export default async (
     const users = await getUsersByTeamId(teamId, {
       page,
       filter,
-      pageSize: +pageSize || null,
+      pageSize: +pageSize || undefined,
     });
 
     return ok(res, users);
