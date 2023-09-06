@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { useApi, useDateRange, useMessages, usePageQuery, useSticky } from 'components/hooks';
-import RefreshButton from 'components/input/RefreshButton';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
@@ -10,7 +9,7 @@ import { formatShortTime } from 'lib/format';
 import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';
 
-export function WebsiteMetricsBar({ websiteId, showFilter = true, showRefresh = true, sticky }) {
+export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   const { formatMessage, labels } = useMessages();
 
   const { get, useQuery } = useApi();
@@ -88,7 +87,7 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, showRefresh = 
                     handleAddFilter(value);
                     close();
                   }}
-                  includeOnlyEquals={true}
+                  allowFilterSelect={false}
                 />
               </PopupForm>
             );
@@ -161,7 +160,6 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, showRefresh = 
       <Column defaultSize={12} xl={4}>
         <div className={styles.actions}>
           {showFilter && <WebsiteFilterButton />}
-          {showRefresh && <RefreshButton websiteId={websiteId} />}
           <WebsiteDateFilter websiteId={websiteId} />
         </div>
       </Column>

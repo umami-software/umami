@@ -35,7 +35,7 @@ export function RetentionParameters() {
         <MonthSelect date={startDate} onChange={handleDateChange} />
       </FormRow>
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} loading={isRunning}>
+        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
         </SubmitButton>
       </FormButtons>

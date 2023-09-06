@@ -37,10 +37,6 @@
     margin-bottom: 10px;
   }
 
-  .title {
-    font-size: 18px;
-  }
-
   .actions {
     flex-basis: 100%;
     order: -1;

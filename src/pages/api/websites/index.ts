@@ -42,8 +42,13 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    req.query.id = userId;
-    req.query.pageSize = 100;
+    if (!req.query.id) {
+      req.query.id = userId;
+    }
+
+    if (!req.query.pageSize) {
+      req.query.pageSize = 100;
+    }
 
     return userWebsites(req as any, res);
   }

@@ -3,14 +3,13 @@ import { useRouter } from 'next/router';
 import SideNav from './SideNav';
 import useUser from 'components/hooks/useUser';
 import useMessages from 'components/hooks/useMessages';
-import useConfig from 'components/hooks/useConfig';
 import styles from './SettingsLayout.module.css';
 
 export function SettingsLayout({ children }) {
   const { user } = useUser();
   const { pathname } = useRouter();
   const { formatMessage, labels } = useMessages();
-  const { cloudMode } = useConfig();
+  const cloudMode = Boolean(process.env.cloudMode);
 
   const items = [
     { key: 'websites', label: formatMessage(labels.websites), url: '/settings/websites' },

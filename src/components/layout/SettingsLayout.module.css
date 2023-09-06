@@ -13,4 +13,8 @@
   .menu {
     display: none;
   }
+
+  .content {
+    margin-top: 20px;
+  }
 }

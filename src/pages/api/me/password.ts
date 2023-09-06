@@ -23,7 +23,6 @@ export interface UserPasswordRequestBody {
 
 const schema = {
   POST: yup.object().shape({
-    id: yup.string().uuid().required(),
     currentPassword: yup.string().required(),
     newPassword: yup.string().min(8).required(),
   }),

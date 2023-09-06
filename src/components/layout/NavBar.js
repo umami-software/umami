@@ -1,26 +1,24 @@
 import { Icon, Text, Row, Column } from 'react-basics';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import classNames from 'classnames';
 import Icons from 'components/icons';
 import ThemeButton from 'components/input/ThemeButton';
 import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
-import styles from './NavBar.module.css';
-import useConfig from 'components/hooks/useConfig';
 import useMessages from 'components/hooks/useMessages';
-import { useRouter } from 'next/router';
-import HamburgerButton from '../common/HamburgerButton';
+import HamburgerButton from 'components/common/HamburgerButton';
+import styles from './NavBar.module.css';
 
 export function NavBar() {
   const { pathname } = useRouter();
-  const { cloudMode } = useConfig();
   const { formatMessage, labels } = useMessages();
 
   const links = [
     { label: formatMessage(labels.dashboard), url: '/dashboard' },
     { label: formatMessage(labels.websites), url: '/websites' },
     { label: formatMessage(labels.reports), url: '/reports' },
-    !cloudMode && { label: formatMessage(labels.settings), url: '/settings' },
+    { label: formatMessage(labels.settings), url: '/settings' },
   ].filter(n => n);
 
   return (

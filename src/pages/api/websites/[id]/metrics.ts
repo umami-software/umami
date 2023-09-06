@@ -13,23 +13,26 @@ export interface WebsiteMetricsRequestQuery {
   type: string;
   startAt: number;
   endAt: number;
-  url: string;
-  referrer: string;
-  title: string;
-  query: string;
-  event: string;
-  os: string;
-  browser: string;
-  device: string;
-  country: string;
-  region: string;
-  city: string;
-  language: string;
+  url?: string;
+  referrer?: string;
+  title?: string;
+  query?: string;
+  os?: string;
+  browser?: string;
+  device?: string;
+  country?: string;
+  region?: string;
+  city?: string;
+  language?: string;
+  event?: string;
 }
 
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
+    type: yup.string().required(),
+    startAt: yup.number().required(),
+    endAt: yup.number().required(),
   }),
 };
 
@@ -50,7 +53,6 @@ export default async (
     referrer,
     title,
     query,
-    event,
     os,
     browser,
     device,
@@ -58,6 +60,7 @@ export default async (
     region,
     city,
     language,
+    event,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -74,7 +77,6 @@ export default async (
       referrer,
       title,
       query,
-      event,
       os,
       browser,
       device,
@@ -82,9 +84,8 @@ export default async (
       region,
       city,
       language,
+      event,
     };
-
-    filters[type] = undefined;
 
     const column = FILTER_COLUMNS[type] || type;
 

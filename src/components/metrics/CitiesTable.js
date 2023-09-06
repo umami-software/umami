@@ -22,9 +22,7 @@ export function CitiesTable({ websiteId, ...props }) {
       <FilterLink id="city" value={city} label={renderLabel(city, country)}>
         {country && (
           <img
-            src={`${basePath}/images/flags/${
-              country?.split?.('-')?.[0]?.toLowerCase() || 'xx'
-            }.png`}
+            src={`${basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
             alt={country}
           />
         )}
