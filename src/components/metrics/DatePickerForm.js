@@ -50,6 +50,7 @@ export function DatePickerForm({
             date={singleDate}
             minDate={minDate}
             maxDate={maxDate}
+            locale={dateLocale}
             onChange={setSingleDate}
           />
         )}
