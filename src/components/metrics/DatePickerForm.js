@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Calendar } from 'react-basics';
-import { isAfter, isBefore, isSameDay } from 'date-fns';
+import { isAfter, isBefore, isSameDay, startOfDay, endOfDay } from 'date-fns';
 import useLocale from 'components/hooks/useLocale';
 import { getDateLocale } from 'lib/lang';
 import { FILTER_DAY, FILTER_RANGE } from 'lib/constants';
@@ -31,9 +31,9 @@ export function DatePickerForm({
 
   const handleSave = () => {
     if (selected === FILTER_DAY) {
-      onChange(`range:${singleDate.getTime()}:${singleDate.getTime()}`);
+      onChange(`range:${startOfDay(singleDate).getTime()}:${endOfDay(singleDate).getTime()}`);
     } else {
-      onChange(`range:${startDate.getTime()}:${endDate.getTime()}`);
+      onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`);
     }
   };
 
