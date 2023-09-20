@@ -6,7 +6,7 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { getValues } from 'queries';
 
-export interface WebsiteResetRequestQuery {
+export interface ValuesRequestQuery {
   id: string;
 }
 
@@ -17,10 +17,7 @@ const schema = {
   }),
 };
 
-export default async (
-  req: NextApiRequestQueryBody<WebsiteResetRequestQuery>,
-  res: NextApiResponse,
-) => {
+export default async (req: NextApiRequestQueryBody<ValuesRequestQuery>, res: NextApiResponse) => {
   await useCors(req, res);
   await useAuth(req, res);
 
