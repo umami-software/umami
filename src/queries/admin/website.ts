@@ -297,7 +297,7 @@ export async function resetWebsite(
     }),
   ]).then(async data => {
     if (cache.enabled) {
-      await cache.storeWebsite(data[2]);
+      await cache.storeWebsite(data[3]);
     }
 
     return data;
