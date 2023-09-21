@@ -42,7 +42,8 @@
     "change-password": "node scripts/change-password.js",
     "lint": "next lint --quiet",
     "prepare": "node -e \"if (process.env.NODE_ENV !== 'production'){process.exit(1)} \" || husky install",
-    "postbuild": "node scripts/postbuild.js"
+    "postbuild": "node scripts/postbuild.js",
+    "update": "To update we need to 1. git fetch upstream 2. git merge upstream/master into what ever branch 3. git push"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
