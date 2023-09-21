@@ -55,7 +55,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
 
   if (isUuid(userId)) {
     user = await getUserById(userId);
-  } else if (redis.enabled && authKey) {
+  } else if (redis && authKey) {
     user = await redis.get(authKey);
   }
 

@@ -3,7 +3,7 @@ import useMessages from 'components/hooks/useMessages';
 import useConfig from 'components/hooks/useConfig';
 import { useRouter } from 'next/router';
 
-export function TrackingCode({ websiteId, analyticsUrl }) {
+export function TrackingCode({ websiteId, baseUrl }) {
   const { formatMessage, messages } = useMessages();
   const { basePath } = useRouter();
   const config = useConfig();
@@ -13,9 +13,7 @@ export function TrackingCode({ websiteId, analyticsUrl }) {
 
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${
-        analyticsUrl || process.env.analyticsUrl || location.origin
-      }${basePath}/${trackerScriptName}`;
+    : `${baseUrl || location.origin}${basePath}/${trackerScriptName}`;
 
   const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
 
