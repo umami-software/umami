@@ -69,7 +69,14 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
         <WebsiteEditForm websiteId={websiteId} data={values} onSave={handleSave} />
       )}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} analyticsUrl={analyticsUrl} />}
-      {tab === 'share' && <ShareUrl websiteId={websiteId} data={values} onSave={handleSave} />}
+      {tab === 'share' && (
+        <ShareUrl
+          websiteId={websiteId}
+          data={values}
+          analyticsUrl={analyticsUrl}
+          onSave={handleSave}
+        />
+      )}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleReset} />}
     </Page>
   );
