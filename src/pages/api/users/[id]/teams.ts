@@ -1,10 +1,11 @@
+import * as yup from 'yup';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getTeamsByUserId } from 'queries';
-import * as yup from 'yup';
+
 export interface UserTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {
   id: string;
 }
@@ -18,7 +19,7 @@ export interface UserTeamsRequestBody {
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
-    ...getFilterValidation('/All|Name|Owner/i'),
+    ...pageInfo,
   }),
 };
 
@@ -40,12 +41,12 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { page, query, pageSize } = req.query;
 
     const teams = await getTeamsByUserId(userId, {
+      query,
       page,
-      filter,
-      pageSize: +pageSize || undefined,
+      pageSize,
     });
 
     return ok(res, teams);

@@ -25,13 +25,13 @@ export function DataTable({
   const { page, pageSize, count } = pageInfo || {};
   const noResults = Boolean(query && data?.length === 0);
 
-  const handleChange = () => {
-    onChange?.({ query, page });
+  const handleChange = value => {
+    onChange?.({ query: value, page });
   };
 
   const handleSearch = value => {
     setQuery(value);
-    handleChange();
+    handleChange(value);
   };
 
   const handlePageChange = page => {

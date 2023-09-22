@@ -7,7 +7,7 @@ import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 export function WebsitesList({
   showTeam,
@@ -20,16 +20,20 @@ export function WebsitesList({
   const { user } = useUser();
   const [params, setParams] = useState({});
   const { get, useQuery } = useApi();
-  const { data, isLoading, error, refetch } = useQuery(
-    ['websites', includeTeams, onlyTeams],
-    () =>
-      get(`/users/${user?.id}/websites`, {
+  const count = useRef(0);
+  const q = useQuery(
+    ['websites', includeTeams, onlyTeams, params],
+    () => {
+      count.current += 1;
+      return get(`/users/${user?.id}/websites`, {
         includeTeams,
         onlyTeams,
         ...params,
-      }),
+      });
+    },
     { enabled: !!user },
   );
+  const { data, refetch, isLoading, error } = q;
   const { showToast } = useToasts();
 
   const handleChange = params => {
@@ -60,10 +64,10 @@ export function WebsitesList({
   );
 
   return (
-    <Page loading={isLoading} error={error}>
+    <Page loading={isLoading && count.current === 0} error={error}>
       {showHeader && <PageHeader title={formatMessage(labels.websites)}>{addButton}</PageHeader>}
       <WebsitesTable
-        data={data}
+        data={data?.data}
         showTeam={showTeam}
         showEditButton={showEditButton}
         onChange={handleChange}

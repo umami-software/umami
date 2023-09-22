@@ -1,7 +1,7 @@
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createReport, getReportsByUserId } from 'queries';
@@ -21,7 +21,7 @@ export interface ReportRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Description|Type|Username|Website Name|Website Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     websiteId: yup.string().uuid().required(),

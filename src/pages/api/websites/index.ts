@@ -7,7 +7,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
 import userWebsites from 'pages/api/users/[id]/websites';
 import * as yup from 'yup';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 
 export interface WebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {}
 
@@ -19,7 +19,7 @@ export interface WebsitesRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     name: yup.string().max(100).required(),

@@ -1,6 +1,6 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByUserId } from 'queries';
@@ -17,7 +17,7 @@ const schema = {
     id: yup.string().uuid().required(),
     includeTeams: yup.boolean(),
     onlyTeams: yup.boolean(),
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
 };
 
@@ -32,7 +32,7 @@ export default async (
   await useValidate(req, res);
 
   const { user } = req.auth;
-  const { id: userId, page, filter, pageSize, includeTeams, onlyTeams } = req.query;
+  const { id: userId, page, pageSize, query, includeTeams, onlyTeams } = req.query;
 
   if (req.method === 'GET') {
     if (!user.isAdmin && user.id !== userId) {
@@ -40,8 +40,8 @@ export default async (
     }
 
     const websites = await getWebsitesByUserId(userId, {
+      query,
       page,
-      filter,
       pageSize: +pageSize || undefined,
       includeTeams,
       onlyTeams,

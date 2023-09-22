@@ -8,7 +8,6 @@ import DataTable, { DataTableStyles } from 'components/common/DataTable';
 
 export function WebsitesTable({
   data = [],
-  filterValue,
   showTeam,
   showEditButton,
   openExternal = false,
@@ -17,12 +16,12 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
-  const showTable = data && (filterValue || data?.data?.length !== 0);
+  const showTable = data.length !== 0;
 
   return (
     <DataTable onChange={onChange}>
       {showTable && (
-        <GridTable data={data?.data}>
+        <GridTable data={data}>
           <GridColumn name="name" label={formatMessage(labels.name)} />
           <GridColumn name="domain" label={formatMessage(labels.domain)} />
           {showTeam && (

@@ -1,6 +1,6 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 import userWebsites from 'pages/api/users/[id]/websites';
@@ -12,7 +12,7 @@ export interface MyWebsitesRequestQuery extends SearchFilter<WebsiteSearchFilter
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
 };
 

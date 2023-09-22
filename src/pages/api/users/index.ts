@@ -3,7 +3,7 @@ import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, SearchFilter, User, UserSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUserByUsername, getUsers } from 'queries';
@@ -19,7 +19,7 @@ export interface UsersRequestBody {
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Username/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     username: yup.string().max(255).required(),

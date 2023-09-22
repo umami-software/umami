@@ -54,11 +54,11 @@ export interface ReportSearchFilter extends SearchFilter<ReportSearchFilterType>
 }
 
 export interface SearchFilter<T> {
-  filter?: string;
-  filterType?: T;
-  pageSize: number;
-  page: number;
+  query?: string;
+  page?: number;
+  pageSize?: number;
   orderBy?: string;
+  data?: T;
 }
 
 export interface FilterResult<T> {

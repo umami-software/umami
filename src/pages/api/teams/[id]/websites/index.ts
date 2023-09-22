@@ -1,7 +1,8 @@
+import * as yup from 'yup';
 import { canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByTeamId } from 'queries';
@@ -15,12 +16,10 @@ export interface TeamWebsiteRequestBody {
   websiteIds?: string[];
 }
 
-import * as yup from 'yup';
-
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),

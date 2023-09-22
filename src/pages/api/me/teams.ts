@@ -1,6 +1,6 @@
 import { useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 import userTeams from 'pages/api/users/[id]/teams';
@@ -12,7 +12,7 @@ export interface MyTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> 
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Owner/i),
+    ...pageInfo,
   }),
 };
 

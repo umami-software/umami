@@ -3,7 +3,7 @@ import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createTeam, getTeamsByUserId } from 'queries';
@@ -18,7 +18,7 @@ export interface MyTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> 
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Owner/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     name: yup.string().max(50).required(),
@@ -39,12 +39,11 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, filter, pageSize } = req.query;
+    const { page, query } = req.query;
 
     const results = await getTeamsByUserId(userId, {
       page,
-      filter,
-      pageSize: +pageSize || undefined,
+      query,
     });
 
     return ok(res, results);
