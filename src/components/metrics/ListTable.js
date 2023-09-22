@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Empty from 'components/common/Empty';
 import { formatNumber, formatLongNumber } from 'lib/format';
 import useMessages from 'components/hooks/useMessages';
-import styles from './DataTable.module.css';
+import styles from './ListTable.module.css';
 
 export function ListTable({
   data = [],

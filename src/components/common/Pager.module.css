@@ -1,7 +1,4 @@
-.container {
-  margin-top: 20px;
-}
-
 .text {
+  font-size: var(--font-size-md);
   margin: 0 16px;
 }
