@@ -36,7 +36,7 @@ export function SettingsTable({
 
   return (
     <>
-      {showSearch && !!value.length && (
+      {showSearch && (value.length > 0 || filterValue) && (
         <SearchField
           onChange={handleFilterChange}
           delay={1000}
