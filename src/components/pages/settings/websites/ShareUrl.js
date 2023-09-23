@@ -16,7 +16,7 @@ import useMessages from 'components/hooks/useMessages';
 
 const generateId = () => getRandomChars(16);
 
-export function ShareUrl({ websiteId, data, onSave }) {
+export function ShareUrl({ websiteId, data, analyticsUrl, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
@@ -27,10 +27,7 @@ export function ShareUrl({ websiteId, data, onSave }) {
   );
   const ref = useRef(null);
   const url = useMemo(
-    () =>
-      `${process.env.analyticsUrl || location.origin}${basePath}/share/${id}/${encodeURIComponent(
-        name,
-      )}`,
+    () => `${analyticsUrl || location.origin}${basePath}/share/${id}/${encodeURIComponent(name)}`,
     [id, name, basePath],
   );
 

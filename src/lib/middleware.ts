@@ -21,7 +21,7 @@ const log = debug('umami:middleware');
 export const useCors = createMiddleware(
   cors({
     // Cache CORS preflight request 24 hours by default
-    maxAge: process.env.CORS_MAX_AGE || 86400,
+    maxAge: Number(process.env.CORS_MAX_AGE) || 86400,
   }),
 );
 
@@ -55,7 +55,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
 
   if (isUuid(userId)) {
     user = await getUserById(userId);
-  } else if (redis.enabled && authKey) {
+  } else if (redis && authKey) {
     user = await redis.get(authKey);
   }
 

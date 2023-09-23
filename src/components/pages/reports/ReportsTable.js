@@ -5,6 +5,7 @@ import { useMessages } from 'components/hooks';
 import useUser from 'components/hooks/useUser';
 import { useState } from 'react';
 import { Button, Flexbox, Icon, Icons, Modal, Text } from 'react-basics';
+import { REPORT_TYPES } from 'lib/constants';
 
 export function ReportsTable({
   data = [],
@@ -34,6 +35,15 @@ export function ReportsTable({
     { name: 'action', label: ' ' },
   ];
 
+  const cellRender = (row, data, key) => {
+    if (key === 'type') {
+      return formatMessage(
+        labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === row.type)],
+      );
+    }
+    return data[key];
+  };
+
   const handleConfirm = () => {
     onDelete(report.id);
   };
@@ -42,6 +52,7 @@ export function ReportsTable({
     <>
       <SettingsTable
         columns={columns}
+        cellRender={cellRender}
         data={data}
         showSearch={true}
         showPaging={true}

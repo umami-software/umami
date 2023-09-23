@@ -2,18 +2,20 @@ import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
 import { useTimezone } from './useTimezone';
 import useApi from './useApi';
-
-const baseParameters = {
-  name: 'Untitled',
-  description: '',
-  parameters: {},
-};
+import useMessages from './useMessages';
 
 export function useReport(reportId, defaultParameters) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();
   const [timezone] = useTimezone();
+  const { formatMessage, labels } = useMessages();
+
+  const baseParameters = {
+    name: formatMessage(labels.untitled),
+    description: '',
+    parameters: {},
+  };
 
   const loadReport = async id => {
     const data = await get(`/reports/${id}`);

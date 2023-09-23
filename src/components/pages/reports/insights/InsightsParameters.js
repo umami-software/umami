@@ -137,7 +137,7 @@ export function InsightsParameters() {
           );
         })}
       <FormButtons>
-        <SubmitButton variant="primary" disabled={!queryEnabled} loading={isRunning}>
+        <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
         </SubmitButton>
       </FormButtons>
