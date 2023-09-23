@@ -57,7 +57,7 @@ export default async (
     const data = await getReportsByUserId(userId, {
       page,
       filter,
-      pageSize: +pageSize || null,
+      pageSize: +pageSize || undefined,
       includeTeams: true,
     });
 

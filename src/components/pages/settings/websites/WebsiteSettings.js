@@ -11,7 +11,7 @@ import ShareUrl from 'components/pages/settings/websites/ShareUrl';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
 
-export function WebsiteSettings({ websiteId, openExternal = false }) {
+export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl }) {
   const router = useRouter();
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
@@ -68,8 +68,15 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
       {tab === 'details' && (
         <WebsiteEditForm websiteId={websiteId} data={values} onSave={handleSave} />
       )}
-      {tab === 'tracking' && <TrackingCode websiteId={websiteId} data={values} />}
-      {tab === 'share' && <ShareUrl websiteId={websiteId} data={values} onSave={handleSave} />}
+      {tab === 'tracking' && <TrackingCode websiteId={websiteId} analyticsUrl={analyticsUrl} />}
+      {tab === 'share' && (
+        <ShareUrl
+          websiteId={websiteId}
+          data={values}
+          analyticsUrl={analyticsUrl}
+          onSave={handleSave}
+        />
+      )}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleReset} />}
     </Page>
   );

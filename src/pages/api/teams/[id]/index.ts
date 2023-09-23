@@ -22,8 +22,8 @@ const schema = {
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),
-    name: yup.string().max(50).required(),
-    accessCode: yup.string().max(50).required(),
+    name: yup.string().max(50),
+    accessCode: yup.string().max(50),
   }),
   DELETE: yup.object().shape({
     id: yup.string().uuid().required(),

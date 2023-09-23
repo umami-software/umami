@@ -4,7 +4,7 @@ import useApi from 'components/hooks/useApi';
 import useUser from 'components/hooks/useUser';
 
 export function useRequireLogin(handler: (data?: object) => void) {
-  const router = useRouter();
+  const { basePath } = useRouter();
   const { get } = useApi();
   const { user, setUser } = useUser();
 
@@ -15,7 +15,7 @@ export function useRequireLogin(handler: (data?: object) => void) {
 
         setUser(typeof handler === 'function' ? handler(data) : (data as any)?.user);
       } catch {
-        await router.push('/login');
+        location.href = `${basePath}/login`;
       }
     }
 

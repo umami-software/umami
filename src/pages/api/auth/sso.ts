@@ -8,7 +8,7 @@ import { setAuthKey } from 'lib/auth';
 export default async (req: NextApiRequestAuth, res: NextApiResponse) => {
   await useAuth(req, res);
 
-  if (redis.enabled && req.auth.user) {
+  if (redis && req.auth.user) {
     const token = await setAuthKey(req.auth.user, 86400);
 
     return ok(res, { user: req.auth.user, token });

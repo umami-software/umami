@@ -3,11 +3,13 @@ import classNames from 'classnames';
 import { ReportContext } from '../Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { useMessages } from 'components/hooks';
+import { useLocale } from 'components/hooks';
 import { formatDate } from 'lib/date';
 import styles from './RetentionTable.module.css';
 
 export function RetentionTable() {
   const { formatMessage, labels } = useMessages();
+  const { locale } = useLocale();
   const { report } = useContext(ReportContext);
   const { data } = report || {};
 
@@ -51,7 +53,7 @@ export function RetentionTable() {
         {rows.map(({ date, visitors, records }, rowIndex) => {
           return (
             <div key={rowIndex} className={styles.row}>
-              <div className={styles.date}>{formatDate(`${date} 00:00:00`, 'PP')}</div>
+              <div className={styles.date}>{formatDate(`${date} 00:00:00`, 'PP', locale)}</div>
               <div className={styles.visitors}>{visitors}</div>
               {days.map(day => {
                 if (totalDays - rowIndex < day) {
