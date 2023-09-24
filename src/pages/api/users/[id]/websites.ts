@@ -42,7 +42,7 @@ export default async (
     const websites = await getWebsitesByUserId(userId, {
       page,
       filter,
-      pageSize: +pageSize || null,
+      pageSize: +pageSize || undefined,
       includeTeams,
       onlyTeams,
     });

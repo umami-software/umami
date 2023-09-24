@@ -97,7 +97,18 @@ export async function getUsers(
 }
 
 export async function getUsersByTeamId(teamId: string, filter?: UserSearchFilter) {
-  return getUsers({ teamId, ...filter });
+  return getUsers(
+    { teamId, ...filter },
+    {
+      include: {
+        teamUser: {
+          select: {
+            role: true,
+          },
+        },
+      },
+    },
+  );
 }
 
 export async function createUser(data: {

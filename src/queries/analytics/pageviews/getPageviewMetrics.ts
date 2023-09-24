@@ -24,6 +24,12 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     { joinSession: SESSION_COLUMNS.includes(column) },
   );
 
+  let excludeDomain = '';
+  if (column === 'referrer_domain') {
+    excludeDomain =
+      'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)';
+  }
+
   return rawQuery(
     `
     select ${column} x, count(*) y
@@ -32,6 +38,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
+      ${excludeDomain}
       ${filterQuery}
     group by 1
     order by 2 desc
@@ -48,6 +55,11 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
+  let excludeDomain = '';
+  if (column === 'referrer_domain') {
+    excludeDomain = 'and referrer_domain != {websiteDomain:String}';
+  }
+
   return rawQuery(
     `
     select ${column} x, count(*) y
@@ -55,6 +67,7 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime} and {endDate:DateTime}
       and event_type = {eventType:UInt32}
+      ${excludeDomain}
       ${filterQuery}
     group by x
     order by y desc

@@ -25,7 +25,7 @@ export function SettingsTable({
   onPageSizeChange,
   filterValue,
 }) {
-  const { formatMessage, messages } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const [filter, setFilter] = useState(filterValue);
   const { data: value, page, count, pageSize } = data;
 
@@ -36,13 +36,13 @@ export function SettingsTable({
 
   return (
     <>
-      {showSearch && !!value.length && (
+      {showSearch && (value.length > 0 || filterValue) && (
         <SearchField
           onChange={handleFilterChange}
           delay={1000}
           value={filter}
           autoFocus={true}
-          placeholder="Search"
+          placeholder={formatMessage(labels.search)}
           style={{ maxWidth: '300px', marginBottom: '10px' }}
         />
       )}

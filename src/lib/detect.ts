@@ -57,6 +57,14 @@ export function getDevice(screen, os) {
   }
 }
 
+function getRegionCode(country, region) {
+  if (!country || !region) {
+    return undefined;
+  }
+
+  return region.includes('-') ? region : `${country}-${region}`;
+}
+
 export async function getLocation(ip, req) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
@@ -71,7 +79,7 @@ export async function getLocation(ip, req) {
 
     return {
       country,
-      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      subdivision1: getRegionCode(country, subdivision1),
       city,
     };
   }
@@ -84,7 +92,7 @@ export async function getLocation(ip, req) {
 
     return {
       country,
-      subdivision1: subdivision1.includes('-') ? subdivision1 : `${country}-${subdivision1}`,
+      subdivision1: getRegionCode(country, subdivision1),
       city,
     };
   }
@@ -121,12 +129,4 @@ export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const device = getDevice(screen, os);
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
-}
-
-export function getJsonBody<T>(req): T {
-  if ((req.headers['content-type'] || '').indexOf('text/plain') !== -1) {
-    return JSON.parse(req.body);
-  }
-
-  return req.body;
 }
