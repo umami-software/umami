@@ -228,13 +228,13 @@ export const EVENT_NAME_LENGTH = 50;
 
 export const DESKTOP_OS = [
   'BeOS',
-  'Chrome OS',
+  'ChromeOS',
   'Linux',
-  'Mac OS',
+  'macOS',
   'Open BSD',
   'OS/2',
   'QNX',
-  'Sun OS',
+  'SunOS',
   'Windows 10',
   'Windows 2000',
   'Windows 3.11',
