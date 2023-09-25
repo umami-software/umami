@@ -1,5 +1,6 @@
 import moment from 'moment';
 import * as yup from 'yup';
+import { UNIT_TYPES } from './constants';
 
 export const DateRangeValidation = {
   startAt: yup.number().integer().required(),
@@ -20,5 +21,11 @@ export function getFilterValidation(matchRegex) {
 export const TimezoneTest = yup.string().test(
   'timezone',
   () => `Invalid timezone`,
-  value => !moment.tz.zone(value),
+  value => !value || !moment.tz.zone(value),
+);
+
+export const UnitTypeTest = yup.string().test(
+  'unit',
+  () => `Invalid unit`,
+  value => !value || !UNIT_TYPES.includes(value),
 );

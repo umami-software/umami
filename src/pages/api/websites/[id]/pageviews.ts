@@ -23,14 +23,14 @@ export interface WebsitePageviewRequestQuery {
   city?: string;
 }
 
-import { TimezoneTest } from 'lib/yup';
+import { TimezoneTest, UnitTypeTest } from 'lib/yup';
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
-    unit: yup.string(),
+    unit: UnitTypeTest,
     timezone: TimezoneTest,
     url: yup.string(),
     referrer: yup.string(),

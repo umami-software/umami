@@ -30,6 +30,8 @@ export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
 
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
+
 export const USER_FILTER_TYPES = {
   all: 'All',
   username: 'Username',
