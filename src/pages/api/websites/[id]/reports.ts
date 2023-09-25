@@ -1,6 +1,7 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
+import { getFilterValidation } from 'lib/yup';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getReportsByWebsiteId } from 'queries';
@@ -13,6 +14,7 @@ import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
+    ...getFilterValidation(/All|Name|Description|Type|Username|Website Name|Website Domain/i),
   }),
 };
 

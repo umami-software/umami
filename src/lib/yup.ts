@@ -1,11 +1,10 @@
+import moment from 'moment';
 import * as yup from 'yup';
 
-export function getDateRangeValidation() {
-  return {
-    startAt: yup.number().integer().required(),
-    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
-  };
-}
+export const DateRangeValidation = {
+  startAt: yup.number().integer().required(),
+  endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+};
 
 // ex: /funnel|insights|retention/i
 export function getFilterValidation(matchRegex) {
@@ -17,3 +16,9 @@ export function getFilterValidation(matchRegex) {
     orderBy: yup.string(),
   };
 }
+
+export const TimezoneTest = yup.string().test(
+  'timezone',
+  () => `Invalid timezone`,
+  value => !moment.tz.zone(value),
+);

@@ -6,6 +6,8 @@ import { NextApiResponse } from 'next';
 import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getEventMetrics } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
+import * as yup from 'yup';
+import { TimezoneTest } from 'lib/yup';
 
 const unitTypes = ['year', 'month', 'hour', 'day'];
 
@@ -18,15 +20,13 @@ export interface WebsiteEventsRequestQuery {
   url: string;
 }
 
-import * as yup from 'yup';
-
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
     unit: yup.string().required(),
-    timezone: yup.string().required(),
+    timezone: TimezoneTest.required(),
     url: yup.string(),
   }),
 };

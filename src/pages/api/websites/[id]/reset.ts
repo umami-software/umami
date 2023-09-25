@@ -4,14 +4,14 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { resetWebsite } from 'queries';
+import * as yup from 'yup';
 
 export interface WebsiteResetRequestQuery {
   id: string;
 }
 
-import * as yup from 'yup';
 const schema = {
-  GET: yup.object().shape({
+  POST: yup.object().shape({
     id: yup.string().uuid().required(),
   }),
 };
@@ -22,7 +22,6 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
   req.yup = schema;
   await useValidate(req, res);
 
