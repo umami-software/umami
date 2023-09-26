@@ -21,11 +21,11 @@ export function getFilterValidation(matchRegex) {
 export const TimezoneTest = yup.string().test(
   'timezone',
   () => `Invalid timezone`,
-  value => !value || !moment.tz.zone(value),
+  value => moment.tz.zone(value) !== null,
 );
 
 export const UnitTypeTest = yup.string().test(
   'unit',
   () => `Invalid unit`,
-  value => !value || !UNIT_TYPES.includes(value),
+  value => UNIT_TYPES.includes(value),
 );
