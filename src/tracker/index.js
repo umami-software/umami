@@ -187,7 +187,8 @@
       headers,
     })
       .then(res => res.text())
-      .then(text => (cache = text));
+      .then(text => (cache = text))
+      .catch(() => {}); // no-op, gulp error
   };
 
   const track = (obj, data) => {

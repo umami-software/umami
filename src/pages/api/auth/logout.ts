@@ -8,7 +8,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   await useAuth(req, res);
 
   if (req.method === 'POST') {
-    if (redis.enabled) {
+    if (redis) {
       await redis.del(getAuthToken(req));
     }
 
