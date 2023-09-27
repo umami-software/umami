@@ -22,6 +22,12 @@ const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
   }),
+  POST: yup.object().shape({
+    id: yup.string().uuid().required(),
+    name: yup.string().required(),
+    domain: yup.string().required(),
+    shareId: yup.string().matches(SHARE_ID_REGEX, { excludeEmptyString: true }),
+  }),
 };
 
 export default async (
@@ -54,10 +60,6 @@ export default async (
     const { name, domain, shareId } = req.body;
 
     let website;
-
-    if (shareId && !shareId.match(SHARE_ID_REGEX)) {
-      return serverError(res, 'Invalid share ID.');
-    }
 
     try {
       website = await updateWebsite(websiteId, { name, domain, shareId });

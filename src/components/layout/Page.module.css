@@ -4,4 +4,5 @@
   flex-direction: column;
   background: var(--base50);
   position: relative;
+  height: 100%;
 }

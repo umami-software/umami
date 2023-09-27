@@ -5,6 +5,7 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { deleteTeamUser } from 'queries';
 import * as yup from 'yup';
+
 export interface TeamUserRequestQuery {
   id: string;
   userId: string;

@@ -30,7 +30,7 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
 export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
 
 export const SESSION_COLUMNS = [
