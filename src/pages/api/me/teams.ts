@@ -1,12 +1,12 @@
 import { useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 import userTeams from 'pages/api/users/[id]/teams';
 import * as yup from 'yup';
 
-export interface MyTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {
+export interface MyTeamsRequestQuery extends SearchFilter {
   id: string;
 }
 

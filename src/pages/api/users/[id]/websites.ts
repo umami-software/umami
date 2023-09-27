@@ -1,12 +1,12 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByUserId } from 'queries';
 import * as yup from 'yup';
 
-export interface UserWebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface UserWebsitesRequestQuery extends SearchFilter {
   id: string;
   includeTeams?: boolean;
   onlyTeams?: boolean;
@@ -32,7 +32,7 @@ export default async (
   await useValidate(req, res);
 
   const { user } = req.auth;
-  const { id: userId, page, pageSize, query, includeTeams, onlyTeams } = req.query;
+  const { id: userId, page, query, includeTeams, onlyTeams } = req.query;
 
   if (req.method === 'GET') {
     if (!user.isAdmin && user.id !== userId) {
@@ -40,9 +40,8 @@ export default async (
     }
 
     const websites = await getWebsitesByUserId(userId, {
-      query,
-      page,
-      pageSize: +pageSize || undefined,
+      page: +page,
+      query: query as string,
       includeTeams,
       onlyTeams,
     });

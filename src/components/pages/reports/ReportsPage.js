@@ -1,28 +1,39 @@
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import { useMessages, useReports } from 'components/hooks';
+import { useMessages, useApi } from 'components/hooks';
 import Link from 'next/link';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import ReportsTable from './ReportsTable';
+import useFilterQuery from 'components/hooks/useFilterQuery';
+import DataTable from 'components/common/DataTable';
+
+function useReports() {
+  const { get, del, useMutation } = useApi();
+  const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
+  const reports = useFilterQuery(['reports'], params => get(`/reports`, params));
+
+  const deleteReport = id => {
+    mutate(id, {
+      onSuccess: () => {
+        reports.refetch();
+      },
+    });
+  };
+
+  return { reports, deleteReport };
+}
 
 export function ReportsPage() {
   const { formatMessage, labels } = useMessages();
-  const {
-    reports,
-    error,
-    isLoading,
-    deleteReport,
-    filter,
-    handleFilterChange,
-    handlePageChange,
-    handlePageSizeChange,
-  } = useReports();
+  const { reports, deleteReport } = useReports();
 
-  const hasData = (reports && reports?.data.length !== 0) || filter;
+  const handleDelete = async (id, callback) => {
+    await deleteReport(id);
+    await reports.refetch();
+    callback?.();
+  };
 
   return (
-    <Page loading={isLoading} error={error}>
+    <>
       <PageHeader title={formatMessage(labels.reports)}>
         <Link href="/reports/create">
           <Button variant="primary">
@@ -33,22 +44,10 @@ export function ReportsPage() {
           </Button>
         </Link>
       </PageHeader>
-
-      {hasData && (
-        <ReportsTable
-          data={reports}
-          showSearch={true}
-          showPaging={true}
-          onFilterChange={handleFilterChange}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          onDelete={deleteReport}
-          filterValue={filter}
-          showDomain={true}
-        />
-      )}
-      {!hasData && <EmptyPlaceholder />}
-    </Page>
+      <DataTable {...reports}>
+        {({ data }) => <ReportsTable data={data} showDomain={true} onDelete={handleDelete} />}
+      </DataTable>
+    </>
   );
 }
 

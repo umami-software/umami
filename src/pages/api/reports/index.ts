@@ -1,13 +1,13 @@
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createReport, getReportsByUserId } from 'queries';
 import * as yup from 'yup';
 
-export interface ReportsRequestQuery extends SearchFilter<ReportSearchFilterType> {}
+export interface ReportsRequestQuery extends SearchFilter {}
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -52,12 +52,11 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, filter, pageSize } = req.query;
+    const { page, query } = req.query;
 
     const data = await getReportsByUserId(userId, {
       page,
-      filter,
-      pageSize: +pageSize || undefined,
+      query,
       includeTeams: true,
     });
 

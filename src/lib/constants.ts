@@ -19,6 +19,7 @@ export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
+export const DEFAULT_PAGE_SIZE = 10;
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -29,22 +30,6 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-
-export const USER_FILTER_TYPES = {
-  all: 'All',
-  username: 'Username',
-} as const;
-export const WEBSITE_FILTER_TYPES = { all: 'All', name: 'Name', domain: 'Domain' } as const;
-export const TEAM_FILTER_TYPES = { all: 'All', name: 'Name', 'user:username': 'Owner' } as const;
-export const REPORT_FILTER_TYPES = {
-  all: 'All',
-  name: 'Name',
-  description: 'Description',
-  type: 'Type',
-  'user:username': 'Username',
-  'website:name': 'Website Name',
-  'website:domain': 'Website Domain',
-} as const;
 
 export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
 

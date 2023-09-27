@@ -1,14 +1,14 @@
 import * as yup from 'yup';
 import { canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByTeamId } from 'queries';
 import { createTeamWebsites } from 'queries/admin/teamWebsite';
 
-export interface TeamWebsiteRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface TeamWebsiteRequestQuery extends SearchFilter {
   id: string;
 }
 
@@ -43,13 +43,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
-
-    const websites = await getWebsitesByTeamId(teamId, {
-      page,
-      filter,
-      pageSize: +pageSize || undefined,
-    });
+    const websites = await getWebsitesByTeamId(teamId, { ...req.query });
 
     return ok(res, websites);
   }

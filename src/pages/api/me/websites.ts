@@ -1,12 +1,12 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 import userWebsites from 'pages/api/users/[id]/websites';
 import * as yup from 'yup';
 
-export interface MyWebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface MyWebsitesRequestQuery extends SearchFilter {
   id: string;
 }
 

@@ -1,11 +1,11 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getReportsByWebsiteId } from 'queries';
 
-export interface ReportsRequestQuery extends SearchFilter<ReportSearchFilterType> {
+export interface ReportsRequestQuery extends SearchFilter {
   id: string;
 }
 
@@ -33,12 +33,11 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { page, query } = req.query;
 
     const data = await getReportsByWebsiteId(websiteId, {
       page,
-      filter,
-      pageSize: +pageSize || undefined,
+      query,
     });
 
     return ok(res, data);

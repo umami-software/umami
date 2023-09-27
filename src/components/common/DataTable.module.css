@@ -1,3 +1,12 @@
+.table {
+  grid-template-rows: repeat(auto-fit, max-content);
+}
+
+.table td {
+  align-items: center;
+  max-height: max-content;
+}
+
 .search {
   max-width: 300px;
   margin: 20px 0;
@@ -8,10 +17,22 @@
   gap: 5px;
 }
 
+.body {
+  display: flex;
+  position: relative;
+}
+
 .body td {
   align-items: center;
 }
 
 .pager {
-  margin-top: 20px;
+  margin: 20px 0;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
 }

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Button, Flexbox, Icon, Icons } from 'react-basics';
+import { Button, Icon, Icons } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import styles from './Pager.module.css';
 
@@ -25,21 +25,25 @@ export function Pager({ page, pageSize, count, onPageChange, className }) {
   }
 
   return (
-    <Flexbox justifyContent="center" className={classNames(styles.container, className)}>
-      <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
-        <Icon rotate={90}>
-          <Icons.ChevronDown />
-        </Icon>
-      </Button>
-      <Flexbox alignItems="center" className={styles.text}>
-        {formatMessage(labels.pageOf, { current: page, total: maxPage })}
-      </Flexbox>
-      <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
-        <Icon rotate={270}>
-          <Icons.ChevronDown />
-        </Icon>
-      </Button>
-    </Flexbox>
+    <div className={classNames(styles.pager, className)}>
+      <div>{formatMessage(labels.numberOfRecords, { x: count })}</div>
+      <div className={styles.nav}>
+        <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
+          <Icon rotate={90}>
+            <Icons.ChevronDown />
+          </Icon>
+        </Button>
+        <div className={styles.text}>
+          {formatMessage(labels.pageOf, { current: page, total: maxPage })}
+        </div>
+        <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
+          <Icon rotate={270}>
+            <Icons.ChevronDown />
+          </Icon>
+        </Button>
+      </div>
+      <div></div>
+    </div>
   );
 }
 

@@ -72,10 +72,10 @@ export async function getWebsites(
         OR: query
           ? [
               {
-                name: { startsWith: query, ...mode },
+                name: { contains: query, ...mode },
               },
               {
-                domain: { startsWith: query, ...mode },
+                domain: { contains: query, ...mode },
               },
             ]
           : [],

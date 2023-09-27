@@ -2,19 +2,19 @@ import { Team } from '@prisma/client';
 import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createTeam, getTeamsByUserId } from 'queries';
 import * as yup from 'yup';
 
-export interface TeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {}
+export interface TeamsRequestQuery extends SearchFilter {}
 export interface TeamsRequestBody {
   name: string;
 }
 
-export interface MyTeamsRequestQuery extends SearchFilter<TeamSearchFilterType> {}
+export interface MyTeamsRequestQuery extends SearchFilter {}
 
 const schema = {
   GET: yup.object().shape({

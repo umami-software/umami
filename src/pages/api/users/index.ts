@@ -2,13 +2,13 @@ import { canCreateUser, canViewUsers } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, Role, SearchFilter, User, UserSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUserByUsername, getUsers } from 'queries';
 
-export interface UsersRequestQuery extends SearchFilter<UserSearchFilterType> {}
+export interface UsersRequestQuery extends SearchFilter {}
 export interface UsersRequestBody {
   username: string;
   password: string;
@@ -46,9 +46,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { page, query } = req.query;
 
-    const users = await getUsers({ page, filter, pageSize: pageSize ? +pageSize : null });
+    const users = await getUsers({ page, query });
 
     return ok(res, users);
   }

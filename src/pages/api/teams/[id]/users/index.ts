@@ -1,11 +1,11 @@
 import { canViewTeam } from 'lib/auth';
 import { useAuth } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, TeamSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUsersByTeamId } from 'queries';
 
-export interface TeamUserRequestQuery extends SearchFilter<TeamSearchFilterType> {
+export interface TeamUserRequestQuery extends SearchFilter {
   id: string;
 }
 
@@ -27,12 +27,11 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { query, page } = req.query;
 
     const users = await getUsersByTeamId(teamId, {
+      query,
       page,
-      filter,
-      pageSize: +pageSize || undefined,
     });
 
     return ok(res, users);

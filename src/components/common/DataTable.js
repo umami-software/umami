@@ -1,46 +1,46 @@
-import { createContext } from 'react';
-import { SearchField } from 'react-basics';
-import { useDataTable } from 'components/hooks/useDataTable';
+import { Banner, Loading, SearchField } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
 import styles from './DataTable.module.css';
+import classNames from 'classnames';
 
-const DEFAULT_SEARCH_DELAY = 1000;
+const DEFAULT_SEARCH_DELAY = 600;
 
 export const DataTableStyles = styles;
 
-export const DataTableContext = createContext(null);
-
 export function DataTable({
+  data = {},
+  params = {},
+  setParams,
+  isLoading,
+  error,
   searchDelay,
   showSearch = true,
   showPaging = true,
   children,
-  onChange,
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const dataTable = useDataTable();
-  const { query, setQuery, data, pageInfo, setPageInfo } = dataTable;
-  const { page, pageSize, count } = pageInfo || {};
-  const noResults = Boolean(query && data?.length === 0);
+  const { pageSize, count } = data;
+  const { query, page } = params;
+  const hasData = Boolean(!isLoading && data?.data?.length);
+  const noResults = Boolean(!isLoading && query && !hasData);
 
-  const handleChange = value => {
-    onChange?.({ query: value, page });
-  };
-
-  const handleSearch = value => {
-    setQuery(value);
-    handleChange(value);
+  const handleSearch = query => {
+    setParams({ ...params, query });
   };
 
   const handlePageChange = page => {
-    setPageInfo(state => ({ ...state, page }));
+    setParams({ ...params, page });
   };
 
+  if (error) {
+    return <Banner variant="error">{formatMessage(messages.error)}</Banner>;
+  }
+
   return (
-    <DataTableContext.Provider value={dataTable}>
-      {showSearch && (
+    <>
+      {(hasData || query || isLoading) && showSearch && (
         <SearchField
           className={styles.search}
           value={query}
@@ -50,8 +50,16 @@ export function DataTable({
           placeholder={formatMessage(labels.search)}
         />
       )}
-      {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
-      <div className={styles.body}>{children}</div>
+      <div
+        className={classNames(styles.body, { [styles.status]: isLoading || noResults || !hasData })}
+      >
+        {hasData && typeof children === 'function' ? children(data) : children}
+        {isLoading && <Loading icon="dots" />}
+        {!isLoading && !hasData && !query && (
+          <Empty message={formatMessage(messages.noDataAvailable)} />
+        )}
+        {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
+      </div>
       {showPaging && (
         <Pager
           className={styles.pager}
@@ -61,7 +69,7 @@ export function DataTable({
           onPageChange={handlePageChange}
         />
       )}
-    </DataTableContext.Provider>
+    </>
   );
 }
 
