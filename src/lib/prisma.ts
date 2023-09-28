@@ -185,7 +185,7 @@ function getPageFilters(filters: SearchFilter): [
     orderBy: string;
   },
 ] {
-  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy } = filters || {};
+  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
 
   return [
     {
@@ -193,7 +193,7 @@ function getPageFilters(filters: SearchFilter): [
       ...(orderBy && {
         orderBy: [
           {
-            [orderBy]: 'asc',
+            [orderBy]: sortDescending ? 'desc' : 'asc',
           },
         ],
       }),
