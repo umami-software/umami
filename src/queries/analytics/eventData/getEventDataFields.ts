@@ -37,7 +37,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { fiel
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
+async function clickhouseQuery(
+  websiteId: string,
+  filters: QueryFilters & { field?: string },
+): Promise<{ fieldName: string; dataType: number; fieldValue: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, filters, {
     columns: { field: 'event_key' },
@@ -52,12 +55,21 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters & { fiel
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
     group by event_key, data_type, string_value
     order by 3 desc, 2 desc, 1 asc
     limit 100
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        fieldName: a.fieldName,
+        dataType: Number(a.dataType),
+        fieldValue: a.fieldValue,
+        total: Number(a.total),
+      };
+    });
+  });
 }
