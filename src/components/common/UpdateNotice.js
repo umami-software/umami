@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Button, Row, Column } from 'react-basics';
@@ -6,12 +7,12 @@ import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import styles from './UpdateNotice.module.css';
 import useMessages from 'components/hooks/useMessages';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 
 export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();
   const { latest, checked, hasUpdate, releaseUrl } = useStore();
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const [dismissed, setDismissed] = useState(checked);
   const allowUpdate =
     user?.isAdmin &&

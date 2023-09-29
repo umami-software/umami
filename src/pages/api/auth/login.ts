@@ -43,8 +43,7 @@ export default async (
     return forbidden(res);
   }
 
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const { username, password } = req.body;

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Icon, Text, TooltipPopup } from 'react-basics';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import styles from './NavGroup.module.css';
@@ -13,7 +13,7 @@ export function NavGroup({
   allowExpand = true,
   minimized = false,
 }) {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
   const [expanded, setExpanded] = useState(defaultExpanded);
 
   const handleExpand = () => setExpanded(state => !state);
