@@ -25,16 +25,13 @@ function getClient() {
     hostname,
     port,
     pathname,
-    // protocol,
+    protocol,
     username = 'default',
     password,
   } = new URL(process.env.CLICKHOUSE_URL);
 
-  // const formattedProtocol =
-  //   protocol.toLowerCase() === 'clickhouse:' || protocol === 'https:' ? 'https:' : 'http:';
-
   const client = createClient({
-    host: `http://${hostname}:${port}`,
+    host: `${protocol}//${hostname}:${port}`,
     database: pathname.replace('/', ''),
     username: username,
     password,
