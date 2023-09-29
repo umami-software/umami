@@ -1,4 +1,4 @@
-import { ClickHouse } from 'clickhouse';
+import { ClickHouseClient, createClient } from '@clickhouse/client';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
@@ -17,7 +17,7 @@ export const CLICKHOUSE_DATE_FORMATS = {
 
 const log = debug('umami:clickhouse');
 
-let clickhouse: ClickHouse;
+let clickhouse: ClickHouseClient;
 const enabled = Boolean(process.env.CLICKHOUSE_URL);
 
 function getClient() {
@@ -25,18 +25,19 @@ function getClient() {
     hostname,
     port,
     pathname,
+    // protocol,
     username = 'default',
     password,
   } = new URL(process.env.CLICKHOUSE_URL);
 
-  const client = new ClickHouse({
-    url: hostname,
-    port: Number(port),
-    format: 'json',
-    config: {
-      database: pathname.replace('/', ''),
-    },
-    basicAuth: password ? { username, password } : null,
+  // const formattedProtocol =
+  //   protocol.toLowerCase() === 'clickhouse:' || protocol === 'https:' ? 'https:' : 'http:';
+
+  const client = createClient({
+    host: `http://${hostname}:${port}`,
+    database: pathname.replace('/', ''),
+    username: username,
+    password,
   });
 
   if (process.env.NODE_ENV !== 'production') {
@@ -118,7 +119,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
   };
 }
 
-async function rawQuery<T>(query: string, params: object = {}): Promise<T> {
+async function rawQuery(query: string, params: Record<string, unknown> = {}): Promise<unknown> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);
@@ -126,7 +127,15 @@ async function rawQuery<T>(query: string, params: object = {}): Promise<T> {
 
   await connect();
 
-  return clickhouse.query(query, { params }).toPromise() as Promise<T>;
+  const resultSet = await clickhouse.query({
+    query: query,
+    query_params: params,
+    format: 'JSONEachRow',
+  });
+
+  const data = await resultSet.json();
+
+  return data;
 }
 
 async function findUnique(data) {
