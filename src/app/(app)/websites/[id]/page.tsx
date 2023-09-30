@@ -1,9 +1,5 @@
 import WebsiteDetails from './WebsiteDetails';
 
-export default function ({ params: { id } }) {
-  if (!id) {
-    return null;
-  }
-
+export default function WebsiteReportsPage({ params: { id } }) {
   return <WebsiteDetails websiteId={id} />;
 }

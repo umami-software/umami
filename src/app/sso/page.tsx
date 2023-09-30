@@ -1,12 +1,14 @@
 'use client';
 import { useEffect } from 'react';
 import { Loading } from 'react-basics';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { setClientAuthToken } from 'lib/client';
 
-export default function ({ params }) {
+export default function SSOPage() {
   const router = useRouter();
-  const { token, url } = params;
+  const search = useSearchParams();
+  const url = search.get('url');
+  const token = search.get('token');
 
   useEffect(() => {
     if (url && token) {

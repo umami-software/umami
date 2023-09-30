@@ -1,7 +1,7 @@
 import InsightsReport from './InsightsReport';
 import { Metadata } from 'next';
 
-export default function () {
+export default function InsightsReportPage() {
   return <InsightsReport reportId={null} />;
 }
 

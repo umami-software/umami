@@ -1,6 +1,6 @@
 import Realtime from './Realtime';
 
-export default function ({ params: { id } }) {
+export default function WebsiteRealtimePage({ params: { id } }) {
   if (!id) {
     return null;
   }

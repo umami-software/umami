@@ -1,7 +1,7 @@
 import WebsiteHeader from '../WebsiteHeader';
 import WebsiteEventData from './WebsiteEventData';
 
-export default function ({ params: { id } }) {
+export default function WebsiteEventDataPage({ params: { id } }) {
   if (!id) {
     return null;
   }

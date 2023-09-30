@@ -1,6 +1,6 @@
 import RetentionReport from './RetentionReport';
 
-export default function () {
+export default function RetentionReportPage() {
   return <RetentionReport reportId={null} />;
 }
 
