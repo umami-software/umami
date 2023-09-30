@@ -37,9 +37,7 @@ export default async (
   res: NextApiResponse<User[] | User>,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
     if (!(await canViewUsers(req.auth))) {

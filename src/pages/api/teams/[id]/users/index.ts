@@ -21,8 +21,7 @@ export default async (
   res: NextApiResponse,
 ) => {
   await useAuth(req, res);
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: teamId } = req.query;
 

@@ -21,9 +21,7 @@ export default async (
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
     req.query.id = req.auth.user.id;

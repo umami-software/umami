@@ -20,9 +20,7 @@ const schema = {
 export default async (req: NextApiRequestQueryBody<ValuesRequestQuery>, res: NextApiResponse) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: websiteId, type } = req.query;
 

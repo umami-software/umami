@@ -20,9 +20,7 @@ const schema = {
 
 export default async (req: NextApiRequestQueryBody<TeamUserRequestQuery>, res: NextApiResponse) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'DELETE') {
     const { id: teamId, userId } = req.query;

@@ -21,9 +21,7 @@ export default async (
   res: NextApiResponse<Team>,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const { accessCode } = req.body;

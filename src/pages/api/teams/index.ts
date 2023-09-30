@@ -30,9 +30,7 @@ export default async (
   res: NextApiResponse<Team[] | Team>,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     user: { id: userId },
