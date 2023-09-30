@@ -78,6 +78,7 @@ const basePath = process.env.BASE_PATH;
 
 /** @type {import('next').NextConfig} */
 const config = {
+  reactStrictMode: false,
   env: {
     basePath: basePath || '',
     cloudMode: !!process.env.CLOUD_MODE,
@@ -85,6 +86,8 @@ const config = {
     configUrl: '/config',
     currentVersion: pkg.version,
     defaultLocale: process.env.DEFAULT_LOCALE,
+    disableLogin: process.env.DISABLE_LOGIN,
+    disableUI: process.env.DISABLE_UI,
     isProduction: process.env.NODE_ENV === 'production',
   },
   basePath,

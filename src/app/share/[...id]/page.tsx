@@ -1,17 +1,9 @@
-import Page from 'components/layout/Page';
-import WebsiteDetails from 'app/(app)/websites/[id]/WebsiteDetails';
-import useShareToken from 'components/hooks/useShareToken';
+import Share from './Share';
 
-export default function SharePage({ params }) {
-  const shareToken = useShareToken(params.id);
-
-  if (!shareToken) {
+export default function ({ params: { id } }) {
+  if (!id) {
     return null;
   }
 
-  return (
-    <Page>
-      <WebsiteDetails websiteId={shareToken.websiteId} />
-    </Page>
-  );
+  return <Share shareId={id} />;
 }
