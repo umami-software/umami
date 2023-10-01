@@ -1,75 +1,49 @@
-import {
-  ActionForm,
-  Button,
-  Icon,
-  Icons,
-  Loading,
-  Modal,
-  ModalTrigger,
-  Text,
-  useToasts,
-} from 'react-basics';
+import { ActionForm, Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import TeamWebsitesTable from './TeamWebsitesTable';
 import TeamAddWebsiteForm from './TeamAddWebsiteForm';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
-import useApiFilter from 'components/hooks/useApiFilter';
+import useUser from 'components/hooks/useUser';
+import useFilterQuery from 'components/hooks/useFilterQuery';
+import DataTable from 'components/common/DataTable';
 
 export function TeamWebsites({ teamId }) {
-  const { showToast } = useToasts();
   const { formatMessage, labels, messages } = useMessages();
-  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
-    useApiFilter();
-  const { get, useQuery } = useApi();
-  const { data, isLoading, refetch } = useQuery(
-    ['teams:websites', teamId, filter, page, pageSize],
-    () =>
-      get(`/teams/${teamId}/websites`, {
-        filter,
-        page,
-        pageSize,
-      }),
+  const { user } = useUser();
+  const { get } = useApi();
+  const { getProps, refetch } = useFilterQuery(
+    ['team:websites', teamId],
+    params => {
+      return get(`/teams/${teamId}/websites`, {
+        ...params,
+      });
+    },
+    { enabled: !!user },
   );
-  const hasData = data && data.length !== 0;
 
-  if (isLoading) {
-    return <Loading icon="dots" style={{ minHeight: 300 }} />;
-  }
-
-  const handleSave = async () => {
-    await refetch();
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  const handleWebsiteAdd = () => {
+    refetch();
   };
 
-  const addButton = (
-    <ModalTrigger>
-      <Button variant="primary">
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-        <Text>{formatMessage(labels.addWebsite)}</Text>
-      </Button>
-      <Modal title={formatMessage(labels.addWebsite)}>
-        {close => <TeamAddWebsiteForm teamId={teamId} onSave={handleSave} onClose={close} />}
-      </Modal>
-    </ModalTrigger>
-  );
-
   return (
-    <div>
-      <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>{addButton}</ActionForm>
-      {hasData && (
-        <TeamWebsitesTable
-          teamId={teamId}
-          data={data}
-          onSave={handleSave}
-          onFilterChange={handleFilterChange}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          filterValue={filter}
-        />
-      )}
-    </div>
+    <>
+      <ActionForm description={formatMessage(messages.teamWebsitesInfo)}>
+        <ModalTrigger>
+          <Button variant="primary">
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            <Text>{formatMessage(labels.addWebsite)}</Text>
+          </Button>
+          <Modal title={formatMessage(labels.addWebsite)}>
+            {close => (
+              <TeamAddWebsiteForm teamId={teamId} onSave={handleWebsiteAdd} onClose={close} />
+            )}
+          </Modal>
+        </ModalTrigger>
+      </ActionForm>
+      <DataTable {...getProps()}>{({ data }) => <TeamWebsitesTable data={data} />}</DataTable>
+    </>
   );
 }
 

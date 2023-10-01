@@ -1,4 +1,4 @@
-import { Button, Text, Icon, Icons, GridTable, GridColumn, Flexbox } from 'react-basics';
+import { Button, Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import { ROLES } from 'lib/constants';
@@ -36,7 +36,7 @@ export function UsersTable({ data = [] }) {
         {row => {
           const { id, username } = row;
           return (
-            <Flexbox gap={10}>
+            <>
               <Link href={`/settings/users/${id}`}>
                 <Button>
                   <Icon>
@@ -46,7 +46,7 @@ export function UsersTable({ data = [] }) {
                 </Button>
               </Link>
               <UserDeleteButton userId={id} username={username} />
-            </Flexbox>
+            </>
           );
         }}
       </GridColumn>

@@ -1,3 +1,4 @@
+'use client';
 import { useState, useMemo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -7,7 +8,6 @@ import useDashboard, { saveDashboard } from 'store/dashboard';
 import useMessages from 'components/hooks/useMessages';
 import useApi from 'components/hooks/useApi';
 import styles from './DashboardEdit.module.css';
-import Page from 'components/layout/Page';
 
 const dragId = 'dashboard-website-ordering';
 
@@ -17,11 +17,7 @@ export function DashboardEdit() {
   const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
   const { get, useQuery } = useApi();
-  const {
-    data: result,
-    isLoading,
-    error,
-  } = useQuery(['websites'], () => get('/websites', { includeTeams: 1 }));
+  const { data: result } = useQuery(['websites'], () => get('/websites', { includeTeams: 1 }));
   const { data: websites } = result || {};
 
   const ordered = useMemo(() => {
@@ -59,7 +55,7 @@ export function DashboardEdit() {
   }
 
   return (
-    <Page loading={isLoading} error={error}>
+    <>
       <div className={styles.buttons}>
         <Button onClick={handleSave} variant="action" size="small">
           {formatMessage(labels.save)}
@@ -105,7 +101,7 @@ export function DashboardEdit() {
           </Droppable>
         </DragDropContext>
       </div>
-    </Page>
+    </>
   );
 }
 

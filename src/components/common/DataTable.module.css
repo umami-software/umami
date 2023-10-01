@@ -23,6 +23,9 @@
 }
 
 .body td {
+  display: flex;
+  gap: 10px;
+  min-height: 70px;
   align-items: center;
 }
 

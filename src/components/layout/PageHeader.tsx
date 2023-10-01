@@ -5,7 +5,7 @@ import styles from './PageHeader.module.css';
 export interface PageHeaderProps {
   title?: string;
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function PageHeader({ title, className, children }: PageHeaderProps) {

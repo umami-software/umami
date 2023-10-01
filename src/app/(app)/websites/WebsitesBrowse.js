@@ -1,5 +1,5 @@
 'use client';
-import WebsiteList from 'app/(app)/settings/websites/WebsitesList';
+import WebsiteList from '../settings/websites/Websites';
 import { useMessages } from 'components/hooks';
 import { useState } from 'react';
 import { Item, Tabs } from 'react-basics';

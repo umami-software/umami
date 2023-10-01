@@ -1,4 +1,3 @@
-'use client';
 import Shell from './Shell';
 import NavBar from './NavBar';
 import Page from 'components/layout/Page';

@@ -3,7 +3,7 @@ import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import Link from 'next/link';
-import { Button, Flexbox, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
+import { Button, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
 import TeamDeleteButton from './TeamDeleteButton';
 import TeamLeaveButton from './TeamLeaveButton';
 
@@ -24,7 +24,7 @@ export function TeamsTable({ data = [] }) {
           const showDelete = user.id === owner?.userId;
 
           return (
-            <Flexbox gap={10}>
+            <>
               <Link href={`/settings/teams/${id}`}>
                 <Button>
                   <Icon>
@@ -35,7 +35,7 @@ export function TeamsTable({ data = [] }) {
               </Link>
               {showDelete && <TeamDeleteButton teamId={id} teamName={name} />}
               {!showDelete && <TeamLeaveButton teamId={id} teamName={name} />}
-            </Flexbox>
+            </>
           );
         }}
       </GridColumn>

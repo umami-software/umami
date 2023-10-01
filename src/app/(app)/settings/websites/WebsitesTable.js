@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button, Text, Icon, Icons, GridTable, GridColumn, Flexbox } from 'react-basics';
+import { Button, Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 
@@ -29,7 +29,7 @@ export function WebsitesTable({ data = [], showTeam, showEditButton }) {
           } = row;
 
           return (
-            <Flexbox gap={10}>
+            <>
               {showEditButton && (!showTeam || ownerId === user.id) && (
                 <Link href={`/settings/websites/${id}`}>
                   <Button>
@@ -48,7 +48,7 @@ export function WebsitesTable({ data = [], showTeam, showEditButton }) {
                   <Text>{formatMessage(labels.view)}</Text>
                 </Button>
               </Link>
-            </Flexbox>
+            </>
           );
         }}
       </GridColumn>

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Item, Loading, Tabs, useToasts } from 'react-basics';
+import { Item, Loading, Tabs, useToasts, Flexbox } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';
 import useUser from 'components/hooks/useUser';
@@ -46,7 +46,7 @@ export function TeamSettings({ teamId }) {
   }
 
   return (
-    <>
+    <Flexbox direction="column">
       <PageHeader title={values?.name} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
@@ -58,7 +58,7 @@ export function TeamSettings({ teamId }) {
       )}
       {tab === 'members' && <TeamMembers teamId={teamId} readOnly={!canEdit} />}
       {tab === 'websites' && <TeamWebsites teamId={teamId} readOnly={!canEdit} />}
-    </>
+    </Flexbox>
   );
 }
 

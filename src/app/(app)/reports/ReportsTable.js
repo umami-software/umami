@@ -4,7 +4,6 @@ import { useMessages } from 'components/hooks';
 import useUser from 'components/hooks/useUser';
 import {
   Button,
-  Flexbox,
   GridColumn,
   GridTable,
   Icon,
@@ -43,7 +42,7 @@ export function ReportsTable({ data = [], onDelete, showDomain }) {
         {row => {
           const { id, name, userId, website } = row;
           return (
-            <Flexbox gap={10}>
+            <>
               <LinkButton href={`/reports/${id}`}>{formatMessage(labels.view)}</LinkButton>
               {(user.id === userId || user.id === website?.userId) && (
                 <ModalTrigger>
@@ -64,7 +63,7 @@ export function ReportsTable({ data = [], onDelete, showDomain }) {
                   </Modal>
                 </ModalTrigger>
               )}
-            </Flexbox>
+            </>
           );
         }}
       </GridColumn>

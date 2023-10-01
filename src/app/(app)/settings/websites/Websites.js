@@ -6,7 +6,7 @@ import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import WebsitesHeader from './WebsitesHeader';
 
-export function WebsitesList({
+export function Websites({
   showHeader = true,
   showEditButton = true,
   showTeam,
@@ -40,4 +40,4 @@ export function WebsitesList({
   );
 }
 
-export default WebsitesList;
+export default Websites;

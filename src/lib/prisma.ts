@@ -189,7 +189,7 @@ function getPageFilters(filters: SearchFilter): [
 
   return [
     {
-      ...(pageSize > 0 && { take: pageSize, skip: pageSize * (page - 1) }),
+      ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
       ...(orderBy && {
         orderBy: [
           {

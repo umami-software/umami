@@ -12,7 +12,6 @@ export * from 'components/common/HoverTooltip';
 export * from 'components/common/LinkButton';
 export * from 'components/common/MobileMenu';
 export * from 'components/common/Pager';
-export * from 'components/common/SettingsTable';
 export * from 'components/common/UpdateNotice';
 export * from 'components/common/WorldMap';
 
@@ -113,5 +112,5 @@ export * from 'app/(app)/settings/websites/[id]/WebsiteDeleteForm';
 export * from 'app/(app)/settings/websites/[id]/WebsiteEditForm';
 export * from 'app/(app)/settings/websites/[id]/WebsiteResetForm';
 export * from 'app/(app)/settings/websites/WebsiteSettings';
-export * from 'app/(app)/settings/websites/WebsitesList';
+export * from './app/(app)/settings/websites/Websites';
 export * from 'app/(app)/settings/websites/WebsitesTable';
