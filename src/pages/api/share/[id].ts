@@ -25,8 +25,7 @@ export default async (
   req: NextApiRequestQueryBody<ShareRequestQuery>,
   res: NextApiResponse<ShareResponse>,
 ) => {
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: shareId } = req.query;
 

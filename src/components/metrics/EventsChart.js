@@ -13,17 +13,17 @@ export function EventsChart({ websiteId, className, token }) {
   const { locale } = useLocale();
   const [timezone] = useTimezone();
   const {
-    query: { url, eventName },
+    query: { url, event },
   } = usePageQuery();
 
-  const { data, isLoading } = useQuery(['events', websiteId, modified, eventName], () =>
+  const { data, isLoading } = useQuery(['events', websiteId, modified, event], () =>
     get(`/websites/${websiteId}/events`, {
       startAt: +startDate,
       endAt: +endDate,
       unit,
       timezone,
       url,
-      eventName,
+      event,
       token,
     }),
   );

@@ -1,0 +1,29 @@
+import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
+import WebsiteAddForm from './WebsiteAddForm';
+import useMessages from 'components/hooks/useMessages';
+
+export function WebsiteAddButton({ onSave }) {
+  const { formatMessage, labels, messages } = useMessages();
+  const { showToast } = useToasts();
+
+  const handleSave = async () => {
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    onSave?.();
+  };
+
+  return (
+    <ModalTrigger>
+      <Button variant="primary">
+        <Icon>
+          <Icons.Plus />
+        </Icon>
+        <Text>{formatMessage(labels.addWebsite)}</Text>
+      </Button>
+      <Modal title={formatMessage(labels.addWebsite)}>
+        {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
+      </Modal>
+    </ModalTrigger>
+  );
+}
+
+export default WebsiteAddButton;

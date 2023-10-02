@@ -29,7 +29,6 @@ export function MetricsTable({
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
     resolveUrl,
-    router,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = usePageQuery();
   const { formatMessage, labels } = useMessages();
@@ -104,7 +103,7 @@ export function MetricsTable({
       {data && !error && <ListTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <Link href={router.pathname} as={resolveUrl({ view: type })}>
+          <Link href={resolveUrl({ view: type })}>
             <Button variant="quiet">
               <Text>{formatMessage(labels.more)}</Text>
               <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>

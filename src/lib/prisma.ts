@@ -1,11 +1,11 @@
+import { Prisma } from '@prisma/client';
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
-import { Prisma } from '@prisma/client';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -171,7 +171,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-function getPageFilters(filters: SearchFilter<any>): [
+function getPageFilters(filters: SearchFilter): [
   {
     orderBy: {
       [x: string]: string;
@@ -185,20 +185,20 @@ function getPageFilters(filters: SearchFilter<any>): [
     orderBy: string;
   },
 ] {
-  const { pageSize = 10, page = 1, orderBy } = filters || {};
+  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
 
   return [
     {
-      ...(pageSize > 0 && { take: pageSize, skip: pageSize * (page - 1) }),
+      ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
       ...(orderBy && {
         orderBy: [
           {
-            [orderBy]: 'asc',
+            [orderBy]: sortDescending ? 'desc' : 'asc',
           },
         ],
       }),
     },
-    { pageSize, page: +page, orderBy },
+    { page: +page, pageSize, orderBy },
   ];
 }
 

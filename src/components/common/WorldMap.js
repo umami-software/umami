@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { useRouter } from 'next/router';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
@@ -14,7 +13,6 @@ import { percentFilter } from 'lib/filters';
 import styles from './WorldMap.module.css';
 
 export function WorldMap({ data, className }) {
-  const { basePath } = useRouter();
   const [tooltip, setTooltipPopup] = useState();
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
@@ -54,7 +52,7 @@ export function WorldMap({ data, className }) {
     >
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
-          <Geographies geography={`${basePath}${MAP_FILE}`}>
+          <Geographies geography={`${process.env.basePath}${MAP_FILE}`}>
             {({ geographies }) => {
               return geographies.map(geo => {
                 const code = ISO_COUNTRIES[geo.id];
