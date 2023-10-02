@@ -20,6 +20,8 @@
 @media only screen and (max-width: 1200px) {
   .actions {
     margin-top: 40px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 }
 

@@ -22,7 +22,7 @@ export function WebsiteDateFilter({ websiteId }) {
   };
 
   return (
-    <Flexbox justifyContent="center" gap={10}>
+    <Flexbox justifyContent="center" gap={10} wrap="wrap">
       {value !== 'all' && selectedUnit && (
         <Flexbox justifyContent="center" className={styles.buttons}>
           <Button onClick={() => handleIncrement(1)}>
