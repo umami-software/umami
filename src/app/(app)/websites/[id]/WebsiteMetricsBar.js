@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useApi, useDateRange, useMessages, usePageQuery, useSticky } from 'components/hooks';
+import { useApi, useDateRange, useMessages, useNavigation, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
@@ -17,10 +17,10 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   const { startDate, endDate, modified } = dateRange;
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const {
-    resolveUrl,
+    makeUrl,
     router,
     query: { url, referrer, title, os, browser, device, country, region, city },
-  } = usePageQuery();
+  } = useNavigation();
 
   const { data, error, isLoading, isFetched } = useQuery(
     [
@@ -64,7 +64,7 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   };
 
   const handleAddFilter = ({ name, value }) => {
-    router.push(resolveUrl({ [name]: value }));
+    router.push(makeUrl({ [name]: value }));
   };
 
   const WebsiteFilterButton = () => {

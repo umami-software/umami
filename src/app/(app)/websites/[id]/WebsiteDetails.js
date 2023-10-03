@@ -3,7 +3,7 @@ import { Loading } from 'react-basics';
 import { usePathname } from 'next/navigation';
 import Page from 'components/layout/Page';
 import FilterTags from 'components/metrics/FilterTags';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import { useWebsite } from 'components/hooks';
 import WebsiteChart from './WebsiteChart';
 import WebsiteMenuView from './WebsiteMenuView';
@@ -18,7 +18,7 @@ export default function WebsiteDetails({ websiteId }) {
 
   const {
     query: { view, url, referrer, os, browser, device, country, region, city, title },
-  } = usePageQuery();
+  } = useNavigation();
 
   if (isLoading || error) {
     return <Page isLoading={isLoading} error={error} />;

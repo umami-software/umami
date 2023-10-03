@@ -3,7 +3,7 @@ import { Flexbox, Loading } from 'react-basics';
 import EventDataTable from './EventDataTable';
 import EventDataValueTable from './EventDataValueTable';
 import { EventDataMetricsBar } from './EventDataMetricsBar';
-import { useDateRange, useApi, usePageQuery } from 'components/hooks';
+import { useDateRange, useApi, useNavigation } from 'components/hooks';
 import styles from './WebsiteEventData.module.css';
 
 function useData(websiteId, event) {
@@ -28,7 +28,7 @@ function useData(websiteId, event) {
 export default function WebsiteEventData({ websiteId }) {
   const {
     query: { event },
-  } = usePageQuery();
+  } = useNavigation();
   const { data, isLoading } = useData(websiteId, event);
 
   return (

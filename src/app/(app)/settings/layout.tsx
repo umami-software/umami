@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import useUser from 'components/hooks/useUser';
 import useMessages from 'components/hooks/useMessages';
-import SideNav from './SideNav';
+import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
 
 export default function SettingsLayout({ children }) {

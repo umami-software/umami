@@ -1,6 +1,4 @@
-import { Icon, Button, Flexbox, Text } from 'react-basics';
-import Link from 'next/link';
-import { GridRow, GridColumn } from 'components/layout/Grid';
+import { Text } from 'react-basics';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import RegionsTable from 'components/metrics/RegionsTable';
@@ -13,12 +11,11 @@ import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import ScreenTable from 'components/metrics/ScreenTable';
 import EventsTable from 'components/metrics/EventsTable';
-import Icons from 'components/icons';
-import SideNav from '../../settings/SideNav';
-import usePageQuery from 'components/hooks/usePageQuery';
+import SideNav from 'components/layout/SideNav';
+import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
 import styles from './WebsiteMenuView.module.css';
-import useLocale from 'components/hooks/useLocale';
+import LinkButton from 'components/common/LinkButton';
 
 const views = {
   url: PagesTable,
@@ -38,93 +35,86 @@ const views = {
 
 export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   const { formatMessage, labels } = useMessages();
-  const { dir } = useLocale();
   const {
-    resolveUrl,
+    makeUrl,
+    pathname,
     query: { view },
-  } = usePageQuery();
+  } = useNavigation();
 
   const items = [
     {
       key: 'url',
       label: formatMessage(labels.pages),
-      url: resolveUrl({ view: 'url' }),
+      url: makeUrl({ view: 'url' }),
     },
     {
       key: 'referrer',
       label: formatMessage(labels.referrers),
-      url: resolveUrl({ view: 'referrer' }),
+      url: makeUrl({ view: 'referrer' }),
     },
     {
       key: 'browser',
       label: formatMessage(labels.browsers),
-      url: resolveUrl({ view: 'browser' }),
+      url: makeUrl({ view: 'browser' }),
     },
     {
       key: 'os',
       label: formatMessage(labels.os),
-      url: resolveUrl({ view: 'os' }),
+      url: makeUrl({ view: 'os' }),
     },
     {
       key: 'device',
       label: formatMessage(labels.devices),
-      url: resolveUrl({ view: 'device' }),
+      url: makeUrl({ view: 'device' }),
     },
     {
       key: 'country',
       label: formatMessage(labels.countries),
-      url: resolveUrl({ view: 'country' }),
+      url: makeUrl({ view: 'country' }),
     },
     {
       key: 'region',
       label: formatMessage(labels.regions),
-      url: resolveUrl({ view: 'region' }),
+      url: makeUrl({ view: 'region' }),
     },
     {
       key: 'city',
       label: formatMessage(labels.cities),
-      url: resolveUrl({ view: 'city' }),
+      url: makeUrl({ view: 'city' }),
     },
     {
       key: 'language',
       label: formatMessage(labels.languages),
-      url: resolveUrl({ view: 'language' }),
+      url: makeUrl({ view: 'language' }),
     },
     {
       key: 'screen',
       label: formatMessage(labels.screens),
-      url: resolveUrl({ view: 'screen' }),
+      url: makeUrl({ view: 'screen' }),
     },
     {
       key: 'event',
       label: formatMessage(labels.events),
-      url: resolveUrl({ view: 'event' }),
+      url: makeUrl({ view: 'event' }),
     },
     {
       key: 'query',
       label: formatMessage(labels.queryParameters),
-      url: resolveUrl({ view: 'query' }),
+      url: makeUrl({ view: 'query' }),
     },
   ];
 
   const DetailsComponent = views[view] || (() => null);
 
   return (
-    <GridRow>
-      <GridColumn xs={12} sm={12} md={12} defaultSize={3} className={styles.menu}>
-        <Link href={resolveUrl({ view: undefined })}>
-          <Flexbox justifyContent="center">
-            <Button variant="quiet">
-              <Icon rotate={dir === 'rtl' ? 0 : 180}>
-                <Icons.ArrowRight />
-              </Icon>
-              <Text>{formatMessage(labels.back)}</Text>
-            </Button>
-          </Flexbox>
-        </Link>
+    <div className={styles.layout}>
+      <div className={styles.menu}>
+        <LinkButton href={pathname} className={styles.back}>
+          <Text>{formatMessage(labels.back)}</Text>
+        </LinkButton>
         <SideNav items={items} selectedKey={view} shallow={true} />
-      </GridColumn>
-      <GridColumn xs={12} sm={12} md={12} defaultSize={9} className={styles.content}>
+      </div>
+      <div className={styles.content}>
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}
@@ -133,7 +123,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
           showFilters={true}
           virtualize={true}
         />
-      </GridColumn>
-    </GridRow>
+      </div>
+    </div>
   );
 }

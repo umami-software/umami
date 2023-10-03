@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import PageviewsChart from 'components/metrics/PageviewsChart';
-import { useApi, useDateRange, useTimezone, usePageQuery } from 'components/hooks';
+import { useApi, useDateRange, useTimezone, useNavigation } from 'components/hooks';
 import { getDateArray } from 'lib/date';
 
 export function WebsiteChart({ websiteId }) {
@@ -9,7 +9,7 @@ export function WebsiteChart({ websiteId }) {
   const [timezone] = useTimezone();
   const {
     query: { url, referrer, os, browser, device, country, region, city, title },
-  } = usePageQuery();
+  } = useNavigation();
   const { get, useQuery } = useApi();
 
   const { data, isLoading } = useQuery(

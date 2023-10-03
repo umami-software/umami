@@ -76,7 +76,7 @@ export * from 'components/hooks/useFormat';
 export * from 'components/hooks/useLanguageNames';
 export * from 'components/hooks/useLocale';
 export * from 'components/hooks/useMessages';
-export * from 'components/hooks/usePageQuery';
+export * from 'components/hooks/useNavigation';
 export * from 'components/hooks/useReport';
 export * from 'components/hooks/useReports';
 export * from 'components/hooks/useRequireLogin';

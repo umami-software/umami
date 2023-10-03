@@ -10,7 +10,7 @@ export * from './useFormat';
 export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
-export * from './usePageQuery';
+export * from './useNavigation';
 export * from './useReport';
 export * from './useReports';
 export * from './useRequireLogin';

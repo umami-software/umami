@@ -1,6 +1,6 @@
 import { safeDecodeURI } from 'next-basics';
 import { Button, Icon, Icons, Text } from 'react-basics';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
 import styles from './FilterTags.module.css';
 
@@ -8,9 +8,9 @@ export function FilterTags({ params }) {
   const { formatMessage, labels } = useMessages();
   const {
     router,
-    resolveUrl,
+    makeUrl,
     query: { view },
-  } = usePageQuery();
+  } = useNavigation();
 
   if (Object.keys(params).filter(key => params[key]).length === 0) {
     return null;
@@ -18,9 +18,9 @@ export function FilterTags({ params }) {
 
   function handleCloseFilter(param) {
     if (!param) {
-      router.push(resolveUrl({ view }, true));
+      router.push(makeUrl({ view }, true));
     } else {
-      router.push(resolveUrl({ [param]: undefined }));
+      router.push(makeUrl({ [param]: undefined }));
     }
   }
 

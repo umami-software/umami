@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import useApi from 'components/hooks/useApi';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'components/hooks/useDateRange';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import ErrorMessage from 'components/common/ErrorMessage';
 import ListTable from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
@@ -28,9 +28,9 @@ export function MetricsTable({
 }) {
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
-    resolveUrl,
+    makeUrl,
     query: { url, referrer, title, os, browser, device, country, region, city },
-  } = usePageQuery();
+  } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { dir } = useLocale();
@@ -103,7 +103,7 @@ export function MetricsTable({
       {data && !error && <ListTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <Link href={resolveUrl({ view: type })}>
+          <Link href={makeUrl({ view: type })}>
             <Button variant="quiet">
               <Text>{formatMessage(labels.more)}</Text>
               <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>

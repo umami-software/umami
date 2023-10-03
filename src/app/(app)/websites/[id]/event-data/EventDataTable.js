@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { GridTable, GridColumn } from 'react-basics';
-import { useMessages, usePageQuery } from 'components/hooks';
+import { useMessages, useNavigation } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES } from 'lib/constants';
 
 export function EventDataTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { resolveUrl } = usePageQuery();
+  const { makeUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
@@ -16,7 +16,7 @@ export function EventDataTable({ data = [] }) {
     <GridTable data={data}>
       <GridColumn name="eventName" label={formatMessage(labels.event)}>
         {row => (
-          <Link href={resolveUrl({ event: row.eventName })} shallow={true}>
+          <Link href={makeUrl({ event: row.eventName })} shallow={true}>
             {row.eventName}
           </Link>
         )}

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { buildUrl } from 'next-basics';
 
-export function usePageQuery() {
+export function useNavigation() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
@@ -17,11 +17,11 @@ export function usePageQuery() {
     return obj;
   }, [params]);
 
-  function resolveUrl(params, reset) {
-    return buildUrl(pathname, { ...(reset ? {} : query) });
+  function makeUrl(params, reset) {
+    return reset ? pathname : buildUrl(pathname, { ...query, ...params });
   }
 
-  return { pathname, query, resolveUrl, router };
+  return { pathname, query, router, makeUrl };
 }
 
-export default usePageQuery;
+export default useNavigation;

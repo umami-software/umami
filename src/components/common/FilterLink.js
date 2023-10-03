@@ -2,13 +2,13 @@ import { Icon, Icons } from 'react-basics';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { safeDecodeURI } from 'next-basics';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
 import styles from './FilterLink.module.css';
 
 export function FilterLink({ id, value, label, externalUrl, children, className }) {
   const { formatMessage, labels } = useMessages();
-  const { resolveUrl, query } = usePageQuery();
+  const { makeUrl, query } = useNavigation();
   const active = query[id] !== undefined;
   const selected = query[id] === value;
 
@@ -22,7 +22,7 @@ export function FilterLink({ id, value, label, externalUrl, children, className 
       {children}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link href={resolveUrl({ [id]: value })} className={styles.label} replace>
+        <Link href={makeUrl({ [id]: value })} className={styles.label} replace>
           {safeDecodeURI(label || value)}
         </Link>
       )}
