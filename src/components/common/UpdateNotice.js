@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Button, Row, Column } from 'react-basics';
+import { Button } from 'react-basics';
 import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
@@ -47,17 +47,17 @@ export function UpdateNotice({ user, config }) {
   }
 
   return createPortal(
-    <Row className={styles.notice}>
-      <Column variant="two" className={styles.message}>
+    <div className={styles.notice}>
+      <div className={styles.message}>
         {formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}
-      </Column>
-      <Column className={styles.buttons}>
+      </div>
+      <div className={styles.buttons}>
         <Button variant="primary" onClick={handleViewClick}>
           {formatMessage(labels.viewDetails)}
         </Button>
         <Button onClick={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
-      </Column>
-    </Row>,
+      </div>
+    </div>,
     document.body,
   );
 }

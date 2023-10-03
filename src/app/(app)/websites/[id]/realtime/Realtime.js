@@ -2,7 +2,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import { subMinutes, startOfMinute } from 'date-fns';
 import firstBy from 'thenby';
-import { GridRow, GridColumn } from 'components/layout/Grid';
+import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
 import WorldMap from 'components/common/WorldMap';
@@ -99,22 +99,16 @@ export function Realtime({ websiteId }) {
       <WebsiteHeader websiteId={websiteId} />
       <RealtimeHeader websiteId={websiteId} data={currentData} />
       <RealtimeChart className={styles.chart} data={realtimeData} unit="minute" />
-      <GridRow>
-        <GridColumn xs={12} sm={12} md={12} lg={4} xl={4}>
+      <Grid>
+        <GridRow columns="one-two">
           <RealtimeUrls websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
-        </GridColumn>
-        <GridColumn xs={12} sm={12} md={12} lg={8} xl={8}>
           <RealtimeLog websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
-        </GridColumn>
-      </GridRow>
-      <GridRow>
-        <GridColumn xs={12} lg={4}>
+        </GridRow>
+        <GridRow columns="one-two">
           <RealtimeCountries data={realtimeData?.countries} />
-        </GridColumn>
-        <GridColumn xs={12} lg={8}>
           <WorldMap data={realtimeData?.countries} />
-        </GridColumn>
-      </GridRow>
+        </GridRow>
+      </Grid>
     </>
   );
 }

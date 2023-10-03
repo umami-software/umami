@@ -1,4 +1,3 @@
-import { Column, Row } from 'react-basics';
 import { useApi, useDateRange } from 'components/hooks';
 import MetricCard from 'components/metrics/MetricCard';
 import useMessages from 'components/hooks/useMessages';
@@ -23,36 +22,16 @@ export function EventDataMetricsBar({ websiteId }) {
   );
 
   return (
-    <Row className={styles.row}>
-      <Column defaultSize={12} xl={8}>
-        <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-          {!error && isFetched && (
-            <>
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.events)}
-                value={data?.events}
-              />
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.fields)}
-                value={data?.fields}
-              />
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.totalRecords)}
-                value={data?.records}
-              />
-            </>
-          )}
-        </MetricsBar>
-      </Column>
-      <Column defaultSize={12} xl={4}>
-        <div className={styles.actions}>
-          <WebsiteDateFilter websiteId={websiteId} />
-        </div>
-      </Column>
-    </Row>
+    <div className={styles.container}>
+      <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
+        <MetricCard label={formatMessage(labels.events)} value={data?.events} />
+        <MetricCard label={formatMessage(labels.fields)} value={data?.fields} />
+        <MetricCard label={formatMessage(labels.totalRecords)} value={data?.records} />
+      </MetricsBar>
+      <div className={styles.actions}>
+        <WebsiteDateFilter websiteId={websiteId} />
+      </div>
+    </div>
   );
 }
 

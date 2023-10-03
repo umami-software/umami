@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Loading, cloneChildren } from 'react-basics';
 import ErrorMessage from 'components/common/ErrorMessage';
-import styles from './MetricsBar.module.css';
 import { formatLongNumber, formatNumber } from 'lib/format';
+import styles from './MetricsBar.module.css';
 
 export function MetricsBar({ children, isLoading, isFetched, error }) {
   const [format, setFormat] = useState(true);
@@ -19,9 +19,12 @@ export function MetricsBar({ children, isLoading, isFetched, error }) {
     <div className={styles.bar} onClick={handleSetFormat}>
       {isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
-      {cloneChildren(children, child => {
-        return { format: child.props.format || formatFunc };
-      })}
+      {!isLoading &&
+        !error &&
+        isFetched &&
+        cloneChildren(children, child => {
+          return { format: child.props.format || formatFunc };
+        })}
     </div>
   );
 }

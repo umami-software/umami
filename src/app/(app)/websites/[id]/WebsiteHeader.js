@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames';
-import { Row, Column, Text, Button, Icon } from 'react-basics';
+import { Text, Button, Icon } from 'react-basics';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Favicon from 'components/common/Favicon';
@@ -39,17 +39,19 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
   ];
 
   return (
-    <Row className={styles.header} justifyContent="center">
-      <Column className={styles.title} variant="two">
+    <div className={styles.header}>
+      <div className={styles.title}>
         <Favicon domain={domain} />
         <Text>{name}</Text>
         <ActiveUsers websiteId={websiteId} />
-      </Column>
-      <Column className={styles.actions} variant="two">
+      </div>
+      <div className={styles.actions}>
         {showLinks && (
           <div className={styles.links}>
             {links.map(({ label, icon, path }) => {
-              const selected = path ? pathname.endsWith(path) : pathname === '/websites/[id]';
+              const selected = path
+                ? pathname.endsWith(path)
+                : pathname.match(/^\/websites\/[\w-]+$/);
 
               return (
                 <Link key={label} href={`/websites/${websiteId}${path}`} shallow={true}>
@@ -68,8 +70,8 @@ export function WebsiteHeader({ websiteId, showLinks = true, children }) {
           </div>
         )}
         {children}
-      </Column>
-    </Row>
+      </div>
+    </div>
   );
 }
 

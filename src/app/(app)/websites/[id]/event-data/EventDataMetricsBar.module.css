@@ -1,5 +1,6 @@
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
@@ -7,12 +8,6 @@
   margin-bottom: 20px;
   background: var(--base50);
   z-index: var(--z-index-above);
-}
-
-.metrics {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 }
 
 .actions {
@@ -23,24 +18,9 @@
   flex: 1;
 }
 
-.bar {
-  display: flex;
-  cursor: pointer;
-  min-height: 110px;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.card {
-  justify-self: flex-start;
-}
-
 @media only screen and (max-width: 992px) {
-  .card {
-    flex-basis: calc(50% - 20px);
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
   }
-}
-
-.row {
-  border-bottom: 1px solid var(--border-color);
 }

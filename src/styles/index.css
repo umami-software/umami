@@ -52,6 +52,8 @@ main {
 
 svg {
   shape-rendering: geometricPrecision;
+  width: 10px;
+  height: 10px;
 }
 
 #__next {

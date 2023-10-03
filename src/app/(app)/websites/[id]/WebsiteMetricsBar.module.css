@@ -1,12 +1,12 @@
 .container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr max-content;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
-  min-height: 90px;
-  margin-bottom: 20px;
   background: var(--base50);
   z-index: var(--z-index-above);
+  min-height: 120px;
+  padding-bottom: 20px;
 }
 
 .actions {
@@ -18,8 +18,12 @@
 }
 
 @media only screen and (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
   .actions {
-    margin-top: 40px;
+    margin: 20px 0;
   }
 }
 
@@ -30,6 +34,7 @@
   }
 
   .isSticky {
+    padding: 10px 0;
     border-bottom: 1px solid var(--base300);
   }
 }

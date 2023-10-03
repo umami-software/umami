@@ -1,6 +1,6 @@
 .header {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr max-content;
   align-items: center;
 }
 
@@ -35,6 +35,10 @@
 }
 
 @media only screen and (max-width: 768px) {
+  .header {
+    grid-template-columns: 1fr;
+  }
+
   .links {
     justify-content: space-evenly;
     flex: 1;
@@ -49,7 +53,7 @@
 
   .icon,
   .icon svg {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 }

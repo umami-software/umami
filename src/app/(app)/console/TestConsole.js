@@ -9,7 +9,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
-import { Button, Column, Row } from 'react-basics';
+import { Button } from 'react-basics';
 import styles from './TestConsole.module.css';
 
 export function TestConsole() {
@@ -91,8 +91,8 @@ export function TestConsole() {
             src={`${basePath}/script.js`}
             data-cache="true"
           />
-          <Row className={styles.test}>
-            <Column xs="4">
+          <div className={styles.test}>
+            <div>
               <div className={styles.header}>Page links</div>
               <div>
                 <Link href={`/console/${websiteId}/page/1/?q=abc`}>page one</Link>
@@ -115,8 +115,8 @@ export function TestConsole() {
                   external link (tab)
                 </a>
               </div>
-            </Column>
-            <Column xs="4">
+            </div>
+            <div>
               <div className={styles.header}>Click events</div>
               <Button id="send-event-button" data-umami-event="button-click" variant="action">
                 Send event
@@ -131,8 +131,8 @@ export function TestConsole() {
               >
                 Send event with data
               </Button>
-            </Column>
-            <Column xs="4">
+            </div>
+            <div>
               <div className={styles.header}>Javascript events</div>
               <Button id="manual-button" variant="action" onClick={handleClick}>
                 Run script
@@ -141,14 +141,12 @@ export function TestConsole() {
               <Button id="manual-button" variant="action" onClick={handleIdentifyClick}>
                 Run identify
               </Button>
-            </Column>
-          </Row>
-          <Row>
-            <Column>
-              <WebsiteChart websiteId={website.id} />
-              <EventsChart websiteId={website.id} />
-            </Column>
-          </Row>
+            </div>
+          </div>
+          <div>
+            <WebsiteChart websiteId={website.id} />
+            <EventsChart websiteId={website.id} />
+          </div>
         </>
       )}
     </Page>

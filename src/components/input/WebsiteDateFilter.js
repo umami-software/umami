@@ -1,7 +1,7 @@
 import useDateRange from 'components/hooks/useDateRange';
 import { isAfter } from 'date-fns';
 import { incrementDateRange } from 'lib/date';
-import { Button, Flexbox, Icon, Icons } from 'react-basics';
+import { Button, Icon, Icons } from 'react-basics';
 import DateFilter from './DateFilter';
 import styles from './WebsiteDateFilter.module.css';
 
@@ -22,9 +22,9 @@ export function WebsiteDateFilter({ websiteId }) {
   };
 
   return (
-    <Flexbox justifyContent="center" gap={10}>
+    <div className={styles.container}>
       {value !== 'all' && selectedUnit && (
-        <Flexbox justifyContent="center" className={styles.buttons}>
+        <div className={styles.buttons}>
           <Button onClick={() => handleIncrement(1)}>
             <Icon rotate={90}>
               <Icons.ChevronDown />
@@ -35,7 +35,7 @@ export function WebsiteDateFilter({ websiteId }) {
               <Icons.ChevronDown />
             </Icon>
           </Button>
-        </Flexbox>
+        </div>
       )}
       <DateFilter
         className={styles.dropdown}
@@ -46,7 +46,7 @@ export function WebsiteDateFilter({ websiteId }) {
         onChange={handleChange}
         showAllTime={true}
       />
-    </Flexbox>
+    </div>
   );
 }
 

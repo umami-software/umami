@@ -6,7 +6,7 @@ import MetricsBar from 'components/metrics/MetricsBar';
 import FilterSelectForm from '../../reports/FilterSelectForm';
 import PopupForm from '../../reports/PopupForm';
 import { formatShortTime } from 'lib/format';
-import { Button, Column, Icon, Icons, Popup, PopupTrigger, Row } from 'react-basics';
+import { Button, Icon, Icons, Popup, PopupTrigger } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
@@ -98,72 +98,64 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   };
 
   return (
-    <Row
+    <div
       ref={ref}
       className={classNames(styles.container, {
         [styles.sticky]: sticky,
         [styles.isSticky]: isSticky,
       })}
     >
-      <Column defaultSize={12} xl={8}>
-        <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-          {!error && isFetched && (
-            <>
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.views)}
-                value={pageviews.value}
-                change={pageviews.change}
-              />
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.visitors)}
-                value={uniques.value}
-                change={uniques.change}
-              />
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.bounceRate)}
-                value={uniques.value ? (num / uniques.value) * 100 : 0}
-                change={
-                  uniques.value && uniques.change
-                    ? (num / uniques.value) * 100 -
-                        (Math.min(diffs.uniques, diffs.bounces) / diffs.uniques) * 100 || 0
-                    : 0
-                }
-                format={n => Number(n).toFixed(0) + '%'}
-                reverseColors
-              />
-              <MetricCard
-                className={styles.card}
-                label={formatMessage(labels.averageVisitTime)}
-                value={
-                  totaltime.value && pageviews.value
-                    ? totaltime.value / (pageviews.value - bounces.value)
-                    : 0
-                }
-                change={
-                  totaltime.value && pageviews.value
-                    ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
-                        totaltime.value / (pageviews.value - bounces.value)) *
-                        -1 || 0
-                    : 0
-                }
-                format={n =>
-                  `${n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`
-                }
-              />
-            </>
-          )}
-        </MetricsBar>
-      </Column>
-      <Column defaultSize={12} xl={4}>
-        <div className={styles.actions}>
-          {showFilter && <WebsiteFilterButton />}
-          <WebsiteDateFilter websiteId={websiteId} />
-        </div>
-      </Column>
-    </Row>
+      <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
+        {pageviews && uniques && (
+          <>
+            <MetricCard
+              label={formatMessage(labels.views)}
+              value={pageviews.value}
+              change={pageviews.change}
+            />
+            <MetricCard
+              label={formatMessage(labels.visitors)}
+              value={uniques.value}
+              change={uniques.change}
+            />
+            <MetricCard
+              className={styles.card}
+              label={formatMessage(labels.bounceRate)}
+              value={uniques.value ? (num / uniques.value) * 100 : 0}
+              change={
+                uniques.value && uniques.change
+                  ? (num / uniques.value) * 100 -
+                      (Math.min(diffs.uniques, diffs.bounces) / diffs.uniques) * 100 || 0
+                  : 0
+              }
+              format={n => Number(n).toFixed(0) + '%'}
+              reverseColors
+            />
+            <MetricCard
+              className={styles.card}
+              label={formatMessage(labels.averageVisitTime)}
+              value={
+                totaltime.value && pageviews.value
+                  ? totaltime.value / (pageviews.value - bounces.value)
+                  : 0
+              }
+              change={
+                totaltime.value && pageviews.value
+                  ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
+                      totaltime.value / (pageviews.value - bounces.value)) *
+                      -1 || 0
+                  : 0
+              }
+              format={n => `${n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
+            />
+          </>
+        )}
+      </MetricsBar>
+      <div className={styles.actions}>
+        {showFilter && <WebsiteFilterButton />}
+        <WebsiteDateFilter websiteId={websiteId} />
+      </div>
+    </div>
   );
 }
 
