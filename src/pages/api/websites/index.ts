@@ -34,7 +34,6 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
   await useValidate(schema, req, res);
 
   const {
