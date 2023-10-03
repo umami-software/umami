@@ -1,6 +1,6 @@
 'use client';
 import DataTable from 'components/common/DataTable';
-import TeamsTable from 'app/(app)/settings/teams/TeamsTable';
+import TeamsTable from 'app/(main)/settings/teams/TeamsTable';
 import useApi from 'components/hooks/useApi';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 

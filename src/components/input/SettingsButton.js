@@ -1,6 +1,6 @@
 import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
-import TimezoneSetting from 'app/(app)/settings/profile/TimezoneSetting';
-import DateRangeSetting from 'app/(app)/settings/profile/DateRangeSetting';
+import TimezoneSetting from 'app/(main)/settings/profile/TimezoneSetting';
+import DateRangeSetting from 'app/(main)/settings/profile/DateRangeSetting';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
 import styles from './SettingsButton.module.css';

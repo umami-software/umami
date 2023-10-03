@@ -1,4 +1,4 @@
-import TeamsList from 'app/(app)/settings/teams/TeamsList';
+import TeamsList from 'app/(main)/settings/teams/TeamsList';
 import TeamsHeader from './TeamsHeader';
 
 export default function () {

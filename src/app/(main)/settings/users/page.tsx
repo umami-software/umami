@@ -1,4 +1,4 @@
-import UsersList from 'app/(app)/settings/users/UsersList';
+import UsersList from 'app/(main)/settings/users/UsersList';
 import { Metadata } from 'next';
 
 export default function () {

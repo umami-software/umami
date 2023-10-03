@@ -1,4 +1,4 @@
-import Dashboard from 'app/(app)/dashboard/Dashboard';
+import Dashboard from 'app/(main)/dashboard/Dashboard';
 import { Metadata } from 'next';
 
 export default function DashboardPage() {

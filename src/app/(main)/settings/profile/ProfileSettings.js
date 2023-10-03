@@ -1,9 +1,9 @@
 'use client';
 import { Form, FormRow } from 'react-basics';
-import TimezoneSetting from 'app/(app)/settings/profile/TimezoneSetting';
-import DateRangeSetting from 'app/(app)/settings/profile/DateRangeSetting';
-import LanguageSetting from 'app/(app)/settings/profile/LanguageSetting';
-import ThemeSetting from 'app/(app)/settings/profile/ThemeSetting';
+import TimezoneSetting from 'app/(main)/settings/profile/TimezoneSetting';
+import DateRangeSetting from 'app/(main)/settings/profile/DateRangeSetting';
+import LanguageSetting from 'app/(main)/settings/profile/LanguageSetting';
+import ThemeSetting from 'app/(main)/settings/profile/ThemeSetting';
 import PasswordChangeButton from './PasswordChangeButton';
 import useUser from 'components/hooks/useUser';
 import useMessages from 'components/hooks/useMessages';

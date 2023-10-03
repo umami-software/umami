@@ -1,6 +1,6 @@
 import Page from 'components/layout/Page';
 import useApi from 'components/hooks/useApi';
-import WebsitesTable from 'app/(app)/settings/websites/WebsitesTable';
+import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import useApiFilter from 'components/hooks/useApiFilter';
 
 export function UserWebsites({ userId }) {

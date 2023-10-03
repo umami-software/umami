@@ -3,7 +3,7 @@ import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
-import WebsiteChart from '../websites/[id]/WebsiteChart';
+import WebsiteChart from '../../(main)/websites/[id]/WebsiteChart';
 import useApi from 'components/hooks/useApi';
 import Head from 'next/head';
 import Link from 'next/link';

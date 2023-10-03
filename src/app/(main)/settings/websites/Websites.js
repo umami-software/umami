@@ -1,5 +1,5 @@
 'use client';
-import WebsitesTable from 'app/(app)/settings/websites/WebsitesTable';
+import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import useUser from 'components/hooks/useUser';
 import useApi from 'components/hooks/useApi';
 import DataTable from 'components/common/DataTable';

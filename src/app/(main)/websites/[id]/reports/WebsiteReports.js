@@ -1,7 +1,7 @@
 'use client';
 import Page from 'components/layout/Page';
 import Empty from 'components/common/Empty';
-import ReportsTable from 'app/(app)/reports/ReportsTable';
+import ReportsTable from '../../../../(main)/reports/ReportsTable';
 import { useMessages, useWebsiteReports } from 'components/hooks';
 import Link from 'next/link';
 import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
