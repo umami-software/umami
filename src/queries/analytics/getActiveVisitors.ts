@@ -24,17 +24,23 @@ async function relationalQuery(websiteId: string) {
   );
 }
 
-async function clickhouseQuery(websiteId: string) {
+async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
   const { rawQuery } = clickhouse;
 
-  return rawQuery(
+  const result = rawQuery(
     `
     select
       count(distinct session_id) x
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime}
+      and created_at >= {startAt:DateTime64}
     `,
     { websiteId, startAt: subMinutes(new Date(), 5) },
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return { x: Number(a.x) };
+    });
+  });
+
+  return result[0] ?? null;
 }

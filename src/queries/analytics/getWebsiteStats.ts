@@ -46,7 +46,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+async function clickhouseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<{ pageviews: number; uniques: number; bounces: number; totaltime: number }[]> {
   const { rawQuery, getDateQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
@@ -69,12 +72,21 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
         max(created_at) max_time
       from website_event
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime} and {endDate:DateTime}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${filterQuery}
       group by session_id, time_series
     ) as t;
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        pageviews: Number(a.pageviews),
+        uniques: Number(a.uniques),
+        bounces: Number(a.bounces),
+        totaltime: Number(a.totaltime),
+      };
+    });
+  });
 }

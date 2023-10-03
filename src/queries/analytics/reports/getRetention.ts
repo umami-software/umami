@@ -172,5 +172,15 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        date: a.date,
+        day: Number(a.day),
+        visitors: Number(a.visitors),
+        returnVisitors: Number(a.returnVisitors),
+        percentage: Number(a.percentage),
+      };
+    });
+  });
 }
