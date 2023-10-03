@@ -248,7 +248,7 @@ export function getMinimumUnit(startDate, endDate) {
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
     return 'hour';
-  } else if (differenceInCalendarDays(endDate, startDate) <= 90) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 12) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';
