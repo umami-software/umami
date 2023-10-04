@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { useApi } from 'components/hooks/useApi';
 
 export function useFilterQuery(key: any[], fn, options?: any) {
@@ -8,19 +8,19 @@ export function useFilterQuery(key: any[], fn, options?: any) {
   });
   const { useQuery } = useApi();
 
-  const result = useQuery<{
-    page: number;
-    pageSize: number;
-    count: number;
-    data: any[];
-  }>([...key, params], fn.bind(null, params), options);
+  const { data, ...other } = useQuery([...key, params], fn.bind(null, params), options);
 
-  const getProps = useCallback(() => {
-    const { data, isLoading, error } = result;
-    return { result: data, isLoading, error, params, setParams };
-  }, [result, params, setParams]);
-
-  return { ...result, getProps };
+  return {
+    result: data as {
+      page: number;
+      pageSize: number;
+      count: number;
+      data: any[];
+    },
+    ...other,
+    params,
+    setParams,
+  };
 }
 
 export default useFilterQuery;

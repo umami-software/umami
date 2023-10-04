@@ -1,4 +1,4 @@
-import TeamsList from 'app/(main)/settings/teams/TeamsList';
+import TeamsDataTable from './TeamsDataTable';
 import TeamsHeader from './TeamsHeader';
 
 export default function () {
@@ -9,7 +9,7 @@ export default function () {
   return (
     <>
       <TeamsHeader />
-      <TeamsList />
+      <TeamsDataTable />
     </>
   );
 }

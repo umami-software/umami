@@ -11,7 +11,7 @@ export function TeamWebsites({ teamId }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get } = useApi();
-  const { getProps, refetch } = useFilterQuery(
+  const queryResult = useFilterQuery(
     ['team:websites', teamId],
     params => {
       return get(`/teams/${teamId}/websites`, {
@@ -21,8 +21,8 @@ export function TeamWebsites({ teamId }) {
     { enabled: !!user },
   );
 
-  const handleWebsiteAdd = () => {
-    refetch();
+  const handleChange = () => {
+    queryResult.refetch();
   };
 
   return (
@@ -36,13 +36,13 @@ export function TeamWebsites({ teamId }) {
             <Text>{formatMessage(labels.addWebsite)}</Text>
           </Button>
           <Modal title={formatMessage(labels.addWebsite)}>
-            {close => (
-              <TeamAddWebsiteForm teamId={teamId} onSave={handleWebsiteAdd} onClose={close} />
-            )}
+            {close => <TeamAddWebsiteForm teamId={teamId} onSave={handleChange} onClose={close} />}
           </Modal>
         </ModalTrigger>
       </ActionForm>
-      <DataTable {...getProps()}>{({ data }) => <TeamWebsitesTable data={data} />}</DataTable>
+      <DataTable queryResult={queryResult}>
+        {({ data }) => <TeamWebsitesTable data={data} onRemove={handleChange} />}
+      </DataTable>
     </>
   );
 }

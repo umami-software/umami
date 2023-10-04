@@ -6,16 +6,10 @@ import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import WebsitesHeader from './WebsitesHeader';
 
-export function Websites({
-  showHeader = true,
-  showEditButton = true,
-  showTeam,
-  includeTeams,
-  onlyTeams,
-}) {
+function useWebsites({ includeTeams, onlyTeams }) {
   const { user } = useUser();
   const { get } = useApi();
-  const filterQuery = useFilterQuery(
+  return useFilterQuery(
     ['websites', { includeTeams, onlyTeams }],
     params => {
       return get(`/users/${user?.id}/websites`, {
@@ -26,18 +20,38 @@ export function Websites({
     },
     { enabled: !!user },
   );
-  const { getProps } = filterQuery;
+}
+
+export function WebsitesDataTable({
+  showHeader = true,
+  showEditButton = true,
+  showViewButton = true,
+  showActions = true,
+  showTeam,
+  includeTeams,
+  onlyTeams,
+  children,
+}) {
+  const queryResult = useWebsites({ includeTeams, onlyTeams });
 
   return (
     <>
       {showHeader && <WebsitesHeader />}
-      <DataTable {...getProps()}>
+      <DataTable queryResult={queryResult}>
         {({ data }) => (
-          <WebsitesTable data={data} showTeam={showTeam} showEditButton={showEditButton} />
+          <WebsitesTable
+            data={data}
+            showTeam={showTeam}
+            showActions={showActions}
+            showEditButton={showEditButton}
+            showViewButton={showViewButton}
+          >
+            {children}
+          </WebsitesTable>
         )}
       </DataTable>
     </>
   );
 }
 
-export default Websites;
+export default WebsitesDataTable;

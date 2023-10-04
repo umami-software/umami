@@ -5,21 +5,20 @@ import DataTable from 'components/common/DataTable';
 import UsersTable from './UsersTable';
 import UsersHeader from './UsersHeader';
 
-export function UsersList() {
+export function UsersDataTable() {
   const { get } = useApi();
-  const filterQuery = useFilterQuery(['users'], params => {
+  const queryResult = useFilterQuery(['users'], params => {
     return get(`/users`, {
       ...params,
     });
   });
-  const { getProps } = filterQuery;
 
   return (
     <>
       <UsersHeader />
-      <DataTable {...getProps()}>{({ data }) => <UsersTable data={data} />}</DataTable>
+      <DataTable queryResult={queryResult}>{({ data }) => <UsersTable data={data} />}</DataTable>
     </>
   );
 }
 
-export default UsersList;
+export default UsersDataTable;

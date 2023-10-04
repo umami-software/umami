@@ -9,19 +9,21 @@ import styles from './DataTable.module.css';
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataTableProps {
-  result: {
-    page: number;
-    pageSize: number;
-    count: number;
-    data: any[];
+  queryResult: {
+    result: {
+      page: number;
+      pageSize: number;
+      count: number;
+      data: any[];
+    };
+    params: {
+      query: string;
+      page: number;
+    };
+    setParams: Dispatch<SetStateAction<{ query: string; page: number }>>;
+    isLoading: boolean;
+    error: unknown;
   };
-  params: {
-    query: string;
-    page: number;
-  };
-  setParams: Dispatch<SetStateAction<{ query: string; page: number }>>;
-  isLoading: boolean;
-  error: unknown;
   searchDelay?: number;
   showSearch?: boolean;
   showPaging?: boolean;
@@ -29,20 +31,17 @@ export interface DataTableProps {
 }
 
 export function DataTable({
-  result,
-  params,
-  setParams,
-  isLoading,
-  error,
-  searchDelay,
+  queryResult,
+  searchDelay = 600,
   showSearch = true,
   showPaging = true,
   children,
 }: DataTableProps) {
   const { formatMessage, labels, messages } = useMessages();
-  const { pageSize, count } = result || {};
-  const { query, page } = params || {};
-  const hasData = Boolean(!isLoading && result?.data?.length);
+  const { result, error, isLoading, params, setParams } = queryResult || {};
+  const { page, pageSize, count, data } = result || {};
+  const { query } = params || {};
+  const hasData = Boolean(!isLoading && data?.length);
   const noResults = Boolean(!isLoading && query && !hasData);
 
   const handleSearch = query => {

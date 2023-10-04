@@ -1,4 +1,4 @@
-import UsersList from 'app/(main)/settings/users/UsersList';
+import UsersDataTable from './UsersDataTable';
 import { Metadata } from 'next';
 
 export default function () {
@@ -6,7 +6,7 @@ export default function () {
     return null;
   }
 
-  return <UsersList />;
+  return <UsersDataTable />;
 }
 export const metadata: Metadata = {
   title: 'Users | umami',

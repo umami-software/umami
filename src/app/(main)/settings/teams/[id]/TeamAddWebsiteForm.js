@@ -1,22 +1,20 @@
 import useApi from 'components/hooks/useApi';
-import { useRef, useState } from 'react';
-import { Button, Dropdown, Form, FormButtons, FormRow, Item, SubmitButton } from 'react-basics';
-import WebsiteTags from '../WebsiteTags';
+import { useState } from 'react';
+import { Button, Form, FormButtons, GridColumn, Loading, SubmitButton, Toggle } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
+import WebsitesDataTable from '../../websites/WebsitesDataTable';
 
 export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
   const { data: websites } = useQuery(['websites'], () => get('/websites'));
-  const [newWebsites, setNewWebsites] = useState([]);
-  const formRef = useRef();
-
+  const [selected, setSelected] = useState([]);
   const hasData = websites && websites.data.length > 0;
 
   const handleSubmit = () => {
     mutate(
-      { websiteIds: newWebsites },
+      { websiteIds: selected },
       {
         onSuccess: async () => {
           onSave();
@@ -26,34 +24,29 @@ export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
     );
   };
 
-  const handleAddWebsite = value => {
-    if (!newWebsites.some(a => a === value)) {
-      const nextValue = [...newWebsites];
-
-      nextValue.push(value);
-
-      setNewWebsites(nextValue);
-    }
-  };
-
-  const handleRemoveWebsite = value => {
-    const newValue = newWebsites.filter(a => a !== value);
-
-    setNewWebsites(newValue);
+  const handleSelect = id => {
+    setSelected(state => (state.includes(id) ? state.filter(n => n !== id) : state.concat(id)));
   };
 
   return (
     <>
+      {!hasData && <Loading />}
       {hasData && (
-        <Form onSubmit={handleSubmit} error={error} ref={formRef}>
-          <FormRow label={formatMessage(labels.websites)}>
-            <Dropdown items={websites.data} onChange={handleAddWebsite} style={{ width: 300 }}>
-              {({ id, name }) => <Item key={id}>{name}</Item>}
-            </Dropdown>
-          </FormRow>
-          <WebsiteTags items={websites.data} websites={newWebsites} onClick={handleRemoveWebsite} />
+        <Form onSubmit={handleSubmit} error={error}>
+          <WebsitesDataTable showHeader={false} showActions={false}>
+            <GridColumn name="select" label={formatMessage(labels.selectWebsite)} alignment="end">
+              {row => (
+                <Toggle
+                  key={row.id}
+                  value={row.id}
+                  checked={selected?.includes(row.id)}
+                  onChange={handleSelect.bind(null, row.id)}
+                />
+              )}
+            </GridColumn>
+          </WebsitesDataTable>
           <FormButtons flex>
-            <SubmitButton disabled={newWebsites && newWebsites.length === 0}>
+            <SubmitButton disabled={selected?.length === 0}>
               {formatMessage(labels.addWebsite)}
             </SubmitButton>
             <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>

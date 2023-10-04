@@ -1,9 +1,9 @@
-import Websites from './Websites';
+import WebsitesDataTable from './WebsitesDataTable';
 
 export default function () {
   if (process.env.cloudMode) {
     return null;
   }
 
-  return <Websites />;
+  return <WebsitesDataTable />;
 }

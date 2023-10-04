@@ -1,10 +1,10 @@
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
 import Link from 'next/link';
 import { Button, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
-import TeamWebsiteRemoveButton from '../TeamWebsiteRemoveButton';
+import useMessages from 'components/hooks/useMessages';
+import useUser from 'components/hooks/useUser';
+import TeamWebsiteRemoveButton from './TeamWebsiteRemoveButton';
 
-export function TeamWebsitesTable({ data = [], onSave }) {
+export function TeamWebsitesTable({ data = [], onRemove }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -20,6 +20,9 @@ export function TeamWebsitesTable({ data = [], onSave }) {
           const canRemove = user.id === userId || user.id === owner.userId;
           return (
             <>
+              {canRemove && (
+                <TeamWebsiteRemoveButton teamId={teamId} websiteId={websiteId} onSave={onRemove} />
+              )}
               <Link href={`/websites/${websiteId}`}>
                 <Button>
                   <Icon>
@@ -28,9 +31,6 @@ export function TeamWebsitesTable({ data = [], onSave }) {
                   <Text>{formatMessage(labels.view)}</Text>
                 </Button>
               </Link>
-              {canRemove && (
-                <TeamWebsiteRemoveButton teamId={teamId} websiteId={websiteId} onSave={onSave} />
-              )}
             </>
           );
         }}

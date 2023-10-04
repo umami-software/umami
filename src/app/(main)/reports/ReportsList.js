@@ -7,30 +7,30 @@ import DataTable from 'components/common/DataTable';
 function useReports() {
   const { get, del, useMutation } = useApi();
   const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
-  const reports = useFilterQuery(['reports'], params => get(`/reports`, params));
+  const queryResult = useFilterQuery(['reports'], params => get(`/reports`, params));
 
   const deleteReport = id => {
     mutate(id, {
       onSuccess: () => {
-        reports.refetch();
+        queryResult.refetch();
       },
     });
   };
 
-  return { reports, deleteReport };
+  return { queryResult, deleteReport };
 }
 
 export default function ReportsList() {
-  const { reports, deleteReport } = useReports();
+  const { queryResult, deleteReport } = useReports();
 
   const handleDelete = async (id, callback) => {
     await deleteReport(id);
-    await reports.refetch();
+    await queryResult.refetch();
     callback?.();
   };
 
   return (
-    <DataTable {...reports.getProps()}>
+    <DataTable queryResult={queryResult}>
       {({ data }) => <ReportsTable data={data} showDomain={true} onDelete={handleDelete} />}
     </DataTable>
   );

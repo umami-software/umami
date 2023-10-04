@@ -3,7 +3,14 @@ import { Button, Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 
-export function WebsitesTable({ data = [], showTeam, showEditButton }) {
+export function WebsitesTable({
+  data = [],
+  showTeam,
+  showActions,
+  showEditButton,
+  showViewButton,
+  children,
+}) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -30,7 +37,7 @@ export function WebsitesTable({ data = [], showTeam, showEditButton }) {
 
           return (
             <>
-              {showEditButton && (!showTeam || ownerId === user.id) && (
+              {showActions && showEditButton && (!showTeam || ownerId === user.id) && (
                 <Link href={`/settings/websites/${id}`}>
                   <Button>
                     <Icon>
@@ -40,18 +47,21 @@ export function WebsitesTable({ data = [], showTeam, showEditButton }) {
                   </Button>
                 </Link>
               )}
-              <Link href={`/websites/${id}`}>
-                <Button>
-                  <Icon>
-                    <Icons.External />
-                  </Icon>
-                  <Text>{formatMessage(labels.view)}</Text>
-                </Button>
-              </Link>
+              {showActions && showViewButton && (
+                <Link href={`/websites/${id}`}>
+                  <Button>
+                    <Icon>
+                      <Icons.External />
+                    </Icon>
+                    <Text>{formatMessage(labels.view)}</Text>
+                  </Button>
+                </Link>
+              )}
             </>
           );
         }}
       </GridColumn>
+      {children}
     </GridTable>
   );
 }

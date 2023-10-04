@@ -88,7 +88,7 @@ export const useValidate = async (schema, req, res) => {
       const rules = schema[req.method];
 
       if (rules) {
-        rules.validateSync(req.method === 'GET' ? { ...req.query } : { ...req.body });
+        rules.validateSync({ ...req.query, ...req.body });
       }
     } catch (e: any) {
       return badRequest(res, e.message);

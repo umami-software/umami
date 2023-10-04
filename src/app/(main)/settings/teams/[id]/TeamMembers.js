@@ -5,7 +5,7 @@ import DataTable from 'components/common/DataTable';
 
 export function TeamMembers({ teamId, readOnly }) {
   const { get } = useApi();
-  const { getProps } = useFilterQuery(
+  const queryResult = useFilterQuery(
     ['team:users', teamId],
     params => {
       return get(`/teams/${teamId}/users`, {
@@ -17,7 +17,7 @@ export function TeamMembers({ teamId, readOnly }) {
 
   return (
     <>
-      <DataTable {...getProps()}>
+      <DataTable queryResult={queryResult}>
         {({ data }) => <TeamMembersTable data={data} readOnly={readOnly} />}
       </DataTable>
     </>
