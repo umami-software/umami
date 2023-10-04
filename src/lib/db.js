@@ -17,6 +17,10 @@ export function getDatabaseType(url = process.env.DATABASE_URL) {
     return POSTGRESQL;
   }
 
+  if (process.env.CLICKHOUSE_URL) {
+    return CLICKHOUSE;
+  }
+
   return type;
 }
 
