@@ -13,7 +13,7 @@ export function useRequireLogin(handler?: (data?: object) => void) {
 
         setUser(typeof handler === 'function' ? handler(data) : (data as any)?.user);
       } catch {
-        location.href = `${process.env.basePath}/login`;
+        location.href = `${process.env.basePath || ''}/login`;
       }
     }
 
