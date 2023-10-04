@@ -28,7 +28,6 @@
   font-weight: 600;
   text-align: center;
   width: 100px;
-  cursor: pointer;
 }
 
 .row {
@@ -71,7 +70,6 @@
   text-align: end;
   margin-inline-end: 10px;
   font-weight: 600;
-  cursor: pointer;
 }
 
 .percent {
