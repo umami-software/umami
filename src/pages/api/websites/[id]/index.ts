@@ -24,9 +24,9 @@ const schema = {
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),
-    name: yup.string().required(),
-    domain: yup.string().required(),
-    shareId: yup.string().matches(SHARE_ID_REGEX, { excludeEmptyString: true }),
+    name: yup.string(),
+    domain: yup.string(),
+    shareId: yup.string().matches(SHARE_ID_REGEX, { excludeEmptyString: true }).nullable(),
   }),
 };
 

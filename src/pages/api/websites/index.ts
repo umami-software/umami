@@ -24,7 +24,7 @@ const schema = {
   POST: yup.object().shape({
     name: yup.string().max(100).required(),
     domain: yup.string().max(500).required(),
-    shareId: yup.string().max(50),
+    shareId: yup.string().max(50).nullable(),
   }),
 };
 
