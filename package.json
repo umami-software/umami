@@ -140,7 +140,7 @@
     "extract-react-intl-messages": "^4.1.1",
     "husky": "^7.0.0",
     "lint-staged": "^11.0.0",
-    "postcss": "^8.4.21",
+    "postcss": "^8.4.31",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-import": "^15.1.0",
     "postcss-preset-env": "7.8.3",
