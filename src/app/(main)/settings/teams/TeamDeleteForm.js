@@ -1,6 +1,7 @@
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import { setValue } from 'store/cache';
 
 export function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
@@ -10,8 +11,9 @@ export function TeamDeleteForm({ teamId, teamName, onSave, onClose }) {
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async () => {
-        onSave();
-        onClose();
+        setValue('teams', Date.now());
+        onSave?.();
+        onClose?.();
       },
     });
   };

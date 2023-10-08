@@ -1,8 +1,8 @@
 'use client';
-import Report from '../Report';
-import ReportHeader from '../ReportHeader';
-import ReportMenu from '../ReportMenu';
-import ReportBody from '../ReportBody';
+import Report from '../[id]/Report';
+import ReportHeader from '../[id]/ReportHeader';
+import ReportMenu from '../[id]/ReportMenu';
+import ReportBody from '../[id]/ReportBody';
 import InsightsParameters from './InsightsParameters';
 import InsightsTable from './InsightsTable';
 import Lightbulb from 'assets/lightbulb.svg';

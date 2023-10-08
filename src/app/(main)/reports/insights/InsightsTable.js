@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
 import { useFormat, useMessages } from 'components/hooks';
-import { ReportContext } from '../Report';
+import { ReportContext } from '../[id]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 
 export function InsightsTable() {

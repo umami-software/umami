@@ -1,13 +1,13 @@
 import { useContext, useRef } from 'react';
-import { useApi, useMessages } from 'components/hooks';
 import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
-import { ReportContext } from '../Report';
 import Empty from 'components/common/Empty';
-import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
 import Icons from 'components/icons';
-import FieldAddForm from '../FieldAddForm';
-import BaseParameters from '../BaseParameters';
-import ParameterList from '../ParameterList';
+import { useApi, useMessages } from 'components/hooks';
+import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
+import { ReportContext } from '../[id]/Report';
+import FieldAddForm from '../[id]/FieldAddForm';
+import ParameterList from '../[id]/ParameterList';
+import BaseParameters from '../[id]/BaseParameters';
 import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {

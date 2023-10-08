@@ -5,7 +5,7 @@ import useTheme from 'components/hooks/useTheme';
 import BarChart from 'components/metrics/BarChart';
 import { formatLongNumber } from 'lib/format';
 import styles from './FunnelChart.module.css';
-import { ReportContext } from '../Report';
+import { ReportContext } from '../[id]/Report';
 
 export function FunnelChart({ className, loading }) {
   const { report } = useContext(ReportContext);

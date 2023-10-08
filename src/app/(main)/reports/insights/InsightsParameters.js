@@ -10,14 +10,14 @@ import {
   Popup,
   TooltipPopup,
 } from 'react-basics';
-import { ReportContext } from '../Report';
 import Icons from 'components/icons';
-import BaseParameters from '../BaseParameters';
-import ParameterList from '../ParameterList';
+import BaseParameters from '../[id]/BaseParameters';
+import { ReportContext } from '../[id]/Report';
+import ParameterList from '../[id]/ParameterList';
+import FilterSelectForm from '../[id]/FilterSelectForm';
+import FieldSelectForm from '../[id]/FieldSelectForm';
+import PopupForm from '../[id]/PopupForm';
 import styles from './InsightsParameters.module.css';
-import PopupForm from '../PopupForm';
-import FilterSelectForm from '../FilterSelectForm';
-import FieldSelectForm from '../FieldSelectForm';
 
 export function InsightsParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);

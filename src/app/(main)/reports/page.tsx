@@ -1,11 +1,11 @@
 import ReportsHeader from './ReportsHeader';
-import ReportsList from './ReportsList';
+import ReportsDataTable from './ReportsDataTable';
 
 export default function ReportsPage() {
   return (
     <>
       <ReportsHeader />
-      <ReportsList />
+      <ReportsDataTable />
     </>
   );
 }

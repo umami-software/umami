@@ -1,26 +1,13 @@
-import ConfirmDeleteForm from 'components/common/ConfirmDeleteForm';
 import LinkButton from 'components/common/LinkButton';
 import { useMessages } from 'components/hooks';
 import useUser from 'components/hooks/useUser';
-import {
-  Button,
-  GridColumn,
-  GridTable,
-  Icon,
-  Icons,
-  Modal,
-  ModalTrigger,
-  Text,
-} from 'react-basics';
+import { GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
 import { REPORT_TYPES } from 'lib/constants';
+import ReportDeleteButton from './ReportDeleteButton';
 
-export function ReportsTable({ data = [], onDelete, showDomain }) {
+export function ReportsTable({ data = [], showDomain }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
-
-  const handleConfirm = (id, callback) => {
-    onDelete?.(id, callback);
-  };
 
   return (
     <GridTable data={data}>
@@ -43,26 +30,15 @@ export function ReportsTable({ data = [], onDelete, showDomain }) {
           const { id, name, userId, website } = row;
           return (
             <>
-              <LinkButton href={`/reports/${id}`}>{formatMessage(labels.view)}</LinkButton>
               {(user.id === userId || user.id === website?.userId) && (
-                <ModalTrigger>
-                  <Button>
-                    <Icon>
-                      <Icons.Trash />
-                    </Icon>
-                    <Text>{formatMessage(labels.delete)}</Text>
-                  </Button>
-                  <Modal>
-                    {close => (
-                      <ConfirmDeleteForm
-                        name={name}
-                        onConfirm={handleConfirm.bind(null, id, close)}
-                        onClose={close}
-                      />
-                    )}
-                  </Modal>
-                </ModalTrigger>
+                <ReportDeleteButton reportId={id} reportName={name} />
               )}
+              <LinkButton href={`/reports/${id}`}>
+                <Icon>
+                  <Icons.ArrowRight />
+                </Icon>
+                <Text>{formatMessage(labels.view)}</Text>
+              </LinkButton>
             </>
           );
         }}

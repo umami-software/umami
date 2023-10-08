@@ -2,10 +2,10 @@
 import FunnelChart from './FunnelChart';
 import FunnelTable from './FunnelTable';
 import FunnelParameters from './FunnelParameters';
-import Report from '../Report';
-import ReportHeader from '../ReportHeader';
-import ReportMenu from '../ReportMenu';
-import ReportBody from '../ReportBody';
+import Report from '../[id]/Report';
+import ReportHeader from '../[id]/ReportHeader';
+import ReportMenu from '../[id]/ReportMenu';
+import ReportBody from '../[id]/ReportBody';
 import Funnel from 'assets/funnel.svg';
 import { REPORT_TYPES } from 'lib/constants';
 

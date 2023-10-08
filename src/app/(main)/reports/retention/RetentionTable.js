@@ -1,9 +1,8 @@
 import { useContext } from 'react';
 import classNames from 'classnames';
-import { ReportContext } from '../Report';
+import { ReportContext } from '../[id]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useMessages } from 'components/hooks';
-import { useLocale } from 'components/hooks';
+import { useMessages, useLocale } from 'components/hooks';
 import { formatDate } from 'lib/date';
 import styles from './RetentionTable.module.css';
 

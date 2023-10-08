@@ -25,16 +25,16 @@ export function TeamsTable({ data = [] }) {
 
           return (
             <>
+              {showDelete && <TeamDeleteButton teamId={id} teamName={name} />}
+              {!showDelete && <TeamLeaveButton teamId={id} teamName={name} />}
               <Link href={`/settings/teams/${id}`}>
                 <Button>
                   <Icon>
                     <Icons.Edit />
                   </Icon>
-                  <Text>{formatMessage(labels.view)}</Text>
+                  <Text>{formatMessage(labels.edit)}</Text>
                 </Button>
               </Link>
-              {showDelete && <TeamDeleteButton teamId={id} teamName={name} />}
-              {!showDelete && <TeamLeaveButton teamId={id} teamName={name} />}
             </>
           );
         }}

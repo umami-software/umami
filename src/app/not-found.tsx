@@ -2,7 +2,7 @@
 import { Flexbox } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 
-export default function Custom404() {
+export default function () {
   const { formatMessage, labels } = useMessages();
 
   return (

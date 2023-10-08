@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
 import { useMessages } from 'components/hooks';
-import { ReportContext } from '../Report';
+import { ReportContext } from '../[id]/Report';
 
 export function EventDataTable() {
   const { report } = useContext(ReportContext);

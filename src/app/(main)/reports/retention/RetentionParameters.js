@@ -1,9 +1,9 @@
 import { useContext, useRef } from 'react';
 import { useMessages } from 'components/hooks';
 import { Form, FormButtons, FormRow, SubmitButton } from 'react-basics';
-import { ReportContext } from '../Report';
+import { ReportContext } from '../[id]/Report';
 import { MonthSelect } from 'components/input/MonthSelect';
-import BaseParameters from '../BaseParameters';
+import BaseParameters from '../[id]/BaseParameters';
 import { parseDateRange } from 'lib/date';
 
 export function RetentionParameters() {

@@ -3,8 +3,8 @@ import { useApi, useDateRange, useMessages, useNavigation, useSticky } from 'com
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import FilterSelectForm from '../../../(main)/reports/FilterSelectForm';
-import PopupForm from '../../../(main)/reports/PopupForm';
+import FilterSelectForm from 'app/(main)/reports/[id]/FilterSelectForm';
+import PopupForm from 'app/(main)/reports/[id]/PopupForm';
 import { formatShortTime } from 'lib/format';
 import { Button, Icon, Icons, Popup, PopupTrigger } from 'react-basics';
 import styles from './WebsiteMetricsBar.module.css';

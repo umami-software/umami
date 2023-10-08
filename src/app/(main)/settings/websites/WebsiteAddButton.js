@@ -1,6 +1,7 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import WebsiteAddForm from './WebsiteAddForm';
 import useMessages from 'components/hooks/useMessages';
+import { setValue } from 'store/cache';
 
 export function WebsiteAddButton({ onSave }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -8,6 +9,7 @@ export function WebsiteAddButton({ onSave }) {
 
   const handleSave = async () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    setValue('websites', Date.now());
     onSave?.();
   };
 

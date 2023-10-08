@@ -7,15 +7,12 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { del, useMutation } = useApi();
   const { mutate, isLoading } = useMutation(() => del(`/teams/${teamId}/websites/${websiteId}`));
 
-  const handleRemoveTeamMember = () => {
-    mutate(
-      {},
-      {
-        onSuccess: () => {
-          onSave();
-        },
+  const handleRemoveTeamMember = async () => {
+    await mutate(null, {
+      onSuccess: () => {
+        onSave();
       },
-    );
+    });
   };
 
   return (

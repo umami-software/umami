@@ -4,13 +4,15 @@ import useUser from 'components/hooks/useUser';
 import useApi from 'components/hooks/useApi';
 import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
-import WebsitesHeader from './WebsitesHeader';
+import useCache from 'store/cache';
 
 function useWebsites({ includeTeams, onlyTeams }) {
   const { user } = useUser();
   const { get } = useApi();
+  const modified = useCache(state => state?.websites);
+
   return useFilterQuery(
-    ['websites', { includeTeams, onlyTeams }],
+    ['websites', { includeTeams, onlyTeams, modified }],
     params => {
       return get(`/users/${user?.id}/websites`, {
         includeTeams,
@@ -23,9 +25,8 @@ function useWebsites({ includeTeams, onlyTeams }) {
 }
 
 export function WebsitesDataTable({
-  showHeader = true,
-  showEditButton = true,
-  showViewButton = true,
+  allowEdit = true,
+  allowView = true,
   showActions = true,
   showTeam,
   includeTeams,
@@ -35,22 +36,19 @@ export function WebsitesDataTable({
   const queryResult = useWebsites({ includeTeams, onlyTeams });
 
   return (
-    <>
-      {showHeader && <WebsitesHeader />}
-      <DataTable queryResult={queryResult}>
-        {({ data }) => (
-          <WebsitesTable
-            data={data}
-            showTeam={showTeam}
-            showActions={showActions}
-            showEditButton={showEditButton}
-            showViewButton={showViewButton}
-          >
-            {children}
-          </WebsitesTable>
-        )}
-      </DataTable>
-    </>
+    <DataTable queryResult={queryResult}>
+      {({ data }) => (
+        <WebsitesTable
+          data={data}
+          showTeam={showTeam}
+          showActions={showActions}
+          allowEdit={allowEdit}
+          allowView={allowView}
+        >
+          {children}
+        </WebsitesTable>
+      )}
+    </DataTable>
   );
 }
 

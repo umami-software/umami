@@ -13,10 +13,10 @@ import {
 } from 'react-basics';
 import Icons from 'components/icons';
 import UrlAddForm from './UrlAddForm';
-import { ReportContext } from '../Report';
-import BaseParameters from '../BaseParameters';
-import ParameterList from '../ParameterList';
-import PopupForm from '../PopupForm';
+import { ReportContext } from '../[id]/Report';
+import BaseParameters from '../[id]/BaseParameters';
+import ParameterList from '../[id]/ParameterList';
+import PopupForm from '../[id]/PopupForm';
 
 export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);

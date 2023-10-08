@@ -1,6 +1,6 @@
 import { ActionForm, Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import TeamWebsitesTable from './TeamWebsitesTable';
-import TeamAddWebsiteForm from './TeamAddWebsiteForm';
+import TeamWebsiteAddForm from './TeamWebsiteAddForm';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
@@ -36,7 +36,7 @@ export function TeamWebsites({ teamId }) {
             <Text>{formatMessage(labels.addWebsite)}</Text>
           </Button>
           <Modal title={formatMessage(labels.addWebsite)}>
-            {close => <TeamAddWebsiteForm teamId={teamId} onSave={handleChange} onClose={close} />}
+            {close => <TeamWebsiteAddForm teamId={teamId} onSave={handleChange} onClose={close} />}
           </Modal>
         </ModalTrigger>
       </ActionForm>

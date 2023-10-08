@@ -4,7 +4,7 @@ import { Button, Form, FormButtons, GridColumn, Loading, SubmitButton, Toggle } 
 import useMessages from 'components/hooks/useMessages';
 import WebsitesDataTable from '../../websites/WebsitesDataTable';
 
-export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
+export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
@@ -57,4 +57,4 @@ export function TeamAddWebsiteForm({ teamId, onSave, onClose }) {
   );
 }
 
-export default TeamAddWebsiteForm;
+export default TeamWebsiteAddForm;

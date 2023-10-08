@@ -1,10 +1,10 @@
 'use client';
 import RetentionTable from './RetentionTable';
 import RetentionParameters from './RetentionParameters';
-import Report from '../Report';
-import ReportHeader from '../ReportHeader';
-import ReportMenu from '../ReportMenu';
-import ReportBody from '../ReportBody';
+import Report from '../[id]/Report';
+import ReportHeader from '../[id]/ReportHeader';
+import ReportMenu from '../[id]/ReportMenu';
+import ReportBody from '../[id]/ReportBody';
 import Magnet from 'assets/magnet.svg';
 import { REPORT_TYPES } from 'lib/constants';
 import { parseDateRange } from 'lib/date';

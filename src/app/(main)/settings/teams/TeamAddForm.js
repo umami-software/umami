@@ -8,6 +8,7 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
+import { setValue } from 'store/cache';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
 
@@ -20,8 +21,9 @@ export function TeamAddForm({ onSave, onClose }) {
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async () => {
-        onSave();
-        onClose();
+        setValue('teams', Date.now());
+        onSave?.();
+        onClose?.();
       },
     });
   };

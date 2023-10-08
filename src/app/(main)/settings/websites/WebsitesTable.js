@@ -7,8 +7,8 @@ export function WebsitesTable({
   data = [],
   showTeam,
   showActions,
-  showEditButton,
-  showViewButton,
+  allowEdit,
+  allowView,
   children,
 }) {
   const { formatMessage, labels } = useMessages();
@@ -37,7 +37,7 @@ export function WebsitesTable({
 
           return (
             <>
-              {showActions && showEditButton && (!showTeam || ownerId === user.id) && (
+              {showActions && allowEdit && (!showTeam || ownerId === user.id) && (
                 <Link href={`/settings/websites/${id}`}>
                   <Button>
                     <Icon>
@@ -47,7 +47,7 @@ export function WebsitesTable({
                   </Button>
                 </Link>
               )}
-              {showActions && showViewButton && (
+              {showActions && allowView && (
                 <Link href={`/websites/${id}`}>
                   <Button>
                     <Icon>
