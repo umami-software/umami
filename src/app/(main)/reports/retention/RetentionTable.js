@@ -6,7 +6,9 @@ import { useMessages, useLocale } from 'components/hooks';
 import { formatDate } from 'lib/date';
 import styles from './RetentionTable.module.css';
 
-export function RetentionTable() {
+const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
+
+export function RetentionTable({ days = DAYS }) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const { report } = useContext(ReportContext);
@@ -15,8 +17,6 @@ export function RetentionTable() {
   if (!data) {
     return <EmptyPlaceholder />;
   }
-
-  const days = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
 
   const rows = data.reduce((arr, row) => {
     const { date, visitors, day } = row;

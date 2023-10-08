@@ -14,8 +14,6 @@ export interface TeamsRequestBody {
   name: string;
 }
 
-export interface MyTeamsRequestQuery extends SearchFilter {}
-
 const schema = {
   GET: yup.object().shape({
     ...pageInfo,

@@ -9,7 +9,7 @@ export default function SettingsLayout({ children }) {
   const { user } = useUser();
   const pathname = usePathname();
   const { formatMessage, labels } = useMessages();
-  const cloudMode = Boolean(process.env.cloudMode);
+  const cloudMode = !!process.env.cloudMode;
 
   const items = [
     { key: 'websites', label: formatMessage(labels.websites), url: '/settings/websites' },
@@ -19,6 +19,10 @@ export default function SettingsLayout({ children }) {
   ].filter(n => n);
 
   const getKey = () => items.find(({ url }) => pathname === url)?.key;
+
+  if (cloudMode) {
+    return null;
+  }
 
   return (
     <div className={styles.layout}>

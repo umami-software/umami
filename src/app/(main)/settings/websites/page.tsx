@@ -1,11 +1,8 @@
 import WebsitesDataTable from './WebsitesDataTable';
 import WebsitesHeader from './WebsitesHeader';
+import { Metadata } from 'next';
 
 export default function () {
-  if (process.env.cloudMode) {
-    return null;
-  }
-
   return (
     <>
       <WebsitesHeader />
@@ -13,3 +10,7 @@ export default function () {
     </>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'Websites Settings | umami',
+};

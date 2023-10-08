@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { Button, Form, FormButtons, GridColumn, Loading, SubmitButton, Toggle } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import WebsitesDataTable from '../../websites/WebsitesDataTable';
+import Empty from 'components/common/Empty';
 
 export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
-  const { data: websites } = useQuery(['websites'], () => get('/websites'));
+  const { data: websites, isLoading } = useQuery(['websites'], () => get('/websites'));
   const [selected, setSelected] = useState([]);
   const hasData = websites && websites.data.length > 0;
 
@@ -30,7 +31,8 @@ export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
 
   return (
     <>
-      {!hasData && <Loading />}
+      {isLoading && !hasData && <Loading />}
+      {!isLoading && !hasData && <Empty />}
       {hasData && (
         <Form onSubmit={handleSubmit} error={error}>
           <WebsitesDataTable showHeader={false} showActions={false}>

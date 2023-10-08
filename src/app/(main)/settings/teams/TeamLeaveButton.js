@@ -13,7 +13,7 @@ export function TeamLeaveButton({ teamId, teamName, onLeave }) {
     <ModalTrigger>
       <Button>
         <Icon rotate={dir === 'rtl' ? 180 : 0}>
-          <Icons.ArrowRight />
+          <Icons.Logout />
         </Icon>
         <Text>{formatMessage(labels.leave)}</Text>
       </Button>

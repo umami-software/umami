@@ -1,4 +1,5 @@
 'use client';
+import { ReactNode } from 'react';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import useUser from 'components/hooks/useUser';
 import useApi from 'components/hooks/useApi';
@@ -6,10 +7,20 @@ import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import useCache from 'store/cache';
 
+export interface WebsitesDataTableProps {
+  allowEdit?: boolean;
+  allowView?: boolean;
+  showActions?: boolean;
+  showTeam?: boolean;
+  includeTeams?: boolean;
+  onlyTeams?: boolean;
+  children?: ReactNode;
+}
+
 function useWebsites({ includeTeams, onlyTeams }) {
   const { user } = useUser();
   const { get } = useApi();
-  const modified = useCache(state => state?.websites);
+  const modified = useCache((state: any) => state?.websites);
 
   return useFilterQuery(
     ['websites', { includeTeams, onlyTeams, modified }],
@@ -32,7 +43,7 @@ export function WebsitesDataTable({
   includeTeams,
   onlyTeams,
   children,
-}) {
+}: WebsitesDataTableProps) {
   const queryResult = useWebsites({ includeTeams, onlyTeams });
 
   return (

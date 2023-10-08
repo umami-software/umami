@@ -1,5 +1,5 @@
 'use client';
-import WebsiteList from '../settings/websites/WebsitesDataTable';
+import WebsitesDataTable from '../settings/websites/WebsitesDataTable';
 import { useMessages } from 'components/hooks';
 import { useState } from 'react';
 import { Item, Tabs } from 'react-basics';
@@ -12,6 +12,7 @@ const TABS = {
 export function WebsitesBrowse() {
   const { formatMessage, labels } = useMessages();
   const [tab, setTab] = useState(TABS.myWebsites);
+  const allowEdit = !process.env.cloudMode;
 
   return (
     <>
@@ -19,9 +20,9 @@ export function WebsitesBrowse() {
         <Item key={TABS.myWebsites}>{formatMessage(labels.myWebsites)}</Item>
         <Item key={TABS.teamWebsites}>{formatMessage(labels.teamWebsites)}</Item>
       </Tabs>
-      {tab === TABS.myWebsites && <WebsiteList showHeader={false} />}
+      {tab === TABS.myWebsites && <WebsitesDataTable allowEdit={allowEdit} />}
       {tab === TABS.teamWebsites && (
-        <WebsiteList showHeader={false} showTeam={true} onlyTeams={true} />
+        <WebsitesDataTable showTeam={true} onlyTeams={true} allowEdit={allowEdit} />
       )}
     </>
   );

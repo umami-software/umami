@@ -10,6 +10,7 @@ import {
 } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import { setValue } from 'store/cache';
 
 export function TeamJoinForm({ onSave, onClose }) {
   const { formatMessage, labels, getMessage } = useMessages();
@@ -20,8 +21,9 @@ export function TeamJoinForm({ onSave, onClose }) {
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async () => {
-        onSave();
-        onClose();
+        setValue('teams', Date.now());
+        onSave?.();
+        onClose?.();
       },
     });
   };

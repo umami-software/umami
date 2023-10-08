@@ -21,18 +21,18 @@ export function TeamsTable({ data = [] }) {
         {row => {
           const { id, name, teamUser } = row;
           const owner = teamUser.find(({ role }) => role === ROLES.teamOwner);
-          const showDelete = user.id === owner?.userId;
+          const isOwner = user.id === owner?.userId;
 
           return (
             <>
-              {showDelete && <TeamDeleteButton teamId={id} teamName={name} />}
-              {!showDelete && <TeamLeaveButton teamId={id} teamName={name} />}
+              {isOwner && <TeamDeleteButton teamId={id} teamName={name} />}
+              {!isOwner && <TeamLeaveButton teamId={id} teamName={name} />}
               <Link href={`/settings/teams/${id}`}>
                 <Button>
                   <Icon>
                     <Icons.Edit />
                   </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
+                  <Text>{formatMessage(isOwner ? labels.edit : labels.view)}</Text>
                 </Button>
               </Link>
             </>
