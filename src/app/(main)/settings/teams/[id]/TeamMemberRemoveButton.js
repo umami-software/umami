@@ -1,6 +1,7 @@
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
+import { setValue } from 'store/cache';
 
 export function TeamMemberRemoveButton({ teamId, userId, disabled, onSave }) {
   const { formatMessage, labels } = useMessages();
@@ -12,7 +13,8 @@ export function TeamMemberRemoveButton({ teamId, userId, disabled, onSave }) {
       {},
       {
         onSuccess: () => {
-          onSave();
+          setValue('team:members', Date.now());
+          onSave?.();
         },
       },
     );

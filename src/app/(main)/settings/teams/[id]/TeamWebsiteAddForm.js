@@ -4,6 +4,7 @@ import { Button, Form, FormButtons, GridColumn, Loading, SubmitButton, Toggle } 
 import useMessages from 'components/hooks/useMessages';
 import WebsitesDataTable from '../../websites/WebsitesDataTable';
 import Empty from 'components/common/Empty';
+import { setValue } from 'store/cache';
 
 export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
@@ -18,8 +19,9 @@ export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
       { websiteIds: selected },
       {
         onSuccess: async () => {
-          onSave();
-          onClose();
+          setValue('team:websites', Date.now());
+          onSave?.();
+          onClose?.();
         },
       },
     );

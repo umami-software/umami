@@ -6,13 +6,15 @@ import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import DataTable from 'components/common/DataTable';
+import useCache from 'store/cache';
 
 export function TeamWebsites({ teamId }) {
   const { formatMessage, labels, messages } = useMessages();
   const { user } = useUser();
   const { get } = useApi();
+  const modified = useCache(state => state?.['team:websites']);
   const queryResult = useFilterQuery(
-    ['team:websites', teamId],
+    ['team:websites', { teamId, modified }],
     params => {
       return get(`/teams/${teamId}/websites`, {
         ...params,

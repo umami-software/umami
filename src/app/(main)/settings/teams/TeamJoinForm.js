@@ -21,7 +21,7 @@ export function TeamJoinForm({ onSave, onClose }) {
   const handleSubmit = async data => {
     mutate(data, {
       onSuccess: async () => {
-        setValue('teams', Date.now());
+        setValue('teams:members', Date.now());
         onSave?.();
         onClose?.();
       },

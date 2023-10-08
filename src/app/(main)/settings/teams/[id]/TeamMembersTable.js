@@ -4,7 +4,7 @@ import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 
-export function TeamMembersTable({ data = [], teamId, readOnly, onChange }) {
+export function TeamMembersTable({ data = [], teamId, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -24,9 +24,7 @@ export function TeamMembersTable({ data = [], teamId, readOnly, onChange }) {
           return (
             !readOnly &&
             row?.teamUser?.[0]?.role !== ROLES.teamOwner &&
-            user?.id !== row?.id && (
-              <TeamMemberRemoveButton teamId={teamId} userId={row.id} onSave={onChange} />
-            )
+            user?.id !== row?.id && <TeamMemberRemoveButton teamId={teamId} userId={row.id} />
           );
         }}
       </GridColumn>
