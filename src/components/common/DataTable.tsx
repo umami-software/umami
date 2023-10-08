@@ -25,16 +25,16 @@ export interface DataTableProps {
     error: unknown;
   };
   searchDelay?: number;
-  showSearch?: boolean;
-  showPaging?: boolean;
+  allowSearch?: boolean;
+  allowPaging?: boolean;
   children: ReactNode | ((data: any) => ReactNode);
 }
 
 export function DataTable({
   queryResult,
   searchDelay = 600,
-  showSearch = true,
-  showPaging = true,
+  allowSearch = true,
+  allowPaging = true,
   children,
 }: DataTableProps) {
   const { formatMessage, labels, messages } = useMessages();
@@ -58,7 +58,7 @@ export function DataTable({
 
   return (
     <>
-      {(hasData || query || isLoading) && showSearch && (
+      {allowSearch && (hasData || query) && (
         <SearchField
           className={styles.search}
           value={query}
@@ -73,12 +73,10 @@ export function DataTable({
       >
         {hasData ? (typeof children === 'function' ? children(result) : children) : null}
         {isLoading && <Loading icon="dots" />}
-        {!isLoading && !hasData && !query && (
-          <Empty message={formatMessage(messages.noDataAvailable)} />
-        )}
+        {!isLoading && !hasData && !query && <Empty />}
         {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
       </div>
-      {showPaging && (
+      {allowPaging && hasData && (
         <Pager
           className={styles.pager}
           page={page}
