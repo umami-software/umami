@@ -91,6 +91,7 @@ async function clickhouseQuery(
           eventName: a.eventName,
           fieldName: a.fieldName,
           dataType: Number(a.dataType),
+          fieldValue: a.fieldValue,
           total: Number(a.total),
         };
       });
