@@ -42,9 +42,7 @@
     };
   };
 
-  const getPath = url => {
-    new URL(url).pathname;
-  };
+  const getPath = url => new URL(url).pathname;
 
   const getPayload = () => ({
     website,
