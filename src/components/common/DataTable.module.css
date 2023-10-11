@@ -20,6 +20,7 @@
 .body {
   display: flex;
   position: relative;
+  overflow-x: auto;
 }
 
 .body td {
@@ -27,6 +28,7 @@
   gap: 10px;
   min-height: 70px;
   align-items: center;
+  min-width: min-content;
 }
 
 .pager {
