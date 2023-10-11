@@ -42,7 +42,13 @@
     };
   };
 
-  const getPath = url => new URL(url).pathname;
+  const getPath = url => {
+    try {
+      return new URL(url).pathname;
+    } catch (e) {
+      return url;
+    }
+  };
 
   const getPayload = () => ({
     website,
