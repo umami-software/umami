@@ -3,16 +3,17 @@ import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import Link from 'next/link';
-import { Button, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
+import { Button, GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import TeamDeleteButton from './TeamDeleteButton';
 import TeamLeaveButton from './TeamLeaveButton';
 
 export function TeamsTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const breakpoint = useBreakpoint();
 
   return (
-    <GridTable data={data}>
+    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="owner" label={formatMessage(labels.owner)}>
         {row => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}

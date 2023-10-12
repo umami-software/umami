@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button, Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
+import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 
@@ -9,14 +9,14 @@ export function WebsitesTable({
   showActions,
   allowEdit,
   allowView,
-  cardMode,
   children,
 }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const breakpoint = useBreakpoint();
 
   return (
-    <GridTable data={data} cardMode={cardMode}>
+    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       {showTeam && (

@@ -1,4 +1,4 @@
-import { Button, Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
+import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import { ROLES } from 'lib/constants';
@@ -9,22 +9,19 @@ import UserDeleteButton from './UserDeleteButton';
 export function UsersTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
   const { dateLocale } = useLocale();
+  const breakpoint = useBreakpoint();
 
   return (
-    <GridTable data={data}>
-      <GridColumn
-        name="username"
-        label={formatMessage(labels.username)}
-        width={'minmax(200px, 2fr)'}
-      />
-      <GridColumn name="role" label={formatMessage(labels.role)}>
+    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
+      <GridColumn name="username" label={formatMessage(labels.username)} style={{ minWidth: 0 }} />
+      <GridColumn name="role" label={formatMessage(labels.role)} width={'120px'}>
         {row =>
           formatMessage(
             labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
           )
         }
       </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)}>
+      <GridColumn name="created" label={formatMessage(labels.created)} width={'100px'}>
         {row =>
           formatDistance(new Date(row.createdAt), new Date(), {
             addSuffix: true,

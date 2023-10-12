@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
   height: 100px;
 }
@@ -36,12 +37,5 @@
     order: 2;
     margin: 20px 0;
     min-width: 100%;
-  }
-}
-
-@media only screen and (max-width: 768px) {
-  .buttons,
-  .links {
-    display: none;
   }
 }

@@ -1,10 +1,10 @@
 .footer {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: flex-end;
   font-size: var(--font-size-sm);
-  line-height: 30px;
-  margin: 40px 0;
+  height: 100px;
 }
 
 .footer a {

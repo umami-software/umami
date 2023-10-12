@@ -7,6 +7,7 @@ import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUserByUsername, getUsers } from 'queries';
+import * as yup from 'yup';
 
 export interface UsersRequestQuery extends SearchFilter {}
 export interface UsersRequestBody {
@@ -16,7 +17,6 @@ export interface UsersRequestBody {
   role: Role;
 }
 
-import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     ...pageInfo,

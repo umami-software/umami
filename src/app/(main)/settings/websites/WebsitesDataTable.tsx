@@ -6,7 +6,6 @@ import useApi from 'components/hooks/useApi';
 import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import useCache from 'store/cache';
-import { useBreakpoint } from 'react-basics';
 
 export interface WebsitesDataTableProps {
   allowEdit?: boolean;
@@ -25,7 +24,7 @@ function useWebsites({ includeTeams, onlyTeams }) {
 
   return useFilterQuery(
     ['websites', { includeTeams, onlyTeams, modified }],
-    params => {
+    (params: any) => {
       return get(`/users/${user?.id}/websites`, {
         includeTeams,
         onlyTeams,
@@ -46,7 +45,6 @@ export function WebsitesDataTable({
   children,
 }: WebsitesDataTableProps) {
   const queryResult = useWebsites({ includeTeams, onlyTeams });
-  const breakpoint = useBreakpoint();
 
   return (
     <DataTable queryResult={queryResult}>
@@ -57,7 +55,6 @@ export function WebsitesDataTable({
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}
-          cardMode={['xs', 'sm', 'md'].includes(breakpoint)}
         >
           {children}
         </WebsitesTable>

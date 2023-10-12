@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import useStore, { setShareToken } from 'store/app';
 import useApi from './useApi';
 
@@ -6,23 +5,16 @@ const selector = state => state.shareToken;
 
 export function useShareToken(shareId) {
   const shareToken = useStore(selector);
-  const { get } = useApi();
+  const { get, useQuery } = useApi();
+  const { isLoading, error } = useQuery(['share', shareId], async () => {
+    const data = await get(`/share/${shareId}`);
 
-  async function loadToken(id) {
-    const data = await get(`/share/${id}`);
+    setShareToken(data);
 
-    if (data) {
-      setShareToken(data);
-    }
-  }
+    return data;
+  });
 
-  useEffect(() => {
-    if (shareId) {
-      loadToken(shareId);
-    }
-  }, [shareId]);
-
-  return shareToken;
+  return { shareToken, isLoading, error };
 }
 
 export default useShareToken;
