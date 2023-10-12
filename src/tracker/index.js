@@ -43,10 +43,11 @@
   };
 
   const getPath = url => {
-    if (url.substring(0, 4) === 'http') {
-      return '/' + url.split('/').splice(3).join('/');
+    try {
+      return new URL(url).pathname;
+    } catch (e) {
+      return url;
     }
-    return url;
   };
 
   const getPayload = () => ({
