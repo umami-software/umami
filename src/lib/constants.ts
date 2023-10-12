@@ -198,7 +198,7 @@ export const EVENT_COLORS = [
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
-export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,16}$/;
 export const UUID_REGEX =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 export const HOSTNAME_REGEX =
