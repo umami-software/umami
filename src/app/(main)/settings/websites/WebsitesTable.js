@@ -9,13 +9,14 @@ export function WebsitesTable({
   showActions,
   allowEdit,
   allowView,
+  cardMode,
   children,
 }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
   return (
-    <GridTable data={data}>
+    <GridTable data={data} cardMode={cardMode}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       {showTeam && (
