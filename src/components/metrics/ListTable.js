@@ -1,6 +1,6 @@
 import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
-import { useSpring, animated, config } from 'react-spring';
+import { useSpring, animated, config } from '@react-spring/web';
 import classNames from 'classnames';
 import Empty from 'components/common/Empty';
 import { formatLongNumber } from 'lib/format';

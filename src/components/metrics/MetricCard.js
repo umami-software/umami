@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from '@react-spring/web';
 import { formatNumber } from 'lib/format';
 import styles from './MetricCard.module.css';
 

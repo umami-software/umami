@@ -9,13 +9,14 @@ export function WebsitesTable({
   showActions,
   allowEdit,
   allowView,
+  cardMode,
   children,
 }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
   return (
-    <GridTable data={data}>
+    <GridTable data={data} cardMode={cardMode}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       {showTeam && (
@@ -28,39 +29,41 @@ export function WebsitesTable({
           {row => row.user.username}
         </GridColumn>
       )}
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
-          const {
-            id,
-            user: { id: ownerId },
-          } = row;
+      {showActions && (
+        <GridColumn name="action" label=" " alignment="end">
+          {row => {
+            const {
+              id,
+              user: { id: ownerId },
+            } = row;
 
-          return (
-            <>
-              {showActions && allowEdit && (!showTeam || ownerId === user.id) && (
-                <Link href={`/settings/websites/${id}`}>
-                  <Button>
-                    <Icon>
-                      <Icons.Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </Button>
-                </Link>
-              )}
-              {showActions && allowView && (
-                <Link href={`/websites/${id}`}>
-                  <Button>
-                    <Icon>
-                      <Icons.External />
-                    </Icon>
-                    <Text>{formatMessage(labels.view)}</Text>
-                  </Button>
-                </Link>
-              )}
-            </>
-          );
-        }}
-      </GridColumn>
+            return (
+              <>
+                {allowEdit && (!showTeam || ownerId === user.id) && (
+                  <Link href={`/settings/websites/${id}`}>
+                    <Button>
+                      <Icon>
+                        <Icons.Edit />
+                      </Icon>
+                      <Text>{formatMessage(labels.edit)}</Text>
+                    </Button>
+                  </Link>
+                )}
+                {allowView && (
+                  <Link href={`/websites/${id}`}>
+                    <Button>
+                      <Icon>
+                        <Icons.External />
+                      </Icon>
+                      <Text>{formatMessage(labels.view)}</Text>
+                    </Button>
+                  </Link>
+                )}
+              </>
+            );
+          }}
+        </GridColumn>
+      )}
       {children}
     </GridTable>
   );
