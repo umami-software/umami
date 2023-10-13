@@ -22,7 +22,7 @@ export function UserWebsites({ userId }) {
     <Page loading={isLoading} error={error}>
       {hasData && (
         <WebsitesTable
-          data={data}
+          data={data.data}
           onFilterChange={handleFilterChange}
           onPageChange={handlePageChange}
           onPageSizeChange={handlePageSizeChange}
