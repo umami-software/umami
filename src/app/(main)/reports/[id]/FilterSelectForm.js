@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import FieldSelectForm from './FieldSelectForm';
 import FieldFilterForm from './FieldFilterForm';
-import { useApi } from 'components/hooks';
+import { useApi, useDateRange } from 'components/hooks';
 import { Loading } from 'react-basics';
 
 function useValues(websiteId, type) {
   const { get, useQuery } = useApi();
+  const [dateRange] = useDateRange(websiteId);
+  const { startDate, endDate } = dateRange;
   const { data, error, isLoading } = useQuery(
     ['websites:values', websiteId, type],
     () =>
       get(`/websites/${websiteId}/values`, {
         type,
+        startAt: +startDate,
+        endAt: +endDate,
       }),
     { enabled: !!(websiteId && type) },
   );
