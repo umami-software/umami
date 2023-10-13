@@ -21,7 +21,7 @@ async function relationalQuery(websiteId: string, column: string, startDate: Dat
     inner join session
       on session.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+      and website_event.created_at between {{startDate}} and {{endDate}}
     `,
     {
       websiteId,
