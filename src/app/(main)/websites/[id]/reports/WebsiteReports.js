@@ -45,7 +45,7 @@ export function WebsiteReports({ websiteId }) {
       </Flexbox>
       {hasData && (
         <ReportsTable
-          data={reports}
+          data={reports.data}
           onDelete={handleDelete}
           onFilterChange={handleFilterChange}
           onPageChange={handlePageChange}
