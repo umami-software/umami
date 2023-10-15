@@ -45,11 +45,11 @@ export function DataTable({
   const noResults = Boolean(!isLoading && query && !hasData);
 
   const handleSearch = query => {
-    setParams({ ...params, query, page: params.query ? page : 1 });
+    setParams({ ...params, query, page: params.page ? page : 1 });
   };
 
   const handlePageChange = page => {
-    setParams({ ...params, page });
+    setParams({ ...params, query, page });
   };
 
   if (error) {
