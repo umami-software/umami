@@ -60,7 +60,7 @@ const redirects = [
   {
     source: '/settings',
     destination: process.env.CLOUD_MODE
-      ? `${process.env.CLOUD_URL}/websites`
+      ? `${process.env.CLOUD_URL}/settings/websites`
       : '/settings/websites',
     permanent: true,
   },

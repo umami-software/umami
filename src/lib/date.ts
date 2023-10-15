@@ -238,7 +238,7 @@ export function incrementDateRange(value, increment) {
 export function getAllowedUnits(startDate, endDate) {
   const units = ['minute', 'hour', 'day', 'month', 'year'];
   const minUnit = getMinimumUnit(startDate, endDate);
-  const index = units.indexOf(minUnit);
+  const index = units.indexOf(minUnit === 'year' ? 'month' : minUnit);
 
   return index >= 0 ? units.splice(index) : [];
 }
