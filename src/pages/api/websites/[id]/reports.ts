@@ -1,3 +1,4 @@
+import * as yup from 'yup';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
@@ -9,7 +10,6 @@ export interface ReportsRequestQuery extends SearchFilter {
   id: string;
 }
 
-import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),

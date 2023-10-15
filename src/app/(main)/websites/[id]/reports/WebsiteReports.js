@@ -1,34 +1,12 @@
 'use client';
-import Page from 'components/layout/Page';
-import Empty from 'components/common/Empty';
-import ReportsTable from '../../../../(main)/reports/ReportsTable';
-import { useMessages, useWebsiteReports } from 'components/hooks';
 import Link from 'next/link';
 import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
+import { useMessages } from 'components/hooks';
 import WebsiteHeader from '../WebsiteHeader';
+import ReportsDataTable from 'app/(main)/reports/ReportsDataTable';
 
 export function WebsiteReports({ websiteId }) {
   const { formatMessage, labels } = useMessages();
-  const {
-    reports,
-    error,
-    isLoading,
-    deleteReport,
-    filter,
-    handleFilterChange,
-    handlePageChange,
-    handlePageSizeChange,
-  } = useWebsiteReports(websiteId);
-
-  const hasData = (reports && reports.data.length !== 0) || filter;
-
-  const handleDelete = async id => {
-    await deleteReport(id);
-  };
-
-  if (isLoading || error) {
-    return <Page loading={isLoading} error={error} />;
-  }
 
   return (
     <>
@@ -43,17 +21,7 @@ export function WebsiteReports({ websiteId }) {
           </Button>
         </Link>
       </Flexbox>
-      {hasData && (
-        <ReportsTable
-          data={reports}
-          onDelete={handleDelete}
-          onFilterChange={handleFilterChange}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          filterValue={filter}
-        />
-      )}
-      {!hasData && <Empty />}
+      <ReportsDataTable websiteId={websiteId} />
     </>
   );
 }
