@@ -238,7 +238,7 @@ export function incrementDateRange(value, increment) {
 export function getAllowedUnits(startDate, endDate) {
   const units = ['minute', 'hour', 'day', 'month', 'year'];
   const minUnit = getMinimumUnit(startDate, endDate);
-  const index = units.indexOf(minUnit);
+  const index = units.indexOf(minUnit === 'year' ? 'month' : minUnit);
 
   return index >= 0 ? units.splice(index) : [];
 }
@@ -248,7 +248,7 @@ export function getMinimumUnit(startDate, endDate) {
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
     return 'hour';
-  } else if (differenceInCalendarDays(endDate, startDate) <= 90) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 12) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';

@@ -5,6 +5,7 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { deleteTeamUser } from 'queries';
 import * as yup from 'yup';
+
 export interface TeamUserRequestQuery {
   id: string;
   userId: string;
@@ -19,9 +20,7 @@ const schema = {
 
 export default async (req: NextApiRequestQueryBody<TeamUserRequestQuery>, res: NextApiResponse) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'DELETE') {
     const { id: teamId, userId } = req.query;

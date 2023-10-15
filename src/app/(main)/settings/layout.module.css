@@ -1,0 +1,31 @@
+.layout {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 20px;
+}
+
+.menu {
+  width: 240px;
+  padding-top: 34px;
+  padding-right: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+}
+
+@media only screen and (max-width: 992px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+}

@@ -33,6 +33,18 @@ const schema = {
     type: yup.string().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
+    url: yup.string(),
+    referrer: yup.string(),
+    title: yup.string(),
+    query: yup.string(),
+    os: yup.string(),
+    browser: yup.string(),
+    device: yup.string(),
+    country: yup.string(),
+    region: yup.string(),
+    city: yup.string(),
+    language: yup.string(),
+    event: yup.string(),
   }),
 };
 
@@ -42,9 +54,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     id: websiteId,

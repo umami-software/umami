@@ -193,6 +193,10 @@ export const labels = defineMessages({
   pageOf: { id: 'label.page-of', defaultMessage: 'Page {current} of {total}' },
   create: { id: 'label.create', defaultMessage: 'Create' },
   search: { id: 'label.search', defaultMessage: 'Search' },
+  numberOfRecords: {
+    id: 'label.number-of-records',
+    defaultMessage: '{x} {x, plural, one {record} other {records}}',
+  },
 });
 
 export const messages = defineMessages({

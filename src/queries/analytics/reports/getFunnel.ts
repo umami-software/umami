@@ -172,7 +172,7 @@ async function clickhouseQuery(
     );
   }
 
-  return rawQuery<{ level: number; count: number }[]>(
+  return rawQuery(
     `
     WITH level0 AS (
       select distinct session_id, url_path, referrer_path, created_at
@@ -201,7 +201,7 @@ async function clickhouseQuery(
   ).then(results => {
     return urls.map((a, i) => ({
       x: a,
-      y: results[i]?.count || 0,
+      y: Number(results[i]?.count) || 0,
       z: (1 - Number(results[i]?.count) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
     }));
   });

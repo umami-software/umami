@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import FilterLink from 'components/common/FilterLink';
 import useCountryNames from 'components/hooks/useCountryNames';
 import { useLocale, useMessages, useFormat } from 'components/hooks';
@@ -8,7 +7,6 @@ export function CountriesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const { formatMessage, labels } = useMessages();
-  const { basePath } = useRouter();
   const { formatCountry } = useFormat();
 
   function renderLink({ x: code }) {
@@ -19,7 +17,10 @@ export function CountriesTable({ websiteId, ...props }) {
         value={countryNames[code] && code}
         label={formatCountry(code)}
       >
-        <img src={`${basePath}/images/flags/${code?.toLowerCase() || 'xx'}.png`} alt={code} />
+        <img
+          src={`${process.env.basePath}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
+          alt={code}
+        />
       </FilterLink>
     );
   }

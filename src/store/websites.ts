@@ -4,10 +4,6 @@ import { DateRange } from 'lib/types';
 
 const store = create(() => ({}));
 
-export function getWebsiteDateRange(websiteId: string) {
-  return store.getState()?.[websiteId];
-}
-
 export function setWebsiteDateRange(websiteId: string, dateRange: DateRange) {
   store.setState(
     produce(state => {

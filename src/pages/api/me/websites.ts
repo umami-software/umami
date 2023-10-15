@@ -1,18 +1,18 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
 import userWebsites from 'pages/api/users/[id]/websites';
 import * as yup from 'yup';
 
-export interface MyWebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface MyWebsitesRequestQuery extends SearchFilter {
   id: string;
 }
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
 };
 
@@ -22,9 +22,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
     req.query.id = req.auth.user.id;

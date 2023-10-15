@@ -14,7 +14,6 @@ import {
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { getUserById } from '../queries';
-import { NextApiRequestQueryBody } from './types';
 
 const log = debug('umami:middleware');
 
@@ -83,14 +82,18 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   next();
 });
 
-export const useValidate = createMiddleware(async (req: any, res, next) => {
-  try {
-    const { yup } = req as NextApiRequestQueryBody;
+export const useValidate = async (schema, req, res) => {
+  return createMiddleware(async (req: any, res, next) => {
+    try {
+      const rules = schema[req.method];
 
-    yup[req.method] && yup[req.method].validateSync({ ...req.query, ...req.body });
-  } catch (e: any) {
-    return badRequest(res, e.message);
-  }
+      if (rules) {
+        rules.validateSync({ ...req.query, ...req.body });
+      }
+    } catch (e: any) {
+      return badRequest(res, e.message);
+    }
 
-  next();
-});
+    next();
+  })(req, res);
+};

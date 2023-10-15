@@ -1,5 +1,4 @@
 import { Prisma, Report } from '@prisma/client';
-import { REPORT_FILTER_TYPES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, ReportSearchFilter } from 'lib/types';
 
@@ -27,27 +26,21 @@ export async function deleteReport(reportId: string): Promise<Report> {
 }
 
 export async function getReports(
-  ReportSearchFilter: ReportSearchFilter,
+  params: ReportSearchFilter,
   options?: { include?: Prisma.ReportInclude },
 ): Promise<FilterResult<Report[]>> {
-  const {
-    userId,
-    websiteId,
-    includeTeams,
-    filter,
-    filterType = REPORT_FILTER_TYPES.all,
-  } = ReportSearchFilter;
+  const { query, userId, websiteId, includeTeams } = params;
 
   const mode = prisma.getSearchMode();
 
   const where: Prisma.ReportWhereInput = {
-    ...(userId && { userId: userId }),
-    ...(websiteId && { websiteId: websiteId }),
+    userId,
+    websiteId,
     AND: [
       {
         OR: [
           {
-            ...(userId && { userId: userId }),
+            userId,
           },
           {
             ...(includeTeams && {
@@ -71,71 +64,53 @@ export async function getReports(
       {
         OR: [
           {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES.name) && {
+            name: {
+              contains: query,
+              ...mode,
+            },
+          },
+          {
+            description: {
+              contains: query,
+              ...mode,
+            },
+          },
+          {
+            type: {
+              contains: query,
+              ...mode,
+            },
+          },
+          {
+            user: {
+              username: {
+                contains: query,
+                ...mode,
+              },
+            },
+          },
+          {
+            website: {
               name: {
-                startsWith: filter,
+                contains: query,
                 ...mode,
               },
-            }),
+            },
           },
           {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES.description) && {
-              description: {
-                startsWith: filter,
+            website: {
+              domain: {
+                contains: query,
                 ...mode,
               },
-            }),
-          },
-          {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES.type) && {
-              type: {
-                startsWith: filter,
-                ...mode,
-              },
-            }),
-          },
-          {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES['user:username']) && {
-              user: {
-                username: {
-                  startsWith: filter,
-                  ...mode,
-                },
-              },
-            }),
-          },
-          {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES['website:name']) && {
-              website: {
-                name: {
-                  startsWith: filter,
-                  ...mode,
-                },
-              },
-            }),
-          },
-          {
-            ...((filterType === REPORT_FILTER_TYPES.all ||
-              filterType === REPORT_FILTER_TYPES['website:domain']) && {
-              website: {
-                domain: {
-                  startsWith: filter,
-                  ...mode,
-                },
-              },
-            }),
+            },
           },
         ],
       },
     ],
   };
 
-  const [pageFilters, getParameters] = prisma.getPageFilters(ReportSearchFilter);
+  const [pageFilters, pageInfo] = prisma.getPageFilters(params);
 
   const reports = await prisma.client.report.findMany({
     where,
@@ -150,13 +125,13 @@ export async function getReports(
   return {
     data: reports,
     count,
-    ...getParameters,
+    ...pageInfo,
   };
 }
 
 export async function getReportsByUserId(
   userId: string,
-  filter: ReportSearchFilter,
+  filter?: ReportSearchFilter,
 ): Promise<FilterResult<Report[]>> {
   return getReports(
     { userId, ...filter },

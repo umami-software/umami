@@ -5,12 +5,8 @@ import {
   EVENT_TYPE,
   KAFKA_TOPIC,
   PERMISSIONS,
-  REPORT_FILTER_TYPES,
   REPORT_TYPES,
   ROLES,
-  TEAM_FILTER_TYPES,
-  USER_FILTER_TYPES,
-  WEBSITE_FILTER_TYPES,
 } from './constants';
 import * as yup from 'yup';
 import { TIME_UNIT } from './date';
@@ -27,46 +23,42 @@ export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
-export type ReportSearchFilterType = ObjectValues<typeof REPORT_FILTER_TYPES>;
-export type UserSearchFilterType = ObjectValues<typeof USER_FILTER_TYPES>;
-export type WebsiteSearchFilterType = ObjectValues<typeof WEBSITE_FILTER_TYPES>;
-export type TeamSearchFilterType = ObjectValues<typeof TEAM_FILTER_TYPES>;
-
-export interface WebsiteSearchFilter extends SearchFilter<WebsiteSearchFilterType> {
+export interface WebsiteSearchFilter extends SearchFilter {
   userId?: string;
   teamId?: string;
   includeTeams?: boolean;
   onlyTeams?: boolean;
 }
 
-export interface UserSearchFilter extends SearchFilter<UserSearchFilterType> {
+export interface UserSearchFilter extends SearchFilter {
   teamId?: string;
 }
 
-export interface TeamSearchFilter extends SearchFilter<TeamSearchFilterType> {
+export interface TeamSearchFilter extends SearchFilter {
   userId?: string;
 }
 
-export interface ReportSearchFilter extends SearchFilter<ReportSearchFilterType> {
+export interface ReportSearchFilter extends SearchFilter {
   userId?: string;
   websiteId?: string;
   includeTeams?: boolean;
 }
 
-export interface SearchFilter<T> {
-  filter?: string;
-  filterType?: T;
-  pageSize: number;
-  page: number;
+export interface SearchFilter {
+  query?: string;
+  page?: number;
+  pageSize?: number;
   orderBy?: string;
+  sortDescending?: boolean;
 }
 
 export interface FilterResult<T> {
   data: T;
   count: number;
-  pageSize: number;
   page: number;
+  pageSize: number;
   orderBy?: string;
+  sortDescending?: boolean;
 }
 
 export interface DynamicData {

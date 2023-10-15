@@ -1,12 +1,14 @@
+import classNames from 'classnames';
 import Link from 'next/link';
-import { Icon, Icons, Text } from 'react-basics';
+import { useLocale } from 'components/hooks';
 import styles from './LinkButton.module.css';
 
-export function LinkButton({ href, icon, children }) {
+export function LinkButton({ href, className, children }) {
+  const { dir } = useLocale();
+
   return (
-    <Link className={styles.button} href={href}>
-      <Icon>{icon || <Icons.ArrowRight />}</Icon>
-      <Text>{children}</Text>
+    <Link className={classNames(styles.button, className)} href={href} dir={dir}>
+      {children}
     </Link>
   );
 }

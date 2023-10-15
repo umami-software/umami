@@ -13,13 +13,13 @@ export function PageviewsChart({ websiteId, data, unit, loading, ...props }) {
 
     return [
       {
-        label: formatMessage(labels.uniqueVisitors),
+        label: formatMessage(labels.visitors),
         data: data.sessions,
         borderWidth: 1,
         ...colors.chart.visitors,
       },
       {
-        label: formatMessage(labels.pageViews),
+        label: formatMessage(labels.views),
         data: data.pageviews,
         borderWidth: 1,
         ...colors.chart.views,

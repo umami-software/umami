@@ -15,6 +15,7 @@ import {
 } from 'next-basics';
 import { getUserByUsername } from 'queries';
 import * as yup from 'yup';
+import { ROLES } from 'lib/constants';
 
 const log = debug('umami:auth');
 
@@ -43,8 +44,7 @@ export default async (
     return forbidden(res);
   }
 
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const { username, password } = req.body;
@@ -63,7 +63,7 @@ export default async (
 
       return ok(res, {
         token,
-        user: { id, username, role, createdAt },
+        user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
       });
     }
 
