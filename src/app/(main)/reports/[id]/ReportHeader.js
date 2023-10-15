@@ -1,11 +1,12 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
+import { Icon, LoadingButton, InlineEditField, useToasts, Loading } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
 import { useMessages, useApi } from 'components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import reportStyles from './Report.module.css';
+import { REPORT_TYPES } from 'lib/constants';
 
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
@@ -49,18 +50,29 @@ export function ReportHeader({ icon }) {
 
   const Title = () => {
     return (
-      <>
-        <Icon size="lg">{icon}</Icon>
-        <InlineEditField
-          key={name}
-          name="name"
-          value={name}
-          placeholder={defaultName}
-          onCommit={handleNameChange}
-        />
-      </>
+      <div className={styles.header}>
+        <div className={styles.type}>
+          {formatMessage(
+            labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
+          )}
+        </div>
+        <div className={styles.title}>
+          <Icon size="lg">{icon}</Icon>
+          <InlineEditField
+            key={name}
+            name="name"
+            value={name}
+            placeholder={defaultName}
+            onCommit={handleNameChange}
+          />
+        </div>
+      </div>
     );
   };
+
+  if (!report) {
+    return <Loading />;
+  }
 
   return (
     <div className={reportStyles.header}>

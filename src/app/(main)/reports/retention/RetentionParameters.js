@@ -19,6 +19,7 @@ export function RetentionParameters() {
   const handleSubmit = (data, e) => {
     e.stopPropagation();
     e.preventDefault();
+
     if (!queryDisabled) {
       runReport(data);
     }

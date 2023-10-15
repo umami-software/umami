@@ -20,7 +20,7 @@ export function TeamMembers({ teamId, readOnly }) {
   return (
     <>
       <DataTable queryResult={queryResult}>
-        {({ data }) => <TeamMembersTable data={data} readOnly={readOnly} />}
+        {({ data }) => <TeamMembersTable data={data} teamId={teamId} readOnly={readOnly} />}
       </DataTable>
     </>
   );

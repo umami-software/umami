@@ -33,7 +33,7 @@ export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
 
   return (
     <>
-      {isLoading && !hasData && <Loading />}
+      {isLoading && !hasData && <Loading icon="dots" position="center" />}
       {!isLoading && !hasData && <Empty />}
       {hasData && (
         <Form onSubmit={handleSubmit} error={error}>

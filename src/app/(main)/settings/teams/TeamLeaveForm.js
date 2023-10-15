@@ -1,6 +1,7 @@
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import { setValue } from 'store/cache';
 
 export function TeamLeaveForm({ teamId, userId, teamName, onSave, onClose }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
@@ -12,6 +13,7 @@ export function TeamLeaveForm({ teamId, userId, teamName, onSave, onClose }) {
       {},
       {
         onSuccess: async () => {
+          setValue('team:members', Date.now());
           onSave();
           onClose();
         },

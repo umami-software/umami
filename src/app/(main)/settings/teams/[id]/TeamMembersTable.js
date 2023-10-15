@@ -1,4 +1,4 @@
-import { GridColumn, GridTable } from 'react-basics';
+import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
@@ -7,6 +7,7 @@ import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 export function TeamMembersTable({ data = [], teamId, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
+  const breakpoint = useBreakpoint();
 
   const roles = {
     [ROLES.teamOwner]: formatMessage(labels.teamOwner),
@@ -14,7 +15,7 @@ export function TeamMembersTable({ data = [], teamId, readOnly }) {
   };
 
   return (
-    <GridTable data={data}>
+    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="username" label={formatMessage(labels.username)} />
       <GridColumn name="role" label={formatMessage(labels.role)}>
         {row => roles[row?.teamUser?.[0]?.role]}

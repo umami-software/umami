@@ -23,7 +23,7 @@ export function ReportsTable({ data = [], showDomain }) {
       </GridColumn>
       {showDomain && (
         <GridColumn name="domain" label={formatMessage(labels.domain)}>
-          {row => row.website.domain}
+          {row => row?.website?.domain}
         </GridColumn>
       )}
       <GridColumn name="action" label="" alignment="end">

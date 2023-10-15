@@ -1,3 +1,20 @@
 .description {
   color: var(--font-color300);
 }
+
+.header {
+  display: grid;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.type {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--base600);
+  line-height: 30px;
+}

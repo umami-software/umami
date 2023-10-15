@@ -5,7 +5,7 @@ import useMessages from 'components/hooks/useMessages';
 export function WebsiteSelect({ websiteId, onSelect }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
-  const { data } = useQuery(['websites:me'], () => get('/me/websites'));
+  const { data } = useQuery(['websites:me'], () => get('/me/websites', { pageSize: 100 }));
 
   const renderValue = value => {
     return data?.data?.find(({ id }) => id === value)?.name;
