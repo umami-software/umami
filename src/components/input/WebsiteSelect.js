@@ -1,6 +1,7 @@
 import { Dropdown, Item } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({ websiteId, onSelect }) {
   const { formatMessage, labels } = useMessages();
@@ -13,6 +14,7 @@ export function WebsiteSelect({ websiteId, onSelect }) {
 
   return (
     <Dropdown
+      menuProps={{ className: styles.dropdown }}
       items={data?.data}
       value={websiteId}
       renderValue={renderValue}
