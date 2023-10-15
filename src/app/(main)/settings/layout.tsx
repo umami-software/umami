@@ -20,7 +20,7 @@ export default function SettingsLayout({ children }) {
 
   const getKey = () => items.find(({ url }) => pathname === url)?.key;
 
-  if (cloudMode) {
+  if (cloudMode && pathname != '/settings/profile') {
     return null;
   }
 
