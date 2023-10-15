@@ -16,6 +16,11 @@
   justify-content: center;
 }
 
+.count {
+  color: var(--base600);
+  font-weight: 700;
+}
+
 @media only screen and (max-width: 992px) {
   .pager {
     grid-template-columns: repeat(2, 1fr);

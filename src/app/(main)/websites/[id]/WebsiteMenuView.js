@@ -1,4 +1,4 @@
-import { Text } from 'react-basics';
+import { Icons, Icon, Text } from 'react-basics';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import RegionsTable from 'components/metrics/RegionsTable';
@@ -110,6 +110,9 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
     <div className={styles.layout}>
       <div className={styles.menu}>
         <LinkButton href={pathname} className={styles.back}>
+          <Icon rotate={180}>
+            <Icons.ArrowRight />
+          </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
         <SideNav items={items} selectedKey={view} shallow={true} />
@@ -122,6 +125,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
           animate={false}
           showFilters={true}
           virtualize={true}
+          itemCount={25}
         />
       </div>
     </div>

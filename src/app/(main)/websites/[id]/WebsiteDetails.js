@@ -9,7 +9,7 @@ import WebsiteChart from './WebsiteChart';
 import WebsiteMenuView from './WebsiteMenuView';
 import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
-import WebsiteTableView from '../WebsiteTableView';
+import WebsiteTableView from './WebsiteTableView';
 
 export default function WebsiteDetails({ websiteId }) {
   const { data: website, isLoading, error } = useWebsite(websiteId);

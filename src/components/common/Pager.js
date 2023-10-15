@@ -26,7 +26,7 @@ export function Pager({ page, pageSize, count, onPageChange, className }) {
 
   return (
     <div className={classNames(styles.pager, className)}>
-      <div>{formatMessage(labels.numberOfRecords, { x: count })}</div>
+      <div className={styles.count}>{formatMessage(labels.numberOfRecords, { x: count })}</div>
       <div className={styles.nav}>
         <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
           <Icon rotate={90}>

@@ -1,4 +1,3 @@
-import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from '@react-spring/web';
 import classNames from 'classnames';
@@ -6,6 +5,8 @@ import Empty from 'components/common/Empty';
 import { formatLongNumber } from 'lib/format';
 import useMessages from 'components/hooks/useMessages';
 import styles from './ListTable.module.css';
+
+const ITEM_SIZE = 30;
 
 export function ListTable({
   data = [],
@@ -16,9 +17,9 @@ export function ListTable({
   animate = true,
   virtualize = false,
   showPercentage = true,
+  itemCount = 10,
 }) {
   const { formatMessage, labels } = useMessages();
-  const [ref, bounds] = useMeasure();
 
   const getRow = row => {
     const { x: label, y: value, z: percent } = row;
@@ -45,10 +46,14 @@ export function ListTable({
         <div className={styles.title}>{title}</div>
         <div className={styles.metric}>{metric}</div>
       </div>
-      <div ref={ref} className={styles.body}>
+      <div className={styles.body}>
         {data?.length === 0 && <Empty />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList height={bounds.height} itemCount={data.length} itemSize={30}>
+          <FixedSizeList
+            height={itemCount * ITEM_SIZE}
+            itemCount={data.length}
+            itemSize={ITEM_SIZE}
+          >
             {Row}
           </FixedSizeList>
         ) : (
