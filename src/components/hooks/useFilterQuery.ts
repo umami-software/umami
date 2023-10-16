@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useApi } from 'components/hooks/useApi';
+import { UseQueryOptions } from '@tanstack/react-query';
 
-export function useFilterQuery(key: any[], fn, options?: any) {
+export function useFilterQuery(key: any[], fn, options?: UseQueryOptions) {
   const [params, setParams] = useState({
     query: '',
     page: 1,
