@@ -41,7 +41,13 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getWebsitesByTeamId(teamId, { ...req.query });
+    const { page, query, pageSize } = req.query;
+
+    const websites = await getWebsitesByTeamId(teamId, {
+      page,
+      query,
+      pageSize: +pageSize || undefined,
+    });
 
     return ok(res, websites);
   }

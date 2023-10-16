@@ -35,11 +35,12 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, query } = req.query;
+    const { page, query, pageSize } = req.query;
 
     const results = await getTeamsByUserId(userId, {
       page,
       query,
+      pageSize: +pageSize || undefined,
     });
 
     return ok(res, results);

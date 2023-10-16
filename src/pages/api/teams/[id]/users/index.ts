@@ -5,6 +5,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUsersByTeamId } from 'queries';
+import { pageInfo } from 'lib/schema';
 
 export interface TeamUserRequestQuery extends SearchFilter {
   id: string;
@@ -13,6 +14,7 @@ export interface TeamUserRequestQuery extends SearchFilter {
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
+    ...pageInfo,
   }),
 };
 
@@ -30,11 +32,12 @@ export default async (
       return unauthorized(res);
     }
 
-    const { query, page } = req.query;
+    const { query, page, pageSize } = req.query;
 
     const users = await getUsersByTeamId(teamId, {
       query,
       page,
+      pageSize: +pageSize || undefined,
     });
 
     return ok(res, users);

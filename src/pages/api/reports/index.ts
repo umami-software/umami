@@ -50,10 +50,11 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, query } = req.query;
+    const { page, query, pageSize } = req.query;
 
     const data = await getReportsByUserId(userId, {
       page,
+      pageSize: +pageSize || undefined,
       query,
       includeTeams: true,
     });

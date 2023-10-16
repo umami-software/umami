@@ -44,9 +44,9 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, query } = req.query;
+    const { page, query, pageSize } = req.query;
 
-    const users = await getUsers({ page, query });
+    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
 
     return ok(res, users);
   }
