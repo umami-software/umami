@@ -1,4 +1,4 @@
-import styles from './Report.module.css';
+import styles from './ReportBody.module.css';
 
 export function ReportBody({ children }) {
   return <div className={styles.body}>{children}</div>;

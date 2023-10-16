@@ -1,11 +1,9 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import { Icon, LoadingButton, InlineEditField, useToasts, Loading } from 'react-basics';
-import PageHeader from 'components/layout/PageHeader';
+import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
 import { useMessages, useApi } from 'components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
-import reportStyles from './Report.module.css';
 import { REPORT_TYPES } from 'lib/constants';
 
 export function ReportHeader({ icon }) {
@@ -48,9 +46,13 @@ export function ReportHeader({ icon }) {
     updateReport({ description });
   };
 
-  const Title = () => {
-    return (
-      <div className={styles.header}>
+  if (!report) {
+    return null;
+  }
+
+  return (
+    <div className={styles.header}>
+      <div>
         <div className={styles.type}>
           {formatMessage(
             labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
@@ -66,17 +68,17 @@ export function ReportHeader({ icon }) {
             onCommit={handleNameChange}
           />
         </div>
+        <div className={styles.description}>
+          <InlineEditField
+            key={description}
+            name="description"
+            value={description}
+            placeholder={`+ ${formatMessage(labels.addDescription)}`}
+            onCommit={handleDescriptionChange}
+          />
+        </div>
       </div>
-    );
-  };
-
-  if (!report) {
-    return <Loading />;
-  }
-
-  return (
-    <div className={reportStyles.header}>
-      <PageHeader title={<Title />}>
+      <div className={styles.actions}>
         <LoadingButton
           variant="primary"
           isLoading={isCreating || isUpdating}
@@ -85,15 +87,6 @@ export function ReportHeader({ icon }) {
         >
           {formatMessage(labels.save)}
         </LoadingButton>
-      </PageHeader>
-      <div className={styles.description}>
-        <InlineEditField
-          key={description}
-          name="description"
-          value={description}
-          placeholder={`+ ${formatMessage(labels.addDescription)}`}
-          onCommit={handleDescriptionChange}
-        />
       </div>
     </div>
   );

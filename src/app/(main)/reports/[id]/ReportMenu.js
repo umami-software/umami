@@ -1,4 +1,4 @@
-import styles from './Report.module.css';
+import styles from './ReportMenu.module.css';
 
 export function ReportMenu({ children }) {
   return <div className={styles.menu}>{children}</div>;
