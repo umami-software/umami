@@ -7,7 +7,7 @@ import FieldAggregateForm from './FieldAggregateForm';
 import FieldFilterForm from './FieldFilterForm';
 import styles from './FieldAddForm.module.css';
 
-export function FieldAddForm({ fields = [], group, element, onAdd, onClose }) {
+export function FieldAddForm({ fields = [], group, onAdd, onClose }) {
   const [selected, setSelected] = useState();
 
   const handleSelect = value => {
@@ -28,7 +28,7 @@ export function FieldAddForm({ fields = [], group, element, onAdd, onClose }) {
   };
 
   return createPortal(
-    <PopupForm className={styles.popup} element={element} onClose={onClose}>
+    <PopupForm className={styles.popup}>
       {!selected && <FieldSelectForm fields={fields} onSelect={handleSelect} />}
       {selected && group === REPORT_PARAMETERS.fields && (
         <FieldAggregateForm {...selected} onSelect={handleSave} />

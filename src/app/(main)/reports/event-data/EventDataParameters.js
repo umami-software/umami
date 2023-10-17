@@ -74,7 +74,7 @@ export function EventDataParameters() {
           <Icons.Plus />
         </Icon>
         <Popup position="bottom" alignment="start">
-          {(close, element) => {
+          {close => {
             return (
               <FieldAddForm
                 fields={data.map(({ eventKey, eventDataType }) => ({
@@ -82,7 +82,6 @@ export function EventDataParameters() {
                   type: DATA_TYPES[eventDataType],
                 }))}
                 group={group}
-                element={element}
                 onAdd={handleAdd}
                 onClose={close}
               />

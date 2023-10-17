@@ -52,14 +52,10 @@ export function FunnelParameters() {
         <Icon>
           <Icons.Plus />
         </Icon>
-        <Popup position="bottom" alignment="start">
-          {(close, element) => {
-            return (
-              <PopupForm element={element} onClose={close}>
-                <UrlAddForm onAdd={handleAddUrl} />
-              </PopupForm>
-            );
-          }}
+        <Popup position="right" alignment="start">
+          <PopupForm>
+            <UrlAddForm onAdd={handleAddUrl} />
+          </PopupForm>
         </Popup>
       </PopupTrigger>
     );

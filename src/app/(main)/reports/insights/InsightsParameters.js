@@ -81,26 +81,22 @@ export function InsightsParameters() {
           </Icon>
         </TooltipPopup>
         <Popup position="bottom" alignment="start" className={styles.popup}>
-          {close => {
-            return (
-              <PopupForm onClose={close}>
-                {id === 'fields' && (
-                  <FieldSelectForm
-                    items={fieldOptions}
-                    onSelect={handleAdd.bind(null, id)}
-                    showType={false}
-                  />
-                )}
-                {id === 'filters' && (
-                  <FilterSelectForm
-                    websiteId={websiteId}
-                    items={fieldOptions}
-                    onSelect={handleAdd.bind(null, id)}
-                  />
-                )}
-              </PopupForm>
-            );
-          }}
+          <PopupForm>
+            {id === 'fields' && (
+              <FieldSelectForm
+                items={fieldOptions}
+                onSelect={handleAdd.bind(null, id)}
+                showType={false}
+              />
+            )}
+            {id === 'filters' && (
+              <FilterSelectForm
+                websiteId={websiteId}
+                items={fieldOptions}
+                onSelect={handleAdd.bind(null, id)}
+              />
+            )}
+          </PopupForm>
         </Popup>
       </PopupTrigger>
     );

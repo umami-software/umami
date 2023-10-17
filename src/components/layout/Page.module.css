@@ -5,7 +5,6 @@
   position: relative;
   width: 100%;
   max-width: 1320px;
-  min-height: calc(100vh - 60px);
   margin: 0 auto;
   padding: 0 20px;
 }
