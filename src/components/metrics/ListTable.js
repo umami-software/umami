@@ -47,7 +47,7 @@ export function ListTable({
         <div className={styles.metric}>{metric}</div>
       </div>
       <div className={styles.body}>
-        {data?.length === 0 && <Empty />}
+        {data?.length === 0 && <Empty className={styles.empty} />}
         {virtualize && data.length > 0 ? (
           <FixedSizeList
             height={itemCount * ITEM_SIZE}

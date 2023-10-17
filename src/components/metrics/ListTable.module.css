@@ -91,6 +91,10 @@
   z-index: -1;
 }
 
+.empty {
+  min-height: 200px;
+}
+
 @media only screen and (max-width: 992px) {
   .body {
     height: auto;

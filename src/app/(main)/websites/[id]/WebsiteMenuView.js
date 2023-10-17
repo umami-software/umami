@@ -1,4 +1,4 @@
-import { Icons, Icon, Text } from 'react-basics';
+import { Icons, Icon, Text, Dropdown, Item } from 'react-basics';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';
 import RegionsTable from 'components/metrics/RegionsTable';
@@ -14,8 +14,8 @@ import EventsTable from 'components/metrics/EventsTable';
 import SideNav from 'components/layout/SideNav';
 import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
-import styles from './WebsiteMenuView.module.css';
 import LinkButton from 'components/common/LinkButton';
+import styles from './WebsiteMenuView.module.css';
 
 const views = {
   url: PagesTable,
@@ -36,6 +36,7 @@ const views = {
 export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   const { formatMessage, labels } = useMessages();
   const {
+    router,
     makeUrl,
     pathname,
     query: { view },
@@ -106,6 +107,12 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
 
   const DetailsComponent = views[view] || (() => null);
 
+  const handleChange = view => {
+    router.push(makeUrl({ view }));
+  };
+
+  const renderValue = value => items.find(({ key }) => key === value)?.label;
+
   return (
     <div className={styles.layout}>
       <div className={styles.menu}>
@@ -115,7 +122,17 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <SideNav items={items} selectedKey={view} shallow={true} />
+        <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
+        <Dropdown
+          className={styles.dropdown}
+          items={items}
+          value={view}
+          renderValue={renderValue}
+          onChange={handleChange}
+          alignment="end"
+        >
+          {({ key, label }) => <Item key={key}>{label}</Item>}
+        </Dropdown>
       </div>
       <div className={styles.content}>
         <DetailsComponent

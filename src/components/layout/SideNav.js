@@ -9,11 +9,17 @@ export function SideNav({
   items,
   shallow = true,
   scroll = false,
+  className,
   onSelect = () => {},
 }) {
   const pathname = usePathname();
   return (
-    <Menu items={items} selectedKey={selectedKey} className={styles.menu} onSelect={onSelect}>
+    <Menu
+      items={items}
+      selectedKey={selectedKey}
+      className={classNames(styles.menu, className)}
+      onSelect={onSelect}
+    >
       {({ key, label, url }) => (
         <Item
           key={key}
