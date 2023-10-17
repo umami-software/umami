@@ -3,22 +3,17 @@ import { useApi, useDateRange, useMessages, useNavigation, useSticky } from 'com
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import FilterSelectForm from 'app/(main)/reports/[id]/FilterSelectForm';
-import PopupForm from 'app/(main)/reports/[id]/PopupForm';
 import { formatShortTime } from 'lib/format';
-import { Button, Icon, Icons, Popup, PopupTrigger } from 'react-basics';
+import WebsiteFilterButton from './WebsiteFilterButton';
 import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
   const { formatMessage, labels } = useMessages();
-
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const {
-    makeUrl,
-    router,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = useNavigation();
 
@@ -43,17 +38,6 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
       }),
   );
 
-  const fieldOptions = [
-    { name: 'url', type: 'string', label: formatMessage(labels.url) },
-    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-  ];
-
   const { pageviews, uniques, bounces, totaltime } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);
   const diffs = data && {
@@ -61,40 +45,6 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
     uniques: uniques.value - uniques.change,
     bounces: bounces.value - bounces.change,
     totaltime: totaltime.value - totaltime.change,
-  };
-
-  const handleAddFilter = ({ name, value }) => {
-    router.push(makeUrl({ [name]: value }));
-  };
-
-  const WebsiteFilterButton = () => {
-    return (
-      <PopupTrigger>
-        <Button>
-          <Icon>
-            <Icons.Plus />
-          </Icon>
-          {formatMessage(labels.filter)}
-        </Button>
-        <Popup position="bottom" alignment="start" className={styles.popup}>
-          {close => {
-            return (
-              <PopupForm onClose={close}>
-                <FilterSelectForm
-                  websiteId={websiteId}
-                  items={fieldOptions}
-                  onSelect={value => {
-                    handleAddFilter(value);
-                    close();
-                  }}
-                  allowFilterSelect={false}
-                />
-              </PopupForm>
-            );
-          }}
-        </Popup>
-      </PopupTrigger>
-    );
   };
 
   return (
@@ -152,7 +102,7 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
         )}
       </MetricsBar>
       <div className={styles.actions}>
-        {showFilter && <WebsiteFilterButton />}
+        {showFilter && <WebsiteFilterButton websiteId={websiteId} className={styles.button} />}
         <WebsiteDateFilter websiteId={websiteId} />
       </div>
     </div>

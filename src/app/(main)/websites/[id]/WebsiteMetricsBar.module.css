@@ -17,7 +17,7 @@
   gap: 10px;
 }
 
-@media only screen and (max-width: 1200px) {
+@media screen and (max-width: 1200px) {
   .container {
     grid-template-columns: 1fr;
   }
@@ -27,7 +27,7 @@
   }
 }
 
-@media only screen and (min-width: 992px) {
+@media screen and (min-width: 992px) {
   .sticky {
     position: sticky;
     top: -1px;
@@ -36,5 +36,11 @@
   .isSticky {
     padding: 10px 0;
     border-bottom: 1px solid var(--base300);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .button {
+    display: none;
   }
 }
