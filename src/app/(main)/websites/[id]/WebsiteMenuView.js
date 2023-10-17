@@ -116,7 +116,7 @@ export default function WebsiteMenuView({ websiteId, websiteDomain }) {
   return (
     <div className={styles.layout}>
       <div className={styles.menu}>
-        <LinkButton href={pathname} className={styles.back} variant="quiet">
+        <LinkButton href={pathname} className={styles.back} variant="quiet" scroll={false}>
           <Icon rotate={180}>
             <Icons.ArrowRight />
           </Icon>
