@@ -5,7 +5,7 @@ import useMessages from 'components/hooks/useMessages';
 export function LogoutButton({ tooltipPosition = 'top' }) {
   const { formatMessage, labels } = useMessages();
   return (
-    <Link href="/src/pages/logout">
+    <Link href="/src/app/logout/logout">
       <TooltipPopup label={formatMessage(labels.logout)} position={tooltipPosition}>
         <Button variant="quiet">
           <Icon>

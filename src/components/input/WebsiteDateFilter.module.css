@@ -1,5 +1,15 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .dropdown {
   min-width: 200px;
+}
+
+.buttons {
+  display: flex;
 }
 
 .buttons button:first-child {

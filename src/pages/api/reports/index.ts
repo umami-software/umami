@@ -1,13 +1,13 @@
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, ReportSearchFilterType, SearchFilter } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createReport, getReportsByUserId } from 'queries';
 import * as yup from 'yup';
 
-export interface ReportsRequestQuery extends SearchFilter<ReportSearchFilterType> {}
+export interface ReportsRequestQuery extends SearchFilter {}
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -21,7 +21,7 @@ export interface ReportRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Description|Type|Username|Website Name|Website Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     websiteId: yup.string().uuid().required(),
@@ -43,21 +43,19 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     user: { id: userId },
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, filter, pageSize } = req.query;
+    const { page, query, pageSize } = req.query;
 
     const data = await getReportsByUserId(userId, {
       page,
-      filter,
       pageSize: +pageSize || undefined,
+      query,
       includeTeams: true,
     });
 

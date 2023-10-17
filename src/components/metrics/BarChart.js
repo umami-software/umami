@@ -145,7 +145,7 @@ export function BarChart({
   }, [datasets, unit, theme, animationDuration, locale]);
 
   return (
-    <>
+    <div className={styles.container}>
       <div className={classNames(styles.chart, className)}>
         {loading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
@@ -156,7 +156,7 @@ export function BarChart({
           <div className={styles.tooltip}>{tooltip}</div>
         </HoverTooltip>
       )}
-    </>
+    </div>
   );
 }
 

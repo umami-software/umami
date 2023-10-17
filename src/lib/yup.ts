@@ -1,19 +1,18 @@
+import moment from 'moment';
 import * as yup from 'yup';
+import { UNIT_TYPES } from './constants';
 
-export function getDateRangeValidation() {
-  return {
-    startAt: yup.number().integer().required(),
-    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
-  };
-}
+export const TimezoneTest = yup
+  .string()
+  .default('UTC')
+  .test(
+    'timezone',
+    () => `Invalid timezone`,
+    value => moment.tz.zone(value) !== null,
+  );
 
-// ex: /funnel|insights|retention/i
-export function getFilterValidation(matchRegex) {
-  return {
-    filter: yup.string(),
-    filterType: yup.string().matches(matchRegex),
-    pageSize: yup.number().integer().positive().max(200),
-    page: yup.number().integer().positive(),
-    orderBy: yup.string(),
-  };
-}
+export const UnitTypeTest = yup.string().test(
+  'unit',
+  () => `Invalid unit`,
+  value => UNIT_TYPES.includes(value),
+);

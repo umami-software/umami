@@ -1,19 +1,19 @@
 import { useMemo } from 'react';
-import { Loading, Icon, Text, Button } from 'react-basics';
-import Link from 'next/link';
+import { Loading, Icon, Text } from 'react-basics';
 import firstBy from 'thenby';
 import classNames from 'classnames';
 import useApi from 'components/hooks/useApi';
 import { percentFilter } from 'lib/filters';
 import useDateRange from 'components/hooks/useDateRange';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import ErrorMessage from 'components/common/ErrorMessage';
+import LinkButton from 'components/common/LinkButton';
 import ListTable from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
-import styles from './MetricsTable.module.css';
 import useLocale from 'components/hooks/useLocale';
+import styles from './MetricsTable.module.css';
 
 export function MetricsTable({
   websiteId,
@@ -28,10 +28,9 @@ export function MetricsTable({
 }) {
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
-    resolveUrl,
-    router,
+    makeUrl,
     query: { url, referrer, title, os, browser, device, country, region, city },
-  } = usePageQuery();
+  } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { dir } = useLocale();
@@ -104,14 +103,12 @@ export function MetricsTable({
       {data && !error && <ListTable {...props} data={filteredData} className={className} />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <Link href={router.pathname} as={resolveUrl({ view: type })}>
-            <Button variant="quiet">
-              <Text>{formatMessage(labels.more)}</Text>
-              <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
-                <Icons.ArrowRight />
-              </Icon>
-            </Button>
-          </Link>
+          <LinkButton href={makeUrl({ view: type })} variant="quiet">
+            <Text>{formatMessage(labels.more)}</Text>
+            <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
+              <Icons.ArrowRight />
+            </Icon>
+          </LinkButton>
         )}
       </div>
     </div>

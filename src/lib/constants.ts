@@ -19,6 +19,7 @@ export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
+export const DEFAULT_PAGE_SIZE = 10;
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -29,23 +30,7 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-
-export const USER_FILTER_TYPES = {
-  all: 'All',
-  username: 'Username',
-} as const;
-export const WEBSITE_FILTER_TYPES = { all: 'All', name: 'Name', domain: 'Domain' } as const;
-export const TEAM_FILTER_TYPES = { all: 'All', name: 'Name', 'user:username': 'Owner' } as const;
-export const REPORT_FILTER_TYPES = {
-  all: 'All',
-  name: 'Name',
-  description: 'Description',
-  type: 'Type',
-  'user:username': 'Username',
-  'website:name': 'Website Name',
-  'website:domain': 'Website Domain',
-} as const;
-
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
 export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
 
 export const SESSION_COLUMNS = [
@@ -213,7 +198,7 @@ export const EVENT_COLORS = [
 
 export const DOMAIN_REGEX =
   /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
-export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{16}$/;
+export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,16}$/;
 export const UUID_REGEX =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 export const HOSTNAME_REGEX =

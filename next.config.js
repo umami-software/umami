@@ -6,7 +6,7 @@ const pkg = require('./package.json');
 const contentSecurityPolicy = `
   default-src 'self';
   img-src *;
-  script-src 'self' 'unsafe-eval';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline';
   style-src 'self' 'unsafe-inline';
   connect-src 'self' api.umami.is;
   frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS};
@@ -74,16 +74,23 @@ if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN
   });
 }
 
+const basePath = process.env.BASE_PATH;
+
+/** @type {import('next').NextConfig} */
 const config = {
+  reactStrictMode: false,
   env: {
-    cloudMode: process.env.CLOUD_MODE,
+    basePath: basePath || '',
+    cloudMode: !!process.env.CLOUD_MODE,
     cloudUrl: process.env.CLOUD_URL,
     configUrl: '/config',
     currentVersion: pkg.version,
     defaultLocale: process.env.DEFAULT_LOCALE,
+    disableLogin: process.env.DISABLE_LOGIN,
+    disableUI: process.env.DISABLE_UI,
     isProduction: process.env.NODE_ENV === 'production',
   },
-  basePath: process.env.BASE_PATH,
+  basePath,
   output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
@@ -92,11 +99,23 @@ const config = {
     ignoreBuildErrors: true,
   },
   webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: /\.{js|jsx|ts|tsx}$/,
-      use: ['@svgr/webpack'],
-    });
+    const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.('.svg'));
+
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
+        use: ['@svgr/webpack'],
+      },
+    );
+
+    fileLoaderRule.exclude = /\.svg$/i;
 
     config.resolve.alias['public'] = path.resolve('./public');
 

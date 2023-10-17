@@ -1,13 +1,14 @@
+import * as yup from 'yup';
 import { canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByTeamId } from 'queries';
 import { createTeamWebsites } from 'queries/admin/teamWebsite';
 
-export interface TeamWebsiteRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface TeamWebsiteRequestQuery extends SearchFilter {
   id: string;
 }
 
@@ -15,12 +16,10 @@ export interface TeamWebsiteRequestBody {
   websiteIds?: string[];
 }
 
-import * as yup from 'yup';
-
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),
@@ -33,9 +32,7 @@ export default async (
   res: NextApiResponse,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: teamId } = req.query;
 
@@ -44,11 +41,11 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { page, query, pageSize } = req.query;
 
     const websites = await getWebsitesByTeamId(teamId, {
       page,
-      filter,
+      query,
       pageSize: +pageSize || undefined,
     });
 

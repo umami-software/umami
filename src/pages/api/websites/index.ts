@@ -1,15 +1,15 @@
 import { canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
 import userWebsites from 'pages/api/users/[id]/websites';
 import * as yup from 'yup';
-import { getFilterValidation } from 'lib/yup';
+import { pageInfo } from 'lib/schema';
 
-export interface WebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {}
+export interface WebsitesRequestQuery extends SearchFilter {}
 
 export interface WebsitesRequestBody {
   name: string;
@@ -19,12 +19,12 @@ export interface WebsitesRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     name: yup.string().max(100).required(),
     domain: yup.string().max(500).required(),
-    shareId: yup.string().max(50),
+    shareId: yup.string().max(50).nullable(),
   }),
 };
 
@@ -34,8 +34,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     user: { id: userId },
