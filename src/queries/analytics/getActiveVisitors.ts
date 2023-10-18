@@ -24,10 +24,10 @@ async function relationalQuery(websiteId: string) {
   );
 }
 
-async function clickhouseQuery(websiteId: string): Promise<{ x: number }[]> {
+async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
   const { rawQuery } = clickhouse;
 
-  return rawQuery(
+  const result = rawQuery(
     `
     select
       count(distinct session_id) x
@@ -41,4 +41,6 @@ async function clickhouseQuery(websiteId: string): Promise<{ x: number }[]> {
       return { x: Number(a.x) };
     });
   });
+
+  return result[0] ?? null;
 }
