@@ -30,15 +30,7 @@ export default async (
   await useValidate(schema, req, res);
 
   const { user } = req.auth;
-  const {
-    id: userId,
-    page = 1,
-    pageSize,
-    orderBy,
-    query = '',
-    includeTeams,
-    onlyTeams,
-  } = req.query;
+  const { id: userId, page = 1, pageSize, query = '', ...rest } = req.query;
 
   if (req.method === 'GET') {
     if (!user.isAdmin && user.id !== userId) {
@@ -49,9 +41,7 @@ export default async (
       page,
       pageSize: +pageSize || undefined,
       query,
-      orderBy,
-      includeTeams,
-      onlyTeams,
+      ...rest,
     });
 
     return ok(res, websites);
