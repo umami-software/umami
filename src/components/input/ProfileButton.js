@@ -1,5 +1,5 @@
 import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';

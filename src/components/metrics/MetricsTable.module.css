@@ -1,7 +1,6 @@
 .container {
   position: relative;
   min-height: 430px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;

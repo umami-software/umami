@@ -19,6 +19,7 @@ const customResolver = resolve({
 
 const aliasConfig = {
   entries: [
+    { find: /^app/, replacement: path.resolve('./src/app') },
     { find: /^components/, replacement: path.resolve('./src/components') },
     { find: /^hooks/, replacement: path.resolve('./src/hooks') },
     { find: /^lib/, replacement: path.resolve('./src/lib') },

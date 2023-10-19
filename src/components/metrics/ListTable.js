@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import useMeasure from 'react-use-measure';
 import { FixedSizeList } from 'react-window';
-import { useSpring, animated, config } from 'react-spring';
+import { useSpring, animated, config } from '@react-spring/web';
 import classNames from 'classnames';
 import Empty from 'components/common/Empty';
-import { formatNumber, formatLongNumber } from 'lib/format';
+import { formatLongNumber } from 'lib/format';
 import useMessages from 'components/hooks/useMessages';
-import styles from './DataTable.module.css';
+import styles from './ListTable.module.css';
+
+const ITEM_SIZE = 30;
 
 export function ListTable({
   data = [],
@@ -17,13 +17,9 @@ export function ListTable({
   animate = true,
   virtualize = false,
   showPercentage = true,
+  itemCount = 10,
 }) {
   const { formatMessage, labels } = useMessages();
-  const [ref, bounds] = useMeasure();
-  const [format, setFormat] = useState(true);
-  const formatFunc = format ? formatLongNumber : formatNumber;
-
-  const handleSetFormat = () => setFormat(state => !state);
 
   const getRow = row => {
     const { x: label, y: value, z: percent } = row;
@@ -35,8 +31,6 @@ export function ListTable({
         value={value}
         percent={percent}
         animate={animate && !virtualize}
-        format={formatFunc}
-        onClick={handleSetFormat}
         showPercentage={showPercentage}
       />
     );
@@ -50,14 +44,16 @@ export function ListTable({
     <div className={classNames(styles.table, className)}>
       <div className={styles.header}>
         <div className={styles.title}>{title}</div>
-        <div className={styles.metric} onClick={handleSetFormat}>
-          {metric}
-        </div>
+        <div className={styles.metric}>{metric}</div>
       </div>
-      <div ref={ref} className={styles.body}>
-        {data?.length === 0 && <Empty />}
+      <div className={styles.body}>
+        {data?.length === 0 && <Empty className={styles.empty} />}
         {virtualize && data.length > 0 ? (
-          <FixedSizeList height={bounds.height} itemCount={data.length} itemSize={30}>
+          <FixedSizeList
+            height={itemCount * ITEM_SIZE}
+            itemCount={data.length}
+            itemSize={ITEM_SIZE}
+          >
             {Row}
           </FixedSizeList>
         ) : (
@@ -68,15 +64,7 @@ export function ListTable({
   );
 }
 
-const AnimatedRow = ({
-  label,
-  value = 0,
-  percent,
-  animate,
-  format,
-  onClick,
-  showPercentage = true,
-}) => {
+const AnimatedRow = ({ label, value = 0, percent, animate, showPercentage = true }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -87,8 +75,10 @@ const AnimatedRow = ({
   return (
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
-      <div className={styles.value} onClick={onClick}>
-        <animated.div className={styles.value}>{props.y?.to(format)}</animated.div>
+      <div className={styles.value}>
+        <animated.div className={styles.value} title={props?.y}>
+          {props.y?.to(formatLongNumber)}
+        </animated.div>
       </div>
       {showPercentage && (
         <div className={styles.percent}>

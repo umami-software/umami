@@ -2,13 +2,14 @@ import { canCreateUser, canViewUsers } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, Role, SearchFilter, User, UserSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUserByUsername, getUsers } from 'queries';
+import * as yup from 'yup';
 
-export interface UsersRequestQuery extends SearchFilter<UserSearchFilterType> {}
+export interface UsersRequestQuery extends SearchFilter {}
 export interface UsersRequestBody {
   username: string;
   password: string;
@@ -16,10 +17,9 @@ export interface UsersRequestBody {
   role: Role;
 }
 
-import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
-    ...getFilterValidation(/All|Username/i),
+    ...pageInfo,
   }),
   POST: yup.object().shape({
     username: yup.string().max(255).required(),
@@ -37,18 +37,16 @@ export default async (
   res: NextApiResponse<User[] | User>,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
     if (!(await canViewUsers(req.auth))) {
       return unauthorized(res);
     }
 
-    const { page, filter, pageSize } = req.query;
+    const { page, query, pageSize } = req.query;
 
-    const users = await getUsers({ page, filter, pageSize: pageSize ? +pageSize : null });
+    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
 
     return ok(res, users);
   }

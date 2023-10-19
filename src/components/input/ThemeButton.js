@@ -1,4 +1,4 @@
-import { useTransition, animated } from 'react-spring';
+import { useTransition, animated } from '@react-spring/web';
 import { Button, Icon } from 'react-basics';
 import useTheme from 'components/hooks/useTheme';
 import Icons from 'components/icons';

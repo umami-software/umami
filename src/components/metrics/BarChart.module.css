@@ -1,3 +1,7 @@
+.container {
+  display: grid;
+}
+
 .chart {
   position: relative;
   height: 400px;

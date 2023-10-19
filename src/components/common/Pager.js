@@ -1,14 +1,15 @@
-import styles from './Pager.module.css';
-import { Button, Flexbox, Icon, Icons } from 'react-basics';
+import classNames from 'classnames';
+import { Button, Icon, Icons } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
+import styles from './Pager.module.css';
 
-export function Pager({ page, pageSize, count, onPageChange }) {
+export function Pager({ page, pageSize, count, onPageChange, className }) {
   const { formatMessage, labels } = useMessages();
-  const maxPage = Math.ceil(count / pageSize);
+  const maxPage = pageSize && count ? Math.ceil(count / pageSize) : 0;
   const lastPage = page === maxPage;
   const firstPage = page === 1;
 
-  if (count === 0) {
+  if (count === 0 || !maxPage) {
     return null;
   }
 
@@ -24,21 +25,25 @@ export function Pager({ page, pageSize, count, onPageChange }) {
   }
 
   return (
-    <Flexbox justifyContent="center" className={styles.container}>
-      <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
-        <Icon rotate={90}>
-          <Icons.ChevronDown />
-        </Icon>
-      </Button>
-      <Flexbox alignItems="center" className={styles.text}>
-        {formatMessage(labels.pageOf, { current: page, total: maxPage })}
-      </Flexbox>
-      <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
-        <Icon rotate={270}>
-          <Icons.ChevronDown />
-        </Icon>
-      </Button>
-    </Flexbox>
+    <div className={classNames(styles.pager, className)}>
+      <div className={styles.count}>{formatMessage(labels.numberOfRecords, { x: count })}</div>
+      <div className={styles.nav}>
+        <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
+          <Icon rotate={90}>
+            <Icons.ChevronDown />
+          </Icon>
+        </Button>
+        <div className={styles.text}>
+          {formatMessage(labels.pageOf, { current: page, total: maxPage })}
+        </div>
+        <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
+          <Icon rotate={270}>
+            <Icons.ChevronDown />
+          </Icon>
+        </Button>
+      </div>
+      <div></div>
+    </div>
   );
 }
 

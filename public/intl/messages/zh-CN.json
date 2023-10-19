@@ -182,7 +182,7 @@
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "创建"
     }
   ],
   "label.create-report": [
@@ -380,19 +380,19 @@
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "字段"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "字段"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "筛选器"
     }
   ],
   "label.filter-combined": [
@@ -422,19 +422,19 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "了解用户的转换率和退出率。"
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "大于"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "大于或等于"
     }
   ],
   "label.insights": [
@@ -446,7 +446,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "通过使用筛选器和划分时间段来更深入地研究数据。"
     }
   ],
   "label.is": [
@@ -804,7 +804,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "通过跟踪用户返回的频率来衡量网站的用户粘性。"
     }
   ],
   "label.role": [
@@ -834,7 +834,7 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "搜索"
     }
   ],
   "label.select-date": [

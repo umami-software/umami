@@ -42,7 +42,7 @@ async function clickhouseQuery(websiteId: string, startDate: Date) {
       city
     from website_event
     where website_id = {websiteId:UUID}
-    and created_at >= {startDate:DateTime}
+    and created_at >= {startDate:DateTime64}
     `,
     {
       websiteId,

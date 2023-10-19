@@ -40,7 +40,7 @@ async function clickhouseQuery(websiteId: string) {
       max(created_at) as maxdate
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startDate:DateTime}
+      and created_at >= {startDate:DateTime64}
     `,
     params,
   );

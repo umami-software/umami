@@ -182,7 +182,7 @@
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "建立"
     }
   ],
   "label.create-report": [
@@ -392,7 +392,7 @@
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "篩選器"
     }
   ],
   "label.filter-combined": [
@@ -422,7 +422,7 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "瞭解使用者的轉換率和退出率"
     }
   ],
   "label.greater-than": [
@@ -446,7 +446,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "透過使用區段和篩選器來深入探索你的數據"
     }
   ],
   "label.is": [
@@ -800,7 +800,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "透過追蹤使用者回訪的頻率來衡量您的網站黏著度。"
     }
   ],
   "label.role": [

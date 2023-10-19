@@ -11,23 +11,36 @@ export interface WebsiteStatsRequestQuery {
   id: string;
   startAt: number;
   endAt: number;
-  url: string;
-  referrer: string;
-  title: string;
-  query: string;
-  event: string;
-  os: string;
-  browser: string;
-  device: string;
-  country: string;
-  region: string;
-  city: string;
+  url?: string;
+  referrer?: string;
+  title?: string;
+  query?: string;
+  event?: string;
+  os?: string;
+  browser?: string;
+  device?: string;
+  country?: string;
+  region?: string;
+  city?: string;
 }
 
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
+    startAt: yup.number().required(),
+    endAt: yup.number().required(),
+    url: yup.string(),
+    referrer: yup.string(),
+    title: yup.string(),
+    query: yup.string(),
+    event: yup.string(),
+    os: yup.string(),
+    browser: yup.string(),
+    device: yup.string(),
+    country: yup.string(),
+    region: yup.string(),
+    city: yup.string(),
   }),
 };
 
@@ -37,9 +50,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     id: websiteId,
