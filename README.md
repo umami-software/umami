@@ -72,13 +72,13 @@ docker compose up -d
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 
 ```bash
-docker pull docker.umami.dev/umami-software/umami:postgresql-latest
+docker pull ghcr.io/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 
 ```bash
-docker pull docker.umami.dev/umami-software/umami:mysql-latest
+docker pull ghcr.io/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates
