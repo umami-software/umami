@@ -2593,10 +2593,10 @@
     chalk "^4.1.2"
     debug "^4.3.4"
 
-"@umami/redis-client@^0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.15.0.tgz#55e9c4ede28fdd3b6a169378d391a5d2cc039e51"
-  integrity sha512-+Ei6i4qx9Md4o92Mlzvh9rTgkfllgmSwFu1687DEqFnNrHd+KNVxgNNDiyyCwzfC0t/DAaq7PoOFw4NjJYo9wQ==
+"@umami/redis-client@^0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.16.0.tgz#0050d1f93338d88691c983f3c0cd4a62da20212b"
+  integrity sha512-fE08lkMvhXbkXSdSRpG0R/9a3xIiTvwD6f+hKERFZrpfvJJlH3Uf4Jod8Ahg/+TmD03ihSQPooUT3T9Ig3dfaQ==
   dependencies:
     debug "^4.3.4"
     redis "^4.5.1"
