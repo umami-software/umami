@@ -36,6 +36,7 @@
     "metrics.referrers",
     "message.powered-by"
   ],
+  "mn-MN": ["label.max", "label.min", "label.os", "label.query", "label.url", "label.urls"],
   "nb-NO": ["label.administrator", "label.dashboard"],
   "nl-NL": [
     "label.analytics",
