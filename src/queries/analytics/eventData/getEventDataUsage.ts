@@ -8,7 +8,11 @@ export function getEventDataUsage(...args: [websiteIds: string[], startDate: Dat
   });
 }
 
-function clickhouseQuery(websiteIds: string[], startDate: Date, endDate: Date) {
+function clickhouseQuery(
+  websiteIds: string[],
+  startDate: Date,
+  endDate: Date,
+): Promise<{ websiteId: string; count: number }[]> {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
@@ -26,5 +30,9 @@ function clickhouseQuery(websiteIds: string[], startDate: Date, endDate: Date) {
       startDate,
       endDate,
     },
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return { websiteId: a.websiteId, count: Number(a.count) };
+    });
+  });
 }
