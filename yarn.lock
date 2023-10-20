@@ -6294,10 +6294,10 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
-next-basics@^0.36.0:
-  version "0.36.0"
-  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.36.0.tgz#b1675c3f2b98df2fec8df605095dab7d17f9dc7b"
-  integrity sha512-Nwou8pCjFuoD/ZxUw9iKC7hhZeWbo/ng0ze74yck3W89MNc/CepwCDziflAHY5XcmIVNmpXOCu9OfmzTdVRPWQ==
+next-basics@^0.37.0:
+  version "0.37.0"
+  resolved "https://registry.yarnpkg.com/next-basics/-/next-basics-0.37.0.tgz#4de96040ab38bf3fdfb6fc1aa09cba7719a81d5c"
+  integrity sha512-HnEFc7MFa/dXL0u4oPYqZ9myFBQTxNmCxh4P8qghZ0pKtSFd5FQ7+CqVmakVV+CfrGAORi4k2lW3EpWU8/YwgQ==
   dependencies:
     bcryptjs "^2.4.3"
     jsonwebtoken "^9.0.0"
