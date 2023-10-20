@@ -66,8 +66,8 @@ export default async (
 
     const usage = websiteUsage.reduce(
       (acc, cv) => {
-        acc.websiteEventUsage += Number(cv.websiteEventUsage);
-        acc.eventDataUsage += Number(cv.eventDataUsage);
+        acc.websiteEventUsage += cv.websiteEventUsage;
+        acc.eventDataUsage += cv.eventDataUsage;
 
         return acc;
       },
