@@ -45,6 +45,8 @@ import {
 } from 'date-fns/locale';
 
 export const languages = {
+  'en-GB': { label: 'English (UK)', dateLocale: enGB },
+  'en-US': { label: 'English (US)', dateLocale: enUS },
   'ar-SA': { label: 'العربية', dateLocale: arSA, dir: 'rtl' },
   'be-BY': { label: 'Беларуская', dateLocale: be },
   'bn-BD': { label: 'বাংলা', dateLocale: bn },
@@ -54,8 +56,6 @@ export const languages = {
   'de-CH': { label: 'Schwiizerdütsch', dateLocale: de },
   'de-DE': { label: 'Deutsch', dateLocale: de },
   'el-GR': { label: 'Ελληνικά', dateLocale: el },
-  'en-GB': { label: 'English (UK)', dateLocale: enGB },
-  'en-US': { label: 'English (US)', dateLocale: enUS },
   'es-MX': { label: 'Español', dateLocale: es },
   'fa-IR': { label: 'فارسی', dateLocale: faIR, dir: 'rtl' },
   'fi-FI': { label: 'Suomi', dateLocale: fi },
