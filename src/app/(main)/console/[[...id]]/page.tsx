@@ -5,14 +5,14 @@ async function getEnabled() {
   return !!process.env.ENABLE_TEST_CONSOLE;
 }
 
-export default async function ConsolePage() {
+export default async function ({ params: { id } }) {
   const enabled = await getEnabled();
 
   if (!enabled) {
     return null;
   }
 
-  return <TestConsole />;
+  return <TestConsole websiteId={id?.[0]} />;
 }
 
 export const metadata: Metadata = {

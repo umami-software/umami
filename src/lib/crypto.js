@@ -15,7 +15,7 @@ export function salt() {
 export function uuid(...args) {
   if (!args.length) return v4();
 
-  return v5(hash(...args), v5.DNS);
+  return v5(hash(...args, salt()), v5.DNS);
 }
 
 export function isUuid(value) {

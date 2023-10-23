@@ -3,57 +3,57 @@ import redis from '@umami/redis-client';
 import { getSession, getUserById, getWebsiteById } from '../queries';
 
 async function fetchWebsite(id): Promise<Website> {
-  return redis.fetchObject(`website:${id}`, () => getWebsiteById(id), 86400);
+  return redis.getCache(`website:${id}`, () => getWebsiteById(id), 86400);
 }
 
 async function storeWebsite(data) {
   const { id } = data;
   const key = `website:${id}`;
 
-  const obj = await redis.storeObject(key, data);
+  const obj = await redis.setCache(key, data);
   await redis.expire(key, 86400);
 
   return obj;
 }
 
 async function deleteWebsite(id) {
-  return redis.deleteObject(`website:${id}`);
+  return redis.deleteCache(`website:${id}`);
 }
 
 async function fetchUser(id): Promise<User> {
-  return redis.fetchObject(`user:${id}`, () => getUserById(id, { includePassword: true }), 86400);
+  return redis.getCache(`user:${id}`, () => getUserById(id, { includePassword: true }), 86400);
 }
 
 async function storeUser(data) {
   const { id } = data;
   const key = `user:${id}`;
 
-  const obj = await redis.storeObject(key, data);
+  const obj = await redis.setCache(key, data);
   await redis.expire(key, 86400);
 
   return obj;
 }
 
 async function deleteUser(id) {
-  return redis.deleteObject(`user:${id}`);
+  return redis.deleteCache(`user:${id}`);
 }
 
 async function fetchSession(id) {
-  return redis.fetchObject(`session:${id}`, () => getSession(id), 86400);
+  return redis.getCache(`session:${id}`, () => getSession(id), 86400);
 }
 
 async function storeSession(data) {
   const { id } = data;
   const key = `session:${id}`;
 
-  const obj = await redis.storeObject(key, data);
+  const obj = await redis.setCache(key, data);
   await redis.expire(key, 86400);
 
   return obj;
 }
 
 async function deleteSession(id) {
-  return redis.deleteObject(`session:${id}`);
+  return redis.deleteCache(`session:${id}`);
 }
 
 async function fetchUserBlock(userId: string) {

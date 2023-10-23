@@ -7,19 +7,15 @@ import WebsiteChart from '../../(main)/websites/[id]/WebsiteChart';
 import useApi from 'components/hooks/useApi';
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import useNavigation from 'components/hooks/useNavigation';
 import Script from 'next/script';
 import { Button } from 'react-basics';
 import styles from './TestConsole.module.css';
 
-export function TestConsole() {
+export function TestConsole({ websiteId }) {
   const { get, useQuery } = useApi();
   const { data, isLoading, error } = useQuery(['websites:me'], () => get('/me/websites'));
-  const router = useRouter();
-  const {
-    basePath,
-    query: { id },
-  } = router;
+  const { router } = useNavigation();
 
   function handleChange(value) {
     router.push(`/console/${value}`);
@@ -72,7 +68,6 @@ export function TestConsole() {
     return null;
   }
 
-  const [websiteId] = id || [];
   const website = data?.data.find(({ id }) => websiteId === id);
 
   return (
@@ -87,8 +82,8 @@ export function TestConsole() {
         <>
           <Script
             async
-            data-website-id={website.id}
-            src={`${basePath}/script.js`}
+            data-website-id={websiteId}
+            src={`${process.env.basePath}/script.js`}
             data-cache="true"
           />
           <div className={styles.test}>
