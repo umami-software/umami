@@ -1,0 +1,26 @@
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.label {
+  font-weight: 700;
+}
+
+.tag {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-sm);
+  border: 1px solid var(--blue400);
+  border-radius: var(--border-radius);
+  padding: 8px 16px;
+  cursor: pointer;
+  background: var(--blue100);
+}
+
+.tag:hover {
+  background: var(--blue200);
+}
