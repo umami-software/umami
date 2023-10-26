@@ -112,6 +112,14 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
     const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
     if (value !== undefined && column) {
+      if (value?.value) {
+        if (typeof value.value === 'string' && value.value.indexOf('*') > -1) {
+          // If input contains *, convert to a LIKE
+          value.value = value.value.replace(/%/, '\\%').replace('*', '%');
+          value.filter = OPERATORS.like;
+        }
+      }
+
       arr.push(`and ${mapFilter(column, operator, name)}`);
 
       if (name === 'referrer') {
