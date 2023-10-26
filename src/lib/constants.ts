@@ -92,6 +92,7 @@ export const OPERATORS = {
   lessThanEquals: 'lte',
   before: 'bf',
   after: 'af',
+  like: 'like',
 } as const;
 
 export const DATA_TYPES = {

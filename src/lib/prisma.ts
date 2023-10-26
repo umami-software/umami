@@ -98,6 +98,8 @@ function mapFilter(column, operator, name, type = 'varchar') {
       return `${column} = {{${name}::${type}}}`;
     case OPERATORS.notEquals:
       return `${column} != {{${name}::${type}}}`;
+    case OPERATORS.like:
+      return `${column} LIKE {{${name}::${type}}}`;
     default:
       return '';
   }
