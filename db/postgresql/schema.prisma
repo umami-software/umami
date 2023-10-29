@@ -3,101 +3,217 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
-model account {
-  id          Int       @id @default(autoincrement()) @map("user_id")
-  username    String    @unique @db.VarChar(255)
-  password    String    @db.VarChar(60)
-  isAdmin     Boolean   @default(false) @map("is_admin")
-  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt   DateTime? @default(now()) @map("updated_at") @db.Timestamptz(6)
-  accountUuid String    @unique @map("account_uuid") @db.Uuid
-  website     website[]
+model User {
+  id        String    @id @unique @map("user_id") @db.Uuid
+  username  String    @unique @db.VarChar(255)
+  password  String    @db.VarChar(60)
+  role      String    @map("role") @db.VarChar(50)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  @@index([accountUuid])
+  website  Website[]
+  teamUser TeamUser[]
+  report   Report[]
+
+  @@map("user")
 }
 
-model event {
-  id        Int        @id() @default(autoincrement()) @map("event_id")
-  websiteId Int        @map("website_id")
-  sessionId Int        @map("session_id")
-  createdAt DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
-  url       String     @db.VarChar(500)
-  eventName String     @map("event_name") @db.VarChar(50)
-  eventUuid String     @unique @map("event_uuid") @db.Uuid
-  session   session    @relation(fields: [sessionId], references: [id])
-  website   website    @relation(fields: [websiteId], references: [id])
-  eventData eventData?
+model Session {
+  id           String    @id @unique @map("session_id") @db.Uuid
+  websiteId    String    @map("website_id") @db.Uuid
+  hostname     String?   @db.VarChar(100)
+  browser      String?   @db.VarChar(20)
+  os           String?   @db.VarChar(20)
+  device       String?   @db.VarChar(20)
+  screen       String?   @db.VarChar(11)
+  language     String?   @db.VarChar(35)
+  country      String?   @db.Char(2)
+  subdivision1 String?   @db.VarChar(20)
+  subdivision2 String?   @db.VarChar(50)
+  city         String?   @db.VarChar(50)
+  createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  websiteEvent WebsiteEvent[]
+  sessionData  SessionData[]
+
+  @@index([createdAt])
+  @@index([websiteId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, hostname])
+  @@index([websiteId, createdAt, browser])
+  @@index([websiteId, createdAt, os])
+  @@index([websiteId, createdAt, device])
+  @@index([websiteId, createdAt, screen])
+  @@index([websiteId, createdAt, language])
+  @@index([websiteId, createdAt, country])
+  @@index([websiteId, createdAt, subdivision1])
+  @@index([websiteId, createdAt, city])
+  @@map("session")
+}
+
+model Website {
+  id        String    @id @unique @map("website_id") @db.Uuid
+  name      String    @db.VarChar(100)
+  domain    String?   @db.VarChar(500)
+  shareId   String?   @unique @map("share_id") @db.VarChar(50)
+  resetAt   DateTime? @map("reset_at") @db.Timestamptz(6)
+  userId    String?   @map("user_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+
+  user        User?         @relation(fields: [userId], references: [id])
+  teamWebsite TeamWebsite[]
+  eventData   EventData[]
+  report      Report[]
+  sessionData SessionData[]
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([shareId])
+  @@map("website")
+}
+
+model WebsiteEvent {
+  id             String    @id() @map("event_id") @db.Uuid
+  websiteId      String    @map("website_id") @db.Uuid
+  sessionId      String    @map("session_id") @db.Uuid
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  urlPath        String    @map("url_path") @db.VarChar(500)
+  urlQuery       String?   @map("url_query") @db.VarChar(500)
+  referrerPath   String?   @map("referrer_path") @db.VarChar(500)
+  referrerQuery  String?   @map("referrer_query") @db.VarChar(500)
+  referrerDomain String?   @map("referrer_domain") @db.VarChar(500)
+  pageTitle      String?   @map("page_title") @db.VarChar(500)
+  eventType      Int       @default(1) @map("event_type") @db.Integer
+  eventName      String?   @map("event_name") @db.VarChar(50)
+
+  eventData EventData[]
+  session   Session     @relation(fields: [sessionId], references: [id])
 
   @@index([createdAt])
   @@index([sessionId])
   @@index([websiteId])
-  @@index([eventUuid])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, urlPath])
+  @@index([websiteId, createdAt, urlQuery])
+  @@index([websiteId, createdAt, referrerDomain])
+  @@index([websiteId, createdAt, pageTitle])
+  @@index([websiteId, createdAt, eventName])
+  @@index([websiteId, sessionId, createdAt])
+  @@map("website_event")
 }
 
-model eventData {
-  id        Int   @id @default(autoincrement()) @map("event_data_id")
-  eventId   Int   @unique @map("event_id")
-  eventData Json  @map("event_data")
-  event     event @relation(fields: [eventId], references: [id])
+model EventData {
+  id             String    @id() @map("event_data_id") @db.Uuid
+  websiteId      String    @map("website_id") @db.Uuid
+  websiteEventId String    @map("website_event_id") @db.Uuid
+  eventKey       String    @map("event_key") @db.VarChar(500)
+  stringValue    String?   @map("string_value") @db.VarChar(500)
+  numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue      DateTime? @map("date_value") @db.Timestamptz(6)
+  dataType       Int       @map("data_type") @db.Integer
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
+  website      Website      @relation(fields: [websiteId], references: [id])
+  websiteEvent WebsiteEvent @relation(fields: [websiteEventId], references: [id])
+
+  @@index([createdAt])
+  @@index([websiteId])
+  @@index([websiteEventId])
+  @@index([websiteId, createdAt])
+  @@index([websiteId, createdAt, eventKey])
   @@map("event_data")
 }
 
-model pageview {
-  id        Int       @id @default(autoincrement()) @map("view_id")
-  websiteId Int       @map("website_id")
-  sessionId Int       @map("session_id")
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  url       String    @db.VarChar(500)
-  referrer  String?   @db.VarChar(500)
-  session   session   @relation(fields: [sessionId], references: [id])
-  website   website   @relation(fields: [websiteId], references: [id])
+model SessionData {
+  id          String    @id() @map("session_data_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  sessionId   String    @map("session_id") @db.Uuid
+  sessionKey  String    @map("session_key") @db.VarChar(500)
+  stringValue String?   @map("string_value") @db.VarChar(500)
+  numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
+  dateValue   DateTime? @map("date_value") @db.Timestamptz(6)
+  dataType    Int       @map("data_type") @db.Integer
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @default(now()) @map("deleted_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+  session Session @relation(fields: [sessionId], references: [id])
 
   @@index([createdAt])
+  @@index([websiteId])
   @@index([sessionId])
-  @@index([websiteId, createdAt])
-  @@index([websiteId])
-  @@index([websiteId, sessionId, createdAt])
+  @@map("session_data")
 }
 
-model session {
-  id          Int        @id @default(autoincrement()) @map("session_id")
-  sessionUuid String     @unique @map("session_uuid") @db.Uuid
-  websiteId   Int        @map("website_id")
-  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
-  hostname    String?    @db.VarChar(100)
-  browser     String?    @db.VarChar(20)
-  os          String?    @db.VarChar(20)
-  device      String?    @db.VarChar(20)
-  screen      String?    @db.VarChar(11)
-  language    String?    @db.VarChar(35)
-  country     String?    @db.Char(2)
-  website     website?   @relation(fields: [websiteId], references: [id])
-  events      event[]
-  pageview    pageview[]
+model Team {
+  id         String    @id() @unique() @map("team_id") @db.Uuid
+  name       String    @db.VarChar(50)
+  accessCode String?   @unique @map("access_code") @db.VarChar(50)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  @@index([createdAt])
-  @@index([websiteId])
-  @@index([sessionUuid])
+  teamUser    TeamUser[]
+  teamWebsite TeamWebsite[]
+
+  @@index([accessCode])
+  @@map("team")
 }
 
-model website {
-  id          Int        @id @default(autoincrement()) @map("website_id")
-  websiteUuid String     @unique @map("website_uuid") @db.Uuid
-  userId      Int        @map("user_id")
-  name        String     @db.VarChar(100)
-  domain      String?    @db.VarChar(500)
-  shareId     String?    @unique @map("share_id") @db.VarChar(64)
-  createdAt   DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
-  account     account    @relation(fields: [userId], references: [id])
-  event       event[]
-  pageview    pageview[]
-  session     session[]
+model TeamUser {
+  id        String    @id() @unique() @map("team_user_id") @db.Uuid
+  teamId    String    @map("team_id") @db.Uuid
+  userId    String    @map("user_id") @db.Uuid
+  role      String    @map("role") @db.VarChar(50)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([teamId])
+  @@index([userId])
+  @@map("team_user")
+}
+
+model TeamWebsite {
+  id        String    @id() @unique() @map("team_website_id") @db.Uuid
+  teamId    String    @map("team_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  team    Team    @relation(fields: [teamId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([teamId])
+  @@index([websiteId])
+  @@map("team_website")
+}
+
+model Report {
+  id          String    @id() @unique() @map("report_id") @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  type        String    @map("type") @db.VarChar(200)
+  name        String    @map("name") @db.VarChar(200)
+  description String    @map("description") @db.VarChar(500)
+  parameters  String    @map("parameters") @db.VarChar(6000)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user    User    @relation(fields: [userId], references: [id])
+  website Website @relation(fields: [websiteId], references: [id])
 
   @@index([userId])
-  @@index([websiteUuid])
+  @@index([websiteId])
+  @@index([type])
+  @@index([name])
+  @@map("report")
 }

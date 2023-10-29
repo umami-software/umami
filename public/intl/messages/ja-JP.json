@@ -1,14 +1,32 @@
 {
-  "label.accounts": [
+  "label.access-code": [
     {
       "type": 0,
-      "value": "アカウント"
+      "value": "アクセスコード"
     }
   ],
-  "label.add-account": [
+  "label.actions": [
     {
       "type": 0,
-      "value": "アカウントの追加"
+      "value": "アクション"
+    }
+  ],
+  "label.activity-log": [
+    {
+      "type": 0,
+      "value": "アクティビティログ"
+    }
+  ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "追加"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "説明を追加"
     }
   ],
   "label.add-website": [
@@ -17,34 +35,82 @@
       "value": "Webサイトの追加"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "管理者"
     }
   ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "直後"
+    }
+  ],
   "label.all": [
     {
       "type": 0,
-      "value": "すべて表示"
+      "value": "すべて"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "すべての時間帯"
     }
   ],
-  "label.all-websites": [
+  "label.analytics": [
     {
       "type": 0,
-      "value": "すべてのWebサイト"
+      "value": "アナリティクス"
+    }
+  ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "平均"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "平均滞在時間"
     }
   ],
   "label.back": [
     {
       "type": 0,
       "value": "戻る"
+    }
+  ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "直前"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "直帰率"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "故障"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "ブラウザ"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "ブラウザ"
     }
   ],
   "label.cancel": [
@@ -56,19 +122,91 @@
   "label.change-password": [
     {
       "type": 0,
-      "value": "パスワード変更"
+      "value": "パスワードの変更"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "都市"
+    }
+  ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "都市"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "すべてクリア"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "確認"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "パスワード（確認）"
+      "value": "パスワード(確認)"
     }
   ],
-  "label.copy-to-clipboard": [
+  "label.contains": [
     {
       "type": 0,
-      "value": "クリップボードにコピー"
+      "value": "コンテンツ"
+    }
+  ],
+  "label.continue": [
+    {
+      "type": 0,
+      "value": "続ける"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "国名"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "国"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Create"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "レポートの作成"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "チームの作成"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "ユーザーの作成"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "作成されました"
     }
   ],
   "label.current-password": [
@@ -80,7 +218,7 @@
   "label.custom-range": [
     {
       "type": 0,
-      "value": "期間を指定する"
+      "value": "範囲指定"
     }
   ],
   "label.dashboard": [
@@ -89,16 +227,34 @@
       "value": "ダッシュボード"
     }
   ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "データ"
+    }
+  ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "日付"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "範囲指定"
+      "value": "期間"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "日"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "最初に表示する期間"
+      "value": "デフォルトの期間"
     }
   ],
   "label.delete": [
@@ -107,10 +263,16 @@
       "value": "削除"
     }
   ],
-  "label.delete-account": [
+  "label.delete-team": [
     {
       "type": 0,
-      "value": "アカウントの削除"
+      "value": "チームの削除"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "ユーザーの削除"
     }
   ],
   "label.delete-website": [
@@ -119,10 +281,46 @@
       "value": "Webサイトの削除"
     }
   ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "説明"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "デスクトップ"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "詳細情報"
+    }
+  ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "デバイス"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "デバイス"
+    }
+  ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "無視する"
+      "value": "却下"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "を含まない"
     }
   ],
   "label.domain": [
@@ -131,46 +329,178 @@
       "value": "ドメイン"
     }
   ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "切り捨て"
+    }
+  ],
   "label.edit": [
     {
       "type": 0,
       "value": "編集"
     }
   ],
-  "label.edit-account": [
+  "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "アカウントの編集"
-    }
-  ],
-  "label.edit-website": [
-    {
-      "type": 0,
-      "value": "Webサイトの編集"
+      "value": "ダッシュボードの編集"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "共有リンクを有効にする"
+      "value": "共有URLを有効にする"
     }
   ],
-  "label.invalid": [
+  "label.event": [
     {
       "type": 0,
-      "value": "無効"
+      "value": "イベント"
     }
   ],
-  "label.invalid-domain": [
+  "label.event-data": [
     {
       "type": 0,
-      "value": "無効なドメイン"
+      "value": "イベントデータ"
+    }
+  ],
+  "label.events": [
+    {
+      "type": 0,
+      "value": "イベント"
+    }
+  ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "偽"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "フィールド"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "フィールド"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filter"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "統合"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "RAW"
+    }
+  ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "フィルター"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "分析"
+    }
+  ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Understand the conversion and drop-off rate of users."
+    }
+  ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "超過"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "以上"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "見通し"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Dive deeper into your data by using segments and filters."
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "に等しい"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "に等しくない"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "未設定"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "設定済み"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "参加"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "チームに参加"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "言語"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "言語"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "ノートPC"
     }
   ],
   "label.last-days": [
@@ -201,14 +531,28 @@
       "value": "時間"
     }
   ],
-  "label.logged-in-as": [
-    {
-      "type": 1,
-      "value": "username"
-    },
+  "label.leave": [
     {
       "type": 0,
-      "value": "でログイン中"
+      "value": "離脱"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "チームを離脱"
+    }
+  ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "未満"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "以下"
     }
   ],
   "label.login": [
@@ -223,10 +567,40 @@
       "value": "ログアウト"
     }
   ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "最大"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "メンバー"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "最小"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "携帯電話"
+    }
+  ],
   "label.more": [
     {
       "type": 0,
-      "value": "さらに表示"
+      "value": "もっと見る"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "マイWebサイト"
     }
   ],
   "label.name": [
@@ -244,13 +618,61 @@
   "label.none": [
     {
       "type": 0,
-      "value": "None"
+      "value": "なし"
+    }
+  ],
+  "label.os": [
+    {
+      "type": 0,
+      "value": "OS"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "概要"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "所有者"
+    }
+  ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "ページ "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "閲覧数"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "ページタイトル"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "ページ"
     }
   ],
   "label.password": [
@@ -259,16 +681,38 @@
       "value": "パスワード"
     }
   ],
-  "label.passwords-dont-match": [
+  "label.powered-by": [
     {
       "type": 0,
-      "value": "パスワードが一致しません"
+      "value": "Powered by "
+    },
+    {
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "プロファイル"
+      "value": "プロフィール"
+    }
+  ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "クエリ"
+    }
+  ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "クエリ"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "クエリパラメーター"
     }
   ],
   "label.realtime": [
@@ -277,16 +721,52 @@
       "value": "リアルタイム"
     }
   ],
-  "label.realtime-logs": [
+  "label.referrer": [
     {
       "type": 0,
-      "value": "リアルタイムログ"
+      "value": "リファラー"
+    }
+  ],
+  "label.referrers": [
+    {
+      "type": 0,
+      "value": "リファラー"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
       "value": "更新"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "再生成"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "地域"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "地域"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "削除"
+    }
+  ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "レポート"
     }
   ],
   "label.required": [
@@ -304,13 +784,67 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Reset statistics"
+      "value": "Webサイトをリセットする"
+    }
+  ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "保持"
+    }
+  ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Measure your website stickiness by tracking how often users return."
+    }
+  ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "ロール"
+    }
+  ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "クエリ実行"
     }
   ],
   "label.save": [
     {
       "type": 0,
       "value": "保存"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "画面サイズ"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "日付を選択"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Webサイトを選択"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "セッション"
     }
   ],
   "label.settings": [
@@ -322,19 +856,79 @@
   "label.share-url": [
     {
       "type": 0,
-      "value": "共有リンク"
+      "value": "共有URL"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "一日のみ"
+      "value": "一日"
+    }
+  ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "合計"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "タブレット"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "チーム"
+    }
+  ],
+  "label.team-guest": [
+    {
+      "type": 0,
+      "value": "チームゲスト"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "チームID"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "チームメンバー"
+    }
+  ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "チーム名"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "チーム所有者"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "チームのWebサイト"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "チーム"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "Theme"
+      "value": "テーマ"
     }
   ],
   "label.this-month": [
@@ -361,10 +955,34 @@
       "value": "タイムゾーン"
     }
   ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "タイトル"
+    }
+  ],
   "label.today": [
     {
       "type": 0,
       "value": "今日"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "グラフを切り替える"
+    }
+  ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "累計"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "総記録数"
     }
   ],
   "label.tracking-code": [
@@ -373,10 +991,58 @@
       "value": "トラッキングコード"
     }
   ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "真"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "種別"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "ユニーク"
+    }
+  ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "ユニーク訪問者数"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
       "value": "不明"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "無題"
+    }
+  ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URL"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "ユーザー"
     }
   ],
   "label.username": [
@@ -385,16 +1051,76 @@
       "value": "ユーザー名"
     }
   ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "ユーザー"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "値"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "表示"
+    }
+  ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "詳細を見る"
+      "value": "詳細を表示"
+    }
+  ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "表示のみ"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "表示"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "訪問者"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Webサイト"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "WebサイトID"
     }
   ],
   "label.websites": [
     {
       "type": 0,
       "value": "Webサイト"
+    }
+  ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "ウィンドウ"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "昨日"
     }
   ],
   "message.active-users": [
@@ -404,7 +1130,31 @@
     },
     {
       "type": 0,
-      "value": "人が閲覧中です。"
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "アクティブな訪問者"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "アクティブな訪問者"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
     }
   ],
   "message.confirm-delete": [
@@ -417,76 +1167,264 @@
       "value": "を削除してもよろしいですか？"
     }
   ],
-  "message.confirm-reset": [
-    {
-      "type": 0,
-      "value": "Are your sure you want to reset "
-    },
+  "message.confirm-leave": [
     {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": "'s statistics?"
+      "value": "から離脱してもよろしいですか？"
     }
   ],
-  "message.copied": [
+  "message.confirm-reset": [
+    {
+      "type": 1,
+      "value": "target"
+    },
     {
       "type": 0,
-      "value": "コピーしました！"
+      "value": "をリセットしてもよろしいですか？"
     }
   ],
-  "message.delete-warning": [
+  "message.delete-account": [
     {
       "type": 0,
-      "value": "関連するすべてのデータも削除されます。"
+      "value": "このアカウントを削除するには、下のフォームに「"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "」と入力してください。"
     }
   ],
-  "message.edit-dashboard": [
+  "message.delete-website": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "このWebサイトを削除するには、下のフォームに「"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "」と入力してください。"
     }
   ],
-  "message.failure": [
+  "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "問題が発生しました。"
+      "value": "Webサイトのデータがすべて削除されます。"
     }
   ],
-  "message.get-share-url": [
+  "message.error": [
     {
       "type": 0,
-      "value": "共有リンクを取得"
+      "value": "未知のエラーが発生しました。"
     }
   ],
-  "message.get-tracking-code": [
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "url"
+    },
     {
       "type": 0,
-      "value": "トラッキングコードを取得"
+      "value": "の"
+    },
+    {
+      "type": 1,
+      "value": "event"
     }
   ],
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "設定する"
+      "value": "設定に移動する"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "ユーザー名/パスワードが正しくありません。"
+      "value": "ユーザー名またはパスワードが間違っています。"
     }
   ],
-  "message.log.visitor": [
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "無効なドメインです。http/httpsを含めないでください。"
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "最小文字数は"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "文字です"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Umamiの新しいバージョン"
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": "が利用可能です！"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "データがありません。"
+    }
+  ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "イベントデータがありません。"
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "パスワードが一致しません。"
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "結果が見つかりません。"
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "このチームにはWebサイトがありません。"
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "チームを作成していません。"
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "ユーザーが存在しません。"
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Webサイトが設定されていません。"
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "ページが見つかりません"
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "このWebサイトをリセットするには、下のフォームに「"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "」と入力してください。"
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "このWebサイトの統計情報はすべて削除されますが、設定はそのまま残ります。"
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "保存されました。"
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "あなたのWebサイトの統計情報は次のURLで公開されています："
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "あなたはすでにチームのメンバーです。"
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "チームが見つかりません。"
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Webサイトはチーム内の誰でも見ることができます。"
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "このWebサイトの統計情報を追跡するには、HTMLの"
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": "セクションに以下のコードを記述します。"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "ユーザーが削除されました。"
+    }
+  ],
+  "message.visitor-log": [
     {
       "type": 1,
       "value": "os"
     },
     {
       "type": 0,
-      "value": "（"
+      "value": "("
     },
     {
       "type": 1,
@@ -494,7 +1432,7 @@
     },
     {
       "type": 0,
-      "value": "）で"
+      "value": ")で"
     },
     {
       "type": 1,
@@ -511,268 +1449,6 @@
     {
       "type": 0,
       "value": "からの訪問者"
-    }
-  ],
-  "message.new-version-available": [
-    {
-      "type": 0,
-      "value": "新しいバージョン（"
-    },
-    {
-      "type": 1,
-      "value": "version"
-    },
-    {
-      "type": 0,
-      "value": "）が利用可能です！"
-    }
-  ],
-  "message.no-data-available": [
-    {
-      "type": 0,
-      "value": "データがありません。"
-    }
-  ],
-  "message.no-websites-configured": [
-    {
-      "type": 0,
-      "value": "Webサイトが設定されていません。"
-    }
-  ],
-  "message.page-not-found": [
-    {
-      "type": 0,
-      "value": "ページが見つかりません。"
-    }
-  ],
-  "message.powered-by": [
-    {
-      "type": 0,
-      "value": "このシステムは "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": " で実行されています。"
-    }
-  ],
-  "message.reset-warning": [
-    {
-      "type": 0,
-      "value": "All statistics for this website will be deleted, but your tracking code will remain intact."
-    }
-  ],
-  "message.save-success": [
-    {
-      "type": 0,
-      "value": "正常に保存されました。"
-    }
-  ],
-  "message.share-url": [
-    {
-      "type": 0,
-      "value": "これは"
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "の共有リンクです。"
-    }
-  ],
-  "message.toggle-charts": [
-    {
-      "type": 0,
-      "value": "Toggle charts"
-    }
-  ],
-  "message.track-stats": [
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": "のアクセス解析を開始するには、次のコードをWebサイトの"
-    },
-    {
-      "type": 1,
-      "value": "head"
-    },
-    {
-      "type": 0,
-      "value": "セクションへ追加してください。"
-    }
-  ],
-  "message.type-delete": [
-    {
-      "type": 0,
-      "value": "確認のため、下のフォームに"
-    },
-    {
-      "type": 1,
-      "value": "delete"
-    },
-    {
-      "type": 0,
-      "value": "と入力してください。"
-    }
-  ],
-  "message.type-reset": [
-    {
-      "type": 0,
-      "value": "確認のため、下のフォームに"
-    },
-    {
-      "type": 1,
-      "value": "reset"
-    },
-    {
-      "type": 0,
-      "value": "と入力してください。"
-    }
-  ],
-  "metrics.actions": [
-    {
-      "type": 0,
-      "value": "アクション"
-    }
-  ],
-  "metrics.average-visit-time": [
-    {
-      "type": 0,
-      "value": "平均滞在時間"
-    }
-  ],
-  "metrics.bounce-rate": [
-    {
-      "type": 0,
-      "value": "直帰率"
-    }
-  ],
-  "metrics.browsers": [
-    {
-      "type": 0,
-      "value": "ブラウザ"
-    }
-  ],
-  "metrics.countries": [
-    {
-      "type": 0,
-      "value": "国"
-    }
-  ],
-  "metrics.device.desktop": [
-    {
-      "type": 0,
-      "value": "デスクトップ"
-    }
-  ],
-  "metrics.device.laptop": [
-    {
-      "type": 0,
-      "value": "ノートPC"
-    }
-  ],
-  "metrics.device.mobile": [
-    {
-      "type": 0,
-      "value": "携帯電話"
-    }
-  ],
-  "metrics.device.tablet": [
-    {
-      "type": 0,
-      "value": "タブレット"
-    }
-  ],
-  "metrics.devices": [
-    {
-      "type": 0,
-      "value": "デバイス"
-    }
-  ],
-  "metrics.events": [
-    {
-      "type": 0,
-      "value": "イベント"
-    }
-  ],
-  "metrics.filter.combined": [
-    {
-      "type": 0,
-      "value": "パスまで"
-    }
-  ],
-  "metrics.filter.raw": [
-    {
-      "type": 0,
-      "value": "すべて表示"
-    }
-  ],
-  "metrics.languages": [
-    {
-      "type": 0,
-      "value": "Languages"
-    }
-  ],
-  "metrics.operating-systems": [
-    {
-      "type": 0,
-      "value": "OS"
-    }
-  ],
-  "metrics.page-views": [
-    {
-      "type": 0,
-      "value": "閲覧数"
-    }
-  ],
-  "metrics.pages": [
-    {
-      "type": 0,
-      "value": "ページ"
-    }
-  ],
-  "metrics.query-parameters": [
-    {
-      "type": 0,
-      "value": "Query parameters"
-    }
-  ],
-  "metrics.referrers": [
-    {
-      "type": 0,
-      "value": "リファラー"
-    }
-  ],
-  "metrics.screens": [
-    {
-      "type": 0,
-      "value": "Screens"
-    }
-  ],
-  "metrics.unique-visitors": [
-    {
-      "type": 0,
-      "value": "ユニーク訪問者数"
-    }
-  ],
-  "metrics.views": [
-    {
-      "type": 0,
-      "value": "閲覧数"
-    }
-  ],
-  "metrics.visitors": [
-    {
-      "type": 0,
-      "value": "訪問者数"
     }
   ]
 }

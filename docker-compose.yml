@@ -8,19 +8,24 @@ services:
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
       DATABASE_TYPE: postgresql
-      HASH_SALT: replace-me-with-a-random-string
+      APP_SECRET: replace-me-with-a-random-string
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
   db:
-    image: postgres:12-alpine
+    image: postgres:15-alpine
     environment:
       POSTGRES_DB: umami
       POSTGRES_USER: umami
       POSTGRES_PASSWORD: umami
     volumes:
-      - ./sql/schema.postgresql.sql:/docker-entrypoint-initdb.d/schema.postgresql.sql:ro
       - umami-db-data:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 volumes:
   umami-db-data:

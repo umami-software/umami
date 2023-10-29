@@ -1,0 +1,40 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.item {
+  padding: 5px 0;
+}
+
+.item h1 {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.item h2 {
+  font-size: 14px;
+  color: var(--base700);
+}
+
+.text {
+  padding: 20px;
+  border-radius: 5px;
+  border: 1px solid var(--base400);
+  background: var(--base50);
+}
+
+.active .text {
+  border-color: var(--base600);
+  box-shadow: 4px 4px 4px var(--base100);
+}
+
+.dragActive {
+  cursor: grab;
+}
+
+.dragActive:active {
+  cursor: grabbing;
+}

@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.text {
+  display: flex;
+  white-space: nowrap;
+  font-size: var(--font-size-md);
+  font-weight: 400;
+}
+
+.value {
+  font-weight: 600;
+  margin-right: 4px;
+}

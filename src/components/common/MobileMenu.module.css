@@ -1,0 +1,39 @@
+.menu {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--base50);
+  z-index: var(--z-index-popup);
+  overflow: auto;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 80px;
+  padding: 0 40px;
+}
+
+a.item {
+  color: var(--base600);
+}
+
+a.item.selected,
+.submenu a.item.selected {
+  color: var(--base900);
+}
+
+.submenu a.item {
+  color: var(--base600);
+  margin-left: 40px;
+}

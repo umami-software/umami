@@ -1,0 +1,37 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.row.inactive {
+  color: var(--base500);
+}
+
+.row.inactive img {
+  opacity: 0.35;
+}
+
+.row.active {
+  color: var(--base900);
+  font-weight: 600;
+}
+
+.row .link {
+  display: none;
+  margin-inline-start: 20px;
+}
+
+.row .label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.row:hover .link {
+  display: block;
+}
+
+.icon {
+  cursor: pointer;
+}

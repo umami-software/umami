@@ -1,0 +1,16 @@
+.item {
+  display: inline-flex;
+  align-items: center;
+  line-height: 26px;
+}
+
+.param {
+  padding: 0 8px;
+  color: var(--primary400);
+  background: var(--blue100);
+  border-radius: 4px;
+}
+
+.value {
+  padding: 0 8px;
+}

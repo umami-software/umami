@@ -1,0 +1,14 @@
+.button {
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.button > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+}

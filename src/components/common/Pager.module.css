@@ -1,0 +1,32 @@
+.pager {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  font-size: var(--font-size-md);
+  margin: 0 16px;
+  justify-content: center;
+}
+
+.count {
+  color: var(--base600);
+  font-weight: 700;
+}
+
+@media only screen and (max-width: 992px) {
+  .pager {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .nav {
+    justify-content: end;
+  }
+}

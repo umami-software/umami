@@ -1,0 +1,52 @@
+.table {
+  grid-template-rows: repeat(auto-fit, max-content);
+}
+
+.table td {
+  align-items: center;
+  max-height: max-content;
+}
+
+.search {
+  max-width: 300px;
+  margin: 20px 0;
+}
+
+.action {
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: auto;
+}
+
+.body td {
+  display: flex;
+  gap: 10px;
+  min-height: 70px;
+  align-items: center;
+  min-width: min-content;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.body > div > div > div {
+  display: flex;
+  gap: 10px;
+}
+
+.pager {
+  margin: 20px 0;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
