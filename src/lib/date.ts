@@ -194,7 +194,7 @@ export function incrementDateRange(value, increment) {
 
   const { num, unit } = selectedUnit;
 
-  const sub = num * increment;
+  const sub = Math.abs(num) * increment;
 
   switch (unit) {
     case 'hour':
