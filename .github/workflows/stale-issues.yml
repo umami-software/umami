@@ -22,3 +22,4 @@ jobs:
           operations-per-run: 200
           ascending: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
+          exempt-issue-labels: bug,enhancement
