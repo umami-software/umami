@@ -12,7 +12,7 @@ export interface WebsitePageviewRequestQuery {
   endAt: number;
   unit?: string;
   timezone?: string;
-  url_path?: string;
+  url?: string;
   referrer?: string;
   title?: string;
   os?: string;
@@ -32,7 +32,7 @@ const schema = {
     endAt: yup.number().required(),
     unit: UnitTypeTest,
     timezone: TimezoneTest,
-    url_path: yup.string(),
+    url: yup.string(),
     referrer: yup.string(),
     title: yup.string(),
     os: yup.string(),
@@ -55,7 +55,7 @@ export default async (
   const {
     id: websiteId,
     timezone,
-    url_path,
+    url,
     referrer,
     title,
     os,
@@ -78,7 +78,7 @@ export default async (
       endDate,
       timezone,
       unit,
-      url_path,
+      url,
       referrer,
       title,
       os,

@@ -45,7 +45,7 @@ export const SESSION_COLUMNS = [
 ];
 
 export const FILTER_COLUMNS = {
-  url_path: 'url_path',
+  url: 'url_path',
   referrer: 'referrer_domain',
   title: 'page_title',
   query: 'url_query',

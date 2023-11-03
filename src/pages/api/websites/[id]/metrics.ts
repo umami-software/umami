@@ -13,7 +13,7 @@ export interface WebsiteMetricsRequestQuery {
   type: string;
   startAt: number;
   endAt: number;
-  url_path?: string;
+  url?: string;
   referrer?: string;
   title?: string;
   query?: string;
@@ -33,7 +33,7 @@ const schema = {
     type: yup.string().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
-    url_path: yup.string(),
+    url: yup.string(),
     referrer: yup.string(),
     title: yup.string(),
     query: yup.string(),
@@ -59,7 +59,7 @@ export default async (
   const {
     id: websiteId,
     type,
-    url_path,
+    url,
     referrer,
     title,
     query,
@@ -83,7 +83,7 @@ export default async (
     const filters = {
       startDate,
       endDate,
-      url_path,
+      url,
       referrer,
       title,
       query,
