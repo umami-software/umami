@@ -11,7 +11,7 @@ export interface WebsiteStatsRequestQuery {
   id: string;
   startAt: number;
   endAt: number;
-  url?: string;
+  url_path?: string;
   referrer?: string;
   title?: string;
   query?: string;
@@ -30,7 +30,7 @@ const schema = {
     id: yup.string().uuid().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
-    url: yup.string(),
+    url_path: yup.string(),
     referrer: yup.string(),
     title: yup.string(),
     query: yup.string(),
@@ -54,7 +54,7 @@ export default async (
 
   const {
     id: websiteId,
-    url,
+    url_path,
     referrer,
     title,
     query,
@@ -78,7 +78,7 @@ export default async (
     const prevEndDate = subMinutes(endDate, diff);
 
     const filters = {
-      url,
+      url_path,
       referrer,
       title,
       query,

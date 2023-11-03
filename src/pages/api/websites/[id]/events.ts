@@ -14,7 +14,7 @@ export interface WebsiteEventsRequestQuery {
   endAt: string;
   unit?: string;
   timezone?: string;
-  url: string;
+  url_path: string;
 }
 
 const schema = {
@@ -24,7 +24,7 @@ const schema = {
     endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
     unit: UnitTypeTest,
     timezone: TimezoneTest,
-    url: yup.string(),
+    url_path: yup.string(),
   }),
 };
 
@@ -36,7 +36,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId, timezone, url } = req.query;
+  const { id: websiteId, timezone, url_path } = req.query;
   const { startDate, endDate, unit } = await parseDateRangeQuery(req);
 
   if (req.method === 'GET') {
@@ -49,7 +49,7 @@ export default async (
       endDate,
       timezone,
       unit,
-      url,
+      url_path,
     });
 
     return ok(res, events);
