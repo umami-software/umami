@@ -1,8 +1,9 @@
 'use client';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import UpdateNotice from 'components/common/UpdateNotice';
 import { useRequireLogin, useConfig } from 'components/hooks';
+
+import UpdateNotice from './UpdateNotice';
 
 export function Shell({ children }) {
   const { user } = useRequireLogin();
