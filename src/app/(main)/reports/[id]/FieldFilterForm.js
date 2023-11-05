@@ -21,12 +21,16 @@ export default function FieldFilterForm({
 
   const formattedValues = useMemo(() => {
     const formatted = {};
-    const { compare } = new Intl.Collator(locale, { numeric: true });
     const format = val => {
       formatted[val] = formatValue(val, name);
       return formatted[val];
     };
-    values.sort((a, b) => compare(formatted[a] ?? format(a), formatted[b] ?? format(b)));
+    if (values.length !== 1) {
+      const { compare } = new Intl.Collator(locale, { numeric: true });
+      values.sort((a, b) => compare(formatted[a] ?? format(a), formatted[b] ?? format(b)));
+    } else {
+      format(values[0]);
+    }
     return formatted;
   }, [values]);
 
