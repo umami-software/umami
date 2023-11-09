@@ -75,7 +75,7 @@ async function clickhouseQuery(
       ${parseFields(fields)}
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
       ${filterQuery}
     ${parseGroupBy(fields)}

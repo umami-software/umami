@@ -3,7 +3,7 @@ import { Loading } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from './BarChart';
 import { getDateArray } from 'lib/date';
-import { useApi, useLocale, useDateRange, useTimezone, usePageQuery } from 'components/hooks';
+import { useApi, useLocale, useDateRange, useTimezone, useNavigation } from 'components/hooks';
 import { EVENT_COLORS } from 'lib/constants';
 import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
 
@@ -13,17 +13,17 @@ export function EventsChart({ websiteId, className, token }) {
   const { locale } = useLocale();
   const [timezone] = useTimezone();
   const {
-    query: { url, eventName },
-  } = usePageQuery();
+    query: { url, event },
+  } = useNavigation();
 
-  const { data, isLoading } = useQuery(['events', websiteId, modified, eventName], () =>
+  const { data, isLoading } = useQuery(['events', websiteId, modified, event], () =>
     get(`/websites/${websiteId}/events`, {
       startAt: +startDate,
       endAt: +endDate,
       unit,
       timezone,
       url,
-      eventName,
+      event,
       token,
     }),
   );

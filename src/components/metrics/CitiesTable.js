@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import MetricsTable from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
@@ -9,7 +8,6 @@ import useCountryNames from 'components/hooks/useCountryNames';
 export function CitiesTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
-  const { basePath } = useRouter();
   const countryNames = useCountryNames(locale);
 
   const renderLabel = (city, country) => {
@@ -22,7 +20,7 @@ export function CitiesTable({ websiteId, ...props }) {
       <FilterLink id="city" value={city} label={renderLabel(city, country)}>
         {country && (
           <img
-            src={`${basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
+            src={`${process.env.basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
             alt={country}
           />
         )}

@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import FilterLink from 'components/common/FilterLink';
 import { emptyFilter } from 'lib/filters';
 import useLocale from 'components/hooks/useLocale';
@@ -11,7 +10,6 @@ export function RegionsTable({ websiteId, ...props }) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
   const countryNames = useCountryNames(locale);
-  const { basePath } = useRouter();
 
   const renderLabel = (code, country) => {
     const region = code.includes('-') ? code : `${country}-${code}`;
@@ -21,7 +19,10 @@ export function RegionsTable({ websiteId, ...props }) {
   const renderLink = ({ x: code, country }) => {
     return (
       <FilterLink id="region" className={locale} value={code} label={renderLabel(code, country)}>
-        <img src={`${basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`} alt={code} />
+        <img
+          src={`${process.env.basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
+          alt={code}
+        />
       </FilterLink>
     );
   };

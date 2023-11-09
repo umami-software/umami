@@ -1,12 +1,12 @@
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter, WebsiteSearchFilterType } from 'lib/types';
-import { getFilterValidation } from 'lib/yup';
+import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByUserId } from 'queries';
 import * as yup from 'yup';
 
-export interface UserWebsitesRequestQuery extends SearchFilter<WebsiteSearchFilterType> {
+export interface UserWebsitesRequestQuery extends SearchFilter {
   id: string;
   includeTeams?: boolean;
   onlyTeams?: boolean;
@@ -17,7 +17,7 @@ const schema = {
     id: yup.string().uuid().required(),
     includeTeams: yup.boolean(),
     onlyTeams: yup.boolean(),
-    ...getFilterValidation(/All|Name|Domain/i),
+    ...pageInfo,
   }),
 };
 
@@ -27,12 +27,10 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { user } = req.auth;
-  const { id: userId, page, filter, pageSize, includeTeams, onlyTeams } = req.query;
+  const { id: userId, page = 1, pageSize, query = '', ...rest } = req.query;
 
   if (req.method === 'GET') {
     if (!user.isAdmin && user.id !== userId) {
@@ -41,10 +39,9 @@ export default async (
 
     const websites = await getWebsitesByUserId(userId, {
       page,
-      filter,
       pageSize: +pageSize || undefined,
-      includeTeams,
-      onlyTeams,
+      query,
+      ...rest,
     });
 
     return ok(res, websites);

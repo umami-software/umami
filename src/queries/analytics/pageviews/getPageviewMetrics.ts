@@ -48,7 +48,11 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
   );
 }
 
-async function clickhouseQuery(websiteId: string, column: string, filters: QueryFilters) {
+async function clickhouseQuery(
+  websiteId: string,
+  column: string,
+  filters: QueryFilters,
+): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
@@ -65,7 +69,7 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
     select ${column} x, count(*) y
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
       ${excludeDomain}
       ${filterQuery}
@@ -74,5 +78,9 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
     limit 100
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return { x: a.x, y: Number(a.y) };
+    });
+  });
 }

@@ -1,32 +1,29 @@
-import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import moment from 'moment-timezone';
-import { NextApiResponse } from 'next';
-import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getEventMetrics } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
-
-const unitTypes = ['year', 'month', 'hour', 'day'];
+import { NextApiRequestQueryBody, WebsiteMetric } from 'lib/types';
+import { TimezoneTest, UnitTypeTest } from 'lib/yup';
+import { NextApiResponse } from 'next';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getEventMetrics } from 'queries';
+import * as yup from 'yup';
 
 export interface WebsiteEventsRequestQuery {
   id: string;
   startAt: string;
   endAt: string;
-  unit: string;
-  timezone: string;
+  unit?: string;
+  timezone?: string;
   url: string;
 }
-
-import * as yup from 'yup';
 
 const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
-    unit: yup.string().required(),
-    timezone: yup.string().required(),
+    unit: UnitTypeTest,
+    timezone: TimezoneTest,
     url: yup.string(),
   }),
 };
@@ -37,9 +34,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: websiteId, timezone, url } = req.query;
   const { startDate, endDate, unit } = await parseDateRangeQuery(req);
@@ -47,10 +42,6 @@ export default async (
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
-    }
-
-    if (!moment.tz.zone(timezone) || !unitTypes.includes(unit)) {
-      return badRequest(res);
     }
 
     const events = await getEventMetrics(websiteId, {
