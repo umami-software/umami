@@ -1,7 +1,7 @@
 'use client';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import UpdateNotice from 'components/common/UpdateNotice';
+import UpdateNotice from './UpdateNotice';
 import { useRequireLogin, useConfig } from 'components/hooks';
 
 export function App({ children }) {
