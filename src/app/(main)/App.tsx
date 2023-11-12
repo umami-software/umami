@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import UpdateNotice from 'components/common/UpdateNotice';
 import { useRequireLogin, useConfig } from 'components/hooks';
 
-export function Shell({ children }) {
+export function App({ children }) {
   const { user } = useRequireLogin();
   const config = useConfig();
   const pathname = usePathname();
@@ -24,4 +24,4 @@ export function Shell({ children }) {
   );
 }
 
-export default Shell;
+export default App;

@@ -74,7 +74,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
 
   if (req.method === 'POST') {
-    if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
+    if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
       return ok(res);
     }
 
