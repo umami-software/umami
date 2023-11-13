@@ -11,24 +11,36 @@ const contentSecurityPolicy = [
   `connect-src 'self' api.umami.is`,
 ];
 
+const cspHeader = (values = []) => ({
+  key: 'Content-Security-Policy',
+  value: values
+    .join(';')
+    .replace(/\s{2,}/g, ' ')
+    .trim(),
+});
+
 const headers = [
   {
     key: 'X-DNS-Prefetch-Control',
     value: 'on',
   },
-  !process.env.ALLOWED_FRAME_URLS && {
+  {
     key: 'X-Frame-Options',
     value: 'SAMEORIGIN',
   },
-].filter(n => n);
+  cspHeader(contentSecurityPolicy),
+];
 
-const cspHeader = (values = []) => ({
-  key: 'Content-Security-Policy',
-  value: [...contentSecurityPolicy, ...values]
-    .join(';')
-    .replace(/\s{2,}/g, ' ')
-    .trim(),
-});
+const shareHeaders = [
+  {
+    key: 'X-DNS-Prefetch-Control',
+    value: 'on',
+  },
+  cspHeader([
+    ...contentSecurityPolicy,
+    `frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`,
+  ]),
+];
 
 if (process.env.FORCE_SSL) {
   headers.push({
@@ -127,14 +139,11 @@ const config = {
     return [
       {
         source: '/:path*',
-        headers: [
-          ...headers,
-          cspHeader([`frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`]),
-        ],
+        headers,
       },
       {
         source: '/share/:path*',
-        headers: [...headers, cspHeader()],
+        headers: shareHeaders,
       },
     ];
   },

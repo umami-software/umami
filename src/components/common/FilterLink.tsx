@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Icon, Icons } from 'react-basics';
 import classNames from 'classnames';
 import Link from 'next/link';
@@ -6,7 +7,23 @@ import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
 import styles from './FilterLink.module.css';
 
-export function FilterLink({ id, value, label, externalUrl, children, className }) {
+export interface FilterLinkProps {
+  id: string;
+  value: string;
+  label: string;
+  externalUrl: string;
+  className: string;
+  children: ReactNode;
+}
+
+export function FilterLink({
+  id,
+  value,
+  label,
+  externalUrl,
+  children,
+  className,
+}: FilterLinkProps) {
   const { formatMessage, labels } = useMessages();
   const { makeUrl, query } = useNavigation();
   const active = query[id] !== undefined;

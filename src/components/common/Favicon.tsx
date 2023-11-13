@@ -1,6 +1,6 @@
 import styles from './Favicon.module.css';
 
-function getHostName(url) {
+function getHostName(url: string) {
   const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?=]+)/im);
   return match && match.length > 1 ? match[1] : null;
 }
