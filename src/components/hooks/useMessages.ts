@@ -1,7 +1,8 @@
-import { useIntl, FormattedMessage } from 'react-intl';
+import { useIntl, FormattedMessage, MessageDescriptor, PrimitiveType } from 'react-intl';
 import { messages, labels } from 'components/messages';
+import { FormatXMLElementFn, Options } from 'intl-messageformat';
 
-export function useMessages() {
+export function useMessages(): any {
   const intl = useIntl();
 
   const getMessage = (id: string) => {
@@ -10,7 +11,16 @@ export function useMessages() {
     return message ? formatMessage(message) : id;
   };
 
-  const formatMessage = (descriptor: any, values?: any, opts?: any) => {
+  const formatMessage = (
+    descriptor:
+      | MessageDescriptor
+      | {
+          id: string;
+          defaultMessage: string;
+        },
+    values?: Record<string, PrimitiveType | FormatXMLElementFn<string, string>>,
+    opts?: Options,
+  ) => {
     return descriptor ? intl.formatMessage(descriptor, values, opts) : null;
   };
 

@@ -11,10 +11,10 @@ export function MobileMenu({
   items: any[];
   className?: string;
   onClose: () => void;
-}) {
+}): any {
   const pathname = usePathname();
 
-  const Items = ({ items, className }: { items: any[]; className?: string }) => (
+  const Items = ({ items, className }: { items: any[]; className?: string }): any => (
     <div className={classNames(styles.items, className)}>
       {items.map(({ label, url, children }: { label: string; url: string; children: any[] }) => {
         const selected = pathname.startsWith(url);
