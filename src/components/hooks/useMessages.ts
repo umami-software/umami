@@ -4,13 +4,13 @@ import { messages, labels } from 'components/messages';
 export function useMessages() {
   const intl = useIntl();
 
-  const getMessage = id => {
+  const getMessage = (id: string) => {
     const message = Object.values(messages).find(value => value.id === id);
 
     return message ? formatMessage(message) : id;
   };
 
-  const formatMessage = (descriptor, values, opts) => {
+  const formatMessage = (descriptor: any, values?: any, opts?: any) => {
     return descriptor ? intl.formatMessage(descriptor, values, opts) : null;
   };
 

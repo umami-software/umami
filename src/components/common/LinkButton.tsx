@@ -6,7 +6,7 @@ import { ReactNode } from 'react';
 
 export interface LinkButtonProps {
   href: string;
-  className: string;
+  className?: string;
   variant?: string;
   scroll?: boolean;
   children?: ReactNode;

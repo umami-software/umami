@@ -3,7 +3,7 @@ import { useState } from 'react';
 import MobileMenu from './MobileMenu';
 import Icons from 'components/icons';
 
-export function HamburgerButton({ menuItems }) {
+export function HamburgerButton({ menuItems }: { menuItems: any[] }) {
   const [active, setActive] = useState(false);
 
   const handleClick = () => setActive(state => !state);

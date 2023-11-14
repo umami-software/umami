@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2021",
     "outDir": "./build",
     "module": "esnext",
     "moduleResolution": "node",

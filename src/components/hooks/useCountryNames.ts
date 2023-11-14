@@ -6,10 +6,10 @@ const countryNames = {
   'en-US': enUS,
 };
 
-export function useCountryNames(locale) {
+export function useCountryNames(locale: string) {
   const [list, setList] = useState(countryNames[locale] || enUS);
 
-  async function loadData(locale) {
+  async function loadData(locale: string) {
     const { data } = await httpGet(`${process.env.basePath}/intl/country/${locale}.json`);
 
     if (data) {

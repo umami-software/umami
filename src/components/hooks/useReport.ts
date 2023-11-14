@@ -18,7 +18,7 @@ export function useReport(reportId, defaultParameters) {
   };
 
   const loadReport = async id => {
-    const data = await get(`/reports/${id}`);
+    const data: any = await get(`/reports/${id}`);
 
     const { dateRange } = data?.parameters || {};
     const { startDate, endDate } = dateRange || {};
@@ -40,7 +40,7 @@ export function useReport(reportId, defaultParameters) {
       const data = await post(`/reports/${type}`, { ...parameters, timezone });
 
       setReport(
-        produce(state => {
+        produce((state: any) => {
           state.parameters = parameters;
           state.data = data;
 
@@ -56,7 +56,7 @@ export function useReport(reportId, defaultParameters) {
   const updateReport = useCallback(
     async data => {
       setReport(
-        produce(state => {
+        produce((state: any) => {
           const { parameters, ...rest } = data;
 
           if (parameters) {

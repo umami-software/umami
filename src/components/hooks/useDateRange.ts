@@ -6,7 +6,7 @@ import websiteStore, { setWebsiteDateRange } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';
 import useApi from './useApi';
 
-export function useDateRange(websiteId) {
+export function useDateRange(websiteId: string) {
   const { get } = useApi();
   const { locale } = useLocale();
   const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
@@ -20,7 +20,7 @@ export function useDateRange(websiteId) {
 
       if (typeof value === 'string') {
         if (value === 'all') {
-          const result = await get(`/websites/${websiteId}/daterange`);
+          const result: any = await get(`/websites/${websiteId}/daterange`);
           const { mindate, maxdate } = result;
 
           const startDate = new Date(mindate);
