@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import useApi from 'components/hooks/useApi';
 import useUser from 'components/hooks/useUser';
 
-export function useRequireLogin(handler?: (data?: object) => void) {
+export function useRequireLogin() {
   const { get } = useApi();
   const { user, setUser } = useUser();
 
@@ -11,9 +11,9 @@ export function useRequireLogin(handler?: (data?: object) => void) {
       try {
         const data = await get('/auth/verify');
 
-        setUser(typeof handler === 'function' ? handler(data) : (data as any)?.user);
+        setUser(data);
       } catch {
-        location.href = `${process.env.basePath || ''}/login`;
+        window.location.href = `${process.env.basePath || ''}/login`;
       }
     }
 

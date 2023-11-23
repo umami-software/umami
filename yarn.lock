@@ -2596,18 +2596,18 @@
     "@typescript-eslint/types" "6.8.0"
     eslint-visitor-keys "^3.4.1"
 
-"@umami/prisma-client@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@umami/prisma-client/-/prisma-client-0.3.0.tgz#fea35a44c76af0e4ce58288107cda3ee76fc80ba"
-  integrity sha512-88y/WJX2TEZaUfP+PTretGUL6YdwZCBbhaoeC87eTF3l1aG0Lv3TsmW0lJy5rbKpVqrFJ8zrtvCMP/vt7WeIjg==
+"@umami/prisma-client@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@umami/prisma-client/-/prisma-client-0.5.0.tgz#e2287debbf21f9344c989b9e7192491df88513bf"
+  integrity sha512-BkStMrvxYZQPwEIyy30JJPucTTsmQqb4jD8+ciSHxcBc7039cW0XyX3TL/u9ebZmANzIuNO0XiBArwjWulGIjg==
   dependencies:
     chalk "^4.1.2"
     debug "^4.3.4"
 
-"@umami/redis-client@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.16.0.tgz#0050d1f93338d88691c983f3c0cd4a62da20212b"
-  integrity sha512-fE08lkMvhXbkXSdSRpG0R/9a3xIiTvwD6f+hKERFZrpfvJJlH3Uf4Jod8Ahg/+TmD03ihSQPooUT3T9Ig3dfaQ==
+"@umami/redis-client@^0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@umami/redis-client/-/redis-client-0.17.0.tgz#a24db0cb561a9c18b0ecaf6a3342c28525abe1e5"
+  integrity sha512-rX0xB+QkhMoHnKcj8jzbp1CUMKB/qk2HaYWpNP0Stztkvw7wjFYXsLTLidW3t1a06H5qApx6mJvUjxefLUsX7w==
   dependencies:
     debug "^4.3.4"
     redis "^4.5.1"

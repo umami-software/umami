@@ -7,14 +7,15 @@ import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next
 import { findTeamWebsiteByUserId, getTeamUser, getTeamWebsite } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
+import { NextApiRequest } from 'next';
 
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
 
-export async function setAuthKey(user, expire = 0) {
+export async function setAuthKey(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
 
-  await redis.set(authKey, user);
+  await redis.set(authKey, data);
 
   if (expire) {
     await redis.expire(authKey, expire);
@@ -23,7 +24,7 @@ export async function setAuthKey(user, expire = 0) {
   return createSecureToken({ authKey }, secret());
 }
 
-export function getAuthToken(req) {
+export function getAuthToken(req: NextApiRequest) {
   try {
     return req.headers.authorization.split(' ')[1];
   } catch {
@@ -31,7 +32,7 @@ export function getAuthToken(req) {
   }
 }
 
-export function parseShareToken(req) {
+export function parseShareToken(req: Request) {
   try {
     return parseToken(req.headers[SHARE_TOKEN_HEADER], secret());
   } catch (e) {
