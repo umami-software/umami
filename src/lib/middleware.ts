@@ -1,6 +1,6 @@
-import redis from '@umami/redis-client';
 import cors from 'cors';
 import debug from 'debug';
+import redis from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { isUuid, secret } from 'lib/crypto';
@@ -47,15 +47,17 @@ export const useSession = createMiddleware(async (req, res, next) => {
 export const useAuth = createMiddleware(async (req, res, next) => {
   const token = getAuthToken(req);
   const payload = parseSecureToken(token, secret());
-  const shareToken = await parseShareToken(req);
+  const shareToken = await parseShareToken(req as any);
 
   let user = null;
   const { userId, authKey, grant } = payload || {};
 
   if (isUuid(userId)) {
     user = await getUserById(userId);
-  } else if (redis && authKey) {
-    user = await redis.get(authKey);
+  } else if (redis.enabled && authKey) {
+    const key = await redis.client.get(authKey);
+
+    user = await getUserById(key.userId);
   }
 
   if (process.env.NODE_ENV === 'development') {

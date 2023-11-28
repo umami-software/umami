@@ -1,6 +1,6 @@
 import { Report } from '@prisma/client';
-import redis from '@umami/redis-client';
 import debug from 'debug';
+import redis from '@umami/redis-client';
 import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
@@ -12,13 +12,13 @@ import { NextApiRequest } from 'next';
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
 
-export async function setAuthKey(data: any, expire = 0) {
+export async function saveAuth(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
 
-  await redis.set(authKey, data);
+  await redis.client.set(authKey, data);
 
   if (expire) {
-    await redis.expire(authKey, expire);
+    await redis.client.expire(authKey, expire);
   }
 
   return createSecureToken({ authKey }, secret());
@@ -61,11 +61,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
 
 export async function canCreateWebsite({ user, grant }: Auth) {
   if (cloudMode) {
-    if (grant?.find(a => a === PERMISSIONS.websiteCreate)) {
-      return true;
-    }
-
-    return false;
+    return !!grant?.find(a => a === PERMISSIONS.websiteCreate);
   }
 
   if (user.isAdmin) {
@@ -121,11 +117,7 @@ export async function canDeleteReport(auth: Auth, report: Report) {
 
 export async function canCreateTeam({ user, grant }: Auth) {
   if (cloudMode) {
-    if (grant?.find(a => a === PERMISSIONS.teamCreate)) {
-      return true;
-    }
-
-    return false;
+    return !!grant?.find(a => a === PERMISSIONS.teamCreate);
   }
 
   if (user.isAdmin) {
