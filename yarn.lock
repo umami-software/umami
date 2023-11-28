@@ -1958,6 +1958,11 @@
   resolved "https://registry.yarnpkg.com/@prisma/engines/-/engines-5.4.2.tgz#ba2b7faeb227c76e423e88f962afe6a031319f3f"
   integrity sha512-fqeucJ3LH0e1eyFdT0zRx+oETLancu5+n4lhiYECyEz6H2RDskPJHJYHkVc0LhkU4Uv7fuEnppKU3nVKNzMh8g==
 
+"@prisma/extension-read-replicas@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@prisma/extension-read-replicas/-/extension-read-replicas-0.3.0.tgz#2842a7c928f957c1dd58a6256104797596d43426"
+  integrity sha512-F9+rSmYday6GT2qjhJtkZcBOpLO5LtpvFcMGqrBDHf+78LEdSuxfFjOxYlNuqk4B+th62yxpbhfpmB9/Mca14Q==
+
 "@react-spring/animated@~9.7.3":
   version "9.7.3"
   resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.7.3.tgz#4211b1a6d48da0ff474a125e93c0f460ff816e0f"
