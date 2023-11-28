@@ -82,5 +82,5 @@ export default {
   deleteSession,
   fetchUserBlock,
   incrementUserBlock,
-  enabled: !!redis,
+  enabled: !!redis.enabled,
 };
