@@ -3,7 +3,7 @@ import debug from 'debug';
 import redis from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
-import { isUuid, secret } from 'lib/crypto';
+import { secret } from 'lib/crypto';
 import { findSession } from 'lib/session';
 import {
   badRequest,
@@ -52,7 +52,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   let user = null;
   const { userId, authKey, grant } = payload || {};
 
-  if (isUuid(userId)) {
+  if (userId) {
     user = await getUserById(userId);
   } else if (redis.enabled && authKey) {
     const key = await redis.client.get(authKey);
@@ -61,7 +61,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   }
 
   if (process.env.NODE_ENV === 'development') {
-    log({ token, shareToken, payload, user, grant });
+    log('useAuth:', { token, shareToken, payload, user, grant });
   }
 
   if (!user?.id && !shareToken) {
