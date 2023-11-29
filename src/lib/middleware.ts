@@ -8,6 +8,7 @@ import { findSession } from 'lib/session';
 import {
   badRequest,
   createMiddleware,
+  forbidden,
   parseSecureToken,
   tooManyRequest,
   unauthorized,
@@ -37,6 +38,9 @@ export const useSession = createMiddleware(async (req, res, next) => {
   } catch (e: any) {
     if (e.message === 'Usage Limit.') {
       return tooManyRequest(res, e.message);
+    }
+    if (e.message.startsWith('Website not found:')) {
+      return forbidden(res, e.message);
     }
     return badRequest(res, e.message);
   }
