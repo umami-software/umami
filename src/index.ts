@@ -10,7 +10,7 @@ export * from 'components/hooks/useFormat';
 export * from 'components/hooks/useLocale';
 export * from 'components/hooks/useMessages';
 export * from 'components/hooks/useNavigation';
-export * from 'components/hooks/useRequireLogin';
+export * from 'components/hooks/useLogin';
 export * from 'components/hooks/useShareToken';
 export * from 'components/hooks/useSticky';
 export * from 'components/hooks/useTheme';
