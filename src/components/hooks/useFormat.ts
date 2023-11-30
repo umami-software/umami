@@ -9,23 +9,23 @@ export function useFormat() {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 
-  const formatBrowser = value => {
+  const formatBrowser = (value: string) => {
     return BROWSERS[value] || value;
   };
 
-  const formatCountry = value => {
+  const formatCountry = (value: string) => {
     return countryNames[value] || value;
   };
 
-  const formatRegion = value => {
+  const formatRegion = (value: string) => {
     return regions[value] ? regions[value] : value;
   };
 
-  const formatDevice = value => {
+  const formatDevice = (value: string) => {
     return formatMessage(labels[value] || labels.unknown);
   };
 
-  const formatValue = (value, type) => {
+  const formatValue = (value: string, type: string) => {
     switch (type) {
       case 'browser':
         return formatBrowser(value);

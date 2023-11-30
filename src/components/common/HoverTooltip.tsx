@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Tooltip } from 'react-basics';
 import styles from './HoverTooltip.module.css';
 
-export function HoverTooltip({ children }) {
+export function HoverTooltip({ children }: { children: ReactNode }) {
   const [position, setPosition] = useState({ x: -1000, y: -1000 });
 
   useEffect(() => {

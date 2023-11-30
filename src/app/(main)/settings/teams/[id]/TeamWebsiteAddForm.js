@@ -2,11 +2,13 @@ import useApi from 'components/hooks/useApi';
 import { useState } from 'react';
 import { Button, Form, FormButtons, GridColumn, Loading, SubmitButton, Toggle } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
-import WebsitesDataTable from '../../websites/WebsitesDataTable';
+import WebsitesDataTable from 'app/(main)/settings/websites/WebsitesDataTable';
 import Empty from 'components/common/Empty';
 import { setValue } from 'store/cache';
+import { useUser } from 'components/hooks';
 
 export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
+  const { user } = useUser();
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
@@ -37,7 +39,7 @@ export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
       {!isLoading && !hasData && <Empty />}
       {hasData && (
         <Form onSubmit={handleSubmit} error={error}>
-          <WebsitesDataTable showHeader={false} showActions={false}>
+          <WebsitesDataTable userId={user.id} showHeader={false} showActions={false}>
             <GridColumn name="select" label={formatMessage(labels.selectWebsite)} alignment="end">
               {row => (
                 <Toggle

@@ -5,8 +5,9 @@ export function useSticky({ enabled = true, threshold = 1 }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    let observer;
-    const handler = ([entry]) => setIsSticky(entry.intersectionRatio < threshold);
+    let observer: IntersectionObserver | undefined;
+    const handler: IntersectionObserverCallback = ([entry]) =>
+      setIsSticky(entry.intersectionRatio < threshold);
 
     if (enabled && ref.current) {
       observer = new IntersectionObserver(handler, { threshold: [threshold] });

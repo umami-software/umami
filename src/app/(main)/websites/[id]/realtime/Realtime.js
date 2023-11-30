@@ -5,7 +5,7 @@ import firstBy from 'thenby';
 import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
-import WorldMap from 'components/common/WorldMap';
+import WorldMap from 'components/metrics/WorldMap';
 import RealtimeLog from './RealtimeLog';
 import RealtimeHeader from './RealtimeHeader';
 import RealtimeUrls from './RealtimeUrls';

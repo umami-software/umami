@@ -5,7 +5,7 @@ export function getClientAuthToken() {
   return getItem(AUTH_TOKEN);
 }
 
-export function setClientAuthToken(token) {
+export function setClientAuthToken(token: string) {
   setItem(AUTH_TOKEN, token);
 }
 

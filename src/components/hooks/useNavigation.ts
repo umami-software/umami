@@ -17,7 +17,7 @@ export function useNavigation() {
     return obj;
   }, [params]);
 
-  function makeUrl(params, reset) {
+  function makeUrl(params: any, reset?: boolean) {
     return reset ? pathname : buildUrl(pathname, { ...query, ...params });
   }
 

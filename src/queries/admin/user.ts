@@ -11,13 +11,17 @@ export interface GetUserOptions {
 }
 
 async function getUser(
-  where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
+  where: Prisma.UserWhereUniqueInput,
   options: GetUserOptions = {},
 ): Promise<User> {
   const { includePassword = false, showDeleted = false } = options;
 
-  return prisma.client.user.findFirst({
-    where: { ...where, ...(showDeleted ? {} : { deletedAt: null }) },
+  if (showDeleted) {
+    where.deletedAt = null;
+  }
+
+  return prisma.client.user.findUnique({
+    where,
     select: {
       id: true,
       username: true,
@@ -28,8 +32,8 @@ async function getUser(
   });
 }
 
-export async function getUserById(userId: string, options: GetUserOptions = {}) {
-  return getUser({ id: userId }, options);
+export async function getUserById(id: string, options: GetUserOptions = {}) {
+  return getUser({ id }, options);
 }
 
 export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
