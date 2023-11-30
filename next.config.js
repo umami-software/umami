@@ -9,6 +9,7 @@ const contentSecurityPolicy = [
   `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
   `style-src 'self' 'unsafe-inline'`,
   `connect-src 'self' api.umami.is`,
+  `frame-src *`,
 ];
 
 const cspHeader = (values = []) => ({
