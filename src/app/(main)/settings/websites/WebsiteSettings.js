@@ -34,7 +34,7 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
 
   const handleReset = async value => {
     if (value === 'delete') {
-      await router.push('/settings/websites');
+      router.push('/settings/websites');
     } else if (value === 'reset') {
       showSuccess();
     }
