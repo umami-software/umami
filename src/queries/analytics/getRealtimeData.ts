@@ -2,15 +2,15 @@ import { md5 } from 'next-basics';
 import { getSessions, getEvents } from 'queries/index';
 import { EVENT_TYPE } from 'lib/constants';
 
-export async function getRealtimeData(websiteId, time) {
+export async function getRealtimeData(websiteId: string, startDate: Date) {
   const [pageviews, sessions, events] = await Promise.all([
-    getEvents(websiteId, time, EVENT_TYPE.pageView),
-    getSessions(websiteId, time),
-    getEvents(websiteId, time, EVENT_TYPE.customEvent),
+    getEvents(websiteId, startDate, EVENT_TYPE.pageView),
+    getSessions(websiteId, startDate),
+    getEvents(websiteId, startDate, EVENT_TYPE.customEvent),
   ]);
 
-  const decorate = (id, data) => {
-    return data.map(props => ({
+  const decorate = (id: string, data: any[]) => {
+    return data.map((props: { [key: string]: any }) => ({
       ...props,
       __id: md5(id, ...Object.values(props)),
       __type: id,

@@ -10,9 +10,9 @@ import styles from './FilterLink.module.css';
 export interface FilterLinkProps {
   id: string;
   value: string;
-  label: string;
-  externalUrl: string;
-  className: string;
+  label?: string;
+  externalUrl?: string;
+  className?: string;
   children: ReactNode;
 }
 

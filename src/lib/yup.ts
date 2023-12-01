@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 import * as yup from 'yup';
 import { UNIT_TYPES } from './constants';
 

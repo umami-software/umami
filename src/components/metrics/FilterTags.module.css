@@ -24,3 +24,7 @@
 .tag:hover {
   background: var(--blue200);
 }
+
+.tag b {
+  text-transform: lowercase;
+}

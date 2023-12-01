@@ -7,7 +7,7 @@ export function ErrorMessage() {
 
   return (
     <div className={styles.error}>
-      <Icon className={styles.icon} size="large">
+      <Icon className={styles.icon} size="lg">
         <Icons.Alert />
       </Icon>
       <Text>{formatMessage(messages.error)}</Text>

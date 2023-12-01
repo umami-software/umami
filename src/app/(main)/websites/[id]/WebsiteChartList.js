@@ -1,4 +1,4 @@
-import { Button, Text, Icon } from 'react-basics';
+import { Button, Text, Icon, Icons } from 'react-basics';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 import Link from 'next/link';
@@ -7,7 +7,6 @@ import useDashboard from 'store/dashboard';
 import WebsiteHeader from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { useMessages, useLocale } from 'components/hooks';
-import Icons from 'components/icons';
 
 export default function WebsiteChartList({ websites, showCharts, limit }) {
   const { formatMessage, labels } = useMessages();
