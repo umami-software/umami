@@ -3,14 +3,22 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
-const contentSecurityPolicy = `
-  default-src 'self';
-  img-src *;
-  script-src 'self' 'unsafe-eval' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline';
-  connect-src 'self' api.umami.is;
-  frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS};
-`;
+const contentSecurityPolicy = [
+  `default-src 'self'`,
+  `img-src *`,
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
+  `style-src 'self' 'unsafe-inline'`,
+  `connect-src 'self' api.umami.is`,
+  `frame-src *`,
+];
+
+const cspHeader = (values = []) => ({
+  key: 'Content-Security-Policy',
+  value: values
+    .join(';')
+    .replace(/\s{2,}/g, ' ')
+    .trim(),
+});
 
 const headers = [
   {
@@ -21,10 +29,18 @@ const headers = [
     key: 'X-Frame-Options',
     value: 'SAMEORIGIN',
   },
+  cspHeader(contentSecurityPolicy),
+];
+
+const shareHeaders = [
   {
-    key: 'Content-Security-Policy',
-    value: contentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
+    key: 'X-DNS-Prefetch-Control',
+    value: 'on',
   },
+  cspHeader([
+    ...contentSecurityPolicy,
+    `frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`,
+  ]),
 ];
 
 if (process.env.FORCE_SSL) {
@@ -81,14 +97,13 @@ const config = {
   reactStrictMode: false,
   env: {
     basePath: basePath || '',
-    cloudMode: !!process.env.CLOUD_MODE,
-    cloudUrl: process.env.CLOUD_URL,
+    cloudMode: process.env.CLOUD_MODE || '',
+    cloudUrl: process.env.CLOUD_URL || '',
     configUrl: '/config',
     currentVersion: pkg.version,
-    defaultLocale: process.env.DEFAULT_LOCALE,
-    disableLogin: process.env.DISABLE_LOGIN,
-    disableUI: process.env.DISABLE_UI,
-    isProduction: process.env.NODE_ENV === 'production',
+    defaultLocale: process.env.DEFAULT_LOCALE || '',
+    disableLogin: process.env.DISABLE_LOGIN || '',
+    disableUI: process.env.DISABLE_UI || '',
   },
   basePath,
   output: 'standalone',
@@ -126,6 +141,10 @@ const config = {
       {
         source: '/:path*',
         headers,
+      },
+      {
+        source: '/share/:path*',
+        headers: shareHeaders,
       },
     ];
   },

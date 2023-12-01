@@ -1,14 +1,19 @@
 /* eslint-disable no-console */
+import { ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { Button } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import styles from './ErrorBoundry.module.css';
 
-const logError = (error, info) => {
+const logError = (error: Error, info: ErrorInfo) => {
   console.error(error, info.componentStack);
 };
 
-export function ErrorBoundary({ children }) {
+export interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+export function ErrorBoundary({ children }: ErrorBoundaryProps) {
   const { formatMessage, messages } = useMessages();
 
   const fallbackRender = ({ error, resetErrorBoundary }) => {

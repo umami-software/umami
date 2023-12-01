@@ -1,9 +1,9 @@
 import useStore, { setShareToken } from 'store/app';
 import useApi from './useApi';
 
-const selector = state => state.shareToken;
+const selector = (state: { shareToken: string }) => state.shareToken;
 
-export function useShareToken(shareId) {
+export function useShareToken(shareId: string) {
   const shareToken = useStore(selector);
   const { get, useQuery } = useApi();
   const { isLoading, error } = useQuery(['share', shareId], async () => {

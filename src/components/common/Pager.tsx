@@ -3,7 +3,15 @@ import { Button, Icon, Icons } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import styles from './Pager.module.css';
 
-export function Pager({ page, pageSize, count, onPageChange, className }) {
+export interface PagerProps {
+  page: number;
+  pageSize: number;
+  count: number;
+  onPageChange: (nextPage: number) => void;
+  className?: string;
+}
+
+export function Pager({ page, pageSize, count, onPageChange, className }: PagerProps) {
   const { formatMessage, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(count / pageSize) : 0;
   const lastPage = page === maxPage;
@@ -13,7 +21,7 @@ export function Pager({ page, pageSize, count, onPageChange, className }) {
     return null;
   }
 
-  const handlePageChange = value => {
+  const handlePageChange = (value: number) => {
     const nextPage = page + value;
     if (nextPage > 0 && nextPage <= maxPage) {
       onPageChange(nextPage);

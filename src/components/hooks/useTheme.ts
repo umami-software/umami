@@ -4,7 +4,7 @@ import { getItem, setItem } from 'next-basics';
 import { THEME_COLORS, THEME_CONFIG } from 'lib/constants';
 import { colord } from 'colord';
 
-const selector = state => state.theme;
+const selector = (state: { theme: string }) => state.theme;
 
 export function useTheme() {
   const defaultTheme =

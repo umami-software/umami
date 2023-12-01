@@ -2,7 +2,13 @@ import { useState } from 'react';
 import { Button, LoadingButton, Form, FormButtons } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 
-export function ConfirmDeleteForm({ name, onConfirm, onClose }) {
+export interface ConfirmDeleteFormProps {
+  name: string;
+  onConfirm?: () => void;
+  onClose?: () => void;
+}
+
+export function ConfirmDeleteForm({ name, onConfirm, onClose }: ConfirmDeleteFormProps) {
   const [loading, setLoading] = useState(false);
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
 

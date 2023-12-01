@@ -5,7 +5,7 @@ import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import OSTable from 'components/metrics/OSTable';
 import DevicesTable from 'components/metrics/DevicesTable';
-import WorldMap from 'components/common/WorldMap';
+import WorldMap from 'components/metrics/WorldMap';
 import CountriesTable from 'components/metrics/CountriesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';

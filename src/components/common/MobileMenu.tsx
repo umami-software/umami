@@ -4,12 +4,19 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './MobileMenu.module.css';
 
-export function MobileMenu({ items = [], onClose }) {
+export function MobileMenu({
+  items = [],
+  onClose,
+}: {
+  items: any[];
+  className?: string;
+  onClose: () => void;
+}): any {
   const pathname = usePathname();
 
-  const Items = ({ items, className }) => (
+  const Items = ({ items, className }: { items: any[]; className?: string }): any => (
     <div className={classNames(styles.items, className)}>
-      {items.map(({ label, url, children }) => {
+      {items.map(({ label, url, children }: { label: string; url: string; children: any[] }) => {
         const selected = pathname.startsWith(url);
 
         return (
