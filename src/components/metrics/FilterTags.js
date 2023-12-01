@@ -2,10 +2,12 @@ import { safeDecodeURI } from 'next-basics';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
+import useFormat from 'components/hooks/useFormat';
 import styles from './FilterTags.module.css';
 
 export function FilterTags({ params }) {
   const { formatMessage, labels } = useMessages();
+  const { formatValue } = useFormat();
   const {
     router,
     makeUrl,
@@ -34,7 +36,7 @@ export function FilterTags({ params }) {
         return (
           <div key={key} className={styles.tag} onClick={() => handleCloseFilter(key)}>
             <Text>
-              <b>{`${key}`}</b> = {`${safeDecodeURI(params[key])}`}
+              <b>{formatMessage(labels[key])}</b> = {formatValue(safeDecodeURI(params[key]), key)}
             </Text>
             <Icon>
               <Icons.Close />
