@@ -1,12 +1,16 @@
-import { Button, Icon, Text, Modal, Icons, ModalTrigger } from 'react-basics';
+import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
 import UserAddForm from './UserAddForm';
 import useMessages from 'components/hooks/useMessages';
+import { setValue } from 'store/cache';
 
 export function UserAddButton({ onSave }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
+  const { showToast } = useToasts();
 
   const handleSave = () => {
-    onSave();
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    setValue('users', Date.now());
+    onSave?.();
   };
 
   return (
