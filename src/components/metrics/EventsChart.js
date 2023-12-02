@@ -16,17 +16,20 @@ export function EventsChart({ websiteId, className, token }) {
     query: { url, event },
   } = useNavigation();
 
-  const { data, isLoading } = useQuery(['events', websiteId, modified, event], () =>
-    get(`/websites/${websiteId}/events`, {
-      startAt: +startDate,
-      endAt: +endDate,
-      unit,
-      timezone,
-      url,
-      event,
-      token,
-    }),
-  );
+  const { data, isLoading } = useQuery({
+    queryKey: ['events', websiteId, modified, event],
+    queryFn: () =>
+      get(`/websites/${websiteId}/events`, {
+        startAt: +startDate,
+        endAt: +endDate,
+        unit,
+        timezone,
+        url,
+        event,
+        token,
+      }),
+    enabled: !!websiteId,
+  });
 
   const datasets = useMemo(() => {
     if (!data) return [];

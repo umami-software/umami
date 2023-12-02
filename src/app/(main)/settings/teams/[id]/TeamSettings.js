@@ -17,15 +17,15 @@ export function TeamSettings({ teamId }) {
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
-  const { data, isLoading } = useQuery(
-    ['team', teamId],
-    () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['team', teamId],
+    queryFn: () => {
       if (teamId) {
         return get(`/teams/${teamId}`);
       }
     },
-    { cacheTime: 0 },
-  );
+    cacheTime: 0,
+  });
   const canEdit = data?.teamUser?.find(
     ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,
   );

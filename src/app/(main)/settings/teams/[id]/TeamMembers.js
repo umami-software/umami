@@ -7,15 +7,15 @@ import useCache from 'store/cache';
 export function TeamMembers({ teamId, readOnly }) {
   const { get } = useApi();
   const modified = useCache(state => state?.['team:members']);
-  const queryResult = useFilterQuery(
-    ['team:members', { teamId, modified }],
-    params => {
+  const queryResult = useFilterQuery({
+    queryKey: ['team:members', { teamId, modified }],
+    queryFn: params => {
       return get(`/teams/${teamId}/users`, {
         ...params,
       });
     },
-    { enabled: !!teamId },
-  );
+    enabled: !!teamId,
+  });
 
   return (
     <>

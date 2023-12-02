@@ -35,8 +35,8 @@ export function MetricsTable({
   const { get, useQuery } = useApi();
   const { dir } = useLocale();
 
-  const { data, isLoading, isFetched, error } = useQuery(
-    [
+  const { data, isLoading, isFetched, error } = useQuery({
+    queryKey: [
       'websites:metrics',
       {
         websiteId,
@@ -53,10 +53,12 @@ export function MetricsTable({
         city,
       },
     ],
-    () => {
+    queryFn: () => {
       const filters = { url, title, referrer, os, browser, device, country, region, city };
 
       filters[type] = undefined;
+
+      onDataLoad?.();
 
       return get(`/websites/${websiteId}/metrics`, {
         type,
@@ -65,8 +67,8 @@ export function MetricsTable({
         ...filters,
       });
     },
-    { onSuccess: onDataLoad, retryDelay: delay || DEFAULT_ANIMATION_DURATION },
-  );
+    retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+  });
 
   const filteredData = useMemo(() => {
     if (data) {

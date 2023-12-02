@@ -8,9 +8,11 @@ import useCache from 'store/cache';
 export default function ReportsDataTable({ websiteId }: { websiteId?: string }) {
   const { get } = useApi();
   const modified = useCache(state => (state as any)?.reports);
-  const queryResult = useFilterQuery(['reports', { websiteId, modified }], params =>
-    get(websiteId ? `/websites/${websiteId}/reports` : `/reports`, params),
-  );
+  const queryResult = useFilterQuery({
+    queryKey: ['reports', { websiteId, modified }],
+    queryFn: (params: any) =>
+      get(websiteId ? `/websites/${websiteId}/reports` : `/reports`, params),
+  });
 
   return (
     <DataTable queryResult={queryResult}>

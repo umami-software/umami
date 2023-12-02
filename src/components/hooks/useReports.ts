@@ -8,10 +8,10 @@ export function useReports() {
   const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
     useApiFilter();
-  const { data, error, isLoading } = useQuery(
-    ['reports', { modified, filter, page, pageSize }],
-    () => get(`/reports`, { filter, page, pageSize }),
-  );
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['reports', { modified, filter, page, pageSize }],
+    queryFn: () => get(`/reports`, { filter, page, pageSize }),
+  });
 
   const deleteReport = id => {
     mutate(id, {

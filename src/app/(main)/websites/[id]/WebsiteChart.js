@@ -12,12 +12,12 @@ export function WebsiteChart({ websiteId }) {
   } = useNavigation();
   const { get, useQuery } = useApi();
 
-  const { data, isLoading } = useQuery(
-    [
+  const { data, isLoading } = useQuery({
+    queryKey: [
       'websites:pageviews',
       { websiteId, modified, url, referrer, os, browser, device, country, region, city, title },
     ],
-    () =>
+    queryFn: () =>
       get(`/websites/${websiteId}/pageviews`, {
         startAt: +startDate,
         endAt: +endDate,
@@ -33,7 +33,7 @@ export function WebsiteChart({ websiteId }) {
         city,
         title,
       }),
-  );
+  });
 
   const chartData = useMemo(() => {
     if (data) {

@@ -8,10 +8,13 @@ import useCache from 'store/cache';
 export function TeamsDataTable() {
   const { get } = useApi();
   const modified = useCache(state => state?.teams);
-  const queryResult = useFilterQuery(['teams', { modified }], params => {
-    return get(`/teams`, {
-      ...params,
-    });
+  const queryResult = useFilterQuery({
+    queryKey: ['teams', { modified }],
+    queryFn: params => {
+      return get(`/teams`, {
+        ...params,
+      });
+    },
   });
 
   return (

@@ -28,15 +28,13 @@ export function Realtime({ websiteId }) {
   const [currentData, setCurrentData] = useState();
   const { get, useQuery } = useApi();
   const { data: website } = useWebsite(websiteId);
-  const { data, isLoading, error } = useQuery(
-    ['realtime', websiteId],
-    () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
-    {
-      enabled: !!(websiteId && website),
-      refetchInterval: REALTIME_INTERVAL,
-      cache: false,
-    },
-  );
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['realtime', websiteId],
+    queryFn: () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
+    enabled: !!(websiteId && website),
+    refetchInterval: REALTIME_INTERVAL,
+    cache: false,
+  });
 
   useEffect(() => {
     if (data) {

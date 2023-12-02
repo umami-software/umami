@@ -1,24 +1,25 @@
-import { useState } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { useApi } from 'components/hooks/useApi';
-import { UseQueryOptions } from '@tanstack/react-query';
+import { SearchFilter, FilterResult } from 'lib/types';
 
-export function useFilterQuery(key: any[], fn, options?: UseQueryOptions) {
-  const [params, setParams] = useState({
+export interface FilterQueryResult<T> {
+  result: FilterResult<any[]>;
+  query: any;
+  params: SearchFilter;
+  setParams: Dispatch<SetStateAction<T | SearchFilter>>;
+}
+
+export function useFilterQuery<T>(props = {}): FilterQueryResult<T> {
+  const [params, setParams] = useState<T | SearchFilter>({
     query: '',
     page: 1,
   });
   const { useQuery } = useApi();
-
-  const { data, ...other } = useQuery([...key, params], fn.bind(null, params), options);
+  const { data, ...query } = useQuery<FilterResult<any[]>>({ ...props });
 
   return {
-    result: data as {
-      page: number;
-      pageSize: number;
-      count: number;
-      data: any[];
-    },
-    ...other,
+    result: data,
+    query,
     params,
     setParams,
   };

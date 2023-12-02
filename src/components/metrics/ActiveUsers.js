@@ -7,14 +7,12 @@ import styles from './ActiveUsers.module.css';
 export function ActiveUsers({ websiteId, value, refetchInterval = 60000 }) {
   const { formatMessage, messages } = useMessages();
   const { get, useQuery } = useApi();
-  const { data } = useQuery(
-    ['websites:active', websiteId],
-    () => get(`/websites/${websiteId}/active`),
-    {
-      refetchInterval,
-      enabled: !!websiteId,
-    },
-  );
+  const { data } = useQuery({
+    queryKey: ['websites:active', websiteId],
+    queryFn: () => get(`/websites/${websiteId}/active`),
+    refetchInterval,
+    enabled: !!websiteId,
+  });
 
   const count = useMemo(() => {
     if (websiteId) {

@@ -9,10 +9,9 @@ import useCache from 'store/cache';
 export function UsersDataTable() {
   const { get } = useApi();
   const modified = useCache(state => state?.users);
-  const queryResult = useFilterQuery(['users', { modified }], params => {
-    return get(`/users`, {
-      ...params,
-    });
+  const queryResult = useFilterQuery({
+    queryKey: ['users', { modified }],
+    queryFn: params => get(`/users`, params),
   });
 
   return (

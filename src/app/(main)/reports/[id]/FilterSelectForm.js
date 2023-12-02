@@ -8,16 +8,16 @@ import { useApi } from 'components/hooks';
 function useValues(websiteId, type) {
   const now = Date.now();
   const { get, useQuery } = useApi();
-  const { data, error, isLoading } = useQuery(
-    ['websites:values', websiteId, type],
-    () =>
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['websites:values', websiteId, type],
+    queryFn: () =>
       get(`/websites/${websiteId}/values`, {
         type,
         startAt: +subDays(now, 90),
         endAt: now,
       }),
-    { enabled: !!(websiteId && type) },
-  );
+    enabled: !!(websiteId && type),
+  });
 
   return { data, error, isLoading };
 }

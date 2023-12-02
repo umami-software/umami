@@ -20,9 +20,10 @@ export function Dashboard() {
   const { get, useQuery } = useApi();
   const { page, handlePageChange } = useApiFilter();
   const pageSize = 10;
-  const { data: result, isLoading } = useQuery(['websites', page, pageSize], () =>
-    get('/websites', { includeTeams: 1, page, pageSize }),
-  );
+  const { data: result, isLoading } = useQuery({
+    queryKey: ['websites', page, pageSize],
+    queryFn: () => get('/websites', { includeTeams: 1, page, pageSize }),
+  });
   const { data, count } = result || {};
   const hasData = data && data?.length !== 0;
 

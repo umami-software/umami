@@ -21,17 +21,17 @@ function useWebsites(userId: string, { includeTeams, onlyTeams }) {
   const { get } = useApi();
   const modified = useCache((state: any) => state?.websites);
 
-  return useFilterQuery(
-    ['websites', { includeTeams, onlyTeams, modified }],
-    (params: any) => {
+  return useFilterQuery({
+    queryKey: ['websites', { includeTeams, onlyTeams, modified }],
+    queryFn: (params: any) => {
       return get(`/users/${userId}/websites`, {
         includeTeams,
         onlyTeams,
         ...params,
       });
     },
-    { enabled: !!userId },
-  );
+    enabled: !!userId,
+  });
 }
 
 export function WebsitesDataTable({

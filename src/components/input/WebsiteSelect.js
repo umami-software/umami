@@ -6,7 +6,10 @@ import styles from './WebsiteSelect.module.css';
 export function WebsiteSelect({ websiteId, onSelect }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
-  const { data } = useQuery(['websites:me'], () => get('/me/websites', { pageSize: 100 }));
+  const { data } = useQuery({
+    queryKey: ['websites:me'],
+    queryFn: () => get('/me/websites', { pageSize: 100 }),
+  });
 
   const renderValue = value => {
     return data?.data?.find(({ id }) => id === value)?.name;

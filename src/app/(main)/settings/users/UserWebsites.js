@@ -7,15 +7,15 @@ export function UserWebsites({ userId }) {
   const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
     useApiFilter();
   const { get, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(
-    ['user:websites', userId, filter, page, pageSize],
-    () =>
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['user:websites', userId, filter, page, pageSize],
+    queryFn: () =>
       get(`/users/${userId}/websites`, {
         filter,
         page,
         pageSize,
       }),
-  );
+  });
   const hasData = data && data.length !== 0;
 
   return (

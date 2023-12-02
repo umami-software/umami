@@ -11,15 +11,15 @@ export function EventDataMetricsBar({ websiteId }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, modified } = dateRange;
 
-  const { data, error, isLoading, isFetched } = useQuery(
-    ['event-data:stats', { websiteId, startDate, endDate, modified }],
-    () =>
+  const { data, error, isLoading, isFetched } = useQuery({
+    queryKey: ['event-data:stats', { websiteId, startDate, endDate, modified }],
+    queryFn: () =>
       get(`/event-data/stats`, {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
       }),
-  );
+  });
 
   return (
     <div className={styles.container}>

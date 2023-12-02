@@ -12,7 +12,10 @@ export function TeamWebsiteAddForm({ teamId, onSave, onClose }) {
   const { formatMessage, labels } = useMessages();
   const { get, post, useQuery, useMutation } = useApi();
   const { mutate, error } = useMutation(data => post(`/teams/${teamId}/websites`, data));
-  const { data: websites, isLoading } = useQuery(['websites'], () => get('/websites'));
+  const { data: websites, isLoading } = useQuery({
+    queryKey: ['websites'],
+    queryFn: () => get('/websites'),
+  });
   const [selected, setSelected] = useState([]);
   const hasData = websites && websites.data.length > 0;
 

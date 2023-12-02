@@ -13,7 +13,7 @@ export interface FilterLinkProps {
   label?: string;
   externalUrl?: string;
   className?: string;
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export function FilterLink({

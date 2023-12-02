@@ -13,15 +13,15 @@ export function TeamWebsites({ teamId }) {
   const { user } = useUser();
   const { get } = useApi();
   const modified = useCache(state => state?.['team:websites']);
-  const queryResult = useFilterQuery(
-    ['team:websites', { teamId, modified }],
-    params => {
+  const queryResult = useFilterQuery({
+    queryKey: ['team:websites', { teamId, modified }],
+    queryFn: params => {
       return get(`/teams/${teamId}/websites`, {
         ...params,
       });
     },
-    { enabled: !!user },
-  );
+    enabled: !!user,
+  });
 
   const handleChange = () => {
     queryResult.refetch();

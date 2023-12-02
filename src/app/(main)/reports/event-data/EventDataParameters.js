@@ -12,16 +12,16 @@ import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {
   const { get, useQuery } = useApi();
-  const { data, error, isLoading } = useQuery(
-    ['fields', websiteId, startDate, endDate],
-    () =>
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['fields', websiteId, startDate, endDate],
+    queryFn: () =>
       get('/reports/event-data', {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
       }),
-    { enabled: !!(websiteId && startDate && endDate) },
-  );
+    enabled: !!(websiteId && startDate && endDate),
+  });
 
   return { data, error, isLoading };
 }

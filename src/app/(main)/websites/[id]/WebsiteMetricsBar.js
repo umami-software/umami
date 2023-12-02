@@ -17,12 +17,12 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = useNavigation();
 
-  const { data, error, isLoading, isFetched } = useQuery(
-    [
+  const { data, error, isLoading, isFetched } = useQuery({
+    queryKey: [
       'websites:stats',
       { websiteId, modified, url, referrer, title, os, browser, device, country, region, city },
     ],
-    () =>
+    queryFn: () =>
       get(`/websites/${websiteId}/stats`, {
         startAt: +startDate,
         endAt: +endDate,
@@ -36,7 +36,7 @@ export function WebsiteMetricsBar({ websiteId, showFilter = true, sticky }) {
         region,
         city,
       }),
-  );
+  });
 
   const { pageviews, uniques, bounces, totaltime } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);

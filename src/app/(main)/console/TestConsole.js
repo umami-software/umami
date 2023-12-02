@@ -14,7 +14,10 @@ import styles from './TestConsole.module.css';
 
 export function TestConsole({ websiteId }) {
   const { get, useQuery } = useApi();
-  const { data, isLoading, error } = useQuery(['websites:me'], () => get('/me/websites'));
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['websites:me'],
+    queryFn: () => get('/me/websites'),
+  });
   const { router } = useNavigation();
 
   function handleChange(value) {

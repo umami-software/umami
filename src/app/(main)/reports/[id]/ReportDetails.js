@@ -14,7 +14,10 @@ const reports = {
 
 export default function ReportDetails({ reportId }) {
   const { get, useQuery } = useApi();
-  const { data: report } = useQuery(['reports', reportId], () => get(`/reports/${reportId}`));
+  const { data: report } = useQuery({
+    queryKey: ['reports', reportId],
+    queryFn: () => get(`/reports/${reportId}`),
+  });
 
   if (!report) {
     return null;

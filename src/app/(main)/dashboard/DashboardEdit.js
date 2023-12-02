@@ -17,7 +17,10 @@ export function DashboardEdit() {
   const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
   const { get, useQuery } = useApi();
-  const { data: result } = useQuery(['websites'], () => get('/websites', { includeTeams: 1 }));
+  const { data: result } = useQuery({
+    queryKey: ['websites'],
+    queryFn: () => get('/websites', { includeTeams: 1 }),
+  });
   const { data: websites } = result || {};
 
   const ordered = useMemo(() => {
