@@ -55,7 +55,7 @@ const schema = {
   }),
 };
 
-function convertFilters(filters) {
+function convertFilters(filters: any[]) {
   return filters.reduce((obj, { name, ...value }) => {
     obj[name] = value;
 

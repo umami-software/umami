@@ -86,8 +86,9 @@ async function clickhouseQuery(
   ).then(a => {
     return Object.values(a).map(a => {
       return {
-        x: a.x,
-        y: Number(a.y),
+        ...a,
+        views: Number(a.views),
+        visitors: Number(a.visitors),
       };
     });
   });

@@ -37,10 +37,10 @@ export function InsightsTable() {
         width="100px"
         alignment="end"
       >
-        {row => row.visitors.toLocaleString()}
+        {row => row?.visitors?.toLocaleString()}
       </GridColumn>
       <GridColumn name="views" label={formatMessage(labels.views)} width="100px" alignment="end">
-        {row => row.views.toLocaleString()}
+        {row => row?.views?.toLocaleString()}
       </GridColumn>
     </GridTable>
   );
