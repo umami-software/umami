@@ -19,10 +19,11 @@ export function useFilterQuery<T>({
     query: '',
     page: 1,
   });
+
   const { useQuery } = useApi();
   const { data, ...query } = useQuery({
-    queryKey: [...queryKey, params],
-    queryFn: (data: any) => queryFn({ ...data, ...params }),
+    queryKey: [{ ...queryKey, ...params }],
+    queryFn: () => queryFn(params as any),
     ...options,
   });
 
