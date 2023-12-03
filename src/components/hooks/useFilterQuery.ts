@@ -1,24 +1,33 @@
+import { UseQueryOptions } from '@tanstack/react-query';
 import { useState, Dispatch, SetStateAction } from 'react';
 import { useApi } from 'components/hooks/useApi';
-import { SearchFilter, FilterResult } from 'lib/types';
+import { FilterResult, SearchFilter } from 'lib/types';
 
 export interface FilterQueryResult<T> {
-  result: FilterResult<any[]>;
+  result: FilterResult<T>;
   query: any;
   params: SearchFilter;
   setParams: Dispatch<SetStateAction<T | SearchFilter>>;
 }
 
-export function useFilterQuery<T>(props = {}): FilterQueryResult<T> {
+export function useFilterQuery<T>({
+  queryKey,
+  queryFn,
+  ...options
+}: UseQueryOptions): FilterQueryResult<T> {
   const [params, setParams] = useState<T | SearchFilter>({
     query: '',
     page: 1,
   });
   const { useQuery } = useApi();
-  const { data, ...query } = useQuery<FilterResult<any[]>>({ ...props });
+  const { data, ...query } = useQuery({
+    queryKey: [...queryKey, params],
+    queryFn: (data: any) => queryFn({ ...data, ...params }),
+    ...options,
+  });
 
   return {
-    result: data,
+    result: data as FilterResult<any>,
     query,
     params,
     setParams,

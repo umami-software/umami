@@ -36,11 +36,11 @@ export function DataTable({
   const hasData = Boolean(!isLoading && data?.length);
   const noResults = Boolean(!isLoading && query && !hasData);
 
-  const handleSearch = query => {
+  const handleSearch = (query: string) => {
     setParams({ ...params, query, page: params.page ? page : 1 });
   };
 
-  const handlePageChange = page => {
+  const handlePageChange = (page: number) => {
     setParams({ ...params, query, page });
   };
 
@@ -54,7 +54,7 @@ export function DataTable({
         <SearchField
           className={styles.search}
           value={query}
-          onChange={handleSearch}
+          onSearch={handleSearch}
           delay={searchDelay || DEFAULT_SEARCH_DELAY}
           autoFocus={true}
           placeholder={formatMessage(labels.search)}

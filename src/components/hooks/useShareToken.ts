@@ -3,7 +3,11 @@ import useApi from './useApi';
 
 const selector = (state: { shareToken: string }) => state.shareToken;
 
-export function useShareToken(shareId: string) {
+export function useShareToken(shareId: string): {
+  shareToken: any;
+  isLoading?: boolean;
+  error?: Error;
+} {
   const shareToken = useStore(selector);
   const { get, useQuery } = useApi();
   const { isLoading, error } = useQuery({

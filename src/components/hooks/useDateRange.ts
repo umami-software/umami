@@ -6,7 +6,7 @@ import websiteStore, { setWebsiteDateRange } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';
 import useApi from './useApi';
 
-export function useDateRange(websiteId: string) {
+export function useDateRange(websiteId?: string) {
   const { get } = useApi();
   const { locale } = useLocale();
   const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);

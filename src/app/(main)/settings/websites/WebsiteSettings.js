@@ -20,7 +20,7 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
     queryKey: ['website', websiteId],
     queryFn: () => get(`/websites/${websiteId}`),
     enabled: !!websiteId,
-    cacheTime: 0,
+    gcTime: 0,
   });
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');

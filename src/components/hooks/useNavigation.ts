@@ -2,7 +2,12 @@ import { useMemo } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { buildUrl } from 'next-basics';
 
-export function useNavigation() {
+export function useNavigation(): {
+  pathname: string;
+  query: { [key: string]: string };
+  router: any;
+  makeUrl: (params: any, reset?: boolean) => string;
+} {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();

@@ -21,7 +21,7 @@ export function UserSettings({ userId }) {
         return get(`/users/${userId}`);
       }
     },
-    cacheTime: 0,
+    gcTime: 0,
   });
 
   const handleSave = data => {

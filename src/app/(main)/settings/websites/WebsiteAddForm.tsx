@@ -14,7 +14,9 @@ import useMessages from 'components/hooks/useMessages';
 export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClose?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, error, isLoading } = useMutation(data => post('/websites', data));
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: (data: any) => post('/websites', data),
+  });
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
@@ -26,7 +28,7 @@ export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClo
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error as string}>
+    <Form onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(labels.name)}>
         <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
           <TextField autoComplete="off" />
@@ -48,7 +50,7 @@ export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClo
           {formatMessage(labels.save)}
         </SubmitButton>
         {onClose && (
-          <Button disabled={isLoading} onClick={onClose}>
+          <Button disabled={isPending} onClick={onClose}>
             {formatMessage(labels.cancel)}
           </Button>
         )}
