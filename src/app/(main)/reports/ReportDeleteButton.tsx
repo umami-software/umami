@@ -14,7 +14,7 @@ export function ReportDeleteButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
-  const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
+  const { mutate } = useMutation({ mutationFn: reportId => del(`/reports/${reportId}`) });
 
   const handleConfirm = (close: () => void) => {
     mutate(reportId as any, {
