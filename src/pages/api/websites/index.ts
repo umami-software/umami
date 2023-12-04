@@ -42,7 +42,7 @@ export default async (
 
   if (req.method === 'GET') {
     if (await canViewAllWebsites(req.auth)) {
-      const websites = getWebsites(req.query, {
+      const websites = await getWebsites(req.query, {
         include: {
           teamWebsite: {
             include: {
