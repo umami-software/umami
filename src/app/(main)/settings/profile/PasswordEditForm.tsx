@@ -6,7 +6,9 @@ import useMessages from 'components/hooks/useMessages';
 export function PasswordEditForm({ onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, error, isLoading } = useMutation((data: any) => post('/me/password', data));
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: (data: any) => post('/me/password', data),
+  });
   const ref = useRef(null);
 
   const handleSubmit = async (data: any) => {
@@ -56,7 +58,7 @@ export function PasswordEditForm({ onSave, onClose }) {
         </FormInput>
       </FormRow>
       <FormButtons flex>
-        <Button type="submit" variant="primary" disabled={isLoading}>
+        <Button type="submit" variant="primary" disabled={isPending}>
           {formatMessage(labels.save)}
         </Button>
         <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>

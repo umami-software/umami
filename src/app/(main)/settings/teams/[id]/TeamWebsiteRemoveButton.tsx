@@ -5,10 +5,12 @@ import { Icon, Icons, LoadingButton, Text } from 'react-basics';
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
-  const { mutate, isLoading } = useMutation(() => del(`/teams/${teamId}/websites/${websiteId}`));
+  const { mutate, isPending } = useMutation({
+    mutationFn: () => del(`/teams/${teamId}/websites/${websiteId}`),
+  });
 
   const handleRemoveTeamMember = async () => {
-    await mutate(null, {
+    mutate(null, {
       onSuccess: () => {
         onSave();
       },
@@ -16,7 +18,7 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   };
 
   return (
-    <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()} isLoading={isLoading}>
+    <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()} isLoading={isPending}>
       <Icon>
         <Icons.Close />
       </Icon>

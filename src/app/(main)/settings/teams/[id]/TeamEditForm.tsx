@@ -18,15 +18,17 @@ const generateId = () => getRandomChars(16);
 export function TeamEditForm({ teamId, data, onSave, readOnly }) {
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation(data => post(`/teams/${teamId}`, data));
+  const { mutate, error } = useMutation({
+    mutationFn: (data: any) => post(`/teams/${teamId}`, data),
+  });
   const ref = useRef(null);
   const [accessCode, setAccessCode] = useState(data.accessCode);
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         ref.current.reset(data);
-        onSave(data);
+        onSave?.(data);
       },
     });
   };

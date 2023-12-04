@@ -12,12 +12,12 @@ export function ReportHeader({ icon }) {
   const { showToast } = useToasts();
   const { post, useMutation } = useApi();
   const router = useRouter();
-  const { mutate: create, isLoading: isCreating } = useMutation((data: any) =>
-    post(`/reports`, data),
-  );
-  const { mutate: update, isLoading: isUpdating } = useMutation((data: any) =>
-    post(`/reports/${data.id}`, data),
-  );
+  const { mutate: create, isPending: isCreating } = useMutation({
+    mutationFn: (data: any) => post(`/reports`, data),
+  });
+  const { mutate: update, isPending: isUpdating } = useMutation({
+    mutationFn: (data: any) => post(`/reports/${data.id}`, data),
+  });
 
   const { name, description, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
