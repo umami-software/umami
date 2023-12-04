@@ -12,9 +12,11 @@ import useDashboard from 'store/dashboard';
 import useMessages from 'components/hooks/useMessages';
 import useLocale from 'components/hooks/useLocale';
 import useFilterQuery from 'components/hooks/useFilterQuery';
+import { useUser } from 'components/hooks';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
+  const { user } = useUser();
   const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
   const { get } = useApi();
@@ -23,7 +25,7 @@ export function Dashboard() {
   const { query, params, setParams, result } = useFilterQuery({
     queryKey: ['dashboard:websites'],
     queryFn: (params: any) => {
-      return get(`/websites`, { ...params, includeTeams: true, pageSize });
+      return get(`/users/${user.id}/websites`, { ...params, includeTeams: true, pageSize });
     },
   });
 
