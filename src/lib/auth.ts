@@ -59,6 +59,10 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   return !!(await findTeamWebsiteByUserId(websiteId, user.id));
 }
 
+export async function canViewAllWebsite({ user }: Auth) {
+  return user.isAdmin;
+}
+
 export async function canCreateWebsite({ user, grant }: Auth) {
   if (cloudMode) {
     return !!grant?.find(a => a === PERMISSIONS.websiteCreate);
