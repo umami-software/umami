@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import useApi from './useApi';
-import useApiFilter from 'components/hooks/useApiFilter';
+import useFilterQuery from 'components/hooks/useFilterQuery';
 
-export function useReports() {
+export function useReports(websiteId?: string) {
   const [modified, setModified] = useState(Date.now());
-  const { get, useQuery, del, useMutation } = useApi();
-  const { mutate } = useMutation(reportId => del(`/reports/${reportId}`));
-  const { filter, page, pageSize, handleFilterChange, handlePageChange, handlePageSizeChange } =
-    useApiFilter();
-  const { data, error, isLoading } = useQuery(
-    ['reports', { modified, filter, page, pageSize }],
-    () => get(`/reports`, { filter, page, pageSize }),
-  );
+  const { get, del, useMutation } = useApi();
+  const { mutate } = useMutation({ mutationFn: (reportId: string) => del(`/reports/${reportId}`) });
+  const queryResult = useFilterQuery({
+    queryKey: ['reports', { websiteId, modified }],
+    queryFn: (params: any) => {
+      return get(websiteId ? `/websites/${websiteId}/reports` : `/reports`, params);
+    },
+  });
 
-  const deleteReport = id => {
+  const deleteReport = (id: any) => {
     mutate(id, {
       onSuccess: () => {
         setModified(Date.now());
@@ -22,16 +22,8 @@ export function useReports() {
   };
 
   return {
-    reports: data,
-    error,
-    isLoading,
+    ...queryResult,
     deleteReport,
-    filter,
-    page,
-    pageSize,
-    handleFilterChange,
-    handlePageChange,
-    handlePageSizeChange,
   };
 }
 

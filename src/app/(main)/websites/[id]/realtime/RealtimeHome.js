@@ -10,7 +10,10 @@ export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const router = useRouter();
-  const { data, isLoading, error } = useQuery(['websites:me'], () => get('/me/websites'));
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['websites:me'],
+    queryFn: () => get('/me/websites'),
+  });
 
   useEffect(() => {
     if (data?.length) {

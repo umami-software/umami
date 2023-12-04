@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Item, Tabs, useToasts, Button, Text, Icon, Icons } from 'react-basics';
+import { Item, Tabs, useToasts, Button, Text, Icon, Icons, Loading } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageHeader from 'components/layout/PageHeader';
@@ -16,9 +16,11 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
-  const { data } = useQuery(['website', websiteId], () => get(`/websites/${websiteId}`), {
+  const { data, isLoading } = useQuery({
+    queryKey: ['website', websiteId],
+    queryFn: () => get(`/websites/${websiteId}`),
     enabled: !!websiteId,
-    cacheTime: 0,
+    gcTime: 0,
   });
   const [values, setValues] = useState(null);
   const [tab, setTab] = useState('details');
@@ -45,6 +47,10 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
       setValues(data);
     }
   }, [data]);
+
+  if (isLoading || !values) {
+    return <Loading />;
+  }
 
   return (
     <>

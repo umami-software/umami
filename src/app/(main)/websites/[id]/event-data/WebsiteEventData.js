@@ -10,17 +10,17 @@ function useData(websiteId, event) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();
-  const { data, error, isLoading } = useQuery(
-    ['event-data:events', { websiteId, startDate, endDate, event }],
-    () =>
+  const { data, error, isLoading } = useQuery({
+    queryKey: ['event-data:events', { websiteId, startDate, endDate, event }],
+    queryFn: () =>
       get('/event-data/events', {
         websiteId,
         startAt: +startDate,
         endAt: +endDate,
         event,
       }),
-    { enabled: !!(websiteId && startDate && endDate) },
-  );
+    enabled: !!(websiteId && startDate && endDate),
+  });
 
   return { data, error, isLoading };
 }

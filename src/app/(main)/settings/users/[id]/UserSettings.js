@@ -14,15 +14,15 @@ export function UserSettings({ userId }) {
   const [tab, setTab] = useState('details');
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
-  const { data, isLoading } = useQuery(
-    ['user', userId],
-    () => {
+  const { data, isLoading } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => {
       if (userId) {
         return get(`/users/${userId}`);
       }
     },
-    { cacheTime: 0 },
-  );
+    gcTime: 0,
+  });
 
   const handleSave = data => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
