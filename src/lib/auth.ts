@@ -59,7 +59,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   return !!(await findTeamWebsiteByUserId(websiteId, user.id));
 }
 
-export async function canViewAllWebsite({ user }: Auth) {
+export async function canViewAllWebsites({ user }: Auth) {
   return user.isAdmin;
 }
 

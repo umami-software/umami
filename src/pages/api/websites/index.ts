@@ -1,4 +1,4 @@
-import { canCreateWebsite, canViewAllWebsite } from 'lib/auth';
+import { canCreateWebsite, canViewAllWebsites } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
@@ -41,7 +41,7 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (canViewAllWebsite(req.auth)) {
+    if (await canViewAllWebsites(req.auth)) {
       const websites = getWebsites(req.query, {
         include: {
           teamWebsite: {

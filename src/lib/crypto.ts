@@ -12,7 +12,7 @@ export function salt() {
   return hash(secret(), ROTATING_SALT);
 }
 
-export function uuid(...args: [any]) {
+export function uuid(...args: any) {
   if (!args.length) return v4();
 
   return v5(hash(...args, salt()), v5.DNS);
