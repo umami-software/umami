@@ -38,7 +38,7 @@ export function Dashboard() {
   const { page } = params;
 
   if (query.isLoading) {
-    return <Loading size="lg" />;
+    return <Loading />;
   }
 
   return (

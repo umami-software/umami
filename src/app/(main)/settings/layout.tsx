@@ -4,6 +4,7 @@ import useUser from 'components/hooks/useUser';
 import useMessages from 'components/hooks/useMessages';
 import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
+import SettingsContext from './SettingsContext';
 
 export default function SettingsLayout({ children }) {
   const { user } = useUser();
@@ -24,14 +25,26 @@ export default function SettingsLayout({ children }) {
     return null;
   }
 
+  const hostUrl = process.env.hostUrl || location.origin;
+
+  const config = {
+    settingsUrl: '/settings/websites',
+    hostUrl,
+    shareUrl: hostUrl,
+    trackingCodeUrl: hostUrl,
+    websitesUrl: `/websites`,
+  };
+
   return (
-    <div className={styles.layout}>
-      {!cloudMode && (
-        <div className={styles.menu}>
-          <SideNav items={items} shallow={true} selectedKey={getKey()} />
-        </div>
-      )}
-      <div className={styles.content}>{children}</div>
-    </div>
+    <SettingsContext.Provider value={config}>
+      <div className={styles.layout}>
+        {!cloudMode && (
+          <div className={styles.menu}>
+            <SideNav items={items} shallow={true} selectedKey={getKey()} />
+          </div>
+        )}
+        <div className={styles.content}>{children}</div>
+      </div>
+    </SettingsContext.Provider>
   );
 }

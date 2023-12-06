@@ -22,7 +22,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
         <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
       <Modal title={formatMessage(labels.createUser)}>
-        {close => <UserAddForm onSave={handleSave} onClose={close} />}
+        {(close: () => void) => <UserAddForm onSave={handleSave} onClose={close} />}
       </Modal>
     </ModalTrigger>
   );

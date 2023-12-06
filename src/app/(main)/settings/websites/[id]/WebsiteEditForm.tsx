@@ -1,8 +1,9 @@
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import useApi from 'components/hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
 import useMessages from 'components/hooks/useMessages';
+import SettingsContext from '../../SettingsContext';
 
 export function WebsiteEditForm({
   websiteId,
@@ -14,13 +15,14 @@ export function WebsiteEditForm({
   onSave?: (data: any) => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
+  const { websitesUrl } = useContext(SettingsContext);
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
+    mutationFn: (data: any) => post(`${websitesUrl}/${websiteId}`, data),
   });
   const ref = useRef(null);
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         ref.current.reset(data);

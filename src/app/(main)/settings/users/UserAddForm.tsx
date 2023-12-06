@@ -21,7 +21,7 @@ export function UserAddForm({ onSave, onClose }) {
   });
   const { formatMessage, labels } = useMessages();
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         onSave(data);

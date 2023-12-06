@@ -10,12 +10,15 @@ import {
 import useApi from 'components/hooks/useApi';
 import { DOMAIN_REGEX } from 'lib/constants';
 import useMessages from 'components/hooks/useMessages';
+import { useContext } from 'react';
+import SettingsContext from '../SettingsContext';
 
 export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClose?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
+  const { websitesUrl } = useContext(SettingsContext);
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post('/websites', data),
+    mutationFn: (data: any) => post(websitesUrl, data),
   });
 
   const handleSubmit = async (data: any) => {

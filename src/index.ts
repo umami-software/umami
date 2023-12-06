@@ -48,6 +48,8 @@ export * from 'app/(main)/settings/websites/WebsiteSettings';
 export * from 'app/(main)/settings/websites/WebsitesDataTable';
 export * from 'app/(main)/settings/websites/WebsitesTable';
 
+export * from 'app/(main)/settings/SettingsContext';
+
 export * from 'components/common/ConfirmDeleteForm';
 export * from 'components/common/DataTable';
 export * from 'components/common/Empty';

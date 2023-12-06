@@ -24,7 +24,7 @@ export function UserDeleteButton({
         <Text>{formatMessage(labels.delete)}</Text>
       </Button>
       <Modal title={formatMessage(labels.deleteUser)}>
-        {close => (
+        {(close: () => void) => (
           <UserDeleteForm userId={userId} username={username} onSave={onDelete} onClose={close} />
         )}
       </Modal>

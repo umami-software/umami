@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState, Key } from 'react';
 import { Item, Tabs, useToasts, Button, Text, Icon, Icons, Loading } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,33 +10,35 @@ import TrackingCode from './[id]/TrackingCode';
 import ShareUrl from './[id]/ShareUrl';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import SettingsContext from '../SettingsContext';
 
-export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl }) {
+export function WebsiteSettings({ websiteId, openExternal = false }) {
   const router = useRouter();
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
+  const { websitesUrl, settingsUrl } = useContext(SettingsContext);
   const { data, isLoading } = useQuery({
     queryKey: ['website', websiteId],
-    queryFn: () => get(`/websites/${websiteId}`),
+    queryFn: () => get(`${websitesUrl}/${websiteId}`),
     enabled: !!websiteId,
     gcTime: 0,
   });
   const [values, setValues] = useState(null);
-  const [tab, setTab] = useState('details');
+  const [tab, setTab] = useState<Key>('details');
 
   const showSuccess = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
-  const handleSave = data => {
+  const handleSave = (data: any) => {
     showSuccess();
-    setValues(state => ({ ...state, ...data }));
+    setValues((state: any) => ({ ...state, ...data }));
   };
 
-  const handleReset = async value => {
+  const handleReset = async (value: string) => {
     if (value === 'delete') {
-      router.push('/settings/websites');
+      router.push(settingsUrl);
     } else if (value === 'reset') {
       showSuccess();
     }
@@ -55,7 +57,7 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
   return (
     <>
       <PageHeader title={values?.name}>
-        <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
+        <Link href={`${websitesUrl}/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>
               <Icons.External />
@@ -73,15 +75,8 @@ export function WebsiteSettings({ websiteId, openExternal = false, analyticsUrl 
       {tab === 'details' && (
         <WebsiteEditForm websiteId={websiteId} data={values} onSave={handleSave} />
       )}
-      {tab === 'tracking' && <TrackingCode websiteId={websiteId} analyticsUrl={analyticsUrl} />}
-      {tab === 'share' && (
-        <ShareUrl
-          websiteId={websiteId}
-          data={values}
-          analyticsUrl={analyticsUrl}
-          onSave={handleSave}
-        />
-      )}
+      {tab === 'tracking' && <TrackingCode websiteId={websiteId} />}
+      {tab === 'share' && <ShareUrl websiteId={websiteId} data={values} onSave={handleSave} />}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleReset} />}
     </>
   );

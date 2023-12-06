@@ -1,10 +1,11 @@
 'use client';
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import useApi from 'components/hooks/useApi';
 import DataTable from 'components/common/DataTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import useCache from 'store/cache';
+import SettingsContext from '../SettingsContext';
 
 export interface WebsitesDataTableProps {
   userId: string;
@@ -17,23 +18,6 @@ export interface WebsitesDataTableProps {
   children?: ReactNode;
 }
 
-function useWebsites(userId: string, { includeTeams, onlyTeams }) {
-  const { get } = useApi();
-  const modified = useCache((state: any) => state?.websites);
-
-  return useFilterQuery({
-    queryKey: ['websites', { includeTeams, onlyTeams, modified }],
-    queryFn: (params: any) => {
-      return get(`/users/${userId}/websites`, {
-        includeTeams,
-        onlyTeams,
-        ...params,
-      });
-    },
-    enabled: !!userId,
-  });
-}
-
 export function WebsitesDataTable({
   userId,
   allowEdit = true,
@@ -44,7 +28,21 @@ export function WebsitesDataTable({
   onlyTeams,
   children,
 }: WebsitesDataTableProps) {
-  const queryResult = useWebsites(userId, { includeTeams, onlyTeams });
+  const { get } = useApi();
+  const modified = useCache((state: any) => state?.websites);
+  const { websitesUrl } = useContext(SettingsContext);
+
+  const queryResult = useFilterQuery({
+    queryKey: ['websites', { includeTeams, onlyTeams, modified }],
+    queryFn: (params: any) => {
+      return get(websitesUrl, {
+        includeTeams,
+        onlyTeams,
+        ...params,
+      });
+    },
+    enabled: !!userId,
+  });
 
   return (
     <DataTable queryResult={queryResult}>

@@ -8,14 +8,15 @@ import {
   Button,
   Toggle,
 } from 'react-basics';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import SettingsContext from '../../SettingsContext';
 
 const generateId = () => getRandomChars(16);
 
-export function ShareUrl({ websiteId, data, analyticsUrl, onSave }) {
+export function ShareUrl({ websiteId, data, onSave }) {
   const { formatMessage, labels, messages } = useMessages();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
@@ -24,11 +25,9 @@ export function ShareUrl({ websiteId, data, analyticsUrl, onSave }) {
     mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
   });
   const ref = useRef(null);
+  const { shareUrl } = useContext(SettingsContext);
   const url = useMemo(
-    () =>
-      `${analyticsUrl || location.origin}${process.env.basePath}/share/${id}/${encodeURIComponent(
-        name,
-      )}`,
+    () => `${shareUrl}${process.env.basePath}/share/${id}/${encodeURIComponent(name)}`,
     [id, name],
   );
 

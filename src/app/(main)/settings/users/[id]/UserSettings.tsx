@@ -1,17 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 import { Item, Loading, Tabs, useToasts } from 'react-basics';
 import UserEditForm from '../UserEditForm';
 import PageHeader from 'components/layout/PageHeader';
 import useApi from 'components/hooks/useApi';
-import UserWebsites from '../UserWebsites';
 import useMessages from 'components/hooks/useMessages';
+import UserWebsites from '../UserWebsites';
 
 export function UserSettings({ userId }) {
   const { formatMessage, labels, messages } = useMessages();
   const [edit, setEdit] = useState(false);
   const [values, setValues] = useState(null);
-  const [tab, setTab] = useState('details');
+  const [tab, setTab] = useState<Key>('details');
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
   const { data, isLoading } = useQuery({
@@ -24,7 +24,7 @@ export function UserSettings({ userId }) {
     gcTime: 0,
   });
 
-  const handleSave = data => {
+  const handleSave = (data: any) => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
     if (data) {
       setValues(state => ({ ...state, ...data }));
@@ -42,7 +42,7 @@ export function UserSettings({ userId }) {
   }, [data]);
 
   if (isLoading || !values) {
-    return <Loading size="lg" />;
+    return <Loading />;
   }
 
   return (

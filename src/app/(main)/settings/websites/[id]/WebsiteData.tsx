@@ -29,7 +29,7 @@ export function WebsiteData({
         <ModalTrigger>
           <Button variant="secondary">{formatMessage(labels.reset)}</Button>
           <Modal title={formatMessage(labels.resetWebsite)}>
-            {close => (
+            {(close: () => void) => (
               <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
             )}
           </Modal>
@@ -42,7 +42,7 @@ export function WebsiteData({
         <ModalTrigger>
           <Button variant="danger">{formatMessage(labels.delete)}</Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
-            {close => (
+            {(close: () => void) => (
               <WebsiteDeleteForm websiteId={websiteId} onSave={handleDelete} onClose={close} />
             )}
           </Modal>

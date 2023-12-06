@@ -22,7 +22,7 @@ export function WebsiteAddButton({ onSave }: { onSave?: () => void }) {
         <Text>{formatMessage(labels.addWebsite)}</Text>
       </Button>
       <Modal title={formatMessage(labels.addWebsite)}>
-        {close => <WebsiteAddForm onSave={handleSave} onClose={close} />}
+        {(close: () => void) => <WebsiteAddForm onSave={handleSave} onClose={close} />}
       </Modal>
     </ModalTrigger>
   );

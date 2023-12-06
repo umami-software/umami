@@ -1,8 +1,9 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import useMessages from 'components/hooks/useMessages';
 import useUser from 'components/hooks/useUser';
+import SettingsContext from '../SettingsContext';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -24,6 +25,7 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const breakpoint = useBreakpoint();
+  const { settingsUrl, websitesUrl } = useContext(SettingsContext);
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -50,7 +52,7 @@ export function WebsitesTable({
             return (
               <>
                 {allowEdit && (!showTeam || ownerId === user.id) && (
-                  <Link href={`/settings/websites/${id}`}>
+                  <Link href={`${settingsUrl}/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.Edit />
@@ -60,7 +62,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={`/websites/${id}`}>
+                  <Link href={`${websitesUrl}/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.External />

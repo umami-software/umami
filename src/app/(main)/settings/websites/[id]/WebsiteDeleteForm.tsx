@@ -9,6 +9,8 @@ import {
 } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
+import { useContext } from 'react';
+import SettingsContext from '../../SettingsContext';
 
 const CONFIRM_VALUE = 'DELETE';
 
@@ -22,12 +24,13 @@ export function WebsiteDeleteForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { websitesUrl } = useContext(SettingsContext);
   const { del, useMutation } = useApi();
   const { mutate, error } = useMutation({
-    mutationFn: (data: any) => del(`/websites/${websiteId}`, data),
+    mutationFn: (data: any) => del(`${websitesUrl}/${websiteId}`, data),
   });
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         onSave();
