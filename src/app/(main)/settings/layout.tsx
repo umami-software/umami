@@ -21,7 +21,7 @@ export default function SettingsLayout({ children }) {
 
   const getKey = () => items.find(({ url }) => pathname === url)?.key;
 
-  if (cloudMode && pathname != '/settings/profile') {
+  if (cloudMode && pathname !== '/settings/profile') {
     return null;
   }
 
@@ -29,7 +29,6 @@ export default function SettingsLayout({ children }) {
 
   const config = {
     settingsUrl: '/settings/websites',
-    hostUrl,
     shareUrl: hostUrl,
     trackingCodeUrl: hostUrl,
     websitesUrl: `/websites`,

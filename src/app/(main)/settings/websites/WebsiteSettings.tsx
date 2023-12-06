@@ -51,7 +51,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
   }, [data]);
 
   if (isLoading || !values) {
-    return <Loading />;
+    return <Loading position="page" />;
   }
 
   return (
