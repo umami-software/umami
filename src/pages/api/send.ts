@@ -80,8 +80,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     const { type, payload } = req.body;
 
-    req.yup = schema;
-    await useValidate(req, res);
+    await useValidate(schema, req, res);
 
     if (await hasBlockedIp(req)) {
       return forbidden(res);

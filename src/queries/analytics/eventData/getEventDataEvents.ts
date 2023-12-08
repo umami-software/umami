@@ -59,7 +59,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+async function clickhouseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<{ eventName: string; fieldName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { event } = filters;
   const { params } = await parseFilters(websiteId, filters);
@@ -75,14 +78,24 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
         count(*) as total
       from event_data
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime} and {endDate:DateTime}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_name = {event:String}
       group by event_key, data_type, string_value, event_name
       order by 1 asc, 2 asc, 3 asc, 4 desc
       limit 100
       `,
       params,
-    );
+    ).then(a => {
+      return Object.values(a).map(a => {
+        return {
+          eventName: a.eventName,
+          fieldName: a.fieldName,
+          dataType: Number(a.dataType),
+          fieldValue: a.fieldValue,
+          total: Number(a.total),
+        };
+      });
+    });
   }
 
   return rawQuery(
@@ -94,11 +107,20 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       count(*) as total
     from event_data
     where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime} and {endDate:DateTime}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     group by event_key, data_type, event_name
     order by 1 asc, 2 asc
     limit 100
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        eventName: a.eventName,
+        fieldName: a.fieldName,
+        dataType: Number(a.dataType),
+        total: Number(a.total),
+      };
+    });
+  });
 }

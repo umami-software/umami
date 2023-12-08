@@ -22,8 +22,8 @@ const schema = {
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),
-    name: yup.string().max(50).required(),
-    accessCode: yup.string().max(50).required(),
+    name: yup.string().max(50),
+    accessCode: yup.string().max(50),
   }),
   DELETE: yup.object().shape({
     id: yup.string().uuid().required(),
@@ -35,9 +35,7 @@ export default async (
   res: NextApiResponse<Team>,
 ) => {
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { id: teamId } = req.query;
 

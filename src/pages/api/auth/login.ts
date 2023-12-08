@@ -15,6 +15,7 @@ import {
 } from 'next-basics';
 import { getUserByUsername } from 'queries';
 import * as yup from 'yup';
+import { ROLES } from 'lib/constants';
 
 const log = debug('umami:auth');
 
@@ -43,8 +44,7 @@ export default async (
     return forbidden(res);
   }
 
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const { username, password } = req.body;
@@ -52,17 +52,18 @@ export default async (
     const user = await getUserByUsername(username, { includePassword: true });
 
     if (user && checkPassword(password, user.password)) {
-      if (redis.enabled) {
+      if (redis) {
         const token = await setAuthKey(user);
 
         return ok(res, { token, user });
       }
 
       const token = createSecureToken({ userId: user.id }, secret());
+      const { id, username, role, createdAt } = user;
 
       return ok(res, {
         token,
-        user: { id: user.id, username: user.username, role: user.role, createdAt: user.createdAt },
+        user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
       });
     }
 

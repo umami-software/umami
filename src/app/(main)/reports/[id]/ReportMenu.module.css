@@ -1,0 +1,7 @@
+.menu {
+  width: 300px;
+  padding-right: 20px;
+  border-right: 1px solid var(--base300);
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+}

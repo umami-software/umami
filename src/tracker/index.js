@@ -43,10 +43,11 @@
   };
 
   const getPath = url => {
-    if (url.substring(0, 4) === 'http') {
-      return '/' + url.split('/').splice(3).join('/');
+    try {
+      return new URL(url).pathname;
+    } catch (e) {
+      return url;
     }
-    return url;
   };
 
   const getPayload = () => ({
@@ -187,7 +188,8 @@
       headers,
     })
       .then(res => res.text())
-      .then(text => (cache = text));
+      .then(text => (cache = text))
+      .catch(() => {}); // no-op, gulp error
   };
 
   const track = (obj, data) => {

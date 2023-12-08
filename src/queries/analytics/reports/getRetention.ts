@@ -8,7 +8,7 @@ export async function getRetention(
     filters: {
       startDate: Date;
       endDate: Date;
-      timezone: string;
+      timezone?: string;
     },
   ]
 ) {
@@ -23,7 +23,7 @@ async function relationalQuery(
   filters: {
     startDate: Date;
     endDate: Date;
-    timezone: string;
+    timezone?: string;
   },
 ): Promise<
   {
@@ -103,7 +103,7 @@ async function clickhouseQuery(
   filters: {
     startDate: Date;
     endDate: Date;
-    timezone: string;
+    timezone?: string;
   },
 ): Promise<
   {
@@ -172,5 +172,15 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        date: a.date,
+        day: Number(a.day),
+        visitors: Number(a.visitors),
+        returnVisitors: Number(a.returnVisitors),
+        percentage: Number(a.percentage),
+      };
+    });
+  });
 }

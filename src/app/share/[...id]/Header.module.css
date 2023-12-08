@@ -1,0 +1,41 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100px;
+}
+
+.row {
+  align-items: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--font-color100) !important;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media only screen and (max-width: 992px) {
+  .header .buttons {
+    flex: 1;
+  }
+
+  .links {
+    order: 2;
+    margin: 20px 0;
+    min-width: 100%;
+  }
+}

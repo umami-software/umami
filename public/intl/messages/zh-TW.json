@@ -179,6 +179,12 @@
       "value": "國家"
     }
   ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "建立"
+    }
+  ],
   "label.create-report": [
     {
       "type": 0,
@@ -383,6 +389,12 @@
       "value": "欄位"
     }
   ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "篩選器"
+    }
+  ],
   "label.filter-combined": [
     {
       "type": 0,
@@ -407,6 +419,12 @@
       "value": "漏斗"
     }
   ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "瞭解使用者的轉換率和退出率"
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -423,6 +441,12 @@
     {
       "type": 0,
       "value": "洞察"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "透過使用區段和篩選器來深入探索你的數據"
     }
   ],
   "label.is": [
@@ -773,6 +797,12 @@
       "value": "保留"
     }
   ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "透過追蹤使用者回訪的頻率來衡量您的網站黏著度。"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -795,6 +825,12 @@
     {
       "type": 0,
       "value": "螢幕"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
     }
   ],
   "label.select-date": [

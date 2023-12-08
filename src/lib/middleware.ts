@@ -14,14 +14,13 @@ import {
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { getUserById } from '../queries';
-import { NextApiRequestQueryBody } from './types';
 
 const log = debug('umami:middleware');
 
 export const useCors = createMiddleware(
   cors({
     // Cache CORS preflight request 24 hours by default
-    maxAge: process.env.CORS_MAX_AGE || 86400,
+    maxAge: Number(process.env.CORS_MAX_AGE) || 86400,
   }),
 );
 
@@ -55,7 +54,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
 
   if (isUuid(userId)) {
     user = await getUserById(userId);
-  } else if (redis.enabled && authKey) {
+  } else if (redis && authKey) {
     user = await redis.get(authKey);
   }
 
@@ -83,14 +82,18 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   next();
 });
 
-export const useValidate = createMiddleware(async (req: any, res, next) => {
-  try {
-    const { yup } = req as NextApiRequestQueryBody;
+export const useValidate = async (schema, req, res) => {
+  return createMiddleware(async (req: any, res, next) => {
+    try {
+      const rules = schema[req.method];
 
-    yup[req.method] && yup[req.method].validateSync({ ...req.query, ...req.body });
-  } catch (e: any) {
-    return badRequest(res, e.message);
-  }
+      if (rules) {
+        rules.validateSync({ ...req.query, ...req.body });
+      }
+    } catch (e: any) {
+      return badRequest(res, e.message);
+    }
 
-  next();
-});
+    next();
+  })(req, res);
+};

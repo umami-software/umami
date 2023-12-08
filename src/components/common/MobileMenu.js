@@ -1,11 +1,11 @@
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './MobileMenu.module.css';
 
 export function MobileMenu({ items = [], onClose }) {
-  const { pathname } = useRouter();
+  const pathname = usePathname();
 
   const Items = ({ items, className }) => (
     <div className={classNames(styles.items, className)}>

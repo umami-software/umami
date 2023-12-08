@@ -1,5 +1,4 @@
 import { useState, useMemo } from 'react';
-import { useRouter } from 'next/router';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
@@ -8,16 +7,18 @@ import { ISO_COUNTRIES, MAP_FILE } from 'lib/constants';
 import useTheme from 'components/hooks/useTheme';
 import useCountryNames from 'components/hooks/useCountryNames';
 import useLocale from 'components/hooks/useLocale';
+import useMessages from 'components/hooks/useMessages';
 import { formatLongNumber } from 'lib/format';
 import { percentFilter } from 'lib/filters';
 import styles from './WorldMap.module.css';
 
 export function WorldMap({ data, className }) {
-  const { basePath } = useRouter();
   const [tooltip, setTooltipPopup] = useState();
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
+  const { formatMessage, labels } = useMessages();
   const countryNames = useCountryNames(locale);
+  const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
   const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
 
   function getFillColor(code) {
@@ -40,7 +41,7 @@ export function WorldMap({ data, className }) {
   function handleHover(code) {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
-    setTooltipPopup(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} visitors`);
+    setTooltipPopup(`${countryNames[code]}: ${formatLongNumber(country?.y || 0)} ${visitorsLabel}`);
   }
 
   return (
@@ -51,7 +52,7 @@ export function WorldMap({ data, className }) {
     >
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
-          <Geographies geography={`${basePath}${MAP_FILE}`}>
+          <Geographies geography={`${process.env.basePath}${MAP_FILE}`}>
             {({ geographies }) => {
               return geographies.map(geo => {
                 const code = ISO_COUNTRIES[geo.id];

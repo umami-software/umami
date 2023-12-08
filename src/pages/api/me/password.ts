@@ -37,9 +37,7 @@ export default async (
   }
 
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const { currentPassword, newPassword } = req.body;
   const { id } = req.auth.user;

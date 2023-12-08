@@ -2,19 +2,19 @@ import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';
 import MetricsTable from './MetricsTable';
 import useMessages from 'components/hooks/useMessages';
-import usePageQuery from 'components/hooks/usePageQuery';
+import useNavigation from 'components/hooks/useNavigation';
 import { emptyFilter } from 'lib/filters';
 
 export function PagesTable({ websiteId, showFilters, ...props }) {
   const {
     router,
-    resolveUrl,
+    makeUrl,
     query: { view = 'url' },
-  } = usePageQuery();
+  } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const handleSelect = key => {
-    router.push(resolveUrl({ view: key }), null, { shallow: true });
+    router.push(makeUrl({ view: key }), { scroll: true });
   };
 
   const buttons = [

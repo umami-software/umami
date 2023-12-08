@@ -41,6 +41,12 @@
       "value": "အက်ဒမင်"
     }
   ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "ပြီးနောက်"
+    }
+  ],
   "label.all": [
     {
       "type": 0,
@@ -59,6 +65,12 @@
       "value": "အန်နလစ်တစ်"
     }
   ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "ပျမ်းမျှ"
+    }
+  ],
   "label.average-visit-time": [
     {
       "type": 0,
@@ -71,10 +83,28 @@
       "value": "နောက်သို့"
     }
   ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "မတိုင်မီ"
+    }
+  ],
   "label.bounce-rate": [
     {
       "type": 0,
       "value": "Bounce နှုန်း"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "ခွဲခြမ်းစိတ်ဖြာမှု"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "Browser"
     }
   ],
   "label.browsers": [
@@ -101,6 +131,12 @@
       "value": "မြို့များ"
     }
   ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "City"
+    }
+  ],
   "label.clear-all": [
     {
       "type": 0,
@@ -119,6 +155,12 @@
       "value": "စကားဝှက်အတည်ပြုသည်"
     }
   ],
+  "label.contains": [
+    {
+      "type": 0,
+      "value": "ပါဝင်သည်"
+    }
+  ],
   "label.continue": [
     {
       "type": 0,
@@ -129,6 +171,24 @@
     {
       "type": 0,
       "value": "နိုင်ငံများ"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "Country"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Create"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "ရီပို့လုပ်မည်"
     }
   ],
   "label.create-team": [
@@ -173,10 +233,22 @@
       "value": "ဒေတာ"
     }
   ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
   "label.date-range": [
     {
       "type": 0,
       "value": "ရက်အပိုင်းအခြား"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Day"
     }
   ],
   "label.default-date-range": [
@@ -209,6 +281,12 @@
       "value": "ဝက်ဘ်ဆိုဒ်ကိုဖျက်မည်"
     }
   ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "ရှင်းပြချက်"
+    }
+  ],
   "label.desktop": [
     {
       "type": 0,
@@ -221,6 +299,12 @@
       "value": "အသေးစိတ်"
     }
   ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "Device"
+    }
+  ],
   "label.devices": [
     {
       "type": 0,
@@ -231,6 +315,12 @@
     {
       "type": 0,
       "value": "ပိတ်ပါ"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "မပါဝင်ပါ"
     }
   ],
   "label.domain": [
@@ -281,6 +371,12 @@
       "value": "အဖြစ်အပျက်များ"
     }
   ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "မှားသည်"
+    }
+  ],
   "label.field": [
     {
       "type": 0,
@@ -291,6 +387,12 @@
     {
       "type": 0,
       "value": "Field အမည်များ"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filter"
     }
   ],
   "label.filter-combined": [
@@ -305,16 +407,70 @@
       "value": "အရှိအတိုင်း"
     }
   ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "Filter များ"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
       "value": "ဖန်နယ်"
     }
   ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Understand the conversion and drop-off rate of users."
+    }
+  ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "ထက်ပို၍ကြီးသည်"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "ထက်ပို၍ကြီးသည်သို့မဟုတ်တူသည်"
+    }
+  ],
   "label.insights": [
     {
       "type": 0,
       "value": "အသေးစိတ်သိမြင်နိုင်ရန်"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Dive deeper into your data by using segments and filters."
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "Is"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "Is not"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "Is not set"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "Is set"
     }
   ],
   "label.join": [
@@ -387,6 +543,18 @@
       "value": "အသင်းမှထွက်မည်"
     }
   ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "ထက်ပို၍ငယ်သည်"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "ထက်ပို၍ငယ်သည်သို့မဟုတ်တူသည်"
+    }
+  ],
   "label.login": [
     {
       "type": 0,
@@ -399,10 +567,22 @@
       "value": "လော့ဂ်အောက်လုပ်မည်"
     }
   ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "အများဆုံး"
+    }
+  ],
   "label.members": [
     {
       "type": 0,
       "value": "အဖွဲ့ဝင်များ"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "အနည်းဆုံး"
     }
   ],
   "label.mobile": [
@@ -415,6 +595,12 @@
     {
       "type": 0,
       "value": "နောက်ထပ်"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "My websites"
     }
   ],
   "label.name": [
@@ -435,10 +621,16 @@
       "value": "မရှိပါ"
     }
   ],
-  "label.operating-systems": [
+  "label.os": [
     {
       "type": 0,
       "value": "ကွန်ပျူတာလည်ပတ်မှုစနစ်"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "အပေါ်ယံမြင်ကွင်း"
     }
   ],
   "label.owner": [
@@ -447,10 +639,34 @@
       "value": "ပိုင်ဆိုင်သူ"
     }
   ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Page "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
   "label.page-views": [
     {
       "type": 0,
       "value": "ဝင်ရောက်ကြည့်ရှုသူ"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "Page title"
     }
   ],
   "label.pages": [
@@ -505,6 +721,12 @@
       "value": "အချိန်နှင့်တပြေးညီ"
     }
   ],
+  "label.referrer": [
+    {
+      "type": 0,
+      "value": "Referrer"
+    }
+  ],
   "label.referrers": [
     {
       "type": 0,
@@ -521,6 +743,12 @@
     {
       "type": 0,
       "value": "ပြန်ထုတ်မည်"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "Region"
     }
   ],
   "label.regions": [
@@ -559,6 +787,18 @@
       "value": "ဝက်ဘ်ဆိုဒ်ဒေတာကိုဖျက်မည်"
     }
   ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Retention"
+    }
+  ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Measure your website stickiness by tracking how often users return."
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -581,6 +821,12 @@
     {
       "type": 0,
       "value": "မြင်ကွင်းများ"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
     }
   ],
   "label.select-date": [
@@ -619,6 +865,12 @@
       "value": "တစ်ရက်အတွင်း"
     }
   ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "ပေါင်းလဒ်"
+    }
+  ],
   "label.tablet": [
     {
       "type": 0,
@@ -649,10 +901,22 @@
       "value": "အသင်းဝင်"
     }
   ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Team name"
+    }
+  ],
   "label.team-owner": [
     {
       "type": 0,
       "value": "အသင်းကိုပိုင်ဆိုင်သူ"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Team websites"
     }
   ],
   "label.teams": [
@@ -709,10 +973,40 @@
       "value": "ဇယားများကို အဖွင့်အပိတ်လုပ်မည်"
     }
   ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "စုစုပေါင်း"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "မှတ်တမ်းစုစုပေါင်း"
+    }
+  ],
   "label.tracking-code": [
     {
       "type": 0,
       "value": "ထရက်လုပ်သည့် ကုဒ်"
+    }
+  ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "မှန်သည်"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "အမျိုးအစား"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "Unique"
     }
   ],
   "label.unique-visitors": [
@@ -725,6 +1019,12 @@
     {
       "type": 0,
       "value": "မသိသော"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "ခေါင်းစဉ်မရှိ"
     }
   ],
   "label.url": [
@@ -755,6 +1055,12 @@
     {
       "type": 0,
       "value": "အသုံးပြုသူများ"
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "တန်ဖိုး"
     }
   ],
   "label.view": [
@@ -815,168 +1121,6 @@
     {
       "type": 0,
       "value": "မနေ့က"
-    }
-  ],
-  "labels.after": [
-    {
-      "type": 0,
-      "value": "ပြီးနောက်"
-    }
-  ],
-  "labels.average": [
-    {
-      "type": 0,
-      "value": "ပျမ်းမျှ"
-    }
-  ],
-  "labels.before": [
-    {
-      "type": 0,
-      "value": "မတိုင်မီ"
-    }
-  ],
-  "labels.breakdown": [
-    {
-      "type": 0,
-      "value": "ခွဲခြမ်းစိတ်ဖြာမှု"
-    }
-  ],
-  "labels.contains": [
-    {
-      "type": 0,
-      "value": "ပါဝင်သည်"
-    }
-  ],
-  "labels.create-report": [
-    {
-      "type": 0,
-      "value": "ရီပို့လုပ်မည်"
-    }
-  ],
-  "labels.description": [
-    {
-      "type": 0,
-      "value": "ရှင်းပြချက်"
-    }
-  ],
-  "labels.does-not-contain": [
-    {
-      "type": 0,
-      "value": "မပါဝင်ပါ"
-    }
-  ],
-  "labels.does-not-equal": [
-    {
-      "type": 0,
-      "value": "မတူညီပါ"
-    }
-  ],
-  "labels.equals": [
-    {
-      "type": 0,
-      "value": "တူညီသည်"
-    }
-  ],
-  "labels.false": [
-    {
-      "type": 0,
-      "value": "မှားသည်"
-    }
-  ],
-  "labels.filters": [
-    {
-      "type": 0,
-      "value": "Filter များ"
-    }
-  ],
-  "labels.greater-than": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ကြီးသည်"
-    }
-  ],
-  "labels.greater-than-equals": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ကြီးသည်သို့မဟုတ်တူသည်"
-    }
-  ],
-  "labels.less-than": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ငယ်သည်"
-    }
-  ],
-  "labels.less-than-equals": [
-    {
-      "type": 0,
-      "value": "ထက်ပို၍ငယ်သည်သို့မဟုတ်တူသည်"
-    }
-  ],
-  "labels.max": [
-    {
-      "type": 0,
-      "value": "အများဆုံး"
-    }
-  ],
-  "labels.min": [
-    {
-      "type": 0,
-      "value": "အနည်းဆုံး"
-    }
-  ],
-  "labels.overview": [
-    {
-      "type": 0,
-      "value": "အပေါ်ယံမြင်ကွင်း"
-    }
-  ],
-  "labels.sum": [
-    {
-      "type": 0,
-      "value": "ပေါင်းလဒ်"
-    }
-  ],
-  "labels.total": [
-    {
-      "type": 0,
-      "value": "စုစုပေါင်း"
-    }
-  ],
-  "labels.total-records": [
-    {
-      "type": 0,
-      "value": "မှတ်တမ်းစုစုပေါင်း"
-    }
-  ],
-  "labels.true": [
-    {
-      "type": 0,
-      "value": "မှန်သည်"
-    }
-  ],
-  "labels.type": [
-    {
-      "type": 0,
-      "value": "အမျိုးအစား"
-    }
-  ],
-  "labels.unique": [
-    {
-      "type": 0,
-      "value": "Unique"
-    }
-  ],
-  "labels.untitled": [
-    {
-      "type": 0,
-      "value": "ခေါင်းစဉ်မရှိ"
-    }
-  ],
-  "labels.value": [
-    {
-      "type": 0,
-      "value": "တန်ဖိုး"
     }
   ],
   "message.active-users": [

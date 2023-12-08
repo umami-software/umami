@@ -78,7 +78,9 @@ export function parseDateRange(value, locale = 'en-US') {
     const endDate = new Date(+endTime);
 
     return {
-      ...getDateRangeValues(startDate, endDate),
+      startDate,
+      endDate,
+      unit: getMinimumUnit(startDate, endDate),
       value,
     };
   }
@@ -236,7 +238,7 @@ export function incrementDateRange(value, increment) {
 export function getAllowedUnits(startDate, endDate) {
   const units = ['minute', 'hour', 'day', 'month', 'year'];
   const minUnit = getMinimumUnit(startDate, endDate);
-  const index = units.indexOf(minUnit);
+  const index = units.indexOf(minUnit === 'year' ? 'month' : minUnit);
 
   return index >= 0 ? units.splice(index) : [];
 }
@@ -246,21 +248,13 @@ export function getMinimumUnit(startDate, endDate) {
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
     return 'hour';
-  } else if (differenceInCalendarDays(endDate, startDate) <= 90) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 12) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';
   }
 
   return 'year';
-}
-
-export function getDateRangeValues(startDate, endDate) {
-  return {
-    startDate: startOfDay(startDate),
-    endDate: endOfDay(endDate),
-    unit: getMinimumUnit(startDate, endDate),
-  };
 }
 
 export function getDateFromString(str) {

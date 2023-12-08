@@ -26,3 +26,82 @@
 .button:visited {
   color: var(--base900);
 }
+
+.button.disabled {
+  color: var(--disabled-color) !important;
+  background-color: var(--disabled-background) !important;
+  border-color: transparent !important;
+  pointer-events: none;
+}
+
+.button.primary {
+  color: var(--light50);
+  background: var(--primary400);
+}
+
+.button.primary:hover {
+  color: var(--light50);
+  background: var(--primary500);
+}
+
+.button.primary:active {
+  color: var(--light50);
+  background: var(--primary600);
+}
+
+.button.secondary {
+  border: 1px solid var(--border-color);
+  background: var(--base50);
+}
+
+.button.secondary:hover {
+  background: var(--base75);
+}
+
+.button.secondary:active {
+  background: var(--base100);
+}
+
+.button.quiet {
+  color: var(--base900);
+  background: transparent;
+}
+
+.button.quiet:hover {
+  background: var(--base100);
+}
+
+.button.quiet:active {
+  background: var(--base200);
+}
+
+.button.danger {
+  color: var(--light50);
+  background: var(--red800);
+}
+
+.button.danger:hover {
+  color: var(--light50);
+  background: var(--red900);
+}
+
+.button.danger:active {
+  color: var(--light50);
+  background: var(--red1000);
+}
+
+.button.size-sm {
+  font-size: var(--font-size-sm);
+  height: calc(var(--base-height) * 0.75);
+  padding: 0 calc(var(--size600) * 0.75);
+}
+
+.button.size-md {
+  font-size: var(--font-size-md);
+}
+
+.button.size-lg {
+  font-size: var(--font-size-lg);
+  height: calc(var(--base-height) * 1.25);
+  padding: 0 calc(var(--size600) * 1.25);
+}

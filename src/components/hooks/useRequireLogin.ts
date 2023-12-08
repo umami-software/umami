@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import useApi from 'components/hooks/useApi';
 import useUser from 'components/hooks/useUser';
 
-export function useRequireLogin(handler: (data?: object) => void) {
-  const router = useRouter();
+export function useRequireLogin(handler?: (data?: object) => void) {
   const { get } = useApi();
   const { user, setUser } = useUser();
 
@@ -15,7 +13,7 @@ export function useRequireLogin(handler: (data?: object) => void) {
 
         setUser(typeof handler === 'function' ? handler(data) : (data as any)?.user);
       } catch {
-        await router.push('/login');
+        location.href = `${process.env.basePath || ''}/login`;
       }
     }
 

@@ -66,7 +66,7 @@ CREATE TABLE umami.website_event_queue (
 )
 ENGINE = Kafka
 SETTINGS kafka_broker_list = 'domain:9092,domain:9093,domain:9094', -- input broker list
-       kafka_topic_list = 'events',
+       kafka_topic_list = 'event',
        kafka_group_name = 'event_consumer_group',
        kafka_format = 'JSONEachRow',
        kafka_max_block_size = 1048576,
