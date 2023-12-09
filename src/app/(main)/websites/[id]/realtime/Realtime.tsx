@@ -95,7 +95,7 @@ export function Realtime({ websiteId }) {
   return (
     <>
       <WebsiteHeader websiteId={websiteId} />
-      <RealtimeHeader data={currentData} />
+      <RealtimeHeader data={realtimeData} />
       <RealtimeChart className={styles.chart} data={realtimeData} unit="minute" />
       <Grid>
         <GridRow columns="one-two">

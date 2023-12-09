@@ -8,11 +8,11 @@ import useLocale from 'components/hooks/useLocale';
 import useCountryNames from 'components/hooks/useCountryNames';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
-import { formatDate } from 'lib/date';
 import { safeDecodeURI } from 'next-basics';
 import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
 import useMessages from 'components/hooks/useMessages';
+import { format } from 'date-fns';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -50,7 +50,7 @@ export function RealtimeLog({ data, websiteDomain }) {
     },
   ];
 
-  const getTime = ({ createdAt }) => formatDate(new Date(createdAt), 'pp', locale);
+  const getTime = ({ timestamp }) => format(timestamp, 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
@@ -146,7 +146,7 @@ export function RealtimeLog({ data, websiteDomain }) {
       <div className={styles.body}>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (
-          <FixedSizeList height={500} itemCount={logs.length} itemSize={50}>
+          <FixedSizeList width="100%" height={500} itemCount={logs.length} itemSize={50}>
             {Row}
           </FixedSizeList>
         )}
