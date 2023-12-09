@@ -15,12 +15,7 @@ export function SettingsButton() {
           <Icons.Gear />
         </Icon>
       </Button>
-      <Popup
-        className={styles.popup}
-        position="bottom"
-        alignment="end"
-        onClick={e => e.stopPropagation()}
-      >
+      <Popup className={styles.popup} position="bottom" alignment="end">
         <Form>
           <FormRow label={formatMessage(labels.timezone)}>
             <TimezoneSetting />
