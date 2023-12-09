@@ -6,7 +6,7 @@ import { EventDataMetricsBar } from './EventDataMetricsBar';
 import { useDateRange, useApi, useNavigation } from 'components/hooks';
 import styles from './WebsiteEventData.module.css';
 
-function useData(websiteId, event) {
+function useData(websiteId: string, event: string) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();

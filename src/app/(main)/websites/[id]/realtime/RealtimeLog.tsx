@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { StatusLight, Icon, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
-import firstBy from 'thenby';
+import thenby from 'thenby';
 import FilterButtons from 'components/common/FilterButtons';
 import Empty from 'components/common/Empty';
 import useLocale from 'components/hooks/useLocale';
@@ -130,7 +130,7 @@ export function RealtimeLog({ data, websiteDomain }) {
     }
 
     const { pageviews, visitors, events } = data;
-    const logs = [...pageviews, ...visitors, ...events].sort(firstBy('createdAt', -1));
+    const logs = [...pageviews, ...visitors, ...events].sort(thenby.firstBy('createdAt', -1));
 
     if (filter !== TYPE_ALL) {
       return logs.filter(({ __type }) => __type === filter);

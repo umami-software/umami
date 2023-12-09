@@ -1,15 +1,22 @@
-import { useMemo, useState } from 'react';
+import { Key, useMemo, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
-import firstBy from 'thenby';
+import thenby from 'thenby';
 import { percentFilter } from 'lib/filters';
 import ListTable from 'components/metrics/ListTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import useMessages from 'components/hooks/useMessages';
+import { RealtimeData } from 'lib/types';
 
-export function RealtimeUrls({ websiteDomain, data = {} }) {
+export function RealtimeUrls({
+  websiteDomain,
+  data,
+}: {
+  websiteDomain: string;
+  data: RealtimeData;
+}) {
   const { formatMessage, labels } = useMessages();
-  const { pageviews } = data;
-  const [filter, setFilter] = useState(FILTER_REFERRERS);
+  const { pageviews } = data || {};
+  const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
   const limit = 15;
 
   const buttons = [
@@ -48,7 +55,7 @@ export function RealtimeUrls({ websiteDomain, data = {} }) {
             }
             return arr;
           }, [])
-          .sort(firstBy('y', -1))
+          .sort(thenby.firstBy('y', -1))
           .slice(0, limit),
       );
 
@@ -64,7 +71,7 @@ export function RealtimeUrls({ websiteDomain, data = {} }) {
             }
             return arr;
           }, [])
-          .sort(firstBy('y', -1))
+          .sort(thenby.firstBy('y', -1))
           .slice(0, limit),
       );
 

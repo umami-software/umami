@@ -1,10 +1,11 @@
 import MetricCard from 'components/metrics/MetricCard';
 import useMessages from 'components/hooks/useMessages';
+import { RealtimeData } from 'lib/types';
 import styles from './RealtimeHeader.module.css';
 
-export function RealtimeHeader({ data = {} }) {
+export function RealtimeHeader({ data }: { data: RealtimeData }) {
   const { formatMessage, labels } = useMessages();
-  const { pageviews, visitors, events, countries } = data;
+  const { pageviews, visitors, events, countries } = data || {};
 
   return (
     <div className={styles.header}>

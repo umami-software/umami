@@ -3,6 +3,7 @@ import { format, startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
 import { getDateArray } from 'lib/date';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from 'lib/constants';
+import { RealtimeData } from 'lib/types';
 
 function mapData(data: any[]) {
   let last = 0;
@@ -24,11 +25,9 @@ function mapData(data: any[]) {
 }
 
 export interface RealtimeChartProps {
-  data: {
-    pageviews: any[];
-    visitors: any[];
-  };
+  data: RealtimeData;
   unit: string;
+  className?: string;
 }
 
 export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {

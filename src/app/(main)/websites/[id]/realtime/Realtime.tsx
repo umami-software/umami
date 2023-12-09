@@ -1,7 +1,7 @@
 'use client';
 import { useMemo, useState, useEffect } from 'react';
 import { subMinutes, startOfMinute } from 'date-fns';
-import firstBy from 'thenby';
+import thenby from 'thenby';
 import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
@@ -15,9 +15,10 @@ import useApi from 'components/hooks/useApi';
 import { percentFilter } from 'lib/filters';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import { useWebsite } from 'components/hooks';
+import { RealtimeData } from 'lib/types';
 import styles from './Realtime.module.css';
 
-function mergeData(state = [], data = [], time) {
+function mergeData(state = [], data = [], time: number) {
   const ids = state.map(({ __id }) => __id);
   return state
     .concat(data.filter(({ __id }) => !ids.includes(__id)))
@@ -25,7 +26,7 @@ function mergeData(state = [], data = [], time) {
 }
 
 export function Realtime({ websiteId }) {
-  const [currentData, setCurrentData] = useState();
+  const [currentData, setCurrentData] = useState<RealtimeData>();
   const { get, useQuery } = useApi();
   const { data: website } = useWebsite(websiteId);
   const { data, isLoading, error } = useQuery({
@@ -33,7 +34,6 @@ export function Realtime({ websiteId }) {
     queryFn: () => get(`/realtime/${websiteId}`, { startAt: currentData?.timestamp || 0 }),
     enabled: !!(websiteId && website),
     refetchInterval: REALTIME_INTERVAL,
-    cache: false,
   });
 
   useEffect(() => {
@@ -50,9 +50,9 @@ export function Realtime({ websiteId }) {
     }
   }, [data]);
 
-  const realtimeData = useMemo(() => {
+  const realtimeData: RealtimeData = useMemo(() => {
     if (!currentData) {
-      return { pageviews: [], sessions: [], events: [], countries: [], visitors: [] };
+      return { pageviews: [], sessions: [], events: [], countries: [], visitors: [], timestamp: 0 };
     }
 
     currentData.countries = percentFilter(
@@ -75,7 +75,7 @@ export function Realtime({ websiteId }) {
           }
           return arr;
         }, [])
-        .sort(firstBy('y', -1)),
+        .sort(thenby.firstBy('y', -1)),
     );
 
     currentData.visitors = currentData.sessions.reduce((arr, val) => {
@@ -89,18 +89,18 @@ export function Realtime({ websiteId }) {
   }, [currentData]);
 
   if (isLoading || error) {
-    return <Page loading={isLoading} error={error} />;
+    return <Page isLoading={isLoading} error={error} />;
   }
 
   return (
     <>
       <WebsiteHeader websiteId={websiteId} />
-      <RealtimeHeader websiteId={websiteId} data={currentData} />
+      <RealtimeHeader data={currentData} />
       <RealtimeChart className={styles.chart} data={realtimeData} unit="minute" />
       <Grid>
         <GridRow columns="one-two">
-          <RealtimeUrls websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
-          <RealtimeLog websiteId={websiteId} websiteDomain={website?.domain} data={realtimeData} />
+          <RealtimeUrls websiteDomain={website?.domain} data={realtimeData} />
+          <RealtimeLog websiteDomain={website?.domain} data={realtimeData} />
         </GridRow>
         <GridRow columns="one-two">
           <RealtimeCountries data={realtimeData?.countries} />
