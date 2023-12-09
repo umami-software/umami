@@ -38,15 +38,19 @@ export function Realtime({ websiteId }) {
 
   useEffect(() => {
     if (data) {
-      const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
-      const time = date.getTime();
+      if (!currentData) {
+        setCurrentData(data);
+      } else {
+        const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+        const time = date.getTime();
 
-      setCurrentData(state => ({
-        pageviews: mergeData(state?.pageviews, data.pageviews, time),
-        sessions: mergeData(state?.sessions, data.sessions, time),
-        events: mergeData(state?.events, data.events, time),
-        timestamp: data.timestamp,
-      }));
+        setCurrentData(state => ({
+          pageviews: mergeData(state?.pageviews, data.pageviews, time),
+          sessions: mergeData(state?.sessions, data.sessions, time),
+          events: mergeData(state?.events, data.events, time),
+          timestamp: data.timestamp,
+        }));
+      }
     }
   }, [data]);
 
