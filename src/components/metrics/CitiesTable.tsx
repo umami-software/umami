@@ -11,8 +11,8 @@ export function CitiesTable(props: MetricsTableProps) {
   const countryNames = useCountryNames(locale);
 
   const renderLabel = (city: string, country: string) => {
-    const name = countryNames[country];
-    return name ? `${city}, ${name}` : city;
+    const countryName = countryNames[country];
+    return countryName ? `${city}, ${countryName}` : city;
   };
 
   const renderLink = ({ x: city, country }) => {

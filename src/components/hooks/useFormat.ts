@@ -18,14 +18,19 @@ export function useFormat() {
   };
 
   const formatRegion = (value: string): string => {
-    return regions[value] ? regions[value] : value;
+    const [country] = value.split('-');
+    return regions[value] ? `${regions[value]}, ${countryNames[country]}` : value;
+  };
+
+  const formatCity = (value: string, country?: string): string => {
+    return `${value}, ${countryNames[country]}`;
   };
 
   const formatDevice = (value: string): string => {
     return formatMessage(labels[value] || labels.unknown);
   };
 
-  const formatValue = (value: string, type: string): string => {
+  const formatValue = (value: string, type: string, data?: { [key: string]: any }): string => {
     switch (type) {
       case 'browser':
         return formatBrowser(value);
@@ -33,6 +38,8 @@ export function useFormat() {
         return formatCountry(value);
       case 'region':
         return formatRegion(value);
+      case 'city':
+        return formatCity(value, data?.country);
       case 'device':
         return formatDevice(value);
       default:

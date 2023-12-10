@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { Loading, Icon, Text } from 'react-basics';
+import { ReactNode, useMemo, useState } from 'react';
+import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
 import useApi from 'components/hooks/useApi';
 import { percentFilter } from 'lib/filters';
@@ -12,6 +12,7 @@ import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
 import useMessages from 'components/hooks/useMessages';
 import useLocale from 'components/hooks/useLocale';
+import useFormat from 'components//hooks/useFormat';
 import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -22,6 +23,9 @@ export interface MetricsTableProps extends ListTableProps {
   limit?: number;
   delay?: number;
   onDataLoad?: (data: any) => void;
+  onSearch?: (search: string) => void;
+  allowSearch?: boolean;
+  children?: ReactNode;
 }
 
 export function MetricsTable({
@@ -32,8 +36,12 @@ export function MetricsTable({
   limit,
   onDataLoad,
   delay = null,
+  allowSearch = false,
+  children,
   ...props
 }: MetricsTableProps) {
+  const [search, setSearch] = useState('');
+  const { formatValue } = useFormat();
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
     makeUrl,
@@ -42,7 +50,6 @@ export function MetricsTable({
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const { dir } = useLocale();
-
   const { data, isLoading, isFetched, error } = useQuery({
     queryKey: [
       'websites:metrics',
@@ -94,24 +101,43 @@ export function MetricsTable({
         }
       }
 
+      if (search) {
+        items = items.filter(({ x, ...data }) => {
+          const value = formatValue(x, type, data);
+
+          return value.toLowerCase().includes(search.toLowerCase());
+        });
+      }
+
       items = percentFilter(items);
 
       if (limit) {
-        items = items.filter((e, i) => i < limit);
+        items = items.slice(0, limit - 1);
       }
 
       return items;
     }
     return [];
-  }, [data, error, dataFilter, limit]);
+  }, [data, dataFilter, search, limit, formatValue, type]);
 
   return (
     <div className={classNames(styles.container, className)}>
-      {!data && isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
+      <div className={styles.actions}>
+        {allowSearch && (
+          <SearchField
+            className={styles.search}
+            value={search}
+            onSearch={setSearch}
+            autoFocus={true}
+          />
+        )}
+        {children}
+      </div>
       {data && !error && (
         <ListTable {...(props as ListTableProps)} data={filteredData} className={className} />
       )}
+      {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
         {data && !error && limit && (
           <LinkButton href={makeUrl({ view: type })} variant="quiet">

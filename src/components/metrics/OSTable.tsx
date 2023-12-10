@@ -1,4 +1,4 @@
-import MetricsTable from './MetricsTable';
+import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import useMessages from 'components/hooks/useMessages';
 
@@ -8,7 +8,7 @@ const names = {
   'Sun OS': 'SunOS',
 };
 
-export function OSTable({ websiteId, limit }: { websiteId: string; limit?: number }) {
+export function OSTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
   function renderLink({ x: os }) {
@@ -28,12 +28,11 @@ export function OSTable({ websiteId, limit }: { websiteId: string; limit?: numbe
 
   return (
     <MetricsTable
-      websiteId={websiteId}
-      limit={limit}
+      {...props}
+      type="os"
       title={formatMessage(labels.os)}
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
-      type="os"
     />
   );
 }

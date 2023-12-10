@@ -6,10 +6,10 @@ import useNavigation from 'components/hooks/useNavigation';
 import { emptyFilter } from 'lib/filters';
 
 export interface PagesTableProps extends MetricsTableProps {
-  showFilters?: boolean;
+  allowFilter?: boolean;
 }
 
-export function PagesTable({ showFilters, ...props }: PagesTableProps) {
+export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const {
     router,
     makeUrl,
@@ -37,17 +37,16 @@ export function PagesTable({ showFilters, ...props }: PagesTableProps) {
   };
 
   return (
-    <>
-      {showFilters && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
-      <MetricsTable
-        {...props}
-        title={formatMessage(labels.pages)}
-        type={view}
-        metric={formatMessage(labels.views)}
-        dataFilter={emptyFilter}
-        renderLabel={renderLink}
-      />
-    </>
+    <MetricsTable
+      {...props}
+      title={formatMessage(labels.pages)}
+      type={view}
+      metric={formatMessage(labels.views)}
+      dataFilter={emptyFilter}
+      renderLabel={renderLink}
+    >
+      {allowFilter && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
+    </MetricsTable>
   );
 }
 

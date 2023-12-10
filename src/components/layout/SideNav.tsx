@@ -9,7 +9,7 @@ export interface SideNavProps {
   items: any[];
   shallow?: boolean;
   scroll?: boolean;
-  className?: boolean;
+  className?: string;
   onSelect?: () => void;
 }
 

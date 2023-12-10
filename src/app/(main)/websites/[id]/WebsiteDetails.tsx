@@ -6,7 +6,7 @@ import FilterTags from 'components/metrics/FilterTags';
 import useNavigation from 'components/hooks/useNavigation';
 import { useWebsite } from 'components/hooks';
 import WebsiteChart from './WebsiteChart';
-import WebsiteMenuView from './WebsiteMenuView';
+import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
@@ -34,7 +34,7 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
       {website && (
         <>
           {!view && <WebsiteTableView websiteId={websiteId} />}
-          {view && <WebsiteMenuView websiteId={websiteId} />}
+          {view && <WebsiteExpandedView websiteId={websiteId} />}
         </>
       )}
     </>

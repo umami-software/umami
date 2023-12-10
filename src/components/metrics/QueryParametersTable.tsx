@@ -13,9 +13,9 @@ const filters = {
 };
 
 export function QueryParametersTable({
-  showFilters,
+  allowFilter,
   ...props
-}: { showFilters: boolean } & MetricsTableProps) {
+}: { allowFilter: boolean } & MetricsTableProps) {
   const [filter, setFilter] = useState(FILTER_COMBINED);
   const { formatMessage, labels } = useMessages();
 
@@ -28,27 +28,26 @@ export function QueryParametersTable({
   ];
 
   return (
-    <>
-      {showFilters && <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />}
-      <MetricsTable
-        {...props}
-        title={formatMessage(labels.query)}
-        type="query"
-        metric={formatMessage(labels.views)}
-        dataFilter={filters[filter]}
-        renderLabel={({ x, p, v }) =>
-          filter === FILTER_RAW ? (
-            x
-          ) : (
-            <div className={styles.item}>
-              <div className={styles.param}>{safeDecodeURI(p)}</div>
-              <div className={styles.value}>{safeDecodeURI(v)}</div>
-            </div>
-          )
-        }
-        delay={0}
-      />
-    </>
+    <MetricsTable
+      {...props}
+      title={formatMessage(labels.query)}
+      type="query"
+      metric={formatMessage(labels.views)}
+      dataFilter={filters[filter]}
+      renderLabel={({ x, p, v }) =>
+        filter === FILTER_RAW ? (
+          x
+        ) : (
+          <div className={styles.item}>
+            <div className={styles.param}>{safeDecodeURI(p)}</div>
+            <div className={styles.value}>{safeDecodeURI(v)}</div>
+          </div>
+        )
+      }
+      delay={0}
+    >
+      {allowFilter && <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />}
+    </MetricsTable>
   );
 }
 

@@ -15,7 +15,7 @@ import SideNav from 'components/layout/SideNav';
 import useNavigation from 'components/hooks/useNavigation';
 import useMessages from 'components/hooks/useMessages';
 import LinkButton from 'components/common/LinkButton';
-import styles from './WebsiteMenuView.module.css';
+import styles from './WebsiteExpandedView.module.css';
 
 const views = {
   url: PagesTable,
@@ -33,7 +33,7 @@ const views = {
   query: QueryParametersTable,
 };
 
-export default function WebsiteMenuView({
+export default function WebsiteExpandedView({
   websiteId,
   websiteDomain,
 }: {
@@ -113,11 +113,11 @@ export default function WebsiteMenuView({
 
   const DetailsComponent = views[view] || (() => null);
 
-  const handleChange = view => {
+  const handleChange = (view: any) => {
     router.push(makeUrl({ view }));
   };
 
-  const renderValue = value => items.find(({ key }) => key === value)?.label;
+  const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
 
   return (
     <div className={styles.layout}>
@@ -146,9 +146,10 @@ export default function WebsiteMenuView({
           websiteDomain={websiteDomain}
           limit={false}
           animate={false}
-          showFilters={true}
           virtualize={true}
           itemCount={25}
+          allowFilter={true}
+          allowSearch={true}
         />
       </div>
     </div>
