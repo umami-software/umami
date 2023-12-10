@@ -1,4 +1,5 @@
 'use client';
+import { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactBasicsProvider } from 'react-basics';
@@ -26,14 +27,18 @@ function MessagesProvider({ children }) {
 }
 
 function SettingsProvider({ children }) {
-  const hostUrl = process.env.hostUrl || location.origin;
+  const [config, setConfig] = useState({});
 
-  const config = {
-    settingsUrl: '/settings/websites',
-    shareUrl: hostUrl,
-    trackingCodeUrl: hostUrl,
-    websitesUrl: `/websites`,
-  };
+  useEffect(() => {
+    const hostUrl = process.env.hostUrl || window?.location.origin;
+
+    setConfig({
+      settingsUrl: '/settings/websites',
+      shareUrl: hostUrl,
+      trackingCodeUrl: hostUrl,
+      websitesUrl: `/websites`,
+    });
+  }, []);
 
   return <SettingsContext.Provider value={config}>{children}</SettingsContext.Provider>;
 }

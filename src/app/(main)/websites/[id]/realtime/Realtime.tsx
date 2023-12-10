@@ -6,16 +6,16 @@ import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
 import WorldMap from 'components/metrics/WorldMap';
+import useApi from 'components/hooks/useApi';
+import { useWebsite } from 'components/hooks';
+import { percentFilter } from 'lib/filters';
+import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
+import { RealtimeData } from 'lib/types';
 import RealtimeLog from './RealtimeLog';
 import RealtimeHeader from './RealtimeHeader';
 import RealtimeUrls from './RealtimeUrls';
 import RealtimeCountries from './RealtimeCountries';
 import WebsiteHeader from '../WebsiteHeader';
-import useApi from 'components/hooks/useApi';
-import { percentFilter } from 'lib/filters';
-import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
-import { useWebsite } from 'components/hooks';
-import { RealtimeData } from 'lib/types';
 import styles from './Realtime.module.css';
 
 function mergeData(state = [], data = [], time: number) {
