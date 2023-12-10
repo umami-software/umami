@@ -64,7 +64,7 @@ export function Realtime({ websiteId }) {
           }
           return arr;
         }, [])
-        .reduce((arr, { country }) => {
+        .reduce((arr: { x: any; y: number }[], { country }: any) => {
           if (country) {
             const row = arr.find(({ x }) => x === country);
 

@@ -3,6 +3,7 @@ import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactBasicsProvider } from 'react-basics';
 import ErrorBoundary from 'components/common/ErrorBoundary';
+import SettingsContext from 'app/(main)/settings/SettingsContext';
 import useLocale from 'components/hooks/useLocale';
 import 'chartjs-adapter-date-fns';
 
@@ -24,14 +25,29 @@ function MessagesProvider({ children }) {
   );
 }
 
+function SettingsProvider({ children }) {
+  const hostUrl = process.env.hostUrl || location.origin;
+
+  const config = {
+    settingsUrl: '/settings/websites',
+    shareUrl: hostUrl,
+    trackingCodeUrl: hostUrl,
+    websitesUrl: `/websites`,
+  };
+
+  return <SettingsContext.Provider value={config}>{children}</SettingsContext.Provider>;
+}
+
 export function Providers({ children }) {
   return (
     <MessagesProvider>
-      <QueryClientProvider client={client}>
-        <ReactBasicsProvider>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </ReactBasicsProvider>
-      </QueryClientProvider>
+      <SettingsProvider>
+        <QueryClientProvider client={client}>
+          <ReactBasicsProvider>
+            <ErrorBoundary>{children}</ErrorBoundary>
+          </ReactBasicsProvider>
+        </QueryClientProvider>
+      </SettingsProvider>
     </MessagesProvider>
   );
 }
