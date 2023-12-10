@@ -19,9 +19,9 @@ import { RealtimeData } from 'lib/types';
 import styles from './Realtime.module.css';
 
 function mergeData(state = [], data = [], time: number) {
-  const ids = state.map(({ __id }) => __id);
+  const ids = state.map(({ id }) => id);
   return state
-    .concat(data.filter(({ __id }) => !ids.includes(__id)))
+    .concat(data.filter(({ id }) => !ids.includes(id)))
     .filter(({ timestamp }) => timestamp >= time);
 }
 
@@ -38,21 +38,18 @@ export function Realtime({ websiteId }) {
 
   useEffect(() => {
     if (data) {
-      if (!currentData) {
-        setCurrentData(data);
-      } else {
-        const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
-        const time = date.getTime();
+      const date = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+      const time = date.getTime();
+      const { pageviews, sessions, events, timestamp } = data;
 
-        setCurrentData(state => ({
-          pageviews: mergeData(state?.pageviews, data.pageviews, time),
-          sessions: mergeData(state?.sessions, data.sessions, time),
-          events: mergeData(state?.events, data.events, time),
-          timestamp: data.timestamp,
-        }));
-      }
+      setCurrentData(state => ({
+        pageviews: mergeData(state?.pageviews, pageviews, time),
+        sessions: mergeData(state?.sessions, sessions, time),
+        events: mergeData(state?.events, events, time),
+        timestamp,
+      }));
     }
-  }, [data]);
+  }, [data, currentData]);
 
   const realtimeData: RealtimeData = useMemo(() => {
     if (!currentData) {

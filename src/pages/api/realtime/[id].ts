@@ -1,4 +1,4 @@
-import { subMinutes } from 'date-fns';
+import { startOfMinute, subMinutes } from 'date-fns';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, RealtimeInit } from 'lib/types';
@@ -6,6 +6,8 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRealtimeData } from 'queries';
 import * as yup from 'yup';
+import { REALTIME_RANGE } from 'lib/constants';
+
 export interface RealtimeRequestQuery {
   id: string;
   startAt: number;
@@ -32,7 +34,7 @@ export default async (
       return unauthorized(res);
     }
 
-    let startTime = subMinutes(new Date(), 30);
+    let startTime = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
 
     if (+startAt > startTime.getTime()) {
       startTime = new Date(+startAt);
