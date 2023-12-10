@@ -19,8 +19,8 @@ export function Header() {
         </Link>
       </div>
       <div className={styles.buttons}>
-        <ThemeButton tooltipPosition="bottom" />
-        <LanguageButton tooltipPosition="bottom" menuPosition="bottom" />
+        <ThemeButton />
+        <LanguageButton />
         <SettingsButton />
       </div>
     </header>

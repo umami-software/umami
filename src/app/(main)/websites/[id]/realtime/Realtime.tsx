@@ -49,7 +49,7 @@ export function Realtime({ websiteId }) {
         timestamp,
       }));
     }
-  }, [data, currentData]);
+  }, [data]);
 
   const realtimeData: RealtimeData = useMemo(() => {
     if (!currentData) {
