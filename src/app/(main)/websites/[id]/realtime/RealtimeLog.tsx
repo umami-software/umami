@@ -1,18 +1,19 @@
 import { useMemo, useState } from 'react';
-import { StatusLight, Icon, Text } from 'react-basics';
+import { StatusLight, Icon, Text, SearchField } from 'react-basics';
 import { FixedSizeList } from 'react-window';
+import { format } from 'date-fns';
 import thenby from 'thenby';
+import { safeDecodeURI } from 'next-basics';
 import FilterButtons from 'components/common/FilterButtons';
 import Empty from 'components/common/Empty';
 import useLocale from 'components/hooks/useLocale';
 import useCountryNames from 'components/hooks/useCountryNames';
+import Icons from 'components/icons';
+import useMessages from 'components/hooks/useMessages';
+import useFormat from 'components//hooks/useFormat';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
-import { safeDecodeURI } from 'next-basics';
-import Icons from 'components/icons';
 import styles from './RealtimeLog.module.css';
-import useMessages from 'components/hooks/useMessages';
-import { format } from 'date-fns';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -26,7 +27,9 @@ const icons = {
 };
 
 export function RealtimeLog({ data, websiteDomain }) {
+  const [search, setSearch] = useState('');
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { formatValue } = useFormat();
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
@@ -56,7 +59,15 @@ export function RealtimeLog({ data, websiteDomain }) {
 
   const getIcon = ({ __type }) => icons[__type];
 
-  const getDetail = log => {
+  const getDetail = (log: {
+    __type: any;
+    eventName: any;
+    urlPath: any;
+    browser: any;
+    os: any;
+    country: any;
+    device: any;
+  }) => {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
@@ -130,18 +141,38 @@ export function RealtimeLog({ data, websiteDomain }) {
     }
 
     const { pageviews, visitors, events } = data;
-    const logs = [...pageviews, ...visitors, ...events].sort(thenby.firstBy('createdAt', -1));
+    let logs = [...pageviews, ...visitors, ...events].sort(thenby.firstBy('createdAt', -1));
+
+    if (search) {
+      logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
+        return [
+          eventName,
+          urlPath,
+          os,
+          formatValue(browser, 'browser'),
+          formatValue(country, 'country'),
+          formatValue(device, 'device'),
+        ]
+          .filter(n => n)
+          .map(n => n.toLowerCase())
+          .join('')
+          .includes(search.toLowerCase());
+      });
+    }
 
     if (filter !== TYPE_ALL) {
       return logs.filter(({ __type }) => __type === filter);
     }
 
     return logs;
-  }, [data, filter]);
+  }, [data, filter, formatValue, search]);
 
   return (
     <div className={styles.table}>
-      <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+      <div className={styles.actions}>
+        <SearchField className={styles.search} value={search} onSearch={setSearch} />
+        <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
+      </div>
       <div className={styles.header}>{formatMessage(labels.activityLog)}</div>
       <div className={styles.body}>
         {logs?.length === 0 && <Empty />}
