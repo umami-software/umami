@@ -1,12 +1,10 @@
-import { canCreateUser } from 'lib/auth';
-import { ROLES } from 'lib/constants';
-import { uuid } from 'lib/crypto';
+import { canViewUsers } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
-import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createUser, getUserByUsername } from 'queries';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { getUsers } from 'queries';
 import * as yup from 'yup';
 
 export interface UsersRequestQuery extends SearchFilter {}
@@ -39,27 +37,16 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  if (req.method === 'POST') {
-    if (!(await canCreateUser(req.auth))) {
+  if (req.method === 'GET') {
+    if (!(await canViewUsers(req.auth))) {
       return unauthorized(res);
     }
 
-    const { username, password, role, id } = req.body;
+    const { page, query, pageSize } = req.query;
 
-    const existingUser = await getUserByUsername(username, { showDeleted: true });
+    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
 
-    if (existingUser) {
-      return badRequest(res, 'User already exists');
-    }
-
-    const created = await createUser({
-      id: id || uuid(),
-      username,
-      password: hashPassword(password),
-      role: role ?? ROLES.user,
-    });
-
-    return ok(res, created);
+    return ok(res, users);
   }
 
   return methodNotAllowed(res);

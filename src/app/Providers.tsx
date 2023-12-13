@@ -33,10 +33,11 @@ function SettingsProvider({ children }) {
     const hostUrl = process.env.hostUrl || window?.location.origin;
 
     setConfig({
-      settingsUrl: '/settings/websites',
       shareUrl: hostUrl,
       trackingCodeUrl: hostUrl,
-      websitesUrl: `/websites`,
+      websitesUrl: '/websites',
+      settingsPath: '/settings/websites',
+      websitesPath: `/websites`,
     });
   }, []);
 

@@ -25,7 +25,7 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const breakpoint = useBreakpoint();
-  const { settingsUrl, websitesUrl } = useContext(SettingsContext);
+  const { settingsPath, websitesPath } = useContext(SettingsContext);
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -52,7 +52,7 @@ export function WebsitesTable({
             return (
               <>
                 {allowEdit && (!showTeam || ownerId === user.id) && (
-                  <Link href={`${settingsUrl}/${id}`}>
+                  <Link href={`${settingsPath}/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.Edit />
@@ -62,7 +62,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={`${websitesUrl}/${id}`}>
+                  <Link href={`${websitesPath}/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.External />

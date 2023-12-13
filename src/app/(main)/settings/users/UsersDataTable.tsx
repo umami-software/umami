@@ -11,7 +11,7 @@ export function UsersDataTable() {
   const modified = useCache((state: any) => state?.users);
   const queryResult = useFilterQuery({
     queryKey: ['users', { modified }],
-    queryFn: (params: { [key: string]: any }) => get(`/users`, params),
+    queryFn: (params: { [key: string]: any }) => get(`/admin/users`, params),
   });
 
   return (
