@@ -77,6 +77,7 @@ export function MetricsTable({
         type,
         startAt: +startDate,
         endAt: +endDate,
+        limit,
         ...filters,
       });
 

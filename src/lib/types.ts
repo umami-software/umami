@@ -206,6 +206,7 @@ export interface QueryFilters {
 export interface QueryOptions {
   joinSession?: boolean;
   columns?: { [key: string]: string };
+  limit?: number;
 }
 
 export interface RealtimeData {

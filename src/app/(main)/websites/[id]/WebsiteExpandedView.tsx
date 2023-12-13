@@ -144,7 +144,6 @@ export default function WebsiteExpandedView({
         <DetailsComponent
           websiteId={websiteId}
           websiteDomain={websiteDomain}
-          limit={false}
           animate={false}
           virtualize={true}
           itemCount={25}

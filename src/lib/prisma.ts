@@ -135,7 +135,11 @@ function normalizeFilters(filters = {}) {
   }, {});
 }
 
-async function parseFilters(websiteId, filters: QueryFilters = {}, options: QueryOptions = {}) {
+async function parseFilters(
+  websiteId: string,
+  filters: QueryFilters = {},
+  options: QueryOptions = {},
+) {
   const website = await loadWebsite(websiteId);
 
   return {
