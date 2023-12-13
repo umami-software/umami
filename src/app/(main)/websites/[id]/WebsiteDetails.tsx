@@ -33,8 +33,8 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (
         <>
-          {!view && <WebsiteTableView websiteId={websiteId} />}
-          {view && <WebsiteExpandedView websiteId={websiteId} />}
+          {!view && <WebsiteTableView websiteId={websiteId} domainName={website.domain} />}
+          {view && <WebsiteExpandedView websiteId={websiteId} domainName={website.domain} />}
         </>
       )}
     </>

@@ -17,6 +17,7 @@ import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
+  domainName: string;
   type?: string;
   className?: string;
   dataFilter?: (data: any) => any;
