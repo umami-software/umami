@@ -1,29 +1,16 @@
-import { ReactNode, Dispatch, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Banner, Loading, SearchField } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
 import styles from './DataTable.module.css';
+import { FilterQueryResult } from 'components/hooks/useFilterQuery';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataTableProps {
-  queryResult: {
-    result: {
-      page: number;
-      pageSize: number;
-      count: number;
-      data: any[];
-    };
-    params: {
-      query: string;
-      page: number;
-    };
-    setParams: Dispatch<SetStateAction<{ query: string; page: number }>>;
-    isLoading: boolean;
-    error: unknown;
-  };
+  queryResult: FilterQueryResult<any>;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
@@ -38,17 +25,22 @@ export function DataTable({
   children,
 }: DataTableProps) {
   const { formatMessage, labels, messages } = useMessages();
-  const { result, error, isLoading, params, setParams } = queryResult || {};
+  const {
+    result,
+    params,
+    setParams,
+    query: { error, isLoading },
+  } = queryResult || {};
   const { page, pageSize, count, data } = result || {};
   const { query } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
   const noResults = Boolean(!isLoading && query && !hasData);
 
-  const handleSearch = query => {
+  const handleSearch = (query: string) => {
     setParams({ ...params, query, page: params.page ? page : 1 });
   };
 
-  const handlePageChange = page => {
+  const handlePageChange = (page: number) => {
     setParams({ ...params, query, page });
   };
 
@@ -62,7 +54,7 @@ export function DataTable({
         <SearchField
           className={styles.search}
           value={query}
-          onChange={handleSearch}
+          onSearch={handleSearch}
           delay={searchDelay || DEFAULT_SEARCH_DELAY}
           autoFocus={true}
           placeholder={formatMessage(labels.search)}

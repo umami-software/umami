@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2021",
     "outDir": "./build",
     "module": "esnext",
     "moduleResolution": "node",
@@ -23,6 +23,7 @@
     "incremental": false,
     "baseUrl": "./src",
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "assets/*": ["./assets/*"],
       "components/*": ["./components/*"],
       "lib/*": ["./lib/*"],

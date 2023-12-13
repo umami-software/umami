@@ -66,3 +66,25 @@
 .row .link:hover {
   color: var(--primary400);
 }
+
+.search {
+  max-width: 300px;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+@media only screen and (max-width: 992px) {
+  .actions {
+    flex-direction: column;
+  }
+
+  .search {
+    max-width: 100%;
+  }
+}

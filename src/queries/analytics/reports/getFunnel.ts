@@ -35,7 +35,7 @@ async function relationalQuery(
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
-  const { rawQuery, getAddMinutesQuery } = prisma;
+  const { rawQuery, getAddIntervalQuery } = prisma;
   const { levelQuery, sumQuery } = getFunnelQuery(urls, windowMinutes);
 
   function getFunnelQuery(
@@ -58,9 +58,9 @@ async function relationalQuery(
             join website_event we
                 on l.session_id = we.session_id
             where we.website_id = {{websiteId::uuid}}
-                and we.created_at between l.created_at and ${getAddMinutesQuery(
+                and we.created_at between l.created_at and ${getAddIntervalQuery(
                   `l.created_at `,
-                  windowMinutes,
+                  `${windowMinutes} minute`,
                 )}
                 and we.referrer_path = {{${i - 1}}}
                 and we.url_path = {{${i}}}

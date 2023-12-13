@@ -1,4 +1,4 @@
-import { canCreateUser, canViewUsers } from 'lib/auth';
+import { canCreateUser } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
@@ -6,7 +6,7 @@ import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createUser, getUserByUsername, getUsers } from 'queries';
+import { createUser, getUserByUsername } from 'queries';
 import * as yup from 'yup';
 
 export interface UsersRequestQuery extends SearchFilter {}
@@ -38,18 +38,6 @@ export default async (
 ) => {
   await useAuth(req, res);
   await useValidate(schema, req, res);
-
-  if (req.method === 'GET') {
-    if (!(await canViewUsers(req.auth))) {
-      return unauthorized(res);
-    }
-
-    const { page, query, pageSize } = req.query;
-
-    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
-
-    return ok(res, users);
-  }
 
   if (req.method === 'POST') {
     if (!(await canCreateUser(req.auth))) {

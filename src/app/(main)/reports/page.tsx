@@ -1,7 +1,7 @@
 import ReportsHeader from './ReportsHeader';
 import ReportsDataTable from './ReportsDataTable';
 
-export default function ReportsPage() {
+export default function () {
   return (
     <>
       <ReportsHeader />

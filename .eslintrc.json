@@ -4,6 +4,13 @@
     "es2020": true,
     "node": true
   },
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -12,13 +19,6 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:import/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "next"
-  ],
   "plugins": ["@typescript-eslint", "prettier"],
   "settings": {
     "import/resolver": {

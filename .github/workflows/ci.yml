@@ -16,10 +16,6 @@ jobs:
     strategy:
       matrix:
         include:
-        - node-version: 16.x
-          db-type: postgresql
-        - node-version: 16.x
-          db-type: mysql
         - node-version: 18.x
           db-type: postgresql
         - node-version: 18.x

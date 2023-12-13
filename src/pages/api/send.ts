@@ -1,4 +1,3 @@
-import { Resolver } from 'dns/promises';
 import ipaddr from 'ipaddr.js';
 import isbot from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX } from 'lib/constants';
@@ -74,17 +73,17 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
 
   if (req.method === 'POST') {
-    if (isbot(req.headers['user-agent']) && !process.env.DISABLE_BOT_CHECK) {
+    if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
       return ok(res);
     }
 
-    const { type, payload } = req.body;
-
     await useValidate(schema, req, res);
 
-    if (await hasBlockedIp(req)) {
+    if (hasBlockedIp(req)) {
       return forbidden(res);
     }
+
+    const { type, payload } = req.body;
 
     const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
 
@@ -143,26 +142,14 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   return methodNotAllowed(res);
 };
 
-async function hasBlockedIp(req: NextApiRequestCollect) {
+function hasBlockedIp(req: NextApiRequestCollect) {
   const ignoreIps = process.env.IGNORE_IP;
-  const ignoreHostnames = process.env.IGNORE_HOSTNAME;
 
-  if (ignoreIps || ignoreHostnames) {
+  if (ignoreIps) {
     const ips = [];
 
     if (ignoreIps) {
       ips.push(...ignoreIps.split(',').map(n => n.trim()));
-    }
-
-    if (ignoreHostnames) {
-      const resolver = new Resolver();
-      const promises = ignoreHostnames
-        .split(',')
-        .map(n => resolver.resolve4(n.trim()).catch(() => {}));
-
-      await Promise.all(promises).then(resolvedIps => {
-        ips.push(...resolvedIps.filter(n => n).flatMap(n => n as string[]));
-      });
     }
 
     const clientIp = getIpAddress(req);
@@ -177,8 +164,8 @@ async function hasBlockedIp(req: NextApiRequestCollect) {
 
         if (addr.kind() === range[0].kind() && addr.match(range)) return true;
       }
-
-      return false;
     });
   }
+
+  return false;
 }

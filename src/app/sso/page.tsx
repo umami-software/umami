@@ -18,5 +18,5 @@ export default function SSOPage() {
     }
   }, [router, url, token]);
 
-  return <Loading size="xl" />;
+  return <Loading />;
 }
