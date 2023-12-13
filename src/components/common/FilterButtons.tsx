@@ -4,7 +4,7 @@ import { ButtonGroup, Button, Flexbox } from 'react-basics';
 export interface FilterButtonsProps {
   items: any[];
   selectedKey?: Key;
-  onSelect: () => void;
+  onSelect: (key: any) => void;
 }
 
 export function FilterButtons({ items, selectedKey, onSelect }: FilterButtonsProps) {

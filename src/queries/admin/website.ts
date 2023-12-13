@@ -21,7 +21,7 @@ export async function getWebsiteByShareId(shareId: string) {
 export async function getWebsites(
   filters: WebsiteSearchFilter,
   options?: { include?: Prisma.WebsiteInclude },
-): Promise<FilterResult<Website[]>> {
+): Promise<FilterResult<Website>> {
   const { userId, teamId, includeTeams, onlyTeams, query } = filters;
   const mode = prisma.getSearchMode();
 
@@ -105,7 +105,7 @@ export async function getWebsites(
 export async function getWebsitesByUserId(
   userId: string,
   filters?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+): Promise<FilterResult<Website>> {
   return getWebsites(
     { userId, ...filters },
     {
@@ -133,7 +133,7 @@ export async function getWebsitesByUserId(
 export async function getWebsitesByTeamId(
   teamId: string,
   filters?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+): Promise<FilterResult<Website>> {
   return getWebsites(
     {
       teamId,

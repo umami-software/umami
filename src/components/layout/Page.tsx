@@ -23,7 +23,7 @@ export function Page({
   }
 
   if (isLoading) {
-    return <Loading icon="spinner" size="xl" position="page" />;
+    return <Loading position="page" />;
   }
 
   return <div className={classNames(styles.page, className)}>{children}</div>;

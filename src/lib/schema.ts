@@ -8,6 +8,6 @@ export const dateRange = {
 export const pageInfo = {
   query: yup.string(),
   page: yup.number().integer().positive(),
-  pageSize: yup.number().integer().positive().max(200),
+  pageSize: yup.number().integer().positive().min(1).max(200),
   orderBy: yup.string(),
 };

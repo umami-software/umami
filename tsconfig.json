@@ -23,6 +23,7 @@
     "incremental": false,
     "baseUrl": "./src",
     "paths": {
+      "react": ["./node_modules/@types/react"],
       "assets/*": ["./assets/*"],
       "components/*": ["./components/*"],
       "lib/*": ["./lib/*"],

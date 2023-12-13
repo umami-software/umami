@@ -1,10 +1,10 @@
-import { canCreateWebsite } from 'lib/auth';
+import { canCreateWebsite, canViewAllWebsites } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite } from 'queries';
+import { createWebsite, getWebsites } from 'queries';
 import userWebsites from 'pages/api/users/[id]/websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
@@ -41,6 +41,30 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
+    if (await canViewAllWebsites(req.auth)) {
+      const websites = await getWebsites(req.query, {
+        include: {
+          teamWebsite: {
+            include: {
+              team: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          user: {
+            select: {
+              username: true,
+              id: true,
+            },
+          },
+        },
+      });
+
+      return ok(res, websites);
+    }
+
     if (!req.query.id) {
       req.query.id = userId;
     }

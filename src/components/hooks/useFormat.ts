@@ -9,23 +9,28 @@ export function useFormat() {
   const { locale } = useLocale();
   const countryNames = useCountryNames(locale);
 
-  const formatBrowser = (value: string) => {
+  const formatBrowser = (value: string): string => {
     return BROWSERS[value] || value;
   };
 
-  const formatCountry = (value: string) => {
+  const formatCountry = (value: string): string => {
     return countryNames[value] || value;
   };
 
-  const formatRegion = (value: string) => {
-    return regions[value] ? regions[value] : value;
+  const formatRegion = (value: string): string => {
+    const [country] = value.split('-');
+    return regions[value] ? `${regions[value]}, ${countryNames[country]}` : value;
   };
 
-  const formatDevice = (value: string) => {
+  const formatCity = (value: string, country?: string): string => {
+    return `${value}, ${countryNames[country]}`;
+  };
+
+  const formatDevice = (value: string): string => {
     return formatMessage(labels[value] || labels.unknown);
   };
 
-  const formatValue = (value: string, type: string) => {
+  const formatValue = (value: string, type: string, data?: { [key: string]: any }): string => {
     switch (type) {
       case 'browser':
         return formatBrowser(value);
@@ -33,6 +38,8 @@ export function useFormat() {
         return formatCountry(value);
       case 'region':
         return formatRegion(value);
+      case 'city':
+        return formatCity(value, data?.country);
       case 'device':
         return formatDevice(value);
       default:
