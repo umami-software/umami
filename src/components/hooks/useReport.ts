@@ -4,7 +4,7 @@ import { useTimezone } from './useTimezone';
 import useApi from './useApi';
 import useMessages from './useMessages';
 
-export function useReport(reportId, defaultParameters) {
+export function useReport(reportId: string, defaultParameters: { [key: string]: any }) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();
@@ -17,7 +17,7 @@ export function useReport(reportId, defaultParameters) {
     parameters: {},
   };
 
-  const loadReport = async id => {
+  const loadReport = async (id: string) => {
     const data: any = await get(`/reports/${id}`);
 
     const { dateRange } = data?.parameters || {};
@@ -32,7 +32,7 @@ export function useReport(reportId, defaultParameters) {
   };
 
   const runReport = useCallback(
-    async parameters => {
+    async (parameters: { [key: string]: any }) => {
       setIsRunning(true);
 
       const { type } = report;
@@ -50,11 +50,11 @@ export function useReport(reportId, defaultParameters) {
 
       setIsRunning(false);
     },
-    [report],
+    [report, timezone],
   );
 
   const updateReport = useCallback(
-    async data => {
+    async (data: { [x: string]: any; parameters: any }) => {
       setReport(
         produce((state: any) => {
           const { parameters, ...rest } = data;

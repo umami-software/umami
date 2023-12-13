@@ -1,11 +1,9 @@
-import { canCreateWebsite } from 'lib/auth';
-import { uuid } from 'lib/crypto';
+import { canViewAllWebsites } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite } from 'queries';
-import userWebsites from 'pages/api/users/[id]/websites';
+import { getWebsites } from 'queries';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 
@@ -36,41 +34,32 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const {
-    user: { id: userId },
-  } = req.auth;
-
   if (req.method === 'GET') {
-    if (!req.query.id) {
-      req.query.id = userId;
-    }
-
-    if (!req.query.pageSize) {
-      req.query.pageSize = 100;
-    }
-
-    return userWebsites(req as any, res);
-  }
-
-  if (req.method === 'POST') {
-    const { name, domain, shareId } = req.body;
-
-    if (!(await canCreateWebsite(req.auth))) {
+    if (!(await canViewAllWebsites(req.auth))) {
       return unauthorized(res);
     }
 
-    const data: any = {
-      id: uuid(),
-      name,
-      domain,
-      shareId,
-    };
+    const websites = await getWebsites(req.query, {
+      include: {
+        teamWebsite: {
+          include: {
+            team: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        user: {
+          select: {
+            username: true,
+            id: true,
+          },
+        },
+      },
+    });
 
-    data.userId = userId;
-
-    const website = await createWebsite(data);
-
-    return ok(res, website);
+    return ok(res, websites);
   }
 
   return methodNotAllowed(res);

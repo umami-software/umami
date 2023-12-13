@@ -17,7 +17,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
   const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
   const { showToast } = useToasts();
-  const { websitesUrl, settingsUrl } = useContext(SettingsContext);
+  const { websitesUrl, websitesPath, settingsPath } = useContext(SettingsContext);
   const { data, isLoading } = useQuery({
     queryKey: ['website', websiteId],
     queryFn: () => get(`${websitesUrl}/${websiteId}`),
@@ -38,7 +38,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
 
   const handleReset = async (value: string) => {
     if (value === 'delete') {
-      router.push(settingsUrl);
+      router.push(settingsPath);
     } else if (value === 'reset') {
       showSuccess();
     }
@@ -57,7 +57,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
   return (
     <>
       <PageHeader title={values?.name}>
-        <Link href={`${websitesUrl}/${websiteId}`} target={openExternal ? '_blank' : null}>
+        <Link href={`${websitesPath}/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>
               <Icons.External />
