@@ -9,7 +9,7 @@ export interface PagesTableProps extends MetricsTableProps {
   allowFilter?: boolean;
 }
 
-export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
+export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProps) {
   const {
     router,
     makeUrl,
@@ -17,7 +17,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
-  const handleSelect = key => {
+  const handleSelect = (key: any) => {
     router.push(makeUrl({ view: key }), { scroll: true });
   };
 
@@ -33,12 +33,20 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   ];
 
   const renderLink = ({ x }) => {
-    return <FilterLink id={view} value={x} label={!x && formatMessage(labels.none)} />;
+    return (
+      <FilterLink
+        id={view}
+        value={x}
+        label={!x && formatMessage(labels.none)}
+        externalUrl={`${domainName.startsWith('http') ? domainName : `https://${domainName}`}${x}`}
+      />
+    );
   };
 
   return (
     <MetricsTable
       {...props}
+      domainName={domainName}
       title={formatMessage(labels.pages)}
       type={view}
       metric={formatMessage(labels.views)}

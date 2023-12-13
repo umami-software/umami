@@ -19,11 +19,11 @@ export function FilterTags({ params }) {
   }
 
   function handleCloseFilter(param?: string) {
-    if (!param) {
-      router.push(makeUrl({ view }, true));
-    } else {
-      router.push(makeUrl({ [param]: undefined }));
-    }
+    router.push(makeUrl({ [param]: undefined }));
+  }
+
+  function handleResetFilter() {
+    router.push(makeUrl({ view }, true));
   }
 
   return (
@@ -44,7 +44,7 @@ export function FilterTags({ params }) {
           </div>
         );
       })}
-      <Button size="sm" variant="quiet" onClick={handleCloseFilter}>
+      <Button size="sm" variant="quiet" onClick={handleResetFilter}>
         <Icon>
           <Icons.Close />
         </Icon>

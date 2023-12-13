@@ -35,10 +35,10 @@ const views = {
 
 export default function WebsiteExpandedView({
   websiteId,
-  websiteDomain,
+  domainName,
 }: {
   websiteId: string;
-  websiteDomain?: string;
+  domainName?: string;
 }) {
   const { formatMessage, labels } = useMessages();
   const {
@@ -143,7 +143,7 @@ export default function WebsiteExpandedView({
       <div className={styles.content}>
         <DetailsComponent
           websiteId={websiteId}
-          websiteDomain={websiteDomain}
+          domainName={domainName}
           animate={false}
           virtualize={true}
           itemCount={25}

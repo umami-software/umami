@@ -10,10 +10,17 @@ import CountriesTable from 'components/metrics/CountriesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
 
-export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
+export default function WebsiteTableView({
+  websiteId,
+  domainName,
+}: {
+  websiteId: string;
+  domainName: string;
+}) {
   const [countryData, setCountryData] = useState();
   const tableProps = {
     websiteId,
+    domainName,
     limit: 10,
   };
 
