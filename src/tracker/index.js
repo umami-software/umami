@@ -39,6 +39,15 @@
     }
   };
 
+  const getPageviewEventData = () => Object.fromEntries(
+    [...currentScript.attributes]
+      .filter(attribute => eventRegex.match(attribute.name))
+      .map(attribute => {
+        const match = attribute.name.match(eventRegex);
+        return [match[1], attribute.value]
+      })
+  )
+
   const getPayload = () => ({
     website,
     hostname,
@@ -207,7 +216,7 @@
     } else if (typeof obj === 'function') {
       return send(obj(getPayload()));
     }
-    return send(getPayload());
+    return send({ ...getPayload(), data: getPageviewEventData() });
   };
 
   const identify = data => send({ ...getPayload(), data }, 'identify');
