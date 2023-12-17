@@ -32,8 +32,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
         event_key,
         count(*) as "total"
       from event_data
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
+      join website_event on website_event.event_id = event_data.website_event_id
+      where website_event.website_id = {{websiteId::uuid}}
+        and event_data.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_name is not null
       ${filterQuery}
       group by website_event_id, event_key
       ) as t
