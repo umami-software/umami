@@ -51,6 +51,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       on website_event.event_id = event_data.website_event_id
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
+      and website_event.event_name is not null
     group by website_event.event_name, event_data.event_key, event_data.data_type
     order by 1 asc, 2 asc
     limit 500

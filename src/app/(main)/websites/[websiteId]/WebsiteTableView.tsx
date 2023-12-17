@@ -9,13 +9,17 @@ import WorldMap from 'components/metrics/WorldMap';
 import CountriesTable from 'components/metrics/CountriesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
+import PageviewCustomDataTable from 'components/metrics/PageviewCustomDataTable';
+import { chunkArray } from 'next-basics';
 
 export default function WebsiteTableView({
   websiteId,
   domainName,
+  customDataFields,
 }: {
   websiteId: string;
   domainName: string;
+  customDataFields: string[];
 }) {
   const [countryData, setCountryData] = useState();
   const tableProps = {
@@ -35,6 +39,16 @@ export default function WebsiteTableView({
         <OSTable {...tableProps} />
         <DevicesTable {...tableProps} />
       </GridRow>
+      {chunkArray(customDataFields, 3).map((fields, index) => (
+        <GridRow
+          key={index}
+          columns={fields.length === 1 ? 'one' : fields.length === 2 ? 'two' : 'three'}
+        >
+          {fields.map(field => (
+            <PageviewCustomDataTable key="custom" {...tableProps} fieldName={field} />
+          ))}
+        </GridRow>
+      ))}
       <GridRow columns="two-one">
         <WorldMap data={countryData} />
         <CountriesTable {...tableProps} onDataLoad={setCountryData} />
