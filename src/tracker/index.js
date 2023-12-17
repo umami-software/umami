@@ -42,9 +42,9 @@
 
   const getPageviewEventData = () => Object.fromEntries(
     [...currentScript.attributes]
-      .filter(attribute => pageviewCustomPropertyRegex.match(attribute.name))
+      .filter(attribute => attribute.name.match(pageviewCustomPropertyRegex))
       .map(attribute => {
-        const match = pageviewCustomPropertyRegex.match(attribute.name);
+        const match = attribute.name.match(pageviewCustomPropertyRegex);
         return [match[1], attribute.value]
       })
   )
