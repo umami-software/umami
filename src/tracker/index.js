@@ -26,6 +26,7 @@
   const endpoint = `${root}/api/send`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
+  const pageviewCustomPropertyRegex = /data-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
 
@@ -41,9 +42,9 @@
 
   const getPageviewEventData = () => Object.fromEntries(
     [...currentScript.attributes]
-      .filter(attribute => eventRegex.match(attribute.name))
+      .filter(attribute => pageviewCustomPropertyRegex.match(attribute.name))
       .map(attribute => {
-        const match = attribute.name.match(eventRegex);
+        const match = pageviewCustomPropertyRegex.match(attribute.name);
         return [match[1], attribute.value]
       })
   )
