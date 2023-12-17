@@ -26,6 +26,7 @@ export interface WebsiteMetricsRequestQuery {
   language?: string;
   event?: string;
   limit?: number;
+  fieldName?: string;
 }
 
 const schema = {
@@ -47,6 +48,7 @@ const schema = {
     language: yup.string(),
     event: yup.string(),
     limit: yup.number(),
+    fieldName: yup.string(),
   }),
 };
 
@@ -74,6 +76,7 @@ export default async (
     language,
     event,
     limit,
+    fieldName,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -126,6 +129,10 @@ export default async (
 
     if (EVENT_COLUMNS.includes(type)) {
       const data = await getPageviewMetrics(websiteId, column, filters, limit);
+
+      return ok(res, data);
+    } else if (type === 'custom') {
+      const data = await getPageviewMetrics(websiteId, column, filters, limit, fieldName);
 
       return ok(res, data);
     }
