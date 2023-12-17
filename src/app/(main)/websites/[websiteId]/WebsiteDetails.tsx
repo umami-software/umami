@@ -10,7 +10,13 @@ import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
 
-export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
+export default function WebsiteDetails({
+  websiteId,
+  customDataFields,
+}: {
+  websiteId: string;
+  customDataFields: string[];
+}) {
   const { data: website, isLoading, error } = useWebsite(websiteId);
   const pathname = usePathname();
   const showLinks = !pathname.includes('/share/');
@@ -32,7 +38,13 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (
         <>
-          {!view && <WebsiteTableView websiteId={websiteId} domainName={website.domain} />}
+          {!view && (
+            <WebsiteTableView
+              customDataFields={customDataFields}
+              websiteId={websiteId}
+              domainName={website.domain}
+            />
+          )}
           {view && <WebsiteExpandedView websiteId={websiteId} domainName={website.domain} />}
         </>
       )}

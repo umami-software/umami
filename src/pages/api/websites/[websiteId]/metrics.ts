@@ -28,6 +28,7 @@ export interface WebsiteMetricsRequestQuery {
   limit?: number;
   offset?: number;
   search?: string;
+  fieldName?: string;
 }
 
 const schema = {
@@ -51,6 +52,7 @@ const schema = {
     limit: yup.number(),
     offset: yup.number(),
     search: yup.string(),
+    fieldName: yup.string(),
   }),
 };
 
@@ -80,6 +82,7 @@ export default async (
     limit,
     offset,
     search,
+    fieldName,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -145,6 +148,10 @@ export default async (
         limit,
         offset,
       );
+
+      return ok(res, data);
+    } else if (type === 'custom') {
+      const data = await getPageviewMetrics(websiteId, column, filters, limit, fieldName);
 
       return ok(res, data);
     }

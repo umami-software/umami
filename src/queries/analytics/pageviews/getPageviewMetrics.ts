@@ -11,6 +11,7 @@ export async function getPageviewMetrics(
     filters: QueryFilters,
     limit?: number,
     offset?: number,
+    fieldName?: string,
   ]
 ) {
   return runQuery({
@@ -25,6 +26,7 @@ async function relationalQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  fieldName?: string,
 ) {
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
@@ -37,19 +39,26 @@ async function relationalQuery(
   );
 
   let excludeDomain = '';
+  let joinEventData = '';
+  let filterEventDataOnFieldName = '';
   if (column === 'referrer_domain') {
     excludeDomain =
       'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)';
+  } else if (column === 'custom') {
+    joinEventData = 'join event_data on event_data.website_event_id = website_event.event_id';
+    filterEventDataOnFieldName = 'and event_data.event_key = {{fieldName}}';
   }
 
   return rawQuery(
     `
-    select ${column} x, count(*) y
+    select ${column === 'custom' ? `event_data.string_value` : column} x, count(*) y
     from website_event
+    ${joinEventData}
     ${joinSession}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and event_type = {{eventType}}
+      ${filterEventDataOnFieldName}
       ${excludeDomain}
       ${filterQuery}
     group by 1
@@ -57,7 +66,7 @@ async function relationalQuery(
     limit ${limit}
     offset ${offset}
     `,
-    params,
+    { ...params, fieldName },
   );
 }
 
@@ -67,6 +76,8 @@ async function clickhouseQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  fieldName?: string,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
