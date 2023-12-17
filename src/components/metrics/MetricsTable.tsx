@@ -27,6 +27,7 @@ export interface MetricsTableProps extends ListTableProps {
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
   children?: ReactNode;
+  fieldName?: string;
 }
 
 export function MetricsTable({
@@ -39,6 +40,7 @@ export function MetricsTable({
   delay = null,
   allowSearch = false,
   children,
+  fieldName,
   ...props
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
@@ -67,6 +69,7 @@ export function MetricsTable({
         country,
         region,
         city,
+        fieldName,
       },
     ],
     queryFn: async () => {
@@ -79,6 +82,7 @@ export function MetricsTable({
         startAt: +startDate,
         endAt: +endDate,
         limit,
+        fieldName,
         ...filters,
       });
 
@@ -141,7 +145,7 @@ export function MetricsTable({
       )}
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
-        {data && !error && limit && (
+        {data && !error && limit && type !== 'custom' && (
           <LinkButton href={makeUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
