@@ -8,7 +8,7 @@ const contentSecurityPolicy = [
   `img-src *`,
   `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
   `style-src 'self' 'unsafe-inline'`,
-  `connect-src 'self' api.umami.is`,
+  `connect-src 'self' api.umami.is cloud.umami.is`,
   `frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`,
 ];
 

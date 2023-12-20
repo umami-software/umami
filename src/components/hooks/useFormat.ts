@@ -2,7 +2,7 @@ import useMessages from './useMessages';
 import { BROWSERS } from 'lib/constants';
 import useLocale from './useLocale';
 import useCountryNames from './useCountryNames';
-import regions from 'public/iso-3166-2.json';
+import regions from '../../../public/iso-3166-2.json';
 
 export function useFormat() {
   const { formatMessage, labels } = useMessages();
@@ -23,7 +23,7 @@ export function useFormat() {
   };
 
   const formatCity = (value: string, country?: string): string => {
-    return `${value}, ${countryNames[country]}`;
+    return countryNames[country] ? `${value}, ${countryNames[country]}` : value;
   };
 
   const formatDevice = (value: string): string => {

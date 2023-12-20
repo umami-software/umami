@@ -18,7 +18,7 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
   const { mutate, error } = useMutation({ mutationFn: (data: any) => post('/teams/join', data) });
   const ref = useRef(null);
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         setValue('teams:members', Date.now());

@@ -65,7 +65,7 @@ export function TeamWebsiteAddForm({
             </GridColumn>
           </WebsitesDataTable>
           <FormButtons flex>
-            <SubmitButton disabled={selected?.length === 0}>
+            <SubmitButton variant="primary" disabled={selected?.length === 0}>
               {formatMessage(labels.addWebsite)}
             </SubmitButton>
             <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
