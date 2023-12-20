@@ -7,7 +7,7 @@ import useMessages from 'components/hooks/useMessages';
 import TeamsJoinButton from './TeamsJoinButton';
 import TeamsAddButton from './TeamsAddButton';
 
-export function TeamsHeader() {
+export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
 
@@ -15,7 +15,7 @@ export function TeamsHeader() {
     <PageHeader title={formatMessage(labels.teams)}>
       <Flexbox gap={10}>
         <TeamsJoinButton />
-        {user.role !== ROLES.viewOnly && <TeamsAddButton />}
+        {allowCreate && user.role !== ROLES.viewOnly && <TeamsAddButton />}
       </Flexbox>
     </PageHeader>
   );
