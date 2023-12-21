@@ -1,3 +1,4 @@
+'use client';
 import { ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { Button } from 'react-basics';

@@ -72,6 +72,7 @@ export function NavBar() {
               key={url}
               href={url}
               className={classNames({ [styles.selected]: pathname.startsWith(url) })}
+              prefetch={url !== '/settings'}
             >
               <Text>{label}</Text>
             </Link>
