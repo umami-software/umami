@@ -446,7 +446,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Gräv djupare i dina data genom att använda olika segment och filter"
+      "value": "Gräv djupare i din data genom att använda olika segment och filter"
     }
   ],
   "label.is": [
@@ -1312,7 +1312,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "Ingen event data tillgänglig."
+      "value": "Ingen händelse data tillgänglig."
     }
   ],
   "message.no-match-password": [
