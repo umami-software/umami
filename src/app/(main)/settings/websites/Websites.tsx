@@ -5,10 +5,9 @@ import WebsitesHeader from './WebsitesHeader';
 
 export default function Websites() {
   const { user } = useUser();
-
   return (
     <>
-      <WebsitesHeader />
+      <WebsitesHeader showActions={user.role !== 'view-only'} />
       <WebsitesDataTable userId={user.id} />
     </>
   );
