@@ -41,7 +41,7 @@
   "label.date": "Datum",
   "label.date-range": "Tidsperiod",
   "label.day": "Dag",
-  "label.default-date-range": "Standard Tidsperiod",
+  "label.default-date-range": "Standard datum-urval",
   "label.delete": "Radera",
   "label.delete-team": "Radera team",
   "label.delete-user": "Radera användare",
