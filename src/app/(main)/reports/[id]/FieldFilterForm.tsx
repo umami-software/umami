@@ -65,7 +65,7 @@ export default function FieldFilterForm({
               items={filters}
               value={filter}
               renderValue={renderFilterValue}
-              onChange={(key: any) => setFilter(key)}
+              onSelect={(key: any) => setFilter(key)}
             >
               {({ value, label }) => {
                 return <Item key={value}>{label}</Item>;
@@ -78,7 +78,7 @@ export default function FieldFilterForm({
             items={values}
             value={value}
             renderValue={renderValue}
-            onChange={(key: any) => setValue(key)}
+            onSelect={(key: any) => setValue(key)}
             style={{
               minWidth: '250px',
             }}

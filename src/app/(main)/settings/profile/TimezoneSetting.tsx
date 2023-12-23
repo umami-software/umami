@@ -16,7 +16,7 @@ export function TimezoneSetting() {
       <Dropdown
         items={options}
         value={timezone}
-        onChange={saveTimezone}
+        onSelect={saveTimezone}
         style={{ flex: 1 }}
         menuProps={{ style: { height: 300 } }}
       >

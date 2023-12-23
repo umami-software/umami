@@ -19,7 +19,7 @@ export function LanguageSetting() {
         items={options}
         value={locale}
         renderValue={renderValue}
-        onChange={saveLocale}
+        onSelect={saveLocale}
         menuProps={{ style: { height: 300, width: 300 } }}
       >
         {item => <Item key={item}>{languages[item].label}</Item>}

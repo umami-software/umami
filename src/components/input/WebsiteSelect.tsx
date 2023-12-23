@@ -27,7 +27,7 @@ export function WebsiteSelect({
       items={data?.data}
       value={websiteId}
       renderValue={renderValue}
-      onChange={onSelect}
+      onSelect={onSelect}
       alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
     >

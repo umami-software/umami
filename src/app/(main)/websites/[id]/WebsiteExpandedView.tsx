@@ -134,7 +134,7 @@ export default function WebsiteExpandedView({
           items={items}
           value={view}
           renderValue={renderValue}
-          onChange={handleChange}
+          onSelect={handleChange}
           alignment="end"
         >
           {({ key, label }) => <Item key={key}>{label}</Item>}
