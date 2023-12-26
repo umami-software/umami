@@ -16,7 +16,9 @@ export function UserWebsites({ userId }) {
     <Page isLoading={queryResult.query.isLoading} error={queryResult.query.error}>
       {hasData && (
         <DataTable queryResult={queryResult}>
-          {({ data }) => <WebsitesTable data={data} />}
+          {({ data }) => (
+            <WebsitesTable data={data} showActions={true} allowEdit={true} allowView={true} />
+          )}
         </DataTable>
       )}
     </Page>
