@@ -1,14 +1,8 @@
-import WebsitesDataTable from './WebsitesDataTable';
-import WebsitesHeader from './WebsitesHeader';
 import { Metadata } from 'next';
+import Websites from './Websites';
 
 export default function () {
-  return (
-    <>
-      <WebsitesHeader />
-      <WebsitesDataTable />
-    </>
-  );
+  return <Websites />;
 }
 
 export const metadata: Metadata = {

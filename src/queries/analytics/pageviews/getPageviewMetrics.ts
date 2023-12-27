@@ -5,7 +5,7 @@ import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
-  ...args: [websiteId: string, columns: string, filters: QueryFilters]
+  ...args: [websiteId: string, columns: string, filters: QueryFilters, limit?: number]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -13,7 +13,12 @@ export async function getPageviewMetrics(
   });
 }
 
-async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
+async function relationalQuery(
+  websiteId: string,
+  column: string,
+  filters: QueryFilters,
+  limit: number = 100,
+) {
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
@@ -42,7 +47,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
       ${filterQuery}
     group by 1
     order by 2 desc
-    limit 100
+    limit ${limit}
     `,
     params,
   );
@@ -52,6 +57,7 @@ async function clickhouseQuery(
   websiteId: string,
   column: string,
   filters: QueryFilters,
+  limit: number = 100,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
@@ -75,7 +81,7 @@ async function clickhouseQuery(
       ${filterQuery}
     group by x
     order by y desc
-    limit 100
+    limit ${limit}
     `,
     params,
   ).then(a => {

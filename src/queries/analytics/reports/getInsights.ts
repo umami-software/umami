@@ -83,10 +83,18 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        ...a,
+        views: Number(a.views),
+        visitors: Number(a.visitors),
+      };
+    });
+  });
 }
 
-function parseFields(fields) {
+function parseFields(fields: any[]) {
   const query = fields.reduce(
     (arr, field) => {
       const { name } = field;
@@ -99,7 +107,7 @@ function parseFields(fields) {
   return query.join(',\n');
 }
 
-function parseGroupBy(fields) {
+function parseGroupBy(fields: { name: any }[]) {
   if (!fields.length) {
     return '';
   }
