@@ -1,35 +1,61 @@
+import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
 import useApi from 'components/hooks/useApi';
 import useMessages from 'components/hooks/useMessages';
 import styles from './WebsiteSelect.module.css';
+import Empty from 'components/common/Empty';
 
 export function WebsiteSelect({
   websiteId,
   onSelect,
 }: {
-  websiteId: string;
+  websiteId?: string;
   onSelect?: (key: any) => void;
 }) {
-  const { formatMessage, labels } = useMessages();
+  const [query, setQuery] = useState('');
+  const [selectedId, setSelectedId] = useState<Key>(websiteId);
+  const { formatMessage, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
-  const { data } = useQuery({
-    queryKey: ['websites:me'],
-    queryFn: () => get('/me/websites', { pageSize: 100 }),
+  const { data: websites, isLoading } = useQuery({
+    queryKey: ['websites:me', { query }],
+    queryFn: () => get('/me/websites', { query, pageSize: 5 }),
+  });
+  const { data: website } = useQuery({
+    queryKey: ['websites', { selectedId }],
+    queryFn: () => get(`/websites/${selectedId}`),
+    enabled: !!selectedId,
   });
 
-  const renderValue = value => {
-    return data?.data?.find(({ id }) => id === value)?.name;
+  const renderValue = () => {
+    return website?.name;
+  };
+
+  const renderEmpty = () => {
+    return <Empty message={formatMessage(messages.noResultsFound)} />;
+  };
+
+  const handleSelect = (value: any) => {
+    setSelectedId(value);
+    onSelect?.(value);
+  };
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
   };
 
   return (
     <Dropdown
       menuProps={{ className: styles.dropdown }}
-      items={data?.data}
-      value={websiteId}
+      items={websites?.data}
+      value={selectedId as string}
       renderValue={renderValue}
-      onSelect={onSelect}
+      renderEmpty={renderEmpty}
+      onSelect={handleSelect}
       alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
+      allowSearch={true}
+      onSearch={handleSearch}
+      isLoading={isLoading}
     >
       {({ id, name }) => <Item key={id}>{name}</Item>}
     </Dropdown>

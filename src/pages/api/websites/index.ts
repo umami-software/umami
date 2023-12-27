@@ -45,10 +45,6 @@ export default async (
       req.query.id = userId;
     }
 
-    if (!req.query.pageSize) {
-      req.query.pageSize = 100;
-    }
-
     return userWebsites(req as any, res);
   }
 

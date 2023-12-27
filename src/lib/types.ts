@@ -53,7 +53,7 @@ export interface SearchFilter {
 }
 
 export interface FilterResult<T> {
-  data: T[];
+  data: T;
   count: number;
   page: number;
   pageSize: number;
