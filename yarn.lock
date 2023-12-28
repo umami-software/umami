@@ -7570,10 +7570,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-basics@^0.116.0:
-  version "0.116.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.116.0.tgz#497aa40ceec6c6e849a64be738853f9f04502f8f"
-  integrity sha512-Vv9CFbrlJPClQ22EvLIdWDmxzY1yRlEd9D4RLYQejl1CsDwvTCjP0Y3zkOmHiFVP9I2VcwUf9uhDf5GASh17dw==
+react-basics@^0.117.0:
+  version "0.117.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.117.0.tgz#f75c78acac678f6c4c8e1fdcc7e2a9f415148f1d"
+  integrity sha512-coGwL84LhNrw9kAN2REvR9i6bVs55ZnnQxlDsnH6hnj75Sp36rigGNClSwVN1XTlUWp6k+Gc4rn78cc1E/qn2g==
   dependencies:
     "@react-spring/web" "^9.7.3"
     classnames "^2.3.1"

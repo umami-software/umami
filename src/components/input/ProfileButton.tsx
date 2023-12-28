@@ -34,7 +34,7 @@ export function ProfileButton() {
         </Icon>
       </Button>
       <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
-        <Menu variant="popup" onSelect={handleSelect} className={styles.menu}>
+        <Menu onSelect={handleSelect} className={styles.menu}>
           <Item key="user" className={styles.item}>
             <Text>{user.username}</Text>
           </Item>

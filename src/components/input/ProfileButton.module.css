@@ -1,6 +1,9 @@
 .menu {
   width: 200px;
   z-index: var(--z-index-popup);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
 }
 
 .item {
