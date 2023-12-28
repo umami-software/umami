@@ -21,6 +21,14 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
   const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
 
+  function getStrokeColor(code: string) {
+    if (code === 'AQ') return;
+
+    return theme === 'light'
+      ? colors.map.strokeColor
+      : colord(colors.map.strokeColor).darken(0.2).toHex();
+  }
+
   function getFillColor(code: string) {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
@@ -64,7 +72,7 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
                     key={geo.rsmKey}
                     geography={geo}
                     fill={getFillColor(code)}
-                    stroke={colors.map.strokeColor}
+                    stroke={getStrokeColor(code)}
                     opacity={getOpacity(code)}
                     style={{
                       default: { outline: 'none' },
