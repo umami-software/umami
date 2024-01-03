@@ -252,7 +252,7 @@ export async function createWebsite(
 }
 
 export async function updateWebsite(
-  websiteId,
+  websiteId: string,
   data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
 ): Promise<Website> {
   return prisma.client.website.update({
@@ -264,7 +264,7 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(
-  websiteId,
+  websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
 

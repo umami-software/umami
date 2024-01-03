@@ -151,7 +151,7 @@ async function parseFilters(
     params: {
       ...normalizeFilters(filters),
       websiteId,
-      startDate: maxDate(filters.startDate, website.resetAt),
+      startDate: maxDate(filters.startDate, website?.resetAt),
       websiteDomain: website.domain,
     },
   };

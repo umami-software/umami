@@ -110,7 +110,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
     params: {
       ...normalizeFilters(filters),
       websiteId,
-      startDate: maxDate(filters.startDate, new Date(website.resetAt)),
+      startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
       websiteDomain: website.domain,
     },
   };
