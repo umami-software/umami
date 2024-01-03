@@ -16,7 +16,7 @@ export function TrackingCode({ websiteId }: { websiteId: string }) {
     ? trackerScriptName
     : `${trackingCodeUrl}${process.env.basePath}/${trackerScriptName}`;
 
-  const code = `<script async src="${url}" data-website-id="${websiteId}"></script>`;
+  const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
 
   return (
     <>
