@@ -17,6 +17,9 @@ async function relationalQuery(websiteId: string, startDate: Date) {
         gte: startDate,
       },
     },
+    orderBy: {
+      createdAt: 'asc',
+    },
   });
 }
 
@@ -25,7 +28,7 @@ async function clickhouseQuery(websiteId: string, startDate: Date) {
 
   return rawQuery(
     `
-    select distinct
+    select
       session_id as id,
       website_id as websiteId,
       created_at as createdAt,
@@ -43,6 +46,7 @@ async function clickhouseQuery(websiteId: string, startDate: Date) {
     from website_event
     where website_id = {websiteId:UUID}
     and created_at >= {startDate:DateTime64}
+    order by created_at asc
     `,
     {
       websiteId,

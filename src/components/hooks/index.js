@@ -13,7 +13,7 @@ export * from './useMessages';
 export * from './useNavigation';
 export * from './useReport';
 export * from './useReports';
-export * from './useRequireLogin';
+export * from './useLogin';
 export * from './useShareToken';
 export * from './useSticky';
 export * from './useTheme';

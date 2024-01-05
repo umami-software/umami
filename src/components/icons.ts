@@ -22,7 +22,7 @@ import User from 'assets/user.svg';
 import Users from 'assets/users.svg';
 import Visitor from 'assets/visitor.svg';
 
-const icons: any = {
+const icons = {
   ...Icons,
   AddUser,
   Bars,

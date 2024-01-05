@@ -36,9 +36,4 @@
   .header {
     margin-bottom: 10px;
   }
-
-  .actions {
-    flex-basis: 100%;
-    order: -1;
-  }
 }

@@ -23,15 +23,15 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-function getAddMinutesQuery(field: string, minutes: number): string {
+function getAddIntervalQuery(field: string, interval: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
-    return `${field} + interval '${minutes} minute'`;
+    return `${field} + interval '${interval}'`;
   }
 
   if (db === MYSQL) {
-    return `DATE_ADD(${field}, interval ${minutes} minute)`;
+    return `DATE_ADD(${field}, interval ${interval})`;
   }
 }
 
@@ -80,15 +80,15 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   }
 }
 
-function getTimestampIntervalQuery(field: string): string {
+function getTimestampDiffQuery(field1: string, field2: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return `floor(extract(epoch from max(${field}) - min(${field})))`;
+    return `floor(extract(epoch from (${field2} - ${field1})))`;
   }
 
   if (db === MYSQL) {
-    return `floor(unix_timestamp(max(${field})) - unix_timestamp(min(${field})))`;
+    return `timestampdiff(second, ${field1}, ${field2})`;
   }
 }
 
@@ -135,7 +135,11 @@ function normalizeFilters(filters = {}) {
   }, {});
 }
 
-async function parseFilters(websiteId, filters: QueryFilters = {}, options: QueryOptions = {}) {
+async function parseFilters(
+  websiteId: string,
+  filters: QueryFilters = {},
+  options: QueryOptions = {},
+) {
   const website = await loadWebsite(websiteId);
 
   return {
@@ -216,11 +220,11 @@ function getSearchMode(): { mode?: Prisma.QueryMode } {
 
 export default {
   ...prisma,
-  getAddMinutesQuery,
+  getAddIntervalQuery,
   getDayDiffQuery,
   getCastColumnQuery,
   getDateQuery,
-  getTimestampIntervalQuery,
+  getTimestampDiffQuery,
   getFilterQuery,
   parseFilters,
   getPageFilters,

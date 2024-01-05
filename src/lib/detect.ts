@@ -107,11 +107,16 @@ export async function getLocation(ip, req) {
   const result = lookup.get(ip);
 
   if (result) {
+    const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
+    const subdivision1 = result.subdivisions?.[0]?.iso_code;
+    const subdivision2 = result.subdivisions?.[1]?.names?.en;
+    const city = result.city?.names?.en;
+
     return {
-      country: result.country?.iso_code ?? result?.registered_country?.iso_code,
-      subdivision1: result.subdivisions?.[0]?.iso_code,
-      subdivision2: result.subdivisions?.[1]?.names?.en,
-      city: result.city?.names?.en,
+      country,
+      subdivision1: getRegionCode(country, subdivision1),
+      subdivision2,
+      city,
     };
   }
 }

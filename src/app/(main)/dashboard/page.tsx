@@ -1,7 +1,7 @@
 import Dashboard from 'app/(main)/dashboard/Dashboard';
 import { Metadata } from 'next';
 
-export default function DashboardPage() {
+export default function () {
   return <Dashboard />;
 }
 

@@ -53,7 +53,7 @@ export interface SearchFilter {
 }
 
 export interface FilterResult<T> {
-  data: T;
+  data: T[];
   count: number;
   page: number;
   pageSize: number;
@@ -180,7 +180,7 @@ export interface DateRange {
   endDate: Date;
   value: string;
   unit?: TimeUnit;
-  selectedUnit?: TimeUnit;
+  selectedUnit?: { num: number; unit: TimeUnit };
 }
 
 export interface QueryFilters {
@@ -206,4 +206,14 @@ export interface QueryFilters {
 export interface QueryOptions {
   joinSession?: boolean;
   columns?: { [key: string]: string };
+  limit?: number;
+}
+
+export interface RealtimeData {
+  pageviews: any[];
+  sessions: any[];
+  events: any[];
+  timestamp: number;
+  countries?: any[];
+  visitors?: any[];
 }

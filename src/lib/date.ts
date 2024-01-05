@@ -32,6 +32,7 @@ import {
   subWeeks,
 } from 'date-fns';
 import { getDateLocale } from 'lib/lang';
+import { DateRange } from 'lib/types';
 
 export const TIME_UNIT = {
   minute: 'minute',
@@ -54,13 +55,13 @@ export function getTimezone() {
   return moment.tz.guess();
 }
 
-export function getLocalTime(t) {
+export function getLocalTime(t: string | number | Date) {
   return addMinutes(new Date(t), new Date().getTimezoneOffset());
 }
 
-export function parseDateRange(value, locale = 'en-US') {
+export function parseDateRange(value: string | object, locale = 'en-US'): DateRange {
   if (typeof value === 'object') {
-    return value;
+    return value as DateRange;
   }
 
   if (value === 'all') {
@@ -93,7 +94,7 @@ export function parseDateRange(value, locale = 'en-US') {
   if (!match) return null;
 
   const { num, unit } = match.groups;
-  const selectedUnit = { num, unit };
+  const selectedUnit = { num: +num, unit };
 
   if (+num === 1) {
     switch (unit) {
@@ -172,7 +173,7 @@ export function parseDateRange(value, locale = 'en-US') {
   switch (unit) {
     case 'day':
       return {
-        startDate: subDays(startOfDay(now), num - 1),
+        startDate: subDays(startOfDay(now), +num - 1),
         endDate: endOfDay(now),
         unit,
         value,
@@ -180,7 +181,7 @@ export function parseDateRange(value, locale = 'en-US') {
       };
     case 'hour':
       return {
-        startDate: subHours(startOfHour(now), num - 1),
+        startDate: subHours(startOfHour(now), +num - 1),
         endDate: endOfHour(now),
         unit,
         value,
@@ -189,12 +190,15 @@ export function parseDateRange(value, locale = 'en-US') {
   }
 }
 
-export function incrementDateRange(value, increment) {
+export function incrementDateRange(
+  value: { startDate: any; endDate: any; selectedUnit: any },
+  increment: number,
+) {
   const { startDate, endDate, selectedUnit } = value;
 
   const { num, unit } = selectedUnit;
 
-  const sub = num * increment;
+  const sub = Math.abs(num) * increment;
 
   switch (unit) {
     case 'hour':
@@ -235,7 +239,7 @@ export function incrementDateRange(value, increment) {
   }
 }
 
-export function getAllowedUnits(startDate, endDate) {
+export function getAllowedUnits(startDate: Date, endDate: Date) {
   const units = ['minute', 'hour', 'day', 'month', 'year'];
   const minUnit = getMinimumUnit(startDate, endDate);
   const index = units.indexOf(minUnit === 'year' ? 'month' : minUnit);
@@ -243,7 +247,7 @@ export function getAllowedUnits(startDate, endDate) {
   return index >= 0 ? units.splice(index) : [];
 }
 
-export function getMinimumUnit(startDate, endDate) {
+export function getMinimumUnit(startDate: number | Date, endDate: number | Date) {
   if (differenceInMinutes(endDate, startDate) <= 60) {
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
@@ -257,25 +261,25 @@ export function getMinimumUnit(startDate, endDate) {
   return 'year';
 }
 
-export function getDateFromString(str) {
+export function getDateFromString(str: string) {
   const [ymd, hms] = str.split(' ');
   const [year, month, day] = ymd.split('-');
 
   if (hms) {
     const [hour, min, sec] = hms.split(':');
 
-    return new Date(year, month - 1, day, hour, min, sec);
+    return new Date(+year, +month - 1, +day, +hour, +min, +sec);
   }
 
-  return new Date(year, month - 1, day);
+  return new Date(+year, +month - 1, +day);
 }
 
-export function getDateArray(data, startDate, endDate, unit) {
+export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: string) {
   const arr = [];
   const [diff, add, normalize] = dateFuncs[unit];
   const n = diff(endDate, startDate) + 1;
 
-  function findData(date) {
+  function findData(date: Date) {
     const d = data.find(({ x }) => {
       return normalize(getDateFromString(x)).getTime() === date.getTime();
     });
@@ -293,7 +297,7 @@ export function getDateArray(data, startDate, endDate, unit) {
   return arr;
 }
 
-export function getDateLength(startDate, endDate, unit) {
+export function getDateLength(startDate: Date, endDate: Date, unit: string | number) {
   const [diff] = dateFuncs[unit];
   return diff(endDate, startDate) + 1;
 }
@@ -310,7 +314,7 @@ export const CUSTOM_FORMATS = {
   },
 };
 
-export function formatDate(date, str, locale = 'en-US') {
+export function formatDate(date: string | number | Date, str: string, locale = 'en-US') {
   return format(
     typeof date === 'string' ? new Date(date) : date,
     CUSTOM_FORMATS?.[locale]?.[str] || str,
@@ -320,10 +324,10 @@ export function formatDate(date, str, locale = 'en-US') {
   );
 }
 
-export function maxDate(...args) {
+export function maxDate(...args: Date[]) {
   return max(args.filter(n => isDate(n)));
 }
 
-export function minDate(...args) {
+export function minDate(...args: any[]) {
   return min(args.filter(n => isDate(n)));
 }
