@@ -1,0 +1,12 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: var(--font-size-sm);
+  height: 100px;
+}
+
+.footer a {
+  color: var(--font-color100);
+}

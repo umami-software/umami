@@ -1,11 +1,11 @@
+import { Prisma } from '@prisma/client';
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS } from './constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
-import { Prisma } from '@prisma/client';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -23,15 +23,15 @@ const POSTGRESQL_DATE_FORMATS = {
   year: 'YYYY-01-01',
 };
 
-function getAddMinutesQuery(field: string, minutes: number): string {
+function getAddIntervalQuery(field: string, interval: string): string {
   const db = getDatabaseType(process.env.DATABASE_URL);
 
   if (db === POSTGRESQL) {
-    return `${field} + interval '${minutes} minute'`;
+    return `${field} + interval '${interval}'`;
   }
 
   if (db === MYSQL) {
-    return `DATE_ADD(${field}, interval ${minutes} minute)`;
+    return `DATE_ADD(${field}, interval ${interval})`;
   }
 }
 
@@ -80,15 +80,15 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   }
 }
 
-function getTimestampIntervalQuery(field: string): string {
+function getTimestampDiffQuery(field1: string, field2: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return `floor(extract(epoch from max(${field}) - min(${field})))`;
+    return `floor(extract(epoch from (${field2} - ${field1})))`;
   }
 
   if (db === MYSQL) {
-    return `floor(unix_timestamp(max(${field})) - unix_timestamp(min(${field})))`;
+    return `timestampdiff(second, ${field1}, ${field2})`;
   }
 }
 
@@ -135,7 +135,11 @@ function normalizeFilters(filters = {}) {
   }, {});
 }
 
-async function parseFilters(websiteId, filters: QueryFilters = {}, options: QueryOptions = {}) {
+async function parseFilters(
+  websiteId: string,
+  filters: QueryFilters = {},
+  options: QueryOptions = {},
+) {
   const website = await loadWebsite(websiteId);
 
   return {
@@ -171,7 +175,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-function getPageFilters(filters: SearchFilter<any>): [
+function getPageFilters(filters: SearchFilter): [
   {
     orderBy: {
       [x: string]: string;
@@ -185,20 +189,20 @@ function getPageFilters(filters: SearchFilter<any>): [
     orderBy: string;
   },
 ] {
-  const { pageSize = 10, page = 1, orderBy } = filters || {};
+  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
 
   return [
     {
-      ...(pageSize > 0 && { take: pageSize, skip: pageSize * (page - 1) }),
+      ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
       ...(orderBy && {
         orderBy: [
           {
-            [orderBy]: 'asc',
+            [orderBy]: sortDescending ? 'desc' : 'asc',
           },
         ],
       }),
     },
-    { pageSize, page: +page, orderBy },
+    { page: +page, pageSize, orderBy },
   ];
 }
 
@@ -216,11 +220,11 @@ function getSearchMode(): { mode?: Prisma.QueryMode } {
 
 export default {
   ...prisma,
-  getAddMinutesQuery,
+  getAddIntervalQuery,
   getDayDiffQuery,
   getCastColumnQuery,
   getDateQuery,
-  getTimestampIntervalQuery,
+  getTimestampDiffQuery,
   getFilterQuery,
   parseFilters,
   getPageFilters,

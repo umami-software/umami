@@ -1,18 +1,11 @@
 .bar {
-  display: flex;
-  flex-direction: row;
-  cursor: pointer;
-  min-height: 110px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
   gap: 20px;
-  flex-wrap: wrap;
 }
 
-.card {
-  justify-self: flex-start;
-}
-
-@media only screen and (max-width: 992px) {
-  .card {
-    flex-basis: calc(50% - 20px);
+@media screen and (max-width: 768px) {
+  .bar {
+    grid-template-columns: 1fr 1fr;
   }
 }

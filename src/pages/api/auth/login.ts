@@ -1,6 +1,6 @@
 import redis from '@umami/redis-client';
 import debug from 'debug';
-import { setAuthKey } from 'lib/auth';
+import { saveAuth } from 'lib/auth';
 import { secret } from 'lib/crypto';
 import { useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, User } from 'lib/types';
@@ -15,6 +15,7 @@ import {
 } from 'next-basics';
 import { getUserByUsername } from 'queries';
 import * as yup from 'yup';
+import { ROLES } from 'lib/constants';
 
 const log = debug('umami:auth');
 
@@ -43,8 +44,7 @@ export default async (
     return forbidden(res);
   }
 
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const { username, password } = req.body;
@@ -52,8 +52,8 @@ export default async (
     const user = await getUserByUsername(username, { includePassword: true });
 
     if (user && checkPassword(password, user.password)) {
-      if (redis) {
-        const token = await setAuthKey(user);
+      if (redis.enabled) {
+        const token = await saveAuth({ userId: user.id });
 
         return ok(res, { token, user });
       }
@@ -63,7 +63,7 @@ export default async (
 
       return ok(res, {
         token,
-        user: { id, username, role, createdAt },
+        user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
       });
     }
 

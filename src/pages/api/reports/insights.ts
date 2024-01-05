@@ -55,7 +55,7 @@ const schema = {
   }),
 };
 
-function convertFilters(filters) {
+function convertFilters(filters: any[]) {
   return filters.reduce((obj, { name, ...value }) => {
     obj[name] = value;
 
@@ -69,9 +69,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   if (req.method === 'POST') {
     const {

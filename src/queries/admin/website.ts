@@ -1,6 +1,6 @@
 import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
-import { ROLES, WEBSITE_FILTER_TYPES } from 'lib/constants';
+import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, WebsiteSearchFilter } from 'lib/types';
 
@@ -19,17 +19,10 @@ export async function getWebsiteByShareId(shareId: string) {
 }
 
 export async function getWebsites(
-  WebsiteSearchFilter: WebsiteSearchFilter,
+  filters: WebsiteSearchFilter,
   options?: { include?: Prisma.WebsiteInclude },
-): Promise<FilterResult<Website[]>> {
-  const {
-    userId,
-    teamId,
-    includeTeams,
-    onlyTeams,
-    filter,
-    filterType = WEBSITE_FILTER_TYPES.all,
-  } = WebsiteSearchFilter;
+): Promise<FilterResult<Website>> {
+  const { userId, teamId, includeTeams, onlyTeams, query } = filters;
   const mode = prisma.getSearchMode();
 
   const where: Prisma.WebsiteWhereInput = {
@@ -76,27 +69,23 @@ export async function getWebsites(
         ],
       },
       {
-        OR: [
-          {
-            ...((filterType === WEBSITE_FILTER_TYPES.all ||
-              filterType === WEBSITE_FILTER_TYPES.name) && {
-              name: { startsWith: filter, ...mode },
-            }),
-          },
-          {
-            ...((filterType === WEBSITE_FILTER_TYPES.all ||
-              filterType === WEBSITE_FILTER_TYPES.domain) && {
-              domain: { startsWith: filter, ...mode },
-            }),
-          },
-        ],
+        OR: query
+          ? [
+              {
+                name: { contains: query, ...mode },
+              },
+              {
+                domain: { contains: query, ...mode },
+              },
+            ]
+          : [],
       },
     ],
   };
 
   const [pageFilters, getParameters] = prisma.getPageFilters({
     orderBy: 'name',
-    ...WebsiteSearchFilter,
+    ...filters,
   });
 
   const websites = await prisma.client.website.findMany({
@@ -115,10 +104,10 @@ export async function getWebsites(
 
 export async function getWebsitesByUserId(
   userId: string,
-  filter?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+  filters?: WebsiteSearchFilter,
+): Promise<FilterResult<Website>> {
   return getWebsites(
-    { userId, ...filter },
+    { userId, ...filters },
     {
       include: {
         teamWebsite: {
@@ -143,12 +132,12 @@ export async function getWebsitesByUserId(
 
 export async function getWebsitesByTeamId(
   teamId: string,
-  filter?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+  filters?: WebsiteSearchFilter,
+): Promise<FilterResult<Website>> {
   return getWebsites(
     {
       teamId,
-      ...filter,
+      ...filters,
       includeTeams: true,
     },
     {

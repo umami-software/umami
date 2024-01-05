@@ -1,10 +1,17 @@
 .container {
   position: relative;
   min-height: 430px;
-  height: 100%;
   display: flex;
   flex-direction: column;
   flex: 1;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
 .footer {
@@ -12,8 +19,20 @@
   justify-content: center;
 }
 
+.search {
+  max-width: 300px;
+}
+
 @media only screen and (max-width: 992px) {
   .container {
     min-height: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .search {
+    max-width: 100%;
   }
 }

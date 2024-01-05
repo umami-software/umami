@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 import cache from 'lib/cache';
-import { ROLES, USER_FILTER_TYPES } from 'lib/constants';
+import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, Role, User, UserSearchFilter } from 'lib/types';
 import { getRandomChars } from 'next-basics';
@@ -11,13 +11,17 @@ export interface GetUserOptions {
 }
 
 async function getUser(
-  where: Prisma.UserWhereInput | Prisma.UserWhereUniqueInput,
+  where: Prisma.UserWhereUniqueInput,
   options: GetUserOptions = {},
 ): Promise<User> {
   const { includePassword = false, showDeleted = false } = options;
 
-  return prisma.client.user.findFirst({
-    where: { ...where, ...(showDeleted ? {} : { deletedAt: null }) },
+  if (showDeleted) {
+    where.deletedAt = null;
+  }
+
+  return prisma.client.user.findUnique({
+    where,
     select: {
       id: true,
       username: true,
@@ -28,8 +32,8 @@ async function getUser(
   });
 }
 
-export async function getUserById(userId: string, options: GetUserOptions = {}) {
-  return getUser({ id: userId }, options);
+export async function getUserById(id: string, options: GetUserOptions = {}) {
+  return getUser({ id }, options);
 }
 
 export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
@@ -37,10 +41,10 @@ export async function getUserByUsername(username: string, options: GetUserOption
 }
 
 export async function getUsers(
-  searchFilter: UserSearchFilter,
+  params: UserSearchFilter,
   options?: { include?: Prisma.UserInclude },
 ): Promise<FilterResult<User[]>> {
-  const { teamId, filter, filterType = USER_FILTER_TYPES.all } = searchFilter;
+  const { teamId, query } = params;
   const mode = prisma.getSearchMode();
 
   const where: Prisma.UserWhereInput = {
@@ -51,17 +55,14 @@ export async function getUsers(
         },
       },
     }),
-    ...(filter && {
+    ...(query && {
       AND: {
         OR: [
           {
-            ...((filterType === USER_FILTER_TYPES.all ||
-              filterType === USER_FILTER_TYPES.username) && {
-              username: {
-                startsWith: filter,
-                ...mode,
-              },
-            }),
+            username: {
+              contains: query,
+              ...mode,
+            },
           },
         ],
       },
@@ -70,7 +71,7 @@ export async function getUsers(
 
   const [pageFilters, getParameters] = prisma.getPageFilters({
     orderBy: 'username',
-    ...searchFilter,
+    ...params,
   });
 
   const users = await prisma.client.user

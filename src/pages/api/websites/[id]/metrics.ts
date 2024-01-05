@@ -25,6 +25,7 @@ export interface WebsiteMetricsRequestQuery {
   city?: string;
   language?: string;
   event?: string;
+  limit?: number;
 }
 
 const schema = {
@@ -33,6 +34,19 @@ const schema = {
     type: yup.string().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
+    url: yup.string(),
+    referrer: yup.string(),
+    title: yup.string(),
+    query: yup.string(),
+    os: yup.string(),
+    browser: yup.string(),
+    device: yup.string(),
+    country: yup.string(),
+    region: yup.string(),
+    city: yup.string(),
+    language: yup.string(),
+    event: yup.string(),
+    limit: yup.number(),
   }),
 };
 
@@ -42,9 +56,7 @@ export default async (
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
-
-  req.yup = schema;
-  await useValidate(req, res);
+  await useValidate(schema, req, res);
 
   const {
     id: websiteId,
@@ -61,6 +73,7 @@ export default async (
     city,
     language,
     event,
+    limit,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -90,7 +103,7 @@ export default async (
     const column = FILTER_COLUMNS[type] || type;
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, column, filters);
+      const data = await getSessionMetrics(websiteId, column, filters, limit);
 
       if (type === 'language') {
         const combined = {};
@@ -112,7 +125,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(websiteId, column, filters);
+      const data = await getPageviewMetrics(websiteId, column, filters, limit);
 
       return ok(res, data);
     }

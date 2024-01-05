@@ -12,7 +12,8 @@ export async function getWebsiteStats(...args: [websiteId: string, filters: Quer
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { getDateQuery, getTimestampIntervalQuery, parseFilters, rawQuery } = prisma;
+  const { getDateQuery, getAddIntervalQuery, getTimestampDiffQuery, parseFilters, rawQuery } =
+    prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -24,13 +25,16 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "uniques",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-      sum(t.time) as "totaltime"
+      sum(case when t.max_time < ${getAddIntervalQuery('t.min_time', '1 hour')}
+        then ${getTimestampDiffQuery('t.min_time', 't.max_time')}
+        else 0 end) as "totaltime"
     from (
       select
         website_event.session_id,
-        ${getDateQuery('website_event.created_at', 'hour')},
-        count(*) as c,
-        ${getTimestampIntervalQuery('website_event.created_at')} as "time"
+        ${getDateQuery('website_event.created_at', 'day')},
+        count(*) as "c",
+        min(website_event.created_at) as "min_time",
+        max(website_event.created_at) as "max_time"
       from website_event
       join website 
         on website_event.website_id = website.website_id
@@ -46,7 +50,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   );
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+async function clickhouseQuery(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<{ pageviews: number; uniques: number; bounces: number; totaltime: number }[]> {
   const { rawQuery, getDateQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
@@ -69,12 +76,21 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
         max(created_at) max_time
       from website_event
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime} and {endDate:DateTime}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${filterQuery}
       group by session_id, time_series
     ) as t;
     `,
     params,
-  );
+  ).then(a => {
+    return Object.values(a).map(a => {
+      return {
+        pageviews: Number(a.pageviews),
+        uniques: Number(a.uniques),
+        bounces: Number(a.bounces),
+        totaltime: Number(a.totaltime),
+      };
+    });
+  });
 }

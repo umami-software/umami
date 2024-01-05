@@ -1,20 +1,20 @@
-import redis from '@umami/redis-client';
 import cors from 'cors';
 import debug from 'debug';
+import redis from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
-import { isUuid, secret } from 'lib/crypto';
+import { secret } from 'lib/crypto';
 import { findSession } from 'lib/session';
 import {
   badRequest,
   createMiddleware,
+  forbidden,
   parseSecureToken,
   tooManyRequest,
   unauthorized,
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { getUserById } from '../queries';
-import { NextApiRequestQueryBody } from './types';
 
 const log = debug('umami:middleware');
 
@@ -39,6 +39,9 @@ export const useSession = createMiddleware(async (req, res, next) => {
     if (e.message === 'Usage Limit.') {
       return tooManyRequest(res, e.message);
     }
+    if (e.message.startsWith('Website not found:')) {
+      return forbidden(res, e.message);
+    }
     return badRequest(res, e.message);
   }
 
@@ -48,19 +51,23 @@ export const useSession = createMiddleware(async (req, res, next) => {
 export const useAuth = createMiddleware(async (req, res, next) => {
   const token = getAuthToken(req);
   const payload = parseSecureToken(token, secret());
-  const shareToken = await parseShareToken(req);
+  const shareToken = await parseShareToken(req as any);
 
   let user = null;
   const { userId, authKey, grant } = payload || {};
 
-  if (isUuid(userId)) {
+  if (userId) {
     user = await getUserById(userId);
-  } else if (redis && authKey) {
-    user = await redis.get(authKey);
+  } else if (redis.enabled && authKey) {
+    const key = await redis.client.get(authKey);
+
+    if (key?.userId) {
+      user = await getUserById(key.userId);
+    }
   }
 
   if (process.env.NODE_ENV === 'development') {
-    log({ token, shareToken, payload, user, grant });
+    log('useAuth:', { token, shareToken, payload, user, grant });
   }
 
   if (!user?.id && !shareToken) {
@@ -83,14 +90,18 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   next();
 });
 
-export const useValidate = createMiddleware(async (req: any, res, next) => {
-  try {
-    const { yup } = req as NextApiRequestQueryBody;
+export const useValidate = async (schema, req, res) => {
+  return createMiddleware(async (req: any, res, next) => {
+    try {
+      const rules = schema[req.method];
 
-    yup[req.method] && yup[req.method].validateSync({ ...req.query, ...req.body });
-  } catch (e: any) {
-    return badRequest(res, e.message);
-  }
+      if (rules) {
+        rules.validateSync({ ...req.query, ...req.body });
+      }
+    } catch (e: any) {
+      return badRequest(res, e.message);
+    }
 
-  next();
-});
+    next();
+  })(req, res);
+};
