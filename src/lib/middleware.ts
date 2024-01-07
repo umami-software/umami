@@ -15,6 +15,48 @@ import {
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { getUserById } from '../queries';
+import NextAuth from "next-auth"
+import CognitoProvider from "next-auth/providers/cognito";
+import { to } from '@react-spring/web';
+
+
+export const authOptions = {
+  providers: [
+    CognitoProvider({
+      clientId: process.env.COGNITO_CLIENT_ID || '7h6hhomuifrl5bemj8knjmb3lu',
+      clientSecret: process.env.COGNITO_CLIENT_SECRET || '1ab85ado6qdt7viosusrp5ka493g6471hqfn2k2r37oaheo4lir7',
+      issuer: process.env.COGNITO_DOMAIN || 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gqaC2lQjh',
+      idToken: true,
+      name: 'Cognito',
+      checks: 'nonce',
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user, account }) {
+      console.log("in next auth::::",token)
+      if (account) {
+        if (account['provider'] === 'cognito') {
+          var tokenParsed = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+          console.log("token parsed",tokenParsed )
+          // token.refreshToken = account?.refresh_token;
+          // token.accessTokenExpires = account.expires_at * 1000;
+          console.log("token parsed::::",tokenParsed['cognito:username'],tokenParsed['iat'])
+          return { userId: tokenParsed['cognito:username'], iat: tokenParsed['iat'] };
+        }
+      }
+      // Return previous token if the access token has not expired yet
+      if ((Date.now()) < (token.accessTokenExpires ?? 0)) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+    },
+  }
+}
+
+
+
+export default NextAuth(authOptions)
 
 const log = debug('umami:middleware');
 
@@ -50,11 +92,18 @@ export const useSession = createMiddleware(async (req, res, next) => {
 
 export const useAuth = createMiddleware(async (req, res, next) => {
   const token = getAuthToken(req);
+  //console.log("got auth token",token)
   const payload = parseSecureToken(token, secret());
   const shareToken = await parseShareToken(req as any);
-
+  //console.log("got shareToken",shareToken);
+  let cognitoPayload = {};
+  if(!payload){
+    cognitoPayload =  await authOptions.callbacks.jwt({token:token,user:"",account:{provider:"cognito"}});
+  }
+  console.log("cognito auth payload",cognitoPayload)
+  console.log("umami auth payload ",payload);
   let user = null;
-  const { userId, authKey, grant } = payload || {};
+  const { userId, authKey, grant } = payload || cognitoPayload || {};
 
   if (userId) {
     user = await getUserById(userId);
@@ -94,7 +143,6 @@ export const useValidate = async (schema, req, res) => {
   return createMiddleware(async (req: any, res, next) => {
     try {
       const rules = schema[req.method];
-
       if (rules) {
         rules.validateSync({ ...req.query, ...req.body });
       }
