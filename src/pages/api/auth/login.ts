@@ -1,6 +1,6 @@
 import redis from '@umami/redis-client';
 import debug from 'debug';
-import { setAuthKey } from 'lib/auth';
+import { saveAuth } from 'lib/auth';
 import { secret } from 'lib/crypto';
 import { useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, User } from 'lib/types';
@@ -52,8 +52,8 @@ export default async (
     const user = await getUserByUsername(username, { includePassword: true });
 
     if (user && checkPassword(password, user.password)) {
-      if (redis) {
-        const token = await setAuthKey(user);
+      if (redis.enabled) {
+        const token = await saveAuth({ userId: user.id });
 
         return ok(res, { token, user });
       }

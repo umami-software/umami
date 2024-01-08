@@ -6,13 +6,33 @@
   flex: 1;
 }
 
+.actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 .footer {
   display: flex;
   justify-content: center;
 }
 
+.search {
+  max-width: 300px;
+}
+
 @media only screen and (max-width: 992px) {
   .container {
     min-height: auto;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .search {
+    max-width: 100%;
   }
 }

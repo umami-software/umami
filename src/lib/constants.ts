@@ -13,7 +13,7 @@ export const REPO_URL = 'https://github.com/umami-software/umami';
 export const UPDATES_URL = 'https://api.umami.is/v1/updates';
 export const TELEMETRY_PIXEL = 'https://i.umami.is/a.png';
 
-export const DEFAULT_LOCALE = process.env.defaultLocale ?? 'en-US';
+export const DEFAULT_LOCALE = process.env.defaultLocale || 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';

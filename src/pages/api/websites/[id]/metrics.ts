@@ -25,6 +25,7 @@ export interface WebsiteMetricsRequestQuery {
   city?: string;
   language?: string;
   event?: string;
+  limit?: number;
 }
 
 const schema = {
@@ -45,6 +46,7 @@ const schema = {
     city: yup.string(),
     language: yup.string(),
     event: yup.string(),
+    limit: yup.number(),
   }),
 };
 
@@ -71,6 +73,7 @@ export default async (
     city,
     language,
     event,
+    limit,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -100,7 +103,7 @@ export default async (
     const column = FILTER_COLUMNS[type] || type;
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, column, filters);
+      const data = await getSessionMetrics(websiteId, column, filters, limit);
 
       if (type === 'language') {
         const combined = {};
@@ -122,7 +125,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(websiteId, column, filters);
+      const data = await getPageviewMetrics(websiteId, column, filters, limit);
 
       return ok(res, data);
     }
