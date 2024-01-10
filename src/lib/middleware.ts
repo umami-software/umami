@@ -23,9 +23,9 @@ import { to } from '@react-spring/web';
 export const authOptions = {
   providers: [
     CognitoProvider({
-      clientId: process.env.COGNITO_CLIENT_ID || '7h6hhomuifrl5bemj8knjmb3lu',
-      clientSecret: process.env.COGNITO_CLIENT_SECRET || '1ab85ado6qdt7viosusrp5ka493g6471hqfn2k2r37oaheo4lir7',
-      issuer: process.env.COGNITO_DOMAIN || 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_gqaC2lQjh',
+      clientId: process.env.COGNITO_CLIENT_ID,
+      clientSecret: process.env.COGNITO_CLIENT_SECRET ,
+      issuer: process.env.COGNITO_DOMAIN,
       idToken: true,
       name: 'Cognito',
       checks: 'nonce',
