@@ -25,7 +25,7 @@ export const authOptions = {
     CognitoProvider({
       clientId: process.env.COGNITO_CLIENT_ID,
       clientSecret: process.env.COGNITO_CLIENT_SECRET ,
-      issuer: process.env.COGNITO_DOMAIN,
+      issuer: process.env.COGNITO_DOMAIN ,
       idToken: true,
       name: 'Cognito',
       checks: 'nonce',
