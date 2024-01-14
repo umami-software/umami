@@ -206,16 +206,14 @@ function getPageFilters(filters: SearchFilter): [
   ];
 }
 
-function getSearchMode(): { mode?: Prisma.QueryMode } {
+function getQueryMode(): Prisma.QueryMode {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return {
-      mode: 'insensitive',
-    };
+    return 'insensitive';
   }
 
-  return {};
+  return 'default';
 }
 
 export default {
@@ -228,6 +226,6 @@ export default {
   getFilterQuery,
   parseFilters,
   getPageFilters,
-  getSearchMode,
+  getQueryMode,
   rawQuery,
 };

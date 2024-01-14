@@ -131,7 +131,11 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         return badRequest(res, 'Data required.');
       }
 
-      await saveSessionData({ ...session, sessionData: eventData, sessionId: session.id });
+      await saveSessionData({
+        websiteId: session.websiteId,
+        sessionId: session.id,
+        sessionData: eventData,
+      });
     }
 
     const token = createToken(session, secret());

@@ -45,7 +45,7 @@ export async function getUsers(
   options?: { include?: Prisma.UserInclude },
 ): Promise<FilterResult<User[]>> {
   const { teamId, query } = params;
-  const mode = prisma.getSearchMode();
+  const mode = prisma.getQueryMode();
 
   const where: Prisma.UserWhereInput = {
     ...(teamId && {
@@ -61,7 +61,7 @@ export async function getUsers(
           {
             username: {
               contains: query,
-              ...mode,
+              mode,
             },
           },
         ],

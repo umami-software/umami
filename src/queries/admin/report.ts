@@ -31,7 +31,7 @@ export async function getReports(
 ): Promise<FilterResult<Report[]>> {
   const { query, userId, websiteId, includeTeams } = params;
 
-  const mode = prisma.getSearchMode();
+  const mode = prisma.getQueryMode();
 
   const where: Prisma.ReportWhereInput = {
     userId,
@@ -66,26 +66,26 @@ export async function getReports(
           {
             name: {
               contains: query,
-              ...mode,
+              mode,
             },
           },
           {
             description: {
               contains: query,
-              ...mode,
+              mode,
             },
           },
           {
             type: {
               contains: query,
-              ...mode,
+              mode,
             },
           },
           {
             user: {
               username: {
                 contains: query,
-                ...mode,
+                mode,
               },
             },
           },
@@ -93,7 +93,7 @@ export async function getReports(
             website: {
               name: {
                 contains: query,
-                ...mode,
+                mode,
               },
             },
           },
@@ -101,7 +101,7 @@ export async function getReports(
             website: {
               domain: {
                 contains: query,
-                ...mode,
+                mode,
               },
             },
           },

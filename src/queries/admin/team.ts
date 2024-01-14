@@ -86,7 +86,7 @@ export async function getTeams(
   options?: { include?: Prisma.TeamInclude },
 ): Promise<FilterResult<Team[]>> {
   const { userId, query } = filters;
-  const mode = prisma.getSearchMode();
+  const mode = prisma.getQueryMode();
 
   const where: Prisma.TeamWhereInput = {
     ...(userId && {
@@ -98,7 +98,7 @@ export async function getTeams(
       AND: {
         OR: [
           {
-            name: { startsWith: query, ...mode },
+            name: { startsWith: query, mode },
           },
           {
             teamUser: {
@@ -107,7 +107,7 @@ export async function getTeams(
                 user: {
                   username: {
                     startsWith: query,
-                    ...mode,
+                    mode,
                   },
                 },
               },

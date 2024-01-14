@@ -23,7 +23,7 @@ export async function getWebsites(
   options?: { include?: Prisma.WebsiteInclude },
 ): Promise<FilterResult<Website[]>> {
   const { userId, teamId, includeTeams, onlyTeams, query } = filters;
-  const mode = prisma.getSearchMode();
+  const mode = prisma.getQueryMode();
 
   const where: Prisma.WebsiteWhereInput = {
     ...(teamId && {
@@ -72,10 +72,10 @@ export async function getWebsites(
         OR: query
           ? [
               {
-                name: { contains: query, ...mode },
+                name: { contains: query, mode },
               },
               {
-                domain: { contains: query, ...mode },
+                domain: { contains: query, mode },
               },
             ]
           : [],

@@ -3,13 +3,14 @@ import { Button, Flexbox } from 'react-basics';
 import useDateRange from 'components/hooks/useDateRange';
 import { DEFAULT_DATE_RANGE } from 'lib/constants';
 import useMessages from 'components/hooks/useMessages';
+import { DateRange } from 'lib/types';
 
 export function DateRangeSetting() {
   const { formatMessage, labels } = useMessages();
   const [dateRange, setDateRange] = useDateRange();
   const { value } = dateRange;
 
-  const handleChange = value => setDateRange(value);
+  const handleChange = (value: string | DateRange) => setDateRange(value);
   const handleReset = () => setDateRange(DEFAULT_DATE_RANGE);
 
   return (
