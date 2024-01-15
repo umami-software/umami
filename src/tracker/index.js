@@ -31,16 +31,6 @@
 
   /* Helper functions */
 
-  const hook = (_this, method, callback) => {
-    const orig = _this[method];
-
-    return (...args) => {
-      callback.apply(null, args);
-
-      return orig.apply(_this, args);
-    };
-  };
-
   const getPath = url => {
     try {
       return new URL(url).pathname;
@@ -59,10 +49,7 @@
     referrer: currentRef,
   });
 
-  /* Tracking functions */
-  const trackingDisabled = () =>
-    (localStorage && localStorage.getItem('umami.disabled')) ||
-    (domain && !domains.includes(hostname));
+  /* Event handlers */
 
   const handlePush = (state, title, url) => {
     if (!url) return;
@@ -75,77 +62,25 @@
     }
   };
 
-  const handleClick = () => {
-    const trackElement = el => {
-      const attr = el.getAttribute.bind(el);
-      const eventName = attr(eventNameAttribute);
+  const handlePathChanges = () => {
+    const hook = (_this, method, callback) => {
+      const orig = _this[method];
 
-      if (eventName) {
-        const eventData = {};
+      return (...args) => {
+        callback.apply(null, args);
 
-        el.getAttributeNames().forEach(name => {
-          const match = name.match(eventRegex);
-
-          if (match) {
-            eventData[match[1]] = attr(name);
-          }
-        });
-
-        return track(eventName, eventData);
-      }
-      return Promise.resolve();
-    };
-
-    const callback = e => {
-      const findATagParent = (rootElem, maxSearchDepth) => {
-        let currentElement = rootElem;
-        for (let i = 0; i < maxSearchDepth; i++) {
-          if (currentElement.tagName === 'A') {
-            return currentElement;
-          }
-          currentElement = currentElement.parentElement;
-          if (!currentElement) {
-            return null;
-          }
-        }
-        return null;
+        return orig.apply(_this, args);
       };
-
-      const el = e.target;
-      const anchor = el.tagName === 'A' ? el : findATagParent(el, 10);
-
-      if (anchor) {
-        const { href, target } = anchor;
-        const external =
-          target === '_blank' ||
-          e.ctrlKey ||
-          e.shiftKey ||
-          e.metaKey ||
-          (e.button && e.button === 1);
-        const eventName = anchor.getAttribute(eventNameAttribute);
-
-        if (eventName && href) {
-          if (!external) {
-            e.preventDefault();
-          }
-          return trackElement(anchor).then(() => {
-            if (!external) location.href = href;
-          });
-        }
-      } else {
-        trackElement(el);
-      }
     };
 
-    document.addEventListener('click', callback, true);
+    history.pushState = hook(history, 'pushState', handlePush);
+    history.replaceState = hook(history, 'replaceState', handlePush);
   };
 
-  const observeTitle = () => {
-    const callback = ([entry]) => {
+  const handleTitleChanges = () => {
+    const observer = new MutationObserver(([entry]) => {
       title = entry && entry.target ? entry.target.text : undefined;
-    };
-
-    const observer = new MutationObserver(callback);
+    });
 
     const node = document.querySelector('head > title');
 
@@ -157,6 +92,86 @@
       });
     }
   };
+
+  const handleClicks = () => {
+    document.addEventListener(
+      'click',
+      async e => {
+        const isSpecialTag = tagName => ['BUTTON', 'A'].includes(tagName);
+
+        const trackElement = async el => {
+          const attr = el.getAttribute.bind(el);
+          const eventName = attr(eventNameAttribute);
+
+          if (eventName) {
+            const eventData = {};
+
+            el.getAttributeNames().forEach(name => {
+              const match = name.match(eventRegex);
+
+              if (match) {
+                eventData[match[1]] = attr(name);
+              }
+            });
+
+            return track(eventName, eventData);
+          }
+        };
+
+        const findParentTag = (rootElem, maxSearchDepth) => {
+          let currentElement = rootElem;
+          for (let i = 0; i < maxSearchDepth; i++) {
+            if (isSpecialTag(currentElement.tagName)) {
+              return currentElement;
+            }
+            currentElement = currentElement.parentElement;
+            if (!currentElement) {
+              return null;
+            }
+          }
+        };
+
+        const el = e.target;
+        const parentElement = isSpecialTag(el.tagName) ? el : findParentTag(el, 10);
+
+        if (parentElement) {
+          const { href, target } = parentElement;
+          const eventName = parentElement.getAttribute(eventNameAttribute);
+
+          if (eventName) {
+            if (parentElement.tagName === 'A') {
+              const external =
+                target === '_blank' ||
+                e.ctrlKey ||
+                e.shiftKey ||
+                e.metaKey ||
+                (e.button && e.button === 1);
+
+              if (eventName && href) {
+                if (!external) {
+                  e.preventDefault();
+                }
+                return trackElement(parentElement).then(() => {
+                  if (!external) location.href = href;
+                });
+              }
+            } else if (parentElement.tagName === 'BUTTON') {
+              return trackElement(parentElement);
+            }
+          }
+        } else {
+          return trackElement(el);
+        }
+      },
+      true,
+    );
+  };
+
+  /* Tracking functions */
+
+  const trackingDisabled = () =>
+    (localStorage && localStorage.getItem('umami.disabled')) ||
+    (domain && !domains.includes(hostname));
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
@@ -173,6 +188,7 @@
         headers,
       });
       const text = await res.text();
+
       return (cache = text);
     } catch {
       /* empty */
@@ -212,10 +228,9 @@
   let initialized;
 
   if (autoTrack && !trackingDisabled()) {
-    history.pushState = hook(history, 'pushState', handlePush);
-    history.replaceState = hook(history, 'replaceState', handlePush);
-    handleClick();
-    observeTitle();
+    handlePathChanges();
+    handleTitleChanges();
+    handleClicks();
 
     const init = () => {
       if (document.readyState === 'complete' && !initialized) {

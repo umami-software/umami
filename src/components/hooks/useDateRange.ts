@@ -46,7 +46,7 @@ export function useDateRange(websiteId?: string) {
   };
 
   return [dateRange, saveDateRange] as [
-    { startDate: Date; endDate: Date; modified?: number; value?: string },
+    { startDate: Date; endDate: Date; modified?: number; value?: string; unit?: string },
     (value: string | DateRange) => void,
   ];
 }

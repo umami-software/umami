@@ -77,10 +77,10 @@ export function EventsChart({ websiteId, className, token }: EventsChartProps) {
       className={className}
       datasets={datasets}
       unit={unit}
-      loading={isLoading}
-      stacked
+      stacked={true}
       renderXLabel={renderDateLabels(unit, locale)}
       renderTooltipPopup={renderStatusTooltipPopup(unit, locale)}
+      isLoading={isLoading}
     />
   );
 }
