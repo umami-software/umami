@@ -227,7 +227,7 @@ export const messages = defineMessages({
   },
   shareUrl: {
     id: 'message.share-url',
-    defaultMessage: 'Your website stats are publically available at the following URL:',
+    defaultMessage: 'Your website stats are publicly available at the following URL:',
   },
   trackingCode: {
     id: 'message.tracking-code',

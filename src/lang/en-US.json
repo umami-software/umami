@@ -207,7 +207,7 @@
   "message.reset-website": "To reset this website, type {confirmation} in the box below to confirm.",
   "message.reset-website-warning": "All statistics for this website will be deleted, but your settings will remain intact.",
   "message.saved": "Saved.",
-  "message.share-url": "Your website stats are publically available at the following URL:",
+  "message.share-url": "Your website stats are publicly available at the following URL:",
   "message.team-already-member": "You are already a member of the team.",
   "message.team-not-found": "Team not found.",
   "message.team-websites-info": "Websites can be viewed by anyone on the team.",
