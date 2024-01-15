@@ -18,7 +18,6 @@
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
   const autoTrack = attr(_data + 'auto-track') !== _false;
-  const dnt = attr(_data + 'do-not-track');
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
   const root = hostUrl
@@ -61,23 +60,8 @@
   });
 
   /* Tracking functions */
-
-  const doNotTrack = () => {
-    const { doNotTrack, navigator, external } = window;
-
-    const msTrackProtection = 'msTrackingProtectionEnabled';
-    const msTracking = () => {
-      return external && msTrackProtection in external && external[msTrackProtection]();
-    };
-
-    const dnt = doNotTrack || navigator.doNotTrack || navigator.msDoNotTrack || msTracking();
-
-    return dnt == '1' || dnt === 'yes';
-  };
-
   const trackingDisabled = () =>
     (localStorage && localStorage.getItem('umami.disabled')) ||
-    (dnt && doNotTrack()) ||
     (domain && !domains.includes(hostname));
 
   const handlePush = (state, title, url) => {
@@ -174,7 +158,7 @@
     }
   };
 
-  const send = (payload, type = 'event') => {
+  const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
     const headers = {
       'Content-Type': 'application/json',
@@ -182,14 +166,17 @@
     if (typeof cache !== 'undefined') {
       headers['x-umami-cache'] = cache;
     }
-    return fetch(endpoint, {
-      method: 'POST',
-      body: JSON.stringify({ type, payload }),
-      headers,
-    })
-      .then(res => res.text())
-      .then(text => (cache = text))
-      .catch(() => {}); // no-op, gulp error
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify({ type, payload }),
+        headers,
+      });
+      const text = await res.text();
+      return (cache = text);
+    } catch {
+      /* empty */
+    }
   };
 
   const track = (obj, data) => {
