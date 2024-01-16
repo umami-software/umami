@@ -21,7 +21,7 @@ export function UsersTable({ data = [] }: { data: any[] }) {
           )
         }
       </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)} width={'100px'}>
+      <GridColumn name="created" label={formatMessage(labels.created)} width={'120px'}>
         {row =>
           formatDistance(new Date(row.createdAt), new Date(), {
             addSuffix: true,
