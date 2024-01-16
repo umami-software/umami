@@ -70,7 +70,8 @@ export async function getUsers(
   };
 
   const [pageFilters, getParameters] = prisma.getPageFilters({
-    orderBy: 'username',
+    orderBy: 'createdAt',
+    sortDescending: true,
     ...params,
   });
 
