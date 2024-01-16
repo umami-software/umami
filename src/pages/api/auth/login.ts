@@ -16,8 +16,10 @@ import {
 import { getUserByUsername } from 'queries';
 import * as yup from 'yup';
 import { ROLES } from 'lib/constants';
+import { getIpAddress } from 'lib/detect';
 
 const log = debug('umami:auth');
+const logFailed = debug('umami:auth:failed');
 
 export interface LoginRequestBody {
   username: string;
@@ -68,6 +70,7 @@ export default async (
     }
 
     log('Login failed:', { username, user });
+    logFailed(`Login from ip ${getIpAddress(req)} failed.`);
 
     return unauthorized(res, 'message.incorrect-username-password');
   }
