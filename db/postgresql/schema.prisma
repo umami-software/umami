@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
-  directUrl    = env("DIRECT_URL") // plain connection with no pgBouncer (used for push & migrations)
   relationMode = "prisma"
 }
 
