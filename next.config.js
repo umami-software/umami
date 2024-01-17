@@ -18,6 +18,22 @@ const headers = [
     value: 'on',
   },
   {
+    key: 'Access-Control-Allow-Credentials',
+    value: 'true',
+  },
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+  {
+    key: 'Access-Control-Allow-Headers',
+    value: 'Content-Type',
+  },
+  {
+    key: 'Access-Control-Allow-Methods',
+    value: 'GET, OPTIONS, PATCH, DELETE, POST, PUT',
+  },
+  {
     key: 'Content-Security-Policy',
     value: contentSecurityPolicy
       .join(';')
@@ -25,6 +41,11 @@ const headers = [
       .trim(),
   },
 ];
+
+headers.push({
+  key: 'Access-Control-Allow-Origin',
+  value: '*',
+});
 
 if (process.env.FORCE_SSL) {
   headers.push({

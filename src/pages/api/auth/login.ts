@@ -70,6 +70,8 @@ export default async (
     log('Login failed:', { username, user });
 
     return unauthorized(res, 'message.incorrect-username-password');
+  } else if (req.method === 'OPTIONS') {
+    return ok(res);
   }
 
   return methodNotAllowed(res);
