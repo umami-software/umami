@@ -19,7 +19,6 @@ import { ROLES } from 'lib/constants';
 import { getIpAddress } from 'lib/detect';
 
 const log = debug('umami:auth');
-const logFailed = debug('umami:auth:failed');
 
 export interface LoginRequestBody {
   username: string;
@@ -69,8 +68,7 @@ export default async (
       });
     }
 
-    log('Login failed:', { username, user });
-    logFailed(`Login from ip ${getIpAddress(req)} failed.`);
+    log(`Login from ip ${getIpAddress(req)} with username "${username.replace(/["\r\n]/g, '')}" failed.`);
 
     return unauthorized(res, 'message.incorrect-username-password');
   }
