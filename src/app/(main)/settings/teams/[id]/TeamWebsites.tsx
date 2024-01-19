@@ -1,11 +1,11 @@
-import TeamWebsitesTable from './TeamWebsitesTable';
-import useApi from 'components/hooks/useApi';
-import useUser from 'components/hooks/useUser';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import DataTable from 'components/common/DataTable';
+import useApi from 'components/hooks/useApi';
+import useUser from 'components/hooks/useUser';
 import useCache from 'store/cache';
+import WebsitesTable from '../../websites/WebsitesTable';
 
-export function TeamWebsites({ teamId, readOnly }: { teamId: string; readOnly: boolean }) {
+export function TeamWebsites({ teamId }: { teamId: string; readOnly: boolean }) {
   const { user } = useUser();
   const { get } = useApi();
   const modified = useCache(state => state?.['team:websites']);
@@ -19,14 +19,8 @@ export function TeamWebsites({ teamId, readOnly }: { teamId: string; readOnly: b
     enabled: !!user,
   });
 
-  const handleChange = () => {
-    queryResult.query.refetch();
-  };
-
   return (
-    <DataTable queryResult={queryResult}>
-      {({ data }) => <TeamWebsitesTable data={data} onRemove={handleChange} readOnly={readOnly} />}
-    </DataTable>
+    <DataTable queryResult={queryResult}>{({ data }) => <WebsitesTable data={data} />}</DataTable>
   );
 }
 
