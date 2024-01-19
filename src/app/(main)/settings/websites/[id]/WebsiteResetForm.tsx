@@ -43,7 +43,7 @@ export function WebsiteResetForm({
     <Form onSubmit={handleSubmit} error={error}>
       <p>
         <FormattedMessage
-          {...messages.resetWebsite}
+          {...messages.actionConfirmation}
           values={{ confirmation: <b>{CONFIRM_VALUE}</b> }}
         />
       </p>

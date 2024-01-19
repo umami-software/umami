@@ -41,7 +41,7 @@ export default function FieldFilterForm({
       format(values[0]);
     }
     return formatted;
-  }, [values]);
+  }, [formatValue, locale, name, values]);
 
   const renderFilterValue = value => {
     return filters.find(f => f.value === value)?.label;
@@ -65,7 +65,7 @@ export default function FieldFilterForm({
               items={filters}
               value={filter}
               renderValue={renderFilterValue}
-              onSelect={(key: any) => setFilter(key)}
+              onChange={(key: any) => setFilter(key)}
             >
               {({ value, label }) => {
                 return <Item key={value}>{label}</Item>;
@@ -78,7 +78,7 @@ export default function FieldFilterForm({
             items={values}
             value={value}
             renderValue={renderValue}
-            onSelect={(key: any) => setValue(key)}
+            onChange={(key: any) => setValue(key)}
             style={{
               minWidth: '250px',
             }}

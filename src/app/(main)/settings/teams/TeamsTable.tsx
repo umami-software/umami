@@ -4,7 +4,6 @@ import useUser from 'components/hooks/useUser';
 import { ROLES } from 'lib/constants';
 import Link from 'next/link';
 import { Button, GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
-import TeamDeleteButton from './TeamDeleteButton';
 import TeamLeaveButton from './TeamLeaveButton';
 
 export function TeamsTable({ data = [] }: { data: any[] }) {
@@ -26,13 +25,10 @@ export function TeamsTable({ data = [] }: { data: any[] }) {
 
           return (
             <>
-              {isOwner && <TeamDeleteButton teamId={id} teamName={name} />}
               {!isOwner && <TeamLeaveButton teamId={id} teamName={name} />}
               <Link href={`/settings/teams/${id}`}>
                 <Button>
-                  <Icon>
-                    <Icons.Edit />
-                  </Icon>
+                  <Icon>{isOwner ? <Icons.Edit /> : <Icons.ArrowRight />}</Icon>
                   <Text>{formatMessage(isOwner ? labels.edit : labels.view)}</Text>
                 </Button>
               </Link>

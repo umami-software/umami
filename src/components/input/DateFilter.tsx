@@ -113,7 +113,7 @@ export function DateFilter({
         value={value}
         alignment={alignment}
         placeholder={formatMessage(labels.selectDate)}
-        onSelect={key => handleChange(key as any)}
+        onChange={key => handleChange(key as any)}
       >
         {({ label, value, divider }) => (
           <Item key={value} divider={divider}>

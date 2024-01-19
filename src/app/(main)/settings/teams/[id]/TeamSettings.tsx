@@ -9,6 +9,7 @@ import useMessages from 'components/hooks/useMessages';
 import TeamEditForm from './TeamEditForm';
 import TeamMembers from './TeamMembers';
 import TeamWebsites from './TeamWebsites';
+import TeamData from './TeamData';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -52,12 +53,14 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="members">{formatMessage(labels.members)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>
+        <Item key="data">{formatMessage(labels.data)}</Item>
       </Tabs>
       {tab === 'details' && (
         <TeamEditForm teamId={teamId} data={values} onSave={handleSave} readOnly={!canEdit} />
       )}
       {tab === 'members' && <TeamMembers teamId={teamId} readOnly={!canEdit} />}
       {tab === 'websites' && <TeamWebsites teamId={teamId} readOnly={!canEdit} />}
+      {canEdit && tab === 'data' && <TeamData teamId={teamId} />}
     </Flexbox>
   );
 }

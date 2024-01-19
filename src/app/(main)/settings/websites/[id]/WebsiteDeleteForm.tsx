@@ -43,7 +43,7 @@ export function WebsiteDeleteForm({
     <Form onSubmit={handleSubmit} error={error}>
       <p>
         <FormattedMessage
-          {...messages.deleteWebsite}
+          {...messages.actionConfirmation}
           values={{ confirmation: <b>{CONFIRM_VALUE}</b> }}
         />
       </p>

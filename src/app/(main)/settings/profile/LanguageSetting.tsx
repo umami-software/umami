@@ -29,7 +29,7 @@ export function LanguageSetting() {
         items={options}
         value={locale}
         renderValue={renderValue}
-        onSelect={saveLocale}
+        onChange={saveLocale}
         allowSearch={true}
         onSearch={setSearch}
         menuProps={{ className: styles.menu }}

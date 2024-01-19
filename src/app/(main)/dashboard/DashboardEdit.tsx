@@ -19,7 +19,7 @@ export function DashboardEdit() {
   const { get, useQuery } = useApi();
   const { data: result } = useQuery({
     queryKey: ['websites'],
-    queryFn: () => get('/websites', { includeTeams: 1 }),
+    queryFn: () => get('/websites'),
   });
   const { data: websites } = result || {};
 

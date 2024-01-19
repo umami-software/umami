@@ -50,7 +50,7 @@ export function WebsiteSelect({
       value={selectedId as string}
       renderValue={renderValue}
       renderEmpty={renderEmpty}
-      onSelect={handleSelect}
+      onChange={handleSelect}
       alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
       allowSearch={true}

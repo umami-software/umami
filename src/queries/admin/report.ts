@@ -29,7 +29,7 @@ export async function getReports(
   params: ReportSearchFilter,
   options?: { include?: Prisma.ReportInclude },
 ): Promise<FilterResult<Report[]>> {
-  const { query, userId, websiteId, includeTeams } = params;
+  const { query, userId, websiteId } = params;
 
   const mode = prisma.getQueryMode();
 
@@ -41,23 +41,6 @@ export async function getReports(
         OR: [
           {
             userId,
-          },
-          {
-            ...(includeTeams && {
-              website: {
-                teamWebsite: {
-                  some: {
-                    team: {
-                      teamUser: {
-                        some: {
-                          userId,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            }),
           },
         ],
       },

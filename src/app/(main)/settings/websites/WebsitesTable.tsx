@@ -7,7 +7,6 @@ import SettingsContext from '../SettingsContext';
 
 export interface WebsitesTableProps {
   data: any[];
-  showTeam?: boolean;
   showActions?: boolean;
   allowEdit?: boolean;
   allowView?: boolean;
@@ -16,7 +15,6 @@ export interface WebsitesTableProps {
 
 export function WebsitesTable({
   data = [],
-  showTeam,
   showActions,
   allowEdit,
   allowView,
@@ -31,16 +29,6 @@ export function WebsitesTable({
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
-      {showTeam && (
-        <GridColumn name="teamName" label={formatMessage(labels.teamName)}>
-          {row => row.teamWebsite[0]?.team.name}
-        </GridColumn>
-      )}
-      {showTeam && (
-        <GridColumn name="owner" label={formatMessage(labels.owner)}>
-          {row => row.user.username}
-        </GridColumn>
-      )}
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
@@ -51,7 +39,7 @@ export function WebsitesTable({
 
             return (
               <>
-                {allowEdit && (!showTeam || ownerId === user.id) && (
+                {allowEdit && ownerId === user.id && (
                   <Link href={`${settingsPath}/${id}`}>
                     <Button>
                       <Icon>

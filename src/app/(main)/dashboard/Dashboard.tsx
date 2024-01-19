@@ -63,7 +63,7 @@ export function Dashboard() {
           {editing && <DashboardEdit />}
           {!editing && (
             <>
-              <WebsiteChartList websites={data} showCharts={showCharts} limit={pageSize} />
+              <WebsiteChartList websites={data as any} showCharts={showCharts} limit={pageSize} />
               <Pager
                 page={page}
                 pageSize={pageSize}

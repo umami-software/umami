@@ -41,7 +41,6 @@ export interface TeamSearchFilter extends SearchFilter {
 export interface ReportSearchFilter extends SearchFilter {
   userId?: string;
   websiteId?: string;
-  includeTeams?: boolean;
 }
 
 export interface SearchFilter {

@@ -12,9 +12,6 @@ export interface WebsitesDataTableProps {
   allowEdit?: boolean;
   allowView?: boolean;
   showActions?: boolean;
-  showTeam?: boolean;
-  includeTeams?: boolean;
-  onlyTeams?: boolean;
   children?: ReactNode;
 }
 
@@ -23,9 +20,6 @@ export function WebsitesDataTable({
   allowEdit = true,
   allowView = true,
   showActions = true,
-  showTeam,
-  includeTeams,
-  onlyTeams,
   children,
 }: WebsitesDataTableProps) {
   const { get } = useApi();
@@ -33,11 +27,9 @@ export function WebsitesDataTable({
   const { websitesUrl } = useContext(SettingsContext);
 
   const queryResult = useFilterQuery({
-    queryKey: ['websites', { includeTeams, onlyTeams, modified }],
+    queryKey: ['websites', { modified }],
     queryFn: (params: any) => {
       return get(websitesUrl, {
-        includeTeams,
-        onlyTeams,
         ...params,
       });
     },
@@ -49,7 +41,6 @@ export function WebsitesDataTable({
       {({ data }) => (
         <WebsitesTable
           data={data}
-          showTeam={showTeam}
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}

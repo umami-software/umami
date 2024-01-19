@@ -1,6 +1,5 @@
 import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
-import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, WebsiteSearchFilter } from 'lib/types';
 
@@ -22,49 +21,16 @@ export async function getWebsites(
   filters: WebsiteSearchFilter,
   options?: { include?: Prisma.WebsiteInclude },
 ): Promise<FilterResult<Website[]>> {
-  const { userId, teamId, includeTeams, onlyTeams, query } = filters;
+  const { userId, teamId, query } = filters;
   const mode = prisma.getQueryMode();
 
   const where: Prisma.WebsiteWhereInput = {
-    ...(teamId && {
-      teamWebsite: {
-        some: {
-          teamId,
-        },
-      },
-    }),
     AND: [
       {
         OR: [
           {
-            ...(userId &&
-              !onlyTeams && {
-                userId,
-              }),
-          },
-          {
-            ...((includeTeams || onlyTeams) && {
-              AND: [
-                {
-                  teamWebsite: {
-                    some: {
-                      team: {
-                        teamUser: {
-                          some: {
-                            userId,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-                {
-                  userId: {
-                    not: userId,
-                  },
-                },
-              ],
-            }),
+            ...(userId && { userId }),
+            ...(teamId && { teamId }),
           },
         ],
       },
@@ -110,15 +76,6 @@ export async function getWebsitesByUserId(
     { userId, ...filters },
     {
       include: {
-        teamWebsite: {
-          include: {
-            team: {
-              select: {
-                name: true,
-              },
-            },
-          },
-        },
         user: {
           select: {
             username: true,
@@ -138,21 +95,9 @@ export async function getWebsitesByTeamId(
     {
       teamId,
       ...filters,
-      includeTeams: true,
     },
     {
       include: {
-        teamWebsite: {
-          include: {
-            team: {
-              include: {
-                teamUser: {
-                  where: { role: ROLES.teamOwner },
-                },
-              },
-            },
-          },
-        },
         user: {
           select: {
             id: true,

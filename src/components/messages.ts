@@ -238,13 +238,9 @@ export const messages = defineMessages({
     id: 'message.team-already-member',
     defaultMessage: 'You are already a member of the team.',
   },
-  deleteAccount: {
-    id: 'message.delete-account',
-    defaultMessage: 'To delete this account, type {confirmation} in the box below to confirm.',
-  },
-  deleteWebsite: {
-    id: 'message.delete-website',
-    defaultMessage: 'To delete this website, type {confirmation} in the box below to confirm.',
+  actionConfirmation: {
+    id: 'message.action-confirmation',
+    defaultMessage: 'Type {confirmation} in the box below to confirm.',
   },
   resetWebsite: {
     id: 'message.reset-website',
@@ -262,6 +258,10 @@ export const messages = defineMessages({
   deleteWebsiteWarning: {
     id: 'message.delete-website-warning',
     defaultMessage: 'All website data will be deleted.',
+  },
+  deleteTeamWarning: {
+    id: 'message.delete-team-warning',
+    defaultMessage: 'Deleting a team will also delete all team websites.',
   },
   noResultsFound: {
     id: 'message.no-results-found',
