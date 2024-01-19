@@ -44,9 +44,9 @@
     hostname,
     screen,
     language,
-    title,
-    url: currentUrl,
-    referrer: currentRef,
+    title: encodeURIComponent(title),
+    url: encodeURI(currentUrl),
+    referrer: encodeURI(currentRef),
   });
 
   /* Event handlers */
