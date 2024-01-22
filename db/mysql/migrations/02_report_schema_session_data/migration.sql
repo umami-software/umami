@@ -1,9 +1,9 @@
 -- AlterTable
-ALTER TABLE `event_data` RENAME COLUMN `event_data_type` TO `data_type`;
-ALTER TABLE `event_data` RENAME COLUMN `event_date_value` TO `date_value`;
-ALTER TABLE `event_data` RENAME COLUMN `event_id` TO `event_data_id`;
-ALTER TABLE `event_data` RENAME COLUMN `event_numeric_value` TO `number_value`;
-ALTER TABLE `event_data` RENAME COLUMN `event_string_value` TO `string_value`;
+ALTER TABLE `event_data` CHANGE `event_data_type` `data_type` INTEGER UNSIGNED NOT NULL;
+ALTER TABLE `event_data` CHANGE `event_date_value` `date_value` TIMESTAMP(0) NULL;
+ALTER TABLE `event_data` CHANGE `event_id` `event_data_id` VARCHAR(36) NOT NULL;
+ALTER TABLE `event_data` CHANGE `event_numeric_value` `number_value` DECIMAL(19,4) NULL;
+ALTER TABLE `event_data` CHANGE `event_string_value` `string_value` VARCHAR(500) NULL;
 
 -- CreateTable
 CREATE TABLE `session_data` (

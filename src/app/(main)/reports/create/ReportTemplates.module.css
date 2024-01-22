@@ -1,0 +1,32 @@
+.reports {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 20px;
+}
+
+.report {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--base500);
+  border-radius: var(--border-radius);
+}
+
+.title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.description {
+  flex: 1;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

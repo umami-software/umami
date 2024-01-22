@@ -1,0 +1,11 @@
+.bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
+  gap: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .bar {
+    grid-template-columns: 1fr 1fr;
+  }
+}

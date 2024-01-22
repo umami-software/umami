@@ -66,12 +66,16 @@ async function checkDatabaseVersion() {
 
 async function checkV1Tables() {
   try {
-    await prisma.$queryRaw`select * from account limit 1`;
+    // check for v1 migrations before v2 release date
+    const record =
+      await prisma.$queryRaw`select * from _prisma_migrations where started_at < '2023-04-17'`;
 
-    error(
-      'Umami v1 tables detected. For how to upgrade from v1 to v2 go to https://umami.is/docs/migrate-v1-v2.',
-    );
-    process.exit(1);
+    if (record.length > 0) {
+      error(
+        'Umami v1 tables detected. For how to upgrade from v1 to v2 go to https://umami.is/docs/migrate-v1-v2.',
+      );
+      process.exit(1);
+    }
   } catch (e) {
     // Ignore
   }
