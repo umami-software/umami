@@ -69,7 +69,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
         console.error("JWT invalid issuer!",error.message);
       }
 
-      console.log('INVALID TOKEN:::::',error);
+      console.log('INVALID TOKEN:::::',error)
     }
   }
   let user = null;
@@ -122,5 +122,3 @@ export const useValidate = async (schema, req, res) => {
     next();
   })(req, res);
 };
-
-//eyJraWQiOiIxcUJBak9xbGsyeEc5Q1laM25CbXBUNWZnSjJTMXduU3dZYTIzUnhucUU0PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNmI2MjVmOS0zYTBmLTRmNjItOGQ2Ny0zZjVjYjI1ZjkyYTQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOnJvbGVTdGF0dXMiOiJBUFBST1ZFRCIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX2dxYUMybFFqaCIsImNvZ25pdG86dXNlcm5hbWUiOiIwNmI2MjVmOS0zYTBmLTRmNjItOGQ2Ny0zZjVjYjI1ZjkyYTQiLCJnaXZlbl9uYW1lIjoiQW5raXQiLCJvcmlnaW5fanRpIjoiNTAyOTg5YTAtNDhjZi00MGY1LWI5MjEtZTA3ZmY4OTE3YzkyIiwiYXVkIjoiN2g2aGhvbXVpZnJsNWJlbWo4a25qbWIzbHUiLCJldmVudF9pZCI6ImVlYTAyYTk3LTVkMWItNGNlOC1hY2M3LTE3Y2IwMTQ5MGY5YiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzA0Njg5MDM1LCJuYW1lIjoiQW5raXQgU2luZ2giLCJleHAiOjE3MDQ3MDM0MzUsImN1c3RvbTpyb2xlIjoiTk9OX1BST0ZJVCIsImlhdCI6MTcwNDY4OTAzNSwiZmFtaWx5X25hbWUiOiJTaW5naCIsImp0aSI6ImFjMTc0NWY3LWYyMGEtNDZiNS1iNmJiLThkOGU5Nzg4ZGUzNiIsImVtYWlsIjoiYXN0LmFua2l0MTAxOUBnbWFpbC5jb20ifQ.VkkVpcKi1DCtSLosSigqYFSfvotfMdFtpuNQBzotEF0EspxDgwbTcLLWpmw9zNp2A7s_s2wo2u6NnUhtJDt-VWhkPU0EvTuPkKldiviPej4i41jx6xNbeW7j9954sAvAxnbdyyXOFOfBrODyLR3OPpaZhR_VbB2ay5nFrp1IiDBG8OgHHO-Ca7kVTO0DznXwqzCdp82a8Tmlk4-Nej_nkIGuQmD1nAiUAk0IO7rmWA4lY377PZW4XEEC13K0ziM-lP5B6chp2SuycxcAeDBc-Yk_QcpumH2jpLy6pPee8Ehup7IHKsA28_4W7H1CTwxoNwviHI1k-jhQLzYiusn69g
