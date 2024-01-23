@@ -16,7 +16,7 @@ import {
 import { NextApiRequestCollect } from 'pages/api/send';
 import { getUserById } from '../queries';
 import { verifier } from './jwtVerifier';
-import { JwtExpiredError,JwtInvalidIssuerError } from "aws-jwt-verify/error";
+import { JwtExpiredError,JwtInvalidIssuerError,JwtParseError } from "aws-jwt-verify/error";
 
 
 const log = debug('umami:middleware');
@@ -69,7 +69,11 @@ export const useAuth = createMiddleware(async (req, res, next) => {
         console.error("JWT invalid issuer!",error.message);
       }
 
-      console.log('INVALID TOKEN:::::',error)
+      if (error instanceof JwtParseError) {
+        console.error("JWT Parse Issue",error.message);
+      }
+
+      console.log('INVALID TOKEN:::::',error); //unknow handle
     }
   }
   let user = null;
