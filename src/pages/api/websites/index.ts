@@ -15,6 +15,7 @@ export interface WebsitesRequestBody {
   name: string;
   domain: string;
   shareId: string;
+  customUserId:string
 }
 
 const schema = {
@@ -25,6 +26,7 @@ const schema = {
     name: yup.string().max(100).required(),
     domain: yup.string().max(500).required(),
     shareId: yup.string().max(50).nullable(),
+    customUserId: yup.string().max(50).nullable(),
   }),
 };
 
@@ -53,7 +55,7 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name, domain, shareId } = req.body;
+    const { name, domain, shareId ,customUserId} = req.body;
 
     if (!(await canCreateWebsite(req.auth))) {
       return unauthorized(res);
@@ -65,11 +67,11 @@ export default async (
       domain,
       shareId,
     };
-
     data.userId = userId;
-
+    if(customUserId){
+      data.userId = customUserId;
+    }
     const website = await createWebsite(data);
-
     return ok(res, website);
   }
 
