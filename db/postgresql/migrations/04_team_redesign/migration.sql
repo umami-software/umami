@@ -5,7 +5,11 @@
 
 */
 -- AlterTable
-ALTER TABLE "team" ADD COLUMN     "deleted_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE "team" ADD COLUMN     "deleted_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "logo_url" VARCHAR(2183);
+
+-- AlterTable
+ALTER TABLE "user" ADD COLUMN     "logo_url" VARCHAR(2183);
 
 -- AlterTable
 ALTER TABLE "website" ADD COLUMN     "team_id" UUID;
