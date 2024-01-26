@@ -3,8 +3,8 @@ import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteTeamWebsite } from 'queries/admin/teamWebsite';
 import * as yup from 'yup';
+import { deleteWebsite } from 'queries/admin/website';
 
 export interface TeamWebsitesRequestQuery {
   id: string;
@@ -32,7 +32,7 @@ export default async (
       return unauthorized(res);
     }
 
-    await deleteTeamWebsite(teamId, websiteId);
+    await deleteWebsite(websiteId);
 
     return ok(res);
   }
