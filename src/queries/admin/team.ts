@@ -169,7 +169,7 @@ export async function getTeamsByUserId(
           },
         },
         _count: {
-          select: { website: true, teamUser: true },
+          select: { website: true, teamUser: { where: { user: { deletedAt: null } } } },
         },
       },
     },
