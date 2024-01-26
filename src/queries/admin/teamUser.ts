@@ -65,16 +65,14 @@ export async function updateTeamUser(
 }
 
 export async function deleteTeamUser(teamId: string, userId: string): Promise<TeamUser> {
-  const { client, transaction } = prisma;
+  const { client } = prisma;
 
-  return transaction([
-    client.teamUser.deleteMany({
-      where: {
-        teamId,
-        userId,
-      },
-    }),
-  ]);
+  return client.teamUser.deleteMany({
+    where: {
+      teamId,
+      userId,
+    },
+  });
 }
 
 export async function deleteTeamUserByUserId(
