@@ -3,10 +3,9 @@ import useApi from 'components/hooks/useApi';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import DataTable from 'components/common/DataTable';
 import UsersTable from './UsersTable';
-import UsersHeader from './UsersHeader';
 import useCache from 'store/cache';
 
-export function UsersDataTable() {
+export function UsersDataTable({ showActions }: { showActions: boolean }) {
   const { get } = useApi();
   const modified = useCache((state: any) => state?.users);
   const queryResult = useFilterQuery({
@@ -15,10 +14,9 @@ export function UsersDataTable() {
   });
 
   return (
-    <>
-      <UsersHeader />
-      <DataTable queryResult={queryResult}>{({ data }) => <UsersTable data={data} />}</DataTable>
-    </>
+    <DataTable queryResult={queryResult}>
+      {({ data }) => <UsersTable data={data} showActions={showActions} />}
+    </DataTable>
   );
 }
 

@@ -1,8 +1,14 @@
-import UsersDataTable from './UsersDataTable';
 import { Metadata } from 'next';
+import UsersDataTable from './UsersDataTable';
+import UsersHeader from './UsersHeader';
 
 export default function () {
-  return <UsersDataTable />;
+  return (
+    <>
+      <UsersHeader />
+      <UsersDataTable />
+    </>
+  );
 }
 export const metadata: Metadata = {
   title: 'Users | umami',

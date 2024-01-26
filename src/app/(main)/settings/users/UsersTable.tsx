@@ -6,7 +6,13 @@ import useMessages from 'components/hooks/useMessages';
 import useLocale from 'components/hooks/useLocale';
 import UserDeleteButton from './UserDeleteButton';
 
-export function UsersTable({ data = [] }: { data: any[] }) {
+export function UsersTable({
+  data = [],
+  showActions = true,
+}: {
+  data: any[];
+  showActions?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
   const { dateLocale } = useLocale();
   const breakpoint = useBreakpoint();
@@ -29,24 +35,26 @@ export function UsersTable({ data = [] }: { data: any[] }) {
           })
         }
       </GridColumn>
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
-          const { id, username } = row;
-          return (
-            <>
-              <Link href={`/settings/users/${id}`}>
-                <Button>
-                  <Icon>
-                    <Icons.Edit />
-                  </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
-                </Button>
-              </Link>
-              <UserDeleteButton userId={id} username={username} />
-            </>
-          );
-        }}
-      </GridColumn>
+      {showActions && (
+        <GridColumn name="action" label=" " alignment="end">
+          {row => {
+            const { id, username } = row;
+            return (
+              <>
+                <Link href={`/settings/users/${id}`}>
+                  <Button>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </Button>
+                </Link>
+                <UserDeleteButton userId={id} username={username} />
+              </>
+            );
+          }}
+        </GridColumn>
+      )}
     </GridTable>
   );
 }

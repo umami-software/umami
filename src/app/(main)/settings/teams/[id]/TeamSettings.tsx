@@ -25,7 +25,6 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         return get(`/teams/${teamId}`);
       }
     },
-    gcTime: 0,
   });
   const canEdit = data?.teamUser?.find(
     ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,

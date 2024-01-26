@@ -6,7 +6,6 @@ import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsitesByTeamId } from 'queries';
-import { createTeamWebsites } from 'queries/admin/teamWebsite';
 
 export interface TeamWebsiteRequestQuery extends SearchFilter {
   id: string;
@@ -48,18 +47,6 @@ export default async (
       query,
       pageSize: +pageSize || undefined,
     });
-
-    return ok(res, websites);
-  }
-
-  if (req.method === 'POST') {
-    if (!(await canViewTeam(req.auth, teamId))) {
-      return unauthorized(res);
-    }
-
-    const { websiteIds } = req.body;
-
-    const websites = await createTeamWebsites(teamId, websiteIds);
 
     return ok(res, websites);
   }

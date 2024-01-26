@@ -52,6 +52,7 @@ export const labels = defineMessages({
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
+  addMember: { id: 'label.add-member', defaultMessage: 'Add member' },
   addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },

@@ -1,10 +1,10 @@
 import { Report } from '@prisma/client';
 import debug from 'debug';
 import redis from '@umami/redis-client';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { findTeamWebsiteByUserId, getTeamUser, getTeamWebsite } from 'queries';
+import { getTeamUser, getWebsiteById } from 'queries';
 import { loadWebsite } from './load';
 import { Auth } from './types';
 import { NextApiRequest } from 'next';
@@ -55,8 +55,6 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
   if (user.id === website?.userId) {
     return true;
   }
-
-  return !!(await findTeamWebsiteByUserId(websiteId, user.id));
 }
 
 export async function canViewAllWebsites({ user }: Auth) {
@@ -178,16 +176,12 @@ export async function canDeleteTeamWebsite({ user }: Auth, teamId: string, websi
     return true;
   }
 
-  const teamWebsite = await getTeamWebsite(teamId, websiteId);
+  const teamWebsite = await getWebsiteById(websiteId);
 
-  if (teamWebsite?.website?.userId === user.id) {
-    return true;
-  }
+  if (teamWebsite && teamWebsite.teamId === teamId) {
+    const teamUser = await getTeamUser(teamId, user.id);
 
-  if (teamWebsite) {
-    const teamUser = await getTeamUser(teamWebsite.teamId, user.id);
-
-    return hasPermission(teamUser.role, PERMISSIONS.teamUpdate);
+    return teamUser.role === ROLES.teamOwner || teamUser.role === ROLES.teamMember;
   }
 
   return false;

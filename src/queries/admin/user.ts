@@ -105,6 +105,7 @@ export async function getUsersByTeamId(teamId: string, filter?: UserSearchFilter
       include: {
         teamUser: {
           select: {
+            teamId: true,
             role: true,
           },
         },
@@ -188,7 +189,27 @@ export async function deleteUser(
 
   const teamIds = teams.map(a => a.id);
 
-  return prisma
+  if (cloudMode) {
+    return client.transaction([
+      client.website.updateMany({
+        data: {
+          deletedAt: new Date(),
+        },
+        where: { id: { in: websiteIds } },
+      }),
+      client.user.update({
+        data: {
+          username: getRandomChars(32),
+          deletedAt: new Date(),
+        },
+        where: {
+          id: userId,
+        },
+      }),
+    ]);
+  }
+
+  return client
     .transaction([
       client.eventData.deleteMany({
         where: { websiteId: { in: websiteIds } },
@@ -198,29 +219,6 @@ export async function deleteUser(
       }),
       client.session.deleteMany({
         where: { websiteId: { in: websiteIds } },
-      }),
-      client.teamWebsite.deleteMany({
-        where: {
-          OR: [
-            {
-              websiteId: {
-                in: websiteIds,
-              },
-            },
-            {
-              teamId: {
-                in: teamIds,
-              },
-            },
-          ],
-        },
-      }),
-      client.teamWebsite.deleteMany({
-        where: {
-          teamId: {
-            in: teamIds,
-          },
-        },
       }),
       client.teamUser.deleteMany({
         where: {
@@ -257,33 +255,16 @@ export async function deleteUser(
           ],
         },
       }),
-      cloudMode
-        ? client.website.updateMany({
-            data: {
-              deletedAt: new Date(),
-            },
-            where: { id: { in: websiteIds } },
-          })
-        : client.website.deleteMany({
-            where: { id: { in: websiteIds } },
-          }),
-      cloudMode
-        ? client.user.update({
-            data: {
-              username: getRandomChars(32),
-              deletedAt: new Date(),
-            },
-            where: {
-              id: userId,
-            },
-          })
-        : client.user.delete({
-            where: {
-              id: userId,
-            },
-          }),
+      client.website.deleteMany({
+        where: { id: { in: websiteIds } },
+      }),
+      client.user.delete({
+        where: {
+          id: userId,
+        },
+      }),
     ])
-    .then(async data => {
+    .then(async (data: any) => {
       if (cache.enabled) {
         const ids = websites.map(a => a.id);
 

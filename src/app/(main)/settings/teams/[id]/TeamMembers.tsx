@@ -1,8 +1,8 @@
 import useApi from 'components/hooks/useApi';
-import TeamMembersTable from './TeamMembersTable';
 import useFilterQuery from 'components/hooks/useFilterQuery';
 import DataTable from 'components/common/DataTable';
 import useCache from 'store/cache';
+import TeamMembersTable from './TeamMembersTable';
 
 export function TeamMembers({ teamId, readOnly }: { teamId: string; readOnly: boolean }) {
   const { get } = useApi();
@@ -18,11 +18,9 @@ export function TeamMembers({ teamId, readOnly }: { teamId: string; readOnly: bo
   });
 
   return (
-    <>
-      <DataTable queryResult={queryResult}>
-        {({ data }) => <TeamMembersTable data={data} teamId={teamId} readOnly={readOnly} />}
-      </DataTable>
-    </>
+    <DataTable queryResult={queryResult}>
+      {({ data }) => <TeamMembersTable data={data} teamId={teamId} readOnly={readOnly} />}
+    </DataTable>
   );
 }
 

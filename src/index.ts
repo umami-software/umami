@@ -18,7 +18,6 @@ export * from 'components/hooks/useTimezone';
 export * from 'components/hooks/useUser';
 export * from 'components/hooks/useWebsite';
 
-export * from 'app/(main)/settings/teams/[id]/TeamWebsiteAddForm';
 export * from 'app/(main)/settings/teams/[id]/TeamEditForm';
 export * from 'app/(main)/settings/teams/[id]/TeamMemberRemoveButton';
 export * from 'app/(main)/settings/teams/[id]/TeamMembers';

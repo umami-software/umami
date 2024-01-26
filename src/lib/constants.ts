@@ -125,6 +125,7 @@ export const ROLES = {
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
+  teamGuest: 'team-guest',
 } as const;
 
 export const PERMISSIONS = {

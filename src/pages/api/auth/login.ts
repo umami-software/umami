@@ -68,7 +68,12 @@ export default async (
       });
     }
 
-    log(`Login from ip ${getIpAddress(req)} with username "${username.replace(/["\r\n]/g, '')}" failed.`);
+    log(
+      `Login from ip ${getIpAddress(req)} with username "${username.replace(
+        /["\r\n]/g,
+        '',
+      )}" failed.`,
+    );
 
     return unauthorized(res, 'message.incorrect-username-password');
   }

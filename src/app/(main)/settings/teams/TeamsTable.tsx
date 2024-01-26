@@ -17,6 +17,12 @@ export function TeamsTable({ data = [] }: { data: any[] }) {
       <GridColumn name="owner" label={formatMessage(labels.owner)}>
         {row => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
       </GridColumn>
+      <GridColumn name="websites" label={formatMessage(labels.websites)}>
+        {row => row._count.website}
+      </GridColumn>
+      <GridColumn name="members" label={formatMessage(labels.members)}>
+        {row => row._count.teamUser}
+      </GridColumn>
       <GridColumn name="action" label=" " alignment="end">
         {row => {
           const { id, name, teamUser } = row;

@@ -260,7 +260,7 @@ export async function deleteWebsite(
       },
     }),
     cloudMode
-      ? prisma.client.website.update({
+      ? client.website.update({
           data: {
             deletedAt: new Date(),
           },

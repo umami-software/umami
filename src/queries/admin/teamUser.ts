@@ -68,14 +68,6 @@ export async function deleteTeamUser(teamId: string, userId: string): Promise<Te
   const { client, transaction } = prisma;
 
   return transaction([
-    client.teamWebsite.deleteMany({
-      where: {
-        teamId: teamId,
-        website: {
-          userId: userId,
-        },
-      },
-    }),
     client.teamUser.deleteMany({
       where: {
         teamId,
