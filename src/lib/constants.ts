@@ -147,8 +147,19 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.teamCreate,
   ],
   [ROLES.viewOnly]: [],
-  [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
-  [ROLES.teamMember]: [],
+  [ROLES.teamOwner]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamMember]: [
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamGuest]: [],
 } as const;
 
 export const THEME_COLORS = {
