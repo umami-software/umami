@@ -3,13 +3,25 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
+const basePath = process.env.BASE_PATH || '';
+const forceSSL = process.env.FORCE_SSL || '';
+const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
+const defaultLocale = process.env.DEFAULT_LOCALE || '';
+const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
+const cloudMode = process.env.CLOUD_MODE || '';
+const cloudUrl = process.env.CLOUD_URL || '';
+const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
+const disableLogin = process.env.DISABLE_LOGIN || '';
+const disableUI = process.env.DISABLE_UI || '';
+const hostURL = process.env.HOST_URL || '';
+
 const contentSecurityPolicy = [
   `default-src 'self'`,
   `img-src *`,
   `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
   `style-src 'self' 'unsafe-inline'`,
   `connect-src 'self' api.umami.is cloud.umami.is`,
-  `frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`,
+  `frame-ancestors 'self' ${frameAncestors}`,
 ];
 
 const headers = [
@@ -26,7 +38,7 @@ const headers = [
   },
 ];
 
-if (process.env.FORCE_SSL) {
+if (forceSSL) {
   headers.push({
     key: 'Strict-Transport-Security',
     value: 'max-age=63072000; includeSubDomains; preload',
@@ -35,15 +47,15 @@ if (process.env.FORCE_SSL) {
 
 const rewrites = [];
 
-if (process.env.COLLECT_API_ENDPOINT) {
+if (collectApiEndpoint) {
   rewrites.push({
-    source: process.env.COLLECT_API_ENDPOINT,
+    source: collectApiEndpoint,
     destination: '/api/send',
   });
 }
 
-if (process.env.TRACKER_SCRIPT_NAME) {
-  const names = process.env.TRACKER_SCRIPT_NAME?.split(',').map(name => name.trim());
+if (trackerScriptName) {
+  const names = trackerScriptName?.split(',').map(name => name.trim());
 
   if (names) {
     names.forEach(name => {
@@ -58,36 +70,37 @@ if (process.env.TRACKER_SCRIPT_NAME) {
 const redirects = [
   {
     source: '/settings',
-    destination: process.env.CLOUD_MODE
-      ? `${process.env.CLOUD_URL}/settings/websites`
-      : '/settings/websites',
+    destination: cloudMode ? `${cloudUrl}/settings/websites` : '/settings/websites',
+    permanent: true,
+  },
+  {
+    source: '/teams/:id',
+    destination: '/teams/:id/websites',
     permanent: true,
   },
 ];
 
-if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN) {
+if (cloudMode && cloudUrl && disableLogin) {
   redirects.push({
     source: '/login',
-    destination: process.env.CLOUD_URL,
+    destination: cloudUrl,
     permanent: false,
   });
 }
-
-const basePath = process.env.BASE_PATH;
 
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: false,
   env: {
-    basePath: basePath || '',
-    cloudMode: process.env.CLOUD_MODE || '',
-    cloudUrl: process.env.CLOUD_URL || '',
+    basePath,
+    cloudMode,
+    cloudUrl,
     configUrl: '/config',
     currentVersion: pkg.version,
-    defaultLocale: process.env.DEFAULT_LOCALE || '',
-    disableLogin: process.env.DISABLE_LOGIN || '',
-    disableUI: process.env.DISABLE_UI || '',
-    hostUrl: process.env.HOST_URL || '',
+    defaultLocale,
+    disableLogin,
+    disableUI,
+    hostURL,
   },
   basePath,
   output: 'standalone',

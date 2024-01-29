@@ -3,20 +3,17 @@ import { Button, Icon, Icons, Loading, Text } from 'react-basics';
 import Link from 'next/link';
 import PageHeader from 'components/layout/PageHeader';
 import Pager from 'components/common/Pager';
-import WebsiteChartList from '../../(main)/websites/[id]/WebsiteChartList';
+import WebsiteChartList from 'app/(main)/websites/[id]/WebsiteChartList';
 import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { useApi } from 'components/hooks';
 import useDashboard from 'store/dashboard';
-import { useMessages } from 'components/hooks';
-import { useLocale } from 'components/hooks';
-import { useFilterQuery } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLocale, useLogin, useFilterQuery } from 'components/hooks';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
   const { get } = useApi();

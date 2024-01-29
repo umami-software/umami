@@ -1,5 +1,4 @@
-import { useApi } from 'components/hooks';
-import { useFilterQuery } from 'components/hooks';
+import { useApi, useFilterQuery } from 'components/hooks';
 import DataTable from 'components/common/DataTable';
 import useCache from 'store/cache';
 import TeamMembersTable from './TeamMembersTable';

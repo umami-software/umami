@@ -1,6 +1,5 @@
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
-import { useMessages } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLogin } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 
@@ -14,7 +13,7 @@ export function TeamMembersTable({
   readOnly: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const breakpoint = useBreakpoint();
 
   const roles = {

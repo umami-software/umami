@@ -2,14 +2,14 @@ import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basic
 import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
 import { useMessages } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useLogin } from 'components/hooks';
 import { useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
 import styles from './ProfileButton.module.css';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const router = useRouter();
   const { dir } = useLocale();
   const cloudMode = Boolean(process.env.cloudMode);

@@ -9,9 +9,8 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import { useApi } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
-import { useMessages } from 'components/hooks';
 
 export function UserEditForm({
   userId,
@@ -19,8 +18,8 @@ export function UserEditForm({
   onSave,
 }: {
   userId: string;
-  data: any[];
-  onSave: (data: any) => void;
+  data: object;
+  onSave?: (data: any) => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
@@ -44,7 +43,7 @@ export function UserEditForm({
     });
   };
 
-  const renderValue = value => {
+  const renderValue = (value: string) => {
     if (value === ROLES.user) {
       return formatMessage(labels.user);
     }

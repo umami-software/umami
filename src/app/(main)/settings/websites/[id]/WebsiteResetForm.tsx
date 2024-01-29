@@ -1,16 +1,5 @@
-import {
-  Button,
-  Form,
-  FormRow,
-  FormButtons,
-  FormInput,
-  SubmitButton,
-  TextField,
-} from 'react-basics';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import { useContext } from 'react';
-import SettingsContext from '../../SettingsContext';
+import { useApi, useMessages } from 'components/hooks';
+import TypeConfirmationForm from 'components/common/TypeConfirmationForm';
 
 const CONFIRM_VALUE = 'RESET';
 
@@ -23,40 +12,30 @@ export function WebsiteResetForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
-  const { websitesUrl } = useContext(SettingsContext);
+  const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`${websitesUrl}/${websiteId}/reset`, data),
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: (data: any) => post(`/websites/${websiteId}/reset`, data),
   });
 
-  const handleSubmit = async (data: any) => {
-    mutate(data, {
+  const handleConfirm = async () => {
+    mutate(null, {
       onSuccess: async () => {
-        onSave();
-        onClose();
+        onSave?.();
+        onClose?.();
       },
     });
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
-      <p>
-        <FormattedMessage
-          {...messages.actionConfirmation}
-          values={{ confirmation: <b>{CONFIRM_VALUE}</b> }}
-        />
-      </p>
-      <FormRow label={formatMessage(labels.confirm)}>
-        <FormInput name="confirm" rules={{ validate: value => value === CONFIRM_VALUE }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton variant="danger">{formatMessage(labels.reset)}</SubmitButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
-      </FormButtons>
-    </Form>
+    <TypeConfirmationForm
+      confirmationValue={CONFIRM_VALUE}
+      onConfirm={handleConfirm}
+      onClose={onClose}
+      isLoading={isPending}
+      error={error}
+      buttonLabel={formatMessage(labels.reset)}
+    />
   );
 }
 

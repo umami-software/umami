@@ -1,7 +1,5 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useMessages } from 'components/hooks';
-import { useLocale } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLocale, useLogin } from 'components/hooks';
 import TeamDeleteForm from './TeamLeaveForm';
 
 export function TeamLeaveButton({
@@ -15,7 +13,7 @@ export function TeamLeaveButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { dir } = useLocale();
-  const { user } = useUser();
+  const { user } = useLogin();
 
   return (
     <ModalTrigger>
@@ -26,7 +24,7 @@ export function TeamLeaveButton({
         <Text>{formatMessage(labels.leave)}</Text>
       </Button>
       <Modal title={formatMessage(labels.leaveTeam)}>
-        {close => (
+        {(close: () => void) => (
           <TeamDeleteForm
             teamId={teamId}
             userId={user.id}

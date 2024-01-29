@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export const labels = defineMessages({
+  ok: { id: 'label.ok', defaultMessage: 'OK' },
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
   required: { id: 'label.required', defaultMessage: 'Required' },
   save: { id: 'label.save', defaultMessage: 'Save' },
@@ -50,6 +51,7 @@ export const labels = defineMessages({
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },
   resetWebsite: { id: 'label.reset-website', defaultMessage: 'Reset website' },
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
+  deleteReport: { id: 'label.delete-report', defaultMessage: 'Delete report' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
   addMember: { id: 'label.add-member', defaultMessage: 'Add member' },

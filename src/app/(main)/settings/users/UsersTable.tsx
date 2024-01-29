@@ -2,8 +2,7 @@ import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import { ROLES } from 'lib/constants';
-import { useMessages } from 'components/hooks';
-import { useLocale } from 'components/hooks';
+import { useMessages, useLocale } from 'components/hooks';
 import UserDeleteButton from './UserDeleteButton';
 
 export function UsersTable({
@@ -35,12 +34,16 @@ export function UsersTable({
           })
         }
       </GridColumn>
+      <GridColumn name="websites" label={formatMessage(labels.websites)} width={'120px'}>
+        {row => row._count.website}
+      </GridColumn>
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
             const { id, username } = row;
             return (
               <>
+                <UserDeleteButton userId={id} username={username} />
                 <Link href={`/settings/users/${id}`}>
                   <Button>
                     <Icon>
@@ -49,7 +52,6 @@ export function UsersTable({
                     <Text>{formatMessage(labels.edit)}</Text>
                   </Button>
                 </Link>
-                <UserDeleteButton userId={id} username={username} />
               </>
             );
           }}

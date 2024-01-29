@@ -4,8 +4,8 @@ import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
 import websiteStore, { setWebsiteDateRange } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';
 import { DateRange } from 'lib/types';
-import useLocale from './useLocale';
-import { useApi } from 'components/hooks';
+import { useLocale } from './useLocale';
+import { useApi } from './queries/useApi';
 
 export function useDateRange(websiteId?: string) {
   const { get } = useApi();

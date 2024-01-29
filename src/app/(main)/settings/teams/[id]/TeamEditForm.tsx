@@ -7,28 +7,37 @@ import {
   TextField,
   Button,
   Flexbox,
+  useToasts,
 } from 'react-basics';
 import { getRandomChars } from 'next-basics';
 import { useRef, useState } from 'react';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 
 const generateId = () => getRandomChars(16);
 
-export function TeamEditForm({ teamId, data, onSave, readOnly }) {
-  const { formatMessage, labels } = useMessages();
+export function TeamEditForm({
+  teamId,
+  data,
+  readOnly,
+}: {
+  teamId: string;
+  data?: { name: string; accessCode: string };
+  readOnly?: boolean;
+}) {
+  const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/teams/${teamId}`, data),
   });
   const ref = useRef(null);
   const [accessCode, setAccessCode] = useState(data.accessCode);
+  const { showToast } = useToasts();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         ref.current.reset(data);
-        onSave?.(data);
+        showToast({ message: formatMessage(messages.saved), variant: 'success' });
       },
     });
   };

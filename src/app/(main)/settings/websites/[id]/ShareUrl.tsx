@@ -10,21 +10,20 @@ import {
 } from 'react-basics';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 import SettingsContext from '../../SettingsContext';
 
 const generateId = () => getRandomChars(16);
 
 export function ShareUrl({ websiteId, data, onSave }) {
   const ref = useRef(null);
-  const { shareUrl, websitesUrl } = useContext(SettingsContext);
+  const { shareUrl } = useContext(SettingsContext);
   const { formatMessage, labels, messages } = useMessages();
   const { name, shareId } = data;
   const [id, setId] = useState(shareId);
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`${websitesUrl}/${websiteId}`, data),
+    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
   });
   const url = useMemo(
     () => `${shareUrl}${process.env.basePath}/share/${id}/${encodeURIComponent(name)}`,

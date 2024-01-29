@@ -84,7 +84,7 @@ export async function getUsers(
       ...pageFilters,
       ...(options?.include && { include: options.include }),
     })
-    .then(a => {
+    .then((a: { [x: string]: any; password: any }[]) => {
       return a.map(({ password, ...rest }) => rest);
     });
 
@@ -163,7 +163,7 @@ export async function deleteUser(
     User,
   ]
 > {
-  const { client } = prisma;
+  const { client, transaction } = prisma;
   const cloudMode = process.env.CLOUD_MODE;
 
   const websites = await client.website.findMany({
@@ -190,7 +190,7 @@ export async function deleteUser(
   const teamIds = teams.map(a => a.id);
 
   if (cloudMode) {
-    return client.transaction([
+    return transaction([
       client.website.updateMany({
         data: {
           deletedAt: new Date(),
@@ -209,70 +209,68 @@ export async function deleteUser(
     ]);
   }
 
-  return client
-    .transaction([
-      client.eventData.deleteMany({
-        where: { websiteId: { in: websiteIds } },
-      }),
-      client.websiteEvent.deleteMany({
-        where: { websiteId: { in: websiteIds } },
-      }),
-      client.session.deleteMany({
-        where: { websiteId: { in: websiteIds } },
-      }),
-      client.teamUser.deleteMany({
-        where: {
-          OR: [
-            {
-              teamId: {
-                in: teamIds,
-              },
+  return transaction([
+    client.eventData.deleteMany({
+      where: { websiteId: { in: websiteIds } },
+    }),
+    client.websiteEvent.deleteMany({
+      where: { websiteId: { in: websiteIds } },
+    }),
+    client.session.deleteMany({
+      where: { websiteId: { in: websiteIds } },
+    }),
+    client.teamUser.deleteMany({
+      where: {
+        OR: [
+          {
+            teamId: {
+              in: teamIds,
             },
-            {
-              userId,
-            },
-          ],
-        },
-      }),
-      client.team.deleteMany({
-        where: {
-          id: {
-            in: teamIds,
           },
+          {
+            userId,
+          },
+        ],
+      },
+    }),
+    client.team.deleteMany({
+      where: {
+        id: {
+          in: teamIds,
         },
-      }),
-      client.report.deleteMany({
-        where: {
-          OR: [
-            {
-              websiteId: {
-                in: websiteIds,
-              },
+      },
+    }),
+    client.report.deleteMany({
+      where: {
+        OR: [
+          {
+            websiteId: {
+              in: websiteIds,
             },
-            {
-              userId,
-            },
-          ],
-        },
-      }),
-      client.website.deleteMany({
-        where: { id: { in: websiteIds } },
-      }),
-      client.user.delete({
-        where: {
-          id: userId,
-        },
-      }),
-    ])
-    .then(async (data: any) => {
-      if (cache.enabled) {
-        const ids = websites.map(a => a.id);
+          },
+          {
+            userId,
+          },
+        ],
+      },
+    }),
+    client.website.deleteMany({
+      where: { id: { in: websiteIds } },
+    }),
+    client.user.delete({
+      where: {
+        id: userId,
+      },
+    }),
+  ]).then(async (data: any) => {
+    if (cache.enabled) {
+      const ids = websites.map(a => a.id);
 
-        for (let i = 0; i < ids.length; i++) {
-          await cache.deleteWebsite(`website:${ids[i]}`);
-        }
+      for (let i = 0; i < ids.length; i++) {
+        await cache.deleteWebsite(`website:${ids[i]}`);
       }
+    }
 
-      return data;
-    });
+    return data;
+  });
 }

@@ -9,7 +9,7 @@ export function useWebsites({ userId, teamId }: { userId?: string; teamId?: stri
   return useFilterQuery({
     queryKey: ['websites', { userId, teamId, modified }],
     queryFn: (params: any) => {
-      return get(teamId ? `/teams/${teamId}/websites` : '/websites', {
+      return get(teamId ? `/teams/${teamId}/websites` : `/users/${userId}/websites`, {
         ...params,
       });
     },

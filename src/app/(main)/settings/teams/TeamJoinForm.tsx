@@ -8,8 +8,7 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 import { setValue } from 'store/cache';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {

@@ -1,8 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import { useMessages } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLogin } from 'components/hooks';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -22,7 +21,7 @@ export function WebsitesTable({
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const breakpoint = useBreakpoint();
 
   return (
@@ -32,13 +31,12 @@ export function WebsitesTable({
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
-            const { id } = row;
-            const isOwner = row.userId === user.id || row.teamId === teamId;
+            const { id, userId } = row;
 
             return (
               <>
-                {allowEdit && isOwner && (
-                  <Link href={`/settings/${id}`}>
+                {allowEdit && !teamId && user.id === userId && (
+                  <Link href={`/settings/websites/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.Edit />

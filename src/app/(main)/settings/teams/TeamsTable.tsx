@@ -1,13 +1,12 @@
 'use client';
 import { Button, GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import Link from 'next/link';
-import { useMessages } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLogin } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 
 export function TeamsTable({ data = [] }: { data: any[] }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const breakpoint = useBreakpoint();
 
   return (

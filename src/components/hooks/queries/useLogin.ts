@@ -1,9 +1,11 @@
+import useStore, { setUser } from 'store/app';
 import useApi from './useApi';
-import useUser from './useUser';
+
+const selector = (state: { user: any }) => state.user;
 
 export function useLogin() {
   const { get, useQuery } = useApi();
-  const { user, setUser } = useUser();
+  const user = useStore(selector);
 
   const query = useQuery({
     queryKey: ['login'],
@@ -14,6 +16,7 @@ export function useLogin() {
 
       return data;
     },
+    enabled: !user,
   });
 
   return { user, ...query };

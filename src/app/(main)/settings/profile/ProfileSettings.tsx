@@ -5,12 +5,11 @@ import DateRangeSetting from 'app/(main)/settings/profile/DateRangeSetting';
 import LanguageSetting from 'app/(main)/settings/profile/LanguageSetting';
 import ThemeSetting from 'app/(main)/settings/profile/ThemeSetting';
 import PasswordChangeButton from './PasswordChangeButton';
-import { useUser } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useLogin, useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 
 export function ProfileSettings() {
-  const { user } = useUser();
+  const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
   const cloudMode = Boolean(process.env.cloudMode);
 

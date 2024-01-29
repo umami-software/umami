@@ -44,7 +44,20 @@ export default async (
 
     const { page, query, pageSize } = req.query;
 
-    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
+    const users = await getUsers(
+      { page, query, pageSize: +pageSize || undefined },
+      {
+        include: {
+          _count: {
+            select: {
+              website: {
+                where: { deletedAt: null },
+              },
+            },
+          },
+        },
+      },
+    );
 
     return ok(res, users);
   }

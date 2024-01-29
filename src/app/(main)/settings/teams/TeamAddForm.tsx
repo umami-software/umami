@@ -8,8 +8,7 @@ import {
   SubmitButton,
 } from 'react-basics';
 import { setValue } from 'store/cache';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();

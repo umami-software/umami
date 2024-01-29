@@ -1,11 +1,13 @@
-import useStore, { setUser } from 'store/app';
+import useApi from './useApi';
 
-const selector = (state: { user: any }) => state.user;
-
-export function useUser() {
-  const user = useStore(selector);
-
-  return { user, setUser };
+export function useUser(userId: string, options?: { [key: string]: any }) {
+  const { get, useQuery } = useApi();
+  return useQuery({
+    queryKey: ['users', userId],
+    queryFn: () => get(`/users/${userId}`),
+    enabled: !!userId,
+    ...options,
+  });
 }
 
 export default useUser;

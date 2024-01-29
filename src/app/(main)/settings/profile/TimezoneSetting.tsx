@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { Dropdown, Item, Button, Flexbox } from 'react-basics';
 import { listTimeZones } from 'timezone-support';
-import { useTimezone } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useTimezone, useMessages } from 'components/hooks';
 import { getTimezone } from 'lib/date';
 import styles from './TimezoneSetting.module.css';
 

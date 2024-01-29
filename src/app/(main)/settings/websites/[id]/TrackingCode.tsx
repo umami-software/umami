@@ -1,6 +1,5 @@
 import { TextArea } from 'react-basics';
-import { useMessages } from 'components/hooks';
-import { useConfig } from 'components/hooks';
+import { useMessages, useConfig } from 'components/hooks';
 import { useContext } from 'react';
 import SettingsContext from '../../SettingsContext';
 

@@ -1,58 +1,28 @@
 'use client';
-import { Key, useEffect, useState } from 'react';
-import { Item, Loading, Tabs, useToasts } from 'react-basics';
+import { Key, useState } from 'react';
+import { Item, Loading, Tabs } from 'react-basics';
 import UserEditForm from '../UserEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import UserWebsites from '../UserWebsites';
+import { useMessages, useUser } from 'components/hooks';
+import UserWebsites from './UserWebsites';
 
-export function UserSettings({ userId }) {
-  const { formatMessage, labels, messages } = useMessages();
-  const [edit, setEdit] = useState(false);
-  const [values, setValues] = useState(null);
+export function UserSettings({ userId }: { userId: string }) {
+  const { formatMessage, labels } = useMessages();
   const [tab, setTab] = useState<Key>('details');
-  const { get, useQuery } = useApi();
-  const { showToast } = useToasts();
-  const { data, isLoading } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => {
-      if (userId) {
-        return get(`/users/${userId}`);
-      }
-    },
-    gcTime: 0,
-  });
+  const { data: user, isLoading } = useUser(userId, { gcTime: 0 });
 
-  const handleSave = (data: any) => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
-    if (data) {
-      setValues(state => ({ ...state, ...data }));
-    }
-
-    if (edit) {
-      setEdit(false);
-    }
-  };
-
-  useEffect(() => {
-    if (data) {
-      setValues(data);
-    }
-  }, [data]);
-
-  if (isLoading || !values) {
+  if (isLoading) {
     return <Loading />;
   }
 
   return (
     <>
-      <PageHeader title={values?.username} />
+      <PageHeader title={user?.username} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>
       </Tabs>
-      {tab === 'details' && <UserEditForm userId={userId} data={values} onSave={handleSave} />}
+      {tab === 'details' && <UserEditForm userId={userId} data={user} />}
       {tab === 'websites' && <UserWebsites userId={userId} />}
     </>
   );

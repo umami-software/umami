@@ -1,13 +1,12 @@
 import { GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import LinkButton from 'components/common/LinkButton';
-import { useMessages } from 'components/hooks';
-import { useUser } from 'components/hooks';
+import { useMessages, useLogin } from 'components/hooks';
 import { REPORT_TYPES } from 'lib/constants';
 import ReportDeleteButton from './ReportDeleteButton';
 
 export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const breakpoint = useBreakpoint();
 
   return (

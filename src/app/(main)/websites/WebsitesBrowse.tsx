@@ -1,9 +1,9 @@
 'use client';
 import WebsitesDataTable from '../settings/websites/WebsitesDataTable';
-import { useUser } from 'components/hooks';
+import { useLogin } from 'components/hooks';
 
 export function WebsitesBrowse() {
-  const { user } = useUser();
+  const { user } = useLogin();
   const allowEdit = !process.env.cloudMode;
 
   return <WebsitesDataTable userId={user.id} allowEdit={allowEdit} />;

@@ -1,12 +1,11 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useUser } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useLogin, useMessages } from 'components/hooks';
 import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
 
 export default function SettingsLayout({ children }) {
-  const { user } = useUser();
+  const { user } = useLogin();
   const pathname = usePathname();
   const { formatMessage, labels } = useMessages();
   const cloudMode = !!process.env.cloudMode;

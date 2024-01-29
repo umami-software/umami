@@ -2,10 +2,8 @@ import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import TeamDeleteForm from '../TeamDeleteForm';
 
-export function TeamData({ teamId }: { teamId: string; onSave?: (value: string) => void }) {
+export function TeamData({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
-
-  const handleSave = () => {};
 
   return (
     <ActionForm
@@ -15,9 +13,7 @@ export function TeamData({ teamId }: { teamId: string; onSave?: (value: string) 
       <ModalTrigger>
         <Button variant="danger">{formatMessage(labels.delete)}</Button>
         <Modal title={formatMessage(labels.deleteTeam)}>
-          {(close: () => void) => (
-            <TeamDeleteForm teamId={teamId} teamName={''} onSave={handleSave} onClose={close} />
-          )}
+          {(close: () => void) => <TeamDeleteForm teamId={teamId} onClose={close} />}
         </Modal>
       </ModalTrigger>
     </ActionForm>
