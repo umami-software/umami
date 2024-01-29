@@ -1,6 +1,4 @@
 import { useApi, useMessages } from 'components/hooks';
-import { useContext } from 'react';
-import SettingsContext from '../../SettingsContext';
 import TypeConfirmationForm from 'components/common/TypeConfirmationForm';
 
 const CONFIRM_VALUE = 'DELETE';
@@ -15,10 +13,9 @@ export function WebsiteDeleteForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { websitesUrl } = useContext(SettingsContext);
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: (data: any) => del(`${websitesUrl}/${websiteId}`, data),
+    mutationFn: (data: any) => del(`/websites/${websiteId}`, data),
   });
 
   const handleConfirm = async () => {

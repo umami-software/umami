@@ -2,16 +2,7 @@
 import { ReactNode } from 'react';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import DataTable from 'components/common/DataTable';
-import useWebsites from 'components/hooks/queries/useWebsites';
-
-export interface WebsitesDataTableProps {
-  userId?: string;
-  teamId?: string;
-  allowEdit?: boolean;
-  allowView?: boolean;
-  showActions?: boolean;
-  children?: ReactNode;
-}
+import { useWebsites } from 'components/hooks';
 
 export function WebsitesDataTable({
   userId,
@@ -20,13 +11,21 @@ export function WebsitesDataTable({
   allowView = true,
   showActions = true,
   children,
-}: WebsitesDataTableProps) {
+}: {
+  userId?: string;
+  teamId?: string;
+  allowEdit?: boolean;
+  allowView?: boolean;
+  showActions?: boolean;
+  children?: ReactNode;
+}) {
   const queryResult = useWebsites({ userId, teamId });
 
   return (
     <DataTable queryResult={queryResult}>
       {({ data }) => (
         <WebsitesTable
+          teamId={teamId}
           data={data}
           showActions={showActions}
           allowEdit={allowEdit}

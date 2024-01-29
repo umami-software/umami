@@ -1,23 +1,23 @@
-import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
+import { Button, Modal, ModalTrigger, ActionForm, useToasts } from 'react-basics';
+import { useRouter } from 'next/navigation';
+import { useMessages } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
-import { useMessages } from 'components/hooks';
+import { touch } from 'store/cache';
 
-export function WebsiteData({
-  websiteId,
-  onSave,
-}: {
-  websiteId: string;
-  onSave?: (value: string) => void;
-}) {
+export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
+  const router = useRouter();
+  const { showToast } = useToasts();
 
   const handleReset = async () => {
-    onSave('reset');
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    onSave?.();
   };
 
   const handleDelete = async () => {
-    onSave('delete');
+    touch('websites');
+    router.push('/settings/websites');
   };
 
   return (

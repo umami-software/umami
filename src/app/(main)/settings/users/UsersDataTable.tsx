@@ -1,7 +1,7 @@
 'use client';
 import DataTable from 'components/common/DataTable';
+import { useUsers } from 'components/hooks';
 import UsersTable from './UsersTable';
-import useUsers from 'components/hooks/queries/useUsers';
 
 export function UsersDataTable({ showActions }: { showActions?: boolean }) {
   const queryResult = useUsers();

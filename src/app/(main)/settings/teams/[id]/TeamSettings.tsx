@@ -4,6 +4,7 @@ import { Item, Loading, Tabs, Flexbox } from 'react-basics';
 import TeamsContext from 'app/(main)/teams/TeamsContext';
 import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';
+import Icons from 'components/icons';
 import { useLogin, useTeam, useMessages } from 'components/hooks';
 import TeamEditForm from './TeamEditForm';
 import TeamMembers from './TeamMembers';
@@ -27,7 +28,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
   return (
     <TeamsContext.Provider value={team}>
       <Flexbox direction="column">
-        <PageHeader title={team?.name} />
+        <PageHeader title={team?.name} icon={<Icons.Users />} />
         <Tabs
           selectedKey={tab}
           onSelect={(value: any) => setTab(value)}

@@ -1,68 +1,63 @@
+import { Website } from '@prisma/client';
 import {
   Form,
   FormRow,
   FormButtons,
   Flexbox,
   TextField,
-  SubmitButton,
   Button,
   Toggle,
+  LoadingButton,
+  useToasts,
 } from 'react-basics';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import { useApi, useMessages } from 'components/hooks';
-import SettingsContext from '../../SettingsContext';
+import SettingsContext from 'app/(main)/settings/SettingsContext';
 
 const generateId = () => getRandomChars(16);
 
-export function ShareUrl({ websiteId, data, onSave }) {
-  const ref = useRef(null);
-  const { shareUrl } = useContext(SettingsContext);
+export function ShareUrl({ website, onSave }: { website: Website; onSave?: () => void }) {
+  const { domain, shareId } = website;
+  const { hostUrl } = useContext(SettingsContext);
   const { formatMessage, labels, messages } = useMessages();
-  const { name, shareId } = data;
   const [id, setId] = useState(shareId);
+  const { showToast } = useToasts();
   const { post, useMutation } = useApi();
-  const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: (data: any) => post(`/websites/${website.id}`, data),
   });
-  const url = useMemo(
-    () => `${shareUrl}${process.env.basePath}/share/${id}/${encodeURIComponent(name)}`,
-    [id, name],
-  );
 
-  const handleSubmit = async (data: any) => {
-    mutate(data, {
-      onSuccess: async () => {
-        onSave(data);
-        ref.current.reset(data);
-      },
-    });
-  };
+  const url = `${hostUrl || location.origin}${
+    process.env.basePath
+  }/share/${id}/${encodeURIComponent(domain)}`;
 
   const handleGenerate = () => {
-    const id = generateId();
-    ref.current.setValue('shareId', id, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setId(id);
+    setId(generateId());
   };
 
   const handleCheck = (checked: boolean) => {
     const data = { shareId: checked ? generateId() : null };
     mutate(data, {
       onSuccess: async () => {
-        onSave(data);
+        onSave?.();
+        showToast({ message: formatMessage(messages.saved), variant: 'success' });
       },
     });
     setId(data.shareId);
   };
 
-  useEffect(() => {
-    if (id && id !== shareId) {
-      ref.current.setValue('shareId', id);
-    }
-  }, [id, shareId]);
+  const handleSave = () => {
+    mutate(
+      { shareId: id },
+      {
+        onSuccess: async () => {
+          showToast({ message: formatMessage(messages.saved), variant: 'success' });
+          onSave?.();
+        },
+      },
+    );
+  };
 
   return (
     <>
@@ -70,7 +65,7 @@ export function ShareUrl({ websiteId, data, onSave }) {
         {formatMessage(labels.enableShareUrl)}
       </Toggle>
       {id && (
-        <Form key={websiteId} ref={ref} onSubmit={handleSubmit} error={error} values={data}>
+        <Form error={error}>
           <FormRow>
             <p>{formatMessage(messages.shareUrl)}</p>
             <Flexbox gap={10}>
@@ -79,7 +74,14 @@ export function ShareUrl({ websiteId, data, onSave }) {
             </Flexbox>
           </FormRow>
           <FormButtons>
-            <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+            <LoadingButton
+              variant="primary"
+              disabled={id === shareId}
+              isLoading={isPending}
+              onClick={handleSave}
+            >
+              {formatMessage(labels.save)}
+            </LoadingButton>
           </FormButtons>
         </Form>
       )}

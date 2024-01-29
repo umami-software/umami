@@ -1,6 +1,7 @@
 'use client';
 import { Key, useState } from 'react';
 import { Item, Loading, Tabs } from 'react-basics';
+import Icons from 'components/icons';
 import UserEditForm from '../UserEditForm';
 import PageHeader from 'components/layout/PageHeader';
 import { useMessages, useUser } from 'components/hooks';
@@ -17,7 +18,7 @@ export function UserSettings({ userId }: { userId: string }) {
 
   return (
     <>
-      <PageHeader title={user?.username} />
+      <PageHeader title={user?.username} icon={<Icons.User />} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>

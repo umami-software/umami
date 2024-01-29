@@ -10,8 +10,6 @@ import {
 import { useApi } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
 import { useMessages } from 'components/hooks';
-import { useContext } from 'react';
-import SettingsContext from '../SettingsContext';
 
 export function WebsiteAddForm({
   teamId,
@@ -23,10 +21,9 @@ export function WebsiteAddForm({
   onClose?: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { websitesUrl } = useContext(SettingsContext);
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(websitesUrl, { ...data, teamId }),
+    mutationFn: (data: any) => post('/websites', { ...data, teamId }),
   });
 
   const handleSubmit = async (data: any) => {

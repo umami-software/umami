@@ -27,6 +27,11 @@
   flex: 1;
 }
 
+.icon {
+  color: var(--base700);
+  margin-right: 1rem;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

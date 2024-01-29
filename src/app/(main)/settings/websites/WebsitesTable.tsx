@@ -46,7 +46,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={teamId ? `/team/${teamId}/websites/${id}` : `/websites/${id}`}>
+                  <Link href={teamId ? `/teams/${teamId}/websites/${id}` : `/websites/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.External />
