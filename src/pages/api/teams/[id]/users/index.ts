@@ -31,7 +31,7 @@ const schema = {
 };
 
 export default async (
-  req: NextApiRequestQueryBody<TeamUserRequestQuery, any>,
+  req: NextApiRequestQueryBody<TeamUserRequestQuery, TeamUserRequestBody>,
   res: NextApiResponse,
 ) => {
   await useAuth(req, res);
