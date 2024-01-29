@@ -59,7 +59,7 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   if(!payload){
     try {
       const payload = await verifier.verify(token);
-      cognitoPayload = { userId: payload['cognito:username'], iat: payload['iat'] }
+      cognitoPayload = { userId: payload['sub'], iat: payload['iat'] }
     } catch(error){
       if (error instanceof JwtExpiredError) {
         console.error("JWT expired!",error.message);
