@@ -1,6 +1,6 @@
 'use client';
-import useApi from 'components/hooks/useApi';
-import useFilterQuery from 'components/hooks/useFilterQuery';
+import { useApi } from 'components/hooks';
+import { useFilterQuery } from 'components/hooks';
 import DataTable from 'components/common/DataTable';
 import UsersTable from './UsersTable';
 import useCache from 'store/cache';

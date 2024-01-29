@@ -1,3 +1,4 @@
+'use client';
 import { createContext } from 'react';
 
 export const SettingsContext = createContext(null);

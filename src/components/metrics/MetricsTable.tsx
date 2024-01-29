@@ -1,17 +1,17 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { percentFilter } from 'lib/filters';
-import useDateRange from 'components/hooks/useDateRange';
-import useNavigation from 'components/hooks/useNavigation';
+import { useDateRange } from 'components/hooks';
+import { useNavigation } from 'components/hooks';
 import ErrorMessage from 'components/common/ErrorMessage';
 import LinkButton from 'components/common/LinkButton';
 import ListTable, { ListTableProps } from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
+import { useMessages } from 'components/hooks';
+import { useLocale } from 'components/hooks';
 import useFormat from 'components//hooks/useFormat';
 import styles from './MetricsTable.module.css';
 

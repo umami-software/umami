@@ -1,5 +1,5 @@
-import useApi from 'components/hooks/useApi';
-import useUser from 'components/hooks/useUser';
+import useApi from './useApi';
+import useUser from './useUser';
 
 export function useLogin() {
   const { get, useQuery } = useApi();

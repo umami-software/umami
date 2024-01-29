@@ -1,4 +1,4 @@
-import useDateRange from 'components/hooks/useDateRange';
+import { useDateRange } from 'components/hooks';
 import { isAfter } from 'date-fns';
 import { incrementDateRange } from 'lib/date';
 import { Button, Icon, Icons } from 'react-basics';

@@ -3,8 +3,8 @@ import { Key, useEffect, useState } from 'react';
 import { Item, Loading, Tabs, useToasts } from 'react-basics';
 import UserEditForm from '../UserEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import UserWebsites from '../UserWebsites';
 
 export function UserSettings({ userId }) {

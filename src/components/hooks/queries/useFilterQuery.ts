@@ -1,6 +1,6 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState, Dispatch, SetStateAction } from 'react';
-import { useApi } from 'components/hooks/useApi';
+import { useApi } from './useApi';
 import { FilterResult, SearchFilter } from 'lib/types';
 
 export interface FilterQueryResult<T> {

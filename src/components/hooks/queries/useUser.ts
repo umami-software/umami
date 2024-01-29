@@ -1,6 +1,6 @@
 import useStore, { setUser } from 'store/app';
 
-const selector = state => state.user;
+const selector = (state: { user: any }) => state.user;
 
 export function useUser() {
   const user = useStore(selector);

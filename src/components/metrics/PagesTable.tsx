@@ -1,8 +1,8 @@
 import FilterLink from 'components/common/FilterLink';
 import FilterButtons from 'components/common/FilterButtons';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import useMessages from 'components/hooks/useMessages';
-import useNavigation from 'components/hooks/useNavigation';
+import { useMessages } from 'components/hooks';
+import { useNavigation } from 'components/hooks';
 import { emptyFilter } from 'lib/filters';
 
 export interface PagesTableProps extends MetricsTableProps {

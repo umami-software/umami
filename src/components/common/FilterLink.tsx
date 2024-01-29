@@ -3,8 +3,8 @@ import { Icon, Icons } from 'react-basics';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { safeDecodeURI } from 'next-basics';
-import useNavigation from 'components/hooks/useNavigation';
-import useMessages from 'components/hooks/useMessages';
+import { useNavigation } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import styles from './FilterLink.module.css';
 
 export interface FilterLinkProps {

@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();
@@ -22,7 +22,7 @@ export function RealtimeHome() {
   }, [data, router]);
 
   return (
-    <Page loading={isLoading || data?.length > 0} error={error}>
+    <Page isLoading={isLoading || data?.length > 0} error={error}>
       <PageHeader title={formatMessage(labels.realtime)} />
       {data?.length === 0 && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)} />

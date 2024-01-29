@@ -1,7 +1,7 @@
 import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import styles from './WebsiteSelect.module.css';
 import Empty from 'components/common/Empty';
 

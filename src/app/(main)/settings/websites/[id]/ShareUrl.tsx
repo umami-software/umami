@@ -10,8 +10,8 @@ import {
 } from 'react-basics';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { getRandomChars } from 'next-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import SettingsContext from '../../SettingsContext';
 
 const generateId = () => getRandomChars(16);

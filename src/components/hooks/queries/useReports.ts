@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useApi from './useApi';
-import useFilterQuery from 'components/hooks/useFilterQuery';
+import useFilterQuery from './useFilterQuery';
 
 export function useReports(websiteId?: string) {
   const [modified, setModified] = useState(Date.now());

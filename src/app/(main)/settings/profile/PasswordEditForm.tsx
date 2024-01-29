@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
   const { formatMessage, labels, messages } = useMessages();

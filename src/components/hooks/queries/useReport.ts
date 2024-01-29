@@ -1,8 +1,8 @@
 import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
-import { useTimezone } from './useTimezone';
-import useApi from './useApi';
-import useMessages from './useMessages';
+import { useApi } from './useApi';
+import { useTimezone } from '../useTimezone';
+import { useMessages } from '../useMessages';
 
 export function useReport(reportId: string, defaultParameters: { [key: string]: any }) {
   const [report, setReport] = useState(null);

@@ -6,7 +6,7 @@ import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
 import styles from './UpdateNotice.module.css';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import { usePathname } from 'next/navigation';
 
 export function UpdateNotice({ user, config }) {

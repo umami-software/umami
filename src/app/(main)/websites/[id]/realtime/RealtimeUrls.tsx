@@ -4,7 +4,7 @@ import thenby from 'thenby';
 import { percentFilter } from 'lib/filters';
 import ListTable from 'components/metrics/ListTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import { RealtimeData } from 'lib/types';
 
 export function RealtimeUrls({

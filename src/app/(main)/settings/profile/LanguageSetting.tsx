@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, Dropdown, Item, Flexbox } from 'react-basics';
-import useLocale from 'components/hooks/useLocale';
+import { useLocale } from 'components/hooks';
 import { DEFAULT_LOCALE } from 'lib/constants';
 import { languages } from 'lib/lang';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import styles from './LanguageSetting.module.css';
 
 export function LanguageSetting() {

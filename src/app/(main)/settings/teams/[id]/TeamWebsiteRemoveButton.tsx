@@ -1,5 +1,5 @@
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
 
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {

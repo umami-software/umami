@@ -8,8 +8,8 @@ import WebsiteEditForm from './[id]/WebsiteEditForm';
 import WebsiteData from './[id]/WebsiteData';
 import TrackingCode from './[id]/TrackingCode';
 import ShareUrl from './[id]/ShareUrl';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import SettingsContext from '../SettingsContext';
 
 export function WebsiteSettings({ websiteId, openExternal = false }) {

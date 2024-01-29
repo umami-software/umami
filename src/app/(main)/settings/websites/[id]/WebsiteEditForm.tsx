@@ -1,8 +1,8 @@
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
 import { useContext, useRef } from 'react';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import SettingsContext from '../../SettingsContext';
 
 export function WebsiteEditForm({

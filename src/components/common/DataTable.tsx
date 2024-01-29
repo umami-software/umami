@@ -5,7 +5,7 @@ import { useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
 import styles from './DataTable.module.css';
-import { FilterQueryResult } from 'components/hooks/useFilterQuery';
+import { FilterQueryResult } from 'components/hooks';
 
 const DEFAULT_SEARCH_DELAY = 600;
 

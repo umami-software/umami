@@ -1,8 +1,8 @@
 import { safeDecodeURI } from 'next-basics';
 import { Button, Icon, Icons, Text } from 'react-basics';
-import useNavigation from 'components/hooks/useNavigation';
-import useMessages from 'components/hooks/useMessages';
-import useFormat from 'components/hooks/useFormat';
+import { useNavigation } from 'components/hooks';
+import { useMessages } from 'components/hooks';
+import { useFormat } from 'components/hooks';
 import styles from './FilterTags.module.css';
 
 export function FilterTags({ params }) {

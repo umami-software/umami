@@ -1,15 +1,15 @@
-import { ReactNode, useContext } from 'react';
+import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
-import SettingsContext from '../SettingsContext';
+import { useMessages } from 'components/hooks';
+import { useUser } from 'components/hooks';
 
 export interface WebsitesTableProps {
   data: any[];
   showActions?: boolean;
   allowEdit?: boolean;
   allowView?: boolean;
+  teamId?: string;
   children?: ReactNode;
 }
 
@@ -18,12 +18,12 @@ export function WebsitesTable({
   showActions,
   allowEdit,
   allowView,
+  teamId,
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
   const { user } = useUser();
   const breakpoint = useBreakpoint();
-  const { settingsPath, websitesPath } = useContext(SettingsContext);
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -32,15 +32,13 @@ export function WebsitesTable({
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
-            const {
-              id,
-              user: { id: ownerId },
-            } = row;
+            const { id } = row;
+            const isOwner = row.userId === user.id || row.teamId === teamId;
 
             return (
               <>
-                {allowEdit && ownerId === user.id && (
-                  <Link href={`${settingsPath}/${id}`}>
+                {allowEdit && isOwner && (
+                  <Link href={`/settings/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.Edit />
@@ -50,7 +48,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={`${websitesPath}/${id}`}>
+                  <Link href={teamId ? `/team/${teamId}/websites/${id}` : `/websites/${id}`}>
                     <Button>
                       <Icon>
                         <Icons.External />

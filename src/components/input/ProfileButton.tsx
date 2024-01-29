@@ -1,9 +1,9 @@
 import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
-import useLocale from 'components/hooks/useLocale';
+import { useMessages } from 'components/hooks';
+import { useUser } from 'components/hooks';
+import { useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
 import styles from './ProfileButton.module.css';
 

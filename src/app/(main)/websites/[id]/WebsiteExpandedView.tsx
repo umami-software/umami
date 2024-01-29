@@ -12,8 +12,8 @@ import ReferrersTable from 'components/metrics/ReferrersTable';
 import ScreenTable from 'components/metrics/ScreenTable';
 import EventsTable from 'components/metrics/EventsTable';
 import SideNav from 'components/layout/SideNav';
-import useNavigation from 'components/hooks/useNavigation';
-import useMessages from 'components/hooks/useMessages';
+import { useNavigation } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import LinkButton from 'components/common/LinkButton';
 import styles from './WebsiteExpandedView.module.css';
 

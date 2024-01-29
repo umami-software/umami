@@ -1,7 +1,7 @@
 import { GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import LinkButton from 'components/common/LinkButton';
 import { useMessages } from 'components/hooks';
-import useUser from 'components/hooks/useUser';
+import { useUser } from 'components/hooks';
 import { REPORT_TYPES } from 'lib/constants';
 import ReportDeleteButton from './ReportDeleteButton';
 

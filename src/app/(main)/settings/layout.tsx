@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import useUser from 'components/hooks/useUser';
-import useMessages from 'components/hooks/useMessages';
+import { useUser } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
 

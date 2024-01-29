@@ -1,6 +1,6 @@
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
+import { useMessages } from 'components/hooks';
+import { useUser } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 

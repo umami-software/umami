@@ -2,8 +2,8 @@ import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';
 import { ROLES } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
+import { useMessages } from 'components/hooks';
+import { useLocale } from 'components/hooks';
 import UserDeleteButton from './UserDeleteButton';
 
 export function UsersTable({

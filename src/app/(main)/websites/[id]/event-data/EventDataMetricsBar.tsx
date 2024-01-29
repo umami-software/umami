@@ -1,6 +1,6 @@
 import { useApi, useDateRange } from 'components/hooks';
 import MetricCard from 'components/metrics/MetricCard';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricsBar from 'components/metrics/MetricsBar';
 import styles from './EventDataMetricsBar.module.css';

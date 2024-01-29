@@ -1,6 +1,6 @@
 import { Button, Icon, Modal, ModalTrigger, Text } from 'react-basics';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import TeamAddForm from './TeamAddForm';
 
 export function TeamsAddButton({ onAdd }: { onAdd?: () => void }) {

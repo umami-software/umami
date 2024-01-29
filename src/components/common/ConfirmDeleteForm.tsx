@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, LoadingButton, Form, FormButtons } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export interface ConfirmDeleteFormProps {
   name: string;

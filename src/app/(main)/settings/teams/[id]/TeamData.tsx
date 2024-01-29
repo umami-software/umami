@@ -1,5 +1,5 @@
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import TeamDeleteForm from '../TeamDeleteForm';
 
 export function TeamData({ teamId }: { teamId: string; onSave?: (value: string) => void }) {

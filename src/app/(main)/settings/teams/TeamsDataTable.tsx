@@ -1,8 +1,8 @@
 'use client';
 import DataTable from 'components/common/DataTable';
 import TeamsTable from 'app/(main)/settings/teams/TeamsTable';
-import useApi from 'components/hooks/useApi';
-import useFilterQuery from 'components/hooks/useFilterQuery';
+import { useApi } from 'components/hooks';
+import { useFilterQuery } from 'components/hooks';
 import useCache from 'store/cache';
 
 export function TeamsDataTable() {

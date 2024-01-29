@@ -3,7 +3,7 @@ import { Loading } from 'react-basics';
 import { usePathname } from 'next/navigation';
 import Page from 'components/layout/Page';
 import FilterTags from 'components/metrics/FilterTags';
-import useNavigation from 'components/hooks/useNavigation';
+import { useNavigation } from 'components/hooks';
 import { useWebsite } from 'components/hooks';
 import WebsiteChart from './WebsiteChart';
 import WebsiteExpandedView from './WebsiteExpandedView';

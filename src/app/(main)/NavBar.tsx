@@ -6,7 +6,7 @@ import Icons from 'components/icons';
 import ThemeButton from 'components/input/ThemeButton';
 import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import HamburgerButton from 'components/common/HamburgerButton';
 import { usePathname } from 'next/navigation';
 import styles from './NavBar.module.css';

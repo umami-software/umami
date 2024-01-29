@@ -5,8 +5,8 @@ import DateRangeSetting from 'app/(main)/settings/profile/DateRangeSetting';
 import LanguageSetting from 'app/(main)/settings/profile/LanguageSetting';
 import ThemeSetting from 'app/(main)/settings/profile/ThemeSetting';
 import PasswordChangeButton from './PasswordChangeButton';
-import useUser from 'components/hooks/useUser';
-import useMessages from 'components/hooks/useMessages';
+import { useUser } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 
 export function ProfileSettings() {

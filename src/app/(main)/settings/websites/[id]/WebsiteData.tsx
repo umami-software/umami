@@ -1,7 +1,7 @@
 import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function WebsiteData({
   websiteId,

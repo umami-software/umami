@@ -6,7 +6,7 @@ import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
 import WorldMap from 'components/metrics/WorldMap';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { useWebsite } from 'components/hooks';
 import { percentFilter } from 'lib/filters';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';

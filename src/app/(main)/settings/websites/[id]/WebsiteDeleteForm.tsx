@@ -7,8 +7,8 @@ import {
   SubmitButton,
   TextField,
 } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import { useContext } from 'react';
 import SettingsContext from '../../SettingsContext';
 

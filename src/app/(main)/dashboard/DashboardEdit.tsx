@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import { Button } from 'react-basics';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
-import useMessages from 'components/hooks/useMessages';
-import useApi from 'components/hooks/useApi';
+import { useMessages } from 'components/hooks';
+import { useApi } from 'components/hooks';
 import styles from './DashboardEdit.module.css';
 
 const dragId = 'dashboard-website-ordering';

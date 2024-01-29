@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactBasicsProvider } from 'react-basics';
 import ErrorBoundary from 'components/common/ErrorBoundary';
 import SettingsContext from 'app/(main)/settings/SettingsContext';
-import useLocale from 'components/hooks/useLocale';
+import { useLocale } from 'components/hooks';
 import 'chartjs-adapter-date-fns';
 
 const client = new QueryClient({

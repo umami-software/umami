@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
-import useLocale from 'components/hooks/useLocale';
-import useMessages from 'components/hooks/useMessages';
+import { useLocale } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import { formatDate } from 'lib/date';
 

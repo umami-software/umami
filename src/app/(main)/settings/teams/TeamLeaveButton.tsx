@@ -1,7 +1,7 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
-import useUser from 'components/hooks/useUser';
+import { useMessages } from 'components/hooks';
+import { useLocale } from 'components/hooks';
+import { useUser } from 'components/hooks';
 import TeamDeleteForm from './TeamLeaveForm';
 
 export function TeamLeaveButton({

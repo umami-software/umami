@@ -1,6 +1,6 @@
 import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 
 export function UserDeleteForm({ userId, username, onSave, onClose }) {
   const { formatMessage, FormattedMessage, labels, messages } = useMessages();

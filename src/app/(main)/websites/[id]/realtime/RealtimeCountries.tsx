@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import ListTable from 'components/metrics/ListTable';
-import useLocale from 'components/hooks/useLocale';
-import useCountryNames from 'components/hooks/useCountryNames';
-import useMessages from 'components/hooks/useMessages';
+import { useLocale } from 'components/hooks';
+import { useCountryNames } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import classNames from 'classnames';
 import styles from './RealtimeCountries.module.css';
 

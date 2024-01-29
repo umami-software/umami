@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function TeamWebsitesTable({
   data = [],

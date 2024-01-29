@@ -1,14 +1,12 @@
 'use client';
-import { ReactNode, useContext } from 'react';
+import { ReactNode } from 'react';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
-import useApi from 'components/hooks/useApi';
 import DataTable from 'components/common/DataTable';
-import useFilterQuery from 'components/hooks/useFilterQuery';
-import useCache from 'store/cache';
-import SettingsContext from '../SettingsContext';
+import useWebsites from 'components/hooks/queries/useWebsites';
 
 export interface WebsitesDataTableProps {
-  userId: string;
+  userId?: string;
+  teamId?: string;
   allowEdit?: boolean;
   allowView?: boolean;
   showActions?: boolean;
@@ -17,24 +15,13 @@ export interface WebsitesDataTableProps {
 
 export function WebsitesDataTable({
   userId,
+  teamId,
   allowEdit = true,
   allowView = true,
   showActions = true,
   children,
 }: WebsitesDataTableProps) {
-  const { get } = useApi();
-  const modified = useCache((state: any) => state?.websites);
-  const { websitesUrl } = useContext(SettingsContext);
-
-  const queryResult = useFilterQuery({
-    queryKey: ['websites', { modified }],
-    queryFn: (params: any) => {
-      return get(websitesUrl, {
-        ...params,
-      });
-    },
-    enabled: !!userId,
-  });
+  const queryResult = useWebsites({ userId, teamId });
 
   return (
     <DataTable queryResult={queryResult}>

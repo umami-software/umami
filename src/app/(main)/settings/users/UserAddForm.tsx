@@ -10,9 +10,9 @@ import {
   SubmitButton,
   Button,
 } from 'react-basics';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { ROLES } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();

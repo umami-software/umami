@@ -4,7 +4,7 @@ import { getClientAuthToken } from 'lib/client';
 import { SHARE_TOKEN_HEADER } from 'lib/constants';
 import useStore from 'store/app';
 
-const selector = state => state.shareToken;
+const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
 export function useApi() {
   const shareToken = useStore(selector);

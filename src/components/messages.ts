@@ -198,6 +198,7 @@ export const labels = defineMessages({
     id: 'label.number-of-records',
     defaultMessage: '{x} {x, plural, one {record} other {records}}',
   },
+  select: { id: 'label.select', defaultMessage: 'Select' },
 });
 
 export const messages = defineMessages({

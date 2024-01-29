@@ -1,7 +1,7 @@
 import Page from 'components/layout/Page';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
-import useFilterQuery from 'components/hooks/useFilterQuery';
+import { useFilterQuery } from 'components/hooks';
 import DataTable from 'components/common/DataTable';
 
 export function UserWebsites({ userId }) {

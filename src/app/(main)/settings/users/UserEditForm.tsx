@@ -9,9 +9,9 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { ROLES } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function UserEditForm({
   userId,

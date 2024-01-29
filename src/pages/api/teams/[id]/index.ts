@@ -3,7 +3,7 @@ import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
+import { methodNotAllowed, notFound, ok, unauthorized } from 'next-basics';
 import { deleteTeam, getTeamById, updateTeam } from 'queries';
 import * as yup from 'yup';
 
@@ -44,9 +44,13 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getTeamById(teamId, { includeTeamUser: true });
+    const team = await getTeamById(teamId, { includeTeamUser: true });
 
-    return ok(res, user);
+    if (!team) {
+      return notFound(res);
+    }
+
+    return ok(res, team);
   }
 
   if (req.method === 'POST') {

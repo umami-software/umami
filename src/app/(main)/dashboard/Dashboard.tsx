@@ -7,11 +7,11 @@ import WebsiteChartList from '../../(main)/websites/[id]/WebsiteChartList';
 import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import useDashboard from 'store/dashboard';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
-import useFilterQuery from 'components/hooks/useFilterQuery';
+import { useMessages } from 'components/hooks';
+import { useLocale } from 'components/hooks';
+import { useFilterQuery } from 'components/hooks';
 import { useUser } from 'components/hooks';
 
 export function Dashboard() {

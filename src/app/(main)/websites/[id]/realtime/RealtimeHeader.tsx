@@ -1,5 +1,5 @@
 import MetricCard from 'components/metrics/MetricCard';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import { RealtimeData } from 'lib/types';
 import styles from './RealtimeHeader.module.css';
 

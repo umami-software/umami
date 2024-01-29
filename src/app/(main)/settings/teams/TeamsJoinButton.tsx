@@ -1,6 +1,6 @@
 import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import TeamJoinForm from './TeamJoinForm';
 
 export function TeamsJoinButton() {
