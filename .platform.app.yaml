@@ -38,6 +38,10 @@ mounts:
 # The size of the persistent disk of the application (in MB).
 disk: 2048
 
+resources:
+    base_memory: 256
+    memory_ratio: 100
+
 # The relationships of the application with services or other applications.
 #
 # The left-hand side is the name of the relationship as it will be exposed
@@ -45,7 +49,6 @@ disk: 2048
 # side is in the form '<service name>:<endpoint name>'.
 relationships:
     postgresdatabase: 'dbpostgres:postgresql'
-
 
 web:
     commands:
