@@ -1,7 +1,7 @@
 import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
 import UserAddForm from './UserAddForm';
 import { useMessages } from 'components/hooks';
-import { setValue } from 'store/cache';
+import { touch } from 'store/cache';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -9,7 +9,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
 
   const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
-    setValue('users', Date.now());
+    touch('users');
     onSave?.();
   };
 

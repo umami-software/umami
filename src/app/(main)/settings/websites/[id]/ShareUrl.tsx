@@ -10,16 +10,22 @@ import {
   LoadingButton,
   useToasts,
 } from 'react-basics';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import { useApi, useMessages } from 'components/hooks';
-import SettingsContext from 'app/(main)/settings/SettingsContext';
 
 const generateId = () => getRandomChars(16);
 
-export function ShareUrl({ website, onSave }: { website: Website; onSave?: () => void }) {
+export function ShareUrl({
+  website,
+  hostUrl,
+  onSave,
+}: {
+  website: Website;
+  hostUrl?: string;
+  onSave?: () => void;
+}) {
   const { domain, shareId } = website;
-  const { hostUrl } = useContext(SettingsContext);
   const { formatMessage, labels, messages } = useMessages();
   const [id, setId] = useState(shareId);
   const { showToast } = useToasts();
@@ -28,7 +34,7 @@ export function ShareUrl({ website, onSave }: { website: Website; onSave?: () =>
     mutationFn: (data: any) => post(`/websites/${website.id}`, data),
   });
 
-  const url = `${hostUrl || location.origin}${
+  const url = `${hostUrl || process.env.hostUrl || window?.location.origin}${
     process.env.basePath
   }/share/${id}/${encodeURIComponent(domain)}`;
 
