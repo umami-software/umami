@@ -51,7 +51,7 @@ export function TeamWebsiteAddForm({
       {isLoading && !hasData && <Loading icon="dots" position="center" />}
       {!isLoading && !hasData && <Empty />}
       {hasData && (
-        <Form onSubmit={handleSubmit} error={error}>
+        <Form onSubmit={handleSubmit} error={error} style={{ maxHeight: '70vh', overflow: 'auto' }}>
           <WebsitesDataTable userId={user.id} showActions={false}>
             <GridColumn name="select" label={formatMessage(labels.selectWebsite)} alignment="end">
               {row => (
