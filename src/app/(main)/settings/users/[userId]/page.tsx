@@ -1,9 +1,9 @@
 import UserSettings from './UserSettings';
 
-export default function ({ params }) {
+export default function ({ params: { userId } }) {
   if (process.env.cloudMode) {
     return null;
   }
 
-  return <UserSettings userId={params.id} />;
+  return <UserSettings userId={userId} />;
 }

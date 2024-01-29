@@ -1,5 +1,5 @@
 'use client';
-import WebsiteDetails from 'app/(main)/websites/[id]/WebsiteDetails';
+import WebsiteDetails from '../../(main)/websites/[websiteId]/WebsiteDetails';
 import { useShareToken } from 'components/hooks';
 import styles from './Share.module.css';
 import Page from 'components/layout/Page';

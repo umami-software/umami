@@ -4,12 +4,12 @@ import { Item, Tabs, Button, Text, Icon, Loading } from 'react-basics';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
-import WebsiteEditForm from './[id]/WebsiteEditForm';
-import WebsiteData from './[id]/WebsiteData';
-import TrackingCode from './[id]/TrackingCode';
-import ShareUrl from './[id]/ShareUrl';
+import WebsiteEditForm from './[websiteId]/WebsiteEditForm';
+import WebsiteData from './[websiteId]/WebsiteData';
+import TrackingCode from './[websiteId]/TrackingCode';
+import ShareUrl from './[websiteId]/ShareUrl';
 import { useWebsite, useMessages } from 'components/hooks';
-import WebsiteContext from 'app/(main)/websites/[id]/WebsiteContext';
+import WebsiteContext from '../../websites/[websiteId]/WebsiteContext';
 
 export function WebsiteSettings({ websiteId, openExternal = false }) {
   const { formatMessage, labels } = useMessages();

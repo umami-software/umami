@@ -4,10 +4,10 @@ import Empty from 'components/common/Empty';
 import Icons from 'components/icons';
 import { useApi, useMessages } from 'components/hooks';
 import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
-import { ReportContext } from '../[id]/Report';
-import FieldAddForm from '../[id]/FieldAddForm';
-import ParameterList from '../[id]/ParameterList';
-import BaseParameters from '../[id]/BaseParameters';
+import { ReportContext } from '../[reportId]/Report';
+import FieldAddForm from '../[reportId]/FieldAddForm';
+import ParameterList from '../[reportId]/ParameterList';
+import BaseParameters from '../[reportId]/BaseParameters';
 import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {

@@ -7,7 +7,7 @@ import WebsiteSelect from 'components/input/WebsiteSelect';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import EventsChart from 'components/metrics/EventsChart';
-import WebsiteChart from 'app/(main)/websites/[id]/WebsiteChart';
+import WebsiteChart from '../websites/[websiteId]/WebsiteChart';
 import { useApi, useNavigation } from 'components/hooks';
 import styles from './TestConsole.module.css';
 

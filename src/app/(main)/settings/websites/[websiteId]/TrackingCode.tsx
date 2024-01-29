@@ -1,12 +1,14 @@
 import { TextArea } from 'react-basics';
 import { useMessages, useConfig } from 'components/hooks';
 
+const SCRIPT_NAME = 'script.js';
+
 export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUrl?: string }) {
   const { formatMessage, messages } = useMessages();
   const config = useConfig();
 
   const trackerScriptName =
-    config?.trackerScriptName?.split(',')?.map((n: string) => n.trim())?.[0] || 'script.js';
+    config?.trackerScriptName?.split(',')?.map((n: string) => n.trim())?.[0] || SCRIPT_NAME;
 
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName

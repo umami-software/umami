@@ -11,12 +11,12 @@ import {
   TooltipPopup,
 } from 'react-basics';
 import Icons from 'components/icons';
-import BaseParameters from '../[id]/BaseParameters';
-import { ReportContext } from '../[id]/Report';
-import ParameterList from '../[id]/ParameterList';
-import FilterSelectForm from '../[id]/FilterSelectForm';
-import FieldSelectForm from '../[id]/FieldSelectForm';
-import PopupForm from '../[id]/PopupForm';
+import BaseParameters from '../[reportId]/BaseParameters';
+import { ReportContext } from '../[reportId]/Report';
+import ParameterList from '../[reportId]/ParameterList';
+import FilterSelectForm from '../[reportId]/FilterSelectForm';
+import FieldSelectForm from '../[reportId]/FieldSelectForm';
+import PopupForm from '../[reportId]/PopupForm';
 import styles from './InsightsParameters.module.css';
 
 export function InsightsParameters() {

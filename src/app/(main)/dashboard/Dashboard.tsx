@@ -3,7 +3,7 @@ import { Button, Icon, Icons, Loading, Text } from 'react-basics';
 import Link from 'next/link';
 import PageHeader from 'components/layout/PageHeader';
 import Pager from 'components/common/Pager';
-import WebsiteChartList from 'app/(main)/websites/[id]/WebsiteChartList';
+import WebsiteChartList from '../websites/[websiteId]/WebsiteChartList';
 import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';

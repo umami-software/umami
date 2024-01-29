@@ -1,4 +1,4 @@
-import WebsiteDetails from 'app/(main)/websites/[id]/WebsiteDetails';
+import WebsiteDetails from '../../../../websites/[websiteId]/WebsiteDetails';
 
 export default function TeamWebsitePage({ params: { websiteId } }) {
   return <WebsiteDetails websiteId={websiteId} />;
