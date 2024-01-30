@@ -6,11 +6,9 @@ export function useReports({ websiteId, teamId }: { websiteId?: string; teamId?:
   const modified = useCache((state: any) => state?.reports);
   const { get, del, useMutation } = useApi();
   const queryResult = useFilterQuery({
-    queryKey: ['reports', { websiteId, modified }],
+    queryKey: ['reports', { websiteId, teamId, modified }],
     queryFn: (params: any) => {
-      const url = websiteId ? `/websites/${websiteId}/reports` : `/reports`;
-
-      return get(teamId ? `/teams/${teamId}${url}` : url, params);
+      return get('/reports', { websiteId, teamId, ...params });
     },
   });
   const { mutate } = useMutation({ mutationFn: (reportId: string) => del(`/reports/${reportId}`) });

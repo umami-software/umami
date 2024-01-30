@@ -4,7 +4,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
-import { createReport, getUserReports } from 'queries';
+import { createReport, getReports } from 'queries';
 import * as yup from 'yup';
 
 export interface ReportsRequestQuery extends SearchFilter {}
@@ -50,13 +50,25 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const { page, query, pageSize } = req.query;
-
-    const data = await getUserReports(userId, {
+    const { page, query, pageSize, websiteId, teamId } = req.query;
+    const filters = {
       page,
       pageSize: +pageSize || undefined,
       query,
-    });
+    };
+
+    const data = await getReports(
+      {
+        where: {
+          userId: !(websiteId && teamId) ? userId : undefined,
+          websiteId,
+        },
+        include: {
+          website: true,
+        },
+      },
+      filters,
+    );
 
     return ok(res, data);
   }

@@ -24,9 +24,9 @@ export async function getReports(
   const { query, userId, websiteId } = filters;
 
   const where: Prisma.ReportWhereInput = {
-    ...criteria.where,
     userId,
     websiteId,
+    ...criteria.where,
     AND: [
       {
         OR: [

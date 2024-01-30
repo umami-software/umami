@@ -63,6 +63,7 @@ export function ListTable({
         {data?.length === 0 && <Empty className={styles.empty} />}
         {virtualize && data.length > 0 ? (
           <FixedSizeList
+            width="100%"
             height={itemCount * ITEM_SIZE}
             itemCount={data.length}
             itemSize={ITEM_SIZE}

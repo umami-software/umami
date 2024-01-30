@@ -29,9 +29,6 @@ export function ProfileButton() {
         <Icon>
           <Icons.Profile />
         </Icon>
-        <Icon size="sm">
-          <Icons.ChevronDown />
-        </Icon>
       </Button>
       <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
         <Menu onSelect={handleSelect} className={styles.menu}>
