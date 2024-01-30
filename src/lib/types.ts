@@ -179,11 +179,12 @@ export interface RealtimeUpdate {
 }
 
 export interface DateRange {
+  value: string;
   startDate: Date;
   endDate: Date;
-  value: string;
   unit?: TimeUnit;
-  selectedUnit?: { num: number; unit: TimeUnit };
+  num?: number;
+  offset?: number;
 }
 
 export interface QueryFilters {

@@ -7,7 +7,7 @@ import { DateRange } from 'lib/types';
 import { useLocale } from './useLocale';
 import { useApi } from './queries/useApi';
 
-export function useDateRange(websiteId?: string) {
+export function useDateRange(websiteId?: string): [DateRange, (value: string | DateRange) => void] {
   const { get } = useApi();
   const { locale } = useLocale();
   const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
@@ -45,10 +45,7 @@ export function useDateRange(websiteId?: string) {
     }
   };
 
-  return [dateRange, saveDateRange] as [
-    { startDate: Date; endDate: Date; modified?: number; value?: string; unit?: string },
-    (value: string | DateRange) => void,
-  ];
+  return [dateRange, saveDateRange];
 }
 
 export default useDateRange;
