@@ -3,7 +3,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getWebsitesByUserId } from 'queries';
+import { getUserWebsites } from 'queries';
 import * as yup from 'yup';
 
 export interface UserWebsitesRequestQuery extends SearchFilter {
@@ -37,7 +37,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getWebsitesByUserId(userId, {
+    const websites = await getUserWebsites(userId, {
       page,
       pageSize: +pageSize || undefined,
       query,

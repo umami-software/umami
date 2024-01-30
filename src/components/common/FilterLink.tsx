@@ -25,7 +25,7 @@ export function FilterLink({
   className,
 }: FilterLinkProps) {
   const { formatMessage, labels } = useMessages();
-  const { makeUrl, query } = useNavigation();
+  const { renderUrl, query } = useNavigation();
   const active = query[id] !== undefined;
   const selected = query[id] === value;
 
@@ -39,7 +39,7 @@ export function FilterLink({
       {children}
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
-        <Link href={makeUrl({ [id]: value })} className={styles.label} replace>
+        <Link href={renderUrl({ [id]: value })} className={styles.label} replace>
           {safeDecodeURI(label || value)}
         </Link>
       )}

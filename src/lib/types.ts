@@ -38,6 +38,10 @@ export interface TeamSearchFilter extends SearchFilter {
   userId?: string;
 }
 
+export interface TeamUserSearchFilter extends SearchFilter {
+  teamId?: string;
+}
+
 export interface ReportSearchFilter extends SearchFilter {
   userId?: string;
   websiteId?: string;

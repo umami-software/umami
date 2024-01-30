@@ -3,7 +3,7 @@ import { methodNotAllowed, ok, serverError, unauthorized } from 'next-basics';
 import { Website, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite, canUpdateWebsite, canDeleteWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { deleteWebsite, getWebsiteById, updateWebsite } from 'queries';
+import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 import { SHARE_ID_REGEX } from 'lib/constants';
 
 export interface WebsiteRequestQuery {
@@ -45,7 +45,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const website = await getWebsiteById(websiteId);
+    const website = await getWebsite(websiteId);
 
     return ok(res, website);
   }

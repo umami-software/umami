@@ -3,7 +3,7 @@ import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteUser, getUserById, getUserByUsername, updateUser } from 'queries';
+import { deleteUser, getUser, getUserByUsername, updateUser } from 'queries';
 import * as yup from 'yup';
 
 export interface UserRequestQuery {
@@ -45,7 +45,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const user = await getUserById(id);
+    const user = await getUser(id);
 
     return ok(res, user);
   }
@@ -57,7 +57,7 @@ export default async (
 
     const { username, password, role } = req.body;
 
-    const user = await getUserById(id);
+    const user = await getUser(id);
 
     const data: any = {};
 

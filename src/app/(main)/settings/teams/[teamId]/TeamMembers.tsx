@@ -1,24 +1,13 @@
-import { useApi, useFilterQuery } from 'components/hooks';
 import DataTable from 'components/common/DataTable';
-import useCache from 'store/cache';
 import TeamMembersTable from './TeamMembersTable';
+import useTeamMembers from 'components/hooks/queries/useTeamMembers';
 
-export function TeamMembers({ teamId, readOnly }: { teamId: string; readOnly: boolean }) {
-  const { get } = useApi();
-  const modified = useCache(state => state?.['team:members']);
-  const queryResult = useFilterQuery({
-    queryKey: ['team:members', { teamId, modified }],
-    queryFn: params => {
-      return get(`/teams/${teamId}/users`, {
-        ...params,
-      });
-    },
-    enabled: !!teamId,
-  });
+export function TeamMembers({ teamId, allowEdit }: { teamId: string; allowEdit: boolean }) {
+  const queryResult = useTeamMembers(teamId);
 
   return (
     <DataTable queryResult={queryResult}>
-      {({ data }) => <TeamMembersTable data={data} teamId={teamId} readOnly={readOnly} />}
+      {({ data }) => <TeamMembersTable data={data} teamId={teamId} allowEdit={allowEdit} />}
     </DataTable>
   );
 }

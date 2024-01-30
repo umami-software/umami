@@ -4,7 +4,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getTeamsByUserId } from 'queries';
+import { getUserTeams } from 'queries';
 
 export interface UserTeamsRequestQuery extends SearchFilter {
   id: string;
@@ -41,7 +41,7 @@ export default async (
 
     const { page, query, pageSize } = req.query;
 
-    const teams = await getTeamsByUserId(userId, {
+    const teams = await getUserTeams(userId, {
       query,
       page,
       pageSize: +pageSize || undefined,

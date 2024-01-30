@@ -4,24 +4,25 @@ import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, Role, User, UserSearchFilter } from 'lib/types';
 import { getRandomChars } from 'next-basics';
+import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
   includePassword?: boolean;
   showDeleted?: boolean;
 }
 
-async function getUser(
-  where: Prisma.UserWhereUniqueInput,
+async function findUser(
+  criteria: Prisma.UserFindUniqueArgs,
   options: GetUserOptions = {},
 ): Promise<User> {
   const { includePassword = false, showDeleted = false } = options;
 
-  if (showDeleted) {
-    where.deletedAt = null;
-  }
-
   return prisma.client.user.findUnique({
-    where,
+    ...criteria,
+    where: {
+      ...criteria.where,
+      ...(showDeleted && { delatedAt: null }),
+    },
     select: {
       id: true,
       username: true,
@@ -32,19 +33,26 @@ async function getUser(
   });
 }
 
-export async function getUserById(id: string, options: GetUserOptions = {}) {
-  return getUser({ id }, options);
+export async function getUser(userId: string, options: GetUserOptions = {}) {
+  return findUser(
+    {
+      where: {
+        id: userId,
+      },
+    },
+    options,
+  );
 }
 
 export async function getUserByUsername(username: string, options: GetUserOptions = {}) {
-  return getUser({ username }, options);
+  return findUser({ where: { username } }, options);
 }
 
 export async function getUsers(
-  params: UserSearchFilter,
-  options?: { include?: Prisma.UserInclude },
+  criteria: UserFindManyArgs,
+  filters?: UserSearchFilter,
 ): Promise<FilterResult<User[]>> {
-  const { teamId, query } = params;
+  const { teamId, query } = filters;
   const mode = prisma.getQueryMode();
 
   const where: Prisma.UserWhereInput = {
@@ -67,49 +75,19 @@ export async function getUsers(
         ],
       },
     }),
+    deletedAt: null,
   };
 
-  const [pageFilters, getParameters] = prisma.getPageFilters({
-    orderBy: 'createdAt',
-    sortDescending: true,
-    ...params,
-  });
-
-  const users = await prisma.client.user
-    .findMany({
-      where: {
-        ...where,
-        deletedAt: null,
-      },
-      ...pageFilters,
-      ...(options?.include && { include: options.include }),
-    })
-    .then((a: { [x: string]: any; password: any }[]) => {
-      return a.map(({ password, ...rest }) => rest);
-    });
-
-  const count = await prisma.client.user.count({
-    where: {
-      ...where,
-      deletedAt: null,
-    },
-  });
-
-  return { data: users as any, count, ...getParameters };
-}
-
-export async function getUsersByTeamId(teamId: string, filter?: UserSearchFilter) {
-  return getUsers(
-    { teamId, ...filter },
+  return prisma.pagedQuery(
+    'user',
     {
-      include: {
-        teamUser: {
-          select: {
-            teamId: true,
-            role: true,
-          },
-        },
-      },
+      ...criteria,
+      where,
+    },
+    {
+      orderBy: 'createdAt',
+      sortDescending: true,
+      ...filters,
     },
   );
 }

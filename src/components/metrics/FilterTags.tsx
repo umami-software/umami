@@ -10,7 +10,7 @@ export function FilterTags({ params }) {
   const { formatValue } = useFormat();
   const {
     router,
-    makeUrl,
+    renderUrl,
     query: { view },
   } = useNavigation();
 
@@ -19,11 +19,11 @@ export function FilterTags({ params }) {
   }
 
   function handleCloseFilter(param?: string) {
-    router.push(makeUrl({ [param]: undefined }));
+    router.push(renderUrl({ [param]: undefined }));
   }
 
   function handleResetFilter() {
-    router.push(makeUrl({ view }, true));
+    router.push(renderUrl({ view }, true));
   }
 
   return (

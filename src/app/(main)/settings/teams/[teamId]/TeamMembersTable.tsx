@@ -6,11 +6,11 @@ import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 export function TeamMembersTable({
   data = [],
   teamId,
-  readOnly,
+  allowEdit,
 }: {
   data: any[];
   teamId: string;
-  readOnly: boolean;
+  allowEdit: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
@@ -23,16 +23,20 @@ export function TeamMembersTable({
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
-      <GridColumn name="username" label={formatMessage(labels.username)} />
+      <GridColumn name="username" label={formatMessage(labels.username)}>
+        {row => row?.user?.username}
+      </GridColumn>
       <GridColumn name="role" label={formatMessage(labels.role)}>
-        {row => roles[row?.teamUser?.[0]?.role]}
+        {row => roles[row?.role]}
       </GridColumn>
       <GridColumn name="action" label=" " alignment="end">
         {row => {
           return (
-            !readOnly &&
-            row?.teamUser?.[0]?.role !== ROLES.teamOwner &&
-            user?.id !== row?.id && <TeamMemberRemoveButton teamId={teamId} userId={row.id} />
+            allowEdit &&
+            row?.role !== ROLES.teamOwner &&
+            user?.id !== row?.id && (
+              <TeamMemberRemoveButton teamId={teamId} userId={row?.user?.id} />
+            )
           );
         }}
       </GridColumn>

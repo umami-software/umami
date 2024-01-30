@@ -175,24 +175,12 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-function getPageFilters(filters: SearchFilter): [
-  {
-    orderBy: {
-      [x: string]: string;
-    }[];
-    take: number;
-    skip: number;
-  },
-  {
-    pageSize: number;
-    page: number;
-    orderBy: string;
-  },
-] {
+async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) {
   const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
 
-  return [
-    {
+  const data = await prisma.client[model].findMany({
+    ...criteria,
+    ...{
       ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
       ...(orderBy && {
         orderBy: [
@@ -202,8 +190,11 @@ function getPageFilters(filters: SearchFilter): [
         ],
       }),
     },
-    { page: +page, pageSize, orderBy },
-  ];
+  });
+
+  const count = await prisma.client[model].count({ where: (criteria as any).where });
+
+  return { data, count, page: +page, pageSize, orderBy };
 }
 
 function getQueryMode(): Prisma.QueryMode {
@@ -225,7 +216,7 @@ export default {
   getTimestampDiffQuery,
   getFilterQuery,
   parseFilters,
-  getPageFilters,
   getQueryMode,
   rawQuery,
+  pagedQuery,
 };

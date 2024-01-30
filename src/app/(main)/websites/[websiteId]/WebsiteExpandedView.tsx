@@ -43,7 +43,7 @@ export default function WebsiteExpandedView({
   const { formatMessage, labels } = useMessages();
   const {
     router,
-    makeUrl,
+    renderUrl,
     pathname,
     query: { view },
   } = useNavigation();
@@ -52,69 +52,69 @@ export default function WebsiteExpandedView({
     {
       key: 'url',
       label: formatMessage(labels.pages),
-      url: makeUrl({ view: 'url' }),
+      url: renderUrl({ view: 'url' }),
     },
     {
       key: 'referrer',
       label: formatMessage(labels.referrers),
-      url: makeUrl({ view: 'referrer' }),
+      url: renderUrl({ view: 'referrer' }),
     },
     {
       key: 'browser',
       label: formatMessage(labels.browsers),
-      url: makeUrl({ view: 'browser' }),
+      url: renderUrl({ view: 'browser' }),
     },
     {
       key: 'os',
       label: formatMessage(labels.os),
-      url: makeUrl({ view: 'os' }),
+      url: renderUrl({ view: 'os' }),
     },
     {
       key: 'device',
       label: formatMessage(labels.devices),
-      url: makeUrl({ view: 'device' }),
+      url: renderUrl({ view: 'device' }),
     },
     {
       key: 'country',
       label: formatMessage(labels.countries),
-      url: makeUrl({ view: 'country' }),
+      url: renderUrl({ view: 'country' }),
     },
     {
       key: 'region',
       label: formatMessage(labels.regions),
-      url: makeUrl({ view: 'region' }),
+      url: renderUrl({ view: 'region' }),
     },
     {
       key: 'city',
       label: formatMessage(labels.cities),
-      url: makeUrl({ view: 'city' }),
+      url: renderUrl({ view: 'city' }),
     },
     {
       key: 'language',
       label: formatMessage(labels.languages),
-      url: makeUrl({ view: 'language' }),
+      url: renderUrl({ view: 'language' }),
     },
     {
       key: 'screen',
       label: formatMessage(labels.screens),
-      url: makeUrl({ view: 'screen' }),
+      url: renderUrl({ view: 'screen' }),
     },
     {
       key: 'event',
       label: formatMessage(labels.events),
-      url: makeUrl({ view: 'event' }),
+      url: renderUrl({ view: 'event' }),
     },
     {
       key: 'query',
       label: formatMessage(labels.queryParameters),
-      url: makeUrl({ view: 'query' }),
+      url: renderUrl({ view: 'query' }),
     },
   ];
 
   const DetailsComponent = views[view] || (() => null);
 
   const handleChange = (view: any) => {
-    router.push(makeUrl({ view }));
+    router.push(renderUrl({ view }));
   };
 
   const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;

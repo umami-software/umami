@@ -47,9 +47,9 @@ export function TeamSettings({ teamId }: { teamId: string }) {
           <Item key="websites">{formatMessage(labels.websites)}</Item>
           <Item key="data">{formatMessage(labels.data)}</Item>
         </Tabs>
-        {tab === 'details' && <TeamEditForm teamId={teamId} data={team} readOnly={!canEdit} />}
-        {tab === 'members' && <TeamMembers teamId={teamId} readOnly={!canEdit} />}
-        {tab === 'websites' && <TeamWebsites teamId={teamId} readOnly={!canEdit} />}
+        {tab === 'details' && <TeamEditForm teamId={teamId} data={team} allowEdit={canEdit} />}
+        {tab === 'members' && <TeamMembers teamId={teamId} allowEdit={canEdit} />}
+        {tab === 'websites' && <TeamWebsites teamId={teamId} allowEdit={canEdit} />}
         {canEdit && tab === 'data' && <TeamData teamId={teamId} />}
       </Flexbox>
     </TeamsContext.Provider>

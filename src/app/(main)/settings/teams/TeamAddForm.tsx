@@ -7,7 +7,7 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { setValue } from 'store/cache';
+import { touch } from 'store/cache';
 import { useApi, useMessages } from 'components/hooks';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
@@ -17,10 +17,10 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
     mutationFn: (data: any) => post('/teams', data),
   });
 
-  const handleSubmit = async data => {
+  const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        setValue('teams', Date.now());
+        touch('teams');
         onSave?.();
         onClose?.();
       },

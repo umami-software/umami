@@ -42,10 +42,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, query, pageSize } = req.query;
-
     const users = await getUsers(
-      { page, query, pageSize: +pageSize || undefined },
       {
         include: {
           _count: {
@@ -57,6 +54,7 @@ export default async (
           },
         },
       },
+      req.query,
     );
 
     return ok(res, users);

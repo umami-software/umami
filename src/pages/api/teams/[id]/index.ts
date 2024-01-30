@@ -4,7 +4,7 @@ import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, notFound, ok, unauthorized } from 'next-basics';
-import { deleteTeam, getTeamById, updateTeam } from 'queries';
+import { deleteTeam, getTeam, updateTeam } from 'queries';
 import * as yup from 'yup';
 
 export interface TeamRequestQuery {
@@ -44,7 +44,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const team = await getTeamById(teamId, { includeTeamUser: true });
+    const team = await getTeam(teamId, { includeMembers: true });
 
     if (!team) {
       return notFound(res);

@@ -1,39 +1,30 @@
 import { Prisma, Report } from '@prisma/client';
 import prisma from 'lib/prisma';
 import { FilterResult, ReportSearchFilter } from 'lib/types';
+import ReportFindUniqueArgs = Prisma.ReportFindUniqueArgs;
+import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
-export async function createReport(data: Prisma.ReportUncheckedCreateInput): Promise<Report> {
-  return prisma.client.report.create({ data });
+async function findReport(criteria: ReportFindUniqueArgs) {
+  return prisma.client.report.findUnique(criteria);
 }
 
-export async function getReportById(reportId: string): Promise<Report> {
-  return prisma.client.report.findUnique({
+export async function getReport(reportId: string): Promise<Report> {
+  return findReport({
     where: {
       id: reportId,
     },
   });
 }
 
-export async function updateReport(
-  reportId: string,
-  data: Prisma.ReportUpdateInput,
-): Promise<Report> {
-  return prisma.client.report.update({ where: { id: reportId }, data });
-}
-
-export async function deleteReport(reportId: string): Promise<Report> {
-  return prisma.client.report.delete({ where: { id: reportId } });
-}
-
 export async function getReports(
-  params: ReportSearchFilter,
-  options?: { include?: Prisma.ReportInclude },
+  criteria: ReportFindManyArgs,
+  filters: ReportSearchFilter = {},
 ): Promise<FilterResult<Report[]>> {
-  const { query, userId, websiteId } = params;
-
   const mode = prisma.getQueryMode();
+  const { query, userId, websiteId } = filters;
 
   const where: Prisma.ReportWhereInput = {
+    ...criteria.where,
     userId,
     websiteId,
     AND: [
@@ -93,32 +84,18 @@ export async function getReports(
     ],
   };
 
-  const [pageFilters, pageInfo] = prisma.getPageFilters(params);
-
-  const reports = await prisma.client.report.findMany({
-    where,
-    ...pageFilters,
-    ...(options?.include && { include: options.include }),
-  });
-
-  const count = await prisma.client.report.count({
-    where,
-  });
-
-  return {
-    data: reports,
-    count,
-    ...pageInfo,
-  };
+  return prisma.pagedQuery('report', { where }, filters);
 }
 
-export async function getReportsByUserId(
+export async function getUserReports(
   userId: string,
-  filter?: ReportSearchFilter,
+  filters?: ReportSearchFilter,
 ): Promise<FilterResult<Report[]>> {
   return getReports(
-    { userId, ...filter },
     {
+      where: {
+        userId,
+      },
       include: {
         website: {
           select: {
@@ -128,12 +105,35 @@ export async function getReportsByUserId(
         },
       },
     },
+    filters,
   );
 }
 
-export async function getReportsByWebsiteId(
+export async function getWebsiteReports(
   websiteId: string,
-  filter: ReportSearchFilter,
+  filters: ReportSearchFilter = {},
 ): Promise<FilterResult<Report[]>> {
-  return getReports({ websiteId, ...filter });
+  return getReports(
+    {
+      where: {
+        websiteId,
+      },
+    },
+    filters,
+  );
+}
+
+export async function createReport(data: Prisma.ReportUncheckedCreateInput): Promise<Report> {
+  return prisma.client.report.create({ data });
+}
+
+export async function updateReport(
+  reportId: string,
+  data: Prisma.ReportUpdateInput,
+): Promise<Report> {
+  return prisma.client.report.update({ where: { id: reportId }, data });
+}
+
+export async function deleteReport(reportId: string): Promise<Report> {
+  return prisma.client.report.delete({ where: { id: reportId } });
 }

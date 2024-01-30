@@ -6,7 +6,7 @@ import { DATA_TYPES } from 'lib/constants';
 
 export function EventDataTable({ data = [] }) {
   const { formatMessage, labels } = useMessages();
-  const { makeUrl } = useNavigation();
+  const { renderUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
@@ -16,7 +16,7 @@ export function EventDataTable({ data = [] }) {
     <GridTable data={data}>
       <GridColumn name="eventName" label={formatMessage(labels.event)}>
         {row => (
-          <Link href={makeUrl({ event: row.eventName })} shallow={true}>
+          <Link href={renderUrl({ event: row.eventName })} shallow={true}>
             {row.eventName}
           </Link>
         )}

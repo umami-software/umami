@@ -6,31 +6,30 @@ import Icons from 'components/icons';
 import ThemeButton from 'components/input/ThemeButton';
 import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
-import { useMessages } from 'components/hooks';
+import { useMessages, useNavigation } from 'components/hooks';
 import HamburgerButton from 'components/common/HamburgerButton';
-import { usePathname } from 'next/navigation';
 import styles from './NavBar.module.css';
 
 export function NavBar() {
-  const pathname = usePathname();
   const { formatMessage, labels } = useMessages();
   const cloudMode = Boolean(process.env.cloudMode);
+  const { pathname, renderTeamUrl } = useNavigation();
 
   const links = [
-    { label: formatMessage(labels.dashboard), url: '/dashboard' },
-    { label: formatMessage(labels.websites), url: '/websites' },
-    { label: formatMessage(labels.reports), url: '/reports' },
-    { label: formatMessage(labels.settings), url: '/settings' },
+    { label: formatMessage(labels.dashboard), url: renderTeamUrl('/dashboard') },
+    { label: formatMessage(labels.websites), url: renderTeamUrl('/websites') },
+    { label: formatMessage(labels.reports), url: renderTeamUrl('/reports') },
+    { label: formatMessage(labels.settings), url: renderTeamUrl('/settings') },
   ].filter(n => n);
 
   const menuItems = [
     {
       label: formatMessage(labels.dashboard),
-      url: '/dashboard',
+      url: renderTeamUrl('/dashboard'),
     },
     !cloudMode && {
       label: formatMessage(labels.settings),
-      url: '/settings',
+      url: renderTeamUrl('/settings'),
       children: [
         {
           label: formatMessage(labels.websites),

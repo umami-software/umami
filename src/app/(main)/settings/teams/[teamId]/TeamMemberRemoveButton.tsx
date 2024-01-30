@@ -1,6 +1,6 @@
 import { useApi, useMessages } from 'components/hooks';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
-import { setValue } from 'store/cache';
+import { touch } from 'store/cache';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -22,7 +22,7 @@ export function TeamMemberRemoveButton({
   const handleRemoveTeamMember = () => {
     mutate(null, {
       onSuccess: () => {
-        setValue('team:members', Date.now());
+        touch('team:members');
         onSave?.();
       },
     });

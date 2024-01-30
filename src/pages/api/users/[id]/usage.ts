@@ -2,7 +2,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getEventDataUsage, getEventUsage, getUserWebsites } from 'queries';
+import { getAllWebsites, getEventDataUsage, getEventUsage } from 'queries';
 import * as yup from 'yup';
 
 export interface UserUsageRequestQuery {
@@ -26,7 +26,7 @@ const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
-    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+    endAt: yup.number().integer().moreThan(yup.ref<number>('startAt')).required(),
   }),
 };
 
@@ -50,7 +50,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const websites = await getUserWebsites(userId);
+    const websites = await getAllWebsites(userId);
 
     const websiteIds = websites.map(a => a.id);
 

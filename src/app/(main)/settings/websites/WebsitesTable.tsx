@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import { useMessages, useLogin } from 'components/hooks';
+import { useMessages, useLogin, useNavigation } from 'components/hooks';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -23,6 +23,7 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const breakpoint = useBreakpoint();
+  const { renderTeamUrl } = useNavigation();
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -46,7 +47,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={teamId ? `/teams/${teamId}/websites/${id}` : `/websites/${id}`}>
+                  <Link href={renderTeamUrl(`/websites/${id}`)}>
                     <Button>
                       <Icon>
                         <Icons.External />

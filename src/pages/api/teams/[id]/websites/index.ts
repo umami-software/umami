@@ -5,7 +5,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite, getWebsitesByTeamId } from 'queries';
+import { createWebsite, getTeamWebsites } from 'queries';
 import { uuid } from 'lib/crypto';
 
 export interface TeamWebsiteRequestQuery extends SearchFilter {
@@ -46,7 +46,7 @@ export default async (
 
     const { page, query, pageSize } = req.query;
 
-    const websites = await getWebsitesByTeamId(teamId, {
+    const websites = await getTeamWebsites(teamId, {
       page,
       query,
       pageSize: +pageSize || undefined,

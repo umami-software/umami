@@ -9,7 +9,7 @@ import {
   methodNotAllowed,
   ok,
 } from 'next-basics';
-import { getUserById, updateUser } from 'queries';
+import { getUser, updateUser } from 'queries';
 import * as yup from 'yup';
 
 export interface UserPasswordRequestQuery {
@@ -43,7 +43,7 @@ export default async (
   const { id } = req.auth.user;
 
   if (req.method === 'POST') {
-    const user = await getUserById(id, { includePassword: true });
+    const user = await getUser(id, { includePassword: true });
 
     if (!checkPassword(currentPassword, user.password)) {
       return badRequest(res, 'Current password is incorrect');

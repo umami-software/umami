@@ -3,7 +3,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, ReportType, YupRequest } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { deleteReport, getReportById, updateReport } from 'queries';
+import { deleteReport, getReport, updateReport } from 'queries';
 import * as yup from 'yup';
 
 export interface ReportRequestQuery {
@@ -54,7 +54,7 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    const report = await getReportById(reportId);
+    const report = await getReport(reportId);
 
     if (!(await canViewReport(req.auth, report))) {
       return unauthorized(res);
@@ -68,7 +68,7 @@ export default async (
   if (req.method === 'POST') {
     const { websiteId, type, name, description, parameters } = req.body;
 
-    const report = await getReportById(reportId);
+    const report = await getReport(reportId);
 
     if (!(await canUpdateReport(req.auth, report))) {
       return unauthorized(res);
@@ -87,7 +87,7 @@ export default async (
   }
 
   if (req.method === 'DELETE') {
-    const report = await getReportById(reportId);
+    const report = await getReport(reportId);
 
     if (!(await canDeleteReport(req.auth, report))) {
       return unauthorized(res);

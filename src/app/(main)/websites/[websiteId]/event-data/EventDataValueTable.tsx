@@ -8,12 +8,12 @@ import { DATA_TYPES } from 'lib/constants';
 
 export function EventDataValueTable({ data = [], event }: { data: any[]; event: string }) {
   const { formatMessage, labels } = useMessages();
-  const { makeUrl } = useNavigation();
+  const { renderUrl } = useNavigation();
 
   const Title = () => {
     return (
       <>
-        <Link href={makeUrl({ event: undefined })}>
+        <Link href={renderUrl({ event: undefined })}>
           <Button>
             <Icon rotate={180}>
               <Icons.ArrowRight />

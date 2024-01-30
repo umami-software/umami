@@ -6,7 +6,7 @@ import Funnel from 'assets/funnel.svg';
 import Lightbulb from 'assets/lightbulb.svg';
 import Magnet from 'assets/magnet.svg';
 import styles from './ReportTemplates.module.css';
-import { useMessages } from 'components/hooks';
+import { useMessages, useNavigation } from 'components/hooks';
 
 function ReportItem({ title, description, url, icon }) {
   const { formatMessage, labels } = useMessages();
@@ -32,26 +32,27 @@ function ReportItem({ title, description, url, icon }) {
   );
 }
 
-export function ReportTemplates({ showHeader = true }) {
+export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
+  const { renderTeamUrl } = useNavigation();
 
   const reports = [
     {
       title: formatMessage(labels.insights),
       description: formatMessage(labels.insightsDescription),
-      url: '/reports/insights',
+      url: renderTeamUrl('/reports/insights'),
       icon: <Lightbulb />,
     },
     {
       title: formatMessage(labels.funnel),
       description: formatMessage(labels.funnelDescription),
-      url: '/reports/funnel',
+      url: renderTeamUrl('/reports/funnel'),
       icon: <Funnel />,
     },
     {
       title: formatMessage(labels.retention),
       description: formatMessage(labels.retentionDescription),
-      url: '/reports/retention',
+      url: renderTeamUrl('/reports/retention'),
       icon: <Magnet />,
     },
   ];

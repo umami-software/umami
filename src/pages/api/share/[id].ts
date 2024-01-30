@@ -3,7 +3,7 @@ import { useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { createToken, methodNotAllowed, notFound, ok } from 'next-basics';
-import { getWebsiteByShareId } from 'queries';
+import { getSharedWebsite } from 'queries';
 import * as yup from 'yup';
 
 export interface ShareRequestQuery {
@@ -30,7 +30,7 @@ export default async (
   const { id: shareId } = req.query;
 
   if (req.method === 'GET') {
-    const website = await getWebsiteByShareId(shareId);
+    const website = await getSharedWebsite(shareId);
 
     if (website) {
       const data = { websiteId: website.id };

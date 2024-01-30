@@ -11,7 +11,7 @@ export function WebsiteFilterButton({
   className?: string;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { makeUrl, router } = useNavigation();
+  const { renderUrl, router } = useNavigation();
 
   const fieldOptions = [
     { name: 'url', type: 'string', label: formatMessage(labels.url) },
@@ -25,7 +25,7 @@ export function WebsiteFilterButton({
   ];
 
   const handleAddFilter = ({ name, value }) => {
-    router.push(makeUrl({ [name]: value }));
+    router.push(renderUrl({ [name]: value }));
   };
 
   return (

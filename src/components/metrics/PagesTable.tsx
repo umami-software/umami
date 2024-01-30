@@ -12,13 +12,13 @@ export interface PagesTableProps extends MetricsTableProps {
 export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProps) {
   const {
     router,
-    makeUrl,
+    renderUrl,
     query: { view = 'url' },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
   const handleSelect = (key: any) => {
-    router.push(makeUrl({ view: key }), { scroll: true });
+    router.push(renderUrl({ view: key }), { scroll: true });
   };
 
   const buttons = [

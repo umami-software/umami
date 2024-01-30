@@ -5,6 +5,7 @@ import WebsitesHeader from './WebsitesHeader';
 
 export default function Websites() {
   const { user } = useLogin();
+
   return (
     <>
       <WebsitesHeader showActions={user.role !== 'view-only'} />

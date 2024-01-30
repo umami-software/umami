@@ -45,7 +45,7 @@ export function MetricsTable({
   const { formatValue } = useFormat();
   const [{ startDate, endDate, modified }] = useDateRange(websiteId);
   const {
-    makeUrl,
+    renderUrl,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
@@ -142,7 +142,7 @@ export function MetricsTable({
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <LinkButton href={makeUrl({ view: type })} variant="quiet">
+          <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
               <Icons.ArrowRight />

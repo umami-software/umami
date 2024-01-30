@@ -18,11 +18,11 @@ const generateId = () => getRandomChars(16);
 export function TeamEditForm({
   teamId,
   data,
-  readOnly,
+  allowEdit,
 }: {
   teamId: string;
   data?: { name: string; accessCode: string };
-  readOnly?: boolean;
+  allowEdit?: boolean;
 }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
@@ -57,22 +57,24 @@ export function TeamEditForm({
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
       <FormRow label={formatMessage(labels.name)}>
-        {!readOnly && (
+        {allowEdit && (
           <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
             <TextField />
           </FormInput>
         )}
-        {readOnly && data.name}
+        {!allowEdit && data.name}
       </FormRow>
-      <FormRow label={formatMessage(labels.accessCode)}>
-        <Flexbox gap={10}>
-          <TextField value={accessCode} readOnly allowCopy />
-          {!readOnly && (
-            <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
-          )}
-        </Flexbox>
-      </FormRow>
-      {!readOnly && (
+      {allowEdit && (
+        <FormRow label={formatMessage(labels.accessCode)}>
+          <Flexbox gap={10}>
+            <TextField value={accessCode} readOnly allowCopy />
+            {allowEdit && (
+              <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
+            )}
+          </Flexbox>
+        </FormRow>
+      )}
+      {allowEdit && (
         <FormButtons>
           <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
         </FormButtons>

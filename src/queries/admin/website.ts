@@ -2,29 +2,37 @@ import { Prisma, Website } from '@prisma/client';
 import cache from 'lib/cache';
 import prisma from 'lib/prisma';
 import { FilterResult, WebsiteSearchFilter } from 'lib/types';
+import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
 
-async function getWebsite(where: Prisma.WebsiteWhereUniqueInput): Promise<Website> {
-  return prisma.client.website.findUnique({
-    where,
+async function findWebsite(criteria: Prisma.WebsiteFindManyArgs): Promise<Website> {
+  return prisma.client.website.findUnique(criteria);
+}
+
+export async function getWebsite(websiteId: string) {
+  return findWebsite({
+    where: {
+      id: websiteId,
+    },
   });
 }
 
-export async function getWebsiteById(id: string) {
-  return getWebsite({ id });
-}
-
-export async function getWebsiteByShareId(shareId: string) {
-  return getWebsite({ shareId });
+export async function getSharedWebsite(shareId: string) {
+  return findWebsite({
+    where: {
+      shareId,
+    },
+  });
 }
 
 export async function getWebsites(
+  criteria: WebsiteFindManyArgs,
   filters: WebsiteSearchFilter,
-  options?: { include?: Prisma.WebsiteInclude },
 ): Promise<FilterResult<Website[]>> {
   const { userId, teamId, query } = filters;
   const mode = prisma.getQueryMode();
 
   const where: Prisma.WebsiteWhereInput = {
+    ...criteria.where,
     AND: [
       {
         OR: [
@@ -47,34 +55,29 @@ export async function getWebsites(
           : [],
       },
     ],
+    deletedAt: null,
   };
 
-  const [pageFilters, getParameters] = prisma.getPageFilters({
-    orderBy: 'name',
-    ...filters,
-  });
-
-  const websites = await prisma.client.website.findMany({
-    where: {
-      ...where,
-      deletedAt: null,
-    },
-    ...pageFilters,
-    ...(options?.include && { include: options.include }),
-  });
-
-  const count = await prisma.client.website.count({ where: { ...where, deletedAt: null } });
-
-  return { data: websites, count, ...getParameters };
+  return prisma.pagedQuery('website', { where }, filters);
 }
 
-export async function getWebsitesByUserId(
+export async function getAllWebsites(userId: string) {
+  return prisma.client.website.findMany({
+    where: {
+      userId,
+    },
+  });
+}
+
+export async function getUserWebsites(
   userId: string,
   filters?: WebsiteSearchFilter,
 ): Promise<FilterResult<Website[]>> {
   return getWebsites(
-    { userId, ...filters },
     {
+      where: {
+        userId,
+      },
       include: {
         user: {
           select: {
@@ -84,19 +87,22 @@ export async function getWebsitesByUserId(
         },
       },
     },
+    {
+      orderBy: 'name',
+      ...filters,
+    },
   );
 }
 
-export async function getWebsitesByTeamId(
+export async function getTeamWebsites(
   teamId: string,
   filters?: WebsiteSearchFilter,
 ): Promise<FilterResult<Website[]>> {
   return getWebsites(
     {
-      teamId,
-      ...filters,
-    },
-    {
+      where: {
+        teamId,
+      },
       include: {
         user: {
           select: {
@@ -106,78 +112,8 @@ export async function getWebsitesByTeamId(
         },
       },
     },
+    filters,
   );
-}
-
-export async function getUserWebsites(
-  userId: string,
-  options?: { includeTeams: boolean },
-): Promise<Website[]> {
-  const { rawQuery } = prisma;
-
-  if (options?.includeTeams) {
-    const websites = await rawQuery(
-      `
-      select
-        website_id as "id",
-        name,
-        domain,
-        share_id as "shareId",
-        reset_at as "resetAt",
-        user_id as "userId",
-        created_at as "createdAt",
-        updated_at as "updatedAt",
-        deleted_at as "deletedAt",
-        null as "teamId",
-        null as "teamName"
-      from website
-      where user_id = {{userId::uuid}}
-        and deleted_at is null
-      union
-      select           
-        w.website_id as "id",
-        w.name,
-        w.domain,
-        w.share_id as "shareId",
-        w.reset_at as "resetAt",
-        w.user_id as "userId",
-        w.created_at as "createdAt",
-        w.updated_at as "updatedAt",
-        w.deleted_at as "deletedAt",
-        t.team_id as "teamId",
-        t.name as "teamName"
-      from website w
-      inner join team_website tw
-        on tw.website_id = w.website_id
-      inner join team t
-        on t.team_id = tw.team_id
-      inner join team_user tu 
-        on tu.team_id = tw.team_id
-      where tu.user_id = {{userId::uuid}}
-        and w.deleted_at is null
-      `,
-      { userId },
-    );
-
-    return websites.reduce((arr, item) => {
-      if (!arr.find(({ id }) => id === item.id)) {
-        return arr.concat(item);
-      }
-      return arr;
-    }, []);
-  }
-
-  return prisma.client.website.findMany({
-    where: {
-      userId,
-      deletedAt: null,
-    },
-    orderBy: [
-      {
-        name: 'asc',
-      },
-    ],
-  });
 }
 
 export async function createWebsite(

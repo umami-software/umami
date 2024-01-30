@@ -4,7 +4,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getReportsByWebsiteId } from 'queries';
+import { getWebsiteReports } from 'queries';
 import { pageInfo } from 'lib/schema';
 
 export interface ReportsRequestQuery extends SearchFilter {
@@ -35,7 +35,7 @@ export default async (
 
     const { page, query, pageSize } = req.query;
 
-    const data = await getReportsByWebsiteId(websiteId, {
+    const data = await getWebsiteReports(websiteId, {
       page,
       pageSize: +pageSize || undefined,
       query,
