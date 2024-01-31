@@ -1,7 +1,8 @@
 'use client';
-import { Button, GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
+import { Button, GridColumn, GridTable, Icon, Text, useBreakpoint } from 'react-basics';
 import Link from 'next/link';
 import { useMessages, useLogin } from 'components/hooks';
+import Icons from 'components/icons';
 import { ROLES } from 'lib/constants';
 
 export function TeamsTable({ data = [] }: { data: any[] }) {
@@ -42,9 +43,9 @@ export function TeamsTable({ data = [] }: { data: any[] }) {
               <Link href={`/teams/${id}`}>
                 <Button>
                   <Icon>
-                    <Icons.External />
+                    <Icons.Change />
                   </Icon>
-                  <Text>{formatMessage(labels.view)}</Text>
+                  <Text>{formatMessage(labels.switch)}</Text>
                 </Button>
               </Link>
             </>

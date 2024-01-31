@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { Button, GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
+import { Button, GridColumn, GridTable, Icon, Text } from 'react-basics';
 import { useMessages } from 'components/hooks';
+import Icons from 'components/icons';
 
 export function TeamWebsitesTable({
   data = [],
@@ -21,7 +22,7 @@ export function TeamWebsitesTable({
             <Link href={`/websites/${websiteId}`}>
               <Button>
                 <Icon>
-                  <Icons.External />
+                  <Icons.Change />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </Button>

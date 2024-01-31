@@ -202,6 +202,7 @@ export const labels = defineMessages({
   },
   select: { id: 'label.select', defaultMessage: 'Select' },
   myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
+  switch: { id: 'label.switch', defaultMessage: 'Switch' },
 });
 
 export const messages = defineMessages({

@@ -50,7 +50,7 @@ export function WebsitesTable({
                   <Link href={renderTeamUrl(`/websites/${id}`)}>
                     <Button>
                       <Icon>
-                        <Icons.External />
+                        <Icons.ArrowRight />
                       </Icon>
                       <Text>{formatMessage(labels.view)}</Text>
                     </Button>

@@ -32,7 +32,7 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         <PageHeader title={team?.name} icon={<Icons.Users />}>
           <LinkButton href={`/teams/${teamId}`} variant="primary">
             <Icon>
-              <Icons.External />
+              <Icons.Change />
             </Icon>
             <Text>{formatMessage(labels.view)}</Text>
           </LinkButton>
