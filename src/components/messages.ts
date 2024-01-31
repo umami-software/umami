@@ -201,6 +201,7 @@ export const labels = defineMessages({
     defaultMessage: '{x} {x, plural, one {record} other {records}}',
   },
   select: { id: 'label.select', defaultMessage: 'Select' },
+  myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
 });
 
 export const messages = defineMessages({

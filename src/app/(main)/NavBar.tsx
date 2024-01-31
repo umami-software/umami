@@ -2,18 +2,20 @@
 import { Icon, Text } from 'react-basics';
 import Link from 'next/link';
 import classNames from 'classnames';
-import Icons from 'components/icons';
+import HamburgerButton from 'components/common/HamburgerButton';
 import ThemeButton from 'components/input/ThemeButton';
 import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
-import { useMessages, useNavigation } from 'components/hooks';
-import HamburgerButton from 'components/common/HamburgerButton';
+import TeamsButton from 'components/input/TeamsButton';
+import Icons from 'components/icons';
+import { useLogin, useMessages, useNavigation } from 'components/hooks';
 import styles from './NavBar.module.css';
 
 export function NavBar() {
+  const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
   const cloudMode = Boolean(process.env.cloudMode);
-  const { pathname, renderTeamUrl } = useNavigation();
+  const { pathname, renderTeamUrl, teamId } = useNavigation();
 
   const links = [
     { label: formatMessage(labels.dashboard), url: renderTeamUrl('/dashboard') },
@@ -79,6 +81,7 @@ export function NavBar() {
         })}
       </div>
       <div className={styles.actions}>
+        {user?.teams?.length && <TeamsButton teamId={teamId} />}
         <ThemeButton />
         <LanguageButton />
         <ProfileButton />

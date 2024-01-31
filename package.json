@@ -92,6 +92,7 @@
     "isbot": "^3.4.5",
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.6",
+    "md5": "^2.3.0",
     "moment-timezone": "^0.5.35",
     "next": "14.0.4",
     "next-basics": "^0.39.0",
