@@ -1,0 +1,10 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--base400);
+  border-radius: var(--border-radius);
+  line-height: 32px;
+  padding: 10px;
+  overflow: hidden;
+}

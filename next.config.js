@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
+const path = require('path');
 const pkg = require('./package.json');
 
-const contentSecurityPolicy = `
-  default-src 'self';
-  img-src *;
-  script-src 'self' 'unsafe-eval';
-  style-src 'self' 'unsafe-inline';
-  connect-src 'self' api.umami.is;
-  frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS};
-`;
+const contentSecurityPolicy = [
+  `default-src 'self'`,
+  `img-src *`,
+  `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
+  `style-src 'self' 'unsafe-inline'`,
+  `connect-src 'self' api.umami.is`,
+  `frame-ancestors 'self' ${process.env.ALLOWED_FRAME_URLS || ''}`,
+];
 
 const headers = [
   {
@@ -17,12 +18,11 @@ const headers = [
     value: 'on',
   },
   {
-    key: 'X-Frame-Options',
-    value: 'SAMEORIGIN',
-  },
-  {
     key: 'Content-Security-Policy',
-    value: contentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
+    value: contentSecurityPolicy
+      .join(';')
+      .replace(/\s{2,}/g, ' ')
+      .trim(),
   },
 ];
 
@@ -58,7 +58,9 @@ if (process.env.TRACKER_SCRIPT_NAME) {
 const redirects = [
   {
     source: '/settings',
-    destination: process.env.CLOUD_MODE ? '/settings/profile' : '/settings/websites',
+    destination: process.env.CLOUD_MODE
+      ? `${process.env.CLOUD_URL}/settings/websites`
+      : '/settings/websites',
     permanent: true,
   },
 ];
@@ -71,13 +73,23 @@ if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN
   });
 }
 
+const basePath = process.env.BASE_PATH;
+
+/** @type {import('next').NextConfig} */
 const config = {
+  reactStrictMode: false,
   env: {
+    basePath: basePath || '',
+    cloudMode: process.env.CLOUD_MODE || '',
+    cloudUrl: process.env.CLOUD_URL || '',
+    configUrl: '/config',
     currentVersion: pkg.version,
-    defaultLocale: process.env.DEFAULT_LOCALE,
-    isProduction: process.env.NODE_ENV === 'production',
+    defaultLocale: process.env.DEFAULT_LOCALE || '',
+    disableLogin: process.env.DISABLE_LOGIN || '',
+    disableUI: process.env.DISABLE_UI || '',
+    hostUrl: process.env.HOST_URL || '',
   },
-  basePath: process.env.BASE_PATH,
+  basePath,
   output: 'standalone',
   eslint: {
     ignoreDuringBuilds: true,
@@ -86,11 +98,25 @@ const config = {
     ignoreBuildErrors: true,
   },
   webpack(config) {
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: /\.{js|jsx|ts|tsx}$/,
-      use: ['@svgr/webpack'],
-    });
+    const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.('.svg'));
+
+    config.module.rules.push(
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
+        issuer: fileLoaderRule.issuer,
+        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
+        use: ['@svgr/webpack'],
+      },
+    );
+
+    fileLoaderRule.exclude = /\.svg$/i;
+
+    config.resolve.alias['public'] = path.resolve('./public');
 
     return config;
   },
