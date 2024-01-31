@@ -1,7 +1,6 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
-import { useApi } from 'components/hooks';
 import { percentFilter } from 'lib/filters';
 import { useDateRange } from 'components/hooks';
 import { useNavigation } from 'components/hooks';
@@ -14,6 +13,7 @@ import { useMessages } from 'components/hooks';
 import { useLocale } from 'components/hooks';
 import useFormat from 'components//hooks/useFormat';
 import styles from './MetricsTable.module.css';
+import useWebsiteMetrics from 'components/hooks/queries/useWebsiteMetrics';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -43,55 +43,36 @@ export function MetricsTable({
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
-  const [{ startDate, endDate, modified }] = useDateRange(websiteId);
+  const [{ startDate, endDate }] = useDateRange(websiteId);
   const {
     renderUrl,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
-  const { get, useQuery } = useApi();
   const { dir } = useLocale();
-  const { data, isLoading, isFetched, error } = useQuery({
-    queryKey: [
-      'websites:metrics',
-      {
-        websiteId,
-        type,
-        modified,
-        url,
-        referrer,
-        os,
-        title,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      },
-    ],
-    queryFn: async () => {
-      const filters = { url, title, referrer, os, browser, device, country, region, city };
 
-      filters[type] = undefined;
-
-      const data = await get(`/websites/${websiteId}/metrics`, {
-        type,
-        startAt: +startDate,
-        endAt: +endDate,
-        limit,
-        ...filters,
-      });
-
-      onDataLoad?.(data);
-
-      return data;
+  const { data, isLoading, isFetched, error } = useWebsiteMetrics(
+    websiteId,
+    {
+      type,
+      startAt: +startDate,
+      endAt: +endDate,
+      url,
+      referrer,
+      os,
+      title,
+      browser,
+      device,
+      country,
+      region,
+      city,
     },
-    retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-  });
+    { retryDelay: delay || DEFAULT_ANIMATION_DURATION },
+  );
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items: any[] = data;
+      let items = data as any[];
 
       if (dataFilter) {
         if (Array.isArray(dataFilter)) {

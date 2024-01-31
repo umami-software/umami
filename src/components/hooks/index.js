@@ -11,6 +11,8 @@ export * from './queries/useUser';
 export * from './queries/useUsers';
 export * from './queries/useWebsite';
 export * from './queries/useWebsites';
+export * from './queries/useWebsiteEvents';
+export * from './queries/useWebsiteMetrics';
 export * from './useCountryNames';
 export * from './useDateRange';
 export * from './useDocumentClick';
