@@ -1,10 +1,5 @@
-.button {
-  margin-right: 10px;
-}
-
 .menu {
   background: var(--base50);
-  right: -10px;
 }
 
 .heading {
@@ -14,4 +9,8 @@
   padding: 8px 16px;
   text-transform: uppercase;
   border-bottom: 1px solid var(--base300);
+}
+
+.selected {
+  font-weight: bold;
 }
