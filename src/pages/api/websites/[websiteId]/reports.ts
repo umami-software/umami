@@ -8,12 +8,12 @@ import { getWebsiteReports } from 'queries';
 import { pageInfo } from 'lib/schema';
 
 export interface ReportsRequestQuery extends SearchFilter {
-  id: string;
+  websiteId: string;
 }
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     ...pageInfo,
   }),
 };
@@ -26,7 +26,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId } = req.query;
+  const { websiteId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

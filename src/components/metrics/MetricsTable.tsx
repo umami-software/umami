@@ -1,19 +1,21 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
-import { percentFilter } from 'lib/filters';
-import { useDateRange } from 'components/hooks';
-import { useNavigation } from 'components/hooks';
 import ErrorMessage from 'components/common/ErrorMessage';
 import LinkButton from 'components/common/LinkButton';
-import ListTable, { ListTableProps } from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { percentFilter } from 'lib/filters';
+import {
+  useDateRange,
+  useNavigation,
+  useWebsiteMetrics,
+  useMessages,
+  useLocale,
+  useFormat,
+} from 'components/hooks';
 import Icons from 'components/icons';
-import { useMessages } from 'components/hooks';
-import { useLocale } from 'components/hooks';
-import useFormat from 'components//hooks/useFormat';
+import ListTable, { ListTableProps } from './ListTable';
 import styles from './MetricsTable.module.css';
-import useWebsiteMetrics from 'components/hooks/queries/useWebsiteMetrics';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -67,7 +69,7 @@ export function MetricsTable({
       region,
       city,
     },
-    { retryDelay: delay || DEFAULT_ANIMATION_DURATION },
+    { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
   );
 
   const filteredData = useMemo(() => {

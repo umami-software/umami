@@ -7,12 +7,12 @@ import { resetWebsite } from 'queries';
 import * as yup from 'yup';
 
 export interface WebsiteResetRequestQuery {
-  id: string;
+  websiteId: string;
 }
 
 const schema = {
   POST: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
   }),
 };
 
@@ -24,7 +24,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId } = req.query;
+  const { websiteId } = req.query;
 
   if (req.method === 'POST') {
     if (!(await canUpdateWebsite(req.auth, websiteId))) {

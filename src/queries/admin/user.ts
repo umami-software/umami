@@ -112,12 +112,11 @@ export async function createUser(data: {
   });
 }
 
-export async function updateUser(
-  data: Prisma.UserUpdateInput,
-  where: Prisma.UserWhereUniqueInput,
-): Promise<User> {
+export async function updateUser(userId: string, data: Prisma.UserUpdateInput): Promise<User> {
   return prisma.client.user.update({
-    where,
+    where: {
+      id: userId,
+    },
     data,
     select: {
       id: true,

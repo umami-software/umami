@@ -8,7 +8,7 @@ import { getValues } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
 
 export interface ValuesRequestQuery {
-  id: string;
+  websiteId: string;
   startAt: number;
   endAt: number;
 }
@@ -16,7 +16,7 @@ export interface ValuesRequestQuery {
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
   }),
@@ -27,7 +27,7 @@ export default async (req: NextApiRequestQueryBody<ValuesRequestQuery>, res: Nex
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId, type } = req.query;
+  const { websiteId, type } = req.query;
   const { startDate, endDate } = await parseDateRangeQuery(req);
 
   if (req.method === 'GET') {

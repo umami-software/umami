@@ -9,13 +9,13 @@ import * as yup from 'yup';
 import { REALTIME_RANGE } from 'lib/constants';
 
 export interface RealtimeRequestQuery {
-  id: string;
+  websiteId: string;
   startAt: number;
 }
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
   }),
 };
@@ -28,7 +28,7 @@ export default async (
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
-    const { id: websiteId, startAt } = req.query;
+    const { websiteId, startAt } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);

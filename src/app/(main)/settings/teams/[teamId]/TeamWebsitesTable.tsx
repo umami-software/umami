@@ -17,7 +17,7 @@ export function TeamWebsitesTable({
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       <GridColumn name="action" label=" " alignment="end">
         {row => {
-          const { id: websiteId } = row;
+          const { websiteId } = row;
           return (
             <Link href={`/websites/${websiteId}`}>
               <Button>

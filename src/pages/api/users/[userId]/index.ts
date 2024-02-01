@@ -1,16 +1,17 @@
+import * as yup from 'yup';
 import { canDeleteUser, canUpdateUser, canViewUser } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, Role, User } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { deleteUser, getUser, getUserByUsername, updateUser } from 'queries';
-import * as yup from 'yup';
 
 export interface UserRequestQuery {
-  id: string;
+  userId: string;
 }
 
 export interface UserRequestBody {
+  userId: string;
   username: string;
   password: string;
   role: Role;
@@ -18,10 +19,10 @@ export interface UserRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    userId: yup.string().uuid().required(),
   }),
   POST: yup.object().shape({
-    id: yup.string().uuid().required(),
+    userId: yup.string().uuid().required(),
     username: yup.string().max(255),
     password: yup.string(),
     role: yup.string().matches(/admin|user|view-only/i),
@@ -36,28 +37,28 @@ export default async (
   await useValidate(schema, req, res);
 
   const {
-    user: { id: userId, isAdmin },
+    user: { isAdmin },
   } = req.auth;
-  const { id } = req.query;
+  const userId: string = req.query.userId;
 
   if (req.method === 'GET') {
-    if (!(await canViewUser(req.auth, id))) {
+    if (!(await canViewUser(req.auth, userId))) {
       return unauthorized(res);
     }
 
-    const user = await getUser(id);
+    const user = await getUser(userId);
 
     return ok(res, user);
   }
 
   if (req.method === 'POST') {
-    if (!(await canUpdateUser(req.auth, id))) {
+    if (!(await canUpdateUser(req.auth, userId))) {
       return unauthorized(res);
     }
 
     const { username, password, role } = req.body;
 
-    const user = await getUser(id);
+    const user = await getUser(userId);
 
     const data: any = {};
 
@@ -83,7 +84,7 @@ export default async (
       }
     }
 
-    const updated = await updateUser(data, { id });
+    const updated = await updateUser(userId, data);
 
     return ok(res, updated);
   }
@@ -93,11 +94,11 @@ export default async (
       return unauthorized(res);
     }
 
-    if (id === userId) {
+    if (userId === req.auth.user.id) {
       return badRequest(res, 'You cannot delete yourself.');
     }
 
-    await deleteUser(id);
+    await deleteUser(userId);
 
     return ok(res);
   }

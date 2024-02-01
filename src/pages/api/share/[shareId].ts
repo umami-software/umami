@@ -7,17 +7,17 @@ import { getSharedWebsite } from 'queries';
 import * as yup from 'yup';
 
 export interface ShareRequestQuery {
-  id: string;
+  shareId: string;
 }
 
 export interface ShareResponse {
-  id: string;
+  shareId: string;
   token: string;
 }
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().required(),
+    shareId: yup.string().required(),
   }),
 };
 
@@ -27,7 +27,7 @@ export default async (
 ) => {
   await useValidate(schema, req, res);
 
-  const { id: shareId } = req.query;
+  const { shareId } = req.query;
 
   if (req.method === 'GET') {
     const website = await getSharedWebsite(shareId);

@@ -7,12 +7,12 @@ import { getWebsiteDateRange } from 'queries';
 import * as yup from 'yup';
 
 export interface WebsiteDateRangeRequestQuery {
-  id: string;
+  websiteId: string;
 }
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
   }),
 };
 
@@ -24,7 +24,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId } = req.query;
+  const { websiteId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

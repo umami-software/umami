@@ -9,7 +9,7 @@ import { parseDateRangeQuery } from 'lib/query';
 import * as yup from 'yup';
 
 export interface WebsiteMetricsRequestQuery {
-  id: string;
+  websiteId: string;
   type: string;
   startAt: number;
   endAt: number;
@@ -30,7 +30,7 @@ export interface WebsiteMetricsRequestQuery {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     type: yup.string().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
@@ -59,7 +59,7 @@ export default async (
   await useValidate(schema, req, res);
 
   const {
-    id: websiteId,
+    websiteId,
     type,
     url,
     referrer,

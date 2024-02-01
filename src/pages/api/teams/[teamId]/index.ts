@@ -8,7 +8,7 @@ import { deleteTeam, getTeam, updateTeam } from 'queries';
 import * as yup from 'yup';
 
 export interface TeamRequestQuery {
-  id: string;
+  teamId: string;
 }
 
 export interface TeamRequestBody {
@@ -18,7 +18,7 @@ export interface TeamRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    teamId: yup.string().uuid().required(),
   }),
   POST: yup.object().shape({
     id: yup.string().uuid().required(),
@@ -26,7 +26,7 @@ const schema = {
     accessCode: yup.string().max(50),
   }),
   DELETE: yup.object().shape({
-    id: yup.string().uuid().required(),
+    teamId: yup.string().uuid().required(),
   }),
 };
 
@@ -37,7 +37,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: teamId } = req.query;
+  const { teamId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewTeam(req.auth, teamId))) {

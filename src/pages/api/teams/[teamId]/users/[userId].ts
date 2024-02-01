@@ -7,7 +7,7 @@ import { deleteTeamUser, getTeamUser, updateTeamUser } from 'queries';
 import * as yup from 'yup';
 
 export interface TeamUserRequestQuery {
-  id: string;
+  teamId: string;
   userId: string;
 }
 
@@ -17,7 +17,7 @@ export interface TeamUserRequestBody {
 
 const schema = {
   DELETE: yup.object().shape({
-    id: yup.string().uuid().required(),
+    teamId: yup.string().uuid().required(),
     userId: yup.string().uuid().required(),
   }),
   POST: yup.object().shape({
@@ -35,7 +35,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: teamId, userId } = req.query;
+  const { teamId, userId } = req.query;
 
   if (req.method === 'POST') {
     if (!(await canUpdateTeam(req.auth, teamId))) {

@@ -50,6 +50,17 @@ export async function createTeamUser(
   });
 }
 
+export async function updateTeamUser(teamUserId: string, data: any): Promise<TeamUser> {
+  return prisma.client.teamUser.update(
+    {
+      where: {
+        id: teamUserId,
+      },
+    },
+    data,
+  );
+}
+
 export async function deleteTeamUser(teamId: string, userId: string): Promise<TeamUser> {
   const { client } = prisma;
 

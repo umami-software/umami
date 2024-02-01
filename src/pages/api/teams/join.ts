@@ -6,6 +6,7 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, notFound, ok } from 'next-basics';
 import { createTeamUser, findTeam, getTeamUser } from 'queries';
 import * as yup from 'yup';
+
 export interface TeamsJoinRequestBody {
   accessCode: string;
 }

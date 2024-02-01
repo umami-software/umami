@@ -84,7 +84,7 @@ export async function getReports(
     ],
   };
 
-  return prisma.pagedQuery('report', { where }, filters);
+  return prisma.pagedQuery('report', { ...criteria, where }, filters);
 }
 
 export async function getUserReports(

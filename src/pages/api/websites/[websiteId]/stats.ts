@@ -8,7 +8,7 @@ import { parseDateRangeQuery } from 'lib/query';
 import { getWebsiteStats } from 'queries';
 
 export interface WebsiteStatsRequestQuery {
-  id: string;
+  websiteId: string;
   startAt: number;
   endAt: number;
   url?: string;
@@ -27,7 +27,7 @@ export interface WebsiteStatsRequestQuery {
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
     url: yup.string(),
@@ -53,7 +53,7 @@ export default async (
   await useValidate(schema, req, res);
 
   const {
-    id: websiteId,
+    websiteId,
     url,
     referrer,
     title,
@@ -65,7 +65,7 @@ export default async (
     country,
     region,
     city,
-  } = req.query;
+  }: any & { websiteId: string } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

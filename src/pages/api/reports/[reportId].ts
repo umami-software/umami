@@ -7,7 +7,7 @@ import { deleteReport, getReport, updateReport } from 'queries';
 import * as yup from 'yup';
 
 export interface ReportRequestQuery {
-  id: string;
+  reportId: string;
 }
 
 export interface ReportRequestBody {
@@ -20,10 +20,10 @@ export interface ReportRequestBody {
 
 const schema: YupRequest = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    reportId: yup.string().uuid().required(),
   }),
   POST: yup.object().shape({
-    id: yup.string().uuid().required(),
+    reportId: yup.string().uuid().required(),
     websiteId: yup.string().uuid().required(),
     type: yup
       .string()
@@ -36,7 +36,7 @@ const schema: YupRequest = {
       .test('len', 'Must not exceed 6000 characters.', val => JSON.stringify(val).length < 6000),
   }),
   DELETE: yup.object().shape({
-    id: yup.string().uuid().required(),
+    reportId: yup.string().uuid().required(),
   }),
 };
 
@@ -48,7 +48,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: reportId } = req.query;
+  const { reportId } = req.query;
   const {
     user: { id: userId },
   } = req.auth;

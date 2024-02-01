@@ -8,7 +8,7 @@ import { createTeamUser, getTeamUser, getTeamUsers } from 'queries';
 import * as yup from 'yup';
 
 export interface TeamUserRequestQuery extends SearchFilter {
-  id: string;
+  teamId: string;
 }
 
 export interface TeamUserRequestBody {
@@ -18,7 +18,7 @@ export interface TeamUserRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    teamId: yup.string().uuid().required(),
     ...pageInfo,
   }),
   POST: yup.object().shape({
@@ -37,7 +37,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: teamId } = req.query;
+  const { teamId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewTeam(req.auth, teamId))) {

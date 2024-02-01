@@ -9,7 +9,7 @@ import { createWebsite, getTeamWebsites } from 'queries';
 import { uuid } from 'lib/crypto';
 
 export interface TeamWebsiteRequestQuery extends SearchFilter {
-  id: string;
+  teamId: string;
 }
 
 export interface TeamWebsiteRequestBody {
@@ -20,7 +20,7 @@ export interface TeamWebsiteRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    teamId: yup.string().uuid().required(),
     ...pageInfo,
   }),
   POST: yup.object().shape({
@@ -37,7 +37,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: teamId } = req.query;
+  const { teamId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewTeam(req.auth, teamId))) {

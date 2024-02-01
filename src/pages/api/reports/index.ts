@@ -1,13 +1,11 @@
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok } from 'next-basics';
 import { createReport, getReports } from 'queries';
 import * as yup from 'yup';
-
-export interface ReportsRequestQuery extends SearchFilter {}
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -60,11 +58,18 @@ export default async (
     const data = await getReports(
       {
         where: {
-          userId: !(websiteId && teamId) ? userId : undefined,
-          websiteId,
+          website: {
+            id: websiteId,
+            userId: !websiteId && !teamId ? userId : undefined,
+            teamId,
+          },
         },
         include: {
-          website: true,
+          website: {
+            select: {
+              domain: true,
+            },
+          },
         },
       },
       filters,

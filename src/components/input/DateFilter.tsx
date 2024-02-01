@@ -11,10 +11,9 @@ export interface DateFilterProps {
   value: string;
   startDate: Date;
   endDate: Date;
-  offset: number;
+  offset?: number;
   className?: string;
   onChange?: (value: string) => void;
-  selectedUnit?: string;
   showAllTime?: boolean;
   alignment?: 'start' | 'center' | 'end';
 }
@@ -23,7 +22,7 @@ export function DateFilter({
   startDate,
   endDate,
   value,
-  offset,
+  offset = 0,
   className,
   onChange,
   showAllTime = false,

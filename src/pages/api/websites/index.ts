@@ -5,7 +5,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
-import userWebsites from 'pages/api/users/[id]/websites';
+import userWebsites from 'pages/api/users/[userId]/websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 
@@ -41,11 +41,11 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (!req.query.id) {
-      req.query.id = userId;
+    if (!req.query.userId) {
+      req.query.userId = userId;
     }
 
-    return userWebsites(req as any, res);
+    return userWebsites(req, res);
   }
 
   if (req.method === 'POST') {

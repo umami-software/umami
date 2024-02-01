@@ -4,7 +4,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
 export function useWebsiteMetrics(
   websiteId: string,
   params?: { [key: string]: any },
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
+  options?: Omit<UseQueryOptions & { onDataLoad?: (data: any) => void }, 'queryKey' | 'queryFn'>,
 ) {
   const { get, useQuery } = useApi();
 
@@ -24,6 +24,8 @@ export function useWebsiteMetrics(
       const data = await get(`/websites/${websiteId}/metrics`, {
         ...filters,
       });
+
+      options?.onDataLoad?.(data);
 
       return data;
     },

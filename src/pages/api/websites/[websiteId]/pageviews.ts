@@ -7,7 +7,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewStats, getSessionStats } from 'queries';
 
 export interface WebsitePageviewRequestQuery {
-  id: string;
+  websiteId: string;
   startAt: number;
   endAt: number;
   unit?: string;
@@ -27,7 +27,7 @@ import { TimezoneTest, UnitTypeTest } from 'lib/yup';
 import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     startAt: yup.number().required(),
     endAt: yup.number().required(),
     unit: UnitTypeTest,
@@ -52,19 +52,8 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const {
-    id: websiteId,
-    timezone,
-    url,
-    referrer,
-    title,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-  } = req.query;
+  const { websiteId, timezone, url, referrer, title, os, browser, device, country, region, city } =
+    req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

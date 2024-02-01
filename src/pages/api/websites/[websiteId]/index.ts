@@ -7,7 +7,7 @@ import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 import { SHARE_ID_REGEX } from 'lib/constants';
 
 export interface WebsiteRequestQuery {
-  id: string;
+  websiteId: string;
 }
 
 export interface WebsiteRequestBody {
@@ -20,10 +20,10 @@ import * as yup from 'yup';
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
   }),
   POST: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     name: yup.string(),
     domain: yup.string(),
     shareId: yup.string().matches(SHARE_ID_REGEX, { excludeEmptyString: true }).nullable(),
@@ -38,7 +38,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId } = req.query;
+  const { websiteId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

@@ -9,7 +9,7 @@ import { getEventMetrics } from 'queries';
 import * as yup from 'yup';
 
 export interface WebsiteEventsRequestQuery {
-  id: string;
+  websiteId: string;
   startAt: string;
   endAt: string;
   unit?: string;
@@ -19,7 +19,7 @@ export interface WebsiteEventsRequestQuery {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
     unit: UnitTypeTest,
@@ -36,7 +36,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { id: websiteId, timezone, url } = req.query;
+  const { websiteId, timezone, url } = req.query;
   const { startDate, endDate, unit } = await parseDateRangeQuery(req);
 
   if (req.method === 'GET') {
