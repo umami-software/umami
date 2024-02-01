@@ -10,7 +10,7 @@ export interface FilterQueryResult<T> {
   setParams: Dispatch<SetStateAction<T | SearchFilter>>;
 }
 
-export function useFilterQuery<T>({
+export function useFilterQuery<T = any>({
   queryKey,
   queryFn,
   ...options
