@@ -16,7 +16,7 @@ export function WebsiteAddForm({
   onSave,
   onClose,
 }: {
-  teamId: string;
+  teamId?: string;
   onSave?: () => void;
   onClose?: () => void;
 }) {
