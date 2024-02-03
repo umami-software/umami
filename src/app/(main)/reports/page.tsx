@@ -1,14 +1,14 @@
 import ReportsHeader from './ReportsHeader';
 import ReportsDataTable from './ReportsDataTable';
 
-export default function () {
+export default function ({ params: { teamId } }: { params: { teamId: string } }) {
   return (
     <>
       <ReportsHeader />
-      <ReportsDataTable />
+      <ReportsDataTable teamId={teamId} />
     </>
   );
 }
 export const metadata = {
-  title: 'Reports | umami',
+  title: 'Reports | Umami',
 };

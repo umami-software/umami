@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import { useMessages, useLogin, useNavigation } from 'components/hooks';
+import { useMessages, useLogin, useTeamContext } from 'components/hooks';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -23,7 +23,7 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const breakpoint = useBreakpoint();
-  const { renderTeamUrl } = useNavigation();
+  const { renderTeamUrl } = useTeamContext();
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -32,12 +32,12 @@ export function WebsitesTable({
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
-            const { id, userId } = row;
+            const { id } = row;
 
             return (
               <>
-                {allowEdit && !teamId && user.id === userId && (
-                  <Link href={`/settings/websites/${id}`}>
+                {allowEdit && (teamId || user.isAdmin) && (
+                  <Link href={renderTeamUrl(`/settings/websites/${id}`)}>
                     <Button>
                       <Icon>
                         <Icons.Edit />
@@ -47,7 +47,7 @@ export function WebsitesTable({
                   </Link>
                 )}
                 {allowView && (
-                  <Link href={renderTeamUrl(`/websites/${id}`)}>
+                  <Link href={renderTeamUrl(renderTeamUrl(`/websites/${id}`))}>
                     <Button>
                       <Icon>
                         <Icons.ArrowRight />

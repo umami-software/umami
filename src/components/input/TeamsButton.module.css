@@ -1,3 +1,7 @@
+.button {
+  font-weight: 700;
+}
+
 .menu {
   background: var(--base50);
 }

@@ -14,7 +14,7 @@ const defaultParameters = {
   parameters: { window: 60, urls: [] },
 };
 
-export default function FunnelReport({ reportId }) {
+export default function FunnelReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Funnel />} />

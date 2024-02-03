@@ -1,3 +1,4 @@
+'use client';
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import { useMessages, useLogin } from 'components/hooks';
 import { ROLES } from 'lib/constants';

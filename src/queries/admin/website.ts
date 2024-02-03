@@ -28,37 +28,23 @@ export async function getWebsites(
   criteria: WebsiteFindManyArgs,
   filters: WebsiteSearchFilter,
 ): Promise<FilterResult<Website[]>> {
-  const { userId, teamId, query } = filters;
+  const { query } = filters;
   const mode = prisma.getQueryMode();
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    AND: [
-      {
-        OR: [
-          {
-            ...(userId && { userId }),
-            ...(teamId && { teamId }),
-          },
-        ],
-      },
-      {
-        OR: query
-          ? [
-              {
-                name: { contains: query, mode },
-              },
-              {
-                domain: { contains: query, mode },
-              },
-            ]
-          : [],
-      },
-    ],
+    name: {
+      contains: query ? query : undefined,
+      mode,
+    },
+    domain: {
+      contains: query ? query : undefined,
+      mode,
+    },
     deletedAt: null,
   };
 
-  return prisma.pagedQuery('website', { where }, filters);
+  return prisma.pagedQuery('website', { ...criteria, where }, filters);
 }
 
 export async function getAllWebsites(userId: string) {

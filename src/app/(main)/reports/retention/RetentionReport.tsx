@@ -19,7 +19,7 @@ const defaultParameters = {
   },
 };
 
-export default function RetentionReport({ reportId }: { reportId: string }) {
+export default function RetentionReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Magnet />} />

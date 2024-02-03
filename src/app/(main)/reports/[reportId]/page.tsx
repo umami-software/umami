@@ -10,5 +10,5 @@ export default function ReportDetailsPage({ params: { reportId } }) {
 }
 
 export const metadata: Metadata = {
-  title: 'Reports | umami',
+  title: 'Reports | Umami',
 };

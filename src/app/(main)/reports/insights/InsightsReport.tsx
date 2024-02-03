@@ -13,7 +13,7 @@ const defaultParameters = {
   parameters: { fields: [], filters: [] },
 };
 
-export default function InsightsReport({ reportId }: { reportId: string }) {
+export default function InsightsReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Lightbulb />} />

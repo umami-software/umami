@@ -25,5 +25,6 @@ export * from './useLocale';
 export * from './useMessages';
 export * from './useNavigation';
 export * from './useSticky';
+export * from './useTeamContext';
 export * from './useTheme';
 export * from './useTimezone';

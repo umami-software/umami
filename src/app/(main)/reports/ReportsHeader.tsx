@@ -1,12 +1,12 @@
 'use client';
 import PageHeader from 'components/layout/PageHeader';
 import { Icon, Icons, Text } from 'react-basics';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useMessages, useTeamContext } from 'components/hooks';
 import LinkButton from 'components/common/LinkButton';
 
 export function ReportsHeader() {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useNavigation();
+  const { renderTeamUrl } = useTeamContext();
 
   return (
     <PageHeader title={formatMessage(labels.reports)}>

@@ -78,6 +78,11 @@ const redirects = [
     destination: '/teams/:id/websites',
     permanent: true,
   },
+  {
+    source: '/teams/:id/settings',
+    destination: cloudMode ? `${cloudUrl}/teams/:id/settings` : '/teams/:id/settings/team',
+    permanent: true,
+  },
 ];
 
 if (cloudMode && cloudUrl && disableLogin) {

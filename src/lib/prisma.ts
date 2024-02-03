@@ -176,12 +176,13 @@ async function rawQuery(sql: string, data: object): Promise<any> {
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) {
-  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await prisma.client[model].findMany({
     ...criteria,
     ...{
-      ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
+      ...(size > 0 && { take: +size, skip: +size * (page - 1) }),
       ...(orderBy && {
         orderBy: [
           {

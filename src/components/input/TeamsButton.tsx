@@ -1,9 +1,9 @@
 import { Key } from 'react';
 import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
+import classNames from 'classnames';
 import Icons from 'components/icons';
 import { useLogin, useMessages, useNavigation } from 'components/hooks';
 import styles from './TeamsButton.module.css';
-import classNames from 'classnames';
 
 export function TeamsButton({ teamId }: { teamId: string }) {
   const { user } = useLogin();

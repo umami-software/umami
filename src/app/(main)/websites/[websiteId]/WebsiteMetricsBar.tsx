@@ -19,7 +19,7 @@ export function WebsiteMetricsBar({
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, modified } = dateRange;
+  const { startDate, endDate } = dateRange;
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const {
     query: { url, referrer, title, os, browser, device, country, region, city },
@@ -28,7 +28,7 @@ export function WebsiteMetricsBar({
   const { data, error, isLoading, isFetched } = useQuery({
     queryKey: [
       'websites:stats',
-      { websiteId, modified, url, referrer, title, os, browser, device, country, region, city },
+      { websiteId, url, referrer, title, os, browser, device, country, region, city },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/stats`, {

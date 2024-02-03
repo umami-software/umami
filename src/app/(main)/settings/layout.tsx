@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useLogin, useMessages } from 'components/hooks';
+import { useLogin, useMessages, useTeamContext } from 'components/hooks';
 import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
 
@@ -9,12 +9,32 @@ export default function SettingsLayout({ children }) {
   const pathname = usePathname();
   const { formatMessage, labels } = useMessages();
   const cloudMode = !!process.env.cloudMode;
+  const { teamId, renderTeamUrl } = useTeamContext();
 
   const items = [
-    { key: 'websites', label: formatMessage(labels.websites), url: '/settings/websites' },
-    { key: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
-    user.isAdmin && { key: 'users', label: formatMessage(labels.users), url: '/settings/users' },
-    { key: 'profile', label: formatMessage(labels.profile), url: '/settings/profile' },
+    {
+      key: 'team',
+      label: formatMessage(labels.team),
+      url: renderTeamUrl('/settings/team'),
+    },
+    teamId && {
+      key: 'members',
+      label: formatMessage(labels.members),
+      url: renderTeamUrl('/settings/members'),
+    },
+    {
+      key: 'websites',
+      label: formatMessage(labels.websites),
+      url: renderTeamUrl('/settings/websites'),
+    },
+    !teamId && { key: 'teams', label: formatMessage(labels.teams), url: '/settings/teams' },
+    !teamId &&
+      user.isAdmin && {
+        key: 'users',
+        label: formatMessage(labels.users),
+        url: renderTeamUrl('/settings/users'),
+      },
+    !teamId && { key: 'profile', label: formatMessage(labels.profile), url: '/settings/profile' },
   ].filter(n => n);
 
   const getKey = () => items.find(({ url }) => pathname === url)?.key;

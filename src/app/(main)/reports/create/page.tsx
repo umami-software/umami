@@ -6,5 +6,5 @@ export default function ReportsCreatePage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Create Report | umami',
+  title: 'Create Report | Umami',
 };

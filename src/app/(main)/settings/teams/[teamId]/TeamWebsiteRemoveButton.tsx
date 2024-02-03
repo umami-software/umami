@@ -1,3 +1,4 @@
+'use client';
 import { useApi, useMessages } from 'components/hooks';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
 

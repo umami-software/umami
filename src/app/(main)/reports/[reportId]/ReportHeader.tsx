@@ -1,7 +1,6 @@
 import { useContext } from 'react';
-import { useRouter } from 'next/navigation';
 import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
-import { useMessages, useApi } from 'components/hooks';
+import { useMessages, useApi, useNavigation, useTeamContext } from 'components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from 'lib/constants';
@@ -10,8 +9,10 @@ export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
   const { showToast } = useToasts();
+  const { router } = useNavigation();
+  const { renderTeamUrl } = useTeamContext();
+
   const { post, useMutation } = useApi();
-  const router = useRouter();
   const { mutate: create, isPending: isCreating } = useMutation({
     mutationFn: (data: any) => post(`/reports`, data),
   });
@@ -28,7 +29,7 @@ export function ReportHeader({ icon }) {
       create(report, {
         onSuccess: async ({ id }) => {
           showToast({ message: formatMessage(messages.saved), variant: 'success' });
-          router.push(`/reports/${id}`);
+          router.push(renderTeamUrl(`/reports/${id}`));
         },
       });
     } else {

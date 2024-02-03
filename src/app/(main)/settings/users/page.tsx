@@ -11,5 +11,5 @@ export default function () {
   );
 }
 export const metadata: Metadata = {
-  title: 'Users | umami',
+  title: 'Users | Umami',
 };

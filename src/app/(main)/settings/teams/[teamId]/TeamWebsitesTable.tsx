@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { Button, GridColumn, GridTable, Icon, Text } from 'react-basics';
 import { useMessages } from 'components/hooks';

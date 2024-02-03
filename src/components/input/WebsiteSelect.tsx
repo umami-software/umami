@@ -1,30 +1,27 @@
 import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import styles from './WebsiteSelect.module.css';
+import { useWebsite, useWebsites, useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
+import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({
   websiteId,
+  teamId,
+  userId,
   onSelect,
 }: {
   websiteId?: string;
+  teamId?: string;
+  userId?: string;
   onSelect?: (key: any) => void;
 }) {
+  const { formatMessage, labels, messages } = useMessages();
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<Key>(websiteId);
-  const { formatMessage, labels, messages } = useMessages();
-  const { get, useQuery } = useApi();
-  const { data: websites, isLoading } = useQuery({
-    queryKey: ['websites:me', { query }],
-    queryFn: () => get('/me/websites', { query, pageSize: 5 }),
-  });
-  const { data: website } = useQuery({
-    queryKey: ['websites', { selectedId }],
-    queryFn: () => get(`/websites/${selectedId}`),
-    enabled: !!selectedId,
-  });
+
+  const { data: website } = useWebsite(selectedId as string);
+
+  const queryResult = useWebsites({ teamId, userId }, { query, pageSize: 5 });
 
   const renderValue = () => {
     return website?.name;
@@ -46,7 +43,7 @@ export function WebsiteSelect({
   return (
     <Dropdown
       menuProps={{ className: styles.dropdown }}
-      items={websites?.data}
+      items={queryResult?.result?.data as any[]}
       value={selectedId as string}
       renderValue={renderValue}
       renderEmpty={renderEmpty}
@@ -55,7 +52,7 @@ export function WebsiteSelect({
       placeholder={formatMessage(labels.selectWebsite)}
       allowSearch={true}
       onSearch={handleSearch}
-      isLoading={isLoading}
+      isLoading={queryResult.query.isLoading}
     >
       {({ id, name }) => <Item key={id}>{name}</Item>}
     </Dropdown>

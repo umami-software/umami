@@ -1,10 +1,3 @@
-import { Metadata } from 'next';
-import ReportTemplates from 'app/(main)/reports/create/ReportTemplates';
+import Page from 'app/(main)/reports/create/page';
 
-export default function () {
-  return <ReportTemplates />;
-}
-
-export const metadata: Metadata = {
-  title: 'Create Report | umami',
-};
+export default Page;

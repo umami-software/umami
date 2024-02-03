@@ -6,7 +6,7 @@ import Funnel from 'assets/funnel.svg';
 import Lightbulb from 'assets/lightbulb.svg';
 import Magnet from 'assets/magnet.svg';
 import styles from './ReportTemplates.module.css';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useMessages, useTeamContext } from 'components/hooks';
 
 function ReportItem({ title, description, url, icon }) {
   const { formatMessage, labels } = useMessages();
@@ -34,7 +34,7 @@ function ReportItem({ title, description, url, icon }) {
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useNavigation();
+  const { renderTeamUrl } = useTeamContext();
 
   const reports = [
     {

@@ -46,11 +46,24 @@ export default async (
 
     const { query, page, pageSize } = req.query;
 
-    const users = await getTeamUsers(teamId, {
-      query,
-      page,
-      pageSize: +pageSize || undefined,
-    });
+    const users = await getTeamUsers(
+      {
+        where: { teamId },
+        include: {
+          user: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      },
+      {
+        query,
+        page,
+        pageSize,
+      },
+    );
 
     return ok(res, users);
   }

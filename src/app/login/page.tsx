@@ -21,5 +21,5 @@ export default async function LoginPage() {
 }
 
 export const metadata: Metadata = {
-  title: 'Login | umami',
+  title: 'Login | Umami',
 };

@@ -5,7 +5,7 @@ import { getDateArray } from 'lib/date';
 
 export function WebsiteChart({ websiteId }: { websiteId: string }) {
   const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit, modified } = dateRange;
+  const { startDate, endDate, unit } = dateRange;
   const [timezone] = useTimezone();
   const {
     query: { url, referrer, os, browser, device, country, region, city, title },
@@ -15,7 +15,7 @@ export function WebsiteChart({ websiteId }: { websiteId: string }) {
   const { data, isLoading } = useQuery({
     queryKey: [
       'websites:pageviews',
-      { websiteId, modified, url, referrer, os, browser, device, country, region, city, title },
+      { websiteId, url, referrer, os, browser, device, country, region, city, title },
     ],
     queryFn: () =>
       get(`/websites/${websiteId}/pageviews`, {

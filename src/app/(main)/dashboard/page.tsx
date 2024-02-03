@@ -6,5 +6,5 @@ export default function () {
 }
 
 export const metadata: Metadata = {
-  title: 'Dashboard | umami',
+  title: 'Dashboard | Umami',
 };

@@ -1,3 +1,4 @@
+'use client';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import TeamDeleteForm from '../TeamDeleteForm';

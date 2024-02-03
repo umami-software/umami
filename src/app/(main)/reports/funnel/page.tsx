@@ -2,9 +2,9 @@ import FunnelReport from './FunnelReport';
 import { Metadata } from 'next';
 
 export default function FunnelReportPage() {
-  return <FunnelReport reportId={null} />;
+  return <FunnelReport />;
 }
 
 export const metadata: Metadata = {
-  title: 'Funnel Report | umami',
+  title: 'Funnel Report | Umami',
 };
