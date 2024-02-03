@@ -1,3 +1,4 @@
+'use client';
 import useStore, { setUser } from 'store/app';
 import useApi from './useApi';
 import { UseQueryResult } from '@tanstack/react-query';

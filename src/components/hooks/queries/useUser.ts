@@ -1,3 +1,4 @@
+'use client';
 import useApi from './useApi';
 
 export function useUser(userId: string, options?: { [key: string]: any }) {

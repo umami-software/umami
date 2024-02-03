@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 import { httpGet, setItem } from 'next-basics';
 import { LOCALE_CONFIG } from 'lib/constants';

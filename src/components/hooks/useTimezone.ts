@@ -1,3 +1,4 @@
+'use client';
 import { useState, useCallback } from 'react';
 import { getTimezone } from 'lib/date';
 import { getItem, setItem } from 'next-basics';

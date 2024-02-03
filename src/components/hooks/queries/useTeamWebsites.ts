@@ -1,3 +1,4 @@
+'use client';
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
 

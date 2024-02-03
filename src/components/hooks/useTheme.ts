@@ -1,3 +1,4 @@
+'use client';
 import { useEffect } from 'react';
 import useStore, { setTheme } from 'store/app';
 import { getItem, setItem } from 'next-basics';

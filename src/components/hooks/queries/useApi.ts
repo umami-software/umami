@@ -1,3 +1,4 @@
+'use client';
 import * as reactQuery from '@tanstack/react-query';
 import { useApi as nextUseApi } from 'next-basics';
 import { getClientAuthToken } from 'lib/client';

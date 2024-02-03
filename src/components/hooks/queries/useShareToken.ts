@@ -1,3 +1,4 @@
+'use client';
 import useStore, { setShareToken } from 'store/app';
 import useApi from './useApi';
 

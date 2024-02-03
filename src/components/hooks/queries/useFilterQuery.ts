@@ -1,3 +1,4 @@
+'use client';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState, Dispatch, SetStateAction } from 'react';
 import { useApi } from './useApi';
