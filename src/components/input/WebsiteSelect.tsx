@@ -1,3 +1,4 @@
+'use client';
 import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
 import { useWebsite, useWebsites, useMessages } from 'components/hooks';
