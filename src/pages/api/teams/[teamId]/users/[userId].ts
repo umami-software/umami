@@ -37,6 +37,16 @@ export default async (
 
   const { teamId, userId } = req.query;
 
+  if (req.method === 'GET') {
+    if (!(await canUpdateTeam(req.auth, teamId))) {
+      return unauthorized(res, 'You must be the owner of this team.');
+    }
+
+    const teamUser = await getTeamUser(teamId, userId);
+
+    return ok(res, teamUser);
+  }
+
   if (req.method === 'POST') {
     if (!(await canUpdateTeam(req.auth, teamId))) {
       return unauthorized(res, 'You must be the owner of this team.');

@@ -166,12 +166,12 @@ export async function canViewTeam({ user }: Auth, teamId: string) {
 }
 
 export async function canUpdateTeam({ user, grant }: Auth, teamId: string) {
-  if (cloudMode) {
-    return !!grant?.find(a => a === PERMISSIONS.teamUpdate);
-  }
-
   if (user.isAdmin) {
     return true;
+  }
+
+  if (cloudMode) {
+    return !!grant?.find(a => a === PERMISSIONS.teamUpdate);
   }
 
   const teamUser = await getTeamUser(teamId, user.id);
