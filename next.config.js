@@ -75,7 +75,7 @@ const redirects = [
   },
   {
     source: '/teams/:id',
-    destination: '/teams/:id/websites',
+    destination: '/teams/:id/dashboard',
     permanent: true,
   },
   {

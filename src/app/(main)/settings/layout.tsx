@@ -12,7 +12,7 @@ export default function SettingsLayout({ children }) {
   const { teamId, renderTeamUrl } = useTeamContext();
 
   const items = [
-    {
+    teamId && {
       key: 'team',
       label: formatMessage(labels.team),
       url: renderTeamUrl('/settings/team'),

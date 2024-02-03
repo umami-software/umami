@@ -7,39 +7,30 @@ import WebsiteChartList from '../websites/[websiteId]/WebsiteChartList';
 import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useApi } from 'components/hooks';
+import { useMessages, useLocale, useTeamContext, useWebsites } from 'components/hooks';
 import useDashboard from 'store/dashboard';
-import { useMessages, useLocale, useLogin, useFilterQuery } from 'components/hooks';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
-  const { user } = useLogin();
+  const { teamId } = useTeamContext();
   const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
-  const { get } = useApi();
   const pageSize = 10;
 
-  const { query, params, setParams, result } = useFilterQuery({
-    queryKey: ['dashboard:websites'],
-    queryFn: (params: any) => {
-      return get(`/users/${user.id}/websites`, { ...params, includeTeams: true, pageSize });
-    },
-  });
+  const { result, query, params, setParams } = useWebsites({}, { pageSize });
+  const { page } = params;
+  const hasData = !!result?.data;
 
   const handlePageChange = (page: number) => {
     setParams({ ...params, page });
   };
-
-  const { data, count } = result || {};
-  const hasData = !!(data as any)?.length;
-  const { page } = params;
 
   if (query.isLoading) {
     return <Loading />;
   }
 
   return (
-    <>
+    <section style={{ marginBottom: 60 }}>
       <PageHeader title={formatMessage(labels.dashboard)}>
         {!editing && hasData && <DashboardSettingsButton />}
       </PageHeader>
@@ -57,21 +48,25 @@ export function Dashboard() {
       )}
       {hasData && (
         <>
-          {editing && <DashboardEdit />}
+          {editing && <DashboardEdit teamId={teamId} />}
           {!editing && (
             <>
-              <WebsiteChartList websites={data as any} showCharts={showCharts} limit={pageSize} />
+              <WebsiteChartList
+                websites={result?.data as any}
+                showCharts={showCharts}
+                limit={pageSize}
+              />
               <Pager
                 page={page}
                 pageSize={pageSize}
-                count={count}
+                count={result?.count}
                 onPageChange={handlePageChange}
               />
             </>
           )}
         </>
       )}
-    </>
+    </section>
   );
 }
 
