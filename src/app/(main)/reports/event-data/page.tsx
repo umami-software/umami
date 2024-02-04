@@ -1,5 +1,5 @@
-import EventDataReport from './EventDataReport';
 import { Metadata } from 'next';
+import EventDataReport from './EventDataReport';
 
 export default function FunnelReportPage() {
   return <EventDataReport />;
