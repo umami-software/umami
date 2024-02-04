@@ -109,7 +109,7 @@ export async function createWebsite(
     .create({
       data,
     })
-    .then(async data => {
+    .then(async (data: { id: any }) => {
       if (cache.enabled) {
         await cache.storeWebsite(data);
       }

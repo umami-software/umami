@@ -1,7 +1,8 @@
 import { ok } from 'next-basics';
 import { CURRENT_VERSION, TELEMETRY_PIXEL } from 'lib/constants';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (process.env.NODE_ENV === 'production') {
     res.setHeader('content-type', 'text/javascript');
 

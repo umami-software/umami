@@ -1,4 +1,4 @@
-import { canCreateWebsite } from 'lib/auth';
+import { canCreateTeamWebsite, canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
@@ -15,6 +15,7 @@ export interface WebsitesRequestBody {
   name: string;
   domain: string;
   shareId: string;
+  teamId: string;
 }
 
 const schema = {
@@ -25,6 +26,7 @@ const schema = {
     name: yup.string().max(100).required(),
     domain: yup.string().max(500).required(),
     shareId: yup.string().max(50).nullable(),
+    teamId: yup.string().nullable(),
   }),
 };
 
@@ -49,9 +51,12 @@ export default async (
   }
 
   if (req.method === 'POST') {
-    const { name, domain, shareId } = req.body;
+    const { name, domain, shareId, teamId } = req.body;
 
-    if (!(await canCreateWebsite(req.auth))) {
+    if (
+      (teamId && !(await canCreateTeamWebsite(req.auth, teamId))) ||
+      !(await canCreateWebsite(req.auth))
+    ) {
       return unauthorized(res);
     }
 
@@ -60,9 +65,12 @@ export default async (
       name,
       domain,
       shareId,
+      teamId,
     };
 
-    data.userId = userId;
+    if (!teamId) {
+      data.userId = userId;
+    }
 
     const website = await createWebsite(data);
 

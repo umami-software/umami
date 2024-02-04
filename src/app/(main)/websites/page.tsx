@@ -1,12 +1,12 @@
 import WebsitesHeader from 'app/(main)/settings/websites/WebsitesHeader';
-import WebsitesBrowse from './WebsitesBrowse';
+import Websites from './Websites';
 import { Metadata } from 'next';
 
 export default function WebsitesPage({ params: { teamId, userId } }) {
   return (
     <>
-      <WebsitesHeader teamId={teamId} showActions={false} />
-      <WebsitesBrowse teamId={teamId} userId={userId} />
+      <WebsitesHeader teamId={teamId} />
+      <Websites teamId={teamId} userId={userId} />
     </>
   );
 }

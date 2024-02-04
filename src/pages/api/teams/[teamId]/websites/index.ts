@@ -1,12 +1,11 @@
 import * as yup from 'yup';
-import { canCreateTeamWebsite, canViewTeam } from 'lib/auth';
+import { canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { createWebsite, getTeamWebsites } from 'queries';
-import { uuid } from 'lib/crypto';
+import { ok, unauthorized } from 'next-basics';
+import { getTeamWebsites } from 'queries';
 
 export interface TeamWebsiteRequestQuery extends SearchFilter {
   teamId: string;
@@ -54,18 +53,4 @@ export default async (
 
     return ok(res, websites);
   }
-
-  if (req.method === 'POST') {
-    if (!(await canCreateTeamWebsite(req.auth, teamId))) {
-      return unauthorized(res);
-    }
-
-    const { name, domain, shareId } = req.body;
-
-    const website = await createWebsite({ id: uuid(), name, domain, shareId });
-
-    return ok(res, website);
-  }
-
-  return methodNotAllowed(res);
 };
