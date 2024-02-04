@@ -52,29 +52,11 @@ export async function getUsers(
   criteria: UserFindManyArgs,
   filters?: UserSearchFilter,
 ): Promise<FilterResult<User[]>> {
-  const { teamId, query } = filters;
-  const mode = prisma.getQueryMode();
+  const { query } = filters;
 
   const where: Prisma.UserWhereInput = {
-    ...(teamId && {
-      teamUser: {
-        some: {
-          teamId,
-        },
-      },
-    }),
-    ...(query && {
-      AND: {
-        OR: [
-          {
-            username: {
-              contains: query,
-              mode,
-            },
-          },
-        ],
-      },
-    }),
+    ...criteria.where,
+    ...prisma.getSearchParameters(query, [{ username: 'contains' }]),
     deletedAt: null,
   };
 

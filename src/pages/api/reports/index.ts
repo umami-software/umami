@@ -3,9 +3,10 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
-import { methodNotAllowed, ok } from 'next-basics';
+import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createReport, getReports } from 'queries';
 import * as yup from 'yup';
+import { canViewTeam, canViewWebsite } from 'lib/auth';
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -51,16 +52,23 @@ export default async (
     const { page, query, pageSize, websiteId, teamId } = req.query;
     const filters = {
       page,
-      pageSize: +pageSize || undefined,
+      pageSize,
       query,
     };
+
+    if (
+      (websiteId && !(await canViewWebsite(req.auth, websiteId))) ||
+      (teamId && !(await canViewTeam(req.auth, teamId)))
+    ) {
+      return unauthorized(res);
+    }
 
     const data = await getReports(
       {
         where: {
+          userId: !teamId && !websiteId ? userId : undefined,
+          websiteId,
           website: {
-            id: websiteId,
-            userId: !websiteId && !teamId ? userId : undefined,
             teamId,
           },
         },

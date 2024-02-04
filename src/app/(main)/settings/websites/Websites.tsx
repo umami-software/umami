@@ -8,7 +8,7 @@ export default function Websites({ teamId }: { teamId: string }) {
 
   return (
     <>
-      <WebsitesHeader showActions={user.role !== 'view-only'} />
+      <WebsitesHeader teamId={teamId} showActions={user.role !== 'view-only'} />
       <WebsitesDataTable teamId={teamId} userId={user.id} allowEdit={true} />
     </>
   );

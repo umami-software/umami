@@ -6,8 +6,8 @@ import { useMessages } from 'components/hooks';
 import { useLogin } from 'components/hooks';
 import { useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
-import styles from './ProfileButton.module.css';
 import Avatar from 'components/common/Avatar';
+import styles from './ProfileButton.module.css';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();

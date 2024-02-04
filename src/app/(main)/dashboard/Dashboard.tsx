@@ -12,14 +12,14 @@ import useDashboard from 'store/dashboard';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
-  const { teamId } = useTeamContext();
+  const { teamId, renderTeamUrl } = useTeamContext();
   const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
   const pageSize = 10;
 
-  const { result, query, params, setParams } = useWebsites({}, { pageSize });
+  const { result, query, params, setParams } = useWebsites({ teamId }, { pageSize });
   const { page } = params;
-  const hasData = !!result?.data;
+  const hasData = !!result?.data?.length;
 
   const handlePageChange = (page: number) => {
     setParams({ ...params, page });
@@ -36,7 +36,7 @@ export function Dashboard() {
       </PageHeader>
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
-          <Link href="/settings/websites">
+          <Link href={renderTeamUrl('/settings/websites')}>
             <Button>
               <Icon rotate={dir === 'rtl' ? 180 : 0}>
                 <Icons.ArrowRight />

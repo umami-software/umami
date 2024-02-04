@@ -20,68 +20,30 @@ export async function getReports(
   criteria: ReportFindManyArgs,
   filters: ReportSearchFilter = {},
 ): Promise<FilterResult<Report[]>> {
-  const mode = prisma.getQueryMode();
-  const { query, userId, websiteId } = filters;
+  const { query } = filters;
 
   const where: Prisma.ReportWhereInput = {
-    userId,
-    websiteId,
     ...criteria.where,
-    AND: [
+    ...prisma.getSearchParameters(query, [
+      { name: 'contains' },
+      { description: 'contains' },
+      { type: 'contains' },
       {
-        OR: [
-          {
-            userId,
-          },
-        ],
+        user: {
+          username: 'contains',
+        },
       },
       {
-        OR: [
-          {
-            name: {
-              contains: query,
-              mode,
-            },
-          },
-          {
-            description: {
-              contains: query,
-              mode,
-            },
-          },
-          {
-            type: {
-              contains: query,
-              mode,
-            },
-          },
-          {
-            user: {
-              username: {
-                contains: query,
-                mode,
-              },
-            },
-          },
-          {
-            website: {
-              name: {
-                contains: query,
-                mode,
-              },
-            },
-          },
-          {
-            website: {
-              domain: {
-                contains: query,
-                mode,
-              },
-            },
-          },
-        ],
+        website: {
+          name: 'contains',
+        },
       },
-    ],
+      {
+        website: {
+          domain: 'contains',
+        },
+      },
+    ]),
   };
 
   return prisma.pagedQuery('report', { ...criteria, where }, filters);

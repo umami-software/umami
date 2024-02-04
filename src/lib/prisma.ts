@@ -24,7 +24,7 @@ const POSTGRESQL_DATE_FORMATS = {
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field} + interval '${interval}'`;
@@ -36,7 +36,7 @@ function getAddIntervalQuery(field: string, interval: string): string {
 }
 
 function getDayDiffQuery(field1: string, field2: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field1}::date - ${field2}::date`;
@@ -48,7 +48,7 @@ function getDayDiffQuery(field1: string, field2: string): string {
 }
 
 function getCastColumnQuery(field: string, type: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field}::${type}`;
@@ -92,7 +92,7 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function mapFilter(column, operator, name, type = 'varchar') {
+function mapFilter(column: string, operator: string, name: string, type = 'varchar') {
   switch (operator) {
     case OPERATORS.equals:
       return `${column} = {{${name}::${type}}}`;
@@ -208,16 +208,44 @@ function getQueryMode(): Prisma.QueryMode {
   return 'default';
 }
 
+function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
+  if (!query) return;
+
+  const mode = getQueryMode();
+  const parseFilter = (filter: { [key: string]: any }) => {
+    const [[key, value]] = Object.entries(filter);
+
+    return {
+      [key]:
+        typeof value === 'string'
+          ? {
+              [value]: query,
+              mode,
+            }
+          : parseFilter(value),
+    };
+  };
+
+  const params = filters.map(filter => parseFilter(filter));
+
+  return {
+    AND: {
+      OR: params,
+    },
+  };
+}
+
 export default {
   ...prisma,
   getAddIntervalQuery,
-  getDayDiffQuery,
   getCastColumnQuery,
+  getDayDiffQuery,
   getDateQuery,
-  getTimestampDiffQuery,
   getFilterQuery,
-  parseFilters,
+  getSearchParameters,
+  getTimestampDiffQuery,
   getQueryMode,
-  rawQuery,
   pagedQuery,
+  parseFilters,
+  rawQuery,
 };

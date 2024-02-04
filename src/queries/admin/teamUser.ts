@@ -18,18 +18,10 @@ export async function getTeamUsers(
   filters?: TeamUserSearchFilter,
 ): Promise<FilterResult<TeamUser[]>> {
   const { query } = filters;
-  const mode = prisma.getQueryMode();
 
   const where: Prisma.TeamUserWhereInput = {
     ...criteria.where,
-    user: {
-      username: query
-        ? {
-            contains: query,
-            mode,
-          }
-        : undefined,
-    },
+    ...prisma.getSearchParameters(query, [{ user: { username: 'contains' } }]),
   };
 
   return prisma.pagedQuery(

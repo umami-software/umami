@@ -24,41 +24,12 @@ export async function getTeams(
   criteria: TeamFindManyArgs,
   filters: TeamSearchFilter = {},
 ): Promise<FilterResult<Team[]>> {
-  const mode = prisma.getQueryMode();
-  const { userId, query } = filters;
+  const { getSearchParameters } = prisma;
+  const { query } = filters;
 
   const where: Prisma.TeamWhereInput = {
     ...criteria.where,
-    ...(userId && {
-      teamUser: {
-        some: { userId },
-      },
-    }),
-    ...(query && {
-      AND: {
-        OR: [
-          {
-            name: {
-              startsWith: query,
-              mode,
-            },
-          },
-          {
-            teamUser: {
-              some: {
-                role: ROLES.teamOwner,
-                user: {
-                  username: {
-                    startsWith: query,
-                    mode,
-                  },
-                },
-              },
-            },
-          },
-        ],
-      },
-    }),
+    ...getSearchParameters(query, [{ name: 'contains' }]),
   };
 
   return prisma.pagedQuery<TeamFindManyArgs>(

@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 export default function WebsitesPage({ params: { teamId, userId } }) {
   return (
     <>
-      <WebsitesHeader showActions={false} />
+      <WebsitesHeader teamId={teamId} showActions={false} />
       <WebsitesBrowse teamId={teamId} userId={userId} />
     </>
   );
