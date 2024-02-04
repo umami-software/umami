@@ -1,3 +1,4 @@
+'use client';
 import { GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import LinkButton from 'components/common/LinkButton';
 import { useMessages, useLogin, useTeamContext } from 'components/hooks';

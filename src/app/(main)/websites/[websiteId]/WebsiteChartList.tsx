@@ -1,3 +1,4 @@
+'use client';
 import { Button, Text, Icon, Icons } from 'react-basics';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';

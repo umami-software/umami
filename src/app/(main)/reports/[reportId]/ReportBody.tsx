@@ -1,3 +1,4 @@
+'use client';
 import styles from './ReportBody.module.css';
 import { useContext } from 'react';
 import { ReportContext } from './Report';

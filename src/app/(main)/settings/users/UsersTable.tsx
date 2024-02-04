@@ -1,3 +1,4 @@
+'use client';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import Link from 'next/link';

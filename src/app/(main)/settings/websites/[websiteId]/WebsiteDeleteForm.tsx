@@ -1,3 +1,4 @@
+'use client';
 import { useApi, useMessages } from 'components/hooks';
 import TypeConfirmationForm from 'components/common/TypeConfirmationForm';
 

@@ -1,3 +1,4 @@
+'use client';
 import { useApi, useMessages } from 'components/hooks';
 import ConfirmationForm from 'components/common/ConfirmationForm';
 import { touch } from 'store/cache';

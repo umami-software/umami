@@ -1,3 +1,4 @@
+'use client';
 import { Website } from '@prisma/client';
 import { useRef } from 'react';
 import {

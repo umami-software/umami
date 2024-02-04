@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Grid, GridRow } from 'components/layout/Grid';
 import PagesTable from 'components/metrics/PagesTable';

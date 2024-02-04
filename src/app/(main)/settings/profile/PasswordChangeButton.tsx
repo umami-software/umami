@@ -1,3 +1,4 @@
+'use client';
 import { Button, Icon, Text, useToasts, ModalTrigger, Modal } from 'react-basics';
 import PasswordEditForm from 'app/(main)/settings/profile/PasswordEditForm';
 import Icons from 'components/icons';

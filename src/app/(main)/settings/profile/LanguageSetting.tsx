@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Button, Dropdown, Item, Flexbox } from 'react-basics';
 import { useLocale, useMessages } from 'components/hooks';

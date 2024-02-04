@@ -1,6 +1,7 @@
+'use client';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
-import PopupForm from '../../reports/[reportId]/PopupForm';
-import FilterSelectForm from '../../reports/[reportId]/FilterSelectForm';
+import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
+import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
 import { useMessages, useNavigation } from 'components/hooks';
 
 export function WebsiteFilterButton({

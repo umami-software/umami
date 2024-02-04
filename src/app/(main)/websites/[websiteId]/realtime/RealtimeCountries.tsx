@@ -1,3 +1,4 @@
+'use client';
 import { useCallback } from 'react';
 import ListTable from 'components/metrics/ListTable';
 import { useLocale } from 'components/hooks';

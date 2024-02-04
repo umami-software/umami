@@ -1,3 +1,4 @@
+'use client';
 import { useMemo, useState } from 'react';
 import { StatusLight, Icon, Text, SearchField } from 'react-basics';
 import { FixedSizeList } from 'react-window';

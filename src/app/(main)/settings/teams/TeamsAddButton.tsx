@@ -1,3 +1,4 @@
+'use client';
 import { Button, Icon, Modal, ModalTrigger, Text } from 'react-basics';
 import Icons from 'components/icons';
 import { useMessages } from 'components/hooks';

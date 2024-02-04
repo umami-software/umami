@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { useMessages } from 'components/hooks';
 import { Button, Form, FormRow, TextField, Flexbox } from 'react-basics';

@@ -1,3 +1,4 @@
+'use client';
 import { ReactNode } from 'react';
 import { Icon, TooltipPopup } from 'react-basics';
 import Icons from 'components/icons';

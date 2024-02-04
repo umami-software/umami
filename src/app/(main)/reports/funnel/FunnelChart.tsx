@@ -1,3 +1,4 @@
+'use client';
 import { JSX, useCallback, useContext, useMemo } from 'react';
 import { Loading, StatusLight } from 'react-basics';
 import { useMessages, useTheme } from 'components/hooks';

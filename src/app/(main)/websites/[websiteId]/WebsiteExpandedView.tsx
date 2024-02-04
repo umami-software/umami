@@ -1,3 +1,4 @@
+'use client';
 import { Icons, Icon, Text, Dropdown, Item } from 'react-basics';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import CountriesTable from 'components/metrics/CountriesTable';

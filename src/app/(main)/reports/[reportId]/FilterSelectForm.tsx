@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Loading } from 'react-basics';
 import { subDays } from 'date-fns';

@@ -1,3 +1,4 @@
+'use client';
 import { useContext } from 'react';
 import { FormRow } from 'react-basics';
 import { parseDateRange } from 'lib/date';

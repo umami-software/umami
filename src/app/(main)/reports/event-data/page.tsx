@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 import EventDataReport from './EventDataReport';
 
-export default function FunnelReportPage() {
+export default function EventDataReportPage() {
   return <EventDataReport />;
 }
 
 export const metadata: Metadata = {
-  title: 'Funnel Report | Umami',
+  title: 'Event Data Report | Umami',
 };

@@ -1,3 +1,4 @@
+'use client';
 import { useState } from 'react';
 import { Dropdown, Item, Button, Flexbox } from 'react-basics';
 import { listTimeZones } from 'timezone-support';

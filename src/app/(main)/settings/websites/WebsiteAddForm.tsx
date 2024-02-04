@@ -1,3 +1,4 @@
+'use client';
 import {
   Form,
   FormRow,

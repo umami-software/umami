@@ -1,3 +1,4 @@
+'use client';
 import { useApi, useDateRange } from 'components/hooks';
 import MetricCard from 'components/metrics/MetricCard';
 import { useMessages } from 'components/hooks';
@@ -9,10 +10,10 @@ export function EventDataMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, modified } = dateRange;
+  const { startDate, endDate } = dateRange;
 
   const { data, error, isLoading, isFetched } = useQuery({
-    queryKey: ['event-data:stats', { websiteId, startDate, endDate, modified }],
+    queryKey: ['event-data:stats', { websiteId, startDate, endDate }],
     queryFn: () =>
       get(`/event-data/stats`, {
         websiteId,

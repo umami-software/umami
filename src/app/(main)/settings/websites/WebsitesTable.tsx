@@ -1,3 +1,4 @@
+'use client';
 import { ReactNode } from 'react';
 import Link from 'next/link';
 import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';

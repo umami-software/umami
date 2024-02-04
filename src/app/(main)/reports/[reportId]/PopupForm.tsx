@@ -1,3 +1,4 @@
+'use client';
 import { CSSProperties, ReactNode } from 'react';
 import classNames from 'classnames';
 import styles from './PopupForm.module.css';
