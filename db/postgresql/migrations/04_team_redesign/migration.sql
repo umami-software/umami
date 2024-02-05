@@ -9,13 +9,18 @@ ALTER TABLE "team" ADD COLUMN     "deleted_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TI
 ADD COLUMN     "logo_url" VARCHAR(2183);
 
 -- AlterTable
-ALTER TABLE "user" ADD COLUMN     "logo_url" VARCHAR(2183);
+ALTER TABLE "user" ADD COLUMN     "display_name" VARCHAR(255),
+ADD COLUMN     "logo_url" VARCHAR(2183);
 
 -- AlterTable
-ALTER TABLE "website" ADD COLUMN     "team_id" UUID;
+ALTER TABLE "website" ADD COLUMN     "created_by" UUID,
+ADD COLUMN     "team_id" UUID;
 
 -- DropTable
 DROP TABLE "team_website";
 
 -- CreateIndex
 CREATE INDEX "website_team_id_idx" ON "website"("team_id");
+
+-- CreateIndex
+CREATE INDEX "website_created_by_idx" ON "website"("created_by");

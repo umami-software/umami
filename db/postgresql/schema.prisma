@@ -9,18 +9,20 @@ datasource db {
 }
 
 model User {
-  id        String    @id @unique @map("user_id") @db.Uuid
-  username  String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(60)
-  role      String    @map("role") @db.VarChar(50)
-  logoUrl   String?   @map("logo_url") @db.VarChar(2183)
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
-  deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
+  id          String    @id @unique @map("user_id") @db.Uuid
+  username    String    @unique @db.VarChar(255)
+  password    String    @db.VarChar(60)
+  role        String    @map("role") @db.VarChar(50)
+  logoUrl     String?   @map("logo_url") @db.VarChar(2183)
+  displayName String?   @map("display_name") @db.VarChar(255)
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  website  Website[]
-  teamUser TeamUser[]
-  report   Report[]
+  websiteUser       Website[] @relation("user")
+  websiteCreateUser Website[] @relation("createUser")
+  teamUser          TeamUser[]
+  report            Report[]
 
   @@map("user")
 }
@@ -66,11 +68,13 @@ model Website {
   resetAt   DateTime? @map("reset_at") @db.Timestamptz(6)
   userId    String?   @map("user_id") @db.Uuid
   teamId    String?   @map("team_id") @db.Uuid
+  createdBy String?   @map("created_by") @db.Uuid
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  user        User?         @relation(fields: [userId], references: [id])
+  user        User?         @relation("user", fields: [userId], references: [id])
+  createUser  User?         @relation("createUser", fields: [createdBy], references: [id])
   team        Team?         @relation(fields: [teamId], references: [id])
   eventData   EventData[]
   report      Report[]
@@ -80,6 +84,7 @@ model Website {
   @@index([teamId])
   @@index([createdAt])
   @@index([shareId])
+  @@index([createdBy])
   @@map("website")
 }
 
