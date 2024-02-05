@@ -1,5 +1,6 @@
 export * from 'components/hooks';
 
+export * from 'app/(main)/settings/teams/[teamId]/TeamData';
 export * from 'app/(main)/settings/teams/[teamId]/TeamEditForm';
 export * from 'app/(main)/settings/teams/[teamId]/TeamMemberRemoveButton';
 export * from 'app/(main)/settings/teams/[teamId]/TeamMembers';
