@@ -7,7 +7,7 @@ import LinkButton from 'components/common/LinkButton';
 
 export function TeamsTable({
   data = [],
-  allowEdit = true,
+  allowEdit = false,
   showActions = true,
 }: {
   data: any[];
