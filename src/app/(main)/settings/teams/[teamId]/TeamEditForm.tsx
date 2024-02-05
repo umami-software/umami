@@ -11,27 +11,21 @@ import {
   useToasts,
 } from 'react-basics';
 import { getRandomChars } from 'next-basics';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { useApi, useMessages } from 'components/hooks';
+import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
 
 const generateId = () => getRandomChars(16);
 
-export function TeamEditForm({
-  teamId,
-  data,
-  allowEdit,
-}: {
-  teamId: string;
-  data?: { name: string; accessCode: string };
-  allowEdit?: boolean;
-}) {
+export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?: boolean }) {
+  const team = useContext(TeamContext);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/teams/${teamId}`, data),
   });
   const ref = useRef(null);
-  const [accessCode, setAccessCode] = useState(data.accessCode);
+  const [accessCode, setAccessCode] = useState(team.accessCode);
   const { showToast } = useToasts();
 
   const handleSubmit = async (data: any) => {
@@ -53,7 +47,7 @@ export function TeamEditForm({
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error} values={team}>
       <FormRow label={formatMessage(labels.teamId)}>
         <TextField value={teamId} readOnly allowCopy />
       </FormRow>
@@ -63,7 +57,7 @@ export function TeamEditForm({
             <TextField />
           </FormInput>
         )}
-        {!allowEdit && data.name}
+        {!allowEdit && team.name}
       </FormRow>
       {allowEdit && (
         <FormRow label={formatMessage(labels.accessCode)}>
