@@ -134,7 +134,7 @@ async function clickhouseQuery(data: {
 
   const message = {
     ...args,
-    website_websiteId,
+    website_id: websiteId,
     session_id: sessionId,
     event_id: uuid(),
     country: country,
