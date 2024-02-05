@@ -1,7 +1,7 @@
 'use client';
 import { GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
 import LinkButton from 'components/common/LinkButton';
-import { useMessages, useLogin, useTeamContext } from 'components/hooks';
+import { useMessages, useLogin, useTeamUrl } from 'components/hooks';
 import { REPORT_TYPES } from 'lib/constants';
 import ReportDeleteButton from './ReportDeleteButton';
 
@@ -9,7 +9,7 @@ export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomai
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const breakpoint = useBreakpoint();
-  const { renderTeamUrl } = useTeamContext();
+  const { renderTeamUrl } = useTeamUrl();
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>

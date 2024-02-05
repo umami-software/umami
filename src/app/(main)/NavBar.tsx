@@ -8,14 +8,14 @@ import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
 import TeamsButton from 'components/input/TeamsButton';
 import Icons from 'components/icons';
-import { useLogin, useMessages, useNavigation, useTeamContext } from 'components/hooks';
+import { useLogin, useMessages, useNavigation, useTeamUrl } from 'components/hooks';
 import styles from './NavBar.module.css';
 
 export function NavBar() {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
   const { pathname } = useNavigation();
-  const { teamId, renderTeamUrl } = useTeamContext();
+  const { teamId, renderTeamUrl } = useTeamUrl();
 
   const cloudMode = Boolean(process.env.cloudMode);
 

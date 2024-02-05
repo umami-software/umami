@@ -1,9 +1,9 @@
 'use client';
-import { Button, GridColumn, GridTable, Icon, Text, useBreakpoint } from 'react-basics';
-import Link from 'next/link';
+import { GridColumn, GridTable, Icon, Text, useBreakpoint } from 'react-basics';
 import { useMessages, useLogin } from 'components/hooks';
 import Icons from 'components/icons';
 import { ROLES } from 'lib/constants';
+import LinkButton from 'components/common/LinkButton';
 
 export function TeamsTable({ data = [] }: { data: any[] }) {
   const { formatMessage, labels } = useMessages();
@@ -31,23 +31,19 @@ export function TeamsTable({ data = [] }: { data: any[] }) {
           return (
             <>
               {isOwner && (
-                <Link href={`/settings/teams/${id}`}>
-                  <Button>
-                    <Icon>
-                      <Icons.Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </Button>
-                </Link>
-              )}
-              <Link href={`/teams/${id}`}>
-                <Button>
+                <LinkButton href={`/settings/teams/${id}`}>
                   <Icon>
-                    <Icons.Change />
+                    <Icons.Edit />
                   </Icon>
-                  <Text>{formatMessage(labels.switch)}</Text>
-                </Button>
-              </Link>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </LinkButton>
+              )}
+              <LinkButton href={`/teams/${id}`}>
+                <Icon>
+                  <Icons.Change />
+                </Icon>
+                <Text>{formatMessage(labels.switch)}</Text>
+              </LinkButton>
             </>
           );
         }}

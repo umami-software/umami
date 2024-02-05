@@ -1,10 +1,10 @@
 'use client';
-import { useTeam, useTeamContext } from 'components/hooks';
+import { useTeam, useTeamUrl } from 'components/hooks';
 import { Loading } from 'react-basics';
-import notFound from 'app/not-found';
+import TeamContext from './TeamContext';
 
 export function Team({ children }) {
-  const { teamId } = useTeamContext();
+  const { teamId } = useTeamUrl();
   const { data: team, isLoading } = useTeam(teamId);
 
   if (isLoading) {
@@ -12,10 +12,10 @@ export function Team({ children }) {
   }
 
   if (!team) {
-    return notFound();
+    return null;
   }
 
-  return children;
+  return <TeamContext.Provider value={team}>{children}</TeamContext.Provider>;
 }
 
 export default Team;

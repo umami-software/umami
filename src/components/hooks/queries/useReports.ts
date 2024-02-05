@@ -1,10 +1,10 @@
 'use client';
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
-import useCache from 'store/cache';
+import useModified from 'store/modified';
 
 export function useReports({ websiteId, teamId }: { websiteId?: string; teamId?: string }) {
-  const modified = useCache((state: any) => state?.reports);
+  const modified = useModified((state: any) => state?.reports);
   const { get, del, useMutation } = useApi();
   const queryResult = useFilterQuery({
     queryKey: ['reports', { websiteId, teamId, modified }],

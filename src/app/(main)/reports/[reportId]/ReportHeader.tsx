@@ -1,7 +1,7 @@
 'use client';
 import { useContext } from 'react';
 import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
-import { useMessages, useApi, useNavigation, useTeamContext } from 'components/hooks';
+import { useMessages, useApi, useNavigation, useTeamUrl } from 'components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from 'lib/constants';
@@ -11,7 +11,7 @@ export function ReportHeader({ icon }) {
   const { formatMessage, labels, messages } = useMessages();
   const { showToast } = useToasts();
   const { router } = useNavigation();
-  const { renderTeamUrl } = useTeamContext();
+  const { renderTeamUrl } = useTeamUrl();
 
   const { post, useMutation } = useApi();
   const { mutate: create, isPending: isCreating } = useMutation({

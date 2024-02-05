@@ -4,16 +4,16 @@ import { Item, Tabs, Button, Text, Icon, Loading } from 'react-basics';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
+import WebsiteContext from 'app/(main)/websites/[websiteId]/WebsiteContext';
 import WebsiteEditForm from './[websiteId]/WebsiteEditForm';
 import WebsiteData from './[websiteId]/WebsiteData';
 import TrackingCode from './[websiteId]/TrackingCode';
 import ShareUrl from './[websiteId]/ShareUrl';
 import { useWebsite, useMessages } from 'components/hooks';
-import WebsiteContext from '../../websites/[websiteId]/WebsiteContext';
 
 export function WebsiteSettings({ websiteId, openExternal = false }) {
   const { formatMessage, labels } = useMessages();
-  const { data: website, isLoading, refetch } = useWebsite(websiteId, { gcTime: 0 });
+  const { data: website, isLoading, refetch } = useWebsite(websiteId);
   const [tab, setTab] = useState<Key>('details');
 
   const handleSave = () => {

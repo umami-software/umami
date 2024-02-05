@@ -1,7 +1,7 @@
 'use client';
 import DataTable from 'components/common/DataTable';
 import TeamMembersTable from './TeamMembersTable';
-import useTeamMembers from 'components/hooks/queries/useTeamMembers';
+import { useTeamMembers } from 'components/hooks';
 
 export function TeamMembers({ teamId, allowEdit }: { teamId: string; allowEdit: boolean }) {
   const queryResult = useTeamMembers(teamId);

@@ -1,18 +1,18 @@
 'use client';
-import { Button, Icon, Icons, Loading, Text } from 'react-basics';
-import Link from 'next/link';
+import { Icon, Icons, Loading, Text } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
 import Pager from 'components/common/Pager';
 import WebsiteChartList from '../websites/[websiteId]/WebsiteChartList';
 import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
 import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useMessages, useLocale, useTeamContext, useWebsites } from 'components/hooks';
+import { useMessages, useLocale, useTeamUrl, useWebsites } from 'components/hooks';
 import useDashboard from 'store/dashboard';
+import LinkButton from 'components/common/LinkButton';
 
 export function Dashboard() {
   const { formatMessage, labels, messages } = useMessages();
-  const { teamId, renderTeamUrl } = useTeamContext();
+  const { teamId, renderTeamUrl } = useTeamUrl();
   const { showCharts, editing } = useDashboard();
   const { dir } = useLocale();
   const pageSize = 10;
@@ -36,14 +36,12 @@ export function Dashboard() {
       </PageHeader>
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
-          <Link href={renderTeamUrl('/settings/websites')}>
-            <Button>
-              <Icon rotate={dir === 'rtl' ? 180 : 0}>
-                <Icons.ArrowRight />
-              </Icon>
-              <Text>{formatMessage(messages.goToSettings)}</Text>
-            </Button>
-          </Link>
+          <LinkButton href={renderTeamUrl('/settings/websites')}>
+            <Icon rotate={dir === 'rtl' ? 180 : 0}>
+              <Icons.ArrowRight />
+            </Icon>
+            <Text>{formatMessage(messages.goToSettings)}</Text>
+          </LinkButton>
         </EmptyPlaceholder>
       )}
       {hasData && (

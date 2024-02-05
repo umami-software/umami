@@ -1,11 +1,11 @@
 'use client';
-import { GridTable, GridColumn, Button, Icon, Text } from 'react-basics';
+import { GridTable, GridColumn, Icon, Text } from 'react-basics';
 import { useMessages, useNavigation } from 'components/hooks';
-import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES } from 'lib/constants';
+import LinkButton from 'components/common/LinkButton';
 
 export function EventDataValueTable({ data = [], event }: { data: any[]; event: string }) {
   const { formatMessage, labels } = useMessages();
@@ -14,14 +14,12 @@ export function EventDataValueTable({ data = [], event }: { data: any[]; event: 
   const Title = () => {
     return (
       <>
-        <Link href={renderUrl({ event: undefined })}>
-          <Button>
-            <Icon rotate={180}>
-              <Icons.ArrowRight />
-            </Icon>
-            <Text>{formatMessage(labels.back)}</Text>
-          </Button>
-        </Link>
+        <LinkButton href={renderUrl({ event: undefined })}>
+          <Icon rotate={180}>
+            <Icons.ArrowRight />
+          </Icon>
+          <Text>{formatMessage(labels.back)}</Text>
+        </LinkButton>
         <Text>{event}</Text>
       </>
     );

@@ -2,7 +2,9 @@
 import { useApi } from './useApi';
 import { useFilterQuery } from './useFilterQuery';
 import { useLogin } from './useLogin';
-import useCache from 'store/cache';
+import useModified from 'store/modified';
+
+const selector = (state: any) => state?.websites;
 
 export function useWebsites(
   { userId, teamId }: { userId?: string; teamId?: string },
@@ -10,7 +12,7 @@ export function useWebsites(
 ) {
   const { get } = useApi();
   const { user } = useLogin();
-  const modified = useCache((state: any) => state?.websites);
+  const modified = useModified(selector);
 
   return useFilterQuery({
     queryKey: ['websites', { userId, teamId, modified, ...params }],

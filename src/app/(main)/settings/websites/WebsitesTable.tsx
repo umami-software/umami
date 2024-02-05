@@ -1,8 +1,8 @@
 'use client';
 import { ReactNode } from 'react';
-import Link from 'next/link';
-import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import { useMessages, useLogin, useTeamContext } from 'components/hooks';
+import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
+import { useMessages, useLogin, useTeamUrl } from 'components/hooks';
+import LinkButton from 'components/common/LinkButton';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -24,7 +24,7 @@ export function WebsitesTable({
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const breakpoint = useBreakpoint();
-  const { renderTeamUrl } = useTeamContext();
+  const { renderTeamUrl } = useTeamUrl();
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
@@ -33,29 +33,25 @@ export function WebsitesTable({
       {showActions && (
         <GridColumn name="action" label=" " alignment="end">
           {row => {
-            const { id } = row;
+            const { id: websiteId } = row;
 
             return (
               <>
                 {allowEdit && (teamId || user.isAdmin) && (
-                  <Link href={renderTeamUrl(`/settings/websites/${id}`)}>
-                    <Button>
-                      <Icon>
-                        <Icons.Edit />
-                      </Icon>
-                      <Text>{formatMessage(labels.edit)}</Text>
-                    </Button>
-                  </Link>
+                  <LinkButton href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </LinkButton>
                 )}
                 {allowView && (
-                  <Link href={renderTeamUrl(renderTeamUrl(`/websites/${id}`))}>
-                    <Button>
-                      <Icon>
-                        <Icons.ArrowRight />
-                      </Icon>
-                      <Text>{formatMessage(labels.view)}</Text>
-                    </Button>
-                  </Link>
+                  <LinkButton href={renderTeamUrl(renderTeamUrl(`/websites/${websiteId}`))}>
+                    <Icon>
+                      <Icons.ArrowRight />
+                    </Icon>
+                    <Text>{formatMessage(labels.view)}</Text>
+                  </LinkButton>
                 )}
               </>
             );

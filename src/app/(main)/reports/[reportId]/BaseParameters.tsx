@@ -4,7 +4,7 @@ import { FormRow } from 'react-basics';
 import { parseDateRange } from 'lib/date';
 import DateFilter from 'components/input/DateFilter';
 import WebsiteSelect from 'components/input/WebsiteSelect';
-import { useMessages, useTeamContext } from 'components/hooks';
+import { useMessages, useTeamUrl } from 'components/hooks';
 import { ReportContext } from './Report';
 
 export interface BaseParametersProps {
@@ -22,7 +22,7 @@ export function BaseParameters({
 }: BaseParametersProps) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
-  const { teamId } = useTeamContext();
+  const { teamId } = useTeamUrl();
 
   const { parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};

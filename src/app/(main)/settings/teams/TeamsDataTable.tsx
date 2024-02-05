@@ -1,20 +1,10 @@
 'use client';
 import DataTable from 'components/common/DataTable';
 import TeamsTable from 'app/(main)/settings/teams/TeamsTable';
-import { useApi, useFilterQuery } from 'components/hooks';
-import useCache from 'store/cache';
+import { useTeams } from 'components/hooks';
 
 export function TeamsDataTable() {
-  const { get } = useApi();
-  const modified = useCache((state: any) => state?.teams);
-  const queryResult = useFilterQuery({
-    queryKey: ['teams', { modified }],
-    queryFn: (params: any) => {
-      return get(`/teams`, {
-        ...params,
-      });
-    },
-  });
+  const queryResult = useTeams();
 
   return (
     <DataTable queryResult={queryResult}>

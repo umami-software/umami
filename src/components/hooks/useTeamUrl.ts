@@ -1,7 +1,7 @@
 'use client';
 import { usePathname } from 'next/navigation';
 
-export function useTeamContext(): {
+export function useTeamUrl(): {
   teamId?: string;
   renderTeamUrl: (url: string) => string;
 } {
@@ -15,4 +15,4 @@ export function useTeamContext(): {
   return { teamId, renderTeamUrl };
 }
 
-export default useTeamContext;
+export default useTeamUrl;

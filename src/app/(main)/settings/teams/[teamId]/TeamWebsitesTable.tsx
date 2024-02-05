@@ -1,16 +1,20 @@
 'use client';
-import Link from 'next/link';
-import { Button, GridColumn, GridTable, Icon, Text } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { GridColumn, GridTable, Icon, Text } from 'react-basics';
+import { useLogin, useMessages } from 'components/hooks';
 import Icons from 'components/icons';
+import LinkButton from 'components/common/LinkButton';
 
 export function TeamWebsitesTable({
+  teamId,
   data = [],
+  allowEdit,
 }: {
+  teamId: string;
   data: any[];
-  readOnly: boolean;
-  onRemove: () => void;
+  allowEdit?: boolean;
 }) {
+  const { user } = useLogin();
+
   const { formatMessage, labels } = useMessages();
   return (
     <GridTable data={data}>
@@ -20,14 +24,22 @@ export function TeamWebsitesTable({
         {row => {
           const { websiteId } = row;
           return (
-            <Link href={`/websites/${websiteId}`}>
-              <Button>
+            <>
+              {allowEdit && (teamId || user?.isAdmin) && (
+                <LinkButton href={`/team/${teamId}/settings/websites/${websiteId}`}>
+                  <Icon>
+                    <Icons.Edit />
+                  </Icon>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </LinkButton>
+              )}
+              <LinkButton href={`/teams/${teamId}/websites/${websiteId}`}>
                 <Icon>
                   <Icons.Change />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
-              </Button>
-            </Link>
+              </LinkButton>
+            </>
           );
         }}
       </GridColumn>

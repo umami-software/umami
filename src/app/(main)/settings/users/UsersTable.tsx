@@ -1,10 +1,10 @@
 'use client';
-import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
+import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { formatDistance } from 'date-fns';
-import Link from 'next/link';
 import { ROLES } from 'lib/constants';
 import { useMessages, useLocale } from 'components/hooks';
 import UserDeleteButton from './UserDeleteButton';
+import LinkButton from 'components/common/LinkButton';
 
 export function UsersTable({
   data = [],
@@ -45,14 +45,12 @@ export function UsersTable({
             return (
               <>
                 <UserDeleteButton userId={id} username={username} />
-                <Link href={`/settings/users/${id}`}>
-                  <Button>
-                    <Icon>
-                      <Icons.Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </Button>
-                </Link>
+                <LinkButton href={`/settings/users/${id}`}>
+                  <Icon>
+                    <Icons.Edit />
+                  </Icon>
+                  <Text>{formatMessage(labels.edit)}</Text>
+                </LinkButton>
               </>
             );
           }}

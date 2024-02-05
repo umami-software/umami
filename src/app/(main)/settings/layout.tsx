@@ -1,6 +1,6 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import { useLogin, useMessages, useTeamContext } from 'components/hooks';
+import { useLogin, useMessages, useTeamUrl } from 'components/hooks';
 import SideNav from 'components/layout/SideNav';
 import styles from './layout.module.css';
 
@@ -9,7 +9,7 @@ export default function SettingsLayout({ children }) {
   const pathname = usePathname();
   const { formatMessage, labels } = useMessages();
   const cloudMode = !!process.env.cloudMode;
-  const { teamId, renderTeamUrl } = useTeamContext();
+  const { teamId, renderTeamUrl } = useTeamUrl();
 
   const items = [
     teamId && {
