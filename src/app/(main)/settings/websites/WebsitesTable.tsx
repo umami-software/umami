@@ -46,7 +46,7 @@ export function WebsitesTable({
                   </LinkButton>
                 )}
                 {allowView && (
-                  <LinkButton href={renderTeamUrl(renderTeamUrl(`/websites/${websiteId}`))}>
+                  <LinkButton href={renderTeamUrl(`/websites/${websiteId}`)}>
                     <Icon>
                       <Icons.ArrowRight />
                     </Icon>

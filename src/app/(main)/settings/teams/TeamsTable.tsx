@@ -5,7 +5,15 @@ import Icons from 'components/icons';
 import { ROLES } from 'lib/constants';
 import LinkButton from 'components/common/LinkButton';
 
-export function TeamsTable({ data = [] }: { data: any[] }) {
+export function TeamsTable({
+  data = [],
+  allowEdit = true,
+  showActions = true,
+}: {
+  data: any[];
+  allowEdit?: boolean;
+  showActions?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const breakpoint = useBreakpoint();
@@ -29,22 +37,24 @@ export function TeamsTable({ data = [] }: { data: any[] }) {
           const isOwner = user.id === owner?.userId;
 
           return (
-            <>
-              {isOwner && (
-                <LinkButton href={`/settings/teams/${id}`}>
+            showActions && (
+              <>
+                {allowEdit && isOwner && (
+                  <LinkButton href={`/teams/${id}/settings`}>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </LinkButton>
+                )}
+                <LinkButton href={`/teams/${id}`}>
                   <Icon>
-                    <Icons.Edit />
+                    <Icons.Change />
                   </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
+                  <Text>{formatMessage(labels.switch)}</Text>
                 </LinkButton>
-              )}
-              <LinkButton href={`/teams/${id}`}>
-                <Icon>
-                  <Icons.Change />
-                </Icon>
-                <Text>{formatMessage(labels.switch)}</Text>
-              </LinkButton>
-            </>
+              </>
+            )
           );
         }}
       </GridColumn>
