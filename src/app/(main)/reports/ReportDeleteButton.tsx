@@ -1,7 +1,7 @@
 'use client';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import { useApi, useMessages } from 'components/hooks';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 import ConfirmationForm from 'components/common/ConfirmationForm';
 
 export function ReportDeleteButton({

@@ -1,5 +1,4 @@
 'use client';
-import { Website } from '@prisma/client';
 import {
   Form,
   FormRow,
@@ -11,21 +10,22 @@ import {
   LoadingButton,
   useToasts,
 } from 'react-basics';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { getRandomChars } from 'next-basics';
 import { useApi, useMessages } from 'components/hooks';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import { touch } from 'store/modified';
 
 const generateId = () => getRandomChars(16);
 
 export function ShareUrl({
-  website,
   hostUrl,
-  onSave,
 }: {
-  website: Website;
+  websiteId: string;
   hostUrl?: string;
   onSave?: () => void;
 }) {
+  const website = useContext(WebsiteContext);
   const { domain, shareId } = website;
   const { formatMessage, labels, messages } = useMessages();
   const [id, setId] = useState(shareId);
@@ -47,7 +47,6 @@ export function ShareUrl({
     const data = { shareId: checked ? generateId() : null };
     mutate(data, {
       onSuccess: async () => {
-        onSave?.();
         showToast({ message: formatMessage(messages.saved), variant: 'success' });
       },
     });
@@ -60,7 +59,7 @@ export function ShareUrl({
       {
         onSuccess: async () => {
           showToast({ message: formatMessage(messages.saved), variant: 'success' });
-          onSave?.();
+          touch(`website:${website?.id}`);
         },
       },
     );

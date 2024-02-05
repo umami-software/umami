@@ -1,5 +1,5 @@
-import Team from './Team';
+import TeamProvider from './TeamProvider';
 
 export default function ({ children }) {
-  return <Team>{children}</Team>;
+  return <TeamProvider>{children}</TeamProvider>;
 }

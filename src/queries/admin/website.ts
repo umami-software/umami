@@ -124,7 +124,7 @@ export async function updateWebsite(
 ): Promise<Website> {
   return prisma.client.website.update({
     where: {
-      websiteId,
+      id: websiteId,
     },
     data,
   });
@@ -146,7 +146,7 @@ export async function resetWebsite(
       where: { websiteId },
     }),
     client.website.update({
-      where: { websiteId },
+      where: { id: websiteId },
       data: {
         resetAt: new Date(),
       },
@@ -186,10 +186,10 @@ export async function deleteWebsite(
           data: {
             deletedAt: new Date(),
           },
-          where: { websiteId },
+          where: { id: websiteId },
         })
       : client.website.delete({
-          where: { websiteId },
+          where: { id: websiteId },
         }),
   ]).then(async data => {
     if (cache.enabled) {

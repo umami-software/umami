@@ -1,7 +1,7 @@
 'use client';
 import { useApi, useMessages } from 'components/hooks';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 
 export function TeamMemberRemoveButton({
   teamId,

@@ -2,7 +2,7 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import WebsiteAddForm from './WebsiteAddForm';
 import { useMessages } from 'components/hooks';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 
 export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();

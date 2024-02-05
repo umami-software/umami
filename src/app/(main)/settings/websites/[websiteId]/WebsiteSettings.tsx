@@ -1,31 +1,23 @@
 'use client';
-import { useState, Key } from 'react';
-import { Item, Tabs, Button, Text, Icon, Loading } from 'react-basics';
+import { useState, Key, useContext } from 'react';
+import { Item, Tabs, Button, Text, Icon } from 'react-basics';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
-import WebsiteContext from 'app/(main)/websites/[websiteId]/WebsiteContext';
-import WebsiteEditForm from './[websiteId]/WebsiteEditForm';
-import WebsiteData from './[websiteId]/WebsiteData';
-import TrackingCode from './[websiteId]/TrackingCode';
-import ShareUrl from './[websiteId]/ShareUrl';
-import { useWebsite, useMessages } from 'components/hooks';
+import WebsiteEditForm from './WebsiteEditForm';
+import WebsiteData from './WebsiteData';
+import TrackingCode from './TrackingCode';
+import ShareUrl from './ShareUrl';
+import { useMessages } from 'components/hooks';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export function WebsiteSettings({ websiteId, openExternal = false }) {
+  const website = useContext(WebsiteContext);
   const { formatMessage, labels } = useMessages();
-  const { data: website, isLoading, refetch } = useWebsite(websiteId);
   const [tab, setTab] = useState<Key>('details');
 
-  const handleSave = () => {
-    refetch();
-  };
-
-  if (isLoading) {
-    return <Loading position="page" />;
-  }
-
   return (
-    <WebsiteContext.Provider value={website}>
+    <>
       <PageHeader title={website?.name} icon={<Icons.Globe />}>
         <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
@@ -42,11 +34,11 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
         <Item key="share">{formatMessage(labels.shareUrl)}</Item>
         <Item key="data">{formatMessage(labels.data)}</Item>
       </Tabs>
-      {tab === 'details' && <WebsiteEditForm website={website} onSave={handleSave} />}
+      {tab === 'details' && <WebsiteEditForm websiteId={websiteId} />}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} />}
-      {tab === 'share' && <ShareUrl website={website} onSave={handleSave} />}
+      {tab === 'share' && <ShareUrl websiteId={websiteId} />}
       {tab === 'data' && <WebsiteData websiteId={websiteId} />}
-    </WebsiteContext.Provider>
+    </>
   );
 }
 

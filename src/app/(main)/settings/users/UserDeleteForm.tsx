@@ -1,7 +1,7 @@
 'use client';
 import { useApi, useMessages } from 'components/hooks';
 import ConfirmationForm from 'components/common/ConfirmationForm';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 
 export function UserDeleteForm({ userId, username, onSave, onClose }) {
   const { FormattedMessage, messages, labels, formatMessage } = useMessages();

@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useMessages } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();

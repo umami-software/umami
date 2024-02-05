@@ -1,6 +1,5 @@
 'use client';
-import { Website } from '@prisma/client';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
 import {
   SubmitButton,
   Form,
@@ -12,18 +11,20 @@ import {
 } from 'react-basics';
 import { useApi, useMessages } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
+import { touch } from 'store/modified';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export function WebsiteEditForm({
-  website,
-  onSave,
+  websiteId,
 }: {
-  website: Website;
+  websiteId: string;
   onSave?: (data: any) => void;
 }) {
+  const website = useContext(WebsiteContext);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
-    mutationFn: (data: any) => post(`/websites/${website.id}`, data),
+    mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
   });
   const ref = useRef(null);
   const { showToast } = useToasts();
@@ -33,7 +34,7 @@ export function WebsiteEditForm({
       onSuccess: async () => {
         showToast({ message: formatMessage(messages.saved), variant: 'success' });
         ref.current.reset(data);
-        onSave?.(data);
+        touch(`website:${website?.id}`);
       },
     });
   };
@@ -41,7 +42,7 @@ export function WebsiteEditForm({
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error} values={website}>
       <FormRow label={formatMessage(labels.websiteId)}>
-        <TextField value={website.id} readOnly allowCopy />
+        <TextField value={website?.id} readOnly allowCopy />
       </FormRow>
       <FormRow label={formatMessage(labels.name)}>
         <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>

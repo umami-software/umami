@@ -57,17 +57,17 @@ export default async (
 
     const { name, domain, shareId } = req.body;
 
-    let website;
-
     try {
-      website = await updateWebsite(websiteId, { name, domain, shareId });
+      const website = await updateWebsite(websiteId, { name, domain, shareId });
+
+      return ok(res, website);
     } catch (e: any) {
       if (e.message.includes('Unique constraint') && e.message.includes('share_id')) {
         return serverError(res, 'That share ID is already taken.');
       }
-    }
 
-    return ok(res, website);
+      return serverError(res, e);
+    }
   }
 
   if (req.method === 'DELETE') {

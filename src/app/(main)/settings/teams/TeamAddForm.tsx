@@ -8,7 +8,7 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { touch } from 'store/cache';
+import { touch } from 'store/modified';
 import { useApi, useMessages } from 'components/hooks';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
