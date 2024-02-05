@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode } from 'react';
 import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
-import { useMessages, useLogin, useTeamUrl } from 'components/hooks';
+import { useMessages, useTeamUrl } from 'components/hooks';
 import LinkButton from 'components/common/LinkButton';
 
 export interface WebsitesTableProps {
@@ -18,11 +18,9 @@ export function WebsitesTable({
   showActions,
   allowEdit,
   allowView,
-  teamId,
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
   const breakpoint = useBreakpoint();
   const { renderTeamUrl } = useTeamUrl();
 
@@ -37,7 +35,7 @@ export function WebsitesTable({
 
             return (
               <>
-                {allowEdit && (teamId || user.isAdmin) && (
+                {allowEdit && (
                   <LinkButton href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
                     <Icon>
                       <Icons.Edit />
