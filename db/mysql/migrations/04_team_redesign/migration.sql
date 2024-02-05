@@ -16,6 +16,9 @@ ALTER TABLE `user` ADD COLUMN `display_name` VARCHAR(255) NULL,
 ALTER TABLE `website` ADD COLUMN `created_by` VARCHAR(36) NULL,
     ADD COLUMN `team_id` VARCHAR(36) NULL;
 
+-- MigrateData
+UPDATE "website" SET created_by = user_id WHERE team_id IS NULL;
+
 -- DropTable
 DROP TABLE `team_website`;
 

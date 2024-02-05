@@ -16,6 +16,9 @@ ADD COLUMN     "logo_url" VARCHAR(2183);
 ALTER TABLE "website" ADD COLUMN     "created_by" UUID,
 ADD COLUMN     "team_id" UUID;
 
+-- MigrateData
+UPDATE "website" SET created_by = user_id WHERE team_id IS NULL;
+
 -- DropTable
 DROP TABLE "team_website";
 
@@ -24,3 +27,5 @@ CREATE INDEX "website_team_id_idx" ON "website"("team_id");
 
 -- CreateIndex
 CREATE INDEX "website_created_by_idx" ON "website"("created_by");
+
+
