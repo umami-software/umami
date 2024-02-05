@@ -2,9 +2,7 @@ import { Key } from 'react';
 import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
-import { useMessages } from 'components/hooks';
-import { useLogin } from 'components/hooks';
-import { useLocale } from 'components/hooks';
+import { useMessages, useLogin, useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
 import Avatar from 'components/common/Avatar';
 import styles from './ProfileButton.module.css';
@@ -18,7 +16,7 @@ export function ProfileButton() {
 
   const handleSelect = (key: Key, close: () => void) => {
     if (key === 'profile') {
-      router.push('/settings/profile');
+      router.push('/profile');
     }
     if (key === 'logout') {
       router.push('/logout');

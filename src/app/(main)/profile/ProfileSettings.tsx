@@ -19,7 +19,7 @@ export function ProfileSettings() {
 
   const { username, role } = user;
 
-  const renderRole = value => {
+  const renderRole = (value: string) => {
     if (value === ROLES.user) {
       return formatMessage(labels.user);
     }
