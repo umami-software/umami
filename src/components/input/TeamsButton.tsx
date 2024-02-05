@@ -1,3 +1,4 @@
+'use client';
 import { Key } from 'react';
 import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
 import classNames from 'classnames';
