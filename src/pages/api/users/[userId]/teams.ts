@@ -44,7 +44,7 @@ export default async (
     const teams = await getUserTeams(userId, {
       query,
       page,
-      pageSize: +pageSize || undefined,
+      pageSize,
     });
 
     return ok(res, teams);

@@ -48,7 +48,7 @@ export default async (
     const websites = await getTeamWebsites(teamId, {
       page,
       query,
-      pageSize: +pageSize || undefined,
+      pageSize,
     });
 
     return ok(res, websites);

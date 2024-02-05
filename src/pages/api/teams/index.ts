@@ -40,7 +40,7 @@ export default async (
     const results = await getUserTeams(userId, {
       page,
       query,
-      pageSize: +pageSize || undefined,
+      pageSize,
     });
 
     return ok(res, results);

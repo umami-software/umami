@@ -5,15 +5,15 @@ import WebsiteAddButton from './WebsiteAddButton';
 
 export interface WebsitesHeaderProps {
   teamId?: string;
-  showActions?: boolean;
+  allowCreate?: boolean;
 }
 
-export function WebsitesHeader({ teamId, showActions = true }: WebsitesHeaderProps) {
+export function WebsitesHeader({ teamId, allowCreate = true }: WebsitesHeaderProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
     <PageHeader title={formatMessage(labels.websites)}>
-      {!process.env.cloudMode && showActions && <WebsiteAddButton teamId={teamId} />}
+      {allowCreate && !process.env.cloudMode && <WebsiteAddButton teamId={teamId} />}
     </PageHeader>
   );
 }
