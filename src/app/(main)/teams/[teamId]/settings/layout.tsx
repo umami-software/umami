@@ -1,3 +1,5 @@
-import Layout from 'app/(main)/settings/layout';
+import TeamSettings from './TeamSettings';
 
-export default Layout;
+export default function ({ children, params: { teamId } }) {
+  return <TeamSettings teamId={teamId}>{children}</TeamSettings>;
+}

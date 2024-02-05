@@ -49,13 +49,13 @@ export function NavBar() {
         },
         {
           label: formatMessage(labels.profile),
-          url: '/settings/profile',
+          url: '/profile',
         },
       ],
     },
     cloudMode && {
       label: formatMessage(labels.profile),
-      url: '/settings/profile',
+      url: '/profile',
     },
     !cloudMode && { label: formatMessage(labels.logout), url: '/logout' },
   ].filter(n => n);

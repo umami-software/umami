@@ -12,5 +12,5 @@ export default function () {
 }
 
 export const metadata: Metadata = {
-  title: 'Profile Settings | Umami',
+  title: 'Profile | Umami',
 };
