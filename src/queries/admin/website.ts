@@ -29,18 +29,15 @@ export async function getWebsites(
   filters: WebsiteSearchFilter,
 ): Promise<FilterResult<Website[]>> {
   const { query } = filters;
-  const mode = prisma.getQueryMode();
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    name: {
-      contains: query ? query : undefined,
-      mode,
-    },
-    domain: {
-      contains: query ? query : undefined,
-      mode,
-    },
+    ...prisma.getSearchParameters(query, [
+      {
+        name: 'contains',
+      },
+      { domain: 'contains' },
+    ]),
     deletedAt: null,
   };
 
