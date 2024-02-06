@@ -1,4 +1,3 @@
-'use client';
 import { useRef } from 'react';
 import {
   Form,

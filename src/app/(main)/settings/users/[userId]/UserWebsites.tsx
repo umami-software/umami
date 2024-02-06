@@ -1,4 +1,3 @@
-'use client';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import DataTable from 'components/common/DataTable';
 import { useWebsites } from 'components/hooks';

@@ -1,4 +1,3 @@
-'use client';
 import FunnelChart from './FunnelChart';
 import FunnelTable from './FunnelTable';
 import FunnelParameters from './FunnelParameters';

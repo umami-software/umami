@@ -1,4 +1,3 @@
-'use client';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import WebsiteAddForm from './WebsiteAddForm';
 import { useMessages } from 'components/hooks';

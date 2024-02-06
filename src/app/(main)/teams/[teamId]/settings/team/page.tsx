@@ -1,5 +1,3 @@
-import Team from './Team';
+import Page from 'app/(main)/settings/teams/[teamId]/team/page';
 
-export default function ({ params: { teamId } }) {
-  return <Team teamId={teamId} />;
-}
+export default Page;

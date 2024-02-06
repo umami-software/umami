@@ -1,14 +1,8 @@
 import { Metadata } from 'next';
-import TeamsDataTable from './TeamsDataTable';
-import TeamsHeader from './TeamsHeader';
+import TeamsPage from './TeamsPage';
 
 export default function () {
-  return (
-    <>
-      <TeamsHeader />
-      <TeamsDataTable />
-    </>
-  );
+  return <TeamsPage />;
 }
 
 export const metadata: Metadata = {

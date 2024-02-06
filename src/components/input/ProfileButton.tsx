@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
 import { useMessages, useLogin, useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
-import Avatar from 'components/common/Avatar';
 import styles from './ProfileButton.module.css';
 
 export function ProfileButton() {
@@ -34,12 +33,7 @@ export function ProfileButton() {
       <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
         {(close: () => void) => (
           <Menu onSelect={key => handleSelect(key, close)} className={styles.menu}>
-            <Item key="user" className={styles.item}>
-              <Icon size="lg">
-                <Avatar value={user.id} />
-              </Icon>
-              <Text>{user.username}</Text>
-            </Item>
+            <Text className={styles.name}>{user.username}</Text>
             <Item key="profile" className={styles.item} divider={true}>
               <Icon>
                 <Icons.User />

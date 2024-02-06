@@ -1,4 +1,3 @@
-'use client';
 import DateFilter from 'components/input/DateFilter';
 import { Button, Flexbox } from 'react-basics';
 import { useDateRange, useMessages } from 'components/hooks';

@@ -1,4 +1,3 @@
-'use client';
 import { Flexbox } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';

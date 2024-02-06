@@ -1,4 +1,3 @@
-'use client';
 import classNames from 'classnames';
 import { useApi, useDateRange, useMessages, useNavigation, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';

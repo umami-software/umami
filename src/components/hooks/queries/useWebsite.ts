@@ -1,4 +1,3 @@
-'use client';
 import useApi from './useApi';
 
 export function useWebsite(websiteId: string, options?: { [key: string]: any }) {

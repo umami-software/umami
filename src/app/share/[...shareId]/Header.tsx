@@ -1,4 +1,3 @@
-'use client';
 import { Icon, Text } from 'react-basics';
 import Link from 'next/link';
 import LanguageButton from 'components/input/LanguageButton';

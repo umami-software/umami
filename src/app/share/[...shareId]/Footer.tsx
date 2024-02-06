@@ -1,4 +1,3 @@
-'use client';
 import { CURRENT_VERSION, HOMEPAGE_URL } from 'lib/constants';
 import styles from './Footer.module.css';
 

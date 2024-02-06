@@ -37,7 +37,7 @@ export default async (
 
     const data = await getWebsiteReports(websiteId, {
       page,
-      pageSize: +pageSize || undefined,
+      pageSize,
       query,
     });
 

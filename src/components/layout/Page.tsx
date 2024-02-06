@@ -1,4 +1,3 @@
-'use client';
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Banner, Loading } from 'react-basics';

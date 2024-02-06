@@ -1,6 +1,7 @@
 .container {
   display: grid;
   gap: 30px;
+  padding-bottom: 40px;
 }
 
 .actions {

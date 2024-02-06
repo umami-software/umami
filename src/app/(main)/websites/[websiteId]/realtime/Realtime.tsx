@@ -1,4 +1,3 @@
-'use client';
 import { useMemo, useState, useEffect } from 'react';
 import { subMinutes, startOfMinute } from 'date-fns';
 import thenby from 'thenby';
@@ -6,8 +5,7 @@ import { Grid, GridRow } from 'components/layout/Grid';
 import Page from 'components/layout/Page';
 import RealtimeChart from 'components/metrics/RealtimeChart';
 import WorldMap from 'components/metrics/WorldMap';
-import { useApi } from 'components/hooks';
-import { useWebsite } from 'components/hooks';
+import { useApi, useWebsite } from 'components/hooks';
 import { percentFilter } from 'lib/filters';
 import { REALTIME_RANGE, REALTIME_INTERVAL } from 'lib/constants';
 import { RealtimeData } from 'lib/types';

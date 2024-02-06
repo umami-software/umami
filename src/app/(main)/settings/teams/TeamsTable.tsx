@@ -1,13 +1,11 @@
-'use client';
 import { GridColumn, GridTable, Icon, Text, useBreakpoint } from 'react-basics';
-import { useMessages, useLogin } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import { ROLES } from 'lib/constants';
 import LinkButton from 'components/common/LinkButton';
 
 export function TeamsTable({
   data = [],
-  allowEdit = false,
   showActions = true,
 }: {
   data: any[];
@@ -15,7 +13,6 @@ export function TeamsTable({
   showActions?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
   const breakpoint = useBreakpoint();
 
   return (
@@ -30,34 +27,22 @@ export function TeamsTable({
       <GridColumn name="members" label={formatMessage(labels.members)}>
         {row => row._count.teamUser}
       </GridColumn>
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
-          const { id, teamUser } = row;
-          const owner = teamUser.find(({ role }) => role === ROLES.teamOwner);
-          const isOwner = user.id === owner?.userId;
+      {showActions && (
+        <GridColumn name="action" label=" " alignment="end">
+          {row => {
+            const { id } = row;
 
-          return (
-            showActions && (
-              <>
-                {allowEdit && isOwner && (
-                  <LinkButton href={`/teams/${id}/settings`}>
-                    <Icon>
-                      <Icons.Edit />
-                    </Icon>
-                    <Text>{formatMessage(labels.edit)}</Text>
-                  </LinkButton>
-                )}
-                <LinkButton href={`/teams/${id}`}>
-                  <Icon>
-                    <Icons.Change />
-                  </Icon>
-                  <Text>{formatMessage(labels.switch)}</Text>
-                </LinkButton>
-              </>
-            )
-          );
-        }}
-      </GridColumn>
+            return (
+              <LinkButton href={`/teams/${id}/settings`}>
+                <Icon>
+                  <Icons.ArrowRight />
+                </Icon>
+                <Text>{formatMessage(labels.view)}</Text>
+              </LinkButton>
+            );
+          }}
+        </GridColumn>
+      )}
     </GridTable>
   );
 }

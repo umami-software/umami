@@ -1,4 +1,3 @@
-'use client';
 import { useContext } from 'react';
 import ListTable from 'components/metrics/ListTable';
 import { useMessages } from 'components/hooks';

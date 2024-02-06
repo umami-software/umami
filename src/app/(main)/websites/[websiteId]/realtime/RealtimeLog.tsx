@@ -1,4 +1,3 @@
-'use client';
 import { useMemo, useState } from 'react';
 import { StatusLight, Icon, Text, SearchField } from 'react-basics';
 import { FixedSizeList } from 'react-window';
@@ -7,10 +6,8 @@ import thenby from 'thenby';
 import { safeDecodeURI } from 'next-basics';
 import FilterButtons from 'components/common/FilterButtons';
 import Empty from 'components/common/Empty';
-import { useLocale } from 'components/hooks';
-import { useCountryNames } from 'components/hooks';
+import { useLocale, useCountryNames, useMessages } from 'components/hooks';
 import Icons from 'components/icons';
-import { useMessages } from 'components/hooks';
 import useFormat from 'components//hooks/useFormat';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';

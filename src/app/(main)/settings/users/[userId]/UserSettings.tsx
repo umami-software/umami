@@ -1,4 +1,3 @@
-'use client';
 import { Key, useState } from 'react';
 import { Item, Loading, Tabs } from 'react-basics';
 import Icons from 'components/icons';

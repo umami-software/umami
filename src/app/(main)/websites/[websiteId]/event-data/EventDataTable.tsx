@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { GridTable, GridColumn } from 'react-basics';
 import { useMessages, useNavigation } from 'components/hooks';

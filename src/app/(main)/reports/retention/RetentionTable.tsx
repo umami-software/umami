@@ -1,4 +1,3 @@
-'use client';
 import { useContext } from 'react';
 import classNames from 'classnames';
 import { ReportContext } from '../[reportId]/Report';

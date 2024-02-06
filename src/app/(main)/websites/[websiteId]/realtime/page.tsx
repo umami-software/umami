@@ -1,9 +1,5 @@
-import Realtime from './Realtime';
+import WebsiteRealtimePage from './WebsiteRealtimePage';
 
-export default function WebsiteRealtimePage({ params: { websiteId } }) {
-  if (!websiteId) {
-    return null;
-  }
-
-  return <Realtime websiteId={websiteId} />;
+export default function ({ params: { websiteId } }) {
+  return <WebsiteRealtimePage websiteId={websiteId} />;
 }

@@ -30,7 +30,7 @@ export default async (req: NextApiRequestQueryBody, res: NextApiResponse) => {
 
     const websites = await getUserWebsites(userId, {
       page,
-      pageSize: +pageSize || undefined,
+      pageSize,
       query,
       ...rest,
     });

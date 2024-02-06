@@ -1,8 +1,8 @@
-import Logout from './Logout';
+import LogoutPage from './LogoutPage';
 import { Metadata } from 'next';
 
 export default function () {
-  return <Logout />;
+  return <LogoutPage />;
 }
 
 export const metadata: Metadata = {

@@ -1,4 +1,3 @@
-'use client';
 import { useReports } from 'components/hooks';
 import ReportsTable from './ReportsTable';
 import DataTable from 'components/common/DataTable';

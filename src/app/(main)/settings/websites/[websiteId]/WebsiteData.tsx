@@ -1,4 +1,3 @@
-'use client';
 import { Button, Modal, ModalTrigger, ActionForm, useToasts } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import { useMessages } from 'components/hooks';

@@ -1,3 +1,4 @@
+'use client';
 import App from './App';
 import NavBar from './NavBar';
 import Page from 'components/layout/Page';

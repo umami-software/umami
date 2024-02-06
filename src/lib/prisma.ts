@@ -195,7 +195,7 @@ async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) 
 
   const count = await prisma.client[model].count({ where: (criteria as any).where });
 
-  return { data, count, page: +page, pageSize, orderBy };
+  return { data, count, page: +page, pageSize: size, orderBy };
 }
 
 function getQueryMode(): Prisma.QueryMode {

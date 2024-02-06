@@ -1,20 +1,22 @@
-'use client';
 import { createContext, ReactNode } from 'react';
 import { Loading } from 'react-basics';
+import classNames from 'classnames';
 import { useReport } from 'components/hooks';
 import styles from './Report.module.css';
-import classNames from 'classnames';
 
 export const ReportContext = createContext(null);
 
-export interface ReportProps {
+export function Report({
+  reportId,
+  defaultParameters,
+  children,
+  className,
+}: {
   reportId: string;
   defaultParameters: { [key: string]: any };
   children: ReactNode;
   className?: string;
-}
-
-export function Report({ reportId, defaultParameters, children, className }: ReportProps) {
+}) {
   const report = useReport(reportId, defaultParameters);
 
   if (!report) {

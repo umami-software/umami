@@ -1,4 +1,3 @@
-'use client';
 import PageHeader from 'components/layout/PageHeader';
 import { Icon, Icons, Text } from 'react-basics';
 import { useMessages, useTeamUrl } from 'components/hooks';

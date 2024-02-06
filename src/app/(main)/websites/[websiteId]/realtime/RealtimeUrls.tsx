@@ -1,4 +1,3 @@
-'use client';
 import { Key, useMemo, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import thenby from 'thenby';

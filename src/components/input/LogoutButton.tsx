@@ -9,7 +9,7 @@ export function LogoutButton({
 }) {
   const { formatMessage, labels } = useMessages();
   return (
-    <Link href="/src/app/logout/logout">
+    <Link href="/src/app/logout/LogoutPage">
       <TooltipPopup label={formatMessage(labels.logout)} position={tooltipPosition}>
         <Button variant="quiet">
           <Icon>

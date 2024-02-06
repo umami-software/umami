@@ -1,4 +1,3 @@
-'use client';
 import { useContext, useEffect, useState } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
 import { useFormat, useMessages } from 'components/hooks';

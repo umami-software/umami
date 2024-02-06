@@ -1,4 +1,3 @@
-'use client';
 import { useMemo } from 'react';
 import PageviewsChart from 'components/metrics/PageviewsChart';
 import { useApi, useDateRange, useTimezone, useNavigation } from 'components/hooks';

@@ -1,15 +1,10 @@
-import WebsiteHeader from '../WebsiteHeader';
-import WebsiteEventData from './WebsiteEventData';
+import { Metadata } from 'next';
+import EventDataPage from './EventDataPage';
 
-export default function WebsiteEventDataPage({ params: { websiteId } }) {
-  if (!websiteId) {
-    return null;
-  }
-
-  return (
-    <>
-      <WebsiteHeader websiteId={websiteId} />
-      <WebsiteEventData websiteId={websiteId} />
-    </>
-  );
+export default async function ({ params: { websiteId } }) {
+  return <EventDataPage websiteId={websiteId} />;
 }
+
+export const metadata: Metadata = {
+  title: 'Event Data | Umami',
+};

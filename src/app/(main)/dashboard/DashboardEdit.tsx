@@ -1,4 +1,3 @@
-'use client';
 import { useState, useMemo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';

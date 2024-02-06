@@ -1,4 +1,3 @@
-'use client';
 import { useContext, useRef } from 'react';
 import {
   SubmitButton,
@@ -14,12 +13,7 @@ import { DOMAIN_REGEX } from 'lib/constants';
 import { touch } from 'store/modified';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
-export function WebsiteEditForm({
-  websiteId,
-}: {
-  websiteId: string;
-  onSave?: (data: any) => void;
-}) {
+export function WebsiteEditForm({ websiteId }: { websiteId: string }) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();

@@ -1,4 +1,3 @@
-'use client';
 import { GridTable, GridColumn, Icon, Text } from 'react-basics';
 import { useMessages, useNavigation } from 'components/hooks';
 import Icons from 'components/icons';

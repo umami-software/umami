@@ -1,4 +1,3 @@
-'use client';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import { useMessages, useLocale, useLogin } from 'components/hooks';
 import TeamDeleteForm from './TeamLeaveForm';

@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect, useRef } from 'react';
 
 export function useSticky({ enabled = true, threshold = 1 }) {

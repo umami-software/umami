@@ -1,4 +1,3 @@
-'use client';
 import RetentionTable from './RetentionTable';
 import RetentionParameters from './RetentionParameters';
 import Report from '../[reportId]/Report';

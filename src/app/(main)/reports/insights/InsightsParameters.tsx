@@ -1,4 +1,3 @@
-'use client';
 import { useContext } from 'react';
 import { useFormat, useMessages, useFilters } from 'components/hooks';
 import {

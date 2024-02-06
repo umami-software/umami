@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import RetentionReport from './RetentionReport';
+import RetentionReportPage from './RetentionReportPage';
 
-export default function RetentionReportPage() {
-  return <RetentionReport />;
+export default function () {
+  return <RetentionReportPage />;
 }
 
 export const metadata: Metadata = {

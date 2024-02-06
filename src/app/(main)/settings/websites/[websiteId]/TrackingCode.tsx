@@ -1,4 +1,3 @@
-'use client';
 import { TextArea } from 'react-basics';
 import { useMessages, useConfig } from 'components/hooks';
 

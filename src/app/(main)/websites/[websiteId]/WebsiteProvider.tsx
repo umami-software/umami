@@ -1,4 +1,3 @@
-'use client';
 import { createContext, ReactNode, useEffect } from 'react';
 import { useWebsite } from 'components/hooks';
 import { Loading } from 'react-basics';
