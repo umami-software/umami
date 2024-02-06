@@ -1,10 +1,11 @@
+'use client';
 import Link from 'next/link';
 import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import WebsiteHeader from '../WebsiteHeader';
 import ReportsDataTable from 'app/(main)/reports/ReportsDataTable';
 
-export function WebsiteReports({ websiteId }) {
+export function WebsiteReportsPage({ websiteId }) {
   const { formatMessage, labels } = useMessages();
 
   return (
@@ -25,4 +26,4 @@ export function WebsiteReports({ websiteId }) {
   );
 }
 
-export default WebsiteReports;
+export default WebsiteReportsPage;
