@@ -8,19 +8,13 @@ import {
   TextField,
   SubmitButton,
   PasswordField,
+  useToasts,
 } from 'react-basics';
 import { useApi, useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
+import { useRef } from 'react';
 
-export function UserEditForm({
-  userId,
-  data,
-  onSave,
-}: {
-  userId: string;
-  data: object;
-  onSave?: (data: any) => void;
-}) {
+export function UserEditForm({ userId, data }: { userId: string; data: object }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
@@ -34,11 +28,14 @@ export function UserEditForm({
       role: string;
     }) => post(`/users/${userId}`, { username, password, role }),
   });
+  const ref = useRef(null);
+  const { showToast } = useToasts();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        onSave(data);
+        showToast({ message: formatMessage(messages.saved), variant: 'success' });
+        ref.current.reset(data);
       },
     });
   };
@@ -56,7 +53,7 @@ export function UserEditForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error} values={data} style={{ width: 300 }}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data} style={{ width: 300 }}>
       <FormRow label={formatMessage(labels.username)}>
         <FormInput name="username">
           <TextField />
