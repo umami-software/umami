@@ -1,4 +1,4 @@
-import ReportPage from '../[reportId]/ReportPage';
+import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
@@ -14,7 +14,7 @@ const defaultParameters = {
 
 export default function InsightsReport({ reportId }: { reportId?: string }) {
   return (
-    <ReportPage reportId={reportId} defaultParameters={defaultParameters}>
+    <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Lightbulb />} />
       <ReportMenu>
         <InsightsParameters />
@@ -22,6 +22,6 @@ export default function InsightsReport({ reportId }: { reportId?: string }) {
       <ReportBody>
         <InsightsTable />
       </ReportBody>
-    </ReportPage>
+    </Report>
   );
 }

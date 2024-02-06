@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import EventDataReport from './EventDataReport';
+import EventDataReportPage from './EventDataReportPage';
 
 export default function () {
-  return <EventDataReport />;
+  return <EventDataReportPage />;
 }
 
 export const metadata: Metadata = {

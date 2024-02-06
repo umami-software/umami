@@ -1,6 +1,6 @@
 import RetentionTable from './RetentionTable';
 import RetentionParameters from './RetentionParameters';
-import ReportPage from '../[reportId]/ReportPage';
+import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
@@ -20,7 +20,7 @@ const defaultParameters = {
 
 export default function RetentionReport({ reportId }: { reportId?: string }) {
   return (
-    <ReportPage reportId={reportId} defaultParameters={defaultParameters}>
+    <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Magnet />} />
       <ReportMenu>
         <RetentionParameters />
@@ -28,6 +28,6 @@ export default function RetentionReport({ reportId }: { reportId?: string }) {
       <ReportBody>
         <RetentionTable />
       </ReportBody>
-    </ReportPage>
+    </Report>
   );
 }

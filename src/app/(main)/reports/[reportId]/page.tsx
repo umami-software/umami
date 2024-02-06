@@ -1,12 +1,8 @@
-import ReportDetails from './ReportDetails';
 import { Metadata } from 'next';
+import ReportPage from './ReportPage';
 
-export default function ReportDetailsPage({ params: { reportId } }) {
-  if (!reportId) {
-    return null;
-  }
-
-  return <ReportDetails reportId={reportId} />;
+export default function ({ params: { reportId } }) {
+  return <ReportPage reportId={reportId} />;
 }
 
 export const metadata: Metadata = {

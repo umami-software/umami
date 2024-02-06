@@ -12,7 +12,7 @@ import {
 } from 'react-basics';
 import Icons from 'components/icons';
 import BaseParameters from '../[reportId]/BaseParameters';
-import { ReportContext } from '../[reportId]/ReportPage';
+import { ReportContext } from '../[reportId]/Report';
 import ParameterList from '../[reportId]/ParameterList';
 import FilterSelectForm from '../[reportId]/FilterSelectForm';
 import FieldSelectForm from '../[reportId]/FieldSelectForm';

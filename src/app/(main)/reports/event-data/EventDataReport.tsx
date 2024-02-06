@@ -1,4 +1,4 @@
-import ReportPage from '../[reportId]/ReportPage';
+import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
@@ -13,7 +13,7 @@ const defaultParameters = {
 
 export default function EventDataReport({ reportId }: { reportId?: string }) {
   return (
-    <ReportPage reportId={reportId} defaultParameters={defaultParameters}>
+    <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Nodes />} />
       <ReportMenu>
         <EventDataParameters />
@@ -21,6 +21,6 @@ export default function EventDataReport({ reportId }: { reportId?: string }) {
       <ReportBody>
         <EventDataTable />
       </ReportBody>
-    </ReportPage>
+    </Report>
   );
 }
