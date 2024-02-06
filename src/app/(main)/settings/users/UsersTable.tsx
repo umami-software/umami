@@ -1,4 +1,3 @@
-'use client';
 import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import { ROLES } from 'lib/constants';

@@ -1,15 +1,10 @@
-import TeamWebsites from './TeamWebsites';
-import TeamProvider from 'app/(main)/teams/[teamId]/TeamProvider';
+import TeamWebsitesPage from './TeamWebsitesPage';
 import { Metadata } from 'next';
 
 export default function ({ params: { teamId } }) {
-  return (
-    <TeamProvider teamId={teamId}>
-      <TeamWebsites teamId={teamId} />
-    </TeamProvider>
-  );
+  return <TeamWebsitesPage teamId={teamId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Teams websites - Umami',
+  title: 'Teams Websites - Umami',
 };

@@ -1,4 +1,3 @@
-'use client';
 import { useMessages } from './useMessages';
 import { OPERATORS } from 'lib/constants';
 

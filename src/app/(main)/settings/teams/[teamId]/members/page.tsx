@@ -1,13 +1,8 @@
-import TeamMembers from './TeamMembers';
-import TeamProvider from 'app/(main)/teams/[teamId]/TeamProvider';
+import TeamMembersPage from './TeamMembersPage';
 import { Metadata } from 'next';
 
 export default function ({ params: { teamId } }) {
-  return (
-    <TeamProvider teamId={teamId}>
-      <TeamMembers teamId={teamId} />
-    </TeamProvider>
-  );
+  return <TeamMembersPage teamId={teamId} />;
 }
 
 export const metadata: Metadata = {

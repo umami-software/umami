@@ -1,8 +1,7 @@
-'use client';
 import { useContext } from 'react';
 import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
 import { useMessages, useApi, useNavigation, useTeamUrl } from 'components/hooks';
-import { ReportContext } from './Report';
+import { ReportContext } from './ReportPage';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from 'lib/constants';
 

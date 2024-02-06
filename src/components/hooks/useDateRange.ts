@@ -1,4 +1,3 @@
-'use client';
 import { getMinimumUnit, parseDateRange } from 'lib/date';
 import { setItem } from 'next-basics';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';

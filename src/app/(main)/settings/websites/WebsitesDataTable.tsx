@@ -1,4 +1,3 @@
-'use client';
 import { ReactNode } from 'react';
 import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
 import DataTable from 'components/common/DataTable';

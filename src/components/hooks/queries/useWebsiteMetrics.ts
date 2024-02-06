@@ -1,4 +1,3 @@
-'use client';
 import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
 

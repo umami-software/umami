@@ -1,10 +1,10 @@
-import WebsiteProvider from 'app/(main)/websites/[websiteId]/WebsiteProvider';
-import WebsiteSettings from './WebsiteSettings';
+import WebsitePage from './WebsitePage';
+import { Metadata } from 'next';
 
-export default async function WebsiteSettingsPage({ params: { websiteId } }) {
-  return (
-    <WebsiteProvider websiteId={websiteId}>
-      <WebsiteSettings websiteId={websiteId} />
-    </WebsiteProvider>
-  );
+export default async function ({ params: { websiteId } }) {
+  return <WebsitePage websiteId={websiteId} />;
 }
+
+export const metadata: Metadata = {
+  title: 'Website settings - Umami',
+};

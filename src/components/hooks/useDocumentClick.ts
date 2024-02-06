@@ -1,4 +1,3 @@
-'use client';
 import { useEffect } from 'react';
 
 export function useDocumentClick(handler: (event: MouseEvent) => any) {

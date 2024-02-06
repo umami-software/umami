@@ -1,5 +1,5 @@
-import Settings from './Settings';
+import SettingsLayout from './SettingsLayout';
 
 export default function ({ children }) {
-  return <Settings>{children}</Settings>;
+  return <SettingsLayout>{children}</SettingsLayout>;
 }

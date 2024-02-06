@@ -1,4 +1,3 @@
-'use client';
 import FunnelReport from '../funnel/FunnelReport';
 import EventDataReport from '../event-data/EventDataReport';
 import InsightsReport from '../insights/InsightsReport';

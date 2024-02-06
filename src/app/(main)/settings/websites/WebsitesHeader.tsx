@@ -1,4 +1,3 @@
-'use client';
 import { useMessages } from 'components/hooks';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteAddButton from './WebsiteAddButton';

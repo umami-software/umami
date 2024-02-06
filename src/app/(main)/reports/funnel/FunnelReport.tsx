@@ -1,8 +1,7 @@
-'use client';
 import FunnelChart from './FunnelChart';
 import FunnelTable from './FunnelTable';
 import FunnelParameters from './FunnelParameters';
-import Report from '../[reportId]/Report';
+import ReportPage from '../[reportId]/ReportPage';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
@@ -16,7 +15,7 @@ const defaultParameters = {
 
 export default function FunnelReport({ reportId }: { reportId?: string }) {
   return (
-    <Report reportId={reportId} defaultParameters={defaultParameters}>
+    <ReportPage reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Funnel />} />
       <ReportMenu>
         <FunnelParameters />
@@ -25,6 +24,6 @@ export default function FunnelReport({ reportId }: { reportId?: string }) {
         <FunnelChart />
         <FunnelTable />
       </ReportBody>
-    </Report>
+    </ReportPage>
   );
 }

@@ -1,7 +1,6 @@
-'use client';
 import styles from './ReportMenu.module.css';
 import { useContext } from 'react';
-import { ReportContext } from './Report';
+import { ReportContext } from './ReportPage';
 
 export function ReportMenu({ children }) {
   const { report } = useContext(ReportContext);

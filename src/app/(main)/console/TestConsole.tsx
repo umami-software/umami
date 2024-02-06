@@ -1,4 +1,3 @@
-'use client';
 import { Button } from 'react-basics';
 import Head from 'next/head';
 import Link from 'next/link';

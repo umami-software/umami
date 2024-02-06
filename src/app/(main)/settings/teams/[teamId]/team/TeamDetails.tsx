@@ -1,4 +1,3 @@
-'use client';
 import { useContext, useState } from 'react';
 import { Item, Tabs, Flexbox, Text, Icon } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
@@ -10,7 +9,7 @@ import TeamAdmin from './TeamAdmin';
 import LinkButton from 'components/common/LinkButton';
 import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
 
-export function Team({ teamId }: { teamId: string }) {
+export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
@@ -42,4 +41,4 @@ export function Team({ teamId }: { teamId: string }) {
   );
 }
 
-export default Team;
+export default TeamDetails;

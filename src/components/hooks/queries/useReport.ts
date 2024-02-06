@@ -1,4 +1,3 @@
-'use client';
 import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
 import { useApi } from './useApi';

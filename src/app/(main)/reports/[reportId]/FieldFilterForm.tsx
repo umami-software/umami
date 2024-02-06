@@ -1,4 +1,3 @@
-'use client';
 import { useState, useMemo } from 'react';
 import { Form, FormRow, Item, Flexbox, Dropdown, Button } from 'react-basics';
 import { useMessages, useFilters, useFormat, useLocale } from 'components/hooks';

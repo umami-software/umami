@@ -1,15 +1,8 @@
-import ProfileHeader from './ProfileHeader';
-import ProfileSettings from './ProfileSettings';
 import { Metadata } from 'next';
-import styles from './page.module.css';
+import ProfilePage from './ProfilePage';
 
 export default function () {
-  return (
-    <div className={styles.container}>
-      <ProfileHeader />
-      <ProfileSettings />
-    </div>
-  );
+  return <ProfilePage />;
 }
 
 export const metadata: Metadata = {

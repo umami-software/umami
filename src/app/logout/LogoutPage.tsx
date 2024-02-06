@@ -5,7 +5,7 @@ import { useApi } from 'components/hooks';
 import { setUser } from 'store/app';
 import { removeClientAuthToken } from 'lib/client';
 
-export function Logout() {
+export function LogoutPage() {
   const disabled = !!(process.env.disableLogin || process.env.cloudMode);
   const router = useRouter();
   const { post } = useApi();
@@ -29,4 +29,4 @@ export function Logout() {
   return null;
 }
 
-export default Logout;
+export default LogoutPage;

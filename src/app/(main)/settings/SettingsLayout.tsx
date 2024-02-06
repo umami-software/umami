@@ -1,9 +1,9 @@
 'use client';
 import { ReactNode } from 'react';
 import { useLogin, useMessages } from 'components/hooks';
-import SettingsLayout from 'components/layout/SettingsLayout';
+import MenuLayout from 'components/layout/MenuLayout';
 
-export default function Settings({ children }: { children: ReactNode }) {
+export default function SettingsLayout({ children }: { children: ReactNode }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
 
@@ -21,5 +21,5 @@ export default function Settings({ children }: { children: ReactNode }) {
     },
   ].filter(n => n);
 
-  return <SettingsLayout items={items}>{children}</SettingsLayout>;
+  return <MenuLayout items={items}>{children}</MenuLayout>;
 }

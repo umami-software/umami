@@ -1,4 +1,3 @@
-'use client';
 import { Flexbox, Loading } from 'react-basics';
 import EventDataTable from './EventDataTable';
 import EventDataValueTable from './EventDataValueTable';

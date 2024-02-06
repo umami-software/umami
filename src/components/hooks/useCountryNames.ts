@@ -1,4 +1,3 @@
-'use client';
 import { useState, useEffect } from 'react';
 import { httpGet } from 'next-basics';
 import enUS from '../../../public/intl/country/en-US.json';

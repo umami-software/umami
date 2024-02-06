@@ -1,4 +1,3 @@
-'use client';
 import { useEffect } from 'react';
 import useStore, { setConfig } from 'store/app';
 import { useApi } from './useApi';

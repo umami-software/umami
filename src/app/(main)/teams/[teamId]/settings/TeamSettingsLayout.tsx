@@ -1,6 +1,6 @@
 'use client';
 import { ReactNode } from 'react';
-import SettingsLayout from 'components/layout/SettingsLayout';
+import MenuLayout from 'components/layout/MenuLayout';
 import { useMessages } from 'components/hooks';
 
 export default function ({ children, teamId }: { children: ReactNode; teamId: string }) {
@@ -24,5 +24,5 @@ export default function ({ children, teamId }: { children: ReactNode; teamId: st
     },
   ].filter(n => n);
 
-  return <SettingsLayout items={items}>{children}</SettingsLayout>;
+  return <MenuLayout items={items}>{children}</MenuLayout>;
 }

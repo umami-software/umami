@@ -1,4 +1,3 @@
-'use client';
 import { Loading } from 'react-basics';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';

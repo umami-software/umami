@@ -10,7 +10,7 @@ import { useMessages, useLocale, useTeamUrl, useWebsites } from 'components/hook
 import useDashboard from 'store/dashboard';
 import LinkButton from 'components/common/LinkButton';
 
-export function Dashboard() {
+export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
   const { teamId, renderTeamUrl } = useTeamUrl();
   const { showCharts, editing } = useDashboard();
@@ -68,4 +68,4 @@ export function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardPage;

@@ -1,4 +1,3 @@
-'use client';
 import useMessages from './useMessages';
 import { BROWSERS } from 'lib/constants';
 import useLocale from './useLocale';

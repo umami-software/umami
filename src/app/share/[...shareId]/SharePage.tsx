@@ -1,12 +1,12 @@
 'use client';
-import WebsiteDetails from '../../(main)/websites/[websiteId]/WebsiteDetails';
+import WebsiteDetails from 'app/(main)/websites/[websiteId]/WebsiteDetails';
 import { useShareToken } from 'components/hooks';
-import styles from './Share.module.css';
 import Page from 'components/layout/Page';
 import Header from './Header';
 import Footer from './Footer';
+import styles from './SharePage.module.css';
 
-export default function Share({ shareId }) {
+export default function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareToken(shareId);
 
   if (isLoading || !shareToken) {

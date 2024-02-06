@@ -1,4 +1,3 @@
-'use client';
 import { useContext, useRef } from 'react';
 import {
   SubmitButton,

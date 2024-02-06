@@ -1,4 +1,3 @@
-'use client';
 import { useApi, useMessages } from 'components/hooks';
 import { touch } from 'store/modified';
 import TypeConfirmationForm from 'components/common/TypeConfirmationForm';

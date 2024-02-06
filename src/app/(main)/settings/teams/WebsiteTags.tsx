@@ -1,4 +1,3 @@
-'use client';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import styles from './WebsiteTags.module.css';
 

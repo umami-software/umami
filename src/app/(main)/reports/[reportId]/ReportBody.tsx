@@ -1,7 +1,6 @@
-'use client';
 import styles from './ReportBody.module.css';
 import { useContext } from 'react';
-import { ReportContext } from './Report';
+import { ReportContext } from './ReportPage';
 
 export function ReportBody({ children }) {
   const { report } = useContext(ReportContext);

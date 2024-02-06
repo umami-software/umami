@@ -1,4 +1,3 @@
-'use client';
 import DataTable from 'components/common/DataTable';
 import TeamsTable from 'app/(main)/settings/teams/TeamsTable';
 import { useTeams } from 'components/hooks';

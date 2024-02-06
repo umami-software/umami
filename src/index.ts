@@ -1,17 +1,17 @@
 export * from 'components/hooks';
 
 export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembers';
+export * from './app/(main)/settings/teams/[teamId]/members/TeamMembersPage';
 export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersDataTable';
 export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersTable';
 
-export * from 'app/(main)/settings/teams/[teamId]/team/Team';
+export * from './app/(main)/settings/teams/[teamId]/team/TeamDetails';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamAdmin';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamDeleteForm';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamEditForm';
 
 export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsiteRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsites';
+export * from './app/(main)/settings/teams/[teamId]/websites/TeamWebsitesPage';
 export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesDataTable';
 export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesTable';
 

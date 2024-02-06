@@ -1,8 +1,8 @@
-import FunnelReport from './FunnelReport';
+import FunnelReportPage from './FunnelReportPage';
 import { Metadata } from 'next';
 
-export default function FunnelReportPage() {
-  return <FunnelReport />;
+export default function () {
+  return <FunnelReportPage />;
 }
 
 export const metadata: Metadata = {

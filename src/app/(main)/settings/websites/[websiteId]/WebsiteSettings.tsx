@@ -1,4 +1,3 @@
-'use client';
 import { useState, Key, useContext } from 'react';
 import { Item, Tabs, Button, Text, Icon } from 'react-basics';
 import Link from 'next/link';

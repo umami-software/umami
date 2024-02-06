@@ -1,11 +1,9 @@
-'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
-import { useApi } from 'components/hooks';
+import { useApi, useMessages } from 'components/hooks';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useMessages } from 'components/hooks';
 
 export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();

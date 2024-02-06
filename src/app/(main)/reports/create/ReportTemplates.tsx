@@ -1,4 +1,3 @@
-'use client';
 import Link from 'next/link';
 import { Button, Icons, Text, Icon } from 'react-basics';
 import PageHeader from 'components/layout/PageHeader';
@@ -7,30 +6,6 @@ import Lightbulb from 'assets/lightbulb.svg';
 import Magnet from 'assets/magnet.svg';
 import styles from './ReportTemplates.module.css';
 import { useMessages, useTeamUrl } from 'components/hooks';
-
-function ReportItem({ title, description, url, icon }) {
-  const { formatMessage, labels } = useMessages();
-
-  return (
-    <div className={styles.report}>
-      <div className={styles.title}>
-        <Icon size="lg">{icon}</Icon>
-        <Text>{title}</Text>
-      </div>
-      <div className={styles.description}>{description}</div>
-      <div className={styles.buttons}>
-        <Link href={url}>
-          <Button variant="primary">
-            <Icon>
-              <Icons.Plus />
-            </Icon>
-            <Text>{formatMessage(labels.create)}</Text>
-          </Button>
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
@@ -68,6 +43,30 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
         })}
       </div>
     </>
+  );
+}
+
+function ReportItem({ title, description, url, icon }) {
+  const { formatMessage, labels } = useMessages();
+
+  return (
+    <div className={styles.report}>
+      <div className={styles.title}>
+        <Icon size="lg">{icon}</Icon>
+        <Text>{title}</Text>
+      </div>
+      <div className={styles.description}>{description}</div>
+      <div className={styles.buttons}>
+        <Link href={url}>
+          <Button variant="primary">
+            <Icon>
+              <Icons.Plus />
+            </Icon>
+            <Text>{formatMessage(labels.create)}</Text>
+          </Button>
+        </Link>
+      </div>
+    </div>
   );
 }
 

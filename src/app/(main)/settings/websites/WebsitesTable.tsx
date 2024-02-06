@@ -1,4 +1,3 @@
-'use client';
 import { ReactNode } from 'react';
 import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { useMessages, useTeamUrl } from 'components/hooks';

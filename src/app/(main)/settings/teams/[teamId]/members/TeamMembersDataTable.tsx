@@ -1,4 +1,3 @@
-'use client';
 import DataTable from 'components/common/DataTable';
 import TeamMembersTable from './TeamMembersTable';
 import { useTeamMembers } from 'components/hooks';

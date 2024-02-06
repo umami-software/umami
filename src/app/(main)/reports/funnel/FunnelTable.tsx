@@ -1,8 +1,7 @@
-'use client';
 import { useContext } from 'react';
 import ListTable from 'components/metrics/ListTable';
 import { useMessages } from 'components/hooks';
-import { ReportContext } from '../[reportId]/Report';
+import { ReportContext } from '../[reportId]/ReportPage';
 
 export function FunnelTable() {
   const { report } = useContext(ReportContext);

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import Websites from './Websites';
+import WebsitesPage from './WebsitesPage';
 
 export default function ({ params: { teamId } }: { params: { teamId: string } }) {
-  return <Websites teamId={teamId} />;
+  return <WebsitesPage teamId={teamId} />;
 }
 
 export const metadata: Metadata = {

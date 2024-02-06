@@ -1,4 +1,3 @@
-'use client';
 import MetricCard from 'components/metrics/MetricCard';
 import { useMessages } from 'components/hooks';
 import { RealtimeData } from 'lib/types';

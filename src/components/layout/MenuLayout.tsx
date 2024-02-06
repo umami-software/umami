@@ -1,10 +1,9 @@
-'use client';
 import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import SideNav from 'components/layout/SideNav';
-import styles from './SettingsLayout.module.css';
+import styles from './MenuLayout.module.css';
 
-export function SettingsLayout({ items = [], children }: { items: any[]; children: ReactNode }) {
+export function MenuLayout({ items = [], children }: { items: any[]; children: ReactNode }) {
   const pathname = usePathname();
   const cloudMode = !!process.env.cloudMode;
 
@@ -22,4 +21,4 @@ export function SettingsLayout({ items = [], children }: { items: any[]; childre
   );
 }
 
-export default SettingsLayout;
+export default MenuLayout;

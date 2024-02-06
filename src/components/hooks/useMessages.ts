@@ -1,4 +1,3 @@
-'use client';
 import { useIntl, FormattedMessage } from 'react-intl';
 import { messages, labels } from 'components/messages';
 

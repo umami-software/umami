@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import EventDataReport from './EventDataReport';
 
-export default function EventDataReportPage() {
+export default function () {
   return <EventDataReport />;
 }
 

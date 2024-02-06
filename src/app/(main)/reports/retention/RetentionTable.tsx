@@ -1,7 +1,6 @@
-'use client';
 import { useContext } from 'react';
 import classNames from 'classnames';
-import { ReportContext } from '../[reportId]/Report';
+import { ReportContext } from '../[reportId]/ReportPage';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { useMessages, useLocale } from 'components/hooks';
 import { formatDate } from 'lib/date';

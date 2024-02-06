@@ -1,5 +1,5 @@
-import TeamSettings from './TeamSettings';
+import TeamSettingsLayout from './TeamSettingsLayout';
 
 export default function ({ children, params: { teamId } }) {
-  return <TeamSettings teamId={teamId}>{children}</TeamSettings>;
+  return <TeamSettingsLayout teamId={teamId}>{children}</TeamSettingsLayout>;
 }
