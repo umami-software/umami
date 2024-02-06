@@ -1,16 +1,21 @@
 export * from 'components/hooks';
 
-export * from 'app/(main)/settings/teams/[teamId]/TeamData';
-export * from 'app/(main)/settings/teams/[teamId]/TeamEditForm';
-export * from 'app/(main)/settings/teams/[teamId]/TeamMemberRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/TeamMembers';
-export * from 'app/(main)/settings/teams/[teamId]/TeamMembersTable';
-export * from 'app/(main)/settings/teams/[teamId]/TeamSettings';
-export * from 'app/(main)/settings/teams/[teamId]/TeamWebsiteRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/TeamWebsites';
-export * from 'app/(main)/settings/teams/[teamId]/TeamWebsitesTable';
+export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberRemoveButton';
+export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembers';
+export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersDataTable';
+export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersTable';
+
+export * from 'app/(main)/settings/teams/[teamId]/team/Team';
+export * from 'app/(main)/settings/teams/[teamId]/team/TeamAdmin';
+export * from 'app/(main)/settings/teams/[teamId]/team/TeamDeleteForm';
+export * from 'app/(main)/settings/teams/[teamId]/team/TeamEditForm';
+
+export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsiteRemoveButton';
+export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsites';
+export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesDataTable';
+export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesTable';
+
 export * from 'app/(main)/settings/teams/TeamAddForm';
-export * from 'app/(main)/settings/teams/TeamDeleteForm';
 export * from 'app/(main)/settings/teams/TeamsHeader';
 export * from 'app/(main)/settings/teams/TeamJoinForm';
 export * from 'app/(main)/settings/teams/TeamLeaveForm';

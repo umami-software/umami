@@ -35,7 +35,7 @@ export function TeamWebsitesTable({
               )}
               <LinkButton href={`/teams/${teamId}/websites/${websiteId}`}>
                 <Icon>
-                  <Icons.Change />
+                  <Icons.ArrowRight />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </LinkButton>

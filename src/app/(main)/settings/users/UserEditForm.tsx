@@ -49,7 +49,7 @@ export function UserEditForm({
       return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(labels.admin);
+      return formatMessage(labels.administrator);
     }
     if (value === ROLES.viewOnly) {
       return formatMessage(labels.viewOnly);
@@ -78,7 +78,7 @@ export function UserEditForm({
           <Dropdown renderValue={renderValue}>
             <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
             <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
+            <Item key={ROLES.admin}>{formatMessage(labels.administrator)}</Item>
           </Dropdown>
         </FormInput>
       </FormRow>

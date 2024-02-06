@@ -3,7 +3,13 @@ import DataTable from 'components/common/DataTable';
 import TeamMembersTable from './TeamMembersTable';
 import { useTeamMembers } from 'components/hooks';
 
-export function TeamMembers({ teamId, allowEdit }: { teamId: string; allowEdit: boolean }) {
+export function TeamMembersDataTable({
+  teamId,
+  allowEdit = false,
+}: {
+  teamId: string;
+  allowEdit?: boolean;
+}) {
   const queryResult = useTeamMembers(teamId);
 
   return (
@@ -13,4 +19,4 @@ export function TeamMembers({ teamId, allowEdit }: { teamId: string; allowEdit: 
   );
 }
 
-export default TeamMembers;
+export default TeamMembersDataTable;

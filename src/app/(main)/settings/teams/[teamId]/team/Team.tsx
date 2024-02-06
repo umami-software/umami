@@ -6,13 +6,11 @@ import { ROLES } from 'lib/constants';
 import Icons from 'components/icons';
 import { useLogin, useMessages } from 'components/hooks';
 import TeamEditForm from './TeamEditForm';
-import TeamMembers from './TeamMembers';
-import TeamWebsites from './TeamWebsites';
-import TeamData from './TeamData';
+import TeamAdmin from './TeamAdmin';
 import LinkButton from 'components/common/LinkButton';
 import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
 
-export function TeamSettings({ teamId }: { teamId: string }) {
+export function Team({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
@@ -25,25 +23,23 @@ export function TeamSettings({ teamId }: { teamId: string }) {
   return (
     <Flexbox direction="column">
       <PageHeader title={team?.name} icon={<Icons.Users />}>
-        <LinkButton href={`/teams/${teamId}`} variant="primary">
-          <Icon>
-            <Icons.Change />
-          </Icon>
-          <Text>{formatMessage(labels.view)}</Text>
-        </LinkButton>
+        {!canEdit && (
+          <LinkButton href={`/teams/${teamId}`}>
+            <Icon>
+              <Icons.Logout />
+            </Icon>
+            <Text>{formatMessage(labels.leaveTeam)}</Text>
+          </LinkButton>
+        )}
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
-        <Item key="members">{formatMessage(labels.members)}</Item>
-        <Item key="websites">{formatMessage(labels.websites)}</Item>
-        <Item key="data">{formatMessage(labels.data)}</Item>
+        <Item key="admin">{formatMessage(labels.admin)}</Item>
       </Tabs>
       {tab === 'details' && <TeamEditForm teamId={teamId} allowEdit={canEdit} />}
-      {tab === 'members' && <TeamMembers teamId={teamId} allowEdit={canEdit} />}
-      {tab === 'websites' && <TeamWebsites teamId={teamId} allowEdit={canEdit} />}
-      {canEdit && tab === 'data' && <TeamData teamId={teamId} />}
+      {canEdit && tab === 'admin' && <TeamAdmin teamId={teamId} />}
     </Flexbox>
   );
 }
 
-export default TeamSettings;
+export default Team;

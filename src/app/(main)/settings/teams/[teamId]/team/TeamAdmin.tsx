@@ -1,9 +1,9 @@
 'use client';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import { useMessages } from 'components/hooks';
-import TeamDeleteForm from '../TeamDeleteForm';
+import TeamDeleteForm from './TeamDeleteForm';
 
-export function TeamData({ teamId }: { teamId: string }) {
+export function TeamAdmin({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
 
   return (
@@ -21,4 +21,4 @@ export function TeamData({ teamId }: { teamId: string }) {
   );
 }
 
-export default TeamData;
+export default TeamAdmin;

@@ -11,7 +11,7 @@ import { ROLES } from 'lib/constants';
 export function ProfileSettings() {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
-  const cloudMode = Boolean(process.env.cloudMode);
+  const cloudMode = !!process.env.cloudMode;
 
   if (!user) {
     return null;
@@ -24,7 +24,7 @@ export function ProfileSettings() {
       return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(labels.admin);
+      return formatMessage(labels.administrator);
     }
     if (value === ROLES.viewOnly) {
       return formatMessage(labels.viewOnly);

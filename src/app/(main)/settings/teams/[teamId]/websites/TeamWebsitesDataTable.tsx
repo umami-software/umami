@@ -3,7 +3,13 @@ import DataTable from 'components/common/DataTable';
 import { useTeamWebsites } from 'components/hooks';
 import TeamWebsitesTable from './TeamWebsitesTable';
 
-export function TeamWebsites({ teamId, allowEdit }: { teamId: string; allowEdit: boolean }) {
+export function TeamWebsitesDataTable({
+  teamId,
+  allowEdit = false,
+}: {
+  teamId: string;
+  allowEdit?: boolean;
+}) {
   const queryResult = useTeamWebsites(teamId);
 
   return (
@@ -13,4 +19,4 @@ export function TeamWebsites({ teamId, allowEdit }: { teamId: string; allowEdit:
   );
 }
 
-export default TeamWebsites;
+export default TeamWebsitesDataTable;
