@@ -1,3 +1,4 @@
+'use client';
 import { createContext, ReactNode, useEffect } from 'react';
 import { useTeam } from 'components/hooks';
 import { Loading } from 'react-basics';
