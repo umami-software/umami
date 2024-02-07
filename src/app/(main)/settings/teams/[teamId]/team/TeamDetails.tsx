@@ -26,10 +26,10 @@ export function TeamDetails({ teamId }: { teamId: string }) {
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
-        <Item key="admin">{formatMessage(labels.admin)}</Item>
+        {canEdit && <Item key="admin">{formatMessage(labels.admin)}</Item>}
       </Tabs>
       {tab === 'details' && <TeamEditForm teamId={teamId} allowEdit={canEdit} />}
-      {canEdit && tab === 'admin' && <TeamAdmin teamId={teamId} />}
+      {tab === 'admin' && <TeamAdmin teamId={teamId} />}
     </Flexbox>
   );
 }
