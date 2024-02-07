@@ -7,7 +7,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUserTeams } from 'queries';
 
 export interface UserTeamsRequestQuery extends SearchFilter {
-  id: string;
+  userId: string;
 }
 
 export interface UserTeamsRequestBody {
@@ -18,13 +18,13 @@ export interface UserTeamsRequestBody {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    userId: yup.string().uuid().required(),
     ...pageInfo,
   }),
 };
 
 export default async (
-  req: NextApiRequestQueryBody<any, UserTeamsRequestBody>,
+  req: NextApiRequestQueryBody<UserTeamsRequestQuery, UserTeamsRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
@@ -41,7 +41,7 @@ export default async (
 
     const { page, query, pageSize } = req.query;
 
-    const teams = await getUserTeams(userId, {
+    const teams = await getUserTeams(userId as string, {
       query,
       page,
       pageSize,

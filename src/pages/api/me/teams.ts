@@ -1,4 +1,4 @@
-import { useCors, useValidate } from 'lib/middleware';
+import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
@@ -14,6 +14,7 @@ const schema = {
 
 export default async (req: NextApiRequestQueryBody, res: NextApiResponse) => {
   await useCors(req, res);
+  await useAuth(req, res);
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
