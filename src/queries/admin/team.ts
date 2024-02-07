@@ -46,6 +46,7 @@ export async function getUserTeams(userId: string, filters: TeamSearchFilter = {
   return getTeams(
     {
       where: {
+        deletedAt: null,
         teamUser: {
           some: { userId },
         },
