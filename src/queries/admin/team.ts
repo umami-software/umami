@@ -5,8 +5,8 @@ import prisma from 'lib/prisma';
 import { FilterResult, TeamSearchFilter } from 'lib/types';
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
 
-export async function findTeam(criteria: Prisma.TeamFindFirstArgs): Promise<Team> {
-  return prisma.client.team.findFirst(criteria);
+export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {
+  return prisma.client.team.findUnique(criteria);
 }
 
 export async function getTeam(teamId: string, options: { includeMembers?: boolean } = {}) {

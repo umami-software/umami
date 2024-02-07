@@ -4,7 +4,7 @@ import prisma from 'lib/prisma';
 import { FilterResult, WebsiteSearchFilter } from 'lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
 
-async function findWebsite(criteria: Prisma.WebsiteFindManyArgs): Promise<Website> {
+async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
   return prisma.client.website.findUnique(criteria);
 }
 
@@ -106,7 +106,7 @@ export async function createWebsite(
     .create({
       data,
     })
-    .then(async (data: { id: any }) => {
+    .then(async data => {
       if (cache.enabled) {
         await cache.storeWebsite(data);
       }
