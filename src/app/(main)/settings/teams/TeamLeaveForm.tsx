@@ -35,7 +35,7 @@ export function TeamLeaveForm({
     <ConfirmationForm
       buttonLabel={formatMessage(labels.leave)}
       message={
-        <FormattedMessage {...messages.confirmDelete} values={{ target: <b>{teamName}</b> }} />
+        <FormattedMessage {...messages.confirmLeave} values={{ target: <b>{teamName}</b> }} />
       }
       onConfirm={handleConfirm}
       onClose={onClose}

@@ -1,23 +1,23 @@
+import { useLocale, useLogin, useMessages } from 'components/hooks';
+import { useRouter } from 'next/navigation';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useMessages, useLocale, useLogin } from 'components/hooks';
+import { touch } from 'store/modified';
 import TeamDeleteForm from './TeamLeaveForm';
 
-export function TeamLeaveButton({
-  teamId,
-  teamName,
-  onLeave,
-}: {
-  teamId: string;
-  teamName: string;
-  onLeave?: () => void;
-}) {
+export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName: string }) {
   const { formatMessage, labels } = useMessages();
+  const router = useRouter();
   const { dir } = useLocale();
   const { user } = useLogin();
 
+  const handleLeave = async () => {
+    touch('teams');
+    router.push('/settings/teams');
+  };
+
   return (
     <ModalTrigger>
-      <Button>
+      <Button variant="secondary">
         <Icon rotate={dir === 'rtl' ? 180 : 0}>
           <Icons.Logout />
         </Icon>
@@ -29,7 +29,7 @@ export function TeamLeaveButton({
             teamId={teamId}
             userId={user.id}
             teamName={teamName}
-            onSave={onLeave}
+            onSave={handleLeave}
             onClose={close}
           />
         )}

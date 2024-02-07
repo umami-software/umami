@@ -1,13 +1,13 @@
-import { useContext, useState } from 'react';
-import { Item, Tabs, Flexbox, Text, Icon } from 'react-basics';
+import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
+import { useLogin, useMessages } from 'components/hooks';
+import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';
-import Icons from 'components/icons';
-import { useLogin, useMessages } from 'components/hooks';
-import TeamEditForm from './TeamEditForm';
+import { useContext, useState } from 'react';
+import { Flexbox, Item, Tabs } from 'react-basics';
+import TeamLeaveButton from '../../TeamLeaveButton';
 import TeamAdmin from './TeamAdmin';
-import LinkButton from 'components/common/LinkButton';
-import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
+import TeamEditForm from './TeamEditForm';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -22,14 +22,7 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   return (
     <Flexbox direction="column">
       <PageHeader title={team?.name} icon={<Icons.Users />}>
-        {!canEdit && (
-          <LinkButton href={`/teams/${teamId}`}>
-            <Icon>
-              <Icons.Logout />
-            </Icon>
-            <Text>{formatMessage(labels.leaveTeam)}</Text>
-          </LinkButton>
-        )}
+        {!canEdit && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
