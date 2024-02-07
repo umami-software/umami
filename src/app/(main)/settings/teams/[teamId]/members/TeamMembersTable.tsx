@@ -6,7 +6,7 @@ import TeamMemberRemoveButton from './TeamMemberRemoveButton';
 export function TeamMembersTable({
   data = [],
   teamId,
-  allowEdit,
+  allowEdit = false,
 }: {
   data: any[];
   teamId: string;
