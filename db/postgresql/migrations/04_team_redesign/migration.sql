@@ -5,7 +5,7 @@
 
 */
 -- AlterTable
-ALTER TABLE "team" ADD COLUMN     "deleted_at" TIMESTAMPTZ(6) DEFAULT CURRENT_TIMESTAMP,
+ALTER TABLE "team" ADD COLUMN     "deleted_at" TIMESTAMPTZ(6),
 ADD COLUMN     "logo_url" VARCHAR(2183);
 
 -- AlterTable
@@ -27,5 +27,3 @@ CREATE INDEX "website_team_id_idx" ON "website"("team_id");
 
 -- CreateIndex
 CREATE INDEX "website_created_by_idx" ON "website"("created_by");
-
-
