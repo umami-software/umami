@@ -221,7 +221,7 @@ export async function deleteUser(
         id: userId,
       },
     }),
-  ]).then(async (data: any) => {
+  ]).then(async data => {
     if (cache.enabled) {
       const ids = websites.map(a => a.id);
 

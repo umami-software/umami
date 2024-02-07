@@ -15,7 +15,7 @@ export function WebsiteDeleteForm({
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, isPending, error } = useMutation({
-    mutationFn: (data: any) => del(`/websites/${websiteId}`, data),
+    mutationFn: () => del(`/websites/${websiteId}`),
   });
 
   const handleConfirm = async () => {

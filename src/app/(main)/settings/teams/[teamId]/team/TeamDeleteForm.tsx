@@ -16,7 +16,7 @@ export function TeamDeleteForm({
   const { labels, formatMessage } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => del(`/teams/${teamId}`, data),
+    mutationFn: () => del(`/teams/${teamId}`),
   });
 
   const handleConfirm = async () => {

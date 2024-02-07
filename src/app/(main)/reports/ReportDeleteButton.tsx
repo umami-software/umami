@@ -49,6 +49,7 @@ export function ReportDeleteButton({
             error={error}
             onConfirm={handleConfirm.bind(null, close)}
             onClose={close}
+            buttonLabel={formatMessage(labels.delete)}
           />
         )}
       </Modal>

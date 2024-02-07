@@ -1,14 +1,13 @@
-import {
-  Form,
-  FormRow,
-  FormInput,
-  FormButtons,
-  TextField,
-  Button,
-  SubmitButton,
-} from 'react-basics';
-import { touch } from 'store/modified';
 import { useApi, useMessages } from 'components/hooks';
+import {
+  Button,
+  Form,
+  FormButtons,
+  FormInput,
+  FormRow,
+  SubmitButton,
+  TextField,
+} from 'react-basics';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();
@@ -20,7 +19,6 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        touch('teams');
         onSave?.();
         onClose?.();
       },

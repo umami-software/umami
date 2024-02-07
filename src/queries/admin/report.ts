@@ -1,10 +1,9 @@
 import { Prisma, Report } from '@prisma/client';
 import prisma from 'lib/prisma';
 import { FilterResult, ReportSearchFilter } from 'lib/types';
-import ReportFindUniqueArgs = Prisma.ReportFindUniqueArgs;
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
-async function findReport(criteria: ReportFindUniqueArgs) {
+async function findReport(criteria: Prisma.ReportFindUniqueArgs): Promise<Report> {
   return prisma.client.report.findUnique(criteria);
 }
 
