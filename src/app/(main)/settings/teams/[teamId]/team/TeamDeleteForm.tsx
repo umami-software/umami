@@ -1,6 +1,5 @@
-import { useApi, useMessages } from 'components/hooks';
-import { touch } from 'store/modified';
 import TypeConfirmationForm from 'components/common/TypeConfirmationForm';
+import { useApi, useMessages } from 'components/hooks';
 
 const CONFIRM_VALUE = 'DELETE';
 
@@ -22,7 +21,6 @@ export function TeamDeleteForm({
   const handleConfirm = async () => {
     mutate(null, {
       onSuccess: async () => {
-        touch('teams');
         onSave?.();
         onClose?.();
       },

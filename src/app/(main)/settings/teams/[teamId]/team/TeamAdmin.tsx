@@ -1,9 +1,17 @@
-import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import { useMessages } from 'components/hooks';
+import { useRouter } from 'next/navigation';
+import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';
+import { touch } from 'store/modified';
 
 export function TeamAdmin({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
+  const router = useRouter();
+
+  const handleLeave = async () => {
+    touch('teams');
+    router.push('/settings/teams');
+  };
 
   return (
     <ActionForm
@@ -13,7 +21,9 @@ export function TeamAdmin({ teamId }: { teamId: string }) {
       <ModalTrigger>
         <Button variant="danger">{formatMessage(labels.delete)}</Button>
         <Modal title={formatMessage(labels.deleteTeam)}>
-          {(close: () => void) => <TeamDeleteForm teamId={teamId} onClose={close} />}
+          {(close: () => void) => (
+            <TeamDeleteForm teamId={teamId} onSave={handleLeave} onClose={close} />
+          )}
         </Modal>
       </ModalTrigger>
     </ActionForm>
