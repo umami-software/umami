@@ -5,21 +5,21 @@ import useModified from 'store/modified';
 
 export const TeamContext = createContext(null);
 
-export function TeamProvider({ teamId, children }: { teamId: string; children: ReactNode }) {
+export function TeamProvider({ teamId, children }: { teamId?: string; children: ReactNode }) {
   const modified = useModified(state => state?.[`team:${teamId}`]);
   const { data: team, isLoading, isFetching, refetch } = useTeam(teamId);
 
   useEffect(() => {
-    if (modified) {
+    if (teamId && modified) {
       refetch();
     }
-  }, [modified]);
+  }, [teamId, modified]);
 
   if (isFetching && isLoading) {
     return <Loading />;
   }
 
-  if (!team) {
+  if (teamId && !team) {
     return null;
   }
 
