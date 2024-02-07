@@ -24,7 +24,7 @@ export function TeamLeaveForm({
   const handleConfirm = async () => {
     mutate(null, {
       onSuccess: async () => {
-        touch('team:members');
+        touch('teams:members');
         onSave();
         onClose();
       },

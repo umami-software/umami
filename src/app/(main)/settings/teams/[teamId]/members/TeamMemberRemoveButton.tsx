@@ -22,7 +22,7 @@ export function TeamMemberRemoveButton({
   const handleRemoveTeamMember = () => {
     mutate(null, {
       onSuccess: () => {
-        touch('team:members');
+        touch('teams:members');
         onSave?.();
       },
     });

@@ -4,10 +4,10 @@ import useFilterQuery from './useFilterQuery';
 
 export function useTeamMembers(teamId: string) {
   const { get } = useApi();
-  const modified = useModified((state: any) => state?.['team:users']);
+  const modified = useModified((state: any) => state?.['teams:members']);
 
   return useFilterQuery({
-    queryKey: ['teams:users', { teamId, modified }],
+    queryKey: ['teams:members', { teamId, modified }],
     queryFn: (params: any) => {
       return get(`/teams/${teamId}/users`, params);
     },
