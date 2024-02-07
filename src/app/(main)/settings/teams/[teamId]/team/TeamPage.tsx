@@ -2,7 +2,7 @@
 import TeamProvider from 'app/(main)/teams/[teamId]/TeamProvider';
 import TeamDetails from './TeamDetails';
 
-export function TeamMembersPage({ teamId }: { teamId: string }) {
+export function TeamPage({ teamId }: { teamId: string }) {
   return (
     <TeamProvider teamId={teamId}>
       <TeamDetails teamId={teamId} />
@@ -10,4 +10,4 @@ export function TeamMembersPage({ teamId }: { teamId: string }) {
   );
 }
 
-export default TeamMembersPage;
+export default TeamPage;
