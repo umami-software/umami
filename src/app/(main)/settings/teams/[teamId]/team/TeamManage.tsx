@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';
 
-export function TeamAdmin({ teamId }: { teamId: string }) {
+export function TeamManage({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
   const router = useRouter();
   const { touch } = useModified();
@@ -30,4 +30,4 @@ export function TeamAdmin({ teamId }: { teamId: string }) {
   );
 }
 
-export default TeamAdmin;
+export default TeamManage;

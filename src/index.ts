@@ -4,7 +4,7 @@ export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberRemoveButton
 export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersDataTable';
 export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersTable';
 
-export * from 'app/(main)/settings/teams/[teamId]/team/TeamAdmin';
+export * from './app/(main)/settings/teams/[teamId]/team/TeamManage';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamDeleteForm';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamDetails';
 export * from 'app/(main)/settings/teams/[teamId]/team/TeamEditForm';
