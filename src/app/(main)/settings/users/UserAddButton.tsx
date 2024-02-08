@@ -1,11 +1,11 @@
 import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
 import UserAddForm from './UserAddForm';
-import { useMessages } from 'components/hooks';
-import { touch } from 'store/modified';
+import { useMessages, useModified } from 'components/hooks';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
   const { showToast } = useToasts();
+  const { touch } = useModified();
 
   const handleSave = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });

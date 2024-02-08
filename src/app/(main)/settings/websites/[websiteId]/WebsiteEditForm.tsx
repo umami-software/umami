@@ -8,9 +8,8 @@ import {
   TextField,
   useToasts,
 } from 'react-basics';
-import { useApi, useMessages } from 'components/hooks';
+import { useApi, useMessages, useModified } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
-import { touch } from 'store/modified';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export function WebsiteEditForm({ websiteId }: { websiteId: string }) {
@@ -22,6 +21,7 @@ export function WebsiteEditForm({ websiteId }: { websiteId: string }) {
   });
   const ref = useRef(null);
   const { showToast } = useToasts();
+  const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

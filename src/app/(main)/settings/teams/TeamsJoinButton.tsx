@@ -1,12 +1,12 @@
 import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import Icons from 'components/icons';
-import { useMessages } from 'components/hooks';
+import { useMessages, useModified } from 'components/hooks';
 import TeamJoinForm from './TeamJoinForm';
-import { touch } from 'store/modified';
 
 export function TeamsJoinButton() {
   const { formatMessage, labels, messages } = useMessages();
   const { showToast } = useToasts();
+  const { touch } = useModified();
 
   const handleJoin = () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });

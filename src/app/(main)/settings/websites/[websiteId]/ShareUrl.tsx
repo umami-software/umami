@@ -11,9 +11,8 @@ import {
 } from 'react-basics';
 import { useContext, useState } from 'react';
 import { getRandomChars } from 'next-basics';
-import { useApi, useMessages } from 'components/hooks';
+import { useApi, useMessages, useModified } from 'components/hooks';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
-import { touch } from 'store/modified';
 
 const generateId = () => getRandomChars(16);
 
@@ -33,6 +32,7 @@ export function ShareUrl({
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post(`/websites/${website.id}`, data),
   });
+  const { touch } = useModified();
 
   const url = `${hostUrl || process.env.hostUrl || window?.location.origin}${
     process.env.basePath

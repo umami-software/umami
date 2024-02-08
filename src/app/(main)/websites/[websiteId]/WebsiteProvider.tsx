@@ -1,7 +1,6 @@
 import { createContext, ReactNode, useEffect } from 'react';
-import { useWebsite } from 'components/hooks';
+import { useModified, useWebsite } from 'components/hooks';
 import { Loading } from 'react-basics';
-import useModified from 'store/modified';
 
 export const WebsiteContext = createContext(null);
 
@@ -12,7 +11,7 @@ export function WebsiteProvider({
   websiteId: string;
   children: ReactNode;
 }) {
-  const modified = useModified(state => state?.[`website:${websiteId}`]);
+  const { modified } = useModified(`website:${websiteId}`);
   const { data: website, isFetching, isLoading, refetch } = useWebsite(websiteId);
 
   useEffect(() => {

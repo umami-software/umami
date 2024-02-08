@@ -1,12 +1,12 @@
-import { useMessages } from 'components/hooks';
+import { useMessages, useModified } from 'components/hooks';
 import { useRouter } from 'next/navigation';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';
-import { touch } from 'store/modified';
 
 export function TeamAdmin({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
   const router = useRouter();
+  const { touch } = useModified();
 
   const handleLeave = async () => {
     touch('teams');

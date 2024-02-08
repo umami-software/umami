@@ -1,15 +1,16 @@
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
-import { useLogin } from 'components/hooks';
-import useModified from 'store/modified';
+import useLogin from './useLogin';
+import useModified from '../useModified';
 
 export function useTeams(userId?: string) {
   const { get } = useApi();
   const { user } = useLogin();
-  const modified = useModified((state: any) => state?.teams);
+  const id = userId || user?.id;
+  const { modified } = useModified(`teams`);
 
   return useFilterQuery({
-    queryKey: ['teams', { userId: userId || user?.id, modified }],
+    queryKey: ['teams', { userId: id, modified }],
     queryFn: (params: any) => {
       return get(`/teams`, params);
     },

@@ -25,6 +25,7 @@ export * from './useFormat';
 export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
+export * from './useModified';
 export * from './useNavigation';
 export * from './useSticky';
 export * from './useTeamUrl';

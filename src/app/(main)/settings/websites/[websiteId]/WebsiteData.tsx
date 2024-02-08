@@ -1,14 +1,14 @@
 import { Button, Modal, ModalTrigger, ActionForm, useToasts } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useMessages } from 'components/hooks';
+import { useMessages, useModified } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
-import { touch } from 'store/modified';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
   const router = useRouter();
   const { showToast } = useToasts();
+  const { touch } = useModified();
 
   const handleReset = async () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });

@@ -1,6 +1,5 @@
-import { useApi, useMessages } from 'components/hooks';
+import { useApi, useMessages, useModified } from 'components/hooks';
 import { Icon, Icons, LoadingButton, Text } from 'react-basics';
-import { touch } from 'store/modified';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -18,6 +17,7 @@ export function TeamMemberRemoveButton({
   const { mutate, isPending } = useMutation({
     mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
   });
+  const { touch } = useModified();
 
   const handleRemoveTeamMember = () => {
     mutate(null, {

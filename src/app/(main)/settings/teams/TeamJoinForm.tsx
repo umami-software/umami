@@ -8,14 +8,14 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { useApi, useMessages } from 'components/hooks';
-import { touch } from 'store/modified';
+import { useApi, useMessages, useModified } from 'components/hooks';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels, getMessage } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({ mutationFn: (data: any) => post('/teams/join', data) });
   const ref = useRef(null);
+  const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {

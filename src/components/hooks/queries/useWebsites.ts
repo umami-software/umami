@@ -1,7 +1,7 @@
 import { useApi } from './useApi';
 import { useFilterQuery } from './useFilterQuery';
 import { useLogin } from './useLogin';
-import useModified from 'store/modified';
+import useModified from '../useModified';
 
 export function useWebsites(
   { userId, teamId }: { userId?: string; teamId?: string },
@@ -9,7 +9,7 @@ export function useWebsites(
 ) {
   const { get } = useApi();
   const { user } = useLogin();
-  const modified = useModified((state: any) => state?.websites);
+  const { modified } = useModified(`websites`);
 
   return useFilterQuery({
     queryKey: ['websites', { userId, teamId, modified, ...params }],

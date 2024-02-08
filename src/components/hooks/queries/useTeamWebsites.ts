@@ -1,10 +1,10 @@
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
-import useModified from 'store/modified';
+import useModified from '../useModified';
 
 export function useTeamWebsites(teamId: string) {
   const { get } = useApi();
-  const modified = useModified((state: any) => state?.['teams:websites']);
+  const { modified } = useModified(`teams:websites`);
 
   return useFilterQuery({
     queryKey: ['teams:websites', { teamId, modified }],

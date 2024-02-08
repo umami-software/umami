@@ -1,6 +1,5 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useApi, useMessages } from 'components/hooks';
-import { touch } from 'store/modified';
+import { useApi, useMessages, useModified } from 'components/hooks';
 import ConfirmationForm from 'components/common/ConfirmationForm';
 
 export function ReportDeleteButton({
@@ -17,6 +16,7 @@ export function ReportDeleteButton({
   const { mutate, isPending, error } = useMutation({
     mutationFn: reportId => del(`/reports/${reportId}`),
   });
+  const { touch } = useModified();
 
   const handleConfirm = (close: () => void) => {
     mutate(reportId as any, {

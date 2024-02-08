@@ -1,10 +1,10 @@
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
-import useModified from 'store/modified';
+import useModified from '../useModified';
 
 export function useUsers() {
   const { get } = useApi();
-  const modified = useModified((state: any) => state?.users);
+  const { modified } = useModified(`users`);
 
   return useFilterQuery({
     queryKey: ['users', { modified }],

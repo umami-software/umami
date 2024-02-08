@@ -1,13 +1,12 @@
 'use client';
 import { createContext, ReactNode, useEffect } from 'react';
-import { useTeam } from 'components/hooks';
+import { useTeam, useModified } from 'components/hooks';
 import { Loading } from 'react-basics';
-import useModified from 'store/modified';
 
 export const TeamContext = createContext(null);
 
 export function TeamProvider({ teamId, children }: { teamId?: string; children: ReactNode }) {
-  const modified = useModified(state => state?.[`team:${teamId}`]);
+  const { modified } = useModified(`teams`);
   const { data: team, isLoading, isFetching, refetch } = useTeam(teamId);
 
   useEffect(() => {
