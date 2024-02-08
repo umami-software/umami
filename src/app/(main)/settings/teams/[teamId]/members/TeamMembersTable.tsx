@@ -2,6 +2,7 @@ import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import { useMessages, useLogin } from 'components/hooks';
 import { ROLES } from 'lib/constants';
 import TeamMemberRemoveButton from './TeamMemberRemoveButton';
+import TeamMemberEditButton from './TeamMemberEditButton';
 
 export function TeamMembersTable({
   data = [],
@@ -19,6 +20,7 @@ export function TeamMembersTable({
   const roles = {
     [ROLES.teamOwner]: formatMessage(labels.teamOwner),
     [ROLES.teamMember]: formatMessage(labels.teamMember),
+    [ROLES.teamViewOnly]: formatMessage(labels.viewOnly),
   };
 
   return (
@@ -35,7 +37,14 @@ export function TeamMembersTable({
             allowEdit &&
             row?.role !== ROLES.teamOwner &&
             user?.id !== row?.id && (
-              <TeamMemberRemoveButton teamId={teamId} userId={row?.user?.id} />
+              <>
+                <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />
+                <TeamMemberRemoveButton
+                  teamId={teamId}
+                  userId={row?.user?.id}
+                  userName={row?.user?.username}
+                />
+              </>
             )
           );
         }}
