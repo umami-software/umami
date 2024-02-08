@@ -10,7 +10,7 @@ export function RetentionParameters() {
   const { report, runReport, isRunning, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
 
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
   const { startDate } = dateRange || {};
   const queryDisabled = !websiteId || !dateRange;
@@ -30,7 +30,7 @@ export function RetentionParameters() {
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
-      <BaseParameters showDateSelect={false} />
+      <BaseParameters showDateSelect={false} allowWebsiteSelect={!id} />
       <FormRow label={formatMessage(labels.date)}>
         <MonthSelect date={startDate} onChange={handleDateChange} />
       </FormRow>

@@ -3,7 +3,7 @@ import { FormRow } from 'react-basics';
 import { parseDateRange } from 'lib/date';
 import DateFilter from 'components/input/DateFilter';
 import WebsiteSelect from 'components/input/WebsiteSelect';
-import { useMessages, useTeamUrl } from 'components/hooks';
+import { useMessages, useTeamUrl, useWebsite } from 'components/hooks';
 import { ReportContext } from './Report';
 
 export interface BaseParametersProps {
@@ -22,10 +22,11 @@ export function BaseParameters({
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { teamId } = useTeamUrl();
-
   const { parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
   const { value, startDate, endDate } = dateRange || {};
+  const { data: website } = useWebsite(websiteId);
+  const { name } = website || {};
 
   const handleWebsiteSelect = (websiteId: string) => {
     updateReport({ websiteId, parameters: { websiteId } });
@@ -39,8 +40,10 @@ export function BaseParameters({
     <>
       {showWebsiteSelect && (
         <FormRow label={formatMessage(labels.website)}>
-          {allowWebsiteSelect && (
+          {allowWebsiteSelect ? (
             <WebsiteSelect teamId={teamId} websiteId={websiteId} onSelect={handleWebsiteSelect} />
+          ) : (
+            name
           )}
         </FormRow>
       )}
