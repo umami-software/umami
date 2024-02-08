@@ -42,7 +42,7 @@ export const labels = defineMessages({
   owner: { id: 'label.owner', defaultMessage: 'Owner' },
   teamOwner: { id: 'label.team-owner', defaultMessage: 'Team owner' },
   teamMember: { id: 'label.team-member', defaultMessage: 'Team member' },
-  teamGuest: { id: 'label.team-guest', defaultMessage: 'Team guest' },
+  teamViewOnly: { id: 'label.team-view-only', defaultMessage: 'Team view only' },
   enableShareUrl: { id: 'label.enable-share-url', defaultMessage: 'Enable share URL' },
   data: { id: 'label.data', defaultMessage: 'Data' },
   trackingCode: { id: 'label.tracking-code', defaultMessage: 'Tracking code' },
@@ -56,6 +56,8 @@ export const labels = defineMessages({
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
   addMember: { id: 'label.add-member', defaultMessage: 'Add member' },
+  editMember: { id: 'label.edit-member', defaultMessage: 'Edit member' },
+  removeMember: { id: 'label.remove-member', defaultMessage: 'Remove member' },
   addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
@@ -109,6 +111,7 @@ export const labels = defineMessages({
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
   customRange: { id: 'label.custom-range', defaultMessage: 'Custom range' },
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  selectRole: { id: 'label.select-role', defaultMessage: 'Select role' },
   selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
@@ -219,6 +222,10 @@ export const messages = defineMessages({
   confirmDelete: {
     id: 'message.confirm-delete',
     defaultMessage: 'Are you sure you want to delete {target}?',
+  },
+  confirmRemove: {
+    id: 'message.confirm-remove',
+    defaultMessage: 'Are you sure you want to remove {target}?',
   },
   confirmLeave: {
     id: 'message.confirm-leave',

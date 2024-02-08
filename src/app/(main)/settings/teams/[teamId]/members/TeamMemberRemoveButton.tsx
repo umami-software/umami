@@ -1,44 +1,64 @@
+import ConfirmationForm from 'components/common/ConfirmationForm';
 import { useApi, useMessages, useModified } from 'components/hooks';
-import { Icon, Icons, LoadingButton, Text } from 'react-basics';
+import { messages } from 'components/messages';
+import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
+import { FormattedMessage } from 'react-intl';
 
 export function TeamMemberRemoveButton({
   teamId,
   userId,
-  disabled,
+  userName,
   onSave,
 }: {
   teamId: string;
   userId: string;
+  userName: string;
   disabled?: boolean;
   onSave?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
   const { del, useMutation } = useApi();
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error } = useMutation({
     mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
   });
   const { touch } = useModified();
 
-  const handleRemoveTeamMember = () => {
+  const handleConfirm = (close: () => void) => {
     mutate(null, {
       onSuccess: () => {
         touch('teams:members');
         onSave?.();
+        close();
       },
     });
   };
 
   return (
-    <LoadingButton
-      onClick={() => handleRemoveTeamMember()}
-      disabled={disabled}
-      isLoading={isPending}
-    >
-      <Icon>
-        <Icons.Close />
-      </Icon>
-      <Text>{formatMessage(labels.remove)}</Text>
-    </LoadingButton>
+    <ModalTrigger>
+      <Button variant="quiet">
+        <Icon>
+          <Icons.Close />
+        </Icon>
+        <Text>{formatMessage(labels.remove)}</Text>
+      </Button>
+      <Modal title={formatMessage(labels.removeMember)}>
+        {(close: () => void) => (
+          <ConfirmationForm
+            message={
+              <FormattedMessage
+                {...messages.confirmRemove}
+                values={{ target: <b>{userName}</b> }}
+              />
+            }
+            isLoading={isPending}
+            error={error}
+            onConfirm={handleConfirm.bind(null, close)}
+            onClose={close}
+            buttonLabel={formatMessage(labels.remove)}
+          />
+        )}
+      </Modal>
+    </ModalTrigger>
   );
 }
 
