@@ -28,6 +28,7 @@ export const labels = defineMessages({
   created: { id: 'label.created', defaultMessage: 'Created' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
+  member: { id: 'label.member', defaultMessage: 'Member' },
   members: { id: 'label.members', defaultMessage: 'Members' },
   accessCode: { id: 'label.access-code', defaultMessage: 'Access code' },
   teamId: { id: 'label.team-id', defaultMessage: 'Team ID' },

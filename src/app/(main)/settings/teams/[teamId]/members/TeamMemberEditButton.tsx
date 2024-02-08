@@ -25,7 +25,7 @@ export function TeamMemberEditButton({
 
   return (
     <ModalTrigger>
-      <Button variant="quiet">
+      <Button>
         <Icon>
           <Icons.Edit />
         </Icon>
