@@ -36,7 +36,7 @@ export function TeamMembersTable({
           return (
             allowEdit &&
             row?.role !== ROLES.teamOwner &&
-            user?.id !== row?.id && (
+            user?.id !== row?.user?.id && (
               <>
                 <TeamMemberEditButton teamId={teamId} userId={row?.user?.id} role={row?.role} />
                 <TeamMemberRemoveButton
