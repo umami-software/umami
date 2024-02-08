@@ -8,7 +8,7 @@ import TeamsAddButton from './TeamsAddButton';
 export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.cloudMode;
 
   return (
     <PageHeader title={formatMessage(labels.teams)}>

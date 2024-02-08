@@ -26,7 +26,7 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
   const ref = useRef(null);
   const [accessCode, setAccessCode] = useState(team.accessCode);
   const { showToast } = useToasts();
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.cloudMode;
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
