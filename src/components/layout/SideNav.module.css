@@ -1,6 +1,7 @@
 .menu {
   display: flex;
   flex-direction: column;
+  gap: 2px;
 }
 
 .item a {
@@ -16,4 +17,5 @@
 
 .selected {
   font-weight: 700;
+  background: var(--base75);
 }
