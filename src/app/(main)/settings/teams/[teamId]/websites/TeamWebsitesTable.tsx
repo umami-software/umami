@@ -25,7 +25,7 @@ export function TeamWebsitesTable({
           return (
             <>
               {allowEdit && (teamId || user?.isAdmin) && (
-                <LinkButton href={`/team/${teamId}/settings/websites/${websiteId}`}>
+                <LinkButton href={`/teams/${teamId}/settings/websites/${websiteId}`}>
                   <Icon>
                     <Icons.Edit />
                   </Icon>
