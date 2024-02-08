@@ -6,7 +6,7 @@ import { ROLES } from 'lib/constants';
 import { useContext, useState } from 'react';
 import { Flexbox, Item, Tabs } from 'react-basics';
 import TeamLeaveButton from '../../TeamLeaveButton';
-import TeamAdmin from './TeamAdmin';
+import TeamManage from './TeamManage';
 import TeamEditForm from './TeamEditForm';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
@@ -15,7 +15,7 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   const { user } = useLogin();
   const [tab, setTab] = useState('details');
 
-  const canEdit = team?.teamUser?.find(
+  const canEdit = !!team?.teamUser?.find(
     ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,
   );
 
@@ -26,10 +26,10 @@ export function TeamDetails({ teamId }: { teamId: string }) {
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
-        {canEdit && <Item key="admin">{formatMessage(labels.admin)}</Item>}
+        {canEdit && <Item key="manage">{formatMessage(labels.manage)}</Item>}
       </Tabs>
       {tab === 'details' && <TeamEditForm teamId={teamId} allowEdit={canEdit} />}
-      {tab === 'admin' && <TeamAdmin teamId={teamId} />}
+      {tab === 'manage' && <TeamManage teamId={teamId} />}
     </Flexbox>
   );
 }
