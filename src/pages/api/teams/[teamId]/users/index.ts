@@ -48,7 +48,12 @@ export default async (
 
     const users = await getTeamUsers(
       {
-        where: { teamId },
+        where: {
+          teamId,
+          user: {
+            deletedAt: null,
+          },
+        },
         include: {
           user: {
             select: {

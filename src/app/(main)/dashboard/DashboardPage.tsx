@@ -36,7 +36,7 @@ export function DashboardPage() {
       </PageHeader>
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
-          <LinkButton href={renderTeamUrl('/settings/websites')}>
+          <LinkButton href={renderTeamUrl('/settings')}>
             <Icon rotate={dir === 'rtl' ? 180 : 0}>
               <Icons.ArrowRight />
             </Icon>

@@ -6,7 +6,7 @@ import LinkButton from 'components/common/LinkButton';
 export function TeamWebsitesTable({
   teamId,
   data = [],
-  allowEdit,
+  allowEdit = false,
 }: {
   teamId: string;
   data: any[];
@@ -21,7 +21,7 @@ export function TeamWebsitesTable({
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       <GridColumn name="action" label=" " alignment="end">
         {row => {
-          const { websiteId } = row;
+          const { id: websiteId } = row;
           return (
             <>
               {allowEdit && (teamId || user?.isAdmin) && (

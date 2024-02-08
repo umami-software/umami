@@ -1,6 +1,6 @@
-import useModified from 'store/modified';
 import useApi from './useApi';
 import useFilterQuery from './useFilterQuery';
+import useModified from 'store/modified';
 
 export function useTeamMembers(teamId: string) {
   const { get } = useApi();
