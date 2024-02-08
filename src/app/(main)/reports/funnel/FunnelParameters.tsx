@@ -22,7 +22,7 @@ export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
 
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange, urls } = parameters || {};
   const queryDisabled = !websiteId || !dateRange || urls?.length < 2;
 
@@ -62,7 +62,7 @@ export function FunnelParameters() {
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       <FormRow label={formatMessage(labels.window)}>
         <FormInput
           name="window"

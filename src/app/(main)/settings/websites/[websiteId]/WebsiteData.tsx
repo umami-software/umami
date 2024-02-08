@@ -1,6 +1,6 @@
 import { Button, Modal, ModalTrigger, ActionForm, useToasts } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useMessages, useModified } from 'components/hooks';
+import { useMessages, useModified, useTeamUrl } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
 
@@ -9,6 +9,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const router = useRouter();
   const { showToast } = useToasts();
   const { touch } = useModified();
+  const { teamId, renderTeamUrl } = useTeamUrl();
 
   const handleReset = async () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
@@ -16,8 +17,13 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   };
 
   const handleDelete = async () => {
-    touch('websites');
-    router.push('/settings/websites');
+    if (teamId) {
+      touch('teams:websites');
+      router.push(renderTeamUrl('/settings/websites'));
+    } else {
+      touch('websites');
+      router.push('/settings/websites');
+    }
   };
 
   return (

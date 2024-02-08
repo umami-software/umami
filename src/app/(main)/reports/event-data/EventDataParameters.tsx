@@ -29,7 +29,7 @@ function useFields(websiteId, startDate, endDate) {
 export function EventDataParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange, fields, filters, groups } = parameters || {};
   const { startDate, endDate } = dateRange || {};
   const queryEnabled = websiteId && dateRange && fields?.length;
@@ -93,7 +93,7 @@ export function EventDataParameters() {
 
   return (
     <Form values={parameters} error={error} onSubmit={handleSubmit}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       {!hasData && <Empty message={formatMessage(messages.noEventData)} />}
       {parametersSelected &&
         hasData &&
