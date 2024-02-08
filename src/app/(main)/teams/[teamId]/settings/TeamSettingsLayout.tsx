@@ -13,14 +13,14 @@ export default function ({ children, teamId }: { children: ReactNode; teamId: st
       url: `/teams/${teamId}/settings/team`,
     },
     {
-      key: 'members',
-      label: formatMessage(labels.members),
-      url: `/teams/${teamId}/settings/members`,
-    },
-    {
       key: 'websites',
       label: formatMessage(labels.websites),
       url: `/teams/${teamId}/settings/websites`,
+    },
+    {
+      key: 'members',
+      label: formatMessage(labels.members),
+      url: `/teams/${teamId}/settings/members`,
     },
   ].filter(n => n);
 
