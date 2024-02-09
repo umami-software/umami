@@ -30,7 +30,7 @@ export function ReportDeleteButton({
 
   return (
     <ModalTrigger>
-      <Button variant="quiet">
+      <Button>
         <Icon>
           <Icons.Trash />
         </Icon>

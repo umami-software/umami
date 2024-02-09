@@ -35,7 +35,7 @@ export function TeamMemberRemoveButton({
 
   return (
     <ModalTrigger>
-      <Button variant="quiet">
+      <Button>
         <Icon>
           <Icons.Close />
         </Icon>

@@ -11,7 +11,7 @@ import {
   SubmitButton,
 } from 'react-basics';
 
-export function UserAddForm({
+export function TeamMemberEditForm({
   teamId,
   userId,
   role,
@@ -41,7 +41,7 @@ export function UserAddForm({
 
   const renderValue = (value: string) => {
     if (value === ROLES.teamMember) {
-      return formatMessage(labels.teamMember);
+      return formatMessage(labels.member);
     }
     if (value === ROLES.teamViewOnly) {
       return formatMessage(labels.viewOnly);
@@ -58,7 +58,7 @@ export function UserAddForm({
               minWidth: '250px',
             }}
           >
-            <Item key={ROLES.teamMember}>{formatMessage(labels.teamMember)}</Item>
+            <Item key={ROLES.teamMember}>{formatMessage(labels.member)}</Item>
             <Item key={ROLES.teamViewOnly}>{formatMessage(labels.viewOnly)}</Item>
           </Dropdown>
         </FormInput>
@@ -75,4 +75,4 @@ export function UserAddForm({
   );
 }
 
-export default UserAddForm;
+export default TeamMemberEditForm;
