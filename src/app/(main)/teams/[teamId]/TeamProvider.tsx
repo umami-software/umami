@@ -16,7 +16,7 @@ export function TeamProvider({ teamId, children }: { teamId?: string; children: 
   }, [teamId, modified]);
 
   if (isFetching && isLoading) {
-    return <Loading />;
+    return <Loading position="page" />;
   }
 
   if (teamId && !team) {
