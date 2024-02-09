@@ -9,8 +9,7 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
 
   const handleSave = async () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
-    teamId ? touch('teams:websites') : touch('websites');
-
+    touch('websites');
     onSave?.();
   };
 
