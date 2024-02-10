@@ -53,6 +53,7 @@ export const labels = defineMessages({
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },
   resetWebsite: { id: 'label.reset-website', defaultMessage: 'Reset website' },
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
+  transferWebsite: { id: 'label.transfer-website', defaultMessage: 'Transfer website' },
   deleteReport: { id: 'label.delete-report', defaultMessage: 'Delete report' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
@@ -207,7 +208,7 @@ export const labels = defineMessages({
   },
   select: { id: 'label.select', defaultMessage: 'Select' },
   myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
-  switch: { id: 'label.switch', defaultMessage: 'Switch' },
+  transfer: { id: 'label.transfer', defaultMessage: 'Transfer' },
 });
 
 export const messages = defineMessages({
@@ -326,5 +327,17 @@ export const messages = defineMessages({
   newVersionAvailable: {
     id: 'message.new-version-available',
     defaultMessage: 'A new version of Umami {version} is available!',
+  },
+  transferWebsite: {
+    id: 'message.transfer-website',
+    defaultMessage: 'Transfer website ownership to another user or team.',
+  },
+  transferTeamWebsiteToUser: {
+    id: 'message.transfer-team-website-to-user',
+    defaultMessage: 'Do you want to transfer this website to your account?',
+  },
+  transferUserWebsiteToTeam: {
+    id: 'message.transfer-user-website-to-team',
+    defaultMessage: 'Which team do you want to transfer this website to?',
   },
 });

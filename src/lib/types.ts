@@ -10,6 +10,7 @@ import {
 } from './constants';
 import * as yup from 'yup';
 import { TIME_UNIT } from './date';
+import { Dispatch, SetStateAction } from 'react';
 
 type ObjectValues<T> = T[keyof T];
 
@@ -62,6 +63,13 @@ export interface FilterResult<T> {
   pageSize: number;
   orderBy?: string;
   sortDescending?: boolean;
+}
+
+export interface FilterQueryResult<T> {
+  result: FilterResult<T>;
+  query: any;
+  params: SearchFilter;
+  setParams: Dispatch<SetStateAction<T | SearchFilter>>;
 }
 
 export interface DynamicData {

@@ -1,7 +1,7 @@
 import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER, ROLES } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { NextApiRequest } from 'next';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
@@ -96,6 +96,38 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     const teamUser = await getTeamUser(website.teamId, user.id);
 
     return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteUpdate);
+  }
+
+  return false;
+}
+
+export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string, userId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  const website = await loadWebsite(websiteId);
+
+  if (website.teamId && user.id === userId) {
+    const teamUser = await getTeamUser(website.teamId, userId);
+
+    return teamUser?.role === ROLES.teamOwner;
+  }
+
+  return false;
+}
+
+export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
+  if (user.isAdmin) {
+    return true;
+  }
+
+  const website = await loadWebsite(websiteId);
+
+  if (website.userId === user.id) {
+    const teamUser = await getTeamUser(teamId, user.id);
+
+    return teamUser?.role === ROLES.teamOwner;
   }
 
   return false;
