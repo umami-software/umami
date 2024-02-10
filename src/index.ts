@@ -43,10 +43,11 @@ export * from 'app/(main)/settings/websites/WebsitesTable';
 export * from 'app/(main)/teams/[teamId]/TeamProvider';
 export * from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
-export * from 'components/common/TypeConfirmationForm';
+export * from 'components/common/ConfirmationForm';
 export * from 'components/common/DataTable';
 export * from 'components/common/Empty';
 export * from 'components/common/ErrorBoundary';
+export * from 'components/common/ErrorMessage';
 export * from 'components/common/Favicon';
 export * from 'components/common/FilterButtons';
 export * from 'components/common/FilterLink';
@@ -55,6 +56,7 @@ export * from 'components/common/HoverTooltip';
 export * from 'components/common/LinkButton';
 export * from 'components/common/MobileMenu';
 export * from 'components/common/Pager';
+export * from 'components/common/TypeConfirmationForm';
 
 export * from 'components/input/TeamsButton';
 export * from 'components/input/ThemeButton';
