@@ -102,10 +102,6 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
 }
 
 export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string, userId: string) {
-  if (user.isAdmin) {
-    return true;
-  }
-
   const website = await loadWebsite(websiteId);
 
   if (website.teamId && user.id === userId) {
@@ -118,10 +114,6 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
 }
 
 export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
-  if (user.isAdmin) {
-    return true;
-  }
-
   const website = await loadWebsite(websiteId);
 
   if (website.userId === user.id) {

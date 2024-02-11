@@ -1,53 +1,54 @@
-import { Button, Modal, ModalTrigger, ActionForm, useToasts } from 'react-basics';
+import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useMessages, useModified, useTeamUrl } from 'components/hooks';
+import { useLogin, useMessages, useModified, useTeamUrl } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
 import WebsiteTransferForm from './WebsiteTransferForm';
+import { ROLES } from 'lib/constants';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
-  const router = useRouter();
-  const { showToast } = useToasts();
+  const { user } = useLogin();
   const { touch } = useModified();
   const { teamId, renderTeamUrl } = useTeamUrl();
+  const router = useRouter();
+  const hasTeams = user?.teams?.length > 0;
+  const isTeamOwner =
+    (!teamId && hasTeams) ||
+    (hasTeams &&
+      user?.teams
+        ?.find(({ id }) => id === teamId)
+        ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 
-  const handleTransfer = () => {
+  const handleSave = () => {
     touch('websites');
-
+    onSave?.();
     router.push(renderTeamUrl(`/settings/websites`));
   };
 
   const handleReset = async () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
     onSave?.();
-  };
-
-  const handleDelete = async () => {
-    touch('websites');
-
-    if (teamId) {
-      router.push(renderTeamUrl('/settings/websites'));
-    } else {
-      router.push('/settings/websites');
-    }
   };
 
   return (
     <>
-      <ActionForm
-        label={formatMessage(labels.transferWebsite)}
-        description={formatMessage(messages.transferWebsite)}
-      >
-        <ModalTrigger>
-          <Button variant="secondary">{formatMessage(labels.transfer)}</Button>
-          <Modal title={formatMessage(labels.transferWebsite)}>
-            {(close: () => void) => (
-              <WebsiteTransferForm websiteId={websiteId} onSave={handleTransfer} onClose={close} />
-            )}
-          </Modal>
-        </ModalTrigger>
-      </ActionForm>
+      {process.env.cloudMode && (
+        <ActionForm
+          label={formatMessage(labels.transferWebsite)}
+          description={formatMessage(messages.transferWebsite)}
+        >
+          <ModalTrigger disabled={!isTeamOwner}>
+            <Button variant="secondary" disabled={!isTeamOwner}>
+              {formatMessage(labels.transfer)}
+            </Button>
+            <Modal title={formatMessage(labels.transferWebsite)}>
+              {(close: () => void) => (
+                <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+              )}
+            </Modal>
+          </ModalTrigger>
+        </ActionForm>
+      )}
       <ActionForm
         label={formatMessage(labels.resetWebsite)}
         description={formatMessage(messages.resetWebsiteWarning)}
@@ -69,7 +70,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
           <Button variant="danger">{formatMessage(labels.delete)}</Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
             {(close: () => void) => (
-              <WebsiteDeleteForm websiteId={websiteId} onSave={handleDelete} onClose={close} />
+              <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
             )}
           </Modal>
         </ModalTrigger>

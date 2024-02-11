@@ -1,5 +1,5 @@
 import { useState, Key, useContext } from 'react';
-import { Item, Tabs, Button, Text, Icon } from 'react-basics';
+import { Item, Tabs, Button, Text, Icon, useToasts } from 'react-basics';
 import Link from 'next/link';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
@@ -12,8 +12,13 @@ import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider'
 
 export function WebsiteSettings({ websiteId, openExternal = false }) {
   const website = useContext(WebsiteContext);
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const [tab, setTab] = useState<Key>('details');
+  const { showToast } = useToasts();
+
+  const handleSave = () => {
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
 
   return (
     <>
@@ -36,7 +41,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
       {tab === 'details' && <WebsiteEditForm websiteId={websiteId} />}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} />}
       {tab === 'share' && <ShareUrl websiteId={websiteId} />}
-      {tab === 'data' && <WebsiteData websiteId={websiteId} />}
+      {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleSave} />}
     </>
   );
 }

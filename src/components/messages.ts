@@ -330,14 +330,14 @@ export const messages = defineMessages({
   },
   transferWebsite: {
     id: 'message.transfer-website',
-    defaultMessage: 'Transfer website ownership to another user or team.',
+    defaultMessage: 'Transfer website ownership to your account or another team.',
   },
   transferTeamWebsiteToUser: {
     id: 'message.transfer-team-website-to-user',
-    defaultMessage: 'Do you want to transfer this website to your account?',
+    defaultMessage: 'Transfer this website to your account?',
   },
   transferUserWebsiteToTeam: {
     id: 'message.transfer-user-website-to-team',
-    defaultMessage: 'Which team do you want to transfer this website to?',
+    defaultMessage: 'Select the team to transfer this website to.',
   },
 });
