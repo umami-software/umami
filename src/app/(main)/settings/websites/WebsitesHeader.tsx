@@ -12,7 +12,7 @@ export function WebsitesHeader({ teamId, allowCreate = true }: WebsitesHeaderPro
 
   return (
     <PageHeader title={formatMessage(labels.websites)}>
-      {allowCreate && !process.env.cloudMode && <WebsiteAddButton teamId={teamId} />}
+      {allowCreate && <WebsiteAddButton teamId={teamId} />}
     </PageHeader>
   );
 }
