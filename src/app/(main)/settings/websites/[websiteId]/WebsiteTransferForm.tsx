@@ -9,7 +9,6 @@ import {
   Dropdown,
   Item,
   Flexbox,
-  useToasts,
 } from 'react-basics';
 import { useApi, useLogin, useMessages, useTeams } from 'components/hooks';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
@@ -34,7 +33,6 @@ export function WebsiteTransferForm({
   });
   const { result, query } = useTeams(user.id);
   const isTeamWebsite = !!website?.teamId;
-  const { showToast } = useToasts();
 
   const handleSubmit = async () => {
     mutate(
@@ -44,7 +42,6 @@ export function WebsiteTransferForm({
       },
       {
         onSuccess: async () => {
-          showToast({ message: formatMessage(messages.saved), variant: 'success' });
           onSave?.();
           onClose?.();
         },
