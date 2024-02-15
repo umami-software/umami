@@ -249,6 +249,14 @@ export const DESKTOP_OS = [
 
 export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
 
+export const OS_NAMES = {
+  'Android OS': 'Android',
+  'Chrome OS': 'ChromeOS',
+  'Mac OS': 'macOS',
+  'Sun OS': 'SunOS',
+  'Windows 10': 'Windows 10/11',
+};
+
 export const BROWSERS = {
   android: 'Android',
   aol: 'AOL',
