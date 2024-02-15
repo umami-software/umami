@@ -90,7 +90,7 @@ export function MetricsTable({
         items = items.filter(({ x, ...data }) => {
           const value = formatValue(x, type, data);
 
-          return value.toLowerCase().includes(search.toLowerCase());
+          return value?.toLowerCase().includes(search.toLowerCase());
         });
       }
 
