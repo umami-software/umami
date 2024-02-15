@@ -1,18 +1,10 @@
 import { useContext, useRef } from 'react';
-import {
-  SubmitButton,
-  Form,
-  FormInput,
-  FormRow,
-  FormButtons,
-  TextField,
-  useToasts,
-} from 'react-basics';
+import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
 import { useApi, useMessages, useModified } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
-export function WebsiteEditForm({ websiteId }: { websiteId: string }) {
+export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
@@ -20,15 +12,14 @@ export function WebsiteEditForm({ websiteId }: { websiteId: string }) {
     mutationFn: (data: any) => post(`/websites/${websiteId}`, data),
   });
   const ref = useRef(null);
-  const { showToast } = useToasts();
   const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        showToast({ message: formatMessage(messages.saved), variant: 'success' });
         ref.current.reset(data);
-        touch(`website:${website?.id}`);
+        touch(`website:${website.id}`);
+        onSave?.();
       },
     });
   };

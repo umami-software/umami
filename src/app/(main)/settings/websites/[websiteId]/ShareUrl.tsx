@@ -7,7 +7,6 @@ import {
   Button,
   Toggle,
   LoadingButton,
-  useToasts,
 } from 'react-basics';
 import { useContext, useState } from 'react';
 import { getRandomChars } from 'next-basics';
@@ -18,6 +17,7 @@ const generateId = () => getRandomChars(16);
 
 export function ShareUrl({
   hostUrl,
+  onSave,
 }: {
   websiteId: string;
   hostUrl?: string;
@@ -27,7 +27,6 @@ export function ShareUrl({
   const { domain, shareId } = website;
   const { formatMessage, labels, messages } = useMessages();
   const [id, setId] = useState(shareId);
-  const { showToast } = useToasts();
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post(`/websites/${website.id}`, data),
@@ -46,7 +45,8 @@ export function ShareUrl({
     const data = { shareId: checked ? generateId() : null };
     mutate(data, {
       onSuccess: async () => {
-        showToast({ message: formatMessage(messages.saved), variant: 'success' });
+        touch(`website:${website.id}`);
+        onSave?.();
       },
     });
     setId(data.shareId);
@@ -57,8 +57,8 @@ export function ShareUrl({
       { shareId: id },
       {
         onSuccess: async () => {
-          showToast({ message: formatMessage(messages.saved), variant: 'success' });
-          touch(`website:${website?.id}`);
+          touch(`website:${website.id}`);
+          onSave?.();
         },
       },
     );

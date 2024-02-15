@@ -38,9 +38,9 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
         <Item key="share">{formatMessage(labels.shareUrl)}</Item>
         <Item key="data">{formatMessage(labels.data)}</Item>
       </Tabs>
-      {tab === 'details' && <WebsiteEditForm websiteId={websiteId} />}
+      {tab === 'details' && <WebsiteEditForm websiteId={websiteId} onSave={handleSave} />}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} />}
-      {tab === 'share' && <ShareUrl websiteId={websiteId} />}
+      {tab === 'share' && <ShareUrl websiteId={websiteId} onSave={handleSave} />}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleSave} />}
     </>
   );
