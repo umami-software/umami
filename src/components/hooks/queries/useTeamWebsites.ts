@@ -4,7 +4,7 @@ import useModified from '../useModified';
 
 export function useTeamWebsites(teamId: string) {
   const { get } = useApi();
-  const { modified } = useModified(`teams:websites`);
+  const { modified } = useModified(`websites`);
 
   return useFilterQuery({
     queryKey: ['teams:websites', { teamId, modified }],
