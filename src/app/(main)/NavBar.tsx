@@ -17,7 +17,7 @@ export function NavBar() {
   const { pathname } = useNavigation();
   const { teamId, renderTeamUrl } = useTeamUrl();
 
-  const cloudMode = Boolean(process.env.cloudMode);
+  const cloudMode = !!process.env.cloudMode;
 
   const links = [
     { label: formatMessage(labels.dashboard), url: renderTeamUrl('/dashboard') },

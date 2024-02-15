@@ -10,10 +10,11 @@ export function TeamsButton({ teamId }: { teamId: string }) {
   const { formatMessage, labels } = useMessages();
   const { router } = useNavigation();
   const team = user?.teams?.find(({ id }) => id === teamId);
+  const cloudMode = !!process.env.cloudMode;
 
   const handleSelect = (close: () => void, id: Key) => {
     if (id !== user.id) {
-      router.push(`/teams/${id}`);
+      router.push(cloudMode ? `${process.env.cloudUrl}/teams/${id}` : `/teams/${id}`);
     } else {
       router.push('/');
     }

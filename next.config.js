@@ -70,7 +70,7 @@ if (trackerScriptName) {
 const redirects = [
   {
     source: '/settings',
-    destination: cloudMode ? `${cloudUrl}/settings/websites` : '/settings/websites',
+    destination: '/settings/websites',
     permanent: true,
   },
   {
@@ -80,17 +80,31 @@ const redirects = [
   },
   {
     source: '/teams/:id/settings',
-    destination: cloudMode ? `${cloudUrl}/teams/:id/settings` : '/teams/:id/settings/team',
+    destination: '/teams/:id/settings/team',
     permanent: true,
   },
 ];
 
-if (cloudMode && cloudUrl && disableLogin) {
+if (cloudMode && cloudUrl) {
   redirects.push({
-    source: '/login',
-    destination: cloudUrl,
+    source: '/settings/:path*',
+    destination: `${cloudUrl}/settings/:path*`,
     permanent: false,
   });
+
+  redirects.push({
+    source: '/teams/:id/settings/:path*',
+    destination: `${cloudUrl}/teams/:id/settings/:path*`,
+    permanent: false,
+  });
+
+  if (disableLogin) {
+    redirects.push({
+      source: '/login',
+      destination: cloudUrl,
+      permanent: false,
+    });
+  }
 }
 
 /** @type {import('next').NextConfig} */
