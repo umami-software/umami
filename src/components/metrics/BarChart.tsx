@@ -136,10 +136,7 @@ export function BarChart({
   const updateChart = () => {
     setTooltipPopup(null);
 
-    datasets.forEach((dataset, index) => {
-      chart.current.data.datasets[index].data = dataset.data;
-      chart.current.data.datasets[index].label = dataset.label;
-    });
+    chart.current.data.datasets = datasets;
 
     chart.current.options = getOptions();
 

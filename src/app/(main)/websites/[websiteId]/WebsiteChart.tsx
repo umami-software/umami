@@ -1,39 +1,13 @@
 import { useMemo } from 'react';
 import PageviewsChart from 'components/metrics/PageviewsChart';
-import { useApi, useDateRange, useTimezone, useNavigation } from 'components/hooks';
 import { getDateArray } from 'lib/date';
+import useWebsitePageviews from 'components/hooks/queries/useWebsitePageviews';
+import { useDateRange } from 'components/hooks';
 
 export function WebsiteChart({ websiteId }: { websiteId: string }) {
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit } = dateRange;
-  const [timezone] = useTimezone();
-  const {
-    query: { url, referrer, os, browser, device, country, region, city, title },
-  } = useNavigation();
-  const { get, useQuery } = useApi();
-
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      'websites:pageviews',
-      { websiteId, url, referrer, os, browser, device, country, region, city, title },
-    ],
-    queryFn: () =>
-      get(`/websites/${websiteId}/pageviews`, {
-        startAt: +startDate,
-        endAt: +endDate,
-        unit,
-        timezone,
-        url,
-        referrer,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-        title,
-      }),
-  });
+  const { data, isLoading } = useWebsitePageviews(websiteId);
 
   const chartData = useMemo(() => {
     if (data) {

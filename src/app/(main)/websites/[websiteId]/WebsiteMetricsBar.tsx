@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import { useApi, useDateRange, useMessages, useNavigation, useSticky } from 'components/hooks';
+import { useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
 import { formatShortTime } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import styles from './WebsiteMetricsBar.module.css';
+import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -17,34 +18,8 @@ export function WebsiteMetricsBar({
   sticky?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { get, useQuery } = useApi();
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate } = dateRange;
   const { ref, isSticky } = useSticky({ enabled: sticky });
-  const {
-    query: { url, referrer, title, os, browser, device, country, region, city },
-  } = useNavigation();
-
-  const { data, error, isLoading, isFetched } = useQuery({
-    queryKey: [
-      'websites:stats',
-      { websiteId, url, referrer, title, os, browser, device, country, region, city },
-    ],
-    queryFn: () =>
-      get(`/websites/${websiteId}/stats`, {
-        startAt: +startDate,
-        endAt: +endDate,
-        url,
-        referrer,
-        title,
-        os,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      }),
-  });
+  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
 
   const { pageviews, uniques, bounces, totaltime } = data || {};
   const num = Math.min(data && uniques.value, data && bounces.value);
