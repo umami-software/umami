@@ -1,10 +1,10 @@
 import FilterLink from 'components/common/FilterLink';
 import { emptyFilter } from 'lib/filters';
-import useLocale from 'components/hooks/useLocale';
-import useMessages from 'components/hooks/useMessages';
-import useCountryNames from 'components/hooks/useCountryNames';
+import { useLocale } from 'components/hooks';
+import { useMessages } from 'components/hooks';
+import { useCountryNames } from 'components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import regions from 'public/iso-3166-2.json';
+import regions from '../../../public/iso-3166-2.json';
 
 export function RegionsTable(props: MetricsTableProps) {
   const { locale } = useLocale();

@@ -22,26 +22,15 @@
   "plugins": ["@typescript-eslint", "prettier"],
   "settings": {
     "import/resolver": {
-      "alias": {
-        "map": [
-          ["assets", "./src/assets"],
-          ["components", "./src/components"],
-          ["db", "./db"],
-          ["hooks", "./src/components/hooks"],
-          ["lang", "./src/lang"],
-          ["lib", "./src/lib"],
-          ["public", "./public"],
-          ["queries", "./src/queries"],
-          ["store", "./src/store"],
-          ["styles", "./src/styles"]
-        ],
-        "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
       }
     }
   },
   "rules": {
     "no-console": "error",
     "react/display-name": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "import/no-anonymous-default-export": "off",

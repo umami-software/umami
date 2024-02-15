@@ -1,7 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import useMessages from 'components/hooks/useMessages';
-import useFormat from 'components/hooks/useFormat';
+import { useMessages, useFormat } from 'components/hooks';
 
 export function OSTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();

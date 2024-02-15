@@ -1,36 +1,35 @@
-import useDateRange from 'components/hooks/useDateRange';
+import { useDateRange } from 'components/hooks';
 import { isAfter } from 'date-fns';
-import { incrementDateRange } from 'lib/date';
+import { getOffsetDateRange } from 'lib/date';
 import { Button, Icon, Icons } from 'react-basics';
 import DateFilter from './DateFilter';
 import styles from './WebsiteDateFilter.module.css';
+import { DateRange } from 'lib/types';
 
 export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
   const [dateRange, setDateRange] = useDateRange(websiteId);
-  const { value, startDate, endDate, selectedUnit } = dateRange;
-  const isFutureDate =
-    value !== 'all' &&
-    selectedUnit &&
-    isAfter(incrementDateRange(dateRange, -1).startDate, new Date());
+  const { value, startDate, endDate, offset } = dateRange;
+  const disableForward =
+    value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
 
-  const handleChange = value => {
+  const handleChange = (value: string | DateRange) => {
     setDateRange(value);
   };
 
-  const handleIncrement = value => {
-    setDateRange(incrementDateRange(dateRange, value));
+  const handleIncrement = (increment: number) => {
+    setDateRange(getOffsetDateRange(dateRange, increment));
   };
 
   return (
     <div className={styles.container}>
-      {value !== 'all' && selectedUnit && (
+      {value !== 'all' && (
         <div className={styles.buttons}>
-          <Button onClick={() => handleIncrement(1)}>
+          <Button onClick={() => handleIncrement(-1)}>
             <Icon rotate={90}>
               <Icons.ChevronDown />
             </Icon>
           </Button>
-          <Button onClick={() => handleIncrement(-1)} disabled={isFutureDate}>
+          <Button onClick={() => handleIncrement(1)} disabled={disableForward}>
             <Icon rotate={270}>
               <Icons.ChevronDown />
             </Icon>
@@ -42,7 +41,7 @@ export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
         value={value}
         startDate={startDate}
         endDate={endDate}
-        selectedUnit={selectedUnit}
+        offset={offset}
         onChange={handleChange}
         showAllTime={true}
       />

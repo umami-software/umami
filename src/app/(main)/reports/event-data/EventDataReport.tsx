@@ -1,7 +1,7 @@
-import Report from '../[id]/Report';
-import ReportHeader from '../[id]/ReportHeader';
-import ReportMenu from '../[id]/ReportMenu';
-import ReportBody from '../[id]/ReportBody';
+import Report from '../[reportId]/Report';
+import ReportHeader from '../[reportId]/ReportHeader';
+import ReportMenu from '../[reportId]/ReportMenu';
+import ReportBody from '../[reportId]/ReportBody';
 import EventDataParameters from './EventDataParameters';
 import EventDataTable from './EventDataTable';
 import Nodes from 'assets/nodes.svg';
@@ -11,7 +11,7 @@ const defaultParameters = {
   parameters: { fields: [], filters: [] },
 };
 
-export default function EventDataReport({ reportId }: { reportId: string }) {
+export default function EventDataReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Nodes />} />

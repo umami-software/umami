@@ -1,12 +1,12 @@
 import { User, Website } from '@prisma/client';
 import redis from '@umami/redis-client';
-import { getSession, getUserById, getWebsiteById } from '../queries';
+import { getSession, getUser, getWebsite } from '../queries';
 
-async function fetchWebsite(id): Promise<Website> {
-  return redis.client.getCache(`website:${id}`, () => getWebsiteById(id), 86400);
+async function fetchWebsite(websiteId: string): Promise<Website> {
+  return redis.client.getCache(`website:${websiteId}`, () => getWebsite(websiteId), 86400);
 }
 
-async function storeWebsite(data) {
+async function storeWebsite(data: { id: any }) {
   const { id } = data;
   const key = `website:${id}`;
 
@@ -21,11 +21,7 @@ async function deleteWebsite(id) {
 }
 
 async function fetchUser(id): Promise<User> {
-  return redis.client.getCache(
-    `user:${id}`,
-    () => getUserById(id, { includePassword: true }),
-    86400,
-  );
+  return redis.client.getCache(`user:${id}`, () => getUser(id, { includePassword: true }), 86400);
 }
 
 async function storeUser(data) {

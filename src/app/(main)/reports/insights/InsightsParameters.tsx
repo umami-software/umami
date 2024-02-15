@@ -1,22 +1,22 @@
+import { useFilters, useFormat, useMessages } from 'components/hooks';
+import Icons from 'components/icons';
 import { useContext } from 'react';
-import { useFormat, useMessages, useFilters } from 'components/hooks';
 import {
   Form,
-  FormRow,
   FormButtons,
-  SubmitButton,
-  PopupTrigger,
+  FormRow,
   Icon,
   Popup,
+  PopupTrigger,
+  SubmitButton,
   TooltipPopup,
 } from 'react-basics';
-import Icons from 'components/icons';
-import BaseParameters from '../[id]/BaseParameters';
-import { ReportContext } from '../[id]/Report';
-import ParameterList from '../[id]/ParameterList';
-import FilterSelectForm from '../[id]/FilterSelectForm';
-import FieldSelectForm from '../[id]/FieldSelectForm';
-import PopupForm from '../[id]/PopupForm';
+import BaseParameters from '../[reportId]/BaseParameters';
+import FieldSelectForm from '../[reportId]/FieldSelectForm';
+import FilterSelectForm from '../[reportId]/FilterSelectForm';
+import ParameterList from '../[reportId]/ParameterList';
+import PopupForm from '../[reportId]/PopupForm';
+import { ReportContext } from '../[reportId]/Report';
 import styles from './InsightsParameters.module.css';
 
 export function InsightsParameters() {
@@ -24,7 +24,7 @@ export function InsightsParameters() {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { filterLabels } = useFilters();
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange, fields, filters } = parameters || {};
   const { startDate, endDate } = dateRange || {};
   const parametersSelected = websiteId && startDate && endDate;
@@ -103,7 +103,7 @@ export function InsightsParameters() {
 
   return (
     <Form values={parameters} onSubmit={handleSubmit}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       {parametersSelected &&
         parameterGroups.map(({ id, label }) => {
           return (

@@ -1,11 +1,33 @@
-.test {
+.container {
+  display: grid;
+  gap: 30px;
+  padding-bottom: 40px;
+}
+
+.actions {
   border: 1px solid var(--base400);
   border-radius: 5px;
   padding: 0 20px 20px 20px;
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  box-shadow: 0 0 0 10px var(--base100);
 }
 
 .header {
   font-size: 16px;
   font-weight: 700;
   margin: 20px 0;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wrapped {
+  border: 1px solid var(--blue900);
+  border-radius: 4px;
+  padding: 8px 16px;
 }

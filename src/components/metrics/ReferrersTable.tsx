@@ -1,6 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function ReferrersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();

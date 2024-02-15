@@ -1,6 +1,6 @@
 import { Button, Icon, Icons, TooltipPopup } from 'react-basics';
 import Link from 'next/link';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function LogoutButton({
   tooltipPosition = 'top',
@@ -9,7 +9,7 @@ export function LogoutButton({
 }) {
   const { formatMessage, labels } = useMessages();
   return (
-    <Link href="/src/app/logout/logout">
+    <Link href="/src/app/logout/LogoutPage">
       <TooltipPopup label={formatMessage(labels.logout)} position={tooltipPosition}>
         <Button variant="quiet">
           <Icon>

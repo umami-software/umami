@@ -123,7 +123,7 @@ export async function getLocation(ip, req) {
 
 export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const userAgent = req.headers['user-agent'];
-  const ip = getIpAddress(req);
+  const ip = req.body.payload.ip || getIpAddress(req);
   const location = await getLocation(ip, req);
   const country = location?.country;
   const subdivision1 = location?.subdivision1;
