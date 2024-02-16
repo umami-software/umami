@@ -1,10 +1,9 @@
 import { JSX, useCallback, useContext, useMemo } from 'react';
 import { Loading, StatusLight } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useTheme from 'components/hooks/useTheme';
+import { useMessages, useTheme } from 'components/hooks';
 import BarChart from 'components/metrics/BarChart';
 import { formatLongNumber } from 'lib/format';
-import { ReportContext } from '../[id]/Report';
+import { ReportContext } from '../[reportId]/Report';
 import styles from './FunnelChart.module.css';
 
 export interface FunnelChartProps {

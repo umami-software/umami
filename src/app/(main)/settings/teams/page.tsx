@@ -1,20 +1,10 @@
-import TeamsDataTable from './TeamsDataTable';
-import TeamsHeader from './TeamsHeader';
 import { Metadata } from 'next';
+import TeamsPage from './TeamsPage';
 
 export default function () {
-  if (process.env.cloudMode) {
-    return null;
-  }
-
-  return (
-    <>
-      <TeamsHeader />
-      <TeamsDataTable />
-    </>
-  );
+  return <TeamsPage />;
 }
 
 export const metadata: Metadata = {
-  title: 'Teams Settings | umami',
+  title: 'Teams Settings - Umami',
 };

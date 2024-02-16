@@ -3,7 +3,7 @@ import { getAllowedUnits, getMinimumUnit } from './date';
 import { getWebsiteDateRange } from '../queries';
 
 export async function parseDateRangeQuery(req: NextApiRequest) {
-  const { id: websiteId, startAt, endAt, unit } = req.query;
+  const { websiteId, startAt, endAt, unit } = req.query;
 
   // All-time
   if (+startAt === 0 && +endAt === 1) {

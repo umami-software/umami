@@ -35,7 +35,7 @@
       "value": "Add website"
     }
   ],
-  "label.admin": [
+  "label.administrator": [
     {
       "type": 0,
       "value": "Administrator"
@@ -1382,7 +1382,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Your website stats are publically available at the following URL:"
+      "value": "Your website stats are publicly available at the following URL:"
     }
   ],
   "message.team-already-member": [

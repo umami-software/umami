@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import Chart from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
-import useLocale from 'components/hooks/useLocale';
-import useTheme from 'components/hooks/useTheme';
+import { useLocale } from 'components/hooks';
+import { useTheme } from 'components/hooks';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import { renderNumberLabels } from 'lib/charts';
 import styles from './BarChart.module.css';
@@ -136,10 +136,7 @@ export function BarChart({
   const updateChart = () => {
     setTooltipPopup(null);
 
-    datasets.forEach((dataset, index) => {
-      chart.current.data.datasets[index].data = dataset.data;
-      chart.current.data.datasets[index].label = dataset.label;
-    });
+    chart.current.data.datasets = datasets;
 
     chart.current.options = getOptions();
 

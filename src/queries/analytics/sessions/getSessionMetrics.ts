@@ -17,7 +17,7 @@ async function relationalQuery(
   websiteId: string,
   column: string,
   filters: QueryFilters,
-  limit: number = 100,
+  limit: number = 500,
 ) {
   const { parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
@@ -56,7 +56,7 @@ async function clickhouseQuery(
   websiteId: string,
   column: string,
   filters: QueryFilters,
-  limit: number = 100,
+  limit: number = 500,
 ): Promise<{ x: string; y: number }[]> {
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
