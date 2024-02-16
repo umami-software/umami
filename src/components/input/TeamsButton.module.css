@@ -4,6 +4,7 @@
 
 .menu {
   background: var(--base50);
+  min-width: 260px;
 }
 
 .heading {

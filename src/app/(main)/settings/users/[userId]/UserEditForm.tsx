@@ -8,13 +8,13 @@ import {
   TextField,
   SubmitButton,
   PasswordField,
-  useToasts,
 } from 'react-basics';
-import { useApi, useMessages } from 'components/hooks';
+import { useApi, useLogin, useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
+import { UserContext } from './UserProvider';
 
-export function UserEditForm({ userId, data }: { userId: string; data: object }) {
+export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({
@@ -29,13 +29,14 @@ export function UserEditForm({ userId, data }: { userId: string; data: object })
     }) => post(`/users/${userId}`, { username, password, role }),
   });
   const ref = useRef(null);
-  const { showToast } = useToasts();
+  const user = useContext(UserContext);
+  const { user: login } = useLogin();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        showToast({ message: formatMessage(messages.saved), variant: 'success' });
         ref.current.reset(data);
+        onSave?.();
       },
     });
   };
@@ -53,7 +54,7 @@ export function UserEditForm({ userId, data }: { userId: string; data: object })
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={data} style={{ width: 300 }}>
+    <Form ref={ref} onSubmit={handleSubmit} error={error} values={user} style={{ width: 300 }}>
       <FormRow label={formatMessage(labels.username)}>
         <FormInput name="username">
           <TextField />
@@ -69,15 +70,17 @@ export function UserEditForm({ userId, data }: { userId: string; data: object })
           <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(labels.role)}>
-        <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown renderValue={renderValue}>
-            <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
-            <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(labels.administrator)}</Item>
-          </Dropdown>
-        </FormInput>
-      </FormRow>
+      {user.id !== login.id && (
+        <FormRow label={formatMessage(labels.role)}>
+          <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
+            <Dropdown renderValue={renderValue}>
+              <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
+              <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
+              <Item key={ROLES.admin}>{formatMessage(labels.administrator)}</Item>
+            </Dropdown>
+          </FormInput>
+        </FormRow>
+      )}
       <FormButtons>
         <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
       </FormButtons>

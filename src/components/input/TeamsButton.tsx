@@ -29,7 +29,7 @@ export function TeamsButton({ teamId }: { teamId: string }) {
       </Button>
       <Popup alignment="end">
         {(close: () => void) => (
-          <Menu variant="popup" onSelect={handleSelect.bind(null, close)}>
+          <Menu className={styles.menu} variant="popup" onSelect={handleSelect.bind(null, close)}>
             <div className={styles.heading}>{formatMessage(labels.myAccount)}</div>
             <Item key={user.id} className={classNames({ [styles.selected]: !teamId })}>
               <Flexbox gap={10} alignItems="center">

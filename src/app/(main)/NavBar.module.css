@@ -7,6 +7,7 @@
   background: var(--base75);
   border-bottom: 1px solid var(--base300);
   padding: 0 20px;
+  z-index: 200;
 }
 
 .logo {

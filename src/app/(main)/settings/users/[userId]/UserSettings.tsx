@@ -1,19 +1,21 @@
-import { Key, useState } from 'react';
-import { Item, Loading, Tabs } from 'react-basics';
+import { Key, useContext, useState } from 'react';
+import { Item, Tabs, useToasts } from 'react-basics';
 import Icons from 'components/icons';
-import UserEditForm from '../UserEditForm';
+import UserEditForm from './UserEditForm';
 import PageHeader from 'components/layout/PageHeader';
-import { useMessages, useUser } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import UserWebsites from './UserWebsites';
+import { UserContext } from './UserProvider';
 
 export function UserSettings({ userId }: { userId: string }) {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const [tab, setTab] = useState<Key>('details');
-  const { data: user, isLoading } = useUser(userId, { gcTime: 0 });
+  const user = useContext(UserContext);
+  const { showToast } = useToasts();
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const handleSave = () => {
+    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+  };
 
   return (
     <>
@@ -22,7 +24,7 @@ export function UserSettings({ userId }: { userId: string }) {
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>
       </Tabs>
-      {tab === 'details' && <UserEditForm userId={userId} data={user} />}
+      {tab === 'details' && <UserEditForm userId={userId} onSave={handleSave} />}
       {tab === 'websites' && <UserWebsites userId={userId} />}
     </>
   );
