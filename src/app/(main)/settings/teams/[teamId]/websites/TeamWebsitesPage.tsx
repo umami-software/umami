@@ -12,16 +12,16 @@ export function TeamWebsitesPage({ teamId }: { teamId: string }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
 
-  const canEdit = team?.teamUser?.find(
-    ({ userId, role }) => role !== ROLES.viewOnly && userId === user.id,
+  const allowEdit = !!team?.teamUser?.find(
+    ({ userId, role }) => userId === user.id && role !== ROLES.teamViewOnly,
   );
 
   return (
     <>
       <PageHeader title={formatMessage(labels.websites)}>
-        {canEdit && <WebsiteAddButton teamId={teamId} />}
+        {allowEdit && <WebsiteAddButton teamId={teamId} />}
       </PageHeader>
-      <TeamWebsitesDataTable teamId={teamId} allowEdit={canEdit} />
+      <TeamWebsitesDataTable teamId={teamId} allowEdit={allowEdit} />
     </>
   );
 }
