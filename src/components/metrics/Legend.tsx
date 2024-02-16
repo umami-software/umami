@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 import { StatusLight } from 'react-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
-import useLocale from 'components/hooks/useLocale';
-import useForceUpdate from 'components/hooks/useForceUpdate';
+import { useLocale } from 'components/hooks';
+import { useForceUpdate } from 'components/hooks';
 import styles from './Legend.module.css';
 
 export function Legend({ chart }) {
   const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
 
-  const handleClick = index => {
+  const handleClick = (index: string | number) => {
     const meta = chart.getDatasetMeta(index);
 
     meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;

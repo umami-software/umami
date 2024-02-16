@@ -14,7 +14,7 @@ import {
   unauthorized,
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
-import { getUserById } from '../queries';
+import { getUser } from '../queries';
 
 const log = debug('umami:middleware');
 
@@ -57,12 +57,12 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const { userId, authKey, grant } = payload || {};
 
   if (userId) {
-    user = await getUserById(userId);
+    user = await getUser(userId);
   } else if (redis.enabled && authKey) {
     const key = await redis.client.get(authKey);
 
     if (key?.userId) {
-      user = await getUserById(key.userId);
+      user = await getUser(key.userId);
     }
   }
 

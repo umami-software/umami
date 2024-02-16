@@ -13,16 +13,16 @@ import {
 } from 'react-basics';
 import Icons from 'components/icons';
 import UrlAddForm from './UrlAddForm';
-import { ReportContext } from '../[id]/Report';
-import BaseParameters from '../[id]/BaseParameters';
-import ParameterList from '../[id]/ParameterList';
-import PopupForm from '../[id]/PopupForm';
+import { ReportContext } from '../[reportId]/Report';
+import BaseParameters from '../[reportId]/BaseParameters';
+import ParameterList from '../[reportId]/ParameterList';
+import PopupForm from '../[reportId]/PopupForm';
 
 export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
 
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange, urls } = parameters || {};
   const queryDisabled = !websiteId || !dateRange || urls?.length < 2;
 
@@ -62,7 +62,7 @@ export function FunnelParameters() {
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       <FormRow label={formatMessage(labels.window)}>
         <FormInput
           name="window"

@@ -4,6 +4,7 @@ import Bars from 'assets/bars.svg';
 import BarChart from 'assets/bar-chart.svg';
 import Bolt from 'assets/bolt.svg';
 import Calendar from 'assets/calendar.svg';
+import Change from 'assets/change.svg';
 import Clock from 'assets/clock.svg';
 import Dashboard from 'assets/dashboard.svg';
 import Eye from 'assets/eye.svg';
@@ -29,6 +30,7 @@ const icons = {
   BarChart,
   Bolt,
   Calendar,
+  Change,
   Clock,
   Dashboard,
   Eye,

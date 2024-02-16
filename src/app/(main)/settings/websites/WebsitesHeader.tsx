@@ -1,14 +1,18 @@
-'use client';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import PageHeader from 'components/layout/PageHeader';
 import WebsiteAddButton from './WebsiteAddButton';
 
-export function WebsitesHeader({ showActions = true }) {
+export interface WebsitesHeaderProps {
+  teamId?: string;
+  allowCreate?: boolean;
+}
+
+export function WebsitesHeader({ teamId, allowCreate = true }: WebsitesHeaderProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
     <PageHeader title={formatMessage(labels.websites)}>
-      {!process.env.cloudMode && showActions && <WebsiteAddButton />}
+      {allowCreate && <WebsiteAddButton teamId={teamId} />}
     </PageHeader>
   );
 }

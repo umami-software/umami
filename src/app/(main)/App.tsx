@@ -27,7 +27,7 @@ export function App({ children }) {
       {children}
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
-        <Script src={`telemetry.js`} />
+        <Script src={`${process.env.basePath}/telemetry.js`} />
       )}
     </>
   );
