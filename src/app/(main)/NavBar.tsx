@@ -14,7 +14,7 @@ import styles from './NavBar.module.css';
 export function NavBar() {
   const { formatMessage, labels } = useMessages();
   const { pathname, router } = useNavigation();
-  const { teamId, renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl } = useTeamUrl();
 
   const cloudMode = !!process.env.cloudMode;
 
@@ -88,7 +88,7 @@ export function NavBar() {
         })}
       </div>
       <div className={styles.actions}>
-        <TeamsButton teamId={teamId} onChange={handleTeamChange} />
+        <TeamsButton onChange={handleTeamChange} />
         <ThemeButton />
         <LanguageButton />
         <ProfileButton />

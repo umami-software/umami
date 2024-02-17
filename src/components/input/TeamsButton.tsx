@@ -2,25 +2,24 @@ import { Key } from 'react';
 import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
 import classNames from 'classnames';
 import Icons from 'components/icons';
-import { useLogin, useMessages, useTeams } from 'components/hooks';
+import { useLogin, useMessages, useTeams, useTeamUrl } from 'components/hooks';
 import styles from './TeamsButton.module.css';
 
 export function TeamsButton({
-  teamId,
   className,
   onChange,
 }: {
-  teamId: string;
   className?: string;
   onChange?: (value: string) => void;
 }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
   const { result } = useTeams(user?.id);
+  const { teamId } = useTeamUrl();
   const team = result?.data?.find(({ id }) => id === teamId);
 
   const handleSelect = (close: () => void, id: Key) => {
-    onChange?.(id as string);
+    onChange?.((id !== user.id ? id : '') as string);
     close();
   };
 
