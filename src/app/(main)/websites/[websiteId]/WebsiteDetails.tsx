@@ -1,3 +1,4 @@
+'use client';
 import { Loading } from 'react-basics';
 import { usePathname } from 'next/navigation';
 import Page from 'components/layout/Page';

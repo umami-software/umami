@@ -5,5 +5,5 @@ export default function () {
   return <UsersPage />;
 }
 export const metadata: Metadata = {
-  title: 'Users | Umami',
+  title: 'Users',
 };

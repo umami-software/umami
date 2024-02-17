@@ -16,5 +16,5 @@ export default async function ({ params: { websiteId } }) {
 }
 
 export const metadata: Metadata = {
-  title: 'Test Console | Umami',
+  title: 'Test Console',
 };

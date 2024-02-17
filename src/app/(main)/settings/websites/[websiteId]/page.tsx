@@ -6,5 +6,5 @@ export default async function ({ params: { websiteId } }) {
 }
 
 export const metadata: Metadata = {
-  title: 'Website settings - Umami',
+  title: 'Website',
 };
