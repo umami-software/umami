@@ -25,7 +25,7 @@ const schema = {
     userId: yup.string().uuid().required(),
     role: yup
       .string()
-      .matches(/team-member|team-guest/i)
+      .matches(/team-member|team-view-only/i)
       .required(),
   }),
 };
