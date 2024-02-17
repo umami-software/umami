@@ -23,7 +23,7 @@ export function useWebsiteStats(websiteId: string, options?: { [key: string]: st
   };
 
   return useQuery({
-    queryKey: ['websites:stats', params],
+    queryKey: ['websites:stats', { websiteId, ...params }],
     queryFn: () => get(`/websites/${websiteId}/stats`, params),
     ...options,
   });

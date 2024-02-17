@@ -260,7 +260,7 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
 
   const change = num * increment;
   const { add } = DATE_FUNCTIONS[unit];
-  const { unit: originalUnit } = parseDateValue(value);
+  const { unit: originalUnit } = parseDateValue(value) || {};
 
   switch (originalUnit) {
     case 'week':
