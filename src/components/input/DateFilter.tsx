@@ -92,7 +92,7 @@ export function DateFilter({
   const handleClose = () => setShowPicker(false);
 
   const renderValue = (value: string) => {
-    const { unit } = parseDateValue(value);
+    const { unit } = parseDateValue(value) || {};
 
     if (offset && unit === 'year') {
       return formatDate(startDate, 'yyyy', locale);

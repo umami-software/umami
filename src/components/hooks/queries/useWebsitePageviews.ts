@@ -26,7 +26,7 @@ export function useWebsitePageviews(websiteId: string, options?: { [key: string]
   };
 
   return useQuery({
-    queryKey: ['websites:pageviews', params],
+    queryKey: ['websites:pageviews', { websiteId, ...params }],
     queryFn: () => get(`/websites/${websiteId}/pageviews`, params),
     ...options,
   });
