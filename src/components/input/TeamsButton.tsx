@@ -7,9 +7,11 @@ import styles from './TeamsButton.module.css';
 
 export function TeamsButton({
   teamId,
+  className,
   onChange,
 }: {
   teamId: string;
+  className?: string;
   onChange?: (value: string) => void;
 }) {
   const { user } = useLogin();
@@ -28,9 +30,12 @@ export function TeamsButton({
 
   return (
     <PopupTrigger>
-      <Button className={styles.button} variant="quiet">
+      <Button className={classNames(styles.button, className)} variant="quiet">
         <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
         <Text>{teamId ? team?.name : user.username}</Text>
+        <Icon>
+          <Icons.ChevronDown />
+        </Icon>
       </Button>
       <Popup alignment="end">
         {(close: () => void) => (
