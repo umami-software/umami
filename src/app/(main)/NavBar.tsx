@@ -8,14 +8,13 @@ import LanguageButton from 'components/input/LanguageButton';
 import ProfileButton from 'components/input/ProfileButton';
 import TeamsButton from 'components/input/TeamsButton';
 import Icons from 'components/icons';
-import { useLogin, useMessages, useNavigation, useTeamUrl } from 'components/hooks';
+import { useMessages, useNavigation, useTeamUrl } from 'components/hooks';
 import styles from './NavBar.module.css';
 
 export function NavBar() {
-  const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
-  const { pathname } = useNavigation();
-  const { teamId, renderTeamUrl } = useTeamUrl();
+  const { pathname, router } = useNavigation();
+  const { renderTeamUrl } = useTeamUrl();
 
   const cloudMode = !!process.env.cloudMode;
 
@@ -60,6 +59,12 @@ export function NavBar() {
     !cloudMode && { label: formatMessage(labels.logout), url: '/logout' },
   ].filter(n => n);
 
+  const handleTeamChange = (teamId: string) => {
+    const url = teamId ? `/teams/${teamId}` : '/';
+
+    router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
+  };
+
   return (
     <div className={styles.navbar}>
       <div className={styles.logo}>
@@ -83,7 +88,7 @@ export function NavBar() {
         })}
       </div>
       <div className={styles.actions}>
-        {user?.teams?.length && <TeamsButton teamId={teamId} />}
+        <TeamsButton onChange={handleTeamChange} />
         <ThemeButton />
         <LanguageButton />
         <ProfileButton />

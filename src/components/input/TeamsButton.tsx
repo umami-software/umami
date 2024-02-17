@@ -2,30 +2,39 @@ import { Key } from 'react';
 import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
 import classNames from 'classnames';
 import Icons from 'components/icons';
-import { useLogin, useMessages, useNavigation } from 'components/hooks';
+import { useLogin, useMessages, useTeams, useTeamUrl } from 'components/hooks';
 import styles from './TeamsButton.module.css';
 
-export function TeamsButton({ teamId }: { teamId: string }) {
+export function TeamsButton({
+  className,
+  onChange,
+}: {
+  className?: string;
+  onChange?: (value: string) => void;
+}) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
-  const { router } = useNavigation();
-  const team = user?.teams?.find(({ id }) => id === teamId);
-  const cloudMode = !!process.env.cloudMode;
+  const { result } = useTeams(user?.id);
+  const { teamId } = useTeamUrl();
+  const team = result?.data?.find(({ id }) => id === teamId);
 
   const handleSelect = (close: () => void, id: Key) => {
-    if (id !== user.id) {
-      router.push(cloudMode ? `${process.env.cloudUrl}/teams/${id}` : `/teams/${id}`);
-    } else {
-      router.push('/');
-    }
+    onChange?.((id !== user.id ? id : '') as string);
     close();
   };
 
+  if (!result) {
+    return null;
+  }
+
   return (
     <PopupTrigger>
-      <Button className={styles.button} variant="quiet">
+      <Button className={classNames(styles.button, className)} variant="quiet">
         <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
         <Text>{teamId ? team?.name : user.username}</Text>
+        <Icon>
+          <Icons.ChevronDown />
+        </Icon>
       </Button>
       <Popup alignment="end">
         {(close: () => void) => (
@@ -40,7 +49,7 @@ export function TeamsButton({ teamId }: { teamId: string }) {
               </Flexbox>
             </Item>
             <div className={styles.heading}>{formatMessage(labels.team)}</div>
-            {user?.teams?.map(({ id, name }) => (
+            {result?.data?.map(({ id, name }) => (
               <Item key={id} className={classNames({ [styles.selected]: id === teamId })}>
                 <Flexbox gap={10} alignItems="center">
                   <Icon>

@@ -3,7 +3,7 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
-import userWebsites from 'pages/api/users/[userId]/websites';
+import userWebsitesRoute from 'pages/api/users/[userId]/websites';
 import * as yup from 'yup';
 
 const schema = {
@@ -20,7 +20,7 @@ export default async (req: NextApiRequestQueryBody, res: NextApiResponse) => {
   if (req.method === 'GET') {
     req.query.userId = req.auth.user.id;
 
-    return userWebsites(req, res);
+    return userWebsitesRoute(req, res);
   }
 
   return methodNotAllowed(res);
