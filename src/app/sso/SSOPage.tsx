@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { Loading } from 'react-basics';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { setClientAuthToken } from 'lib/client';
+import { Suspense } from 'react';
 
 export default function SSOPage() {
   const router = useRouter();
@@ -18,5 +19,9 @@ export default function SSOPage() {
     }
   }, [router, url, token]);
 
-  return <Loading />;
+  return (
+    <Suspense>
+      <Loading />
+    </Suspense>
+  );
 }
