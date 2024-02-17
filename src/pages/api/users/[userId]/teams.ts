@@ -32,10 +32,10 @@ export default async (
   await useValidate(schema, req, res);
 
   const { user } = req.auth;
-  const { id: userId } = req.query;
+  const { userId } = req.query;
 
   if (req.method === 'GET') {
-    if (!user.isAdmin && user.id !== userId) {
+    if (!user.isAdmin && (!userId || user.id !== userId)) {
       return unauthorized(res);
     }
 

@@ -1,6 +1,6 @@
 import DataTable from 'components/common/DataTable';
 import TeamsTable from 'app/(main)/settings/teams/TeamsTable';
-import { useTeams } from 'components/hooks';
+import { useLogin, useTeams } from 'components/hooks';
 
 export function TeamsDataTable({
   allowEdit,
@@ -9,7 +9,8 @@ export function TeamsDataTable({
   allowEdit?: boolean;
   showActions?: boolean;
 }) {
-  const queryResult = useTeams();
+  const { user } = useLogin();
+  const queryResult = useTeams(user.id);
 
   return (
     <DataTable queryResult={queryResult}>

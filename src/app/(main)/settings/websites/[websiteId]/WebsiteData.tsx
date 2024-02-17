@@ -1,6 +1,6 @@
 import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useLogin, useMessages, useModified, useTeamUrl } from 'components/hooks';
+import { useLogin, useMessages, useModified, useTeams, useTeamUrl } from 'components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
 import WebsiteTransferForm from './WebsiteTransferForm';
@@ -12,11 +12,12 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { touch } = useModified();
   const { teamId, renderTeamUrl } = useTeamUrl();
   const router = useRouter();
-  const hasTeams = user?.teams?.length > 0;
+  const { result } = useTeams(user.id);
+  const hasTeams = result?.data?.length > 0;
   const isTeamOwner =
     (!teamId && hasTeams) ||
     (hasTeams &&
-      user?.teams
+      result?.data
         ?.find(({ id }) => id === teamId)
         ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 

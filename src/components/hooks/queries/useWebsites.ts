@@ -13,9 +13,8 @@ export function useWebsites(
 
   return useFilterQuery({
     queryKey: ['websites', { userId, teamId, modified, ...params }],
-    queryFn: (data: any) => {
+    queryFn: () => {
       return get(teamId ? `/teams/${teamId}/websites` : `/users/${userId || user.id}/websites`, {
-        ...data,
         ...params,
       });
     },

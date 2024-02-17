@@ -5,7 +5,7 @@ import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
-import userWebsites from 'pages/api/users/[userId]/websites';
+import userWebsitesRoute from 'pages/api/users/[userId]/websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 
@@ -47,7 +47,7 @@ export default async (
       req.query.userId = userId;
     }
 
-    return userWebsites(req, res);
+    return userWebsitesRoute(req, res);
   }
 
   if (req.method === 'POST') {
