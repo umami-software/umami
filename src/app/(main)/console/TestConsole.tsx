@@ -1,5 +1,4 @@
 import { Button } from 'react-basics';
-import Head from 'next/head';
 import Link from 'next/link';
 import Script from 'next/script';
 import WebsiteSelect from 'components/input/WebsiteSelect';
@@ -73,9 +72,6 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
 
   return (
     <Page isLoading={isLoading} error={error}>
-      <Head>
-        <title>{website ? `${website.name} | Umami Console` : 'Umami Console'}</title>
-      </Head>
       <PageHeader title="Test console">
         <WebsiteSelect websiteId={website?.id} onSelect={handleChange} />
       </PageHeader>

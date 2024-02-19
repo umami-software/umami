@@ -4,21 +4,19 @@ import DataTable from 'components/common/DataTable';
 import { useWebsites } from 'components/hooks';
 
 export function WebsitesDataTable({
-  userId,
   teamId,
   allowEdit = true,
   allowView = true,
   showActions = true,
   children,
 }: {
-  userId?: string;
   teamId?: string;
   allowEdit?: boolean;
   allowView?: boolean;
   showActions?: boolean;
   children?: ReactNode;
 }) {
-  const queryResult = useWebsites({ userId, teamId });
+  const queryResult = useWebsites({ teamId });
 
   return (
     <DataTable queryResult={queryResult}>

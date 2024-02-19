@@ -11,5 +11,5 @@ export default function ReportsPage({ teamId }: { teamId: string }) {
   );
 }
 export const metadata = {
-  title: 'Reports | Umami',
+  title: 'Reports',
 };

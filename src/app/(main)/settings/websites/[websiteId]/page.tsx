@@ -1,10 +1,10 @@
-import WebsitePage from './WebsitePage';
+import WebsiteSettingsPage from './WebsiteSettingsPage';
 import { Metadata } from 'next';
 
 export default async function ({ params: { websiteId } }) {
-  return <WebsitePage websiteId={websiteId} />;
+  return <WebsiteSettingsPage websiteId={websiteId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Website settings - Umami',
+  title: 'Website',
 };

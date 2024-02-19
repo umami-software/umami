@@ -2,7 +2,7 @@
 import UsersDataTable from './UsersDataTable';
 import UsersHeader from './UsersHeader';
 
-export default function UsersPage() {
+export default function UsersSettingsPage() {
   return (
     <>
       <UsersHeader />

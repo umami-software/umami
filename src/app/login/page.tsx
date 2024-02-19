@@ -6,5 +6,5 @@ export default async function () {
 }
 
 export const metadata: Metadata = {
-  title: 'Login | Umami',
+  title: 'Login',
 };

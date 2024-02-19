@@ -6,5 +6,5 @@ export default function () {
 }
 
 export const metadata: Metadata = {
-  title: 'Insights Report | Umami',
+  title: 'Insights Report',
 };

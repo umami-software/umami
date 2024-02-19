@@ -6,5 +6,5 @@ export default function () {
 }
 
 export const metadata: Metadata = {
-  title: 'Funnel Report | Umami',
+  title: 'Funnel Report',
 };

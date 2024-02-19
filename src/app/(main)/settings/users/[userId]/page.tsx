@@ -6,5 +6,5 @@ export default function ({ params: { userId } }) {
 }
 
 export const metadata: Metadata = {
-  title: 'User Settings - Umami',
+  title: 'User Settings',
 };
