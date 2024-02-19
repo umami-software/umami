@@ -48,7 +48,7 @@ export function WebsiteSettings({
       </Tabs>
       {tab === 'details' && <WebsiteEditForm websiteId={websiteId} onSave={handleSave} />}
       {tab === 'tracking' && <TrackingCode websiteId={websiteId} hostUrl={hostUrl} />}
-      {tab === 'share' && <ShareUrl websiteId={websiteId} onSave={handleSave} />}
+      {tab === 'share' && <ShareUrl websiteId={websiteId} hostUrl={hostUrl} onSave={handleSave} />}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleSave} />}
     </>
   );
