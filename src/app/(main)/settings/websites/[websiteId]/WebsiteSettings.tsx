@@ -16,8 +16,8 @@ export function WebsiteSettings({
   openExternal = false,
 }: {
   websiteId: string;
-  hostUrl: string;
-  openExternal: boolean;
+  hostUrl?: string;
+  openExternal?: boolean;
 }) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels, messages } = useMessages();
