@@ -29,7 +29,7 @@ async function relationalQuery(websiteId: string) {
 async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
   const { rawQuery } = clickhouse;
 
-  const result = rawQuery(
+  const result = await rawQuery(
     `
     select
       count(distinct session_id) x
