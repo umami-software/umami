@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
-import UsersPage from './UsersPage';
+import UsersSettingsPage from './UsersSettingsPage';
 
 export default function () {
-  return <UsersPage />;
+  return <UsersSettingsPage />;
 }
 export const metadata: Metadata = {
   title: 'Users',

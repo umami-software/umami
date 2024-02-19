@@ -23,6 +23,7 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
 
   const handlePageChange = (value: number) => {
     const nextPage = page + value;
+
     if (nextPage > 0 && nextPage <= maxPage) {
       onPageChange(nextPage);
     }
