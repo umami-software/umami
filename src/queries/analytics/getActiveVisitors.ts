@@ -13,7 +13,7 @@ export async function getActiveVisitors(...args: [websiteId: string]) {
 async function relationalQuery(websiteId: string) {
   const { rawQuery } = prisma;
 
-  return rawQuery(
+  const result = await rawQuery(
     `
     select count(distinct session_id) x
     from website_event
@@ -22,6 +22,8 @@ async function relationalQuery(websiteId: string) {
     `,
     { websiteId, startAt: subMinutes(new Date(), 5) },
   );
+
+  return result[0] ?? null;
 }
 
 async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
