@@ -10,7 +10,15 @@ import ShareUrl from './ShareUrl';
 import { useMessages } from 'components/hooks';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
-export function WebsiteSettings({ websiteId, openExternal = false }) {
+export function WebsiteSettings({
+  websiteId,
+  hostUrl,
+  openExternal = false,
+}: {
+  websiteId: string;
+  hostUrl: string;
+  openExternal: boolean;
+}) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels, messages } = useMessages();
   const [tab, setTab] = useState<Key>('details');
@@ -39,7 +47,7 @@ export function WebsiteSettings({ websiteId, openExternal = false }) {
         <Item key="data">{formatMessage(labels.data)}</Item>
       </Tabs>
       {tab === 'details' && <WebsiteEditForm websiteId={websiteId} onSave={handleSave} />}
-      {tab === 'tracking' && <TrackingCode websiteId={websiteId} />}
+      {tab === 'tracking' && <TrackingCode websiteId={websiteId} hostUrl={hostUrl} />}
       {tab === 'share' && <ShareUrl websiteId={websiteId} onSave={handleSave} />}
       {tab === 'data' && <WebsiteData websiteId={websiteId} onSave={handleSave} />}
     </>
