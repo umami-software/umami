@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import WebsitesPage from './WebsitesPage';
+import WebsitesSettingsPage from './WebsitesSettingsPage';
 
 export default function ({ params: { teamId } }: { params: { teamId: string } }) {
-  return <WebsitesPage teamId={teamId} />;
+  return <WebsitesSettingsPage teamId={teamId} />;
 }
 
 export const metadata: Metadata = {
-  title: 'Websites Settings | Umami',
+  title: 'Websites',
 };

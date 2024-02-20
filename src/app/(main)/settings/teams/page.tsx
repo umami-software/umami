@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
-import TeamsPage from './TeamsPage';
+import TeamsSettingsPage from './TeamsSettingsPage';
 
 export default function () {
-  return <TeamsPage />;
+  return <TeamsSettingsPage />;
 }
 
 export const metadata: Metadata = {
-  title: 'Teams Settings - Umami',
+  title: 'Teams',
 };

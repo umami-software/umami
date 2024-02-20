@@ -7,12 +7,10 @@ import styles from './WebsiteSelect.module.css';
 export function WebsiteSelect({
   websiteId,
   teamId,
-  userId,
   onSelect,
 }: {
   websiteId?: string;
   teamId?: string;
-  userId?: string;
   onSelect?: (key: any) => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -21,7 +19,7 @@ export function WebsiteSelect({
 
   const { data: website } = useWebsite(selectedId as string);
 
-  const queryResult = useWebsites({ teamId, userId }, { query, pageSize: 5 });
+  const queryResult = useWebsites({ teamId }, { query, pageSize: 5 });
 
   const renderValue = () => {
     return website?.name;

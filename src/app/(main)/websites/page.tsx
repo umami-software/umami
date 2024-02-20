@@ -6,5 +6,5 @@ export default function ({ params: { teamId, userId } }) {
 }
 
 export const metadata: Metadata = {
-  title: 'Websites | Umami',
+  title: 'Websites',
 };

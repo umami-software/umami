@@ -32,5 +32,8 @@ export default function ({ children }) {
 }
 
 export const metadata: Metadata = {
-  title: 'umami',
+  title: {
+    template: '%s | Umami',
+    default: 'Umami',
+  },
 };

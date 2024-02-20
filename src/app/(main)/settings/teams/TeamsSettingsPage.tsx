@@ -2,7 +2,7 @@
 import TeamsDataTable from './TeamsDataTable';
 import TeamsHeader from './TeamsHeader';
 
-export default function TeamsPage() {
+export default function TeamsSettingsPage() {
   return (
     <>
       <TeamsHeader />
