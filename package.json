@@ -117,7 +117,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
-    "@netlify/plugin-nextjs": "^4.27.3",
+    "@netlify/plugin-nextjs": "^4.41.3",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-buble": "^1.0.2",
     "@rollup/plugin-commonjs": "^25.0.4",
