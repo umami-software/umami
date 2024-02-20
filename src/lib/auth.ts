@@ -5,8 +5,7 @@ import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER, ROLES } from 'lib/co
 import { secret } from 'lib/crypto';
 import { NextApiRequest } from 'next';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { getTeamUser } from 'queries';
-import { loadWebsite } from './load';
+import { getTeamUser, getWebsite } from 'queries';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
@@ -50,7 +49,7 @@ export async function canViewWebsite({ user, shareToken }: Auth, websiteId: stri
     return true;
   }
 
-  const website = await loadWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
@@ -86,7 +85,7 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  const website = await loadWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
@@ -102,7 +101,7 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
 }
 
 export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string, userId: string) {
-  const website = await loadWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   if (website.teamId && user.id === userId) {
     const teamUser = await getTeamUser(website.teamId, userId);
@@ -114,9 +113,9 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
 }
 
 export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string, teamId: string) {
-  const website = await loadWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
-  if (website.userId === user.id) {
+  if (website.userId && website.userId === user.id) {
     const teamUser = await getTeamUser(teamId, user.id);
 
     return teamUser?.role === ROLES.teamOwner;
@@ -130,7 +129,7 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
-  const website = await loadWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   if (website.userId) {
     return user.id === website.userId;
