@@ -6,7 +6,7 @@ import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createReport, getReports } from 'queries';
 import * as yup from 'yup';
-import { canViewTeam, canViewWebsite } from 'lib/auth';
+import { canUpdateWebsite, canViewTeam, canViewWebsite } from 'lib/auth';
 
 export interface ReportRequestBody {
   websiteId: string;
@@ -88,6 +88,10 @@ export default async (
 
   if (req.method === 'POST') {
     const { websiteId, type, name, description, parameters } = req.body;
+
+    if (!(await canUpdateWebsite(req.auth, websiteId))) {
+      return unauthorized(res);
+    }
 
     const result = await createReport({
       id: uuid(),
