@@ -11,9 +11,9 @@ export function TeamMembersPage({ teamId }: { teamId: string }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
 
-  const canEdit = team?.teamUser?.find(
-    ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,
-  );
+  const canEdit =
+    team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
+    user.role !== ROLES.viewOnly;
 
   return (
     <>

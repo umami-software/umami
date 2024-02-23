@@ -13,12 +13,15 @@ export function TeamWebsitesTable({
   allowEdit?: boolean;
 }) {
   const { user } = useLogin();
-
   const { formatMessage, labels } = useMessages();
+
   return (
     <GridTable data={data}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
+      <GridColumn name="createdBy" label={formatMessage(labels.createdBy)}>
+        {row => row?.createUser?.username}
+      </GridColumn>
       <GridColumn name="action" label=" " alignment="end">
         {row => {
           const { id: websiteId } = row;
