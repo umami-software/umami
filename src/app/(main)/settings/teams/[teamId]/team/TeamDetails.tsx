@@ -15,9 +15,9 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   const { user } = useLogin();
   const [tab, setTab] = useState('details');
 
-  const canEdit = !!team?.teamUser?.find(
-    ({ userId, role }) => role === ROLES.teamOwner && userId === user.id,
-  );
+  const canEdit =
+    !!team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
+    user.role !== ROLES.viewOnly;
 
   return (
     <Flexbox direction="column">
