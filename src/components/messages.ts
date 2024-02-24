@@ -209,6 +209,18 @@ export const labels = defineMessages({
   select: { id: 'label.select', defaultMessage: 'Select' },
   myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
   transfer: { id: 'label.transfer', defaultMessage: 'Transfer' },
+  viewedPage: {
+    id: 'message.viewed-page',
+    defaultMessage: 'Viewed page',
+  },
+  triggeredEvent: {
+    id: 'message.triggered-event',
+    defaultMessage: 'Triggered event',
+  },
+  visitorsDroppedOff: {
+    id: 'message.visitors-dropped-off',
+    defaultMessage: 'Visitors droppped off',
+  },
 });
 
 export const messages = defineMessages({

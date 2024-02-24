@@ -2,6 +2,25 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
+const formatResults = (urls: string[]) => (results: unknown) => {
+  return urls.map((url: string, i: number) => {
+    const visitors = Number(results[i]?.count) || 0;
+    const previous = Number(results[i - 1]?.count) || 0;
+    const dropped = previous > 0 ? previous - visitors : 0;
+    const dropoff = 1 - visitors / previous;
+    const remaining = visitors / Number(results[0].count);
+
+    return {
+      url,
+      visitors,
+      previous,
+      dropped,
+      dropoff,
+      remaining,
+    };
+  });
+};
+
 export async function getFunnel(
   ...args: [
     websiteId: string,
@@ -29,9 +48,9 @@ async function relationalQuery(
   },
 ): Promise<
   {
-    x: string;
-    y: number;
-    z: number;
+    url: string;
+    visitors: number;
+    dropoff: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -98,13 +117,7 @@ async function relationalQuery(
       endDate,
       ...urls,
     },
-  ).then(results => {
-    return urls.map((a, i) => ({
-      x: a,
-      y: results[i]?.count || 0,
-      z: (1 - Number(results[i]?.count) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
-    }));
-  });
+  ).then(formatResults(urls));
 }
 
 async function clickhouseQuery(
@@ -117,9 +130,9 @@ async function clickhouseQuery(
   },
 ): Promise<
   {
-    x: string;
-    y: number;
-    z: number;
+    url: string;
+    visitors: number;
+    dropoff: number;
   }[]
 > {
   const { windowMinutes, startDate, endDate, urls } = criteria;
@@ -198,11 +211,5 @@ async function clickhouseQuery(
       endDate,
       ...urlParams,
     },
-  ).then(results => {
-    return urls.map((a, i) => ({
-      x: a,
-      y: Number(results[i]?.count) || 0,
-      z: (1 - Number(results[i]?.count) / Number(results[i - 1]?.count)) * 100 || 0, // drop off
-    }));
-  });
+  ).then(formatResults(urls));
 }
