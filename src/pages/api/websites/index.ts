@@ -62,6 +62,7 @@ export default async (
 
     const data: any = {
       id: uuid(),
+      createdBy: userId,
       name,
       domain,
       shareId,

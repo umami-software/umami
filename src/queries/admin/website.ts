@@ -87,7 +87,7 @@ export async function getTeamWebsites(
         teamId,
       },
       include: {
-        user: {
+        createUser: {
           select: {
             id: true,
             username: true,

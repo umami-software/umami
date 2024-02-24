@@ -1,4 +1,4 @@
-import { isValid, parseISO } from 'date-fns';
+import { isValid } from 'date-fns';
 import { DATA_TYPE } from './constants';
 import { DynamicDataType } from './types';
 
@@ -28,7 +28,7 @@ export function flattenJSON(
 export function getDataType(value: any): string {
   let type: string = typeof value;
 
-  if ((type === 'string' && isValid(value)) || isValid(parseISO(value))) {
+  if ((type === 'string' && isValid(value)) || isValid(new Date(value))) {
     type = 'date';
   }
 

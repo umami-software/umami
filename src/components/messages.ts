@@ -26,6 +26,7 @@ export const labels = defineMessages({
   myWebsites: { id: 'label.my-websites', defaultMessage: 'My websites' },
   teamWebsites: { id: 'label.team-websites', defaultMessage: 'Team websites' },
   created: { id: 'label.created', defaultMessage: 'Created' },
+  createdBy: { id: 'label.created-by', defaultMessage: 'Created By' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
   member: { id: 'label.member', defaultMessage: 'Member' },
