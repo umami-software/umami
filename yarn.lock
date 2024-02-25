@@ -1704,20 +1704,19 @@
   dependencies:
     is-promise "^4.0.0"
 
-"@netlify/functions@^2.1.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-2.3.0.tgz#37e2ca41c0034a10de4addbdff7fbb8ec669e8c7"
-  integrity sha512-E3kzXPWMP/r1rAWhjTaXcaOT47dhEvg/eQUJjRLhD9Zzp0WqkdynHr+bqff4rFNv6tuXrtFZrpbPJFKHH0c0zw==
+"@netlify/functions@^2.4.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@netlify/functions/-/functions-2.6.0.tgz#801a6fe8ceef2ce1512c637a28e53e6a3aae289b"
+  integrity sha512-vU20tij0fb4nRGACqb+5SQvKd50JYyTyEhQetCMHdakcJFzjLDivvRR16u1G2Oy4A7xNAtGJF1uz8reeOtTVcQ==
   dependencies:
-    "@netlify/serverless-functions-api" "1.9.0"
-    is-promise "^4.0.0"
+    "@netlify/serverless-functions-api" "1.14.0"
 
-"@netlify/ipx@^1.4.5":
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/@netlify/ipx/-/ipx-1.4.5.tgz#c0b38628457786ca3edf365a9a0cf97cdd9d0883"
-  integrity sha512-QuPxUj8Bn8hXwjdcA1BF+HPLqFJ2e9OCNrKX/s3hoUFjjqQrNSK8lLARAtzGfOM3BRsTXyi/zGdwBE+oJKd0dw==
+"@netlify/ipx@^1.4.6":
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/@netlify/ipx/-/ipx-1.4.6.tgz#0bd308d70a1d2e1928e66cb49e36294f66f7b8b2"
+  integrity sha512-rnKR2LXhtnflitPX9CQIv+XSrNlYIqGsV54xrXifhbtHHjCjCw/lixsi8qwAXqEIgZBC9b4Y7prhHqRtC4oIjw==
   dependencies:
-    "@netlify/functions" "^2.1.0"
+    "@netlify/functions" "^2.4.0"
     etag "^1.8.1"
     fs-extra "^11.0.0"
     ipx "^1.3.1"
@@ -1726,22 +1725,22 @@
     murmurhash "^2.0.0"
     node-fetch "^2.0.0"
     ufo "^1.0.0"
-    unstorage "^1.0.0"
+    unstorage "1.9.0"
 
 "@netlify/node-cookies@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@netlify/node-cookies/-/node-cookies-0.1.0.tgz#dda912ba618527695cf519fafa221c5e6777c612"
   integrity sha512-OAs1xG+FfLX0LoRASpqzVntVV/RpYkgpI0VrUnw2u0Q1qiZUzcPffxRK8HF3gc4GjuhG5ahOEMJ9bswBiZPq0g==
 
-"@netlify/plugin-nextjs@^4.27.3":
-  version "4.41.0"
-  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-4.41.0.tgz#34c4af80b8f1575d6053d38f59e9b1e0aa1c3321"
-  integrity sha512-Yq1hw/Ip3OGhQhG9xVNIf+lyY6XIbkDzxpXV3wIFbfZDOzgXxBfHixB+AWRoztiYPDknIRC3UOQKwdlRkHyqhw==
+"@netlify/plugin-nextjs@^4.41.3":
+  version "4.41.3"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-4.41.3.tgz#f8274526147f652438cc6790b6819ca15d441dd3"
+  integrity sha512-l8TB61u7A1ZF22QpoyZtresSUsHOJGP9DatECnqlNab3lG8id1kz9Pso+nZVOznWOm98o7w51k2+TIf52x+DBQ==
   dependencies:
     "@netlify/blobs" "^2.2.0"
     "@netlify/esbuild" "0.14.39"
     "@netlify/functions" "^1.6.0"
-    "@netlify/ipx" "^1.4.5"
+    "@netlify/ipx" "^1.4.6"
     "@vercel/node-bridge" "^2.1.0"
     chalk "^4.1.2"
     chokidar "^3.5.3"
@@ -1763,10 +1762,10 @@
     slash "^3.0.0"
     tiny-glob "^0.2.9"
 
-"@netlify/serverless-functions-api@1.9.0":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@netlify/serverless-functions-api/-/serverless-functions-api-1.9.0.tgz#3e58249e57350aee2c5143c282fddb4abbae4a9d"
-  integrity sha512-Jq4uk1Mwa5vyxImupJYXPP+I5yYcp3PtguvXtJRutKdm9DPALXfZVtCQzBWMNdZiqVWCM3La9hvaBsPjSMfeug==
+"@netlify/serverless-functions-api@1.14.0":
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/@netlify/serverless-functions-api/-/serverless-functions-api-1.14.0.tgz#2bedff76cf898e24e48161aa2508776c4d261ed1"
+  integrity sha512-HUNETLNvNiC2J+SB/YuRwJA9+agPrc0azSoWVk8H85GC+YE114hcS5JW+dstpKwVerp2xILE3vNWN7IMXP5Q5Q==
   dependencies:
     "@netlify/node-cookies" "^0.1.0"
     urlpattern-polyfill "8.0.2"
@@ -8993,7 +8992,7 @@ universalify@^2.0.0:
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-2.0.0.tgz#75a4984efedc4b08975c5aeb73f530d02df25717"
   integrity sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==
 
-unstorage@^1.0.0:
+unstorage@1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/unstorage/-/unstorage-1.9.0.tgz#0c1977f4e769a48344339ac97ec3f2feea94d43d"
   integrity sha512-VpD8ZEYc/le8DZCrny3bnqKE4ZjioQxBRnWE+j5sGNvziPjeDlaS1NaFFHzl/kkXaO3r7UaF8MGQrs14+1B4pQ==
