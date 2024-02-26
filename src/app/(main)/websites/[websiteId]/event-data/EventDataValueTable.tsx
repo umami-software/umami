@@ -1,32 +1,15 @@
-import { GridTable, GridColumn, Icon, Text } from 'react-basics';
-import { useMessages, useNavigation } from 'components/hooks';
-import Icons from 'components/icons';
+import { GridTable, GridColumn } from 'react-basics';
+import { useMessages } from 'components/hooks';
 import PageHeader from 'components/layout/PageHeader';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES } from 'lib/constants';
-import LinkButton from 'components/common/LinkButton';
 
 export function EventDataValueTable({ data = [], event }: { data: any[]; event: string }) {
   const { formatMessage, labels } = useMessages();
-  const { renderUrl } = useNavigation();
-
-  const Title = () => {
-    return (
-      <>
-        <LinkButton href={renderUrl({ event: undefined })}>
-          <Icon rotate={180}>
-            <Icons.ArrowRight />
-          </Icon>
-          <Text>{formatMessage(labels.back)}</Text>
-        </LinkButton>
-        <Text>{event}</Text>
-      </>
-    );
-  };
 
   return (
     <>
-      <PageHeader title={<Title />} />
+      <PageHeader title={event} />
       {data.length <= 0 && <Empty />}
       {data.length > 0 && (
         <GridTable data={data}>
