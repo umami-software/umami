@@ -1,5 +1,4 @@
 import FunnelChart from './FunnelChart';
-import FunnelTable from './FunnelTable';
 import FunnelParameters from './FunnelParameters';
 import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
@@ -22,7 +21,6 @@ export default function FunnelReport({ reportId }: { reportId?: string }) {
       </ReportMenu>
       <ReportBody>
         <FunnelChart />
-        <FunnelTable />
       </ReportBody>
     </Report>
   );
