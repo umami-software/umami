@@ -49,7 +49,7 @@
 .bar {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   background: var(--base900);
   height: 50px;
   border-radius: 5px;
