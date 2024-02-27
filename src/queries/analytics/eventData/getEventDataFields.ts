@@ -31,7 +31,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { fiel
     ${filterQuery}
     group by event_key, data_type, string_value
     order by 3 desc, 2 desc, 1 asc
-    limit 100
+    limit 500
     `,
     params,
   );
@@ -59,7 +59,7 @@ async function clickhouseQuery(
     ${filterQuery}
     group by event_key, data_type, string_value
     order by 3 desc, 2 desc, 1 asc
-    limit 100
+    limit 500
     `,
     params,
   ).then(a => {

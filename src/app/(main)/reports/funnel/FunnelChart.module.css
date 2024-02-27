@@ -1,3 +1,84 @@
-.loading {
-  height: 300px;
+.chart {
+  display: grid;
+}
+
+.num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--base800);
+  background: var(--base100);
+  z-index: 1;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 30px;
+  position: relative;
+  padding-bottom: 60px;
+}
+
+.step::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 25px;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--base100);
+}
+
+.card {
+  display: grid;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  gap: 20px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--base900);
+  height: 50px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.label {
+  color: var(--base700);
+}
+
+.value {
+  color: var(--base50);
+  margin-right: 20px;
+}
+
+.track {
+  background-color: var(--base100);
+  border-radius: 5px;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  text-transform: lowercase;
+}
+
+.item {
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--base300);
 }

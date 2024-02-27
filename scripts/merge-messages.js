@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const prettier = require('prettier');
-const messages = require('../build/messages.json');
+const messages = require('../build/extracted-messages.json');
 
 const dest = path.resolve(__dirname, '../src/lang');
 const files = fs.readdirSync(dest);

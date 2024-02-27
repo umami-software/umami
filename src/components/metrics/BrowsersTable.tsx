@@ -1,7 +1,7 @@
 import FilterLink from 'components/common/FilterLink';
 import MetricsTable, { MetricsTableProps } from 'components/metrics/MetricsTable';
-import useMessages from 'components/hooks/useMessages';
-import useFormat from 'components/hooks/useFormat';
+import { useMessages } from 'components/hooks';
+import { useFormat } from 'components/hooks';
 
 export function BrowsersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
