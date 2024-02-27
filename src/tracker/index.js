@@ -14,10 +14,12 @@
 
   const _data = 'data-';
   const _false = 'false';
+  const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
   const autoTrack = attr(_data + 'auto-track') !== _false;
+  const stripSearch = attr(_data + 'strip-search') === _true;
   const dnt = attr(_data + 'do-not-track');
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
@@ -218,7 +220,7 @@
     };
   }
 
-  let currentUrl = `${pathname}${search}`;
+  let currentUrl = `${pathname}${stripSearch ? '' : search}`;
   let currentRef = document.referrer;
   let title = document.title;
   let cache;
