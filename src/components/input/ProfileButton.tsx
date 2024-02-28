@@ -25,7 +25,7 @@ export function ProfileButton() {
 
   return (
     <PopupTrigger>
-      <Button variant="quiet">
+      <Button data-cy="button-profile" variant="quiet">
         <Icon>
           <Icons.Profile />
         </Icon>
@@ -41,7 +41,7 @@ export function ProfileButton() {
               <Text>{formatMessage(labels.profile)}</Text>
             </Item>
             {!cloudMode && (
-              <Item key="logout" className={styles.item}>
+              <Item data-cy="item-logout" key="logout" className={styles.item}>
                 <Icon>
                   <Icons.Logout />
                 </Icon>
