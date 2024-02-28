@@ -22,7 +22,7 @@ const schema = {
 
 export default async (
   req: NextApiRequestQueryBody<EventDataStatsRequestQuery>,
-  res: NextApiResponse<any>,
+  res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);

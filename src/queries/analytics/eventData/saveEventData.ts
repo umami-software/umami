@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { flattenJSON } from 'lib/data';
+import { flattenJSON, getStringValue } from 'lib/data';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { DynamicData } from 'lib/types';
@@ -37,15 +37,10 @@ async function relationalQuery(data: {
     websiteEventId: eventId,
     websiteId,
     eventKey: a.key,
-    stringValue:
-      a.dynamicDataType === DATA_TYPE.number
-        ? parseFloat(a.value).toFixed(4)
-        : a.dynamicDataType === DATA_TYPE.date
-        ? a.value.split('.')[0] + 'Z'
-        : a.value.toString(),
-    numberValue: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
-    dateValue: a.dynamicDataType === DATA_TYPE.date ? new Date(a.value) : null,
-    dataType: a.dynamicDataType,
+    stringValue: getStringValue(a.value, a.dataType),
+    numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
+    dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
+    dataType: a.dataType,
   }));
 
   return prisma.client.eventData.createMany({
@@ -75,13 +70,10 @@ async function clickhouseQuery(data: {
     url_path: urlPath,
     event_name: eventName,
     event_key: a.key,
-    string_value:
-      a.dynamicDataType === DATA_TYPE.date
-        ? getDateFormat(a.value, 'isoUtcDateTime')
-        : a.value.toString(),
-    number_value: a.dynamicDataType === DATA_TYPE.number ? a.value : null,
-    date_value: a.dynamicDataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
-    data_type: a.dynamicDataType,
+    string_value: getStringValue(a.value, a.dataType),
+    number_value: a.dataType === DATA_TYPE.number ? a.value : null,
+    date_value: a.dataType === DATA_TYPE.date ? getDateFormat(a.value) : null,
+    data_type: a.dataType,
     created_at: createdAt,
   }));
 

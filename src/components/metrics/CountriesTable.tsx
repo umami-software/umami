@@ -1,5 +1,5 @@
 import FilterLink from 'components/common/FilterLink';
-import useCountryNames from 'components/hooks/useCountryNames';
+import { useCountryNames } from 'components/hooks';
 import { useLocale, useMessages, useFormat } from 'components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 

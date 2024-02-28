@@ -1,15 +1,15 @@
+import { useMessages, useModified } from 'components/hooks';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
 import WebsiteAddForm from './WebsiteAddForm';
-import useMessages from 'components/hooks/useMessages';
-import { setValue } from 'store/cache';
 
-export function WebsiteAddButton({ onSave }: { onSave?: () => void }) {
+export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
   const { showToast } = useToasts();
+  const { touch } = useModified();
 
   const handleSave = async () => {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
-    setValue('websites', Date.now());
+    touch('websites');
     onSave?.();
   };
 
@@ -22,7 +22,9 @@ export function WebsiteAddButton({ onSave }: { onSave?: () => void }) {
         <Text>{formatMessage(labels.addWebsite)}</Text>
       </Button>
       <Modal title={formatMessage(labels.addWebsite)}>
-        {(close: () => void) => <WebsiteAddForm onSave={handleSave} onClose={close} />}
+        {(close: () => void) => (
+          <WebsiteAddForm teamId={teamId} onSave={handleSave} onClose={close} />
+        )}
       </Modal>
     </ModalTrigger>
   );

@@ -125,6 +125,7 @@ export const ROLES = {
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
   teamMember: 'team-member',
+  teamViewOnly: 'team-view-only',
 } as const;
 
 export const PERMISSIONS = {
@@ -146,8 +147,19 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.teamCreate,
   ],
   [ROLES.viewOnly]: [],
-  [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
-  [ROLES.teamMember]: [],
+  [ROLES.teamOwner]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamMember]: [
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamViewOnly]: [],
 } as const;
 
 export const THEME_COLORS = {
@@ -203,6 +215,9 @@ export const UUID_REGEX =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 export const HOSTNAME_REGEX =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+export const IP_REGEX = /^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/;
+export const DATETIME_REGEX =
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;
@@ -235,6 +250,14 @@ export const DESKTOP_OS = [
 ];
 
 export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
+
+export const OS_NAMES = {
+  'Android OS': 'Android',
+  'Chrome OS': 'ChromeOS',
+  'Mac OS': 'macOS',
+  'Sun OS': 'SunOS',
+  'Windows 10': 'Windows 10/11',
+};
 
 export const BROWSERS = {
   android: 'Android',

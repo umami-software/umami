@@ -1,6 +1,7 @@
 import { defineMessages } from 'react-intl';
 
 export const labels = defineMessages({
+  ok: { id: 'label.ok', defaultMessage: 'OK' },
   unknown: { id: 'label.unknown', defaultMessage: 'Unknown' },
   required: { id: 'label.required', defaultMessage: 'Required' },
   save: { id: 'label.save', defaultMessage: 'Save' },
@@ -16,7 +17,8 @@ export const labels = defineMessages({
   role: { id: 'label.role', defaultMessage: 'Role' },
   user: { id: 'label.user', defaultMessage: 'User' },
   viewOnly: { id: 'label.view-only', defaultMessage: 'View only' },
-  admin: { id: 'label.admin', defaultMessage: 'Administrator' },
+  manage: { id: 'label.manage', defaultMessage: 'Manage' },
+  administrator: { id: 'label.administrator', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
   website: { id: 'label.website', defaultMessage: 'Website' },
@@ -24,8 +26,10 @@ export const labels = defineMessages({
   myWebsites: { id: 'label.my-websites', defaultMessage: 'My websites' },
   teamWebsites: { id: 'label.team-websites', defaultMessage: 'Team websites' },
   created: { id: 'label.created', defaultMessage: 'Created' },
+  createdBy: { id: 'label.created-by', defaultMessage: 'Created By' },
   edit: { id: 'label.edit', defaultMessage: 'Edit' },
   name: { id: 'label.name', defaultMessage: 'Name' },
+  member: { id: 'label.member', defaultMessage: 'Member' },
   members: { id: 'label.members', defaultMessage: 'Members' },
   accessCode: { id: 'label.access-code', defaultMessage: 'Access code' },
   teamId: { id: 'label.team-id', defaultMessage: 'Team ID' },
@@ -40,7 +44,7 @@ export const labels = defineMessages({
   owner: { id: 'label.owner', defaultMessage: 'Owner' },
   teamOwner: { id: 'label.team-owner', defaultMessage: 'Team owner' },
   teamMember: { id: 'label.team-member', defaultMessage: 'Team member' },
-  teamGuest: { id: 'label.team-guest', defaultMessage: 'Team guest' },
+  teamViewOnly: { id: 'label.team-view-only', defaultMessage: 'Team view only' },
   enableShareUrl: { id: 'label.enable-share-url', defaultMessage: 'Enable share URL' },
   data: { id: 'label.data', defaultMessage: 'Data' },
   trackingCode: { id: 'label.tracking-code', defaultMessage: 'Tracking code' },
@@ -50,8 +54,13 @@ export const labels = defineMessages({
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },
   resetWebsite: { id: 'label.reset-website', defaultMessage: 'Reset website' },
   deleteWebsite: { id: 'label.delete-website', defaultMessage: 'Delete website' },
+  transferWebsite: { id: 'label.transfer-website', defaultMessage: 'Transfer website' },
+  deleteReport: { id: 'label.delete-report', defaultMessage: 'Delete report' },
   reset: { id: 'label.reset', defaultMessage: 'Reset' },
   addWebsite: { id: 'label.add-website', defaultMessage: 'Add website' },
+  addMember: { id: 'label.add-member', defaultMessage: 'Add member' },
+  editMember: { id: 'label.edit-member', defaultMessage: 'Edit member' },
+  removeMember: { id: 'label.remove-member', defaultMessage: 'Remove member' },
   addDescription: { id: 'label.add-description', defaultMessage: 'Add description' },
   changePassword: { id: 'label.change-password', defaultMessage: 'Change password' },
   currentPassword: { id: 'label.current-password', defaultMessage: 'Current password' },
@@ -105,6 +114,7 @@ export const labels = defineMessages({
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
   customRange: { id: 'label.custom-range', defaultMessage: 'Custom range' },
   selectWebsite: { id: 'label.select-website', defaultMessage: 'Select website' },
+  selectRole: { id: 'label.select-role', defaultMessage: 'Select role' },
   selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
   all: { id: 'label.all', defaultMessage: 'All' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
@@ -197,6 +207,21 @@ export const labels = defineMessages({
     id: 'label.number-of-records',
     defaultMessage: '{x} {x, plural, one {record} other {records}}',
   },
+  select: { id: 'label.select', defaultMessage: 'Select' },
+  myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
+  transfer: { id: 'label.transfer', defaultMessage: 'Transfer' },
+  viewedPage: {
+    id: 'message.viewed-page',
+    defaultMessage: 'Viewed page',
+  },
+  triggeredEvent: {
+    id: 'message.triggered-event',
+    defaultMessage: 'Triggered event',
+  },
+  visitorsDroppedOff: {
+    id: 'message.visitors-dropped-off',
+    defaultMessage: 'Visitors droppped off',
+  },
 });
 
 export const messages = defineMessages({
@@ -213,6 +238,10 @@ export const messages = defineMessages({
     id: 'message.confirm-delete',
     defaultMessage: 'Are you sure you want to delete {target}?',
   },
+  confirmRemove: {
+    id: 'message.confirm-remove',
+    defaultMessage: 'Are you sure you want to remove {target}?',
+  },
   confirmLeave: {
     id: 'message.confirm-leave',
     defaultMessage: 'Are you sure you want to leave {target}?',
@@ -227,7 +256,7 @@ export const messages = defineMessages({
   },
   shareUrl: {
     id: 'message.share-url',
-    defaultMessage: 'Your website stats are publically available at the following URL:',
+    defaultMessage: 'Your website stats are publicly available at the following URL:',
   },
   trackingCode: {
     id: 'message.tracking-code',
@@ -238,13 +267,9 @@ export const messages = defineMessages({
     id: 'message.team-already-member',
     defaultMessage: 'You are already a member of the team.',
   },
-  deleteAccount: {
-    id: 'message.delete-account',
-    defaultMessage: 'To delete this account, type {confirmation} in the box below to confirm.',
-  },
-  deleteWebsite: {
-    id: 'message.delete-website',
-    defaultMessage: 'To delete this website, type {confirmation} in the box below to confirm.',
+  actionConfirmation: {
+    id: 'message.action-confirmation',
+    defaultMessage: 'Type {confirmation} in the box below to confirm.',
   },
   resetWebsite: {
     id: 'message.reset-website',
@@ -262,6 +287,10 @@ export const messages = defineMessages({
   deleteWebsiteWarning: {
     id: 'message.delete-website-warning',
     defaultMessage: 'All website data will be deleted.',
+  },
+  deleteTeamWarning: {
+    id: 'message.delete-team-warning',
+    defaultMessage: 'Deleting a team will also delete all team websites.',
   },
   noResultsFound: {
     id: 'message.no-results-found',
@@ -311,5 +340,17 @@ export const messages = defineMessages({
   newVersionAvailable: {
     id: 'message.new-version-available',
     defaultMessage: 'A new version of Umami {version} is available!',
+  },
+  transferWebsite: {
+    id: 'message.transfer-website',
+    defaultMessage: 'Transfer website ownership to your account or another team.',
+  },
+  transferTeamWebsiteToUser: {
+    id: 'message.transfer-team-website-to-user',
+    defaultMessage: 'Transfer this website to your account?',
+  },
+  transferUserWebsiteToTeam: {
+    id: 'message.transfer-user-website-to-team',
+    defaultMessage: 'Select the team to transfer this website to.',
   },
 });
