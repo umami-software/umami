@@ -10,7 +10,6 @@ env:
     org.opencontainers.image.vendor=${{github.repository_owner}},
     org.opencontainers.image.licenses="MIT",
     org.opencontainers.image.version=${{github.ref_name}},
-    org.opencontainers.image.created=${{ env.NOW }},
     org.opencontainers.image.source=${{github.server_url}}/${{github.repository}},
     org.opencontainers.image.revision=${{github.sha}},
     org.opencontainers.image.url="https://umami.is/",
