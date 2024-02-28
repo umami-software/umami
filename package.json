@@ -43,7 +43,8 @@
     "lint": "next lint --quiet",
     "prepare": "node -e \"if (process.env.NODE_ENV !== 'production'){process.exit(1)} \" || husky install",
     "postbuild": "node scripts/postbuild.js",
-    "cypress-open": "cypress open"
+    "cypress-open": "cypress open cypress run --config-file cypress/cypress.config.ts",
+    "cypress-run": "cypress run cypress run --config-file cypress/cypress.config.ts"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
