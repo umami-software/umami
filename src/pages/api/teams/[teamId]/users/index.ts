@@ -44,8 +44,6 @@ export default async (
       return unauthorized(res);
     }
 
-    const { query, page, pageSize } = req.query;
-
     const users = await getTeamUsers(
       {
         where: {
@@ -63,11 +61,7 @@ export default async (
           },
         },
       },
-      {
-        query,
-        page,
-        pageSize,
-      },
+      req.query,
     );
 
     return ok(res, users);
