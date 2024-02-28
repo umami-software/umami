@@ -56,10 +56,10 @@ const schema = {
         hostname: yup.string().matches(HOSTNAME_REGEX).max(100),
         ip: yup.string().matches(IP_REGEX),
         language: yup.string().max(35),
-        referrer: yup.string().max(500),
+        referrer: yup.string(),
         screen: yup.string().max(11),
-        title: yup.string().max(500),
-        url: yup.string().max(500),
+        title: yup.string(),
+        url: yup.string(),
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
       })
