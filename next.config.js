@@ -152,14 +152,14 @@ const config = {
 
     return config;
   },
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers,
-      },
-    ];
-  },
+  // async headers() {
+  //   return [
+  //     {
+  //       source: '/:path*',
+  //       headers,
+  //     },
+  //   ];
+  // },
   async rewrites() {
     return [
       ...rewrites,
