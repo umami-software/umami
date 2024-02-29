@@ -33,23 +33,21 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
 
   return (
     <>
-      {process.env.cloudMode && (
-        <ActionForm
-          label={formatMessage(labels.transferWebsite)}
-          description={formatMessage(messages.transferWebsite)}
-        >
-          <ModalTrigger disabled={!isTeamOwner}>
-            <Button variant="secondary" disabled={!isTeamOwner}>
-              {formatMessage(labels.transfer)}
-            </Button>
-            <Modal title={formatMessage(labels.transferWebsite)}>
-              {(close: () => void) => (
-                <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-              )}
-            </Modal>
-          </ModalTrigger>
-        </ActionForm>
-      )}
+      <ActionForm
+        label={formatMessage(labels.transferWebsite)}
+        description={formatMessage(messages.transferWebsite)}
+      >
+        <ModalTrigger disabled={!isTeamOwner}>
+          <Button variant="secondary" disabled={!isTeamOwner}>
+            {formatMessage(labels.transfer)}
+          </Button>
+          <Modal title={formatMessage(labels.transferWebsite)}>
+            {(close: () => void) => (
+              <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+            )}
+          </Modal>
+        </ModalTrigger>
+      </ActionForm>
       <ActionForm
         label={formatMessage(labels.resetWebsite)}
         description={formatMessage(messages.resetWebsiteWarning)}
