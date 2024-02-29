@@ -76,7 +76,7 @@
   position: relative;
   width: 50px;
   color: var(--base600);
-  border-left: 1px solid var(--base600);
+  border-inline-start: 1px solid var(--base600);
   padding-inline-start: 10px;
   z-index: 1;
 }
