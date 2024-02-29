@@ -2,7 +2,8 @@
 version: '3'
 services:
   umami:
-    image: ghcr.io/umami-software/umami:postgresql-latest
+    build: ../
+    #image: ghcr.io/umami-software/umami:postgresql-latest
     ports:
       - '3000:3000'
     environment:
@@ -38,10 +39,13 @@ services:
       - umami
       - db
     environment:
-      - CYPRESS_baseUrl=http://localhost:3000
-    entrypoint: /bin/sh -c "yarn install"
-    working_dir: /cypress
+      - CYPRESS_baseUrl=http://umami:3000
+      - CYPRESS_umami_user=admin
+      - CYPRESS_umami_password=umami
     volumes:
+      - ../tsconfig.json:/tsconfig.json
+      - ../cypress.config.ts:/cypress.config.ts
       - ./:/cypress
+      - ../node_modules/:/node_modules
 volumes:
   umami-db-data:
