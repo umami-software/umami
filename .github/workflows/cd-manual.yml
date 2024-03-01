@@ -39,7 +39,7 @@ jobs:
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
-          labels: $DOCKER_LABELS
+          labels: ${{ DOCKER_LABELS }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true

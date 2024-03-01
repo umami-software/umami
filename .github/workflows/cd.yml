@@ -39,7 +39,7 @@ jobs:
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
-          labels: $DOCKER_LABELS
+          labels: ${{ DOCKER_LABELS }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true
@@ -53,7 +53,7 @@ jobs:
         with:
           image: umamisoftware/umami
           tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
-          labels: $DOCKER_LABELS
+          labels: ${{ DOCKER_LABELS }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
