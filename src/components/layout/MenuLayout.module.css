@@ -7,7 +7,7 @@
 .menu {
   width: 240px;
   padding-top: 34px;
-  padding-right: 20px;
+  padding-inline-end: 20px;
 }
 
 .content {
