@@ -27,10 +27,11 @@
     "plugin:import/errors",
     "plugin:import/typescript",
     "plugin:css-modules/recommended",
+    "plugin:cypress/recommended",
     "prettier",
     "next"
   ],
-  "plugins": ["@typescript-eslint", "prettier", "promise", "css-modules"],
+  "plugins": ["@typescript-eslint", "prettier", "promise", "css-modules", "cypress"],
   "rules": {
     "no-console": "error",
     "react/display-name": "off",

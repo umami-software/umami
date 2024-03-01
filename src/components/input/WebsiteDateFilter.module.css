@@ -15,6 +15,7 @@
 .buttons button:first-child {
   border-start-end-radius: 0;
   border-end-end-radius: 0;
+  border-inline-end: 1px solid var(--base400);
 }
 
 .buttons button:last-child {
