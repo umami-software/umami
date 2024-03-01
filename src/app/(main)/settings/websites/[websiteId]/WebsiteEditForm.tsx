@@ -27,15 +27,20 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
   return (
     <Form ref={ref} onSubmit={handleSubmit} error={error} values={website}>
       <FormRow label={formatMessage(labels.websiteId)}>
-        <TextField value={website?.id} readOnly allowCopy />
+        <TextField data-test="text-field-websiteId" value={website?.id} readOnly allowCopy />
       </FormRow>
       <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
+        <FormInput
+          data-test="input-name"
+          name="name"
+          rules={{ required: formatMessage(labels.required) }}
+        >
           <TextField />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.domain)}>
         <FormInput
+          data-test="input-domain"
           name="domain"
           rules={{
             required: formatMessage(labels.required),
@@ -49,7 +54,9 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
         </FormInput>
       </FormRow>
       <FormButtons>
-        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+        <SubmitButton data-test="button-submit" variant="primary">
+          {formatMessage(labels.save)}
+        </SubmitButton>
       </FormButtons>
     </Form>
   );

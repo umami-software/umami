@@ -43,7 +43,7 @@ export function LoginForm() {
       <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
         <FormRow label={formatMessage(labels.username)}>
           <FormInput
-            data-cy="input-username"
+            data-test="input-username"
             name="username"
             rules={{ required: formatMessage(labels.required) }}
           >
@@ -52,7 +52,7 @@ export function LoginForm() {
         </FormRow>
         <FormRow label={formatMessage(labels.password)}>
           <FormInput
-            data-cy="input-password"
+            data-test="input-password"
             name="password"
             rules={{ required: formatMessage(labels.required) }}
           >
@@ -61,7 +61,7 @@ export function LoginForm() {
         </FormRow>
         <FormButtons>
           <SubmitButton
-            data-cy="button-submit"
+            data-test="button-submit"
             className={styles.button}
             variant="primary"
             disabled={isPending}
