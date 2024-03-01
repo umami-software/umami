@@ -263,6 +263,13 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
   const { unit: originalUnit } = parseDateValue(value) || {};
 
   switch (originalUnit) {
+    case 'day':
+      return {
+        ...dateRange,
+        startDate: addDays(startDate, increment),
+        endDate: addDays(endDate, increment),
+        offset: offset + increment,
+      };
     case 'week':
       return {
         ...dateRange,
