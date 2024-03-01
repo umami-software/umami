@@ -2,20 +2,6 @@ name: Create docker images
 
 on: [create]
 
-env:
-  # set Docker OCI Labels
-  DOCKER_LABELS: > 
-    org.opencontainers.image.title=${{github.event.repository.name}},
-    org.opencontainers.image.description="Umami is a simple, fast, privacy-focused alternative to Google Analytics",
-    org.opencontainers.image.vendor=${{github.repository_owner}},
-    org.opencontainers.image.licenses="MIT",
-    org.opencontainers.image.version=${{github.ref_name}},
-    org.opencontainers.image.source=${{github.server_url}}/${{github.repository}},
-    org.opencontainers.image.revision=${{github.sha}},
-    org.opencontainers.image.url="https://umami.is/",
-    org.opencontainers.image.documentation="https://umami.is/docs",
-    org.opencontainers.image.base.name="docker.io/library/node:18-alpine"
-
 jobs:
   build:
     name: Build, push, and deploy
@@ -39,7 +25,6 @@ jobs:
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
-          labels: $DOCKER_LABELS
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true
@@ -53,7 +38,6 @@ jobs:
         with:
           image: umamisoftware/umami
           tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
-          labels: $DOCKER_LABELS
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}

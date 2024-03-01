@@ -39,13 +39,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, query, pageSize } = req.query;
-
-    const teams = await getUserTeams(userId as string, {
-      query,
-      page,
-      pageSize,
-    });
+    const teams = await getUserTeams(userId as string, req.query);
 
     return ok(res, teams);
   }
