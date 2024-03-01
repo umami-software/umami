@@ -93,7 +93,7 @@
     "is-ci": "^3.0.1",
     "is-docker": "^3.0.0",
     "is-localhost-ip": "^1.4.0",
-    "isbot": "^3.4.5",
+    "isbot": "^5.1.1",
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.6",
     "md5": "^2.3.0",
