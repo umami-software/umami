@@ -39,7 +39,7 @@ export function WebsiteAddForm({
     <Form onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(labels.name)}>
         <FormInput
-          data-cy="input-name"
+          data-test="input-name"
           name="name"
           rules={{ required: formatMessage(labels.required) }}
         >
@@ -48,7 +48,7 @@ export function WebsiteAddForm({
       </FormRow>
       <FormRow label={formatMessage(labels.domain)}>
         <FormInput
-          data-cy="input-domain"
+          data-test="input-domain"
           name="domain"
           rules={{
             required: formatMessage(labels.required),
@@ -59,7 +59,7 @@ export function WebsiteAddForm({
         </FormInput>
       </FormRow>
       <FormButtons flex>
-        <SubmitButton data-cy="button-submit" variant="primary" disabled={false}>
+        <SubmitButton data-test="button-submit" variant="primary" disabled={false}>
           {formatMessage(labels.save)}
         </SubmitButton>
         {onClose && (
