@@ -15,7 +15,7 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
 
   return (
     <ModalTrigger>
-      <Button variant="primary">
+      <Button data-cy="button-website-add" variant="primary">
         <Icon>
           <Icons.Plus />
         </Icon>
