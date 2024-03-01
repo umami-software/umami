@@ -32,7 +32,7 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "إضافة عضو"
+      "value": "أضِف عضو"
     }
   ],
   "label.add-website": [
@@ -218,7 +218,7 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "انشئ من قبل"
+      "value": "أُنشئ من قبل"
     }
   ],
   "label.current-password": [
@@ -278,7 +278,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "حذف التقرير"
+      "value": "احذف التقرير"
     }
   ],
   "label.delete-team": [
@@ -368,7 +368,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "تعديل العضو"
+      "value": "عدّل العضو"
     }
   ],
   "label.enable-share-url": [
@@ -848,7 +848,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "حذف عضو"
+      "value": "احذف عضو"
     }
   ],
   "label.reports": [
@@ -920,7 +920,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "اختيار"
+      "value": "اختر"
     }
   ],
   "label.select-date": [
@@ -1100,7 +1100,7 @@
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "حول الموقع"
+      "value": "انقل الموقع"
     }
   ],
   "label.true": [
@@ -1246,7 +1246,7 @@
     },
     {
       "type": 0,
-      "value": " في الصندوق للتأكيد."
+      "value": " في المربع أدناه للتأكيد."
     }
   ],
   "message.active-users": [
@@ -1342,7 +1342,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "حذف الفريق سيؤدي إلى حذف جميع المواقع"
+      "value": "حذف فريق سيؤدي إلى حذف جميع مواقع الفريق"
     }
   ],
   "message.delete-website-warning": [
@@ -1538,25 +1538,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "حول هذا الموقع إلى حسابك؟"
+      "value": "نقل هذا الموقع إلى حسابك؟"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "اختر الفريق الذي تريد تحويل الموقع إليه."
+      "value": "اختر الفريق الذي تريد نقل الموقع إليه."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "حول ملكية الموقع لحسابك أو فريق أخر."
+      "value": "نقل ملكية الموقع لحسابك أو فريق أخر."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "تفعيل حدث"
+      "value": "أُطلق الحدث"
     }
   ],
   "message.user-deleted": [
@@ -1568,7 +1568,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "صفحة تمت مشاهدتها"
+      "value": "شوهدت الصفحة"
     }
   ],
   "message.visitor-log": [
