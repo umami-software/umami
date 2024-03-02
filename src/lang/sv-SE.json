@@ -234,5 +234,5 @@
   "message.user-deleted": "Användaren har raderats.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Besökare från {country} med {browser} på {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

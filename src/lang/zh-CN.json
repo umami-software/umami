@@ -234,5 +234,5 @@
   "message.user-deleted": "用户已删除。",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "来自{country}的访客在搭载 {os} 的{device}上使用 {browser} 浏览器进行访问。",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

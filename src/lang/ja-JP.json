@@ -234,5 +234,5 @@
   "message.user-deleted": "ユーザーが削除されました。",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{os}({device})で{browser}を使用している{country}からの訪問者",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

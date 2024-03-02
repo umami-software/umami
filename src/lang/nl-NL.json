@@ -234,5 +234,5 @@
   "message.user-deleted": "Gebruiker verwijderd.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

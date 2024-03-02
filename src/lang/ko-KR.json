@@ -234,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

@@ -234,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

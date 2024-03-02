@@ -234,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Vierailija maasta {country} selaimella {browser} laitteella {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

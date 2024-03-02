@@ -220,7 +220,7 @@ export const labels = defineMessages({
   },
   visitorsDroppedOff: {
     id: 'message.visitors-dropped-off',
-    defaultMessage: 'Visitors droppped off',
+    defaultMessage: 'Visitors dropped off',
   },
 });
 
