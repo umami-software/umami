@@ -1,12 +1,12 @@
-import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Text, Button, Icon } from 'react-basics';
+import Favicon from 'components/common/Favicon';
+import { useMessages, useWebsite } from 'components/hooks';
+import Icons from 'components/icons';
+import ActiveUsers from 'components/metrics/ActiveUsers';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Favicon from 'components/common/Favicon';
-import ActiveUsers from 'components/metrics/ActiveUsers';
-import Icons from 'components/icons';
-import { useMessages, useWebsite } from 'components/hooks';
+import { ReactNode } from 'react';
+import { Button, Icon, Text } from 'react-basics';
 import styles from './WebsiteHeader.module.css';
 
 export function WebsiteHeader({
