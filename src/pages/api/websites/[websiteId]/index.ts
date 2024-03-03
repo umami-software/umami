@@ -28,6 +28,9 @@ const schema = {
     domain: yup.string(),
     shareId: yup.string().matches(SHARE_ID_REGEX, { excludeEmptyString: true }).nullable(),
   }),
+  DELETE: yup.object().shape({
+    websiteId: yup.string().uuid().required(),
+  }),
 };
 
 export default async (
