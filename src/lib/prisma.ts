@@ -198,14 +198,14 @@ async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) 
   return { data, count, page: +page, pageSize: size, orderBy };
 }
 
-function getQueryMode(): Prisma.QueryMode {
+function getQueryMode(): { mode?: Prisma.QueryMode } {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return 'insensitive';
+    return { mode: 'insensitive' };
   }
 
-  return 'default';
+  return {};
 }
 
 function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
@@ -220,7 +220,7 @@ function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
         typeof value === 'string'
           ? {
               [value]: query,
-              mode,
+              ...mode,
             }
           : parseFilter(value),
     };
