@@ -23,7 +23,7 @@ export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
 
   return (
     <div className={styles.container}>
-      {value !== 'all' && (
+      {value !== 'all' && !value.startsWith('range') && (
         <div className={styles.buttons}>
           <Button onClick={() => handleIncrement(-1)}>
             <Icon rotate={dir === 'rtl' ? 270 : 90}>
