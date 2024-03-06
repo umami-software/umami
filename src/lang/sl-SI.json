@@ -35,6 +35,7 @@
   "label.create-team": "Ustvari ekipo",
   "label.create-user": "Ustvari uporabnika",
   "label.created": "Ustvarjeno",
+  "label.created-by": "Created By",
   "label.current-password": "Trenutno geslo",
   "label.custom-range": "Obdobje po meri",
   "label.dashboard": "Nadzorna plošča",
@@ -233,5 +234,5 @@
   "message.user-deleted": "Uporabnik je izbrisan.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Obiskovalec iz {country} uporablja {browser} na {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

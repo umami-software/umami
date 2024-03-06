@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "ពាក្យសម្ងាត់បច្ចុប្បន្ន",
   "label.custom-range": "កំណត់ដោយខ្លួនឯង",
   "label.dashboard": "ផ្ទាំងគ្រប់គ្រង",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "អ្នកមើលពីប្រទេស {country} ប្រើប្រាស់កម្មវិធី {browser} លើឧបករណ៍ {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }
