@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "தற்போதைய கடவுச்சொல்",
   "label.custom-range": "தனிப்பயன் வேறுபாட்டெல்லை",
   "label.dashboard": "முகப்பு",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{country}வில் இருந்து பார்வையாளர் {browser} ஐ {os} {device}லில் பயன்படுத்துகிறார்",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

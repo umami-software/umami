@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "Kata laluan semasa",
   "label.custom-range": "Julat khas",
   "label.dashboard": "Papan pemuka",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Pelawat dari {country} mengguna {browser} pada {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

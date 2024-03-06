@@ -35,6 +35,7 @@
   "label.create-team": "建立團隊",
   "label.create-user": "建立使用者",
   "label.created": "已建立",
+  "label.created-by": "Created By",
   "label.current-password": "目前密碼",
   "label.custom-range": "自訂範圍",
   "label.dashboard": "儀表板",
@@ -233,5 +234,5 @@
   "message.user-deleted": "使用者已刪除。",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "來自 {country} 的訪客在 {device} 上的 {os} 使用 {browser} 瀏覽。",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

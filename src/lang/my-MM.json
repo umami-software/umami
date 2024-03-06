@@ -35,6 +35,7 @@
   "label.create-team": "Team ပြုလုပ်မည်",
   "label.create-user": "အသုံးပြုသူထည့်မည်",
   "label.created": "ပြုလုပ်ပြီးသော",
+  "label.created-by": "Created By",
   "label.current-password": "လက်ရှိစကားဝှက်",
   "label.custom-range": "အချိန်အပိုင်းအခြားရွေးရန်",
   "label.dashboard": "ဒက်ရှ်ဘုတ်",
@@ -233,5 +234,5 @@
   "message.user-deleted": "အသုံးပြုသူ ဖျက်ပြီးပါပြီ",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{country} မှ {browser} ဖြင့် {os} {device} တွင် ဝင်ရောက်ကြည့်ရှုသူ",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

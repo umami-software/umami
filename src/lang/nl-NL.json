@@ -35,6 +35,7 @@
   "label.create-team": "Team aanmaken",
   "label.create-user": "Gebruiker maken",
   "label.created": "Gemaakt",
+  "label.created-by": "Created By",
   "label.current-password": "Huidig wachtwoord",
   "label.custom-range": "Aangepast bereik",
   "label.dashboard": "Overzicht",
@@ -233,5 +234,5 @@
   "message.user-deleted": "Gebruiker verwijderd.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Bezoeker uit {country} met {browser} op een {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

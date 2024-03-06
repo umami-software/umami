@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "현재 비밀번호",
   "label.custom-range": "범위 지정",
   "label.dashboard": "대시보드",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{os} {device}에서 {browser}을(를) 사용하는 {country}의 방문자",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }
