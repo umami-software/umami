@@ -5,7 +5,13 @@ import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
-  ...args: [websiteId: string, column: string, filters: QueryFilters, limit?: number]
+  ...args: [
+    websiteId: string,
+    column: string,
+    filters: QueryFilters,
+    limit?: number,
+    offset?: number,
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -18,6 +24,7 @@ async function relationalQuery(
   column: string,
   filters: QueryFilters,
   limit: number = 500,
+  offset: number = 0,
 ) {
   const { parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
@@ -47,7 +54,9 @@ async function relationalQuery(
     group by 1 
     ${includeCountry ? ', 3' : ''}
     order by 2 desc
-    limit ${limit}`,
+    limit ${limit}
+    offset ${offset}
+    `,
     params,
   );
 }
@@ -57,6 +66,7 @@ async function clickhouseQuery(
   column: string,
   filters: QueryFilters,
   limit: number = 500,
+  offset: number = 0,
 ): Promise<{ x: string; y: number }[]> {
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
@@ -80,6 +90,7 @@ async function clickhouseQuery(
     ${includeCountry ? ', country' : ''}
     order by y desc
     limit ${limit}
+    offset ${offset}
     `,
     params,
   ).then(a => {

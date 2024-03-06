@@ -16,7 +16,7 @@ import { NextApiRequestCollect } from 'pages/api/send';
 
 let lookup;
 
-export function getIpAddress(req) {
+export function getIpAddress(req: NextApiRequestCollect) {
   // Custom header
   if (req.headers[process.env.CLIENT_IP_HEADER]) {
     return req.headers[process.env.CLIENT_IP_HEADER];
@@ -29,35 +29,35 @@ export function getIpAddress(req) {
   return getClientIp(req);
 }
 
-export function getDevice(screen, os) {
+export function getDevice(screen: string, os: string) {
   if (!screen) return;
 
   const [width] = screen.split('x');
 
   if (DESKTOP_OS.includes(os)) {
-    if (os === 'Chrome OS' || width < DESKTOP_SCREEN_WIDTH) {
+    if (os === 'Chrome OS' || +width < DESKTOP_SCREEN_WIDTH) {
       return 'laptop';
     }
     return 'desktop';
   } else if (MOBILE_OS.includes(os)) {
-    if (os === 'Amazon OS' || width > MOBILE_SCREEN_WIDTH) {
+    if (os === 'Amazon OS' || +width > MOBILE_SCREEN_WIDTH) {
       return 'tablet';
     }
     return 'mobile';
   }
 
-  if (width >= DESKTOP_SCREEN_WIDTH) {
+  if (+width >= DESKTOP_SCREEN_WIDTH) {
     return 'desktop';
-  } else if (width >= LAPTOP_SCREEN_WIDTH) {
+  } else if (+width >= LAPTOP_SCREEN_WIDTH) {
     return 'laptop';
-  } else if (width >= MOBILE_SCREEN_WIDTH) {
+  } else if (+width >= MOBILE_SCREEN_WIDTH) {
     return 'tablet';
   } else {
     return 'mobile';
   }
 }
 
-function getRegionCode(country, region) {
+function getRegionCode(country: string, region: string) {
   if (!country || !region) {
     return undefined;
   }
@@ -65,7 +65,7 @@ function getRegionCode(country, region) {
   return region.includes('-') ? region : `${country}-${region}`;
 }
 
-export async function getLocation(ip, req) {
+export async function getLocation(ip: string, req: NextApiRequestCollect) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
     return;

@@ -4,6 +4,7 @@ import { useMessages, useApi, useNavigation, useTeamUrl } from 'components/hooks
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from 'lib/constants';
+import Breadcrumb from 'components/common/Breadcrumb';
 
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
@@ -57,9 +58,16 @@ export function ReportHeader({ icon }) {
     <div className={styles.header}>
       <div>
         <div className={styles.type}>
-          {formatMessage(
-            labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
-          )}
+          <Breadcrumb
+            data={[
+              { label: formatMessage(labels.reports), url: '/reports' },
+              {
+                label: formatMessage(
+                  labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
+                ),
+              },
+            ]}
+          />
         </div>
         <div className={styles.title}>
           <Icon size="lg">{icon}</Icon>

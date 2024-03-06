@@ -29,12 +29,12 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  border-right: 2px solid var(--base200);
+  border-inline-end: 2px solid var(--base200);
   padding: 1rem 2rem;
   gap: var(--size500);
   font-weight: 600;
   width: 200px;
-  margin-right: -2px;
+  margin-inline-end: -2px;
 }
 
 a.item {
@@ -43,7 +43,7 @@ a.item {
 
 .item.selected {
   color: var(--base900);
-  border-right-color: var(--primary400);
+  border-inline-end-color: var(--primary400);
   background: var(--blue100);
 }
 

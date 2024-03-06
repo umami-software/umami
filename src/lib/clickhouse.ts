@@ -61,12 +61,14 @@ function getDateFormat(date: Date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function mapFilter(column: string, operator: string, name: string, type = 'String') {
-  switch (operator) {
+function mapFilter(column: string, filter: string, name: string, type: string = 'String') {
+  switch (filter) {
     case OPERATORS.equals:
       return `${column} = {${name}:${type}}`;
     case OPERATORS.notEquals:
       return `${column} != {${name}:${type}}`;
+    case OPERATORS.contains:
+      return `positionCaseInsensitive(${column}, {${name}:${type}}) > 0`;
     default:
       return '';
   }
@@ -75,11 +77,11 @@ function mapFilter(column: string, operator: string, name: string, type = 'Strin
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
   const query = Object.keys(filters).reduce((arr, name) => {
     const value = filters[name];
-    const operator = value?.filter ?? OPERATORS.equals;
-    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+    const filter = value?.filter ?? OPERATORS.equals;
+    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (value !== undefined && column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+    if (value !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, filter, name)}`);
 
       if (name === 'referrer') {
         arr.push('and referrer_domain != {websiteDomain:String}');

@@ -27,9 +27,13 @@
   flex: 1;
 }
 
+.breadcrumb {
+  padding-top: 20px;
+}
+
 .icon {
   color: var(--base700);
-  margin-right: 1rem;
+  margin-inline-end: 1rem;
 }
 
 .actions {

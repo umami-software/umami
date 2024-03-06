@@ -42,17 +42,30 @@ export function LoginForm() {
       <div className={styles.title}>umami</div>
       <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
         <FormRow label={formatMessage(labels.username)}>
-          <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
+          <FormInput
+            data-test="input-username"
+            name="username"
+            rules={{ required: formatMessage(labels.required) }}
+          >
             <TextField autoComplete="off" />
           </FormInput>
         </FormRow>
         <FormRow label={formatMessage(labels.password)}>
-          <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
+          <FormInput
+            data-test="input-password"
+            name="password"
+            rules={{ required: formatMessage(labels.required) }}
+          >
             <PasswordField />
           </FormInput>
         </FormRow>
         <FormButtons>
-          <SubmitButton className={styles.button} variant="primary" disabled={isPending}>
+          <SubmitButton
+            data-test="button-submit"
+            className={styles.button}
+            variant="primary"
+            disabled={isPending}
+          >
             {formatMessage(labels.login)}
           </SubmitButton>
         </FormButtons>

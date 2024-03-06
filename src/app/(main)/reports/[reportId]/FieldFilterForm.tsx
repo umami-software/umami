@@ -27,6 +27,7 @@ export default function FieldFilterForm({
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const filters = getFilters(type);
+  const [search, setSearch] = useState('');
 
   const formattedValues = useMemo(() => {
     const formatted = {};
@@ -42,6 +43,10 @@ export default function FieldFilterForm({
     }
     return formatted;
   }, [formatValue, locale, name, values]);
+
+  const filteredValues = useMemo(() => {
+    return search ? values.filter(n => n.includes(search)) : values;
+  }, [search, formattedValues]);
 
   const renderFilterValue = value => {
     return filters.find(f => f.value === value)?.label;
@@ -74,14 +79,14 @@ export default function FieldFilterForm({
           )}
           <Dropdown
             className={styles.dropdown}
+            popupProps={{ className: styles.popup }}
             menuProps={{ className: styles.menu }}
-            items={values}
+            items={filteredValues}
             value={value}
             renderValue={renderValue}
             onChange={(key: any) => setValue(key)}
-            style={{
-              minWidth: '250px',
-            }}
+            allowSearch={true}
+            onSearch={setSearch}
           >
             {(value: string) => {
               return <Item key={value}>{formattedValues[value]}</Item>;
