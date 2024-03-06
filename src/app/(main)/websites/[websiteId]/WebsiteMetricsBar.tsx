@@ -52,7 +52,6 @@ export function WebsiteMetricsBar({
               change={uniques.change}
             />
             <MetricCard
-              className={styles.card}
               label={formatMessage(labels.bounceRate)}
               value={uniques.value ? (num / uniques.value) * 100 : 0}
               change={
@@ -65,7 +64,6 @@ export function WebsiteMetricsBar({
               reverseColors
             />
             <MetricCard
-              className={styles.card}
               label={formatMessage(labels.averageVisitTime)}
               value={
                 totaltime.value && pageviews.value
