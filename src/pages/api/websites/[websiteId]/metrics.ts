@@ -26,6 +26,8 @@ export interface WebsiteMetricsRequestQuery {
   language?: string;
   event?: string;
   limit?: number;
+  offset?: number;
+  search?: string;
 }
 
 const schema = {
@@ -47,6 +49,8 @@ const schema = {
     language: yup.string(),
     event: yup.string(),
     limit: yup.number(),
+    offset: yup.number(),
+    search: yup.string(),
   }),
 };
 
@@ -74,6 +78,8 @@ export default async (
     language,
     event,
     limit,
+    offset,
+    search,
   } = req.query;
 
   if (req.method === 'GET') {
@@ -98,12 +104,19 @@ export default async (
       city,
       language,
       event,
+      search,
     };
 
     const column = FILTER_COLUMNS[type] || type;
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, column, filters, limit);
+      const data = await getSessionMetrics(
+        websiteId,
+        column,
+        { ...filters, search },
+        limit,
+        offset,
+      );
 
       if (type === 'language') {
         const combined = {};
@@ -125,7 +138,13 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(websiteId, column, filters, limit);
+      const data = await getPageviewMetrics(
+        websiteId,
+        column,
+        { ...filters, search },
+        limit,
+        offset,
+      );
 
       return ok(res, data);
     }

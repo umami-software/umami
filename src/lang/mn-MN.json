@@ -35,6 +35,7 @@
   "label.create-team": "Баг үүсгэх",
   "label.create-user": "Хэрэглэгч үүсгэх",
   "label.created": "Үүсгэсэн",
+  "label.created-by": "Created By",
   "label.current-password": "Ашиглаж буй нууц үг",
   "label.custom-range": "Дурын хугацаа",
   "label.dashboard": "Хянах самбар",
@@ -233,5 +234,5 @@
   "message.user-deleted": "Хэрэглэгч устсан.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{country} улсаас {os} {device} дээр {browser} хөтөч ашиглан орсон",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

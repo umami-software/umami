@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "वर्तमान पासवर्ड",
   "label.custom-range": "कस्टम रेंज",
   "label.dashboard": "नियंत्रण-पट्ट",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "{country} का आगंतुक, जो {browser} का उपयोग करता है, {os} यन्त्र पर",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

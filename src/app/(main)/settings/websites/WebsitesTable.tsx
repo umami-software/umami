@@ -36,7 +36,7 @@ export function WebsitesTable({
               <>
                 {allowEdit && (
                   <LinkButton href={renderTeamUrl(`/settings/websites/${websiteId}`)}>
-                    <Icon>
+                    <Icon data-test="link-button-edit">
                       <Icons.Edit />
                     </Icon>
                     <Text>{formatMessage(labels.edit)}</Text>

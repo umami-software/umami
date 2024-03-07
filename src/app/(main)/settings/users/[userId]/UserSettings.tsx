@@ -6,6 +6,7 @@ import PageHeader from 'components/layout/PageHeader';
 import { useMessages } from 'components/hooks';
 import UserWebsites from './UserWebsites';
 import { UserContext } from './UserProvider';
+import Breadcrumb from 'components/common/Breadcrumb';
 
 export function UserSettings({ userId }: { userId: string }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -17,9 +18,23 @@ export function UserSettings({ userId }: { userId: string }) {
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
+  const breadcrumb = (
+    <Breadcrumb
+      data={[
+        {
+          label: formatMessage(labels.users),
+          url: '/settings/users',
+        },
+        {
+          label: user.username,
+        },
+      ]}
+    />
+  );
+
   return (
     <>
-      <PageHeader title={user?.username} icon={<Icons.User />} />
+      <PageHeader title={user?.username} icon={<Icons.User />} breadcrumb={breadcrumb} />
       <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
         <Item key="websites">{formatMessage(labels.websites)}</Item>

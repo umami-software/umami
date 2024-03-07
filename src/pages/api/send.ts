@@ -1,5 +1,5 @@
 import ipaddr from 'ipaddr.js';
-import isbot from 'isbot';
+import { isbot } from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { getIpAddress } from 'lib/detect';

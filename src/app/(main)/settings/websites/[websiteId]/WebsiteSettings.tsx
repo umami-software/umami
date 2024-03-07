@@ -1,14 +1,15 @@
-import { useState, Key, useContext } from 'react';
-import { Item, Tabs, Button, Text, Icon, useToasts } from 'react-basics';
-import Link from 'next/link';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import Breadcrumb from 'components/common/Breadcrumb';
+import { useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import PageHeader from 'components/layout/PageHeader';
-import WebsiteEditForm from './WebsiteEditForm';
-import WebsiteData from './WebsiteData';
-import TrackingCode from './TrackingCode';
+import Link from 'next/link';
+import { Key, useContext, useState } from 'react';
+import { Button, Icon, Item, Tabs, Text, useToasts } from 'react-basics';
 import ShareUrl from './ShareUrl';
-import { useMessages } from 'components/hooks';
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import TrackingCode from './TrackingCode';
+import WebsiteData from './WebsiteData';
+import WebsiteEditForm from './WebsiteEditForm';
 
 export function WebsiteSettings({
   websiteId,
@@ -28,9 +29,23 @@ export function WebsiteSettings({
     showToast({ message: formatMessage(messages.saved), variant: 'success' });
   };
 
+  const breadcrumb = (
+    <Breadcrumb
+      data={[
+        {
+          label: formatMessage(labels.websites),
+          url: website.teamId ? `/teams/${website.teamId}/settings/websites` : '/settings/websites',
+        },
+        {
+          label: website.name,
+        },
+      ]}
+    />
+  );
+
   return (
     <>
-      <PageHeader title={website?.name} icon={<Icons.Globe />}>
+      <PageHeader title={website?.name} icon={<Icons.Globe />} breadcrumb={breadcrumb}>
         <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>

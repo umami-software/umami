@@ -5,6 +5,7 @@ import { ReactBasicsProvider } from 'react-basics';
 import ErrorBoundary from 'components/common/ErrorBoundary';
 import { useLocale } from 'components/hooks';
 import 'chartjs-adapter-date-fns';
+import { useEffect } from 'react';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -16,7 +17,13 @@ const client = new QueryClient({
 });
 
 function MessagesProvider({ children }) {
-  const { locale, messages } = useLocale();
+  const { locale, messages, dir } = useLocale();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('dir', dir);
+    document.documentElement.setAttribute('lang', locale);
+  }, [locale, dir]);
+
   return (
     <IntlProvider locale={locale} messages={messages[locale]} onError={() => null}>
       {children}

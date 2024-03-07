@@ -27,6 +27,9 @@ const schema = {
     password: yup.string(),
     role: yup.string().matches(/admin|user|view-only/i),
   }),
+  DELETE: yup.object().shape({
+    userId: yup.string().uuid().required(),
+  }),
 };
 
 export default async (
