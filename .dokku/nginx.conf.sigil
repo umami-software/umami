@@ -1,0 +1,191 @@
+{{ range $port_map := .PROXY_PORT_MAP | split " " }}
+{{ $port_map_list := $port_map | split ":" }}
+{{ $scheme := index $port_map_list 0 }}
+{{ $listen_port := index $port_map_list 1 }}
+{{ $upstream_port := index $port_map_list 2 }}
+
+{{ if eq $scheme "http" }}
+server {
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }};
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+  underscores_in_headers {{ $.NGINX_UNDERSCORE_IN_HEADERS }};
+{{ if (and (eq $listen_port "80") ($.SSL_INUSE)) }}
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+  location / {
+    return 301 https://$host:{{ $.PROXY_SSL_PORT }}$request_uri;
+  }
+{{ else }}
+  location    / {
+
+    gzip on;
+    gzip_min_length  1100;
+    gzip_buffers  4 32k;
+    gzip_types    text/css text/javascript text/xml text/plain text/x-component application/javascript application/x-javascript application/wasm application/json application/xml application/rss+xml font/truetype application/x-font-ttf font/opentype application/vnd.ms-fontobject image/svg+xml;
+    gzip_vary on;
+    gzip_comp_level  6;
+
+    proxy_pass  http://{{ $.APP }}-{{ $upstream_port }};
+    proxy_http_version 1.1;
+    proxy_read_timeout {{ $.PROXY_READ_TIMEOUT }};
+    proxy_buffer_size {{ $.PROXY_BUFFER_SIZE }};
+    proxy_buffering {{ $.PROXY_BUFFERING }};
+    proxy_buffers {{ $.PROXY_BUFFERS }};
+    proxy_busy_buffers_size {{ $.PROXY_BUSY_BUFFERS_SIZE }};
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For {{ $.PROXY_X_FORWARDED_FOR }};
+    proxy_set_header X-Forwarded-Port {{ $.PROXY_X_FORWARDED_PORT }};
+    proxy_set_header X-Forwarded-Proto {{ $.PROXY_X_FORWARDED_PROTO }};
+    proxy_set_header X-Request-Start $msec;
+    {{ if $.PROXY_X_FORWARDED_SSL }}proxy_set_header X-Forwarded-Ssl {{ $.PROXY_X_FORWARDED_SSL }};{{ end }}
+  }
+
+  {{ if $.CLIENT_MAX_BODY_SIZE }}client_max_body_size {{ $.CLIENT_MAX_BODY_SIZE }};{{ end }}
+
+  error_page 400 401 402 403 405 406 407 408 409 410 411 412 413 414 415 416 417 418 420 422 423 424 426 428 429 431 444 449 450 451 /400-error.html;
+  location /400-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+
+  error_page 404 /404-error.html;
+  location /404-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+
+  error_page 500 501 502 503 504 505 506 507 508 509 510 511 /500-error.html;
+  location /500-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+{{ end }}
+}
+{{ else if eq $scheme "https"}}
+server {
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl {{ if eq $.HTTP2_SUPPORTED "true" }}http2{{ end }};
+  {{ if $.SSL_SERVER_NAME }}server_name {{ $.SSL_SERVER_NAME }}; {{ end }}
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+  underscores_in_headers {{ $.NGINX_UNDERSCORE_IN_HEADERS }};
+
+  ssl_certificate           {{ $.APP_SSL_PATH }}/server.crt;
+  ssl_certificate_key       {{ $.APP_SSL_PATH }}/server.key;
+  ssl_protocols             TLSv1.2 {{ if eq $.TLS13_SUPPORTED "true" }}TLSv1.3{{ end }};
+  ssl_prefer_server_ciphers off;
+
+  keepalive_timeout   70;
+
+  location    / {
+
+    gzip on;
+    gzip_min_length  1100;
+    gzip_buffers  4 32k;
+    gzip_types    text/css text/javascript text/xml text/plain text/x-component application/javascript application/x-javascript application/json application/xml  application/rss+xml font/truetype application/x-font-ttf font/opentype application/vnd.ms-fontobject image/svg+xml;
+    gzip_vary on;
+    gzip_comp_level  6;
+
+    proxy_pass  http://{{ $.APP }}-{{ $upstream_port }};
+    {{ if eq $.HTTP2_PUSH_SUPPORTED "true" }}http2_push_preload on; {{ end }}
+    proxy_http_version 1.1;
+    proxy_read_timeout {{ $.PROXY_READ_TIMEOUT }};
+    proxy_buffer_size {{ $.PROXY_BUFFER_SIZE }};
+    proxy_buffering {{ $.PROXY_BUFFERING }};
+    proxy_buffers {{ $.PROXY_BUFFERS }};
+    proxy_busy_buffers_size {{ $.PROXY_BUSY_BUFFERS_SIZE }};
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $http_connection;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For {{ $.PROXY_X_FORWARDED_FOR }};
+    proxy_set_header X-Forwarded-Port {{ $.PROXY_X_FORWARDED_PORT }};
+    proxy_set_header X-Forwarded-Proto {{ $.PROXY_X_FORWARDED_PROTO }};
+    proxy_set_header X-Request-Start $msec;
+    {{ if $.PROXY_X_FORWARDED_SSL }}proxy_set_header X-Forwarded-Ssl {{ $.PROXY_X_FORWARDED_SSL }};{{ end }}
+  }
+
+  {{ if $.CLIENT_MAX_BODY_SIZE }}client_max_body_size {{ $.CLIENT_MAX_BODY_SIZE }};{{ end }}
+
+  error_page 400 401 402 403 405 406 407 408 409 410 411 412 413 414 415 416 417 418 420 422 423 424 426 428 429 431 444 449 450 451 /400-error.html;
+  location /400-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+
+  error_page 404 /404-error.html;
+  location /404-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+
+  error_page 500 501 503 504 505 506 507 508 509 510 511 /500-error.html;
+  location /500-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+
+  error_page 502 /502-error.html;
+  location /502-error.html {
+    root {{ $.DOKKU_LIB_ROOT }}/data/nginx-vhosts/dokku-errors;
+    internal;
+  }
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+}
+{{ else if eq $scheme "grpc"}}
+{{ if eq $.GRPC_SUPPORTED "true"}}{{ if eq $.HTTP2_SUPPORTED "true"}}
+server {
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} http2;
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} http2;
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+  underscores_in_headers {{ $.NGINX_UNDERSCORE_IN_HEADERS }};
+  location    / {
+    grpc_pass  grpc://{{ $.APP }}-{{ $upstream_port }};
+  }
+
+  {{ if $.CLIENT_MAX_BODY_SIZE }}client_max_body_size {{ $.CLIENT_MAX_BODY_SIZE }};{{ end }}
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+}
+{{ end }}{{ end }}
+{{ else if eq $scheme "grpcs"}}
+{{ if eq $.GRPC_SUPPORTED "true"}}{{ if eq $.HTTP2_SUPPORTED "true"}}
+server {
+  listen      [{{ $.NGINX_BIND_ADDRESS_IP6 }}]:{{ $listen_port }} ssl http2;
+  listen      {{ if $.NGINX_BIND_ADDRESS_IP4 }}{{ $.NGINX_BIND_ADDRESS_IP4 }}:{{end}}{{ $listen_port }} ssl http2;
+  {{ if $.NOSSL_SERVER_NAME }}server_name {{ $.NOSSL_SERVER_NAME }}; {{ end }}
+  access_log  {{ $.NGINX_ACCESS_LOG_PATH }}{{ if and ($.NGINX_ACCESS_LOG_FORMAT) (ne $.NGINX_ACCESS_LOG_PATH "off") }} {{ $.NGINX_ACCESS_LOG_FORMAT }}{{ end }};
+  error_log   {{ $.NGINX_ERROR_LOG_PATH }};
+  underscores_in_headers {{ $.NGINX_UNDERSCORE_IN_HEADERS }};
+
+  ssl_certificate           {{ $.APP_SSL_PATH }}/server.crt;
+  ssl_certificate_key       {{ $.APP_SSL_PATH }}/server.key;
+  ssl_protocols             TLSv1.2 {{ if eq $.TLS13_SUPPORTED "true" }}TLSv1.3{{ end }};
+  ssl_prefer_server_ciphers off;
+
+  location    / {
+    grpc_pass  grpc://{{ $.APP }}-{{ $upstream_port }};
+  }
+
+  {{ if $.CLIENT_MAX_BODY_SIZE }}client_max_body_size {{ $.CLIENT_MAX_BODY_SIZE }};{{ end }}
+  include {{ $.DOKKU_ROOT }}/{{ $.APP }}/nginx.conf.d/*.conf;
+}
+{{ end }}{{ end }}
+{{ end }}
+{{ end }}
+
+{{ if $.DOKKU_APP_WEB_LISTENERS }}
+{{ range $upstream_port := $.PROXY_UPSTREAM_PORTS | split " " }}
+upstream {{ $.APP }}-{{ $upstream_port }} {
+{{ range $listeners := $.DOKKU_APP_WEB_LISTENERS | split " " }}
+{{ $listener_list := $listeners | split ":" }}
+{{ $listener_ip := index $listener_list 0 }}
+  server {{ $listener_ip }}:{{ $upstream_port }};{{ end }}
+}
+{{ end }}{{ end }}
