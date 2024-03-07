@@ -43,9 +43,10 @@ services:
       - CYPRESS_umami_user=admin
       - CYPRESS_umami_password=umami
     volumes:
-      - ../tsconfig.json:/tsconfig.json
+      - ./tsconfig.json:/tsconfig.json
       - ../cypress.config.ts:/cypress.config.ts
       - ./:/cypress
       - ../node_modules/:/node_modules
+      - ../src/lib/crypto.ts:/src/lib/crypto.ts
 volumes:
   umami-db-data:

@@ -6,8 +6,12 @@ describe('Login tests', () => {
     },
     () => {
       cy.visit('/login');
-      cy.getDataTest('input-username').find('input').type(Cypress.env('umami_user'));
-      cy.getDataTest('input-password').find('input').type(Cypress.env('umami_password'));
+      cy.getDataTest('input-username').find('input').click();
+      cy.getDataTest('input-username').find('input').type(Cypress.env('umami_user'), { delay: 50 });
+      cy.getDataTest('input-password').find('input').click();
+      cy.getDataTest('input-password')
+        .find('input')
+        .type(Cypress.env('umami_password'), { delay: 50 });
       cy.getDataTest('button-submit').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/dashboard');
       cy.getDataTest('button-profile').click();
