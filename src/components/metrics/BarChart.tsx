@@ -119,7 +119,7 @@ export function BarChart({
     locale,
   ]);
 
-  const createChart = () => {
+  const createChart = (datasets: any[]) => {
     Chart.defaults.font.family = 'Inter';
 
     chart.current = new Chart(canvas.current, {
@@ -133,24 +133,36 @@ export function BarChart({
     onCreate?.(chart.current);
   };
 
-  const updateChart = () => {
+  const updateChart = (datasets: any[]) => {
     setTooltipPopup(null);
 
-    chart.current.data.datasets = datasets;
+    const diff = chart.current.data.datasets.reduce(
+      (found: boolean, dataset: { data: any[] }, set: number) => {
+        if (!found) {
+          return dataset.data.find((value, index) => {
+            return datasets[set].data[index].y !== value.y;
+          });
+        }
+        return found;
+      },
+      false,
+    );
 
-    chart.current.options = getOptions();
+    if (diff) {
+      chart.current.data.datasets = datasets;
+      chart.current.options = getOptions();
+      chart.current.update();
 
-    onUpdate?.(chart.current);
-
-    chart.current.update();
+      onUpdate?.(chart.current);
+    }
   };
 
   useEffect(() => {
     if (datasets) {
       if (!chart.current) {
-        createChart();
+        createChart(datasets);
       } else {
-        updateChart();
+        updateChart(datasets);
       }
     }
   }, [datasets, unit, theme, animationDuration, locale]);
