@@ -21,6 +21,7 @@ export interface BarChartProps {
   XAxisType?: string;
   YAxisType?: string;
   renderTooltipPopup?: (setTooltipPopup: (data: any) => void, model: any) => void;
+  updateMode?: string;
   onCreate?: (chart: any) => void;
   onUpdate?: (chart: any) => void;
   className?: string;
@@ -37,6 +38,7 @@ export function BarChart({
   XAxisType = 'time',
   YAxisType = 'linear',
   renderTooltipPopup,
+  updateMode,
   onCreate,
   onUpdate,
   className,
@@ -136,25 +138,16 @@ export function BarChart({
   const updateChart = (datasets: any[]) => {
     setTooltipPopup(null);
 
-    const diff = chart.current.data.datasets.reduce(
-      (found: boolean, dataset: { data: any[] }, set: number) => {
-        if (!found) {
-          return dataset.data.find((value, index) => {
-            return datasets[set].data[index].y !== value.y;
-          });
-        }
-        return found;
-      },
-      false,
-    );
+    chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
+      dataset.data = datasets[index].data;
+    });
 
-    if (diff) {
-      chart.current.data.datasets = datasets;
-      chart.current.options = getOptions();
-      chart.current.update();
+    chart.current.options = getOptions();
 
-      onUpdate?.(chart.current);
-    }
+    // Allow config changes before update
+    onUpdate?.(chart.current);
+
+    chart.current.update(updateMode);
   };
 
   useEffect(() => {

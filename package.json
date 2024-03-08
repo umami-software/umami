@@ -73,7 +73,7 @@
     "@umami/prisma-client": "^0.14.0",
     "@umami/redis-client": "^0.18.0",
     "chalk": "^4.1.1",
-    "chart.js": "^4.2.1",
+    "chart.js": "^4.4.2",
     "chartjs-adapter-date-fns": "^3.0.0",
     "classnames": "^2.3.1",
     "colord": "^2.9.2",
