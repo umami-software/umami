@@ -48,6 +48,7 @@ export function BarChart({
   const [tooltip, setTooltipPopup] = useState(null);
   const { locale } = useLocale();
   const { theme, colors } = useTheme();
+  const [legendItems, setLegendItems] = useState([]);
 
   const getOptions = useCallback(() => {
     return {
@@ -133,13 +134,15 @@ export function BarChart({
     });
 
     onCreate?.(chart.current);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
   const updateChart = (datasets: any[]) => {
     setTooltipPopup(null);
 
     chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
-      dataset.data = datasets[index].data;
+      dataset.data = datasets[index]?.data;
     });
 
     chart.current.options = getOptions();
@@ -148,6 +151,8 @@ export function BarChart({
     onUpdate?.(chart.current);
 
     chart.current.update(updateMode);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
   useEffect(() => {
@@ -160,13 +165,21 @@ export function BarChart({
     }
   }, [datasets, unit, theme, animationDuration, locale]);
 
+  const handleLegendClick = (index: number) => {
+    const meta = chart.current.getDatasetMeta(index);
+
+    meta.hidden = meta.hidden === null ? !chart.current.data.datasets[index].hidden : null;
+
+    chart.current.update();
+  };
+
   return (
     <>
       <div className={classNames(styles.chart, className)}>
         {isLoading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
       </div>
-      <Legend chart={chart.current} />
+      <Legend items={legendItems} onClick={handleLegendClick} />
       {tooltip && (
         <HoverTooltip>
           <div className={styles.tooltip}>{tooltip}</div>

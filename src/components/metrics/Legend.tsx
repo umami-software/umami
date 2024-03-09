@@ -6,38 +6,34 @@ import { useLocale } from 'components/hooks';
 import { useForceUpdate } from 'components/hooks';
 import styles from './Legend.module.css';
 
-export function Legend({ chart }) {
+export function Legend({
+  items = [],
+  onClick,
+}: {
+  items: any[];
+  onClick: (index: number) => void;
+}) {
   const { locale } = useLocale();
   const forceUpdate = useForceUpdate();
-
-  const handleClick = (index: string | number) => {
-    const meta = chart.getDatasetMeta(index);
-
-    meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
-
-    chart.update();
-
-    forceUpdate();
-  };
 
   useEffect(() => {
     forceUpdate();
   }, [locale, forceUpdate]);
 
-  if (!chart?.legend?.legendItems.find(({ text }) => text)) {
+  if (!items.find(({ text }) => text)) {
     return null;
   }
 
   return (
     <div className={styles.legend}>
-      {chart.legend.legendItems.map(({ text, fillStyle, datasetIndex, hidden }) => {
+      {items.map(({ text, fillStyle, datasetIndex, hidden }) => {
         const color = colord(fillStyle);
 
         return (
           <div
             key={text}
             className={classNames(styles.label, { [styles.hidden]: hidden })}
-            onClick={() => handleClick(datasetIndex)}
+            onClick={() => onClick(datasetIndex)}
           >
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
               <span className={locale}>{text}</span>
