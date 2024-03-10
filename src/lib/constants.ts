@@ -224,6 +224,7 @@ export const LAPTOP_SCREEN_WIDTH = 1024;
 export const MOBILE_SCREEN_WIDTH = 479;
 
 export const URL_LENGTH = 500;
+export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
 
 export const DESKTOP_OS = [
