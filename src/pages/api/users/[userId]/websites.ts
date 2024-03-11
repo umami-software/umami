@@ -9,8 +9,7 @@ import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     userId: yup.string().uuid().required(),
-    includeTeams: yup.boolean(),
-    onlyTeams: yup.boolean(),
+    teamId: yup.string().uuid(),
     ...pageInfo,
   }),
 };
