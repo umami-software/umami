@@ -35,6 +35,7 @@
   "label.create-team": "Utwórz zespół",
   "label.create-user": "Utwórz użytkownika",
   "label.created": "Utworzony",
+  "label.created-by": "Created By",
   "label.current-password": "Aktualne hasło",
   "label.custom-range": "Zakres niestandardowy",
   "label.dashboard": "Panel",
@@ -233,5 +234,5 @@
   "message.user-deleted": "Użytkownik usunięty.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Odwiedzający z {country} używa {browser} na {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

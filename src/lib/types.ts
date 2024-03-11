@@ -213,6 +213,7 @@ export interface QueryFilters {
   city?: string;
   language?: string;
   event?: string;
+  search?: string;
 }
 
 export interface QueryOptions {

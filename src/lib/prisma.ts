@@ -92,12 +92,14 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function mapFilter(column: string, operator: string, name: string, type = 'varchar') {
-  switch (operator) {
+function mapFilter(column: string, filter: string, name: string, type = 'varchar') {
+  switch (filter) {
     case OPERATORS.equals:
       return `${column} = {{${name}::${type}}}`;
     case OPERATORS.notEquals:
       return `${column} != {{${name}::${type}}}`;
+    case OPERATORS.contains:
+      return `${column} like {{${name}::${type}}}`;
     default:
       return '';
   }
@@ -106,11 +108,11 @@ function mapFilter(column: string, operator: string, name: string, type = 'varch
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
   const query = Object.keys(filters).reduce((arr, name) => {
     const value = filters[name];
-    const operator = value?.filter ?? OPERATORS.equals;
-    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+    const filter = value?.filter ?? OPERATORS.equals;
+    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (value !== undefined && column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+    if (value !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, filter, name)}`);
 
       if (name === 'referrer') {
         arr.push(
@@ -198,14 +200,14 @@ async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) 
   return { data, count, page: +page, pageSize: size, orderBy };
 }
 
-function getQueryMode(): Prisma.QueryMode {
+function getQueryMode(): { mode?: Prisma.QueryMode } {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return 'insensitive';
+    return { mode: 'insensitive' };
   }
 
-  return 'default';
+  return {};
 }
 
 function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
@@ -220,7 +222,7 @@ function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
         typeof value === 'string'
           ? {
               [value]: query,
-              mode,
+              ...mode,
             }
           : parseFilter(value),
     };

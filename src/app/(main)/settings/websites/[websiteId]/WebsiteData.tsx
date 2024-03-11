@@ -66,7 +66,9 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         description={formatMessage(messages.deleteWebsiteWarning)}
       >
         <ModalTrigger>
-          <Button variant="danger">{formatMessage(labels.delete)}</Button>
+          <Button data-test="button-delete" variant="danger">
+            {formatMessage(labels.delete)}
+          </Button>
           <Modal title={formatMessage(labels.deleteWebsite)}>
             {(close: () => void) => (
               <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />

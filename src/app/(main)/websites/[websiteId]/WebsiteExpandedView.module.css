@@ -58,6 +58,6 @@
     gap: 20px;
     align-items: center;
     justify-content: space-between;
-    padding-right: 0;
+    padding-inline-end: 0;
   }
 }

@@ -68,6 +68,8 @@ export function MetricsTable({
       country,
       region,
       city,
+      limit,
+      search,
     },
     { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
   );
@@ -86,19 +88,7 @@ export function MetricsTable({
         }
       }
 
-      if (search) {
-        items = items.filter(({ x, ...data }) => {
-          const value = formatValue(x, type, data);
-
-          return value?.toLowerCase().includes(search.toLowerCase());
-        });
-      }
-
       items = percentFilter(items);
-
-      if (limit) {
-        items = items.slice(0, limit - 1);
-      }
 
       return items;
     }
@@ -114,6 +104,7 @@ export function MetricsTable({
             className={styles.search}
             value={search}
             onSearch={setSearch}
+            delay={300}
             autoFocus={true}
           />
         )}

@@ -35,6 +35,7 @@
   "label.create-team": "Create team",
   "label.create-user": "Create user",
   "label.created": "Created",
+  "label.created-by": "Created By",
   "label.current-password": "Contrasinal actual",
   "label.custom-range": "Rango personalizado",
   "label.dashboard": "Taboleiro",
@@ -233,5 +234,5 @@
   "message.user-deleted": "User deleted.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Visitante desde {country} usando {browser} en {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }

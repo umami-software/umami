@@ -23,7 +23,7 @@ export function TeamsButton({
     close();
   };
 
-  if (!result) {
+  if (!result?.count) {
     return null;
   }
 

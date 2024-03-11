@@ -35,6 +35,7 @@
   "label.create-team": "Skapa team",
   "label.create-user": "Skapa användare",
   "label.created": "Skapad",
+  "label.created-by": "Created By",
   "label.current-password": "Nuvarande lösenord",
   "label.custom-range": "Anpassat urval",
   "label.dashboard": "Översikt",
@@ -233,5 +234,5 @@
   "message.user-deleted": "Användaren har raderats.",
   "message.viewed-page": "Viewed page",
   "message.visitor-log": "Besökare från {country} med {browser} på {os} {device}",
-  "message.visitors-dropped-off": "Visitors droppped off"
+  "message.visitors-dropped-off": "Visitors dropped off"
 }
