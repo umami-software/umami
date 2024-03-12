@@ -46,7 +46,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
       return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(labels.administrator);
+      return formatMessage(labels.admin);
     }
     if (value === ROLES.viewOnly) {
       return formatMessage(labels.viewOnly);
@@ -76,7 +76,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
             <Dropdown renderValue={renderValue}>
               <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
               <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-              <Item key={ROLES.admin}>{formatMessage(labels.administrator)}</Item>
+              <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
             </Dropdown>
           </FormInput>
         </FormRow>
