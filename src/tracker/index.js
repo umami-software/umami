@@ -44,7 +44,7 @@
     hostname,
     screen,
     language,
-    title: encodeURIComponent(title),
+    title: title ? encodeURIComponent(title) : undefined,
     url: encodeURI(currentUrl),
     referrer: encodeURI(currentRef),
   });
@@ -79,7 +79,7 @@
 
   const handleTitleChanges = () => {
     const observer = new MutationObserver(([entry]) => {
-      title = entry && entry.target ? entry.target.text : undefined;
+      title = entry && entry.target ? entry.target.data : undefined;
     });
 
     const node = document.querySelector('head > title');
