@@ -266,29 +266,29 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
     case 'day':
       return {
         ...dateRange,
-        startDate: addDays(startDate, increment),
-        endDate: addDays(endDate, increment),
+        startDate: addDays(startDate, change),
+        endDate: addDays(endDate, change),
         offset: offset + increment,
       };
     case 'week':
       return {
         ...dateRange,
-        startDate: addWeeks(startDate, increment),
-        endDate: addWeeks(endDate, increment),
+        startDate: addWeeks(startDate, change),
+        endDate: addWeeks(endDate, change),
         offset: offset + increment,
       };
     case 'month':
       return {
         ...dateRange,
-        startDate: addMonths(startDate, increment),
-        endDate: addMonths(endDate, increment),
+        startDate: addMonths(startDate, change),
+        endDate: addMonths(endDate, change),
         offset: offset + increment,
       };
     case 'year':
       return {
         ...dateRange,
-        startDate: addYears(startDate, increment),
-        endDate: addYears(endDate, increment),
+        startDate: addYears(startDate, change),
+        endDate: addYears(endDate, change),
         offset: offset + increment,
       };
     default:
