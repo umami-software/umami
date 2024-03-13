@@ -32,7 +32,7 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "添加成员"
     }
   ],
   "label.add-website": [
@@ -272,7 +272,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "删除报告"
     }
   ],
   "label.delete-team": [
@@ -362,7 +362,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "编辑成员"
     }
   ],
   "label.enable-share-url": [
@@ -588,7 +588,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "管理"
     }
   ],
   "label.max": [
@@ -600,7 +600,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "成员"
     }
   ],
   "label.members": [
@@ -630,7 +630,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "我的帐户"
     }
   ],
   "label.my-websites": [
@@ -730,7 +730,7 @@
     },
     {
       "type": 1,
-      "value": "current"
+      "value": "当前"
     },
     {
       "type": 0,
@@ -768,7 +768,7 @@
     },
     {
       "type": 1,
-      "value": "name"
+      "value": "名字"
     },
     {
       "type": 0,
@@ -850,7 +850,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "移除成员"
     }
   ],
   "label.reports": [
@@ -922,7 +922,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "选择"
     }
   ],
   "label.select-date": [
@@ -934,7 +934,7 @@
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "选择角色"
     }
   ],
   "label.select-website": [
@@ -1012,7 +1012,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "仅团队视图"
     }
   ],
   "label.team-websites": [
@@ -1096,13 +1096,13 @@
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "转移"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "转移网站"
     }
   ],
   "label.true": [
@@ -1240,15 +1240,15 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "类型 "
     },
     {
       "type": 1,
-      "value": "confirmation"
+      "value": "确认"
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " 在下面的框中确认。"
     }
   ],
   "message.active-users": [
@@ -1296,7 +1296,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "您确定要删除 "
     },
     {
       "type": 1,
@@ -1324,7 +1324,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "删除团队也会删除所有团队的网站。"
     }
   ],
   "message.delete-website-warning": [
@@ -1350,7 +1350,7 @@
     },
     {
       "type": 1,
-      "value": "event"
+      "value": "事件"
     }
   ],
   "message.go-to-settings": [
@@ -1388,11 +1388,11 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "Umami的新版本"
+      "value": "Umami 的新版本"
     },
     {
       "type": 1,
-      "value": "version"
+      "value": "版本"
     },
     {
       "type": 0,
@@ -1460,7 +1460,7 @@
     },
     {
       "type": 1,
-      "value": "confirmation"
+      "value": "确认"
     },
     {
       "type": 0,
@@ -1520,25 +1520,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "将该网站转入您的账户？"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "选择要将该网站转移到哪个团队。"
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "将网站所有权转移到您的账户或其他团队。"
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "触发事件"
     }
   ],
   "message.user-deleted": [
@@ -1550,7 +1550,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "已浏览页面"
     }
   ],
   "message.visitor-log": [
@@ -1560,7 +1560,7 @@
     },
     {
       "type": 1,
-      "value": "country"
+      "value": "国家"
     },
     {
       "type": 0,
@@ -1568,7 +1568,7 @@
     },
     {
       "type": 1,
-      "value": "os"
+      "value": "系统"
     },
     {
       "type": 0,
@@ -1576,7 +1576,7 @@
     },
     {
       "type": 1,
-      "value": "device"
+      "value": "设备"
     },
     {
       "type": 0,
@@ -1584,7 +1584,7 @@
     },
     {
       "type": 1,
-      "value": "browser"
+      "value": "浏览器"
     },
     {
       "type": 0,
@@ -1594,7 +1594,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "访客减少"
     }
   ]
 }
