@@ -1,11 +1,11 @@
-import { canCreateWebsite } from 'lib/auth';
+import { canCreateTeamWebsite, canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
-import userWebsites from 'pages/api/users/[id]/websites';
+import userWebsitesRoute from 'pages/api/users/[userId]/websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 
@@ -15,6 +15,7 @@ export interface WebsitesRequestBody {
   name: string;
   domain: string;
   shareId: string;
+  teamId: string;
 }
 
 const schema = {
@@ -25,6 +26,7 @@ const schema = {
     name: yup.string().max(100).required(),
     domain: yup.string().max(500).required(),
     shareId: yup.string().max(50).nullable(),
+    teamId: yup.string().nullable(),
   }),
 };
 
@@ -41,32 +43,35 @@ export default async (
   } = req.auth;
 
   if (req.method === 'GET') {
-    if (!req.query.id) {
-      req.query.id = userId;
+    if (!req.query.userId) {
+      req.query.userId = userId;
     }
 
-    if (!req.query.pageSize) {
-      req.query.pageSize = 100;
-    }
-
-    return userWebsites(req as any, res);
+    return userWebsitesRoute(req, res);
   }
 
   if (req.method === 'POST') {
-    const { name, domain, shareId } = req.body;
+    const { name, domain, shareId, teamId } = req.body;
 
-    if (!(await canCreateWebsite(req.auth))) {
+    if (
+      (teamId && !(await canCreateTeamWebsite(req.auth, teamId))) ||
+      !(await canCreateWebsite(req.auth))
+    ) {
       return unauthorized(res);
     }
 
     const data: any = {
       id: uuid(),
+      createdBy: userId,
       name,
       domain,
       shareId,
+      teamId,
     };
 
-    data.userId = userId;
+    if (!teamId) {
+      data.userId = userId;
+    }
 
     const website = await createWebsite(data);
 

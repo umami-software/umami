@@ -22,7 +22,7 @@ async function relationalQuery(websiteId: string, column: string, startDate: Dat
       on session.session_id = website_event.session_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-    limit 100
+    limit 500
     `,
     {
       websiteId,
@@ -41,7 +41,7 @@ async function clickhouseQuery(websiteId: string, column: string, startDate: Dat
     from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    limit 100
+    limit 500
     `,
     {
       websiteId,

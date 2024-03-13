@@ -39,25 +39,19 @@ export default async (
       return unauthorized(res);
     }
 
-    const websites = await getWebsites(req.query, {
-      include: {
-        teamWebsite: {
-          include: {
-            team: {
-              select: {
-                name: true,
-              },
+    const websites = await getWebsites(
+      {
+        include: {
+          user: {
+            select: {
+              username: true,
+              id: true,
             },
           },
         },
-        user: {
-          select: {
-            username: true,
-            id: true,
-          },
-        },
       },
-    });
+      req.query,
+    );
 
     return ok(res, websites);
   }

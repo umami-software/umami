@@ -1,12 +1,17 @@
-import { Button, Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
+import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
 import { formatDistance } from 'date-fns';
-import Link from 'next/link';
 import { ROLES } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
+import { useMessages, useLocale } from 'components/hooks';
 import UserDeleteButton from './UserDeleteButton';
+import LinkButton from 'components/common/LinkButton';
 
-export function UsersTable({ data = [] }: { data: any[] }) {
+export function UsersTable({
+  data = [],
+  showActions = true,
+}: {
+  data: any[];
+  showActions?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
   const { dateLocale } = useLocale();
   const breakpoint = useBreakpoint();
@@ -21,7 +26,7 @@ export function UsersTable({ data = [] }: { data: any[] }) {
           )
         }
       </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)} width={'100px'}>
+      <GridColumn name="created" label={formatMessage(labels.created)} width={'150px'}>
         {row =>
           formatDistance(new Date(row.createdAt), new Date(), {
             addSuffix: true,
@@ -29,24 +34,27 @@ export function UsersTable({ data = [] }: { data: any[] }) {
           })
         }
       </GridColumn>
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
-          const { id, username } = row;
-          return (
-            <>
-              <Link href={`/settings/users/${id}`}>
-                <Button>
+      <GridColumn name="websites" label={formatMessage(labels.websites)} width={'120px'}>
+        {row => row._count.website}
+      </GridColumn>
+      {showActions && (
+        <GridColumn name="action" label=" " alignment="end">
+          {row => {
+            const { id, username } = row;
+            return (
+              <>
+                <UserDeleteButton userId={id} username={username} />
+                <LinkButton href={`/settings/users/${id}`}>
                   <Icon>
                     <Icons.Edit />
                   </Icon>
                   <Text>{formatMessage(labels.edit)}</Text>
-                </Button>
-              </Link>
-              <UserDeleteButton userId={id} username={username} />
-            </>
-          );
-        }}
-      </GridColumn>
+                </LinkButton>
+              </>
+            );
+          }}
+        </GridColumn>
+      )}
     </GridTable>
   );
 }

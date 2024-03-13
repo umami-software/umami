@@ -1,8 +1,8 @@
 import { safeDecodeURI } from 'next-basics';
 import { Button, Icon, Icons, Text } from 'react-basics';
-import useNavigation from 'components/hooks/useNavigation';
-import useMessages from 'components/hooks/useMessages';
-import useFormat from 'components/hooks/useFormat';
+import { useNavigation } from 'components/hooks';
+import { useMessages } from 'components/hooks';
+import { useFormat } from 'components/hooks';
 import styles from './FilterTags.module.css';
 
 export function FilterTags({ params }) {
@@ -10,7 +10,7 @@ export function FilterTags({ params }) {
   const { formatValue } = useFormat();
   const {
     router,
-    makeUrl,
+    renderUrl,
     query: { view },
   } = useNavigation();
 
@@ -19,11 +19,11 @@ export function FilterTags({ params }) {
   }
 
   function handleCloseFilter(param?: string) {
-    router.push(makeUrl({ [param]: undefined }));
+    router.push(renderUrl({ [param]: undefined }));
   }
 
   function handleResetFilter() {
-    router.push(makeUrl({ view }, true));
+    router.push(renderUrl({ view }, true));
   }
 
   return (

@@ -1,18 +1,20 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
-import useApi from 'components/hooks/useApi';
-import { percentFilter } from 'lib/filters';
-import useDateRange from 'components/hooks/useDateRange';
-import useNavigation from 'components/hooks/useNavigation';
 import ErrorMessage from 'components/common/ErrorMessage';
 import LinkButton from 'components/common/LinkButton';
-import ListTable, { ListTableProps } from './ListTable';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
+import { percentFilter } from 'lib/filters';
+import {
+  useDateRange,
+  useNavigation,
+  useWebsiteMetrics,
+  useMessages,
+  useLocale,
+  useFormat,
+} from 'components/hooks';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
-import useLocale from 'components/hooks/useLocale';
-import useFormat from 'components//hooks/useFormat';
+import ListTable, { ListTableProps } from './ListTable';
 import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -43,55 +45,38 @@ export function MetricsTable({
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
-  const [{ startDate, endDate, modified }] = useDateRange(websiteId);
+  const [{ startDate, endDate }] = useDateRange(websiteId);
   const {
-    makeUrl,
+    renderUrl,
     query: { url, referrer, title, os, browser, device, country, region, city },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
-  const { get, useQuery } = useApi();
   const { dir } = useLocale();
-  const { data, isLoading, isFetched, error } = useQuery({
-    queryKey: [
-      'websites:metrics',
-      {
-        websiteId,
-        type,
-        modified,
-        url,
-        referrer,
-        os,
-        title,
-        browser,
-        device,
-        country,
-        region,
-        city,
-      },
-    ],
-    queryFn: async () => {
-      const filters = { url, title, referrer, os, browser, device, country, region, city };
 
-      filters[type] = undefined;
-
-      const data = await get(`/websites/${websiteId}/metrics`, {
-        type,
-        startAt: +startDate,
-        endAt: +endDate,
-        limit,
-        ...filters,
-      });
-
-      onDataLoad?.(data);
-
-      return data;
+  const { data, isLoading, isFetched, error } = useWebsiteMetrics(
+    websiteId,
+    {
+      type,
+      startAt: +startDate,
+      endAt: +endDate,
+      url,
+      referrer,
+      os,
+      title,
+      browser,
+      device,
+      country,
+      region,
+      city,
+      limit,
+      search,
     },
-    retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-  });
+    { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
+  );
 
   const filteredData = useMemo(() => {
     if (data) {
-      let items: any[] = data;
+      let items = data as any[];
 
       if (dataFilter) {
         if (Array.isArray(dataFilter)) {
@@ -103,19 +88,7 @@ export function MetricsTable({
         }
       }
 
-      if (search) {
-        items = items.filter(({ x, ...data }) => {
-          const value = formatValue(x, type, data);
-
-          return value.toLowerCase().includes(search.toLowerCase());
-        });
-      }
-
       items = percentFilter(items);
-
-      if (limit) {
-        items = items.slice(0, limit - 1);
-      }
 
       return items;
     }
@@ -131,6 +104,7 @@ export function MetricsTable({
             className={styles.search}
             value={search}
             onSearch={setSearch}
+            delay={300}
             autoFocus={true}
           />
         )}
@@ -142,7 +116,7 @@ export function MetricsTable({
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
         {data && !error && limit && (
-          <LinkButton href={makeUrl({ view: type })} variant="quiet">
+          <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
               <Icons.ArrowRight />

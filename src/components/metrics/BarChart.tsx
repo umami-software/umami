@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import Chart from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
-import useLocale from 'components/hooks/useLocale';
-import useTheme from 'components/hooks/useTheme';
+import { useLocale } from 'components/hooks';
+import { useTheme } from 'components/hooks';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import { renderNumberLabels } from 'lib/charts';
 import styles from './BarChart.module.css';
@@ -21,6 +21,7 @@ export interface BarChartProps {
   XAxisType?: string;
   YAxisType?: string;
   renderTooltipPopup?: (setTooltipPopup: (data: any) => void, model: any) => void;
+  updateMode?: string;
   onCreate?: (chart: any) => void;
   onUpdate?: (chart: any) => void;
   className?: string;
@@ -37,6 +38,7 @@ export function BarChart({
   XAxisType = 'time',
   YAxisType = 'linear',
   renderTooltipPopup,
+  updateMode,
   onCreate,
   onUpdate,
   className,
@@ -46,6 +48,7 @@ export function BarChart({
   const [tooltip, setTooltipPopup] = useState(null);
   const { locale } = useLocale();
   const { theme, colors } = useTheme();
+  const [legendItems, setLegendItems] = useState([]);
 
   const getOptions = useCallback(() => {
     return {
@@ -119,7 +122,7 @@ export function BarChart({
     locale,
   ]);
 
-  const createChart = () => {
+  const createChart = (datasets: any[]) => {
     Chart.defaults.font.family = 'Inter';
 
     chart.current = new Chart(canvas.current, {
@@ -131,32 +134,44 @@ export function BarChart({
     });
 
     onCreate?.(chart.current);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
-  const updateChart = () => {
+  const updateChart = (datasets: any[]) => {
     setTooltipPopup(null);
 
-    datasets.forEach((dataset, index) => {
-      chart.current.data.datasets[index].data = dataset.data;
-      chart.current.data.datasets[index].label = dataset.label;
+    chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
+      dataset.data = datasets[index]?.data;
     });
 
     chart.current.options = getOptions();
 
+    // Allow config changes before update
     onUpdate?.(chart.current);
 
-    chart.current.update();
+    chart.current.update(updateMode);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
   useEffect(() => {
     if (datasets) {
       if (!chart.current) {
-        createChart();
+        createChart(datasets);
       } else {
-        updateChart();
+        updateChart(datasets);
       }
     }
   }, [datasets, unit, theme, animationDuration, locale]);
+
+  const handleLegendClick = (index: number) => {
+    const meta = chart.current.getDatasetMeta(index);
+
+    meta.hidden = meta.hidden === null ? !chart.current.data.datasets[index].hidden : null;
+
+    chart.current.update();
+  };
 
   return (
     <>
@@ -164,7 +179,7 @@ export function BarChart({
         {isLoading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
       </div>
-      <Legend chart={chart.current} />
+      <Legend items={legendItems} onClick={handleLegendClick} />
       {tooltip && (
         <HoverTooltip>
           <div className={styles.tooltip}>{tooltip}</div>
