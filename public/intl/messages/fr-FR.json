@@ -32,7 +32,7 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Ajouter un membre"
     }
   ],
   "label.add-website": [
@@ -215,6 +215,12 @@
       "value": "Créé"
     }
   ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Crée par"
+    }
+  ],
   "label.current-password": [
     {
       "type": 0,
@@ -272,7 +278,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Supprimer le rapport"
     }
   ],
   "label.delete-team": [
@@ -362,7 +368,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Modifier le membre"
     }
   ],
   "label.enable-share-url": [
@@ -580,7 +586,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Gérer"
     }
   ],
   "label.max": [
@@ -592,7 +598,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Membre"
     }
   ],
   "label.members": [
@@ -622,7 +628,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Mon compte"
     }
   ],
   "label.my-websites": [
@@ -646,7 +652,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "Aucun·e"
+      "value": "Aucun"
     }
   ],
   "label.number-of-records": [
@@ -834,7 +840,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Retirer le membre"
     }
   ],
   "label.reports": [
@@ -918,7 +924,7 @@
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Choisir un rôle"
     }
   ],
   "label.select-website": [
@@ -1080,13 +1086,13 @@
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "Transférer"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Transférer le site"
     }
   ],
   "label.true": [
@@ -1224,7 +1230,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Taper "
     },
     {
       "type": 1,
@@ -1232,7 +1238,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " ci-dessous pour confirmer."
     }
   ],
   "message.active-users": [
@@ -1304,7 +1310,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Êtes-vous sûr de vouloir retirer "
     },
     {
       "type": 1,
@@ -1312,7 +1318,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ?"
     }
   ],
   "message.confirm-reset": [
@@ -1332,7 +1338,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "Supprimer une équipe supprimera aussi tous les sites de cette équipe."
     }
   ],
   "message.delete-website-warning": [
@@ -1520,19 +1526,19 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Transférer ce site sur votre compte ?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Choisir l'équipe à laquelle transférer ce site."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Transférer la propriété du site sur votre compte ou à une autre équipe."
     }
   ],
   "message.triggered-event": [
@@ -1550,7 +1556,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Page vue"
     }
   ],
   "message.visitor-log": [
@@ -1590,7 +1596,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "Visiteurs ont abandonné"
     }
   ]
 }
