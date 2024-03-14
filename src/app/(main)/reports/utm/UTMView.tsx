@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { firstBy } from 'thenby';
 import { ReportContext } from '../[reportId]/Report';
 import styles from './UTMView.module.css';
+import { UTM_PARAMS } from 'lib/constants';
 
 function toArray(data: { [key: string]: number }) {
   return Object.keys(data)
@@ -21,7 +22,7 @@ export default function UTMView() {
 
   return (
     <div>
-      {Object.keys(data).map(key => {
+      {UTM_PARAMS.map(key => {
         return (
           <div key={key}>
             <div className={styles.title}>{key}</div>
