@@ -14,7 +14,7 @@ export async function saveSessionData(data: {
 
   const jsonKeys = flattenJSON(sessionData);
 
-  const flattendData = jsonKeys.map(a => ({
+  const flattenedData = jsonKeys.map(a => ({
     id: uuid(),
     websiteId,
     sessionId,
@@ -32,7 +32,7 @@ export async function saveSessionData(data: {
       },
     }),
     client.sessionData.createMany({
-      data: flattendData as any,
+      data: flattenedData as any,
     }),
   ]);
 }
