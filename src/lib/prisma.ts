@@ -24,7 +24,7 @@ const POSTGRESQL_DATE_FORMATS = {
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field} + interval '${interval}'`;
@@ -36,7 +36,7 @@ function getAddIntervalQuery(field: string, interval: string): string {
 }
 
 function getDayDiffQuery(field1: string, field2: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field1}::date - ${field2}::date`;
@@ -48,7 +48,7 @@ function getDayDiffQuery(field1: string, field2: string): string {
 }
 
 function getCastColumnQuery(field: string, type: string): string {
-  const db = getDatabaseType(process.env.DATABASE_URL);
+  const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
     return `${field}::${type}`;
@@ -92,12 +92,14 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function mapFilter(column, operator, name, type = 'varchar') {
-  switch (operator) {
+function mapFilter(column: string, filter: string, name: string, type = 'varchar') {
+  switch (filter) {
     case OPERATORS.equals:
       return `${column} = {{${name}::${type}}}`;
     case OPERATORS.notEquals:
       return `${column} != {{${name}::${type}}}`;
+    case OPERATORS.contains:
+      return `${column} like {{${name}::${type}}}`;
     default:
       return '';
   }
@@ -106,11 +108,11 @@ function mapFilter(column, operator, name, type = 'varchar') {
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
   const query = Object.keys(filters).reduce((arr, name) => {
     const value = filters[name];
-    const operator = value?.filter ?? OPERATORS.equals;
-    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+    const filter = value?.filter ?? OPERATORS.equals;
+    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (value !== undefined && column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+    if (value !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, filter, name)}`);
 
       if (name === 'referrer') {
         arr.push(
@@ -151,7 +153,7 @@ async function parseFilters(
     params: {
       ...normalizeFilters(filters),
       websiteId,
-      startDate: maxDate(filters.startDate, website.resetAt),
+      startDate: maxDate(filters.startDate, website?.resetAt),
       websiteDomain: website.domain,
     },
   };
@@ -175,25 +177,14 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-function getPageFilters(filters: SearchFilter): [
-  {
-    orderBy: {
-      [x: string]: string;
-    }[];
-    take: number;
-    skip: number;
-  },
-  {
-    pageSize: number;
-    page: number;
-    orderBy: string;
-  },
-] {
-  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, orderBy, sortDescending = false } = filters || {};
+async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
 
-  return [
-    {
-      ...(pageSize > 0 && { take: +pageSize, skip: +pageSize * (page - 1) }),
+  const data = await prisma.client[model].findMany({
+    ...criteria,
+    ...{
+      ...(size > 0 && { take: +size, skip: +size * (page - 1) }),
       ...(orderBy && {
         orderBy: [
           {
@@ -202,32 +193,61 @@ function getPageFilters(filters: SearchFilter): [
         ],
       }),
     },
-    { page: +page, pageSize, orderBy },
-  ];
+  });
+
+  const count = await prisma.client[model].count({ where: (criteria as any).where });
+
+  return { data, count, page: +page, pageSize: size, orderBy };
 }
 
-function getSearchMode(): { mode?: Prisma.QueryMode } {
+function getQueryMode(): { mode?: Prisma.QueryMode } {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return {
-      mode: 'insensitive',
-    };
+    return { mode: 'insensitive' };
   }
 
   return {};
 }
 
+function getSearchParameters(query: string, filters: { [key: string]: any }[]) {
+  if (!query) return;
+
+  const mode = getQueryMode();
+  const parseFilter = (filter: { [key: string]: any }) => {
+    const [[key, value]] = Object.entries(filter);
+
+    return {
+      [key]:
+        typeof value === 'string'
+          ? {
+              [value]: query,
+              ...mode,
+            }
+          : parseFilter(value),
+    };
+  };
+
+  const params = filters.map(filter => parseFilter(filter));
+
+  return {
+    AND: {
+      OR: params,
+    },
+  };
+}
+
 export default {
   ...prisma,
   getAddIntervalQuery,
-  getDayDiffQuery,
   getCastColumnQuery,
+  getDayDiffQuery,
   getDateQuery,
-  getTimestampDiffQuery,
   getFilterQuery,
+  getSearchParameters,
+  getTimestampDiffQuery,
+  getQueryMode,
+  pagedQuery,
   parseFilters,
-  getPageFilters,
-  getSearchMode,
   rawQuery,
 };

@@ -20,27 +20,27 @@ const initialState = {
 
 const store = create(() => ({ ...initialState }));
 
-export function setTheme(theme) {
+export function setTheme(theme: string) {
   store.setState({ theme });
 }
 
-export function setLocale(locale) {
+export function setLocale(locale: string) {
   store.setState({ locale });
 }
 
-export function setShareToken(shareToken) {
+export function setShareToken(shareToken: string) {
   store.setState({ shareToken });
 }
 
-export function setUser(user) {
+export function setUser(user: object) {
   store.setState({ user });
 }
 
-export function setConfig(config) {
+export function setConfig(config: object) {
   store.setState({ config });
 }
 
-export function setDateRange(dateRange) {
+export function setDateRange(dateRange: object) {
   store.setState({ dateRange });
 }
 

@@ -31,7 +31,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     from (
       select
         website_event.session_id,
-        ${getDateQuery('website_event.created_at', 'day')},
+        ${getDateQuery('website_event.created_at', 'hour')},
         count(*) as "c",
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
@@ -70,7 +70,7 @@ async function clickhouseQuery(
     from (
       select
         session_id,
-        ${getDateQuery('created_at', 'day')} time_series,
+        ${getDateQuery('created_at', 'hour')} time_series,
         count(*) c,
         min(created_at) min_time,
         max(created_at) max_time

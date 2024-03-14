@@ -46,27 +46,29 @@ function getClient() {
   return client;
 }
 
-function getDateStringQuery(data, unit) {
+function getDateStringQuery(data: any, unit: string | number) {
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
-function getDateQuery(field, unit, timezone?) {
+function getDateQuery(field: string, unit: string, timezone?: string) {
   if (timezone) {
     return `date_trunc('${unit}', ${field}, '${timezone}')`;
   }
   return `date_trunc('${unit}', ${field})`;
 }
 
-function getDateFormat(date) {
+function getDateFormat(date: Date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function mapFilter(column, operator, name, type = 'String') {
-  switch (operator) {
+function mapFilter(column: string, filter: string, name: string, type: string = 'String') {
+  switch (filter) {
     case OPERATORS.equals:
       return `${column} = {${name}:${type}}`;
     case OPERATORS.notEquals:
       return `${column} != {${name}:${type}}`;
+    case OPERATORS.contains:
+      return `positionCaseInsensitive(${column}, {${name}:${type}}) > 0`;
     default:
       return '';
   }
@@ -75,11 +77,11 @@ function mapFilter(column, operator, name, type = 'String') {
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
   const query = Object.keys(filters).reduce((arr, name) => {
     const value = filters[name];
-    const operator = value?.filter ?? OPERATORS.equals;
-    const column = FILTER_COLUMNS[name] ?? options?.columns?.[name];
+    const filter = value?.filter ?? OPERATORS.equals;
+    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
 
-    if (value !== undefined && column) {
-      arr.push(`and ${mapFilter(column, operator, name)}`);
+    if (value !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, filter, name)}`);
 
       if (name === 'referrer') {
         arr.push('and referrer_domain != {websiteDomain:String}');
@@ -110,7 +112,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
     params: {
       ...normalizeFilters(filters),
       websiteId,
-      startDate: maxDate(filters.startDate, new Date(website.resetAt)),
+      startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
       websiteDomain: website.domain,
     },
   };
@@ -130,12 +132,10 @@ async function rawQuery(query: string, params: Record<string, unknown> = {}): Pr
     format: 'JSONEachRow',
   });
 
-  const data = await resultSet.json();
-
-  return data;
+  return resultSet.json();
 }
 
-async function findUnique(data) {
+async function findUnique(data: any[]) {
   if (data.length > 1) {
     throw `${data.length} records found when expecting 1.`;
   }
@@ -143,7 +143,7 @@ async function findUnique(data) {
   return findFirst(data);
 }
 
-async function findFirst(data) {
+async function findFirst(data: any[]) {
   return data[0] ?? null;
 }
 

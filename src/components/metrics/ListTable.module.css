@@ -39,6 +39,11 @@
   align-items: center;
   margin-bottom: 5px;
   overflow: hidden;
+  border-radius: 4px;
+}
+
+.row:hover {
+  background-color: var(--base75);
 }
 
 .label {
@@ -46,6 +51,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   flex: 2;
+  padding-left: 10px;
 }
 
 .label a {
@@ -76,7 +82,7 @@
   position: relative;
   width: 50px;
   color: var(--base600);
-  border-left: 1px solid var(--base600);
+  border-inline-start: 1px solid var(--base600);
   padding-inline-start: 10px;
   z-index: 1;
 }

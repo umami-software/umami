@@ -49,7 +49,7 @@ mysql://username:mypassword@localhost:3306/mydb
 yarn build
 ```
 
-The build step will also create tables in your database if you ae installing for the first time. It will also create a login user with username **admin** and password **umami**.
+The build step will also create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
 
 ### Start the application
 
