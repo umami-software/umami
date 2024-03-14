@@ -32,7 +32,7 @@ async function relationalQuery(data: {
   const jsonKeys = flattenJSON(eventData);
 
   // id, websiteEventId, eventStringValue
-  const flattendData = jsonKeys.map(a => ({
+  const flattenedData = jsonKeys.map(a => ({
     id: uuid(),
     websiteEventId: eventId,
     websiteId,
@@ -44,7 +44,7 @@ async function relationalQuery(data: {
   }));
 
   return prisma.client.eventData.createMany({
-    data: flattendData,
+    data: flattenedData,
   });
 }
 
