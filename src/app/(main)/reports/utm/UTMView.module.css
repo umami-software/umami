@@ -1,0 +1,24 @@
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.params {
+  display: grid;
+  gap: 10px;
+  padding: 20px 0;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.label {
+  min-width: 200px;
+}
+
+.value {
+  min-width: 50px;
+  text-align: right;
+}

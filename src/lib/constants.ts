@@ -106,6 +106,7 @@ export const REPORT_TYPES = {
   funnel: 'funnel',
   insights: 'insights',
   retention: 'retention',
+  utm: 'utm',
 } as const;
 
 export const REPORT_PARAMETERS = {
@@ -226,6 +227,8 @@ export const MOBILE_SCREEN_WIDTH = 479;
 export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+
+export const UTM_PARAMS = ['source', 'medium', 'campaign', 'term', 'content'];
 
 export const DESKTOP_OS = [
   'BeOS',

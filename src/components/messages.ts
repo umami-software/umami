@@ -222,6 +222,11 @@ export const labels = defineMessages({
     id: 'message.visitors-dropped-off',
     defaultMessage: 'Visitors dropped off',
   },
+  utm: { id: 'label.utm', defaultMessage: 'UTM' },
+  utmDescription: {
+    id: 'label.utm-description',
+    defaultMessage: 'Track your campaigns through UTM parameters.',
+  },
 });
 
 export const messages = defineMessages({
