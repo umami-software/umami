@@ -194,7 +194,7 @@ export const THEME_COLORS = {
   },
 };
 
-export const EVENT_COLORS = [
+export const CHART_COLORS = [
   '#2680eb',
   '#9256d9',
   '#44b556',

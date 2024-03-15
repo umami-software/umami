@@ -1,24 +1,14 @@
 .title {
   font-size: 18px;
+  line-height: 36px;
   font-weight: 700;
 }
 
-.params {
-  display: grid;
-  gap: 10px;
-  padding: 20px 0;
-}
-
 .row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 50% 50%;
   gap: 20px;
-}
-
-.label {
-  min-width: 200px;
-}
-
-.value {
-  min-width: 50px;
-  text-align: right;
+  border-bottom: 1px solid var(--base300);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
 }

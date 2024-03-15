@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Flexbox, Icon, Icons, Text } from 'react-basics';
 import styles from './Breadcrumb.module.css';
+import { Fragment } from 'react';
 
 export interface BreadcrumbProps {
   data: {
@@ -14,7 +15,7 @@ export function Breadcrumb({ data }: BreadcrumbProps) {
     <Flexbox alignItems="center" gap={3} className={styles.bar}>
       {data.map((a, i) => {
         return (
-          <>
+          <Fragment key={i}>
             {a.url ? (
               <Link href={a.url} className={styles.link}>
                 <Text>{a.label}</Text>
@@ -27,7 +28,7 @@ export function Breadcrumb({ data }: BreadcrumbProps) {
                 <Icons.ChevronDown />
               </Icon>
             ) : null}
-          </>
+          </Fragment>
         );
       })}
     </Flexbox>

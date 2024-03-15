@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { StatusLight } from 'react-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
+import { LegendItem } from 'chart.js/auto';
 import { useLocale } from 'components/hooks';
-import { useForceUpdate } from 'components/hooks';
 import styles from './Legend.module.css';
 
 export function Legend({
@@ -11,14 +10,9 @@ export function Legend({
   onClick,
 }: {
   items: any[];
-  onClick: (index: number) => void;
+  onClick: (index: LegendItem) => void;
 }) {
   const { locale } = useLocale();
-  const forceUpdate = useForceUpdate();
-
-  useEffect(() => {
-    forceUpdate();
-  }, [locale, forceUpdate]);
 
   if (!items.find(({ text }) => text)) {
     return null;
@@ -26,14 +20,15 @@ export function Legend({
 
   return (
     <div className={styles.legend}>
-      {items.map(({ text, fillStyle, datasetIndex, hidden }) => {
+      {items.map(item => {
+        const { text, fillStyle, hidden } = item;
         const color = colord(fillStyle);
 
         return (
           <div
             key={text}
             className={classNames(styles.label, { [styles.hidden]: hidden })}
-            onClick={() => onClick(datasetIndex)}
+            onClick={() => onClick(item)}
           >
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
               <span className={locale}>{text}</span>
