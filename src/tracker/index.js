@@ -22,10 +22,9 @@
   const stripSearch = attr(_data + 'strip-search') === _true;
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
-  const root = hostUrl
-    ? hostUrl.replace(/\/$/, '')
-    : currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${root}/api/send`;
+  const host =
+    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
