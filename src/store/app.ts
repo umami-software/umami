@@ -48,7 +48,7 @@ export function setConfig(config: object) {
   store.setState({ config });
 }
 
-export function setDateRange(dateRange: object) {
+export function setDateRange(dateRange: string | object) {
   store.setState({ dateRange });
 }
 
