@@ -9,9 +9,17 @@ import {
 } from 'lib/constants';
 import { getItem } from 'next-basics';
 
+function getDefaultTheme() {
+  return typeof window !== 'undefined'
+    ? window?.matchMedia('(prefers-color-scheme: dark)')?.matches
+      ? 'dark'
+      : 'light'
+    : 'light';
+}
+
 const initialState = {
   locale: getItem(LOCALE_CONFIG) || DEFAULT_LOCALE,
-  theme: getItem(THEME_CONFIG) || DEFAULT_THEME,
+  theme: getItem(THEME_CONFIG) || getDefaultTheme() || DEFAULT_THEME,
   dateRange: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE,
   shareToken: null,
   user: null,
