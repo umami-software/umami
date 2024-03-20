@@ -16,6 +16,7 @@ export function WebsiteFilterButton({
   const fieldOptions = [
     { name: 'url', type: 'string', label: formatMessage(labels.url) },
     { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
+    { name: 'query', type: 'string', label: formatMessage(labels.query) },
     { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
     { name: 'os', type: 'string', label: formatMessage(labels.os) },
     { name: 'device', type: 'string', label: formatMessage(labels.device) },
