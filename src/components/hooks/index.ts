@@ -2,6 +2,7 @@ export * from './queries/useApi';
 export * from './queries/useConfig';
 export * from './queries/useFilterQuery';
 export * from './queries/useLogin';
+export * from './queries/useRealtime';
 export * from './queries/useReport';
 export * from './queries/useReports';
 export * from './queries/useShareToken';

@@ -15,6 +15,7 @@ export const labels = defineMessages({
   username: { id: 'label.username', defaultMessage: 'Username' },
   password: { id: 'label.password', defaultMessage: 'Password' },
   role: { id: 'label.role', defaultMessage: 'Role' },
+  admin: { id: 'label.admin', defaultMessage: 'Admin' },
   user: { id: 'label.user', defaultMessage: 'User' },
   viewOnly: { id: 'label.view-only', defaultMessage: 'View only' },
   manage: { id: 'label.manage', defaultMessage: 'Manage' },
@@ -221,6 +222,11 @@ export const labels = defineMessages({
   visitorsDroppedOff: {
     id: 'message.visitors-dropped-off',
     defaultMessage: 'Visitors dropped off',
+  },
+  utm: { id: 'label.utm', defaultMessage: 'UTM' },
+  utmDescription: {
+    id: 'label.utm-description',
+    defaultMessage: 'Track your campaigns through UTM parameters.',
   },
 });
 

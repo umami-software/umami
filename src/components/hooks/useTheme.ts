@@ -1,19 +1,13 @@
 import { useEffect } from 'react';
 import useStore, { setTheme } from 'store/app';
 import { getItem, setItem } from 'next-basics';
-import { THEME_COLORS, THEME_CONFIG } from 'lib/constants';
+import { DEFAULT_THEME, THEME_COLORS, THEME_CONFIG } from 'lib/constants';
 import { colord } from 'colord';
 
 const selector = (state: { theme: string }) => state.theme;
 
 export function useTheme() {
-  const defaultTheme =
-    typeof window !== 'undefined'
-      ? window?.matchMedia('(prefers-color-scheme: dark)')?.matches
-        ? 'dark'
-        : 'light'
-      : 'light';
-  const theme = useStore(selector) || getItem(THEME_CONFIG) || defaultTheme;
+  const theme = useStore(selector) || getItem(THEME_CONFIG) || DEFAULT_THEME;
   const primaryColor = colord(THEME_COLORS[theme].primary);
 
   const colors = {

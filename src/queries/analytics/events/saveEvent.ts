@@ -1,4 +1,4 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE } from 'lib/constants';
+import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
@@ -69,7 +69,7 @@ async function relationalQuery(data: {
       referrerPath: referrerPath?.substring(0, URL_LENGTH),
       referrerQuery: referrerQuery?.substring(0, URL_LENGTH),
       referrerDomain: referrerDomain?.substring(0, URL_LENGTH),
-      pageTitle,
+      pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     },
@@ -151,7 +151,7 @@ async function clickhouseQuery(data: {
     referrer_path: referrerPath?.substring(0, URL_LENGTH),
     referrer_query: referrerQuery?.substring(0, URL_LENGTH),
     referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
-    page_title: pageTitle,
+    page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     created_at: createdAt,

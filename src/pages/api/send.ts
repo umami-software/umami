@@ -111,7 +111,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       }
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/.+\/$/, '');
+        urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
 
       await saveEvent({

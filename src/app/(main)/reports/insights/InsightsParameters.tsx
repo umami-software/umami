@@ -53,11 +53,11 @@ export function InsightsParameters() {
     filters,
   };
 
-  const handleSubmit = values => {
+  const handleSubmit = (values: any) => {
     runReport(values);
   };
 
-  const handleAdd = (id, value) => {
+  const handleAdd = (id: string | number, value: { name: any }) => {
     const data = parameterData[id];
 
     if (!data.find(({ name }) => name === value.name)) {
@@ -65,7 +65,7 @@ export function InsightsParameters() {
     }
   };
 
-  const handleRemove = (id, index) => {
+  const handleRemove = (id: string, index: number) => {
     const data = [...parameterData[id]];
     data.splice(index, 1);
     updateReport({ parameters: { [id]: data } });

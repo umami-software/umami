@@ -4,7 +4,7 @@ import { useApi } from './useApi';
 import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
 
-export function useReport(reportId: string, defaultParameters: { [key: string]: any }) {
+export function useReport(reportId: string, defaultParameters: { [key: string]: any } = {}) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();

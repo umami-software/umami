@@ -196,7 +196,7 @@
   "label.window": "Ventana",
   "label.yesterday": "Ayer",
   "message.action-confirmation": "Escriba {confirmation} en el cuadro a continuación para confirmar.",
-  "message.active-users": "{x} {x, plural, uno {activo} otros {activos}}",
+  "message.active-users": "{x} {x, plural, one {activo} other {activos}}",
   "message.confirm-delete": "¿Seguro que quieres eliminar {target}?",
   "message.confirm-leave": "¿Seguro que quieres abandonar {target}?",
   "message.confirm-remove": "¿Estás seguro de que desea eliminar {target}?",
