@@ -164,7 +164,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
     case 'day':
       return {
         startDate: subDays(startOfDay(now), num),
-        endDate: endOfDay(now),
+        endDate: subDays(endOfDay(now), num ? 1 : 0),
         unit: num ? 'day' : 'hour',
         offset: 0,
         num: num || 1,
@@ -181,8 +181,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'month':
       return {
-        startDate: subMonths(startOfMonth(now), 1),
-        endDate: subMonths(endOfMonth(now), 1),
+        startDate: subMonths(startOfMonth(now), num),
+        endDate: subMonths(endOfMonth(now), num),
         unit: 'day',
         offset: 0,
         num: num || 1,
@@ -190,8 +190,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'year':
       return {
-        startDate: subYears(startOfYear(now), 1),
-        endDate: subYears(endOfYear(now), 1),
+        startDate: subYears(startOfYear(now), num),
+        endDate: subYears(endOfYear(now), num),
         unit: 'month',
         offset: 0,
         num: num || 1,
