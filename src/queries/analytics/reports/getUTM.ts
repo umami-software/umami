@@ -92,29 +92,26 @@ async function clickhouseQuery(
   ).then(result => parseParameters(result as any[]));
 }
 
-function parseParameters(result: any[]) {
-  return Object.values(result).reduce((data, { url_query, num }) => {
-    const params = url_query.split('&').map(n => decodeURIComponent(n));
+function parseParameters(data: any[]) {
+  return data.reduce((obj, { url_query, num }) => {
+    try {
+      const searchParams = new URLSearchParams(url_query);
 
-    for (const param of params) {
-      const [key, value] = param.split('=');
-
-      const match = key.match(/^utm_(\w+)$/);
-
-      if (match) {
-        const group = match[1];
-        const name = decodeURIComponent(value);
-
-        if (!data[group]) {
-          data[group] = { [name]: +num };
-        } else if (!data[group][name]) {
-          data[group][name] = +num;
-        } else {
-          data[group][name] += +num;
+      for (const [key, value] of searchParams) {
+        if (key.match(/^utm_(\w+)$/)) {
+          if (!obj[key]) {
+            obj[key] = { [value]: +num };
+          } else if (!obj[key][value]) {
+            obj[key][value] = +num;
+          } else {
+            obj[key][value] += +num;
+          }
         }
       }
+    } catch {
+      // Ignore
     }
 
-    return data;
+    return obj;
   }, {});
 }
