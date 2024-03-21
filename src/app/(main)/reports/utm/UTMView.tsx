@@ -7,7 +7,7 @@ import ListTable from 'components/metrics/ListTable';
 import styles from './UTMView.module.css';
 import { useMessages } from 'components/hooks';
 
-function toArray(data: { [key: string]: number }) {
+function toArray(data: { [key: string]: number } = {}) {
   return Object.keys(data)
     .map(key => {
       return { name: key, value: data[key] };
