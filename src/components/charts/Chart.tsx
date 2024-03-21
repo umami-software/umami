@@ -111,7 +111,7 @@ export function Chart({
     } else {
       const { index } = item;
       const meta = chart.current.getDatasetMeta(0);
-      const hidden = !!meta.data[index].hidden;
+      const hidden = !!meta?.data?.[index]?.hidden;
 
       meta.data[index].hidden = !hidden;
       chart.current.legend.legendItems[index].hidden = !hidden;
