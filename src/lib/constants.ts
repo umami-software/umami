@@ -228,7 +228,7 @@ export const URL_LENGTH = 500;
 export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
 
-export const UTM_PARAMS = ['source', 'medium', 'campaign', 'term', 'content'];
+export const UTM_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 export const DESKTOP_OS = [
   'BeOS',

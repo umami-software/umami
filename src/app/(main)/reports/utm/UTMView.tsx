@@ -26,8 +26,8 @@ export default function UTMView() {
 
   return (
     <div>
-      {UTM_PARAMS.map(key => {
-        const items = toArray(data[key]);
+      {UTM_PARAMS.map(param => {
+        const items = toArray(data[param]);
         const chartData = {
           labels: items.map(({ name }) => name),
           datasets: [
@@ -42,9 +42,9 @@ export default function UTMView() {
         }, 0);
 
         return (
-          <div key={key} className={styles.row}>
+          <div key={param} className={styles.row}>
             <div>
-              <div className={styles.title}>{key}</div>
+              <div className={styles.title}>{param.replace(/^utm_/, '')}</div>
               <ListTable
                 metric={formatMessage(labels.views)}
                 data={items.map(({ name, value }) => ({
