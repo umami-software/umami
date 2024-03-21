@@ -20,7 +20,7 @@ export function LanguageSetting() {
 
   const handleReset = () => saveLocale(DEFAULT_LOCALE);
 
-  const renderValue = (value: string | number) => languages[value].label;
+  const renderValue = (value: string | number) => languages?.[value]?.label;
 
   return (
     <Flexbox gap={10}>

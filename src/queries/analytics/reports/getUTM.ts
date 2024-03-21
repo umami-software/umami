@@ -99,12 +99,13 @@ function parseParameters(data: any[]) {
 
       for (const [key, value] of searchParams) {
         if (key.match(/^utm_(\w+)$/)) {
+          const name = decodeURIComponent(value);
           if (!obj[key]) {
-            obj[key] = { [value]: +num };
-          } else if (!obj[key][value]) {
-            obj[key][value] = +num;
+            obj[key] = { [name]: +num };
+          } else if (!obj[key][name]) {
+            obj[key][name] = +num;
           } else {
-            obj[key][value] += +num;
+            obj[key][name] += +num;
           }
         }
       }
