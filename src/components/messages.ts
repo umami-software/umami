@@ -110,6 +110,7 @@ export const labels = defineMessages({
   yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
   thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
   lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
+  lastMonths: { id: 'label.last-months', defaultMessage: 'Last {x} months' },
   thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
   thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
