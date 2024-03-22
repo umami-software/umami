@@ -23,7 +23,7 @@ export function ProfileSettings() {
       return formatMessage(labels.user);
     }
     if (value === ROLES.admin) {
-      return formatMessage(labels.administrator);
+      return formatMessage(labels.admin);
     }
     if (value === ROLES.viewOnly) {
       return formatMessage(labels.viewOnly);

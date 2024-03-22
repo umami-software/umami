@@ -18,7 +18,7 @@ export const labels = defineMessages({
   user: { id: 'label.user', defaultMessage: 'User' },
   viewOnly: { id: 'label.view-only', defaultMessage: 'View only' },
   manage: { id: 'label.manage', defaultMessage: 'Manage' },
-  administrator: { id: 'label.administrator', defaultMessage: 'Administrator' },
+  admin: { id: 'label.admin', defaultMessage: 'Administrator' },
   confirm: { id: 'label.confirm', defaultMessage: 'Confirm' },
   details: { id: 'label.details', defaultMessage: 'Details' },
   website: { id: 'label.website', defaultMessage: 'Website' },
