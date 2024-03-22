@@ -45,6 +45,7 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and url_query is not null
+      and event_type = 1
     group by 1
     `,
     {
@@ -83,6 +84,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and url_query != ''
+      and event_type = 1
     group by 1
     `,
     {
