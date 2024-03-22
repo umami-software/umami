@@ -16,7 +16,7 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   const showLinks = !pathname.includes('/share/');
 
   const {
-    query: { view, url, referrer, os, browser, device, country, region, city, title },
+    query: { view, url, referrer, query, os, browser, device, country, region, city, title },
   } = useNavigation();
 
   if (isLoading || error) {
@@ -26,7 +26,7 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
-      <FilterTags params={{ url, referrer, os, browser, device, country, region, city, title }} />
+      <FilterTags params={{ url, referrer, query, os, browser, device, country, region, city, title }} />
       <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
       <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
