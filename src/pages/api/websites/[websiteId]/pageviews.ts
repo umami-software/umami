@@ -14,6 +14,7 @@ export interface WebsitePageviewRequestQuery {
   timezone?: string;
   url?: string;
   referrer?: string;
+  query?: string;
   title?: string;
   os?: string;
   browser?: string;
@@ -34,6 +35,7 @@ const schema = {
     timezone: TimezoneTest,
     url: yup.string(),
     referrer: yup.string(),
+    query: yup.string(),
     title: yup.string(),
     os: yup.string(),
     browser: yup.string(),
@@ -52,7 +54,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, timezone, url, referrer, title, os, browser, device, country, region, city } =
+  const { websiteId, timezone, url, referrer, query, title, os, browser, device, country, region, city } =
     req.query;
 
   if (req.method === 'GET') {
@@ -69,6 +71,7 @@ export default async (
       unit,
       url,
       referrer,
+      query,
       title,
       os,
       browser,

@@ -48,7 +48,7 @@ export function MetricsTable({
   const [{ startDate, endDate }] = useDateRange(websiteId);
   const {
     renderUrl,
-    query: { url, referrer, title, os, browser, device, country, region, city },
+    query: { url, referrer, query, title, os, browser, device, country, region, city },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { dir } = useLocale();
@@ -61,6 +61,7 @@ export function MetricsTable({
       endAt: +endDate,
       url,
       referrer,
+      query,
       os,
       title,
       browser,

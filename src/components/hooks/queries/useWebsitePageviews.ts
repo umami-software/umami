@@ -6,7 +6,7 @@ export function useWebsitePageviews(websiteId: string, options?: { [key: string]
   const { startDate, endDate, unit } = dateRange;
   const [timezone] = useTimezone();
   const {
-    query: { url, referrer, os, browser, device, country, region, city, title },
+    query: { url, referrer, query, os, browser, device, country, region, city, title },
   } = useNavigation();
 
   const params = {
@@ -16,6 +16,7 @@ export function useWebsitePageviews(websiteId: string, options?: { [key: string]
     timezone,
     url,
     referrer,
+    query,
     os,
     browser,
     device,
