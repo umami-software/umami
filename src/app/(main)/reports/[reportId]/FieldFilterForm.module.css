@@ -1,7 +1,7 @@
 .popup {
   display: flex;
   max-width: 300px;
-  max-height: 400px;
+  max-height: 210px;
   overflow-x: hidden;
 }
 
@@ -19,6 +19,6 @@
   min-width: 180px;
 }
 
-.menu {
-  min-width: 200px;
+.text {
+  min-width: 180px;
 }
