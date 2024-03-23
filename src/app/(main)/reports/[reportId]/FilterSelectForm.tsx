@@ -24,14 +24,14 @@ function useValues(websiteId: string, type: string) {
 
 export interface FilterSelectFormProps {
   websiteId: string;
-  items: any[];
+  fields: any[];
   onSelect?: (key: any) => void;
   allowFilterSelect?: boolean;
 }
 
 export default function FilterSelectForm({
   websiteId,
-  items,
+  fields,
   onSelect,
   allowFilterSelect,
 }: FilterSelectFormProps) {
@@ -39,7 +39,7 @@ export default function FilterSelectForm({
   const { data, isLoading } = useValues(websiteId, field?.name);
 
   if (!field) {
-    return <FieldSelectForm fields={items} onSelect={setField} showType={false} />;
+    return <FieldSelectForm fields={fields} onSelect={setField} showType={false} />;
   }
 
   if (isLoading) {

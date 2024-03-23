@@ -22,7 +22,7 @@ export function useFilters() {
   };
 
   const typeFilters = {
-    string: [OPERATORS.equals, OPERATORS.notEquals],
+    string: [OPERATORS.equals, OPERATORS.notEquals, OPERATORS.contains, OPERATORS.doesNotContain],
     array: [OPERATORS.contains, OPERATORS.doesNotContain],
     boolean: [OPERATORS.true, OPERATORS.false],
     number: [

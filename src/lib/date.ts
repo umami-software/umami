@@ -182,8 +182,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
     case 'month':
       return {
         startDate: subMonths(startOfMonth(now), num),
-        endDate: subMonths(endOfMonth(now), num),
-        unit: 'day',
+        endDate: subMonths(endOfMonth(now), num ? 1 : 0),
+        unit: num ? 'month' : 'day',
         offset: 0,
         num: num || 1,
         value,
