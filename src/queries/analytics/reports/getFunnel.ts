@@ -81,8 +81,8 @@ async function relationalQuery(
                   `l.created_at `,
                   `${windowMinutes} minute`,
                 )}
-                and we.referrer_path = {{${i - 1}}}
-                and we.url_path = {{${i}}}
+                and we.referrer_path like {{${i - 1}}}
+                and we.url_path like {{${i}}}
                 and we.created_at <= {{endDate}}
           )`;
         }
@@ -105,7 +105,7 @@ async function relationalQuery(
       from website_event
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
-        and url_path = {{0}}
+        and url_path like {{0}}
     )
     ${levelQuery}
     ${sumQuery}
@@ -165,8 +165,8 @@ async function clickhouseQuery(
             join level0 y
             on x.session_id = y.session_id
             where y.created_at between x.created_at and x.created_at + interval ${windowMinutes} minute
-                and y.referrer_path = {url${i - 1}:String}
-                and y.url_path = {url${i}:String}
+                and y.referrer_path like {url${i - 1}:String}
+                and y.url_path like {url${i}:String}
           )`;
         }
 
@@ -197,7 +197,7 @@ async function clickhouseQuery(
     level1 AS (
       select *
       from level0
-      where url_path = {url0:String}
+      where url_path like {url0:String}
     )
     ${levelQuery}
     select *
