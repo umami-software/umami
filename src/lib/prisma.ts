@@ -100,6 +100,8 @@ function mapFilter(column: string, filter: string, name: string, type = 'varchar
       return `${column} != {{${name}::${type}}}`;
     case OPERATORS.contains:
       return `${column} like {{${name}::${type}}}`;
+    case OPERATORS.doesNotContain:
+      return `${column} not like {{${name}::${type}}}`;
     default:
       return '';
   }

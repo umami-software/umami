@@ -1,4 +1,5 @@
 import { StatusLight } from 'react-basics';
+import { safeDecodeURIComponent } from 'next-basics';
 import { colord } from 'colord';
 import classNames from 'classnames';
 import { LegendItem } from 'chart.js/auto';
@@ -31,7 +32,7 @@ export function Legend({
             onClick={() => onClick(item)}
           >
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
-              <span className={locale}>{text}</span>
+              <span className={locale}>{safeDecodeURIComponent(text)}</span>
             </StatusLight>
           </div>
         );

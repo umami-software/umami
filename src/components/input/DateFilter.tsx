@@ -59,7 +59,15 @@ export function DateFilter({
       label: formatMessage(labels.lastDays, { x: 90 }),
       value: '90day',
     },
-    { label: formatMessage(labels.thisYear), value: '0year' },
+    { label: formatMessage(labels.thisYear), value: '0year', divider: true },
+    {
+      label: formatMessage(labels.lastMonths, { x: 6 }),
+      value: '6month',
+    },
+    {
+      label: formatMessage(labels.lastMonths, { x: 12 }),
+      value: '12month',
+    },
     showAllTime && {
       label: formatMessage(labels.allTime),
       value: 'all',

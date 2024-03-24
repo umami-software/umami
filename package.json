@@ -69,7 +69,7 @@
     "@prisma/client": "5.10.2",
     "@prisma/extension-read-replicas": "^0.3.0",
     "@react-spring/web": "^9.7.3",
-    "@tanstack/react-query": "^5.12.2",
+    "@tanstack/react-query": "^5.28.6",
     "@umami/prisma-client": "^0.14.0",
     "@umami/redis-client": "^0.18.0",
     "chalk": "^4.1.1",
@@ -176,6 +176,6 @@
     "tar": "^6.1.2",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.4.3"
   }
 }
