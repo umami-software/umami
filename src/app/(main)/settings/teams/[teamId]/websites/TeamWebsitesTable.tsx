@@ -1,4 +1,4 @@
-import { GridColumn, GridTable, Icon, Text } from 'react-basics';
+import { GridColumn, GridTable, Icon, Text, useBreakpoint } from 'react-basics';
 import { useLogin, useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import LinkButton from 'components/common/LinkButton';
@@ -14,9 +14,10 @@ export function TeamWebsitesTable({
 }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
+  const breakpoint = useBreakpoint();
 
   return (
-    <GridTable data={data}>
+    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="domain" label={formatMessage(labels.domain)} />
       <GridColumn name="createdBy" label={formatMessage(labels.createdBy)}>
