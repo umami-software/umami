@@ -1,7 +1,7 @@
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useFields, useMessages, useNavigation } from 'components/hooks';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -12,17 +12,7 @@ export function WebsiteFilterButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
-
-  const fieldOptions = [
-    { name: 'url', type: 'string', label: formatMessage(labels.url) },
-    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-  ];
+  const { fields } = useFields();
 
   const handleAddFilter = ({ name, value }) => {
     router.push(renderUrl({ [name]: value }));
@@ -42,8 +32,8 @@ export function WebsiteFilterButton({
             <PopupForm>
               <FilterSelectForm
                 websiteId={websiteId}
-                items={fieldOptions}
-                onSelect={value => {
+                fields={fields}
+                onChange={value => {
                   handleAddFilter(value);
                   close();
                 }}

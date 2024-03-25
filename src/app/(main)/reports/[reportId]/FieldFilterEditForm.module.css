@@ -2,7 +2,7 @@
   display: flex;
   max-width: 300px;
   max-height: 210px;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .popup > div {

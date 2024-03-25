@@ -1,4 +1,4 @@
-import { useMessages } from 'components/hooks';
+import { useFields, useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import { useContext } from 'react';
 import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
@@ -7,24 +7,12 @@ import ParameterList from '../[reportId]/ParameterList';
 import PopupForm from '../[reportId]/PopupForm';
 import { ReportContext } from '../[reportId]/Report';
 
-export function InsightsFieldParameters() {
+export function FieldParameters() {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { parameters } = report || {};
   const { fields } = parameters || {};
-
-  const fieldOptions = [
-    { name: 'url', type: 'string', label: formatMessage(labels.url) },
-    { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
-    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'query', type: 'string', label: formatMessage(labels.query) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-  ];
+  const { fields: fieldOptions } = useFields();
 
   const handleAdd = (value: { name: any }) => {
     if (!fields.find(({ name }) => name === value.name)) {
@@ -72,4 +60,4 @@ export function InsightsFieldParameters() {
   );
 }
 
-export default InsightsFieldParameters;
+export default FieldParameters;

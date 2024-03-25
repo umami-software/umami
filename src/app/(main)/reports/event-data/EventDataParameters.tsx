@@ -60,10 +60,9 @@ export function EventDataParameters() {
     }
   };
 
-  const handleRemove = (group: string, index: number) => {
+  const handleRemove = (group: string) => {
     const data = [...parameterData[group]];
-    data.splice(index, 1);
-    updateReport({ parameters: { [group]: data } });
+    updateReport({ parameters: { [group]: data.filter(({ name }) => name !== group) } });
   };
 
   const AddButton = ({ group, onAdd }) => {
@@ -104,29 +103,28 @@ export function EventDataParameters() {
               label={label}
               action={<AddButton group={group} onAdd={handleAdd} />}
             >
-              <ParameterList
-                items={parameterData[group]}
-                onRemove={index => handleRemove(group, index)}
-              >
-                {({ name, value }) => {
+              <ParameterList>
+                {parameterData[group].map(({ name, value }) => {
                   return (
-                    <div className={styles.parameter}>
-                      {group === REPORT_PARAMETERS.fields && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value}</div>
-                        </>
-                      )}
-                      {group === REPORT_PARAMETERS.filters && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value[0]}</div>
-                          <div>{value[1]}</div>
-                        </>
-                      )}
-                    </div>
+                    <ParameterList.Item key={name} onRemove={() => handleRemove(group)}>
+                      <div className={styles.parameter}>
+                        {group === REPORT_PARAMETERS.fields && (
+                          <>
+                            <div>{name}</div>
+                            <div className={styles.op}>{value}</div>
+                          </>
+                        )}
+                        {group === REPORT_PARAMETERS.filters && (
+                          <>
+                            <div>{name}</div>
+                            <div className={styles.op}>{value[0]}</div>
+                            <div>{value[1]}</div>
+                          </>
+                        )}
+                      </div>
+                    </ParameterList.Item>
                   );
-                }}
+                })}
               </ParameterList>
             </FormRow>
           );

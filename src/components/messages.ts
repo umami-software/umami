@@ -148,6 +148,7 @@ export const labels = defineMessages({
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
   add: { id: 'label.add', defaultMessage: 'Add' },
+  update: { id: 'label.update', defaultMessage: 'Update' },
   window: { id: 'label.window', defaultMessage: 'Window' },
   runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
   field: { id: 'label.field', defaultMessage: 'Field' },

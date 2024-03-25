@@ -10,54 +10,67 @@ import {
   Menu,
   Popup,
   PopupTrigger,
+  Loading,
 } from 'react-basics';
-import { useMessages, useFilters, useFormat, useLocale } from 'components/hooks';
+import { useMessages, useFilters, useFormat, useLocale, useWebsiteValues } from 'components/hooks';
 import { safeDecodeURIComponent } from 'next-basics';
 import { OPERATORS } from 'lib/constants';
-import styles from './FieldFilterForm.module.css';
+import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
+  websiteId?: string;
   name: string;
   label?: string;
   type: string;
-  values?: any[];
-  onSelect?: (key: any) => void;
+  defaultValue?: string;
+  onChange?: (filter: { name: string; type: string; filter: string; value: string }) => void;
   allowFilterSelect?: boolean;
+  isNew?: boolean;
 }
 
-export default function FieldFilterForm({
+export default function FieldFilterEditForm({
+  websiteId,
   name,
   label,
   type,
-  values,
-  onSelect,
+  defaultValue,
+  onChange,
   allowFilterSelect = true,
+  isNew,
 }: FieldFilterFormProps) {
   const { formatMessage, labels } = useMessages();
   const [filter, setFilter] = useState('eq');
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue ?? '');
   const { getFilters } = useFilters();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const filters = getFilters(type);
+  const { data: values = [], isLoading } = useWebsiteValues(websiteId, name);
 
   const formattedValues = useMemo(() => {
+    if (!values) {
+      return {};
+    }
     const formatted = {};
     const format = (val: string) => {
       formatted[val] = formatValue(val, name);
       return formatted[val];
     };
-    if (values.length !== 1) {
+
+    if (values?.length !== 1) {
       const { compare } = new Intl.Collator(locale, { numeric: true });
       values.sort((a, b) => compare(formatted[a] ?? format(a), formatted[b] ?? format(b)));
     } else {
       format(values[0]);
     }
+
     return formatted;
   }, [formatValue, locale, name, values]);
 
   const filteredValues = useMemo(() => {
-    return value ? values.filter(n => n.includes(value)) : values;
+    return value
+      ? values.filter(n => formattedValues[n].toLowerCase().includes(value.toLowerCase()))
+      : values;
   }, [value, formattedValues]);
 
   const renderFilterValue = value => {
@@ -65,7 +78,7 @@ export default function FieldFilterForm({
   };
 
   const handleAdd = () => {
-    onSelect({ name, type, filter, value });
+    onChange({ name, type, filter, value });
   };
 
   const handleMenuSelect = value => {
@@ -74,7 +87,7 @@ export default function FieldFilterForm({
 
   const showMenu =
     [OPERATORS.equals, OPERATORS.notEquals].includes(filter as any) &&
-    !(filteredValues.length === 1 && filteredValues[0] === value);
+    !(filteredValues?.length === 1 && filteredValues[0] === formattedValues[value]);
 
   return (
     <Form>
@@ -97,25 +110,44 @@ export default function FieldFilterForm({
             <TextField
               className={styles.text}
               value={decodeURIComponent(value)}
+              placeholder={formatMessage(labels.enter)}
               onChange={e => setValue(e.target.value)}
             />
             {showMenu && (
-              <Popup className={styles.popup} alignment="end">
-                {filteredValues.length > 0 && (
-                  <Menu variant="popup" onSelect={handleMenuSelect}>
-                    {filteredValues.map(value => {
-                      return <Item key={value}>{safeDecodeURIComponent(value)}</Item>;
-                    })}
-                  </Menu>
-                )}
+              <Popup className={styles.popup} alignment="start">
+                <ResultsMenu
+                  values={filteredValues}
+                  type={name}
+                  isLoading={isLoading}
+                  onSelect={handleMenuSelect}
+                />
               </Popup>
             )}
           </PopupTrigger>
         </Flexbox>
         <Button variant="primary" onClick={handleAdd} disabled={!filter || !value}>
-          {formatMessage(labels.add)}
+          {isNew ? formatMessage(labels.add) : formatMessage(labels.update)}
         </Button>
       </FormRow>
     </Form>
   );
 }
+
+const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
+  const { formatValue } = useFormat();
+  if (isLoading) {
+    return <Loading icon="dots" position="center" />;
+  }
+
+  if (!values?.length) {
+    return null;
+  }
+
+  return (
+    <Menu variant="popup" onSelect={onSelect}>
+      {values?.map(value => {
+        return <Item key={value}>{safeDecodeURIComponent(formatValue(value, type))}</Item>;
+      })}
+    </Menu>
+  );
+};
