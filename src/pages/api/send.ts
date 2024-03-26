@@ -1,7 +1,7 @@
 import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret } from 'lib/crypto';
+import { secret, sessionSalt, uuid } from 'lib/crypto';
 import { getIpAddress } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
@@ -31,6 +31,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
   session: {
     id: string;
     websiteId: string;
+    visitId: string;
     ownerId: string;
     hostname: string;
     browser: string;
@@ -42,6 +43,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
     subdivision1: string;
     subdivision2: string;
     city: string;
+    iat: number;
   };
   headers: { [key: string]: any };
   yup: YupRequest;
@@ -93,6 +95,14 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     const session = req.session;
 
+    // expire visitId after 30 minutes
+    session.visitId =
+      !!session.iat && Math.floor(new Date().getTime() / 1000) - session.iat > 1800
+        ? uuid(session.id, sessionSalt())
+        : session.visitId;
+
+    session.iat = Math.floor(new Date().getTime() / 1000);
+
     if (type === COLLECTION_TYPE.event) {
       // eslint-disable-next-line prefer-const
       let [urlPath, urlQuery] = url?.split('?') || [];
@@ -125,6 +135,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventData,
         ...session,
         sessionId: session.id,
+        visitId: session.visitId,
       });
     }
 

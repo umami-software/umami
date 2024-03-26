@@ -6,8 +6,9 @@ import { uuid } from 'lib/crypto';
 import { saveEventData } from 'queries/analytics/eventData/saveEventData';
 
 export async function saveEvent(args: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -34,8 +35,9 @@ export async function saveEvent(args: {
 }
 
 async function relationalQuery(data: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -48,6 +50,7 @@ async function relationalQuery(data: {
   const {
     websiteId,
     sessionId,
+    visitId,
     urlPath,
     urlQuery,
     referrerPath,
@@ -64,6 +67,7 @@ async function relationalQuery(data: {
       id: websiteEventId,
       websiteId,
       sessionId,
+      visitId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       urlQuery: urlQuery?.substring(0, URL_LENGTH),
       referrerPath: referrerPath?.substring(0, URL_LENGTH),
@@ -90,8 +94,9 @@ async function relationalQuery(data: {
 }
 
 async function clickhouseQuery(data: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -114,6 +119,7 @@ async function clickhouseQuery(data: {
   const {
     websiteId,
     sessionId,
+    visitId,
     urlPath,
     urlQuery,
     referrerPath,
@@ -136,6 +142,7 @@ async function clickhouseQuery(data: {
     ...args,
     website_id: websiteId,
     session_id: sessionId,
+    visit_id: visitId,
     event_id: uuid(),
     country: country,
     subdivision1:
