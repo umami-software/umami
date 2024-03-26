@@ -38,11 +38,9 @@ export function FunnelParameters() {
     updateReport({ parameters: { urls: parameters.urls.concat(url) } });
   };
 
-  const handleRemoveUrl = (index: number, e: any) => {
-    e.stopPropagation();
+  const handleRemoveUrl = (url: string) => {
     const urls = [...parameters.urls];
-    urls.splice(index, 1);
-    updateReport({ parameters: { urls } });
+    updateReport({ parameters: { urls: urls.filter(n => n.url !== url) } });
   };
 
   const AddUrlButton = () => {
@@ -72,10 +70,11 @@ export function FunnelParameters() {
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton />}>
-        <ParameterList
-          items={urls}
-          onRemove={(index: number, e: any) => handleRemoveUrl(index, e)}
-        />
+        <ParameterList>
+          {urls.map(url => {
+            return <ParameterList.Item key={url} onRemove={() => handleRemoveUrl(url)} />;
+          })}
+        </ParameterList>
       </FormRow>
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>

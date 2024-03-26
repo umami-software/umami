@@ -1,6 +1,7 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
+import { safeDecodeURIComponent } from 'next-basics';
 
 export async function getUTM(
   ...args: [
@@ -44,6 +45,7 @@ async function relationalQuery(
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and url_query is not null
+      and event_type = 1
     group by 1
     `,
     {
@@ -82,6 +84,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and url_query != ''
+      and event_type = 1
     group by 1
     `,
     {
@@ -92,29 +95,27 @@ async function clickhouseQuery(
   ).then(result => parseParameters(result as any[]));
 }
 
-function parseParameters(result: any[]) {
-  return Object.values(result).reduce((data, { url_query, num }) => {
-    const params = url_query.split('&').map(n => decodeURIComponent(n));
+function parseParameters(data: any[]) {
+  return data.reduce((obj, { url_query, num }) => {
+    try {
+      const searchParams = new URLSearchParams(url_query);
 
-    for (const param of params) {
-      const [key, value] = param.split('=');
-
-      const match = key.match(/^utm_(\w+)$/);
-
-      if (match) {
-        const group = match[1];
-        const name = decodeURIComponent(value);
-
-        if (!data[group]) {
-          data[group] = { [name]: +num };
-        } else if (!data[group][name]) {
-          data[group][name] = +num;
-        } else {
-          data[group][name] += +num;
+      for (const [key, value] of searchParams) {
+        if (key.match(/^utm_(\w+)$/)) {
+          const name = safeDecodeURIComponent(value);
+          if (!obj[key]) {
+            obj[key] = { [name]: +num };
+          } else if (!obj[key][name]) {
+            obj[key][name] = +num;
+          } else {
+            obj[key][name] += +num;
+          }
         }
       }
+    } catch {
+      // Ignore
     }
 
-    return data;
+    return obj;
   }, {});
 }

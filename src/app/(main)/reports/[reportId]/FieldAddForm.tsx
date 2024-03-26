@@ -4,8 +4,7 @@ import { REPORT_PARAMETERS } from 'lib/constants';
 import PopupForm from './PopupForm';
 import FieldSelectForm from './FieldSelectForm';
 import FieldAggregateForm from './FieldAggregateForm';
-import FieldFilterForm from './FieldFilterForm';
-import styles from './FieldAddForm.module.css';
+import FieldFilterEditForm from './FieldFilterEditForm';
 
 export function FieldAddForm({
   fields = [],
@@ -38,13 +37,13 @@ export function FieldAddForm({
   };
 
   return createPortal(
-    <PopupForm className={styles.popup}>
+    <PopupForm>
       {!selected && <FieldSelectForm fields={fields} onSelect={handleSelect} />}
       {selected && group === REPORT_PARAMETERS.fields && (
         <FieldAggregateForm {...selected} onSelect={handleSave} />
       )}
       {selected && group === REPORT_PARAMETERS.filters && (
-        <FieldFilterForm {...selected} onSelect={handleSave} />
+        <FieldFilterEditForm {...selected} onChange={handleSave} />
       )}
     </PopupForm>,
     document.body,

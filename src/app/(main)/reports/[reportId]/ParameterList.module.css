@@ -13,9 +13,4 @@
   border: 1px solid var(--base400);
   border-radius: var(--border-radius);
   box-shadow: 1px 1px 1px var(--base400);
-  gap: 10px;
-}
-
-.icon {
-  align-self: center;
 }
