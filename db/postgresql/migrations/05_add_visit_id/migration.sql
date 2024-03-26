@@ -1,9 +1,17 @@
 -- AlterTable
 ALTER TABLE "website_event" ADD COLUMN "visit_id" UUID NULL;
 
-UPDATE "website_event"
-SET visit_id = uuid_in(overlay(overlay(md5(CONCAT(session_id::text, to_char(date_trunc('hour', created_at), 'YYYY-MM-DD HH24:00:00'))) placing '4' from 13) placing '8' from 17)::cstring)
-WHERE visit_id IS NULL;
+UPDATE "website_event" we
+SET visit_id = a.uuid
+FROM (SELECT DISTINCT
+        s.session_id,
+        s.visit_time,
+        gen_random_uuid() uuid
+    FROM (SELECT DISTINCT session_id,
+            date_trunc('hour', created_at) visit_time
+        FROM "website_event") s) a
+WHERE we.session_id = a.session_id 
+    and date_trunc('hour', we.created_at) = a.visit_time;
 
 ALTER TABLE "website_event" ALTER COLUMN "visit_id" SET NOT NULL;
 
