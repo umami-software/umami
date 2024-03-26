@@ -8,7 +8,7 @@
     history,
   } = window;
   const { hostname, pathname, search } = location;
-  const { currentScript } = document;
+  const { currentScript, referrer } = document;
 
   if (!currentScript) return;
 
@@ -19,7 +19,7 @@
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
   const autoTrack = attr(_data + 'auto-track') !== _false;
-  const stripSearch = attr(_data + 'strip-search') === _true;
+  const excludeSearch = attr(_data + 'exclude-search') === _true;
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -32,12 +32,8 @@
 
   /* Helper functions */
 
-  const getPath = url => {
-    try {
-      return new URL(url).pathname;
-    } catch (e) {
-      return url;
-    }
+  const parseURL = url => {
+    return excludeSearch ? url.split('?')[0] : url;
   };
 
   const getPayload = () => ({
@@ -56,7 +52,7 @@
     if (!url) return;
 
     currentRef = currentUrl;
-    currentUrl = getPath(url.toString());
+    currentUrl = parseURL(url.toString());
 
     if (currentUrl !== currentRef) {
       setTimeout(track, delayDuration);
@@ -222,8 +218,8 @@
     };
   }
 
-  let currentUrl = `${pathname}${stripSearch ? '' : search}`;
-  let currentRef = document.referrer;
+  let currentUrl = `${pathname}${search}`;
+  let currentRef = referrer !== hostname ? referrer : '';
   let title = document.title;
   let cache;
   let initialized;
