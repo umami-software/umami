@@ -43,6 +43,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
     subdivision1: string;
     subdivision2: string;
     city: string;
+    iat: number;
   };
   headers: { [key: string]: any };
   yup: YupRequest;
