@@ -92,31 +92,31 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function mapFilter(column: string, filter: string, name: string, type = 'varchar') {
-  switch (filter) {
+function mapFilter(column: string, op: string, name: string, type = 'varchar') {
+  switch (op) {
     case OPERATORS.equals:
       return `${column} = {{${name}::${type}}}`;
     case OPERATORS.notEquals:
       return `${column} != {{${name}::${type}}}`;
     case OPERATORS.contains:
-      return `${column} like {{${name}::${type}}}`;
+      return `${column} ilike {{${name}::${type}}}`;
     case OPERATORS.doesNotContain:
-      return `${column} not like {{${name}::${type}}}`;
+      return `${column} not ilike {{${name}::${type}}}`;
     default:
       return '';
   }
 }
 
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
-  const query = Object.keys(filters).reduce((arr, name) => {
-    const value = filters[name];
-    const filter = value?.filter ?? OPERATORS.equals;
-    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
+  const query = Object.keys(filters).reduce((arr, key) => {
+    const filter = filters[key];
+    const op = filter?.op ?? OPERATORS.equals;
+    const column = filter?.column ?? FILTER_COLUMNS[key] ?? options?.columns?.[key];
 
-    if (value !== undefined && column !== undefined) {
-      arr.push(`and ${mapFilter(column, filter, name)}`);
+    if (filter !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, op, key)}`);
 
-      if (name === 'referrer') {
+      if (key === 'referrer') {
         arr.push(
           'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
         );
@@ -171,7 +171,10 @@ async function rawQuery(sql: string, data: object): Promise<any> {
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
-    params.push(data[name]);
+
+    const value = data[name];
+
+    params.push(value);
 
     return db === MYSQL ? '?' : `$${params.length}${type ?? ''}`;
   });

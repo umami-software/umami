@@ -97,7 +97,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       // eslint-disable-next-line prefer-const
       let [urlPath, urlQuery] = url?.split('?') || [];
       let [referrerPath, referrerQuery] = referrer?.split('?') || [];
-      let referrerDomain;
+      let referrerDomain = '';
 
       if (!urlPath) {
         urlPath = '/';

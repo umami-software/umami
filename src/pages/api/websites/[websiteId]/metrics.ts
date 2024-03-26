@@ -3,7 +3,7 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
+import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from 'lib/constants';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
 import { parseDateRangeQuery } from 'lib/query';
 import * as yup from 'yup';
@@ -88,7 +88,7 @@ export default async (
     }
 
     const { startDate, endDate } = await parseDateRangeQuery(req);
-
+    const column = FILTER_COLUMNS[type] || type;
     const filters = {
       startDate,
       endDate,
@@ -104,19 +104,18 @@ export default async (
       city,
       language,
       event,
-      search,
     };
 
-    const column = FILTER_COLUMNS[type] || type;
+    if (search) {
+      filters[column] = {
+        column,
+        op: OPERATORS.contains,
+        value: '%' + search + '%',
+      };
+    }
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(
-        websiteId,
-        column,
-        { ...filters, search },
-        limit,
-        offset,
-      );
+      const data = await getSessionMetrics(websiteId, column, filters, limit, offset);
 
       if (type === 'language') {
         const combined = {};
@@ -138,13 +137,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(
-        websiteId,
-        column,
-        { ...filters, search },
-        limit,
-        offset,
-      );
+      const data = await getPageviewMetrics(websiteId, column, filters, limit, offset);
 
       return ok(res, data);
     }
