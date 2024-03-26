@@ -7,7 +7,7 @@ import { QueryFilters } from 'lib/types';
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<
-  { pageviews: number; uniques: number; visitors: number; bounces: number; totaltime: number }[]
+  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,7 +19,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<
-  { pageviews: number; uniques: number; visitors: number; bounces: number; totaltime: number }[]
+  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   const { getTimestampDiffQuery, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
@@ -30,9 +30,9 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      sum(t.c) as "pageviews",
-      count(distinct t.session_id) as "uniques",
-      count(distinct t.visit_id) as "visitors",
+      sum(t.c) as "views",
+      count(distinct t.session_id) as "visitors",
+      count(distinct t.visit_id) as "visits",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
       sum(${getTimestampDiffQuery('t.min_time', 't.max_time')}) as "totaltime"
     from (
@@ -61,7 +61,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<
-  { pageviews: number; uniques: number; visitors: number; bounces: number; totaltime: number }[]
+  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
@@ -72,9 +72,9 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select 
-      sum(t.c) as "pageviews",
-      count(distinct t.session_id) as "uniques",
-      count(distinct t.visit_id) as "visitors",
+      sum(t.c) as "views",
+      count(distinct t.session_id) as "visitors",
+      count(distinct t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
@@ -96,9 +96,9 @@ async function clickhouseQuery(
   ).then(a => {
     return Object.values(a).map(a => {
       return {
-        pageviews: Number(a.pageviews),
-        uniques: Number(a.uniques),
+        views: Number(a.views),
         visitors: Number(a.visitors),
+        visits: Number(a.visits),
         bounces: Number(a.bounces),
         totaltime: Number(a.totaltime),
       };
