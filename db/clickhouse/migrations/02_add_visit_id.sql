@@ -1,3 +1,22 @@
+CREATE TABLE umami.website_event_join
+(
+    session_id UUID,
+    visit_id UUID,
+    created_at DateTime('UTC')
+)
+    engine = MergeTree
+        ORDER BY (session_id, created_at)
+        SETTINGS index_granularity = 8192;
+
+INSERT INTO umami.website_event_join
+SELECT DISTINCT
+    s.session_id,
+    generateUUIDv4() visit_id,
+    s.created_at
+FROM (SELECT DISTINCT session_id,
+        date_trunc('hour', created_at) created_at
+    FROM website_event) s;
+
 -- create new table
 CREATE TABLE umami.website_event_new
 (
@@ -33,7 +52,7 @@ CREATE TABLE umami.website_event_new
 INSERT INTO umami.website_event_new
 SELECT we.website_id,
     we.session_id,
-    we2.visit_id,
+    j.visit_id,
     we.event_id,
     we.hostname,
     we.browser,
@@ -56,15 +75,17 @@ SELECT we.website_id,
     we.created_at,
     we.job_id
 FROM umami.website_event we
-JOIN (SELECT DISTINCT
-    s.session_id,
-    generateUUIDv4() visit_id,
-    s.created_at
-FROM (SELECT DISTINCT session_id,
-        date_trunc('hour', created_at) created_at
-    FROM umami.website_event) s) we2
-    ON we.session_id = we2.session_id
-        and date_trunc('hour', we.created_at) = we2.created_at;
+JOIN umami.website_event_join j
+    ON we.session_id = j.session_id
+        and date_trunc('hour', we.created_at) = j.created_at
+WHERE we.created_at > '2023-03-31';
 
 RENAME TABLE umami.website_event TO umami.website_event_old;
 RENAME TABLE umami.website_event_new TO umami.website_event;
+
+/*
+
+ DROP TABLE umami.website_event_old
+ DROP TABLE umami.website_event_join
+
+ */
