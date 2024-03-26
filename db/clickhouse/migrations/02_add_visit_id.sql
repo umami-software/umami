@@ -1,5 +1,5 @@
 -- create new table
-CREATE TABLE test.website_event_new
+CREATE TABLE umami.website_event_new
 (
     website_id UUID,
     session_id UUID,
@@ -30,7 +30,7 @@ CREATE TABLE test.website_event_new
         ORDER BY (website_id, session_id, created_at)
         SETTINGS index_granularity = 8192;
 
-INSERT INTO test.website_event_new
+INSERT INTO umami.website_event_new
 SELECT we.website_id,
     we.session_id,
     we2.visit_id,
@@ -55,17 +55,17 @@ SELECT we.website_id,
     we.event_name,
     we.created_at,
     we.job_id
-FROM test.website_event we
+FROM umami.website_event we
 JOIN (SELECT DISTINCT
     s.session_id,
     generateUUIDv4() visit_id,
     s.created_at
 FROM (SELECT DISTINCT session_id,
         date_trunc('hour', created_at) created_at
-    FROM test.website_event) s) we2
+    FROM umami.website_event) s) we2
     ON we.session_id = we2.session_id
         and date_trunc('hour', we.created_at) = we2.created_at
 ORDER BY we.session_id, we.created_at
 
-RENAME TABLE test.website_event TO test.website_event_old;
-RENAME TABLE test.website_event_new TO test.website_event;
+RENAME TABLE umami.website_event TO umami.website_event_old;
+RENAME TABLE umami.website_event_new TO umami.website_event;
