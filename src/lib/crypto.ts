@@ -12,7 +12,7 @@ export function salt() {
   return hash(secret(), ROTATING_SALT);
 }
 
-export function sessionSalt() {
+export function visitSalt() {
   const ROTATING_SALT = hash(startOfHour(new Date()).toUTCString());
 
   return hash(secret(), ROTATING_SALT);
