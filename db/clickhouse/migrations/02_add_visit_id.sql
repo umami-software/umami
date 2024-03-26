@@ -64,8 +64,7 @@ FROM (SELECT DISTINCT session_id,
         date_trunc('hour', created_at) created_at
     FROM umami.website_event) s) we2
     ON we.session_id = we2.session_id
-        and date_trunc('hour', we.created_at) = we2.created_at
-ORDER BY we.session_id, we.created_at
+        and date_trunc('hour', we.created_at) = we2.created_at;
 
 RENAME TABLE umami.website_event TO umami.website_event_old;
 RENAME TABLE umami.website_event_new TO umami.website_event;
