@@ -32,6 +32,20 @@
 
   /* Helper functions */
 
+  const encode = str => {
+    try {
+      const result = decodeURI(str);
+
+      if (result !== str) {
+        return result;
+      }
+    } catch {
+      return str;
+    }
+
+    return encodeURI(str);
+  };
+
   const parseURL = url => {
     return excludeSearch ? url.split('?')[0] : url;
   };
@@ -41,9 +55,9 @@
     hostname,
     screen,
     language,
-    title: encodeURIComponent(title),
-    url: encodeURI(currentUrl),
-    referrer: encodeURI(currentRef),
+    title: encode(title),
+    url: encode(currentUrl),
+    referrer: encode(currentRef),
   });
 
   /* Event handlers */

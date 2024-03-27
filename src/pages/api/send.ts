@@ -6,7 +6,15 @@ import { getIpAddress } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { badRequest, createToken, forbidden, methodNotAllowed, ok, send } from 'next-basics';
+import {
+  badRequest,
+  createToken,
+  forbidden,
+  methodNotAllowed,
+  ok,
+  safeDecodeURI,
+  send,
+} from 'next-basics';
 import { saveEvent, saveSessionData } from 'queries';
 import * as yup from 'yup';
 
@@ -88,8 +96,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-
-    const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
+    const { url, referrer, name: eventName, data: eventData, title } = payload;
+    const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
 
@@ -105,8 +113,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     if (type === COLLECTION_TYPE.event) {
       // eslint-disable-next-line prefer-const
-      let [urlPath, urlQuery] = url?.split('?') || [];
-      let [referrerPath, referrerQuery] = referrer?.split('?') || [];
+      let [urlPath, urlQuery] = safeDecodeURI(url)?.split('?') || [];
+      let [referrerPath, referrerQuery] = safeDecodeURI(referrer)?.split('?') || [];
       let referrerDomain = '';
 
       if (!urlPath) {
