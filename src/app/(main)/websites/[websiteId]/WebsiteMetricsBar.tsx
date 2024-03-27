@@ -43,7 +43,7 @@ export function WebsiteMetricsBar({
         {pageviews && visitors && (
           <>
             <MetricCard
-              label={formatMessage(labels.pageviews)}
+              label={formatMessage(labels.views)}
               value={pageviews.value}
               change={pageviews.change}
             />
