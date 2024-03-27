@@ -1,7 +1,7 @@
 import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret, sessionSalt, uuid } from 'lib/crypto';
+import { secret, visitSalt, uuid } from 'lib/crypto';
 import { getIpAddress } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
@@ -98,7 +98,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     // expire visitId after 30 minutes
     session.visitId =
       !!session.iat && Math.floor(new Date().getTime() / 1000) - session.iat > 1800
-        ? uuid(session.id, sessionSalt())
+        ? uuid(session.id, visitSalt())
         : session.visitId;
 
     session.iat = Math.floor(new Date().getTime() / 1000);
