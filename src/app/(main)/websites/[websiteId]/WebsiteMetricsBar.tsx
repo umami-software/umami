@@ -48,23 +48,14 @@ export function WebsiteMetricsBar({
               change={views.change}
             />
             <MetricCard
-              label={formatMessage(labels.visitors)}
-              value={visitors.value}
-              change={visitors.change}
-            />
-            <MetricCard
               label={formatMessage(labels.visits)}
               value={visits.value}
               change={visits.change}
             />
             <MetricCard
-              label={formatMessage(labels.viewsPerVisit)}
-              value={visits.value ? views.value / visits.value : 0}
-              change={
-                visits.value && visits.change
-                  ? views.value / visits.value - diffs.views / diffs.visits
-                  : 0
-              }
+              label={formatMessage(labels.visitors)}
+              value={visitors.value}
+              change={visitors.change}
             />
             <MetricCard
               label={formatMessage(labels.bounceRate)}

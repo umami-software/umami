@@ -62,30 +62,32 @@ function getDateFormat(date: Date) {
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
+  const value = `{${name}:${type}}`;
+
   switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {${name}:${type}}`;
+      return `${column} = ${value}`;
     case OPERATORS.notEquals:
-      return `${column} != {${name}:${type}}`;
+      return `${column} != ${value}`;
     case OPERATORS.contains:
-      return `positionCaseInsensitive(${column}, {${name}:${type}}) > 0`;
+      return `positionCaseInsensitive(${column}, ${value}) > 0`;
     case OPERATORS.doesNotContain:
-      return `positionCaseInsensitive(${column}, {${name}:${type}}) = 0`;
+      return `positionCaseInsensitive(${column}, ${value}) = 0`;
     default:
       return '';
   }
 }
 
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = Object.keys(filters).reduce((arr, name) => {
-    const value = filters[name];
-    const filter = value?.filter ?? OPERATORS.equals;
-    const column = value?.column ?? FILTER_COLUMNS[name] ?? options?.columns?.[name];
+  const query = Object.keys(filters).reduce((arr, key) => {
+    const filter = filters[key];
+    const operator = filter?.operator ?? OPERATORS.equals;
+    const column = filter?.column ?? FILTER_COLUMNS[key] ?? options?.columns?.[key];
 
-    if (value !== undefined && column !== undefined) {
-      arr.push(`and ${mapFilter(column, filter, name)}`);
+    if (filter !== undefined && column !== undefined) {
+      arr.push(`and ${mapFilter(column, operator, key)}`);
 
-      if (name === 'referrer') {
+      if (key === 'referrer') {
         arr.push('and referrer_domain != {websiteDomain:String}');
       }
     }

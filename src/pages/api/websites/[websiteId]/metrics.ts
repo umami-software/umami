@@ -5,7 +5,7 @@ import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from 'lib/constants';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
-import { parseDateRangeQuery } from 'lib/query';
+import { getQueryFilters, parseDateRangeQuery } from 'lib/query';
 import * as yup from 'yup';
 
 export interface WebsiteMetricsRequestQuery {
@@ -62,25 +62,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const {
-    websiteId,
-    type,
-    url,
-    referrer,
-    title,
-    query,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-    language,
-    event,
-    limit,
-    offset,
-    search,
-  } = req.query;
+  const { websiteId, type, limit, offset, search } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -90,24 +72,13 @@ export default async (
     const { startDate, endDate } = await parseDateRangeQuery(req);
     const column = FILTER_COLUMNS[type] || type;
     const filters = {
+      ...getQueryFilters(req),
       startDate,
       endDate,
-      url,
-      referrer,
-      title,
-      query,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      language,
-      event,
     };
 
     if (search) {
-      filters[column] = {
+      filters[type] = {
         column,
         operator: OPERATORS.contains,
         value: search,

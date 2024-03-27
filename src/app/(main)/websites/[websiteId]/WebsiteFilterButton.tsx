@@ -2,6 +2,7 @@ import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation } from 'components/hooks';
+import { OPERATORS } from 'lib/constants';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -14,8 +15,18 @@ export function WebsiteFilterButton({
   const { renderUrl, router } = useNavigation();
   const { fields } = useFields();
 
-  const handleAddFilter = ({ name, value }) => {
-    router.push(renderUrl({ [name]: value }));
+  const handleAddFilter = ({ name, operator, value }) => {
+    let prefix = '';
+
+    if (operator === OPERATORS.notEquals) {
+      prefix = '!';
+    } else if (operator === OPERATORS.contains) {
+      prefix = '~';
+    } else if (operator === OPERATORS.doesNotContain) {
+      prefix = '!~';
+    }
+
+    router.push(renderUrl({ [name]: prefix + value }));
   };
 
   return (
@@ -26,7 +37,7 @@ export function WebsiteFilterButton({
         </Icon>
         <Text>{formatMessage(labels.filter)}</Text>
       </Button>
-      <Popup position="bottom" alignment="start">
+      <Popup position="bottom" alignment="end">
         {(close: () => void) => {
           return (
             <PopupForm>
@@ -37,7 +48,6 @@ export function WebsiteFilterButton({
                   handleAddFilter(value);
                   close();
                 }}
-                allowFilterSelect={false}
               />
             </PopupForm>
           );

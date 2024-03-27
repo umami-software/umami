@@ -211,7 +211,7 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
   }
 
   if (!values?.length) {
-    return <h1>poop</h1>;
+    return null;
   }
 
   return (

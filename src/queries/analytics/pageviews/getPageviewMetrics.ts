@@ -70,7 +70,6 @@ async function clickhouseQuery(
   offset: number = 0,
 ): Promise<{ x: string; y: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
-
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
