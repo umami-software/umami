@@ -78,7 +78,6 @@ FROM umami.website_event we
 JOIN umami.website_event_join j
     ON we.session_id = j.session_id
         and date_trunc('hour', we.created_at) = j.created_at
-WHERE we.created_at > '2023-03-31';
 
 RENAME TABLE umami.website_event TO umami.website_event_old;
 RENAME TABLE umami.website_event_new TO umami.website_event;

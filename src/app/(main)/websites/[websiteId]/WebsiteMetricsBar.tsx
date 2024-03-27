@@ -21,10 +21,10 @@ export function WebsiteMetricsBar({
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
 
-  const { views, visitors, visits, bounces, totaltime } = data || {};
+  const { pageviews, visitors, visits, bounces, totaltime } = data || {};
   const num = Math.min(data && visitors.value, data && bounces.value);
   const diffs = data && {
-    views: views.value - views.change,
+    pageviews: pageviews.value - pageviews.change,
     visitors: visitors.value - visitors.change,
     visits: visits.value - visits.change,
     bounces: bounces.value - bounces.change,
@@ -40,12 +40,12 @@ export function WebsiteMetricsBar({
       })}
     >
       <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-        {views && visitors && (
+        {pageviews && visitors && (
           <>
             <MetricCard
-              label={formatMessage(labels.views)}
-              value={views.value}
-              change={views.change}
+              label={formatMessage(labels.pageviews)}
+              value={pageviews.value}
+              change={pageviews.change}
             />
             <MetricCard
               label={formatMessage(labels.visits)}
@@ -72,12 +72,14 @@ export function WebsiteMetricsBar({
             <MetricCard
               label={formatMessage(labels.averageVisitTime)}
               value={
-                totaltime.value && views.value ? totaltime.value / (views.value - bounces.value) : 0
+                totaltime.value && pageviews.value
+                  ? totaltime.value / (pageviews.value - bounces.value)
+                  : 0
               }
               change={
-                totaltime.value && views.value
-                  ? (diffs.totaltime / (diffs.views - diffs.bounces) -
-                      totaltime.value / (views.value - bounces.value)) *
+                totaltime.value && pageviews.value
+                  ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
+                      totaltime.value / (pageviews.value - bounces.value)) *
                       -1 || 0
                   : 0
               }

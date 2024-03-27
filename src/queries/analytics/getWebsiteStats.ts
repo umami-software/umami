@@ -7,7 +7,7 @@ import { QueryFilters } from 'lib/types';
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<
-  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
+  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,7 +19,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<
-  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
+  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   const { getTimestampDiffQuery, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
@@ -61,7 +61,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<
-  { views: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
+  { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
@@ -96,7 +96,7 @@ async function clickhouseQuery(
   ).then(a => {
     return Object.values(a).map(a => {
       return {
-        views: Number(a.views),
+        pageviews: Number(a.views),
         visitors: Number(a.visitors),
         visits: Number(a.visits),
         bounces: Number(a.bounces),
