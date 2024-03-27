@@ -84,7 +84,7 @@ export function NavBar() {
         <Icon size="lg">
           <Icons.Logo />
         </Icon>
-        <Text>umami</Text>
+        <Text>{process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'umami'}</Text>
       </div>
       <div className={styles.links}>
         {links.map(({ url, label }) => {

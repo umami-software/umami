@@ -21,7 +21,7 @@ export default function ({ children }) {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Umami',
-    default: 'Umami',
+    template: `%s | ${process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'Umami'}`,
+    default: process.env.NEXT_PUBLIC_CUSTOM_TITLE || 'Umami',
   },
 };
