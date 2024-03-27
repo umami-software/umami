@@ -109,7 +109,7 @@ export function DateFilter({
       );
     }
 
-    return options.find(e => e.value === value).label;
+    return options.find(e => e.value === value)?.label;
   };
 
   return (
