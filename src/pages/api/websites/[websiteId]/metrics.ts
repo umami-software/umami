@@ -109,8 +109,8 @@ export default async (
     if (search) {
       filters[column] = {
         column,
-        op: OPERATORS.contains,
-        value: '%' + search + '%',
+        operator: OPERATORS.contains,
+        value: search,
       };
     }
 

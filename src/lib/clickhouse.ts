@@ -61,8 +61,8 @@ function getDateFormat(date: Date) {
   return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
-function mapFilter(column: string, filter: string, name: string, type: string = 'String') {
-  switch (filter) {
+function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
+  switch (operator) {
     case OPERATORS.equals:
       return `${column} = {${name}:${type}}`;
     case OPERATORS.notEquals:

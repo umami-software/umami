@@ -92,16 +92,20 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function mapFilter(column: string, op: string, name: string, type = 'varchar') {
-  switch (op) {
+function mapFilter(column: string, operator: string, name: string, type: string = '') {
+  const db = getDatabaseType();
+  const like = db === POSTGRESQL ? 'ilike' : 'like';
+  const value = `{{${name}${type ? `::${type}` : ''}}}`;
+
+  switch (operator) {
     case OPERATORS.equals:
-      return `${column} = {{${name}::${type}}}`;
+      return `${column} = ${value}`;
     case OPERATORS.notEquals:
-      return `${column} != {{${name}::${type}}}`;
+      return `${column} != ${value}`;
     case OPERATORS.contains:
-      return `${column} ilike {{${name}::${type}}}`;
+      return `${column} ${like} ${value}`;
     case OPERATORS.doesNotContain:
-      return `${column} not ilike {{${name}::${type}}}`;
+      return `${column} not ${like} ${value}`;
     default:
       return '';
   }
@@ -110,11 +114,11 @@ function mapFilter(column: string, op: string, name: string, type = 'varchar') {
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
   const query = Object.keys(filters).reduce((arr, key) => {
     const filter = filters[key];
-    const op = filter?.op ?? OPERATORS.equals;
+    const operator = filter?.operator ?? OPERATORS.equals;
     const column = filter?.column ?? FILTER_COLUMNS[key] ?? options?.columns?.[key];
 
     if (filter !== undefined && column !== undefined) {
-      arr.push(`and ${mapFilter(column, op, key)}`);
+      arr.push(`and ${mapFilter(column, operator, key)}`);
 
       if (key === 'referrer') {
         arr.push(
@@ -131,9 +135,12 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
 
 function normalizeFilters(filters = {}) {
   return Object.keys(filters).reduce((obj, key) => {
-    const value = filters[key];
+    const filter = filters[key];
+    const value = filter?.value ?? filter;
 
-    obj[key] = value?.value ?? value;
+    obj[key] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(filter?.operator)
+      ? `%${value}%`
+      : value;
 
     return obj;
   }, {});

@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { safeDecodeURIComponent } from 'next-basics';
 import { useMessages, useFormat, useFilters, useFields } from 'components/hooks';
 import Icons from 'components/icons';
 import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
@@ -15,9 +14,8 @@ export function FilterParameters() {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { filterLabels } = useFilters();
   const { parameters } = report || {};
-  const { websiteId, filters } = parameters || {};
+  const { websiteId, filters, dateRange } = parameters || {};
   const { fields } = useFields();
 
   const handleAdd = (value: { name: any }) => {
@@ -30,7 +28,7 @@ export function FilterParameters() {
     updateReport({ parameters: { filters: filters.filter(f => f.name !== name) } });
   };
 
-  const handleChange = filter => {
+  const handleChange = (close: () => void, filter: { name: any }) => {
     updateReport({
       parameters: {
         filters: filters.map(f => {
@@ -41,6 +39,7 @@ export function FilterParameters() {
         }),
       },
     });
+    close();
   };
 
   const AddButton = () => {
@@ -67,44 +66,66 @@ export function FilterParameters() {
   return (
     <FormRow label={formatMessage(labels.filters)} action={<AddButton />}>
       <ParameterList>
-        {filters.map(({ name, filter, value }: { name: string; filter: string; value: string }) => {
-          const label = fields.find(f => f.name === name)?.label;
-          const isEquals = [OPERATORS.equals, OPERATORS.notEquals].includes(filter as any);
-          return (
-            <ParameterList.Item key={name} onRemove={() => handleRemove(name)}>
-              <FilterParameter
-                name={name}
-                label={label}
-                filter={filterLabels[filter]}
-                value={isEquals ? formatValue(value, name) : value}
-                onChange={handleChange}
-              />
-            </ParameterList.Item>
-          );
-        })}
+        {filters.map(
+          ({ name, operator, value }: { name: string; operator: string; value: string }) => {
+            const label = fields.find(f => f.name === name)?.label;
+            const isEquals = [OPERATORS.equals, OPERATORS.notEquals].includes(operator as any);
+            return (
+              <ParameterList.Item key={name} onRemove={() => handleRemove(name)}>
+                <FilterParameter
+                  {...dateRange}
+                  websiteId={websiteId}
+                  name={name}
+                  label={label}
+                  operator={operator}
+                  value={isEquals ? formatValue(value, name) : value}
+                  onChange={handleChange}
+                />
+              </ParameterList.Item>
+            );
+          },
+        )}
       </ParameterList>
     </FormRow>
   );
 }
 
-const FilterParameter = ({ name, label, filter, value, type = 'string', onChange }) => {
+const FilterParameter = ({
+  websiteId,
+  name,
+  label,
+  operator,
+  value,
+  type = 'string',
+  startDate,
+  endDate,
+  onChange,
+}) => {
+  const { filterLabels } = useFilters();
+
   return (
     <PopupTrigger>
       <div className={styles.item}>
         <div className={styles.label}>{label}</div>
-        <div className={styles.filter}>{filter}</div>
-        <div className={styles.value}>{safeDecodeURIComponent(value)}</div>
+        <div className={styles.op}>{filterLabels[operator]}</div>
+        <div className={styles.value}>{value}</div>
       </div>
       <Popup className={styles.edit} alignment="start">
-        <PopupForm>
-          <FieldFilterEditForm
-            name={name}
-            label={label}
-            type={type}
-            defaultValue={value}
-            onChange={onChange}
-          />
-        </PopupForm>
+        {(close: any) => (
+          <PopupForm>
+            <FieldFilterEditForm
+              websiteId={websiteId}
+              name={name}
+              label={label}
+              type={type}
+              startDate={startDate}
+              endDate={endDate}
+              operator={operator}
+              defaultValue={value}
+              onChange={onChange.bind(null, close)}
+            />
+          </PopupForm>
+        )}
       </Popup>
     </PopupTrigger>
   );

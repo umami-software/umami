@@ -3,8 +3,6 @@ import { createPortal } from 'react-dom';
 import { REPORT_PARAMETERS } from 'lib/constants';
 import PopupForm from './PopupForm';
 import FieldSelectForm from './FieldSelectForm';
-import FieldAggregateForm from './FieldAggregateForm';
-import FieldFilterEditForm from './FieldFilterEditForm';
 
 export function FieldAddForm({
   fields = [],
@@ -17,7 +15,11 @@ export function FieldAddForm({
   onAdd: (group: string, value: string) => void;
   onClose: () => void;
 }) {
-  const [selected, setSelected] = useState<{ name: string; type: string; value: string }>();
+  const [selected, setSelected] = useState<{
+    name: string;
+    type: string;
+    value: string;
+  }>();
 
   const handleSelect = (value: any) => {
     const { type } = value;
@@ -39,12 +41,6 @@ export function FieldAddForm({
   return createPortal(
     <PopupForm>
       {!selected && <FieldSelectForm fields={fields} onSelect={handleSelect} />}
-      {selected && group === REPORT_PARAMETERS.fields && (
-        <FieldAggregateForm {...selected} onSelect={handleSave} />
-      )}
-      {selected && group === REPORT_PARAMETERS.filters && (
-        <FieldFilterEditForm {...selected} onChange={handleSave} />
-      )}
     </PopupForm>,
     document.body,
   );

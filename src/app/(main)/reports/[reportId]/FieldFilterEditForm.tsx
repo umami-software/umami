@@ -6,14 +6,15 @@ import {
   Flexbox,
   Dropdown,
   Button,
+  SearchField,
   TextField,
+  Text,
+  Icon,
+  Icons,
   Menu,
-  Popup,
-  PopupTrigger,
   Loading,
 } from 'react-basics';
 import { useMessages, useFilters, useFormat, useLocale, useWebsiteValues } from 'components/hooks';
-import { safeDecodeURIComponent } from 'next-basics';
 import { OPERATORS } from 'lib/constants';
 import styles from './FieldFilterEditForm.module.css';
 
@@ -22,8 +23,11 @@ export interface FieldFilterFormProps {
   name: string;
   label?: string;
   type: string;
+  startDate: Date;
+  endDate: Date;
+  operator?: string;
   defaultValue?: string;
-  onChange?: (filter: { name: string; type: string; filter: string; value: string }) => void;
+  onChange?: (filter: { name: string; type: string; operator: string; value: string }) => void;
   allowFilterSelect?: boolean;
   isNew?: boolean;
 }
@@ -33,19 +37,37 @@ export default function FieldFilterEditForm({
   name,
   label,
   type,
-  defaultValue,
+  startDate,
+  endDate,
+  operator: defaultOperator = 'eq',
+  defaultValue = '',
   onChange,
   allowFilterSelect = true,
   isNew,
 }: FieldFilterFormProps) {
   const { formatMessage, labels } = useMessages();
-  const [filter, setFilter] = useState('eq');
-  const [value, setValue] = useState(defaultValue ?? '');
+  const [operator, setOperator] = useState(defaultOperator);
+  const [value, setValue] = useState(defaultValue);
+  const [showMenu, setShowMenu] = useState(false);
+  const isEquals = [OPERATORS.equals, OPERATORS.notEquals].includes(operator as any);
+  const [search, setSearch] = useState('');
+  const [selected, setSelected] = useState(isEquals ? value : '');
   const { getFilters } = useFilters();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const filters = getFilters(type);
-  const { data: values = [], isLoading } = useWebsiteValues(websiteId, name);
+  const isDisabled = !operator || (isEquals && !selected) || (!isEquals && !value);
+  const {
+    data: values = [],
+    isLoading,
+    refetch,
+  } = useWebsiteValues({
+    websiteId,
+    type: name,
+    startDate,
+    endDate,
+    search,
+  });
 
   const formattedValues = useMemo(() => {
     if (!values) {
@@ -69,25 +91,49 @@ export default function FieldFilterEditForm({
 
   const filteredValues = useMemo(() => {
     return value
-      ? values.filter(n => formattedValues[n].toLowerCase().includes(value.toLowerCase()))
+      ? values.filter((n: string | number) =>
+          formattedValues[n].toLowerCase().includes(value.toLowerCase()),
+        )
       : values;
   }, [value, formattedValues]);
 
-  const renderFilterValue = value => {
-    return filters.find(f => f.value === value)?.label;
+  const renderFilterValue = (value: any) => {
+    return filters.find((f: { value: any }) => f.value === value)?.label;
   };
 
   const handleAdd = () => {
-    onChange({ name, type, filter, value });
+    onChange({ name, type, operator, value: isEquals ? selected : value });
   };
 
-  const handleMenuSelect = value => {
-    setValue(value);
+  const handleMenuSelect = (close: () => void, value: string) => {
+    setSelected(value);
+    close();
   };
 
-  const showMenu =
-    [OPERATORS.equals, OPERATORS.notEquals].includes(filter as any) &&
-    !(filteredValues?.length === 1 && filteredValues[0] === formattedValues[value]);
+  const handleSearch = (value: string) => {
+    setSearch(value);
+  };
+
+  const handleReset = () => {
+    setSelected('');
+    setValue('');
+    setSearch('');
+    refetch();
+  };
+
+  const handleOperatorChange = (value: any) => {
+    setOperator(value);
+
+    if ([OPERATORS.equals, OPERATORS.notEquals].includes(value)) {
+      setValue('');
+    } else {
+      setSelected('');
+    }
+  };
+
+  const handleBlur = () => {
+    window.setTimeout(() => setShowMenu(false), 500);
+  };
 
   return (
     <Form>
@@ -97,35 +143,54 @@ export default function FieldFilterEditForm({
             <Dropdown
               className={styles.dropdown}
               items={filters}
-              value={filter}
+              value={operator}
               renderValue={renderFilterValue}
-              onChange={(key: any) => setFilter(key)}
+              onChange={handleOperatorChange}
             >
               {({ value, label }) => {
                 return <Item key={value}>{label}</Item>;
               }}
             </Dropdown>
           )}
-          <PopupTrigger>
-            <TextField
-              className={styles.text}
-              value={decodeURIComponent(value)}
-              placeholder={formatMessage(labels.enter)}
-              onChange={e => setValue(e.target.value)}
-            />
-            {showMenu && (
-              <Popup className={styles.popup} alignment="start">
+          {selected && isEquals && (
+            <div className={styles.selected} onClick={handleReset}>
+              <Text>{selected}</Text>
+              <Icon>
+                <Icons.Close />
+              </Icon>
+            </div>
+          )}
+          {!selected && isEquals && (
+            <div className={styles.search}>
+              <SearchField
+                className={styles.text}
+                value={value}
+                placeholder={formatMessage(labels.enter)}
+                onChange={e => setValue(e.target.value)}
+                onSearch={handleSearch}
+                delay={500}
+                onFocus={() => setShowMenu(true)}
+                onBlur={handleBlur}
+              />
+              {showMenu && (
                 <ResultsMenu
                   values={filteredValues}
                   type={name}
                   isLoading={isLoading}
-                  onSelect={handleMenuSelect}
+                  onSelect={handleMenuSelect.bind(null, close)}
                 />
-              </Popup>
-            )}
-          </PopupTrigger>
+              )}
+            </div>
+          )}
+          {!selected && !isEquals && (
+            <TextField
+              className={styles.text}
+              value={value}
+              onChange={e => setValue(e.target.value)}
+            />
+          )}
         </Flexbox>
-        <Button variant="primary" onClick={handleAdd} disabled={!filter || !value}>
+        <Button variant="primary" onClick={handleAdd} disabled={isDisabled}>
           {isNew ? formatMessage(labels.add) : formatMessage(labels.update)}
         </Button>
       </FormRow>
@@ -136,17 +201,23 @@ export default function FieldFilterEditForm({
 const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
   const { formatValue } = useFormat();
   if (isLoading) {
-    return <Loading icon="dots" position="center" />;
+    return (
+      <Menu>
+        <Item>
+          <Loading icon="dots" position="center" />
+        </Item>
+      </Menu>
+    );
   }
 
   if (!values?.length) {
-    return null;
+    return <h1>poop</h1>;
   }
 
   return (
-    <Menu variant="popup" onSelect={onSelect}>
+    <Menu className={styles.menu} variant="popup" onSelect={onSelect}>
       {values?.map(value => {
-        return <Item key={value}>{safeDecodeURIComponent(formatValue(value, type))}</Item>;
+        return <Item key={value}>{formatValue(value, type)}</Item>;
       })}
     </Menu>
   );
