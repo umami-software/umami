@@ -11,7 +11,7 @@ export function OSTable(props: MetricsTableProps) {
       <FilterLink id="os" value={os} label={formatOS(os)}>
         <img
           src={`${process.env.basePath || ''}/images/os/${
-            os?.toLowerCase().replaceAll(/\W/g, '-') || 'unknown'
+            os?.toLowerCase()?.replaceAll(/\W/g, '-') || 'unknown'
           }.png`}
           alt={os}
           width={16}
