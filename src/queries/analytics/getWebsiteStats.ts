@@ -30,7 +30,7 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      sum(t.c) as "views",
+      sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
@@ -72,7 +72,7 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select 
-      sum(t.c) as "views",
+      sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
@@ -93,14 +93,14 @@ async function clickhouseQuery(
     ) as t;
     `,
     params,
-  ).then(a => {
-    return Object.values(a).map(a => {
+  ).then(result => {
+    return Object.values(result).map(n => {
       return {
-        pageviews: Number(a.views),
-        visitors: Number(a.visitors),
-        visits: Number(a.visits),
-        bounces: Number(a.bounces),
-        totaltime: Number(a.totaltime),
+        pageviews: Number(n.pageviews),
+        visitors: Number(n.visitors),
+        visits: Number(n.visits),
+        bounces: Number(n.bounces),
+        totaltime: Number(n.totaltime),
       };
     });
   });
