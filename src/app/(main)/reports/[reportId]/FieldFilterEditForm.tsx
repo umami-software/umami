@@ -105,9 +105,9 @@ export default function FieldFilterEditForm({
     onChange({ name, type, operator, value: isEquals ? selected : value });
   };
 
-  const handleMenuSelect = (close: () => void, value: string) => {
+  const handleMenuSelect = (value: string) => {
     setSelected(value);
-    close();
+    setShowMenu(false);
   };
 
   const handleSearch = (value: string) => {
@@ -177,7 +177,7 @@ export default function FieldFilterEditForm({
                   values={filteredValues}
                   type={name}
                   isLoading={isLoading}
-                  onSelect={handleMenuSelect.bind(null, close)}
+                  onSelect={handleMenuSelect}
                 />
               )}
             </div>
@@ -202,7 +202,7 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
   const { formatValue } = useFormat();
   if (isLoading) {
     return (
-      <Menu>
+      <Menu className={styles.menu} variant="popup">
         <Item>
           <Loading icon="dots" position="center" />
         </Item>
@@ -216,7 +216,7 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
 
   return (
     <Menu className={styles.menu} variant="popup" onSelect={onSelect}>
-      {values?.map(value => {
+      {values?.map((value: any) => {
         return <Item key={value}>{formatValue(value, type)}</Item>;
       })}
     </Menu>
