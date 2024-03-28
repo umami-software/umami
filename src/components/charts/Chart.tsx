@@ -99,7 +99,7 @@ export function Chart({
         updateChart(data);
       }
     }
-  }, [data]);
+  }, [data, options]);
 
   const handleLegendClick = (item: LegendItem) => {
     if (type === 'bar') {
