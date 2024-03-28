@@ -33,6 +33,10 @@
   /* Helper functions */
 
   const encode = str => {
+    if (!str) {
+      return undefined;
+    }
+
     try {
       const result = decodeURI(str);
 
