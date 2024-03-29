@@ -6,6 +6,10 @@ function getHostName(url: string) {
 }
 
 export function Favicon({ domain, ...props }) {
+  if (process.env.privateMode) {
+    return null;
+  }
+
   const hostName = domain ? getHostName(domain) : null;
 
   return hostName ? (

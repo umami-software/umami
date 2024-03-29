@@ -4,9 +4,9 @@ import { Button } from 'react-basics';
 import { setItem } from 'next-basics';
 import useStore, { checkVersion } from 'store/version';
 import { REPO_URL, VERSION_CHECK } from 'lib/constants';
-import styles from './UpdateNotice.module.css';
 import { useMessages } from 'components/hooks';
 import { usePathname } from 'next/navigation';
+import styles from './UpdateNotice.module.css';
 
 export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -16,8 +16,9 @@ export function UpdateNotice({ user, config }) {
   const allowUpdate =
     user?.isAdmin &&
     !config?.updatesDisabled &&
-    !config?.cloudMode &&
     !pathname.includes('/share/') &&
+    !process.env.cloudMode &&
+    !process.env.privateMode &&
     !dismissed;
 
   const updateCheck = useCallback(() => {
