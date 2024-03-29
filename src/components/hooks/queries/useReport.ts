@@ -8,7 +8,7 @@ export function useReport(reportId: string, defaultParameters: { [key: string]: 
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();
-  const [timezone] = useTimezone();
+  const { timezone } = useTimezone();
   const { formatMessage, labels } = useMessages();
 
   const baseParameters = {

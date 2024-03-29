@@ -22,7 +22,7 @@ export interface EventsChartProps {
 export function EventsChart({ websiteId, className, token }: EventsChartProps) {
   const [{ startDate, endDate, unit, offset }] = useDateRange(websiteId);
   const { locale } = useLocale();
-  const [timezone] = useTimezone();
+  const { timezone } = useTimezone();
   const {
     query: { url, event },
   } = useNavigation();

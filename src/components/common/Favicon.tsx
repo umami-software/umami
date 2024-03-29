@@ -16,7 +16,8 @@ export function Favicon({ domain, ...props }) {
     <img
       className={styles.favicon}
       src={`https://icons.duckduckgo.com/ip3/${hostName}.ico`}
-      height="16"
+      width={16}
+      height={16}
       alt=""
       {...props}
     />

@@ -20,16 +20,17 @@ import * as yup from 'yup';
 
 export interface CollectRequestBody {
   payload: {
-    data: { [key: string]: any };
-    hostname: string;
-    ip: string;
-    language: string;
-    referrer: string;
-    screen: string;
-    title: string;
-    url: string;
     website: string;
-    name: string;
+    data?: { [key: string]: any };
+    hostname?: string;
+    ip?: string;
+    language?: string;
+    name?: string;
+    referrer?: string;
+    screen?: string;
+    tag?: string;
+    title?: string;
+    url: string;
   };
   type: CollectionType;
 }
@@ -72,6 +73,7 @@ const schema = {
         url: yup.string(),
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
+        tag: yup.string().max(50),
       })
       .required(),
     type: yup

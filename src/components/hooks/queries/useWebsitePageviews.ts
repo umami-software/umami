@@ -4,7 +4,7 @@ export function useWebsitePageviews(websiteId: string, options?: { [key: string]
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit } = dateRange;
-  const [timezone] = useTimezone();
+  const { timezone } = useTimezone();
   const {
     query: { url, referrer, os, browser, device, country, region, city, title },
   } = useNavigation();

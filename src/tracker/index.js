@@ -18,6 +18,7 @@
   const attr = currentScript.getAttribute.bind(currentScript);
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
+  const tag = attr(_data + 'tag');
   const autoTrack = attr(_data + 'auto-track') !== _false;
   const excludeSearch = attr(_data + 'exclude-search') === _true;
   const domain = attr(_data + 'domains') || '';
@@ -216,6 +217,7 @@
         ...getPayload(),
         name: obj,
         data: typeof data === 'object' ? data : undefined,
+        tag,
       });
     } else if (typeof obj === 'object') {
       return send(obj);
