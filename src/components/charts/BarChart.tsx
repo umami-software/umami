@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useTheme } from 'components/hooks';
 import Chart, { ChartProps } from 'components/charts/Chart';
 import { renderNumberLabels } from 'lib/charts';
@@ -25,45 +26,47 @@ export function BarChart(props: BarChartProps) {
     stacked = false,
   } = props;
 
-  const options = {
-    scales: {
-      x: {
-        type: XAxisType,
-        stacked: true,
-        time: {
-          unit,
+  const options = useMemo(() => {
+    return {
+      scales: {
+        x: {
+          type: XAxisType,
+          stacked: true,
+          time: {
+            unit,
+          },
+          grid: {
+            display: false,
+          },
+          border: {
+            color: colors.chart.line,
+          },
+          ticks: {
+            color: colors.chart.text,
+            autoSkip: false,
+            maxRotation: 0,
+            callback: renderXLabel,
+          },
         },
-        grid: {
-          display: false,
-        },
-        border: {
-          color: colors.chart.line,
-        },
-        ticks: {
-          color: colors.chart.text,
-          autoSkip: false,
-          maxRotation: 0,
-          callback: renderXLabel,
+        y: {
+          type: YAxisType,
+          min: 0,
+          beginAtZero: true,
+          stacked,
+          grid: {
+            color: colors.chart.line,
+          },
+          border: {
+            color: colors.chart.line,
+          },
+          ticks: {
+            color: colors.chart.text,
+            callback: renderYLabel || renderNumberLabels,
+          },
         },
       },
-      y: {
-        type: YAxisType,
-        min: 0,
-        beginAtZero: true,
-        stacked,
-        grid: {
-          color: colors.chart.line,
-        },
-        border: {
-          color: colors.chart.line,
-        },
-        ticks: {
-          color: colors.chart.text,
-          callback: renderYLabel || renderNumberLabels,
-        },
-      },
-    },
-  };
+    };
+  }, [colors]);
 
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
     const { opacity } = tooltip;

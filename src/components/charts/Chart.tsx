@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, ReactNode } from 'react';
+import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
 import { Loading } from 'react-basics';
 import classNames from 'classnames';
 import ChartJS, { LegendItem } from 'chart.js/auto';
@@ -38,29 +38,31 @@ export function Chart({
   const chart = useRef(null);
   const [legendItems, setLegendItems] = useState([]);
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    animation: {
-      duration: animationDuration,
-      resize: {
-        duration: 0,
+  const options = useMemo(() => {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: {
+        duration: animationDuration,
+        resize: {
+          duration: 0,
+        },
+        active: {
+          duration: 0,
+        },
       },
-      active: {
-        duration: 0,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          enabled: false,
+          external: onTooltip,
+        },
       },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        enabled: false,
-        external: onTooltip,
-      },
-    },
-    ...chartOptions,
-  };
+      ...chartOptions,
+    };
+  }, [chartOptions]);
 
   const createChart = (data: any) => {
     ChartJS.defaults.font.family = 'Inter';
