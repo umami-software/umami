@@ -3,39 +3,19 @@ import { Loading } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
 import { getDateArray } from 'lib/date';
-import {
-  useLocale,
-  useDateRange,
-  useTimezone,
-  useNavigation,
-  useWebsiteEvents,
-} from 'components/hooks';
+import { useLocale, useDateRange, useWebsiteEvents } from 'components/hooks';
 import { CHART_COLORS } from 'lib/constants';
 import { renderDateLabels } from 'lib/charts';
 
 export interface EventsChartProps {
   websiteId: string;
   className?: string;
-  token?: string;
 }
 
-export function EventsChart({ websiteId, className, token }: EventsChartProps) {
-  const [{ startDate, endDate, unit, offset }] = useDateRange(websiteId);
+export function EventsChart({ websiteId, className }: EventsChartProps) {
+  const [{ startDate, endDate, unit }] = useDateRange(websiteId);
   const { locale } = useLocale();
-  const { timezone } = useTimezone();
-  const {
-    query: { url, event },
-  } = useNavigation();
-  const { data, isLoading } = useWebsiteEvents(websiteId, {
-    startAt: +startDate,
-    endAt: +endDate,
-    unit,
-    timezone,
-    url,
-    event,
-    token,
-    offset,
-  });
+  const { data, isLoading } = useWebsiteEvents(websiteId);
 
   const chartData = useMemo(() => {
     if (!data) return [];

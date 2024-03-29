@@ -66,7 +66,7 @@ export function BarChart(props: BarChartProps) {
         },
       },
     };
-  }, [colors]);
+  }, [colors, unit, stacked, renderXLabel, renderYLabel]);
 
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
     const { opacity } = tooltip;

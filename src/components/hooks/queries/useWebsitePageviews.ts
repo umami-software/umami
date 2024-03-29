@@ -1,3 +1,4 @@
+import { zonedTimeToUtc } from 'date-fns-tz';
 import { useApi, useDateRange, useNavigation, useTimezone } from 'components/hooks';
 
 export function useWebsitePageviews(websiteId: string, options?: { [key: string]: string }) {
@@ -10,8 +11,8 @@ export function useWebsitePageviews(websiteId: string, options?: { [key: string]
   } = useNavigation();
 
   const params = {
-    startAt: +startDate,
-    endAt: +endDate,
+    startAt: +zonedTimeToUtc(startDate, timezone),
+    endAt: +zonedTimeToUtc(endDate, timezone),
     unit,
     timezone,
     url,
