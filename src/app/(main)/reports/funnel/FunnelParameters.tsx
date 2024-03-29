@@ -72,7 +72,11 @@ export function FunnelParameters() {
       <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton />}>
         <ParameterList>
           {urls.map(url => {
-            return <ParameterList.Item key={url} onRemove={() => handleRemoveUrl(url)} />;
+            return (
+              <ParameterList.Item key={url} onRemove={() => handleRemoveUrl(url)}>
+                {url}
+              </ParameterList.Item>
+            );
           })}
         </ParameterList>
       </FormRow>
