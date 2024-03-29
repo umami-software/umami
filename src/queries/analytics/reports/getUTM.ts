@@ -26,15 +26,7 @@ async function relationalQuery(
     endDate: Date;
     timezone?: string;
   },
-): Promise<
-  {
-    date: string;
-    day: number;
-    visitors: number;
-    returnVisitors: number;
-    percentage: number;
-  }[]
-> {
+) {
   const { startDate, endDate } = filters;
   const { rawQuery } = prisma;
 
@@ -44,7 +36,7 @@ async function relationalQuery(
     from website_event
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
-      and url_query is not null
+      and coalesce(url_query, '') != ''
       and event_type = 1
     group by 1
     `,
@@ -53,9 +45,7 @@ async function relationalQuery(
       startDate,
       endDate,
     },
-  ).then(results => {
-    return results;
-  });
+  ).then(result => parseParameters(result as any[]));
 }
 
 async function clickhouseQuery(
@@ -65,15 +55,7 @@ async function clickhouseQuery(
     endDate: Date;
     timezone?: string;
   },
-): Promise<
-  {
-    date: string;
-    day: number;
-    visitors: number;
-    returnVisitors: number;
-    percentage: number;
-  }[]
-> {
+) {
   const { startDate, endDate } = filters;
   const { rawQuery } = clickhouse;
 
@@ -104,11 +86,11 @@ function parseParameters(data: any[]) {
         if (key.match(/^utm_(\w+)$/)) {
           const name = safeDecodeURIComponent(value);
           if (!obj[key]) {
-            obj[key] = { [name]: +num };
+            obj[key] = { [name]: Number(num) };
           } else if (!obj[key][name]) {
-            obj[key][name] = +num;
+            obj[key][name] = Number(num);
           } else {
-            obj[key][name] += +num;
+            obj[key][name] += Number(num);
           }
         }
       }
