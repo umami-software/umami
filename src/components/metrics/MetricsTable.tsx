@@ -29,6 +29,7 @@ export interface MetricsTableProps extends ListTableProps {
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
   children?: ReactNode;
+  fieldName?: string
 }
 
 export function MetricsTable({
@@ -41,6 +42,7 @@ export function MetricsTable({
   delay = null,
   allowSearch = false,
   children,
+  fieldName,
   ...props
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
@@ -70,6 +72,7 @@ export function MetricsTable({
       city,
       limit,
       search,
+      fieldName,
     },
     { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
   );

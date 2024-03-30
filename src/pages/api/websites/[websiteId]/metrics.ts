@@ -151,7 +151,7 @@ export default async (
 
       return ok(res, data);
     } else if (type === 'custom') {
-      const data = await getPageviewMetrics(websiteId, column, filters, limit, fieldName);
+      const data = await getPageviewMetrics(websiteId, column, filters, limit, offset, fieldName);
 
       return ok(res, data);
     }
