@@ -26,7 +26,7 @@
   const endpoint = `${root}/api/send`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
-  const pageviewCustomPropertyRegex = /data-event-([\w-_]+)/;
+  const pageviewCustomPropertyRegex = /data-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
 
@@ -40,14 +40,16 @@
     }
   };
 
-  const getPageviewEventData = () => Object.fromEntries(
-    Array.from(currentScript.attributes)
-      .filter(attribute => attribute.name.match(pageviewCustomPropertyRegex))
-      .map(attribute => {
-        const match = attribute.name.match(pageviewCustomPropertyRegex);
-        return [match[1], attribute.value]
-      })
-  )
+  const getPageviewEventData = () =>
+    Object.fromEntries(
+      Array.from(currentScript.attributes)
+        .filter(attribute => attribute.name.match(pageviewCustomPropertyRegex))
+        .filter(attribute => attribute.name !== 'data-website-id')
+        .map(attribute => {
+          const match = attribute.name.match(pageviewCustomPropertyRegex);
+          return [match[1], attribute.value];
+        }),
+    );
 
   const getPayload = () => ({
     website,
