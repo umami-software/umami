@@ -27,6 +27,7 @@
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const pageviewCustomPropertyRegex = /data-([\w-_]+)/;
+  const reservedDataAttributes = ['website-id', 'domains', 'umami-event', 'auto-track', 'host-url'];
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
 
@@ -44,7 +45,10 @@
     Object.fromEntries(
       Array.from(currentScript.attributes)
         .filter(attribute => attribute.name.match(pageviewCustomPropertyRegex))
-        .filter(attribute => attribute.name !== 'data-website-id')
+        .filter(
+          attribute =>
+            !reservedDataAttributes.some(reserved => _data + reserved === attribute.name),
+        )
         .map(attribute => {
           const match = attribute.name.match(pageviewCustomPropertyRegex);
           return [match[1], attribute.value];
