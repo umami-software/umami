@@ -73,7 +73,7 @@ const schema = {
         url: yup.string(),
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
-        tag: yup.string().max(50),
+        tag: yup.string().max(50).nullable(),
       })
       .required(),
     type: yup
