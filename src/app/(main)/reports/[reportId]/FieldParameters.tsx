@@ -5,7 +5,7 @@ import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
 import FieldSelectForm from '../[reportId]/FieldSelectForm';
 import ParameterList from '../[reportId]/ParameterList';
 import PopupForm from '../[reportId]/PopupForm';
-import { ReportContext } from '../[reportId]/Report';
+import { ReportContext } from './Report';
 
 export function FieldParameters() {
   const { report, updateReport } = useContext(ReportContext);

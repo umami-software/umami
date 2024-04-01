@@ -6,8 +6,8 @@ import FilterSelectForm from '../[reportId]/FilterSelectForm';
 import ParameterList from '../[reportId]/ParameterList';
 import PopupForm from '../[reportId]/PopupForm';
 import { ReportContext } from './Report';
-import { OPERATORS } from 'lib/constants';
 import FieldFilterEditForm from '../[reportId]/FieldFilterEditForm';
+import { operatorEquals } from 'lib/params';
 import styles from './FilterParameters.module.css';
 
 export function FilterParameters() {
@@ -69,7 +69,8 @@ export function FilterParameters() {
         {filters.map(
           ({ name, operator, value }: { name: string; operator: string; value: string }) => {
             const label = fields.find(f => f.name === name)?.label;
-            const isEquals = [OPERATORS.equals, OPERATORS.notEquals].includes(operator as any);
+            const isEquals = operatorEquals(operator);
+
             return (
               <ParameterList.Item key={name} onRemove={() => handleRemove(name)}>
                 <FilterParameter
@@ -101,13 +102,13 @@ const FilterParameter = ({
   endDate,
   onChange,
 }) => {
-  const { filterLabels } = useFilters();
+  const { operatorLabels } = useFilters();
 
   return (
     <PopupTrigger>
       <div className={styles.item}>
         <div className={styles.label}>{label}</div>
-        <div className={styles.op}>{filterLabels[operator]}</div>
+        <div className={styles.op}>{operatorLabels[operator]}</div>
         <div className={styles.value}>{value}</div>
       </div>
       <Popup className={styles.edit} alignment="start">

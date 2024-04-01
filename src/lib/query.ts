@@ -1,13 +1,7 @@
 import { NextApiRequest } from 'next';
 import { getAllowedUnits, getMinimumUnit } from './date';
 import { getWebsiteDateRange } from '../queries';
-import { FILTER_COLUMNS, OPERATORS } from 'lib/constants';
-
-const OPERATOR_SYMBOLS = {
-  '!': 'neq',
-  '~': 'c',
-  '!~': 'dnc',
-};
+import { FILTER_COLUMNS, OPERATORS, OPERATOR_PREFIXES } from 'lib/constants';
 
 export async function parseDateRangeQuery(req: NextApiRequest) {
   const { websiteId, startAt, endAt, unit } = req.query;
@@ -52,7 +46,7 @@ export function getQueryFilters(req: NextApiRequest) {
         obj[key] = {
           name: key,
           column: FILTER_COLUMNS[key],
-          operator: OPERATOR_SYMBOLS[prefix] || OPERATORS.equals,
+          operator: OPERATOR_PREFIXES[prefix] || OPERATORS.equals,
           value: paramValue,
         };
       }

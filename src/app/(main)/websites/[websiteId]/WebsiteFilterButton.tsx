@@ -1,8 +1,10 @@
+import classNames from 'classnames';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation } from 'components/hooks';
-import { OPERATORS } from 'lib/constants';
+import { OPERATOR_PREFIXES } from 'lib/constants';
+import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -16,22 +18,14 @@ export function WebsiteFilterButton({
   const { fields } = useFields();
 
   const handleAddFilter = ({ name, operator, value }) => {
-    let prefix = '';
-
-    if (operator === OPERATORS.notEquals) {
-      prefix = '!';
-    } else if (operator === OPERATORS.contains) {
-      prefix = '~';
-    } else if (operator === OPERATORS.doesNotContain) {
-      prefix = '!~';
-    }
+    const prefix = OPERATOR_PREFIXES[operator];
 
     router.push(renderUrl({ [name]: prefix + value }));
   };
 
   return (
     <PopupTrigger>
-      <Button className={className}>
+      <Button className={classNames(className, styles.button)} variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>

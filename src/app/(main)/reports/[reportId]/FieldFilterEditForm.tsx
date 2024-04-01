@@ -16,6 +16,7 @@ import {
 } from 'react-basics';
 import { useMessages, useFilters, useFormat, useLocale, useWebsiteValues } from 'components/hooks';
 import { OPERATORS } from 'lib/constants';
+import { operatorEquals } from 'lib/params';
 import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
@@ -49,13 +50,12 @@ export default function FieldFilterEditForm({
   const [operator, setOperator] = useState(defaultOperator);
   const [value, setValue] = useState(defaultValue);
   const [showMenu, setShowMenu] = useState(false);
-  const isEquals = [OPERATORS.equals, OPERATORS.notEquals].includes(operator as any);
+  const isEquals = operatorEquals(operator);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(isEquals ? value : '');
-  const { getFilters } = useFilters();
+  const { filters } = useFilters();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
-  const filters = getFilters(type);
   const isDisabled = !operator || (isEquals && !selected) || (!isEquals && !value);
   const {
     data: values = [],
@@ -98,7 +98,7 @@ export default function FieldFilterEditForm({
   }, [value, formattedValues]);
 
   const renderFilterValue = (value: any) => {
-    return filters.find((f: { value: any }) => f.value === value)?.label;
+    return filters.find((filter: { value: any }) => filter.value === value)?.label;
   };
 
   const handleAdd = () => {
@@ -142,7 +142,7 @@ export default function FieldFilterEditForm({
           {allowFilterSelect && (
             <Dropdown
               className={styles.dropdown}
-              items={filters}
+              items={filters.filter(f => f.type === type)}
               value={operator}
               renderValue={renderFilterValue}
               onChange={handleOperatorChange}
@@ -154,7 +154,7 @@ export default function FieldFilterEditForm({
           )}
           {selected && isEquals && (
             <div className={styles.selected} onClick={handleReset}>
-              <Text>{selected}</Text>
+              <Text>{formatValue(selected, name)}</Text>
               <Icon>
                 <Icons.Close />
               </Icon>
