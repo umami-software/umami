@@ -81,6 +81,7 @@ export function Chart({
   const updateChart = (data: any) => {
     chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
       dataset.data = data?.datasets[index]?.data;
+      chart.current.legend.legendItems[index].text = data?.datasets[index].label;
     });
 
     chart.current.options = options;
@@ -88,9 +89,9 @@ export function Chart({
     // Allow config changes before update
     onUpdate?.(chart.current);
 
-    chart.current.update(updateMode);
-
     setLegendItems(chart.current.legend.legendItems);
+
+    chart.current.update(updateMode);
   };
 
   useEffect(() => {

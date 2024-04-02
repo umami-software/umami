@@ -63,6 +63,7 @@
     title: encode(title),
     url: encode(currentUrl),
     referrer: encode(currentRef),
+    tag: tag ? tag : undefined,
   });
 
   /* Event handlers */
@@ -217,7 +218,6 @@
         ...getPayload(),
         name: obj,
         data: typeof data === 'object' ? data : undefined,
-        tag,
       });
     } else if (typeof obj === 'object') {
       return send(obj);

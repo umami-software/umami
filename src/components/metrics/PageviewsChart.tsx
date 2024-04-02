@@ -38,7 +38,7 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
         },
       ],
     };
-  }, [data]);
+  }, [data, locale]);
 
   return (
     <BarChart
