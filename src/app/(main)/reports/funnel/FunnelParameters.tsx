@@ -40,7 +40,7 @@ export function FunnelParameters() {
 
   const handleRemoveUrl = (url: string) => {
     const urls = [...parameters.urls];
-    updateReport({ parameters: { urls: urls.filter(n => n.url !== url) } });
+    updateReport({ parameters: { urls: urls.filter(n => n !== url) } });
   };
 
   const AddUrlButton = () => {
