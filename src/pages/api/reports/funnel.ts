@@ -34,7 +34,8 @@ const schema = {
           value: yup.string().required(),
         }),
       )
-      .min(2),
+      .min(2)
+      .required(),
     window: yup.number().positive().required(),
     dateRange: yup
       .object()

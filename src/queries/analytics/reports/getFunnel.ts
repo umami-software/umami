@@ -82,7 +82,7 @@ async function relationalQuery(
             from website_event
             where website_id = {{websiteId::uuid}}
               and created_at between {{startDate}} and {{endDate}}
-              and ${column} ${operator} {param${i}:String}
+              and ${column} ${operator} {{${i}}}
           )`;
         } else {
           pv.levelQuery += `
@@ -96,7 +96,7 @@ async function relationalQuery(
                   `l.created_at `,
                   `${windowMinutes} minute`,
                 )}
-                and we.${column} ${operator} {param${i}:String}
+                and we.${column} ${operator} {{${i}}}
                 and we.created_at <= {{endDate}}
           )`;
         }
