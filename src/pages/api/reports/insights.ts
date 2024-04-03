@@ -56,8 +56,8 @@ const schema = {
 };
 
 function convertFilters(filters: any[]) {
-  return filters.reduce((obj, { name, ...value }) => {
-    obj[name] = value;
+  return filters.reduce((obj, filter) => {
+    obj[filter.name] = filter;
 
     return obj;
   }, {});

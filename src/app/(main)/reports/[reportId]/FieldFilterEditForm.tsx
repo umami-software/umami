@@ -191,7 +191,7 @@ export default function FieldFilterEditForm({
           )}
         </Flexbox>
         <Button variant="primary" onClick={handleAdd} disabled={isDisabled}>
-          {isNew ? formatMessage(labels.add) : formatMessage(labels.update)}
+          {formatMessage(isNew ? labels.add : labels.update)}
         </Button>
       </FormRow>
     </Form>

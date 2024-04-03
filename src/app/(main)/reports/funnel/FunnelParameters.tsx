@@ -41,6 +41,17 @@ export function FunnelParameters() {
     updateReport({ parameters: { steps: parameters.steps.concat(step) } });
   };
 
+  const handleUpdateStep = (
+    close: () => void,
+    index: number,
+    step: { type: string; value: string },
+  ) => {
+    const steps = [...parameters.steps];
+    steps[index] = step;
+    updateReport({ parameters: { steps } });
+    close();
+  };
+
   const handleRemoveStep = (index: number) => {
     const steps = [...parameters.steps];
     delete steps[index];
@@ -57,7 +68,7 @@ export function FunnelParameters() {
         </Button>
         <Popup alignment="start">
           <PopupForm>
-            <FunnelStepAddForm onAdd={handleAddStep} />
+            <FunnelStepAddForm onChange={handleAddStep} />
           </PopupForm>
         </Popup>
       </PopupTrigger>
@@ -79,14 +90,30 @@ export function FunnelParameters() {
         <ParameterList>
           {steps.map((step: { type: string; value: string }, index: number) => {
             return (
-              <ParameterList.Item key={index} onRemove={() => handleRemoveStep(index)}>
-                <div className={styles.item}>
-                  <div className={styles.type}>
-                    <Icon>{step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}</Icon>
+              <PopupTrigger key={index}>
+                <ParameterList.Item
+                  className={styles.item}
+                  onRemove={() => handleRemoveStep(index)}
+                >
+                  <div className={styles.value}>
+                    <div className={styles.type}>
+                      <Icon>{step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}</Icon>
+                    </div>
+                    <div>{step.value}</div>
                   </div>
-                  <div>{step.value}</div>
-                </div>
-              </ParameterList.Item>
+                </ParameterList.Item>
+                <Popup alignment="start">
+                  {(close: () => void) => (
+                    <PopupForm>
+                      <FunnelStepAddForm
+                        type={step.type}
+                        value={step.value}
+                        onChange={handleUpdateStep.bind(null, close, index)}
+                      />
+                    </PopupForm>
+                  )}
+                </Popup>
+              </PopupTrigger>
             );
           })}
         </ParameterList>
