@@ -2,10 +2,11 @@ import { Prisma } from '@prisma/client';
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
-import { FILTER_COLUMNS, SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
+import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, SearchFilter } from './types';
+import { filtersToArray } from './params';
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -112,15 +113,11 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 }
 
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}): string {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-    const operator = filter?.operator ?? OPERATORS.equals;
-    const column = filter?.column ?? FILTER_COLUMNS[key] ?? options?.columns?.[key];
+  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
+    if (column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
 
-    if (filter !== undefined && column !== undefined) {
-      arr.push(`and ${mapFilter(column, operator, key)}`);
-
-      if (key === 'referrer') {
+      if (name === 'referrer') {
         arr.push(
           'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
         );
@@ -133,12 +130,9 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   return query.join('\n');
 }
 
-function normalizeFilters(filters = {}) {
-  return Object.keys(filters).reduce((obj, key) => {
-    const filter = filters[key];
-    const value = filter?.value ?? filter;
-
-    obj[key] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(filter?.operator)
+function getFilterParams(filters: QueryFilters = {}) {
+  return filtersToArray(filters).reduce((obj, { name, operator, value }) => {
+    obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
       ? `%${value}%`
       : value;
 
@@ -152,15 +146,16 @@ async function parseFilters(
   options: QueryOptions = {},
 ) {
   const website = await loadWebsite(websiteId);
+  const joinSession = Object.keys(filters).find(key => SESSION_COLUMNS.includes(key));
 
   return {
     joinSession:
-      options?.joinSession || Object.keys(filters).find(key => SESSION_COLUMNS.includes(key))
+      options?.joinSession || joinSession
         ? `inner join session on website_event.session_id = session.session_id`
         : '',
     filterQuery: getFilterQuery(filters, options),
     params: {
-      ...normalizeFilters(filters),
+      ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, website?.resetAt),
       websiteDomain: website.domain,

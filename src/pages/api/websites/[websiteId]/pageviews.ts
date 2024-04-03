@@ -1,6 +1,6 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { getQueryFilters, parseDateRangeQuery } from 'lib/query';
+import { getRequestFilters, getRequestDateRange } from 'lib/request';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -59,10 +59,10 @@ export default async (
       return unauthorized(res);
     }
 
-    const { startDate, endDate, unit } = await parseDateRangeQuery(req);
+    const { startDate, endDate, unit } = await getRequestDateRange(req);
 
     const filters = {
-      ...getQueryFilters(req),
+      ...getRequestFilters(req),
       startDate,
       endDate,
       timezone,

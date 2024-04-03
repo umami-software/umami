@@ -11,7 +11,7 @@ import {
 } from 'next-basics';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { getValues } from 'queries';
-import { parseDateRangeQuery } from 'lib/query';
+import { getRequestDateRange } from 'lib/request';
 import * as yup from 'yup';
 
 export interface ValuesRequestQuery {
@@ -38,7 +38,7 @@ export default async (req: NextApiRequestQueryBody<ValuesRequestQuery>, res: Nex
   await useValidate(schema, req, res);
 
   const { websiteId, type, search } = req.query;
-  const { startDate, endDate } = await parseDateRangeQuery(req);
+  const { startDate, endDate } = await getRequestDateRange(req);
 
   if (req.method === 'GET') {
     if (!SESSION_COLUMNS.includes(type as string) && !EVENT_COLUMNS.includes(type as string)) {

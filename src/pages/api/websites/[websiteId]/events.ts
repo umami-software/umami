@@ -1,6 +1,6 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { parseDateRangeQuery } from 'lib/query';
+import { getRequestDateRange } from 'lib/request';
 import { NextApiRequestQueryBody, WebsiteMetric } from 'lib/types';
 import { TimezoneTest, UnitTypeTest } from 'lib/yup';
 import { NextApiResponse } from 'next';
@@ -37,7 +37,7 @@ export default async (
   await useValidate(schema, req, res);
 
   const { websiteId, timezone, url } = req.query;
-  const { startDate, endDate, unit } = await parseDateRangeQuery(req);
+  const { startDate, endDate, unit } = await getRequestDateRange(req);
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {

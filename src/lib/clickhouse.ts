@@ -3,9 +3,10 @@ import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { QueryFilters, QueryOptions } from './types';
-import { FILTER_COLUMNS, OPERATORS } from './constants';
+import { OPERATORS } from './constants';
 import { loadWebsite } from './load';
 import { maxDate } from './date';
+import { filtersToArray } from './params';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%M:00',
@@ -79,15 +80,11 @@ function mapFilter(column: string, operator: string, name: string, type: string 
 }
 
 function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = Object.keys(filters).reduce((arr, key) => {
-    const filter = filters[key];
-    const operator = filter?.operator ?? OPERATORS.equals;
-    const column = filter?.column ?? FILTER_COLUMNS[key] ?? options?.columns?.[key];
+  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
+    if (column) {
+      arr.push(`and ${mapFilter(column, operator, name)}`);
 
-    if (filter !== undefined && column !== undefined) {
-      arr.push(`and ${mapFilter(column, operator, key)}`);
-
-      if (key === 'referrer') {
+      if (name === 'referrer') {
         arr.push('and referrer_domain != {websiteDomain:String}');
       }
     }
@@ -98,11 +95,11 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
-function normalizeFilters(filters = {}) {
-  return Object.keys(filters).reduce((obj, key) => {
-    const value = filters[key];
-
-    obj[key] = value?.value ?? value;
+function getFilterParams(filters: QueryFilters = {}) {
+  return filtersToArray(filters).reduce((obj, { name, value }) => {
+    if (name && value !== undefined) {
+      obj[name] = value;
+    }
 
     return obj;
   }, {});
@@ -114,7 +111,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
   return {
     filterQuery: getFilterQuery(filters, options),
     params: {
-      ...normalizeFilters(filters),
+      ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
       websiteDomain: website.domain,

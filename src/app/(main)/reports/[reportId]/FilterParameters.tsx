@@ -7,7 +7,7 @@ import ParameterList from '../[reportId]/ParameterList';
 import PopupForm from '../[reportId]/PopupForm';
 import { ReportContext } from './Report';
 import FieldFilterEditForm from '../[reportId]/FieldFilterEditForm';
-import { operatorEquals } from 'lib/params';
+import { isSearchOperator } from 'lib/params';
 import styles from './FilterParameters.module.css';
 
 export function FilterParameters() {
@@ -69,7 +69,7 @@ export function FilterParameters() {
         {filters.map(
           ({ name, operator, value }: { name: string; operator: string; value: string }) => {
             const label = fields.find(f => f.name === name)?.label;
-            const isEquals = operatorEquals(operator);
+            const isSearch = isSearchOperator(operator);
 
             return (
               <ParameterList.Item key={name} onRemove={() => handleRemove(name)}>
@@ -79,7 +79,7 @@ export function FilterParameters() {
                   name={name}
                   label={label}
                   operator={operator}
-                  value={isEquals ? formatValue(value, name) : value}
+                  value={isSearch ? value : formatValue(value, name)}
                   onChange={handleChange}
                 />
               </ParameterList.Item>
