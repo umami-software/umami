@@ -79,6 +79,7 @@ export default async (
 
     if (search) {
       filters[type] = {
+        name: type,
         column,
         operator: OPERATORS.contains,
         value: search,
