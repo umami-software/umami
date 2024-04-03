@@ -25,7 +25,7 @@ export function FunnelChart({ className }: FunnelChartProps) {
             <div className={styles.card}>
               <div className={styles.header}>
                 <span className={styles.label}>
-                  {formatMessage(type === 'url' ? labels.viewedPage : labels.triggeredEvent)}:
+                  {formatMessage(type === 'url' ? labels.viewedPage : labels.triggeredEvent)}
                 </span>
                 <span className={styles.item}>{value}</span>
               </div>
