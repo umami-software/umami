@@ -11,7 +11,7 @@ import {
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FieldFilterEditForm from 'app/(main)/reports/[reportId]/FieldFilterEditForm';
 import { OPERATOR_PREFIXES } from 'lib/constants';
-import { operatorEquals, parseParameterValue } from 'lib/params';
+import { isSearchOperator, parseParameterValue } from 'lib/params';
 import styles from './FilterTags.module.css';
 
 export function FilterTags({
@@ -66,7 +66,7 @@ export function FilterTags({
         }
         const label = fields.find(f => f.name === key)?.label;
         const { operator, value } = parseParameterValue(params[key]);
-        const paramValue = operatorEquals(operator) ? formatValue(value, key) : value;
+        const paramValue = isSearchOperator(operator) ? formatValue(value, key) : value;
 
         return (
           <PopupTrigger key={key}>

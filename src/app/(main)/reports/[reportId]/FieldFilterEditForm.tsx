@@ -16,7 +16,7 @@ import {
 } from 'react-basics';
 import { useMessages, useFilters, useFormat, useLocale, useWebsiteValues } from 'components/hooks';
 import { OPERATORS } from 'lib/constants';
-import { operatorEquals } from 'lib/params';
+import { isEqualsOperator } from 'lib/params';
 import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
@@ -50,7 +50,7 @@ export default function FieldFilterEditForm({
   const [operator, setOperator] = useState(defaultOperator);
   const [value, setValue] = useState(defaultValue);
   const [showMenu, setShowMenu] = useState(false);
-  const isEquals = operatorEquals(operator);
+  const isEquals = isEqualsOperator(operator);
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(isEquals ? value : '');
   const { filters } = useFilters();

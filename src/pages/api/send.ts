@@ -98,7 +98,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-    const { url, referrer, name: eventName, data: eventData, title } = payload;
+    const { url, referrer, name: eventName, data, title } = payload;
     const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
@@ -142,7 +142,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         referrerDomain,
         pageTitle,
         eventName,
-        eventData,
+        eventData: data,
         ...session,
         sessionId: session.id,
         visitId: session.visitId,
@@ -150,14 +150,14 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     if (type === COLLECTION_TYPE.identify) {
-      if (!eventData) {
+      if (!data) {
         return badRequest(res, 'Data required.');
       }
 
       await saveSessionData({
         websiteId: session.websiteId,
         sessionId: session.id,
-        sessionData: eventData,
+        sessionData: data,
       });
     }
 
