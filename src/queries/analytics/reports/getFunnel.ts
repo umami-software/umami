@@ -3,8 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
 const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
-  return steps.map((steps: { type: string; value: string }, i: number) => {
-    const url = steps.value;
+  return steps.map((step: { type: string; value: string }, i: number) => {
     const visitors = Number(results[i]?.count) || 0;
     const previous = Number(results[i - 1]?.count) || 0;
     const dropped = previous > 0 ? previous - visitors : 0;
@@ -12,7 +11,7 @@ const formatResults = (steps: { type: string; value: string }[]) => (results: un
     const remaining = visitors / Number(results[0].count);
 
     return {
-      url,
+      ...step,
       visitors,
       previous,
       dropped,
@@ -49,7 +48,7 @@ async function relationalQuery(
   },
 ): Promise<
   {
-    url: string;
+    value: string;
     visitors: number;
     dropoff: number;
   }[]
@@ -141,7 +140,7 @@ async function clickhouseQuery(
   },
 ): Promise<
   {
-    url: string;
+    value: string;
     visitors: number;
     dropoff: number;
   }[]

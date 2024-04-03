@@ -51,7 +51,7 @@
   align-items: center;
   justify-content: flex-end;
   background: var(--base900);
-  height: 50px;
+  height: 30px;
   border-radius: 5px;
   overflow: hidden;
   position: relative;
@@ -61,19 +61,12 @@
   color: var(--base700);
 }
 
-.value {
-  color: var(--base50);
-  margin-inline-end: 20px;
-}
-
 .track {
   background-color: var(--base100);
   border-radius: 5px;
 }
 
 .info {
-  display: flex;
-  justify-content: space-between;
   text-transform: lowercase;
 }
 
@@ -81,4 +74,25 @@
   padding: 6px 10px;
   border-radius: 4px;
   border: 1px solid var(--base300);
+}
+
+.metric {
+  color: var(--base700);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 24px;
+  margin: 10px 0;
+  text-transform: lowercase;
+}
+
+.visitors {
+  color: var(--base900);
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.percent {
+  font-weight: 700;
+  align-self: flex-end;
 }

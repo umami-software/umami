@@ -232,6 +232,8 @@ export const labels = defineMessages({
     id: 'label.utm-description',
     defaultMessage: 'Track your campaigns through UTM parameters.',
   },
+  steps: { id: 'label.steps', defaultMessage: 'Steps' },
+  addStep: { id: 'label.add-step', defaultMessage: 'Add step' },
 });
 
 export const messages = defineMessages({
