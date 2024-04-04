@@ -74,7 +74,8 @@ export function FilterParameters() {
             return (
               <ParameterList.Item key={name} onRemove={() => handleRemove(name)}>
                 <FilterParameter
-                  {...dateRange}
+                  startDate={dateRange.startDate}
+                  endDate={dateRange.endDate}
                   websiteId={websiteId}
                   name={name}
                   label={label}

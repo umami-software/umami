@@ -37,7 +37,7 @@
 .card {
   display: grid;
   gap: 20px;
-  margin-top: 8px;
+  margin-top: 14px;
 }
 
 .header {
@@ -73,7 +73,7 @@
 }
 
 .item {
-  font-size: 24px;
+  font-size: 20px;
   color: var(--base900);
   font-weight: 700;
 }
@@ -83,19 +83,19 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-  font-size: 24px;
   margin: 10px 0;
   text-transform: lowercase;
 }
 
 .visitors {
   color: var(--base900);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 900;
   margin-right: 10px;
 }
 
 .percent {
+  font-size: 20px;
   font-weight: 700;
   align-self: flex-end;
 }
