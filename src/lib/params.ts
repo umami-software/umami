@@ -31,7 +31,7 @@ export function filtersToArray(filters: QueryFilters = {}, options: QueryOptions
     }
 
     if (filter?.name && filter?.value !== undefined) {
-      return arr.concat(filter);
+      return arr.concat({ ...filter, column: options?.columns?.[key] ?? FILTER_COLUMNS[key] });
     }
 
     const { operator, value } = parseParameterValue(filter);
