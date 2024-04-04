@@ -13,7 +13,7 @@ export function Report({
   className,
 }: {
   reportId: string;
-  defaultParameters: { [key: string]: any };
+  defaultParameters: { type: string; parameters: { [key: string]: any } };
   children: ReactNode;
   className?: string;
 }) {

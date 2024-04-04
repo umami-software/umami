@@ -4,7 +4,7 @@ import { OPERATORS } from 'lib/constants';
 export function useFilters() {
   const { formatMessage, labels } = useMessages();
 
-  const filterLabels = {
+  const operatorLabels = {
     [OPERATORS.equals]: formatMessage(labels.is),
     [OPERATORS.notEquals]: formatMessage(labels.isNot),
     [OPERATORS.set]: formatMessage(labels.isSet),
@@ -22,7 +22,7 @@ export function useFilters() {
   };
 
   const typeFilters = {
-    string: [OPERATORS.equals, OPERATORS.notEquals],
+    string: [OPERATORS.equals, OPERATORS.notEquals, OPERATORS.contains, OPERATORS.doesNotContain],
     array: [OPERATORS.contains, OPERATORS.doesNotContain],
     boolean: [OPERATORS.true, OPERATORS.false],
     number: [
@@ -37,11 +37,17 @@ export function useFilters() {
     uuid: [OPERATORS.equals],
   };
 
+  const filters = Object.keys(typeFilters).flatMap(key => {
+    return (
+      typeFilters[key]?.map(value => ({ type: key, value, label: operatorLabels[value] })) ?? []
+    );
+  });
+
   const getFilters = type => {
-    return typeFilters[type]?.map(key => ({ type, value: key, label: filterLabels[key] })) ?? [];
+    return typeFilters[type]?.map(key => ({ type, value: key, label: operatorLabels[key] })) ?? [];
   };
 
-  return { getFilters, filterLabels, typeFilters };
+  return { filters, operatorLabels, typeFilters, getFilters };
 }
 
 export default useFilters;

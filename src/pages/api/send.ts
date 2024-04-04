@@ -1,27 +1,36 @@
 import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret } from 'lib/crypto';
+import { secret, visitSalt, uuid } from 'lib/crypto';
 import { getIpAddress } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { badRequest, createToken, forbidden, methodNotAllowed, ok, send } from 'next-basics';
+import {
+  badRequest,
+  createToken,
+  forbidden,
+  methodNotAllowed,
+  ok,
+  safeDecodeURI,
+  send,
+} from 'next-basics';
 import { saveEvent, saveSessionData } from 'queries';
 import * as yup from 'yup';
 
 export interface CollectRequestBody {
   payload: {
-    data: { [key: string]: any };
-    hostname: string;
-    ip: string;
-    language: string;
-    referrer: string;
-    screen: string;
-    title: string;
-    url: string;
     website: string;
-    name: string;
+    data?: { [key: string]: any };
+    hostname?: string;
+    ip?: string;
+    language?: string;
+    name?: string;
+    referrer?: string;
+    screen?: string;
+    tag?: string;
+    title?: string;
+    url: string;
   };
   type: CollectionType;
 }
@@ -31,6 +40,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
   session: {
     id: string;
     websiteId: string;
+    visitId: string;
     ownerId: string;
     hostname: string;
     browser: string;
@@ -42,6 +52,7 @@ export interface NextApiRequestCollect extends NextApiRequest {
     subdivision1: string;
     subdivision2: string;
     city: string;
+    iat: number;
   };
   headers: { [key: string]: any };
   yup: YupRequest;
@@ -62,6 +73,7 @@ const schema = {
         url: yup.string(),
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
+        tag: yup.string().max(50).nullable(),
       })
       .required(),
     type: yup
@@ -86,18 +98,26 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-
-    const { url, referrer, name: eventName, data: eventData, title: pageTitle } = payload;
+    const { url, referrer, name: eventName, data, title } = payload;
+    const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
 
     const session = req.session;
 
+    // expire visitId after 30 minutes
+    session.visitId =
+      !!session.iat && Math.floor(new Date().getTime() / 1000) - session.iat > 1800
+        ? uuid(session.id, visitSalt())
+        : session.visitId;
+
+    session.iat = Math.floor(new Date().getTime() / 1000);
+
     if (type === COLLECTION_TYPE.event) {
       // eslint-disable-next-line prefer-const
-      let [urlPath, urlQuery] = url?.split('?') || [];
-      let [referrerPath, referrerQuery] = referrer?.split('?') || [];
-      let referrerDomain;
+      let [urlPath, urlQuery] = safeDecodeURI(url)?.split('?') || [];
+      let [referrerPath, referrerQuery] = safeDecodeURI(referrer)?.split('?') || [];
+      let referrerDomain = '';
 
       if (!urlPath) {
         urlPath = '/';
@@ -111,7 +131,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       }
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/.+\/$/, '');
+        urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
 
       await saveEvent({
@@ -122,21 +142,22 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         referrerDomain,
         pageTitle,
         eventName,
-        eventData,
+        eventData: data,
         ...session,
         sessionId: session.id,
+        visitId: session.visitId,
       });
     }
 
     if (type === COLLECTION_TYPE.identify) {
-      if (!eventData) {
+      if (!data) {
         return badRequest(res, 'Data required.');
       }
 
       await saveSessionData({
         websiteId: session.websiteId,
         sessionId: session.id,
-        sessionData: eventData,
+        sessionData: data,
       });
     }
 

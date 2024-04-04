@@ -215,6 +215,12 @@
       "value": "Үүсгэсэн"
     }
   ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
+    }
+  ],
   "label.current-password": [
     {
       "type": 0,

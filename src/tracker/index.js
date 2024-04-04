@@ -8,22 +8,24 @@
     history,
   } = window;
   const { hostname, pathname, search } = location;
-  const { currentScript } = document;
+  const { currentScript, referrer } = document;
 
   if (!currentScript) return;
 
   const _data = 'data-';
   const _false = 'false';
+  const _true = 'true';
   const attr = currentScript.getAttribute.bind(currentScript);
   const website = attr(_data + 'website-id');
   const hostUrl = attr(_data + 'host-url');
+  const tag = attr(_data + 'tag');
   const autoTrack = attr(_data + 'auto-track') !== _false;
+  const excludeSearch = attr(_data + 'exclude-search') === _true;
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
-  const root = hostUrl
-    ? hostUrl.replace(/\/$/, '')
-    : currentScript.src.split('/').slice(0, -1).join('/');
-  const endpoint = `${root}/api/send`;
+  const host =
+    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+  const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
@@ -31,12 +33,26 @@
 
   /* Helper functions */
 
-  const getPath = url => {
-    try {
-      return new URL(url).pathname;
-    } catch (e) {
-      return url;
+  const encode = str => {
+    if (!str) {
+      return undefined;
     }
+
+    try {
+      const result = decodeURI(str);
+
+      if (result !== str) {
+        return result;
+      }
+    } catch {
+      return str;
+    }
+
+    return encodeURI(str);
+  };
+
+  const parseURL = url => {
+    return excludeSearch ? url.split('?')[0] : url;
   };
 
   const getPayload = () => ({
@@ -44,9 +60,10 @@
     hostname,
     screen,
     language,
-    title: encodeURIComponent(title),
-    url: encodeURI(currentUrl),
-    referrer: encodeURI(currentRef),
+    title: encode(title),
+    url: encode(currentUrl),
+    referrer: encode(currentRef),
+    tag: tag ? tag : undefined,
   });
 
   /* Event handlers */
@@ -55,7 +72,7 @@
     if (!url) return;
 
     currentRef = currentUrl;
-    currentUrl = getPath(url.toString());
+    currentUrl = parseURL(url.toString());
 
     if (currentUrl !== currentRef) {
       setTimeout(track, delayDuration);
@@ -222,7 +239,7 @@
   }
 
   let currentUrl = `${pathname}${search}`;
-  let currentRef = document.referrer;
+  let currentRef = referrer !== hostname ? referrer : '';
   let title = document.title;
   let cache;
   let initialized;

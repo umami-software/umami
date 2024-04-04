@@ -94,6 +94,13 @@ export const OPERATORS = {
   after: 'af',
 } as const;
 
+export const OPERATOR_PREFIXES = {
+  [OPERATORS.equals]: '',
+  [OPERATORS.notEquals]: '!',
+  [OPERATORS.contains]: '~',
+  [OPERATORS.doesNotContain]: '!~',
+};
+
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
@@ -106,6 +113,7 @@ export const REPORT_TYPES = {
   funnel: 'funnel',
   insights: 'insights',
   retention: 'retention',
+  utm: 'utm',
 } as const;
 
 export const REPORT_PARAMETERS = {
@@ -193,7 +201,7 @@ export const THEME_COLORS = {
   },
 };
 
-export const EVENT_COLORS = [
+export const CHART_COLORS = [
   '#2680eb',
   '#9256d9',
   '#44b556',
@@ -224,7 +232,10 @@ export const LAPTOP_SCREEN_WIDTH = 1024;
 export const MOBILE_SCREEN_WIDTH = 479;
 
 export const URL_LENGTH = 500;
+export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+
+export const UTM_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 export const DESKTOP_OS = [
   'BeOS',

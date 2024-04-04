@@ -1,0 +1,14 @@
+.title {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 700;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  gap: 20px;
+  border-bottom: 1px solid var(--base300);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}

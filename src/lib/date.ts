@@ -151,105 +151,50 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
   const dateLocale = getDateLocale(locale);
   const { num, unit } = parseDateValue(value);
 
-  if (num === 1) {
-    switch (unit) {
-      case 'day':
-        return {
-          startDate: startOfDay(now),
-          endDate: endOfDay(now),
-          unit: 'hour',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'week':
-        return {
-          startDate: startOfWeek(now, { locale: dateLocale }),
-          endDate: endOfWeek(now, { locale: dateLocale }),
-          unit: 'day',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'month':
-        return {
-          startDate: startOfMonth(now),
-          endDate: endOfMonth(now),
-          unit: 'day',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'year':
-        return {
-          startDate: startOfYear(now),
-          endDate: endOfYear(now),
-          unit: 'month',
-          num: +num,
-          offset: 0,
-          value,
-        };
-    }
-  }
-
-  if (num === -1) {
-    switch (unit) {
-      case 'day':
-        return {
-          startDate: subDays(startOfDay(now), 1),
-          endDate: subDays(endOfDay(now), 1),
-          unit: 'hour',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'week':
-        return {
-          startDate: subDays(startOfWeek(now, { locale: dateLocale }), 7),
-          endDate: subDays(endOfWeek(now, { locale: dateLocale }), 1),
-          unit: 'day',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'month':
-        return {
-          startDate: subMonths(startOfMonth(now), 1),
-          endDate: subMonths(endOfMonth(now), 1),
-          unit: 'day',
-          num: +num,
-          offset: 0,
-          value,
-        };
-      case 'year':
-        return {
-          startDate: subYears(startOfYear(now), 1),
-          endDate: subYears(endOfYear(now), 1),
-          unit: 'month',
-          num: +num,
-          offset: 0,
-          value,
-        };
-    }
-  }
-
   switch (unit) {
-    case 'day':
+    case 'hour':
       return {
-        startDate: subDays(startOfDay(now), +num - 1),
-        endDate: endOfDay(now),
-        num: +num,
+        startDate: subHours(startOfHour(now), num),
+        endDate: endOfHour(now),
         offset: 0,
+        num: num || 1,
         unit,
         value,
       };
-    case 'hour':
+    case 'day':
       return {
-        startDate: subHours(startOfHour(now), +num - 1),
-        endDate: endOfHour(now),
-        num: +num,
+        startDate: subDays(startOfDay(now), num),
+        endDate: subDays(endOfDay(now), num ? 1 : 0),
+        unit: num ? 'day' : 'hour',
         offset: 0,
-        unit,
+        num: num || 1,
+        value,
+      };
+    case 'week':
+      return {
+        startDate: subWeeks(startOfWeek(now, { locale: dateLocale }), num),
+        endDate: subWeeks(endOfWeek(now, { locale: dateLocale }), num),
+        unit: 'day',
+        offset: 0,
+        num: num || 1,
+        value,
+      };
+    case 'month':
+      return {
+        startDate: subMonths(startOfMonth(now), num),
+        endDate: subMonths(endOfMonth(now), num ? 1 : 0),
+        unit: num ? 'month' : 'day',
+        offset: 0,
+        num: num || 1,
+        value,
+      };
+    case 'year':
+      return {
+        startDate: subYears(startOfYear(now), num),
+        endDate: subYears(endOfYear(now), num),
+        unit: 'month',
+        offset: 0,
+        num: num || 1,
         value,
       };
   }
@@ -266,29 +211,29 @@ export function getOffsetDateRange(dateRange: DateRange, increment: number) {
     case 'day':
       return {
         ...dateRange,
-        startDate: addDays(startDate, increment),
-        endDate: addDays(endDate, increment),
+        startDate: addDays(startDate, change),
+        endDate: addDays(endDate, change),
         offset: offset + increment,
       };
     case 'week':
       return {
         ...dateRange,
-        startDate: addWeeks(startDate, increment),
-        endDate: addWeeks(endDate, increment),
+        startDate: addWeeks(startDate, change),
+        endDate: addWeeks(endDate, change),
         offset: offset + increment,
       };
     case 'month':
       return {
         ...dateRange,
-        startDate: addMonths(startDate, increment),
-        endDate: addMonths(endDate, increment),
+        startDate: addMonths(startDate, change),
+        endDate: addMonths(endDate, change),
         offset: offset + increment,
       };
     case 'year':
       return {
         ...dateRange,
-        startDate: addYears(startDate, increment),
-        endDate: addYears(endDate, increment),
+        startDate: addYears(startDate, change),
+        endDate: addYears(endDate, change),
         offset: offset + increment,
       };
     default:
@@ -316,7 +261,7 @@ export function getMinimumUnit(startDate: number | Date, endDate: number | Date)
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
     return 'hour';
-  } else if (differenceInCalendarMonths(endDate, startDate) <= 12) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 6) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';

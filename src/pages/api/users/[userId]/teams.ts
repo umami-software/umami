@@ -10,12 +10,6 @@ export interface UserTeamsRequestQuery extends SearchFilter {
   userId: string;
 }
 
-export interface UserTeamsRequestBody {
-  name: string;
-  domain: string;
-  shareId: string;
-}
-
 const schema = {
   GET: yup.object().shape({
     userId: yup.string().uuid().required(),
@@ -24,7 +18,7 @@ const schema = {
 };
 
 export default async (
-  req: NextApiRequestQueryBody<UserTeamsRequestQuery, UserTeamsRequestBody>,
+  req: NextApiRequestQueryBody<UserTeamsRequestQuery, any>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
