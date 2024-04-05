@@ -1,10 +1,9 @@
+import classNames from 'classnames';
+import { useMessages, useNavigation } from 'components/hooks';
+import { safeDecodeURIComponent } from 'next-basics';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Icon, Icons } from 'react-basics';
-import classNames from 'classnames';
-import Link from 'next/link';
-import { safeDecodeURI } from 'next-basics';
-import { useNavigation } from 'components/hooks';
-import { useMessages } from 'components/hooks';
 import styles from './FilterLink.module.css';
 
 export interface FilterLinkProps {
@@ -40,7 +39,7 @@ export function FilterLink({
       {!value && `(${label || formatMessage(labels.unknown)})`}
       {value && (
         <Link href={renderUrl({ [id]: value })} className={styles.label} replace>
-          {safeDecodeURI(label || value)}
+          {safeDecodeURIComponent(label || value)}
         </Link>
       )}
       {externalUrl && (

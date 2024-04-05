@@ -35,7 +35,7 @@ export function ShareUrl({
 
   const url = `${hostUrl || process.env.hostUrl || window?.location.origin}${
     process.env.basePath
-  }/share/${id}/${encodeURIComponent(domain)}`;
+  }/share/${id}/${domain}`;
 
   const handleGenerate = () => {
     setId(generateId());

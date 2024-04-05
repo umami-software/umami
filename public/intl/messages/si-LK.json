@@ -41,7 +41,7 @@
       "value": "වෙබ් අඩවිය එක් කරන්න"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Administrator"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Created"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

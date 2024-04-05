@@ -21,11 +21,12 @@ export function WebsiteMetricsBar({
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
 
-  const { pageviews, uniques, bounces, totaltime } = data || {};
-  const num = Math.min(data && uniques.value, data && bounces.value);
+  const { pageviews, visitors, visits, bounces, totaltime } = data || {};
+  const num = Math.min(data && visitors.value, data && bounces.value);
   const diffs = data && {
     pageviews: pageviews.value - pageviews.change,
-    uniques: uniques.value - uniques.change,
+    visitors: visitors.value - visitors.change,
+    visits: visits.value - visits.change,
     bounces: bounces.value - bounces.change,
     totaltime: totaltime.value - totaltime.change,
   };
@@ -39,7 +40,7 @@ export function WebsiteMetricsBar({
       })}
     >
       <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-        {pageviews && uniques && (
+        {pageviews && visitors && (
           <>
             <MetricCard
               label={formatMessage(labels.views)}
@@ -47,17 +48,22 @@ export function WebsiteMetricsBar({
               change={pageviews.change}
             />
             <MetricCard
+              label={formatMessage(labels.visits)}
+              value={visits.value}
+              change={visits.change}
+            />
+            <MetricCard
               label={formatMessage(labels.visitors)}
-              value={uniques.value}
-              change={uniques.change}
+              value={visitors.value}
+              change={visitors.change}
             />
             <MetricCard
               label={formatMessage(labels.bounceRate)}
-              value={uniques.value ? (num / uniques.value) * 100 : 0}
+              value={visitors.value ? (num / visitors.value) * 100 : 0}
               change={
-                uniques.value && uniques.change
-                  ? (num / uniques.value) * 100 -
-                      (Math.min(diffs.uniques, diffs.bounces) / diffs.uniques) * 100 || 0
+                visitors.value && visitors.change
+                  ? (num / visitors.value) * 100 -
+                      (Math.min(diffs.visitors, diffs.bounces) / diffs.visitors) * 100 || 0
                   : 0
               }
               format={n => Number(n).toFixed(0) + '%'}

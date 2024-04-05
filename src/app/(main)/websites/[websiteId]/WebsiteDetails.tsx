@@ -13,20 +13,19 @@ import WebsiteTableView from './WebsiteTableView';
 export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   const { data: website, isLoading, error } = useWebsite(websiteId);
   const pathname = usePathname();
-  const showLinks = !pathname.includes('/share/');
-
-  const {
-    query: { view, url, referrer, os, browser, device, country, region, city, title },
-  } = useNavigation();
+  const { query } = useNavigation();
 
   if (isLoading || error) {
     return <Page isLoading={isLoading} error={error} />;
   }
 
+  const showLinks = !pathname.includes('/share/');
+  const { view, ...params } = query;
+
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
-      <FilterTags params={{ url, referrer, os, browser, device, country, region, city, title }} />
+      <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
       <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}

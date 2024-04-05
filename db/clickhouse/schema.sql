@@ -3,6 +3,7 @@ CREATE TABLE umami.website_event
 (
     website_id UUID,
     session_id UUID,
+    visit_id UUID,
     event_id UUID,
     --sessions
     hostname LowCardinality(String),

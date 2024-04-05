@@ -41,7 +41,7 @@
       "value": "ویب سائٹ کا اضافہ کریں"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "منتظم"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Created"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

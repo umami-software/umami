@@ -7,7 +7,7 @@ export function useFilterQuery<T = any>({
   queryKey,
   queryFn,
   ...options
-}: UseQueryOptions): FilterQueryResult<T> {
+}: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): FilterQueryResult<T> {
   const [params, setParams] = useState<T | SearchFilter>({
     query: '',
     page: 1,

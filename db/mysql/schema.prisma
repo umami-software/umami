@@ -92,6 +92,7 @@ model WebsiteEvent {
   id             String    @id() @map("event_id") @db.VarChar(36)
   websiteId      String    @map("website_id") @db.VarChar(36)
   sessionId      String    @map("session_id") @db.VarChar(36)
+  visitId        String    @map("visit_id") @db.VarChar(36)
   createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   urlPath        String    @map("url_path") @db.VarChar(500)
   urlQuery       String?   @map("url_query") @db.VarChar(500)
@@ -107,6 +108,7 @@ model WebsiteEvent {
 
   @@index([createdAt])
   @@index([sessionId])
+  @@index([visitId])
   @@index([websiteId])
   @@index([websiteId, createdAt])
   @@index([websiteId, createdAt, urlPath])
@@ -115,6 +117,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, pageTitle])
   @@index([websiteId, createdAt, eventName])
   @@index([websiteId, sessionId, createdAt])
+  @@index([websiteId, visitId, createdAt])
   @@map("website_event")
 }
 

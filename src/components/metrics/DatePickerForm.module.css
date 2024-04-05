@@ -9,10 +9,6 @@
   justify-content: center;
 }
 
-.calendars > div {
-  width: 380px;
-}
-
 .calendars > div + div {
   margin-inline-start: 20px;
   padding-inline-start: 20px;

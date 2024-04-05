@@ -41,7 +41,7 @@
       "value": "ဝက်ဘ်ဆိုဒ်ထည့်မည်"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "အက်ဒမင်"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "ပြုလုပ်ပြီးသော"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

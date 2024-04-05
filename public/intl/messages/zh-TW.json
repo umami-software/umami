@@ -41,7 +41,7 @@
       "value": "新增網站"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "管理員"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "已建立"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

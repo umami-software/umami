@@ -41,7 +41,7 @@
       "value": "Добавить сайт"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Администратор"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Создано"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

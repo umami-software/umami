@@ -17,9 +17,11 @@ import { NextApiRequestCollect } from 'pages/api/send';
 let lookup;
 
 export function getIpAddress(req: NextApiRequestCollect) {
+  const customHeader = String(process.env.CLIENT_IP_HEADER).toLowerCase();
+
   // Custom header
-  if (req.headers[process.env.CLIENT_IP_HEADER]) {
-    return req.headers[process.env.CLIENT_IP_HEADER];
+  if (customHeader !== 'undefined' && req.headers[customHeader]) {
+    return req.headers[customHeader];
   }
   // Cloudflare
   else if (req.headers['cf-connecting-ip']) {
