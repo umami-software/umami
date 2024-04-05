@@ -10,7 +10,6 @@ const defaultLocale = process.env.DEFAULT_LOCALE || '';
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
 const cloudMode = process.env.CLOUD_MODE || '';
 const cloudUrl = process.env.CLOUD_URL || '';
-const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const disableLogin = process.env.DISABLE_LOGIN || '';
 const disableUI = process.env.DISABLE_UI || '';
 const hostURL = process.env.HOST_URL || '';
@@ -20,8 +19,7 @@ const contentSecurityPolicy = [
   `img-src *`,
   `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
   `style-src 'self' 'unsafe-inline'`,
-  `connect-src 'self' api.umami.is cloud.umami.is`,
-  `frame-ancestors 'self' ${frameAncestors}`,
+  `connect-src 'self' api.umami.is cloud.umami.is`
 ];
 
 const headers = [
