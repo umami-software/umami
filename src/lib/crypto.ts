@@ -1,4 +1,4 @@
-import { startOfMonth } from 'date-fns';
+import { startOfHour, startOfMonth } from 'date-fns';
 import { hash } from 'next-basics';
 import { v4, v5, validate } from 'uuid';
 
@@ -8,6 +8,12 @@ export function secret() {
 
 export function salt() {
   const ROTATING_SALT = hash(startOfMonth(new Date()).toUTCString());
+
+  return hash(secret(), ROTATING_SALT);
+}
+
+export function visitSalt() {
+  const ROTATING_SALT = hash(startOfHour(new Date()).toUTCString());
 
   return hash(secret(), ROTATING_SALT);
 }

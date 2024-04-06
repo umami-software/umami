@@ -1,7 +1,3 @@
-.container {
-  display: grid;
-}
-
 .chart {
   position: relative;
   height: 400px;
@@ -12,8 +8,4 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.tooltip .value {
-  text-transform: lowercase;
 }

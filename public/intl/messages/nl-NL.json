@@ -41,7 +41,7 @@
       "value": "Website koppelen"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Beheerder"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Gemaakt"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

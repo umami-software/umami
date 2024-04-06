@@ -1,4 +1,4 @@
-import { Key, useMemo, useState } from 'react';
+import { Key, useContext, useMemo, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import thenby from 'thenby';
 import { percentFilter } from 'lib/filters';
@@ -6,14 +6,10 @@ import ListTable from 'components/metrics/ListTable';
 import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import { useMessages } from 'components/hooks';
 import { RealtimeData } from 'lib/types';
+import { WebsiteContext } from '../WebsiteProvider';
 
-export function RealtimeUrls({
-  websiteDomain,
-  data,
-}: {
-  websiteDomain: string;
-  data: RealtimeData;
-}) {
+export function RealtimeUrls({ data }: { data: RealtimeData }) {
+  const website = useContext(WebsiteContext);
   const { formatMessage, labels } = useMessages();
   const { pageviews } = data || {};
   const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
@@ -31,7 +27,7 @@ export function RealtimeUrls({
   ];
 
   const renderLink = ({ x }) => {
-    const domain = x.startsWith('/') ? websiteDomain : '';
+    const domain = x.startsWith('/') ? website?.domain : '';
     return (
       <a href={`//${domain}${x}`} target="_blank" rel="noreferrer noopener">
         {x}

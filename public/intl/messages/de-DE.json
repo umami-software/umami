@@ -41,7 +41,7 @@
       "value": "Website hinzufügen"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Administrator"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Erstellt"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

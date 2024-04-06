@@ -41,7 +41,7 @@
       "value": "ওয়েবসাইট যুক্ত করুন"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "অ্যাডমিন"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Created"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

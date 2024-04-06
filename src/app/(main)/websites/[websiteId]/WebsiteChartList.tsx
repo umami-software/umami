@@ -6,7 +6,7 @@ import WebsiteChart from './WebsiteChart';
 import useDashboard from 'store/dashboard';
 import WebsiteHeader from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useLocale } from 'components/hooks';
+import { useMessages, useLocale, useTeamUrl } from 'components/hooks';
 
 export default function WebsiteChartList({
   websites,
@@ -19,6 +19,7 @@ export default function WebsiteChartList({
 }) {
   const { formatMessage, labels } = useMessages();
   const { websiteOrder } = useDashboard();
+  const { renderTeamUrl } = useTeamUrl();
   const { dir } = useLocale();
 
   const ordered = useMemo(
@@ -35,7 +36,7 @@ export default function WebsiteChartList({
         return index < limit ? (
           <div key={id}>
             <WebsiteHeader websiteId={id} showLinks={false}>
-              <Link href={`/websites/${id}`}>
+              <Link href={renderTeamUrl(`/websites/${id}`)}>
                 <Button variant="primary">
                   <Text>{formatMessage(labels.viewDetails)}</Text>
                   <Icon>

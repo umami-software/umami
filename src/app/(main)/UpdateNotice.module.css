@@ -1,14 +1,17 @@
 .notice {
   position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
   max-width: 800px;
   gap: 20px;
-  margin: 80px auto;
+  margin: 60px auto;
   align-self: center;
   background: var(--base50);
   padding: 20px;
   border: 1px solid var(--base300);
   border-radius: var(--border-radius);
-  z-index: var(--z-index-popup);
+  z-index: 9999;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
 }
 

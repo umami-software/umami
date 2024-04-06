@@ -27,7 +27,7 @@ const schema: YupRequest = {
     websiteId: yup.string().uuid().required(),
     type: yup
       .string()
-      .matches(/funnel|insights|retention/i)
+      .matches(/funnel|insights|retention|utm/i)
       .required(),
     name: yup.string().max(200).required(),
     description: yup.string().max(500),

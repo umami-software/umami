@@ -1,7 +1,10 @@
+import classNames from 'classnames';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useFields, useMessages, useNavigation } from 'components/hooks';
+import { OPERATOR_PREFIXES } from 'lib/constants';
+import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -12,42 +15,33 @@ export function WebsiteFilterButton({
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
+  const { fields } = useFields();
 
-  const fieldOptions = [
-    { name: 'url', type: 'string', label: formatMessage(labels.url) },
-    { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
-    { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
-    { name: 'os', type: 'string', label: formatMessage(labels.os) },
-    { name: 'device', type: 'string', label: formatMessage(labels.device) },
-    { name: 'country', type: 'string', label: formatMessage(labels.country) },
-    { name: 'region', type: 'string', label: formatMessage(labels.region) },
-    { name: 'city', type: 'string', label: formatMessage(labels.city) },
-  ];
+  const handleAddFilter = ({ name, operator, value }) => {
+    const prefix = OPERATOR_PREFIXES[operator];
 
-  const handleAddFilter = ({ name, value }) => {
-    router.push(renderUrl({ [name]: value }));
+    router.push(renderUrl({ [name]: prefix + value }));
   };
 
   return (
     <PopupTrigger>
-      <Button className={className}>
+      <Button className={classNames(className, styles.button)} variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>
         <Text>{formatMessage(labels.filter)}</Text>
       </Button>
-      <Popup position="bottom" alignment="start">
+      <Popup position="bottom" alignment="end">
         {(close: () => void) => {
           return (
             <PopupForm>
               <FilterSelectForm
                 websiteId={websiteId}
-                items={fieldOptions}
-                onSelect={value => {
+                fields={fields}
+                onChange={value => {
                   handleAddFilter(value);
                   close();
                 }}
-                allowFilterSelect={false}
               />
             </PopupForm>
           );

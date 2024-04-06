@@ -41,7 +41,7 @@
       "value": "Веб нэмэх"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Админ"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Үүсгэсэн"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [

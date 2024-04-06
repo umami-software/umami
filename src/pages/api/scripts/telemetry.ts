@@ -6,7 +6,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (process.env.NODE_ENV === 'production') {
     res.setHeader('content-type', 'text/javascript');
 
-    if (process.env.DISABLE_TELEMETRY) {
+    if (process.env.DISABLE_TELEMETRY || process.env.PRIVATE_MODE) {
       return res.send('/* telemetry disabled */');
     }
 

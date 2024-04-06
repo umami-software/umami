@@ -41,7 +41,7 @@
       "value": "Dodaj spletno mesto"
     }
   ],
-  "label.administrator": [
+  "label.admin": [
     {
       "type": 0,
       "value": "Administrator"
@@ -213,6 +213,12 @@
     {
       "type": 0,
       "value": "Ustvarjeno"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [
