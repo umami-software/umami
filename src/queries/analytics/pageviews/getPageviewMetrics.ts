@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE, SESSION_COLUMNS, OPERATORS } from 'lib/constants';
+import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
@@ -27,6 +27,7 @@ async function relationalQuery(
   offset: number = 0,
 ) {
   const { rawQuery, parseFilters } = prisma;
+
   const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
     {
@@ -71,14 +72,6 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
-    ...(filters.search && {
-      [column]: {
-        value: filters.search,
-        filter: OPERATORS.contains,
-        column,
-        name: column,
-      },
-    }),
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 

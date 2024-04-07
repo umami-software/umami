@@ -44,7 +44,6 @@ export default function WebsiteExpandedView({
   const {
     router,
     renderUrl,
-    pathname,
     query: { view },
   } = useNavigation();
 
@@ -122,7 +121,12 @@ export default function WebsiteExpandedView({
   return (
     <div className={styles.layout}>
       <div className={styles.menu}>
-        <LinkButton href={pathname} className={styles.back} variant="quiet" scroll={false}>
+        <LinkButton
+          href={renderUrl({ view: undefined })}
+          className={styles.back}
+          variant="quiet"
+          scroll={false}
+        >
           <Icon rotate={dir === 'rtl' ? 0 : 180}>
             <Icons.ArrowRight />
           </Icon>

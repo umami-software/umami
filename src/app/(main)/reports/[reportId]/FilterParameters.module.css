@@ -15,7 +15,7 @@
   white-space: nowrap;
 }
 
-.filter {
+.op {
   color: var(--blue900);
   background-color: var(--blue100);
   font-size: 12px;
@@ -33,4 +33,8 @@
   padding: 2px 8px;
   border-radius: 5px;
   white-space: nowrap;
+}
+
+.edit {
+  margin-top: 20px;
 }

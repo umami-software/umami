@@ -261,7 +261,7 @@ export function getMinimumUnit(startDate: number | Date, endDate: number | Date)
     return 'minute';
   } else if (differenceInHours(endDate, startDate) <= 48) {
     return 'hour';
-  } else if (differenceInCalendarMonths(endDate, startDate) <= 12) {
+  } else if (differenceInCalendarMonths(endDate, startDate) <= 6) {
     return 'day';
   } else if (differenceInCalendarMonths(endDate, startDate) <= 24) {
     return 'month';

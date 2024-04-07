@@ -4,6 +4,7 @@ import Icons from 'components/icons';
 import Empty from 'components/common/Empty';
 import { useMessages } from 'components/hooks';
 import styles from './ParameterList.module.css';
+import classNames from 'classnames';
 
 export interface ParameterListProps {
   children?: ReactNode;
@@ -20,9 +21,19 @@ export function ParameterList({ children }: ParameterListProps) {
   );
 }
 
-const Item = ({ children, onRemove }: { children?: ReactNode; onRemove?: () => void }) => {
+const Item = ({
+  children,
+  className,
+  onClick,
+  onRemove,
+}: {
+  children?: ReactNode;
+  className?: string;
+  onClick?: () => void;
+  onRemove?: () => void;
+}) => {
   return (
-    <div className={styles.item}>
+    <div className={classNames(styles.item, className)} onClick={onClick}>
       {children}
       <Icon onClick={onRemove}>
         <Icons.Close />

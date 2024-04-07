@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import { Form, FormButtons, SubmitButton } from 'react-basics';
 import BaseParameters from '../[reportId]/BaseParameters';
 import { ReportContext } from '../[reportId]/Report';
-import InsightsFieldParameters from './InsightsFieldParameters';
-import InsightsFilterParameters from './InsightsFilterParameters';
+import FieldParameters from '../[reportId]/FieldParameters';
+import FilterParameters from '../[reportId]/FilterParameters';
 
 export function InsightsParameters() {
   const { report, runReport, isRunning } = useContext(ReportContext);
@@ -22,8 +22,8 @@ export function InsightsParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit}>
       <BaseParameters allowWebsiteSelect={!id} />
-      {parametersSelected && <InsightsFieldParameters />}
-      {parametersSelected && <InsightsFilterParameters />}
+      {parametersSelected && <FieldParameters />}
+      {parametersSelected && <FilterParameters />}
       <FormButtons>
         <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
