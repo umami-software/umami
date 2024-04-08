@@ -12,21 +12,20 @@ import WebsiteTableView from './WebsiteTableView';
 
 export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   const { data: website, isLoading, error } = useWebsite(websiteId);
-  const pathname = usePathname();
   const { query } = useNavigation();
 
   if (isLoading || error) {
     return <Page isLoading={isLoading} error={error} />;
   }
 
-  const showLinks = !pathname.includes('/share/');
+  const showLinks = false
   const { view, ...params } = query;
 
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
+      <WebsiteMetricsBar websiteId={websiteId} sticky={false} />
       <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (

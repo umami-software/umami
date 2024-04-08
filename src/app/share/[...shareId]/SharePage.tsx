@@ -3,7 +3,6 @@ import WebsiteDetails from 'app/(main)/websites/[websiteId]/WebsiteDetails';
 import { useShareToken } from 'components/hooks';
 import Page from 'components/layout/Page';
 import Header from './Header';
-import Footer from './Footer';
 import styles from './SharePage.module.css';
 
 export default function SharePage({ shareId }) {
@@ -18,7 +17,6 @@ export default function SharePage({ shareId }) {
       <Page>
         <Header />
         <WebsiteDetails websiteId={shareToken.websiteId} />
-        <Footer />
       </Page>
     </div>
   );
