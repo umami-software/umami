@@ -31,16 +31,17 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
     sendHeightToParent();
 
     // Add event listener for resize
-    const resizeListener = () => {
+    window.addEventListener('resize', () => {
       sendHeightToParent();
-    };
-    window.addEventListener('resize', resizeListener);
+    });
 
     // Cleanup function to remove event listener
     return () => {
-      window.removeEventListener('resize', resizeListener);
+      window.removeEventListener('resize', () => {
+        sendHeightToParent();
+      });
     };
-  }, []);
+  }, [])
   return (
     <>
       {showLinks && <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />}
