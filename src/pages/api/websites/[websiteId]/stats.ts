@@ -48,7 +48,6 @@ export default async (
   req: NextApiRequestQueryBody<WebsiteStatsRequestQuery>,
   res: NextApiResponse<WebsiteStats>,
 ) => {
-  await useCors(req, res);
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
