@@ -22,18 +22,23 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
 
   const showLinks = !pathname.includes('/share/');
   const { view, ...params } = query; 
-  const sendHeight = () => {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ height: height }, "*");
-    };
   useEffect(() => {
-    // Send content height initially and on resize
-    sendHeight();
-    window.addEventListener('resize', sendHeight);
+    function sendHeightToParent() {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ height: height }, '*');
+    }
 
-    // Cleanup event listener on component unmount
+    sendHeightToParent();
+
+    // Add event listener for resize
+    const resizeListener = () => {
+      sendHeightToParent();
+    };
+    window.addEventListener('resize', resizeListener);
+
+    // Cleanup function to remove event listener
     return () => {
-      window.removeEventListener('resize', sendHeight);
+      window.removeEventListener('resize', resizeListener);
     };
   }, []);
   return (
