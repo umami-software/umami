@@ -32,7 +32,7 @@ export async function relationalQuery(data: {
     id: uuid(),
     websiteId,
     sessionId,
-    sessionKey: a.key,
+    dataKey: a.key,
     stringValue: getStringValue(a.value, a.dataType),
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
@@ -46,13 +46,13 @@ export async function relationalQuery(data: {
     select: {
       id: true,
       sessionId: true,
-      sessionKey: true,
+      dataKey: true,
     },
   });
 
   for (const data of flattenedData) {
-    const { sessionId, sessionKey, ...props } = data;
-    const record = existing.find(e => e.sessionId === sessionId && e.sessionKey === sessionKey);
+    const { sessionId, dataKey, ...props } = data;
+    const record = existing.find(e => e.sessionId === sessionId && e.dataKey === dataKey);
 
     if (record) {
       await client.sessionData.update({
