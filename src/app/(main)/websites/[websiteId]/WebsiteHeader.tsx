@@ -48,11 +48,12 @@ export function WebsiteHeader({
 
   return (
     <div className={styles.header}>
+      {showLinks && (
       <div className={styles.title}>
         <Favicon domain={domain} />
         <Text>{name}</Text>
         <ActiveUsers websiteId={websiteId} />
-      </div>
+      </div>)}
       <div className={styles.actions}>
         {showLinks && (
           <div className={styles.links}>

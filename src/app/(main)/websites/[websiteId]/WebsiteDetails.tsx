@@ -1,6 +1,7 @@
 'use client';
 import { Loading } from 'react-basics';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 import Page from 'components/layout/Page';
 import FilterTags from 'components/metrics/FilterTags';
 import { useNavigation, useWebsite } from 'components/hooks';
@@ -12,18 +13,34 @@ import WebsiteTableView from './WebsiteTableView';
 
 export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   const { data: website, isLoading, error } = useWebsite(websiteId);
+  const pathname = usePathname();
   const { query } = useNavigation();
 
   if (isLoading || error) {
     return <Page isLoading={isLoading} error={error} />;
   }
 
-  const showLinks = false
+  const showLinks = !pathname.includes('/share/');
   const { view, ...params } = query;
+  useEffect(() => {
+    // Send message to parent window with content height
+    const sendHeight = () => {
+      const height = document.body.scrollHeight;
+      window.parent.postMessage({ height: height }, "*");
+    };
 
+    // Send content height initially and on resize
+    sendHeight();
+    window.addEventListener('resize', sendHeight);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', sendHeight);
+    };
+  }, []);
   return (
     <>
-      <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
+      {showLinks && <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />}
       <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} sticky={false} />
       <WebsiteChart websiteId={websiteId} />
