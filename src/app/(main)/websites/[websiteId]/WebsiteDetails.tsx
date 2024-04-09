@@ -21,14 +21,12 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   }
 
   const showLinks = !pathname.includes('/share/');
-  const { view, ...params } = query;
-  useEffect(() => {
-    // Send message to parent window with content height
-    const sendHeight = () => {
+  const { view, ...params } = query; 
+  const sendHeight = () => {
       const height = document.body.scrollHeight;
       window.parent.postMessage({ height: height }, "*");
     };
-
+  useEffect(() => {
     // Send content height initially and on resize
     sendHeight();
     window.addEventListener('resize', sendHeight);
