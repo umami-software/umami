@@ -36,7 +36,7 @@ async function relationalQuery(data: {
     id: uuid(),
     websiteEventId: eventId,
     websiteId,
-    eventKey: a.key,
+    dataKey: a.key,
     stringValue: getStringValue(a.value, a.dataType),
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
