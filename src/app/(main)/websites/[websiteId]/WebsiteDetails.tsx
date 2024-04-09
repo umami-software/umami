@@ -1,7 +1,6 @@
 'use client';
 import { Loading } from 'react-basics';
 import { usePathname } from 'next/navigation';
-import { useEffect } from 'react';
 import Page from 'components/layout/Page';
 import FilterTags from 'components/metrics/FilterTags';
 import { useNavigation, useWebsite } from 'components/hooks';
@@ -22,26 +21,6 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
 
   const showLinks = !pathname.includes('/share/');
   const { view, ...params } = query; 
-  useEffect(() => {
-    function sendHeightToParent() {
-      const height = document.body.scrollHeight;
-      window.parent.postMessage({ height: height }, '*');
-    }
-
-    sendHeightToParent();
-
-    // Add event listener for resize
-    window.addEventListener('resize', () => {
-      sendHeightToParent();
-    });
-
-    // Cleanup function to remove event listener
-    return () => {
-      window.removeEventListener('resize', () => {
-        sendHeightToParent();
-      });
-    };
-  }, [])
   return (
     <>
       {showLinks && <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />}
