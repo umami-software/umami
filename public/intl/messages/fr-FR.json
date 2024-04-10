@@ -35,6 +35,12 @@
       "value": "Ajouter un membre"
     }
   ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Ajouter une étape"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -547,6 +553,16 @@
       "value": " dernières heures"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " derniers mois"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -671,7 +687,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "enregistrement"
             }
           ]
         },
@@ -679,7 +695,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "enregistrements"
             }
           ]
         }
@@ -876,7 +892,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Mesure de l'atractivité du site en visualisant les taux d'utilisateurs qui reviennent."
+      "value": "Mesure de l'attractivité du site en visualisant les taux de visiteurs qui reviennent."
     }
   ],
   "label.role": [
@@ -955,6 +971,12 @@
     {
       "type": 0,
       "value": "Journée"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Étapes"
     }
   ],
   "label.sum": [
@@ -1131,6 +1153,12 @@
       "value": "Sans titre"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Modifier"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1159,6 +1187,18 @@
     {
       "type": 0,
       "value": "Utilisateurs"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Suivi de campagnes via les paramètres UTM."
     }
   ],
   "label.value": [
@@ -1191,10 +1231,22 @@
       "value": "Vues"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Vues par visite"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Visiteurs"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visites"
     }
   ],
   "label.website": [
@@ -1544,7 +1596,7 @@
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Évènement déclenché"
     }
   ],
   "message.user-deleted": [
