@@ -209,7 +209,7 @@
   "message.confirm-leave": "هل أنت متأكد من مغادرة {target}?",
   "message.confirm-remove": "هل انت متأكد من حذف {target}?",
   "message.confirm-reset": "هل أنت متأكد من اعادة تعيين الإحصائيات لـ {target}؟",
-  "message.delete-team-warning": "حذف فريق سيؤدي إلى حذف جميع مواقع الفريق",
+  "message.delete-team-warning": "سيؤدي حذف الفريق أيضًا إلى حذف كافة مواقع الفريق",
   "message.delete-website-warning": "سيتم حذف كافة بيانات الموقع.",
   "message.error": "حدث خطأ ما.",
   "message.event-log": "{event} في {url}",
