@@ -43,10 +43,8 @@ async function relationalQuery(
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
-      join website 
-        on website_event.website_id = website.website_id
         ${joinSession}
-      where website.website_id = {{websiteId::uuid}}
+      where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
         ${filterQuery}

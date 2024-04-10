@@ -87,7 +87,7 @@ export default async (
     }
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, column, filters, limit, offset);
+      const data = await getSessionMetrics(websiteId, type, filters, limit, offset);
 
       if (type === 'language') {
         const combined = {};

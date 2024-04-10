@@ -15,13 +15,13 @@ export async function getEventDataFields(
 async function relationalQuery(websiteId: string, filters: QueryFilters & { field?: string }) {
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, params } = await parseFilters(websiteId, filters, {
-    columns: { field: 'event_key' },
+    columns: { field: 'data_key' },
   });
 
   return rawQuery(
     `
     select
-      event_key as "fieldName",
+      data_key as "fieldName",
       data_type as "dataType",
       string_value as "fieldValue",
       count(*) as "total"
@@ -29,7 +29,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { fiel
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    group by event_key, data_type, string_value
+    group by data_key, data_type, string_value
     order by 3 desc, 2 desc, 1 asc
     limit 500
     `,
@@ -43,13 +43,13 @@ async function clickhouseQuery(
 ): Promise<{ fieldName: string; dataType: number; fieldValue: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, filters, {
-    columns: { field: 'event_key' },
+    columns: { field: 'data_key' },
   });
 
   return rawQuery(
     `
     select
-      event_key as fieldName,
+      data_key as fieldName,
       data_type as dataType,
       string_value as fieldValue,
       count(*) as total
@@ -57,7 +57,7 @@ async function clickhouseQuery(
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    group by event_key, data_type, string_value
+    group by data_key, data_type, string_value
     order by 3 desc, 2 desc, 1 asc
     limit 500
     `,
