@@ -55,6 +55,8 @@ export function FilterParameters() {
             <FilterSelectForm
               websiteId={websiteId}
               fields={fields.filter(({ name }) => !filters.find(f => f.name === name))}
+              startDate={dateRange?.startDate}
+              endDate={dateRange?.endDate}
               onChange={handleAdd}
             />
           </PopupForm>
