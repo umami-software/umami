@@ -66,7 +66,7 @@ export function FilterTags({
         }
         const label = fields.find(f => f.name === key)?.label;
         const { operator, value } = parseParameterValue(params[key]);
-        const paramValue = isSearchOperator(operator) ? formatValue(value, key) : value;
+        const paramValue = isSearchOperator(operator) ? value : formatValue(value, key);
 
         return (
           <PopupTrigger key={key}>
