@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
-import { useFields, useMessages, useNavigation } from 'components/hooks';
+import { useFields, useMessages, useNavigation, useDateRange } from 'components/hooks';
 import { OPERATOR_PREFIXES } from 'lib/constants';
 import styles from './WebsiteFilterButton.module.css';
 
@@ -16,6 +16,7 @@ export function WebsiteFilterButton({
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
   const { fields } = useFields();
+  const [{ startDate, endDate }] = useDateRange(websiteId);
 
   const handleAddFilter = ({ name, operator, value }) => {
     const prefix = OPERATOR_PREFIXES[operator];
@@ -38,6 +39,8 @@ export function WebsiteFilterButton({
               <FilterSelectForm
                 websiteId={websiteId}
                 fields={fields}
+                startDate={startDate}
+                endDate={endDate}
                 onChange={value => {
                   handleAddFilter(value);
                   close();
