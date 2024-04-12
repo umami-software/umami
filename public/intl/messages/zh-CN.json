@@ -35,6 +35,12 @@
       "value": "添加成员"
     }
   ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Add step"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -555,6 +561,20 @@
       "value": " 小时"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Last "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " months"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -973,6 +993,12 @@
       "value": "单日"
     }
   ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -1147,6 +1173,12 @@
       "value": "未命名"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1175,6 +1207,18 @@
     {
       "type": 0,
       "value": "用户"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
     }
   ],
   "label.value": [
@@ -1207,10 +1251,22 @@
       "value": "浏览量"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "访客"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visits"
     }
   ],
   "label.website": [

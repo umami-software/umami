@@ -75,8 +75,8 @@ export function EventDataParameters() {
           {(close: () => void) => {
             return (
               <FieldAddForm
-                fields={data.map(({ eventKey, eventDataType }) => ({
-                  name: eventKey,
+                fields={data.map(({ dataKey, eventDataType }) => ({
+                  name: dataKey,
                   type: DATA_TYPES[eventDataType],
                 }))}
                 group={group}
