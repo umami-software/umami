@@ -52,6 +52,12 @@
   };
 
   const parseURL = url => {
+    try {
+      const { pathname, search } = new URL(url);
+      url = pathname + search;
+    } catch {
+      /* empty */
+    }
     return excludeSearch ? url.split('?')[0] : url;
   };
 
