@@ -24,6 +24,7 @@ export function LanguagesTable({
       metric={formatMessage(labels.visitors)}
       onDataLoad={data => onDataLoad?.(percentFilter(data))}
       renderLabel={renderLabel}
+      searchFormattedValues={true}
     />
   );
 }

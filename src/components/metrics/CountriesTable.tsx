@@ -42,6 +42,7 @@ export function CountriesTable({
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
       onDataLoad={handleDataLoad}
+      searchFormattedValues={true}
     />
   );
 }
