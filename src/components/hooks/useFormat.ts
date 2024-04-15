@@ -53,7 +53,7 @@ export function useFormat() {
     }
   };
 
-  return { formatOS, formatBrowser, formatDevice, formatCountry, formatRegion, formatValue };
+  return { formatOS, formatBrowser, formatDevice, formatCountry, formatRegion, formatCity, formatValue };
 }
 
 export default useFormat;
