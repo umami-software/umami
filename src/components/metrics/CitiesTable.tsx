@@ -29,6 +29,7 @@ export function CitiesTable(props: MetricsTableProps) {
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }
