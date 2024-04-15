@@ -7,7 +7,7 @@
     document,
     history,
   } = window;
-  const { hostname, pathname, search } = location;
+  const { hostname, href } = location;
   const { currentScript, referrer } = document;
 
   if (!currentScript) return;
@@ -244,7 +244,7 @@
     };
   }
 
-  let currentUrl = `${pathname}${search}`;
+  let currentUrl = parseURL(href);
   let currentRef = referrer !== hostname ? referrer : '';
   let title = document.title;
   let cache;
