@@ -20,19 +20,25 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Toevoegen"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Omschrijving toevoegen"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
       "value": "Add member"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Add step"
     }
   ],
   "label.add-website": [
@@ -44,13 +50,13 @@
   "label.admin": [
     {
       "type": 0,
-      "value": "Beheerder"
+      "value": "Administrator"
     }
   ],
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Na"
     }
   ],
   "label.all": [
@@ -74,7 +80,7 @@
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Gemiddelde"
     }
   ],
   "label.average-visit-time": [
@@ -92,7 +98,7 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Voor"
     }
   ],
   "label.bounce-rate": [
@@ -104,7 +110,7 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Opsplitsen"
     }
   ],
   "label.browser": [
@@ -140,7 +146,7 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Stad"
     }
   ],
   "label.clear-all": [
@@ -164,7 +170,7 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Bevat"
     }
   ],
   "label.continue": [
@@ -182,19 +188,19 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Land"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Aanmaken"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Rapport aanmaken"
     }
   ],
   "label.create-team": [
@@ -218,7 +224,7 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Gemaakt Door"
     }
   ],
   "label.current-password": [
@@ -248,7 +254,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Datum"
     }
   ],
   "label.date-range": [
@@ -260,7 +266,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Dag"
     }
   ],
   "label.default-date-range": [
@@ -278,7 +284,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Rapport verwijderen"
     }
   ],
   "label.delete-team": [
@@ -302,7 +308,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Omschrijving"
     }
   ],
   "label.desktop": [
@@ -320,7 +326,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Apparaat"
     }
   ],
   "label.devices": [
@@ -338,7 +344,7 @@
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Bevat geen"
     }
   ],
   "label.domain": [
@@ -350,7 +356,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Uitval"
     }
   ],
   "label.edit": [
@@ -368,7 +374,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Gebruiker aanpassen"
     }
   ],
   "label.enable-share-url": [
@@ -380,13 +386,13 @@
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Gebeurtenis"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Datum gebeurtenis"
     }
   ],
   "label.events": [
@@ -398,19 +404,19 @@
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Onwaar"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Veld"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Velden"
     }
   ],
   "label.filter": [
@@ -446,31 +452,31 @@
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Ontdek de conversie- en uitvalpercentages van gebruikers."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Groter dan"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Groter of gelijk aan"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Inzichten"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Verken je gegevens verder door segmenten en filters te gebruiken."
     }
   ],
   "label.is": [
@@ -482,19 +488,19 @@
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Is niet"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Is niet ingesteld"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Is ingesteld"
     }
   ],
   "label.join": [
@@ -555,6 +561,20 @@
       "value": " uur"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Last "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " months"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -570,13 +590,13 @@
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Minder dan"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Minder of gelijk aan"
     }
   ],
   "label.login": [
@@ -594,7 +614,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Beheren"
     }
   ],
   "label.max": [
@@ -606,7 +626,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Gebruiker"
     }
   ],
   "label.members": [
@@ -636,13 +656,13 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Mijn profiel"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Mijn websites"
     }
   ],
   "label.name": [
@@ -712,7 +732,7 @@
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Overzicht"
     }
   ],
   "label.owner": [
@@ -724,7 +744,7 @@
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Pagina "
     },
     {
       "type": 1,
@@ -732,7 +752,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " van "
     },
     {
       "type": 1,
@@ -748,7 +768,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Pagina titel"
     }
   ],
   "label.pages": [
@@ -830,7 +850,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Regio"
     }
   ],
   "label.regions": [
@@ -848,13 +868,13 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Gebruiker verwijderen"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Rapporten"
     }
   ],
   "label.required": [
@@ -878,13 +898,13 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "Retentie"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Meet de retentie van je website door door bij te houden hoe vaak gebruikers terugkeren."
     }
   ],
   "label.role": [
@@ -896,7 +916,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Query uitvoeren"
     }
   ],
   "label.save": [
@@ -914,25 +934,25 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Zoeken"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Selecteer"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Datum selecteren"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Rol selecteren"
     }
   ],
   "label.select-website": [
@@ -965,10 +985,16 @@
       "value": "Enkele dag"
     }
   ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Som"
     }
   ],
   "label.tablet": [
@@ -998,7 +1024,7 @@
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Teamnaam"
     }
   ],
   "label.team-owner": [
@@ -1010,7 +1036,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Team alleen lezen"
     }
   ],
   "label.team-websites": [
@@ -1076,13 +1102,13 @@
   "label.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "Totaal"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Totaal records"
     }
   ],
   "label.tracking-code": [
@@ -1106,7 +1132,7 @@
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Waar"
     }
   ],
   "label.type": [
@@ -1136,7 +1162,13 @@
   "label.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Ongetiteld"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
     }
   ],
   "label.url": [
@@ -1148,7 +1180,7 @@
   "label.urls": [
     {
       "type": 0,
-      "value": "URLs"
+      "value": "URL's"
     }
   ],
   "label.user": [
@@ -1169,10 +1201,22 @@
       "value": "Gebruikers"
     }
   ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
+    }
+  ],
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Waarde"
     }
   ],
   "label.view": [
@@ -1190,7 +1234,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Alleen inzien"
     }
   ],
   "label.views": [
@@ -1199,10 +1243,22 @@
       "value": "Weergaven"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Bezoekers"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visits"
     }
   ],
   "label.website": [
@@ -1238,7 +1294,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Typ "
     },
     {
       "type": 1,
@@ -1246,7 +1302,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " in het veld hieronder om te bevestigen."
     }
   ],
   "message.active-users": [
@@ -1314,7 +1370,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Weet je zeker dat je "
     },
     {
       "type": 1,
@@ -1322,7 +1378,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " wilt verwijderen?"
     }
   ],
   "message.confirm-reset": [
@@ -1342,13 +1398,13 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "Als een team wordt verwijderd, worden ook alle websites van dat team verwijderd."
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "Alle verwante gegezens zullen ook verwijderd worden."
+      "value": "Alle verwante gegevens zullen ook verwijderd worden."
     }
   ],
   "message.error": [
@@ -1406,7 +1462,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Een nieuwe versie van Umami "
     },
     {
       "type": 1,
@@ -1414,7 +1470,7 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": " is beschikbaar!"
     }
   ],
   "message.no-data-available": [
@@ -1426,7 +1482,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Geen gegevens over de gebeurtenis beschikbaar."
     }
   ],
   "message.no-match-password": [
@@ -1438,7 +1494,7 @@
   "message.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Geen resultaten gevonden."
     }
   ],
   "message.no-team-websites": [
@@ -1474,7 +1530,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Typ "
     },
     {
       "type": 1,
@@ -1482,7 +1538,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " in het veld hieronder om te bevestigen dat je de website wilt resetten."
     }
   ],
   "message.reset-website-warning": [
@@ -1538,37 +1594,37 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Deze website toevoegen aan je account?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Selecteer het team om deze website aan toe te voegen."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Draag het eigenaarschap van de website over naar jouw account, of een ander team."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Getriggerde gebeurtenis"
     }
   ],
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "Gebruiker verwijderd."
+      "value": "Gebruiker verwijderd"
     }
   ],
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Bekeken pagina"
     }
   ],
   "message.visitor-log": [
@@ -1608,7 +1664,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "Afgehaakte bezoekers"
     }
   ]
 }

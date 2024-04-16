@@ -123,9 +123,9 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
   }
 }
 
-export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
+export async function getClientInfo(req: NextApiRequestCollect) {
   const userAgent = req.headers['user-agent'];
-  const ip = req.body.payload.ip || getIpAddress(req);
+  const ip = req.body?.payload?.ip || getIpAddress(req);
   const location = await getLocation(ip, req);
   const country = location?.country;
   const subdivision1 = location?.subdivision1;
@@ -133,7 +133,7 @@ export async function getClientInfo(req: NextApiRequestCollect, { screen }) {
   const city = location?.city;
   const browser = browserName(userAgent);
   const os = detectOS(userAgent);
-  const device = getDevice(screen, os);
+  const device = getDevice(req.body?.payload?.screen, os);
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
 }

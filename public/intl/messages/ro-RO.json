@@ -35,6 +35,12 @@
       "value": "Adaugă membru"
     }
   ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Add step"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -213,6 +219,12 @@
     {
       "type": 0,
       "value": "Creat"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [
@@ -547,6 +559,20 @@
     {
       "type": 0,
       "value": " ore"
+    }
+  ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Last "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " months"
     }
   ],
   "label.leave": [
@@ -959,6 +985,12 @@
       "value": "O singură zi"
     }
   ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -1133,6 +1165,12 @@
       "value": "Fără titlu"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1161,6 +1199,18 @@
     {
       "type": 0,
       "value": "Utilizatori"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
     }
   ],
   "label.value": [
@@ -1193,10 +1243,22 @@
       "value": "Vizualizări"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Vizitatori"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visits"
     }
   ],
   "label.website": [
