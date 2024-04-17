@@ -7,6 +7,7 @@ export function useFields() {
     { name: 'url', type: 'string', label: formatMessage(labels.url) },
     { name: 'title', type: 'string', label: formatMessage(labels.pageTitle) },
     { name: 'referrer', type: 'string', label: formatMessage(labels.referrer) },
+    { name: 'host', type: 'string', label: formatMessage(labels.host) },
     { name: 'query', type: 'string', label: formatMessage(labels.query) },
     { name: 'browser', type: 'string', label: formatMessage(labels.browser) },
     { name: 'os', type: 'string', label: formatMessage(labels.os) },

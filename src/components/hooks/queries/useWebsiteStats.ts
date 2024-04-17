@@ -5,7 +5,7 @@ export function useWebsiteStats(websiteId: string, options?: { [key: string]: st
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const {
-    query: { url, referrer, title, os, browser, device, country, region, city },
+    query: { url, referrer, host, title, os, browser, device, country, region, city },
   } = useNavigation();
 
   const params = {
@@ -13,6 +13,7 @@ export function useWebsiteStats(websiteId: string, options?: { [key: string]: st
     endAt: +endDate,
     url,
     referrer,
+    host,
     title,
     os,
     browser,
