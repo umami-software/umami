@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.11.1",
+  "version": "2.11.2",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -66,7 +66,7 @@
   "dependencies": {
     "@clickhouse/client": "^0.2.2",
     "@fontsource/inter": "^4.5.15",
-    "@prisma/client": "5.11.0",
+    "@prisma/client": "5.12.1",
     "@prisma/extension-read-replicas": "^0.3.0",
     "@react-spring/web": "^9.7.3",
     "@tanstack/react-query": "^5.28.6",
@@ -102,7 +102,7 @@
     "next-basics": "^0.39.0",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
-    "prisma": "5.11.0",
+    "prisma": "5.12.1",
     "react": "^18.2.0",
     "react-basics": "^0.123.0",
     "react-beautiful-dnd": "^13.1.0",

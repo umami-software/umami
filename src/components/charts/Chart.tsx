@@ -80,8 +80,13 @@ export function Chart({
 
   const updateChart = (data: any) => {
     chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
-      dataset.data = data?.datasets[index]?.data;
-      chart.current.legend.legendItems[index].text = data?.datasets[index].label;
+      if (data?.datasets[index]) {
+        dataset.data = data?.datasets[index]?.data;
+
+        if (chart.current.legend.legendItems[index]) {
+          chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+        }
+      }
     });
 
     chart.current.options = options;
