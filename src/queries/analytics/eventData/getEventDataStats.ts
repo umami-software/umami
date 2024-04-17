@@ -24,18 +24,18 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select 
       count(distinct t.website_event_id) as "events",
-      count(distinct t.event_key) as "fields",
+      count(distinct t.data_key) as "fields",
       sum(t.total) as "records"
     from (
       select
         website_event_id,
-        event_key,
+        data_key,
         count(*) as "total"
       from event_data
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
-      group by website_event_id, event_key
+      group by website_event_id, data_key
       ) as t
     `,
     params,
@@ -53,18 +53,18 @@ async function clickhouseQuery(
     `
     select 
       count(distinct t.event_id) as "events",
-      count(distinct t.event_key) as "fields",
+      count(distinct t.data_key) as "fields",
       sum(t.total) as "records"
     from (
       select
         event_id,
-        event_key,
+        data_key,
         count(*) as "total"
       from event_data
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${filterQuery}
-      group by event_id, event_key
+      group by event_id, data_key
       ) as t
     `,
     params,

@@ -65,7 +65,7 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   await checkUserBlock(website.userId);
 
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
-    await getClientInfo(req, payload);
+    await getClientInfo(req);
 
   const sessionId = uuid(websiteId, hostname, ip, userAgent);
   const visitId = uuid(sessionId, visitSalt());

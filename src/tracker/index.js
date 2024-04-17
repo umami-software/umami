@@ -7,7 +7,7 @@
     document,
     history,
   } = window;
-  const { hostname, pathname, search } = location;
+  const { hostname, href } = location;
   const { currentScript, referrer } = document;
 
   if (!currentScript) return;
@@ -52,6 +52,12 @@
   };
 
   const parseURL = url => {
+    try {
+      const { pathname, search } = new URL(url);
+      url = pathname + search;
+    } catch {
+      /* empty */
+    }
     return excludeSearch ? url.split('?')[0] : url;
   };
 
@@ -238,7 +244,7 @@
     };
   }
 
-  let currentUrl = `${pathname}${search}`;
+  let currentUrl = parseURL(href);
   let currentRef = referrer !== hostname ? referrer : '';
   let title = document.title;
   let cache;

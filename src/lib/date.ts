@@ -154,7 +154,7 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
   switch (unit) {
     case 'hour':
       return {
-        startDate: subHours(startOfHour(now), num),
+        startDate: num ? subHours(startOfHour(now), num - 1) : startOfHour(now),
         endDate: endOfHour(now),
         offset: 0,
         num: num || 1,
@@ -163,8 +163,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'day':
       return {
-        startDate: subDays(startOfDay(now), num),
-        endDate: subDays(endOfDay(now), num ? 1 : 0),
+        startDate: num ? subDays(startOfDay(now), num - 1) : startOfDay(now),
+        endDate: endOfDay(now),
         unit: num ? 'day' : 'hour',
         offset: 0,
         num: num || 1,
@@ -172,8 +172,10 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'week':
       return {
-        startDate: subWeeks(startOfWeek(now, { locale: dateLocale }), num),
-        endDate: subWeeks(endOfWeek(now, { locale: dateLocale }), num),
+        startDate: num
+          ? subWeeks(startOfWeek(now, { locale: dateLocale }), num - 1)
+          : startOfWeek(now, { locale: dateLocale }),
+        endDate: endOfWeek(now, { locale: dateLocale }),
         unit: 'day',
         offset: 0,
         num: num || 1,
@@ -181,8 +183,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'month':
       return {
-        startDate: subMonths(startOfMonth(now), num),
-        endDate: subMonths(endOfMonth(now), num ? 1 : 0),
+        startDate: num ? subMonths(startOfMonth(now), num - 1) : startOfMonth(now),
+        endDate: endOfMonth(now),
         unit: num ? 'month' : 'day',
         offset: 0,
         num: num || 1,
@@ -190,8 +192,8 @@ export function parseDateRange(value: string | object, locale = 'en-US'): DateRa
       };
     case 'year':
       return {
-        startDate: subYears(startOfYear(now), num),
-        endDate: subYears(endOfYear(now), num),
+        startDate: num ? subYears(startOfYear(now), num - 1) : startOfYear(now),
+        endDate: endOfYear(now),
         unit: 'month',
         offset: 0,
         num: num || 1,
@@ -286,19 +288,11 @@ export function getDateFromString(str: string) {
 export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: string) {
   const arr = [];
   const { diff, add, start } = DATE_FUNCTIONS[unit];
-  const n = diff(endDate, startDate) + 1;
+  const n = diff(endDate, startDate);
 
-  function findData(date: Date) {
-    const d = data.find(({ x }) => {
-      return start(getDateFromString(x)).getTime() === date.getTime();
-    });
-
-    return d?.y || 0;
-  }
-
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i <= n; i++) {
     const t = start(add(startDate, i));
-    const y = findData(t);
+    const y = data.find(({ x }) => start(getDateFromString(x)).getTime() === t.getTime())?.y || 0;
 
     arr.push({ x: t, y });
   }
