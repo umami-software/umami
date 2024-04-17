@@ -27,7 +27,7 @@ CREATE TABLE umami.website_event
     event_type UInt32,
     event_name String,
     created_at DateTime('UTC'),
-    job_id UUID
+    job_id Nullable(UUID)
 )
     engine = MergeTree
         ORDER BY (website_id, session_id, created_at)
@@ -40,14 +40,30 @@ CREATE TABLE umami.event_data
     event_id UUID,
     url_path String,
     event_name String,
-    event_key String,
+    data_key String,
     string_value Nullable(String),
-    number_value Nullable(Decimal64(4)), --922337203685477.5625
+    number_value Nullable(Decimal64(4)),
     date_value Nullable(DateTime('UTC')),
     data_type UInt32,
     created_at DateTime('UTC'),
-    job_id UUID
+    job_id Nullable(UUID)
 )
     engine = MergeTree
-        ORDER BY (website_id, event_id, event_key, created_at)
+        ORDER BY (website_id, event_id, data_key, created_at)
+        SETTINGS index_granularity = 8192;
+
+CREATE TABLE umami.session_data
+(
+    website_id UUID,
+    session_id UUID,
+    data_key String,
+    string_value Nullable(String),
+    number_value Nullable(Decimal64(4)),
+    date_value Nullable(DateTime('UTC')),
+    data_type UInt32,
+    created_at DateTime('UTC'),
+    job_id Nullable(UUID)
+)
+    engine = MergeTree
+        ORDER BY (website_id, session_id, data_key, created_at)
         SETTINGS index_granularity = 8192;
