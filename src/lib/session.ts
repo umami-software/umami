@@ -6,23 +6,9 @@ import { createSession } from 'queries';
 import cache from './cache';
 import clickhouse from './clickhouse';
 import { loadSession, loadWebsite } from './load';
+import { SessionData } from 'lib/types';
 
-export async function findSession(req: NextApiRequestCollect): Promise<{
-  id: any;
-  websiteId: string;
-  visitId: string;
-  hostname: string;
-  browser: string;
-  os: any;
-  device: string;
-  screen: string;
-  language: string;
-  country: any;
-  subdivision1: any;
-  subdivision2: any;
-  city: any;
-  ownerId: string;
-}> {
+export async function getSession(req: NextApiRequestCollect): Promise<SessionData> {
   const { payload } = req.body;
 
   if (!payload) {
@@ -35,6 +21,7 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   if (cacheToken) {
     const result = await parseToken(cacheToken, secret());
 
+    // Token is valid
     if (result) {
       await checkUserBlock(result?.ownerId);
 
@@ -45,7 +32,6 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
 
-  // Check the hostname value for legality to eliminate dirty data
   const validHostnameRegex = /^[\w-.]+$/;
   if (!validHostnameRegex.test(hostname)) {
     throw new Error('Invalid hostname.');
@@ -78,7 +64,7 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
       visitId,
       hostname,
       browser,
-      os: os as any,
+      os,
       device,
       screen,
       language,

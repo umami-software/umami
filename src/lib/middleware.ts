@@ -4,7 +4,7 @@ import redis from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { findSession } from 'lib/session';
+import { getSession } from 'lib/session';
 import {
   badRequest,
   createMiddleware,
@@ -27,7 +27,7 @@ export const useCors = createMiddleware(
 
 export const useSession = createMiddleware(async (req, res, next) => {
   try {
-    const session = await findSession(req as NextApiRequestCollect);
+    const session = await getSession(req as NextApiRequestCollect);
 
     if (!session) {
       log('useSession: Session not found');

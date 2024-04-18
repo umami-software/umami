@@ -230,3 +230,20 @@ export interface RealtimeData {
   countries?: any[];
   visitors?: any[];
 }
+
+export interface SessionData {
+  id: string;
+  websiteId: string;
+  visitId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
+  ownerId: string;
+}
