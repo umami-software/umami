@@ -98,6 +98,11 @@ docker compose pull
 docker compose up --force-recreate
 ```
 
+## One-Click Deployment
+
+[![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploylobe.svg)](https://repocloud.io/details/?app_id=67)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template/umami-analytics)
+
 ## License
 
 MIT
