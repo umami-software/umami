@@ -1,18 +1,14 @@
-import useApi from './useApi';
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useDateRange, useNavigation, useTimezone } from 'components/hooks';
 import { zonedTimeToUtc } from 'date-fns-tz';
+import useApi from './useApi';
 
-export function useWebsiteEvents(
-  websiteId: string,
-  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
-) {
+export function useWebsiteEvents(websiteId: string, options?: { [key: string]: string }) {
   const { get, useQuery } = useApi();
   const [dateRange] = useDateRange(websiteId);
   const { startDate, endDate, unit, offset } = dateRange;
   const { timezone } = useTimezone();
   const {
-    query: { url, event },
+    query: { url, referrer, os, browser, device, country, region, city, title, event },
   } = useNavigation();
 
   const params = {
@@ -20,14 +16,22 @@ export function useWebsiteEvents(
     endAt: +zonedTimeToUtc(endDate, timezone),
     unit,
     offset,
-    timezone,
     url,
+    referrer,
+    os,
+    browser,
+    device,
+    country,
+    region,
+    city,
+    title,
+    timezone,
     event,
   };
 
   return useQuery({
-    queryKey: ['events', { ...params }],
-    queryFn: () => get(`/websites/${websiteId}/events`, { ...params }),
+    queryKey: ['events', { websiteId, ...params }],
+    queryFn: () => get(`/websites/${websiteId}/events`, params),
     enabled: !!websiteId,
     ...options,
   });

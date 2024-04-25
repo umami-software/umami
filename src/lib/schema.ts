@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 export const dateRange = {
   startAt: yup.number().integer().required(),
-  endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+  endAt: yup.number().integer().min(yup.ref('startAt')).required(),
 };
 
 export const pageInfo = {
