@@ -245,5 +245,4 @@ export interface SessionData {
   subdivision1: string;
   subdivision2: string;
   city: string;
-  ownerId: string;
 }
