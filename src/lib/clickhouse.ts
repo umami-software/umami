@@ -4,7 +4,7 @@ import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { QueryFilters, QueryOptions } from './types';
 import { OPERATORS } from './constants';
-import { loadWebsite } from './load';
+import { fetchWebsite } from './load';
 import { maxDate } from './date';
 import { filtersToArray } from './params';
 
@@ -106,7 +106,7 @@ function getFilterParams(filters: QueryFilters = {}) {
 }
 
 async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
-  const website = await loadWebsite(websiteId);
+  const website = await fetchWebsite(websiteId);
 
   return {
     filterQuery: getFilterQuery(filters, options),

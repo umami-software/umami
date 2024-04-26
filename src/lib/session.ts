@@ -4,7 +4,7 @@ import { parseToken } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
 import clickhouse from './clickhouse';
-import { loadSession, loadWebsite } from './load';
+import { fetchSession, fetchWebsite } from './load';
 import { SessionData } from 'lib/types';
 
 export async function getSession(req: NextApiRequestCollect): Promise<SessionData> {
@@ -30,7 +30,7 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
   const { website: websiteId, hostname, screen, language } = payload;
 
   // Find website
-  const website = await loadWebsite(websiteId);
+  const website = await fetchWebsite(websiteId);
 
   if (!website) {
     throw new Error(`Website not found: ${websiteId}.`);
@@ -62,7 +62,7 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
   }
 
   // Find session
-  let session = await loadSession(sessionId);
+  let session = await fetchSession(sessionId);
 
   // Create a session if not found
   if (!session) {

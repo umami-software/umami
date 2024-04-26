@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
 import { FilterResult, Role, User, UserSearchFilter } from 'lib/types';
@@ -221,15 +220,5 @@ export async function deleteUser(
         id: userId,
       },
     }),
-  ]).then(async data => {
-    if (cache.enabled) {
-      const ids = websites.map(a => a.id);
-
-      for (let i = 0; i < ids.length; i++) {
-        await cache.deleteWebsite(`website:${ids[i]}`);
-      }
-    }
-
-    return data;
-  });
+  ]);
 }
