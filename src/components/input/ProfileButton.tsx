@@ -11,7 +11,7 @@ export function ProfileButton() {
   const { user } = useLogin();
   const router = useRouter();
   const { dir } = useLocale();
-  const cloudMode = Boolean(process.env.cloudMode);
+  const cloudMode = !!process.env.cloudMode;
 
   const handleSelect = (key: Key, close: () => void) => {
     if (key === 'profile') {

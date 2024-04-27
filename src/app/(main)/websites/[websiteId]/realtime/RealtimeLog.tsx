@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { StatusLight, Icon, Text, SearchField } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import { format } from 'date-fns';
@@ -11,6 +11,8 @@ import Icons from 'components/icons';
 import useFormat from 'components//hooks/useFormat';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
+import { RealtimeData } from 'lib/types';
+import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
 const TYPE_ALL = 'all';
@@ -24,7 +26,8 @@ const icons = {
   [TYPE_EVENT]: <Icons.Bolt />,
 };
 
-export function RealtimeLog({ data, websiteDomain }) {
+export function RealtimeLog({ data }: { data: RealtimeData }) {
+  const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
@@ -76,7 +79,7 @@ export function RealtimeLog({ data, websiteDomain }) {
             event: <b>{eventName || formatMessage(labels.unknown)}</b>,
             url: (
               <a
-                href={`//${websiteDomain}${url}`}
+                href={`//${website?.domain}${url}`}
                 className={styles.link}
                 target="_blank"
                 rel="noreferrer noopener"
@@ -92,7 +95,7 @@ export function RealtimeLog({ data, websiteDomain }) {
     if (__type === TYPE_PAGEVIEW) {
       return (
         <a
-          href={`//${websiteDomain}${url}`}
+          href={`//${website?.domain}${url}`}
           className={styles.link}
           target="_blank"
           rel="noreferrer noopener"

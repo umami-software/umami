@@ -1,6 +1,6 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { parseDateRangeQuery } from 'lib/query';
+import { getRequestFilters, getRequestDateRange } from 'lib/request';
 import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
@@ -52,30 +52,21 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, timezone, url, referrer, title, os, browser, device, country, region, city } =
-    req.query;
+  const { websiteId, timezone } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const { startDate, endDate, unit } = await parseDateRangeQuery(req);
+    const { startDate, endDate, unit } = await getRequestDateRange(req);
 
     const filters = {
+      ...getRequestFilters(req),
       startDate,
       endDate,
       timezone,
       unit,
-      url,
-      referrer,
-      title,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
     };
 
     const [pageviews, sessions] = await Promise.all([

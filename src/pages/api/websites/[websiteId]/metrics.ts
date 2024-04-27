@@ -3,9 +3,9 @@ import { badRequest, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { WebsiteMetric, NextApiRequestQueryBody } from 'lib/types';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS } from 'lib/constants';
+import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from 'lib/constants';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
-import { parseDateRangeQuery } from 'lib/query';
+import { getRequestFilters, getRequestDateRange } from 'lib/request';
 import * as yup from 'yup';
 
 export interface WebsiteMetricsRequestQuery {
@@ -90,36 +90,25 @@ export default async (
       return unauthorized(res);
     }
 
-    const { startDate, endDate } = await parseDateRangeQuery(req);
-
+    const { startDate, endDate } = await getRequestDateRange(req);
+    const column = FILTER_COLUMNS[type] || type;
     const filters = {
+      ...getRequestFilters(req),
       startDate,
       endDate,
-      url,
-      referrer,
-      title,
-      query,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      language,
-      event,
-      search,
     };
 
-    const column = FILTER_COLUMNS[type] || type;
+    if (search) {
+      filters[type] = {
+        name: type,
+        column,
+        operator: OPERATORS.contains,
+        value: search,
+      };
+    }
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(
-        websiteId,
-        column,
-        { ...filters, search },
-        limit,
-        offset,
-      );
+      const data = await getSessionMetrics(websiteId, type, filters, limit, offset);
 
       if (type === 'language') {
         const combined = {};
@@ -141,13 +130,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(
-        websiteId,
-        column,
-        { ...filters, search },
-        limit,
-        offset,
-      );
+      const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
 
       return ok(res, data);
     } else if (type === 'custom') {

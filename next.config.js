@@ -14,6 +14,7 @@ const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
 const disableLogin = process.env.DISABLE_LOGIN || '';
 const disableUI = process.env.DISABLE_UI || '';
 const hostURL = process.env.HOST_URL || '';
+const privateMode = process.env.PRIVATE_MODE || '';
 
 const contentSecurityPolicy = [
   `default-src 'self'`,
@@ -120,6 +121,7 @@ const config = {
     disableLogin,
     disableUI,
     hostURL,
+    privateMode,
   },
   basePath,
   output: 'standalone',

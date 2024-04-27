@@ -1,0 +1,16 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.type {
+  color: var(--base700);
+}
+
+.value {
+  display: flex;
+  align-self: center;
+  gap: 20px;
+}

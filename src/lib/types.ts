@@ -73,7 +73,7 @@ export interface FilterQueryResult<T> {
 }
 
 export interface DynamicData {
-  [key: string]: number | string | DynamicData | number[] | string[] | DynamicData[];
+  [key: string]: number | string | number[] | string[];
 }
 
 export interface Auth {

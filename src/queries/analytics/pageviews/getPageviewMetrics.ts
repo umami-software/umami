@@ -1,7 +1,7 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE, SESSION_COLUMNS, OPERATORS } from 'lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
@@ -22,12 +22,13 @@ export async function getPageviewMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  column: string,
+  type: string,
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
   fieldName?: string,
 ) {
+  const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
@@ -35,7 +36,7 @@ async function relationalQuery(
       ...filters,
       eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
-    { joinSession: SESSION_COLUMNS.includes(column) },
+    { joinSession: SESSION_COLUMNS.includes(type) },
   );
 
   let excludeDomain = '';
@@ -72,24 +73,17 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  column: string,
+  type: string,
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   fieldName?: string,
 ): Promise<{ x: string; y: number }[]> {
+  const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
-    ...(filters.search && {
-      [column]: {
-        value: filters.search,
-        filter: OPERATORS.contains,
-        column,
-        name: column,
-      },
-    }),
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 

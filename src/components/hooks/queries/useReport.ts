@@ -4,11 +4,14 @@ import { useApi } from './useApi';
 import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
 
-export function useReport(reportId: string, defaultParameters: { [key: string]: any }) {
+export function useReport(
+  reportId: string,
+  defaultParameters: { type: string; parameters: { [key: string]: any } },
+) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
   const { get, post } = useApi();
-  const [timezone] = useTimezone();
+  const { timezone } = useTimezone();
   const { formatMessage, labels } = useMessages();
 
   const baseParameters = {
@@ -28,6 +31,8 @@ export function useReport(reportId: string, defaultParameters: { [key: string]: 
       dateRange.endDate = new Date(endDate);
     }
 
+    data.parameters = { ...defaultParameters?.parameters, ...data.parameters };
+
     setReport(data);
   };
 
@@ -41,7 +46,7 @@ export function useReport(reportId: string, defaultParameters: { [key: string]: 
 
       setReport(
         produce((state: any) => {
-          state.parameters = parameters;
+          state.parameters = { ...defaultParameters?.parameters, ...parameters };
           state.data = data;
 
           return state;
@@ -60,7 +65,11 @@ export function useReport(reportId: string, defaultParameters: { [key: string]: 
           const { parameters, ...rest } = data;
 
           if (parameters) {
-            state.parameters = { ...state.parameters, ...parameters };
+            state.parameters = {
+              ...defaultParameters?.parameters,
+              ...state.parameters,
+              ...parameters,
+            };
           }
 
           for (const key in rest) {
@@ -80,7 +89,7 @@ export function useReport(reportId: string, defaultParameters: { [key: string]: 
     } else {
       loadReport(reportId);
     }
-  }, []);
+  }, [reportId]);
 
   return { report, runReport, updateReport, isRunning };
 }

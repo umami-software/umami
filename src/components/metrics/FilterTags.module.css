@@ -13,18 +13,39 @@
   flex-direction: row;
   align-items: center;
   gap: 10px;
-  font-size: var(--font-size-sm);
-  border: 1px solid var(--blue400);
+  background: var(--base75);
+  border: 1px solid var(--base400);
   border-radius: var(--border-radius);
+  box-shadow: 1px 1px 1px var(--base500);
   padding: 8px 16px;
   cursor: pointer;
-  background: var(--blue100);
 }
 
 .tag:hover {
-  background: var(--blue200);
+  background: var(--base100);
 }
 
-.tag b {
+.close {
+  font-weight: 700;
+}
+
+.name,
+.value {
+  color: var(--base700);
+  font-weight: 700;
+}
+
+.operator {
   text-transform: lowercase;
+  font-weight: 900;
+}
+
+.icon {
+  margin-left: 10px;
+  padding: 2px;
+  border-radius: 100%;
+}
+
+.icon:hover {
+  background: var(--base200);
 }

@@ -9,7 +9,7 @@ import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
   type: REPORT_TYPES.funnel,
-  parameters: { window: 60, urls: [] },
+  parameters: { window: 60, steps: [] },
 };
 
 export default function FunnelReport({ reportId }: { reportId?: string }) {

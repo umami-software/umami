@@ -32,7 +32,13 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "Ajouter un membre"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Ajouter une étape"
     }
   ],
   "label.add-website": [
@@ -215,6 +221,12 @@
       "value": "Créé"
     }
   ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Crée par"
+    }
+  ],
   "label.current-password": [
     {
       "type": 0,
@@ -272,7 +284,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Supprimer le rapport"
     }
   ],
   "label.delete-team": [
@@ -362,7 +374,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Modifier le membre"
     }
   ],
   "label.enable-share-url": [
@@ -541,6 +553,16 @@
       "value": " dernières heures"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " derniers mois"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -580,7 +602,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Gérer"
     }
   ],
   "label.max": [
@@ -592,7 +614,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Membre"
     }
   ],
   "label.members": [
@@ -622,7 +644,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Mon compte"
     }
   ],
   "label.my-websites": [
@@ -646,7 +668,7 @@
   "label.none": [
     {
       "type": 0,
-      "value": "Aucun·e"
+      "value": "Aucun"
     }
   ],
   "label.number-of-records": [
@@ -665,7 +687,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "enregistrement"
             }
           ]
         },
@@ -673,7 +695,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "enregistrements"
             }
           ]
         }
@@ -834,7 +856,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Retirer le membre"
     }
   ],
   "label.reports": [
@@ -870,7 +892,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Mesure de l'atractivité du site en visualisant les taux d'utilisateurs qui reviennent."
+      "value": "Mesure de l'attractivité du site en visualisant les taux de visiteurs qui reviennent."
     }
   ],
   "label.role": [
@@ -918,7 +940,7 @@
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Choisir un rôle"
     }
   ],
   "label.select-website": [
@@ -949,6 +971,12 @@
     {
       "type": 0,
       "value": "Journée"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Étapes"
     }
   ],
   "label.sum": [
@@ -1080,13 +1108,13 @@
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "Transférer"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Transférer le site"
     }
   ],
   "label.true": [
@@ -1125,6 +1153,12 @@
       "value": "Sans titre"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Modifier"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1153,6 +1187,18 @@
     {
       "type": 0,
       "value": "Utilisateurs"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Suivi de campagnes via les paramètres UTM."
     }
   ],
   "label.value": [
@@ -1185,10 +1231,22 @@
       "value": "Vues"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Vues par visite"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Visiteurs"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visites"
     }
   ],
   "label.website": [
@@ -1224,7 +1282,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Taper "
     },
     {
       "type": 1,
@@ -1232,7 +1290,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " ci-dessous pour confirmer."
     }
   ],
   "message.active-users": [
@@ -1304,7 +1362,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Êtes-vous sûr de vouloir retirer "
     },
     {
       "type": 1,
@@ -1312,7 +1370,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " ?"
     }
   ],
   "message.confirm-reset": [
@@ -1332,7 +1390,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "Supprimer une équipe supprimera aussi tous les sites de cette équipe."
     }
   ],
   "message.delete-website-warning": [
@@ -1520,25 +1578,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Transférer ce site sur votre compte ?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Choisir l'équipe à laquelle transférer ce site."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Transférer la propriété du site sur votre compte ou à une autre équipe."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Évènement déclenché"
     }
   ],
   "message.user-deleted": [
@@ -1550,7 +1608,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Page vue"
     }
   ],
   "message.visitor-log": [
@@ -1590,7 +1648,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "Visiteurs ont abandonné"
     }
   ]
 }

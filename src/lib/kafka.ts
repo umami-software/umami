@@ -17,14 +17,9 @@ function getClient() {
   const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions | Mechanism } =
     username && password
       ? {
-          ssl: {
-            checkServerIdentity: () => undefined,
-            ca: [process.env.CA_CERT],
-            key: process.env.CLIENT_KEY,
-            cert: process.env.CLIENT_CERT,
-          },
+          ssl: true,
           sasl: {
-            mechanism: 'plain',
+            mechanism: 'scram-sha-256',
             username,
             password,
           },

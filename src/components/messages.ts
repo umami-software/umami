@@ -99,6 +99,7 @@ export const labels = defineMessages({
   queryParameters: { id: 'label.query-parameters', defaultMessage: 'Query parameters' },
   back: { id: 'label.back', defaultMessage: 'Back' },
   visitors: { id: 'label.visitors', defaultMessage: 'Visitors' },
+  visits: { id: 'label.visits', defaultMessage: 'Visits' },
   filterCombined: { id: 'label.filter-combined', defaultMessage: 'Combined' },
   filterRaw: { id: 'label.filter-raw', defaultMessage: 'Raw' },
   views: { id: 'label.views', defaultMessage: 'Views' },
@@ -109,6 +110,7 @@ export const labels = defineMessages({
   yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
   thisWeek: { id: 'label.this-week', defaultMessage: 'This week' },
   lastDays: { id: 'label.last-days', defaultMessage: 'Last {x} days' },
+  lastMonths: { id: 'label.last-months', defaultMessage: 'Last {x} months' },
   thisMonth: { id: 'label.this-month', defaultMessage: 'This month' },
   thisYear: { id: 'label.this-year', defaultMessage: 'This year' },
   allTime: { id: 'label.all-time', defaultMessage: 'All time' },
@@ -125,6 +127,7 @@ export const labels = defineMessages({
   pageViews: { id: 'label.page-views', defaultMessage: 'Page views' },
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
+  viewsPerVisit: { id: 'label.views-per-visit', defaultMessage: 'Views per visit' },
   averageVisitTime: { id: 'label.average-visit-time', defaultMessage: 'Average visit time' },
   desktop: { id: 'label.desktop', defaultMessage: 'Desktop' },
   laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
@@ -146,6 +149,7 @@ export const labels = defineMessages({
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
   add: { id: 'label.add', defaultMessage: 'Add' },
+  update: { id: 'label.update', defaultMessage: 'Update' },
   window: { id: 'label.window', defaultMessage: 'Window' },
   runQuery: { id: 'label.run-query', defaultMessage: 'Run query' },
   field: { id: 'label.field', defaultMessage: 'Field' },
@@ -222,6 +226,13 @@ export const labels = defineMessages({
     id: 'message.visitors-dropped-off',
     defaultMessage: 'Visitors dropped off',
   },
+  utm: { id: 'label.utm', defaultMessage: 'UTM' },
+  utmDescription: {
+    id: 'label.utm-description',
+    defaultMessage: 'Track your campaigns through UTM parameters.',
+  },
+  steps: { id: 'label.steps', defaultMessage: 'Steps' },
+  addStep: { id: 'label.add-step', defaultMessage: 'Add step' },
 });
 
 export const messages = defineMessages({

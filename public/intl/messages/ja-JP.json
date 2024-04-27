@@ -32,7 +32,13 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "メンバーの追加"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Add step"
     }
   ],
   "label.add-website": [
@@ -188,7 +194,7 @@
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "作成"
     }
   ],
   "label.create-report": [
@@ -213,6 +219,12 @@
     {
       "type": 0,
       "value": "作成されました"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [
@@ -272,7 +284,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "レポートの削除"
     }
   ],
   "label.delete-team": [
@@ -362,7 +374,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "メンバーの編集"
     }
   ],
   "label.enable-share-url": [
@@ -410,13 +422,13 @@
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "フィルター"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "統合"
+      "value": "結合"
     }
   ],
   "label.filter-raw": [
@@ -434,13 +446,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "分析"
+      "value": "ファネル"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "ユーザーのコンバージョン率と離脱率を分析します。"
     }
   ],
   "label.greater-than": [
@@ -458,13 +470,13 @@
   "label.insights": [
     {
       "type": 0,
-      "value": "見通し"
+      "value": "インサイト"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "セグメントとフィルタを使用して、データをさらに詳しく分析します。"
     }
   ],
   "label.is": [
@@ -549,6 +561,20 @@
       "value": "時間"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Last "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " months"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -588,7 +614,7 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "管理"
     }
   ],
   "label.max": [
@@ -600,7 +626,7 @@
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "メンバー"
     }
   ],
   "label.members": [
@@ -630,7 +656,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "マイアカウント"
     }
   ],
   "label.my-websites": [
@@ -842,7 +868,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "メンバーの削除"
     }
   ],
   "label.reports": [
@@ -872,13 +898,13 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "保持"
+      "value": "リテンション"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "ユーザーの再訪問回数を記録して、Webサイトのリテンション率を計測します。"
     }
   ],
   "label.role": [
@@ -908,13 +934,13 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "検索"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "選択"
     }
   ],
   "label.select-date": [
@@ -926,7 +952,7 @@
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "ロールを選択"
     }
   ],
   "label.select-website": [
@@ -957,6 +983,12 @@
     {
       "type": 0,
       "value": "一日"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
     }
   ],
   "label.sum": [
@@ -1004,7 +1036,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "チーム表示のみ"
     }
   ],
   "label.team-websites": [
@@ -1088,13 +1120,13 @@
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "移管"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Webサイトの移管"
     }
   ],
   "label.true": [
@@ -1133,6 +1165,12 @@
       "value": "無題"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1161,6 +1199,18 @@
     {
       "type": 0,
       "value": "ユーザー"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
     }
   ],
   "label.value": [
@@ -1193,10 +1243,22 @@
       "value": "表示"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "訪問者"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visits"
     }
   ],
   "label.website": [
@@ -1232,7 +1294,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "承認する場合は、下のフォームに「"
     },
     {
       "type": 1,
@@ -1240,7 +1302,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": "」と入力してください。"
     }
   ],
   "message.active-users": [
@@ -1299,16 +1361,12 @@
   ],
   "message.confirm-remove": [
     {
-      "type": 0,
-      "value": "Are you sure you want to remove "
-    },
-    {
       "type": 1,
       "value": "target"
     },
     {
       "type": 0,
-      "value": "?"
+      "value": "を削除してもよろしいですか？"
     }
   ],
   "message.confirm-reset": [
@@ -1324,7 +1382,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。"
     }
   ],
   "message.delete-website-warning": [
@@ -1526,25 +1584,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "このWebサイトをあなたのアカウントに移管しますか？"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "このWebサイトを移管するチームを選択してください。"
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Webサイトの所有権を自分のアカウントまたは別のチームへ移管します。"
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "トリガーされたイベント"
     }
   ],
   "message.user-deleted": [
@@ -1556,7 +1614,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "閲覧されたページ"
     }
   ],
   "message.visitor-log": [
@@ -1596,7 +1654,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "訪問者の離脱率"
     }
   ]
 }

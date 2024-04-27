@@ -4,7 +4,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, WebsiteStats } from 'lib/types';
-import { parseDateRangeQuery } from 'lib/query';
+import { getRequestFilters, getRequestDateRange } from 'lib/request';
 import { getWebsiteStats } from 'queries';
 
 export interface WebsiteStatsRequestQuery {
@@ -52,44 +52,19 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const {
-    websiteId,
-    url,
-    referrer,
-    title,
-    query,
-    event,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-  }: any & { websiteId: string } = req.query;
+  const { websiteId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const { startDate, endDate } = await parseDateRangeQuery(req);
+    const { startDate, endDate } = await getRequestDateRange(req);
     const diff = differenceInMinutes(endDate, startDate);
     const prevStartDate = subMinutes(startDate, diff);
     const prevEndDate = subMinutes(endDate, diff);
 
-    const filters = {
-      url,
-      referrer,
-      title,
-      query,
-      event,
-      os,
-      browser,
-      device,
-      country,
-      region,
-      city,
-    };
+    const filters = getRequestFilters(req);
 
     const metrics = await getWebsiteStats(websiteId, { ...filters, startDate, endDate });
 
