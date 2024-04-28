@@ -29,7 +29,7 @@
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const pageviewCustomPropertyRegex = /data-([\w-_]+)/;
-  const reservedDataAttributes = ['website-id', 'domains', 'umami-event', 'auto-track', 'host-url'];
+  const reservedDataAttributes = ['website-id', 'domains', 'umami-event', 'auto-track', 'host-url', 'exclude-search'];
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
 
