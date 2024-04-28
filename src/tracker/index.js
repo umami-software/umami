@@ -28,6 +28,8 @@
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
+  const pageviewCustomPropertyRegex = /data-([\w-_]+)/;
+  const reservedDataAttributes = ['website-id', 'domains', 'umami-event', 'auto-track', 'host-url', 'exclude-search'];
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
 
@@ -60,6 +62,20 @@
     }
     return excludeSearch ? url.split('?')[0] : url;
   };
+
+  const getPageviewEventData = () =>
+    Object.fromEntries(
+      Array.from(currentScript.attributes)
+        .filter(attribute => attribute.name.match(pageviewCustomPropertyRegex))
+        .filter(
+          attribute =>
+            !reservedDataAttributes.some(reserved => _data + reserved === attribute.name),
+        )
+        .map(attribute => {
+          const match = attribute.name.match(pageviewCustomPropertyRegex);
+          return [match[1], attribute.value];
+        }),
+    );
 
   const getPayload = () => ({
     website,
@@ -230,7 +246,7 @@
     } else if (typeof obj === 'function') {
       return send(obj(getPayload()));
     }
-    return send(getPayload());
+    return send({ ...getPayload(), data: getPageviewEventData() });
   };
 
   const identify = data => send({ ...getPayload(), data }, 'identify');

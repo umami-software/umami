@@ -28,6 +28,7 @@ export interface WebsiteMetricsRequestQuery {
   limit?: number;
   offset?: number;
   search?: string;
+  fieldName?: string;
 }
 
 const schema = {
@@ -51,6 +52,7 @@ const schema = {
     limit: yup.number(),
     offset: yup.number(),
     search: yup.string(),
+    fieldName: yup.string(),
   }),
 };
 
@@ -62,7 +64,26 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, type, limit, offset, search } = req.query;
+  const {
+    websiteId,
+    type,
+    url,
+    referrer,
+    title,
+    query,
+    os,
+    browser,
+    device,
+    country,
+    region,
+    city,
+    language,
+    event,
+    limit,
+    offset,
+    search,
+    fieldName,
+  } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -110,6 +131,10 @@ export default async (
 
     if (EVENT_COLUMNS.includes(type)) {
       const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
+
+      return ok(res, data);
+    } else if (type === 'custom') {
+      const data = await getPageviewMetrics(websiteId, column, filters, limit, offset, fieldName);
 
       return ok(res, data);
     }
