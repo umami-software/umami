@@ -2,7 +2,7 @@ import { Prisma, Team } from '@prisma/client';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import prisma from 'lib/prisma';
-import { FilterResult, TeamSearchFilter } from 'lib/types';
+import { PageResult, PageParams } from 'lib/types';
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
 
 export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {
@@ -22,8 +22,8 @@ export async function getTeam(teamId: string, options: { includeMembers?: boolea
 
 export async function getTeams(
   criteria: TeamFindManyArgs,
-  filters: TeamSearchFilter = {},
-): Promise<FilterResult<Team[]>> {
+  filters: PageParams = {},
+): Promise<PageResult<Team[]>> {
   const { getSearchParameters } = prisma;
   const { query } = filters;
 
@@ -42,7 +42,7 @@ export async function getTeams(
   );
 }
 
-export async function getUserTeams(userId: string, filters: TeamSearchFilter = {}) {
+export async function getUserTeams(userId: string, filters: PageParams = {}) {
   return getTeams(
     {
       where: {

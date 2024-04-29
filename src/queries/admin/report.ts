@@ -1,6 +1,6 @@
 import { Prisma, Report } from '@prisma/client';
 import prisma from 'lib/prisma';
-import { FilterResult, ReportSearchFilter } from 'lib/types';
+import { PageResult, PageParams } from 'lib/types';
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
 async function findReport(criteria: Prisma.ReportFindUniqueArgs): Promise<Report> {
@@ -17,8 +17,8 @@ export async function getReport(reportId: string): Promise<Report> {
 
 export async function getReports(
   criteria: ReportFindManyArgs,
-  filters: ReportSearchFilter = {},
-): Promise<FilterResult<Report[]>> {
+  filters: PageParams = {},
+): Promise<PageResult<Report[]>> {
   const { query } = filters;
 
   const where: Prisma.ReportWhereInput = {
@@ -50,8 +50,8 @@ export async function getReports(
 
 export async function getUserReports(
   userId: string,
-  filters?: ReportSearchFilter,
-): Promise<FilterResult<Report[]>> {
+  filters?: PageParams,
+): Promise<PageResult<Report[]>> {
   return getReports(
     {
       where: {
@@ -72,8 +72,8 @@ export async function getUserReports(
 
 export async function getWebsiteReports(
   websiteId: string,
-  filters: ReportSearchFilter = {},
-): Promise<FilterResult<Report[]>> {
+  filters: PageParams = {},
+): Promise<PageResult<Report[]>> {
   return getReports(
     {
       where: {

@@ -1,6 +1,6 @@
 import { Prisma, Website } from '@prisma/client';
 import prisma from 'lib/prisma';
-import { FilterResult, WebsiteSearchFilter } from 'lib/types';
+import { PageResult, PageParams } from 'lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
 
 async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
@@ -25,8 +25,8 @@ export async function getSharedWebsite(shareId: string) {
 
 export async function getWebsites(
   criteria: WebsiteFindManyArgs,
-  filters: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+  filters: PageParams,
+): Promise<PageResult<Website[]>> {
   const { query } = filters;
 
   const where: Prisma.WebsiteWhereInput = {
@@ -53,8 +53,8 @@ export async function getAllWebsites(userId: string) {
 
 export async function getUserWebsites(
   userId: string,
-  filters?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+  filters?: PageParams,
+): Promise<PageResult<Website[]>> {
   return getWebsites(
     {
       where: {
@@ -78,8 +78,8 @@ export async function getUserWebsites(
 
 export async function getTeamWebsites(
   teamId: string,
-  filters?: WebsiteSearchFilter,
-): Promise<FilterResult<Website[]>> {
+  filters?: PageParams,
+): Promise<PageResult<Website[]>> {
   return getWebsites(
     {
       where: {

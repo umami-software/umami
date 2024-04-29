@@ -1,14 +1,14 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useApi } from './useApi';
-import { FilterResult, SearchFilter, FilterQueryResult } from 'lib/types';
+import { PageResult, PageParams, FilterQueryResult } from 'lib/types';
 
 export function useFilterQuery<T = any>({
   queryKey,
   queryFn,
   ...options
 }: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): FilterQueryResult<T> {
-  const [params, setParams] = useState<T | SearchFilter>({
+  const [params, setParams] = useState<T | PageParams>({
     query: '',
     page: 1,
   });
@@ -21,7 +21,7 @@ export function useFilterQuery<T = any>({
   });
 
   return {
-    result: data as FilterResult<any>,
+    result: data as PageResult<any>,
     query,
     params,
     setParams,
