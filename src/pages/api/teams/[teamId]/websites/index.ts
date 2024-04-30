@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 import { canViewTeam } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { ok, unauthorized } from 'next-basics';
 import { getTeamWebsites } from 'queries';
 
-export interface TeamWebsiteRequestQuery extends SearchFilter {
+export interface TeamWebsiteRequestQuery extends PageParams {
   teamId: string;
 }
 
