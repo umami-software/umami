@@ -28,6 +28,7 @@ export interface MetricsTableProps extends ListTableProps {
   onDataLoad?: (data: any) => void;
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
+  searchFormattedValues?: boolean;
   children?: ReactNode;
 }
 
@@ -40,6 +41,7 @@ export function MetricsTable({
   onDataLoad,
   delay = null,
   allowSearch = false,
+  searchFormattedValues = false,
   children,
   ...props
 }: MetricsTableProps) {
@@ -69,7 +71,7 @@ export function MetricsTable({
       region,
       city,
       limit,
-      search,
+      search: (searchFormattedValues) ? undefined : search,
     },
     { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
   );
@@ -86,6 +88,14 @@ export function MetricsTable({
         } else {
           items = dataFilter(data);
         }
+      }
+
+      if (searchFormattedValues && search) {
+        items = items.filter(({ x, ...data }) => {
+          const value = formatValue(x, type, data);
+
+          return value?.toLowerCase().includes(search.toLowerCase());
+        });
       }
 
       items = percentFilter(items);
