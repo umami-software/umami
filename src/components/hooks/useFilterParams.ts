@@ -8,7 +8,7 @@ export function useFilterParams(websiteId: string) {
   const { startDate, endDate, unit, offset } = dateRange;
   const { timezone } = useTimezone();
   const {
-    query: { url, referrer, title, os, browser, device, country, region, city, event },
+    query: { url, referrer, title, query, os, browser, device, country, region, city, event },
   } = useNavigation();
 
   return {
@@ -20,6 +20,7 @@ export function useFilterParams(websiteId: string) {
     url,
     referrer,
     title,
+    query,
     os,
     browser,
     device,
