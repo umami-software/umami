@@ -506,13 +506,13 @@
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Učlani se"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Učlani se u tim"
     }
   ],
   "label.language": [

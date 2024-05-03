@@ -38,7 +38,7 @@
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "添加步骤"
     }
   ],
   "label.add-website": [
@@ -564,7 +564,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "最近 "
     },
     {
       "type": 1,
@@ -572,7 +572,7 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " 个月"
     }
   ],
   "label.leave": [
@@ -996,7 +996,7 @@
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "步骤"
     }
   ],
   "label.sum": [
@@ -1176,7 +1176,7 @@
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "更新"
     }
   ],
   "label.url": [
@@ -1218,7 +1218,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "通过UTM参数追踪您的广告活动。"
     }
   ],
   "label.value": [
@@ -1254,7 +1254,7 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "每次访问的浏览量"
     }
   ],
   "label.visitors": [
@@ -1266,7 +1266,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "访问次数"
     }
   ],
   "label.website": [
