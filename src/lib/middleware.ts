@@ -8,9 +8,8 @@ import { getSession } from 'lib/session';
 import {
   badRequest,
   createMiddleware,
-  forbidden,
+  notFound,
   parseSecureToken,
-  tooManyRequest,
   unauthorized,
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
@@ -36,11 +35,8 @@ export const useSession = createMiddleware(async (req, res, next) => {
 
     (req as any).session = session;
   } catch (e: any) {
-    if (e.message === 'Usage Limit.') {
-      return tooManyRequest(res, e.message);
-    }
-    if (e.message.startsWith('Website not found:')) {
-      return forbidden(res, e.message);
+    if (e.message.startsWith('Website not found')) {
+      return notFound(res, e.message);
     }
     return badRequest(res, e.message);
   }
