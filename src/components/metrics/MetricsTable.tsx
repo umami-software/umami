@@ -6,7 +6,6 @@ import LinkButton from 'components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import { percentFilter } from 'lib/filters';
 import {
-  useDateRange,
   useNavigation,
   useWebsiteMetrics,
   useMessages,
@@ -45,34 +44,14 @@ export function MetricsTable({
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
-  const [{ startDate, endDate }] = useDateRange(websiteId);
-  const {
-    renderUrl,
-    query: { url, referrer, title, os, browser, device, country, region, city },
-  } = useNavigation();
+  const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { dir } = useLocale();
 
-  const { data, isLoading, isFetched, error } = useWebsiteMetrics(
-    websiteId,
-    {
-      type,
-      startAt: +startDate,
-      endAt: +endDate,
-      url,
-      referrer,
-      os,
-      title,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      limit,
-      search,
-    },
-    { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
-  );
+  const { data, isLoading, isFetched, error } = useWebsiteMetrics(websiteId, type, limit, {
+    retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+    onDataLoad,
+  });
 
   const filteredData = useMemo(() => {
     if (data) {
