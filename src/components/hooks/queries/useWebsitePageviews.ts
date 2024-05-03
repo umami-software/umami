@@ -4,7 +4,7 @@ import { useFilterParams } from '..//useFilterParams';
 
 export function useWebsitePageviews(
   websiteId: string,
-  options?: Omit<UseQueryOptions & { onDataLoad?: (data: any) => void }, 'queryKey' | 'queryFn'>,
+  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
 ) {
   const { get, useQuery } = useApi();
   const params = useFilterParams(websiteId);
