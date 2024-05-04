@@ -38,7 +38,11 @@ export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProp
         id={view}
         value={x}
         label={!x && formatMessage(labels.none)}
-        externalUrl={`${domainName.startsWith('http') ? domainName : `https://${domainName}`}${x}`}
+        externalUrl={
+          view === 'url'
+            ? `${domainName.startsWith('http') ? domainName : `https://${domainName}`}${x}`
+            : null
+        }
       />
     );
   };
