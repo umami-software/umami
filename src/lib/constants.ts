@@ -132,6 +132,7 @@ export const ROLES = {
   user: 'user',
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
+  teamManager: 'team-manager',
   teamMember: 'team-member',
   teamViewOnly: 'team-view-only',
 } as const;
@@ -158,6 +159,12 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamOwner]: [
     PERMISSIONS.teamUpdate,
     PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamManager]: [
+    PERMISSIONS.teamUpdate,
     PERMISSIONS.websiteCreate,
     PERMISSIONS.websiteUpdate,
     PERMISSIONS.websiteDelete,
