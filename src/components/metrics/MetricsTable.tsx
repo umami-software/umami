@@ -48,10 +48,14 @@ export function MetricsTable({
   const { formatMessage, labels } = useMessages();
   const { dir } = useLocale();
 
-  const { data, isLoading, isFetched, error } = useWebsiteMetrics(websiteId, type, limit, {
-    retryDelay: delay || DEFAULT_ANIMATION_DURATION,
-    onDataLoad,
-  });
+  const { data, isLoading, isFetched, error } = useWebsiteMetrics(
+    websiteId,
+    { type, limit, search },
+    {
+      retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+      onDataLoad,
+    },
+  );
 
   const filteredData = useMemo(() => {
     if (data) {
