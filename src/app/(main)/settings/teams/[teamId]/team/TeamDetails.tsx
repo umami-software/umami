@@ -15,18 +15,24 @@ export function TeamDetails({ teamId }: { teamId: string }) {
   const { user } = useLogin();
   const [tab, setTab] = useState('details');
 
-  const canEdit =
+  const isTeamOwner =
     !!team?.teamUser?.find(({ userId, role }) => role === ROLES.teamOwner && userId === user.id) &&
     user.role !== ROLES.viewOnly;
+
+  const canEdit =
+    !!team?.teamUser?.find(
+      ({ userId, role }) =>
+        (role === ROLES.teamOwner || role === ROLES.teamManager) && userId === user.id,
+    ) && user.role !== ROLES.viewOnly;
 
   return (
     <Flexbox direction="column">
       <PageHeader title={team?.name} icon={<Icons.Users />}>
-        {!canEdit && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
+        {!isTeamOwner && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
       <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
         <Item key="details">{formatMessage(labels.details)}</Item>
-        {canEdit && <Item key="manage">{formatMessage(labels.manage)}</Item>}
+        {isTeamOwner && <Item key="manage">{formatMessage(labels.manage)}</Item>}
       </Tabs>
       {tab === 'details' && <TeamEditForm teamId={teamId} allowEdit={canEdit} />}
       {tab === 'manage' && <TeamManage teamId={teamId} />}

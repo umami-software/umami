@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.11.2",
+  "version": "2.11.3",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -71,7 +71,7 @@
     "@react-spring/web": "^9.7.3",
     "@tanstack/react-query": "^5.28.6",
     "@umami/prisma-client": "^0.14.0",
-    "@umami/redis-client": "^0.18.0",
+    "@umami/redis-client": "^0.20.0",
     "chalk": "^4.1.1",
     "chart.js": "^4.4.2",
     "chartjs-adapter-date-fns": "^3.0.0",
@@ -121,7 +121,7 @@
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
-    "@netlify/plugin-nextjs": "^4.41.3",
+    "@netlify/plugin-nextjs": "^5.1.0",
     "@rollup/plugin-alias": "^5.0.0",
     "@rollup/plugin-commonjs": "^25.0.4",
     "@rollup/plugin-json": "^6.0.0",

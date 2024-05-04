@@ -40,6 +40,9 @@ export function TeamMemberEditForm({
   };
 
   const renderValue = (value: string) => {
+    if (value === ROLES.teamManager) {
+      return formatMessage(labels.manager);
+    }
     if (value === ROLES.teamMember) {
       return formatMessage(labels.member);
     }
@@ -58,6 +61,7 @@ export function TeamMemberEditForm({
               minWidth: '250px',
             }}
           >
+            <Item key={ROLES.teamManager}>{formatMessage(labels.manager)}</Item>
             <Item key={ROLES.teamMember}>{formatMessage(labels.member)}</Item>
             <Item key={ROLES.teamViewOnly}>{formatMessage(labels.viewOnly)}</Item>
           </Dropdown>

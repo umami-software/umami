@@ -26,7 +26,7 @@ const schema = {
   GET: yup.object().shape({
     id: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
-    endAt: yup.number().integer().moreThan(yup.ref<number>('startAt')).required(),
+    endAt: yup.number().integer().min(yup.ref<number>('startAt')).required(),
   }),
 };
 

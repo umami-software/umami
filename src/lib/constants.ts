@@ -30,7 +30,7 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
 export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
 
 export const SESSION_COLUMNS = [
@@ -132,6 +132,7 @@ export const ROLES = {
   user: 'user',
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
+  teamManager: 'team-manager',
   teamMember: 'team-member',
   teamViewOnly: 'team-view-only',
 } as const;
@@ -158,6 +159,12 @@ export const ROLE_PERMISSIONS = {
   [ROLES.teamOwner]: [
     PERMISSIONS.teamUpdate,
     PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamManager]: [
+    PERMISSIONS.teamUpdate,
     PERMISSIONS.websiteCreate,
     PERMISSIONS.websiteUpdate,
     PERMISSIONS.websiteDelete,

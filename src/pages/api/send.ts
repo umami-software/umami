@@ -1,10 +1,5 @@
 import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
-import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret, visitSalt, uuid } from 'lib/crypto';
-import { getIpAddress } from 'lib/detect';
-import { useCors, useSession, useValidate } from 'lib/middleware';
-import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   badRequest,
@@ -15,6 +10,11 @@ import {
   safeDecodeURI,
   send,
 } from 'next-basics';
+import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
+import { secret, visitSalt, uuid } from 'lib/crypto';
+import { getIpAddress } from 'lib/detect';
+import { useCors, useSession, useValidate } from 'lib/middleware';
+import { CollectionType, YupRequest } from 'lib/types';
 import { saveEvent, saveSessionData } from 'queries';
 import * as yup from 'yup';
 
@@ -41,7 +41,6 @@ export interface NextApiRequestCollect extends NextApiRequest {
     id: string;
     websiteId: string;
     visitId: string;
-    ownerId: string;
     hostname: string;
     browser: string;
     os: string;

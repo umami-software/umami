@@ -1,13 +1,13 @@
 import * as yup from 'yup';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsiteReports } from 'queries';
 import { pageInfo } from 'lib/schema';
 
-export interface ReportsRequestQuery extends SearchFilter {
+export interface ReportsRequestQuery extends PageParams {
   websiteId: string;
 }
 
