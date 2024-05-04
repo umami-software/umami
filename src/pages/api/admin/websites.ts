@@ -1,13 +1,17 @@
 import { canViewAllWebsites } from 'lib/auth';
+import { ROLES } from 'lib/constants';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { pageInfo } from 'lib/schema';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getWebsites } from 'queries';
 import * as yup from 'yup';
-import { pageInfo } from 'lib/schema';
 
-export interface WebsitesRequestQuery extends SearchFilter {}
+export interface WebsitesRequestQuery extends PageParams {
+  userId?: string;
+  includeTeams?: boolean;
+}
 
 export interface WebsitesRequestBody {
   name: string;
@@ -39,13 +43,46 @@ export default async (
       return unauthorized(res);
     }
 
+    const { userId, includeOwnedTeams } = req.query;
+
     const websites = await getWebsites(
       {
+        where: {
+          OR: [
+            ...(userId && [{ userId }]),
+            ...(userId &&
+              includeOwnedTeams && [
+                {
+                  team: {
+                    deletedAt: null,
+                    teamUser: {
+                      some: {
+                        role: ROLES.teamOwner,
+                        userId,
+                      },
+                    },
+                  },
+                },
+              ]),
+          ],
+        },
         include: {
           user: {
             select: {
               username: true,
               id: true,
+            },
+          },
+          team: {
+            where: {
+              deletedAt: null,
+            },
+            include: {
+              teamUser: {
+                where: {
+                  role: ROLES.teamOwner,
+                },
+              },
             },
           },
         },

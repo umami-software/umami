@@ -1,13 +1,13 @@
 import { canViewUsers } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
+import { NextApiRequestQueryBody, Role, PageParams, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUsers } from 'queries';
 import * as yup from 'yup';
 
-export interface UsersRequestQuery extends SearchFilter {}
+export interface UsersRequestQuery extends PageParams {}
 export interface UsersRequestBody {
   userId: string;
   username: string;

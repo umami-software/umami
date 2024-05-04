@@ -1,8 +1,7 @@
 import { Prisma } from '@prisma/client';
-import cache from 'lib/cache';
 import { ROLES } from 'lib/constants';
 import prisma from 'lib/prisma';
-import { FilterResult, Role, User, UserSearchFilter } from 'lib/types';
+import { PageResult, Role, User, PageParams } from 'lib/types';
 import { getRandomChars } from 'next-basics';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
@@ -50,8 +49,8 @@ export async function getUserByUsername(username: string, options: GetUserOption
 
 export async function getUsers(
   criteria: UserFindManyArgs,
-  filters?: UserSearchFilter,
-): Promise<FilterResult<User[]>> {
+  filters?: PageParams,
+): Promise<PageResult<User[]>> {
   const { query } = filters;
 
   const where: Prisma.UserWhereInput = {
@@ -221,15 +220,5 @@ export async function deleteUser(
         id: userId,
       },
     }),
-  ]).then(async data => {
-    if (cache.enabled) {
-      const ids = websites.map(a => a.id);
-
-      for (let i = 0; i < ids.length; i++) {
-        await cache.deleteWebsite(`website:${ids[i]}`);
-      }
-    }
-
-    return data;
-  });
+  ]);
 }

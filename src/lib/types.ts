@@ -24,31 +24,7 @@ export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
-export interface WebsiteSearchFilter extends SearchFilter {
-  userId?: string;
-  teamId?: string;
-  includeTeams?: boolean;
-  onlyTeams?: boolean;
-}
-
-export interface UserSearchFilter extends SearchFilter {
-  teamId?: string;
-}
-
-export interface TeamSearchFilter extends SearchFilter {
-  userId?: string;
-}
-
-export interface TeamUserSearchFilter extends SearchFilter {
-  teamId?: string;
-}
-
-export interface ReportSearchFilter extends SearchFilter {
-  userId?: string;
-  websiteId?: string;
-}
-
-export interface SearchFilter {
+export interface PageParams {
   query?: string;
   page?: number;
   pageSize?: number;
@@ -56,7 +32,7 @@ export interface SearchFilter {
   sortDescending?: boolean;
 }
 
-export interface FilterResult<T> {
+export interface PageResult<T> {
   data: T;
   count: number;
   page: number;
@@ -66,10 +42,10 @@ export interface FilterResult<T> {
 }
 
 export interface FilterQueryResult<T> {
-  result: FilterResult<T>;
+  result: PageResult<T>;
   query: any;
-  params: SearchFilter;
-  setParams: Dispatch<SetStateAction<T | SearchFilter>>;
+  params: PageParams;
+  setParams: Dispatch<SetStateAction<T | PageParams>>;
 }
 
 export interface DynamicData {
@@ -229,4 +205,20 @@ export interface RealtimeData {
   timestamp: number;
   countries?: any[];
   visitors?: any[];
+}
+
+export interface SessionData {
+  id: string;
+  websiteId: string;
+  visitId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }
