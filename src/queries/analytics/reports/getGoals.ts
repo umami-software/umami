@@ -196,7 +196,7 @@ async function clickhouseQuery(
         const results = a[0];
 
         return Object.keys(results).map((key, i) => {
-          return { ...urls[i], result: results[key] };
+          return { ...urls[i], goal: Number(urls[i].goal), result: Number(results[key]) };
         });
       })
     : [];
@@ -216,7 +216,7 @@ async function clickhouseQuery(
         const results = a[0];
 
         return Object.keys(results).map((key, i) => {
-          return { ...events[i], result: results[key] };
+          return { ...events[i], goal: Number(events[i].goal), result: Number(results[key]) };
         });
       })
     : [];

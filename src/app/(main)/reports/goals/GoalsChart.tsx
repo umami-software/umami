@@ -33,10 +33,13 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
                   <span className={styles.visitors}>{formatLongNumber(goal)}</span>
                   {formatMessage(labels.goal)}
                 </div>
-                <div className={styles.percent}>{(result / goal).toFixed(2)}%</div>
+                <div className={styles.percent}>{((result / goal) * 100).toFixed(2)}%</div>
               </div>
               <div className={styles.track}>
-                <div className={styles.bar} style={{ width: `${result / goal}%` }}></div>
+                <div
+                  className={styles.bar}
+                  style={{ width: `${result > goal ? 100 : (result / goal) * 100}%` }}
+                ></div>
               </div>
             </div>
           </div>
