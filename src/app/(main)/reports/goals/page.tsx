@@ -1,8 +1,8 @@
+import GoalsReportPage from './GoalsReportPage';
 import { Metadata } from 'next';
-import UTMReportPage from './UTMReportPage';
 
 export default function () {
-  return <UTMReportPage />;
+  return <GoalsReportPage />;
 }
 
 export const metadata: Metadata = {

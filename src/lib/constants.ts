@@ -111,6 +111,7 @@ export const DATA_TYPES = {
 
 export const REPORT_TYPES = {
   funnel: 'funnel',
+  goals: 'goals',
   insights: 'insights',
   retention: 'retention',
   utm: 'utm',

@@ -37,6 +37,12 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       url: renderTeamUrl('/reports/utm'),
       icon: <Tag />,
     },
+    {
+      title: formatMessage(labels.goals),
+      description: formatMessage(labels.goalsDescription),
+      url: renderTeamUrl('/reports/goals'),
+      icon: <Tag />,
+    },
   ];
 
   return (

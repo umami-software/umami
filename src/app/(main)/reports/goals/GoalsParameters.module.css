@@ -1,0 +1,26 @@
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.type {
+  color: var(--base700);
+}
+
+.value {
+  display: flex;
+  align-self: center;
+  gap: 20px;
+}
+
+.goal {
+  color: var(--blue900);
+  background-color: var(--blue100);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
