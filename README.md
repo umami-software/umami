@@ -72,13 +72,13 @@ docker compose up -d
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 
 ```bash
-docker pull ghcr.io/umami-software/umami:postgresql-latest
+docker pull docker.umami.is/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 
 ```bash
-docker pull ghcr.io/umami-software/umami:mysql-latest
+docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates
@@ -102,4 +102,3 @@ docker compose up --force-recreate
 
 MIT
 
-<img referrerpolicy="no-referrer-when-downgrade" src="https://static.scarf.sh/a.png?x-pxid=40923c13-147d-4033-b602-1d4b2b5c34cd" />
