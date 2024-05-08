@@ -18,7 +18,7 @@ export function WebsitesDataTable({
 }) {
   const queryResult = useWebsites({ teamId });
 
-  if (!queryResult?.result?.data?.length) {
+  if (queryResult?.result?.data?.length === 0) {
     return children;
   }
 
