@@ -25,13 +25,6 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
                 </span>
                 <span className={styles.item}>{value}</span>
               </div>
-              <div className={styles.metric}>
-                <div className={styles.value}>
-                  {formatLongNumber(result)}
-                  <span className={styles.total}> / {formatLongNumber(goal)}</span>
-                </div>
-                <div className={styles.percent}>{((result / goal) * 100).toFixed(2)}%</div>
-              </div>
               <div className={styles.track}>
                 <div
                   className={classNames(
@@ -45,6 +38,13 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
                   )}
                   style={{ width: `${percent}%` }}
                 ></div>
+              </div>
+              <div className={styles.metric}>
+                <div className={styles.value}>
+                  {formatLongNumber(result)}
+                  <span className={styles.total}> / {formatLongNumber(goal)}</span>
+                </div>
+                <div className={styles.percent}>{((result / goal) * 100).toFixed(2)}%</div>
               </div>
             </div>
           </div>
