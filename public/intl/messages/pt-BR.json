@@ -392,7 +392,7 @@
   "label.event-data": [
     {
       "type": 0,
-      "value": "Dados do evento"
+      "value": "Dados de eventos"
     }
   ],
   "label.events": [
@@ -470,13 +470,13 @@
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Compreensão"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Explore seus dados mais profundamente usando segmentos e filtros."
+      "value": "Explore seus dados mais profundamente usando campos e filtros."
     }
   ],
   "label.is": [
@@ -608,7 +608,7 @@
   "label.logout": [
     {
       "type": 0,
-      "value": "Logout"
+      "value": "Sair"
     }
   ],
   "label.manage": [
@@ -650,7 +650,7 @@
   "label.more": [
     {
       "type": 0,
-      "value": "Mais"
+      "value": "Ver todos"
     }
   ],
   "label.my-account": [
@@ -726,7 +726,7 @@
   "label.os": [
     {
       "type": 0,
-      "value": "SO"
+      "value": "Sistema operacional"
     }
   ],
   "label.overview": [
@@ -738,7 +738,7 @@
   "label.owner": [
     {
       "type": 0,
-      "value": "Proprietário"
+      "value": "Criado por"
     }
   ],
   "label.page-of": [
@@ -802,19 +802,19 @@
   "label.queries": [
     {
       "type": 0,
-      "value": "Consultas"
+      "value": "Parâmetros"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Consulta"
+      "value": "Parâmetro"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Parâmetros de consulta"
+      "value": "Chave-valor de parâmetro"
     }
   ],
   "label.realtime": [
@@ -826,13 +826,13 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referenciador"
+      "value": "Origem"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referenciadores"
+      "value": "Origens"
     }
   ],
   "label.refresh": [
@@ -892,7 +892,7 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "Redefinir site"
+      "value": "Apagar dados do site"
     }
   ],
   "label.retention": [
@@ -916,7 +916,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Executar consulta"
+      "value": "Realizar consulta"
     }
   ],
   "label.save": [
@@ -1030,7 +1030,7 @@
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Proprietário da equipe"
+      "value": "Criador da equipe"
     }
   ],
   "label.team-view-only": [
@@ -1096,7 +1096,7 @@
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Alternar gráficos"
+      "value": "Esconder gráficos"
     }
   ],
   "label.total": [
@@ -1560,7 +1560,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "As estatísticas do seu site estão publicamente disponíveis no seguinte URL:"
+      "value": "As estatísticas do seu site estão publicamente disponíveis na seguinte URL:"
     }
   ],
   "message.team-already-member": [
