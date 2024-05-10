@@ -76,11 +76,9 @@ export function GoalsAddForm({
             className={styles.input}
             value={goal?.toString()}
             onChange={e => handleChange(e, setGoal)}
-            autoFocus={true}
             autoComplete="off"
             onKeyDown={handleKeyDown}
           />
-          .
         </Flexbox>
       </FormRow>
       <FormRow>

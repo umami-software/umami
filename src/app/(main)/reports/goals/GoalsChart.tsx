@@ -14,9 +14,10 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
   return (
     <div className={classNames(styles.chart, className)}>
       {data?.map(({ type, value, goal, result }, index: number) => {
+        const percent = result > goal ? 100 : (result / goal) * 100;
+
         return (
-          <div key={index} className={styles.step}>
-            <div className={styles.num}>{index + 1}</div>
+          <div key={index} className={styles.goal}>
             <div className={styles.card}>
               <div className={styles.header}>
                 <span className={styles.label}>
@@ -25,20 +26,24 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
                 <span className={styles.item}>{value}</span>
               </div>
               <div className={styles.metric}>
-                <div>
-                  <span className={styles.visitors}>{formatLongNumber(result)}</span>
-                  {formatMessage(labels.visitors)}
-                </div>
-                <div>
-                  <span className={styles.visitors}>{formatLongNumber(goal)}</span>
-                  {formatMessage(labels.goal)}
+                <div className={styles.value}>
+                  {formatLongNumber(result)}
+                  <span className={styles.total}> / {formatLongNumber(goal)}</span>
                 </div>
                 <div className={styles.percent}>{((result / goal) * 100).toFixed(2)}%</div>
               </div>
               <div className={styles.track}>
                 <div
-                  className={styles.bar}
-                  style={{ width: `${result > goal ? 100 : (result / goal) * 100}%` }}
+                  className={classNames(
+                    classNames(styles.bar, {
+                      [styles.level1]: percent <= 20,
+                      [styles.level2]: percent > 20 && percent <= 40,
+                      [styles.level3]: percent > 40 && percent <= 60,
+                      [styles.level4]: percent > 60 && percent <= 80,
+                      [styles.level5]: percent > 80,
+                    }),
+                  )}
+                  style={{ width: `${percent}%` }}
                 ></div>
               </div>
             </div>

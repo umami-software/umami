@@ -83,15 +83,12 @@ export function GoalsParameters() {
             return (
               <PopupTrigger key={index}>
                 <ParameterList.Item
-                  className={styles.item}
+                  icon={goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
                   onRemove={() => handleRemoveGoals(index)}
                 >
-                  <div className={styles.value}>
-                    <div className={styles.type}>
-                      <Icon>{goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}</Icon>
-                    </div>
-                    <div>{goal.value}</div>
-                    <div className={styles.goal}>{formatNumber(goal.goal)}</div>
+                  <div className={styles.value}>{goal.value}</div>
+                  <div className={styles.goal}>
+                    {formatMessage(labels.goal)}: {formatNumber(goal.goal)}
                   </div>
                 </ParameterList.Item>
                 <Popup alignment="start">

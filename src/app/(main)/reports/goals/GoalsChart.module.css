@@ -1,27 +1,15 @@
 .chart {
   display: grid;
+  gap: 30px;
 }
 
-.num {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--base800);
-  background: var(--base100);
-  z-index: 1;
+.goal {
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--base400);
 }
 
-.step {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  column-gap: 30px;
-  position: relative;
-  padding-bottom: 60px;
+.goal:last-child {
+  border: 0;
 }
 
 .card {
@@ -36,26 +24,10 @@
   gap: 20px;
 }
 
-.bar {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  background: var(--base900);
-  height: 30px;
-  border-radius: 5px;
-  overflow: hidden;
-  position: relative;
-}
-
 .label {
   color: var(--base600);
   font-weight: 700;
   text-transform: uppercase;
-}
-
-.track {
-  background-color: var(--base100);
-  border-radius: 5px;
 }
 
 .item {
@@ -73,7 +45,7 @@
   text-transform: lowercase;
 }
 
-.visitors {
+.value {
   color: var(--base900);
   font-size: 24px;
   font-weight: 900;
@@ -84,4 +56,40 @@
   font-size: 20px;
   font-weight: 700;
   align-self: flex-end;
+}
+
+.total {
+  color: var(--base700);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--base900);
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar.level1 {
+  background: var(--red800);
+}
+.bar.level2 {
+  background: var(--orange200);
+}
+.bar.level3 {
+  background: var(--orange400);
+}
+.bar.level4 {
+  background: var(--orange600);
+}
+.bar.level5 {
+  background: var(--green600);
+}
+
+.track {
+  background-color: var(--base100);
+  border-radius: 5px;
 }
