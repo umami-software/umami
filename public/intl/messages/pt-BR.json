@@ -748,7 +748,7 @@
     },
     {
       "type": 1,
-      "value": "current"
+      "value": "átual"
     },
     {
       "type": 0,
@@ -1470,7 +1470,7 @@
     },
     {
       "type": 1,
-      "value": "version"
+      "value": "versão"
     },
     {
       "type": 0,
@@ -1644,7 +1644,7 @@
     },
     {
       "type": 1,
-      "value": "country"
+      "value": "país"
     },
     {
       "type": 0,
@@ -1652,7 +1652,7 @@
     },
     {
       "type": 1,
-      "value": "browser"
+      "value": "navegador"
     },
     {
       "type": 0,
@@ -1668,7 +1668,7 @@
     },
     {
       "type": 1,
-      "value": "device"
+      "value": "dispositivo"
     }
   ],
   "message.visitors-dropped-off": [
