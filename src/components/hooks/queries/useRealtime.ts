@@ -1,6 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { RealtimeData } from 'lib/types';
-import { useApi } from 'components/hooks';
+import { useApi } from './useApi';
 import { REALTIME_INTERVAL, REALTIME_RANGE } from 'lib/constants';
 import { startOfMinute, subMinutes } from 'date-fns';
 import { percentFilter } from 'lib/filters';

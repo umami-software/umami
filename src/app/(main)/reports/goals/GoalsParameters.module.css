@@ -1,18 +1,7 @@
-.item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.type {
-  color: var(--base700);
-}
-
 .value {
-  display: flex;
-  align-self: center;
-  gap: 20px;
+  width: 100%;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 .goal {
@@ -22,5 +11,4 @@
   font-weight: 900;
   padding: 2px 8px;
   border-radius: 5px;
-  white-space: nowrap;
 }

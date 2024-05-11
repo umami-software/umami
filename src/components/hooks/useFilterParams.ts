@@ -5,7 +5,7 @@ import { zonedTimeToUtc } from 'date-fns-tz';
 
 export function useFilterParams(websiteId: string) {
   const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit, offset } = dateRange;
+  const { startDate, endDate, unit } = dateRange;
   const { timezone } = useTimezone();
   const {
     query: { url, referrer, title, query, os, browser, device, country, region, city, event },
@@ -15,7 +15,6 @@ export function useFilterParams(websiteId: string) {
     startAt: +zonedTimeToUtc(startDate, timezone),
     endAt: +zonedTimeToUtc(endDate, timezone),
     unit,
-    offset,
     timezone,
     url,
     referrer,

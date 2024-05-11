@@ -1,4 +1,5 @@
 import { Prisma, Website } from '@prisma/client';
+import redis from '@umami/redis-client';
 import prisma from 'lib/prisma';
 import { PageResult, PageParams } from 'lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
@@ -122,6 +123,7 @@ export async function resetWebsite(
   websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
+  const cloudMode = !!process.env.cloudMode;
 
   return transaction([
     client.eventData.deleteMany({
@@ -139,14 +141,20 @@ export async function resetWebsite(
         resetAt: new Date(),
       },
     }),
-  ]);
+  ]).then(async data => {
+    if (cloudMode) {
+      await redis.client.set(`website:${websiteId}`, data[3]);
+    }
+
+    return data;
+  });
 }
 
 export async function deleteWebsite(
   websiteId: string,
 ): Promise<[Prisma.BatchPayload, Prisma.BatchPayload, Website]> {
   const { client, transaction } = prisma;
-  const cloudMode = process.env.CLOUD_MODE;
+  const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction([
     client.eventData.deleteMany({
@@ -173,5 +181,11 @@ export async function deleteWebsite(
       : client.website.delete({
           where: { id: websiteId },
         }),
-  ]);
+  ]).then(async data => {
+    if (cloudMode) {
+      await redis.client.del(`website:${websiteId}`);
+    }
+
+    return data;
+  });
 }
