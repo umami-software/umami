@@ -24,7 +24,7 @@ export interface UserUsageRequestResponse {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    userId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().min(yup.ref<number>('startAt')).required(),
   }),
