@@ -3,7 +3,7 @@ import { useMessages, useConfig } from 'components/hooks';
 
 const SCRIPT_NAME = 'script.js';
 
-export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUrl?: string }) {
+export function TrackingCode({ websiteId }: { websiteId: string }) {
   const { formatMessage, messages } = useMessages();
   const config = useConfig();
 
@@ -12,8 +12,8 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
 
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${hostUrl || process.env.hostUrl || window?.location.origin}${
-        process.env.basePath
+    : `${process.env.trackerScriptHost || window?.location.origin || ''}${
+        process.env.basePath || ''
       }/${trackerScriptName}`;
 
   const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;
