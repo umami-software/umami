@@ -3,6 +3,7 @@ import redis from '@umami/redis-client';
 import prisma from 'lib/prisma';
 import { PageResult, PageParams } from 'lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
+import { ROLES } from 'lib/constants';
 
 async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
   return prisma.client.website.findUnique(criteria);
@@ -48,6 +49,27 @@ export async function getAllWebsites(userId: string) {
   return prisma.client.website.findMany({
     where: {
       userId,
+    },
+  });
+}
+
+export async function getAllUserWebsitesIncludingTeamOwner(userId: string) {
+  return prisma.client.website.findMany({
+    where: {
+      OR: [
+        { userId },
+        {
+          team: {
+            deletedAt: null,
+            teamUser: {
+              some: {
+                role: ROLES.teamOwner,
+                userId,
+              },
+            },
+          },
+        },
+      ],
     },
   });
 }

@@ -2,7 +2,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getAllWebsites, getEventDataUsage, getEventUsage } from 'queries';
+import { getAllUserWebsitesIncludingTeamOwner, getEventDataUsage, getEventUsage } from 'queries';
 import * as yup from 'yup';
 
 export interface UserUsageRequestQuery {
@@ -50,7 +50,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const websites = await getAllWebsites(userId);
+    const websites = await getAllUserWebsitesIncludingTeamOwner(userId);
 
     const websiteIds = websites.map(a => a.id);
 
