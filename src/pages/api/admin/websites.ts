@@ -43,7 +43,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { userId, includeOwnedTeams } = req.query;
+    const { userId, includeTeams } = req.query;
 
     const websites = await getWebsites(
       {
@@ -51,7 +51,7 @@ export default async (
           OR: [
             ...(userId && [{ userId }]),
             ...(userId &&
-              includeOwnedTeams && [
+              includeTeams && [
                 {
                   team: {
                     deletedAt: null,
