@@ -11,7 +11,7 @@ export function BrowsersTable(props: MetricsTableProps) {
     return (
       <FilterLink id="browser" value={browser} label={formatBrowser(browser)}>
         <img
-          src={`${process.env.basePath}/images/browsers/${browser || 'unknown'}.png`}
+          src={`${process.env.basePath || ''}/images/browsers/${browser || 'unknown'}.png`}
           alt={browser}
           width={16}
           height={16}

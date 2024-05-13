@@ -3,19 +3,19 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
-const basePath = process.env.BASE_PATH || '';
-const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
-const cloudMode = process.env.CLOUD_MODE || '';
-const cloudUrl = process.env.CLOUD_URL || '';
-const defaultLocale = process.env.DEFAULT_LOCALE || '';
-const disableLogin = process.env.DISABLE_LOGIN || '';
-const disableUI = process.env.DISABLE_UI || '';
-const forceSSL = process.env.FORCE_SSL || '';
-const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
-const privateMode = process.env.PRIVATE_MODE || '';
-const shareUrlHost = process.env.SHARE_HOST_URL || '';
-const trackerScriptHost = process.env.TRACKER_SCRIPT_HOST || '';
-const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
+const basePath = process.env.BASE_PATH;
+const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
+const cloudMode = process.env.CLOUD_MODE;
+const cloudUrl = process.env.CLOUD_URL;
+const defaultLocale = process.env.DEFAULT_LOCALE;
+const disableLogin = process.env.DISABLE_LOGIN;
+const disableUI = process.env.DISABLE_UI;
+const forceSSL = process.env.FORCE_SSL;
+const frameAncestors = process.env.ALLOWED_FRAME_URLS;
+const privateMode = process.env.PRIVATE_MODE;
+const shareUrlHost = process.env.SHARE_URL_HOST;
+const trackerScriptHost = process.env.TRACKER_SCRIPT_HOST;
+const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
 
 const contentSecurityPolicy = [
   `default-src 'self'`,
