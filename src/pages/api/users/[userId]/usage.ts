@@ -6,8 +6,9 @@ import { getAllUserWebsitesIncludingTeamOwner, getEventDataUsage, getEventUsage 
 import * as yup from 'yup';
 
 export interface UserUsageRequestQuery {
-  id: string;
-  params: { startAt: string; endAt: string };
+  userId: string;
+  startAt: string;
+  endAt: string;
 }
 
 export interface UserUsageRequestResponse {
@@ -44,7 +45,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { id: userId, startAt, endAt } = req.query;
+    const { userId, startAt, endAt } = req.query;
 
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
