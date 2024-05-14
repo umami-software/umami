@@ -48,7 +48,19 @@ export async function getWebsites(
 export async function getAllWebsites(userId: string) {
   return prisma.client.website.findMany({
     where: {
-      userId,
+      OR: [
+        { userId },
+        {
+          team: {
+            deletedAt: null,
+            teamUser: {
+              some: {
+                userId,
+              },
+            },
+          },
+        },
+      ],
     },
   });
 }
