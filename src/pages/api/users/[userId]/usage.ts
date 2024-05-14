@@ -7,8 +7,7 @@ import * as yup from 'yup';
 
 export interface UserUsageRequestQuery {
   id: string;
-  startAt: string;
-  endAt: string;
+  params: { startAt: string; endAt: string };
 }
 
 export interface UserUsageRequestResponse {
