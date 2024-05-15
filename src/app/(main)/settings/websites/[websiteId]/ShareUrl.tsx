@@ -15,7 +15,7 @@ import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider'
 
 const generateId = () => getRandomChars(16);
 
-export function ShareUrl({ onSave }: { websiteId: string; onSave?: () => void }) {
+export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () => void }) {
   const website = useContext(WebsiteContext);
   const { domain, shareId } = website;
   const { formatMessage, labels, messages } = useMessages();
@@ -26,7 +26,7 @@ export function ShareUrl({ onSave }: { websiteId: string; onSave?: () => void })
   });
   const { touch } = useModified();
 
-  const url = `${process.env.shareUrlHost || window?.location.origin || ''}${
+  const url = `${hostUrl || window?.location.origin || ''}${
     process.env.basePath || ''
   }/share/${id}/${domain}`;
 

@@ -3,7 +3,7 @@ import { useMessages, useConfig } from 'components/hooks';
 
 const SCRIPT_NAME = 'script.js';
 
-export function TrackingCode({ websiteId }: { websiteId: string }) {
+export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUrl?: string }) {
   const { formatMessage, messages } = useMessages();
   const config = useConfig();
 
@@ -12,7 +12,7 @@ export function TrackingCode({ websiteId }: { websiteId: string }) {
 
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${process.env.trackerScriptHost || window?.location.origin || ''}${
+    : `${hostUrl || window?.location.origin || ''}${
         process.env.basePath || ''
       }/${trackerScriptName}`;
 

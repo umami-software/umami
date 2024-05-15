@@ -13,8 +13,6 @@ const disableUI = process.env.DISABLE_UI;
 const forceSSL = process.env.FORCE_SSL;
 const frameAncestors = process.env.ALLOWED_FRAME_URLS;
 const privateMode = process.env.PRIVATE_MODE;
-const shareUrlHost = process.env.SHARE_URL_HOST;
-const trackerScriptHost = process.env.TRACKER_SCRIPT_HOST;
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
 
 const contentSecurityPolicy = [
@@ -122,8 +120,6 @@ const config = {
     disableLogin,
     disableUI,
     privateMode,
-    shareUrlHost,
-    trackerScriptHost,
   },
   basePath,
   output: 'standalone',
