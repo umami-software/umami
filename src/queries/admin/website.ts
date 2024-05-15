@@ -61,6 +61,7 @@ export async function getAllWebsites(userId: string) {
           },
         },
       ],
+      deletedAt: null,
     },
   });
 }

@@ -62,6 +62,7 @@ export default async (
       websiteName: a.name,
       websiteEventUsage: websiteEventUsage.find(b => a.id === b.websiteId)?.count || 0,
       eventDataUsage: eventDataUsage.find(b => a.id === b.websiteId)?.count || 0,
+      deletedAt: a.deletedAt,
     }));
 
     const usage = websiteUsage.reduce(
@@ -74,9 +75,13 @@ export default async (
       { websiteEventUsage: 0, eventDataUsage: 0 },
     );
 
+    const filteredWebsiteUsage = websiteUsage.filter(
+      a => !a.deletedAt && (a.websiteEventUsage > 0 || a.eventDataUsage > 0),
+    );
+
     return ok(res, {
       ...usage,
-      websites: websiteUsage,
+      websites: filteredWebsiteUsage,
     });
   }
 
