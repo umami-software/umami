@@ -10,7 +10,7 @@ import * as yup from 'yup';
 
 export interface WebsitesRequestQuery extends PageParams {
   userId?: string;
-  includeTeams?: boolean;
+  includeOwnedTeams?: boolean;
 }
 
 export interface WebsitesRequestBody {
@@ -43,27 +43,28 @@ export default async (
       return unauthorized(res);
     }
 
-    const { userId, includeTeams } = req.query;
+    const { userId, includeOwnedTeams } = req.query;
 
     const websites = await getWebsites(
       {
         where: {
           OR: [
             ...(userId && [{ userId }]),
-            ...(userId &&
-              includeTeams && [
-                {
-                  team: {
-                    deletedAt: null,
-                    teamUser: {
-                      some: {
-                        role: ROLES.teamOwner,
-                        userId,
+            ...(userId && includeOwnedTeams
+              ? [
+                  {
+                    team: {
+                      deletedAt: null,
+                      teamUser: {
+                        some: {
+                          role: ROLES.teamOwner,
+                          userId,
+                        },
                       },
                     },
                   },
-                },
-              ]),
+                ]
+              : []),
           ],
         },
         include: {
