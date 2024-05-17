@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
 import { Loading } from 'react-basics';
 import classNames from 'classnames';
-import ChartJS, { LegendItem } from 'chart.js/auto';
+import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
@@ -17,7 +17,7 @@ export interface ChartProps {
   onUpdate?: (chart: any) => void;
   onTooltip?: (model: any) => void;
   className?: string;
-  chartOptions?: { [key: string]: any };
+  chartOptions?: ChartOptions;
   tooltip?: ReactNode;
 }
 
