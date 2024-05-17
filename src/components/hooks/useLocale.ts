@@ -19,7 +19,9 @@ export function useLocale() {
   const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale: string) {
-    const { ok, data } = await httpGet(`${process.env.basePath}/intl/messages/${locale}.json`);
+    const { ok, data } = await httpGet(
+      `${process.env.basePath || ''}/intl/messages/${locale}.json`,
+    );
 
     if (ok) {
       messages[locale] = data;
