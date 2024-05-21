@@ -87,7 +87,7 @@ async function relationalQuery(
       .join('\n')
       .slice(0, -1);
     const eventColumns = events
-      .map((a, i) => `COUNT(CASE WHEN url_path = {{event${i}}} THEN 1 END) AS EVENT${i},`)
+      .map((a, i) => `COUNT(CASE WHEN event_name = {{event${i}}} THEN 1 END) AS EVENT${i},`)
       .join('\n')
       .slice(0, -1);
     const eventDataColumns = eventData
