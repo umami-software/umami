@@ -4,6 +4,16 @@
   font-weight: 600;
 }
 
+.eventData {
+  color: var(--orange900);
+  background-color: var(--orange100);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
 .goal {
   color: var(--blue900);
   background-color: var(--blue100);
@@ -11,4 +21,5 @@
   font-weight: 900;
   padding: 2px 8px;
   border-radius: 5px;
+  width: fit-content;
 }

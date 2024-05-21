@@ -28,9 +28,23 @@ const schema = {
       .array()
       .of(
         yup.object().shape({
-          type: yup.string().required(),
+          type: yup
+            .string()
+            .matches(/url|event|event-data/i)
+            .required(),
           value: yup.string().required(),
           goal: yup.number().required(),
+          operator: yup
+            .string()
+            .matches(/count|sum|average/i)
+            .when('type', {
+              is: 'eventData',
+              then: yup.string().required(),
+            }),
+          property: yup.string().when('type', {
+            is: 'eventData',
+            then: yup.string().required(),
+          }),
         }),
       )
       .min(1)

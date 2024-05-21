@@ -11,19 +11,36 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
 
   const { data } = report || {};
 
+  const getLabel = type => {
+    let label = '';
+    switch (type) {
+      case 'url':
+        label = labels.viewedPage;
+        break;
+      case 'event':
+        label = labels.triggeredEvent;
+        break;
+      default:
+        label = labels.collectedData;
+        break;
+    }
+
+    return label;
+  };
+
   return (
     <div className={classNames(styles.chart, className)}>
-      {data?.map(({ type, value, goal, result }, index: number) => {
+      {data?.map(({ type, value, goal, result, property, operator }, index: number) => {
         const percent = result > goal ? 100 : (result / goal) * 100;
 
         return (
           <div key={index} className={styles.goal}>
             <div className={styles.card}>
               <div className={styles.header}>
-                <span className={styles.label}>
-                  {formatMessage(type === 'url' ? labels.viewedPage : labels.triggeredEvent)}
-                </span>
-                <span className={styles.item}>{value}</span>
+                <span className={styles.label}>{formatMessage(getLabel(type))}</span>
+                <span className={styles.item}>{`${value}${
+                  type === 'event-data' ? `:(${operator}):${property}` : ''
+                }`}</span>
               </div>
               <div className={styles.track}>
                 <div
