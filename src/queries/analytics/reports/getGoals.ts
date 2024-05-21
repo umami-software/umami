@@ -61,8 +61,6 @@ async function relationalQuery(
     const eventDataParam = eventData.reduce((acc, cv, i) => {
       acc[`eventData${i}`] = cv.value;
       acc[`property${i}`] = cv.property;
-      acc[`eventData${i + 999}`] = cv.value;
-      acc[`property${i + 999}`] = cv.property;
       return acc;
     }, {});
 
@@ -120,8 +118,8 @@ async function relationalQuery(
   ) {
     const urlWhere = urls.map((a, i) => `{{url${i}}}`).join(',');
     const eventWhere = events.map((a, i) => `{{event${i}}}`).join(',');
-    const eventDataNameWhere = eventData.map((a, i) => `{{eventData${i + 999}}}`).join(',');
-    const eventDataKeyWhere = eventData.map((a, i) => `{{property${i + 999}}}`).join(',');
+    const eventDataNameWhere = eventData.map((a, i) => `{{eventData${i}}}`).join(',');
+    const eventDataKeyWhere = eventData.map((a, i) => `{{property${i}}}`).join(',');
 
     return {
       urls: `and url_path in (${urlWhere})`,
