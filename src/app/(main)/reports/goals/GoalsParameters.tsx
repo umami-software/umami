@@ -4,6 +4,7 @@ import { formatNumber } from 'lib/format';
 import { useContext } from 'react';
 import {
   Button,
+  Flexbox,
   Form,
   FormButtons,
   FormRow,
@@ -79,33 +80,53 @@ export function GoalsParameters() {
       <BaseParameters allowWebsiteSelect={!id} />
       <FormRow label={formatMessage(labels.goals)} action={<AddGoalsButton />}>
         <ParameterList>
-          {goals.map((goal: { type: string; value: string; goal: number }, index: number) => {
-            return (
-              <PopupTrigger key={index}>
-                <ParameterList.Item
-                  icon={goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
-                  onRemove={() => handleRemoveGoals(index)}
-                >
-                  <div className={styles.value}>{goal.value}</div>
-                  <div className={styles.goal}>
-                    {formatMessage(labels.goal)}: {formatNumber(goal.goal)}
-                  </div>
-                </ParameterList.Item>
-                <Popup alignment="start">
-                  {(close: () => void) => (
-                    <PopupForm>
-                      <GoalsAddForm
-                        type={goal.type}
-                        value={goal.value}
-                        goal={goal.goal}
-                        onChange={handleUpdateGoals.bind(null, close, index)}
-                      />
-                    </PopupForm>
-                  )}
-                </Popup>
-              </PopupTrigger>
-            );
-          })}
+          {goals.map(
+            (
+              goal: {
+                type: string;
+                value: string;
+                goal: number;
+                operator?: string;
+                property?: string;
+              },
+              index: number,
+            ) => {
+              return (
+                <PopupTrigger key={index}>
+                  <ParameterList.Item
+                    icon={goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
+                    onRemove={() => handleRemoveGoals(index)}
+                  >
+                    <Flexbox direction="column" gap={5}>
+                      <div className={styles.value}>{goal.value}</div>
+                      {goal.type === 'event-data' && (
+                        <div className={styles.eventData}>
+                          {formatMessage(labels[goal.operator])}: {goal.property}
+                        </div>
+                      )}
+                      <div className={styles.goal}>
+                        {formatMessage(labels.goal)}: {formatNumber(goal.goal)}
+                      </div>
+                    </Flexbox>
+                  </ParameterList.Item>
+                  <Popup alignment="start">
+                    {(close: () => void) => (
+                      <PopupForm>
+                        <GoalsAddForm
+                          type={goal.type}
+                          value={goal.value}
+                          goal={goal.goal}
+                          operator={goal.operator}
+                          property={goal.property}
+                          onChange={handleUpdateGoals.bind(null, close, index)}
+                        />
+                      </PopupForm>
+                    )}
+                  </Popup>
+                </PopupTrigger>
+              );
+            },
+          )}
         </ParameterList>
       </FormRow>
       <FormButtons>
