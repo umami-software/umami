@@ -38,9 +38,3 @@
     border-bottom: 1px solid var(--base300);
   }
 }
-
-@media screen and (max-width: 768px) {
-  .button {
-    display: none;
-  }
-}

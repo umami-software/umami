@@ -9,6 +9,7 @@ import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
+import { FILTER_COLUMNS } from 'lib/constants';
 
 export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   const { data: website, isLoading, error } = useWebsite(websiteId);
@@ -20,13 +21,20 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
   }
 
   const showLinks = !pathname.includes('/share/');
-  const { view, ...params } = query;
+  const { view } = query;
+
+  const params = Object.keys(query).reduce((obj, key) => {
+    if (FILTER_COLUMNS[key]) {
+      obj[key] = query[key];
+    }
+    return obj;
+  }, {});
 
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} sticky={true} />
+      <WebsiteMetricsBar websiteId={websiteId} />
       <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (

@@ -247,6 +247,7 @@ export const labels = defineMessages({
     id: 'label.journey-description',
     defaultMessage: 'Understand how users nagivate through your website.',
   },
+  compare: { id: 'label.compare', defaultMessage: 'Compare' },
 });
 
 export const messages = defineMessages({

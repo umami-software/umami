@@ -27,9 +27,6 @@ export const MetricCard = ({
 
   return (
     <div className={classNames(styles.card, className)}>
-      <animated.div className={styles.value} title={props?.x as any}>
-        {props?.x?.to(x => format(x))}
-      </animated.div>
       <div className={styles.label}>
         {label}
         {~~change !== 0 && !hideComparison && (
@@ -45,6 +42,9 @@ export const MetricCard = ({
           </animated.span>
         )}
       </div>
+      <animated.div className={styles.value} title={props?.x as any}>
+        {props?.x?.to(x => format(x))}
+      </animated.div>
     </div>
   );
 };

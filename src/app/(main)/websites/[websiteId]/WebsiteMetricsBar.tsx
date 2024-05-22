@@ -5,18 +5,10 @@ import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
 import { formatShortTime } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
-import styles from './WebsiteMetricsBar.module.css';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
+import styles from './WebsiteMetricsBar.module.css';
 
-export function WebsiteMetricsBar({
-  websiteId,
-  showFilter = true,
-  sticky,
-}: {
-  websiteId: string;
-  showFilter?: boolean;
-  sticky?: boolean;
-}) {
+export function WebsiteMetricsBar({ websiteId, sticky }: { websiteId: string; sticky?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
@@ -89,7 +81,7 @@ export function WebsiteMetricsBar({
         )}
       </MetricsBar>
       <div className={styles.actions}>
-        {showFilter && <WebsiteFilterButton websiteId={websiteId} className={styles.button} />}
+        <WebsiteFilterButton websiteId={websiteId} />
         <WebsiteDateFilter websiteId={websiteId} />
       </div>
     </div>

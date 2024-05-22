@@ -9,9 +9,15 @@ import styles from './WebsiteFilterButton.module.css';
 export function WebsiteFilterButton({
   websiteId,
   className,
+  position = 'bottom',
+  alignment = 'end',
+  showText = true,
 }: {
   websiteId: string;
   className?: string;
+  position?: 'bottom' | 'top' | 'left' | 'right';
+  alignment?: 'end' | 'center' | 'start';
+  showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
@@ -30,9 +36,9 @@ export function WebsiteFilterButton({
         <Icon>
           <Icons.Plus />
         </Icon>
-        <Text>{formatMessage(labels.filter)}</Text>
+        {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popup position="bottom" alignment="end">
+      <Popup position={position} alignment={alignment}>
         {(close: () => void) => {
           return (
             <PopupForm>
