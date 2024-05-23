@@ -4,6 +4,7 @@ import WebsiteMetricsBar from '../WebsiteMetricsBar';
 import FilterTags from 'components/metrics/FilterTags';
 import { useNavigation } from 'components/hooks';
 import { FILTER_COLUMNS } from 'lib/constants';
+import WebsiteChart from '../WebsiteChart';
 
 export function WebsiteComparePage({ websiteId }) {
   const { query } = useNavigation();
@@ -20,6 +21,7 @@ export function WebsiteComparePage({ websiteId }) {
       <WebsiteHeader websiteId={websiteId} />
       <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} compareMode={true} />
+      <WebsiteChart websiteId={websiteId} />
     </>
   );
 }

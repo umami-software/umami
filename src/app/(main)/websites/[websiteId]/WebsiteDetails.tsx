@@ -34,7 +34,7 @@ export default function WebsiteDetails({ websiteId }: { websiteId: string }) {
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} />
+      <WebsiteMetricsBar websiteId={websiteId} showChange={true} sticky={true} />
       <WebsiteChart websiteId={websiteId} />
       {!website && <Loading icon="dots" style={{ minHeight: 300 }} />}
       {website && (

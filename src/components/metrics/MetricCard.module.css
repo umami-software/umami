@@ -61,3 +61,7 @@
   color: var(--red700);
   background: var(--red100);
 }
+
+.hide {
+  visibility: hidden;
+}

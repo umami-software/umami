@@ -13,10 +13,12 @@ import { Dropdown, Item } from 'react-basics';
 export function WebsiteMetricsBar({
   websiteId,
   sticky,
+  showChange = false,
   compareMode = false,
 }: {
   websiteId: string;
   sticky?: boolean;
+  showChange?: boolean;
   compareMode?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
@@ -88,6 +90,7 @@ export function WebsiteMetricsBar({
                 change={change}
                 format={format}
                 reverseColors={reverseColors}
+                showChange={compareMode || showChange}
                 showPrevious={compareMode}
               />
             );

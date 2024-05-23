@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
@@ -31,8 +30,8 @@ export function WebsiteFilterButton({
   };
 
   return (
-    <PopupTrigger>
-      <Button className={classNames(className, styles.button)} variant="quiet">
+    <PopupTrigger className={className}>
+      <Button className={styles.button} variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>

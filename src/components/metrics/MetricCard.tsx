@@ -24,7 +24,7 @@ export const MetricCard = ({
   reverseColors = false,
   format = formatNumber,
   showLabel = true,
-  showChange = true,
+  showChange = false,
   showPrevious = false,
   className,
 }: MetricCardProps) => {
@@ -45,6 +45,7 @@ export const MetricCard = ({
           className={classNames(styles.change, {
             [styles.positive]: positive,
             [styles.negative]: negative,
+            [styles.hide]: ~~change === 0,
           })}
         >
           <Icon rotate={positive ? -45 : 45} size={showPrevious ? 'sm' : 'xs'}>
