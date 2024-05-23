@@ -22,6 +22,7 @@ export interface WebsiteStatsRequestQuery {
   country?: string;
   region?: string;
   city?: string;
+  compare?: string;
 }
 
 import * as yup from 'yup';
@@ -41,6 +42,7 @@ const schema = {
     country: yup.string(),
     region: yup.string(),
     city: yup.string(),
+    compare: yup.string(),
   }),
 };
 
@@ -77,7 +79,7 @@ export default async (
     const stats = Object.keys(metrics[0]).reduce((obj, key) => {
       obj[key] = {
         value: Number(metrics[0][key]) || 0,
-        change: Number(metrics[0][key]) - Number(prevPeriod[0][key]) || 0,
+        prev: Number(prevPeriod[0][key]) || 0,
       };
       return obj;
     }, {});

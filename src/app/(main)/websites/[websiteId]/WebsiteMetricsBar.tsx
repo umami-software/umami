@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import classNames from 'classnames';
 import { useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
@@ -7,21 +8,65 @@ import { formatShortTime } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
+import { Dropdown, Item } from 'react-basics';
 
-export function WebsiteMetricsBar({ websiteId, sticky }: { websiteId: string; sticky?: boolean }) {
+export function WebsiteMetricsBar({
+  websiteId,
+  sticky,
+  compareMode = false,
+}: {
+  websiteId: string;
+  sticky?: boolean;
+  compareMode?: boolean;
+}) {
   const { formatMessage, labels } = useMessages();
+  const [compare, setCompare] = useState('prev');
   const { ref, isSticky } = useSticky({ enabled: sticky });
-  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
+  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId, compare);
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
-  const num = Math.min(data && visitors.value, data && bounces.value);
-  const diffs = data && {
-    pageviews: pageviews.value - pageviews.change,
-    visitors: visitors.value - visitors.change,
-    visits: visits.value - visits.change,
-    bounces: bounces.value - bounces.change,
-    totaltime: totaltime.value - totaltime.change,
-  };
+
+  const metrics = data
+    ? [
+        {
+          ...pageviews,
+          label: formatMessage(labels.views),
+          change: pageviews.value - pageviews.prev,
+        },
+        {
+          ...visits,
+          label: formatMessage(labels.visits),
+          change: visits.value - visits.prev,
+        },
+        {
+          ...visitors,
+          label: formatMessage(labels.visitors),
+          change: visitors.value - visitors.prev,
+        },
+        {
+          label: formatMessage(labels.bounceRate),
+          value: (Math.min(visitors.value, bounces.value) / visitors.value) * 100,
+          prev: (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
+          change:
+            (Math.min(visitors.value, bounces.value) / visitors.value) * 100 -
+            (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
+          format: n => Number(n).toFixed(0) + '%',
+          reverseColors: true,
+        },
+        {
+          label: formatMessage(labels.visitDuration),
+          value: totaltime.value / visits.value,
+          prev: totaltime.prev / visits.prev,
+          change: totaltime.value / visits.value - totaltime.prev / visits.prev,
+          format: n => `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+        },
+      ]
+    : [];
+
+  const items = [
+    { label: formatMessage(labels.previousPeriod), value: 'prev' },
+    { label: formatMessage(labels.yearOverYear), value: 'yoy' },
+  ];
 
   return (
     <div
@@ -31,58 +76,44 @@ export function WebsiteMetricsBar({ websiteId, sticky }: { websiteId: string; st
         [styles.isSticky]: isSticky,
       })}
     >
-      <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-        {pageviews && visitors && (
-          <>
-            <MetricCard
-              label={formatMessage(labels.views)}
-              value={pageviews.value}
-              change={pageviews.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.visits)}
-              value={visits.value}
-              change={visits.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.visitors)}
-              value={visitors.value}
-              change={visitors.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.bounceRate)}
-              value={visitors.value ? (num / visitors.value) * 100 : 0}
-              change={
-                visitors.value && visitors.change
-                  ? (num / visitors.value) * 100 -
-                      (Math.min(diffs.visitors, diffs.bounces) / diffs.visitors) * 100 || 0
-                  : 0
-              }
-              format={n => Number(n).toFixed(0) + '%'}
-              reverseColors
-            />
-            <MetricCard
-              label={formatMessage(labels.averageVisitTime)}
-              value={
-                totaltime.value && pageviews.value
-                  ? totaltime.value / (pageviews.value - bounces.value)
-                  : 0
-              }
-              change={
-                totaltime.value && pageviews.value
-                  ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
-                      totaltime.value / (pageviews.value - bounces.value)) *
-                      -1 || 0
-                  : 0
-              }
-              format={n => `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
-            />
-          </>
-        )}
-      </MetricsBar>
+      <div>
+        <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
+          {metrics.map(({ label, value, prev, change, format, reverseColors }) => {
+            return (
+              <MetricCard
+                key={label}
+                value={value}
+                previousValue={prev}
+                label={label}
+                change={change}
+                format={format}
+                reverseColors={reverseColors}
+                showPrevious={compareMode}
+              />
+            );
+          })}
+        </MetricsBar>
+      </div>
       <div className={styles.actions}>
         <WebsiteFilterButton websiteId={websiteId} />
         <WebsiteDateFilter websiteId={websiteId} />
+        {compareMode && (
+          <div className={styles.vs}>
+            <b>VS</b>
+            <Dropdown
+              className={styles.dropdown}
+              items={items}
+              value={compare}
+              renderValue={value => items.find(i => i.value === value)?.label}
+              alignment="end"
+              onChange={(e: any) => setCompare(e)}
+            >
+              {items.map(({ label, value }) => (
+                <Item key={value}>{label}</Item>
+              ))}
+            </Dropdown>
+          </div>
+        )}
       </div>
     </div>
   );

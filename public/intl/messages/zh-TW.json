@@ -83,12 +83,6 @@
       "value": "平均"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "平均造訪時間"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1251,6 +1245,12 @@
     {
       "type": 0,
       "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "平均造訪時間"
     }
   ],
   "label.visitors": [

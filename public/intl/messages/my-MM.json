@@ -83,12 +83,6 @@
       "value": "ပျမ်းမျှ"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "ဝဘက်ဘ်ဆိုဒ်တွင် ပျမ်းမျှကုန်ဆုံးချိန်"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1247,6 +1241,12 @@
     {
       "type": 0,
       "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "ဝဘက်ဘ်ဆိုဒ်တွင် ပျမ်းမျှကုန်ဆုံးချိန်"
     }
   ],
   "label.visitors": [

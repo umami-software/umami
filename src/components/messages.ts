@@ -134,7 +134,7 @@ export const labels = defineMessages({
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
   viewsPerVisit: { id: 'label.views-per-visit', defaultMessage: 'Views per visit' },
-  averageVisitTime: { id: 'label.average-visit-time', defaultMessage: 'Average visit time' },
+  visitDuration: { id: 'label.visit-duration', defaultMessage: 'Visit duration' },
   desktop: { id: 'label.desktop', defaultMessage: 'Desktop' },
   laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
   tablet: { id: 'label.tablet', defaultMessage: 'Tablet' },
@@ -253,6 +253,8 @@ export const labels = defineMessages({
     defaultMessage: 'Understand how users nagivate through your website.',
   },
   compare: { id: 'label.compare', defaultMessage: 'Compare' },
+  previousPeriod: { id: 'label.previous-period', defaultMessage: 'Previous period' },
+  yearOverYear: { id: 'label.year-over-year', defaultMessage: 'Year over year' },
 });
 
 export const messages = defineMessages({

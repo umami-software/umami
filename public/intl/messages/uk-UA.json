@@ -83,12 +83,6 @@
       "value": "Середнє"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Середній час візиту"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1247,6 +1241,12 @@
     {
       "type": 0,
       "value": "Перегляди за візит"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Середній час візиту"
     }
   ],
   "label.visitors": [
