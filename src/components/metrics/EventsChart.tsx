@@ -13,7 +13,9 @@ export interface EventsChartProps {
 }
 
 export function EventsChart({ websiteId, className }: EventsChartProps) {
-  const [{ startDate, endDate, unit }] = useDateRange(websiteId);
+  const {
+    dateRange: { startDate, endDate, unit },
+  } = useDateRange(websiteId);
   const { locale } = useLocale();
   const { data, isLoading } = useWebsiteEvents(websiteId);
 

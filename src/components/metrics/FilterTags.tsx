@@ -24,7 +24,7 @@ export function FilterTags({
 }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
   const {
     router,
     renderUrl,

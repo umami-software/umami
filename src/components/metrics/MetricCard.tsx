@@ -48,7 +48,7 @@ export const MetricCard = ({
             [styles.hide]: ~~change === 0,
           })}
         >
-          <Icon rotate={positive ? -45 : 45} size={showPrevious ? 'sm' : 'xs'}>
+          <Icon rotate={positive || reverseColors ? -45 : 45} size={showPrevious ? 'md' : 'xs'}>
             <Icons.ArrowRight />
           </Icon>
           <animated.span title={changeProps?.x as any}>

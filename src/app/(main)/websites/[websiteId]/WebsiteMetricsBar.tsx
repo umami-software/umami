@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import classNames from 'classnames';
 import { useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
@@ -9,6 +8,7 @@ import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
 import { Dropdown, Item } from 'react-basics';
+import useStore, { setWebsiteDateCompare } from 'store/websites';
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -22,9 +22,12 @@ export function WebsiteMetricsBar({
   compareMode?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const [compare, setCompare] = useState('prev');
+  const dateCompare = useStore(state => state[websiteId]?.dateCompare);
   const { ref, isSticky } = useSticky({ enabled: sticky });
-  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId, compare);
+  const { data, isLoading, isFetched, error } = useWebsiteStats(
+    websiteId,
+    compareMode && dateCompare,
+  );
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
 
@@ -106,10 +109,10 @@ export function WebsiteMetricsBar({
             <Dropdown
               className={styles.dropdown}
               items={items}
-              value={compare}
+              value={dateCompare || 'prev'}
               renderValue={value => items.find(i => i.value === value)?.label}
               alignment="end"
-              onChange={(e: any) => setCompare(e)}
+              onChange={(value: any) => setWebsiteDateCompare(websiteId, value)}
             >
               {items.map(({ label, value }) => (
                 <Item key={value}>{label}</Item>

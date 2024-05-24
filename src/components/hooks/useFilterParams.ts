@@ -4,7 +4,7 @@ import { useTimezone } from './useTimezone';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
 export function useFilterParams(websiteId: string) {
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
   const { startDate, endDate, unit } = dateRange;
   const { timezone } = useTimezone();
   const {

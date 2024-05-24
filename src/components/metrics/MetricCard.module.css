@@ -5,13 +5,9 @@
   min-width: 150px;
 }
 
-.card.compare {
-  gap: 10px;
-}
-
 .card.compare .change {
   font-size: 16px;
-  padding: 5px 10px;
+  margin: 10px 0;
 }
 
 .card:first-child {
@@ -23,7 +19,7 @@
 }
 
 .value {
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 700;
   white-space: nowrap;
   color: var(--base900);
@@ -46,7 +42,7 @@
   gap: 5px;
   font-size: 13px;
   font-weight: 700;
-  padding: 0 5px;
+  padding: 0.1em 0.5em;
   border-radius: 5px;
   color: var(--base500);
   align-self: flex-start;

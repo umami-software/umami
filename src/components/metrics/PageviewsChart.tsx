@@ -5,8 +5,12 @@ import { renderDateLabels } from 'lib/charts';
 
 export interface PageviewsChartProps extends BarChartProps {
   data: {
-    sessions: any[];
     pageviews: any[];
+    sessions: any[];
+    compare?: {
+      pageviews: any[];
+      sessions: any[];
+    };
   };
   unit: string;
   isLoading?: boolean;
@@ -36,7 +40,25 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
           borderWidth: 1,
           ...colors.chart.views,
         },
-      ],
+        data.compare
+          ? {
+              type: 'line',
+              label: formatMessage(labels.visitors),
+              data: data.compare.pageviews,
+              borderWidth: 2,
+              borderColor: '#f15bb5',
+            }
+          : null,
+        data.compare
+          ? {
+              type: 'line',
+              label: formatMessage(labels.visits),
+              data: data.compare.sessions,
+              borderWidth: 2,
+              borderColor: '#9b5de5',
+            }
+          : null,
+      ].filter(n => n),
     };
   }, [data, locale]);
 

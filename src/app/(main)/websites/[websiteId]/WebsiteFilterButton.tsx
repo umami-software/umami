@@ -21,7 +21,9 @@ export function WebsiteFilterButton({
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
   const { fields } = useFields();
-  const [{ startDate, endDate }] = useDateRange(websiteId);
+  const {
+    dateRange: { startDate, endDate },
+  } = useDateRange(websiteId);
 
   const handleAddFilter = ({ name, operator, value }) => {
     const prefix = OPERATOR_PREFIXES[operator];
