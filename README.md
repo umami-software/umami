@@ -1,49 +1,56 @@
-# umami
+<p align="center">
+  <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
+</p>
 
-Umami is a simple, fast, privacy-focused alternative to Google Analytics.
+# Umami
 
-## Getting started
+> Umami is a simple, fast, privacy-focused alternative to Google Analytics.
+
+[![GitHub Release][release-shield]][releases-url]
+[![MIT License][license-shield]][license-url]
+[![Build Status][build-shield]][build-url]
+
+## Getting Started
 
 A detailed getting started guide can be found at [https://umami.is/docs/](https://umami.is/docs/)
 
-## Installing from source
+## Installing from Source
 
 ### Requirements
 
 - A server with Node.js version 16.13 or newer
-- A database. Umami supports [MySQL](https://www.mysql.com/) (minimum v8.0) and [Postgresql](https://www.postgresql.org/) (minimum v12.14) databases.
+- A database. Umami supports [MySQL](https://www.mysql.com/) (minimum v8.0) and [PostgreSQL](https://www.postgresql.org/) (minimum v12.14) databases.
 
 ### Install Yarn
 
-```
+```bash
 npm install -g yarn
 ```
 
-### Get the source code and install packages
+### Get the Source Code and Install Packages
 
-```
+```bash
 git clone https://github.com/umami-software/umami.git
 cd umami
 yarn install
 ```
 
-### Configure umami
+### Configure Umami
 
-Create an `.env` file with the following
+Create an `.env` file with the following:
 
-```
+```bash
 DATABASE_URL=connection-url
 ```
 
-The connection url is in the following format:
+The connection URL is in the following format:
 
-```
+```bash
 postgresql://username:mypassword@localhost:5432/mydb
-
 mysql://username:mypassword@localhost:3306/mydb
 ```
 
-### Build the application
+### Build the Application
 
 ```bash
 yarn build
@@ -51,19 +58,17 @@ yarn build
 
 The build step will also create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
 
-### Start the application
+### Start the Application
 
 ```bash
 yarn start
 ```
 
-By default this will launch the application on `http://localhost:3000`. You will need to either
-[proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server
-or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 
 ## Installing with Docker
 
-To build the umami container and start up a Postgres database, run:
+To build the Umami container and start up a Postgres database, run:
 
 ```bash
 docker compose up -d
@@ -81,7 +86,7 @@ Or with MySQL support:
 docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
-## Getting updates
+## Getting Updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
 
@@ -102,3 +107,9 @@ docker compose up --force-recreate
 
 MIT
 
+[release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
+[releases-url]: https://github.com/umami-software/umami/releases
+[license-shield]: https://img.shields.io/github/license/umami-software/umami.svg
+[license-url]: https://github.com/umami-software/umami/blob/master/LICENSE
+[build-shield]: https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml
+[build-url]: https://github.com/umami-software/umami/actions
