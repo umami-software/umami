@@ -2,27 +2,31 @@
   <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
 </p>
 
-# Umami
+# 🌐 Umami
 
-> Umami is a simple, fast, privacy-focused alternative to Google Analytics.
+> **Umami** is a simple, fast, privacy-focused alternative to Google Analytics.
 
-[![GitHub Release][release-shield]][releases-url]
-[![MIT License][license-shield]][license-url]
-[![Build Status][build-shield]][build-url]
+[![GitHub Release][release-shield]][releases-url] [![MIT License][license-shield]][license-url] [![Build Status][build-shield]][build-url]
 
-## Demo
+---
+
+## 🎉 Demo
 
 Explore Umami's features by trying out our demo installation:
 
-[Umami Demo](https://demo.umami.is/)
+👉 [Umami Demo](https://demo.umami.is/) 👈
 
 Please note that the demo is provided for exploration purposes only and may not include the latest features or configurations. For a more accurate representation, consider installing Umami on your own server.
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 A detailed getting started guide can be found at [https://umami.is/docs/](https://umami.is/docs/)
 
-## Installing from Source
+---
+
+## 🛠 Installing from Source
 
 ### Requirements
 
@@ -74,7 +78,9 @@ yarn start
 
 By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
 
-## Installing with Docker
+---
+
+## 🐳 Installing with Docker
 
 To build the Umami container and start up a Postgres database, run:
 
@@ -94,7 +100,9 @@ Or with MySQL support:
 docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
-## Getting Updates
+---
+
+## 🔄 Getting Updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
 
@@ -111,12 +119,11 @@ docker compose pull
 docker compose up --force-recreate
 ```
 
-## Contact
+---
 
-[![GitHub][github-shield]][github-url]
-[![Twitter][twitter-shield]][twitter-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-[![Discord][discord-shield]][discord-url]
+## 📞 Contact
+
+[![GitHub][github-shield]][github-url] [![Twitter][twitter-shield]][twitter-url] [![LinkedIn][linkedin-shield]][linkedin-url] [![Discord][discord-shield]][discord-url]
 
 [release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
 [releases-url]: https://github.com/umami-software/umami/releases
@@ -132,3 +139,5 @@ docker compose up --force-recreate
 [linkedin-url]: https://linkedin.com/company/umami-software
 [discord-shield]: https://img.shields.io/badge/Discord--blue?style=social&logo=discord
 [discord-url]: https://discord.com/invite/4dz4zcXYrQ
+
+---
