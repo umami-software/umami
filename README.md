@@ -2,7 +2,7 @@
   <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
 </p>
 
-<h1 align="center"> Umami</h1>
+<h1 align="center">Umami</h1>
 
 <p align="center"><b>Empowering insights. Preserving privacy.</b></p>
 
@@ -20,15 +20,10 @@
   <a href="https://github.com/umami-software/umami/actions">
     <img src="https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml" alt="Build Status">
   </a>
+  <a href="https://analytics.umami.is/share/LGazGOecbDtaIwDr/umami.is" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo">
+  </a>
 </p>
-
----
-
-## 🎉 Demo
-
-Explore Umami's features by trying out our demo installation:
-
-👉 [Umami Demo](https://analytics.umami.is/share/LGazGOecbDtaIwDr/umami.is) 👈
 
 ---
 
