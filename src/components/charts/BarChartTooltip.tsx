@@ -21,7 +21,9 @@ export default function BarChartTooltip({ tooltip, unit }) {
 
   return (
     <Flexbox direction="column" gap={10}>
-      <div>{formatDate(new Date(dataPoints[0].raw.x), formats[unit], locale)}</div>
+      <div>
+        {formatDate(new Date(dataPoints[0].raw.d || dataPoints[0].raw.x), formats[unit], locale)}
+      </div>
       <div>
         <StatusLight color={labelColors?.[0]?.backgroundColor}>
           {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}

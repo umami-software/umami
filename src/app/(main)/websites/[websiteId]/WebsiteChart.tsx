@@ -25,8 +25,16 @@ export function WebsiteChart({
 
       if (compare) {
         result['compare'] = {
-          pageviews: result.pageviews.map(({ x }, i) => ({ x, y: compare.pageviews[i].y })),
-          sessions: result.sessions.map(({ x }, i) => ({ x, y: compare.sessions[i].y })),
+          pageviews: result.pageviews.map(({ x }, i) => ({
+            x,
+            y: compare.pageviews[i].y,
+            d: compare.pageviews[i].x,
+          })),
+          sessions: result.sessions.map(({ x }, i) => ({
+            x,
+            y: compare.sessions[i].y,
+            d: compare.pageviews[i].x,
+          })),
         };
       }
 
