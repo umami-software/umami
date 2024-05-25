@@ -33,32 +33,38 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
           data: data.sessions,
           borderWidth: 1,
           ...colors.chart.visitors,
+          order: 3,
         },
         {
           label: formatMessage(labels.views),
           data: data.pageviews,
           borderWidth: 1,
           ...colors.chart.views,
+          order: 4,
         },
-        data.compare
-          ? {
-              type: 'line',
-              label: formatMessage(labels.visitors),
-              data: data.compare.pageviews,
-              borderWidth: 2,
-              borderColor: '#f15bb5',
-            }
-          : null,
-        data.compare
-          ? {
-              type: 'line',
-              label: formatMessage(labels.visits),
-              data: data.compare.sessions,
-              borderWidth: 2,
-              borderColor: '#9b5de5',
-            }
-          : null,
-      ].filter(n => n),
+        ...(data.compare
+          ? [
+              {
+                type: 'line',
+                label: `${formatMessage(labels.visits)} (VS)`,
+                data: data.compare.pageviews,
+                borderWidth: 2,
+                backgroundColor: '#8601B0',
+                borderColor: '#8601B0',
+                order: 1,
+              },
+              {
+                type: 'line',
+                label: `${formatMessage(labels.visitors)} (VS)`,
+                data: data.compare.sessions,
+                borderWidth: 2,
+                backgroundColor: '#f15bb5',
+                borderColor: '#f15bb5',
+                order: 2,
+              },
+            ]
+          : []),
+      ],
     };
   }, [data, locale]);
 
