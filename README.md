@@ -110,9 +110,25 @@ To update the Docker image, simply pull the new images and rebuild:
 docker compose pull
 docker compose up --force-recreate
 ```
+
+## Contact
+
+[![GitHub][github-shield]][github-url]
+[![Twitter][twitter-shield]][twitter-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+[![Discord][discord-shield]][discord-url]
+
 [release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
 [releases-url]: https://github.com/umami-software/umami/releases
 [license-shield]: https://img.shields.io/github/license/umami-software/umami.svg
 [license-url]: https://github.com/umami-software/umami/blob/master/LICENSE
 [build-shield]: https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml
 [build-url]: https://github.com/umami-software/umami/actions
+[github-shield]: https://img.shields.io/badge/GitHub--blue?style=social&logo=github
+[github-url]: https://github.com/umami-software/umami
+[twitter-shield]: https://img.shields.io/badge/Twitter--blue?style=social&logo=twitter
+[twitter-url]: https://twitter.com/umami_software
+[linkedin-shield]: https://img.shields.io/badge/LinkedIn--blue?style=social&logo=linkedin
+[linkedin-url]: https://linkedin.com/company/umami-software
+[discord-shield]: https://img.shields.io/badge/Discord--blue?style=social&logo=discord
+[discord-url]: https://discord.com/invite/4dz4zcXYrQ
