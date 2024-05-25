@@ -30,8 +30,6 @@ Explore Umami's features by trying out our demo installation:
 
 👉 [Umami Demo](https://analytics.umami.is/share/LGazGOecbDtaIwDr/umami.is) 👈
 
-*Please note that the demo is provided for exploration purposes only and may not include the latest features or configurations. For a more accurate representation, consider installing Umami on your own server.*
-
 ---
 
 ## 🚀 Getting Started
