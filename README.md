@@ -2,7 +2,7 @@
   <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
 </p>
 
-<h1 align="center">🌐 Umami</h1>
+<h1 align="center"> Umami</h1>
 
 <p align="center"><b>Empowering insights. Preserving privacy.</b></p>
 
