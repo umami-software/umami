@@ -110,11 +110,6 @@ To update the Docker image, simply pull the new images and rebuild:
 docker compose pull
 docker compose up --force-recreate
 ```
-
-## License
-
-MIT
-
 [release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
 [releases-url]: https://github.com/umami-software/umami/releases
 [license-shield]: https://img.shields.io/github/license/umami-software/umami.svg
