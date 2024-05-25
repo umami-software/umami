@@ -2,11 +2,25 @@
   <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
 </p>
 
-# 🌐 Umami
+<h1 align="center">🌐 Umami</h1>
 
-> **Umami** is a simple, fast, privacy-focused alternative to Google Analytics.
+<p align="center"><b>Empowering insights. Preserving privacy.</b></p>
 
-[![GitHub Release][release-shield]][releases-url] [![MIT License][license-shield]][license-url] [![Build Status][build-shield]][build-url]
+<p align="center">
+  <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
+</p>
+
+<p align="center">
+  <a href="https://github.com/umami-software/umami/releases">
+    <img src="https://img.shields.io/github/release/umami-software/umami.svg" alt="GitHub Release">
+  </a>
+  <a href="https://github.com/umami-software/umami/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/umami-software/umami.svg" alt="MIT License">
+  </a>
+  <a href="https://github.com/umami-software/umami/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml" alt="Build Status">
+  </a>
+</p>
 
 ---
 
@@ -16,13 +30,13 @@ Explore Umami's features by trying out our demo installation:
 
 👉 [Umami Demo](https://demo.umami.is/) 👈
 
-Please note that the demo is provided for exploration purposes only and may not include the latest features or configurations. For a more accurate representation, consider installing Umami on your own server.
+*Please note that the demo is provided for exploration purposes only and may not include the latest features or configurations. For a more accurate representation, consider installing Umami on your own server.*
 
 ---
 
 ## 🚀 Getting Started
 
-A detailed getting started guide can be found at [https://umami.is/docs/](https://umami.is/docs/)
+A detailed getting started guide can be found at [umami.is/docs](https://umami.is/docs/).
 
 ---
 
@@ -55,7 +69,7 @@ Create an `.env` file with the following:
 DATABASE_URL=connection-url
 ```
 
-The connection URL is in the following format:
+The connection URL format:
 
 ```bash
 postgresql://username:mypassword@localhost:5432/mydb
@@ -68,7 +82,7 @@ mysql://username:mypassword@localhost:3306/mydb
 yarn build
 ```
 
-The build step will also create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
+*The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.*
 
 ### Start the Application
 
@@ -76,7 +90,7 @@ The build step will also create tables in your database if you are installing fo
 yarn start
 ```
 
-By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+*By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.*
 
 ---
 
@@ -123,7 +137,20 @@ docker compose up --force-recreate
 
 ## 📞 Contact
 
-[![GitHub][github-shield]][github-url] [![Twitter][twitter-shield]][twitter-url] [![LinkedIn][linkedin-shield]][linkedin-url] [![Discord][discord-shield]][discord-url]
+<p align="center">
+  <a href="https://github.com/umami-software/umami">
+    <img src="https://img.shields.io/badge/GitHub--blue?style=social&logo=github" alt="GitHub">
+  </a>
+  <a href="https://twitter.com/umami_software">
+    <img src="https://img.shields.io/badge/Twitter--blue?style=social&logo=twitter" alt="Twitter">
+  </a>
+  <a href="https://linkedin.com/company/umami-software">
+    <img src="https://img.shields.io/badge/LinkedIn--blue?style=social&logo=linkedin" alt="LinkedIn">
+  </a>
+  <a href="https://discord.com/invite/4dz4zcXYrQ">
+    <img src="https://img.shields.io/badge/Discord--blue?style=social&logo=discord" alt="Discord">
+  </a>
+</p>
 
 [release-shield]: https://img.shields.io/github/release/umami-software/umami.svg
 [releases-url]: https://github.com/umami-software/umami/releases
@@ -139,5 +166,3 @@ docker compose up --force-recreate
 [linkedin-url]: https://linkedin.com/company/umami-software
 [discord-shield]: https://img.shields.io/badge/Discord--blue?style=social&logo=discord
 [discord-url]: https://discord.com/invite/4dz4zcXYrQ
-
----
