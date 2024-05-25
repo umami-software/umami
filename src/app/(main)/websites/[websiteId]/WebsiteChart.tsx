@@ -9,7 +9,7 @@ export function WebsiteChart({
   compareMode = false,
 }: {
   websiteId: string;
-  compareMode: boolean;
+  compareMode?: boolean;
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
   const { startDate, endDate, unit } = dateRange;
@@ -27,13 +27,13 @@ export function WebsiteChart({
         result['compare'] = {
           pageviews: result.pageviews.map(({ x }, i) => ({
             x,
-            y: compare.pageviews[i].y,
-            d: compare.pageviews[i].x,
+            y: compare.pageviews[i]?.y,
+            d: compare.pageviews[i]?.x,
           })),
           sessions: result.sessions.map(({ x }, i) => ({
             x,
-            y: compare.sessions[i].y,
-            d: compare.pageviews[i].x,
+            y: compare.sessions[i]?.y,
+            d: compare.sessions[i]?.x,
           })),
         };
       }

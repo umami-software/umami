@@ -98,9 +98,9 @@ export function Chart({
     // Allow config changes before update
     onUpdate?.(chart.current);
 
-    setLegendItems(chart.current.legend.legendItems);
-
     chart.current.update(updateMode);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
   useEffect(() => {
