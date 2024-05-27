@@ -167,6 +167,10 @@ const config = {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
       },
+      {
+        source: '/teams/:teamId/:path*',
+        destination: '/:path*',
+      },
     ];
   },
   async redirects() {
