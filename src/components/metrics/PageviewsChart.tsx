@@ -46,7 +46,7 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
           ? [
               {
                 type: 'line',
-                label: `${formatMessage(labels.visits)} (VS)`,
+                label: `${formatMessage(labels.visits)} (${formatMessage(labels.previous)})`,
                 data: data.compare.pageviews,
                 borderWidth: 2,
                 backgroundColor: '#8601B0',
@@ -55,7 +55,7 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
               },
               {
                 type: 'line',
-                label: `${formatMessage(labels.visitors)} (VS)`,
+                label: `${formatMessage(labels.visitors)} (${formatMessage(labels.previous)})`,
                 data: data.compare.sessions,
                 borderWidth: 2,
                 backgroundColor: '#f15bb5',

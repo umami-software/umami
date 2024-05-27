@@ -15,6 +15,7 @@ export interface ListTableProps {
   metric?: string;
   className?: string;
   renderLabel?: (row: any, index: number) => ReactNode;
+  renderChange?: (row: any, index: number) => ReactNode;
   animate?: boolean;
   virtualize?: boolean;
   showPercentage?: boolean;
@@ -27,6 +28,7 @@ export function ListTable({
   metric,
   className,
   renderLabel,
+  renderChange,
   animate = true,
   virtualize = false,
   showPercentage = true,
@@ -45,6 +47,7 @@ export function ListTable({
         percent={percent}
         animate={animate && !virtualize}
         showPercentage={showPercentage}
+        change={renderChange ? renderChange(row, index) : null}
       />
     );
   };
@@ -78,7 +81,7 @@ export function ListTable({
   );
 }
 
-const AnimatedRow = ({ label, value = 0, percent, animate, showPercentage = true }) => {
+const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentage = true }) => {
   const props = useSpring({
     width: percent,
     y: value,
@@ -90,6 +93,7 @@ const AnimatedRow = ({ label, value = 0, percent, animate, showPercentage = true
     <div className={styles.row}>
       <div className={styles.label}>{label}</div>
       <div className={styles.value}>
+        {change}
         <animated.div className={styles.value} title={props?.y as any}>
           {props.y?.to(formatLongNumber)}
         </animated.div>

@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import SideNav from 'components/layout/SideNav';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useDateRange, useMessages, useNavigation } from 'components/hooks';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
@@ -13,11 +14,12 @@ import LanguagesTable from 'components/metrics/LanguagesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import { Grid, GridRow } from 'components/layout/Grid';
-import styles from './WebsiteCompareTables.module.css';
-import { useContext, useState } from 'react';
 import MetricsTable from 'components/metrics/MetricsTable';
-import FilterLink from 'components/common/FilterLink';
-import { WebsiteContext } from '../WebsiteProvider';
+import useStore from 'store/websites';
+import { getCompareDate } from 'lib/date';
+import { formatNumber } from 'lib/format';
+import ChangeLabel from 'components/metrics/ChangeLabel';
+import styles from './WebsiteCompareTables.module.css';
 
 const views = {
   url: PagesTable,
@@ -36,14 +38,15 @@ const views = {
 };
 
 export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
-  const { domain } = useContext(WebsiteContext);
   const [data, setData] = useState([]);
+  const { dateRange } = useDateRange(websiteId);
+  const dateCompare = useStore(state => state[websiteId]?.dateCompare);
   const { formatMessage, labels } = useMessages();
   const {
     renderUrl,
     query: { view },
   } = useNavigation();
-  const Component: typeof MetricsTable = views[view] || (() => null);
+  const Component: typeof MetricsTable = views[view || 'url'] || (() => null);
 
   const items = [
     {
@@ -108,27 +111,48 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
     },
   ];
 
-  const renderLabel = ({ x, y }, index) => {
-    return (
-      <FilterLink
-        id={view}
-        value={x}
-        label={!x && formatMessage(labels.none)}
-        externalUrl={
-          view === 'url' ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}` : null
-        }
-      >
-        {y} : {data[index]?.y} !
-      </FilterLink>
-    );
+  const renderChange = ({ x, y }) => {
+    const prev = data.find(d => d.x === x)?.y;
+    const value = y - prev;
+    const change = Math.abs(((y - prev) / prev) * 100);
+
+    return !isNaN(change) && <ChangeLabel value={value}>{formatNumber(change)}%</ChangeLabel>;
+  };
+
+  const { startDate, endDate } = getCompareDate(
+    dateCompare,
+    dateRange.startDate,
+    dateRange.endDate,
+  );
+
+  const params = {
+    startAt: startDate.getTime(),
+    endAt: endDate.getTime(),
   };
 
   return (
     <Grid className={styles.container}>
       <GridRow columns="compare">
         <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
-        <Component websiteId={websiteId} limit={20} showMore={false} onDataLoad={setData} />
-        <Component websiteId={websiteId} limit={20} showMore={false} renderLabel={renderLabel} />
+        <div>
+          <div className={styles.title}>{formatMessage(labels.previous)}</div>
+          <Component
+            websiteId={websiteId}
+            limit={20}
+            showMore={false}
+            onDataLoad={setData}
+            params={params}
+          />
+        </div>
+        <div>
+          <div className={styles.title}> {formatMessage(labels.current)}</div>
+          <Component
+            websiteId={websiteId}
+            limit={20}
+            showMore={false}
+            renderChange={renderChange}
+          />
+        </div>
       </GridRow>
     </Grid>
   );

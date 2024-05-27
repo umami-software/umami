@@ -70,7 +70,7 @@ export function WebsiteMetricsBar({
 
   const items = [
     { label: formatMessage(labels.previousPeriod), value: 'prev' },
-    { label: formatMessage(labels.yearOverYear), value: 'yoy' },
+    { label: formatMessage(labels.previousYear), value: 'yoy' },
   ];
 
   return (

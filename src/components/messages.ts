@@ -253,8 +253,10 @@ export const labels = defineMessages({
     defaultMessage: 'Understand how users nagivate through your website.',
   },
   compare: { id: 'label.compare', defaultMessage: 'Compare' },
+  current: { id: 'label.current', defaultMessage: 'Current' },
+  previous: { id: 'label.previous', defaultMessage: 'Previous' },
   previousPeriod: { id: 'label.previous-period', defaultMessage: 'Previous period' },
-  yearOverYear: { id: 'label.year-over-year', defaultMessage: 'Year over year' },
+  previousYear: { id: 'label.previous-year', defaultMessage: 'Previous year' },
 });
 
 export const messages = defineMessages({

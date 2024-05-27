@@ -55,7 +55,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
       type={view}
       metric={formatMessage(labels.views)}
       dataFilter={emptyFilter}
-      renderLabel={props.renderLabel || renderLink}
+      renderLabel={renderLink}
     >
       {allowFilter && <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />}
     </MetricsTable>

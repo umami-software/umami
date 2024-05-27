@@ -1,10 +1,8 @@
 <p align="center">
-  <img src="https://github.com/shubhusion/umami/blob/master/src/assets/logo-white.svg" alt="Umami Logo" width="100">
+  <img src="https://umami.is/images/umami-logo.png" alt="Umami Logo" width="100">
 </p>
 
 <h1 align="center">Umami</h1>
-
-<p align="center"><b>Empowering insights. Preserving privacy.</b></p>
 
 <p align="center">
   <i>Umami is a simple, fast, privacy-focused alternative to Google Analytics.</i>
@@ -12,16 +10,16 @@
 
 <p align="center">
   <a href="https://github.com/umami-software/umami/releases">
-    <img src="https://img.shields.io/github/release/umami-software/umami.svg" alt="GitHub Release">
+    <img src="https://img.shields.io/github/release/umami-software/umami.svg" alt="GitHub Release" />
   </a>
   <a href="https://github.com/umami-software/umami/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/umami-software/umami.svg" alt="MIT License">
+    <img src="https://img.shields.io/github/license/umami-software/umami.svg" alt="MIT License" />
   </a>
   <a href="https://github.com/umami-software/umami/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml" alt="Build Status">
+    <img src="https://img.shields.io/github/actions/workflow/status/umami-software/umami/ci.yml" alt="Build Status" />
   </a>
   <a href="https://analytics.umami.is/share/LGazGOecbDtaIwDr/umami.is" style="text-decoration: none;">
-    <img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo">
+    <img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo" />
   </a>
 </p>
 
@@ -128,20 +126,20 @@ docker compose up --force-recreate
 
 ---
 
-## 📞 Contact
+## 🛟 Support
 
 <p align="center">
   <a href="https://github.com/umami-software/umami">
-    <img src="https://img.shields.io/badge/GitHub--blue?style=social&logo=github" alt="GitHub">
+    <img src="https://img.shields.io/badge/GitHub--blue?style=social&logo=github" alt="GitHub" />
   </a>
   <a href="https://twitter.com/umami_software">
-    <img src="https://img.shields.io/badge/Twitter--blue?style=social&logo=twitter" alt="Twitter">
+    <img src="https://img.shields.io/badge/Twitter--blue?style=social&logo=twitter" alt="Twitter" />
   </a>
   <a href="https://linkedin.com/company/umami-software">
-    <img src="https://img.shields.io/badge/LinkedIn--blue?style=social&logo=linkedin" alt="LinkedIn">
+    <img src="https://img.shields.io/badge/LinkedIn--blue?style=social&logo=linkedin" alt="LinkedIn" />
   </a>
-  <a href="https://discord.com/invite/4dz4zcXYrQ">
-    <img src="https://img.shields.io/badge/Discord--blue?style=social&logo=discord" alt="Discord">
+  <a href="https://umami.is/discord">
+    <img src="https://img.shields.io/badge/Discord--blue?style=social&logo=discord" alt="Discord" />
   </a>
 </p>
 
