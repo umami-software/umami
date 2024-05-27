@@ -95,6 +95,9 @@ export const labels = defineMessages({
   devices: { id: 'label.devices', defaultMessage: 'Devices' },
   countries: { id: 'label.countries', defaultMessage: 'Countries' },
   languages: { id: 'label.languages', defaultMessage: 'Languages' },
+  count: { id: 'label.count', defaultMessage: 'Count' },
+  average: { id: 'label.average', defaultMessage: 'Average' },
+  sum: { id: 'label.sum', defaultMessage: 'Sum' },
   event: { id: 'label.event', defaultMessage: 'Event' },
   events: { id: 'label.events', defaultMessage: 'Events' },
   query: { id: 'label.query', defaultMessage: 'Query' },
@@ -107,6 +110,7 @@ export const labels = defineMessages({
   views: { id: 'label.views', defaultMessage: 'Views' },
   none: { id: 'label.none', defaultMessage: 'None' },
   clearAll: { id: 'label.clear-all', defaultMessage: 'Clear all' },
+  property: { id: 'label.property', defaultMessage: 'Property' },
   today: { id: 'label.today', defaultMessage: 'Today' },
   lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
   yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
@@ -130,7 +134,7 @@ export const labels = defineMessages({
   uniqueVisitors: { id: 'label.unique-visitors', defaultMessage: 'Unique visitors' },
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
   viewsPerVisit: { id: 'label.views-per-visit', defaultMessage: 'Views per visit' },
-  averageVisitTime: { id: 'label.average-visit-time', defaultMessage: 'Average visit time' },
+  visitDuration: { id: 'label.visit-duration', defaultMessage: 'Visit duration' },
   desktop: { id: 'label.desktop', defaultMessage: 'Desktop' },
   laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
   tablet: { id: 'label.tablet', defaultMessage: 'Tablet' },
@@ -178,8 +182,6 @@ export const labels = defineMessages({
   before: { id: 'label.before', defaultMessage: 'Before' },
   after: { id: 'label.after', defaultMessage: 'After' },
   total: { id: 'label.total', defaultMessage: 'Total' },
-  sum: { id: 'label.sum', defaultMessage: 'Sum' },
-  average: { id: 'label.average', defaultMessage: 'Average' },
   min: { id: 'label.min', defaultMessage: 'Min' },
   max: { id: 'label.max', defaultMessage: 'Max' },
   unique: { id: 'label.unique', defaultMessage: 'Unique' },
@@ -220,6 +222,10 @@ export const labels = defineMessages({
     id: 'message.viewed-page',
     defaultMessage: 'Viewed page',
   },
+  collectedData: {
+    id: 'message.collected-data',
+    defaultMessage: 'Collected data',
+  },
   triggeredEvent: {
     id: 'message.triggered-event',
     defaultMessage: 'Triggered event',
@@ -239,9 +245,18 @@ export const labels = defineMessages({
   goals: { id: 'label.goals', defaultMessage: 'Goals' },
   goalsDescription: {
     id: 'label.goals-description',
-    defaultMessage: 'Track your goals for pageviews or events.',
+    defaultMessage: 'Track your goals for pageviews and events.',
   },
-  count: { id: 'label.count', defaultMessage: 'Count' },
+  journey: { id: 'label.journey', defaultMessage: 'Journey' },
+  journeyDescription: {
+    id: 'label.journey-description',
+    defaultMessage: 'Understand how users nagivate through your website.',
+  },
+  compare: { id: 'label.compare', defaultMessage: 'Compare' },
+  current: { id: 'label.current', defaultMessage: 'Current' },
+  previous: { id: 'label.previous', defaultMessage: 'Previous' },
+  previousPeriod: { id: 'label.previous-period', defaultMessage: 'Previous period' },
+  previousYear: { id: 'label.previous-year', defaultMessage: 'Previous year' },
 });
 
 export const messages = defineMessages({

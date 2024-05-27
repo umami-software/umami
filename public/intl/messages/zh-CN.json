@@ -83,12 +83,6 @@
       "value": "平均"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "平均访问时间"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1255,6 +1249,12 @@
     {
       "type": 0,
       "value": "每次访问的浏览量"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "平均访问时间"
     }
   ],
   "label.visitors": [

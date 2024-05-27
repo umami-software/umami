@@ -71,7 +71,7 @@
       "value": "Average"
     }
   ],
-  "label.average-visit-time": [
+  "label.visit-duration": [
     {
       "type": 0,
       "value": "Tiempo promedio de visita"

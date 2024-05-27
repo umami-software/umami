@@ -4,7 +4,7 @@ import { useFilterParams } from '../useFilterParams';
 
 export function useWebsiteMetrics(
   websiteId: string,
-  query: { type: string; limit: number; search: string },
+  queryParams: { type: string; limit: number; search: string; startAt?: number; endAt?: number },
   options?: Omit<UseQueryOptions & { onDataLoad?: (data: any) => void }, 'queryKey' | 'queryFn'>,
 ) {
   const { get, useQuery } = useApi();
@@ -16,17 +16,17 @@ export function useWebsiteMetrics(
       {
         websiteId,
         ...params,
-        ...query,
+        ...queryParams,
       },
     ],
     queryFn: async () => {
       const filters = { ...params };
 
-      filters[query.type] = undefined;
+      filters[queryParams.type] = undefined;
 
       const data = await get(`/websites/${websiteId}/metrics`, {
         ...filters,
-        ...query,
+        ...queryParams,
       });
 
       options?.onDataLoad?.(data);

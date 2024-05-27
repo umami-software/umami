@@ -18,7 +18,6 @@ import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
-  domainName: string;
   type?: string;
   className?: string;
   dataFilter?: (data: any) => any;
@@ -27,6 +26,8 @@ export interface MetricsTableProps extends ListTableProps {
   onDataLoad?: (data: any) => void;
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
+  showMore?: boolean;
+  params?: { [key: string]: any };
   children?: ReactNode;
 }
 
@@ -39,6 +40,8 @@ export function MetricsTable({
   onDataLoad,
   delay = null,
   allowSearch = false,
+  showMore = true,
+  params,
   children,
   ...props
 }: MetricsTableProps) {
@@ -50,7 +53,7 @@ export function MetricsTable({
 
   const { data, isLoading, isFetched, error } = useWebsiteMetrics(
     websiteId,
-    { type, limit, search },
+    { type, limit, search, ...params },
     {
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
       onDataLoad,
@@ -98,7 +101,7 @@ export function MetricsTable({
       )}
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
-        {data && !error && limit && (
+        {showMore && data && !error && limit && (
           <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>

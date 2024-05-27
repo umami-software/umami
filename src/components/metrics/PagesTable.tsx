@@ -4,18 +4,21 @@ import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { useMessages } from 'components/hooks';
 import { useNavigation } from 'components/hooks';
 import { emptyFilter } from 'lib/filters';
+import { useContext } from 'react';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export interface PagesTableProps extends MetricsTableProps {
   allowFilter?: boolean;
 }
 
-export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProps) {
+export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const {
     router,
     renderUrl,
     query: { view = 'url' },
   } = useNavigation();
   const { formatMessage, labels } = useMessages();
+  const { domain } = useContext(WebsiteContext);
 
   const handleSelect = (key: any) => {
     router.push(renderUrl({ view: key }), { scroll: true });
@@ -39,9 +42,7 @@ export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProp
         value={x}
         label={!x && formatMessage(labels.none)}
         externalUrl={
-          view === 'url'
-            ? `${domainName.startsWith('http') ? domainName : `https://${domainName}`}${x}`
-            : null
+          view === 'url' ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}` : null
         }
       />
     );
@@ -50,7 +51,6 @@ export function PagesTable({ allowFilter, domainName, ...props }: PagesTableProp
   return (
     <MetricsTable
       {...props}
-      domainName={domainName}
       title={formatMessage(labels.pages)}
       type={view}
       metric={formatMessage(labels.views)}

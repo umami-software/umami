@@ -62,8 +62,8 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  ).then(a => {
-    return Object.values(a).map(a => {
+  ).then(result => {
+    return Object.values(result).map((a: any) => {
       return {
         fieldName: a.fieldName,
         dataType: Number(a.dataType),

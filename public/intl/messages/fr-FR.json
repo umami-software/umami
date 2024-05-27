@@ -83,12 +83,6 @@
       "value": "Moyenne"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Temps de visite moyen"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1235,6 +1229,12 @@
     {
       "type": 0,
       "value": "Vues par visite"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Temps de visite moyen"
     }
   ],
   "label.visitors": [

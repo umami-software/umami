@@ -119,10 +119,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
   };
 }
 
-async function rawQuery<T = unknown>(
-  query: string,
-  params: Record<string, unknown> = {},
-): Promise<T> {
+async function rawQuery(query: string, params: Record<string, unknown> = {}): Promise<unknown[]> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);

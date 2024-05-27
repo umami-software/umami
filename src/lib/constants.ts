@@ -20,6 +20,7 @@ export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_DATE_COMPARE = 'prev';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 5000;
@@ -115,6 +116,7 @@ export const REPORT_TYPES = {
   insights: 'insights',
   retention: 'retention',
   utm: 'utm',
+  journey: 'journey',
 } as const;
 
 export const REPORT_PARAMETERS = {

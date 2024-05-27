@@ -8,21 +8,30 @@ import { DateRange } from 'lib/types';
 
 export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
   const { dir } = useLocale();
-  const [dateRange, setDateRange] = useDateRange(websiteId);
+  const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, startDate, endDate, offset } = dateRange;
   const disableForward =
     value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
 
   const handleChange = (value: string | DateRange) => {
-    setDateRange(value);
+    saveDateRange(value);
   };
 
   const handleIncrement = (increment: number) => {
-    setDateRange(getOffsetDateRange(dateRange, increment));
+    saveDateRange(getOffsetDateRange(dateRange, increment));
   };
 
   return (
     <div className={styles.container}>
+      <DateFilter
+        className={styles.dropdown}
+        value={value}
+        startDate={startDate}
+        endDate={endDate}
+        offset={offset}
+        onChange={handleChange}
+        showAllTime={true}
+      />
       {value !== 'all' && !value.startsWith('range') && (
         <div className={styles.buttons}>
           <Button onClick={() => handleIncrement(-1)}>
@@ -37,15 +46,6 @@ export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
           </Button>
         </div>
       )}
-      <DateFilter
-        className={styles.dropdown}
-        value={value}
-        startDate={startDate}
-        endDate={endDate}
-        offset={offset}
-        onChange={handleChange}
-        showAllTime={true}
-      />
     </div>
   );
 }
