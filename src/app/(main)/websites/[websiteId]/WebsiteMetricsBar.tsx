@@ -3,7 +3,7 @@ import { useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime } from 'lib/format';
+import { formatShortTime, formatLongNumber } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
@@ -37,16 +37,19 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
+          formatValue: formatLongNumber,
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
+          formatValue: formatLongNumber,
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
+          formatValue: formatLongNumber,
         },
         {
           label: formatMessage(labels.bounceRate),
@@ -55,7 +58,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visitors.value, bounces.value) / visitors.value) * 100 -
             (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
-          format: n => Number(n).toFixed(0) + '%',
+          formatValue: n => Number(n).toFixed(0) + '%',
           reverseColors: true,
         },
         {
@@ -63,7 +66,8 @@ export function WebsiteMetricsBar({
           value: totaltime.value / visits.value,
           prev: totaltime.prev / visits.prev,
           change: totaltime.value / visits.value - totaltime.prev / visits.prev,
-          format: n => `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+          formatValue: n =>
+            `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
         },
       ]
     : [];
@@ -78,12 +82,12 @@ export function WebsiteMetricsBar({
       ref={ref}
       className={classNames(styles.container, {
         [styles.sticky]: sticky,
-        [styles.isSticky]: isSticky,
+        [styles.isSticky]: sticky && isSticky,
       })}
     >
       <div>
         <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-          {metrics.map(({ label, value, prev, change, format, reverseColors }) => {
+          {metrics.map(({ label, value, prev, change, formatValue, reverseColors }) => {
             return (
               <MetricCard
                 key={label}
@@ -91,7 +95,7 @@ export function WebsiteMetricsBar({
                 previousValue={prev}
                 label={label}
                 change={change}
-                format={format}
+                formatValue={formatValue}
                 reverseColors={reverseColors}
                 showChange={compareMode || showChange}
                 showPrevious={compareMode}
