@@ -37,19 +37,21 @@ export const MetricCard = ({
   return (
     <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
       {showLabel && <div className={styles.label}>{label}</div>}
-      <animated.div className={styles.value} title={formatValue(value)}>
+      <animated.div className={styles.value} title={value.toString()}>
         {props?.x?.to(x => formatValue(x))}
       </animated.div>
       {showChange && (
-        <ChangeLabel className={styles.change} value={change} reverseColors={reverseColors}>
-          <animated.span title={formatValue(change)}>
-            {changeProps?.x?.to(x => Math.abs(~~x))}
-          </animated.span>
-          %
+        <ChangeLabel
+          className={styles.change}
+          value={change}
+          title={formatValue(change)}
+          reverseColors={reverseColors}
+        >
+          <animated.span>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</animated.span>
         </ChangeLabel>
       )}
       {showPrevious && (
-        <animated.div className={classNames(styles.value, styles.prev)} title={formatValue(diff)}>
+        <animated.div className={classNames(styles.value, styles.prev)} title={diff.toString()}>
           {prevProps?.x?.to(x => formatValue(x))}
         </animated.div>
       )}
