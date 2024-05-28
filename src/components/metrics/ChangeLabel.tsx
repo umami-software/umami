@@ -6,12 +6,14 @@ import styles from './ChangeLabel.module.css';
 export function ChangeLabel({
   value,
   size,
+  title,
   reverseColors,
   className,
   children,
 }: {
   value: number;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  title?: string;
   reverseColors?: boolean;
   showPercentage?: boolean;
   className?: string;
@@ -19,20 +21,19 @@ export function ChangeLabel({
 }) {
   const positive = value * (reverseColors ? -1 : 1) >= 0;
   const negative = value * (reverseColors ? -1 : 1) < 0;
-  const isNew = isNaN(value);
+  const neutral = value === 0 || isNaN(value);
 
   return (
     <div
       className={classNames(styles.label, className, {
         [styles.positive]: positive,
         [styles.negative]: negative,
-        [styles.neutral]: value === 0,
-        [styles.new]: isNew,
+        [styles.neutral]: neutral,
       })}
-      title={value.toString()}
+      title={title}
     >
-      {!isNew && (
-        <Icon rotate={value === 0 ? 0 : positive || reverseColors ? -45 : 45} size={size}>
+      {!neutral && (
+        <Icon rotate={value === 0 ? 0 : positive || reverseColors ? -90 : 90} size={size}>
           <Icons.ArrowRight />
         </Icon>
       )}
