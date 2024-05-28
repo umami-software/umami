@@ -11,6 +11,7 @@ import * as yup from 'yup';
 export interface WebsitesRequestQuery extends PageParams {
   userId?: string;
   includeOwnedTeams?: boolean;
+  includeAllTeams?: boolean;
 }
 
 export interface WebsitesRequestBody {
@@ -43,7 +44,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const { userId, includeOwnedTeams } = req.query;
+    const { userId, includeOwnedTeams, includeAllTeams } = req.query;
 
     const websites = await getWebsites(
       {
@@ -58,6 +59,20 @@ export default async (
                       teamUser: {
                         some: {
                           role: ROLES.teamOwner,
+                          userId,
+                        },
+                      },
+                    },
+                  },
+                ]
+              : []),
+            ...(userId && includeAllTeams
+              ? [
+                  {
+                    team: {
+                      deletedAt: null,
+                      teamUser: {
+                        some: {
                           userId,
                         },
                       },
