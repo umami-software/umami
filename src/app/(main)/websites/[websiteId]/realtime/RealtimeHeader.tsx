@@ -14,25 +14,21 @@ export function RealtimeHeader({ data }: { data: RealtimeData }) {
           className={styles.card}
           label={formatMessage(labels.views)}
           value={pageviews?.length}
-          showChange
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.visitors)}
           value={visitors?.length}
-          showChange
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.events)}
           value={events?.length}
-          showChange
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.countries)}
           value={countries?.length}
-          showChange
         />
       </div>
     </div>
