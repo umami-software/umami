@@ -22,7 +22,7 @@ export function WebsiteComparePage({ websiteId }) {
     <WebsiteProvider websiteId={websiteId}>
       <WebsiteHeader websiteId={websiteId} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} compareMode={true} />
+      <WebsiteMetricsBar websiteId={websiteId} compareMode={true} showFilter={true} />
       <WebsiteChart websiteId={websiteId} compareMode={true} />
       <WebsiteCompareTables websiteId={websiteId} />
     </WebsiteProvider>
