@@ -60,7 +60,7 @@ export function ReportHeader({ icon }) {
         <div className={styles.type}>
           <Breadcrumb
             data={[
-              { label: formatMessage(labels.reports), url: '/reports' },
+              { label: formatMessage(labels.reports), url: renderTeamUrl('/reports') },
               {
                 label: formatMessage(
                   labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],

@@ -2,6 +2,15 @@ import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 
+interface JourneyResult {
+  e1: string;
+  e2: string;
+  e3: string;
+  e4: string;
+  e5: string;
+  count: string;
+}
+
 export async function getJourney(
   ...args: [
     websiteId: string,
@@ -23,16 +32,7 @@ async function relationalQuery(
     startDate: Date;
     endDate: Date;
   },
-): Promise<
-  {
-    e1: string;
-    e2: string;
-    e3: string;
-    e4: string;
-    e5: string;
-    count: string;
-  }[]
-> {
+): Promise<JourneyResult[]> {
   const { startDate, endDate } = filters;
   const { rawQuery } = prisma;
 
@@ -79,7 +79,7 @@ async function relationalQuery(
       startDate,
       endDate,
     },
-  );
+  ).then(parseResult);
 }
 
 async function clickhouseQuery(
@@ -88,16 +88,7 @@ async function clickhouseQuery(
     startDate: Date;
     endDate: Date;
   },
-): Promise<
-  {
-    e1: string;
-    e2: string;
-    e3: string;
-    e4: string;
-    e5: string;
-    count: string;
-  }[]
-> {
+): Promise<JourneyResult[]> {
   const { startDate, endDate } = filters;
   const { rawQuery } = clickhouse;
 
@@ -144,5 +135,9 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  );
+  ).then(parseResult);
+}
+
+function parseResult(data: any) {
+  return data.map(({ e1, e2, e3, e4, e5, count }) => ({ items: [e1, e2, e3, e4, e5], count }));
 }
