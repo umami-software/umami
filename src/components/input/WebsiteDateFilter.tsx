@@ -6,7 +6,13 @@ import DateFilter from './DateFilter';
 import styles from './WebsiteDateFilter.module.css';
 import { DateRange } from 'lib/types';
 
-export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
+export function WebsiteDateFilter({
+  websiteId,
+  showAllTime = true,
+}: {
+  websiteId: string;
+  showAllTime?: boolean;
+}) {
   const { dir } = useLocale();
   const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, startDate, endDate, offset } = dateRange;
@@ -30,7 +36,7 @@ export function WebsiteDateFilter({ websiteId }: { websiteId: string }) {
         endDate={endDate}
         offset={offset}
         onChange={handleChange}
-        showAllTime={true}
+        showAllTime={showAllTime}
       />
       {value !== 'all' && !value.startsWith('range') && (
         <div className={styles.buttons}>

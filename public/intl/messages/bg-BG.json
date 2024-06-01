@@ -2,535 +2,541 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "এক্সেস কোড"
+      "value": "Код за достъп"
     }
   ],
   "label.actions": [
     {
       "type": 0,
-      "value": "অ্যাকশনস"
+      "value": "Действия"
     }
   ],
   "label.activity-log": [
     {
       "type": 0,
-      "value": "একটিভিটি দেখুন"
+      "value": "Активностти"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "যুক্ত করুন"
+      "value": "Добави"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "বর্ননা যোগ করুন"
+      "value": "Добави описание"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "সদস্য যোগ করুন"
+      "value": "Добави член"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "পদ যোগ করুন"
+      "value": "Добави стъпка"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "ওয়েবসাইট যুক্ত করুন"
+      "value": "Добави уебсайт"
     }
   ],
   "label.admin": [
     {
       "type": 0,
-      "value": "অ্যাডমিন"
+      "value": "Администратор"
     }
   ],
   "label.after": [
     {
       "type": 0,
-      "value": "পরে"
+      "value": "След"
     }
   ],
   "label.all": [
     {
       "type": 0,
-      "value": "সবগুলো"
+      "value": "Всички"
     }
   ],
   "label.all-time": [
     {
       "type": 0,
-      "value": "সব সময়"
+      "value": "За всички времена"
     }
   ],
   "label.analytics": [
     {
       "type": 0,
-      "value": "Analytics"
+      "value": "Анализи"
     }
   ],
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
+      "value": "Средно"
+    }
+  ],
+  "label.average-visit-time": [
+    {
+      "type": 0,
+      "value": "Средно време на посещение"
     }
   ],
   "label.back": [
     {
       "type": 0,
-      "value": "পেছনে"
+      "value": "Назад"
     }
   ],
   "label.before": [
     {
       "type": 0,
-      "value": "পূর্বে"
+      "value": "Преди"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "উপরে উঠার হার"
+      "value": "Kоефициент на отказ"
     }
   ],
   "label.breakdown": [
     {
       "type": 0,
-      "value": "ভাঙ্গন"
+      "value": "Разбивка"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "ব্রাউজার"
+      "value": "Браузър"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "ব্রাউজার সমূহ"
+      "value": "Браузъри"
     }
   ],
   "label.cancel": [
     {
       "type": 0,
-      "value": "বাতিল"
+      "value": "Отмени"
     }
   ],
   "label.change-password": [
     {
       "type": 0,
-      "value": "পাসওয়ার্ড পরিবর্তন করুন"
+      "value": "Смени парола"
     }
   ],
   "label.cities": [
     {
       "type": 0,
-      "value": "শহরসমূহ"
+      "value": "Градове"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "শহর"
+      "value": "Град"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "সব মুছে ফেলুন"
+      "value": "Изчисти всички"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "নিশ্চিত করুন"
+      "value": "Потвърди"
     }
   ],
   "label.confirm-password": [
     {
       "type": 0,
-      "value": "পাসওয়ার্ড নিশ্চিত করুন"
+      "value": "Потвърди парола"
     }
   ],
   "label.contains": [
     {
       "type": 0,
-      "value": "রয়েছে"
+      "value": "Съдържа"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "পরবর্তিতে"
+      "value": "Продължи"
     }
   ],
   "label.countries": [
     {
       "type": 0,
-      "value": "দেশসমূহ"
+      "value": "Държави"
     }
   ],
   "label.country": [
     {
       "type": 0,
-      "value": "দেশ"
+      "value": "Държава"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "তৈরি করুন"
+      "value": "Създай"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "রিপোর্ট তৈরি করুন"
+      "value": "Създай отчет"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "দল তৈরি করুন"
+      "value": "Създай екип"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "ব্যবহারকারী তৈরি করুন"
+      "value": "Създай потребител"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "তৈরি করা হয়েছে"
+      "value": "Създадено"
     }
   ],
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Създадено от"
     }
   ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "বর্তমান পাসওয়ার্ড"
+      "value": "Текуща парола"
     }
   ],
   "label.custom-range": [
     {
       "type": 0,
-      "value": "কাস্টম রেঞ্জ"
+      "value": "Обхват"
     }
   ],
   "label.dashboard": [
     {
       "type": 0,
-      "value": "ড্যাশবোর্ড"
+      "value": "Табло"
     }
   ],
   "label.data": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Данни"
     }
   ],
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Дата"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "তারিখের পরিসীমা"
+      "value": "Диапазон от дати"
     }
   ],
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Ден"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "ডিফল্ট তারিখের পরিসীমা"
+      "value": "Диапазон от дати по подразбиране"
     }
   ],
   "label.delete": [
     {
       "type": 0,
-      "value": "মুছে ফেলুন"
+      "value": "Изтрий"
     }
   ],
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "Изтрий отчет"
     }
   ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Изтрий екип"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Изтрий потребител"
     }
   ],
   "label.delete-website": [
     {
       "type": 0,
-      "value": "ওয়েবসাইট মুছুন"
+      "value": "Изтрий уебсайт"
     }
   ],
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Описание"
     }
   ],
   "label.desktop": [
     {
       "type": 0,
-      "value": "ডেস্কটপ"
+      "value": "Десктоп"
     }
   ],
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Детайли"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Устройство"
     }
   ],
   "label.devices": [
     {
       "type": 0,
-      "value": "ডিভাইস গুলো"
+      "value": "Устройства"
     }
   ],
   "label.dismiss": [
     {
       "type": 0,
-      "value": "বাতিল"
+      "value": "Отхвърли"
     }
   ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Не съдържа"
     }
   ],
   "label.domain": [
     {
       "type": 0,
-      "value": "ডোমেইন"
+      "value": "Домейн"
     }
   ],
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Отпадане"
     }
   ],
   "label.edit": [
     {
       "type": 0,
-      "value": "সম্পাদনা করুন"
+      "value": "Редактирай"
     }
   ],
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Редактирай табло"
     }
   ],
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Редактирай член"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "শেয়ার ইউআরএল শেয়ার করুন"
+      "value": "Активирай Линк за споделяне"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Събитие"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Данни за събитие"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "ঘটনা"
+      "value": "Събития"
     }
   ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Грешно"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Поле"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Полета"
     }
   ],
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "Филтър"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "সম্মিলিত"
+      "value": "Комбиниран"
     }
   ],
   "label.filter-raw": [
     {
       "type": 0,
-      "value": "অপরিশোধিত"
+      "value": "Суров"
     }
   ],
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Филтри"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Фуния"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Разберете процента на конверсия и отпадане на потребителите."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "По-голямо от"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "По-голямо или равно на"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Изводи"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Навлезте по-дълбоко в данните си, като използвате сегменти и филтри."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Е"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Не е"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Не е зададено"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Зададено е"
     }
   ],
   "label.join": [
     {
       "type": 0,
-      "value": "Join"
+      "value": "Присъедини се"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "Join team"
+      "value": "Присъедини се към екип"
     }
   ],
   "label.language": [
     {
       "type": 0,
-      "value": "ভাষা"
+      "value": "Език"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "ভাষা"
+      "value": "Езици"
     }
   ],
   "label.laptop": [
     {
       "type": 0,
-      "value": "ল্যাপটপ"
+      "value": "Лаптоп"
     }
   ],
   "label.last-days": [
     {
       "type": 0,
-      "value": "শেষ "
+      "value": "Последните "
     },
     {
       "type": 1,
@@ -538,13 +544,13 @@
     },
     {
       "type": 0,
-      "value": " দিন"
+      "value": " дни"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "শেষ "
+      "value": "Последните "
     },
     {
       "type": 1,
@@ -552,13 +558,13 @@
     },
     {
       "type": 0,
-      "value": " ঘন্টা"
+      "value": " часа"
     }
   ],
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Последните "
     },
     {
       "type": 1,
@@ -566,115 +572,115 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " месеца"
     }
   ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Напусни"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Напусни екип"
     }
   ],
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "По-малко от"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "По-малко или равно на"
     }
   ],
   "label.login": [
     {
       "type": 0,
-      "value": "লগিন"
+      "value": "Вход"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "লগ আউট"
+      "value": "Изход"
     }
   ],
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "Управлявай"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "Max"
+      "value": "Максимум"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "Член"
     }
   ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Членове"
     }
   ],
   "label.min": [
     {
       "type": 0,
-      "value": "Min"
+      "value": "Минимум"
     }
   ],
   "label.mobile": [
     {
       "type": 0,
-      "value": "মুঠোফোন"
+      "value": "Мобилен"
     }
   ],
   "label.more": [
     {
       "type": 0,
-      "value": "আরও"
+      "value": "Още"
     }
   ],
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "Моят акаунт"
     }
   ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Моите уебсайтове"
     }
   ],
   "label.name": [
     {
       "type": 0,
-      "value": "নাম"
+      "value": "Име"
     }
   ],
   "label.new-password": [
     {
       "type": 0,
-      "value": "নতুন পাসওয়ার্ড"
+      "value": "Нова парола"
     }
   ],
   "label.none": [
     {
       "type": 0,
-      "value": "কিছুই না"
+      "value": "Няма"
     }
   ],
   "label.number-of-records": [
@@ -693,7 +699,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "един"
             }
           ]
         },
@@ -701,7 +707,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "други"
             }
           ]
         }
@@ -714,31 +720,31 @@
   "label.ok": [
     {
       "type": 0,
-      "value": "OK"
+      "value": "Добре"
     }
   ],
   "label.os": [
     {
       "type": 0,
-      "value": "OS"
+      "value": "ОС"
     }
   ],
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Общ преглед"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "মালিক"
+      "value": "Собственик"
     }
   ],
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Страница "
     },
     {
       "type": 1,
@@ -746,7 +752,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " от "
     },
     {
       "type": 1,
@@ -756,443 +762,443 @@
   "label.page-views": [
     {
       "type": 0,
-      "value": "পৃষ্ঠা পরিদর্শন গুলো"
+      "value": "Прегледи на страницата"
     }
   ],
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Заглавие на страница"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "পৃষ্ঠাগুলি"
+      "value": "Страници"
     }
   ],
   "label.password": [
     {
       "type": 0,
-      "value": "পাসওয়ার্ড"
+      "value": "Парола"
     }
   ],
   "label.powered-by": [
     {
-      "type": 1,
-      "value": "name"
+      "type": 0,
+      "value": "Поддържано от "
     },
     {
-      "type": 0,
-      "value": " দ্বারা চালিত"
+      "type": 1,
+      "value": "name"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "প্রোফাইল"
+      "value": "Профил"
     }
   ],
   "label.queries": [
     {
       "type": 0,
-      "value": "Queries"
+      "value": "Запитвания"
     }
   ],
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Запитване"
     }
   ],
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Query parameters"
+      "value": "Параметри на търсене"
     }
   ],
   "label.realtime": [
     {
       "type": 0,
-      "value": "সরাসরি"
+      "value": "В реално време"
     }
   ],
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Референт"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "রেফারার্স"
+      "value": "Референти"
     }
   ],
   "label.refresh": [
     {
       "type": 0,
-      "value": "রিফ্রেশ"
+      "value": "Обнови"
     }
   ],
   "label.regenerate": [
     {
       "type": 0,
-      "value": "Regenerate"
+      "value": "Регенерирай"
     }
   ],
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Регион"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "Regions"
+      "value": "Региони"
     }
   ],
   "label.remove": [
     {
       "type": 0,
-      "value": "Remove"
+      "value": "Премахни"
     }
   ],
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Премахни член"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Отчети"
     }
   ],
   "label.required": [
     {
       "type": 0,
-      "value": "প্রয়োজনীয়"
+      "value": "Задължително"
     }
   ],
   "label.reset": [
     {
       "type": 0,
-      "value": "রিসেট"
+      "value": "Нулирай"
     }
   ],
   "label.reset-website": [
     {
       "type": 0,
-      "value": "ওয়েবসাইট রিসেট করুন"
+      "value": "Нулирай уебсайт"
     }
   ],
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "Привързване"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Измерете привързаността към вашия уебсайт, като проследявате колко често потребителите се връщат."
     }
   ],
   "label.role": [
     {
       "type": 0,
-      "value": "Role"
+      "value": "Роля"
     }
   ],
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Изпълни запитване"
     }
   ],
   "label.save": [
     {
       "type": 0,
-      "value": "সংরক্ষণ"
+      "value": "Запази"
     }
   ],
   "label.screens": [
     {
       "type": 0,
-      "value": "স্ক্রিনগুলি"
+      "value": "Екрани"
     }
   ],
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Търсене"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Избери"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Избери дата"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "Избери роля"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "Select website"
+      "value": "Избери уебсайт"
     }
   ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Сесии"
     }
   ],
   "label.settings": [
     {
       "type": 0,
-      "value": "সেটিংস"
+      "value": "Настройки"
     }
   ],
   "label.share-url": [
     {
       "type": 0,
-      "value": "ইউআরএল শেয়ার করুন"
+      "value": "Сподели Линк"
     }
   ],
   "label.single-day": [
     {
       "type": 0,
-      "value": "একদিন"
+      "value": "Един ден"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Стъпки"
     }
   ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Сума"
     }
   ],
   "label.tablet": [
     {
       "type": 0,
-      "value": "ট্যাবলেট"
+      "value": "Таблет"
     }
   ],
   "label.team": [
     {
       "type": 0,
-      "value": "Team"
+      "value": "Екип"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "ID на екип"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team member"
+      "value": "Член на екипа"
     }
   ],
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Име на екипа"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team owner"
+      "value": "Собственик на екипа"
     }
   ],
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Видимо само за членове на екипа"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Уебсайтове на екипа"
     }
   ],
   "label.teams": [
     {
       "type": 0,
-      "value": "Teams"
+      "value": "Екипи"
     }
   ],
   "label.theme": [
     {
       "type": 0,
-      "value": "থিম"
+      "value": "Тема"
     }
   ],
   "label.this-month": [
     {
       "type": 0,
-      "value": "এই মাস"
+      "value": "Този месец"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "এই সপ্তাহ"
+      "value": "Тази седмица"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "এই বছর"
+      "value": "Тази година"
     }
   ],
   "label.timezone": [
     {
       "type": 0,
-      "value": "সময়স্থান"
+      "value": "Часова зона"
     }
   ],
   "label.title": [
     {
       "type": 0,
-      "value": "Title"
+      "value": "Заглавие"
     }
   ],
   "label.today": [
     {
       "type": 0,
-      "value": "আজ"
+      "value": "Днес"
     }
   ],
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "চার্ট পরিবর্তন করুন"
+      "value": "Виж диаграми"
     }
   ],
   "label.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "Общо"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Общо записи"
     }
   ],
   "label.tracking-code": [
     {
       "type": 0,
-      "value": "ট্র্যাকিং কোড"
+      "value": "Код за проследяване"
     }
   ],
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "Прехвърли"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "Прехвърляне на уебсайт"
     }
   ],
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Вярно"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Вид"
     }
   ],
   "label.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Уникален"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "অনন্য ভিজিটর"
+      "value": "Уникални посетители"
     }
   ],
   "label.unknown": [
     {
       "type": 0,
-      "value": "অজানা"
+      "value": "Неизвестен"
     }
   ],
   "label.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Без заглавие"
     }
   ],
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "Актуализирай"
     }
   ],
   "label.url": [
     {
       "type": 0,
-      "value": "URL"
+      "value": "URL адрес"
     }
   ],
   "label.urls": [
     {
       "type": 0,
-      "value": "URLs"
+      "value": "URL адреси"
     }
   ],
   "label.user": [
     {
       "type": 0,
-      "value": "User"
+      "value": "Потребител"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "ব্যবহারকারীর নাম"
+      "value": "Потребителско име"
     }
   ],
   "label.users": [
     {
       "type": 0,
-      "value": "Users"
+      "value": "Потребители"
     }
   ],
   "label.utm": [
@@ -1204,97 +1210,91 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "Следете кампаниите си чрез UTM параметри."
     }
   ],
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Стойност"
     }
   ],
   "label.view": [
     {
       "type": 0,
-      "value": "View"
+      "value": "Преглед"
     }
   ],
   "label.view-details": [
     {
       "type": 0,
-      "value": "বিস্তারিত দেখুন"
+      "value": "Преглед на детайлите"
     }
   ],
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Само за преглед"
     }
   ],
   "label.views": [
     {
       "type": 0,
-      "value": "ভিউস"
+      "value": "Прегледи"
     }
   ],
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
-    }
-  ],
-  "label.visit-duration": [
-    {
-      "type": 0,
-      "value": "গড় পরিদর্শনের সময়"
+      "value": "Прегледи на посещение"
     }
   ],
   "label.visitors": [
     {
       "type": 0,
-      "value": "পরিদর্শনার্থী"
+      "value": "Посетители"
     }
   ],
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Посещения"
     }
   ],
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Уебсайт"
     }
   ],
   "label.website-id": [
     {
       "type": 0,
-      "value": "Website ID"
+      "value": "Идентификатор на уебсайт"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "সবগুলো ওয়েবসাইট"
+      "value": "Уебсайтове"
     }
   ],
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Прозорец"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Yesterday"
+      "value": "Вчера"
     }
   ],
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "Въведете "
     },
     {
       "type": 1,
@@ -1302,7 +1302,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " в полето по-долу, за да потвърдите."
     }
   ],
   "message.active-users": [
@@ -1312,7 +1312,7 @@
     },
     {
       "type": 0,
-      "value": " বর্তমান  "
+      "value": " "
     },
     {
       "offset": 0,
@@ -1321,7 +1321,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitor"
+              "value": "активен един"
             }
           ]
         },
@@ -1329,7 +1329,7 @@
           "value": [
             {
               "type": 0,
-              "value": "visitors"
+              "value": "активни други"
             }
           ]
         }
@@ -1342,7 +1342,7 @@
   "message.confirm-delete": [
     {
       "type": 0,
-      "value": "আপনি কি নিশ্চিত যে আপনি "
+      "value": "Сигурни ли сте, че искате да изтриете "
     },
     {
       "type": 1,
@@ -1350,13 +1350,13 @@
     },
     {
       "type": 0,
-      "value": " মুছতে চান?"
+      "value": "?"
     }
   ],
   "message.confirm-leave": [
     {
       "type": 0,
-      "value": "Are you sure you want to leave "
+      "value": "Сигурни ли сте, че искате да напуснете "
     },
     {
       "type": 1,
@@ -1370,7 +1370,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "Сигурни ли сте, че искате да премахнете "
     },
     {
       "type": 1,
@@ -1384,7 +1384,7 @@
   "message.confirm-reset": [
     {
       "type": 0,
-      "value": "আপনি কি নিশ্চিত যে আপনি "
+      "value": "Сигурни ли сте, че искате да нулирате "
     },
     {
       "type": 1,
@@ -1392,25 +1392,25 @@
     },
     {
       "type": 0,
-      "value": " এর পরিসংখ্যান পুনরায় সেট করতে চান?"
+      "value": "?"
     }
   ],
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "Изтриването на екип ще изтрие и всички уебсайтове създадени от екипа."
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "সমস্ত সম্পর্কিত ডেটা পাশাপাশি মুছে ফেলা হবে।"
+      "value": "Всички данни за уебсайта ще бъдат изтрити."
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "কিছু ভুল হয়েছে।"
+      "value": "Възникна грешка."
     }
   ],
   "message.event-log": [
@@ -1420,7 +1420,7 @@
     },
     {
       "type": 0,
-      "value": " on "
+      "value": " на "
     },
     {
       "type": 1,
@@ -1430,25 +1430,25 @@
   "message.go-to-settings": [
     {
       "type": 0,
-      "value": "সেটিংস এ যান"
+      "value": "Отидете в настройките"
     }
   ],
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "ভুল ব্যবহারকারীর নাম/পাসওয়ার্ড।"
+      "value": "Неправилно потребителско име и/или парола."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "ভুল ডোমেন"
+      "value": "Невалиден домейн. Не включвайте http/https."
     }
   ],
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Minimum length of "
+      "value": "Минимална дължина от "
     },
     {
       "type": 1,
@@ -1456,13 +1456,13 @@
     },
     {
       "type": 0,
-      "value": " characters"
+      "value": " символа"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Има нова версия на Umami "
     },
     {
       "type": 1,
@@ -1470,67 +1470,67 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": "!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "কোন তথ্য নেই।"
+      "value": "Няма налични данни."
     }
   ],
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Няма налични данни за събитие."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "পাসওয়ার্ড মেলে না"
+      "value": "Паролите не съвпадат."
     }
   ],
   "message.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Няма намерени резултати."
     }
   ],
   "message.no-team-websites": [
     {
       "type": 0,
-      "value": "This team does not have any websites."
+      "value": "Този екип няма никакви уебсайтове."
     }
   ],
   "message.no-teams": [
     {
       "type": 0,
-      "value": "You have not created any teams."
+      "value": "Няма създадени екипи."
     }
   ],
   "message.no-users": [
     {
       "type": 0,
-      "value": "There are no users."
+      "value": "Няма потребители."
     }
   ],
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "কোনও ওয়েবসাইট কনফিগার করা নেই।"
+      "value": "Нямате конфигурирани уебсайтове."
     }
   ],
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "পৃষ্ঠা খুঁজে পাওয়া যায়নি।"
+      "value": "Страницата не е намерена"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "За да нулирате този уебсайт, въведете "
     },
     {
       "type": 1,
@@ -1538,111 +1538,121 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " в полето по-долу, за да потвърдите."
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "এই ওয়েবসাইটের সমস্ত পরিসংখ্যান মুছে ফেলা হবে, তবে আপনার ট্র্যাকিং কোডটি অক্ষত থাকবে।"
+      "value": "Всички статистически данни за този уебсайт ще бъдат изтрити, но вашите настройки ще останат непроменени."
     }
   ],
   "message.saved": [
     {
       "type": 0,
-      "value": "সংরক্ষিত হয়েছে।"
+      "value": "Запазено."
     }
   ],
   "message.share-url": [
     {
       "type": 0,
-      "value": "এটি "
-    },
-    {
-      "type": 1,
-      "value": "target"
-    },
-    {
-      "type": 0,
-      "value": " এর জন্য প্রকাশ্যে শেয়ার করার ইউআরএল।"
+      "value": "Статистиката за вашия уебсайт е публично достъпна на следния URL адрес:"
     }
   ],
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "You are already a member of the team."
+      "value": "Вече сте член на екипа."
     }
   ],
   "message.team-not-found": [
     {
       "type": 0,
-      "value": "Team not found."
+      "value": "Екипът не е намерен."
     }
   ],
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "Websites can be viewed by anyone on the team."
+      "value": "Уебсайтовете могат да бъдат преглеждани от всеки член на екипа."
     }
   ],
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "ট্র্যাকিং কোড"
+      "value": "За активирате проследяването на статистиката във вашият уебсайт, поставете следния код в секцията "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " намираща се в вашия HTML."
     }
   ],
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "Искате да прехвърлите този уебсайт към вашия акаунт?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Изберете екипът на който да бъде прехвърлен уебсайта."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "Прехвърли собствеността на уебсайта към вашия акаунт или към друг екип."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Активирано събитие"
     }
   ],
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "User deleted."
+      "value": "Потребителят е изтрит."
     }
   ],
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "Страницата е видяна"
     }
   ],
   "message.visitor-log": [
+    {
+      "type": 0,
+      "value": "Посетител от "
+    },
     {
       "type": 1,
       "value": "country"
     },
     {
       "type": 0,
-      "value": " থেকে একজন ভিসিটর "
+      "value": ", използващ "
     },
     {
       "type": 1,
-      "value": "ব্রাউজার"
+      "value": "browser"
     },
     {
       "type": 0,
-      "value": ", ব্যবহার করছেন "
+      "value": " на "
     },
     {
       "type": 1,
@@ -1655,16 +1665,12 @@
     {
       "type": 1,
       "value": "device"
-    },
-    {
-      "type": 0,
-      "value": " এর মধ্যে।"
     }
   ],
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "Спад на посетителите"
     }
   ]
 }

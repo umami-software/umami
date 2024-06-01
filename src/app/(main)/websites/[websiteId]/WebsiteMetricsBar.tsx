@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useMessages, useSticky } from 'components/hooks';
+import { useDateRange, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
@@ -15,12 +15,15 @@ export function WebsiteMetricsBar({
   sticky,
   showChange = false,
   compareMode = false,
+  showFilter = false,
 }: {
   websiteId: string;
   sticky?: boolean;
   showChange?: boolean;
   compareMode?: boolean;
+  showFilter?: boolean;
 }) {
+  const { dateRange } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
   const dateCompare = useStore(state => state[websiteId]?.dateCompare);
   const { ref, isSticky } = useSticky({ enabled: sticky });
@@ -28,6 +31,7 @@ export function WebsiteMetricsBar({
     websiteId,
     compareMode && dateCompare,
   );
+  const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
 
@@ -97,16 +101,16 @@ export function WebsiteMetricsBar({
                 change={change}
                 formatValue={formatValue}
                 reverseColors={reverseColors}
-                showChange={compareMode || showChange}
-                showPrevious={compareMode}
+                showChange={!isAllTime && (compareMode || showChange)}
+                showPrevious={!isAllTime && compareMode}
               />
             );
           })}
         </MetricsBar>
       </div>
       <div className={styles.actions}>
-        <WebsiteFilterButton websiteId={websiteId} />
-        <WebsiteDateFilter websiteId={websiteId} />
+        {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
+        <WebsiteDateFilter websiteId={websiteId} showAllTime={false} />
         {compareMode && (
           <div className={styles.vs}>
             <b>VS</b>

@@ -144,7 +144,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventData: data,
         ...session,
         sessionId: session.id,
-        visitId: session.visitId,
       });
     }
 
