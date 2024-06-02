@@ -110,7 +110,7 @@ export function WebsiteMetricsBar({
       </div>
       <div className={styles.actions}>
         {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
-        <WebsiteDateFilter websiteId={websiteId} showAllTime={false} />
+        <WebsiteDateFilter websiteId={websiteId} showAllTime={!compareMode} />
         {compareMode && (
           <div className={styles.vs}>
             <b>VS</b>
