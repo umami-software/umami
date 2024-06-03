@@ -66,11 +66,29 @@ export default async (
     const data = await getReports(
       {
         where: {
-          userId: !teamId && !websiteId ? userId : undefined,
-          websiteId,
-          website: {
-            teamId,
-          },
+          OR: [
+            ...(websiteId ? [{ websiteId }] : []),
+            ...(teamId
+              ? [
+                  {
+                    website: {
+                      deletedAt: null,
+                      teamId,
+                    },
+                  },
+                ]
+              : []),
+            ...(userId
+              ? [
+                  {
+                    website: {
+                      deletedAt: null,
+                      userId,
+                    },
+                  },
+                ]
+              : []),
+          ],
         },
         include: {
           website: {
