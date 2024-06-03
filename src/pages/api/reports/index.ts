@@ -78,7 +78,7 @@ export default async (
                   },
                 ]
               : []),
-            ...(userId
+            ...(userId && !websiteId && !teamId
               ? [
                   {
                     website: {
