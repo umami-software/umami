@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useMessages } from 'components/hooks';
-import { Form, FormButtons, SubmitButton } from 'react-basics';
+import { Form, FormButtons, FormInput, FormRow, SubmitButton, TextField } from 'react-basics';
 import { ReportContext } from '../[reportId]/Report';
 import BaseParameters from '../[reportId]/BaseParameters';
 
@@ -9,8 +9,8 @@ export function JourneyParameters() {
   const { formatMessage, labels } = useMessages();
 
   const { id, parameters } = report || {};
-  const { websiteId, dateRange } = parameters || {};
-  const queryDisabled = !websiteId || !dateRange;
+  const { websiteId, dateRange, steps } = parameters || {};
+  const queryDisabled = !websiteId || !dateRange || !steps;
 
   const handleSubmit = (data: any, e: any) => {
     e.stopPropagation();
@@ -24,6 +24,24 @@ export function JourneyParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={true} allowWebsiteSelect={!id} />
+      <FormRow label={`${formatMessage(labels.steps)} (3 to 7)`}>
+        <FormInput
+          name="steps"
+          rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/, min: 3, max: 7 }}
+        >
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
+      <FormRow label={formatMessage(labels.startStep)}>
+        <FormInput name="startStep">
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
+      <FormRow label={formatMessage(labels.endStep)}>
+        <FormInput name="endStep">
+          <TextField autoComplete="off" />
+        </FormInput>
+      </FormRow>
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}

@@ -1,11 +1,12 @@
 'use client';
-import FunnelReport from '../funnel/FunnelReport';
+import { useReport } from 'components/hooks';
 import EventDataReport from '../event-data/EventDataReport';
+import FunnelReport from '../funnel/FunnelReport';
+import GoalReport from '../goals/GoalsReport';
 import InsightsReport from '../insights/InsightsReport';
+import JourneyReport from '../journey/JourneyReport';
 import RetentionReport from '../retention/RetentionReport';
 import UTMReport from '../utm/UTMReport';
-import GoalReport from '../goals/GoalsReport';
-import { useReport } from 'components/hooks';
 
 const reports = {
   funnel: FunnelReport,
@@ -14,6 +15,7 @@ const reports = {
   retention: RetentionReport,
   utm: UTMReport,
   goals: GoalReport,
+  journey: JourneyReport,
 };
 
 export default function ReportPage({ reportId }: { reportId: string }) {

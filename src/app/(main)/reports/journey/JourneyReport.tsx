@@ -10,7 +10,7 @@ import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
   type: REPORT_TYPES.journey,
-  parameters: {},
+  parameters: { steps: 5 },
 };
 
 export default function JourneyReport({ reportId }: { reportId?: string }) {

@@ -8,14 +8,13 @@ import { useEscapeKey } from 'components/hooks';
 export default function JourneyView() {
   const [selected, setSelected] = useState(null);
   const { report } = useContext(ReportContext);
-  const { data } = report || {};
+  const { data, parameters } = report || {};
   useEscapeKey(() => setSelected(null));
-
   const columns = useMemo(() => {
     if (!data) {
       return [];
     }
-    return Array(data[0].items.length)
+    return Array(Number(parameters.steps))
       .fill(undefined)
       .map((col = {}, index) => {
         data.forEach(({ items, count }) => {

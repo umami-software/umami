@@ -27,7 +27,7 @@ const schema = {
     name: yup.string().max(200).required(),
     type: yup
       .string()
-      .matches(/funnel|insights|retention|utm|goals/i)
+      .matches(/funnel|insights|retention|utm|goals|journey/i)
       .required(),
     description: yup.string().max(500),
     parameters: yup

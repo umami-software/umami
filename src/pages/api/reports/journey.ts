@@ -9,6 +9,9 @@ import * as yup from 'yup';
 export interface RetentionRequestBody {
   websiteId: string;
   dateRange: { startDate: string; endDate: string };
+  steps: number;
+  startStep?: string;
+  endStep?: string;
 }
 
 const schema = {
@@ -21,6 +24,9 @@ const schema = {
         endDate: yup.date().required(),
       })
       .required(),
+    steps: yup.number().min(3).max(7).required(),
+    startStep: yup.string(),
+    endStep: yup.string(),
   }),
 };
 
@@ -36,6 +42,9 @@ export default async (
     const {
       websiteId,
       dateRange: { startDate, endDate },
+      steps,
+      startStep,
+      endStep,
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -45,6 +54,9 @@ export default async (
     const data = await getJourney(websiteId, {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
+      steps,
+      startStep,
+      endStep,
     });
 
     return ok(res, data);
