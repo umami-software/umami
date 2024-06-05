@@ -62,7 +62,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visitors.value, bounces.value) / visitors.value) * 100 -
             (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
-          formatValue: n => Number(n).toFixed(0) + '%',
+          formatValue: n => Math.round(+n) + '%',
           reverseColors: true,
         },
         {
