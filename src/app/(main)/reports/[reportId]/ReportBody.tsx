@@ -1,6 +1,6 @@
-import styles from './ReportBody.module.css';
 import { useContext } from 'react';
 import { ReportContext } from './Report';
+import styles from './ReportBody.module.css';
 
 export function ReportBody({ children }) {
   const { report } = useContext(ReportContext);

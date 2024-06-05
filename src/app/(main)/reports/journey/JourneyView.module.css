@@ -1,5 +1,6 @@
 .container {
-  height: 900px;
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
@@ -12,13 +13,13 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 60px;
   overflow: auto;
+  gap: 100px;
 }
 
 .header {
   display: flex;
-  margin-bottom: 20px;
+  min-height: 70px;
 }
 
 .num {
@@ -37,7 +38,11 @@
 }
 
 .column {
-  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nodes {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -48,14 +53,18 @@
   padding: 10px 20px;
   background: var(--base75);
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  min-width: 300px;
+  min-height: 60px;
 }
 
-.item:hover:not(.highlight) {
+.item:hover:not(.selected) {
   color: var(--base900);
   background: var(--base100);
 }
 
-.highlight {
+.selected {
   color: var(--base75);
   background: var(--base900);
   font-weight: 400;
