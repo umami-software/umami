@@ -2,6 +2,9 @@
   width: 100%;
   height: 100%;
   position: relative;
+
+  --journey-line-color: var(--base600);
+  --journey-active-color: var(--primary400);
 }
 
 .view {
@@ -43,18 +46,22 @@
 }
 
 .nodes {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 100%;
 }
 
 .item {
+  position: relative;
   cursor: pointer;
   padding: 10px 20px;
   background: var(--base75);
   border-radius: 5px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   min-width: 300px;
   min-height: 60px;
 }
@@ -70,6 +77,10 @@
   font-weight: 400;
 }
 
+.item.active {
+  background: var(--primary400);
+}
+
 .behind {
   color: var(--base400);
 }
@@ -80,4 +91,138 @@
 
 .current {
   color: var(--base500);
+}
+
+.name {
+  font-weight: 500;
+}
+
+.count {
+  border-radius: 4px;
+  padding: 5px 10px;
+  background: var(--base200);
+}
+
+.selected .count {
+  color: var(--base50);
+  background: var(--base800);
+}
+
+.line {
+  position: absolute;
+  left: -100px;
+  width: 100px;
+}
+
+.line.flat:before {
+  content: '';
+  position: absolute;
+  width: 97px;
+  left: 3px;
+  border-top: 3px solid var(--journey-line-color);
+}
+
+.line.fromUp:before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50px;
+  margin-top: 3px;
+  margin-left: -3px;
+  border: 0;
+  border-bottom-left-radius: 100%;
+  border-left: 3px solid var(--journey-line-color);
+  border-bottom: 3px solid var(--journey-line-color);
+  width: 50px;
+  height: 30px;
+}
+
+.line.fromDown:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50px;
+  margin-left: -3px;
+  border: 0;
+  border-top-left-radius: 100%;
+  border-left: 3px solid var(--journey-line-color);
+  border-top: 3px solid var(--journey-line-color);
+  width: 50px;
+  height: 30px;
+}
+
+.line.fromUp:after,
+.line.fromDown:after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  margin: 0;
+  bottom: 0;
+  border-radius: 100%;
+  border: 3px solid var(--journey-line-color);
+  background: var(--base50);
+  width: 13px;
+  height: 13px;
+}
+
+.line.toUp:before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  margin-top: 3px;
+  right: -350px;
+  border: 0;
+  border-bottom-right-radius: 100%;
+  border-right: 3px solid var(--journey-line-color);
+  border-bottom: 3px solid var(--journey-line-color);
+  width: 50px;
+  height: 30px;
+}
+
+.line.toDown:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -350px;
+  border: 0;
+  border-top-right-radius: 100%;
+  border-right: 3px solid var(--journey-line-color);
+  border-top: 3px solid var(--journey-line-color);
+  width: 50px;
+  height: 30px;
+}
+
+.line.toUp:after,
+.line.toDown:after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  right: -306px;
+  margin: 0;
+  bottom: 0;
+  border-radius: 100%;
+  border: 3px solid var(--journey-line-color);
+  background: var(--base50);
+  width: 13px;
+  height: 13px;
+}
+
+.bar {
+  position: absolute;
+  left: -100px;
+  width: 50px;
+  height: 20px;
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.item.active .bar,
+.item.active .line:before,
+.item.active .line:after {
+  border-color: var(--journey-active-color);
+  z-index: 1;
+}
+
+.item.active .count {
+  background: var(--primary600);
 }
