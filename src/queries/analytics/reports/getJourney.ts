@@ -43,7 +43,7 @@ async function relationalQuery(
 ): Promise<JourneyResult[]> {
   const { startDate, endDate, steps, startStep, endStep } = filters;
   const { rawQuery } = prisma;
-  const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
+  const { sequenceQuery, startStepQuery, endStepQuery, finalSelectQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
@@ -57,12 +57,14 @@ async function relationalQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
+    finalSelectQuery: string;
     params: { [key: string]: string };
   } {
     const params = {};
     let sequenceQuery = '';
     let startStepQuery = '';
     let endStepQuery = '';
+    let finalSelectQuery = '';
 
     // create sequence query
     let selectQuery = '';
@@ -104,10 +106,18 @@ async function relationalQuery(
       params['endStep'] = endStep;
     }
 
+    // create final select query
+    for (let i = 1; i < steps; i++) {
+      finalSelectQuery += `\nCASE WHEN e${i} IS NOT NULL and e${
+        i + 1
+      } IS NULL THEN 'dropped off' ELSE e${i + 1} END AS e${i + 1},`;
+    }
+
     return {
       sequenceQuery,
       startStepQuery,
       endStepQuery,
+      finalSelectQuery,
       params,
     };
   }
@@ -124,7 +134,9 @@ async function relationalQuery(
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}),
     ${sequenceQuery}
-    select *
+    select e1,
+        ${finalSelectQuery}
+        count
     from sequences
     where 1 = 1
     ${startStepQuery}
@@ -153,7 +165,7 @@ async function clickhouseQuery(
 ): Promise<JourneyResult[]> {
   const { startDate, endDate, steps, startStep, endStep } = filters;
   const { rawQuery } = clickhouse;
-  const { sequenceQuery, startStepQuery, endStepQuery, params } = getJourneyQuery(
+  const { sequenceQuery, startStepQuery, endStepQuery, finalSelectQuery, params } = getJourneyQuery(
     steps,
     startStep,
     endStep,
@@ -167,12 +179,14 @@ async function clickhouseQuery(
     sequenceQuery: string;
     startStepQuery: string;
     endStepQuery: string;
+    finalSelectQuery: string;
     params: { [key: string]: string };
   } {
     const params = {};
     let sequenceQuery = '';
     let startStepQuery = '';
     let endStepQuery = '';
+    let finalSelectQuery = '';
 
     // create sequence query
     let selectQuery = '';
@@ -207,17 +221,25 @@ async function clickhouseQuery(
     if (endStep) {
       for (let i = 1; i < steps; i++) {
         const startQuery = i === 1 ? 'and (' : '\nor ';
-        endStepQuery += `${startQuery}(e${i} = {endStep:String} and e${i + 1} is null) `;
+        endStepQuery += `${startQuery}(e${i} = {endStep:String} and e${i + 1} = 'dropped off') `;
       }
       endStepQuery += `\nor (e${steps} = {endStep:String}))`;
 
       params['endStep'] = endStep;
     }
 
+    // create final select query
+    for (let i = 1; i < steps; i++) {
+      finalSelectQuery += `\nCASE WHEN e${i} IS NOT NULL and e${
+        i + 1
+      } IS NULL THEN 'dropped off' ELSE e${i + 1} END AS e${i + 1},`;
+    }
+
     return {
       sequenceQuery,
       startStepQuery,
       endStepQuery,
+      finalSelectQuery,
       params,
     };
   }
@@ -233,7 +255,9 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}),
     ${sequenceQuery}
-    select *
+    select e1,
+        ${finalSelectQuery}
+        count
     from sequences
     where 1 = 1
     ${startStepQuery}
