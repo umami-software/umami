@@ -9,7 +9,7 @@ import styles from './JourneyView.module.css';
 
 const NODE_HEIGHT = 60;
 const NODE_GAP = 10;
-const BAR_OFFSET = 3;
+const LINE_WIDTH = 3;
 
 export default function JourneyView() {
   const [selectedNode, setSelectedNode] = useState(null);
@@ -49,20 +49,6 @@ export default function JourneyView() {
                   }
                   return obj;
                 }, {});
-              const to =
-                selected &&
-                paths.reduce((obj, path) => {
-                  const { items, count } = path;
-                  const name = items[index + 1];
-                  if (name) {
-                    if (!obj[name]) {
-                      obj[name] = { name, count: +count };
-                    } else {
-                      obj[name].count += +count;
-                    }
-                  }
-                  return obj;
-                }, {});
 
               column[name] = {
                 name,
@@ -71,7 +57,6 @@ export default function JourneyView() {
                 selected,
                 paths,
                 from: objectToArray(from),
-                to: objectToArray(to),
               };
             } else {
               column[name].total += +count;
@@ -103,65 +88,30 @@ export default function JourneyView() {
     <div className={styles.container}>
       <div className={styles.view}>
         {columns.map((column, columnIndex) => {
-          const current = columnIndex === selectedNode?.index;
-          const behind = columnIndex <= selectedNode?.index - 1;
-          const ahead = columnIndex > selectedNode?.index;
-
           return (
             <div
               key={columnIndex}
-              className={classNames(styles.column, {
-                [styles.current]: current,
-                [styles.behind]: behind,
-                [styles.ahead]: ahead,
-              })}
+              className={classNames(styles.column, { [styles.active]: activeNode })}
             >
               <div className={styles.header}>
                 <div className={styles.num}>{columnIndex + 1}</div>
               </div>
               <div className={styles.nodes}>
-                {column.nodes.map(({ name, total, selected, paths, from, to }, nodeIndex) => {
+                {column.nodes.map(({ name, total, selected, paths, from }, nodeIndex) => {
                   const active =
                     selected && activeNode?.paths.find(path => path.items[columnIndex] === name);
-                  const bars = [];
-                  const lines = from?.reduce(
-                    (obj: { flat: boolean; fromUp: boolean; fromDown: boolean }, { name }: any) => {
-                      const fromIndex = columns[columnIndex - 1]?.nodes.findIndex(node => {
-                        return node.name === name && node.selected;
-                      });
 
-                      if (fromIndex > -1) {
-                        if (nodeIndex === fromIndex) {
-                          obj.flat = true;
-                        } else if (nodeIndex > fromIndex) {
-                          obj.fromUp = true;
-                          bars.push([fromIndex, nodeIndex, 1]);
-                        } else if (nodeIndex < fromIndex) {
-                          obj.fromDown = true;
-                          bars.push([nodeIndex, fromIndex, 0]);
-                        }
-                      }
-
-                      return obj;
-                    },
-                    {},
-                  );
-
-                  to?.reduce((obj: { toUp: boolean; toDown: boolean }, { name }: any) => {
-                    const toIndex = columns[columnIndex + 1]?.nodes.findIndex(node => {
+                  const lines = from?.reduce((arr, { name }: any) => {
+                    const fromIndex = columns[columnIndex - 1]?.nodes.findIndex(node => {
                       return node.name === name && node.selected;
                     });
 
-                    if (toIndex > -1) {
-                      if (nodeIndex > toIndex) {
-                        obj.toUp = true;
-                      } else if (nodeIndex < toIndex) {
-                        obj.toDown = true;
-                      }
+                    if (fromIndex > -1) {
+                      arr.push([fromIndex, nodeIndex]);
                     }
 
-                    return obj;
-                  }, lines);
+                    return arr;
+                  }, []);
 
                   return (
                     <div
@@ -176,21 +126,43 @@ export default function JourneyView() {
                     >
                       <div className={styles.name}>{name}</div>
                       <div className={styles.count}>{total}</div>
-                      {Object.keys(lines).map(key => {
-                        return <div key={key} className={classNames(styles.line, styles[key])} />;
-                      })}
                       {columnIndex < columns.length &&
-                        bars.map(([a, b, d], i) => {
-                          const height = (b - a - 1) * (NODE_HEIGHT + NODE_GAP) + NODE_GAP;
+                        lines.map(([fromIndex, nodeIndex], i) => {
+                          const height =
+                            (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
+                            NODE_GAP;
+                          const midHeight =
+                            (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
+                            NODE_GAP +
+                            LINE_WIDTH;
+                          const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
+
                           return (
                             <div
-                              key={i}
-                              className={styles.bar}
-                              style={{
-                                height: height + BAR_OFFSET,
-                                top: d ? -height : NODE_HEIGHT,
-                              }}
-                            />
+                              key={`${fromIndex}${nodeIndex}${i}`}
+                              className={classNames(styles.line, {
+                                [styles.active]:
+                                  active &&
+                                  activeNode?.paths.find(
+                                    path =>
+                                      path.items[columnIndex] === name &&
+                                      path.items[columnIndex - 1] === nodeName,
+                                  ),
+                                [styles.up]: fromIndex < nodeIndex,
+                                [styles.down]: fromIndex > nodeIndex,
+                                [styles.flat]: fromIndex === nodeIndex,
+                              })}
+                              style={{ height }}
+                            >
+                              <div className={classNames(styles.segment, styles.start)} />
+                              <div
+                                className={classNames(styles.segment, styles.mid)}
+                                style={{
+                                  height: midHeight,
+                                }}
+                              />
+                              <div className={classNames(styles.segment, styles.end)} />
+                            </div>
                           );
                         })}
                     </div>

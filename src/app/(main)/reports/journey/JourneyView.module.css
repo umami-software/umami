@@ -5,6 +5,7 @@
 
   --journey-line-color: var(--base600);
   --journey-active-color: var(--primary400);
+  --journey-faded-color: var(--base300);
 }
 
 .view {
@@ -71,14 +72,19 @@
   background: var(--base100);
 }
 
-.selected {
+.item.selected {
   color: var(--base75);
   background: var(--base900);
   font-weight: 400;
 }
 
 .item.active {
+  color: var(--light50);
   background: var(--primary400);
+}
+
+.item.active .count {
+  background: var(--primary600);
 }
 
 .behind {
@@ -110,119 +116,136 @@
 
 .line {
   position: absolute;
+  bottom: 0;
   left: -100px;
   width: 100px;
 }
 
-.line.flat:before {
-  content: '';
-  position: absolute;
-  width: 97px;
-  left: 3px;
-  border-top: 3px solid var(--journey-line-color);
-}
-
-.line.fromUp:before {
-  content: '';
-  position: absolute;
-  top: -30px;
-  left: 50px;
-  margin-top: 3px;
-  margin-left: -3px;
-  border: 0;
-  border-bottom-left-radius: 100%;
-  border-left: 3px solid var(--journey-line-color);
-  border-bottom: 3px solid var(--journey-line-color);
-  width: 50px;
-  height: 30px;
-}
-
-.line.fromDown:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50px;
-  margin-left: -3px;
-  border: 0;
-  border-top-left-radius: 100%;
-  border-left: 3px solid var(--journey-line-color);
-  border-top: 3px solid var(--journey-line-color);
-  width: 50px;
-  height: 30px;
-}
-
-.line.fromUp:after,
-.line.fromDown:after {
-  content: '';
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  margin: 0;
+.line.up {
   bottom: 0;
-  border-radius: 100%;
-  border: 3px solid var(--journey-line-color);
-  background: var(--base50);
-  width: 13px;
-  height: 13px;
 }
 
-.line.toUp:before {
-  content: '';
+.line.down {
+  top: 0;
+}
+
+.segment {
   position: absolute;
-  top: -30px;
-  margin-top: 3px;
-  right: -350px;
-  border: 0;
-  border-bottom-right-radius: 100%;
-  border-right: 3px solid var(--journey-line-color);
-  border-bottom: 3px solid var(--journey-line-color);
+}
+
+.start {
+  left: 0;
   width: 50px;
   height: 30px;
+  border: 0;
 }
 
-.line.toDown:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -350px;
+.mid {
+  top: 60px;
+  width: 50px;
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.end {
+  right: 0;
+  width: 50px;
+  height: 30px;
   border: 0;
+}
+
+.up .start {
+  top: 30px;
   border-top-right-radius: 100%;
-  border-right: 3px solid var(--journey-line-color);
   border-top: 3px solid var(--journey-line-color);
-  width: 50px;
-  height: 30px;
+  border-right: 3px solid var(--journey-line-color);
 }
 
-.line.toUp:after,
-.line.toDown:after {
+.up .end {
+  width: 53px;
+  bottom: 27px;
+  right: 0;
+  border-bottom-left-radius: 100%;
+  border-bottom: 3px solid var(--journey-line-color);
+  border-left: 3px solid var(--journey-line-color);
+}
+
+.down .start {
+  bottom: 27px;
+  border-bottom-right-radius: 100%;
+  border-bottom: 3px solid var(--journey-line-color);
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.down .end {
+  width: 53px;
+  top: 30px;
+  right: 0;
+  border-top-left-radius: 100%;
+  border-top: 3px solid var(--journey-line-color);
+  border-left: 3px solid var(--journey-line-color);
+}
+
+.flat .start {
+  top: 30px;
+  width: 50px;
+  border-top: 3px solid var(--journey-line-color);
+}
+
+.flat .end {
+  right: 0;
+  bottom: 27px;
+  width: 50px;
+  border-bottom: 3px solid var(--journey-line-color);
+}
+
+.start:before,
+.end:before {
   content: '';
   position: absolute;
-  top: -6px;
-  right: -306px;
-  margin: 0;
-  bottom: 0;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--base50);
+  background: var(--light50);
   width: 13px;
   height: 13px;
 }
 
-.bar {
-  position: absolute;
-  left: -100px;
-  width: 50px;
-  height: 20px;
-  border-right: 3px solid var(--journey-line-color);
+.line:not(.active) .start:before,
+.line:not(.active) .end:before {
+  display: none;
 }
 
-.item.active .bar,
-.item.active .line:before,
-.item.active .line:after {
+.up .start:before,
+.flat .start:before {
+  left: -8px;
+  top: -8px;
+}
+
+.up .end:before,
+.flat .end:before {
+  right: -8px;
+  bottom: -8px;
+}
+
+.down .start:before {
+  left: -8px;
+  bottom: -8px;
+}
+
+.down .end:before {
+  right: -8px;
+  top: -8px;
+}
+
+.line.active .segment,
+.line.active .segment:before {
   border-color: var(--journey-active-color);
   z-index: 1;
 }
 
-.item.active .count {
-  background: var(--primary600);
+.column.active .line:not(.active) .segment {
+  border-color: var(--journey-faded-color);
+}
+
+.column.active .line:not(.active) .segment:before {
+  display: none;
 }
