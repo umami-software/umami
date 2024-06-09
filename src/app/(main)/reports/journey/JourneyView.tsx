@@ -31,8 +31,8 @@ export default function JourneyView() {
           const selectedNodes = selectedNode?.paths ?? [];
 
           if (name) {
+            const selected = !!selectedNodes.find(a => a.items[index] === name);
             if (!column[name]) {
-              const selected = !!selectedNodes.find(a => a.items[index] === name);
               const paths = data.filter((d, i) => {
                 return i !== index && d.items[index] === name;
               });
@@ -43,23 +43,26 @@ export default function JourneyView() {
                   const { items, count } = path;
                   const name = items[index - 1];
                   if (!obj[name]) {
-                    obj[name] = { name, count: +count };
+                    obj[name] = { name, count };
                   } else {
-                    obj[name].count += +count;
+                    obj[name].count += count;
                   }
                   return obj;
                 }, {});
 
               column[name] = {
                 name,
-                total: +count,
+                count,
+                total: count,
                 columnIndex: index,
                 selected,
+                selectedCount: count,
                 paths,
                 from: objectToArray(from),
               };
             } else {
-              column[name].total += +count;
+              column[name].selectedCount += selected ? count : 0;
+              column[name].total += count;
             }
           }
         });
@@ -97,77 +100,81 @@ export default function JourneyView() {
                 <div className={styles.num}>{columnIndex + 1}</div>
               </div>
               <div className={styles.nodes}>
-                {column.nodes.map(({ name, total, selected, paths, from }, nodeIndex) => {
-                  const active =
-                    selected && activeNode?.paths.find(path => path.items[columnIndex] === name);
+                {column.nodes.map(
+                  ({ name, total, selected, paths, from, selectedCount }, nodeIndex) => {
+                    const active =
+                      selected && activeNode?.paths.find(path => path.items[columnIndex] === name);
 
-                  const lines = from?.reduce((arr, { name }: any) => {
-                    const fromIndex = columns[columnIndex - 1]?.nodes.findIndex(node => {
-                      return node.name === name && node.selected;
-                    });
+                    const lines = from?.reduce((arr, { name }: any) => {
+                      const fromIndex = columns[columnIndex - 1]?.nodes.findIndex(node => {
+                        return node.name === name && node.selected;
+                      });
 
-                    if (fromIndex > -1) {
-                      arr.push([fromIndex, nodeIndex]);
-                    }
+                      if (fromIndex > -1) {
+                        arr.push([fromIndex, nodeIndex]);
+                      }
 
-                    return arr;
-                  }, []);
+                      return arr;
+                    }, []);
 
-                  return (
-                    <div
-                      key={name}
-                      className={classNames(styles.item, {
-                        [styles.selected]: selected,
-                        [styles.active]: active,
-                      })}
-                      onClick={() => handleClick(name, columnIndex, paths)}
-                      onMouseEnter={() => selected && setActiveNode({ name, columnIndex, paths })}
-                      onMouseLeave={() => selected && setActiveNode(null)}
-                    >
-                      <div className={styles.name}>{name}</div>
-                      <div className={styles.count}>{total}</div>
-                      {columnIndex < columns.length &&
-                        lines.map(([fromIndex, nodeIndex], i) => {
-                          const height =
-                            (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
-                            NODE_GAP;
-                          const midHeight =
-                            (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
-                            NODE_GAP +
-                            LINE_WIDTH;
-                          const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
-
-                          return (
-                            <div
-                              key={`${fromIndex}${nodeIndex}${i}`}
-                              className={classNames(styles.line, {
-                                [styles.active]:
-                                  active &&
-                                  activeNode?.paths.find(
-                                    path =>
-                                      path.items[columnIndex] === name &&
-                                      path.items[columnIndex - 1] === nodeName,
-                                  ),
-                                [styles.up]: fromIndex < nodeIndex,
-                                [styles.down]: fromIndex > nodeIndex,
-                                [styles.flat]: fromIndex === nodeIndex,
-                              })}
-                              style={{ height }}
-                            >
-                              <div className={classNames(styles.segment, styles.start)} />
-                              <div
-                                className={classNames(styles.segment, styles.mid)}
-                                style={{
-                                  height: midHeight,
-                                }}
-                              />
-                              <div className={classNames(styles.segment, styles.end)} />
-                            </div>
-                          );
+                    return (
+                      <div
+                        key={name}
+                        className={classNames(styles.item, {
+                          [styles.selected]: selected,
+                          [styles.active]: active,
                         })}
-                    </div>
-                  );
-                })}
+                        onClick={() => handleClick(name, columnIndex, paths)}
+                        onMouseEnter={() => selected && setActiveNode({ name, columnIndex, paths })}
+                        onMouseLeave={() => selected && setActiveNode(null)}
+                      >
+                        <div className={styles.name}>{name}</div>
+                        <div className={styles.count}>
+                          {selected || active ? selectedCount : total}
+                        </div>
+                        {columnIndex < columns.length &&
+                          lines.map(([fromIndex, nodeIndex], i) => {
+                            const height =
+                              (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
+                              NODE_GAP;
+                            const midHeight =
+                              (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
+                              NODE_GAP +
+                              LINE_WIDTH;
+                            const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
+
+                            return (
+                              <div
+                                key={`${fromIndex}${nodeIndex}${i}`}
+                                className={classNames(styles.line, {
+                                  [styles.active]:
+                                    active &&
+                                    activeNode?.paths.find(
+                                      path =>
+                                        path.items[columnIndex] === name &&
+                                        path.items[columnIndex - 1] === nodeName,
+                                    ),
+                                  [styles.up]: fromIndex < nodeIndex,
+                                  [styles.down]: fromIndex > nodeIndex,
+                                  [styles.flat]: fromIndex === nodeIndex,
+                                })}
+                                style={{ height }}
+                              >
+                                <div className={classNames(styles.segment, styles.start)} />
+                                <div
+                                  className={classNames(styles.segment, styles.mid)}
+                                  style={{
+                                    height: midHeight,
+                                  }}
+                                />
+                                <div className={classNames(styles.segment, styles.end)} />
+                              </div>
+                            );
+                          })}
+                      </div>
+                    );
+                  },
+                )}
               </div>
             </div>
           );

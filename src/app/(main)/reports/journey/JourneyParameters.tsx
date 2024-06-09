@@ -1,6 +1,15 @@
 import { useContext } from 'react';
 import { useMessages } from 'components/hooks';
-import { Form, FormButtons, FormInput, FormRow, SubmitButton, TextField } from 'react-basics';
+import {
+  Dropdown,
+  Form,
+  FormButtons,
+  FormInput,
+  FormRow,
+  Item,
+  SubmitButton,
+  TextField,
+} from 'react-basics';
 import { ReportContext } from '../[reportId]/Report';
 import BaseParameters from '../[reportId]/BaseParameters';
 
@@ -24,12 +33,12 @@ export function JourneyParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={true} allowWebsiteSelect={!id} />
-      <FormRow label={`${formatMessage(labels.steps)} (3 to 7)`}>
+      <FormRow label={formatMessage(labels.steps)}>
         <FormInput
           name="steps"
           rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/, min: 3, max: 7 }}
         >
-          <TextField autoComplete="off" />
+          <Dropdown items={[3, 4, 5, 6, 7]}>{item => <Item key={item}>{item}</Item>}</Dropdown>
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.startStep)}>

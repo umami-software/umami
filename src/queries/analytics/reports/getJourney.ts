@@ -10,7 +10,7 @@ interface JourneyResult {
   e5: string;
   e6: string;
   e7: string;
-  count: string;
+  count: number;
 }
 
 export async function getJourney(
@@ -267,6 +267,6 @@ function combineSequentialDuplicates(array: any) {
 function parseResult(data: any) {
   return data.map(({ e1, e2, e3, e4, e5, e6, e7, count }) => ({
     items: combineSequentialDuplicates([e1, e2, e3, e4, e5, e6, e7]),
-    count,
+    count: +count,
   }));
 }
