@@ -19,21 +19,22 @@ export function ChangeLabel({
   className?: string;
   children?: ReactNode;
 }) {
-  const positive = value * (reverseColors ? -1 : 1) >= 0;
-  const negative = value * (reverseColors ? -1 : 1) < 0;
+  const positive = value >= 0;
+  const negative = value < 0;
   const neutral = value === 0 || isNaN(value);
+  const good = reverseColors ? negative : positive;
 
   return (
     <div
       className={classNames(styles.label, className, {
-        [styles.positive]: positive,
-        [styles.negative]: negative,
+        [styles.positive]: good,
+        [styles.negative]: !good,
         [styles.neutral]: neutral,
       })}
       title={title}
     >
       {!neutral && (
-        <Icon rotate={value === 0 ? 0 : positive || reverseColors ? -90 : 90} size={size}>
+        <Icon rotate={positive ? -90 : 90} size={size}>
           <Icons.ArrowRight />
         </Icon>
       )}
