@@ -56,16 +56,6 @@ export default function WebsiteExpandedView({
       url: renderUrl({ view: 'url' }),
     },
     {
-      key: 'entry',
-      label: formatMessage(labels.entry),
-      url: renderUrl({ view: 'entry' }),
-    },
-    {
-      key: 'exit',
-      label: formatMessage(labels.exit),
-      url: renderUrl({ view: 'exit' }),
-    },
-    {
       key: 'referrer',
       label: formatMessage(labels.referrers),
       url: renderUrl({ view: 'referrer' }),
