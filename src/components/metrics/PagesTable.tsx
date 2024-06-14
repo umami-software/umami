@@ -45,11 +45,13 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
   const renderLink = ({ x }) => {
     return (
       <FilterLink
-        id={view}
+        id={view === 'entry' || view === 'exit' ? 'url' : view}
         value={x}
         label={!x && formatMessage(labels.none)}
         externalUrl={
-          view === 'url' ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}` : null
+          view !== 'title'
+            ? `${domain.startsWith('http') ? domain : `https://${domain}`}${x}`
+            : null
         }
       />
     );
