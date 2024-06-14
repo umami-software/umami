@@ -1,11 +1,10 @@
-import FilterLink from 'components/common/FilterLink';
+import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 import FilterButtons from 'components/common/FilterButtons';
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import { useMessages } from 'components/hooks';
-import { useNavigation } from 'components/hooks';
+import FilterLink from 'components/common/FilterLink';
+import { useMessages, useNavigation } from 'components/hooks';
 import { emptyFilter } from 'lib/filters';
 import { useContext } from 'react';
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import MetricsTable, { MetricsTableProps } from './MetricsTable';
 
 export interface PagesTableProps extends MetricsTableProps {
   allowFilter?: boolean;
@@ -28,6 +27,14 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
     {
       label: 'URL',
       key: 'url',
+    },
+    {
+      label: formatMessage(labels.entry),
+      key: 'entry',
+    },
+    {
+      label: formatMessage(labels.exit),
+      key: 'exit',
     },
     {
       label: formatMessage(labels.title),

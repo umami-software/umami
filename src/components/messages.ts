@@ -88,6 +88,8 @@ export const labels = defineMessages({
   leaveTeam: { id: 'label.leave-team', defaultMessage: 'Leave team' },
   refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
   pages: { id: 'label.pages', defaultMessage: 'Pages' },
+  entry: { id: 'label.entry', defaultMessage: 'Entry URL' },
+  exit: { id: 'label.exit', defaultMessage: 'Exit URL' },
   referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
   screens: { id: 'label.screens', defaultMessage: 'Screens' },
   browsers: { id: 'label.browsers', defaultMessage: 'Browsers' },

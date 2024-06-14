@@ -93,8 +93,6 @@ export default function JourneyView() {
     return null;
   }
 
-  //console.log({ data, columns, selectedNode, activeNode });
-
   return (
     <div className={styles.container}>
       <div className={styles.view}>

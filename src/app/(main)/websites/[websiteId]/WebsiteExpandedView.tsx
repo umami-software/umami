@@ -18,6 +18,8 @@ import styles from './WebsiteExpandedView.module.css';
 
 const views = {
   url: PagesTable,
+  entry: PagesTable,
+  exit: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
   browser: BrowsersTable,
@@ -52,6 +54,16 @@ export default function WebsiteExpandedView({
       key: 'url',
       label: formatMessage(labels.pages),
       url: renderUrl({ view: 'url' }),
+    },
+    {
+      key: 'entry',
+      label: formatMessage(labels.entry),
+      url: renderUrl({ view: 'entry' }),
+    },
+    {
+      key: 'exit',
+      label: formatMessage(labels.exit),
+      url: renderUrl({ view: 'exit' }),
     },
     {
       key: 'referrer',
