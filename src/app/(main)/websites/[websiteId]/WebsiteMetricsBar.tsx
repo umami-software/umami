@@ -57,11 +57,11 @@ export function WebsiteMetricsBar({
         },
         {
           label: formatMessage(labels.bounceRate),
-          value: (Math.min(visitors.value, bounces.value) / visitors.value) * 100,
-          prev: (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
+          value: (Math.min(visits.value, bounces.value) / visits.value) * 100,
+          prev: (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
           change:
-            (Math.min(visitors.value, bounces.value) / visitors.value) * 100 -
-            (Math.min(visitors.prev, bounces.prev) / visitors.prev) * 100,
+            (Math.min(visits.value, bounces.value) / visits.value) * 100 -
+            (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
           formatValue: n => Math.round(+n) + '%',
           reverseColors: true,
         },
