@@ -31,6 +31,7 @@
   justify-content: center;
   gap: 20px;
   width: 100%;
+  height: 40px;
 }
 
 .visitors {
@@ -41,8 +42,8 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--base800);
-  background: var(--base200);
+  color: var(--blue800);
+  background: var(--blue100);
   padding: 4px 8px;
   border-radius: 5px;
 }
