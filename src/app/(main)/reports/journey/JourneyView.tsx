@@ -1,7 +1,8 @@
 import { useContext, useMemo, useState } from 'react';
+import { TooltipPopup } from 'react-basics';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
-import { useEscapeKey } from 'components/hooks';
+import { useEscapeKey, useMessages } from 'components/hooks';
 import { objectToArray } from 'lib/data';
 import { ReportContext } from '../[reportId]/Report';
 // eslint-disable-next-line css-modules/no-unused-class
@@ -16,6 +17,7 @@ export default function JourneyView() {
   const [activeNode, setActiveNode] = useState(null);
   const { report } = useContext(ReportContext);
   const { data, parameters } = report || {};
+  const { formatMessage, labels } = useMessages();
 
   useEscapeKey(() => setSelectedNode(null));
 
@@ -74,8 +76,16 @@ export default function JourneyView() {
           }
         });
 
+        const nodesArray = objectToArray(nodes).sort(firstBy('total', -1));
+
         return {
-          nodes: objectToArray(nodes).sort(firstBy('total', -1)),
+          nodes: nodesArray,
+          visitors: nodesArray.reduce((sum, { selected, total }) => {
+            if (!selectedNode || (selectedNode && selected)) {
+              sum += total;
+            }
+            return sum;
+          }, 0),
         };
       });
   }, [data, selectedNode, activeNode]);
@@ -99,6 +109,10 @@ export default function JourneyView() {
     <div className={styles.container}>
       <div className={styles.view}>
         {columns.map((column, columnIndex) => {
+          const previousTotal = columns[columnIndex - 1]?.visitors ?? 0;
+          const dropOff =
+            previousTotal > 0 ? ((column.visitors - previousTotal) / previousTotal) * 100 : 0;
+
           return (
             <div
               key={columnIndex}
@@ -106,6 +120,12 @@ export default function JourneyView() {
             >
               <div className={styles.header}>
                 <div className={styles.num}>{columnIndex + 1}</div>
+                <div className={styles.stats}>
+                  <div className={styles.visitors}>
+                    {column.visitors} {formatMessage(labels.visitors)}
+                  </div>
+                  {columnIndex > 0 && <div className={styles.dropoff}>{`${~~dropOff}%`}</div>}
+                </div>
               </div>
               <div className={styles.nodes}>
                 {column.nodes.map(({ name, total, selected, active, paths, from }, nodeIndex) => {
@@ -146,9 +166,11 @@ export default function JourneyView() {
                       onMouseLeave={() => selected && setActiveNode(null)}
                     >
                       <div className={styles.name}>{name}</div>
-                      <div className={styles.count}>
-                        {selected ? (active ? activeCount : selectedCount) : total}
-                      </div>
+                      <TooltipPopup label="hi" disabled={!selected}>
+                        <div className={styles.count}>
+                          {selected ? (active ? activeCount : selectedCount) : total}
+                        </div>
+                      </TooltipPopup>
                       {columnIndex < columns.length &&
                         lines.map(([fromIndex, nodeIndex], i) => {
                           const height =

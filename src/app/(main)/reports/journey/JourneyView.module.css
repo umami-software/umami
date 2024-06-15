@@ -22,8 +22,29 @@
 }
 
 .header {
+  margin-bottom: 20px;
+}
+
+.stats {
   display: flex;
-  min-height: 70px;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.visitors {
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: lowercase;
+}
+
+.dropoff {
+  font-weight: 600;
+  color: var(--base800);
+  background: var(--base200);
+  padding: 4px 8px;
+  border-radius: 5px;
 }
 
 .num {
@@ -38,7 +59,7 @@
   color: var(--base100);
   background: var(--base800);
   z-index: 1;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 
 .column {
