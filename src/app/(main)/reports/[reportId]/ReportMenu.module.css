@@ -8,17 +8,17 @@
 }
 
 .button {
+  position: absolute;
+  right: 0;
   display: flex;
   place-content: center;
   border: 1px solid var(--base400);
   border-right: 0;
   width: 30px;
   padding: 5px;
-  right: 0;
-  position: absolute;
   cursor: pointer;
-  z-index: 1;
   border-radius: 4px 0 0 4px;
+  z-index: 1;
 }
 
 .button:hover {
@@ -31,8 +31,6 @@
 }
 
 .menu.collapsed .button {
-  left: 1px;
-  border-left: 0;
-  border-right: 1px solid var(--base300);
-  border-radius: 0 4px 4px 0;
+  right: 0;
+  border-radius: 4px 0 0 4px;
 }
