@@ -188,59 +188,63 @@ export default function JourneyView() {
                     return (
                       <div
                         key={name}
-                        className={classNames(styles.item, {
-                          [styles.selected]: selected,
-                          [styles.active]: active,
-                        })}
-                        onClick={() => handleClick(name, columnIndex, paths)}
+                        className={styles.wrapper}
                         onMouseEnter={() => selected && setActiveNode({ name, columnIndex, paths })}
                         onMouseLeave={() => selected && setActiveNode(null)}
                       >
-                        <div className={styles.name}>{name}</div>
-                        <TooltipPopup label={dropOffPercent} disabled={!selected}>
-                          <div className={styles.count}>
-                            {selected ? (active ? activeCount : selectedCount) : totalCount}
-                          </div>
-                        </TooltipPopup>
-                        {columnIndex < columns.length &&
-                          lines.map(([fromIndex, nodeIndex], i) => {
-                            const height =
-                              (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
-                              NODE_GAP;
-                            const midHeight =
-                              (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
-                              NODE_GAP +
-                              LINE_WIDTH;
-                            const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
-
-                            return (
-                              <div
-                                key={`${fromIndex}${nodeIndex}${i}`}
-                                className={classNames(styles.line, {
-                                  [styles.active]:
-                                    active &&
-                                    activeNode?.paths.find(
-                                      path =>
-                                        path.items[columnIndex] === name &&
-                                        path.items[columnIndex - 1] === nodeName,
-                                    ),
-                                  [styles.up]: fromIndex < nodeIndex,
-                                  [styles.down]: fromIndex > nodeIndex,
-                                  [styles.flat]: fromIndex === nodeIndex,
-                                })}
-                                style={{ height }}
-                              >
-                                <div className={classNames(styles.segment, styles.start)} />
-                                <div
-                                  className={classNames(styles.segment, styles.mid)}
-                                  style={{
-                                    height: midHeight,
-                                  }}
-                                />
-                                <div className={classNames(styles.segment, styles.end)} />
-                              </div>
-                            );
+                        <div
+                          className={classNames(styles.item, {
+                            [styles.selected]: selected,
+                            [styles.active]: active,
                           })}
+                          onClick={() => handleClick(name, columnIndex, paths)}
+                        >
+                          <div className={styles.name}>{name}</div>
+                          <TooltipPopup label={dropOffPercent} disabled={!selected}>
+                            <div className={styles.count}>
+                              {selected ? (active ? activeCount : selectedCount) : totalCount}
+                            </div>
+                          </TooltipPopup>
+                          {columnIndex < columns.length &&
+                            lines.map(([fromIndex, nodeIndex], i) => {
+                              const height =
+                                (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
+                                NODE_GAP;
+                              const midHeight =
+                                (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
+                                NODE_GAP +
+                                LINE_WIDTH;
+                              const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
+
+                              return (
+                                <div
+                                  key={`${fromIndex}${nodeIndex}${i}`}
+                                  className={classNames(styles.line, {
+                                    [styles.active]:
+                                      active &&
+                                      activeNode?.paths.find(
+                                        path =>
+                                          path.items[columnIndex] === name &&
+                                          path.items[columnIndex - 1] === nodeName,
+                                      ),
+                                    [styles.up]: fromIndex < nodeIndex,
+                                    [styles.down]: fromIndex > nodeIndex,
+                                    [styles.flat]: fromIndex === nodeIndex,
+                                  })}
+                                  style={{ height }}
+                                >
+                                  <div className={classNames(styles.segment, styles.start)} />
+                                  <div
+                                    className={classNames(styles.segment, styles.mid)}
+                                    style={{
+                                      height: midHeight,
+                                    }}
+                                  />
+                                  <div className={classNames(styles.segment, styles.end)} />
+                                </div>
+                              );
+                            })}
+                        </div>
                       </div>
                     );
                   },

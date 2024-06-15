@@ -71,8 +71,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   height: 100%;
+}
+
+.wrapper {
+  padding-bottom: 10px;
 }
 
 .item {
