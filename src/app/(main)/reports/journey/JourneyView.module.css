@@ -104,10 +104,6 @@
   background: var(--primary400);
 }
 
-.item.active .count {
-  background: var(--primary600);
-}
-
 .behind {
   color: var(--base400);
 }
@@ -130,9 +126,13 @@
   background: var(--base200);
 }
 
-.selected .count {
+.item.selected .count {
   color: var(--base50);
   background: var(--base800);
+}
+
+.item.selected.active .count {
+  background: var(--primary600);
 }
 
 .line {

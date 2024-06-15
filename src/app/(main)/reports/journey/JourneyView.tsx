@@ -28,66 +28,114 @@ export default function JourneyView() {
 
     const selectedPaths = selectedNode?.paths ?? [];
     const activePaths = activeNode?.paths ?? [];
+    const columns = [];
 
-    return Array(Number(parameters.steps))
-      .fill(undefined)
-      .map((nodes = {}, index) => {
-        data.forEach(({ items, count }) => {
-          const name = items[index];
+    for (let columnIndex = 0; columnIndex < +parameters.steps; columnIndex++) {
+      const nodes = {};
 
-          if (name) {
-            const selected = !!selectedPaths.find(path => path.items[index] === name);
-            const active = selected && !!activePaths.find(path => path.items[index] === name);
+      data.forEach(({ items, count }: any, nodeIndex: any) => {
+        const name = items[columnIndex];
 
-            if (!nodes[name]) {
-              const paths = data.filter((d, i) => {
-                return i !== index && d.items[index] === name;
-              });
+        if (name) {
+          const selected = !!selectedPaths.find(path => path.items[columnIndex] === name);
+          const active = selected && !!activePaths.find(path => path.items[columnIndex] === name);
 
-              const from =
-                index > 0 &&
-                selected &&
-                paths.reduce((obj, path) => {
-                  const { items, count } = path;
-                  const name = items[index - 1];
+          if (!nodes[name]) {
+            const paths = data.filter((d, i) => {
+              return i !== columnIndex && d.items[columnIndex] === name;
+            });
 
-                  if (!obj[name]) {
-                    obj[name] = { name, count };
-                  } else {
-                    obj[name].count += count;
-                  }
+            const from =
+              columnIndex > 0 &&
+              selected &&
+              paths.reduce((obj, path) => {
+                const { items, count } = path;
+                const name = items[columnIndex - 1];
 
-                  return obj;
-                }, {});
+                if (!obj[name]) {
+                  obj[name] = { name, count };
+                } else {
+                  obj[name].count += count;
+                }
 
-              nodes[name] = {
-                name,
-                count,
-                total: count,
-                columnIndex: index,
-                selected,
-                active,
-                paths,
-                from: objectToArray(from),
-              };
-            } else {
-              nodes[name].total += count;
-            }
+                return obj;
+              }, {});
+
+            nodes[name] = {
+              name,
+              count,
+              totalCount: count,
+              nodeIndex,
+              columnIndex,
+              selected,
+              active,
+              paths,
+              from: objectToArray(from),
+            };
+          } else {
+            nodes[name].totalCount += count;
           }
-        });
-
-        const nodesArray = objectToArray(nodes).sort(firstBy('total', -1));
-
-        return {
-          nodes: nodesArray,
-          visitors: nodesArray.reduce((sum, { selected, total }) => {
-            if (!selectedNode || (selectedNode && selected)) {
-              sum += total;
-            }
-            return sum;
-          }, 0),
-        };
+        }
       });
+
+      columns.push({
+        nodes: objectToArray(nodes).sort(firstBy('total', -1)),
+      });
+    }
+
+    columns.forEach((column, columnIndex) => {
+      const nodes = column.nodes.map((node, nodeIndex) => {
+        const { from, totalCount } = node;
+        const previousNodes = columns[columnIndex - 1]?.nodes;
+        let selectedCount = from?.length ? 0 : totalCount;
+        let activeCount = selectedCount;
+
+        const lines = from?.reduce((arr: any[][], { name, count }: any) => {
+          const fromIndex = previousNodes.findIndex((node: { name: any; selected: any }) => {
+            return node.name === name && node.selected;
+          });
+
+          if (fromIndex > -1) {
+            arr.push([fromIndex, nodeIndex]);
+            selectedCount += count;
+          }
+
+          if (
+            previousNodes.findIndex(node => {
+              return node.name === name && node.active;
+            }) > -1
+          ) {
+            activeCount += count;
+          }
+
+          return arr;
+        }, []);
+
+        return { ...node, selectedCount, activeCount, lines };
+      });
+
+      const visitorCount = nodes.reduce(
+        (sum: number, { selected, selectedCount, active, activeCount, totalCount }) => {
+          if (!selectedNode) {
+            sum += totalCount;
+          } else if (!activeNode && selected) {
+            sum += selectedCount;
+          } else if (active) {
+            sum += activeCount;
+          }
+          return sum;
+        },
+        0,
+      );
+
+      const previousTotal = columns[columnIndex - 1]?.visitorCount ?? 0;
+      const dropOff =
+        previousTotal > 0 ? ((visitorCount - previousTotal) / previousTotal) * 100 : 0;
+
+      Object.assign(column, { nodes, visitorCount, dropOff });
+    });
+
+    return columns;
   }, [data, selectedNode, activeNode]);
 
   const handleClick = (name: string, index: number, paths: any[]) => {
@@ -95,8 +143,8 @@ export default function JourneyView() {
       setSelectedNode({ name, index, paths });
     } else {
       setSelectedNode(null);
-      setActiveNode(null);
     }
+    setActiveNode(null);
   };
 
   if (!data) {
@@ -107,110 +155,96 @@ export default function JourneyView() {
     <div className={styles.container}>
       <div className={styles.view}>
         {columns.map((column, columnIndex) => {
-          const previousTotal = columns[columnIndex - 1]?.visitors ?? 0;
-          const dropOff =
-            previousTotal > 0 ? ((column.visitors - previousTotal) / previousTotal) * 100 : 0;
-
+          const dropOffPercent = `${~~column.dropOff}%`;
           return (
             <div
               key={columnIndex}
-              className={classNames(styles.column, { [styles.active]: activeNode })}
+              className={classNames(styles.column, {
+                [styles.selected]: selectedNode,
+                [styles.active]: activeNode,
+              })}
             >
               <div className={styles.header}>
                 <div className={styles.num}>{columnIndex + 1}</div>
                 <div className={styles.stats}>
                   <div className={styles.visitors}>
-                    {column.visitors} {formatMessage(labels.visitors)}
+                    {column.visitorCount} {formatMessage(labels.visitors)}
                   </div>
-                  {columnIndex > 0 && <div className={styles.dropoff}>{`${~~dropOff}%`}</div>}
+                  {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
                 </div>
               </div>
               <div className={styles.nodes}>
-                {column.nodes.map(({ name, total, selected, active, paths, from }, nodeIndex) => {
-                  const previousNodes = columns[columnIndex - 1]?.nodes;
-                  let selectedCount = from?.length ? 0 : total;
-                  let activeCount = selectedCount;
-
-                  const lines = from?.reduce((arr, { name, count }: any) => {
-                    const fromIndex = previousNodes.findIndex(node => {
-                      return node.name === name && node.selected;
-                    });
-
-                    if (fromIndex > -1) {
-                      arr.push([fromIndex, nodeIndex]);
-                      selectedCount += count;
-                    }
-
-                    if (
-                      previousNodes.findIndex(node => {
-                        return node.name === name && node.active;
-                      }) > -1
-                    ) {
-                      activeCount += count;
-                    }
-
-                    return arr;
-                  }, []);
-
-                  return (
-                    <div
-                      key={name}
-                      className={classNames(styles.item, {
-                        [styles.selected]: selected,
-                        [styles.active]: active,
-                      })}
-                      onClick={() => handleClick(name, columnIndex, paths)}
-                      onMouseEnter={() => selected && setActiveNode({ name, columnIndex, paths })}
-                      onMouseLeave={() => selected && setActiveNode(null)}
-                    >
-                      <div className={styles.name}>{name}</div>
-                      <TooltipPopup label="hi" disabled={!selected}>
-                        <div className={styles.count}>
-                          {selected ? (active ? activeCount : selectedCount) : total}
-                        </div>
-                      </TooltipPopup>
-                      {columnIndex < columns.length &&
-                        lines.map(([fromIndex, nodeIndex], i) => {
-                          const height =
-                            (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
-                            NODE_GAP;
-                          const midHeight =
-                            (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
-                            NODE_GAP +
-                            LINE_WIDTH;
-                          const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
-
-                          return (
-                            <div
-                              key={`${fromIndex}${nodeIndex}${i}`}
-                              className={classNames(styles.line, {
-                                [styles.active]:
-                                  active &&
-                                  activeNode?.paths.find(
-                                    path =>
-                                      path.items[columnIndex] === name &&
-                                      path.items[columnIndex - 1] === nodeName,
-                                  ),
-                                [styles.up]: fromIndex < nodeIndex,
-                                [styles.down]: fromIndex > nodeIndex,
-                                [styles.flat]: fromIndex === nodeIndex,
-                              })}
-                              style={{ height }}
-                            >
-                              <div className={classNames(styles.segment, styles.start)} />
-                              <div
-                                className={classNames(styles.segment, styles.mid)}
-                                style={{
-                                  height: midHeight,
-                                }}
-                              />
-                              <div className={classNames(styles.segment, styles.end)} />
-                            </div>
-                          );
+                {column.nodes.map(
+                  ({
+                    name,
+                    totalCount,
+                    selected,
+                    active,
+                    paths,
+                    activeCount,
+                    selectedCount,
+                    lines,
+                  }) => {
+                    return (
+                      <div
+                        key={name}
+                        className={classNames(styles.item, {
+                          [styles.selected]: selected,
+                          [styles.active]: active,
                         })}
-                    </div>
-                  );
-                })}
+                        onClick={() => handleClick(name, columnIndex, paths)}
+                        onMouseEnter={() => selected && setActiveNode({ name, columnIndex, paths })}
+                        onMouseLeave={() => selected && setActiveNode(null)}
+                      >
+                        <div className={styles.name}>{name}</div>
+                        <TooltipPopup label={dropOffPercent} disabled={!selected}>
+                          <div className={styles.count}>
+                            {selected ? (active ? activeCount : selectedCount) : totalCount}
+                          </div>
+                        </TooltipPopup>
+                        {columnIndex < columns.length &&
+                          lines.map(([fromIndex, nodeIndex], i) => {
+                            const height =
+                              (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
+                              NODE_GAP;
+                            const midHeight =
+                              (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
+                              NODE_GAP +
+                              LINE_WIDTH;
+                            const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
+
+                            return (
+                              <div
+                                key={`${fromIndex}${nodeIndex}${i}`}
+                                className={classNames(styles.line, {
+                                  [styles.active]:
+                                    active &&
+                                    activeNode?.paths.find(
+                                      path =>
+                                        path.items[columnIndex] === name &&
+                                        path.items[columnIndex - 1] === nodeName,
+                                    ),
+                                  [styles.up]: fromIndex < nodeIndex,
+                                  [styles.down]: fromIndex > nodeIndex,
+                                  [styles.flat]: fromIndex === nodeIndex,
+                                })}
+                                style={{ height }}
+                              >
+                                <div className={classNames(styles.segment, styles.start)} />
+                                <div
+                                  className={classNames(styles.segment, styles.mid)}
+                                  style={{
+                                    height: midHeight,
+                                  }}
+                                />
+                                <div className={classNames(styles.segment, styles.end)} />
+                              </div>
+                            );
+                          })}
+                      </div>
+                    );
+                  },
+                )}
               </div>
             </div>
           );
