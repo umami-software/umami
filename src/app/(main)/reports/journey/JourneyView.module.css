@@ -19,6 +19,7 @@
   flex-wrap: nowrap;
   overflow: auto;
   gap: 100px;
+  padding-right: 20px;
 }
 
 .header {
@@ -89,6 +90,7 @@
   align-items: center;
   justify-content: space-between;
   min-width: 300px;
+  max-width: 300px;
   min-height: 60px;
 }
 

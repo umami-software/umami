@@ -5,7 +5,7 @@ import { Icon, Icons } from 'react-basics';
 import classNames from 'classnames';
 
 export function ReportMenu({ children }) {
-  const [collapsed, setCollapsed] = useState(true);
+  const [collapsed, setCollapsed] = useState(false);
   const { report } = useContext(ReportContext);
 
   if (!report) {
