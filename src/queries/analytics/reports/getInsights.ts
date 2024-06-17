@@ -43,7 +43,7 @@ async function relationalQuery(
       count(distinct t.visit_id) as "visits",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
       sum(${getTimestampDiffQuery('t.min_time', 't.max_time')}) as "totaltime",
-      ${parseFields(fields)}
+      ${parseFieldsByName(fields)}
     from (
       select
         ${parseFields(fields)},
@@ -58,10 +58,10 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
         ${filterQuery}
-      group by ${parseFields(fields)}, 
+      group by ${parseFieldsByName(fields)}, 
         website_event.session_id, website_event.visit_id
     ) as t
-    group by ${parseFields(fields)}
+    group by ${parseFieldsByName(fields)}
     order by 1 desc, 2 desc
     limit 500
     `,
@@ -93,7 +93,7 @@ async function clickhouseQuery(
       count(distinct t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime",
-      ${parseFields(fields)}
+      ${parseFieldsByName(fields)}
     from (
       select
         ${parseFields(fields)},
@@ -107,10 +107,10 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${filterQuery}
-      group by ${parseFields(fields)}, 
+      group by ${parseFieldsByName(fields)}, 
         session_id, visit_id
     ) as t
-    group by ${parseFields(fields)}
+    group by ${parseFieldsByName(fields)}
     order by 1 desc, 2 desc
     limit 500
     `,
@@ -130,5 +130,9 @@ async function clickhouseQuery(
 }
 
 function parseFields(fields: { name: any }[]) {
-  return `${fields.map(({ name }) => FILTER_COLUMNS[name]).join(',')}`;
+  return fields.map(({ name }) => `${FILTER_COLUMNS[name]} as "${name}"`).join(',');
+}
+
+function parseFieldsByName(fields: { name: any }[]) {
+  return `${fields.map(({ name }) => name).join(',')}`;
 }
