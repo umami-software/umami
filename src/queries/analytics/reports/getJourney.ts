@@ -267,6 +267,6 @@ function combineSequentialDuplicates(array: any) {
 function parseResult(data: any) {
   return data.map(({ e1, e2, e3, e4, e5, e6, e7, count }) => ({
     items: combineSequentialDuplicates([e1, e2, e3, e4, e5, e6, e7]),
-    count: +count,
+    count: +Number(count),
   }));
 }
