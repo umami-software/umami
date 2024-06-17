@@ -41,9 +41,7 @@ export default function JourneyView() {
           const active = selected && !!activePaths.find(path => path.items[columnIndex] === name);
 
           if (!nodes[name]) {
-            const paths = data.filter((d, i) => {
-              return i !== columnIndex && d.items[columnIndex] === name;
-            });
+            const paths = data.filter(d => d.items[columnIndex] === name);
 
             const from =
               columnIndex > 0 &&
