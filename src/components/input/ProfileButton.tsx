@@ -1,59 +1,56 @@
+import { Key } from 'react';
 import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
 import { useRouter } from 'next/navigation';
 import Icons from 'components/icons';
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
-import useLocale from 'components/hooks/useLocale';
+import { useMessages, useLogin, useLocale } from 'components/hooks';
 import { CURRENT_VERSION } from 'lib/constants';
 import styles from './ProfileButton.module.css';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
   const router = useRouter();
   const { dir } = useLocale();
-  const cloudMode = Boolean(process.env.cloudMode);
+  const cloudMode = !!process.env.cloudMode;
 
-  const handleSelect = key => {
+  const handleSelect = (key: Key, close: () => void) => {
     if (key === 'profile') {
-      router.push('/settings/profile');
+      router.push('/profile');
     }
     if (key === 'logout') {
       router.push('/logout');
     }
+    close();
   };
 
   return (
     <PopupTrigger>
-      <Button variant="quiet">
+      <Button data-test="button-profile" variant="quiet">
         <Icon>
           <Icons.Profile />
         </Icon>
-        <Icon size="sm">
-          <Icons.ChevronDown />
-        </Icon>
       </Button>
       <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
-        <Menu variant="popup" onSelect={handleSelect} className={styles.menu}>
-          <Item key="user" className={styles.item}>
-            <Text>{user.username}</Text>
-          </Item>
-          <Item key="profile" className={styles.item} divider={true}>
-            <Icon>
-              <Icons.User />
-            </Icon>
-            <Text>{formatMessage(labels.profile)}</Text>
-          </Item>
-          {!cloudMode && (
-            <Item key="logout" className={styles.item}>
+        {(close: () => void) => (
+          <Menu onSelect={key => handleSelect(key, close)} className={styles.menu}>
+            <Text className={styles.name}>{user.username}</Text>
+            <Item key="profile" className={styles.item} divider={true}>
               <Icon>
-                <Icons.Logout />
+                <Icons.User />
               </Icon>
-              <Text>{formatMessage(labels.logout)}</Text>
+              <Text>{formatMessage(labels.profile)}</Text>
             </Item>
-          )}
-          <div className={styles.version}>{`v${CURRENT_VERSION}`}</div>
-        </Menu>
+            {!cloudMode && (
+              <Item data-test="item-logout" key="logout" className={styles.item}>
+                <Icon>
+                  <Icons.Logout />
+                </Icon>
+                <Text>{formatMessage(labels.logout)}</Text>
+              </Item>
+            )}
+            <div className={styles.version}>{`v${CURRENT_VERSION}`}</div>
+          </Menu>
+        )}
       </Popup>
     </PopupTrigger>
   );

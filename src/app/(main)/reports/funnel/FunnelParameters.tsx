@@ -10,50 +10,65 @@ import {
   Popup,
   SubmitButton,
   TextField,
+  Button,
 } from 'react-basics';
 import Icons from 'components/icons';
-import UrlAddForm from './UrlAddForm';
-import { ReportContext } from '../[id]/Report';
-import BaseParameters from '../[id]/BaseParameters';
-import ParameterList from '../[id]/ParameterList';
-import PopupForm from '../[id]/PopupForm';
+import FunnelStepAddForm from './FunnelStepAddForm';
+import { ReportContext } from '../[reportId]/Report';
+import BaseParameters from '../[reportId]/BaseParameters';
+import ParameterList from '../[reportId]/ParameterList';
+import PopupForm from '../[reportId]/PopupForm';
+import styles from './FunnelParameters.module.css';
 
 export function FunnelParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
 
-  const { parameters } = report || {};
-  const { websiteId, dateRange, urls } = parameters || {};
-  const queryDisabled = !websiteId || !dateRange || urls?.length < 2;
+  const { id, parameters } = report || {};
+  const { websiteId, dateRange, steps } = parameters || {};
+  const queryDisabled = !websiteId || !dateRange || steps?.length < 2;
 
   const handleSubmit = (data: any, e: any) => {
     e.stopPropagation();
     e.preventDefault();
+
     if (!queryDisabled) {
       runReport(data);
     }
   };
 
-  const handleAddUrl = (url: string) => {
-    updateReport({ parameters: { urls: parameters.urls.concat(url) } });
+  const handleAddStep = (step: { type: string; value: string }) => {
+    updateReport({ parameters: { steps: parameters.steps.concat(step) } });
   };
 
-  const handleRemoveUrl = (index: number, e: any) => {
-    e.stopPropagation();
-    const urls = [...parameters.urls];
-    urls.splice(index, 1);
-    updateReport({ parameters: { urls } });
+  const handleUpdateStep = (
+    close: () => void,
+    index: number,
+    step: { type: string; value: string },
+  ) => {
+    const steps = [...parameters.steps];
+    steps[index] = step;
+    updateReport({ parameters: { steps } });
+    close();
   };
 
-  const AddUrlButton = () => {
+  const handleRemoveStep = (index: number) => {
+    const steps = [...parameters.steps];
+    delete steps[index];
+    updateReport({ parameters: { steps: steps.filter(n => n) } });
+  };
+
+  const AddStepButton = () => {
     return (
       <PopupTrigger>
-        <Icon>
-          <Icons.Plus />
-        </Icon>
-        <Popup position="right" alignment="start">
+        <Button>
+          <Icon>
+            <Icons.Plus />
+          </Icon>
+        </Button>
+        <Popup alignment="start">
           <PopupForm>
-            <UrlAddForm onAdd={handleAddUrl} />
+            <FunnelStepAddForm onChange={handleAddStep} />
           </PopupForm>
         </Popup>
       </PopupTrigger>
@@ -62,7 +77,7 @@ export function FunnelParameters() {
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       <FormRow label={formatMessage(labels.window)}>
         <FormInput
           name="window"
@@ -71,11 +86,37 @@ export function FunnelParameters() {
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>
-      <FormRow label={formatMessage(labels.urls)} action={<AddUrlButton />}>
-        <ParameterList
-          items={urls}
-          onRemove={(index: number, e: any) => handleRemoveUrl(index, e)}
-        />
+      <FormRow label={formatMessage(labels.steps)} action={<AddStepButton />}>
+        <ParameterList>
+          {steps.map((step: { type: string; value: string }, index: number) => {
+            return (
+              <PopupTrigger key={index}>
+                <ParameterList.Item
+                  className={styles.item}
+                  onRemove={() => handleRemoveStep(index)}
+                >
+                  <div className={styles.value}>
+                    <div className={styles.type}>
+                      <Icon>{step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}</Icon>
+                    </div>
+                    <div>{step.value}</div>
+                  </div>
+                </ParameterList.Item>
+                <Popup alignment="start">
+                  {(close: () => void) => (
+                    <PopupForm>
+                      <FunnelStepAddForm
+                        type={step.type}
+                        value={step.value}
+                        onChange={handleUpdateStep.bind(null, close, index)}
+                      />
+                    </PopupForm>
+                  )}
+                </Popup>
+              </PopupTrigger>
+            );
+          })}
+        </ParameterList>
       </FormRow>
       <FormButtons>
         <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>

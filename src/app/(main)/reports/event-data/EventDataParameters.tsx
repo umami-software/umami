@@ -4,10 +4,10 @@ import Empty from 'components/common/Empty';
 import Icons from 'components/icons';
 import { useApi, useMessages } from 'components/hooks';
 import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
-import { ReportContext } from '../[id]/Report';
-import FieldAddForm from '../[id]/FieldAddForm';
-import ParameterList from '../[id]/ParameterList';
-import BaseParameters from '../[id]/BaseParameters';
+import { ReportContext } from '../[reportId]/Report';
+import FieldAddForm from '../[reportId]/FieldAddForm';
+import ParameterList from '../[reportId]/ParameterList';
+import BaseParameters from '../[reportId]/BaseParameters';
 import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {
@@ -29,7 +29,7 @@ function useFields(websiteId, startDate, endDate) {
 export function EventDataParameters() {
   const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
-  const { parameters } = report || {};
+  const { id, parameters } = report || {};
   const { websiteId, dateRange, fields, filters, groups } = parameters || {};
   const { startDate, endDate } = dateRange || {};
   const queryEnabled = websiteId && dateRange && fields?.length;
@@ -60,10 +60,9 @@ export function EventDataParameters() {
     }
   };
 
-  const handleRemove = (group: string, index: number) => {
+  const handleRemove = (group: string) => {
     const data = [...parameterData[group]];
-    data.splice(index, 1);
-    updateReport({ parameters: { [group]: data } });
+    updateReport({ parameters: { [group]: data.filter(({ name }) => name !== group) } });
   };
 
   const AddButton = ({ group, onAdd }) => {
@@ -76,8 +75,8 @@ export function EventDataParameters() {
           {(close: () => void) => {
             return (
               <FieldAddForm
-                fields={data.map(({ eventKey, eventDataType }) => ({
-                  name: eventKey,
+                fields={data.map(({ dataKey, eventDataType }) => ({
+                  name: dataKey,
                   type: DATA_TYPES[eventDataType],
                 }))}
                 group={group}
@@ -93,7 +92,7 @@ export function EventDataParameters() {
 
   return (
     <Form values={parameters} error={error} onSubmit={handleSubmit}>
-      <BaseParameters />
+      <BaseParameters allowWebsiteSelect={!id} />
       {!hasData && <Empty message={formatMessage(messages.noEventData)} />}
       {parametersSelected &&
         hasData &&
@@ -104,29 +103,28 @@ export function EventDataParameters() {
               label={label}
               action={<AddButton group={group} onAdd={handleAdd} />}
             >
-              <ParameterList
-                items={parameterData[group]}
-                onRemove={index => handleRemove(group, index)}
-              >
-                {({ name, value }) => {
+              <ParameterList>
+                {parameterData[group].map(({ name, value }) => {
                   return (
-                    <div className={styles.parameter}>
-                      {group === REPORT_PARAMETERS.fields && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value}</div>
-                        </>
-                      )}
-                      {group === REPORT_PARAMETERS.filters && (
-                        <>
-                          <div>{name}</div>
-                          <div className={styles.op}>{value[0]}</div>
-                          <div>{value[1]}</div>
-                        </>
-                      )}
-                    </div>
+                    <ParameterList.Item key={name} onRemove={() => handleRemove(group)}>
+                      <div className={styles.parameter}>
+                        {group === REPORT_PARAMETERS.fields && (
+                          <>
+                            <div>{name}</div>
+                            <div className={styles.op}>{value}</div>
+                          </>
+                        )}
+                        {group === REPORT_PARAMETERS.filters && (
+                          <>
+                            <div>{name}</div>
+                            <div className={styles.op}>{value[0]}</div>
+                            <div>{value[1]}</div>
+                          </>
+                        )}
+                      </div>
+                    </ParameterList.Item>
                   );
-                }}
+                })}
               </ParameterList>
             </FormRow>
           );

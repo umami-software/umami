@@ -138,7 +138,7 @@ export type UmamiTracker = {
 
     /**
      * Tracks an event with fully customizable dynamic data
-     * Ilf you don't specify any `name` and/or `data`, it will be treated as a page view
+     * If you don't specify any `name` and/or `data`, it will be treated as a page view
      *
      * @example ```
      * umami.track((props) => ({ ...props, url: path }));

@@ -8,7 +8,7 @@ import * as yup from 'yup';
 
 export interface FunnelRequestBody {
   websiteId: string;
-  urls: string[];
+  steps: { type: string; value: string }[];
   window: number;
   dateRange: {
     startDate: string;
@@ -17,7 +17,7 @@ export interface FunnelRequestBody {
 }
 
 export interface FunnelResponse {
-  urls: string[];
+  steps: { type: string; value: string }[];
   window: number;
   startAt: number;
   endAt: number;
@@ -26,7 +26,16 @@ export interface FunnelResponse {
 const schema = {
   POST: yup.object().shape({
     websiteId: yup.string().uuid().required(),
-    urls: yup.array().min(2).of(yup.string()).required(),
+    steps: yup
+      .array()
+      .of(
+        yup.object().shape({
+          type: yup.string().required(),
+          value: yup.string().required(),
+        }),
+      )
+      .min(2)
+      .required(),
     window: yup.number().positive().required(),
     dateRange: yup
       .object()
@@ -49,7 +58,7 @@ export default async (
   if (req.method === 'POST') {
     const {
       websiteId,
-      urls,
+      steps,
       window,
       dateRange: { startDate, endDate },
     } = req.body;
@@ -61,7 +70,7 @@ export default async (
     const data = await getFunnel(websiteId, {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
-      urls,
+      steps,
       windowMinutes: +window,
     });
 

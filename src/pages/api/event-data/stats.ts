@@ -16,13 +16,13 @@ const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
-    endAt: yup.number().integer().moreThan(yup.ref('startAt')).required(),
+    endAt: yup.number().integer().min(yup.ref('startAt')).required(),
   }),
 };
 
 export default async (
   req: NextApiRequestQueryBody<EventDataStatsRequestQuery>,
-  res: NextApiResponse<any>,
+  res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);

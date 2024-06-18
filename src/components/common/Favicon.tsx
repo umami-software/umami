@@ -6,13 +6,18 @@ function getHostName(url: string) {
 }
 
 export function Favicon({ domain, ...props }) {
+  if (process.env.privateMode) {
+    return null;
+  }
+
   const hostName = domain ? getHostName(domain) : null;
 
   return hostName ? (
     <img
       className={styles.favicon}
       src={`https://icons.duckduckgo.com/ip3/${hostName}.ico`}
-      height="16"
+      width={16}
+      height={16}
       alt=""
       {...props}
     />

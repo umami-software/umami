@@ -1,0 +1,11 @@
+.chart {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

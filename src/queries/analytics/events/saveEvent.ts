@@ -1,4 +1,4 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE } from 'lib/constants';
+import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
@@ -6,8 +6,9 @@ import { uuid } from 'lib/crypto';
 import { saveEventData } from 'queries/analytics/eventData/saveEventData';
 
 export async function saveEvent(args: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -34,8 +35,9 @@ export async function saveEvent(args: {
 }
 
 async function relationalQuery(data: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -48,6 +50,7 @@ async function relationalQuery(data: {
   const {
     websiteId,
     sessionId,
+    visitId,
     urlPath,
     urlQuery,
     referrerPath,
@@ -64,12 +67,13 @@ async function relationalQuery(data: {
       id: websiteEventId,
       websiteId,
       sessionId,
+      visitId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       urlQuery: urlQuery?.substring(0, URL_LENGTH),
       referrerPath: referrerPath?.substring(0, URL_LENGTH),
       referrerQuery: referrerQuery?.substring(0, URL_LENGTH),
       referrerDomain: referrerDomain?.substring(0, URL_LENGTH),
-      pageTitle,
+      pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     },
@@ -90,8 +94,9 @@ async function relationalQuery(data: {
 }
 
 async function clickhouseQuery(data: {
-  sessionId: string;
   websiteId: string;
+  sessionId: string;
+  visitId: string;
   urlPath: string;
   urlQuery?: string;
   referrerPath?: string;
@@ -114,6 +119,7 @@ async function clickhouseQuery(data: {
   const {
     websiteId,
     sessionId,
+    visitId,
     urlPath,
     urlQuery,
     referrerPath,
@@ -136,6 +142,7 @@ async function clickhouseQuery(data: {
     ...args,
     website_id: websiteId,
     session_id: sessionId,
+    visit_id: visitId,
     event_id: uuid(),
     country: country,
     subdivision1:
@@ -151,7 +158,7 @@ async function clickhouseQuery(data: {
     referrer_path: referrerPath?.substring(0, URL_LENGTH),
     referrer_query: referrerQuery?.substring(0, URL_LENGTH),
     referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
-    page_title: pageTitle,
+    page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     created_at: createdAt,

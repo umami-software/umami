@@ -1,0 +1,10 @@
+.bar {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--base600);
+}
+
+.link span {
+  color: var(--base700) !important;
+}

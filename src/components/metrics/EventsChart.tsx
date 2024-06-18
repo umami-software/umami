@@ -1,47 +1,26 @@
 import { useMemo } from 'react';
 import { Loading } from 'react-basics';
 import { colord } from 'colord';
-import BarChart from './BarChart';
+import BarChart from 'components/charts/BarChart';
 import { getDateArray } from 'lib/date';
-import { useApi, useLocale, useDateRange, useTimezone, useNavigation } from 'components/hooks';
-import { EVENT_COLORS } from 'lib/constants';
-import { renderDateLabels, renderStatusTooltipPopup } from 'lib/charts';
+import { useLocale, useDateRange, useWebsiteEvents } from 'components/hooks';
+import { CHART_COLORS } from 'lib/constants';
+import { renderDateLabels } from 'lib/charts';
 
 export interface EventsChartProps {
   websiteId: string;
   className?: string;
-  token?: string;
 }
 
-export function EventsChart({ websiteId, className, token }: EventsChartProps) {
-  const { get, useQuery } = useApi();
-  const [{ startDate, endDate, unit, modified }] = useDateRange(websiteId);
+export function EventsChart({ websiteId, className }: EventsChartProps) {
+  const [{ startDate, endDate, unit }] = useDateRange(websiteId);
   const { locale } = useLocale();
-  const [timezone] = useTimezone();
-  const {
-    query: { url, event },
-  } = useNavigation();
+  const { data, isLoading } = useWebsiteEvents(websiteId);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['events', websiteId, modified, event],
-    queryFn: () =>
-      get(`/websites/${websiteId}/events`, {
-        startAt: +startDate,
-        endAt: +endDate,
-        unit,
-        timezone,
-        url,
-        event,
-        token,
-      }),
-    enabled: !!websiteId,
-  });
-
-  const datasets = useMemo(() => {
+  const chartData = useMemo(() => {
     if (!data) return [];
-    if (isLoading) return data;
 
-    const map = data.reduce((obj, { x, t, y }) => {
+    const map = (data as any[]).reduce((obj, { x, t, y }) => {
       if (!obj[x]) {
         obj[x] = [];
       }
@@ -55,18 +34,20 @@ export function EventsChart({ websiteId, className, token }: EventsChartProps) {
       map[key] = getDateArray(map[key], startDate, endDate, unit);
     });
 
-    return Object.keys(map).map((key, index) => {
-      const color = colord(EVENT_COLORS[index % EVENT_COLORS.length]);
-      return {
-        label: key,
-        data: map[key],
-        lineTension: 0,
-        backgroundColor: color.alpha(0.6).toRgbString(),
-        borderColor: color.alpha(0.7).toRgbString(),
-        borderWidth: 1,
-      };
-    });
-  }, [data, isLoading, startDate, endDate, unit]);
+    return {
+      datasets: Object.keys(map).map((key, index) => {
+        const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
+        return {
+          label: key,
+          data: map[key],
+          lineTension: 0,
+          backgroundColor: color.alpha(0.6).toRgbString(),
+          borderColor: color.alpha(0.7).toRgbString(),
+          borderWidth: 1,
+        };
+      }),
+    };
+  }, [data, startDate, endDate, unit]);
 
   if (isLoading) {
     return <Loading icon="dots" />;
@@ -75,12 +56,11 @@ export function EventsChart({ websiteId, className, token }: EventsChartProps) {
   return (
     <BarChart
       className={className}
-      datasets={datasets}
+      data={chartData}
       unit={unit}
-      loading={isLoading}
-      stacked
+      stacked={true}
       renderXLabel={renderDateLabels(unit, locale)}
-      renderTooltipPopup={renderStatusTooltipPopup(unit, locale)}
+      isLoading={isLoading}
     />
   );
 }

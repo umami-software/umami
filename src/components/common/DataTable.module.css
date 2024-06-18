@@ -29,10 +29,6 @@
   gap: 10px;
   min-height: 70px;
   align-items: center;
-  min-width: min-content;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .body > div > div > div {

@@ -29,6 +29,18 @@
       "value": "説明を追加"
     }
   ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "メンバーの追加"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Add step"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -182,7 +194,7 @@
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "作成"
     }
   ],
   "label.create-report": [
@@ -207,6 +219,12 @@
     {
       "type": 0,
       "value": "作成されました"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
     }
   ],
   "label.current-password": [
@@ -261,6 +279,12 @@
     {
       "type": 0,
       "value": "削除"
+    }
+  ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "レポートの削除"
     }
   ],
   "label.delete-team": [
@@ -347,6 +371,12 @@
       "value": "ダッシュボードの編集"
     }
   ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "メンバーの編集"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
@@ -392,13 +422,13 @@
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "フィルター"
     }
   ],
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "統合"
+      "value": "結合"
     }
   ],
   "label.filter-raw": [
@@ -416,13 +446,13 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "分析"
+      "value": "ファネル"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "ユーザーのコンバージョン率と離脱率を分析します。"
     }
   ],
   "label.greater-than": [
@@ -440,13 +470,13 @@
   "label.insights": [
     {
       "type": 0,
-      "value": "見通し"
+      "value": "インサイト"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "セグメントとフィルタを使用して、データをさらに詳しく分析します。"
     }
   ],
   "label.is": [
@@ -531,6 +561,20 @@
       "value": "時間"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Last "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " months"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -567,10 +611,22 @@
       "value": "ログアウト"
     }
   ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "管理"
+    }
+  ],
   "label.max": [
     {
       "type": 0,
       "value": "最大"
+    }
+  ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "メンバー"
     }
   ],
   "label.members": [
@@ -597,6 +653,12 @@
       "value": "もっと見る"
     }
   ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "マイアカウント"
+    }
+  ],
   "label.my-websites": [
     {
       "type": 0,
@@ -619,6 +681,46 @@
     {
       "type": 0,
       "value": "なし"
+    }
+  ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "record"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "records"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "OK"
     }
   ],
   "label.os": [
@@ -763,6 +865,12 @@
       "value": "削除"
     }
   ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "メンバーの削除"
+    }
+  ],
   "label.reports": [
     {
       "type": 0,
@@ -790,13 +898,13 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "保持"
+      "value": "リテンション"
     }
   ],
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "ユーザーの再訪問回数を記録して、Webサイトのリテンション率を計測します。"
     }
   ],
   "label.role": [
@@ -826,13 +934,25 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "検索"
+    }
+  ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "選択"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
       "value": "日付を選択"
+    }
+  ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "ロールを選択"
     }
   ],
   "label.select-website": [
@@ -865,6 +985,12 @@
       "value": "一日"
     }
   ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -881,12 +1007,6 @@
     {
       "type": 0,
       "value": "チーム"
-    }
-  ],
-  "label.team-guest": [
-    {
-      "type": 0,
-      "value": "チームゲスト"
     }
   ],
   "label.team-id": [
@@ -911,6 +1031,12 @@
     {
       "type": 0,
       "value": "チーム所有者"
+    }
+  ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "チーム表示のみ"
     }
   ],
   "label.team-websites": [
@@ -991,6 +1117,18 @@
       "value": "トラッキングコード"
     }
   ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "移管"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Webサイトの移管"
+    }
+  ],
   "label.true": [
     {
       "type": 0,
@@ -1027,6 +1165,12 @@
       "value": "無題"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1055,6 +1199,18 @@
     {
       "type": 0,
       "value": "ユーザー"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
     }
   ],
   "label.value": [
@@ -1087,10 +1243,22 @@
       "value": "表示"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "訪問者"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visits"
     }
   ],
   "label.website": [
@@ -1121,6 +1289,20 @@
     {
       "type": 0,
       "value": "昨日"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "承認する場合は、下のフォームに「"
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": "」と入力してください。"
     }
   ],
   "message.active-users": [
@@ -1177,6 +1359,16 @@
       "value": "から離脱してもよろしいですか？"
     }
   ],
+  "message.confirm-remove": [
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "を削除してもよろしいですか？"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 1,
@@ -1187,32 +1379,10 @@
       "value": "をリセットしてもよろしいですか？"
     }
   ],
-  "message.delete-account": [
+  "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "このアカウントを削除するには、下のフォームに「"
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": "」と入力してください。"
-    }
-  ],
-  "message.delete-website": [
-    {
-      "type": 0,
-      "value": "このWebサイトを削除するには、下のフォームに「"
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": "」と入力してください。"
+      "value": "チームを削除すると、そのチームが管理しているWebサイトもすべて削除されます。"
     }
   ],
   "message.delete-website-warning": [
@@ -1411,10 +1581,40 @@
       "value": "セクションに以下のコードを記述します。"
     }
   ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "このWebサイトをあなたのアカウントに移管しますか？"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "このWebサイトを移管するチームを選択してください。"
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Webサイトの所有権を自分のアカウントまたは別のチームへ移管します。"
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "トリガーされたイベント"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
       "value": "ユーザーが削除されました。"
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "閲覧されたページ"
     }
   ],
   "message.visitor-log": [
@@ -1449,6 +1649,12 @@
     {
       "type": 0,
       "value": "からの訪問者"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "訪問者の離脱率"
     }
   ]
 }
