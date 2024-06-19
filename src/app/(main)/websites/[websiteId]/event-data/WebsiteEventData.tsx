@@ -6,7 +6,7 @@ import { useDateRange, useApi, useNavigation } from 'components/hooks';
 import styles from './WebsiteEventData.module.css';
 
 function useData(websiteId: string, event: string) {
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
   const { get, useQuery } = useApi();
   const { data, error, isLoading } = useQuery({

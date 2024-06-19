@@ -1,12 +1,14 @@
-import Link from 'next/link';
-import { Button, Icons, Text, Icon } from 'react-basics';
-import PageHeader from 'components/layout/PageHeader';
 import Funnel from 'assets/funnel.svg';
 import Lightbulb from 'assets/lightbulb.svg';
 import Magnet from 'assets/magnet.svg';
+import Path from 'assets/path.svg';
 import Tag from 'assets/tag.svg';
-import styles from './ReportTemplates.module.css';
+import Target from 'assets/target.svg';
 import { useMessages, useTeamUrl } from 'components/hooks';
+import PageHeader from 'components/layout/PageHeader';
+import Link from 'next/link';
+import { Button, Icon, Icons, Text } from 'react-basics';
+import styles from './ReportTemplates.module.css';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
@@ -36,6 +38,18 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       description: formatMessage(labels.utmDescription),
       url: renderTeamUrl('/reports/utm'),
       icon: <Tag />,
+    },
+    {
+      title: formatMessage(labels.goals),
+      description: formatMessage(labels.goalsDescription),
+      url: renderTeamUrl('/reports/goals'),
+      icon: <Target />,
+    },
+    {
+      title: formatMessage(labels.journey),
+      description: formatMessage(labels.journeyDescription),
+      url: renderTeamUrl('/reports/journey'),
+      icon: <Path />,
     },
   ];
 

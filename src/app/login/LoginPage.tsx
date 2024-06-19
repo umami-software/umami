@@ -3,7 +3,7 @@ import LoginForm from './LoginForm';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
-  if (process.env.loginDisabled) {
+  if (process.env.disableLogin) {
     return null;
   }
 

@@ -18,4 +18,18 @@ export function setWebsiteDateRange(websiteId: string, dateRange: DateRange) {
   );
 }
 
+export function setWebsiteDateCompare(websiteId: string, dateCompare: string) {
+  store.setState(
+    produce(state => {
+      if (!state[websiteId]) {
+        state[websiteId] = {};
+      }
+
+      state[websiteId].dateCompare = dateCompare;
+
+      return state;
+    }),
+  );
+}
+
 export default store;

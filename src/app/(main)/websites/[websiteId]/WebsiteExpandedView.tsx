@@ -19,6 +19,8 @@ import styles from './WebsiteExpandedView.module.css';
 
 const views = {
   url: PagesTable,
+  entry: PagesTable,
+  exit: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
   host: HostsTable,

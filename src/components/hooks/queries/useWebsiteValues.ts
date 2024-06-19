@@ -1,4 +1,4 @@
-import { useApi } from 'components/hooks';
+import { useApi } from './useApi';
 
 export function useWebsiteValues({
   websiteId,

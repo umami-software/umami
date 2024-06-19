@@ -18,6 +18,10 @@ export function WebsitesDataTable({
 }) {
   const queryResult = useWebsites({ teamId });
 
+  if (queryResult?.result?.data?.length === 0) {
+    return children;
+  }
+
   return (
     <DataTable queryResult={queryResult}>
       {({ data }) => (
@@ -27,9 +31,7 @@ export function WebsitesDataTable({
           showActions={showActions}
           allowEdit={allowEdit}
           allowView={allowView}
-        >
-          {children}
-        </WebsitesTable>
+        />
       )}
     </DataTable>
   );

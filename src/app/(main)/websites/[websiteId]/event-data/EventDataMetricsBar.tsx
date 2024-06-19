@@ -7,7 +7,7 @@ import styles from './EventDataMetricsBar.module.css';
 export function EventDataMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { get, useQuery } = useApi();
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
   const { startDate, endDate } = dateRange;
 
   const { data, error, isLoading, isFetched } = useQuery({

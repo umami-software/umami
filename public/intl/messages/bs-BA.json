@@ -83,12 +83,6 @@
       "value": "Prosjek"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Prosječno vrijeme posjete"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1247,6 +1241,12 @@
     {
       "type": 0,
       "value": "Pregledi po posjeti"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Prosječno vrijeme posjete"
     }
   ],
   "label.visitors": [

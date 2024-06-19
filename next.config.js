@@ -3,18 +3,17 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
-const basePath = process.env.BASE_PATH || '';
-const forceSSL = process.env.FORCE_SSL || '';
-const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
-const defaultLocale = process.env.DEFAULT_LOCALE || '';
-const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
-const cloudMode = process.env.CLOUD_MODE || '';
-const cloudUrl = process.env.CLOUD_URL || '';
-const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
-const disableLogin = process.env.DISABLE_LOGIN || '';
-const disableUI = process.env.DISABLE_UI || '';
-const hostURL = process.env.HOST_URL || '';
-const privateMode = process.env.PRIVATE_MODE || '';
+const basePath = process.env.BASE_PATH;
+const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
+const cloudMode = process.env.CLOUD_MODE;
+const cloudUrl = process.env.CLOUD_URL;
+const defaultLocale = process.env.DEFAULT_LOCALE;
+const disableLogin = process.env.DISABLE_LOGIN;
+const disableUI = process.env.DISABLE_UI;
+const forceSSL = process.env.FORCE_SSL;
+const frameAncestors = process.env.ALLOWED_FRAME_URLS;
+const privateMode = process.env.PRIVATE_MODE;
+const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
 
 const contentSecurityPolicy = [
   `default-src 'self'`,
@@ -120,7 +119,6 @@ const config = {
     defaultLocale,
     disableLogin,
     disableUI,
-    hostURL,
     privateMode,
   },
   basePath,
@@ -168,6 +166,10 @@ const config = {
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
+      },
+      {
+        source: '/teams/:teamId/:path*',
+        destination: '/:path*',
       },
     ];
   },

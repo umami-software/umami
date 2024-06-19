@@ -88,3 +88,7 @@ function getKeyName(key: string, parentKey: string) {
 
   return `${parentKey}.${key}`;
 }
+
+export function objectToArray(obj: object) {
+  return Object.keys(obj).map(key => obj[key]);
+}

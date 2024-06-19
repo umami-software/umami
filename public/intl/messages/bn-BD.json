@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "এক্সেস কোড"
     }
   ],
   "label.actions": [
@@ -14,31 +14,31 @@
   "label.activity-log": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "একটিভিটি দেখুন"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "যুক্ত করুন"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "বর্ননা যোগ করুন"
     }
   ],
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "সদস্য যোগ করুন"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "পদ যোগ করুন"
     }
   ],
   "label.add-website": [
@@ -56,7 +56,7 @@
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "পরে"
     }
   ],
   "label.all": [
@@ -83,12 +83,6 @@
       "value": "Average"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "গড় পরিদর্শনের সময়"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -98,31 +92,31 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "পূর্বে"
     }
   ],
   "label.bounce-rate": [
     {
       "type": 0,
-      "value": "বহিষ্কারের হার"
+      "value": "উপরে উঠার হার"
     }
   ],
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "ভাঙ্গন"
     }
   ],
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "ব্রাউজার"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "ব্রাউজার"
+      "value": "ব্রাউজার সমূহ"
     }
   ],
   "label.cancel": [
@@ -140,25 +134,25 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "শহরসমূহ"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "শহর"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "সব মুছে ফেলুন"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "নিশ্চিত করুন"
     }
   ],
   "label.confirm-password": [
@@ -170,55 +164,55 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "রয়েছে"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "পরবর্তিতে"
     }
   ],
   "label.countries": [
     {
       "type": 0,
-      "value": "দেশ"
+      "value": "দেশসমূহ"
     }
   ],
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "দেশ"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "তৈরি করুন"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "রিপোর্ট তৈরি করুন"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "দল তৈরি করুন"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "ব্যবহারকারী তৈরি করুন"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "তৈরি করা হয়েছে"
     }
   ],
   "label.created-by": [
@@ -1247,6 +1241,12 @@
     {
       "type": 0,
       "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "গড় পরিদর্শনের সময়"
     }
   ],
   "label.visitors": [

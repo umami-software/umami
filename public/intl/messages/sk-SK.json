@@ -83,12 +83,6 @@
       "value": "Average"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Priemerný čas návštevy"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -1247,6 +1241,12 @@
     {
       "type": 0,
       "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Priemerný čas návštevy"
     }
   ],
   "label.visitors": [

@@ -66,8 +66,8 @@ async function clickhouseQuery(
     order by t
     `,
     params,
-  ).then(a => {
-    return Object.values(a).map(a => {
+  ).then(result => {
+    return Object.values(result).map((a: any) => {
       return { x: a.x, y: Number(a.y) };
     });
   });
