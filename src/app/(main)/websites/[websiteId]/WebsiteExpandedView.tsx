@@ -63,11 +63,6 @@ export default function WebsiteExpandedView({
       url: renderUrl({ view: 'referrer' }),
     },
     {
-      key: 'host',
-      label: formatMessage(labels.hosts),
-      url: renderUrl({ view: 'host' }),
-    },
-    {
       key: 'browser',
       label: formatMessage(labels.browsers),
       url: renderUrl({ view: 'browser' }),
@@ -116,6 +111,11 @@ export default function WebsiteExpandedView({
       key: 'query',
       label: formatMessage(labels.queryParameters),
       url: renderUrl({ view: 'query' }),
+    },
+    {
+      key: 'host',
+      label: formatMessage(labels.hosts),
+      url: renderUrl({ view: 'host' }),
     },
   ];
 
