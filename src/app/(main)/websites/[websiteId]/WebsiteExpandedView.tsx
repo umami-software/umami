@@ -9,6 +9,7 @@ import OSTable from 'components/metrics/OSTable';
 import PagesTable from 'components/metrics/PagesTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
+import HostsTable from 'components/metrics/HostsTable';
 import ScreenTable from 'components/metrics/ScreenTable';
 import EventsTable from 'components/metrics/EventsTable';
 import SideNav from 'components/layout/SideNav';
@@ -22,6 +23,7 @@ const views = {
   exit: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
+  host: HostsTable,
   browser: BrowsersTable,
   os: OSTable,
   device: DevicesTable,
@@ -59,6 +61,11 @@ export default function WebsiteExpandedView({
       key: 'referrer',
       label: formatMessage(labels.referrers),
       url: renderUrl({ view: 'referrer' }),
+    },
+    {
+      key: 'host',
+      label: formatMessage(labels.hosts),
+      url: renderUrl({ view: 'host' }),
     },
     {
       key: 'browser',

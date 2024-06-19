@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Grid, GridRow } from 'components/layout/Grid';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
+import HostsTable from 'components/metrics/HostsTable';
 import BrowsersTable from 'components/metrics/BrowsersTable';
 import OSTable from 'components/metrics/OSTable';
 import DevicesTable from 'components/metrics/DevicesTable';
@@ -19,9 +20,10 @@ export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
 
   return (
     <Grid>
-      <GridRow columns="two">
+      <GridRow columns="three">
         <PagesTable {...tableProps} />
         <ReferrersTable {...tableProps} />
+        <HostsTable {...tableProps} />
       </GridRow>
       <GridRow columns="three">
         <BrowsersTable {...tableProps} />

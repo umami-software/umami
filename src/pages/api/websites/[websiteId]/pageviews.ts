@@ -17,6 +17,7 @@ export interface WebsitePageviewRequestQuery {
   timezone?: string;
   url?: string;
   referrer?: string;
+  host?: string;
   title?: string;
   os?: string;
   browser?: string;
@@ -36,6 +37,7 @@ const schema = {
     timezone: TimezoneTest,
     url: yup.string(),
     referrer: yup.string(),
+    host: yup.string(),
     title: yup.string(),
     os: yup.string(),
     browser: yup.string(),

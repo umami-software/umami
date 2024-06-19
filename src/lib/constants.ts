@@ -31,8 +31,9 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
+
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
-export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event'];
+export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'host'];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -43,6 +44,7 @@ export const SESSION_COLUMNS = [
   'country',
   'region',
   'city',
+  'host',
 ];
 
 export const FILTER_COLUMNS = {
@@ -50,6 +52,7 @@ export const FILTER_COLUMNS = {
   entry: 'url_path',
   exit: 'url_path',
   referrer: 'referrer_domain',
+  host: 'hostname',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
