@@ -1,12 +1,15 @@
-import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
+import useApi from './useApi';
+import { useFilterParams } from '../useFilterParams';
 
 export function useWebsiteMetrics(
   websiteId: string,
-  params?: { [key: string]: any },
+  type: string,
+  limit: number,
   options?: Omit<UseQueryOptions & { onDataLoad?: (data: any) => void }, 'queryKey' | 'queryFn'>,
 ) {
   const { get, useQuery } = useApi();
+  const params = useFilterParams(websiteId);
 
   return useQuery({
     queryKey: [
@@ -14,21 +17,26 @@ export function useWebsiteMetrics(
       {
         websiteId,
         ...params,
+        type,
+        limit,
       },
     ],
     queryFn: async () => {
       const filters = { ...params };
 
-      filters[params.type] = undefined;
+      filters[type] = undefined;
 
       const data = await get(`/websites/${websiteId}/metrics`, {
         ...filters,
+        type,
+        limit,
       });
 
       options?.onDataLoad?.(data);
 
       return data;
     },
+    enabled: !!websiteId,
     ...options,
   });
 }

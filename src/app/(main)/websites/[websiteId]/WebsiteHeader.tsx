@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import Favicon from 'components/common/Favicon';
-import { useMessages, useWebsite } from 'components/hooks';
+import { useMessages, useTeamUrl, useWebsite } from 'components/hooks';
 import Icons from 'components/icons';
 import ActiveUsers from 'components/metrics/ActiveUsers';
 import Link from 'next/link';
@@ -19,6 +19,7 @@ export function WebsiteHeader({
   children?: ReactNode;
 }) {
   const { formatMessage, labels } = useMessages();
+  const { renderTeamUrl } = useTeamUrl();
   const pathname = usePathname();
   const { data: website } = useWebsite(websiteId);
   const { name, domain } = website || {};
@@ -62,7 +63,11 @@ export function WebsiteHeader({
                 : pathname.match(/^\/websites\/[\w-]+$/);
 
               return (
-                <Link key={label} href={`/websites/${websiteId}${path}`} shallow={true}>
+                <Link
+                  key={label}
+                  href={renderTeamUrl(`/websites/${websiteId}${path}`)}
+                  shallow={true}
+                >
                   <Button
                     variant="quiet"
                     className={classNames({

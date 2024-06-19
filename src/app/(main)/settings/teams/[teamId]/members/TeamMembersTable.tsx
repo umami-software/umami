@@ -19,6 +19,7 @@ export function TeamMembersTable({
 
   const roles = {
     [ROLES.teamOwner]: formatMessage(labels.teamOwner),
+    [ROLES.teamManager]: formatMessage(labels.teamManager),
     [ROLES.teamMember]: formatMessage(labels.teamMember),
     [ROLES.teamViewOnly]: formatMessage(labels.viewOnly),
   };

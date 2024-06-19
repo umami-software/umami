@@ -11,7 +11,7 @@ A detailed getting started guide can be found at [https://umami.is/docs/](https:
 ### Requirements
 
 - A server with Node.js version 16.13 or newer
-- A database. Umami supports [MySQL](https://www.mysql.com/) and [Postgresql](https://www.postgresql.org/) databases.
+- A database. Umami supports [MySQL](https://www.mysql.com/) (minimum v8.0) and [Postgresql](https://www.postgresql.org/) (minimum v12.14) databases.
 
 ### Install Yarn
 
@@ -72,13 +72,13 @@ docker compose up -d
 Alternatively, to pull just the Umami Docker image with PostgreSQL support:
 
 ```bash
-docker pull ghcr.io/umami-software/umami:postgresql-latest
+docker pull docker.umami.is/umami-software/umami:postgresql-latest
 ```
 
 Or with MySQL support:
 
 ```bash
-docker pull ghcr.io/umami-software/umami:mysql-latest
+docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
 ## Getting updates
@@ -101,3 +101,4 @@ docker compose up --force-recreate
 ## License
 
 MIT
+
