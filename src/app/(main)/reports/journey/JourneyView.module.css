@@ -80,7 +80,7 @@
   padding-bottom: 10px;
 }
 
-.item {
+.node {
   position: relative;
   cursor: pointer;
   padding: 10px 20px;
@@ -89,37 +89,35 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 300px;
+  width: 300px;
   max-width: 300px;
-  min-height: 60px;
+  height: 60px;
+  max-height: 60px;
 }
 
-.item:hover:not(.selected) {
+.node:hover:not(.selected) {
   color: var(--base900);
   background: var(--base100);
 }
 
-.item.selected {
+.node.selected {
   color: var(--base75);
   background: var(--base900);
   font-weight: 400;
 }
 
-.item.active {
+.node.active {
   color: var(--light50);
   background: var(--primary400);
 }
 
-.behind {
-  color: var(--base400);
+.node.selected .count {
+  color: var(--base50);
+  background: var(--base800);
 }
 
-.ahead {
-  color: var(--base400);
-}
-
-.current {
-  color: var(--base500);
+.node.selected.active .count {
+  background: var(--primary600);
 }
 
 .name {
@@ -132,20 +130,12 @@
   background: var(--base200);
 }
 
-.item.selected .count {
-  color: var(--base50);
-  background: var(--base800);
-}
-
-.item.selected.active .count {
-  background: var(--primary600);
-}
-
 .line {
   position: absolute;
   bottom: 0;
   left: -100px;
   width: 100px;
+  pointer-events: none;
 }
 
 .line.up {
@@ -230,8 +220,8 @@
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
   background: var(--light50);
-  width: 13px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
 }
 
 .line:not(.active) .start:before,

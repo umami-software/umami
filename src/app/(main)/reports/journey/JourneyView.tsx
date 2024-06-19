@@ -5,8 +5,8 @@ import classNames from 'classnames';
 import { useEscapeKey, useMessages } from 'components/hooks';
 import { objectToArray } from 'lib/data';
 import { ReportContext } from '../[reportId]/Report';
-// eslint-disable-next-line css-modules/no-unused-class
 import styles from './JourneyView.module.css';
+import { formatLongNumber } from 'lib/format';
 
 const NODE_HEIGHT = 60;
 const NODE_GAP = 10;
@@ -37,27 +37,11 @@ export default function JourneyView() {
         const name = items[columnIndex];
 
         if (name) {
-          const selected = !!selectedPaths.find(path => path.items[columnIndex] === name);
-          const active = selected && !!activePaths.find(path => path.items[columnIndex] === name);
+          const selected = !!selectedPaths.find(({ items }) => items[columnIndex] === name);
+          const active = selected && !!activePaths.find(({ items }) => items[columnIndex] === name);
 
           if (!nodes[name]) {
-            const paths = data.filter(d => d.items[columnIndex] === name);
-
-            const from =
-              columnIndex > 0 &&
-              selected &&
-              paths.reduce((obj, path) => {
-                const { items, count } = path;
-                const name = items[columnIndex - 1];
-
-                if (!obj[name]) {
-                  obj[name] = { name, count };
-                } else {
-                  obj[name].count += count;
-                }
-
-                return obj;
-              }, {});
+            const paths = data.filter(({ items }) => items[columnIndex] === name);
 
             nodes[name] = {
               name,
@@ -68,7 +52,9 @@ export default function JourneyView() {
               selected,
               active,
               paths,
-              from: objectToArray(from),
+              pathMap: paths.map(({ items, count }) => ({
+                [`${columnIndex}:${items.join(':')}`]: count,
+              })),
             };
           } else {
             nodes[name].totalCount += count;
@@ -82,43 +68,45 @@ export default function JourneyView() {
     }
 
     columns.forEach((column, columnIndex) => {
-      const nodes = column.nodes.map((node, nodeIndex) => {
-        const { from, totalCount } = node;
+      const nodes = column.nodes.map((currentNode, currentNodeIndex) => {
         const previousNodes = columns[columnIndex - 1]?.nodes;
-        let selectedCount = from?.length ? 0 : totalCount;
+        let selectedCount = previousNodes ? 0 : currentNode.totalCount;
         let activeCount = selectedCount;
 
-        const lines = from?.reduce((arr: any[][], { name, count }: any) => {
-          const fromIndex = previousNodes.findIndex((node: { name: any; selected: any }) => {
-            return node.name === name && node.selected;
-          });
+        const lines =
+          previousNodes?.reduce((arr: any[][], previousNode: any, previousNodeIndex: number) => {
+            const fromCount = selectedNode?.paths.reduce((sum, path) => {
+              if (
+                previousNode.name === path.items[columnIndex - 1] &&
+                currentNode.name === path.items[columnIndex]
+              ) {
+                sum += path.count;
+              }
+              return sum;
+            }, 0);
 
-          if (fromIndex > -1) {
-            arr.push([fromIndex, nodeIndex]);
-            selectedCount += count;
-          }
+            if (currentNode.selected && previousNode.selected && fromCount) {
+              arr.push([previousNodeIndex, currentNodeIndex]);
+              selectedCount += fromCount;
 
-          if (
-            previousNodes.findIndex(node => {
-              return node.name === name && node.active;
-            }) > -1
-          ) {
-            activeCount += count;
-          }
+              if (previousNode.active) {
+                activeCount += fromCount;
+              }
+            }
 
-          return arr;
-        }, []);
+            return arr;
+          }, []) || [];
 
-        return { ...node, selectedCount, activeCount, lines };
+        return { ...currentNode, selectedCount, activeCount, lines };
       });
 
       const visitorCount = nodes.reduce(
         (sum: number, { selected, selectedCount, active, activeCount, totalCount }) => {
           if (!selectedNode) {
             sum += totalCount;
-          } else if (!activeNode && selected) {
+          } else if (!activeNode && selectedNode && selected) {
             sum += selectedCount;
-          } else if (active) {
+          } else if (activeNode && active) {
             sum += activeCount;
           }
           return sum;
@@ -136,9 +124,9 @@ export default function JourneyView() {
     return columns;
   }, [data, selectedNode, activeNode]);
 
-  const handleClick = (name: string, index: number, paths: any[]) => {
-    if (name !== selectedNode?.name || index !== selectedNode?.index) {
-      setSelectedNode({ name, index, paths });
+  const handleClick = (name: string, columnIndex: number, paths: any[]) => {
+    if (name !== selectedNode?.name || columnIndex !== selectedNode?.columnIndex) {
+      setSelectedNode({ name, columnIndex, paths });
     } else {
       setSelectedNode(null);
     }
@@ -165,8 +153,8 @@ export default function JourneyView() {
               <div className={styles.header}>
                 <div className={styles.num}>{columnIndex + 1}</div>
                 <div className={styles.stats}>
-                  <div className={styles.visitors}>
-                    {column.visitorCount} {formatMessage(labels.visitors)}
+                  <div className={styles.visitors} title={column.visitorCount}>
+                    {formatLongNumber(column.visitorCount)} {formatMessage(labels.visitors)}
                   </div>
                   {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
                 </div>
@@ -183,6 +171,12 @@ export default function JourneyView() {
                     selectedCount,
                     lines,
                   }) => {
+                    const nodeCount = selected
+                      ? active
+                        ? activeCount
+                        : selectedCount
+                      : totalCount;
+
                     return (
                       <div
                         key={name}
@@ -191,7 +185,7 @@ export default function JourneyView() {
                         onMouseLeave={() => selected && setActiveNode(null)}
                       >
                         <div
-                          className={classNames(styles.item, {
+                          className={classNames(styles.node, {
                             [styles.selected]: selected,
                             [styles.active]: active,
                           })}
@@ -199,8 +193,8 @@ export default function JourneyView() {
                         >
                           <div className={styles.name}>{name}</div>
                           <TooltipPopup label={dropOffPercent} disabled={!selected}>
-                            <div className={styles.count}>
-                              {selected ? (active ? activeCount : selectedCount) : totalCount}
+                            <div className={styles.count} title={nodeCount}>
+                              {formatLongNumber(nodeCount)}
                             </div>
                           </TooltipPopup>
                           {columnIndex < columns.length &&

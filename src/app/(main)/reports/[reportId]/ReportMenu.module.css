@@ -1,6 +1,7 @@
 .menu {
   position: relative;
   width: 300px;
+  padding-top: 20px;
   padding-inline-end: 20px;
   border-inline-end: 1px solid var(--base300);
   grid-row: 2 / 3;
@@ -9,6 +10,7 @@
 
 .button {
   position: absolute;
+  top: 0;
   right: 0;
   display: flex;
   place-content: center;
