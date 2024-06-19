@@ -1,6 +1,6 @@
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { getRequestFilters, getRequestDateRange } from 'lib/request';
+import { getRequestDateRange, getRequestFilters } from 'lib/request';
 import { NextApiRequestQueryBody, WebsiteMetric } from 'lib/types';
 import { TimezoneTest, UnitTypeTest } from 'lib/yup';
 import { NextApiResponse } from 'next';
@@ -17,6 +17,7 @@ export interface WebsiteEventsRequestQuery {
   url: string;
   referrer?: string;
   title?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -35,6 +36,7 @@ const schema = {
     url: yup.string(),
     referrer: yup.string(),
     title: yup.string(),
+    host: yup.string(),
     os: yup.string(),
     browser: yup.string(),
     device: yup.string(),

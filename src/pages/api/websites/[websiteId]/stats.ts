@@ -14,10 +14,10 @@ export interface WebsiteStatsRequestQuery {
   endAt: number;
   url?: string;
   referrer?: string;
-  host?: string;
   title?: string;
   query?: string;
   event?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -34,10 +34,10 @@ const schema = {
     endAt: yup.number().required(),
     url: yup.string(),
     referrer: yup.string(),
-    host: yup.string(),
     title: yup.string(),
     query: yup.string(),
     event: yup.string(),
+    host: yup.string(),
     os: yup.string(),
     browser: yup.string(),
     device: yup.string(),
