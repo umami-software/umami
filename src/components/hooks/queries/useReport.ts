@@ -6,7 +6,7 @@ import { useMessages } from '../useMessages';
 
 export function useReport(
   reportId: string,
-  defaultParameters: { type: string; parameters: { [key: string]: any } },
+  defaultParameters?: { type: string; parameters: { [key: string]: any } },
 ) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);

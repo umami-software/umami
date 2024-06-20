@@ -122,6 +122,7 @@ export const REPORT_TYPES = {
   retention: 'retention',
   utm: 'utm',
   journey: 'journey',
+  revenue: 'revenue',
 } as const;
 
 export const REPORT_PARAMETERS = {
