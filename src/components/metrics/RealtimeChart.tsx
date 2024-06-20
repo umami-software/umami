@@ -18,12 +18,12 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
 
   const chartData = useMemo(() => {
     if (!data) {
-      return { views: [], visitors: [] };
+      return { pageviews: [], sessions: [] };
     }
 
     return {
-      views: getDateArray(data.series.views, startDate, endDate, unit),
-      visitors: getDateArray(data.series.visitors, startDate, endDate, unit),
+      pageviews: getDateArray(data.series.views, startDate, endDate, unit),
+      sessions: getDateArray(data.series.visitors, startDate, endDate, unit),
     };
   }, [data, startDate, endDate, unit]);
 
