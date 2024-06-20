@@ -1,7 +1,7 @@
 import { startOfMinute, subMinutes } from 'date-fns';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, RealtimeInit } from 'lib/types';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRealtimeData } from 'queries';
@@ -20,10 +20,7 @@ const schema = {
   }),
 };
 
-export default async (
-  req: NextApiRequestQueryBody<RealtimeRequestQuery>,
-  res: NextApiResponse<RealtimeInit>,
-) => {
+export default async (req: NextApiRequestQueryBody<RealtimeRequestQuery>, res: NextApiResponse) => {
   await useAuth(req, res);
   await useValidate(schema, req, res);
 

@@ -149,19 +149,6 @@ export interface WebsiteStats {
   totalTime: { value: number; change: number };
 }
 
-export interface RealtimeInit {
-  websites: Website[];
-  token: string;
-  data: RealtimeUpdate;
-}
-
-export interface RealtimeUpdate {
-  pageviews: any[];
-  sessions: any[];
-  events: any[];
-  timestamp: number;
-}
-
 export interface DateRange {
   value: string;
   startDate: Date;
