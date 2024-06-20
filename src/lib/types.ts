@@ -181,6 +181,7 @@ export interface QueryFilters {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;

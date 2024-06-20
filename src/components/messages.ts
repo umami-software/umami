@@ -114,6 +114,8 @@ export const labels = defineMessages({
   none: { id: 'label.none', defaultMessage: 'None' },
   clearAll: { id: 'label.clear-all', defaultMessage: 'Clear all' },
   property: { id: 'label.property', defaultMessage: 'Property' },
+  revenueProperty: { id: 'label.revenue-property', defaultMessage: 'Revenue Property' },
+  userProperty: { id: 'label.user-property', defaultMessage: 'User Property' },
   today: { id: 'label.today', defaultMessage: 'Today' },
   lastHours: { id: 'label.last-hours', defaultMessage: 'Last {x} hours' },
   yesterday: { id: 'label.yesterday', defaultMessage: 'Yesterday' },
@@ -154,6 +156,11 @@ export const labels = defineMessages({
   funnelDescription: {
     id: 'label.funnel-description',
     defaultMessage: 'Understand the conversion and drop-off rate of users.',
+  },
+  revenue: { id: 'label.revenue', defaultMessage: 'Revenue' },
+  revenueDescription: {
+    id: 'label.revenue-description',
+    defaultMessage: 'Look into your revenue across time.',
   },
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
@@ -222,6 +229,8 @@ export const labels = defineMessages({
   select: { id: 'label.select', defaultMessage: 'Select' },
   myAccount: { id: 'label.my-account', defaultMessage: 'My account' },
   transfer: { id: 'label.transfer', defaultMessage: 'Transfer' },
+  transactions: { id: 'label.transactions', defaultMessage: 'Transactions' },
+  uniqueCustomers: { id: 'label.uniqueCustomers', defaultMessage: 'Unique Customers' },
   viewedPage: {
     id: 'message.viewed-page',
     defaultMessage: 'Viewed page',
