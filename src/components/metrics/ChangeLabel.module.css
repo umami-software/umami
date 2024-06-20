@@ -1,0 +1,26 @@
+.label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 0.1em 0.5em;
+  border-radius: 5px;
+  color: var(--base500);
+  align-self: flex-start;
+}
+
+.positive {
+  color: var(--green700);
+  background: var(--green100);
+}
+
+.negative {
+  color: var(--red700);
+  background: var(--red100);
+}
+
+.neutral {
+  color: var(--base700);
+  background: var(--base100);
+}

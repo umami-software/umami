@@ -26,7 +26,7 @@ export function BarChart(props: BarChartProps) {
     stacked = false,
   } = props;
 
-  const options = useMemo(() => {
+  const options: any = useMemo(() => {
     return {
       scales: {
         x: {

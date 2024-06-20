@@ -1,0 +1,274 @@
+.container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+
+  --journey-line-color: var(--base600);
+  --journey-active-color: var(--primary400);
+  --journey-faded-color: var(--base300);
+}
+
+.view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  overflow: auto;
+  gap: 100px;
+  padding-right: 20px;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  height: 40px;
+}
+
+.visitors {
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: lowercase;
+}
+
+.dropoff {
+  font-weight: 600;
+  color: var(--blue800);
+  background: var(--blue100);
+  padding: 4px 8px;
+  border-radius: 5px;
+}
+
+.num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--base100);
+  background: var(--base800);
+  z-index: 1;
+  margin: 0 auto 20px;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.nodes {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.wrapper {
+  padding-bottom: 10px;
+}
+
+.node {
+  position: relative;
+  cursor: pointer;
+  padding: 10px 20px;
+  background: var(--base75);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 300px;
+  max-width: 300px;
+  height: 60px;
+  max-height: 60px;
+}
+
+.node:hover:not(.selected) {
+  color: var(--base900);
+  background: var(--base100);
+}
+
+.node.selected {
+  color: var(--base75);
+  background: var(--base900);
+  font-weight: 400;
+}
+
+.node.active {
+  color: var(--light50);
+  background: var(--primary400);
+}
+
+.node.selected .count {
+  color: var(--base50);
+  background: var(--base800);
+}
+
+.node.selected.active .count {
+  background: var(--primary600);
+}
+
+.name {
+  font-weight: 500;
+}
+
+.count {
+  border-radius: 4px;
+  padding: 5px 10px;
+  background: var(--base200);
+}
+
+.line {
+  position: absolute;
+  bottom: 0;
+  left: -100px;
+  width: 100px;
+  pointer-events: none;
+}
+
+.line.up {
+  bottom: 0;
+}
+
+.line.down {
+  top: 0;
+}
+
+.segment {
+  position: absolute;
+}
+
+.start {
+  left: 0;
+  width: 50px;
+  height: 30px;
+  border: 0;
+}
+
+.mid {
+  top: 60px;
+  width: 50px;
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.end {
+  width: 50px;
+  height: 30px;
+  border: 0;
+}
+
+.up .start {
+  top: 30px;
+  border-top-right-radius: 100%;
+  border-top: 3px solid var(--journey-line-color);
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.up .end {
+  width: 52px;
+  bottom: 27px;
+  right: 0;
+  border-bottom-left-radius: 100%;
+  border-bottom: 3px solid var(--journey-line-color);
+  border-left: 3px solid var(--journey-line-color);
+}
+
+.down .start {
+  bottom: 27px;
+  border-bottom-right-radius: 100%;
+  border-bottom: 3px solid var(--journey-line-color);
+  border-right: 3px solid var(--journey-line-color);
+}
+
+.down .end {
+  width: 52px;
+  top: 30px;
+  right: 0;
+  border-top-left-radius: 100%;
+  border-top: 3px solid var(--journey-line-color);
+  border-left: 3px solid var(--journey-line-color);
+}
+
+.flat .start {
+  left: 0;
+  top: 30px;
+  border-top: 3px solid var(--journey-line-color);
+}
+
+.flat .end {
+  right: 0;
+  top: 30px;
+  border-top: 3px solid var(--journey-line-color);
+}
+
+.start:before,
+.end:before {
+  content: '';
+  position: absolute;
+  border-radius: 100%;
+  border: 3px solid var(--journey-line-color);
+  background: var(--light50);
+  width: 14px;
+  height: 14px;
+}
+
+.line:not(.active) .start:before,
+.line:not(.active) .end:before {
+  display: none;
+}
+
+.up .start:before {
+  left: -8px;
+  top: -8px;
+}
+
+.up .end:before {
+  right: -8px;
+  bottom: -8px;
+}
+
+.down .start:before {
+  left: -8px;
+  bottom: -8px;
+}
+
+.down .end:before {
+  right: -8px;
+  top: -8px;
+}
+
+.flat .start:before {
+  left: -8px;
+  top: -8px;
+}
+
+.flat .end:before {
+  right: -8px;
+  top: -8px;
+}
+
+.line.active .segment,
+.line.active .segment:before {
+  border-color: var(--journey-active-color);
+  z-index: 1;
+}
+
+.column.active .line:not(.active) .segment {
+  border-color: var(--journey-faded-color);
+}
+
+.column.active .line:not(.active) .segment:before {
+  display: none;
+}

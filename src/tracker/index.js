@@ -193,17 +193,21 @@
   /* Tracking functions */
 
   const trackingDisabled = () =>
+    !website ||
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (domain && !domains.includes(hostname));
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
+
     const headers = {
       'Content-Type': 'application/json',
     };
+
     if (typeof cache !== 'undefined') {
       headers['x-umami-cache'] = cache;
     }
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',

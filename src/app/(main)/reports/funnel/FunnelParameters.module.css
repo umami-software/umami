@@ -5,10 +5,6 @@
   width: 100%;
 }
 
-.type {
-  color: var(--base700);
-}
-
 .value {
   display: flex;
   align-self: center;

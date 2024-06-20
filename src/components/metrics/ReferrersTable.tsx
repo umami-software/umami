@@ -1,23 +1,21 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import Favicon from 'components/common/Favicon';
 import { useMessages } from 'components/hooks';
-import { Flexbox } from 'react-basics';
+import MetricsTable, { MetricsTableProps } from './MetricsTable';
 
 export function ReferrersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
   const renderLink = ({ x: referrer }) => {
     return (
-      <Flexbox alignItems="center">
+      <FilterLink
+        id="referrer"
+        value={referrer}
+        externalUrl={`https://${referrer}`}
+        label={!referrer && formatMessage(labels.none)}
+      >
         <Favicon domain={referrer} />
-        <FilterLink
-          id="referrer"
-          value={referrer}
-          externalUrl={`https://${referrer}`}
-          label={!referrer && formatMessage(labels.none)}
-        />
-      </Flexbox>
+      </FilterLink>
     );
   };
 

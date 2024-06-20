@@ -11,7 +11,9 @@ export function DevicesTable(props: MetricsTableProps) {
     return (
       <FilterLink id="device" value={labels[device] && device} label={formatDevice(device)}>
         <img
-          src={`${process.env.basePath}/images/device/${device?.toLowerCase() || 'unknown'}.png`}
+          src={`${process.env.basePath || ''}/images/device/${
+            device?.toLowerCase() || 'unknown'
+          }.png`}
           alt={device}
           width={16}
           height={16}

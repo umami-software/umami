@@ -87,7 +87,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   if (req.method === 'POST') {
     if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
-      return ok(res);
+      return ok(res, { beep: 'boop' });
     }
 
     await useValidate(schema, req, res);
@@ -144,7 +144,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventData: data,
         ...session,
         sessionId: session.id,
-        visitId: session.visitId,
       });
     }
 

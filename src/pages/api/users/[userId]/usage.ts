@@ -2,11 +2,11 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getAllWebsites, getEventDataUsage, getEventUsage } from 'queries';
+import { getAllUserWebsitesIncludingTeamOwner, getEventDataUsage, getEventUsage } from 'queries';
 import * as yup from 'yup';
 
 export interface UserUsageRequestQuery {
-  id: string;
+  userId: string;
   startAt: string;
   endAt: string;
 }
@@ -24,7 +24,7 @@ export interface UserUsageRequestResponse {
 
 const schema = {
   GET: yup.object().shape({
-    id: yup.string().uuid().required(),
+    userId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().min(yup.ref<number>('startAt')).required(),
   }),
@@ -45,12 +45,12 @@ export default async (
       return unauthorized(res);
     }
 
-    const { id: userId, startAt, endAt } = req.query;
+    const { userId, startAt, endAt } = req.query;
 
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const websites = await getAllWebsites(userId);
+    const websites = await getAllUserWebsitesIncludingTeamOwner(userId);
 
     const websiteIds = websites.map(a => a.id);
 
@@ -62,6 +62,7 @@ export default async (
       websiteName: a.name,
       websiteEventUsage: websiteEventUsage.find(b => a.id === b.websiteId)?.count || 0,
       eventDataUsage: eventDataUsage.find(b => a.id === b.websiteId)?.count || 0,
+      deletedAt: a.deletedAt,
     }));
 
     const usage = websiteUsage.reduce(
@@ -74,9 +75,13 @@ export default async (
       { websiteEventUsage: 0, eventDataUsage: 0 },
     );
 
+    const filteredWebsiteUsage = websiteUsage.filter(
+      a => !a.deletedAt && (a.websiteEventUsage > 0 || a.eventDataUsage > 0),
+    );
+
     return ok(res, {
       ...usage,
-      websites: websiteUsage,
+      websites: filteredWebsiteUsage,
     });
   }
 

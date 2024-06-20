@@ -181,6 +181,7 @@ export interface QueryFilters {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -199,12 +200,23 @@ export interface QueryOptions {
 }
 
 export interface RealtimeData {
-  pageviews: any[];
-  sessions: any[];
+  countries: { [key: string]: number };
   events: any[];
+  pageviews: any[];
+  referrers: { [key: string]: number };
   timestamp: number;
-  countries?: any[];
-  visitors?: any[];
+  series: {
+    views: any[];
+    visitors: any[];
+  };
+  totals: {
+    views: number;
+    visitors: number;
+    events: number;
+    countries: number;
+  };
+  urls: { [key: string]: number };
+  visitors: any[];
 }
 
 export interface SessionData {
