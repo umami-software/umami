@@ -101,7 +101,7 @@
   "label.last-hours": "Останні {x} годин",
   "label.last-months": "Останні {x} місяців",
   "label.leave": "Покинути",
-<<"label.leave-team": "Покинути команду",
+  "label.leave-team": "Покинути команду",
   "label.less-than": "Менше ніж",
   "label.less-than-equals": "Менше або дорівнює",
   "label.login": "Увійти",
