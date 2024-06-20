@@ -13,17 +13,26 @@ export function getEvents(...args: [websiteId: string, filters: QueryFilters]) {
 function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { startDate } = filters;
 
-  return prisma.client.websiteEvent.findMany({
-    where: {
-      websiteId,
-      createdAt: {
-        gte: startDate,
+  return prisma.client.websiteEvent
+    .findMany({
+      where: {
+        websiteId,
+        createdAt: {
+          gte: startDate,
+        },
       },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    .then(a => {
+      return Object.values(a).map(a => {
+        return {
+          ...a,
+          timestamp: new Date(a.createdAt).getTime() / 1000,
+        };
+      });
+    });
 }
 
 function clickhouseQuery(websiteId: string, filters: QueryFilters) {
