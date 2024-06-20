@@ -72,9 +72,11 @@
 }
 
 .value {
-  width: 50px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-align: end;
-  margin-inline-end: 10px;
+  margin-inline-end: 5px;
   font-weight: 600;
 }
 

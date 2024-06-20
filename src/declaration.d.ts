@@ -1,4 +1,5 @@
 declare module 'cors';
+declare module 'dateformat';
 declare module 'debug';
 declare module 'chartjs-adapter-date-fns';
 declare module 'md5';

@@ -12,6 +12,7 @@ export * from './analytics/eventData/getEventDataStats';
 export * from './analytics/eventData/getEventDataUsage';
 export * from './analytics/events/saveEvent';
 export * from './analytics/reports/getFunnel';
+export * from './analytics/reports/getJourney';
 export * from './analytics/reports/getRetention';
 export * from './analytics/reports/getInsights';
 export * from './analytics/reports/getUTM';

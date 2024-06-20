@@ -85,8 +85,8 @@ async function clickhouseQuery(
       limit 500
       `,
       params,
-    ).then(a => {
-      return Object.values(a).map(a => {
+    ).then(result => {
+      return Object.values(result).map((a: any) => {
         return {
           eventName: a.eventName,
           fieldName: a.fieldName,
@@ -113,8 +113,8 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  ).then(a => {
-    return Object.values(a).map(a => {
+  ).then(result => {
+    return Object.values(result).map((a: any) => {
       return {
         eventName: a.eventName,
         fieldName: a.fieldName,

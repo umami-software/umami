@@ -12,7 +12,7 @@ export function RefreshButton({
   isLoading?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
 
   function handleClick() {
     if (!isLoading && dateRange) {

@@ -8,6 +8,10 @@
   border-top: 1px solid var(--base300);
 }
 
+.row.compare {
+  grid-template-columns: max-content 1fr 1fr;
+}
+
 .col {
   padding: 20px;
   min-height: 430px;

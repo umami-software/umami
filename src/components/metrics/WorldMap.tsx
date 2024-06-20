@@ -54,7 +54,7 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
     >
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
-          <Geographies geography={`${process.env.basePath}${MAP_FILE}`}>
+          <Geographies geography={`${process.env.basePath || ''}${MAP_FILE}`}>
             {({ geographies }) => {
               return geographies.map(geo => {
                 const code = ISO_COUNTRIES[geo.id];

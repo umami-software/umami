@@ -34,6 +34,7 @@ export default function UTMView() {
             {
               data: items.map(({ value }) => value),
               backgroundColor: CHART_COLORS,
+              borderWidth: 0,
             },
           ],
         };

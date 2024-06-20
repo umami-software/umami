@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
 import PopupForm from 'app/(main)/reports/[reportId]/PopupForm';
 import FilterSelectForm from 'app/(main)/reports/[reportId]/FilterSelectForm';
@@ -9,14 +8,22 @@ import styles from './WebsiteFilterButton.module.css';
 export function WebsiteFilterButton({
   websiteId,
   className,
+  position = 'bottom',
+  alignment = 'end',
+  showText = true,
 }: {
   websiteId: string;
   className?: string;
+  position?: 'bottom' | 'top' | 'left' | 'right';
+  alignment?: 'end' | 'center' | 'start';
+  showText?: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
   const { renderUrl, router } = useNavigation();
   const { fields } = useFields();
-  const [{ startDate, endDate }] = useDateRange(websiteId);
+  const {
+    dateRange: { startDate, endDate },
+  } = useDateRange(websiteId);
 
   const handleAddFilter = ({ name, operator, value }) => {
     const prefix = OPERATOR_PREFIXES[operator];
@@ -25,14 +32,14 @@ export function WebsiteFilterButton({
   };
 
   return (
-    <PopupTrigger>
-      <Button className={classNames(className, styles.button)} variant="quiet">
+    <PopupTrigger className={className}>
+      <Button className={styles.button} variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>
-        <Text>{formatMessage(labels.filter)}</Text>
+        {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popup position="bottom" alignment="end">
+      <Popup position={position} alignment={alignment}>
         {(close: () => void) => {
           return (
             <PopupForm>

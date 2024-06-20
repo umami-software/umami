@@ -13,7 +13,7 @@ export function RealtimeCountries({ data }) {
     ({ x: code }) => (
       <span className={classNames(locale, styles.row)}>
         <img
-          src={`${process.env.basePath}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
+          src={`${process.env.basePath || ''}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
           alt={code}
         />
         {countryNames[code]}

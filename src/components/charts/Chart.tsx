@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
 import { Loading } from 'react-basics';
 import classNames from 'classnames';
-import ChartJS, { LegendItem } from 'chart.js/auto';
+import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import HoverTooltip from 'components/common/HoverTooltip';
 import Legend from 'components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
@@ -17,7 +17,7 @@ export interface ChartProps {
   onUpdate?: (chart: any) => void;
   onTooltip?: (model: any) => void;
   className?: string;
-  chartOptions?: { [key: string]: any };
+  chartOptions?: ChartOptions;
   tooltip?: ReactNode;
 }
 
@@ -79,24 +79,28 @@ export function Chart({
   };
 
   const updateChart = (data: any) => {
-    chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
-      if (data?.datasets[index]) {
-        dataset.data = data?.datasets[index]?.data;
+    if (data.datasets.length === chart.current.data.datasets.length) {
+      chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
+        if (data?.datasets[index]) {
+          dataset.data = data?.datasets[index]?.data;
 
-        if (chart.current.legend.legendItems[index]) {
-          chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+          if (chart.current.legend.legendItems[index]) {
+            chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+          }
         }
-      }
-    });
+      });
+    } else {
+      chart.current.data.datasets = data.datasets;
+    }
 
     chart.current.options = options;
 
     // Allow config changes before update
     onUpdate?.(chart.current);
 
-    setLegendItems(chart.current.legend.legendItems);
-
     chart.current.update(updateMode);
+
+    setLegendItems(chart.current.legend.legendItems);
   };
 
   useEffect(() => {

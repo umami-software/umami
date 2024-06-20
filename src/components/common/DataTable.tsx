@@ -4,8 +4,8 @@ import { Banner, Loading, SearchField } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
-import styles from './DataTable.module.css';
 import { FilterQueryResult } from 'lib/types';
+import styles from './DataTable.module.css';
 
 const DEFAULT_SEARCH_DELAY = 600;
 

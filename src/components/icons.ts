@@ -6,6 +6,7 @@ import Bolt from 'assets/bolt.svg';
 import Calendar from 'assets/calendar.svg';
 import Change from 'assets/change.svg';
 import Clock from 'assets/clock.svg';
+import Compare from 'assets/compare.svg';
 import Dashboard from 'assets/dashboard.svg';
 import Eye from 'assets/eye.svg';
 import Gear from 'assets/gear.svg';
@@ -32,6 +33,7 @@ const icons = {
   Calendar,
   Change,
   Clock,
+  Compare,
   Dashboard,
   Eye,
   Gear,
