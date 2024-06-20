@@ -312,7 +312,7 @@ async function clickhouseQuery(
   const where = getWhere(urls, events, eventData);
 
   const urlResults = hasUrl
-    ? await rawQuery<any>(
+    ? await rawQuery(
         `
   select
     ${columns.url}
@@ -332,7 +332,7 @@ async function clickhouseQuery(
     : [];
 
   const eventResults = hasEvent
-    ? await rawQuery<any>(
+    ? await rawQuery(
         `
   select
     ${columns.events}
@@ -352,7 +352,7 @@ async function clickhouseQuery(
     : [];
 
   const eventDataResults = hasEventData
-    ? await rawQuery<any>(
+    ? await rawQuery(
         `
   select
     ${columns.eventData}

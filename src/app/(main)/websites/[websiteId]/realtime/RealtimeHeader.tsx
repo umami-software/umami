@@ -5,7 +5,7 @@ import styles from './RealtimeHeader.module.css';
 
 export function RealtimeHeader({ data }: { data: RealtimeData }) {
   const { formatMessage, labels } = useMessages();
-  const { pageviews, visitors, events, countries } = data || {};
+  const { totals }: any = data || {};
 
   return (
     <div className={styles.header}>
@@ -13,22 +13,22 @@ export function RealtimeHeader({ data }: { data: RealtimeData }) {
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.views)}
-          value={pageviews?.length}
+          value={totals.views}
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.visitors)}
-          value={visitors?.length}
+          value={totals.visitors}
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.events)}
-          value={events?.length}
+          value={totals.events}
         />
         <MetricCard
           className={styles.card}
           label={formatMessage(labels.countries)}
-          value={countries?.length}
+          value={totals.countries}
         />
       </div>
     </div>

@@ -9,7 +9,7 @@ import { maxDate } from './date';
 import { filtersToArray } from './params';
 
 export const CLICKHOUSE_DATE_FORMATS = {
-  minute: '%Y-%m-%d %H:%M:00',
+  minute: '%Y-%m-%d %H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',
   month: '%Y-%m-01',

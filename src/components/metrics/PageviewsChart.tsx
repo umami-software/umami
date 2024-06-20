@@ -5,11 +5,11 @@ import { renderDateLabels } from 'lib/charts';
 
 export interface PageviewsChartProps extends BarChartProps {
   data: {
-    pageviews: any[];
-    sessions: any[];
+    views: any[];
+    visitors: any[];
     compare?: {
-      pageviews: any[];
-      sessions: any[];
+      views: any[];
+      visitors: any[];
     };
   };
   unit: string;
@@ -30,14 +30,14 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
       datasets: [
         {
           label: formatMessage(labels.visitors),
-          data: data.sessions,
+          data: data.visitors,
           borderWidth: 1,
           ...colors.chart.visitors,
           order: 3,
         },
         {
           label: formatMessage(labels.views),
-          data: data.pageviews,
+          data: data.views,
           borderWidth: 1,
           ...colors.chart.views,
           order: 4,
@@ -47,7 +47,7 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
               {
                 type: 'line',
                 label: `${formatMessage(labels.views)} (${formatMessage(labels.previous)})`,
-                data: data.compare.pageviews,
+                data: data.compare.views,
                 borderWidth: 2,
                 backgroundColor: '#8601B0',
                 borderColor: '#8601B0',
@@ -56,7 +56,7 @@ export function PageviewsChart({ data, unit, isLoading, ...props }: PageviewsCha
               {
                 type: 'line',
                 label: `${formatMessage(labels.visitors)} (${formatMessage(labels.previous)})`,
-                data: data.compare.sessions,
+                data: data.compare.visitors,
                 borderWidth: 2,
                 backgroundColor: '#f15bb5',
                 borderColor: '#f15bb5',
