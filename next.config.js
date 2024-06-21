@@ -168,6 +168,10 @@ const config = {
         destination: '/api/scripts/telemetry',
       },
       {
+        source: '/teams/:teamId/settings/:path*',
+        destination: '/teams/:teamId/settings/:path*',
+      },
+      {
         source: '/teams/:teamId/:path*',
         destination: '/:path*',
       },
