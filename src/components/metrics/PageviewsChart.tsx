@@ -29,14 +29,14 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
     return {
       datasets: [
         {
-          label: formatMessage(labels.sessions),
+          label: formatMessage(labels.visitors),
           data: data.sessions,
           borderWidth: 1,
           ...colors.chart.visitors,
           order: 3,
         },
         {
-          label: formatMessage(labels.pageviews),
+          label: formatMessage(labels.views),
           data: data.pageviews,
           borderWidth: 1,
           ...colors.chart.views,
@@ -46,7 +46,7 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
           ? [
               {
                 type: 'line',
-                label: `${formatMessage(labels.pageviews)} (${formatMessage(labels.previous)})`,
+                label: `${formatMessage(labels.views)} (${formatMessage(labels.previous)})`,
                 data: data.compare.pageviews,
                 borderWidth: 2,
                 backgroundColor: '#8601B0',
@@ -55,7 +55,7 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
               },
               {
                 type: 'line',
-                label: `${formatMessage(labels.sessions)} (${formatMessage(labels.previous)})`,
+                label: `${formatMessage(labels.visitors)} (${formatMessage(labels.previous)})`,
                 data: data.compare.sessions,
                 borderWidth: 2,
                 backgroundColor: '#f15bb5',
