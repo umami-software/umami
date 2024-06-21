@@ -54,20 +54,20 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ timestamp }) => format(timestamp, 'h:mm:ss');
+  const getTime = ({ timestamp }) => format(timestamp * 1000, 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
   const getIcon = ({ __type }) => icons[__type];
 
   const getDetail = (log: {
-    __type: any;
-    eventName: any;
-    urlPath: any;
-    browser: any;
-    os: any;
-    country: any;
-    device: any;
+    __type: string;
+    eventName: string;
+    urlPath: string;
+    browser: string;
+    os: string;
+    country: string;
+    device: string;
   }) => {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
@@ -141,8 +141,12 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
       return [];
     }
 
-    const { pageviews, visitors, events } = data;
-    let logs = [...pageviews, ...visitors, ...events].sort(thenby.firstBy('createdAt', -1));
+    const { events, visitors } = data;
+
+    let logs = [
+      ...events.map(e => ({ __type: e.eventName ? TYPE_EVENT : TYPE_PAGEVIEW, ...e })),
+      ...visitors.map(v => ({ __type: TYPE_SESSION, ...v })),
+    ].sort(thenby.firstBy('timestamp', -1));
 
     if (search) {
       logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {

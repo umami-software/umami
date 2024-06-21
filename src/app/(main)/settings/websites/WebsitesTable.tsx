@@ -23,6 +23,10 @@ export function WebsitesTable({
   const breakpoint = useBreakpoint();
   const { renderTeamUrl } = useTeamUrl();
 
+  if (!data?.length) {
+    return children;
+  }
+
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
@@ -55,7 +59,6 @@ export function WebsitesTable({
           }}
         </GridColumn>
       )}
-      {children}
     </GridTable>
   );
 }

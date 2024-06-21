@@ -1,96 +1,133 @@
 import classNames from 'classnames';
-import { useMessages, useSticky } from 'components/hooks';
+import { useDateRange, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime } from 'lib/format';
+import { formatShortTime, formatLongNumber } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
-import styles from './WebsiteMetricsBar.module.css';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
+import styles from './WebsiteMetricsBar.module.css';
+import { Dropdown, Item } from 'react-basics';
+import useStore, { setWebsiteDateCompare } from 'store/websites';
 
 export function WebsiteMetricsBar({
   websiteId,
-  showFilter = true,
   sticky,
+  showChange = false,
+  compareMode = false,
+  showFilter = false,
 }: {
   websiteId: string;
-  showFilter?: boolean;
   sticky?: boolean;
+  showChange?: boolean;
+  compareMode?: boolean;
+  showFilter?: boolean;
 }) {
+  const { dateRange } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
+  const dateCompare = useStore(state => state[websiteId]?.dateCompare);
   const { ref, isSticky } = useSticky({ enabled: sticky });
-  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
+  const { data, isLoading, isFetched, error } = useWebsiteStats(
+    websiteId,
+    compareMode && dateCompare,
+  );
+  const isAllTime = dateRange.value === 'all';
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
-  const num = Math.min(data && visitors.value, data && bounces.value);
-  const diffs = data && {
-    pageviews: pageviews.value - pageviews.change,
-    visitors: visitors.value - visitors.change,
-    visits: visits.value - visits.change,
-    bounces: bounces.value - bounces.change,
-    totaltime: totaltime.value - totaltime.change,
-  };
+
+  const metrics = data
+    ? [
+        {
+          ...pageviews,
+          label: formatMessage(labels.views),
+          change: pageviews.value - pageviews.prev,
+          formatValue: formatLongNumber,
+        },
+        {
+          ...visits,
+          label: formatMessage(labels.visits),
+          change: visits.value - visits.prev,
+          formatValue: formatLongNumber,
+        },
+        {
+          ...visitors,
+          label: formatMessage(labels.visitors),
+          change: visitors.value - visitors.prev,
+          formatValue: formatLongNumber,
+        },
+        {
+          label: formatMessage(labels.bounceRate),
+          value: (Math.min(visits.value, bounces.value) / visits.value) * 100,
+          prev: (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
+          change:
+            (Math.min(visits.value, bounces.value) / visits.value) * 100 -
+            (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
+          formatValue: n => Math.round(+n) + '%',
+          reverseColors: true,
+        },
+        {
+          label: formatMessage(labels.visitDuration),
+          value: totaltime.value / visits.value,
+          prev: totaltime.prev / visits.prev,
+          change: totaltime.value / visits.value - totaltime.prev / visits.prev,
+          formatValue: n =>
+            `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+        },
+      ]
+    : [];
+
+  const items = [
+    { label: formatMessage(labels.previousPeriod), value: 'prev' },
+    { label: formatMessage(labels.previousYear), value: 'yoy' },
+  ];
 
   return (
     <div
       ref={ref}
       className={classNames(styles.container, {
         [styles.sticky]: sticky,
-        [styles.isSticky]: isSticky,
+        [styles.isSticky]: sticky && isSticky,
       })}
     >
-      <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
-        {pageviews && visitors && (
-          <>
-            <MetricCard
-              label={formatMessage(labels.views)}
-              value={pageviews.value}
-              change={pageviews.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.visits)}
-              value={visits.value}
-              change={visits.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.visitors)}
-              value={visitors.value}
-              change={visitors.change}
-            />
-            <MetricCard
-              label={formatMessage(labels.bounceRate)}
-              value={visitors.value ? (num / visitors.value) * 100 : 0}
-              change={
-                visitors.value && visitors.change
-                  ? (num / visitors.value) * 100 -
-                      (Math.min(diffs.visitors, diffs.bounces) / diffs.visitors) * 100 || 0
-                  : 0
-              }
-              format={n => Number(n).toFixed(0) + '%'}
-              reverseColors
-            />
-            <MetricCard
-              label={formatMessage(labels.averageVisitTime)}
-              value={
-                totaltime.value && pageviews.value
-                  ? totaltime.value / (pageviews.value - bounces.value)
-                  : 0
-              }
-              change={
-                totaltime.value && pageviews.value
-                  ? (diffs.totaltime / (diffs.pageviews - diffs.bounces) -
-                      totaltime.value / (pageviews.value - bounces.value)) *
-                      -1 || 0
-                  : 0
-              }
-              format={n => `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`}
-            />
-          </>
-        )}
-      </MetricsBar>
+      <div>
+        <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
+          {metrics.map(({ label, value, prev, change, formatValue, reverseColors }) => {
+            return (
+              <MetricCard
+                key={label}
+                value={value}
+                previousValue={prev}
+                label={label}
+                change={change}
+                formatValue={formatValue}
+                reverseColors={reverseColors}
+                showChange={!isAllTime && (compareMode || showChange)}
+                showPrevious={!isAllTime && compareMode}
+              />
+            );
+          })}
+        </MetricsBar>
+      </div>
       <div className={styles.actions}>
-        {showFilter && <WebsiteFilterButton websiteId={websiteId} className={styles.button} />}
-        <WebsiteDateFilter websiteId={websiteId} />
+        {showFilter && <WebsiteFilterButton websiteId={websiteId} />}
+        <WebsiteDateFilter websiteId={websiteId} showAllTime={!compareMode} />
+        {compareMode && (
+          <div className={styles.vs}>
+            <b>VS</b>
+            <Dropdown
+              className={styles.dropdown}
+              items={items}
+              value={dateCompare || 'prev'}
+              renderValue={value => items.find(i => i.value === value)?.label}
+              alignment="end"
+              onChange={(value: any) => setWebsiteDateCompare(websiteId, value)}
+            >
+              {items.map(({ label, value }) => (
+                <Item key={value}>{label}</Item>
+              ))}
+            </Dropdown>
+          </div>
+        )}
       </div>
     </div>
   );

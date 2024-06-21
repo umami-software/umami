@@ -83,12 +83,6 @@
       "value": "Moyenne"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Temps de visite moyen"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -155,6 +149,12 @@
       "value": "Réinitialiser"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Compare"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -177,6 +177,12 @@
     {
       "type": 0,
       "value": "Continuer"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Count"
     }
   ],
   "label.countries": [
@@ -225,6 +231,12 @@
     {
       "type": 0,
       "value": "Crée par"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Current"
     }
   ],
   "label.current-password": [
@@ -383,6 +395,18 @@
       "value": "Activer l'URL de partage"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Entry URL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
@@ -399,6 +423,12 @@
     {
       "type": 0,
       "value": "Évènements"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
     }
   ],
   "label.false": [
@@ -455,6 +485,24 @@
       "value": "Suivi des conversions et des taux d'abandons."
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Goal"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Goals"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Track your goals for pageviews and events."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -465,6 +513,18 @@
     {
       "type": 0,
       "value": "Supérieur ou égal à"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -513,6 +573,18 @@
     {
       "type": 0,
       "value": "Rejoindre une équipe"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Understand how users nagivate through your website."
     }
   ],
   "label.language": [
@@ -603,6 +675,12 @@
     {
       "type": 0,
       "value": "Gérer"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
     }
   ],
   "label.max": [
@@ -781,10 +859,34 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Previous"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Previous period"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Previous year"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profil"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
     }
   ],
   "label.queries": [
@@ -973,6 +1075,12 @@
       "value": "Journée"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Start Step"
+    }
+  ],
   "label.steps": [
     {
       "type": 0,
@@ -1001,6 +1109,12 @@
     {
       "type": 0,
       "value": "ID d'équipe"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team manager"
     }
   ],
   "label.team-member": [
@@ -1237,6 +1351,12 @@
       "value": "Vues par visite"
     }
   ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Temps de visite moyen"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
@@ -1329,6 +1449,12 @@
     {
       "type": 0,
       "value": " actuellement"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
     }
   ],
   "message.confirm-delete": [

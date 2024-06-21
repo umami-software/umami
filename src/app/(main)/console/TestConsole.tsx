@@ -29,6 +29,7 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
       boolean: true,
       booleanError: 'true',
       time: new Date(),
+      user: `user${Math.round(Math.random() * 10)}`,
       number: 1,
       number2: Math.random() * 100,
       time2: new Date().toISOString(),
@@ -80,7 +81,7 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
           <Script
             async
             data-website-id={websiteId}
-            src={`${process.env.basePath}/script.js`}
+            src={`${process.env.basePath || ''}/script.js`}
             data-cache="true"
           />
           <div className={styles.actions}>

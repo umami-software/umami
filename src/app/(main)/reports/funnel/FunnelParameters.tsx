@@ -93,12 +93,10 @@ export function FunnelParameters() {
               <PopupTrigger key={index}>
                 <ParameterList.Item
                   className={styles.item}
+                  icon={step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
                   onRemove={() => handleRemoveStep(index)}
                 >
                   <div className={styles.value}>
-                    <div className={styles.type}>
-                      <Icon>{step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}</Icon>
-                    </div>
                     <div>{step.value}</div>
                   </div>
                 </ParameterList.Item>

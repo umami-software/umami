@@ -20,7 +20,7 @@ export function CitiesTable(props: MetricsTableProps) {
       <FilterLink id="city" value={city} label={renderLabel(city, country)}>
         {country && (
           <img
-            src={`${process.env.basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
+            src={`${process.env.basePath || ''}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
             alt={country}
           />
         )}

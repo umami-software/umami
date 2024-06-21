@@ -3,7 +3,7 @@ import { Website, Session } from '@prisma/client';
 import redis from '@umami/redis-client';
 
 export async function fetchWebsite(websiteId: string): Promise<Website> {
-  let website;
+  let website = null;
 
   if (redis.enabled) {
     website = await redis.client.fetch(`website:${websiteId}`, () => getWebsite(websiteId), 86400);
@@ -19,7 +19,7 @@ export async function fetchWebsite(websiteId: string): Promise<Website> {
 }
 
 export async function fetchSession(sessionId: string): Promise<Session> {
-  let session;
+  let session = null;
 
   if (redis.enabled) {
     session = await redis.client.fetch(`session:${sessionId}`, () => getSession(sessionId), 86400);

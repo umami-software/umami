@@ -326,3 +326,13 @@ export function getDateLength(startDate: Date, endDate: Date, unit: string | num
   const { diff } = DATE_FUNCTIONS[unit];
   return diff(endDate, startDate) + 1;
 }
+
+export function getCompareDate(compare: string, startDate: Date, endDate: Date) {
+  if (compare === 'yoy') {
+    return { startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
+  }
+
+  const diff = differenceInMinutes(endDate, startDate);
+
+  return { startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+}
