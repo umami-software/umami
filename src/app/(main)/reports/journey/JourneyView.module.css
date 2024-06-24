@@ -121,7 +121,7 @@
 }
 
 .name {
-  font-weight: 500;
+  max-width: 200px;
 }
 
 .count {
