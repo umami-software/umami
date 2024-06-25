@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react';
-import { TooltipPopup } from 'react-basics';
+import { TextOverflow, TooltipPopup } from 'react-basics';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages } from 'components/hooks';
@@ -191,7 +191,9 @@ export default function JourneyView() {
                           })}
                           onClick={() => handleClick(name, columnIndex, paths)}
                         >
-                          <div className={styles.name}>{name}</div>
+                          <div className={styles.name} title={name}>
+                            <TextOverflow> {name}</TextOverflow>
+                          </div>
                           <TooltipPopup label={dropOffPercent} disabled={!selected}>
                             <div className={styles.count} title={nodeCount}>
                               {formatLongNumber(nodeCount)}
