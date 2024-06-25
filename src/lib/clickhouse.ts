@@ -32,7 +32,7 @@ function getClient() {
   } = new URL(process.env.CLICKHOUSE_URL);
 
   const client = createClient({
-    host: `${protocol}//${hostname}:${port}`,
+    url: `${protocol}//${hostname}:${port}`,
     database: pathname.replace('/', ''),
     username: username,
     password,

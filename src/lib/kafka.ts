@@ -19,7 +19,7 @@ function getClient() {
       ? {
           ssl: true,
           sasl: {
-            mechanism: 'scram-sha-256',
+            mechanism: 'plain',
             username,
             password,
           },
@@ -57,7 +57,7 @@ async function getProducer(): Promise<Producer> {
 }
 
 function getDateFormat(date: Date, format?: string): string {
-  return dateFormat(date, format ? format : 'UTC:yyyy-mm-dd HH:MM:ss');
+  return dateFormat(date, format ? format : 'yyyy-mm-dd HH:MM:ss');
 }
 
 async function sendMessage(

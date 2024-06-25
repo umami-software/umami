@@ -146,6 +146,7 @@ export type UmamiTracker = {
      */
     (eventFunction: CustomEventFunction): Promise<string>;
   };
+  identify: (data: { [key: string]: number | string | number[] | string[] }) => Promise<string>;
 };
 
 interface Window {

@@ -94,7 +94,7 @@ async function clickhouseQuery(data: {
       string_value: getStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getDateFormat(value) : null,
-      created_at: createdAt,
+      created_at: createdAt ?? getDateFormat(new Date()),
     };
   });
 
