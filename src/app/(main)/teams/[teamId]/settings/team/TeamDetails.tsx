@@ -5,7 +5,7 @@ import PageHeader from 'components/layout/PageHeader';
 import { ROLES } from 'lib/constants';
 import { useContext, useState } from 'react';
 import { Flexbox, Item, Tabs } from 'react-basics';
-import TeamLeaveButton from '../../TeamLeaveButton';
+import TeamLeaveButton from 'app/(main)/settings/teams/TeamLeaveButton';
 import TeamManage from './TeamManage';
 import TeamEditForm from './TeamEditForm';
 
