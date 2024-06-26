@@ -4,6 +4,7 @@ import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
 import { safeDecodeURIComponent } from 'next-basics';
+import debug from 'debug';
 
 import {
   DESKTOP_OS,
@@ -13,6 +14,8 @@ import {
   MOBILE_SCREEN_WIDTH,
 } from './constants';
 import { NextApiRequestCollect } from 'pages/api/send';
+
+const log = debug('umami:detect');
 
 let lookup;
 
@@ -70,11 +73,14 @@ function getRegionCode(country: string, region: string) {
 export async function getLocation(ip: string, req: NextApiRequestCollect) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
+    log('Localhost:', ip);
     return;
   }
 
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
+    log('Use Cloudflare headers');
+
     const country = safeDecodeURIComponent(req.headers['cf-ipcountry']);
     const subdivision1 = safeDecodeURIComponent(req.headers['cf-region-code']);
     const city = safeDecodeURIComponent(req.headers['cf-ipcity']);
@@ -88,6 +94,8 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
 
   // Vercel headers
   if (req.headers['x-vercel-ip-country']) {
+    log('Use Vercel headers');
+
     const country = safeDecodeURIComponent(req.headers['x-vercel-ip-country']);
     const subdivision1 = safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']);
     const city = safeDecodeURIComponent(req.headers['x-vercel-ip-city']);
@@ -121,6 +129,8 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
       city,
     };
   }
+
+  log('Location not found:', ip);
 }
 
 export async function getClientInfo(req: NextApiRequestCollect) {
