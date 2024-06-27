@@ -263,5 +263,5 @@
   "message.user-deleted": "Usuari eliminat.",
   "message.viewed-page": "Pàgina vista",
   "message.visitor-log": "Visitant de {country} usant {browser} a {os} {device}",
-  "message.visitors-dropped-off": "Els visitants han sortit"
+  "message.visitors-dropped-off": "Visitants han sortit"
 }
