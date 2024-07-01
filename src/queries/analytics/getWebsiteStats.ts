@@ -71,8 +71,8 @@ async function clickhouseQuery(
     `
     select 
       sum(t.c) as "pageviews",
-      count(distinct t.session_id) as "visitors",
-      count(distinct t.visit_id) as "visits",
+      uniq(t.session_id) as "visitors",
+      uniq(t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
