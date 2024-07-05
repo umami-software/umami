@@ -5,6 +5,7 @@ import prisma from 'lib/prisma';
 import { DynamicData } from 'lib/types';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
+import clickhouse from 'lib/clickhouse';
 
 export async function saveSessionData(data: {
   websiteId: string;
@@ -81,6 +82,7 @@ async function clickhouseQuery(data: {
 }) {
   const { websiteId, sessionId, sessionData, createdAt } = data;
 
+  const { insert } = clickhouse;
   const { getDateFormat, sendMessages } = kafka;
 
   const jsonKeys = flattenJSON(sessionData);
@@ -98,7 +100,11 @@ async function clickhouseQuery(data: {
     };
   });
 
-  await sendMessages(messages, 'session_data');
+  if (kafka.enabled) {
+    await sendMessages(messages, 'session_data');
+  } else {
+    await insert('event_data', messages);
+  }
 
   return data;
 }
