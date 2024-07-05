@@ -82,7 +82,7 @@ async function clickhouseQuery(data: {
   });
 
   if (kafka.enabled) {
-    await sendMessages(messages, 'event_data');
+    await sendMessages('event_data', messages);
   } else {
     await insert('event_data', messages);
   }

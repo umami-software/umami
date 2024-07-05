@@ -101,9 +101,9 @@ async function clickhouseQuery(data: {
   });
 
   if (kafka.enabled) {
-    await sendMessages(messages, 'session_data');
+    await sendMessages('session_data', messages);
   } else {
-    await insert('event_data', messages);
+    await insert('session_data', messages);
   }
 
   return data;
