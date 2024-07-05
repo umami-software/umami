@@ -32,7 +32,7 @@ function getClient() {
   } = new URL(process.env.CLICKHOUSE_URL);
 
   const client = createClient({
-    host: `${protocol}//${hostname}:${port}`,
+    url: `${protocol}//${hostname}:${port}`,
     database: pathname.replace('/', ''),
     username: username,
     password,
@@ -136,7 +136,13 @@ async function rawQuery<T = unknown>(
     format: 'JSONEachRow',
   });
 
-  return resultSet.json();
+  return resultSet.json() as T;
+}
+
+async function insert(table: string, values: any[]) {
+  await connect();
+
+  return clickhouse.insert({ table, values, format: 'JSONEachRow' });
 }
 
 async function findUnique(data: any[]) {
@@ -172,4 +178,5 @@ export default {
   findUnique,
   findFirst,
   rawQuery,
+  insert,
 };
