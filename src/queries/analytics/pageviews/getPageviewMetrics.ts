@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import clickhouse from 'lib/clickhouse';
 import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
@@ -5,7 +6,14 @@ import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
-  ...args: [websiteId: string, type: string, filters: QueryFilters, limit?: number, offset?: number]
+  ...args: [
+    websiteId: string,
+    type: string,
+    filters: QueryFilters,
+    limit?: number,
+    offset?: number,
+    unit?: string,
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,6 +27,7 @@ async function relationalQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  unit: string,
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
@@ -79,6 +88,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  unit: string,
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;
@@ -108,10 +118,12 @@ async function clickhouseQuery(
         and x.target_created_at = website_event.created_at`;
   }
 
+  const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
+
   return rawQuery(
     `
-    select ${column} x, count(*) y
-    from website_event
+    select ${column} x, countMerge(views) y
+    from ${table} website_event
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}

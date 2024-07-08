@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
@@ -5,7 +6,14 @@ import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
-  ...args: [websiteId: string, type: string, filters: QueryFilters, limit?: number, offset?: number]
+  ...args: [
+    websiteId: string,
+    type: string,
+    filters: QueryFilters,
+    limit?: number,
+    offset?: number,
+    unit?: string,
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -19,6 +27,7 @@ async function relationalQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  unit: string,
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
@@ -62,6 +71,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
   limit: number = 500,
   offset: number = 0,
+  unit: string,
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
@@ -70,6 +80,7 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'subdivision1';
+  const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
 
   return rawQuery(
     `
@@ -77,7 +88,7 @@ async function clickhouseQuery(
       ${column} x,
       uniq(session_id) y
       ${includeCountry ? ', country' : ''}
-    from website_event
+    from ${table} website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
