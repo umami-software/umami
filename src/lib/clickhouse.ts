@@ -2,8 +2,8 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { QueryFilters, QueryOptions } from './types';
-import { OPERATORS } from './constants';
+import { PageParams, QueryFilters, QueryOptions } from './types';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { fetchWebsite } from './load';
 import { maxDate } from './date';
 import { filtersToArray } from './params';
@@ -47,11 +47,11 @@ function getClient() {
   return client;
 }
 
-function getDateStringQuery(data: any, unit: string | number) {
+function getDateStringSQL(data: any, unit: string | number) {
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
-function getDateQuery(field: string, unit: string, timezone?: string) {
+function getDateSQL(field: string, unit: string, timezone?: string) {
   if (timezone) {
     return `date_trunc('${unit}', ${field}, '${timezone}')`;
   }
@@ -95,6 +95,20 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
+function getDateQuery(filters: QueryFilters = {}) {
+  const { startDate, endDate } = filters;
+
+  if (startDate) {
+    if (endDate) {
+      return `and created_at between {startDate:DateTime64} and {endDate:DateTime64}`;
+    } else {
+      return `and created_at >= {startDate:DateTime64}`;
+    }
+  }
+
+  return '';
+}
+
 function getFilterParams(filters: QueryFilters = {}) {
   return filtersToArray(filters).reduce((obj, { name, value }) => {
     if (name && value !== undefined) {
@@ -110,6 +124,7 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
 
   return {
     filterQuery: getFilterQuery(filters, options),
+    dateQuery: getDateQuery(filters),
     params: {
       ...getFilterParams(filters),
       websiteId,
@@ -117,6 +132,32 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
       websiteDomain: website.domain,
     },
   };
+}
+
+async function pagedQuery(
+  query: string,
+  queryParams: { [key: string]: any },
+  pageParams: PageParams = {},
+) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (page - 1);
+  const direction = sortDescending ? 'desc' : 'asc';
+
+  const statements = [
+    orderBy && `order by ${orderBy} ${direction}`,
+    +size > 0 && `limit ${+size} offset ${offset}`,
+  ]
+    .filter(n => n)
+    .join('\n');
+
+  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
+    res => res[0].num,
+  );
+
+  const data = await rawQuery(`${query}${statements}`, queryParams);
+
+  return { data, count, page: +page, pageSize: size, orderBy };
 }
 
 async function rawQuery<T = unknown>(
@@ -170,11 +211,12 @@ export default {
   client: clickhouse,
   log,
   connect,
-  getDateStringQuery,
-  getDateQuery,
+  getDateStringSQL,
+  getDateSQL,
   getDateFormat,
   getFilterQuery,
   parseFilters,
+  pagedQuery,
   findUnique,
   findFirst,
   rawQuery,

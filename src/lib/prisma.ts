@@ -60,7 +60,7 @@ function getCastColumnQuery(field: string, type: string): string {
   }
 }
 
-function getDateQuery(field: string, unit: string, timezone?: string): string {
+function getDateSQL(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
@@ -81,7 +81,19 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   }
 }
 
-function getTimestampDiffQuery(field1: string, field2: string): string {
+export function getTimestampSQL(field: string) {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return `floor(extract(epoch from ${field}))`;
+  }
+
+  if (db === MYSQL) {
+    return `UNIX_TIMESTAMP(${field})`;
+  }
+}
+
+function getTimestampDiffSQL(field1: string, field2: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
@@ -93,7 +105,7 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function getSearchQuery(column: string): string {
+function getSearchSQL(column: string): string {
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
@@ -137,6 +149,20 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   return query.join('\n');
 }
 
+function getDateQuery(filters: QueryFilters = {}) {
+  const { startDate, endDate } = filters;
+
+  if (startDate) {
+    if (endDate) {
+      return `and website_event.created_at between {{startDate}} and {{endDate}}`;
+    } else {
+      return `and website_event.created_at >= {{startDate}}`;
+    }
+  }
+
+  return '';
+}
+
 function getFilterParams(filters: QueryFilters = {}) {
   return filtersToArray(filters).reduce((obj, { name, operator, value }) => {
     obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
@@ -161,6 +187,7 @@ async function parseFilters(
         ? `inner join session on website_event.session_id = session.session_id`
         : '',
     filterQuery: getFilterQuery(filters, options),
+    dateQuery: getDateQuery(filters),
     params: {
       ...getFilterParams(filters),
       websiteId,
@@ -191,8 +218,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-async function pagedQuery<T>(model: string, criteria: T, filters: PageParams) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
+async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await prisma.client[model].findMany({
@@ -256,11 +283,11 @@ export default {
   getAddIntervalQuery,
   getCastColumnQuery,
   getDayDiffQuery,
-  getDateQuery,
+  getDateSQL,
   getFilterQuery,
   getSearchParameters,
-  getTimestampDiffQuery,
-  getSearchQuery,
+  getTimestampDiffSQL,
+  getSearchSQL,
   getQueryMode,
   pagedQuery,
   parseFilters,
