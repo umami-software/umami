@@ -46,9 +46,14 @@ export function WebsiteHeader({
       path: '/reports',
     },
     {
-      label: formatMessage(labels.eventData),
+      label: formatMessage(labels.sessions),
+      icon: <Icons.User />,
+      path: '/sessions',
+    },
+    {
+      label: formatMessage(labels.events),
       icon: <Icons.Nodes />,
-      path: '/event-data',
+      path: '/events',
     },
   ];
 

@@ -49,9 +49,9 @@ export async function getUserByUsername(username: string, options: GetUserOption
 
 export async function getUsers(
   criteria: UserFindManyArgs,
-  filters?: PageParams,
+  pageParams?: PageParams,
 ): Promise<PageResult<User[]>> {
-  const { query } = filters;
+  const { query } = pageParams;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
@@ -68,7 +68,7 @@ export async function getUsers(
     {
       orderBy: 'createdAt',
       sortDescending: true,
-      ...filters,
+      ...pageParams,
     },
   );
 }
