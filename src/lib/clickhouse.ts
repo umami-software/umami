@@ -9,11 +9,12 @@ import { maxDate } from './date';
 import { filtersToArray } from './params';
 
 export const CLICKHOUSE_DATE_FORMATS = {
-  minute: '%Y-%m-%d %H:%i:00',
-  hour: '%Y-%m-%d %H:00:00',
-  day: '%Y-%m-%d',
-  month: '%Y-%m-01',
-  year: '%Y-01-01',
+  second: '%Y-%m-%dT%H:%i:%S',
+  minute: '%Y-%m-%dT%H:%i:00',
+  hour: '%Y-%m-%dT%H:00:00',
+  day: '%Y-%m-%dT00:00:00',
+  month: '%Y-%m-01T00:00:00',
+  year: '%Y-01-01T00:00:00',
 };
 
 const log = debug('umami:clickhouse');
@@ -47,7 +48,11 @@ function getClient() {
   return client;
 }
 
-function getDateStringSQL(data: any, unit: string | number) {
+function getDateStringSQL(data: any, unit: string | number, timezone?: string) {
+  if (timezone) {
+    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
+  }
+
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 

@@ -19,8 +19,8 @@ export async function getRealtimeData(
   const { startDate, timezone } = criteria;
   const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
   const [events, sessions, pageviews, sessionviews] = await Promise.all([
-    getEvents(websiteId, { startDate }, { pageSize: 10000 }),
-    getSessions(websiteId, { startDate }, { pageSize: 10000 }),
+    getEvents(websiteId, { startDate, timezone }, { pageSize: 10000 }),
+    getSessions(websiteId, { startDate, timezone }, { pageSize: 10000 }),
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),
   ]);

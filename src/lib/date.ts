@@ -292,7 +292,7 @@ export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: 
 
   for (let i = 0; i <= n; i++) {
     const t = start(add(startDate, i));
-    const y = data.find(({ x }) => start(getDateFromString(x)).getTime() === t.getTime())?.y || 0;
+    const y = data.find(({ x }) => start(new Date(x)).getTime() === t.getTime())?.y || 0;
 
     arr.push({ x: t, y });
   }

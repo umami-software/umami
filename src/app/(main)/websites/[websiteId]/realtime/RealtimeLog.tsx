@@ -54,7 +54,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ timestamp }) => format(timestamp * 1000, 'h:mm:ss');
+  const getTime = ({ createdAt }) => format(new Date(createdAt), 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
@@ -149,7 +149,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
         ...e,
       })),
       ...visitors.map(v => ({ __type: TYPE_SESSION, ...v })),
-    ].sort(thenby.firstBy('timestamp', -1));
+    ].sort(thenby.firstBy('createdAt', -1));
 
     if (search) {
       logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {

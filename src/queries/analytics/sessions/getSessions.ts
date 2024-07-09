@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery, parseFilters } = clickhouse;
+  const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
 
   return pagedQuery(
@@ -32,8 +32,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session_id as id,
       website_id as websiteId,
-      created_at as createdAt,
-      toUnixTimestamp(created_at) as timestamp,
+      ${getDateStringSQL('created_at', 'second', filters.timezone)} as createdAt,
       hostname,
       browser,
       os,
