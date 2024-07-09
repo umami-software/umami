@@ -144,7 +144,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     const { events, visitors } = data;
 
     let logs = [
-      ...events.map(e => ({ __type: e.eventName ? TYPE_EVENT : TYPE_PAGEVIEW, ...e })),
+      ...events.map(e => ({
+        __type: e.eventName ? TYPE_EVENT : TYPE_PAGEVIEW,
+        ...e,
+      })),
       ...visitors.map(v => ({ __type: TYPE_SESSION, ...v })),
     ].sort(thenby.firstBy('timestamp', -1));
 

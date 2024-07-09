@@ -46,12 +46,12 @@ async function relationalQuery(
     timezone = 'UTC',
     unit = 'day',
   } = criteria;
-  const { getDateQuery, rawQuery } = prisma;
+  const { getDateSQL, rawQuery } = prisma;
 
   const chartRes = await rawQuery(
     `
     select
-      ${getDateQuery('website_event.created_at', unit, timezone)} time,
+      ${getDateSQL('website_event.created_at', unit, timezone)} time,
       sum(case when data_key = {{revenueProperty}} then number_value else 0 end) sum,
       avg(case when data_key = {{revenueProperty}} then number_value else 0 end) avg,
       count(case when data_key = {{revenueProperty}} then 1 else 0 end) count,
@@ -110,7 +110,7 @@ async function clickhouseQuery(
     timezone = 'UTC',
     unit = 'day',
   } = criteria;
-  const { getDateStringQuery, getDateQuery, rawQuery } = clickhouse;
+  const { getDateStringSQL, getDateSQL, rawQuery } = clickhouse;
 
   const chartRes = await rawQuery<{
     time: string;
@@ -121,14 +121,14 @@ async function clickhouseQuery(
   }>(
     `
     select
-      ${getDateStringQuery('g.time', unit)} as time, 
+      ${getDateStringSQL('g.time', unit)} as time, 
       g.sum as sum,
       g.avg as avg,
       g.count as count,
       g.uniqueCount as uniqueCount
     from (
       select 
-        ${getDateQuery('created_at', unit, timezone)} as time,
+        ${getDateSQL('created_at', unit, timezone)} as time,
         sumIf(number_value, data_key = {revenueProperty:String}) as sum,
         avgIf(number_value, data_key = {revenueProperty:String}) as avg,
         countIf(data_key = {revenueProperty:String}) as count,
