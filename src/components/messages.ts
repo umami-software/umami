@@ -265,7 +265,7 @@ export const labels = defineMessages({
   journey: { id: 'label.journey', defaultMessage: 'Journey' },
   journeyDescription: {
     id: 'label.journey-description',
-    defaultMessage: 'Understand how users nagivate through your website.',
+    defaultMessage: 'Understand how users navigate through your website.',
   },
   compare: { id: 'label.compare', defaultMessage: 'Compare' },
   current: { id: 'label.current', defaultMessage: 'Current' },

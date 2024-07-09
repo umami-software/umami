@@ -42,15 +42,18 @@ async function relationalQuery(
     const aggregrate = type === 'entry' ? 'min' : 'max';
 
     entryExitQuery = `
-    JOIN (select visit_id,
-        ${aggregrate}(created_at) target_created_at
-    from website_event
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      and event_type = {{eventType}}
-    group by visit_id) x
-    ON x.visit_id = website_event.visit_id
-        and x.target_created_at = website_event.created_at`;
+      join (
+        select visit_id,
+            ${aggregrate}(created_at) target_created_at
+        from website_event
+        where website_event.website_id = {{websiteId::uuid}}
+          and website_event.created_at between {{startDate}} and {{endDate}}
+          and event_type = {{eventType}}
+        group by visit_id
+      ) x
+      on x.visit_id = website_event.visit_id
+          and x.target_created_at = website_event.created_at
+    `;
   }
 
   return rawQuery(
@@ -97,15 +100,18 @@ async function clickhouseQuery(
     const aggregrate = type === 'entry' ? 'min' : 'max';
 
     entryExitQuery = `
-    JOIN (select visit_id,
-        ${aggregrate}(created_at) target_created_at
-    from website_event
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
-    group by visit_id) x
-    ON x.visit_id = website_event.visit_id
-        and x.target_created_at = website_event.created_at`;
+      join (
+        select visit_id,
+            ${aggregrate}(created_at) target_created_at
+        from website_event
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and event_type = {eventType:UInt32}
+        group by visit_id
+      ) x
+      on x.visit_id = website_event.visit_id
+          and x.target_created_at = website_event.created_at
+    `;
   }
 
   return rawQuery(

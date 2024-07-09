@@ -27,9 +27,9 @@ export async function getSharedWebsite(shareId: string) {
 
 export async function getWebsites(
   criteria: WebsiteFindManyArgs,
-  filters: PageParams,
+  pageParams: PageParams,
 ): Promise<PageResult<Website[]>> {
-  const { query } = filters;
+  const { query } = pageParams;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
@@ -42,7 +42,7 @@ export async function getWebsites(
     deletedAt: null,
   };
 
-  return prisma.pagedQuery('website', { ...criteria, where }, filters);
+  return prisma.pagedQuery('website', { ...criteria, where }, pageParams);
 }
 
 export async function getAllWebsites(userId: string) {

@@ -1,45 +1,33 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
-import { QueryFilters } from 'lib/types';
+import { PageParams, QueryFilters } from 'lib/types';
 
-export async function getSessions(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getSessions(
+  ...args: [websiteId: string, filters?: QueryFilters, pageParams?: PageParams]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { startDate } = filters;
+async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams: PageParams) {
+  const { pagedQuery } = prisma;
 
-  return prisma.client.session
-    .findMany({
-      where: {
-        websiteId,
-        createdAt: {
-          gte: startDate,
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-    .then(a => {
-      return Object.values(a).map(a => {
-        return {
-          ...a,
-          timestamp: new Date(a.createdAt).getTime() / 1000,
-        };
-      });
-    });
+  const where = {
+    ...filters,
+    id: websiteId,
+  };
+
+  return pagedQuery('session', { where }, pageParams);
 }
 
-async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
-  const { rawQuery } = clickhouse;
-  const { startDate } = filters;
+async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
+  const { pagedQuery, parseFilters } = clickhouse;
+  const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
 
-  return rawQuery(
+  return pagedQuery(
     `
     select
       session_id as id,
@@ -58,12 +46,11 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       city
     from website_event
     where website_id = {websiteId:UUID}
-    and created_at >= {startDate:DateTime64}
+    ${dateQuery}
+    ${filterQuery}
     order by created_at desc
     `,
-    {
-      websiteId,
-      startDate,
-    },
+    params,
+    pageParams,
   );
 }
