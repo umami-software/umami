@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "对比"
+      "value": "比较"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "数量"
+      "value": "统计"
     }
   ],
   "label.countries": [
@@ -236,7 +236,7 @@
   "label.current": [
     {
       "type": 0,
-      "value": "当前"
+      "value": "目前"
     }
   ],
   "label.current-password": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "最后一步"
+      "value": "结束步骤"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "首次访问 URL"
+      "value": "入口 URL"
     }
   ],
   "label.event": [
@@ -500,7 +500,7 @@
   "label.goals-description": [
     {
       "type": 0,
-      "value": "追踪您的页面浏览量和事件目标。"
+      "value": "跟踪页面浏览量和事件的目标。"
     }
   ],
   "label.greater-than": [
@@ -578,13 +578,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "轨迹"
+      "value": "用户浏览轨迹"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "了解用户如何浏览您网站的哪些页面。"
+      "value": "了解用户如何浏览网站。"
     }
   ],
   "label.language": [
@@ -882,19 +882,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "之前"
+      "value": "先前"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "前一周期"
+      "value": "上一时期"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "前一年"
+      "value": "上一年"
     }
   ],
   "label.profile": [
@@ -1098,7 +1098,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "第一步"
+      "value": "开始步骤"
     }
   ],
   "label.steps": [
@@ -1134,7 +1134,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "团队管理"
+      "value": "团队管理者"
     }
   ],
   "label.team-member": [
@@ -1450,7 +1450,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "收集数据"
+      "value": "已收集的数据"
     }
   ],
   "message.confirm-delete": [
