@@ -80,7 +80,7 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'subdivision1';
-  const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
+  const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
 
   return rawQuery(
     `

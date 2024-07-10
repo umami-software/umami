@@ -58,8 +58,8 @@ export const SESSION_COLUMNS = [
 
 export const FILTER_COLUMNS = {
   url: 'url_path',
-  entry: 'url_path',
-  exit: 'url_path',
+  entry: 'entry_url',
+  exit: 'exit_url',
   referrer: 'referrer_domain',
   host: 'hostname',
   title: 'page_title',

@@ -97,34 +97,26 @@ async function clickhouseQuery(
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
-  let entryExitQuery = '';
+  let columnAgg = column;
   let excludeDomain = '';
   if (column === 'referrer_domain') {
     excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
   }
 
-  if (type === 'entry' || type === 'exit') {
-    const aggregrate = type === 'entry' ? 'min' : 'max';
+  if (type === 'entry') {
+    columnAgg = `argMinMerge(${column})`;
+  }
 
-    entryExitQuery = `
-    JOIN (select visit_id,
-        ${aggregrate}(created_at) target_created_at
-    from website_event
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
-    group by visit_id) x
-    ON x.visit_id = website_event.visit_id
-        and x.target_created_at = website_event.created_at`;
+  if (type === 'exit') {
+    columnAgg = `argMaxMerge(${column})`;
   }
 
   const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
 
   return rawQuery(
     `
-    select ${column} x, countMerge(views) y
+    select ${column} x, sum(views) y
     from ${table} website_event
-    ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}

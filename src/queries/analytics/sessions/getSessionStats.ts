@@ -46,7 +46,7 @@ async function clickhouseQuery(
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
-  const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
+  const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
 
   return rawQuery(
     `
