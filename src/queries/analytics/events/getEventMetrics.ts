@@ -15,7 +15,7 @@ export async function getEventMetrics(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateQuery, parseFilters } = prisma;
+  const { rawQuery, getDateSQL, parseFilters } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
@@ -25,7 +25,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       event_name x,
-      ${getDateQuery('website_event.created_at', unit, timezone)} t,
+      ${getDateSQL('website_event.created_at', unit, timezone)} t,
       count(*) y
     from website_event
     ${joinSession}
@@ -45,7 +45,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateQuery, parseFilters } = clickhouse;
+  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
@@ -55,7 +55,7 @@ async function clickhouseQuery(
     `
     select
       event_name x,
-      ${getDateQuery('created_at', unit, timezone)} t,
+      ${getDateSQL('created_at', unit, timezone)} t,
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}

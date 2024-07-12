@@ -75,7 +75,7 @@ async function clickhouseQuery(
     `
     select
       ${column} x,
-      count(distinct session_id) y
+      uniq(session_id) y
       ${includeCountry ? ', country' : ''}
     from website_event
     where website_id = {websiteId:UUID}

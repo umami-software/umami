@@ -21,8 +21,12 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
     router.push(`/console/${value}`);
   }
 
-  function handleClick() {
-    window['umami'].track({ url: '/page-view', referrer: 'https://www.google.com' });
+  function handleRunScript() {
+    window['umami'].track(props => ({
+      ...props,
+      url: '/page-view',
+      referrer: 'https://www.google.com',
+    }));
     window['umami'].track('track-event-no-data');
     window['umami'].track('track-event-with-data', {
       test: 'test-data',
@@ -44,7 +48,7 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
     });
   }
 
-  function handleIdentifyClick() {
+  function handleRunIdentify() {
     window['umami'].identify({
       userId: 123,
       name: 'brian',
@@ -145,10 +149,10 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
             </div>
             <div className={styles.group}>
               <div className={styles.header}>Javascript events</div>
-              <Button id="manual-button" variant="primary" onClick={handleClick}>
+              <Button id="manual-button" variant="primary" onClick={handleRunScript}>
                 Run script
               </Button>
-              <Button id="manual-button" variant="primary" onClick={handleIdentifyClick}>
+              <Button id="manual-button" variant="primary" onClick={handleRunIdentify}>
                 Run identify
               </Button>
             </div>

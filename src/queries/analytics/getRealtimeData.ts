@@ -19,15 +19,15 @@ export async function getRealtimeData(
   const { startDate, timezone } = criteria;
   const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
   const [events, sessions, pageviews, sessionviews] = await Promise.all([
-    getEvents(websiteId, { startDate }),
-    getSessions(websiteId, { startDate }),
+    getEvents(websiteId, { startDate, timezone }, { pageSize: 10000 }),
+    getSessions(websiteId, { startDate, timezone }, { pageSize: 10000 }),
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),
   ]);
 
   const uniques = new Set();
 
-  const sessionStats = sessions.reduce(
+  const sessionStats = sessions.data.reduce(
     (obj: { visitors: any; countries: any }, session: { id: any; country: any }) => {
       const { countries, visitors } = obj;
       const { id, country } = session;
@@ -49,7 +49,7 @@ export async function getRealtimeData(
     },
   );
 
-  const eventStats = events.reduce(
+  const eventStats = events.data.reduce(
     (
       obj: { urls: any; referrers: any; events: any },
       event: { urlPath: any; referrerDomain: any },
@@ -81,9 +81,9 @@ export async function getRealtimeData(
       visitors: sessionviews,
     },
     totals: {
-      views: events.filter(e => !e.eventName).length,
+      views: events.data.filter(e => !e.eventName).length,
       visitors: uniques.size,
-      events: events.filter(e => e.eventName).length,
+      events: events.data.filter(e => e.eventName).length,
       countries: Object.keys(sessionStats.countries).length,
     },
     timestamp: Date.now(),
