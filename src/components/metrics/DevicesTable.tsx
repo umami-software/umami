@@ -1,6 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import { useFormat } from 'components/hooks';
 
 export function DevicesTable(props: MetricsTableProps) {
@@ -11,7 +11,9 @@ export function DevicesTable(props: MetricsTableProps) {
     return (
       <FilterLink id="device" value={labels[device] && device} label={formatDevice(device)}>
         <img
-          src={`${process.env.basePath}/images/device/${device?.toLowerCase() || 'unknown'}.png`}
+          src={`${process.env.basePath || ''}/images/device/${
+            device?.toLowerCase() || 'unknown'
+          }.png`}
           alt={device}
           width={16}
           height={16}

@@ -172,8 +172,8 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  ).then(a => {
-    return Object.values(a).map(a => {
+  ).then(result => {
+    return Object.values(result).map((a: any) => {
       return {
         date: a.date,
         day: Number(a.day),

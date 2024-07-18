@@ -27,6 +27,15 @@
   flex: 1;
 }
 
+.breadcrumb {
+  padding-top: 20px;
+}
+
+.icon {
+  color: var(--base700);
+  margin-inline-end: 1rem;
+}
+
 .actions {
   display: flex;
   justify-content: flex-end;

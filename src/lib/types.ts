@@ -10,6 +10,7 @@ import {
 } from './constants';
 import * as yup from 'yup';
 import { TIME_UNIT } from './date';
+import { Dispatch, SetStateAction } from 'react';
 
 type ObjectValues<T> = T[keyof T];
 
@@ -23,28 +24,7 @@ export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
-export interface WebsiteSearchFilter extends SearchFilter {
-  userId?: string;
-  teamId?: string;
-  includeTeams?: boolean;
-  onlyTeams?: boolean;
-}
-
-export interface UserSearchFilter extends SearchFilter {
-  teamId?: string;
-}
-
-export interface TeamSearchFilter extends SearchFilter {
-  userId?: string;
-}
-
-export interface ReportSearchFilter extends SearchFilter {
-  userId?: string;
-  websiteId?: string;
-  includeTeams?: boolean;
-}
-
-export interface SearchFilter {
+export interface PageParams {
   query?: string;
   page?: number;
   pageSize?: number;
@@ -52,8 +32,8 @@ export interface SearchFilter {
   sortDescending?: boolean;
 }
 
-export interface FilterResult<T> {
-  data: T[];
+export interface PageResult<T> {
+  data: T;
   count: number;
   page: number;
   pageSize: number;
@@ -61,8 +41,15 @@ export interface FilterResult<T> {
   sortDescending?: boolean;
 }
 
+export interface FilterQueryResult<T> {
+  result: PageResult<T>;
+  query: any;
+  params: PageParams;
+  setParams: Dispatch<SetStateAction<T | PageParams>>;
+}
+
 export interface DynamicData {
-  [key: string]: number | string | DynamicData | number[] | string[] | DynamicData[];
+  [key: string]: number | string | number[] | string[];
 }
 
 export interface Auth {
@@ -162,25 +149,13 @@ export interface WebsiteStats {
   totalTime: { value: number; change: number };
 }
 
-export interface RealtimeInit {
-  websites: Website[];
-  token: string;
-  data: RealtimeUpdate;
-}
-
-export interface RealtimeUpdate {
-  pageviews: any[];
-  sessions: any[];
-  events: any[];
-  timestamp: number;
-}
-
 export interface DateRange {
+  value: string;
   startDate: Date;
   endDate: Date;
-  value: string;
   unit?: TimeUnit;
-  selectedUnit?: { num: number; unit: TimeUnit };
+  num?: number;
+  offset?: number;
 }
 
 export interface QueryFilters {
@@ -193,6 +168,7 @@ export interface QueryFilters {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -201,6 +177,7 @@ export interface QueryFilters {
   city?: string;
   language?: string;
   event?: string;
+  search?: string;
 }
 
 export interface QueryOptions {
@@ -210,10 +187,37 @@ export interface QueryOptions {
 }
 
 export interface RealtimeData {
-  pageviews: any[];
-  sessions: any[];
+  countries: { [key: string]: number };
   events: any[];
+  pageviews: any[];
+  referrers: { [key: string]: number };
   timestamp: number;
-  countries?: any[];
-  visitors?: any[];
+  series: {
+    views: any[];
+    visitors: any[];
+  };
+  totals: {
+    views: number;
+    visitors: number;
+    events: number;
+    countries: number;
+  };
+  urls: { [key: string]: number };
+  visitors: any[];
+}
+
+export interface SessionData {
+  id: string;
+  websiteId: string;
+  visitId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }

@@ -1,11 +1,11 @@
 import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { EVENT_TYPE, SESSION_COLUMNS } from 'lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
-  ...args: [websiteId: string, column: string, filters: QueryFilters, limit?: number]
+  ...args: [websiteId: string, type: string, filters: QueryFilters, limit?: number, offset?: number]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,10 +15,12 @@ export async function getSessionMetrics(
 
 async function relationalQuery(
   websiteId: string,
-  column: string,
+  type: string,
   filters: QueryFilters,
-  limit: number = 100,
+  limit: number = 500,
+  offset: number = 0,
 ) {
+  const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
@@ -27,7 +29,7 @@ async function relationalQuery(
       eventType: EVENT_TYPE.pageView,
     },
     {
-      joinSession: SESSION_COLUMNS.includes(column),
+      joinSession: SESSION_COLUMNS.includes(type),
     },
   );
   const includeCountry = column === 'city' || column === 'subdivision1';
@@ -47,17 +49,21 @@ async function relationalQuery(
     group by 1 
     ${includeCountry ? ', 3' : ''}
     order by 2 desc
-    limit ${limit}`,
+    limit ${limit}
+    offset ${offset}
+    `,
     params,
   );
 }
 
 async function clickhouseQuery(
   websiteId: string,
-  column: string,
+  type: string,
   filters: QueryFilters,
-  limit: number = 100,
+  limit: number = 500,
+  offset: number = 0,
 ): Promise<{ x: string; y: number }[]> {
+  const column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
@@ -80,6 +86,7 @@ async function clickhouseQuery(
     ${includeCountry ? ', country' : ''}
     order by y desc
     limit ${limit}
+    offset ${offset}
     `,
     params,
   ).then(a => {

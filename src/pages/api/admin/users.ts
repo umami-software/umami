@@ -1,17 +1,17 @@
 import { canViewUsers } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
+import { NextApiRequestQueryBody, Role, PageParams, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUsers } from 'queries';
 import * as yup from 'yup';
 
-export interface UsersRequestQuery extends SearchFilter {}
+export interface UsersRequestQuery extends PageParams {}
 export interface UsersRequestBody {
+  userId: string;
   username: string;
   password: string;
-  id: string;
   role: Role;
 }
 
@@ -20,9 +20,9 @@ const schema = {
     ...pageInfo,
   }),
   POST: yup.object().shape({
+    userId: yup.string().uuid(),
     username: yup.string().max(255).required(),
     password: yup.string().required(),
-    id: yup.string().uuid(),
     role: yup
       .string()
       .matches(/admin|user|view-only/i)
@@ -42,9 +42,20 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, query, pageSize } = req.query;
-
-    const users = await getUsers({ page, query, pageSize: +pageSize || undefined });
+    const users = await getUsers(
+      {
+        include: {
+          _count: {
+            select: {
+              websiteUser: {
+                where: { deletedAt: null },
+              },
+            },
+          },
+        },
+      },
+      req.query,
+    );
 
     return ok(res, users);
   }

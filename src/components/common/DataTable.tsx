@@ -4,8 +4,8 @@ import { Banner, Loading, SearchField } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
+import { FilterQueryResult } from 'lib/types';
 import styles from './DataTable.module.css';
-import { FilterQueryResult } from 'components/hooks/useFilterQuery';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
@@ -64,7 +64,7 @@ export function DataTable({
         className={classNames(styles.body, { [styles.status]: isLoading || noResults || !hasData })}
       >
         {hasData ? (typeof children === 'function' ? children(result) : children) : null}
-        {isLoading && <Loading icon="dots" />}
+        {isLoading && <Loading position="page" />}
         {!isLoading && !hasData && !query && <Empty />}
         {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
       </div>

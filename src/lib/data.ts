@@ -1,19 +1,18 @@
-import { isValid, parseISO } from 'date-fns';
-import { DATA_TYPE } from './constants';
+import { DATA_TYPE, DATETIME_REGEX } from './constants';
 import { DynamicDataType } from './types';
 
 export function flattenJSON(
   eventData: { [key: string]: any },
-  keyValues: { key: string; value: any; dynamicDataType: DynamicDataType }[] = [],
+  keyValues: { key: string; value: any; dataType: DynamicDataType }[] = [],
   parentKey = '',
-): { key: string; value: any; dynamicDataType: DynamicDataType }[] {
+): { key: string; value: any; dataType: DynamicDataType }[] {
   return Object.keys(eventData).reduce(
     (acc, key) => {
       const value = eventData[key];
       const type = typeof eventData[key];
 
       // nested object
-      if (value && type === 'object' && !Array.isArray(value) && !isValid(value)) {
+      if (value && type === 'object' && !Array.isArray(value) && !isValidDateValue(value)) {
         flattenJSON(value, acc.keyValues, getKeyName(key, parentKey));
       } else {
         createKey(getKeyName(key, parentKey), value, acc);
@@ -25,51 +24,71 @@ export function flattenJSON(
   ).keyValues;
 }
 
+export function isValidDateValue(value: string) {
+  return typeof value === 'string' && DATETIME_REGEX.test(value);
+}
+
 export function getDataType(value: any): string {
   let type: string = typeof value;
 
-  if ((type === 'string' && isValid(value)) || isValid(parseISO(value))) {
+  if (isValidDateValue(value)) {
     type = 'date';
   }
 
   return type;
 }
 
-function createKey(key, value, acc: { keyValues: any[]; parentKey: string }) {
+export function getStringValue(value: string, dataType: number) {
+  if (dataType === DATA_TYPE.number) {
+    return parseFloat(value).toFixed(4);
+  }
+
+  if (dataType === DATA_TYPE.date) {
+    return new Date(value).toISOString();
+  }
+
+  return value;
+}
+
+function createKey(key: string, value: string, acc: { keyValues: any[]; parentKey: string }) {
   const type = getDataType(value);
 
-  let dynamicDataType = null;
+  let dataType = null;
 
   switch (type) {
     case 'number':
-      dynamicDataType = DATA_TYPE.number;
+      dataType = DATA_TYPE.number;
       break;
     case 'string':
-      dynamicDataType = DATA_TYPE.string;
+      dataType = DATA_TYPE.string;
       break;
     case 'boolean':
-      dynamicDataType = DATA_TYPE.boolean;
+      dataType = DATA_TYPE.boolean;
       value = value ? 'true' : 'false';
       break;
     case 'date':
-      dynamicDataType = DATA_TYPE.date;
+      dataType = DATA_TYPE.date;
       break;
     case 'object':
-      dynamicDataType = DATA_TYPE.array;
+      dataType = DATA_TYPE.array;
       value = JSON.stringify(value);
       break;
     default:
-      dynamicDataType = DATA_TYPE.string;
+      dataType = DATA_TYPE.string;
       break;
   }
 
-  acc.keyValues.push({ key, value, dynamicDataType });
+  acc.keyValues.push({ key, value, dataType });
 }
 
-function getKeyName(key, parentKey) {
+function getKeyName(key: string, parentKey: string) {
   if (!parentKey) {
     return key;
   }
 
   return `${parentKey}.${key}`;
+}
+
+export function objectToArray(obj: object) {
+  return Object.keys(obj).map(key => obj[key]);
 }

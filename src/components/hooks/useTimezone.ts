@@ -1,20 +1,18 @@
-import { useState, useCallback } from 'react';
-import { getTimezone } from 'lib/date';
-import { getItem, setItem } from 'next-basics';
+import { setItem } from 'next-basics';
 import { TIMEZONE_CONFIG } from 'lib/constants';
+import useStore, { setTimezone } from 'store/app';
+
+const selector = (state: { timezone: string }) => state.timezone;
 
 export function useTimezone() {
-  const [timezone, setTimezone] = useState(getItem(TIMEZONE_CONFIG) || getTimezone());
+  const timezone = useStore(selector);
 
-  const saveTimezone = useCallback(
-    value => {
-      setItem(TIMEZONE_CONFIG, value);
-      setTimezone(value);
-    },
-    [setTimezone],
-  );
+  const saveTimezone = (value: string) => {
+    setItem(TIMEZONE_CONFIG, value);
+    setTimezone(value);
+  };
 
-  return [timezone, saveTimezone];
+  return { timezone, saveTimezone };
 }
 
 export default useTimezone;

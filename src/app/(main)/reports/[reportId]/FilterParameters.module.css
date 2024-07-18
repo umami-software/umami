@@ -1,0 +1,40 @@
+.item {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.label {
+  color: var(--base800);
+  border: 1px solid var(--base300);
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.op {
+  color: var(--blue900);
+  background-color: var(--blue100);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.value {
+  color: var(--base900);
+  background-color: var(--base100);
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.edit {
+  margin-top: 20px;
+}

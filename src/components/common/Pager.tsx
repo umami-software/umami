@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Button, Icon, Icons } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 import styles from './Pager.module.css';
 
 export interface PagerProps {
@@ -23,6 +23,7 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
 
   const handlePageChange = (value: number) => {
     const nextPage = page + value;
+
     if (nextPage > 0 && nextPage <= maxPage) {
       onPageChange(nextPage);
     }

@@ -1,6 +1,5 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useUser from 'components/hooks/useUser';
+import { useMessages, useLogin } from 'components/hooks';
 import UserDeleteForm from './UserDeleteForm';
 
 export function UserDeleteButton({
@@ -13,11 +12,11 @@ export function UserDeleteButton({
   onDelete?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useUser();
+  const { user } = useLogin();
 
   return (
     <ModalTrigger disabled={userId === user?.id}>
-      <Button disabled={userId === user?.id}>
+      <Button disabled={userId === user?.id} variant="quiet">
         <Icon>
           <Icons.Trash />
         </Icon>

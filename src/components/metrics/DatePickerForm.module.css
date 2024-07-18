@@ -9,14 +9,10 @@
   justify-content: center;
 }
 
-.calendars > div {
-  width: 380px;
-}
-
 .calendars > div + div {
-  margin-left: 20px;
-  padding-left: 20px;
-  border-left: 1px solid var(--base300);
+  margin-inline-start: 20px;
+  padding-inline-start: 20px;
+  border-inline-start: 1px solid var(--base300);
 }
 
 .filter {
@@ -41,7 +37,7 @@
 
   .calendars > div + div {
     padding: 0;
-    margin-left: 0;
+    margin-inline-start: 0;
     margin-top: 20px;
     border: 0;
   }

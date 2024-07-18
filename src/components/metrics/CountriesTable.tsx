@@ -1,5 +1,5 @@
 import FilterLink from 'components/common/FilterLink';
-import useCountryNames from 'components/hooks/useCountryNames';
+import { useCountryNames } from 'components/hooks';
 import { useLocale, useMessages, useFormat } from 'components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 
@@ -27,7 +27,7 @@ export function CountriesTable({
         label={formatCountry(code)}
       >
         <img
-          src={`${process.env.basePath}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
+          src={`${process.env.basePath || ''}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
           alt={code}
         />
       </FilterLink>

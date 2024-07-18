@@ -1,22 +1,17 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import useMessages from 'components/hooks/useMessages';
-
-const names = {
-  'Mac OS': 'macOS',
-  'Chrome OS': 'ChromeOS',
-  'Sun OS': 'SunOS',
-};
+import { useMessages, useFormat } from 'components/hooks';
 
 export function OSTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
+  const { formatOS } = useFormat();
 
   function renderLink({ x: os }) {
     return (
-      <FilterLink id="os" value={names[os] || os}>
+      <FilterLink id="os" value={os} label={formatOS(os)}>
         <img
           src={`${process.env.basePath || ''}/images/os/${
-            os?.toLowerCase().replaceAll(/\W/g, '-') || 'unknown'
+            os?.toLowerCase()?.replaceAll(/\W/g, '-') || 'unknown'
           }.png`}
           alt={os}
           width={16}

@@ -20,9 +20,10 @@ export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_DATE_COMPARE = 'prev';
 
 export const REALTIME_RANGE = 30;
-export const REALTIME_INTERVAL = 5000;
+export const REALTIME_INTERVAL = 10000;
 
 export const FILTER_COMBINED = 'filter-combined';
 export const FILTER_RAW = 'filter-raw';
@@ -30,8 +31,18 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
-export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
+
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
+export const EVENT_COLUMNS = [
+  'url',
+  'entry',
+  'exit',
+  'referrer',
+  'title',
+  'query',
+  'event',
+  'host',
+];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -42,11 +53,15 @@ export const SESSION_COLUMNS = [
   'country',
   'region',
   'city',
+  'host',
 ];
 
 export const FILTER_COLUMNS = {
   url: 'url_path',
+  entry: 'url_path',
+  exit: 'url_path',
   referrer: 'referrer_domain',
+  host: 'hostname',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -94,6 +109,13 @@ export const OPERATORS = {
   after: 'af',
 } as const;
 
+export const OPERATOR_PREFIXES = {
+  [OPERATORS.equals]: '',
+  [OPERATORS.notEquals]: '!',
+  [OPERATORS.contains]: '~',
+  [OPERATORS.doesNotContain]: '!~',
+};
+
 export const DATA_TYPES = {
   [DATA_TYPE.string]: 'string',
   [DATA_TYPE.number]: 'number',
@@ -104,8 +126,12 @@ export const DATA_TYPES = {
 
 export const REPORT_TYPES = {
   funnel: 'funnel',
+  goals: 'goals',
   insights: 'insights',
   retention: 'retention',
+  utm: 'utm',
+  journey: 'journey',
+  revenue: 'revenue',
 } as const;
 
 export const REPORT_PARAMETERS = {
@@ -124,7 +150,9 @@ export const ROLES = {
   user: 'user',
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
+  teamManager: 'team-manager',
   teamMember: 'team-member',
+  teamViewOnly: 'team-view-only',
 } as const;
 
 export const PERMISSIONS = {
@@ -146,8 +174,25 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.teamCreate,
   ],
   [ROLES.viewOnly]: [],
-  [ROLES.teamOwner]: [PERMISSIONS.teamUpdate, PERMISSIONS.teamDelete],
-  [ROLES.teamMember]: [],
+  [ROLES.teamOwner]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.teamDelete,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamManager]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamMember]: [
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+  ],
+  [ROLES.teamViewOnly]: [],
 } as const;
 
 export const THEME_COLORS = {
@@ -181,7 +226,7 @@ export const THEME_COLORS = {
   },
 };
 
-export const EVENT_COLORS = [
+export const CHART_COLORS = [
   '#2680eb',
   '#9256d9',
   '#44b556',
@@ -203,13 +248,19 @@ export const UUID_REGEX =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 export const HOSTNAME_REGEX =
   /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
+export const IP_REGEX = /^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/;
+export const DATETIME_REGEX =
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
 
 export const DESKTOP_SCREEN_WIDTH = 1920;
 export const LAPTOP_SCREEN_WIDTH = 1024;
 export const MOBILE_SCREEN_WIDTH = 479;
 
 export const URL_LENGTH = 500;
+export const PAGE_TITLE_LENGTH = 500;
 export const EVENT_NAME_LENGTH = 50;
+
+export const UTM_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
 export const DESKTOP_OS = [
   'BeOS',
@@ -235,6 +286,14 @@ export const DESKTOP_OS = [
 ];
 
 export const MOBILE_OS = ['Amazon OS', 'Android OS', 'BlackBerry OS', 'iOS', 'Windows Mobile'];
+
+export const OS_NAMES = {
+  'Android OS': 'Android',
+  'Chrome OS': 'ChromeOS',
+  'Mac OS': 'macOS',
+  'Sun OS': 'SunOS',
+  'Windows 10': 'Windows 10/11',
+};
 
 export const BROWSERS = {
   android: 'Android',

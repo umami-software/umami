@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import { colord } from 'colord';
 import HoverTooltip from 'components/common/HoverTooltip';
 import { ISO_COUNTRIES, MAP_FILE } from 'lib/constants';
-import useTheme from 'components/hooks/useTheme';
-import useCountryNames from 'components/hooks/useCountryNames';
-import useLocale from 'components/hooks/useLocale';
-import useMessages from 'components/hooks/useMessages';
+import { useTheme } from 'components/hooks';
+import { useCountryNames } from 'components/hooks';
+import { useLocale } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import { formatLongNumber } from 'lib/format';
 import { percentFilter } from 'lib/filters';
 import styles from './WorldMap.module.css';
@@ -54,7 +54,7 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
     >
       <ComposableMap projection="geoMercator">
         <ZoomableGroup zoom={0.8} minZoom={0.7} center={[0, 40]}>
-          <Geographies geography={`${process.env.basePath}${MAP_FILE}`}>
+          <Geographies geography={`${process.env.basePath || ''}${MAP_FILE}`}>
             {({ geographies }) => {
               return geographies.map(geo => {
                 const code = ISO_COUNTRIES[geo.id];

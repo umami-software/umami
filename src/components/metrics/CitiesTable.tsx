@@ -1,9 +1,9 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
-import useLocale from 'components/hooks/useLocale';
-import useMessages from 'components/hooks/useMessages';
-import useCountryNames from 'components/hooks/useCountryNames';
+import { useLocale } from 'components/hooks';
+import { useMessages } from 'components/hooks';
+import { useCountryNames } from 'components/hooks';
 
 export function CitiesTable(props: MetricsTableProps) {
   const { locale } = useLocale();
@@ -20,7 +20,7 @@ export function CitiesTable(props: MetricsTableProps) {
       <FilterLink id="city" value={city} label={renderLabel(city, country)}>
         {country && (
           <img
-            src={`${process.env.basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
+            src={`${process.env.basePath || ''}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
             alt={country}
           />
         )}

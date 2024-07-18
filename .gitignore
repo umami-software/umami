@@ -22,6 +22,7 @@ node_modules
 # misc
 .DS_Store
 .idea
+.yarn
 *.iml
 *.log
 .vscode
@@ -35,6 +36,7 @@ yarn-error.log*
 # local env files
 .env
 .env.*
+*.env.*
 
 *.dev.yml
 

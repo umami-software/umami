@@ -7,18 +7,23 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import useApi from 'components/hooks/useApi';
+import { useApi } from 'components/hooks';
 import { DOMAIN_REGEX } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
-import { useContext } from 'react';
-import SettingsContext from '../SettingsContext';
+import { useMessages } from 'components/hooks';
 
-export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClose?: () => void }) {
+export function WebsiteAddForm({
+  teamId,
+  onSave,
+  onClose,
+}: {
+  teamId?: string;
+  onSave?: () => void;
+  onClose?: () => void;
+}) {
   const { formatMessage, labels, messages } = useMessages();
-  const { websitesUrl } = useContext(SettingsContext);
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
-    mutationFn: (data: any) => post(websitesUrl, data),
+    mutationFn: (data: any) => post('/websites', { ...data, teamId }),
   });
 
   const handleSubmit = async (data: any) => {
@@ -33,12 +38,17 @@ export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClo
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
+        <FormInput
+          data-test="input-name"
+          name="name"
+          rules={{ required: formatMessage(labels.required) }}
+        >
           <TextField autoComplete="off" />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.domain)}>
         <FormInput
+          data-test="input-domain"
           name="domain"
           rules={{
             required: formatMessage(labels.required),
@@ -49,7 +59,7 @@ export function WebsiteAddForm({ onSave, onClose }: { onSave?: () => void; onClo
         </FormInput>
       </FormRow>
       <FormButtons flex>
-        <SubmitButton variant="primary" disabled={false}>
+        <SubmitButton data-test="button-submit" variant="primary" disabled={false}>
           {formatMessage(labels.save)}
         </SubmitButton>
         {onClose && (
