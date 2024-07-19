@@ -51,17 +51,23 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.customEvent,
   });
 
+  const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
+
   return rawQuery(
     `
     select
       event_name x,
       ${getDateQuery('created_at', unit, timezone)} t,
       count(*) y
-    from website_event
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
+    from (
+      select arrayJoin(event_name) as event_name,
+        created_at
+      from ${table} website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
       ${filterQuery}
+    ) as g
     group by x, t
     order by t
     `,

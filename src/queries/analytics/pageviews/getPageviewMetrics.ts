@@ -100,7 +100,7 @@ async function clickhouseQuery(
   let columnAgg = column;
   let excludeDomain = '';
   if (column === 'referrer_domain') {
-    excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
+    excludeDomain = `and t != {websiteDomain:String} and t != ''`;
   }
 
   if (type === 'entry') {
@@ -111,17 +111,19 @@ async function clickhouseQuery(
     columnAgg = `argMaxMerge(${column})`;
   }
 
-  const table = unit === 'hour' ? 'website_event_metric_hourly' : 'website_event_metric_daily';
+  const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
 
   return rawQuery(
     `
-    select ${column} x, sum(views) y
-    from ${table} website_event
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
-      ${excludeDomain}
-      ${filterQuery}
+    select g.t as x,
+      count(*) as y
+    from (
+      select arrayJoin(${column}) as t
+      from ${table} website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+      ${filterQuery}) as g
     group by x
     order by y desc
     limit ${limit}
