@@ -13,7 +13,7 @@ export async function getPageviewStats(...args: [websiteId: string, filters: Que
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { getDateQuery, parseFilters, rawQuery } = prisma;
+  const { getDateSQL, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -22,7 +22,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-      ${getDateQuery('website_event.created_at', unit, timezone)} x,
+      ${getDateSQL('website_event.created_at', unit, timezone)} x,
       count(*) y
     from website_event
       ${joinSession}
@@ -41,7 +41,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { parseFilters, rawQuery, getDateStringQuery, getDateQuery } = clickhouse;
+  const { parseFilters, rawQuery, getDateStringSQL, getDateSQL } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -51,11 +51,11 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      ${getDateStringQuery('g.t', unit)} as x, 
+      ${getDateStringSQL('g.t', unit)} as x, 
       g.y as y
     from (
       select 
-        ${getDateQuery('created_at', unit, timezone)} as t,
+        ${getDateSQL('created_at', unit, timezone)} as t,
         sum(views) as y
       from ${table} website_event
       where website_id = {websiteId:UUID}

@@ -17,9 +17,9 @@ export async function getReport(reportId: string): Promise<Report> {
 
 export async function getReports(
   criteria: ReportFindManyArgs,
-  filters: PageParams = {},
+  pageParams: PageParams = {},
 ): Promise<PageResult<Report[]>> {
-  const { query } = filters;
+  const { query } = pageParams;
 
   const where: Prisma.ReportWhereInput = {
     ...criteria.where,
@@ -45,7 +45,7 @@ export async function getReports(
     ]),
   };
 
-  return prisma.pagedQuery('report', { ...criteria, where }, filters);
+  return prisma.pagedQuery('report', { ...criteria, where }, pageParams);
 }
 
 export async function getUserReports(

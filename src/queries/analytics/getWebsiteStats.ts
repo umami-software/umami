@@ -23,7 +23,7 @@ async function relationalQuery(
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
-  const { getTimestampDiffQuery, parseFilters, rawQuery } = prisma;
+  const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -36,7 +36,7 @@ async function relationalQuery(
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-      sum(${getTimestampDiffQuery('t.min_time', 't.max_time')}) as "totaltime"
+      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
     from (
       select
         website_event.session_id,
