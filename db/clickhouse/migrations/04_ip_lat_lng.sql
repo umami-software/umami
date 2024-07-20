@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "session" ADD COLUMN "ip" VARCHAR(40),
+ADD COLUMN "lat" FLOAT,
+ADD COLUMN "lng" FLOAT;

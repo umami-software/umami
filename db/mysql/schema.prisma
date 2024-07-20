@@ -19,10 +19,10 @@ model User {
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamp(0)
 
-  websiteUser       Website[] @relation("user")
-  websiteCreateUser Website[] @relation("createUser")
-  teamUser TeamUser[]
-  report   Report[]
+  websiteUser       Website[]  @relation("user")
+  websiteCreateUser Website[]  @relation("createUser")
+  teamUser          TeamUser[]
+  report            Report[]
 
   @@map("user")
 }
@@ -40,6 +40,9 @@ model Session {
   subdivision1 String?   @db.Char(20)
   subdivision2 String?   @db.VarChar(50)
   city         String?   @db.VarChar(50)
+  ip           String?   @db.VarChar(40)
+  lat          Float?
+  lng          Float?
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
 
   websiteEvent WebsiteEvent[]
@@ -57,6 +60,9 @@ model Session {
   @@index([websiteId, createdAt, country])
   @@index([websiteId, createdAt, subdivision1])
   @@index([websiteId, createdAt, city])
+  @@index([websiteId, createdAt, ip])
+  @@index([websiteId, createdAt, lat])
+  @@index([websiteId, createdAt, lng])
   @@map("session")
 }
 
@@ -174,8 +180,8 @@ model Team {
   updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt  DateTime? @map("deleted_at") @db.Timestamp(0)
 
-  website     Website[]
-  teamUser    TeamUser[]
+  website  Website[]
+  teamUser TeamUser[]
 
   @@index([accessCode])
   @@map("team")

@@ -84,11 +84,15 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     const country = safeDecodeURIComponent(req.headers['cf-ipcountry']);
     const subdivision1 = safeDecodeURIComponent(req.headers['cf-region-code']);
     const city = safeDecodeURIComponent(req.headers['cf-ipcity']);
+    const lat = safeDecodeURIComponent(req.headers['cf-iplatitude']);
+    const lng = safeDecodeURIComponent(req.headers['cf-iplongitude']);
 
     return {
       country,
       subdivision1: getRegionCode(country, subdivision1),
       city,
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
     };
   }
 
@@ -99,11 +103,15 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     const country = safeDecodeURIComponent(req.headers['x-vercel-ip-country']);
     const subdivision1 = safeDecodeURIComponent(req.headers['x-vercel-ip-country-region']);
     const city = safeDecodeURIComponent(req.headers['x-vercel-ip-city']);
+    const lat = safeDecodeURIComponent(req.headers['x-vercel-ip-latitude']);
+    const lng = safeDecodeURIComponent(req.headers['x-vercel-ip-longitude']);
 
     return {
       country,
       subdivision1: getRegionCode(country, subdivision1),
       city,
+      lat: parseFloat(lat),
+      lng: parseFloat(lng),
     };
   }
 
@@ -121,12 +129,16 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     const subdivision1 = result.subdivisions?.[0]?.iso_code;
     const subdivision2 = result.subdivisions?.[1]?.names?.en;
     const city = result.city?.names?.en;
+    const lat = result.location?.latitude;
+    const lng = result.location?.longitude;
 
     return {
       country,
       subdivision1: getRegionCode(country, subdivision1),
       subdivision2,
       city,
+      lat,
+      lng,
     };
   }
 
@@ -141,9 +153,23 @@ export async function getClientInfo(req: NextApiRequestCollect) {
   const subdivision1 = location?.subdivision1;
   const subdivision2 = location?.subdivision2;
   const city = location?.city;
+  const lat = location?.lat;
+  const lng = location?.lng;
   const browser = browserName(userAgent);
   const os = detectOS(userAgent) as string;
   const device = getDevice(req.body?.payload?.screen, os);
 
-  return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
+  return {
+    userAgent,
+    browser,
+    os,
+    ip,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+    device,
+    lat,
+    lng,
+  };
 }

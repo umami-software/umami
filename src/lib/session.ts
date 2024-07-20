@@ -36,8 +36,19 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
     throw new Error(`Website not found: ${websiteId}.`);
   }
 
-  const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
-    await getClientInfo(req);
+  const {
+    userAgent,
+    browser,
+    os,
+    ip,
+    country,
+    subdivision1,
+    subdivision2,
+    city,
+    device,
+    lat,
+    lng,
+  } = await getClientInfo(req);
 
   const sessionId = uuid(websiteId, hostname, ip, userAgent);
   const visitId = uuid(sessionId, visitSalt());
@@ -58,6 +69,9 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
       subdivision1,
       subdivision2,
       city,
+      ip,
+      lat,
+      lng,
     };
   }
 
@@ -80,6 +94,9 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
         subdivision1,
         subdivision2,
         city,
+        ip,
+        lat,
+        lng,
       });
     } catch (e: any) {
       if (!e.message.toLowerCase().includes('unique constraint')) {
