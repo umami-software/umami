@@ -100,7 +100,8 @@ ORDER BY (
     website_id,
     toStartOfHour(created_at),
     cityHash64(visit_id),
-    visit_id
+    visit_id,
+    event_type
 )
 SAMPLE BY cityHash64(visit_id)
 TTL created_at + INTERVAL 10 DAY;
@@ -200,7 +201,8 @@ ORDER BY (
     website_id,
     toStartOfDay(created_at),
     cityHash64(visit_id),
-    visit_id
+    visit_id,
+    event_type
 )
 SAMPLE BY cityHash64(visit_id);
 
@@ -265,4 +267,4 @@ GROUP BY website_id,
     subdivision1,
     city,
     event_type,
-    timestamp);        
+    timestamp);
