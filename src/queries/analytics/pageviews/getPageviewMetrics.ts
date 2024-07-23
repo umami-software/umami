@@ -100,18 +100,25 @@ async function clickhouseQuery(
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
-  let columnAgg = column;
   let excludeDomain = '';
+  let groupByQuery = '';
+
   if (column === 'referrer_domain') {
     excludeDomain = `and t != {websiteDomain:String} and t != ''`;
   }
 
+  let columnQuery = `arrayJoin(${column})`;
+
   if (type === 'entry') {
-    columnAgg = `argMinMerge(${column})`;
+    columnQuery = `visit_id x, argMinMerge(${column})`;
   }
 
   if (type === 'exit') {
-    columnAgg = `argMaxMerge(${column})`;
+    columnQuery = `visit_id x, argMaxMerge(${column})`;
+  }
+
+  if (type === 'entry' || type === 'exit') {
+    groupByQuery = 'group by x';
   }
 
   const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
@@ -121,12 +128,13 @@ async function clickhouseQuery(
     select g.t as x,
       count(*) as y
     from (
-      select arrayJoin(${column}) as t
+      select ${columnQuery} as t
       from ${table} website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
-      ${filterQuery}) as g
+      ${filterQuery}
+      ${groupByQuery}) as g
     group by x
     order by y desc
     limit ${limit}
