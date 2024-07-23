@@ -133,7 +133,8 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
-      ${filterQuery}
+        ${excludeDomain}
+        ${filterQuery}
       ${groupByQuery}) as g
     group by x
     order by y desc
