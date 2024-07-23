@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { Loading } from 'react-basics';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
 import { getDateArray } from 'lib/date';
@@ -50,10 +49,6 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
       }),
     };
   }, [data, startDate, endDate, unit]);
-
-  if (isLoading) {
-    return <Loading icon="dots" />;
-  }
 
   return (
     <BarChart
