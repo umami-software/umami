@@ -61,8 +61,8 @@ function getDateFormat(date: Date, format?: string): string {
 }
 
 async function sendMessage(
-  message: { [key: string]: string | number },
   topic: string,
+  message: { [key: string]: string | number },
 ): Promise<RecordMetadata[]> {
   await connect();
 
@@ -77,7 +77,7 @@ async function sendMessage(
   });
 }
 
-async function sendMessages(messages: { [key: string]: string | number }[], topic: string) {
+async function sendMessages(topic: string, messages: { [key: string]: string | number }[]) {
   await connect();
 
   await producer.send({

@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "比较"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "统计"
     }
   ],
   "label.countries": [
@@ -236,7 +236,7 @@
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "目前"
     }
   ],
   "label.current-password": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "结束步骤"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "入口 URL"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "退出 URL"
     }
   ],
   "label.false": [
@@ -488,19 +488,19 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "目标"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "目标"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "跟踪页面浏览量和事件的目标。"
     }
   ],
   "label.greater-than": [
@@ -518,13 +518,13 @@
   "label.host": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "主机"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "主机"
     }
   ],
   "label.insights": [
@@ -578,13 +578,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "用户浏览轨迹"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "了解用户如何浏览网站。"
     }
   ],
   "label.language": [
@@ -692,7 +692,7 @@
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "管理者"
     }
   ],
   "label.max": [
@@ -798,7 +798,7 @@
   "label.ok": [
     {
       "type": 0,
-      "value": "OK"
+      "value": "好的"
     }
   ],
   "label.os": [
@@ -882,19 +882,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "先前"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "上一时期"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "上一年"
     }
   ],
   "label.profile": [
@@ -906,7 +906,7 @@
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "属性"
     }
   ],
   "label.queries": [
@@ -1098,7 +1098,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "开始步骤"
     }
   ],
   "label.steps": [
@@ -1134,7 +1134,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "团队管理者"
     }
   ],
   "label.team-member": [
@@ -1450,7 +1450,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "已收集的数据"
     }
   ],
   "message.confirm-delete": [

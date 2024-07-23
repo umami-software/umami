@@ -79,7 +79,7 @@ export function Chart({
   };
 
   const updateChart = (data: any) => {
-    if (data.datasets.length === chart.current.data.datasets.length) {
+    if ((data?.datasets?.length || 0) === chart.current.data.datasets.length) {
       chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
         if (data?.datasets[index]) {
           dataset.data = data?.datasets[index]?.data;
