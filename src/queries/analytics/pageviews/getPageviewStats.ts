@@ -47,6 +47,9 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
 
+  const table = unit === 'minute' ? 'website_event' : 'website_event_stats_hourly';
+  const columnQuery = unit === 'minute' ? 'count(*)' : 'sum(views)';
+
   return rawQuery(
     `
     select
@@ -55,8 +58,8 @@ async function clickhouseQuery(
     from (
       select 
         ${getDateSQL('created_at', unit, timezone)} as t,
-        sum(views) as y
-      from website_event_stats_hourly website_event
+        ${columnQuery} as y
+      from ${table} website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
