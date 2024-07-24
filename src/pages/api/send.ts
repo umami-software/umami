@@ -1,10 +1,5 @@
 import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
-import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret, visitSalt, uuid } from 'lib/crypto';
-import { getIpAddress } from 'lib/detect';
-import { useCors, useSession, useValidate } from 'lib/middleware';
-import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   badRequest,
@@ -15,6 +10,11 @@ import {
   safeDecodeURI,
   send,
 } from 'next-basics';
+import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
+import { secret, visitSalt, uuid } from 'lib/crypto';
+import { getIpAddress } from 'lib/detect';
+import { useCors, useSession, useValidate } from 'lib/middleware';
+import { CollectionType, YupRequest } from 'lib/types';
 import { saveEvent, saveSessionData } from 'queries';
 import * as yup from 'yup';
 
@@ -41,7 +41,6 @@ export interface NextApiRequestCollect extends NextApiRequest {
     id: string;
     websiteId: string;
     visitId: string;
-    ownerId: string;
     hostname: string;
     browser: string;
     os: string;
@@ -88,7 +87,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   if (req.method === 'POST') {
     if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
-      return ok(res);
+      return ok(res, { beep: 'boop' });
     }
 
     await useValidate(schema, req, res);
@@ -104,14 +103,14 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     await useSession(req, res);
 
     const session = req.session;
+    const iat = Math.floor(new Date().getTime() / 1000);
 
     // expire visitId after 30 minutes
-    session.visitId =
-      !!session.iat && Math.floor(new Date().getTime() / 1000) - session.iat > 1800
-        ? uuid(session.id, visitSalt())
-        : session.visitId;
+    if (session.iat && iat - session.iat > 1800) {
+      session.visitId = uuid(session.id, visitSalt());
+    }
 
-    session.iat = Math.floor(new Date().getTime() / 1000);
+    session.iat = iat;
 
     if (type === COLLECTION_TYPE.event) {
       // eslint-disable-next-line prefer-const
@@ -145,7 +144,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventData: data,
         ...session,
         sessionId: session.id,
-        visitId: session.visitId,
       });
     }
 

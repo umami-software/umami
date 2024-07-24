@@ -4,12 +4,12 @@ import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { QueryFilters, QueryOptions } from './types';
 import { OPERATORS } from './constants';
-import { loadWebsite } from './load';
+import { fetchWebsite } from './load';
 import { maxDate } from './date';
 import { filtersToArray } from './params';
 
 export const CLICKHOUSE_DATE_FORMATS = {
-  minute: '%Y-%m-%d %H:%M:00',
+  minute: '%Y-%m-%d %H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',
   month: '%Y-%m-01',
@@ -106,7 +106,7 @@ function getFilterParams(filters: QueryFilters = {}) {
 }
 
 async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
-  const website = await loadWebsite(websiteId);
+  const website = await fetchWebsite(websiteId);
 
   return {
     filterQuery: getFilterQuery(filters, options),
@@ -119,7 +119,10 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
   };
 }
 
-async function rawQuery(query: string, params: Record<string, unknown> = {}): Promise<unknown> {
+async function rawQuery<T = unknown>(
+  query: string,
+  params: Record<string, unknown> = {},
+): Promise<T> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', query);
     log('PARAMETERS:\n', params);

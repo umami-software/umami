@@ -35,6 +35,12 @@
       "value": "Ajouter un membre"
     }
   ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Ajouter une étape"
+    }
+  ],
   "label.add-website": [
     {
       "type": 0,
@@ -75,12 +81,6 @@
     {
       "type": 0,
       "value": "Moyenne"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Temps de visite moyen"
     }
   ],
   "label.back": [
@@ -149,6 +149,12 @@
       "value": "Réinitialiser"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Compare"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -171,6 +177,12 @@
     {
       "type": 0,
       "value": "Continuer"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Count"
     }
   ],
   "label.countries": [
@@ -219,6 +231,12 @@
     {
       "type": 0,
       "value": "Crée par"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Current"
     }
   ],
   "label.current-password": [
@@ -377,6 +395,18 @@
       "value": "Activer l'URL de partage"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Entry URL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
@@ -393,6 +423,12 @@
     {
       "type": 0,
       "value": "Évènements"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
     }
   ],
   "label.false": [
@@ -449,6 +485,24 @@
       "value": "Suivi des conversions et des taux d'abandons."
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Goal"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Goals"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Track your goals for pageviews and events."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -459,6 +513,18 @@
     {
       "type": 0,
       "value": "Supérieur ou égal à"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -509,6 +575,18 @@
       "value": "Rejoindre une équipe"
     }
   ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Understand how users nagivate through your website."
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -545,6 +623,16 @@
     {
       "type": 0,
       "value": " dernières heures"
+    }
+  ],
+  "label.last-months": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " derniers mois"
     }
   ],
   "label.leave": [
@@ -587,6 +675,12 @@
     {
       "type": 0,
       "value": "Gérer"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
     }
   ],
   "label.max": [
@@ -671,7 +765,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "enregistrement"
             }
           ]
         },
@@ -679,7 +773,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "enregistrements"
             }
           ]
         }
@@ -765,10 +859,34 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Previous"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Previous period"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Previous year"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profil"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
     }
   ],
   "label.queries": [
@@ -876,7 +994,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Mesure de l'atractivité du site en visualisant les taux d'utilisateurs qui reviennent."
+      "value": "Mesure de l'attractivité du site en visualisant les taux de visiteurs qui reviennent."
     }
   ],
   "label.role": [
@@ -957,6 +1075,18 @@
       "value": "Journée"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Start Step"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Étapes"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -979,6 +1109,12 @@
     {
       "type": 0,
       "value": "ID d'équipe"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team manager"
     }
   ],
   "label.team-member": [
@@ -1131,6 +1267,12 @@
       "value": "Sans titre"
     }
   ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Modifier"
+    }
+  ],
   "label.url": [
     {
       "type": 0,
@@ -1159,6 +1301,18 @@
     {
       "type": 0,
       "value": "Utilisateurs"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Suivi de campagnes via les paramètres UTM."
     }
   ],
   "label.value": [
@@ -1191,10 +1345,28 @@
       "value": "Vues"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Vues par visite"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Temps de visite moyen"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Visiteurs"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visites"
     }
   ],
   "label.website": [
@@ -1277,6 +1449,12 @@
     {
       "type": 0,
       "value": " actuellement"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
     }
   ],
   "message.confirm-delete": [
@@ -1544,7 +1722,7 @@
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "Évènement déclenché"
     }
   ],
   "message.user-deleted": [

@@ -1,43 +1,91 @@
-import { getSessions, getEvents } from 'queries/index';
-import { EVENT_TYPE } from 'lib/constants';
+import { getSessions, getEvents, getPageviewStats, getSessionStats } from 'queries/index';
 
-export async function getRealtimeData(websiteId: string, startDate: Date) {
-  const [pageviews, sessions, events] = await Promise.all([
-    getEvents(websiteId, startDate, EVENT_TYPE.pageView),
-    getSessions(websiteId, startDate),
-    getEvents(websiteId, startDate, EVENT_TYPE.customEvent),
+const MAX_SIZE = 50;
+
+function increment(data: object, key: string) {
+  if (key) {
+    if (!data[key]) {
+      data[key] = 1;
+    } else {
+      data[key] += 1;
+    }
+  }
+}
+
+export async function getRealtimeData(
+  websiteId: string,
+  criteria: { startDate: Date; timezone: string },
+) {
+  const { startDate, timezone } = criteria;
+  const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
+  const [events, sessions, pageviews, sessionviews] = await Promise.all([
+    getEvents(websiteId, { startDate }),
+    getSessions(websiteId, { startDate }),
+    getPageviewStats(websiteId, filters),
+    getSessionStats(websiteId, filters),
   ]);
 
-  const decorate = (type: string, data: any[]) => {
-    return data.map((values: { [key: string]: any }) => ({
-      ...values,
-      __type: type,
-      timestamp: values.timestamp ? values.timestamp * 1000 : new Date(values.createdAt).getTime(),
-    }));
-  };
+  const uniques = new Set();
 
-  const set = new Set();
-  const uniques = (type: string, data: any[]) => {
-    return data.reduce((arr, values: { [key: string]: any }) => {
-      if (!set.has(values.id)) {
-        set.add(values.id);
+  const sessionStats = sessions.reduce(
+    (obj: { visitors: any; countries: any }, session: { id: any; country: any }) => {
+      const { countries, visitors } = obj;
+      const { id, country } = session;
 
-        return arr.concat({
-          ...values,
-          __type: type,
-          timestamp: values.timestamp
-            ? values.timestamp * 1000
-            : new Date(values.createdAt).getTime(),
-        });
+      if (!uniques.has(id)) {
+        uniques.add(id);
+        increment(countries, country);
+
+        if (visitors.length < MAX_SIZE) {
+          visitors.push(session);
+        }
       }
-      return arr;
-    }, []);
-  };
+
+      return obj;
+    },
+    {
+      countries: {},
+      visitors: [],
+    },
+  );
+
+  const eventStats = events.reduce(
+    (
+      obj: { urls: any; referrers: any; events: any },
+      event: { urlPath: any; referrerDomain: any },
+    ) => {
+      const { urls, referrers, events } = obj;
+      const { urlPath, referrerDomain } = event;
+
+      increment(urls, urlPath);
+      increment(referrers, referrerDomain);
+
+      if (events.length < MAX_SIZE) {
+        events.push(event);
+      }
+
+      return obj;
+    },
+    {
+      urls: {},
+      referrers: {},
+      events: [],
+    },
+  );
 
   return {
-    pageviews: decorate('pageview', pageviews),
-    sessions: uniques('session', sessions),
-    events: decorate('event', events),
+    ...sessionStats,
+    ...eventStats,
+    series: {
+      views: pageviews,
+      visitors: sessionviews,
+    },
+    totals: {
+      views: events.filter(e => !e.eventName).length,
+      visitors: uniques.size,
+      events: events.filter(e => e.eventName).length,
+      countries: Object.keys(sessionStats.countries).length,
+    },
     timestamp: Date.now(),
   };
 }

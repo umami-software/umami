@@ -3,9 +3,9 @@ import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
 import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
-import { loadWebsite } from './load';
+import { fetchWebsite } from './load';
 import { maxDate } from './date';
-import { QueryFilters, QueryOptions, SearchFilter } from './types';
+import { QueryFilters, QueryOptions, PageParams } from './types';
 import { filtersToArray } from './params';
 
 const MYSQL_DATE_FORMATS = {
@@ -152,7 +152,7 @@ async function parseFilters(
   filters: QueryFilters = {},
   options: QueryOptions = {},
 ) {
-  const website = await loadWebsite(websiteId);
+  const website = await fetchWebsite(websiteId);
   const joinSession = Object.keys(filters).find(key => SESSION_COLUMNS.includes(key));
 
   return {
@@ -191,7 +191,7 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-async function pagedQuery<T>(model: string, criteria: T, filters: SearchFilter) {
+async function pagedQuery<T>(model: string, criteria: T, filters: PageParams) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 

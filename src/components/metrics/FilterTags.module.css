@@ -2,6 +2,12 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  background: var(--base75);
+  padding: 10px 20px;
+  border: 1px solid var(--base400);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .label {
@@ -12,12 +18,13 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 10px;
-  background: var(--base75);
+  gap: 4px;
+  font-size: 12px;
+  background: var(--base50);
   border: 1px solid var(--base400);
   border-radius: var(--border-radius);
   box-shadow: 1px 1px 1px var(--base500);
-  padding: 8px 16px;
+  padding: 6px 14px;
   cursor: pointer;
 }
 
@@ -27,6 +34,8 @@
 
 .close {
   font-weight: 700;
+  align-self: center;
+  margin-left: auto;
 }
 
 .name,

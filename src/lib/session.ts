@@ -1,28 +1,13 @@
-import { isUuid, secret, uuid, visitSalt } from 'lib/crypto';
+import { secret, uuid, visitSalt } from 'lib/crypto';
 import { getClientInfo } from 'lib/detect';
 import { parseToken } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
 import { createSession } from 'queries';
-import cache from './cache';
 import clickhouse from './clickhouse';
-import { loadSession, loadWebsite } from './load';
+import { fetchSession, fetchWebsite } from './load';
+import { SessionData } from 'lib/types';
 
-export async function findSession(req: NextApiRequestCollect): Promise<{
-  id: any;
-  websiteId: string;
-  visitId: string;
-  hostname: string;
-  browser: string;
-  os: any;
-  device: string;
-  screen: string;
-  language: string;
-  country: any;
-  subdivision1: any;
-  subdivision2: any;
-  city: any;
-  ownerId: string;
-}> {
+export async function getSession(req: NextApiRequestCollect): Promise<SessionData> {
   const { payload } = req.body;
 
   if (!payload) {
@@ -35,9 +20,8 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   if (cacheToken) {
     const result = await parseToken(cacheToken, secret());
 
+    // Token is valid
     if (result) {
-      await checkUserBlock(result?.ownerId);
-
       return result;
     }
   }
@@ -45,27 +29,15 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
   // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
 
-  // Check the hostname value for legality to eliminate dirty data
-  const validHostnameRegex = /^[\w-.]+$/;
-  if (!validHostnameRegex.test(hostname)) {
-    throw new Error('Invalid hostname.');
-  }
-
-  if (!isUuid(websiteId)) {
-    throw new Error('Invalid website ID.');
-  }
-
   // Find website
-  const website = await loadWebsite(websiteId);
+  const website = await fetchWebsite(websiteId);
 
   if (!website) {
     throw new Error(`Website not found: ${websiteId}.`);
   }
 
-  await checkUserBlock(website.userId);
-
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
-    await getClientInfo(req, payload);
+    await getClientInfo(req);
 
   const sessionId = uuid(websiteId, hostname, ip, userAgent);
   const visitId = uuid(sessionId, visitSalt());
@@ -78,7 +50,7 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
       visitId,
       hostname,
       browser,
-      os: os as any,
+      os,
       device,
       screen,
       language,
@@ -86,12 +58,11 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
       subdivision1,
       subdivision2,
       city,
-      ownerId: website.userId,
     };
   }
 
   // Find session
-  let session = await loadSession(sessionId);
+  let session = await fetchSession(sessionId);
 
   // Create a session if not found
   if (!session) {
@@ -117,13 +88,5 @@ export async function findSession(req: NextApiRequestCollect): Promise<{
     }
   }
 
-  return { ...session, ownerId: website.userId, visitId: visitId };
-}
-
-async function checkUserBlock(userId: string) {
-  if (process.env.ENABLE_BLOCKER && (await cache.fetchUserBlock(userId))) {
-    await cache.incrementUserBlock(userId);
-
-    throw new Error('Usage Limit.');
-  }
+  return { ...session, visitId: visitId };
 }

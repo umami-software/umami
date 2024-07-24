@@ -43,10 +43,8 @@ async function relationalQuery(
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
       from website_event
-      join website 
-        on website_event.website_id = website.website_id
         ${joinSession}
-      where website.website_id = {{websiteId::uuid}}
+      where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
         ${filterQuery}
@@ -94,13 +92,13 @@ async function clickhouseQuery(
     `,
     params,
   ).then(result => {
-    return Object.values(result).map(n => {
+    return Object.values(result).map((a: any) => {
       return {
-        pageviews: Number(n.pageviews),
-        visitors: Number(n.visitors),
-        visits: Number(n.visits),
-        bounces: Number(n.bounces),
-        totaltime: Number(n.totaltime),
+        pageviews: Number(a.pageviews),
+        visitors: Number(a.visitors),
+        visits: Number(a.visits),
+        bounces: Number(a.bounces),
+        totaltime: Number(a.totaltime),
       };
     });
   });

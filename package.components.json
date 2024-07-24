@@ -11,6 +11,7 @@
     "@tanstack/react-query": "^4.33.0",
     "classnames": "^2.3.1",
     "colord": "^2.9.2",
+    "date-fns-tz": "^1.1.4",
     "immer": "^9.0.12",
     "moment-timezone": "^0.5.35",
     "next": "^13.4.0",

@@ -125,7 +125,7 @@ model EventData {
   id             String    @id() @map("event_data_id") @db.Uuid
   websiteId      String    @map("website_id") @db.Uuid
   websiteEventId String    @map("website_event_id") @db.Uuid
-  eventKey       String    @map("event_key") @db.VarChar(500)
+  dataKey        String    @map("data_key") @db.VarChar(500)
   stringValue    String?   @map("string_value") @db.VarChar(500)
   numberValue    Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue      DateTime? @map("date_value") @db.Timestamptz(6)
@@ -139,7 +139,7 @@ model EventData {
   @@index([websiteId])
   @@index([websiteEventId])
   @@index([websiteId, createdAt])
-  @@index([websiteId, createdAt, eventKey])
+  @@index([websiteId, createdAt, dataKey])
   @@map("event_data")
 }
 
@@ -147,13 +147,12 @@ model SessionData {
   id          String    @id() @map("session_data_id") @db.Uuid
   websiteId   String    @map("website_id") @db.Uuid
   sessionId   String    @map("session_id") @db.Uuid
-  sessionKey  String    @map("session_key") @db.VarChar(500)
+  dataKey    String    @map("data_key") @db.VarChar(500)
   stringValue String?   @map("string_value") @db.VarChar(500)
   numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue   DateTime? @map("date_value") @db.Timestamptz(6)
   dataType    Int       @map("data_type") @db.Integer
   createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
-  deletedAt   DateTime? @default(now()) @map("deleted_at") @db.Timestamptz(6)
 
   website Website @relation(fields: [websiteId], references: [id])
   session Session @relation(fields: [sessionId], references: [id])
@@ -161,6 +160,8 @@ model SessionData {
   @@index([createdAt])
   @@index([websiteId])
   @@index([sessionId])
+  @@index([sessionId, createdAt])
+  @@index([websiteId, createdAt, dataKey])
   @@map("session_data")
 }
 

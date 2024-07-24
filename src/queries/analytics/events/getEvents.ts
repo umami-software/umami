@@ -1,31 +1,43 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
+import { QueryFilters } from 'lib/types';
 
-export function getEvents(...args: [websiteId: string, startDate: Date, eventType: number]) {
+export function getEvents(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-function relationalQuery(websiteId: string, startDate: Date, eventType: number) {
-  return prisma.client.websiteEvent.findMany({
-    where: {
-      websiteId,
-      eventType,
-      createdAt: {
-        gte: startDate,
+function relationalQuery(websiteId: string, filters: QueryFilters) {
+  const { startDate } = filters;
+
+  return prisma.client.websiteEvent
+    .findMany({
+      where: {
+        websiteId,
+        createdAt: {
+          gte: startDate,
+        },
       },
-    },
-    orderBy: {
-      createdAt: 'asc',
-    },
-  });
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
+    .then(a => {
+      return Object.values(a).map(a => {
+        return {
+          ...a,
+          timestamp: new Date(a.createdAt).getTime() / 1000,
+        };
+      });
+    });
 }
 
-function clickhouseQuery(websiteId: string, startDate: Date, eventType: number) {
+function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { rawQuery } = clickhouse;
+  const { startDate } = filters;
 
   return rawQuery(
     `
@@ -41,13 +53,11 @@ function clickhouseQuery(websiteId: string, startDate: Date, eventType: number) 
     from website_event
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}
-      and event_type = {eventType:UInt32}
-    order by created_at asc
+    order by created_at desc
     `,
     {
       websiteId,
       startDate,
-      eventType,
     },
   );
 }

@@ -7,7 +7,7 @@
     document,
     history,
   } = window;
-  const { hostname, pathname, search } = location;
+  const { hostname, href } = location;
   const { currentScript, referrer } = document;
 
   if (!currentScript) return;
@@ -52,6 +52,12 @@
   };
 
   const parseURL = url => {
+    try {
+      const { pathname, search } = new URL(url);
+      url = pathname + search;
+    } catch {
+      /* empty */
+    }
     return excludeSearch ? url.split('?')[0] : url;
   };
 
@@ -187,17 +193,21 @@
   /* Tracking functions */
 
   const trackingDisabled = () =>
+    !website ||
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (domain && !domains.includes(hostname));
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
+
     const headers = {
       'Content-Type': 'application/json',
     };
+
     if (typeof cache !== 'undefined') {
       headers['x-umami-cache'] = cache;
     }
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -238,7 +248,7 @@
     };
   }
 
-  let currentUrl = `${pathname}${search}`;
+  let currentUrl = parseURL(href);
   let currentRef = referrer !== hostname ? referrer : '';
   let title = document.title;
   let cache;

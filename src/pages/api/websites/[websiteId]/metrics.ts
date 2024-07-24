@@ -17,6 +17,7 @@ export interface WebsiteMetricsRequestQuery {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -40,6 +41,7 @@ const schema = {
     referrer: yup.string(),
     title: yup.string(),
     query: yup.string(),
+    host: yup.string(),
     os: yup.string(),
     browser: yup.string(),
     device: yup.string(),
@@ -109,7 +111,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(websiteId, column, filters, limit, offset);
+      const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
 
       return ok(res, data);
     }

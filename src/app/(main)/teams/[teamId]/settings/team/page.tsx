@@ -1,3 +1,10 @@
-import Page from 'app/(main)/settings/teams/[teamId]/team/page';
+import { Metadata } from 'next';
+import TeamPage from './TeamPage';
 
-export default Page;
+export default function ({ params: { teamId } }) {
+  return <TeamPage teamId={teamId} />;
+}
+
+export const metadata: Metadata = {
+  title: 'Teams Details',
+};
