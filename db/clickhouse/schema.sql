@@ -100,10 +100,10 @@ ENGINE = AggregatingMergeTree
 PARTITION BY toYYYYMM(created_at)
 ORDER BY (
     website_id,
+    event_type,
     toStartOfHour(created_at),
     cityHash64(visit_id),
-    visit_id,
-    event_type
+    visit_id
 )
 SAMPLE BY cityHash64(visit_id);
 
