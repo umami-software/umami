@@ -64,7 +64,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, type, limit, offset, search, unit } = req.query;
+  const { websiteId, type, limit, offset, search } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -89,7 +89,7 @@ export default async (
     }
 
     if (SESSION_COLUMNS.includes(type)) {
-      const data = await getSessionMetrics(websiteId, type, filters, limit, offset, unit as string);
+      const data = await getSessionMetrics(websiteId, type, filters, limit, offset);
 
       if (type === 'language') {
         const combined = {};
@@ -111,14 +111,7 @@ export default async (
     }
 
     if (EVENT_COLUMNS.includes(type)) {
-      const data = await getPageviewMetrics(
-        websiteId,
-        type,
-        filters,
-        limit,
-        offset,
-        unit as string,
-      );
+      const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
 
       return ok(res, data);
     }

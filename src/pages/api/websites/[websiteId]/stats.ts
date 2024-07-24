@@ -56,7 +56,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, compare, unit } = req.query;
+  const { websiteId, compare } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -72,13 +72,13 @@ export default async (
 
     const filters = getRequestFilters(req);
 
-    const metrics = await getWebsiteStats(websiteId, unit as string, {
+    const metrics = await getWebsiteStats(websiteId, {
       ...filters,
       startDate,
       endDate,
     });
 
-    const prevPeriod = await getWebsiteStats(websiteId, unit as string, {
+    const prevPeriod = await getWebsiteStats(websiteId, {
       ...filters,
       startDate: compareStartDate,
       endDate: compareEndDate,

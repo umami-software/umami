@@ -6,7 +6,7 @@ import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
 
 export async function getWebsiteStats(
-  ...args: [websiteId: string, unit: string, filters: QueryFilters]
+  ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
 > {
@@ -18,7 +18,6 @@ export async function getWebsiteStats(
 
 async function relationalQuery(
   websiteId: string,
-  unit: string,
   filters: QueryFilters,
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
@@ -59,7 +58,6 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  unit: string,
   filters: QueryFilters,
 ): Promise<
   { pageviews: number; visitors: number; visits: number; bounces: number; totaltime: number }[]
@@ -69,7 +67,6 @@ async function clickhouseQuery(
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
-  const table = unit === 'hour' ? 'website_event_stats_hourly' : 'website_event_stats_daily';
 
   return rawQuery(
     `
@@ -79,7 +76,7 @@ async function clickhouseQuery(
       uniq(visit_id) as "visits",
       sumIf(1, views = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
-    from ${table} "website_event"
+    from website_event_stats_hourly "website_event"
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
