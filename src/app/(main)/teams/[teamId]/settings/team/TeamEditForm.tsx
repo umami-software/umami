@@ -11,7 +11,7 @@ import {
 } from 'react-basics';
 import { getRandomChars } from 'next-basics';
 import { useContext, useRef, useState } from 'react';
-import { useApi, useMessages } from 'components/hooks';
+import { useApi, useMessages, useModified } from 'components/hooks';
 import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
 
 const generateId = () => getRandomChars(16);
@@ -26,12 +26,14 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
   const ref = useRef(null);
   const [accessCode, setAccessCode] = useState(team.accessCode);
   const { showToast } = useToasts();
+  const { touch } = useModified();
   const cloudMode = !!process.env.cloudMode;
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
         ref.current.reset(data);
+        touch('teams');
         showToast({ message: formatMessage(messages.saved), variant: 'success' });
       },
     });

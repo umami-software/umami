@@ -45,10 +45,15 @@ export function WebsiteHeader({
       icon: <Icons.Reports />,
       path: '/reports',
     },
+    // {
+    //   label: formatMessage(labels.sessions),
+    //   icon: <Icons.User />,
+    //   path: '/sessions',
+    // },
     {
-      label: formatMessage(labels.eventData),
+      label: formatMessage(labels.events),
       icon: <Icons.Nodes />,
-      path: '/event-data',
+      path: '/events',
     },
   ];
 

@@ -72,7 +72,11 @@ export default async (
 
     const filters = getRequestFilters(req);
 
-    const metrics = await getWebsiteStats(websiteId, { ...filters, startDate, endDate });
+    const metrics = await getWebsiteStats(websiteId, {
+      ...filters,
+      startDate,
+      endDate,
+    });
 
     const prevPeriod = await getWebsiteStats(websiteId, {
       ...filters,

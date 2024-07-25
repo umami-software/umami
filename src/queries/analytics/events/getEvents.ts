@@ -1,63 +1,54 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { QueryFilters } from 'lib/types';
+import { PageParams, QueryFilters } from 'lib/types';
 
-export function getEvents(...args: [websiteId: string, filters: QueryFilters]) {
+export function getEvents(
+  ...args: [websiteId: string, filters: QueryFilters, pageParams?: PageParams]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-function relationalQuery(websiteId: string, filters: QueryFilters) {
-  const { startDate } = filters;
+async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
+  const { pagedQuery } = prisma;
 
-  return prisma.client.websiteEvent
-    .findMany({
-      where: {
-        websiteId,
-        createdAt: {
-          gte: startDate,
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    })
-    .then(a => {
-      return Object.values(a).map(a => {
-        return {
-          ...a,
-          timestamp: new Date(a.createdAt).getTime() / 1000,
-        };
-      });
-    });
+  const where = {
+    ...filters,
+    id: websiteId,
+  };
+
+  return pagedQuery('website_event', { where }, pageParams);
 }
 
-function clickhouseQuery(websiteId: string, filters: QueryFilters) {
-  const { rawQuery } = clickhouse;
-  const { startDate } = filters;
+async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
+  const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
+  const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
 
-  return rawQuery(
+  return pagedQuery(
     `
     select
       event_id as id,
       website_id as websiteId, 
       session_id as sessionId,
-      created_at as createdAt,
-      toUnixTimestamp(created_at) as timestamp,
+      ${getDateStringSQL('created_at', 'second', filters.timezone)} as createdAt,
       url_path as urlPath,
+      url_query as urlQuery,
+      referrer_path as referrerPath,
+      referrer_query as referrerQuery,
       referrer_domain as referrerDomain,
+      page_title as pageTitle,
+      event_type as eventType,
       event_name as eventName
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startDate:DateTime64}
+    ${dateQuery}
+    ${filterQuery}
     order by created_at desc
     `,
-    {
-      websiteId,
-      startDate,
-    },
+    params,
+    pageParams,
   );
 }

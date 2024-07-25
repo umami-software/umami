@@ -1,7 +1,7 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
 import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
 
 export async function getSessionMetrics(
@@ -77,7 +77,7 @@ async function clickhouseQuery(
       ${column} x,
       uniq(session_id) y
       ${includeCountry ? ', country' : ''}
-    from website_event
+    from website_event_stats_hourly website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}

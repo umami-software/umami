@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Porównaj"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Liczba"
     }
   ],
   "label.countries": [
@@ -236,7 +236,7 @@
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Aktualny"
     }
   ],
   "label.current-password": [
@@ -398,7 +398,7 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Krok końcowy"
     }
   ],
   "label.entry": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL wyjściowy"
     }
   ],
   "label.false": [
@@ -488,13 +488,13 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Cel"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Cele"
     }
   ],
   "label.goals-description": [
@@ -524,7 +524,7 @@
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Hosty"
     }
   ],
   "label.insights": [
@@ -578,13 +578,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Droga"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users nagivate through your website."
+      "value": "Zrozum, w jaki sposób użytkownicy poruszają się po Twojej witrynie."
     }
   ],
   "label.language": [
@@ -874,19 +874,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Poprzedni"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Poprzedni okres"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Poprzedni rok"
     }
   ],
   "label.profile": [
@@ -928,7 +928,7 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Źródło odsyłające"
     }
   ],
   "label.referrers": [
@@ -970,7 +970,7 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "Usuń członka"
     }
   ],
   "label.reports": [
@@ -1090,7 +1090,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Krok startowy"
     }
   ],
   "label.steps": [
@@ -1378,7 +1378,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Odwiedząjący"
+      "value": "Wizyty"
     }
   ],
   "label.website": [
@@ -1462,7 +1462,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Zebrane dane"
     }
   ],
   "message.confirm-delete": [
