@@ -9,6 +9,7 @@ import WorldMap from 'components/metrics/WorldMap';
 import CountriesTable from 'components/metrics/CountriesTable';
 import EventsTable from 'components/metrics/EventsTable';
 import EventsChart from 'components/metrics/EventsChart';
+import HostsTable from 'components/metrics/HostsTable';
 
 export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
   const [countryData, setCountryData] = useState();
@@ -35,6 +36,9 @@ export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
       <GridRow columns="one-two">
         <EventsTable {...tableProps} />
         <EventsChart websiteId={websiteId} />
+      </GridRow>
+      <GridRow columns="three">
+        <HostsTable {...tableProps} />
       </GridRow>
     </Grid>
   );
