@@ -23,8 +23,7 @@ ENV BASE_PATH $BASE_PATH
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
-RUN ALLOWED_FRAME_URLS=/__ENTRYPOINT__ yarn build-docker
-ENV ALLOWED_FRAME_URLS=""
+RUN yarn build-docker
 
 # Production image, copy all the files and run next
 FROM node:18-alpine AS runner
@@ -52,17 +51,11 @@ COPY --from=builder /app/scripts ./scripts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Create entrypoint script
-COPY entrypoint.sh ./entrypoint.sh
-RUN chmod +x ./entrypoint.sh
-
 USER nextjs
 
 EXPOSE 3000
 
 ENV HOSTNAME 0.0.0.0
 ENV PORT 3000
-
-ENTRYPOINT ["./entrypoint.sh"]
 
 CMD ["yarn", "start-docker"]
