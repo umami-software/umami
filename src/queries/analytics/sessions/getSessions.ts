@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
+  const { pagedQuery, parseFilters } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
 
   return pagedQuery(
@@ -32,7 +32,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session_id as id,
       website_id as websiteId,
-      ${getDateStringSQL('created_at', 'second', filters.timezone)} as createdAt,
+      min(created_at) as createdAt,
       hostname,
       browser,
       os,
@@ -41,13 +41,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       language,
       country,
       subdivision1,
-      subdivision2,
       city
     from website_event
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    order by created_at desc
+    group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
+    order by createdAt desc
     `,
     params,
     pageParams,

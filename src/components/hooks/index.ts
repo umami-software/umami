@@ -5,6 +5,7 @@ export * from './queries/useLogin';
 export * from './queries/useRealtime';
 export * from './queries/useReport';
 export * from './queries/useReports';
+export * from './queries/useSession';
 export * from './queries/useSessions';
 export * from './queries/useShareToken';
 export * from './queries/useTeam';

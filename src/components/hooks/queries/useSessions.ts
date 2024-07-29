@@ -4,7 +4,7 @@ import useModified from '../useModified';
 
 export function useSessions(websiteId: string, params?: { [key: string]: string | number }) {
   const { get } = useApi();
-  const { modified } = useModified(`websites`);
+  const { modified } = useModified(`sessions`);
 
   return useFilterQuery({
     queryKey: ['sessions', { websiteId, modified, ...params }],

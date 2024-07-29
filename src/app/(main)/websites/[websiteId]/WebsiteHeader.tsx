@@ -45,11 +45,11 @@ export function WebsiteHeader({
       icon: <Icons.Reports />,
       path: '/reports',
     },
-    // {
-    //   label: formatMessage(labels.sessions),
-    //   icon: <Icons.User />,
-    //   path: '/sessions',
-    // },
+    {
+      label: formatMessage(labels.sessions),
+      icon: <Icons.User />,
+      path: '/sessions',
+    },
     {
       label: formatMessage(labels.events),
       icon: <Icons.Nodes />,
@@ -69,7 +69,7 @@ export function WebsiteHeader({
           <div className={styles.links}>
             {links.map(({ label, icon, path }) => {
               const selected = path
-                ? pathname.endsWith(path)
+                ? pathname.includes(path)
                 : pathname.match(/^\/websites\/[\w-]+$/);
 
               return (

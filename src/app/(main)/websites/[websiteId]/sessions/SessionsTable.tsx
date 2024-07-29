@@ -1,6 +1,8 @@
+import Link from 'next/link';
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import { useFormat, useMessages } from 'components/hooks';
 import { formatDistanceToNow } from 'date-fns';
+import Profile from 'components/common/Profile';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
@@ -9,7 +11,16 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
-      <GridColumn name="id" label="ID" />
+      <GridColumn name="pic" label="" width="90px">
+        {row => <Profile seed={row.id} size={64} />}
+      </GridColumn>
+      <GridColumn name="id" label="ID">
+        {row => (
+          <Link href={`sessions/${row.id}`}>
+            {row.id} ({row.firstAt !== row.lastAt ? 'YES' : 'NO'})
+          </Link>
+        )}
+      </GridColumn>
       <GridColumn name="country" label={formatMessage(labels.country)}>
         {row => formatValue(row.country, 'country')}
       </GridColumn>
