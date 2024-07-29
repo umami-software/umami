@@ -1,6 +1,7 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
 import { useMessages, useFormat } from 'components/hooks';
+import TypeIcon from 'components/common/TypeIcon';
 
 export function OSTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -9,14 +10,7 @@ export function OSTable(props: MetricsTableProps) {
   function renderLink({ x: os }) {
     return (
       <FilterLink id="os" value={os} label={formatOS(os)}>
-        <img
-          src={`${process.env.basePath || ''}/images/os/${
-            os?.toLowerCase()?.replaceAll(/\W/g, '-') || 'unknown'
-          }.png`}
-          alt={os}
-          width={16}
-          height={16}
-        />
+        <TypeIcon type="os" value={os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
       </FilterLink>
     );
   }

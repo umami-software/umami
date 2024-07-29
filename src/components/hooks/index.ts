@@ -32,6 +32,7 @@ export * from './useLocale';
 export * from './useMessages';
 export * from './useModified';
 export * from './useNavigation';
+export * from './useRegionNames';
 export * from './useSticky';
 export * from './useTeamUrl';
 export * from './useTheme';

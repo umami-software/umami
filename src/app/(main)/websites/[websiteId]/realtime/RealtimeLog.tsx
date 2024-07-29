@@ -32,7 +32,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
+  const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
   const buttons = [

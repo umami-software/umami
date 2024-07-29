@@ -272,6 +272,8 @@ export const labels = defineMessages({
   previous: { id: 'label.previous', defaultMessage: 'Previous' },
   previousPeriod: { id: 'label.previous-period', defaultMessage: 'Previous period' },
   previousYear: { id: 'label.previous-year', defaultMessage: 'Previous year' },
+  lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
+  firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
 });
 
 export const messages = defineMessages({

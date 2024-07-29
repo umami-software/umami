@@ -17,7 +17,7 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
-  const countryNames = useCountryNames(locale);
+  const { countryNames } = useCountryNames(locale);
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
   const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
 

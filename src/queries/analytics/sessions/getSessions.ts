@@ -32,7 +32,6 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     select
       session_id as id,
       website_id as websiteId,
-      min(created_at) as createdAt,
       hostname,
       browser,
       os,
@@ -41,13 +40,15 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       language,
       country,
       subdivision1,
-      city
+      city,
+      min(created_at) as firstAt,
+      max(created_at) as lastAt
     from website_event
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
-    order by createdAt desc
+    order by lastAt desc
     `,
     params,
     pageParams,

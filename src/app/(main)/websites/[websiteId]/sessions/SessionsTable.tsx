@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import { useFormat, useMessages } from 'components/hooks';
-import { formatDistanceToNow } from 'date-fns';
 import Profile from 'components/common/Profile';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
@@ -12,14 +11,10 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
       <GridColumn name="pic" label="" width="90px">
-        {row => <Profile seed={row.id} size={64} />}
+        {row => <Profile key={row.id} seed={row.id} size={64} />}
       </GridColumn>
       <GridColumn name="id" label="ID">
-        {row => (
-          <Link href={`sessions/${row.id}`}>
-            {row.id} ({row.firstAt !== row.lastAt ? 'YES' : 'NO'})
-          </Link>
-        )}
+        {row => <Link href={`sessions/${row.id}`}>{row.id}</Link>}
       </GridColumn>
       <GridColumn name="country" label={formatMessage(labels.country)}>
         {row => formatValue(row.country, 'country')}
@@ -32,8 +27,8 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
       <GridColumn name="device" label={formatMessage(labels.device)}>
         {row => formatValue(row.device, 'device')}
       </GridColumn>
-      <GridColumn name="createdAt" label={formatMessage(labels.created)}>
-        {row => formatDistanceToNow(new Date(row.createdAt))}
+      <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
+        {row => row.lastAt}
       </GridColumn>
     </GridTable>
   );

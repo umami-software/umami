@@ -25,8 +25,6 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
     select
       session_id as id,
       website_id as websiteId,
-      min(created_at) as firstAt,
-      max(created_at) as lastAt,
       hostname,
       browser,
       os,
@@ -35,7 +33,9 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       language,
       country,
       subdivision1,
-      city
+      city,
+      min(created_at) as firstAt,
+      max(created_at) as lastAt
     from website_event
     where website_id = {websiteId:UUID}
     and session_id = {sessionId:UUID}
