@@ -1,6 +1,6 @@
 import { useApi } from './useApi';
 
-export function useSession(websiteId: string, sessionId: string) {
+export function useWebsiteSession(websiteId: string, sessionId: string) {
   const { get, useQuery } = useApi();
 
   return useQuery({
@@ -11,4 +11,4 @@ export function useSession(websiteId: string, sessionId: string) {
   });
 }
 
-export default useSession;
+export default useWebsiteSession;

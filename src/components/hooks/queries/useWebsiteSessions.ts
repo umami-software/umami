@@ -2,7 +2,7 @@ import { useApi } from './useApi';
 import { useFilterQuery } from './useFilterQuery';
 import useModified from '../useModified';
 
-export function useSessions(websiteId: string, params?: { [key: string]: string | number }) {
+export function useWebsiteSessions(websiteId: string, params?: { [key: string]: string | number }) {
   const { get } = useApi();
   const { modified } = useModified(`sessions`);
 
@@ -17,4 +17,4 @@ export function useSessions(websiteId: string, params?: { [key: string]: string 
   });
 }
 
-export default useSessions;
+export default useWebsiteSessions;

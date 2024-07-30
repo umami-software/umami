@@ -1,18 +1,27 @@
 .page {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 300px 1fr max-content;
+  margin-bottom: 40px;
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
   padding-right: 20px;
   border-right: 1px solid var(--base300);
 }
 
 .content {
+  padding: 0 20px;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 1px solid var(--base300);
   padding-left: 20px;
 }

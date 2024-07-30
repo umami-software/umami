@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { formatDate } from 'lib/date';
 import { useFormat, useLocale, useMessages, useRegionNames } from 'components/hooks';
 import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
@@ -18,15 +18,19 @@ export default function SessionInfo({ data }) {
         <dd>
           {data?.id} <CopyIcon value={data?.id} />
         </dd>
-        <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{format(new Date(data?.firstAt), 'PPPpp')}</dd>
+
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{format(new Date(data?.lastAt), 'PPPpp')}</dd>
+        <dd>{formatDate(new Date(data?.lastAt), 'EEEE, PPPpp', locale)}</dd>
+
+        <dt>{formatMessage(labels.firstSeen)}</dt>
+        <dd>{formatDate(new Date(data?.firstAt), 'EEEE, PPPpp', locale)}</dd>
+
         <dt>{formatMessage(labels.country)}</dt>
         <dd>
           <TypeIcon type="country" value={data?.country} />
           {formatValue(data?.country, 'country')}
         </dd>
+
         <dt>{formatMessage(labels.region)}</dt>
         <dd>
           <Icon>
@@ -34,6 +38,7 @@ export default function SessionInfo({ data }) {
           </Icon>
           {getRegionName(data?.subdivision1)}
         </dd>
+
         <dt>{formatMessage(labels.city)}</dt>
         <dd>
           <Icon>
@@ -41,16 +46,19 @@ export default function SessionInfo({ data }) {
           </Icon>
           {data?.city}
         </dd>
+
         <dt>{formatMessage(labels.os)}</dt>
         <dd>
           <TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
           {formatValue(data?.os, 'os')}
         </dd>
+
         <dt>{formatMessage(labels.device)}</dt>
         <dd>
           <TypeIcon type="device" value={data?.device} />
           {formatValue(data?.device, 'device')}
         </dd>
+
         <dt>{formatMessage(labels.browser)}</dt>
         <dd>
           <TypeIcon type="browser" value={data?.browser} />

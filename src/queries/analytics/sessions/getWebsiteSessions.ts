@@ -3,7 +3,7 @@ import clickhouse from 'lib/clickhouse';
 import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
 import { PageParams, QueryFilters } from 'lib/types';
 
-export async function getSessions(
+export async function getWebsiteSessions(
   ...args: [websiteId: string, filters?: QueryFilters, pageParams?: PageParams]
 ) {
   return runQuery({

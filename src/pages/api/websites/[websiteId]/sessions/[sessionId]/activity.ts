@@ -4,9 +4,9 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getSession } from 'queries';
+import { getSessionActivity } from 'queries';
 
-export interface ReportsRequestQuery extends PageParams {
+export interface SessionActivityRequestQuery extends PageParams {
   websiteId: string;
   sessionId: string;
 }
@@ -19,7 +19,7 @@ const schema = {
 };
 
 export default async (
-  req: NextApiRequestQueryBody<ReportsRequestQuery, any>,
+  req: NextApiRequestQueryBody<SessionActivityRequestQuery, any>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
@@ -33,7 +33,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getSession(websiteId, sessionId);
+    const data = await getSessionActivity(websiteId, sessionId);
 
     return ok(res, data);
   }

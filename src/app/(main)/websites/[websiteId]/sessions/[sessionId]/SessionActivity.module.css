@@ -1,0 +1,20 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.time {
+  color: var(--font-color200);
+  width: 120px;
+}
+
+.header {
+  font-weight: bold;
+}

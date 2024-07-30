@@ -1,4 +1,4 @@
-import { useSessions } from 'components/hooks';
+import { useWebsiteSessions } from 'components/hooks';
 import SessionsTable from './SessionsTable';
 import DataTable from 'components/common/DataTable';
 import { ReactNode } from 'react';
@@ -11,7 +11,7 @@ export default function SessionsDataTable({
   teamId?: string;
   children?: ReactNode;
 }) {
-  const queryResult = useSessions(websiteId);
+  const queryResult = useWebsiteSessions(websiteId);
 
   if (queryResult?.result?.data?.length === 0) {
     return children;
