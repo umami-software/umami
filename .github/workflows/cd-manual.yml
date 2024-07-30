@@ -29,9 +29,7 @@ jobs:
         with:
           image: umami
           tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
-          buildArgs: |
-            DATABASE_TYPE=${{ matrix.db-type }}
-            ALLOWED_FRAME_URLS=${{ inputs.allowed_frame_url }}
+          buildArgs: DATABASE_TYPE=${{ matrix.db-type }}, ALLOWED_FRAME_URLS=${{ inputs.allowed_frame_url }}
           registry: ghcr.io
           multiPlatform: true
           platform: linux/amd64,linux/arm64
