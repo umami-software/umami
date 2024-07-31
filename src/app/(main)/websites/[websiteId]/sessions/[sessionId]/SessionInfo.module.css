@@ -3,6 +3,10 @@
   gap: 10px;
 }
 
+.info dl {
+  width: 100%;
+}
+
 .info dt {
   color: var(--font-color200);
   font-weight: bold;

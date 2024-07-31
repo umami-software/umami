@@ -35,6 +35,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
     from session_data
     where website_id = {websiteId:UUID}
     and session_id = {sessionId:UUID}
+    order by data_key asc
     `,
     { websiteId, sessionId },
   );

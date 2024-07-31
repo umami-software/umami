@@ -1,8 +1,8 @@
 import { Loading, TextOverflow } from 'react-basics';
 import { useMessages, useSessionData } from 'components/hooks';
 import Empty from 'components/common/Empty';
-import styles from './SessionData.module.css';
 import { DATA_TYPES } from 'lib/constants';
+import styles from './SessionData.module.css';
 
 export function SessionData({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { formatMessage, labels } = useMessages();

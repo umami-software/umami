@@ -33,7 +33,7 @@ export default async (
       return unauthorized(res);
     }
 
-    const data = await getWebsiteSession(websiteId, sessionId);
+    const data = await getWebsiteSession(sessionId);
 
     return ok(res, data);
   }
