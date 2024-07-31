@@ -51,12 +51,29 @@ async function clickhouseQuery(
   const columnQuery = unit === 'minute' ? 'count(*)' : 'sum(views)';
 
   return rawQuery(
+    // `
+    // select
+    //   ${getDateStringSQL('g.t', unit)} as x,
+    //   g.y as y
+    // from (
+    //   select
+    //     ${getDateSQL('created_at', unit, timezone)} as t,
+    //     count(*) as y
+    //   from website_event
+    //   where website_id = {websiteId:UUID}
+    //     and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    //     and event_type = {eventType:UInt32}
+    //     ${filterQuery}
+    //   group by t
+    // ) as g
+    // order by t
+    // `,
     `
     select
-      ${getDateStringSQL('g.t', unit)} as x, 
+      ${getDateStringSQL('g.t', unit)} as x,
       g.y as y
     from (
-      select 
+      select
         ${getDateSQL('created_at', unit, timezone)} as t,
         ${columnQuery} as y
       from ${table} website_event

@@ -111,7 +111,25 @@ async function clickhouseQuery(
     groupByQuery = 'group by x';
   }
 
+  // let excludeDomain = '';
+  // if (column === 'referrer_domain') {
+  //   excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
+  // }
+
   return rawQuery(
+    // `
+    //   select ${column} x, count(*) y
+    //   from website_event
+    //   where website_id = {websiteId:UUID}
+    //     and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    //     and event_type = {eventType:UInt32}
+    //     ${excludeDomain}
+    //     ${filterQuery}
+    //   group by x
+    //   order by y desc
+    //   limit ${limit}
+    //   offset ${offset}
+    //   `,
     `
     select g.t as x,
       count(*) as y
