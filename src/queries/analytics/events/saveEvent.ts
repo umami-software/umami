@@ -4,7 +4,7 @@ import clickhouse from 'lib/clickhouse';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
-import { saveEventData } from 'queries/analytics/eventData/saveEventData';
+import { saveEventData } from './saveEventData';
 
 export async function saveEvent(args: {
   websiteId: string;

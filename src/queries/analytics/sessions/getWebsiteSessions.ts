@@ -42,7 +42,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       subdivision1,
       city,
       min(created_at) as firstAt,
-      max(created_at) as lastAt
+      max(created_at) as lastAt,
+      uniq(visit_id) as visits
     from website_event
     where website_id = {websiteId:UUID}
     ${dateQuery}
@@ -52,5 +53,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     `,
     params,
     pageParams,
-  );
+  ).then((result: any) => ({
+    ...result,
+    visits: Number(result.visits),
+  }));
 }

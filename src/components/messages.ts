@@ -274,6 +274,7 @@ export const labels = defineMessages({
   previousYear: { id: 'label.previous-year', defaultMessage: 'Previous year' },
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
+  properties: { id: 'label.properties', defaultMessage: 'Properties' },
 });
 
 export const messages = defineMessages({

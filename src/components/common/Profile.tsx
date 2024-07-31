@@ -10,9 +10,9 @@ function convertToPastel(hexColor: string, pastelFactor: number = 0.5) {
   hexColor = hexColor.replace(/^#/, '');
 
   // Convert hex to RGB
-  let r = parseInt(hexColor.substr(0, 2), 16);
-  let g = parseInt(hexColor.substr(2, 2), 16);
-  let b = parseInt(hexColor.substr(4, 2), 16);
+  let r = parseInt(hexColor.substring(0, 2), 16);
+  let g = parseInt(hexColor.substring(2, 4), 16);
+  let b = parseInt(hexColor.substring(4, 6), 16);
 
   // Calculate pastel version (mix with white)
   //const pastelFactor = 0.5; // Adjust this value to control pastel intensity

@@ -23,7 +23,6 @@ export function SessionActivity({
 
   return (
     <div className={styles.timeline}>
-      <h1>Activity log</h1>
       {data.map(({ eventId, createdAt, urlPath, eventName, visitId }) => {
         const showHeader = !lastDay || !isSameDay(new Date(lastDay), new Date(createdAt));
         lastDay = createdAt;

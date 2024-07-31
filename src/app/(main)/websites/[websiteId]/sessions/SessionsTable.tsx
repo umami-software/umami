@@ -1,21 +1,27 @@
 import Link from 'next/link';
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
-import { useFormat, useMessages } from 'components/hooks';
+import { useFormat, useLocale, useMessages } from 'components/hooks';
 import Profile from 'components/common/Profile';
+import styles from './SessionsTable.module.css';
+import { formatDate } from 'lib/date';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
+  const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
   const breakpoint = useBreakpoint();
   const { formatValue } = useFormat();
 
   return (
     <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
-      <GridColumn name="pic" label="" width="90px">
-        {row => <Profile key={row.id} seed={row.id} size={64} />}
+      <GridColumn name="id" label="ID" width="300px">
+        {row => (
+          <Link href={`sessions/${row.id}`} className={styles.link}>
+            <Profile key={row.id} seed={row.id} size={64} />
+            {row.id}
+          </Link>
+        )}
       </GridColumn>
-      <GridColumn name="id" label="ID">
-        {row => <Link href={`sessions/${row.id}`}>{row.id}</Link>}
-      </GridColumn>
+      <GridColumn name="visits" label={formatMessage(labels.visits)} width="100px" />
       <GridColumn name="country" label={formatMessage(labels.country)}>
         {row => formatValue(row.country, 'country')}
       </GridColumn>
@@ -28,7 +34,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         {row => formatValue(row.device, 'device')}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
-        {row => row.lastAt}
+        {row => formatDate(new Date(row.lastAt), 'PPPpp', locale)}
       </GridColumn>
     </GridTable>
   );

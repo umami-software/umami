@@ -4,9 +4,10 @@ import SessionInfo from './SessionInfo';
 import { useWebsiteSession } from 'components/hooks';
 import { Loading } from 'react-basics';
 import Profile from 'components/common/Profile';
-import styles from './SessionDetailsPage.module.css';
 import { SessionActivity } from './SessionActivity';
-import SessionStats from './SessionStats';
+import { SessionStats } from './SessionStats';
+import { SessionData } from './SessionData';
+import styles from './SessionDetailsPage.module.css';
 
 export default function SessionDetailsPage({
   websiteId,
@@ -30,10 +31,11 @@ export default function SessionDetailsPage({
           <SessionInfo data={data} />
         </div>
         <div className={styles.content}>
+          <SessionStats data={data} />
           <SessionActivity websiteId={websiteId} sessionId={sessionId} />
         </div>
-        <div className={styles.stats}>
-          <SessionStats data={data} />
+        <div className={styles.data}>
+          <SessionData websiteId={websiteId} sessionId={sessionId} />
         </div>
       </div>
     </>

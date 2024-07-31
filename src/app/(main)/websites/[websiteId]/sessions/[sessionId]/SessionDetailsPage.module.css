@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 300px 1fr max-content;
   margin-bottom: 40px;
+  position: relative;
 }
 
 .sidebar {
@@ -12,16 +13,32 @@
   gap: 20px;
   padding-right: 20px;
   border-right: 1px solid var(--base300);
+  position: relative;
 }
 
 .content {
-  padding: 0 20px;
-}
-
-.stats {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
+  padding: 0 20px;
+  position: relative;
+}
+
+.data {
   border-left: 1px solid var(--base300);
   padding-left: 20px;
+  position: relative;
+  transition: width 200ms ease-in-out;
+}
+
+@media screen and (max-width: 992px) {
+  .page {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .sidebar,
+  .data {
+    border: 0;
+  }
 }

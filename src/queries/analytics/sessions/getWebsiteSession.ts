@@ -37,9 +37,9 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       city,
       min(created_at) as firstAt,
       max(created_at) as lastAt,
-      uniq(visit_id) as "visits",
-      sumIf(1, event_type = 1) as "views",
-      sumIf(1, event_type = 2) as "events"
+      uniq(visit_id) as visits,
+      sumIf(1, event_type = 1) as views,
+      sumIf(1, event_type = 2) as events
     from website_event
     where website_id = {websiteId:UUID}
     and session_id = {sessionId:UUID}
