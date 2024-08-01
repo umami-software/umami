@@ -101,7 +101,6 @@ CREATE TABLE umami.website_event_stats_hourly
 ENGINE = AggregatingMergeTree
         PARTITION BY toYYYYMM(created_at)
         ORDER BY (toStartOfDay(created_at), website_id, session_id, visit_id, created_at)
-        PRIMARY KEY (toStartOfDay(created_at), website_id, session_id, visit_id)
 
 CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
 TO umami.website_event_stats_hourly
