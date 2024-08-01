@@ -64,8 +64,8 @@ async function clickhouseQuery(
   offset: number = 0,
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
-  const { parseFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { parseSessionFilters, rawQuery } = clickhouse;
+  const { filterQuery, params } = await parseSessionFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });

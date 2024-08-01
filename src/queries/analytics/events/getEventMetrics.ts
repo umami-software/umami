@@ -1,8 +1,8 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { WebsiteEventMetric, QueryFilters } from 'lib/types';
 import { EVENT_TYPE } from 'lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
+import { QueryFilters, WebsiteEventMetric } from 'lib/types';
 
 export async function getEventMetrics(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -51,8 +51,24 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.customEvent,
   });
 
-  return rawQuery(
-    `
+  let sql = '';
+
+  if (filterQuery) {
+    sql = `
+    select
+      event_name x,
+      ${getDateSQL('created_at', unit, timezone)} t,
+      count(*) y
+    from website_event
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = {eventType:UInt32}
+      ${filterQuery}
+    group by x, t
+    order by t
+    `;
+  } else {
+    sql = `
     select
       event_name x,
       ${getDateSQL('created_at', unit, timezone)} t,
@@ -64,13 +80,13 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
-      ${filterQuery}
     ) as g
     group by x, t
     order by t
-    `,
-    params,
-  ).then(a => {
+    `;
+  }
+
+  return rawQuery(sql, params).then(a => {
     return Object.values(a).map(a => {
       return { x: a.x, t: a.t, y: Number(a.y) };
     });

@@ -1,7 +1,7 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { EVENT_TYPE } from 'lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE } from 'lib/constants';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewStats(...args: [websiteId: string, filters: QueryFilters]) {
@@ -47,36 +47,18 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
 
-  const table = unit === 'minute' ? 'website_event' : 'website_event_stats_hourly';
-  const columnQuery = unit === 'minute' ? 'count(*)' : 'sum(views)';
+  let sql = '';
 
-  return rawQuery(
-    // `
-    // select
-    //   ${getDateStringSQL('g.t', unit)} as x,
-    //   g.y as y
-    // from (
-    //   select
-    //     ${getDateSQL('created_at', unit, timezone)} as t,
-    //     count(*) as y
-    //   from website_event
-    //   where website_id = {websiteId:UUID}
-    //     and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    //     and event_type = {eventType:UInt32}
-    //     ${filterQuery}
-    //   group by t
-    // ) as g
-    // order by t
-    // `,
-    `
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item)) || unit === 'minute') {
+    sql = `
     select
       ${getDateStringSQL('g.t', unit)} as x,
       g.y as y
     from (
       select
         ${getDateSQL('created_at', unit, timezone)} as t,
-        ${columnQuery} as y
-      from ${table} website_event
+        count(*) as y
+      from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
@@ -84,9 +66,28 @@ async function clickhouseQuery(
       group by t
     ) as g
     order by t
-    `,
-    params,
-  ).then(result => {
+    `;
+  } else {
+    sql = `
+    select
+      ${getDateStringSQL('g.t', unit)} as x,
+      g.y as y
+    from (
+      select
+        ${getDateSQL('created_at', unit, timezone)} as t,
+        sum(views)as y
+      from website_event_stats_hourly website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+        ${filterQuery}
+      group by t
+    ) as g
+    order by t
+    `;
+  }
+
+  return rawQuery(sql, params).then(result => {
     return Object.values(result).map((a: any) => {
       return { x: a.x, y: Number(a.y) };
     });

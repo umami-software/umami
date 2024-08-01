@@ -41,8 +41,8 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { parseFilters, rawQuery, getDateStringSQL, getDateSQL } = clickhouse;
-  const { filterQuery, params } = await parseFilters(websiteId, {
+  const { parseSessionFilters, rawQuery, getDateStringSQL, getDateSQL } = clickhouse;
+  const { filterQuery, params } = await parseSessionFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });

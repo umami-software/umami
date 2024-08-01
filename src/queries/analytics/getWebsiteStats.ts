@@ -3,6 +3,7 @@ import { EVENT_TYPE } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
+import { EVENT_COLUMNS } from 'lib/constants';
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -67,30 +68,33 @@ async function clickhouseQuery(
     eventType: EVENT_TYPE.pageView,
   });
 
-  return rawQuery(
-    // `
-    // select
-    //   sum(t.c) as "pageviews",
-    //   count(distinct t.session_id) as "visitors",
-    //   count(distinct t.visit_id) as "visits",
-    //   sum(if(t.c = 1, 1, 0)) as "bounces",
-    //   sum(max_time-min_time) as "totaltime"
-    // from (
-    //   select
-    //     session_id,
-    //     visit_id,
-    //     count(*) c,
-    //     min(created_at) min_time,
-    //     max(created_at) max_time
-    //   from website_event
-    //   where website_id = {websiteId:UUID}
-    //     and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-    //     and event_type = {eventType:UInt32}
-    //     ${filterQuery}
-    //   group by session_id, visit_id
-    // ) as t;
-    // `,
-    `
+  let sql = '';
+
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    sql = `
+    select
+      sum(t.c) as "pageviews",
+      count(distinct t.session_id) as "visitors",
+      count(distinct t.visit_id) as "visits",
+      sum(if(t.c = 1, 1, 0)) as "bounces",
+      sum(max_time-min_time) as "totaltime"
+    from (
+      select
+        session_id,
+        visit_id,
+        count(*) c,
+        min(created_at) min_time,
+        max(created_at) max_time
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+        ${filterQuery}
+      group by session_id, visit_id
+    ) as t;
+    `;
+  } else {
+    sql = `
     select
       sum(views) as "pageviews",
       uniq(session_id) as "visitors",
@@ -102,9 +106,10 @@ async function clickhouseQuery(
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
       ${filterQuery};
-    `,
-    params,
-  ).then(result => {
+    `;
+  }
+
+  return rawQuery(sql, params).then(result => {
     return Object.values(result).map((a: any) => {
       return {
         pageviews: Number(a.pageviews),
