@@ -171,3 +171,18 @@ GROUP BY website_id,
     city,
     event_type,
     timestamp);
+
+-- projections
+ALTER TABLE umami.website_event 
+ADD PROJECTION website_event_url_path_projection (
+SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
+);
+
+ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
+
+ALTER TABLE umami.website_event 
+ADD PROJECTION website_event_referrer_domain_projection (
+SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
+);
+
+ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
