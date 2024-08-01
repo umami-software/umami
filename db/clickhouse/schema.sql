@@ -29,11 +29,11 @@ CREATE TABLE umami.website_event
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
-    engine = MergeTree
-        PARTITION BY toYYYYMM(created_at)
-        ORDER BY (toStartOfHour(created_at), website_id, session_id, visit_id, created_at)
-        PRIMARY KEY (toStartOfHour(created_at), website_id, session_id, visit_id)
-        SETTINGS index_granularity = 8192;
+ENGINE = MergeTree
+    PARTITION BY toYYYYMM(created_at)
+    ORDER BY (toStartOfHour(created_at), website_id, session_id, visit_id, created_at)
+    PRIMARY KEY (toStartOfHour(created_at), website_id, session_id, visit_id)
+    SETTINGS index_granularity = 8192;
 
 CREATE TABLE umami.event_data
 (
@@ -50,9 +50,9 @@ CREATE TABLE umami.event_data
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
-    engine = MergeTree
-        ORDER BY (website_id, event_id, data_key, created_at)
-        SETTINGS index_granularity = 8192;
+ENGINE = MergeTree
+    ORDER BY (website_id, event_id, data_key, created_at)
+    SETTINGS index_granularity = 8192;
 
 CREATE TABLE umami.session_data
 (
@@ -66,9 +66,9 @@ CREATE TABLE umami.session_data
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
-    engine = MergeTree
-        ORDER BY (website_id, session_id, data_key, created_at)
-        SETTINGS index_granularity = 8192;
+ENGINE = MergeTree
+    ORDER BY (website_id, session_id, data_key, created_at)
+    SETTINGS index_granularity = 8192;
 
 -- stats hourly
 CREATE TABLE umami.website_event_stats_hourly
@@ -99,8 +99,15 @@ CREATE TABLE umami.website_event_stats_hourly
     created_at Datetime('UTC')
 )
 ENGINE = AggregatingMergeTree
-        PARTITION BY toYYYYMM(created_at)
-        ORDER BY (toStartOfDay(created_at), website_id, session_id, visit_id, created_at)
+    PARTITION BY toYYYYMM(created_at)
+    ORDER BY (
+        website_id,
+        event_type,
+        toStartOfHour(created_at),
+        cityHash64(visit_id),
+        visit_id
+    )
+    SAMPLE BY cityHash64(visit_id);
 
 CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
 TO umami.website_event_stats_hourly
