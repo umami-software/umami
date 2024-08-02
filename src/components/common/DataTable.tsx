@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Banner, Loading, SearchField } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages, useNavigation } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
 import { FilterQueryResult } from 'lib/types';
@@ -35,6 +35,7 @@ export function DataTable({
   const { query } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
   const noResults = Boolean(!isLoading && query && !hasData);
+  const { router, renderUrl } = useNavigation();
 
   const handleSearch = (query: string) => {
     setParams({ ...params, query, page: params.page ? page : 1 });
@@ -42,6 +43,7 @@ export function DataTable({
 
   const handlePageChange = (page: number) => {
     setParams({ ...params, query, page });
+    router.push(renderUrl({ page }));
   };
 
   if (error) {

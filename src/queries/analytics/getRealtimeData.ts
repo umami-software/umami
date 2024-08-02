@@ -1,4 +1,9 @@
-import { getWebsiteSessions, getEvents, getPageviewStats, getSessionStats } from 'queries/index';
+import {
+  getWebsiteSessions,
+  getWebsiteEvents,
+  getPageviewStats,
+  getSessionStats,
+} from 'queries/index';
 
 const MAX_SIZE = 50;
 
@@ -19,7 +24,7 @@ export async function getRealtimeData(
   const { startDate, timezone } = criteria;
   const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
   const [events, sessions, pageviews, sessionviews] = await Promise.all([
-    getEvents(websiteId, { startDate, timezone }, { pageSize: 10000 }),
+    getWebsiteEvents(websiteId, { startDate, timezone }, { pageSize: 10000 }),
     getWebsiteSessions(websiteId, { startDate, timezone }, { pageSize: 10000 }),
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),

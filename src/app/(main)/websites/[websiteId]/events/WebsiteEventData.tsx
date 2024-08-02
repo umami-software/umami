@@ -1,5 +1,5 @@
 import { Flexbox, Loading } from 'react-basics';
-import EventDataTable from './EventDataTable';
+import EventsTable from './EventsTable';
 import EventDataValueTable from './EventDataValueTable';
 import { EventDataMetricsBar } from './EventDataMetricsBar';
 import { useDateRange, useApi, useNavigation } from 'components/hooks';
@@ -33,7 +33,7 @@ export default function WebsiteEventData({ websiteId }) {
   return (
     <Flexbox className={styles.container} direction="column" gap={20}>
       <EventDataMetricsBar websiteId={websiteId} />
-      {!event && <EventDataTable data={data} />}
+      {!event && <EventsTable data={data} />}
       {isLoading && <Loading position="page" />}
       {event && data && <EventDataValueTable event={event} data={data} />}
     </Flexbox>

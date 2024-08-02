@@ -8,7 +8,7 @@ export * from './analytics/events/getEventDataFields';
 export * from './analytics/events/getEventDataStats';
 export * from './analytics/events/getEventDataUsage';
 export * from './analytics/events/getEventMetrics';
-export * from './analytics/events/getEvents';
+export * from './analytics/events/getWebsiteEvents';
 export * from './analytics/events/getEventUsage';
 export * from './analytics/events/saveEvent';
 export * from './analytics/reports/getFunnel';

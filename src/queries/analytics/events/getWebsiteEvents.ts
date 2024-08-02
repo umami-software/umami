@@ -3,7 +3,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { PageParams, QueryFilters } from 'lib/types';
 
-export function getEvents(
+export function getWebsiteEvents(
   ...args: [websiteId: string, filters: QueryFilters, pageParams?: PageParams]
 ) {
   return runQuery({

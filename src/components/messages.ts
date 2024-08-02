@@ -130,6 +130,7 @@ export const labels = defineMessages({
   selectRole: { id: 'label.select-role', defaultMessage: 'Select role' },
   selectDate: { id: 'label.select-date', defaultMessage: 'Select date' },
   all: { id: 'label.all', defaultMessage: 'All' },
+  session: { id: 'label.session', defaultMessage: 'Session' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
   activityLog: { id: 'label.activity-log', defaultMessage: 'Activity log' },
@@ -275,6 +276,7 @@ export const labels = defineMessages({
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
+  path: { id: 'label.path', defaultMessage: 'Path' },
 });
 
 export const messages = defineMessages({
