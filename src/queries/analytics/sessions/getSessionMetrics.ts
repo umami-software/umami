@@ -1,5 +1,5 @@
 import clickhouse from 'lib/clickhouse';
-import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
@@ -64,15 +64,34 @@ async function clickhouseQuery(
   offset: number = 0,
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
-  const { parseSessionFilters, rawQuery } = clickhouse;
-  const { filterQuery, params } = await parseSessionFilters(websiteId, {
+  const { parseFilters, rawQuery } = clickhouse;
+  const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
   });
   const includeCountry = column === 'city' || column === 'subdivision1';
 
-  return rawQuery(
-    `
+  let sql = '';
+
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    sql = `
+    select
+      ${column} x,
+      count(distinct session_id) y
+      ${includeCountry ? ', country' : ''}
+    from website_event
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = {eventType:UInt32}
+      ${filterQuery}
+    group by x 
+    ${includeCountry ? ', country' : ''}
+    order by y desc
+    limit ${limit}
+    offset ${offset}
+    `;
+  } else {
+    sql = `
     select
       ${column} x,
       uniq(session_id) y
@@ -87,9 +106,10 @@ async function clickhouseQuery(
     order by y desc
     limit ${limit}
     offset ${offset}
-    `,
-    params,
-  ).then(a => {
+    `;
+  }
+
+  return rawQuery(sql, params).then(a => {
     return Object.values(a).map(a => {
       return { x: a.x, y: Number(a.y), country: a.country };
     });

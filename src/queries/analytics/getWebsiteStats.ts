@@ -74,8 +74,8 @@ async function clickhouseQuery(
     sql = `
     select
       sum(t.c) as "pageviews",
-      count(distinct t.session_id) as "visitors",
-      count(distinct t.visit_id) as "visits",
+      uniq(t.session_id) as "visitors",
+      uniq(t.visit_id) as "visits",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
@@ -96,16 +96,24 @@ async function clickhouseQuery(
   } else {
     sql = `
     select
-      sum(views) as "pageviews",
+      sum(t.c) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
-      sumIf(1, views = 1) as "bounces",
+      sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
-    from website_event_stats_hourly "website_event"
+    from (select
+            session_id,
+            visit_id,
+            sum(views) c,
+            min(min_time) min_time,
+            max(max_time) max_time
+        from umami.website_event_stats_hourly "website_event"
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}
-      ${filterQuery};
+      ${filterQuery}
+      group by session_id, visit_id
+    ) as t;
     `;
   }
 

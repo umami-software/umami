@@ -2,11 +2,11 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { PageParams, QueryFilters, QueryOptions } from './types';
-import { EVENT_COLUMNS, DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
-import { fetchWebsite } from './load';
+import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { maxDate } from './date';
+import { fetchWebsite } from './load';
 import { filtersToArray } from './params';
+import { PageParams, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   second: '%Y-%m-%dT%H:%i:%S',
@@ -100,26 +100,6 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
   return query.join('\n');
 }
 
-function getSessionFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) {
-  const query = filtersToArray(filters, options).reduce((arr, { name, column, operator }) => {
-    if (column) {
-      if (EVENT_COLUMNS.includes(name)) {
-        arr.push(`and has(${column}, {${name}:String})`);
-
-        if (name === 'referrer') {
-          arr.push('and not has(referrer_domain, {websiteDomain:String})');
-        }
-      } else {
-        arr.push(`and ${mapFilter(column, operator, name)}`);
-      }
-    }
-
-    return arr;
-  }, []);
-
-  return query.join('\n');
-}
-
 function getDateQuery(filters: QueryFilters = {}) {
   const { startDate, endDate } = filters;
 
@@ -149,25 +129,6 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
 
   return {
     filterQuery: getFilterQuery(filters, options),
-    dateQuery: getDateQuery(filters),
-    params: {
-      ...getFilterParams(filters),
-      websiteId,
-      startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
-      websiteDomain: website.domain,
-    },
-  };
-}
-
-async function parseSessionFilters(
-  websiteId: string,
-  filters: QueryFilters = {},
-  options?: QueryOptions,
-) {
-  const website = await fetchWebsite(websiteId);
-
-  return {
-    filterQuery: getSessionFilterQuery(filters, options),
     dateQuery: getDateQuery(filters),
     params: {
       ...getFilterParams(filters),
@@ -260,7 +221,6 @@ export default {
   getDateFormat,
   getFilterQuery,
   parseFilters,
-  parseSessionFilters,
   pagedQuery,
   findUnique,
   findFirst,
