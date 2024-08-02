@@ -2,7 +2,7 @@ import { GridTable, GridColumn } from 'react-basics';
 import { useLocale, useMessages } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import { formatDistance } from 'date-fns';
-import Profile from 'components/common/Profile';
+import Avatar from 'components/common/Avatar';
 import Link from 'next/link';
 
 export function EventsTable({ data = [] }) {
@@ -15,18 +15,23 @@ export function EventsTable({ data = [] }) {
 
   return (
     <GridTable data={data}>
-      <GridColumn name="id" label="ID" />
-      <GridColumn name="session" label={formatMessage(labels.session)}>
+      <GridColumn name="session" label={formatMessage(labels.session)} width={'100px'}>
         {row => (
           <Link href={`/sessions/`}>
-            <Profile seed={row.sessionId} size={64} />
+            <Avatar seed={row.sessionId} size={64} />
           </Link>
         )}
       </GridColumn>
-      <GridColumn name="eventName" label={formatMessage(labels.event)}>
-        {row => formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+      <GridColumn name="event" label={formatMessage(labels.event)}>
+        {row => {
+          return (
+            <>
+              {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+              <strong>{row.eventName}</strong>
+            </>
+          );
+        }}
       </GridColumn>
-      <GridColumn name="eventName" label={formatMessage(labels.name)} />
       <GridColumn name="urlPath" label={formatMessage(labels.path)} />
       <GridColumn name="created" label={formatMessage(labels.created)}>
         {row =>

@@ -3,7 +3,7 @@ import WebsiteHeader from '../../WebsiteHeader';
 import SessionInfo from './SessionInfo';
 import { useWebsiteSession } from 'components/hooks';
 import { Loading } from 'react-basics';
-import Profile from 'components/common/Profile';
+import Avatar from 'components/common/Avatar';
 import { SessionActivity } from './SessionActivity';
 import { SessionStats } from './SessionStats';
 import { SessionData } from './SessionData';
@@ -27,7 +27,7 @@ export default function SessionDetailsPage({
       <WebsiteHeader websiteId={websiteId} />
       <div className={styles.page}>
         <div className={styles.sidebar}>
-          <Profile seed={data?.id} />
+          <Avatar seed={data?.id} />
           <SessionInfo data={data} />
         </div>
         <div className={styles.content}>

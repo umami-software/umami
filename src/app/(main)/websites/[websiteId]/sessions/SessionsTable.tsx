@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { GridColumn, GridTable, useBreakpoint } from 'react-basics';
 import { useFormat, useLocale, useMessages } from 'components/hooks';
-import Profile from 'components/common/Profile';
+import Avatar from 'components/common/Avatar';
 import styles from './SessionsTable.module.css';
 import { formatDate } from 'lib/date';
 
@@ -16,7 +16,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
       <GridColumn name="id" label="ID" width="300px">
         {row => (
           <Link href={`sessions/${row.id}`} className={styles.link}>
-            <Profile key={row.id} seed={row.id} size={64} />
+            <Avatar key={row.id} seed={row.id} size={64} />
             {row.id}
           </Link>
         )}
