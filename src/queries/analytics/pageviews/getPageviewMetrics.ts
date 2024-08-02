@@ -1,5 +1,5 @@
 import clickhouse from 'lib/clickhouse';
-import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
@@ -91,28 +91,66 @@ async function clickhouseQuery(
   });
 
   let excludeDomain = '';
-  let groupByQuery = '';
+  let sql = '';
 
-  if (column === 'referrer_domain') {
-    excludeDomain = `and t != {websiteDomain:String} and t != ''`;
-  }
+  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+    let entryExitQuery = '';
 
-  let columnQuery = `arrayJoin(${column})`;
+    if (column === 'referrer_domain') {
+      excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
+    }
 
-  if (type === 'entry') {
-    columnQuery = `visit_id x, argMinMerge(${column})`;
-  }
+    if (type === 'entry' || type === 'exit') {
+      const aggregrate = type === 'entry' ? 'min' : 'max';
 
-  if (type === 'exit') {
-    columnQuery = `visit_id x, argMaxMerge(${column})`;
-  }
+      entryExitQuery = `
+      JOIN (select visit_id,
+          ${aggregrate}(created_at) target_created_at
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+      group by visit_id) x
+      ON x.visit_id = website_event.visit_id
+          and x.target_created_at = website_event.created_at`;
+    }
 
-  if (type === 'entry' || type === 'exit') {
-    groupByQuery = 'group by x';
-  }
+    sql = `
+    select ${column} x, count(*) y
+    from website_event
+    ${entryExitQuery}
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = {eventType:UInt32}
+      ${excludeDomain}
+      ${filterQuery}
+    group by x
+    order by y desc
+    limit ${limit}
+    offset ${offset}
+    `;
+  } else {
+    let groupByQuery = '';
 
-  return rawQuery(
-    `
+    if (column === 'referrer_domain') {
+      excludeDomain = `and t != {websiteDomain:String} and t != ''`;
+    }
+
+    let columnQuery = `arrayJoin(${column})`;
+
+    if (type === 'entry') {
+      columnQuery = `visit_id x, argMinMerge(entry_url)`;
+    }
+
+    if (type === 'exit') {
+      columnQuery = `visit_id x, argMaxMerge(exit_url)`;
+    }
+
+    if (type === 'entry' || type === 'exit') {
+      groupByQuery = 'group by x';
+    }
+
+    sql = `
     select g.t as x,
       count(*) as y
     from (
@@ -128,9 +166,10 @@ async function clickhouseQuery(
     order by y desc
     limit ${limit}
     offset ${offset}
-    `,
-    params,
-  ).then((result: any) => {
+    `;
+  }
+
+  return rawQuery(sql, params).then((result: any) => {
     return Object.values(result).map((a: any) => {
       return { x: a.x, y: Number(a.y) };
     });
