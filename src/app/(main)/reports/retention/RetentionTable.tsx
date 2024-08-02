@@ -52,7 +52,7 @@ export function RetentionTable({ days = DAYS }) {
         {rows.map(({ date, visitors, records }, rowIndex) => {
           return (
             <div key={rowIndex} className={styles.row}>
-              <div className={styles.date}>{formatDate(`${date} 00:00:00`, 'PP', locale)}</div>
+              <div className={styles.date}>{formatDate(date, 'PP', locale)}</div>
               <div className={styles.visitors}>{visitors}</div>
               {days.map(day => {
                 if (totalDays - rowIndex < day) {
