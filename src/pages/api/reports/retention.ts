@@ -9,7 +9,8 @@ import * as yup from 'yup';
 
 export interface RetentionRequestBody {
   websiteId: string;
-  dateRange: { startDate: string; endDate: string; timezone: string };
+  dateRange: { startDate: string; endDate: string };
+  timezone: string;
 }
 
 const schema = {
@@ -20,9 +21,9 @@ const schema = {
       .shape({
         startDate: yup.date().required(),
         endDate: yup.date().required(),
-        timezone: TimezoneTest,
       })
       .required(),
+    timezone: TimezoneTest,
   }),
 };
 
@@ -37,7 +38,8 @@ export default async (
   if (req.method === 'POST') {
     const {
       websiteId,
-      dateRange: { startDate, endDate, timezone },
+      dateRange: { startDate, endDate },
+      timezone,
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {

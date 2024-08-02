@@ -2,11 +2,11 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
-import { PageParams, QueryFilters, QueryOptions } from './types';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
-import { fetchWebsite } from './load';
 import { maxDate } from './date';
+import { fetchWebsite } from './load';
 import { filtersToArray } from './params';
+import { PageParams, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
   second: '%Y-%m-%dT%H:%i:%S',
