@@ -1,5 +1,5 @@
 import { GridTable, GridColumn } from 'react-basics';
-import { useLocale, useMessages } from 'components/hooks';
+import { useLocale, useMessages, useTeamUrl } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import { formatDistance } from 'date-fns';
 import Avatar from 'components/common/Avatar';
@@ -8,6 +8,7 @@ import Link from 'next/link';
 export function EventsTable({ data = [] }) {
   const { dateLocale } = useLocale();
   const { formatMessage, labels } = useMessages();
+  const { renderTeamUrl } = useTeamUrl();
 
   if (data.length === 0) {
     return <Empty />;
@@ -17,7 +18,7 @@ export function EventsTable({ data = [] }) {
     <GridTable data={data}>
       <GridColumn name="session" label={formatMessage(labels.session)} width={'100px'}>
         {row => (
-          <Link href={`/sessions/`}>
+          <Link href={renderTeamUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
             <Avatar seed={row.sessionId} size={64} />
           </Link>
         )}
