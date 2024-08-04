@@ -11,7 +11,6 @@ export async function saveSessionData(data: {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
-  createdAt?: string;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
@@ -78,12 +77,12 @@ async function clickhouseQuery(data: {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
-  createdAt?: string;
 }) {
-  const { websiteId, sessionId, sessionData, createdAt } = data;
+  const { websiteId, sessionId, sessionData } = data;
 
   const { insert } = clickhouse;
   const { getDateFormat, sendMessages } = kafka;
+  const createdAt = getDateFormat(new Date());
 
   const jsonKeys = flattenJSON(sessionData);
 

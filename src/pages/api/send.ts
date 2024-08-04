@@ -144,9 +144,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         ...session,
         sessionId: session.id,
       });
-    }
-
-    if (type === COLLECTION_TYPE.identify) {
+    } else if (type === COLLECTION_TYPE.identify) {
       if (!data) {
         return badRequest(res, 'Data required.');
       }
