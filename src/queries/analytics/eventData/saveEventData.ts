@@ -11,6 +11,7 @@ export async function saveEventData(data: {
   websiteId: string;
   eventId: string;
   sessionId?: string;
+  visitId?: string;
   urlPath?: string;
   eventName?: string;
   eventData: DynamicData;
@@ -52,12 +53,13 @@ async function clickhouseQuery(data: {
   websiteId: string;
   eventId: string;
   sessionId?: string;
+  visitId?: string;
   urlPath?: string;
   eventName?: string;
   eventData: DynamicData;
   createdAt?: string;
 }) {
-  const { websiteId, sessionId, eventId, urlPath, eventName, eventData, createdAt } = data;
+  const { websiteId, sessionId, visitId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
   const { getDateFormat, sendMessages } = kafka;
 
@@ -68,6 +70,7 @@ async function clickhouseQuery(data: {
       website_id: websiteId,
       session_id: sessionId,
       event_id: eventId,
+      visitId: visitId,
       url_path: urlPath,
       event_name: eventName,
       data_key: key,

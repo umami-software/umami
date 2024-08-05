@@ -136,7 +136,7 @@ async function rawQuery<T = unknown>(
     format: 'JSONEachRow',
   });
 
-  return resultSet.json();
+  return resultSet.json() as T;
 }
 
 async function findUnique(data: any[]) {
