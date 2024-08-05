@@ -17,5 +17,6 @@
   grid-row: 2 / 3;
   min-height: 0;
   height: calc(100vh - 60px);
+  height: calc(100dvh - 60px);
   overflow-y: auto;
 }
