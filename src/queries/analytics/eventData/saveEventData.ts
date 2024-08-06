@@ -93,9 +93,11 @@ async function clickhouseQuery(data: {
     event_name: eventName,
   };
   jsonBlobs.blobs.forEach((blob, i) => {
+    if (i >= 20) return; // 20 is the max number of blobs
     message[`blob${i + 1}`] = blob;
   });
   jsonBlobs.doubles.forEach((double, i) => {
+    if (i >= 20) return; // 20 is the max number of doubles
     message[`double${i + 1}`] = double;
   });
 
