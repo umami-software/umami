@@ -92,3 +92,37 @@ function getKeyName(key: string, parentKey: string) {
 export function objectToArray(obj: object) {
   return Object.keys(obj).map(key => obj[key]);
 }
+
+export function flattenDynamicData(
+  data: { key: string; value: any; dataType: DynamicDataType }[],
+): {
+  blobs: string[];
+  doubles: number[];
+} {
+  const blobs: string[] = [];
+  const doubles: number[] = [];
+
+  data.forEach(({ value, dataType }) => {
+    switch (dataType) {
+      case DATA_TYPE.string:
+        blobs.push(value);
+        break;
+      case DATA_TYPE.number:
+        doubles.push(value);
+        break;
+      case DATA_TYPE.date:
+        doubles.push(new Date(value).getTime());
+        break;
+      case DATA_TYPE.boolean:
+        doubles.push(value ? 1 : 0);
+        break;
+      case DATA_TYPE.array:
+        blobs.push(JSON.stringify(value));
+        break;
+      default:
+        break;
+    }
+  });
+
+  return { blobs, doubles };
+}

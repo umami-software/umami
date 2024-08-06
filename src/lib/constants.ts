@@ -143,6 +143,7 @@ export const REPORT_PARAMETERS = {
 export const KAFKA_TOPIC = {
   event: 'event',
   eventData: 'event_data',
+  eventDataBlob: 'event_data_blob',
 } as const;
 
 export const ROLES = {
