@@ -70,7 +70,7 @@ async function clickhouseQuery(data: {
       website_id: websiteId,
       session_id: sessionId,
       event_id: eventId,
-      visitId: visitId,
+      visit_id: visitId,
       url_path: urlPath,
       event_name: eventName,
       data_key: key,
@@ -89,7 +89,7 @@ async function clickhouseQuery(data: {
     website_id: websiteId,
     session_id: sessionId,
     event_id: eventId,
-    visitId: visitId,
+    visit_id: visitId,
     event_name: eventName,
   };
   jsonBlobs.blobs.forEach((blob, i) => {
