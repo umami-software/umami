@@ -1,0 +1,55 @@
+# The name of this app. Must be unique within a project.
+name: app
+
+# The runtime the application uses. The 'type' key defines the base container
+# image that will be used to run the application. There is a separate base
+# container image for each primary language for the application,
+# in multiple versions. Check the JavaScript/Node.js documentation
+# (https://docs.platform.sh/languages/nodejs.html#supported-versions)
+# to find the supported versions for the 'nodejs' type.
+type: 'nodejs:18'
+
+dependencies:
+    nodejs:
+        yarn: '*'
+
+build:
+    flavor: none
+
+hooks:
+    build: |
+        set -e
+        yarn install
+        yarn build
+    deploy: |
+        set -e
+        yarn update-db
+
+# The following block defines a single writable directory, 'web/uploads'
+# The 'source' specifies where the writable mount is. The 'local' source
+# indicates that the mount point will point to a local directory on the
+# application container. The 'source_path' specifies the subdirectory
+# from within the source that the mount should point at.
+mounts:
+    'web/uploads':
+        source: local
+        source_path: uploads
+
+# The size of the persistent disk of the application (in MB).
+disk: 2048
+
+resources:
+    base_memory: 256
+    memory_ratio: 128
+
+# The relationships of the application with services or other applications.
+#
+# The left-hand side is the name of the relationship as it will be exposed
+# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
+# side is in the form '<service name>:<endpoint name>'.
+relationships:
+    postgresdatabase: 'dbpostgres:postgresql'
+
+web:
+    commands:
+        start: 'yarn start'
