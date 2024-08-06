@@ -61,7 +61,7 @@ async function clickhouseQuery(data: {
 }) {
   const { websiteId, sessionId, visitId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
-  const { getDateFormat, sendMessages } = kafka;
+  const { getDateFormat, sendMessages, sendMessage } = kafka;
 
   const jsonKeys = flattenJSON(eventData);
 
@@ -101,7 +101,7 @@ async function clickhouseQuery(data: {
     message[`double${i + 1}`] = double;
   });
 
-  // await sendMessage(message, 'event_data_blob');
+  await sendMessage(message, 'event_data_blob');
 
   return data;
 }
