@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 import { DATA_TYPE } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { flattenJSON, getStringValue } from 'lib/data';
+import { flattenDynamicData, flattenJSON, getStringValue } from 'lib/data';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { DynamicData } from 'lib/types';
@@ -61,7 +61,7 @@ async function clickhouseQuery(data: {
 }) {
   const { websiteId, sessionId, visitId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
-  const { getDateFormat, sendMessages } = kafka;
+  const { getDateFormat, sendMessages, sendMessage } = kafka;
 
   const jsonKeys = flattenJSON(eventData);
 
@@ -83,6 +83,25 @@ async function clickhouseQuery(data: {
   });
 
   await sendMessages(messages, 'event_data');
+
+  const jsonBlobs = flattenDynamicData(jsonKeys);
+  const message: { [key: string]: string | number } = {
+    website_id: websiteId,
+    session_id: sessionId,
+    event_id: eventId,
+    visitId: visitId,
+    event_name: eventName,
+  };
+  jsonBlobs.blobs.forEach((blob, i) => {
+    if (i >= 20) return; // 20 is the max number of blobs
+    message[`blob${i + 1}`] = blob;
+  });
+  jsonBlobs.doubles.forEach((double, i) => {
+    if (i >= 20) return; // 20 is the max number of doubles
+    message[`double${i + 1}`] = double;
+  });
+
+  await sendMessage(message, 'event_data_blob');
 
   return data;
 }
