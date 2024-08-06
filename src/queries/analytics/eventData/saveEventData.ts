@@ -91,6 +91,7 @@ async function clickhouseQuery(data: {
     event_id: eventId,
     visit_id: visitId,
     event_name: eventName,
+    created_at: createdAt ?? getDateFormat(new Date()),
   };
   jsonBlobs.blobs.forEach((blob, i) => {
     if (i >= 20) return; // 20 is the max number of blobs
