@@ -1,12 +1,13 @@
-import { GridTable, GridColumn } from 'react-basics';
+import { GridTable, GridColumn, Icon } from 'react-basics';
 import { useLocale, useMessages, useTeamUrl } from 'components/hooks';
 import Empty from 'components/common/Empty';
-import { formatDistance } from 'date-fns';
 import Avatar from 'components/common/Avatar';
 import Link from 'next/link';
+import Icons from 'components/icons';
+import { formatDate } from 'lib/date';
 
 export function EventsTable({ data = [] }) {
-  const { dateLocale } = useLocale();
+  const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl } = useTeamUrl();
 
@@ -27,20 +28,15 @@ export function EventsTable({ data = [] }) {
         {row => {
           return (
             <>
+              <Icon>{row.eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
               {formatMessage(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
-              <strong>{row.eventName}</strong>
+              <strong>{row.eventName || row.urlPath}</strong>
             </>
           );
         }}
       </GridColumn>
-      <GridColumn name="urlPath" label={formatMessage(labels.path)} />
-      <GridColumn name="created" label={formatMessage(labels.created)}>
-        {row =>
-          formatDistance(new Date(row.createdAt), new Date(), {
-            addSuffix: true,
-            locale: dateLocale,
-          })
-        }
+      <GridColumn name="created" label={formatMessage(labels.created)} width={'300px'}>
+        {row => formatDate(new Date(row.createdAt), 'PPPpp', locale)}
       </GridColumn>
     </GridTable>
   );

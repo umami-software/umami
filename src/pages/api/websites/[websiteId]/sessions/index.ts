@@ -14,6 +14,8 @@ export interface ReportsRequestQuery extends PageParams {
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
+    startAt: yup.number().integer().required(),
+    endAt: yup.number().integer().min(yup.ref('startAt')).required(),
     ...pageInfo,
   }),
 };
@@ -26,14 +28,17 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId } = req.query;
+  const { websiteId, startAt, endAt } = req.query;
+
+  const startDate = new Date(+startAt);
+  const endDate = new Date(+endAt);
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getWebsiteSessions(websiteId, {}, req.query);
+    const data = await getWebsiteSessions(websiteId, { startDate, endDate }, req.query);
 
     return ok(res, data);
   }

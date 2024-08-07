@@ -1,6 +1,6 @@
 export * from './queries/useApi';
 export * from './queries/useConfig';
-export * from './queries/useFilterQuery';
+export * from './queries/usePagedQuery';
 export * from './queries/useLogin';
 export * from './queries/useRealtime';
 export * from './queries/useReport';
@@ -19,6 +19,7 @@ export * from './queries/useUsers';
 export * from './queries/useWebsite';
 export * from './queries/useWebsites';
 export * from './queries/useWebsiteEvents';
+export * from './queries/useWebsiteEventsSeries';
 export * from './queries/useWebsiteMetrics';
 export * from './queries/useWebsiteValues';
 export * from './useCountryNames';

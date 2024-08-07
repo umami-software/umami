@@ -1,14 +1,14 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useApi } from './useApi';
-import { PageResult, PageParams, FilterQueryResult } from 'lib/types';
+import { PageResult, PageParams, PagedQueryResult } from 'lib/types';
 import { useNavigation } from '../useNavigation';
 
-export function useFilterQuery<T = any>({
+export function usePagedQuery<T = any>({
   queryKey,
   queryFn,
   ...options
-}: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): FilterQueryResult<T> {
+}: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): PagedQueryResult<T> {
   const { query: queryParams } = useNavigation();
   const [params, setParams] = useState<PageParams>({
     query: '',
@@ -30,4 +30,4 @@ export function useFilterQuery<T = any>({
   };
 }
 
-export default useFilterQuery;
+export default usePagedQuery;

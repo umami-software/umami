@@ -52,7 +52,7 @@ export function WebsiteHeader({
     },
     {
       label: formatMessage(labels.events),
-      icon: <Icons.Nodes />,
+      icon: <Icons.Bolt />,
       path: '/events',
     },
   ];

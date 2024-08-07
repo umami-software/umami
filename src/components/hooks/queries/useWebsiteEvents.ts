@@ -1,7 +1,7 @@
 import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
-import { useFilterQuery } from 'components/hooks';
+import { usePagedQuery } from 'components/hooks';
 
 export function useWebsiteEvents(
   websiteId: string,
@@ -10,7 +10,7 @@ export function useWebsiteEvents(
   const { get } = useApi();
   const params = useFilterParams(websiteId);
 
-  return useFilterQuery({
+  return usePagedQuery({
     queryKey: ['websites:events', { websiteId, ...params }],
     queryFn: pageParams =>
       get(`/websites/${websiteId}/events`, { ...params, ...pageParams, pageSize: 20 }),

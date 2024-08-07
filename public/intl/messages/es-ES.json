@@ -38,7 +38,7 @@
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Añadir paso"
     }
   ],
   "label.add-website": [
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Comparar"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Contar"
     }
   ],
   "label.countries": [
@@ -230,13 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Creado por"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Actual"
     }
   ],
   "label.current-password": [
@@ -386,7 +386,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Editar miembro"
     }
   ],
   "label.enable-share-url": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Paso final"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL de entrada"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL de salida"
     }
   ],
   "label.false": [
@@ -476,7 +476,7 @@
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Embudo"
     }
   ],
   "label.funnel-description": [
@@ -488,19 +488,19 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Objetivo"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Objetivos"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Realice un seguimiento de sus objetivos de páginas vistas y eventos."
     }
   ],
   "label.greater-than": [
@@ -578,13 +578,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Viaje"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Comprenda cómo los usuarios navegan por su sitio web."
     }
   ],
   "label.language": [
@@ -636,7 +636,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Últimos "
     },
     {
       "type": 1,
@@ -644,7 +644,7 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " meses"
     }
   ],
   "label.leave": [
@@ -698,7 +698,7 @@
   "label.max": [
     {
       "type": 0,
-      "value": "Máx"
+      "value": "Max"
     }
   ],
   "label.member": [
@@ -716,7 +716,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Mín"
+      "value": "Min"
     }
   ],
   "label.mobile": [
@@ -874,19 +874,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Anterior"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Periodo anterior"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Año anterior"
     }
   ],
   "label.profile": [
@@ -898,7 +898,7 @@
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Propiedad"
     }
   ],
   "label.queries": [
@@ -952,7 +952,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Región"
     }
   ],
   "label.regions": [
@@ -1042,7 +1042,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Seleccionar"
     }
   ],
   "label.select-date": [
@@ -1090,13 +1090,13 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Paso inical"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Pasos"
     }
   ],
   "label.sum": [
@@ -1126,7 +1126,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Jefe de equipo"
     }
   ],
   "label.team-member": [
@@ -1282,7 +1282,7 @@
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "Actualizar"
     }
   ],
   "label.url": [
@@ -1324,7 +1324,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "Realice un seguimiento de sus campañas a través de parámetros UTM."
     }
   ],
   "label.value": [
@@ -1360,7 +1360,7 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Vistas por visita"
     }
   ],
   "label.visit-duration": [
@@ -1378,7 +1378,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Visitas"
     }
   ],
   "label.website": [
@@ -1462,7 +1462,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Datos obtenidos"
     }
   ],
   "message.confirm-delete": [
@@ -1726,7 +1726,7 @@
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Seleccione el equipo al que transferir este sitio web."
     }
   ],
   "message.transfer-website": [

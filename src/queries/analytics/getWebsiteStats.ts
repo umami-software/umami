@@ -34,12 +34,14 @@ async function relationalQuery(
       sum(t.c) as "pageviews",
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
+      count(distinct t.country) as "countries",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime",
     from (
       select
         website_event.session_id,
         website_event.visit_id,
+        session.country,
         count(*) as "c",
         min(website_event.created_at) as "min_time",
         max(website_event.created_at) as "max_time"
@@ -49,7 +51,7 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         and event_type = {{eventType}}
         ${filterQuery}
-      group by 1, 2
+      group by 1, 2, 3
     ) as t
     `,
     params,
@@ -76,12 +78,14 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
+      uniq(t.country) as "countries",
       sum(if(t.c = 1, 1, 0)) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
         session_id,
         visit_id,
+        country,
         count(*) c,
         min(created_at) min_time,
         max(created_at) max_time
@@ -90,7 +94,7 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = {eventType:UInt32}
         ${filterQuery}
-      group by session_id, visit_id
+      group by session_id, visit_id, country
     ) as t;
     `;
   } else {
@@ -99,20 +103,23 @@ async function clickhouseQuery(
       sum(t.c) as "pageviews",
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
+      uniq(country) as "countries",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
-    from (select
-            session_id,
-            visit_id,
-            sum(views) c,
-            min(min_time) min_time,
-            max(max_time) max_time
-        from umami.website_event_stats_hourly "website_event"
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
-      ${filterQuery}
-      group by session_id, visit_id
+    from (
+      select
+          session_id,
+          visit_id,
+          country,
+          sum(views) c,
+          min(min_time) min_time,
+          max(max_time) max_time
+      from umami.website_event_stats_hourly "website_event"
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+        ${filterQuery}
+      group by session_id, visit_id, country
     ) as t;
     `;
   }
@@ -125,6 +132,7 @@ async function clickhouseQuery(
         visits: Number(a.visits),
         bounces: Number(a.bounces),
         totaltime: Number(a.totaltime),
+        countries: Number(a.countries),
       };
     });
   });

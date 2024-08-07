@@ -88,8 +88,8 @@ export const labels = defineMessages({
   leaveTeam: { id: 'label.leave-team', defaultMessage: 'Leave team' },
   refresh: { id: 'label.refresh', defaultMessage: 'Refresh' },
   pages: { id: 'label.pages', defaultMessage: 'Pages' },
-  entry: { id: 'label.entry', defaultMessage: 'Entry URL' },
-  exit: { id: 'label.exit', defaultMessage: 'Exit URL' },
+  entry: { id: 'label.entry', defaultMessage: 'Entry path' },
+  exit: { id: 'label.exit', defaultMessage: 'Exit path' },
   referrers: { id: 'label.referrers', defaultMessage: 'Referrers' },
   hosts: { id: 'label.hosts', defaultMessage: 'Hosts' },
   screens: { id: 'label.screens', defaultMessage: 'Screens' },
@@ -165,6 +165,8 @@ export const labels = defineMessages({
   },
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
+  path: { id: 'label.path', defaultMessage: 'Path' },
+  paths: { id: 'label.paths', defaultMessage: 'Paths' },
   add: { id: 'label.add', defaultMessage: 'Add' },
   update: { id: 'label.update', defaultMessage: 'Update' },
   window: { id: 'label.window', defaultMessage: 'Window' },
@@ -276,7 +278,6 @@ export const labels = defineMessages({
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
-  path: { id: 'label.path', defaultMessage: 'Path' },
 });
 
 export const messages = defineMessages({

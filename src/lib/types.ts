@@ -41,7 +41,7 @@ export interface PageResult<T> {
   sortDescending?: boolean;
 }
 
-export interface FilterQueryResult<T> {
+export interface PagedQueryResult<T> {
   result: PageResult<T>;
   query: any;
   params: PageParams;

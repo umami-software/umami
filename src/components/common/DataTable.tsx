@@ -4,13 +4,13 @@ import { Banner, Loading, SearchField } from 'react-basics';
 import { useMessages, useNavigation } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
-import { FilterQueryResult } from 'lib/types';
+import { PagedQueryResult } from 'lib/types';
 import styles from './DataTable.module.css';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataTableProps {
-  queryResult: FilterQueryResult<any>;
+  queryResult: PagedQueryResult<any>;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
