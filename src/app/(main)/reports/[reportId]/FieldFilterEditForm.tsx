@@ -1,22 +1,22 @@
-import { useState, useMemo } from 'react';
-import {
-  Form,
-  FormRow,
-  Item,
-  Flexbox,
-  Dropdown,
-  Button,
-  SearchField,
-  TextField,
-  Text,
-  Icon,
-  Icons,
-  Menu,
-  Loading,
-} from 'react-basics';
-import { useMessages, useFilters, useFormat, useLocale, useWebsiteValues } from 'components/hooks';
+import { useFilters, useFormat, useLocale, useMessages, useWebsiteValues } from 'components/hooks';
 import { OPERATORS } from 'lib/constants';
 import { isEqualsOperator } from 'lib/params';
+import { useMemo, useState } from 'react';
+import {
+  Button,
+  Dropdown,
+  Flexbox,
+  Form,
+  FormRow,
+  Icon,
+  Icons,
+  Item,
+  Loading,
+  Menu,
+  SearchField,
+  Text,
+  TextField,
+} from 'react-basics';
 import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
@@ -68,6 +68,16 @@ export default function FieldFilterEditForm({
     endDate,
     search,
   });
+
+  const filterDropdownItems = (name: string) => {
+    const limitedFilters = ['country', 'region', 'city'];
+
+    if (limitedFilters.includes(name)) {
+      return filters.filter(f => f.type === type && !f.label.match(/contain/gi));
+    } else {
+      return filters.filter(f => f.type === type);
+    }
+  };
 
   const formattedValues = useMemo(() => {
     if (!values) {
@@ -142,7 +152,7 @@ export default function FieldFilterEditForm({
           {allowFilterSelect && (
             <Dropdown
               className={styles.dropdown}
-              items={filters.filter(f => f.type === type)}
+              items={filterDropdownItems(name)}
               value={operator}
               renderValue={renderFilterValue}
               onChange={handleOperatorChange}
