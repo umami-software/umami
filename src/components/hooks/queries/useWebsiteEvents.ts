@@ -1,7 +1,7 @@
 import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
-import { usePagedQuery } from 'components/hooks';
+import { usePagedQuery } from './usePagedQuery';
 
 export function useWebsiteEvents(
   websiteId: string,
