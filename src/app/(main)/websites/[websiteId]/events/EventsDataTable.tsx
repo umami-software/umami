@@ -5,7 +5,6 @@ import { ReactNode } from 'react';
 
 export default function EventsDataTable({
   websiteId,
-  children,
 }: {
   websiteId?: string;
   teamId?: string;
@@ -13,12 +12,8 @@ export default function EventsDataTable({
 }) {
   const queryResult = useWebsiteEvents(websiteId);
 
-  if (queryResult?.result?.data?.length === 0) {
-    return children;
-  }
-
   return (
-    <DataTable queryResult={queryResult} allowSearch={false}>
+    <DataTable queryResult={queryResult} allowSearch={true}>
       {({ data }) => <EventsTable data={data} />}
     </DataTable>
   );

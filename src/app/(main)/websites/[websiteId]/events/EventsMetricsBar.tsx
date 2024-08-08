@@ -6,7 +6,7 @@ import { useMessages } from 'components/hooks';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import { formatLongNumber } from 'lib/format';
 
-export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
+export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
 
@@ -29,8 +29,8 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
           formatValue={formatLongNumber}
         />
         <MetricCard
-          value={data?.countries?.value}
-          label={formatMessage(labels.countries)}
+          value={data?.events?.value}
+          label={formatMessage(labels.events)}
           formatValue={formatLongNumber}
         />
       </MetricsBar>
@@ -39,4 +39,4 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
   );
 }
 
-export default SessionsMetricsBar;
+export default EventsMetricsBar;

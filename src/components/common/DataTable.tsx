@@ -34,7 +34,7 @@ export function DataTable({
   const { page, pageSize, count, data } = result || {};
   const { query } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
-  const noResults = Boolean(!isLoading && query && !hasData);
+  const noResults = Boolean(query && !hasData);
   const { router, renderUrl } = useNavigation();
 
   const handleSearch = (query: string) => {

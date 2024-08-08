@@ -15,6 +15,7 @@ export function useWebsiteSessions(websiteId: string, params?: { [key: string]: 
         ...data,
         ...params,
         ...filters,
+        pageSize: 20,
       });
     },
   });

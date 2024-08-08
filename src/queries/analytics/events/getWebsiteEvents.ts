@@ -26,6 +26,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
+  const { query } = pageParams;
 
   return pagedQuery(
     `
@@ -46,9 +47,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
+    ${query ? `and (positionCaseInsensitive(event_name, {query:String}) > 0)` : ''}
     order by created_at desc
     `,
-    params,
+    { ...params, query },
     pageParams,
   );
 }
