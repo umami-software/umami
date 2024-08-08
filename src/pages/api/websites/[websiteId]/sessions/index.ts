@@ -30,13 +30,13 @@ export default async (
 
   const { websiteId, startAt, endAt } = req.query;
 
-  const startDate = new Date(+startAt);
-  const endDate = new Date(+endAt);
-
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
+
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
 
     const data = await getWebsiteSessions(websiteId, { startDate, endDate }, req.query);
 

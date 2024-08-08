@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { colord } from 'colord';
 import HoverTooltip from 'components/common/HoverTooltip';
 import { ISO_COUNTRIES, MAP_FILE } from 'lib/constants';
-import { useTheme } from 'components/hooks';
+import { useDateRange, useTheme, useWebsiteMetrics } from 'components/hooks';
 import { useCountryNames } from 'components/hooks';
 import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
@@ -12,16 +12,35 @@ import { formatLongNumber } from 'lib/format';
 import { percentFilter } from 'lib/filters';
 import styles from './WorldMap.module.css';
 
-export function WorldMap({ data = [], className }: { data?: any[]; className?: string }) {
+export function WorldMap({
+  websiteId,
+  data,
+  className,
+}: {
+  websiteId?: string;
+  data?: any[];
+  className?: string;
+}) {
   const [tooltip, setTooltipPopup] = useState();
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
-  const metrics = useMemo(() => (data ? percentFilter(data) : []), [data]);
+  const {
+    dateRange: { startDate, endDate },
+  } = useDateRange(websiteId);
+  const { data: mapData } = useWebsiteMetrics(websiteId, {
+    type: 'country',
+    startAt: +startDate,
+    endAt: +endDate,
+  });
+  const metrics = useMemo(
+    () => (data || mapData ? percentFilter((data || mapData) as any[]) : []),
+    [data, mapData],
+  );
 
-  function getFillColor(code: string) {
+  const getFillColor = (code: string) => {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
 
@@ -32,19 +51,19 @@ export function WorldMap({ data = [], className }: { data?: any[]; className?: s
     return colord(colors.map.baseColor)
       [theme === 'light' ? 'lighten' : 'darken'](0.4 * (1.0 - country.z / 100))
       .toHex();
-  }
+  };
 
-  function getOpacity(code) {
+  const getOpacity = (code: string) => {
     return code === 'AQ' ? 0 : 1;
-  }
+  };
 
-  function handleHover(code) {
+  const handleHover = (code: string) => {
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
     setTooltipPopup(
       `${countryNames[code]}: ${formatLongNumber(country?.y || 0)} ${visitorsLabel}` as any,
     );
-  }
+  };
 
   return (
     <div

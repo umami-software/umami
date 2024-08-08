@@ -26,14 +26,17 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId } = req.query;
+  const { websiteId, startAt, endAt } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getWebsiteEvents(websiteId, {}, req.query);
+    const startDate = new Date(+startAt);
+    const endDate = new Date(+endAt);
+
+    const data = await getWebsiteEvents(websiteId, { startDate, endDate }, req.query);
 
     return ok(res, data);
   }
