@@ -1,0 +1,14 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+  gap: 30px;
+}
+
+.table {
+  align-self: start;
+}
+
+.link:hover {
+  cursor: pointer;
+  color: var(--primary400);
+}

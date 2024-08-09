@@ -37,16 +37,6 @@ export function WebsiteHeader({
       path: '/compare',
     },
     {
-      label: formatMessage(labels.realtime),
-      icon: <Icons.Clock />,
-      path: '/realtime',
-    },
-    {
-      label: formatMessage(labels.reports),
-      icon: <Icons.Reports />,
-      path: '/reports',
-    },
-    {
       label: formatMessage(labels.sessions),
       icon: <Icons.User />,
       path: '/sessions',
@@ -55,6 +45,16 @@ export function WebsiteHeader({
       label: formatMessage(labels.events),
       icon: <Lightning />,
       path: '/events',
+    },
+    {
+      label: formatMessage(labels.realtime),
+      icon: <Icons.Clock />,
+      path: '/realtime',
+    },
+    {
+      label: formatMessage(labels.reports),
+      icon: <Icons.Reports />,
+      path: '/reports',
     },
   ];
 

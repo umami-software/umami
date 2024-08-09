@@ -54,7 +54,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt }) => format(new Date(createdAt), 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => format(new Date(firstAt || createdAt), 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
@@ -181,7 +181,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
         <SearchField className={styles.search} value={search} onSearch={setSearch} />
         <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
       </div>
-      <div className={styles.header}>{formatMessage(labels.activityLog)}</div>
+      <div className={styles.header}>{formatMessage(labels.activity)}</div>
       <div className={styles.body}>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (

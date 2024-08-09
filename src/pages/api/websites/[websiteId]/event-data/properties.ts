@@ -3,14 +3,14 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getEventDataFields } from 'queries';
+import { getEventDataProperties } from 'queries';
 import * as yup from 'yup';
 
 export interface EventDataFieldsRequestQuery {
   websiteId: string;
   startAt: string;
   endAt: string;
-  field?: string;
+  propertyName?: string;
 }
 
 const schema = {
@@ -18,7 +18,7 @@ const schema = {
     websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().min(yup.ref('startAt')).required(),
-    field: yup.string(),
+    propertyName: yup.string(),
   }),
 };
 
@@ -31,7 +31,7 @@ export default async (
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, startAt, endAt, field } = req.query;
+    const { websiteId, startAt, endAt, propertyName } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
@@ -40,7 +40,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const data = await getEventDataFields(websiteId, { startDate, endDate, field });
+    const data = await getEventDataProperties(websiteId, { startDate, endDate, propertyName });
 
     return ok(res, data);
   }

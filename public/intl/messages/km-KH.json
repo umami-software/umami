@@ -11,7 +11,7 @@
       "value": "សកម្មភាព"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "កំណត់ហេតុ​សកម្មភាព"
@@ -473,6 +473,12 @@
       "value": "ចម្រោះ"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -633,6 +639,12 @@
     {
       "type": 0,
       "value": " ខែចុងក្រោយ"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
     }
   ],
   "label.leave": [
@@ -849,6 +861,18 @@
       "value": "ពាក្យសម្ងាត់​"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -881,6 +905,12 @@
     {
       "type": 0,
       "value": "គណនី"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
     }
   ],
   "label.property": [
@@ -997,6 +1027,24 @@
       "value": "Measure your website stickiness by tracking how often users return."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -1049,6 +1097,12 @@
     {
       "type": 0,
       "value": "ជ្រើសរើសគេហទំព័រ"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
     }
   ],
   "label.sessions": [
@@ -1219,6 +1273,12 @@
       "value": "លេខកូដតាមដាន"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1255,6 +1315,12 @@
       "value": "អ្នកចូលមើលម្នាក់ៗ"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1289,6 +1355,12 @@
     {
       "type": 0,
       "value": "អ្នកប្រើប្រាស់"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
     }
   ],
   "label.username": [

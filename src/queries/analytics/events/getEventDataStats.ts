@@ -7,7 +7,7 @@ export async function getEventDataStats(
   ...args: [websiteId: string, filters: QueryFilters]
 ): Promise<{
   events: number;
-  fields: number;
+  properties: number;
   records: number;
 }> {
   return runQuery({
@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select 
       count(distinct t.website_event_id) as "events",
-      count(distinct t.data_key) as "fields",
+      count(distinct t.data_key) as "properties",
       sum(t.total) as "records"
     from (
       select
@@ -45,7 +45,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<{ events: number; fields: number; records: number }[]> {
+): Promise<{ events: number; properties: number; records: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, filters);
 
@@ -53,7 +53,7 @@ async function clickhouseQuery(
     `
     select 
       count(distinct t.event_id) as "events",
-      count(distinct t.data_key) as "fields",
+      count(distinct t.data_key) as "properties",
       sum(t.total) as "records"
     from (
       select
@@ -72,7 +72,7 @@ async function clickhouseQuery(
     return Object.values(result).map((a: any) => {
       return {
         events: Number(a.events),
-        fields: Number(a.fields),
+        properties: Number(a.properties),
         records: Number(a.records),
       };
     });

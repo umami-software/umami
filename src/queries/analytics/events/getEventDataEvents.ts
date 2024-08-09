@@ -22,9 +22,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       `
       select
         website_event.event_name as "eventName",
-        event_data.data_key as "fieldName",
+        event_data.data_key as "propertyName",
         event_data.data_type as "dataType",
-        event_data.string_value as "fieldValue",
+        event_data.string_value as "propertyValue",
         count(*) as "total"
       from event_data
       inner join website_event
@@ -43,7 +43,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       website_event.event_name as "eventName",
-      event_data.data_key as "fieldName",
+      event_data.data_key as "propertyName",
       event_data.data_type as "dataType",
       count(*) as "total"
     from event_data
@@ -62,7 +62,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<{ eventName: string; fieldName: string; dataType: number; total: number }[]> {
+): Promise<{ eventName: string; propertyName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { event } = filters;
   const { params } = await parseFilters(websiteId, filters);
@@ -72,9 +72,9 @@ async function clickhouseQuery(
       `
       select
         event_name as eventName,
-        data_key as fieldName,
+        data_key as propertyName,
         data_type as dataType,
-        string_value as fieldValue,
+        string_value as propertyValue,
         count(*) as total
       from event_data
       where website_id = {websiteId:UUID}
@@ -89,9 +89,9 @@ async function clickhouseQuery(
       return Object.values(result).map((a: any) => {
         return {
           eventName: a.eventName,
-          fieldName: a.fieldName,
+          propertyName: a.propertyName,
           dataType: Number(a.dataType),
-          fieldValue: a.fieldValue,
+          propertyValue: a.propertyValue,
           total: Number(a.total),
         };
       });
@@ -102,7 +102,7 @@ async function clickhouseQuery(
     `
     select
       event_name as eventName,
-      data_key as fieldName,
+      data_key as propertyName,
       data_type as dataType,
       count(*) as total
     from event_data
@@ -117,7 +117,7 @@ async function clickhouseQuery(
     return Object.values(result).map((a: any) => {
       return {
         eventName: a.eventName,
-        fieldName: a.fieldName,
+        propertyName: a.propertyName,
         dataType: Number(a.dataType),
         total: Number(a.total),
       };

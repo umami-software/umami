@@ -125,9 +125,9 @@ export interface WebsiteEventMetric {
 
 export interface WebsiteEventData {
   eventName?: string;
-  fieldName: string;
+  propertyName: string;
   dataType: number;
-  fieldValue?: string;
+  propertyValue?: string;
   total: number;
 }
 

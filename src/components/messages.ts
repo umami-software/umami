@@ -133,7 +133,7 @@ export const labels = defineMessages({
   session: { id: 'label.session', defaultMessage: 'Session' },
   sessions: { id: 'label.sessions', defaultMessage: 'Sessions' },
   pageNotFound: { id: 'message.page-not-found', defaultMessage: 'Page not found' },
-  activityLog: { id: 'label.activity-log', defaultMessage: 'Activity log' },
+  activity: { id: 'label.activity', defaultMessage: 'Activity' },
   dismiss: { id: 'label.dismiss', defaultMessage: 'Dismiss' },
   poweredBy: { id: 'label.powered-by', defaultMessage: 'Powered by {name}' },
   pageViews: { id: 'label.page-views', defaultMessage: 'Page views' },
