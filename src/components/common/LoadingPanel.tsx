@@ -23,7 +23,7 @@ export function LoadingPanel({
   className?: string;
   children: ReactNode;
 }) {
-  const isEmpty = !isLoading && isFetched && data && Array.isArray(data) && data.length > 0;
+  const isEmpty = !isLoading && isFetched && data && Array.isArray(data) && data.length === 0;
 
   return (
     <div className={classNames(styles.panel, className)}>
