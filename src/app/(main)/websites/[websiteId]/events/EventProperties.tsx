@@ -1,10 +1,10 @@
 import { GridColumn, GridTable } from 'react-basics';
 import { useEventDataProperties, useEventDataValues, useMessages } from 'components/hooks';
 import { LoadingPanel } from 'components/common/LoadingPanel';
-import styles from './EventProperties.module.css';
 import PieChart from 'components/charts/PieChart';
 import { useState } from 'react';
 import { CHART_COLORS } from 'lib/constants';
+import styles from './EventProperties.module.css';
 
 export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
@@ -36,11 +36,11 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               </div>
             )}
           </GridColumn>
-          <GridColumn name="total" label={formatMessage(labels.count)} />
+          <GridColumn name="total" label={formatMessage(labels.count)} alignment="end" />
         </GridTable>
         {propertyName && (
-          <div>
-            <strong>{propertyName}</strong>
+          <div className={styles.chart}>
+            <div className={styles.title}>{propertyName}</div>
             <PieChart key={propertyName} type="doughnut" data={chartData} />
           </div>
         )}
