@@ -1,24 +1,37 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 
-export async function getSessionActivity(...args: [websiteId: string, sessionId: string]) {
+export async function getSessionActivity(
+  ...args: [websiteId: string, sessionId: string, startDate: Date, endDate: Date]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 }
 
-async function relationalQuery(websiteId: string, sessionId: string) {
+async function relationalQuery(
+  websiteId: string,
+  sessionId: string,
+  startDate: Date,
+  endDate: Date,
+) {
   return prisma.client.websiteEvent.findMany({
     where: {
       id: sessionId,
       websiteId,
+      createdAt: { gte: startDate, lte: endDate },
     },
   });
 }
 
-async function clickhouseQuery(websiteId: string, sessionId: string) {
+async function clickhouseQuery(
+  websiteId: string,
+  sessionId: string,
+  startDate: Date,
+  endDate: Date,
+) {
   const { rawQuery } = clickhouse;
 
   return rawQuery(
@@ -36,9 +49,10 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       visit_id as visitId
     from website_event
     where website_id = {websiteId:UUID}
-    and session_id = {sessionId:UUID} 
+      and session_id = {sessionId:UUID} 
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     order by created_at desc
     `,
-    { websiteId, sessionId },
+    { websiteId, sessionId, startDate, endDate },
   );
 }

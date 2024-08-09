@@ -1,13 +1,13 @@
 'use client';
-import WebsiteHeader from '../../WebsiteHeader';
-import SessionInfo from './SessionInfo';
-import { useWebsiteSession } from 'components/hooks';
 import Avatar from 'components/common/Avatar';
+import { LoadingPanel } from 'components/common/LoadingPanel';
+import { useWebsiteSession } from 'components/hooks';
+import WebsiteHeader from '../../WebsiteHeader';
 import { SessionActivity } from './SessionActivity';
-import { SessionStats } from './SessionStats';
 import { SessionData } from './SessionData';
 import styles from './SessionDetailsPage.module.css';
-import { LoadingPanel } from 'components/common/LoadingPanel';
+import SessionInfo from './SessionInfo';
+import { SessionStats } from './SessionStats';
 
 export default function SessionDetailsPage({
   websiteId,
@@ -28,7 +28,12 @@ export default function SessionDetailsPage({
         </div>
         <div className={styles.content}>
           <SessionStats data={data} />
-          <SessionActivity websiteId={websiteId} sessionId={sessionId} />
+          <SessionActivity
+            websiteId={websiteId}
+            sessionId={sessionId}
+            startDate={data?.firstAt}
+            endDate={data?.lastAt}
+          />
         </div>
         <div className={styles.data}>
           <SessionData websiteId={websiteId} sessionId={sessionId} />
