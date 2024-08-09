@@ -12,7 +12,9 @@ export function TypeIcon({
   return (
     <>
       <img
-        src={`${process.env.basePath || ''}/images/${type}/${value || 'unknown'}.png`}
+        src={`${process.env.basePath || ''}/images/${type}/${
+          value.replaceAll(' ', '-').toLowerCase() || 'unknown'
+        }.png`}
         alt={value}
         width={type === 'country' ? undefined : 16}
         height={type === 'country' ? undefined : 16}

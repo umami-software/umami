@@ -31,11 +31,25 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
       </GridColumn>
       <GridColumn name="city" label={formatMessage(labels.city)} />
       <GridColumn name="browser" label={formatMessage(labels.browser)}>
-        {row => formatValue(row.browser, 'browser')}
+        {row => (
+          <TypeIcon type="browser" value={row.browser}>
+            {formatValue(row.browser, 'browser')}
+          </TypeIcon>
+        )}
       </GridColumn>
-      <GridColumn name="os" label={formatMessage(labels.os)} />
+      <GridColumn name="os" label={formatMessage(labels.os)}>
+        {row => (
+          <TypeIcon type="os" value={row.os}>
+            {formatValue(row.os, 'os')}
+          </TypeIcon>
+        )}
+      </GridColumn>
       <GridColumn name="device" label={formatMessage(labels.device)}>
-        {row => formatValue(row.device, 'device')}
+        {row => (
+          <TypeIcon type="device" value={row.device}>
+            {formatValue(row.device, 'device')}
+          </TypeIcon>
+        )}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
         {row => formatDate(new Date(row.lastAt), 'PPPpp', locale)}
