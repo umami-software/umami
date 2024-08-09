@@ -2,12 +2,12 @@
 import WebsiteHeader from '../../WebsiteHeader';
 import SessionInfo from './SessionInfo';
 import { useWebsiteSession } from 'components/hooks';
-import { Loading } from 'react-basics';
 import Avatar from 'components/common/Avatar';
 import { SessionActivity } from './SessionActivity';
 import { SessionStats } from './SessionStats';
 import { SessionData } from './SessionData';
 import styles from './SessionDetailsPage.module.css';
+import { LoadingPanel } from 'components/common/LoadingPanel';
 
 export default function SessionDetailsPage({
   websiteId,
@@ -16,14 +16,10 @@ export default function SessionDetailsPage({
   websiteId: string;
   sessionId: string;
 }) {
-  const { data, isLoading } = useWebsiteSession(websiteId, sessionId);
-
-  if (isLoading) {
-    return <Loading position="page" />;
-  }
+  const { data, ...query } = useWebsiteSession(websiteId, sessionId);
 
   return (
-    <>
+    <LoadingPanel {...query} loadingIcon="spinner" data={data}>
       <WebsiteHeader websiteId={websiteId} />
       <div className={styles.page}>
         <div className={styles.sidebar}>
@@ -38,6 +34,6 @@ export default function SessionDetailsPage({
           <SessionData websiteId={websiteId} sessionId={sessionId} />
         </div>
       </div>
-    </>
+    </LoadingPanel>
   );
 }

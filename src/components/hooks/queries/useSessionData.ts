@@ -6,7 +6,7 @@ export function useSessionData(websiteId: string, sessionId: string) {
   return useQuery({
     queryKey: ['session:data', { websiteId, sessionId }],
     queryFn: () => {
-      return get(`/sessions/${sessionId}/data`, { websiteId });
+      return get(`/websites/${websiteId}/sessions/${sessionId}/properties`, { websiteId });
     },
   });
 }

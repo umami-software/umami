@@ -1,19 +1,16 @@
-import { Loading, TextOverflow } from 'react-basics';
+import { TextOverflow } from 'react-basics';
 import { useMessages, useSessionData } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import { DATA_TYPES } from 'lib/constants';
 import styles from './SessionData.module.css';
+import { LoadingPanel } from 'components/common/LoadingPanel';
 
 export function SessionData({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading } = useSessionData(websiteId, sessionId);
-
-  if (isLoading) {
-    return <Loading icon="dots" size="sm" />;
-  }
+  const { data, ...query } = useSessionData(websiteId, sessionId);
 
   return (
-    <div className={styles.data}>
+    <LoadingPanel className={styles.data} {...query} data={data}>
       <div className={styles.header}>{formatMessage(labels.properties)}</div>
       {!data?.length && <Empty className={styles.empty} />}
       {data?.map(({ dataKey, dataType, stringValue }) => {
@@ -29,6 +26,6 @@ export function SessionData({ websiteId, sessionId }: { websiteId: string; sessi
           </div>
         );
       })}
-    </div>
+    </LoadingPanel>
   );
 }
