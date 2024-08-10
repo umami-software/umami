@@ -40,8 +40,8 @@ export default async (
     const data = await getSessionActivity(
       websiteId,
       sessionId,
-      new Date(startDate),
-      new Date(endDate),
+      new Date(startDate + 'Z'),
+      new Date(endDate + 'Z'),
     );
 
     return ok(res, data);

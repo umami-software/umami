@@ -18,17 +18,17 @@ export async function fetchWebsite(websiteId: string): Promise<Website> {
   return website;
 }
 
-export async function fetchSession(sessionId: string): Promise<Session> {
+export async function fetchSession(websiteId: string, sessionId: string): Promise<Session> {
   let session = null;
 
   if (redis.enabled) {
     session = await redis.client.fetch(
       `session:${sessionId}`,
-      () => getWebsiteSession(sessionId),
+      () => getWebsiteSession(websiteId, sessionId),
       86400,
     );
   } else {
-    session = await getWebsiteSession(sessionId);
+    session = await getWebsiteSession(websiteId, sessionId);
   }
 
   if (!session) {

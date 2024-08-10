@@ -47,7 +47,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       min(created_at) as firstAt,
       max(created_at) as lastAt,
       uniq(visit_id) as visits,
-      count(*) as views
+      sumIf(1, event_type = 1) as views
     from website_event
     where website_id = {websiteId:UUID}
     ${dateQuery}
