@@ -32,9 +32,9 @@ export function WebsiteHeader({
       path: '',
     },
     {
-      label: formatMessage(labels.compare),
-      icon: <Icons.Compare />,
-      path: '/compare',
+      label: formatMessage(labels.events),
+      icon: <Lightning />,
+      path: '/events',
     },
     {
       label: formatMessage(labels.sessions),
@@ -42,14 +42,14 @@ export function WebsiteHeader({
       path: '/sessions',
     },
     {
-      label: formatMessage(labels.events),
-      icon: <Lightning />,
-      path: '/events',
-    },
-    {
       label: formatMessage(labels.realtime),
       icon: <Icons.Clock />,
       path: '/realtime',
+    },
+    {
+      label: formatMessage(labels.compare),
+      icon: <Icons.Compare />,
+      path: '/compare',
     },
     {
       label: formatMessage(labels.reports),
