@@ -44,11 +44,11 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       country,
       subdivision1,
       city,
-      min(created_at) as firstAt,
-      max(created_at) as lastAt,
+      min(min_time) as firstAt,
+      max(max_time) as lastAt,
       uniq(visit_id) as visits,
-      sumIf(1, event_type = 1) as views
-    from website_event
+      sumIf(views, event_type = 1) as views
+    from website_event_stats_hourly
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}

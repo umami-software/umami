@@ -33,15 +33,12 @@ async function relationalQuery(
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       count(distinct t.country) as "countries",
-      count(t.event_name) as "countries",
-      sum(case when t.event_type = 2 then 1 else 0 end) as "events",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
       sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime",
     from (
       select
         website_event.session_id,
         website_event.visit_id,
-        website_event.event_type,
         session.country,
         count(*) as "c",
         min(website_event.created_at) as "min_time",
@@ -51,7 +48,7 @@ async function relationalQuery(
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
-      group by 1, 2, 3, 4
+      group by 1, 2, 3
     ) as t
     `,
     params,
@@ -78,14 +75,12 @@ async function clickhouseQuery(
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
       uniq(t.country) as "countries",
-      sumIf(1, t.event_type = 2) as "events",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
         session_id,
         visit_id,
-        event_type,
         country,
         count(*) c,
         min(created_at) min_time,
@@ -94,7 +89,7 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
-      group by session_id, visit_id, event_type, country
+      group by session_id, visit_id, country
     ) as t;
     `;
   } else {
@@ -104,14 +99,12 @@ async function clickhouseQuery(
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       uniq(country) as "countries",
-      sumIf(1, t.event_type = 2) as "events",
       sumIf(1, t.c = 1) as "bounces",
       sum(max_time-min_time) as "totaltime"
     from (
       select
           session_id,
           visit_id,
-          event_type,
           country,
           sum(views) c,
           min(min_time) min_time,
@@ -120,7 +113,7 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         ${filterQuery}
-      group by session_id, visit_id, event_type, country
+      group by session_id, visit_id, country
     ) as t;
     `;
   }

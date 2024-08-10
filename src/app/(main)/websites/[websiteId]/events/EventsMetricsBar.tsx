@@ -28,11 +28,6 @@ export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
           label={formatMessage(labels.views)}
           formatValue={formatLongNumber}
         />
-        <MetricCard
-          value={data?.events?.value}
-          label={formatMessage(labels.events)}
-          formatValue={formatLongNumber}
-        />
       </MetricsBar>
       <WebsiteDateFilter websiteId={websiteId} />
     </Flexbox>
