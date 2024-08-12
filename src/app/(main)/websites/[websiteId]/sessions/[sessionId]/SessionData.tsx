@@ -10,22 +10,24 @@ export function SessionData({ websiteId, sessionId }: { websiteId: string; sessi
   const { data, ...query } = useSessionData(websiteId, sessionId);
 
   return (
-    <LoadingPanel className={styles.data} {...query} data={data}>
+    <>
       <div className={styles.header}>{formatMessage(labels.properties)}</div>
-      {!data?.length && <Empty className={styles.empty} />}
-      {data?.map(({ dataKey, dataType, stringValue }) => {
-        return (
-          <div key={dataKey}>
-            <div className={styles.label}>
-              <div className={styles.name}>
-                <TextOverflow>{dataKey}</TextOverflow>
+      <LoadingPanel className={styles.data} {...query} data={data}>
+        {!data?.length && <Empty className={styles.empty} />}
+        {data?.map(({ dataKey, dataType, stringValue }) => {
+          return (
+            <div key={dataKey}>
+              <div className={styles.label}>
+                <div className={styles.name}>
+                  <TextOverflow>{dataKey}</TextOverflow>
+                </div>
+                <div className={styles.type}>{DATA_TYPES[dataType]}</div>
               </div>
-              <div className={styles.type}>{DATA_TYPES[dataType]}</div>
+              <div className={styles.value}>{stringValue}</div>
             </div>
-            <div className={styles.value}>{stringValue}</div>
-          </div>
-        );
-      })}
-    </LoadingPanel>
+          );
+        })}
+      </LoadingPanel>
+    </>
   );
 }

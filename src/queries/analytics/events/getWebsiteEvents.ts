@@ -14,10 +14,12 @@ export function getWebsiteEvents(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery } = prisma;
+  const { query } = pageParams;
 
   const where = {
     ...filters,
     id: websiteId,
+    ...prisma.getSearchParameters(query, [{ eventName: 'contains' }, { urlPath: 'contains' }]),
   };
 
   return pagedQuery('website_event', { where }, pageParams);
@@ -47,7 +49,12 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    ${query ? `and (positionCaseInsensitive(event_name, {query:String}) > 0)` : ''}
+    ${
+      query
+        ? `and (positionCaseInsensitive(event_name, {query:String}) > 0
+           or positionCaseInsensitive(url_path, {query:String}) > 0)`
+        : ''
+    }
     order by created_at desc
     `,
     { ...params, query },

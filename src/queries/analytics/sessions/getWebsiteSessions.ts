@@ -14,12 +14,10 @@ export async function getWebsiteSessions(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams: PageParams) {
   const { pagedQuery } = prisma;
-  const { query } = pageParams;
 
   const where = {
     ...filters,
     id: websiteId,
-    ...prisma.getSearchParameters(query, [{ eventName: 'contains' }, { urlPath: 'contains' }]),
   };
 
   return pagedQuery('session', { where }, pageParams);
@@ -28,7 +26,6 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
-  const { query } = pageParams;
 
   return pagedQuery(
     `
@@ -52,14 +49,22 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     where website_id = {websiteId:UUID}
     ${dateQuery}
     ${filterQuery}
-    ${query ? `and (positionCaseInsensitive(event_name, {query:String}) > 0)` : ''}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
     order by lastAt desc
     `,
     params,
     pageParams,
-  ).then((result: any) => ({
-    ...result,
-    visits: Number(result.visits),
-  }));
+  ).then((result: any) => {
+    return {
+      ...result,
+      data: result.data.map((row: any) => {
+        return {
+          ...row,
+          createdAt: row.firstAt,
+          visits: Number(row.visits),
+          views: Number(row.views),
+        };
+      }),
+    };
+  });
 }

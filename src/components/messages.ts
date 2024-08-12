@@ -141,7 +141,6 @@ export const labels = defineMessages({
   bounceRate: { id: 'label.bounce-rate', defaultMessage: 'Bounce rate' },
   viewsPerVisit: { id: 'label.views-per-visit', defaultMessage: 'Views per visit' },
   visitDuration: { id: 'label.visit-duration', defaultMessage: 'Visit duration' },
-  sessionDuration: { id: 'label.session-duration', defaultMessage: 'Session duration' },
   desktop: { id: 'label.desktop', defaultMessage: 'Desktop' },
   laptop: { id: 'label.laptop', defaultMessage: 'Laptop' },
   tablet: { id: 'label.tablet', defaultMessage: 'Tablet' },
