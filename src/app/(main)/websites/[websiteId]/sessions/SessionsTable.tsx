@@ -1,14 +1,12 @@
 import Link from 'next/link';
 import { GridColumn, GridTable } from 'react-basics';
-import { useFormat, useLocale, useMessages, useTimezone } from 'components/hooks';
+import { useFormat, useMessages, useTimezone } from 'components/hooks';
 import Avatar from 'components/common/Avatar';
 import styles from './SessionsTable.module.css';
 import TypeIcon from 'components/common/TypeIcon';
-import { formatInTimeZone } from 'date-fns-tz';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
-  const { dateLocale } = useLocale();
-  const { timezone } = useTimezone();
+  const { formatDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
 
@@ -53,11 +51,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         )}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
-        {row =>
-          formatInTimeZone(new Date(row.createdAt.split(' ').join('T') + 'Z'), timezone, 'PPPpp', {
-            locale: dateLocale,
-          })
-        }
+        {row => formatDate(row.createdAt, 'PPPpp')}
       </GridColumn>
     </GridTable>
   );
