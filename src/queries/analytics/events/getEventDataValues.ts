@@ -47,16 +47,18 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      string_value as "value",
+      multiIf(data_type = 2, replaceAll(string_value, '.0000', ''),
+              data_type = 4, toString(date_trunc('hour', date_value)),
+              string_value) as "value",
       count(*) as "total"
-    from event_data
+    from umami.event_data
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and data_key = {propertyName:String}
     ${filterQuery}
-    group by string_value
+    group by value
     order by 2 desc
-    limit 500
+    limit 500;
     `,
     params,
   ).then(result => {

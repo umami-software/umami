@@ -1,17 +1,16 @@
-import { useContext, useMemo, useState } from 'react';
-import { StatusLight, Icon, Text, SearchField } from 'react-basics';
-import { FixedSizeList } from 'react-window';
-import { format } from 'date-fns';
-import thenby from 'thenby';
-import { safeDecodeURI } from 'next-basics';
-import FilterButtons from 'components/common/FilterButtons';
-import Empty from 'components/common/Empty';
-import { useLocale, useCountryNames, useMessages } from 'components/hooks';
-import Icons from 'components/icons';
 import useFormat from 'components//hooks/useFormat';
+import Empty from 'components/common/Empty';
+import FilterButtons from 'components/common/FilterButtons';
+import { useCountryNames, useLocale, useMessages, useTimezone } from 'components/hooks';
+import Icons from 'components/icons';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
 import { RealtimeData } from 'lib/types';
+import { safeDecodeURI } from 'next-basics';
+import { useContext, useMemo, useState } from 'react';
+import { Icon, SearchField, StatusLight, Text } from 'react-basics';
+import { FixedSizeList } from 'react-window';
+import thenby from 'thenby';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
@@ -32,6 +31,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
+  const { formatDate } = useTimezone();
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
@@ -54,7 +54,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt, firstAt }) => format(new Date(firstAt || createdAt), 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => formatDate(firstAt || createdAt, 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
