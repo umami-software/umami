@@ -32,6 +32,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
 
   return pagedQuery(
     `
+    with events as (
     select
       event_id as id,
       website_id as websiteId, 
@@ -56,6 +57,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
         : ''
     }
     order by created_at desc
+    limit 1000)
+    select * from events
     `,
     { ...params, query },
     pageParams,

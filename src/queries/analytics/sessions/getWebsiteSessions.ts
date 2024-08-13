@@ -29,6 +29,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
 
   return pagedQuery(
     `
+    with sessions as (
     select
       session_id as id,
       website_id as websiteId,
@@ -51,6 +52,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     group by session_id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city
     order by lastAt desc
+    limit 1000)
+    select * from sessions
     `,
     params,
     pageParams,
