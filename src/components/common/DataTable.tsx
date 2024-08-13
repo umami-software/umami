@@ -68,7 +68,7 @@ export function DataTable({
         {hasData ? (typeof children === 'function' ? children(result) : children) : null}
         {isLoading && <Loading position="page" />}
         {!isLoading && !hasData && !query && <Empty />}
-        {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
+        {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
       </div>
       {allowPaging && hasData && (
         <Pager
