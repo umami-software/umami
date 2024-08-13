@@ -1,5 +1,4 @@
-import { formatDate } from 'lib/date';
-import { useFormat, useLocale, useMessages, useRegionNames } from 'components/hooks';
+import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from 'components/hooks';
 import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
 import Icons from 'components/icons';
@@ -7,6 +6,7 @@ import styles from './SessionInfo.module.css';
 
 export default function SessionInfo({ data }) {
   const { locale } = useLocale();
+  const { formatDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
@@ -20,10 +20,10 @@ export default function SessionInfo({ data }) {
         </dd>
 
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatDate(new Date(data?.lastAt), 'EEEE, PPPpp', locale)}</dd>
+        <dd>{formatDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatDate(new Date(data?.firstAt), 'EEEE, PPPpp', locale)}</dd>
+        <dd>{formatDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>
