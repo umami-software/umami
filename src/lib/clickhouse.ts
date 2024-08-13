@@ -9,12 +9,12 @@ import { filtersToArray } from './params';
 import { PageParams, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
-  second: '%Y-%m-%dT%H:%i:%S',
-  minute: '%Y-%m-%dT%H:%i:00',
-  hour: '%Y-%m-%dT%H:00:00',
-  day: '%Y-%m-%dT00:00:00',
-  month: '%Y-%m-01T00:00:00',
-  year: '%Y-01-01T00:00:00',
+  second: '%Y-%m-%d %H:%i:%S',
+  minute: '%Y-%m-%d %H:%i:00',
+  hour: '%Y-%m-%d %H:00:00',
+  day: '%Y-%m-%d',
+  month: '%Y-%m-01',
+  year: '%Y-01-01',
 };
 
 const log = debug('umami:clickhouse');
@@ -101,12 +101,18 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
 }
 
 function getDateQuery(filters: QueryFilters = {}) {
-  const { startDate, endDate } = filters;
+  const { startDate, endDate, timezone } = filters;
 
   if (startDate) {
     if (endDate) {
+      if (timezone) {
+        return `and created_at between toTimezone({startDate:DateTime64},{timezone:String}) and toTimezone({endDate:DateTime64},{timezone:String})`;
+      }
       return `and created_at between {startDate:DateTime64} and {endDate:DateTime64}`;
     } else {
+      if (timezone) {
+        return `and created_at >= toTimezone({startDate:DateTime64},{timezone:String})`;
+      }
       return `and created_at >= {startDate:DateTime64}`;
     }
   }

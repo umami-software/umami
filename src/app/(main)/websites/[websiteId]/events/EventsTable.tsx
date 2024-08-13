@@ -1,13 +1,14 @@
 import { GridTable, GridColumn, Icon } from 'react-basics';
-import { useLocale, useMessages, useTeamUrl } from 'components/hooks';
+import { useLocale, useMessages, useTeamUrl, useTimezone } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Avatar from 'components/common/Avatar';
 import Link from 'next/link';
 import Icons from 'components/icons';
-import { formatDate } from 'lib/date';
+import { formatInTimeZone } from 'date-fns-tz';
 
 export function EventsTable({ data = [] }) {
-  const { locale } = useLocale();
+  const { dateLocale } = useLocale();
+  const { timezone } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl } = useTeamUrl();
 
@@ -36,7 +37,11 @@ export function EventsTable({ data = [] }) {
         }}
       </GridColumn>
       <GridColumn name="created" label={formatMessage(labels.created)} width={'300px'}>
-        {row => formatDate(new Date(row.createdAt), 'PPPpp', locale)}
+        {row =>
+          formatInTimeZone(new Date(row.createdAt.split(' ').join('T') + 'Z'), timezone, 'PPPpp', {
+            locale: dateLocale,
+          })
+        }
       </GridColumn>
     </GridTable>
   );

@@ -1381,6 +1381,11 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+"@date-fns/utc@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@date-fns/utc/-/utc-1.2.0.tgz#fb705b025b6769840608782c8fa7f3919d1b3337"
+  integrity sha512-YLq+crMPJiBmIdkRmv9nZuZy1mVtMlDcUKlg4mvI0UsC/dZeIaGoGB5p/C4FrpeOhZ7zBTK03T58S0DFkRNMnw==
+
 "@dicebear/adventurer-neutral@9.2.1":
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/@dicebear/adventurer-neutral/-/adventurer-neutral-9.2.1.tgz#0416ff71d0dd3ff391db9c9fda2acb166b074c5f"
