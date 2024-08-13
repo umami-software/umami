@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, HTMLAttributes } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
@@ -16,11 +16,12 @@ export function WorldMap({
   websiteId,
   data,
   className,
+  ...props
 }: {
   websiteId?: string;
   data?: any[];
   className?: string;
-}) {
+} & HTMLAttributes<HTMLDivElement>) {
   const [tooltip, setTooltipPopup] = useState();
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
@@ -67,6 +68,7 @@ export function WorldMap({
 
   return (
     <div
+      {...props}
       className={classNames(styles.container, className)}
       data-tip=""
       data-for="world-map-tooltip"

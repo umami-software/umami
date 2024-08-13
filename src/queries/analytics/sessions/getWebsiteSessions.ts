@@ -60,7 +60,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       data: result.data.map((row: any) => {
         return {
           ...row,
-          createdAt: row.firstAt,
+          createdAt: row.lastAt,
           visits: Number(row.visits),
           views: Number(row.views),
         };

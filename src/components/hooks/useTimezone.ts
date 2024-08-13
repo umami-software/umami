@@ -14,7 +14,13 @@ export function useTimezone() {
   };
 
   const formatDate = (date: string, pattern: string) => {
-    return formatInTimeZone(date.split(' ').join('T') + 'Z', timezone, pattern);
+    return formatInTimeZone(
+      /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$/.test(date)
+        ? date
+        : date.split(' ').join('T') + 'Z',
+      timezone,
+      pattern,
+    );
   };
 
   return { timezone, saveTimezone, formatDate };
