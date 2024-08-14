@@ -1,4 +1,3 @@
-import dateFormat from 'dateformat';
 import debug from 'debug';
 import { Kafka, Mechanism, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
 import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
@@ -56,10 +55,6 @@ async function getProducer(): Promise<Producer> {
   return producer;
 }
 
-function getDateFormat(date: Date, format?: string): string {
-  return dateFormat(date, format ? format : 'UTC:yyyy-mm-dd HH:MM:ss');
-}
-
 async function sendMessage(
   topic: string,
   message: { [key: string]: string | number },
@@ -107,7 +102,6 @@ export default {
   producer,
   log,
   connect,
-  getDateFormat,
   sendMessage,
   sendMessages,
 };

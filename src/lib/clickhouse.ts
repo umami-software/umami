@@ -1,5 +1,4 @@
 import { ClickHouseClient, createClient } from '@clickhouse/client';
-import dateFormat from 'dateformat';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
@@ -61,10 +60,6 @@ function getDateSQL(field: string, unit: string, timezone?: string) {
     return `date_trunc('${unit}', ${field}, '${timezone}')`;
   }
   return `date_trunc('${unit}', ${field})`;
-}
-
-function getDateFormat(date: Date) {
-  return `'${dateFormat(date, 'UTC:yyyy-mm-dd HH:MM:ss')}'`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
@@ -224,7 +219,6 @@ export default {
   connect,
   getDateStringSQL,
   getDateSQL,
-  getDateFormat,
   getFilterQuery,
   parseFilters,
   pagedQuery,

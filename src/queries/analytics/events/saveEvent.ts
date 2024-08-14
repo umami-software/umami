@@ -136,9 +136,9 @@ async function clickhouseQuery(data: {
     ...args
   } = data;
   const { insert } = clickhouse;
-  const { getDateFormat, sendMessage } = kafka;
+  const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAt = getDateFormat(new Date());
+  const createdAt = new Date().toISOString();
 
   const message = {
     ...args,
