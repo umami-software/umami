@@ -41,7 +41,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters & { propertyName?: string },
-): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
+): Promise<{ propertyName: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, filters, {
     columns: { propertyName: 'data_key' },
@@ -65,8 +65,6 @@ async function clickhouseQuery(
     return Object.values(result).map((a: any) => {
       return {
         propertyName: a.propertyName,
-        dataType: Number(a.dataType),
-        propertyValue: a.propertyValue,
         total: Number(a.total),
       };
     });

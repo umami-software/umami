@@ -11,7 +11,7 @@ export function useSessionDataValues(
   const params = useFilterParams(websiteId);
 
   return useQuery<any>({
-    queryKey: ['websites:event-data:values', { websiteId, propertyName, ...params }],
+    queryKey: ['websites:session-data:values', { websiteId, propertyName, ...params }],
     queryFn: () => get(`/websites/${websiteId}/session-data/values`, { ...params, propertyName }),
     enabled: !!(websiteId && propertyName),
     ...options,

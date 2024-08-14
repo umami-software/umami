@@ -22,6 +22,8 @@ export * from './analytics/pageviews/getPageviewStats';
 export * from './analytics/sessions/createSession';
 export * from './analytics/sessions/getWebsiteSession';
 export * from './analytics/sessions/getSessionData';
+export * from './analytics/sessions/getSessionDataProperties';
+export * from './analytics/sessions/getSessionDataValues';
 export * from './analytics/sessions/getSessionMetrics';
 export * from './analytics/sessions/getWebsiteSessions';
 export * from './analytics/sessions/getSessionActivity';

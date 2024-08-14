@@ -3,7 +3,7 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getEventDataValues } from 'queries';
+import { getSessionDataValues } from 'queries';
 
 import * as yup from 'yup';
 
@@ -41,7 +41,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const data = await getEventDataValues(websiteId, { startDate, endDate, propertyName });
+    const data = await getSessionDataValues(websiteId, { startDate, endDate, propertyName });
 
     return ok(res, data);
   }
