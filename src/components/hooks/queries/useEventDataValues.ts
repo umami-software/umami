@@ -4,6 +4,7 @@ import { useFilterParams } from '../useFilterParams';
 
 export function useEventDataValues(
   websiteId: string,
+  eventName: string,
   propertyName: string,
   options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
 ) {
@@ -12,7 +13,8 @@ export function useEventDataValues(
 
   return useQuery<any>({
     queryKey: ['websites:event-data:values', { websiteId, propertyName, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/event-data/values`, { ...params, propertyName }),
+    queryFn: () =>
+      get(`/websites/${websiteId}/event-data/values`, { ...params, eventName, propertyName }),
     enabled: !!(websiteId && propertyName),
     ...options,
   });

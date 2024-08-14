@@ -11,6 +11,7 @@ export interface EventDataFieldsRequestQuery {
   websiteId: string;
   startAt: string;
   endAt: string;
+  eventName?: string;
   propertyName?: string;
 }
 
@@ -19,6 +20,7 @@ const schema = {
     websiteId: yup.string().uuid().required(),
     startAt: yup.number().integer().required(),
     endAt: yup.number().integer().min(yup.ref('startAt')).required(),
+    eventName: yup.string(),
     propertyName: yup.string(),
   }),
 };
@@ -32,7 +34,7 @@ export default async (
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, startAt, endAt, propertyName } = req.query;
+    const { websiteId, startAt, endAt, eventName, propertyName } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
@@ -41,7 +43,12 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const data = await getEventDataValues(websiteId, { startDate, endDate, propertyName });
+    const data = await getEventDataValues(websiteId, {
+      startDate,
+      endDate,
+      eventName,
+      propertyName,
+    });
 
     return ok(res, data);
   }
