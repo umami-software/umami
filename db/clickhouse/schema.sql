@@ -66,8 +66,8 @@ CREATE TABLE umami.session_data
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
-ENGINE = MergeTree
-    ORDER BY (website_id, session_id, data_key, created_at)
+ENGINE = ReplacingMergeTree
+    ORDER BY (website_id, session_id, data_key)
     SETTINGS index_granularity = 8192;
 
 -- stats hourly
