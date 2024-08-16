@@ -8,6 +8,7 @@ import { filtersToArray } from './params';
 import { PageParams, QueryFilters, QueryOptions } from './types';
 
 export const CLICKHOUSE_DATE_FORMATS = {
+  utc: '%Y-%m-%dT%H:%i:%SZ',
   second: '%Y-%m-%d %H:%i:%S',
   minute: '%Y-%m-%d %H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
@@ -47,7 +48,7 @@ function getClient() {
   return client;
 }
 
-function getDateStringSQL(data: any, unit: string | number, timezone?: string) {
+function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
   if (timezone) {
     return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
   }

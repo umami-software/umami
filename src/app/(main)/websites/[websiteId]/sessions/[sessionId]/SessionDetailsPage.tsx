@@ -28,12 +28,7 @@ export default function SessionDetailsPage({
         </div>
         <div className={styles.content}>
           <SessionStats data={data} />
-          <SessionActivity
-            websiteId={websiteId}
-            sessionId={sessionId}
-            startDate={data?.firstAt}
-            endDate={data?.lastAt}
-          />
+          <SessionActivity websiteId={websiteId} sessionId={sessionId} />
         </div>
         <div className={styles.data}>
           <SessionData websiteId={websiteId} sessionId={sessionId} />

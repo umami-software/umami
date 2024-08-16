@@ -24,7 +24,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery, parseFilters } = clickhouse;
+  const { pagedQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
 
   return pagedQuery(
@@ -42,8 +42,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
       country,
       subdivision1,
       city,
-      min(min_time) as firstAt,
-      max(max_time) as lastAt,
+      ${getDateStringSQL('min(min_time)')} as firstAt,
+      ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) as visits,
       sumIf(views, event_type = 1) as views
     from website_event_stats_hourly

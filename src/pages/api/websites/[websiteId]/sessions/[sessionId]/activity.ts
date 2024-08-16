@@ -9,16 +9,12 @@ import { getSessionActivity } from 'queries';
 export interface SessionActivityRequestQuery extends PageParams {
   websiteId: string;
   sessionId: string;
-  startDate: string;
-  endDate: string;
 }
 
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
     sessionId: yup.string().uuid().required(),
-    startDate: yup.string().required(),
-    endDate: yup.string().required(),
   }),
 };
 
@@ -30,19 +26,14 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, sessionId, startDate, endDate } = req.query;
+  const { websiteId, sessionId } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    const data = await getSessionActivity(
-      websiteId,
-      sessionId,
-      new Date(startDate + 'Z'),
-      new Date(endDate + 'Z'),
-    );
+    const data = await getSessionActivity(websiteId, sessionId);
 
     return ok(res, data);
   }
