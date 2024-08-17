@@ -19,7 +19,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
 }
 
 async function clickhouseQuery(websiteId: string, sessionId: string) {
-  const { rawQuery } = clickhouse;
+  const { rawQuery, getDateStringSQL } = clickhouse;
 
   return rawQuery(
     `
@@ -34,8 +34,8 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       country,
       subdivision1,
       city,
-      min(min_time) as firstAt,
-      max(max_time) as lastAt,
+      ${getDateStringSQL('min(min_time)')} as firstAt,
+      ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) visits,
       sum(views) as views,
       sum(events) as events,

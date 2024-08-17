@@ -6,7 +6,7 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getSessionDataProperties } from 'queries';
 import * as yup from 'yup';
 
-export interface EventDataFieldsRequestQuery {
+export interface SessionDataFieldsRequestQuery {
   websiteId: string;
   startAt: string;
   endAt: string;
@@ -23,7 +23,7 @@ const schema = {
 };
 
 export default async (
-  req: NextApiRequestQueryBody<EventDataFieldsRequestQuery>,
+  req: NextApiRequestQueryBody<SessionDataFieldsRequestQuery>,
   res: NextApiResponse<any>,
 ) => {
   await useCors(req, res);

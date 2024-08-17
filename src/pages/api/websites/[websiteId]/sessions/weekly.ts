@@ -4,33 +4,31 @@ import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
-import { getSessionActivity } from 'queries';
+import { pageInfo } from 'lib/schema';
+import { getWebsiteSessionsWeekly } from 'queries';
 
-export interface SessionActivityRequestQuery extends PageParams {
+export interface ReportsRequestQuery extends PageParams {
   websiteId: string;
-  sessionId: string;
-  startAt: number;
-  endAt: number;
 }
 
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
-    sessionId: yup.string().uuid().required(),
-    startAt: yup.number().integer(),
-    endAt: yup.number().integer(),
+    startAt: yup.number().integer().required(),
+    endAt: yup.number().integer().min(yup.ref('startAt')).required(),
+    ...pageInfo,
   }),
 };
 
 export default async (
-  req: NextApiRequestQueryBody<SessionActivityRequestQuery, any>,
+  req: NextApiRequestQueryBody<ReportsRequestQuery, any>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, sessionId, startAt, endAt } = req.query;
+  const { websiteId, startAt, endAt } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -40,7 +38,7 @@ export default async (
     const startDate = new Date(+startAt);
     const endDate = new Date(+endAt);
 
-    const data = await getSessionActivity(websiteId, sessionId, startDate, endDate);
+    const data = await getWebsiteSessionsWeekly(websiteId, { startDate, endDate });
 
     return ok(res, data);
   }

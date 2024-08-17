@@ -23,6 +23,7 @@ async function relationalQuery(
       websiteId,
       createdAt: { gte: startDate, lte: endDate },
     },
+    take: 500,
   });
 }
 
@@ -37,8 +38,6 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      session_id as id,
-      website_id as websiteId,
       created_at as createdAt,
       url_path as urlPath,
       url_query as urlQuery,
@@ -52,6 +51,7 @@ async function clickhouseQuery(
       and session_id = {sessionId:UUID} 
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     order by created_at desc
+    limit 500
     `,
     { websiteId, sessionId, startDate, endDate },
   );

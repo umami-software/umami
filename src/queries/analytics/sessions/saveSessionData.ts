@@ -80,9 +80,9 @@ async function clickhouseQuery(data: {
 }) {
   const { websiteId, sessionId, sessionData } = data;
 
-  const { insert } = clickhouse;
+  const { insert, getUTCString } = clickhouse;
   const { sendMessages } = kafka;
-  const createdAt = new Date().toISOString();
+  const createdAt = getUTCString();
 
   const jsonKeys = flattenJSON(sessionData);
 

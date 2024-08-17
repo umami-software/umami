@@ -12,8 +12,8 @@ export function SessionActivity({
 }: {
   websiteId: string;
   sessionId: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
 }) {
   const { formatDate } = useTimezone();
   const { data, isLoading } = useSessionActivity(websiteId, sessionId, startDate, endDate);
