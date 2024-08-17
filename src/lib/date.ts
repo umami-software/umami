@@ -34,6 +34,7 @@ import {
   addWeeks,
   subWeeks,
   endOfMinute,
+  isSameDay,
 } from 'date-fns';
 import { getDateLocale } from 'lib/lang';
 import { DateRange } from 'lib/types';
@@ -335,4 +336,17 @@ export function getCompareDate(compare: string, startDate: Date, endDate: Date) 
   const diff = differenceInMinutes(endDate, startDate);
 
   return { startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+}
+
+export function getDayOfWeekAsDate(dayOfWeek: number) {
+  const startOfWeekDay = startOfWeek(new Date());
+  const daysToAdd = [0, 1, 2, 3, 4, 5, 6].indexOf(dayOfWeek);
+  let currentDate = addDays(startOfWeekDay, daysToAdd);
+
+  // Ensure we're not returning a past date
+  if (isSameDay(currentDate, startOfWeekDay)) {
+    currentDate = addDays(currentDate, 7);
+  }
+
+  return currentDate;
 }

@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
-import styles from './LoadingPanel.module.css';
 import classNames from 'classnames';
-import ErrorMessage from 'components/common/ErrorMessage';
 import { Loading } from 'react-basics';
+import ErrorMessage from 'components/common/ErrorMessage';
 import Empty from 'components/common/Empty';
+import styles from './LoadingPanel.module.css';
 
 export function LoadingPanel({
   data,
@@ -27,7 +27,7 @@ export function LoadingPanel({
 
   return (
     <div className={classNames(styles.panel, className)}>
-      {isLoading && !isFetched && <Loading icon={loadingIcon} />}
+      {isLoading && !isFetched && <Loading className={styles.loading} icon={loadingIcon} />}
       {error && <ErrorMessage />}
       {!error && isEmpty && <Empty />}
       {!error && !isEmpty && data && children}

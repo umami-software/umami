@@ -14,6 +14,7 @@ export * from './queries/useSessionDataProperties';
 export * from './queries/useSessionDataValues';
 export * from './queries/useWebsiteSession';
 export * from './queries/useWebsiteSessions';
+export * from './queries/useWebsiteSessionsWeekly';
 export * from './queries/useShareToken';
 export * from './queries/useTeam';
 export * from './queries/useTeams';

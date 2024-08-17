@@ -81,6 +81,18 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
   }
 }
 
+function getDateWeeklySQL(field: string) {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return `EXTRACT(DOW FROM ${field})`;
+  }
+
+  if (db === MYSQL) {
+    return `DAYOFWEEK(${field})-1`;
+  }
+}
+
 export function getTimestampSQL(field: string) {
   const db = getDatabaseType();
 
@@ -284,6 +296,7 @@ export default {
   getCastColumnQuery,
   getDayDiffQuery,
   getDateSQL,
+  getDateWeeklySQL,
   getFilterQuery,
   getSearchParameters,
   getTimestampDiffSQL,
