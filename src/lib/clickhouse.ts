@@ -1,4 +1,5 @@
 import { ClickHouseClient, createClient } from '@clickhouse/client';
+import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
@@ -46,6 +47,10 @@ function getClient() {
   log('Clickhouse initialized');
 
   return client;
+}
+
+function getUTCString(date?: Date) {
+  return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
 function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
@@ -221,6 +226,7 @@ export default {
   getDateStringSQL,
   getDateSQL,
   getFilterQuery,
+  getUTCString,
   parseFilters,
   pagedQuery,
   findUnique,

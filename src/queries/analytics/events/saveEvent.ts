@@ -135,10 +135,10 @@ async function clickhouseQuery(data: {
     city,
     ...args
   } = data;
-  const { insert } = clickhouse;
+  const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAt = new Date().toISOString();
+  const createdAt = getUTCString();
 
   const message = {
     ...args,

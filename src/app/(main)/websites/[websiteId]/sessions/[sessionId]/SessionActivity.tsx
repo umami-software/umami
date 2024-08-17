@@ -7,12 +7,16 @@ import styles from './SessionActivity.module.css';
 export function SessionActivity({
   websiteId,
   sessionId,
+  startDate,
+  endDate,
 }: {
   websiteId: string;
   sessionId: string;
+  startDate: Date;
+  endDate: Date;
 }) {
   const { formatDate } = useTimezone();
-  const { data, isLoading } = useSessionActivity(websiteId, sessionId);
+  const { data, isLoading } = useSessionActivity(websiteId, sessionId, startDate, endDate);
 
   if (isLoading) {
     return <Loading position="page" />;
