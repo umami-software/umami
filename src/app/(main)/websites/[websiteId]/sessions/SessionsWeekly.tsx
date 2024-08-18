@@ -55,6 +55,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                 {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
               </div>
               {day?.map((hour: number) => {
+                const pct = hour / max;
                 return (
                   <div key={hour} className={classNames(styles.cell)}>
                     {hour > 0 && (
@@ -62,7 +63,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                         label={`${formatMessage(labels.visitors)}: ${hour}`}
                         position="right"
                       >
-                        <div className={styles.block} style={{ opacity: hour / max }} />
+                        <div
+                          className={styles.block}
+                          style={{ opacity: pct, transform: `scale(${pct})` }}
+                        />
                       </TooltipPopup>
                     )}
                   </div>

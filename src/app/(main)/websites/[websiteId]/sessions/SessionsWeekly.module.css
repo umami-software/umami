@@ -21,10 +21,11 @@
 
 .cell {
   display: flex;
-  background-color: var(--base100);
+  background-color: var(--base75);
   width: 20px;
   height: 20px;
   margin: auto;
+  border-radius: 100%;
   align-items: start;
 }
 
@@ -38,5 +39,5 @@
   background-color: var(--primary400);
   width: 20px;
   height: 20px;
-  border-radius: 3px;
+  border-radius: 100%;
 }
