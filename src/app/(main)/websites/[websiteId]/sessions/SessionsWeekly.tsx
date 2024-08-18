@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, startOfDay, addHours } from 'date-fns';
 import { useLocale, useMessages, useWebsiteSessionsWeekly } from 'components/hooks';
 import { LoadingPanel } from 'components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from 'lib/date';
@@ -40,9 +40,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
           {Array(24)
             .fill(null)
             .map((_, i) => {
+              const label = format(addHours(startOfDay(new Date()), i), 'haaa');
               return (
-                <div key={i} className={classNames(styles.cell, styles.hour)}>
-                  {i.toString().padStart(2, '0')}
+                <div key={i} className={styles.hour}>
+                  {label}
                 </div>
               );
             })}
