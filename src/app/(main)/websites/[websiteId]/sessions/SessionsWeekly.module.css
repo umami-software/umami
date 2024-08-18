@@ -13,7 +13,7 @@
 .day {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 1px;
   position: relative;
 }
 
@@ -23,7 +23,6 @@
   background-color: var(--base100);
   width: 20px;
   height: 20px;
-  margin: auto;
 }
 
 .hour {
