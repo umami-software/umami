@@ -1,3 +1,4 @@
+import debug from 'debug';
 import { Prisma } from '@prisma/client';
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
@@ -7,6 +8,8 @@ import { fetchWebsite } from './load';
 import { maxDate } from './date';
 import { QueryFilters, QueryOptions, PageParams } from './types';
 import { filtersToArray } from './params';
+
+const log = debug('umami:prisma');
 
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%d %H:%i:00',
@@ -210,6 +213,11 @@ async function parseFilters(
 }
 
 async function rawQuery(sql: string, data: object): Promise<any> {
+  if (process.env.LOG_QUERY) {
+    log('QUERY:\n', sql);
+    log('PARAMETERS:\n', data);
+  }
+
   const db = getDatabaseType();
   const params = [];
 

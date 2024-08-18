@@ -35,7 +35,7 @@ async function relationalQuery(
     ${filterQuery}
     group by string_value
     order by 2 desc
-    limit 500
+    limit 100
     `,
     params,
   );
@@ -63,7 +63,7 @@ async function clickhouseQuery(
     ${filterQuery}
     group by event_name, value
     order by 2 desc
-    limit 500;
+    limit 100
     `,
     params,
   ).then(result => {

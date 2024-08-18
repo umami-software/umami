@@ -20,16 +20,16 @@
 .cell {
   display: flex;
   align-items: center;
-  justify-content: center;
   background-color: var(--base100);
   width: 20px;
   height: 20px;
+  margin: auto;
 }
 
 .hour {
   font-weight: 700;
   color: var(--font-color300);
-  background-color: transparent;
+  height: 20px;
 }
 
 .block {

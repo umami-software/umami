@@ -189,7 +189,7 @@ async function rawQuery<T = unknown>(
     format: 'JSONEachRow',
   });
 
-  return resultSet.json() as T;
+  return (await resultSet.json()) as T;
 }
 
 async function insert(table: string, values: any[]) {
