@@ -13,16 +13,19 @@
 .day {
   display: flex;
   flex-direction: column;
+  align-items: start;
+  justify-content: start;
   gap: 1px;
   position: relative;
 }
 
 .cell {
   display: flex;
-  align-items: center;
   background-color: var(--base100);
   width: 20px;
   height: 20px;
+  margin: auto;
+  align-items: start;
 }
 
 .hour {
