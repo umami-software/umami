@@ -34,7 +34,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
 
   return (
     <LoadingPanel {...(props as any)} data={data}>
-      <div className={styles.week}>
+      <div key={data} className={styles.week}>
         <div className={styles.day}>
           <div className={styles.header}>&nbsp;</div>
           {Array(24)
@@ -50,11 +50,12 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
         </div>
         {data?.map((day: number[], index: number) => {
           return (
-            <div className={styles.day} key={index}>
+            <div key={index} className={styles.day}>
               <div className={styles.header}>
                 {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
               </div>
               {day?.map((hour: number) => {
+                const pct = hour / max;
                 return (
                   <div key={hour} className={classNames(styles.cell)}>
                     {hour > 0 && (
@@ -62,7 +63,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                         label={`${formatMessage(labels.visitors)}: ${hour}`}
                         position="right"
                       >
-                        <div className={styles.block} style={{ opacity: hour / max }} />
+                        <div
+                          className={styles.block}
+                          style={{ opacity: pct, transform: `scale(${pct})` }}
+                        />
                       </TooltipPopup>
                     )}
                   </div>

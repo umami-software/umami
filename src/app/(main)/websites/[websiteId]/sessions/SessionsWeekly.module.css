@@ -13,16 +13,20 @@
 .day {
   display: flex;
   flex-direction: column;
+  align-items: start;
+  justify-content: start;
   gap: 1px;
   position: relative;
 }
 
 .cell {
   display: flex;
-  align-items: center;
-  background-color: var(--base100);
+  background-color: var(--base75);
   width: 20px;
   height: 20px;
+  margin: auto;
+  border-radius: 100%;
+  align-items: start;
 }
 
 .hour {
@@ -35,5 +39,5 @@
   background-color: var(--primary400);
   width: 20px;
   height: 20px;
-  border-radius: 3px;
+  border-radius: 100%;
 }
