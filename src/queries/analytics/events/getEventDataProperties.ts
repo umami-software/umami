@@ -24,14 +24,15 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      event_name as "eventName",
-      data_key as "propertyName",
+      we.event_name as "eventName",
+      ed.data_key as "propertyName",
       count(*) as "total"
-    from event_data
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
+    from event_data ed
+    join website_event we on we.event_id = ed.website_event_id
+    where ed.website_id = {{websiteId::uuid}}
+      and ed.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    group by event_name, data_key
+    group by we.event_name, ed.data_key
     order by 3 desc
     limit 500
     `,

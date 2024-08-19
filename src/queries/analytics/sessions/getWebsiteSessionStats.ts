@@ -29,10 +29,10 @@ async function relationalQuery(
     `
     select
       count(*) as "pageviews",
-      count(distinct t.session_id) as "visitors",
-      count(distinct t.visit_id) as "visits",
-      count(distinct t.country) as "countries",
-      sum(case when event_type = 2 then 1 else 0 end) as "events"
+      count(distinct website_event.session_id) as "visitors",
+      count(distinct website_event.visit_id) as "visits",
+      count(distinct session.country) as "countries",
+      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events"
     from website_event
     join session on website_event.session_id = session.session_id
     where website_event.website_id = {{websiteId::uuid}}
