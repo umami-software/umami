@@ -1,14 +1,14 @@
-import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
-import { Flexbox } from 'react-basics';
-import MetricsBar from 'components/metrics/MetricsBar';
-import MetricCard from 'components/metrics/MetricCard';
 import { useMessages } from 'components/hooks';
-import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
+import useWebsiteSessionStats from 'components/hooks/queries/useWebsiteSessionStats';
+import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
+import MetricCard from 'components/metrics/MetricCard';
+import MetricsBar from 'components/metrics/MetricsBar';
 import { formatLongNumber } from 'lib/format';
+import { Flexbox } from 'react-basics';
 
 export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useWebsiteStats(websiteId);
+  const { data, isLoading, isFetched, error } = useWebsiteSessionStats(websiteId);
 
   return (
     <Flexbox direction="row" justifyContent="space-between" style={{ minHeight: 120 }}>

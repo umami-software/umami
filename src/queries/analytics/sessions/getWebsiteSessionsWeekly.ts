@@ -21,7 +21,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     select
       ${getDateWeeklySQL('created_at')} as time,
       count(distinct session_id) as value
-    from website_event_stats_hourly
+    from website_event
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
     group by time

@@ -32,7 +32,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
         number_value as numberValue,
         date_value as dateValue,
         created_at as createdAt
-    from session_data
+    from session_data final
     where website_id = {websiteId:UUID}
     and session_id = {sessionId:UUID}
     order by data_key asc
