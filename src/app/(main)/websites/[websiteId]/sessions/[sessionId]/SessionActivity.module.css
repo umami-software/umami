@@ -12,7 +12,11 @@
 
 .time {
   color: var(--font-color200);
-  width: 120px;
+  width: 150px;
+}
+
+.value {
+  white-space: nowrap;
 }
 
 .header {

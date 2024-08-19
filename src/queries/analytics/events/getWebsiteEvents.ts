@@ -17,12 +17,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
   const { query } = pageParams;
 
   const where = {
-    ...filters,
     id: websiteId,
     ...prisma.getSearchParameters(query, [{ eventName: 'contains' }, { urlPath: 'contains' }]),
   };
 
-  return pagedQuery('website_event', { where }, pageParams);
+  return pagedQuery('WebsiteEvent', { where }, pageParams);
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
