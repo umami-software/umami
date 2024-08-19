@@ -52,7 +52,7 @@ async function clickhouseQuery(
     select
       data_key as propertyName,
       count(*) as total
-    from session_data
+    from session_data final
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
