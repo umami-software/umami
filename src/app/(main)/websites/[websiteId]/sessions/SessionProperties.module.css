@@ -6,7 +6,7 @@
 }
 
 .table {
-  align-self: start;
+  align-self: flex-start;
 }
 
 .link:hover {
