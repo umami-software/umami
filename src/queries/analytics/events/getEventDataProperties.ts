@@ -64,13 +64,5 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        eventName: a.eventName,
-        propertyName: a.propertyName,
-        total: Number(a.total),
-      };
-    });
-  });
+  );
 }

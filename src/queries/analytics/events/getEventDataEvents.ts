@@ -85,17 +85,7 @@ async function clickhouseQuery(
       limit 500
       `,
       params,
-    ).then(result => {
-      return Object.values(result).map((a: any) => {
-        return {
-          eventName: a.eventName,
-          propertyName: a.propertyName,
-          dataType: Number(a.dataType),
-          propertyValue: a.propertyValue,
-          total: Number(a.total),
-        };
-      });
-    });
+    );
   }
 
   return rawQuery(
@@ -113,14 +103,5 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        eventName: a.eventName,
-        propertyName: a.propertyName,
-        dataType: Number(a.dataType),
-        total: Number(a.total),
-      };
-    });
-  });
+  );
 }

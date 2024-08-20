@@ -87,9 +87,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params).then(result => {
-    return Object.values(result).map((a: any) => {
-      return { x: a.x, y: Number(a.y) };
-    });
-  });
+  return rawQuery(sql, params);
 }

@@ -61,12 +61,5 @@ async function clickhouseQuery(
     limit 100
     `,
     params,
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        ...a,
-        total: Number(a.total),
-      };
-    });
-  });
+  );
 }

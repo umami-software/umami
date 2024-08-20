@@ -117,15 +117,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        pageviews: Number(a.pageviews),
-        visitors: Number(a.visitors),
-        visits: Number(a.visits),
-        bounces: Number(a.bounces),
-        totaltime: Number(a.totaltime),
-      };
-    });
-  });
+  return rawQuery(sql, params);
 }

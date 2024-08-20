@@ -30,9 +30,5 @@ function clickhouseQuery(
       startDate,
       endDate,
     },
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return { websiteId: a.websiteId, count: Number(a.count) };
-    });
-  });
+  );
 }

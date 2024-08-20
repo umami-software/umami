@@ -143,17 +143,7 @@ async function clickhouseQuery(
     order by time
     `,
     { websiteId, startDate, endDate, eventName, revenueProperty, userProperty },
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        time: a.time,
-        sum: Number(a.sum),
-        avg: Number(a.avg),
-        count: Number(a.count),
-        uniqueCount: Number(!a.avg ? 0 : a.uniqueCount),
-      };
-    });
-  });
+  ).then(result => result?.[0]);
 
   const totalRes = await rawQuery<{
     sum: number;
@@ -174,16 +164,7 @@ async function clickhouseQuery(
         and data_key in ({revenueProperty:String}, {userProperty:String})
     `,
     { websiteId, startDate, endDate, eventName, revenueProperty, userProperty },
-  ).then(results => {
-    const result = results[0];
-
-    return {
-      sum: Number(result.sum),
-      avg: Number(result.avg),
-      count: Number(result.count),
-      uniqueCount: Number(!result.avg ? 0 : result.uniqueCount),
-    };
-  });
+  );
 
   return { chart: chartRes, total: totalRes };
 }

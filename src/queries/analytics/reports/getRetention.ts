@@ -90,9 +90,7 @@ async function relationalQuery(
       startDate,
       endDate,
     },
-  ).then(results => {
-    return results.map(i => ({ ...i, percentage: Number(i.percentage) || 0 }));
-  });
+  );
 }
 
 async function clickhouseQuery(
@@ -169,15 +167,5 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        date: a.date,
-        day: Number(a.day),
-        visitors: Number(a.visitors),
-        returnVisitors: Number(a.returnVisitors),
-        percentage: Number(a.percentage),
-      };
-    });
-  });
+  );
 }

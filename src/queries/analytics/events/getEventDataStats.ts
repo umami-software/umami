@@ -13,7 +13,7 @@ export async function getEventDataStats(
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
-  }).then(results => results[0]);
+  }).then(results => results?.[0]);
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
@@ -68,13 +68,5 @@ async function clickhouseQuery(
       ) as t
     `,
     params,
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        events: Number(a.events),
-        properties: Number(a.properties),
-        records: Number(a.records),
-      };
-    });
-  });
+  );
 }

@@ -68,15 +68,5 @@ async function clickhouseQuery(
         ${filterQuery}
     `,
     params,
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        pageviews: Number(a.pageviews),
-        visitors: Number(a.visitors),
-        visits: Number(a.visits),
-        countries: Number(a.countries),
-        events: Number(a.events),
-      };
-    });
-  });
+  );
 }
