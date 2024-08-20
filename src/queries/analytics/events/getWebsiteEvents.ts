@@ -15,13 +15,22 @@ export function getWebsiteEvents(
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery } = prisma;
   const { query } = pageParams;
+  const { startDate, endDate } = filters;
 
   const where = {
-    id: websiteId,
+    websiteId,
+    createdAt: {
+      lte: endDate,
+      gte: startDate,
+    },
     ...prisma.getSearchParameters(query, [{ eventName: 'contains' }, { urlPath: 'contains' }]),
   };
 
-  return pagedQuery('WebsiteEvent', { where }, pageParams);
+  return pagedQuery(
+    'websiteEvent',
+    { where },
+    { orderBy: 'createdAt', sortDescending: true, ...pageParams },
+  );
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
