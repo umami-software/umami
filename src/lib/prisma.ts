@@ -88,11 +88,11 @@ function getDateWeeklySQL(field: string) {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
-    return `EXTRACT(DOW FROM ${field})`;
+    return `concat(extract(dow from ${field}), ':', to_char(${field}, 'HH24'))`;
   }
 
   if (db === MYSQL) {
-    return `DAYOFWEEK(${field})-1`;
+    return `date_format(${field}, '%w:%H')`;
   }
 }
 
