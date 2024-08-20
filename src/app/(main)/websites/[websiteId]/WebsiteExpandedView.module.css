@@ -38,7 +38,7 @@
   }
 
   .back {
-    align-self: start;
+    align-self: flex-start;
     margin: 0;
   }
 
