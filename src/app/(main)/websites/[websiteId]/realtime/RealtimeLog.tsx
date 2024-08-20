@@ -31,7 +31,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
-  const { formatDate } = useTimezone();
+  const { formatTimezoneDate } = useTimezone();
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
@@ -54,7 +54,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt, firstAt }) => formatDate(firstAt || createdAt, 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 

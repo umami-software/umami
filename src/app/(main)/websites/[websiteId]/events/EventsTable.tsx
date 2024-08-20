@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Icons from 'components/icons';
 
 export function EventsTable({ data = [] }) {
-  const { formatDate } = useTimezone();
+  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl } = useTeamUrl();
 
@@ -35,7 +35,7 @@ export function EventsTable({ data = [] }) {
         }}
       </GridColumn>
       <GridColumn name="created" label={formatMessage(labels.created)} width={'300px'}>
-        {row => formatDate(row.createdAt, 'PPPpp')}
+        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
       </GridColumn>
     </GridTable>
   );

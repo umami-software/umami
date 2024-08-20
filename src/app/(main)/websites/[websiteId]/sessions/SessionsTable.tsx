@@ -6,7 +6,7 @@ import styles from './SessionsTable.module.css';
 import TypeIcon from 'components/common/TypeIcon';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
-  const { formatDate } = useTimezone();
+  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
 
@@ -51,7 +51,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         )}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
-        {row => formatDate(row.createdAt, 'PPPpp')}
+        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
       </GridColumn>
     </GridTable>
   );

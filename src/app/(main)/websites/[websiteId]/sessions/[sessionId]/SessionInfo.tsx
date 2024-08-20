@@ -6,7 +6,7 @@ import styles from './SessionInfo.module.css';
 
 export default function SessionInfo({ data }) {
   const { locale } = useLocale();
-  const { formatDate } = useTimezone();
+  const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
@@ -20,10 +20,10 @@ export default function SessionInfo({ data }) {
         </dd>
 
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>
