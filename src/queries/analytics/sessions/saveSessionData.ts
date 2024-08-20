@@ -94,7 +94,7 @@ async function clickhouseQuery(data: {
       data_type: dataType,
       string_value: getStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
-      date_value: dataType === DATA_TYPE.date ? value?.toISOString() : null,
+      date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
       created_at: createdAt,
     };
   });

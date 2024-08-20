@@ -49,7 +49,7 @@ function getClient() {
   return client;
 }
 
-function getUTCString(date?: Date) {
+function getUTCString(date?: Date | string | number) {
   return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
