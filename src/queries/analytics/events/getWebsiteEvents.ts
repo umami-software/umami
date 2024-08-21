@@ -1,5 +1,5 @@
 import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { PageParams, QueryFilters } from 'lib/types';
 
@@ -13,23 +13,47 @@ export function getWebsiteEvents(
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
-  const { pagedQuery } = prisma;
+  const { pagedRawQuery, parseFilters } = prisma;
   const { query } = pageParams;
-  const { startDate, endDate } = filters;
+  const { filterQuery, params } = await parseFilters(websiteId, {
+    ...filters,
+  });
 
-  const where = {
-    websiteId,
-    createdAt: {
-      lte: endDate,
-      gte: startDate,
-    },
-    ...prisma.getSearchParameters(query, [{ eventName: 'contains' }, { urlPath: 'contains' }]),
-  };
+  const db = getDatabaseType();
+  const like = db === POSTGRESQL ? 'ilike' : 'like';
 
-  return pagedQuery(
-    'websiteEvent',
-    { where },
-    { orderBy: 'createdAt', sortDescending: true, ...pageParams },
+  return pagedRawQuery(
+    `
+    with events as (
+    select
+      event_id as "id",
+      website_id as "websiteId", 
+      session_id as "sessionId",
+      created_at as "createdAt",
+      url_path as "urlPath",
+      url_query as "urlQuery",
+      referrer_path as "referrerPath",
+      referrer_query as "referrerQuery",
+      referrer_domain as "referrerDomain",
+      page_title as "pageTitle",
+      event_type as "eventType",
+      event_name as "eventName"
+    from website_event
+    where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+    ${filterQuery}
+    ${
+      query
+        ? `and (event_name ${like} {{query}}
+           or url_path ${like} {{query}})`
+        : ''
+    }
+    order by created_at desc
+    limit 1000)
+    select * from events
+    `,
+    { ...params, query: `%${query}%` },
+    pageParams,
   );
 }
 
