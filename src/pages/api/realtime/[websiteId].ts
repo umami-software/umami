@@ -10,13 +10,11 @@ import { REALTIME_RANGE } from 'lib/constants';
 
 export interface RealtimeRequestQuery {
   websiteId: string;
-  timezone: string;
 }
 
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
-    timezone: yup.string().required(),
   }),
 };
 
@@ -25,7 +23,7 @@ export default async (req: NextApiRequestQueryBody<RealtimeRequestQuery>, res: N
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, timezone } = req.query;
+    const { websiteId } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
@@ -33,7 +31,7 @@ export default async (req: NextApiRequestQueryBody<RealtimeRequestQuery>, res: N
 
     const startDate = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
 
-    const data = await getRealtimeData(websiteId, { startDate, timezone });
+    const data = await getRealtimeData(websiteId, { startDate });
 
     return ok(res, data);
   }

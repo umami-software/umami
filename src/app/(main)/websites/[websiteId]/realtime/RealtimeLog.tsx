@@ -10,7 +10,6 @@ import { safeDecodeURI } from 'next-basics';
 import { useContext, useMemo, useState } from 'react';
 import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
-import thenby from 'thenby';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
@@ -141,15 +140,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
       return [];
     }
 
-    const { events, visitors } = data;
-
-    let logs = [
-      ...events.map(e => ({
-        __type: e.eventName ? TYPE_EVENT : TYPE_PAGEVIEW,
-        ...e,
-      })),
-      ...visitors.map(v => ({ __type: TYPE_SESSION, ...v })),
-    ].sort(thenby.firstBy('createdAt', -1));
+    let logs = data.events;
 
     if (search) {
       logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {

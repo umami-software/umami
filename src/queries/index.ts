@@ -31,6 +31,7 @@ export * from './analytics/sessions/getSessionActivity';
 export * from './analytics/sessions/getSessionStats';
 export * from './analytics/sessions/saveSessionData';
 export * from './analytics/getActiveVisitors';
+export * from './analytics/getRealtimeActivity';
 export * from './analytics/getRealtimeData';
 export * from './analytics/getValues';
 export * from './analytics/getWebsiteDateRange';
