@@ -67,8 +67,8 @@ export async function getRealtimeData(websiteId: string, criteria: { startDate: 
       visitors: sessions,
     },
     totals: {
-      views: pageviews.reduce((sum: number, { y }: { y: number }) => sum + y, 0),
-      visitors: sessions.reduce((sum: number, { y }: { y: number }) => sum + y, 0),
+      views: pageviews.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
+      visitors: sessions.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
       events: activity.filter(e => e.eventName).length,
       countries: Object.keys(countries).length,
     },

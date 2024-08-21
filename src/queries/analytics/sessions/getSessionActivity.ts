@@ -19,7 +19,7 @@ async function relationalQuery(
 ) {
   return prisma.client.websiteEvent.findMany({
     where: {
-      id: sessionId,
+      sessionId,
       websiteId,
       createdAt: { gte: startDate, lte: endDate },
     },
