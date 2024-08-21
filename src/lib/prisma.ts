@@ -261,6 +261,32 @@ async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams)
   return { data, count, page: +page, pageSize: size, orderBy };
 }
 
+async function pagedRawQuery(
+  query: string,
+  queryParams: { [key: string]: any },
+  pageParams: PageParams = {},
+) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (page - 1);
+  const direction = sortDescending ? 'desc' : 'asc';
+
+  const statements = [
+    orderBy && `order by ${orderBy} ${direction}`,
+    +size > 0 && `limit ${+size} offset ${offset}`,
+  ]
+    .filter(n => n)
+    .join('\n');
+
+  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
+    res => res[0].num,
+  );
+
+  const data = await rawQuery(`${query}${statements}`, queryParams);
+
+  return { data, count, page: +page, pageSize: size, orderBy };
+}
+
 function getQueryMode(): { mode?: Prisma.QueryMode } {
   const db = getDatabaseType();
 
@@ -311,6 +337,7 @@ export default {
   getSearchSQL,
   getQueryMode,
   pagedQuery,
+  pagedRawQuery,
   parseFilters,
   rawQuery,
 };
