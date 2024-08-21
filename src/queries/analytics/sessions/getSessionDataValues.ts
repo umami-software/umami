@@ -16,20 +16,24 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters & { propertyName?: string },
 ) {
-  const { rawQuery, parseFilters } = prisma;
+  const { rawQuery, parseFilters, getDateSQL } = prisma;
   const { filterQuery, params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
     select
-      string_value as "value",
+      case 
+        when data_type = 2 then replace(string_value, '.0000', '') 
+        when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
+        else string_value
+      end as "value",
       count(*) as "total"
     from session_data
     where website_id = {{websiteId::uuid}}
       and created_at between {{startDate}} and {{endDate}}
       and data_key = {{propertyName}}
     ${filterQuery}
-    group by string_value
+    group by value
     order by 2 desc
     limit 100
     `,
