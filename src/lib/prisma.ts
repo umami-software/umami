@@ -12,11 +12,19 @@ import { filtersToArray } from './params';
 const log = debug('umami:prisma');
 
 const MYSQL_DATE_FORMATS = {
-  minute: '%Y-%m-%dT%H:%i:00Z',
-  hour: '%Y-%m-%dT%H:00:00Z',
-  day: '%Y-%m-%dT00:00:00Z',
-  month: '%Y-%m-01T00:00:00Z',
-  year: '%Y-01-01T00:00:00Z',
+  minute: '%Y-%m-%d %H:%i:00',
+  hour: '%Y-%m-%d %H:00:00',
+  day: '%Y-%m-%d',
+  month: '%Y-%m-01',
+  year: '%Y-01-01',
+};
+
+const POSTGRESQL_DATE_FORMATS = {
+  minute: 'YYYY-MM-DD HH24:MI:00',
+  hour: 'YYYY-MM-DD HH24:00:00',
+  day: 'YYYY-MM-DD',
+  month: 'YYYY-MM-01',
+  year: 'YYYY-01-01',
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
@@ -60,9 +68,9 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
 
   if (db === POSTGRESQL) {
     if (timezone) {
-      return `date_trunc('${unit}', ${field} at time zone '${timezone}')`;
+      return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
     }
-    return `date_trunc('${unit}', ${field})`;
+    return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
   }
 
   if (db === MYSQL) {

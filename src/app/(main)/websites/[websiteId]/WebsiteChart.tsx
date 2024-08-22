@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import PageviewsChart from 'components/metrics/PageviewsChart';
+import { getDateArray } from 'lib/date';
 import useWebsitePageviews from 'components/hooks/queries/useWebsitePageviews';
 import { useDateRange } from 'components/hooks';
 
@@ -18,8 +19,8 @@ export function WebsiteChart({
   const chartData = useMemo(() => {
     if (data) {
       const result = {
-        pageviews,
-        sessions,
+        pageviews: getDateArray(pageviews, startDate, endDate, unit),
+        sessions: getDateArray(sessions, startDate, endDate, unit),
       };
 
       if (compare) {
@@ -42,15 +43,7 @@ export function WebsiteChart({
     return { pageviews: [], sessions: [] };
   }, [data, startDate, endDate, unit]);
 
-  return (
-    <PageviewsChart
-      data={chartData}
-      minDate={startDate.toISOString()}
-      maxDate={endDate.toISOString()}
-      unit={unit}
-      isLoading={isLoading}
-    />
-  );
+  return <PageviewsChart data={chartData} unit={unit} isLoading={isLoading} />;
 }
 
 export default WebsiteChart;
