@@ -273,19 +273,6 @@ export function getMinimumUnit(startDate: number | Date, endDate: number | Date)
   return 'year';
 }
 
-export function getDateFromString(str: string) {
-  const [ymd, hms] = str.split(' ');
-  const [year, month, day] = ymd.split('-');
-
-  if (hms) {
-    const [hour, min, sec] = hms.split(':');
-
-    return new Date(+year, +month - 1, +day, +hour, +min, +sec);
-  }
-
-  return new Date(+year, +month - 1, +day);
-}
-
 export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: string) {
   const arr = [];
   const { diff, add, start } = DATE_FUNCTIONS[unit];

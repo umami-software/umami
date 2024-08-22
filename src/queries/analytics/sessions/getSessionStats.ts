@@ -22,14 +22,21 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-      ${getDateSQL('website_event.created_at', unit, timezone)} x,
-      count(distinct website_event.session_id) y
-    from website_event
+      ${getDateSQL('g.created_at', unit, timezone)} as x,
+      count(distinct g.session_id) as y
+    from (
+      select
+        website_event.session_id,
+        min(website_event.created_at) as created_at,
+        count(*) y
+      from website_event
       ${joinSession}
-    where website_event.website_id = {{websiteId::uuid}}
+      where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
-      and event_type = {{eventType}}
+      and event_type = {{eventType}} 
       ${filterQuery}
+      group by website_event.session_id, website_event.created_at
+    ) as g
     group by 1
     `,
     params,

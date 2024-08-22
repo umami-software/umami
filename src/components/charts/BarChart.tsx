@@ -12,6 +12,8 @@ export interface BarChartProps extends ChartProps {
   renderYLabel?: (label: string, index: number, values: any[]) => string;
   XAxisType?: string;
   YAxisType?: string;
+  minDate?: number | string;
+  maxDate?: number | string;
 }
 
 export function BarChart(props: BarChartProps) {
@@ -24,6 +26,8 @@ export function BarChart(props: BarChartProps) {
     XAxisType = 'time',
     YAxisType = 'linear',
     stacked = false,
+    minDate,
+    maxDate,
   } = props;
 
   const options: any = useMemo(() => {
@@ -32,6 +36,8 @@ export function BarChart(props: BarChartProps) {
         x: {
           type: XAxisType,
           stacked: true,
+          min: minDate,
+          max: maxDate,
           time: {
             unit,
           },

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
-import { getDateArray } from 'lib/date';
 import { useLocale, useDateRange, useWebsiteEventsSeries } from 'components/hooks';
 import { CHART_COLORS } from 'lib/constants';
 import { renderDateLabels } from 'lib/charts';
@@ -30,10 +29,6 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
 
       return obj;
     }, {});
-
-    Object.keys(map).forEach(key => {
-      map[key] = getDateArray(map[key], startDate, endDate, unit);
-    });
 
     return {
       datasets: Object.keys(map).map((key, index) => {
