@@ -19,21 +19,26 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters & { eventName?: string; propertyName?: string },
 ) {
-  const { rawQuery, parseFilters } = prisma;
+  const { rawQuery, parseFilters, getDateSQL } = prisma;
   const { filterQuery, params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
     select
-      string_value as "value",
+      case 
+        when data_type = 2 then replace(string_value, '.0000', '') 
+        when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
+        else string_value
+      end as "value",
       count(*) as "total"
     from event_data
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-      and data_key = {{propertyName}}
-      and event_key = {{eventName}}
+    join website_event on website_event.event_id = event_data.website_event_id
+    where event_data.website_id = {{websiteId::uuid}}
+      and event_data.created_at between {{startDate}} and {{endDate}}
+      and event_data.data_key = {{propertyName}}
+      and website_event.event_name = {{eventName}}
     ${filterQuery}
-    group by string_value
+    group by value
     order by 2 desc
     limit 100
     `,

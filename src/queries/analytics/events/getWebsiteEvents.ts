@@ -44,8 +44,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     ${
       query
-        ? `and (event_name ${like} {{query}}
-           or url_path ${like} {{query}})`
+        ? `and ((event_name ${like} {{query}} and event_type = 2)
+           or (url_path ${like} {{query}} and event_type = 1))`
         : ''
     }
     order by created_at desc
@@ -84,8 +84,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     ${filterQuery}
     ${
       query
-        ? `and (positionCaseInsensitive(event_name, {query:String}) > 0
-           or positionCaseInsensitive(url_path, {query:String}) > 0)`
+        ? `and ((positionCaseInsensitive(event_name, {query:String}) > 0 and event_type = 2)
+           or (positionCaseInsensitive(url_path, {query:String}) > 0 and event_type = 1))`
         : ''
     }
     order by created_at desc

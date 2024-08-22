@@ -10,12 +10,26 @@ export async function getSessionData(...args: [websiteId: string, sessionId: str
 }
 
 async function relationalQuery(websiteId: string, sessionId: string) {
-  return prisma.client.sessionData.findMany({
-    where: {
-      id: sessionId,
-      websiteId,
-    },
-  });
+  const { rawQuery } = prisma;
+
+  return rawQuery(
+    `
+    select
+        website_id as "websiteId",
+        session_id as "sessionId",
+        data_key as "dataKey",
+        data_type as "dataType",
+        replace(string_value, '.0000', '') as "stringValue",
+        number_value as "numberValue",
+        date_value as "dateValue",
+        created_at as "createdAt"
+    from session_data
+    where website_id = {{websiteId::uuid}}
+      and session_id = {{sessionId::uuid}}
+    order by data_key asc
+    `,
+    { websiteId, sessionId },
+  );
 }
 
 async function clickhouseQuery(websiteId: string, sessionId: string) {
@@ -28,7 +42,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
         session_id as sessionId,
         data_key as dataKey,
         data_type as dataType,
-        string_value as stringValue,
+        replace(string_value, '.0000', '')  as stringValue,
         number_value as numberValue,
         date_value as dateValue,
         created_at as createdAt

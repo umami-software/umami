@@ -13,7 +13,7 @@ export function TypeIcon({
     <>
       <img
         src={`${process.env.basePath || ''}/images/${type}/${
-          value.replaceAll(' ', '-').toLowerCase() || 'unknown'
+          value?.replaceAll(' ', '-').toLowerCase() || 'unknown'
         }.png`}
         alt={value}
         width={type === 'country' ? undefined : 16}

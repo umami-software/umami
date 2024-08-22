@@ -22,29 +22,39 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
     `
     with sessions as (
     select
-      s.session_id as "id",
-      s.website_id as "websiteId",
-      hostname,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      subdivision1,
-      city,
-      min(we.created_at) as "firstAt",
-      max(we.created_at) as "lastAt",
-      count(distinct we.visit_id) as "visits",
-      sum(case when we.event_type = 1 then 1 else 0 end) as "views",
-      max(we.created_at) as "createdAt"
-    from website_event we
-    join session s on s.session_id = we.session_id
-    where we.website_id = {{websiteId::uuid}}
-        and we.created_at between {{startDate}} and {{endDate}}
+      session.session_id as "id",
+      session.website_id as "websiteId",
+      session.hostname,
+      session.browser,
+      session.os,
+      session.device,
+      session.screen,
+      session.language,
+      session.country,
+      session.subdivision1,
+      session.city,
+      min(website_event.created_at) as "firstAt",
+      max(website_event.created_at) as "lastAt",
+      count(distinct website_event.visit_id) as "visits",
+      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
+      max(website_event.created_at) as "createdAt"
+    from website_event 
+    join session on session.session_id = website_event.session_id
+    where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    group by s.session_id, s.website_id, s.hostname, s.browser, s.os, s.device, s.screen, s.language, s.country, s.subdivision1, s.city
-    order by max(we.created_at) desc
+    group by session.session_id, 
+      session.website_id, 
+      session.hostname, 
+      session.browser, 
+      session.os, 
+      session.device, 
+      session.screen, 
+      session.language, 
+      session.country, 
+      session.subdivision1, 
+      session.city
+    order by max(website_event.created_at) desc
     limit 1000)
     select * from sessions
     `,

@@ -17,22 +17,22 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-        website_event.session_id as sessionId,
-        website_event.event_name as eventName,
-        website_event.created_at as createdAt,
+        website_event.session_id as "sessionId",
+        website_event.event_name as "eventName",
+        website_event.created_at as "createdAt",
         session.browser,
         session.os,
         session.device,
         session.country,
-        session.url_path as urlPath,
-        session.referrer_domain as referrerDomain
+        website_event.url_path as "urlPath",
+        website_event.referrer_domain as "referrerDomain"
     from website_event
     inner join session
       on session.session_id = website_event.session_id
-    where website_id = {{websiteId::uuid}}
+    where website_event.website_id = {{websiteId::uuid}}
     ${filterQuery}
     ${dateQuery}
-    order by created_at asc
+    order by website_event.created_at asc
     limit 100
     `,
     params,
