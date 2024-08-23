@@ -2,9 +2,9 @@ import path from 'path';
 import { getClientIp } from 'request-ip';
 import { browserName, detectOS } from 'detect-browser';
 import isLocalhost from 'is-localhost-ip';
+import ipaddr from 'ipaddr.js';
 import maxmind from 'maxmind';
 import { safeDecodeURIComponent } from 'next-basics';
-
 import {
   DESKTOP_OS,
   MOBILE_OS,
@@ -136,4 +136,32 @@ export async function getClientInfo(req: NextApiRequestCollect) {
   const device = getDevice(req.body?.payload?.screen, os);
 
   return { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device };
+}
+
+export function hasBlockedIp(req: NextApiRequestCollect) {
+  const ignoreIps = process.env.IGNORE_IP;
+
+  if (ignoreIps) {
+    const ips = [];
+
+    if (ignoreIps) {
+      ips.push(...ignoreIps.split(',').map(n => n.trim()));
+    }
+
+    const clientIp = getIpAddress(req);
+
+    return ips.find(ip => {
+      if (ip === clientIp) return true;
+
+      // CIDR notation
+      if (ip.indexOf('/') > 0) {
+        const addr = ipaddr.parse(clientIp);
+        const range = ipaddr.parseCIDR(ip);
+
+        if (addr.kind() === range[0].kind() && addr.match(range)) return true;
+      }
+    });
+  }
+
+  return false;
 }

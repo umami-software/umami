@@ -2,6 +2,8 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, max-content));
   gap: 20px;
+  width: 100%;
+  position: relative;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,0 +1,21 @@
+.info {
+  display: grid;
+  gap: 10px;
+}
+
+.info dl {
+  width: 100%;
+}
+
+.info dt {
+  color: var(--font-color200);
+  font-weight: bold;
+}
+
+.info dd {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 5px 0 28px;
+  text-align: left;
+}

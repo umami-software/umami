@@ -44,7 +44,7 @@
       if (result !== str) {
         return result;
       }
-    } catch {
+    } catch (e) {
       return str;
     }
 
@@ -55,7 +55,7 @@
     try {
       const { pathname, search } = new URL(url);
       url = pathname + search;
-    } catch {
+    } catch (e) {
       /* empty */
     }
     return excludeSearch ? url.split('?')[0] : url;
@@ -217,7 +217,7 @@
       const text = await res.text();
 
       return (cache = text);
-    } catch {
+    } catch (e) {
       /* empty */
     }
   };

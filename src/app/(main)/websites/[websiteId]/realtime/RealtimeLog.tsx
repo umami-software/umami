@@ -1,17 +1,15 @@
-import { useContext, useMemo, useState } from 'react';
-import { StatusLight, Icon, Text, SearchField } from 'react-basics';
-import { FixedSizeList } from 'react-window';
-import { format } from 'date-fns';
-import thenby from 'thenby';
-import { safeDecodeURI } from 'next-basics';
-import FilterButtons from 'components/common/FilterButtons';
-import Empty from 'components/common/Empty';
-import { useLocale, useCountryNames, useMessages } from 'components/hooks';
-import Icons from 'components/icons';
 import useFormat from 'components//hooks/useFormat';
+import Empty from 'components/common/Empty';
+import FilterButtons from 'components/common/FilterButtons';
+import { useCountryNames, useLocale, useMessages, useTimezone } from 'components/hooks';
+import Icons from 'components/icons';
 import { BROWSERS } from 'lib/constants';
 import { stringToColor } from 'lib/format';
 import { RealtimeData } from 'lib/types';
+import { safeDecodeURI } from 'next-basics';
+import { useContext, useMemo, useState } from 'react';
+import { Icon, SearchField, StatusLight, Text } from 'react-basics';
+import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
 
@@ -32,7 +30,8 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
+  const { formatTimezoneDate } = useTimezone();
+  const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
   const buttons = [
@@ -54,7 +53,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ timestamp }) => format(timestamp * 1000, 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'h:mm:ss');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 
@@ -141,12 +140,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
       return [];
     }
 
-    const { events, visitors } = data;
-
-    let logs = [
-      ...events.map(e => ({ __type: e.eventName ? TYPE_EVENT : TYPE_PAGEVIEW, ...e })),
-      ...visitors.map(v => ({ __type: TYPE_SESSION, ...v })),
-    ].sort(thenby.firstBy('timestamp', -1));
+    let logs = data.events;
 
     if (search) {
       logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
@@ -178,7 +172,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
         <SearchField className={styles.search} value={search} onSearch={setSearch} />
         <FilterButtons items={buttons} selectedKey={filter} onSelect={setFilter} />
       </div>
-      <div className={styles.header}>{formatMessage(labels.activityLog)}</div>
+      <div className={styles.header}>{formatMessage(labels.activity)}</div>
       <div className={styles.body}>
         {logs?.length === 0 && <Empty />}
         {logs?.length > 0 && (

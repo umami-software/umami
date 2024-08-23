@@ -11,6 +11,7 @@ import Dashboard from 'assets/dashboard.svg';
 import Eye from 'assets/eye.svg';
 import Gear from 'assets/gear.svg';
 import Globe from 'assets/globe.svg';
+import Location from 'assets/location.svg';
 import Lock from 'assets/lock.svg';
 import Logo from 'assets/logo.svg';
 import Magnet from 'assets/magnet.svg';
@@ -38,6 +39,7 @@ const icons = {
   Eye,
   Gear,
   Globe,
+  Location,
   Lock,
   Logo,
   Magnet,

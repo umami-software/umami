@@ -7,7 +7,6 @@ import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
-import WebsiteProvider from './WebsiteProvider';
 import { FILTER_COLUMNS } from 'lib/constants';
 
 export default function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
@@ -25,13 +24,13 @@ export default function WebsiteDetailsPage({ websiteId }: { websiteId: string })
   }, {});
 
   return (
-    <WebsiteProvider websiteId={websiteId}>
+    <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
       <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} sticky={true} />
       <WebsiteChart websiteId={websiteId} />
       {!view && <WebsiteTableView websiteId={websiteId} />}
       {view && <WebsiteExpandedView websiteId={websiteId} />}
-    </WebsiteProvider>
+    </>
   );
 }
