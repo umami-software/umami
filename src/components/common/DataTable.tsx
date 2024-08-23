@@ -1,19 +1,21 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Banner, Loading, SearchField } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { Loading, SearchField } from 'react-basics';
+import { useMessages, useNavigation } from 'components/hooks';
 import Empty from 'components/common/Empty';
 import Pager from 'components/common/Pager';
-import { FilterQueryResult } from 'lib/types';
+import { PagedQueryResult } from 'lib/types';
 import styles from './DataTable.module.css';
+import { LoadingPanel } from 'components/common/LoadingPanel';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
 export interface DataTableProps {
-  queryResult: FilterQueryResult<any>;
+  queryResult: PagedQueryResult<any>;
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
+  renderEmpty?: () => ReactNode;
   children: ReactNode | ((data: any) => ReactNode);
 }
 
@@ -22,6 +24,7 @@ export function DataTable({
   searchDelay = 600,
   allowSearch = true,
   allowPaging = true,
+  renderEmpty,
   children,
 }: DataTableProps) {
   const { formatMessage, labels, messages } = useMessages();
@@ -29,12 +32,13 @@ export function DataTable({
     result,
     params,
     setParams,
-    query: { error, isLoading },
+    query: { error, isLoading, isFetched },
   } = queryResult || {};
   const { page, pageSize, count, data } = result || {};
   const { query } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
-  const noResults = Boolean(!isLoading && query && !hasData);
+  const noResults = Boolean(query && !hasData);
+  const { router, renderUrl } = useNavigation();
 
   const handleSearch = (query: string) => {
     setParams({ ...params, query, page: params.page ? page : 1 });
@@ -42,11 +46,8 @@ export function DataTable({
 
   const handlePageChange = (page: number) => {
     setParams({ ...params, query, page });
+    router.push(renderUrl({ page }));
   };
-
-  if (error) {
-    return <Banner variant="error">{formatMessage(messages.error)}</Banner>;
-  }
 
   return (
     <>
@@ -60,23 +61,27 @@ export function DataTable({
           placeholder={formatMessage(labels.search)}
         />
       )}
-      <div
-        className={classNames(styles.body, { [styles.status]: isLoading || noResults || !hasData })}
-      >
-        {hasData ? (typeof children === 'function' ? children(result) : children) : null}
-        {isLoading && <Loading position="page" />}
-        {!isLoading && !hasData && !query && <Empty />}
-        {noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
-      </div>
-      {allowPaging && hasData && (
-        <Pager
-          className={styles.pager}
-          page={page}
-          pageSize={pageSize}
-          count={count}
-          onPageChange={handlePageChange}
-        />
-      )}
+      <LoadingPanel data={data} isLoading={isLoading} isFetched={isFetched} error={error}>
+        <div
+          className={classNames(styles.body, {
+            [styles.status]: isLoading || noResults || !hasData,
+          })}
+        >
+          {hasData ? (typeof children === 'function' ? children(result) : children) : null}
+          {isLoading && <Loading position="page" />}
+          {!isLoading && !hasData && !query && (renderEmpty ? renderEmpty() : <Empty />)}
+          {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
+        </div>
+        {allowPaging && hasData && (
+          <Pager
+            className={styles.pager}
+            page={page}
+            pageSize={pageSize}
+            count={count}
+            onPageChange={handlePageChange}
+          />
+        )}
+      </LoadingPanel>
     </>
   );
 }

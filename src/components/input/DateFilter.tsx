@@ -5,6 +5,8 @@ import DatePickerForm from 'components/metrics/DatePickerForm';
 import { useLocale, useMessages } from 'components/hooks';
 import Icons from 'components/icons';
 import { formatDate, parseDateValue } from 'lib/date';
+import styles from './DateFilter.module.css';
+import classNames from 'classnames';
 
 export interface DateFilterProps {
   value: string;
@@ -123,7 +125,7 @@ export function DateFilter({
   return (
     <>
       <Dropdown
-        className={className}
+        className={classNames(className, styles.dropdown)}
         items={options}
         renderValue={renderValue}
         value={value}

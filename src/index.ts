@@ -1,19 +1,19 @@
 export * from 'components/hooks';
 
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberEditButton';
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberEditForm';
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMemberRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersDataTable';
-export * from 'app/(main)/settings/teams/[teamId]/members/TeamMembersTable';
+export * from 'app/(main)/teams/[teamId]/settings/members/TeamMemberEditButton';
+export * from 'app/(main)/teams/[teamId]/settings/members/TeamMemberEditForm';
+export * from 'app/(main)/teams/[teamId]/settings/members/TeamMemberRemoveButton';
+export * from 'app/(main)/teams/[teamId]/settings/members/TeamMembersDataTable';
+export * from 'app/(main)/teams/[teamId]/settings/members/TeamMembersTable';
 
-export * from 'app/(main)/settings/teams/[teamId]/team/TeamDeleteForm';
-export * from 'app/(main)/settings/teams/[teamId]/team/TeamDetails';
-export * from 'app/(main)/settings/teams/[teamId]/team/TeamEditForm';
-export * from 'app/(main)/settings/teams/[teamId]/team/TeamManage';
+export * from 'app/(main)/teams/[teamId]/settings/team/TeamDeleteForm';
+export * from 'app/(main)/teams/[teamId]/settings/team/TeamDetails';
+export * from 'app/(main)/teams/[teamId]/settings/team/TeamEditForm';
+export * from 'app/(main)/teams/[teamId]/settings/team/TeamManage';
 
-export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsiteRemoveButton';
-export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesDataTable';
-export * from 'app/(main)/settings/teams/[teamId]/websites/TeamWebsitesTable';
+export * from 'app/(main)/teams/[teamId]/settings/websites/TeamWebsiteRemoveButton';
+export * from 'app/(main)/teams/[teamId]/settings/websites/TeamWebsitesDataTable';
+export * from 'app/(main)/teams/[teamId]/settings/websites/TeamWebsitesTable';
 
 export * from 'app/(main)/settings/teams/TeamAddForm';
 export * from 'app/(main)/settings/teams/TeamJoinForm';

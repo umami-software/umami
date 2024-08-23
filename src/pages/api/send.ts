@@ -1,4 +1,3 @@
-import ipaddr from 'ipaddr.js';
 import { isbot } from 'isbot';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
@@ -12,7 +11,7 @@ import {
 } from 'next-basics';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
 import { secret, visitSalt, uuid } from 'lib/crypto';
-import { getIpAddress } from 'lib/detect';
+import { hasBlockedIp } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
 import { saveEvent, saveSessionData } from 'queries';
@@ -122,7 +121,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         urlPath = '/';
       }
 
-      if (referrerPath?.startsWith('http')) {
+      if (/^[\w-]+:\/\/\w+/.test(referrerPath)) {
         const refUrl = new URL(referrer);
         referrerPath = refUrl.pathname;
         referrerQuery = refUrl.search.substring(1);
@@ -145,9 +144,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         ...session,
         sessionId: session.id,
       });
-    }
-
-    if (type === COLLECTION_TYPE.identify) {
+    } else if (type === COLLECTION_TYPE.identify) {
       if (!data) {
         return badRequest(res, 'Data required.');
       }
@@ -166,31 +163,3 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
   return methodNotAllowed(res);
 };
-
-function hasBlockedIp(req: NextApiRequestCollect) {
-  const ignoreIps = process.env.IGNORE_IP;
-
-  if (ignoreIps) {
-    const ips = [];
-
-    if (ignoreIps) {
-      ips.push(...ignoreIps.split(',').map(n => n.trim()));
-    }
-
-    const clientIp = getIpAddress(req);
-
-    return ips.find(ip => {
-      if (ip === clientIp) return true;
-
-      // CIDR notation
-      if (ip.indexOf('/') > 0) {
-        const addr = ipaddr.parse(clientIp);
-        const range = ipaddr.parseCIDR(ip);
-
-        if (addr.kind() === range[0].kind() && addr.match(range)) return true;
-      }
-    });
-  }
-
-  return false;
-}

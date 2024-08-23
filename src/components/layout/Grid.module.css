@@ -27,6 +27,10 @@
   padding-inline-end: 0;
 }
 
+.col.one {
+  grid-column: span 6;
+}
+
 .col.two {
   grid-column: span 3;
 }

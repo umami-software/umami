@@ -1,8 +1,8 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { WebsiteEventMetric, QueryFilters } from 'lib/types';
 import { EVENT_TYPE } from 'lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
+import { QueryFilters, WebsiteEventMetric } from 'lib/types';
 
 export async function getEventMetrics(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -15,7 +15,7 @@ export async function getEventMetrics(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateQuery, parseFilters } = prisma;
+  const { rawQuery, getDateSQL, parseFilters } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
@@ -25,7 +25,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       event_name x,
-      ${getDateQuery('website_event.created_at', unit, timezone)} t,
+      ${getDateSQL('website_event.created_at', unit, timezone)} t,
       count(*) y
     from website_event
     ${joinSession}
@@ -45,17 +45,19 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; t: string; y: number }[]> {
   const { timezone = 'UTC', unit = 'day' } = filters;
-  const { rawQuery, getDateQuery, parseFilters } = clickhouse;
+  const { rawQuery, getDateSQL, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.customEvent,
   });
 
-  return rawQuery(
-    `
+  let sql = '';
+
+  if (filterQuery) {
+    sql = `
     select
       event_name x,
-      ${getDateQuery('created_at', unit, timezone)} t,
+      ${getDateSQL('created_at', unit, timezone)} t,
       count(*) y
     from website_event
     where website_id = {websiteId:UUID}
@@ -64,9 +66,27 @@ async function clickhouseQuery(
       ${filterQuery}
     group by x, t
     order by t
-    `,
-    params,
-  ).then(a => {
+    `;
+  } else {
+    sql = `
+    select
+      event_name x,
+      ${getDateSQL('created_at', unit, timezone)} t,
+      count(*) y
+    from (
+      select arrayJoin(event_name) as event_name,
+        created_at
+      from website_event_stats_hourly website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
+    ) as g
+    group by x, t
+    order by t
+    `;
+  }
+
+  return rawQuery(sql, params).then(a => {
     return Object.values(a).map(a => {
       return { x: a.x, t: a.t, y: Number(a.y) };
     });

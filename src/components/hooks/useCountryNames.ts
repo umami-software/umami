@@ -28,7 +28,7 @@ export function useCountryNames(locale: string) {
     }
   }, [locale]);
 
-  return list;
+  return { countryNames: list };
 }
 
 export default useCountryNames;

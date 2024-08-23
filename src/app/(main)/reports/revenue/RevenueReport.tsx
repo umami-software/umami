@@ -4,7 +4,7 @@ import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
-import Target from 'assets/target.svg';
+import Money from 'assets/money.svg';
 import { REPORT_TYPES } from 'lib/constants';
 
 const defaultParameters = {
@@ -15,12 +15,12 @@ const defaultParameters = {
 export default function RevenueReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Target />} />
+      <ReportHeader icon={<Money />} />
       <ReportMenu>
         <RevenueParameters />
       </ReportMenu>
       <ReportBody>
-        <RevenueChart />
+        <RevenueChart unit="day" />
       </ReportBody>
     </Report>
   );

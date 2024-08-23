@@ -46,12 +46,12 @@ async function relationalQuery(
     timezone = 'UTC',
     unit = 'day',
   } = criteria;
-  const { getDateQuery, rawQuery } = prisma;
+  const { getDateSQL, rawQuery } = prisma;
 
   const chartRes = await rawQuery(
     `
     select
-      ${getDateQuery('website_event.created_at', unit, timezone)} time,
+      ${getDateSQL('website_event.created_at', unit, timezone)} time,
       sum(case when data_key = {{revenueProperty}} then number_value else 0 end) sum,
       avg(case when data_key = {{revenueProperty}} then number_value else 0 end) avg,
       count(case when data_key = {{revenueProperty}} then 1 else 0 end) count,
@@ -110,7 +110,7 @@ async function clickhouseQuery(
     timezone = 'UTC',
     unit = 'day',
   } = criteria;
-  const { getDateStringQuery, getDateQuery, rawQuery } = clickhouse;
+  const { getDateStringSQL, getDateSQL, rawQuery } = clickhouse;
 
   const chartRes = await rawQuery<{
     time: string;
@@ -121,14 +121,14 @@ async function clickhouseQuery(
   }>(
     `
     select
-      ${getDateStringQuery('g.time', unit)} as time, 
+      ${getDateStringSQL('g.time', unit)} as time, 
       g.sum as sum,
       g.avg as avg,
       g.count as count,
       g.uniqueCount as uniqueCount
     from (
       select 
-        ${getDateQuery('created_at', unit, timezone)} as time,
+        ${getDateSQL('created_at', unit, timezone)} as time,
         sumIf(number_value, data_key = {revenueProperty:String}) as sum,
         avgIf(number_value, data_key = {revenueProperty:String}) as avg,
         countIf(data_key = {revenueProperty:String}) as count,
@@ -143,17 +143,7 @@ async function clickhouseQuery(
     order by time
     `,
     { websiteId, startDate, endDate, eventName, revenueProperty, userProperty },
-  ).then(result => {
-    return Object.values(result).map((a: any) => {
-      return {
-        time: a.time,
-        sum: Number(a.sum),
-        avg: Number(a.avg),
-        count: Number(a.count),
-        uniqueCount: Number(!a.avg ? 0 : a.uniqueCount),
-      };
-    });
-  });
+  ).then(result => result?.[0]);
 
   const totalRes = await rawQuery<{
     sum: number;
@@ -174,16 +164,7 @@ async function clickhouseQuery(
         and data_key in ({revenueProperty:String}, {userProperty:String})
     `,
     { websiteId, startDate, endDate, eventName, revenueProperty, userProperty },
-  ).then(results => {
-    const result = results[0];
-
-    return {
-      sum: Number(result.sum),
-      avg: Number(result.avg),
-      count: Number(result.count),
-      uniqueCount: Number(!result.avg ? 0 : result.uniqueCount),
-    };
-  });
+  );
 
   return { chart: chartRes, total: totalRes };
 }

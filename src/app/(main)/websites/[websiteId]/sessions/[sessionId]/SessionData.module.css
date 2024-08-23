@@ -1,0 +1,38 @@
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.header {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.empty {
+  color: var(--font-color300);
+  text-align: center;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.type {
+  font-size: 11px;
+  padding: 0 6px;
+  border-radius: 4px;
+  border: 1px solid var(--base400);
+}
+
+.name {
+  color: var(--font-color200);
+  font-weight: bold;
+}
+
+.value {
+  margin: 5px 0;
+}

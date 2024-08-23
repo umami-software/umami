@@ -51,6 +51,12 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       url: renderTeamUrl('/reports/journey'),
       icon: <Path />,
     },
+    // {
+    //   title: formatMessage(labels.revenue),
+    //   description: formatMessage(labels.revenueDescription),
+    //   url: renderTeamUrl('/reports/revenue'),
+    //   icon: <Money />,
+    // },
   ];
 
   return (

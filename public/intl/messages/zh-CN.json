@@ -11,7 +11,7 @@
       "value": "用户行为"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "活动日志"
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "比较"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "统计"
     }
   ],
   "label.countries": [
@@ -236,7 +236,7 @@
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "目前"
     }
   ],
   "label.current-password": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "结束步骤"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "入口 URL"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "退出 URL"
     }
   ],
   "label.false": [
@@ -473,6 +473,12 @@
       "value": "筛选"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -488,19 +494,19 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "目标"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "目标"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "跟踪页面浏览量和事件的目标。"
     }
   ],
   "label.greater-than": [
@@ -518,13 +524,13 @@
   "label.host": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "主机"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "主机"
     }
   ],
   "label.insights": [
@@ -578,13 +584,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "用户浏览轨迹"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users nagivate through your website."
+      "value": "了解用户如何浏览网站。"
     }
   ],
   "label.language": [
@@ -647,6 +653,12 @@
       "value": " 个月"
     }
   ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -692,7 +704,7 @@
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "管理者"
     }
   ],
   "label.max": [
@@ -798,7 +810,7 @@
   "label.ok": [
     {
       "type": 0,
-      "value": "OK"
+      "value": "好的"
     }
   ],
   "label.os": [
@@ -865,6 +877,18 @@
       "value": "密码"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -882,19 +906,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "先前"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "上一时期"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "上一年"
     }
   ],
   "label.profile": [
@@ -903,10 +927,16 @@
       "value": "个人资料"
     }
   ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "属性"
     }
   ],
   "label.queries": [
@@ -1017,6 +1047,24 @@
       "value": "通过跟踪用户返回的频率来衡量网站的用户粘性。"
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -1071,6 +1119,12 @@
       "value": "选择网站"
     }
   ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1098,7 +1152,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "开始步骤"
     }
   ],
   "label.steps": [
@@ -1134,7 +1188,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "团队管理者"
     }
   ],
   "label.team-member": [
@@ -1239,6 +1293,12 @@
       "value": "跟踪代码"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1275,6 +1335,12 @@
       "value": "独立访客"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1309,6 +1375,12 @@
     {
       "type": 0,
       "value": "用户"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1450,7 +1522,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "已收集的数据"
     }
   ],
   "message.confirm-delete": [
