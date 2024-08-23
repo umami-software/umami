@@ -24,6 +24,7 @@ async function relationalQuery(
       createdAt: { gte: startDate, lte: endDate },
     },
     take: 500,
+    orderBy: { createdAt: 'desc' },
   });
 }
 

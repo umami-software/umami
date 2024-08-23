@@ -19,6 +19,14 @@ const MYSQL_DATE_FORMATS = {
   year: '%Y-01-01T00:00:00Z',
 };
 
+const POSTGRESQL_DATE_FORMATS = {
+  minute: 'YYYY-MM-DD HH24:MI:00',
+  hour: 'YYYY-MM-DD HH24:00:00',
+  day: 'YYYY-MM-DD',
+  month: 'YYYY-MM-01',
+  year: 'YYYY-01-01',
+};
+
 function getAddIntervalQuery(field: string, interval: string): string {
   const db = getDatabaseType();
 
@@ -60,18 +68,16 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
 
   if (db === POSTGRESQL) {
     if (timezone) {
-      return `date_trunc('${unit}', ${field} at time zone '${timezone}')`;
+      return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
     }
-    return `date_trunc('${unit}', ${field})`;
+    return `to_char(date_trunc('${unit}', ${field}), '${POSTGRESQL_DATE_FORMATS[unit]}')`;
   }
 
   if (db === MYSQL) {
     if (timezone) {
       const tz = moment.tz(timezone).format('Z');
-
       return `date_format(convert_tz(${field},'+00:00','${tz}'), '${MYSQL_DATE_FORMATS[unit]}')`;
     }
-
     return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
   }
 }
