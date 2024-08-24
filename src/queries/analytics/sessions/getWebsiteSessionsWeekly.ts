@@ -13,13 +13,14 @@ export async function getWebsiteSessionsWeekly(
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'utc' } = filters;
   const { rawQuery, getDateWeeklySQL, parseFilters } = prisma;
   const { params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
     select
-      ${getDateWeeklySQL('created_at')} as time,
+      ${getDateWeeklySQL('created_at', timezone)} as time,
       count(distinct session_id) as value
     from website_event
     where website_id = {{websiteId::uuid}}
@@ -32,13 +33,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
+  const { timezone = 'utc' } = filters;
   const { rawQuery } = clickhouse;
   const { startDate, endDate } = filters;
 
   return rawQuery(
     `
     select
-      formatDateTime(created_at, '%w:%H') as time,
+      formatDateTime(toDateTime(created_at, '${timezone}'), '%w:%H') as time,
       count(distinct session_id) as value
     from website_event_stats_hourly
     where website_id = {websiteId:UUID}

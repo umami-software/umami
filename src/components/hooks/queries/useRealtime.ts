@@ -1,13 +1,15 @@
+import { useTimezone } from 'components/hooks';
+import { REALTIME_INTERVAL } from 'lib/constants';
 import { RealtimeData } from 'lib/types';
 import { useApi } from './useApi';
-import { REALTIME_INTERVAL } from 'lib/constants';
 
 export function useRealtime(websiteId: string) {
   const { get, useQuery } = useApi();
+  const { timezone } = useTimezone();
   const { data, isLoading, error } = useQuery<RealtimeData>({
-    queryKey: ['realtime', websiteId],
+    queryKey: ['realtime', { websiteId, timezone }],
     queryFn: async () => {
-      return get(`/realtime/${websiteId}`);
+      return get(`/realtime/${websiteId}`, { timezone });
     },
     enabled: !!websiteId,
     refetchInterval: REALTIME_INTERVAL,
