@@ -31,6 +31,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       and event_type = {{eventType}}
       ${filterQuery}
     group by 1
+    order by 1
     `,
     params,
   );
