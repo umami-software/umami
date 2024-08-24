@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Vist per primer cop"
     }
   ],
   "label.funnel": [
@@ -656,7 +656,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Vist per últim cop"
     }
   ],
   "label.leave": [
@@ -876,13 +876,13 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Camí"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Camins"
     }
   ],
   "label.powered-by": [
@@ -922,7 +922,7 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Propietats"
     }
   ],
   "label.property": [
@@ -1042,19 +1042,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Ingressos"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Observi els seus ingressos al llarg del temps."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "Propietat d'Ingressos"
     }
   ],
   "label.role": [
@@ -1114,7 +1114,7 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Sessió"
     }
   ],
   "label.sessions": [
@@ -1180,7 +1180,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Responsable d'Equip"
     }
   ],
   "label.team-member": [
@@ -1288,7 +1288,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Transaccions"
     }
   ],
   "label.transfer": [
@@ -1330,7 +1330,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Clients Únics"
     }
   ],
   "label.unknown": [
@@ -1372,7 +1372,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "Propietat d'Usuari"
     }
   ],
   "label.username": [
