@@ -1,5 +1,5 @@
 -- Create Event
-CREATE TABLE umami.website_event
+CREATE TABLE website_event
 (
     website_id UUID,
     session_id UUID,
@@ -38,7 +38,7 @@ ENGINE = MergeTree
     PRIMARY KEY (toStartOfHour(created_at), website_id, session_id, visit_id)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_data
+CREATE TABLE event_data
 (
     website_id UUID,
     session_id UUID,
@@ -57,7 +57,7 @@ ENGINE = MergeTree
     ORDER BY (website_id, event_id, data_key, created_at)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.session_data
+CREATE TABLE session_data
 (
     website_id UUID,
     session_id UUID,
@@ -73,7 +73,7 @@ ENGINE = ReplacingMergeTree
     ORDER BY (website_id, session_id, data_key)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.event_data_blob
+CREATE TABLE event_data_blob
 (
     website_id UUID,
     session_id UUID,
@@ -127,7 +127,7 @@ CREATE TABLE umami.event_data_blob
         SETTINGS index_granularity = 8192;
 
 -- stats hourly
-CREATE TABLE umami.website_event_stats_hourly
+CREATE TABLE website_event_stats_hourly
 (
     website_id UUID,
     session_id UUID,
@@ -165,8 +165,8 @@ ENGINE = AggregatingMergeTree
     )
     SAMPLE BY cityHash64(visit_id);
 
-CREATE MATERIALIZED VIEW umami.website_event_stats_hourly_mv
-TO umami.website_event_stats_hourly
+CREATE MATERIALIZED VIEW website_event_stats_hourly_mv
+TO website_event_stats_hourly
 AS
 SELECT
     website_id,
@@ -218,7 +218,7 @@ FROM (SELECT
     min(created_at) min_time,
     max(created_at) max_time,
     toStartOfHour(created_at) timestamp
-FROM umami.website_event
+FROM website_event
 GROUP BY website_id,
     session_id,
     visit_id,
@@ -235,17 +235,17 @@ GROUP BY website_id,
     timestamp);
 
 -- projections
-ALTER TABLE umami.website_event 
+ALTER TABLE website_event 
 ADD PROJECTION website_event_url_path_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, url_path, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_url_path_projection;
+ALTER TABLE website_event MATERIALIZE PROJECTION website_event_url_path_projection;
 
-ALTER TABLE umami.website_event 
+ALTER TABLE website_event 
 ADD PROJECTION website_event_referrer_domain_projection (
 SELECT * ORDER BY toStartOfDay(created_at), website_id, referrer_domain, created_at
 );
 
-ALTER TABLE umami.website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
+ALTER TABLE website_event MATERIALIZE PROJECTION website_event_referrer_domain_projection;
 
