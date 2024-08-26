@@ -41,7 +41,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
-  const { unit = 'day' } = filters;
+  const { timezone = 'utc', unit = 'day' } = filters;
   const { parseFilters, rawQuery } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
@@ -57,7 +57,7 @@ async function clickhouseQuery(
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at) as t,
+        date_trunc('${unit}', created_at, '${timezone}') as t,
         count(distinct session_id) as y
       from website_event
       where website_id = {websiteId:UUID}
@@ -75,7 +75,7 @@ async function clickhouseQuery(
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at) as t,
+        date_trunc('${unit}', created_at, '${timezone}') as t,
         uniq(session_id) as y
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
