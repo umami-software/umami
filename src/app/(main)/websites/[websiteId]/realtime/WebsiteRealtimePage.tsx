@@ -10,7 +10,6 @@ import RealtimeHeader from './RealtimeHeader';
 import RealtimeUrls from './RealtimeUrls';
 import RealtimeCountries from './RealtimeCountries';
 import WebsiteHeader from '../WebsiteHeader';
-import WebsiteProvider from '../WebsiteProvider';
 import { percentFilter } from 'lib/filters';
 
 export function WebsiteRealtimePage({ websiteId }) {
@@ -27,7 +26,7 @@ export function WebsiteRealtimePage({ websiteId }) {
   );
 
   return (
-    <WebsiteProvider websiteId={websiteId}>
+    <>
       <WebsiteHeader websiteId={websiteId} />
       <RealtimeHeader data={data} />
       <RealtimeChart data={data} unit="minute" />
@@ -41,7 +40,7 @@ export function WebsiteRealtimePage({ websiteId }) {
           <WorldMap data={countries} />
         </GridRow>
       </Grid>
-    </WebsiteProvider>
+    </>
   );
 }
 

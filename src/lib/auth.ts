@@ -1,7 +1,7 @@
 import { Report } from '@prisma/client';
 import redis from '@umami/redis-client';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER, ROLES } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { NextApiRequest } from 'next';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
@@ -106,7 +106,7 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
   if (website.teamId && user.id === userId) {
     const teamUser = await getTeamUser(website.teamId, userId);
 
-    return teamUser?.role === ROLES.teamOwner;
+    return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteTransferToUser);
   }
 
   return false;
@@ -118,7 +118,7 @@ export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string
   if (website.userId && website.userId === user.id) {
     const teamUser = await getTeamUser(teamId, user.id);
 
-    return teamUser?.role === ROLES.teamOwner;
+    return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteTransferToTeam);
   }
 
   return false;

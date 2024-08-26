@@ -71,7 +71,8 @@ export function WebsiteTransferForm({
               {result.data
                 .filter(({ teamUser }) =>
                   teamUser.find(
-                    ({ role, userId }) => role === ROLES.teamOwner && userId === user.id,
+                    ({ role, userId }) =>
+                      [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
                   ),
                 )
                 .map(({ id, name }) => {

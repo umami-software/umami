@@ -1,3 +1,4 @@
+import debug from 'debug';
 import { Prisma } from '@prisma/client';
 import prisma from '@umami/prisma-client';
 import moment from 'moment-timezone';
@@ -8,8 +9,10 @@ import { maxDate } from './date';
 import { QueryFilters, QueryOptions, PageParams } from './types';
 import { filtersToArray } from './params';
 
+const log = debug('umami:prisma');
+
 const MYSQL_DATE_FORMATS = {
-  minute: '%Y-%m-%d %H:%i:00',
+  minute: '%Y-%m-%dT%H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
   day: '%Y-%m-%d',
   month: '%Y-%m-01',
@@ -60,7 +63,7 @@ function getCastColumnQuery(field: string, type: string): string {
   }
 }
 
-function getDateQuery(field: string, unit: string, timezone?: string): string {
+function getDateSQL(field: string, unit: string, timezone?: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
@@ -73,15 +76,38 @@ function getDateQuery(field: string, unit: string, timezone?: string): string {
   if (db === MYSQL) {
     if (timezone) {
       const tz = moment.tz(timezone).format('Z');
-
       return `date_format(convert_tz(${field},'+00:00','${tz}'), '${MYSQL_DATE_FORMATS[unit]}')`;
     }
-
     return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
   }
 }
 
-function getTimestampDiffQuery(field1: string, field2: string): string {
+function getDateWeeklySQL(field: string, timezone?: string) {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
+  }
+
+  if (db === MYSQL) {
+    const tz = moment.tz(timezone).format('Z');
+    return `date_format(convert_tz(${field},'+00:00','${tz}'), '%w:%H')`;
+  }
+}
+
+export function getTimestampSQL(field: string) {
+  const db = getDatabaseType();
+
+  if (db === POSTGRESQL) {
+    return `floor(extract(epoch from ${field}))`;
+  }
+
+  if (db === MYSQL) {
+    return `UNIX_TIMESTAMP(${field})`;
+  }
+}
+
+function getTimestampDiffSQL(field1: string, field2: string): string {
   const db = getDatabaseType();
 
   if (db === POSTGRESQL) {
@@ -93,7 +119,7 @@ function getTimestampDiffQuery(field1: string, field2: string): string {
   }
 }
 
-function getSearchQuery(column: string): string {
+function getSearchSQL(column: string): string {
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
@@ -137,6 +163,20 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
   return query.join('\n');
 }
 
+function getDateQuery(filters: QueryFilters = {}) {
+  const { startDate, endDate } = filters;
+
+  if (startDate) {
+    if (endDate) {
+      return `and website_event.created_at between {{startDate}} and {{endDate}}`;
+    } else {
+      return `and website_event.created_at >= {{startDate}}`;
+    }
+  }
+
+  return '';
+}
+
 function getFilterParams(filters: QueryFilters = {}) {
   return filtersToArray(filters).reduce((obj, { name, operator, value }) => {
     obj[name] = [OPERATORS.contains, OPERATORS.doesNotContain].includes(operator)
@@ -161,6 +201,7 @@ async function parseFilters(
         ? `inner join session on website_event.session_id = session.session_id`
         : '',
     filterQuery: getFilterQuery(filters, options),
+    dateQuery: getDateQuery(filters),
     params: {
       ...getFilterParams(filters),
       websiteId,
@@ -171,6 +212,11 @@ async function parseFilters(
 }
 
 async function rawQuery(sql: string, data: object): Promise<any> {
+  if (process.env.LOG_QUERY) {
+    log('QUERY:\n', sql);
+    log('PARAMETERS:\n', data);
+  }
+
   const db = getDatabaseType();
   const params = [];
 
@@ -191,8 +237,8 @@ async function rawQuery(sql: string, data: object): Promise<any> {
   return prisma.rawQuery(query, params);
 }
 
-async function pagedQuery<T>(model: string, criteria: T, filters: PageParams) {
-  const { page = 1, pageSize, orderBy, sortDescending = false } = filters || {};
+async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
   const data = await prisma.client[model].findMany({
@@ -210,6 +256,32 @@ async function pagedQuery<T>(model: string, criteria: T, filters: PageParams) {
   });
 
   const count = await prisma.client[model].count({ where: (criteria as any).where });
+
+  return { data, count, page: +page, pageSize: size, orderBy };
+}
+
+async function pagedRawQuery(
+  query: string,
+  queryParams: { [key: string]: any },
+  pageParams: PageParams = {},
+) {
+  const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+  const offset = +size * (page - 1);
+  const direction = sortDescending ? 'desc' : 'asc';
+
+  const statements = [
+    orderBy && `order by ${orderBy} ${direction}`,
+    +size > 0 && `limit ${+size} offset ${offset}`,
+  ]
+    .filter(n => n)
+    .join('\n');
+
+  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
+    res => res[0].num,
+  );
+
+  const data = await rawQuery(`${query}${statements}`, queryParams);
 
   return { data, count, page: +page, pageSize: size, orderBy };
 }
@@ -256,13 +328,15 @@ export default {
   getAddIntervalQuery,
   getCastColumnQuery,
   getDayDiffQuery,
-  getDateQuery,
+  getDateSQL,
+  getDateWeeklySQL,
   getFilterQuery,
   getSearchParameters,
-  getTimestampDiffQuery,
-  getSearchQuery,
+  getTimestampDiffSQL,
+  getSearchSQL,
   getQueryMode,
   pagedQuery,
+  pagedRawQuery,
   parseFilters,
   rawQuery,
 };

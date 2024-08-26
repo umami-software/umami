@@ -1,8 +1,7 @@
-import dateFormat from 'dateformat';
+import * as tls from 'tls';
 import debug from 'debug';
 import { Kafka, Mechanism, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
 import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
-import * as tls from 'tls';
 
 const log = debug('umami:kafka');
 
@@ -14,7 +13,10 @@ function getClient() {
   const { username, password } = new URL(process.env.KAFKA_URL);
   const brokers = process.env.KAFKA_BROKER.split(',');
 
-  const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions | Mechanism } =
+  const ssl: {
+    ssl?: tls.ConnectionOptions | boolean;
+    sasl?: SASLOptions | Mechanism;
+  } =
     username && password
       ? {
           ssl: true,
@@ -56,13 +58,9 @@ async function getProducer(): Promise<Producer> {
   return producer;
 }
 
-function getDateFormat(date: Date, format?: string): string {
-  return dateFormat(date, format ? format : 'yyyy-mm-dd HH:MM:ss');
-}
-
 async function sendMessage(
-  message: { [key: string]: string | number },
   topic: string,
+  message: { [key: string]: string | number },
 ): Promise<RecordMetadata[]> {
   await connect();
 
@@ -77,7 +75,7 @@ async function sendMessage(
   });
 }
 
-async function sendMessages(messages: { [key: string]: string | number }[], topic: string) {
+async function sendMessages(topic: string, messages: { [key: string]: string | number }[]) {
   await connect();
 
   await producer.send({
@@ -107,7 +105,6 @@ export default {
   producer,
   log,
   connect,
-  getDateFormat,
   sendMessage,
   sendMessages,
 };

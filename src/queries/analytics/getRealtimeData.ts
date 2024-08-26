@@ -1,6 +1,4 @@
-import { getSessions, getEvents, getPageviewStats, getSessionStats } from 'queries/index';
-
-const MAX_SIZE = 50;
+import { getPageviewStats, getRealtimeActivity, getSessionStats } from 'queries/index';
 
 function increment(data: object, key: string) {
   if (key) {
@@ -18,55 +16,44 @@ export async function getRealtimeData(
 ) {
   const { startDate, timezone } = criteria;
   const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
-  const [events, sessions, pageviews, sessionviews] = await Promise.all([
-    getEvents(websiteId, { startDate }),
-    getSessions(websiteId, { startDate }),
+  const [activity, pageviews, sessions] = await Promise.all([
+    getRealtimeActivity(websiteId, filters),
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),
   ]);
 
   const uniques = new Set();
 
-  const sessionStats = sessions.reduce(
-    (obj: { visitors: any; countries: any }, session: { id: any; country: any }) => {
-      const { countries, visitors } = obj;
-      const { id, country } = session;
+  const { countries, urls, referrers, events } = activity.reduce(
+    (
+      obj: { countries: any; urls: any; referrers: any; events: any },
+      event: {
+        sessionId: string;
+        urlPath: string;
+        referrerDomain: string;
+        country: string;
+        eventName: string;
+      },
+    ) => {
+      const { countries, urls, referrers, events } = obj;
+      const { sessionId, urlPath, referrerDomain, country, eventName } = event;
 
-      if (!uniques.has(id)) {
-        uniques.add(id);
+      if (!uniques.has(sessionId)) {
+        uniques.add(sessionId);
         increment(countries, country);
 
-        if (visitors.length < MAX_SIZE) {
-          visitors.push(session);
-        }
+        events.push({ __type: 'session', ...event });
       }
+
+      increment(urls, urlPath);
+      increment(referrers, referrerDomain);
+
+      events.push({ __type: eventName ? 'event' : 'pageview', ...event });
 
       return obj;
     },
     {
       countries: {},
-      visitors: [],
-    },
-  );
-
-  const eventStats = events.reduce(
-    (
-      obj: { urls: any; referrers: any; events: any },
-      event: { urlPath: any; referrerDomain: any },
-    ) => {
-      const { urls, referrers, events } = obj;
-      const { urlPath, referrerDomain } = event;
-
-      increment(urls, urlPath);
-      increment(referrers, referrerDomain);
-
-      if (events.length < MAX_SIZE) {
-        events.push(event);
-      }
-
-      return obj;
-    },
-    {
       urls: {},
       referrers: {},
       events: [],
@@ -74,17 +61,19 @@ export async function getRealtimeData(
   );
 
   return {
-    ...sessionStats,
-    ...eventStats,
+    countries,
+    urls,
+    referrers,
+    events: events.reverse(),
     series: {
       views: pageviews,
-      visitors: sessionviews,
+      visitors: sessions,
     },
     totals: {
-      views: events.filter(e => !e.eventName).length,
-      visitors: uniques.size,
-      events: events.filter(e => e.eventName).length,
-      countries: Object.keys(sessionStats.countries).length,
+      views: pageviews.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
+      visitors: sessions.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
+      events: activity.filter(e => e.eventName).length,
+      countries: Object.keys(countries).length,
     },
     timestamp: Date.now(),
   };

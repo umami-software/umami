@@ -1,19 +1,19 @@
 import path from 'path';
-import { getClientIp } from 'request-ip';
+import debug from 'debug';
 import { browserName, detectOS } from 'detect-browser';
+import ipaddr from 'ipaddr.js';
 import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
 import { safeDecodeURIComponent } from 'next-basics';
-import debug from 'debug';
-
+import { NextApiRequestCollect } from 'pages/api/send';
+import { getClientIp } from 'request-ip';
 import {
   DESKTOP_OS,
-  MOBILE_OS,
   DESKTOP_SCREEN_WIDTH,
   LAPTOP_SCREEN_WIDTH,
+  MOBILE_OS,
   MOBILE_SCREEN_WIDTH,
 } from './constants';
-import { NextApiRequestCollect } from 'pages/api/send';
 
 const log = debug('umami:detect');
 
@@ -172,4 +172,32 @@ export async function getClientInfo(req: NextApiRequestCollect) {
     lat,
     lng,
   };
+}
+
+export function hasBlockedIp(req: NextApiRequestCollect) {
+  const ignoreIps = process.env.IGNORE_IP;
+
+  if (ignoreIps) {
+    const ips = [];
+
+    if (ignoreIps) {
+      ips.push(...ignoreIps.split(',').map(n => n.trim()));
+    }
+
+    const clientIp = getIpAddress(req);
+
+    return ips.find(ip => {
+      if (ip === clientIp) return true;
+
+      // CIDR notation
+      if (ip.indexOf('/') > 0) {
+        const addr = ipaddr.parse(clientIp);
+        const range = ipaddr.parseCIDR(ip);
+
+        if (addr.kind() === range[0].kind() && addr.match(range)) return true;
+      }
+    });
+  }
+
+  return false;
 }

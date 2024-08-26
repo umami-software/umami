@@ -18,12 +18,8 @@ export function WebsitesDataTable({
 }) {
   const queryResult = useWebsites({ teamId });
 
-  if (queryResult?.result?.data?.length === 0) {
-    return children;
-  }
-
   return (
-    <DataTable queryResult={queryResult}>
+    <DataTable queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => (
         <WebsitesTable
           teamId={teamId}

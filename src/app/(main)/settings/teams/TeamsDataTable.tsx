@@ -15,12 +15,8 @@ export function TeamsDataTable({
   const { user } = useLogin();
   const queryResult = useTeams(user.id);
 
-  if (queryResult?.result?.data?.length === 0) {
-    return children;
-  }
-
   return (
-    <DataTable queryResult={queryResult}>
+    <DataTable queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => {
         return <TeamsTable data={data} allowEdit={allowEdit} showActions={showActions} />;
       }}

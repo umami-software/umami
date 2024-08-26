@@ -1,0 +1,25 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.table {
+  align-self: flex-start;
+}
+
+.link:hover {
+  cursor: pointer;
+  color: var(--primary400);
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.chart {
+  min-height: 620px;
+}

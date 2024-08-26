@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
-import { getDateArray } from 'lib/date';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from 'lib/constants';
 import { RealtimeData } from 'lib/types';
 
@@ -22,8 +21,8 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
     }
 
     return {
-      pageviews: getDateArray(data.series.views, startDate, endDate, unit),
-      sessions: getDateArray(data.series.visitors, startDate, endDate, unit),
+      pageviews: data.series.views,
+      sessions: data.series.visitors,
     };
   }, [data, startDate, endDate, unit]);
 
@@ -37,7 +36,14 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   }, [endDate]);
 
   return (
-    <PageviewsChart {...props} unit={unit} data={chartData} animationDuration={animationDuration} />
+    <PageviewsChart
+      {...props}
+      minDate={startDate.toISOString()}
+      maxDate={endDate.toISOString()}
+      unit={unit}
+      data={chartData}
+      animationDuration={animationDuration}
+    />
   );
 }
 

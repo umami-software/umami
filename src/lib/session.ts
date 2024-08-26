@@ -76,7 +76,7 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
   }
 
   // Find session
-  let session = await fetchSession(sessionId);
+  let session = await fetchSession(websiteId, sessionId);
 
   // Create a session if not found
   if (!session) {

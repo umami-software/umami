@@ -1,0 +1,43 @@
+.week {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1px;
+  position: relative;
+}
+
+.cell {
+  display: flex;
+  background-color: var(--base75);
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  border-radius: 100%;
+  align-items: flex-start;
+}
+
+.hour {
+  font-weight: 700;
+  color: var(--font-color300);
+  height: 20px;
+}
+
+.block {
+  background-color: var(--primary400);
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}

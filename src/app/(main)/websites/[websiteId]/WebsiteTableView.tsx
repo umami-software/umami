@@ -1,22 +1,23 @@
-import { useState } from 'react';
 import { Grid, GridRow } from 'components/layout/Grid';
+import BrowsersTable from 'components/metrics/BrowsersTable';
+import CountriesTable from 'components/metrics/CountriesTable';
+import DevicesTable from 'components/metrics/DevicesTable';
+import EventsChart from 'components/metrics/EventsChart';
+import EventsTable from 'components/metrics/EventsTable';
+import HostsTable from 'components/metrics/HostsTable';
+import OSTable from 'components/metrics/OSTable';
 import PagesTable from 'components/metrics/PagesTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
-import BrowsersTable from 'components/metrics/BrowsersTable';
-import OSTable from 'components/metrics/OSTable';
-import DevicesTable from 'components/metrics/DevicesTable';
 import WorldMap from 'components/metrics/WorldMap';
-import CountriesTable from 'components/metrics/CountriesTable';
-import EventsTable from 'components/metrics/EventsTable';
-import EventsChart from 'components/metrics/EventsChart';
-import HostsTable from 'components/metrics/HostsTable';
+import { usePathname } from 'next/navigation';
 
 export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
-  const [countryData, setCountryData] = useState();
+  const pathname = usePathname();
   const tableProps = {
     websiteId,
     limit: 10,
   };
+  const isSharePage = pathname.includes('/share/');
 
   return (
     <Grid>
@@ -30,16 +31,18 @@ export default function WebsiteTableView({ websiteId }: { websiteId: string }) {
         <DevicesTable {...tableProps} />
       </GridRow>
       <GridRow columns="two-one">
-        <WorldMap data={countryData} />
-        <CountriesTable {...tableProps} onDataLoad={setCountryData} />
-      </GridRow>
-      <GridRow columns="one-two">
-        <EventsTable {...tableProps} />
-        <EventsChart websiteId={websiteId} />
+        <WorldMap websiteId={websiteId} />
+        <CountriesTable {...tableProps} />
       </GridRow>
       <GridRow columns="three">
         <HostsTable {...tableProps} />
       </GridRow>
+      {isSharePage && (
+        <GridRow columns="one-two">
+          <EventsTable {...tableProps} />
+          <EventsChart websiteId={websiteId} />
+        </GridRow>
+      )}
     </Grid>
   );
 }

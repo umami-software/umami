@@ -1,9 +1,10 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
+import clickhouse from 'lib/clickhouse';
+import { EVENT_NAME_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH, URL_LENGTH } from 'lib/constants';
+import { uuid } from 'lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import { uuid } from 'lib/crypto';
-import { saveEventData } from 'queries/analytics/eventData/saveEventData';
+import { saveEventData } from './saveEventData';
 
 export async function saveEvent(args: {
   websiteId: string;
@@ -135,9 +136,10 @@ async function clickhouseQuery(data: {
     city,
     ...args
   } = data;
-  const { getDateFormat, sendMessage } = kafka;
+  const { insert, getUTCString } = clickhouse;
+  const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAt = getDateFormat(new Date());
+  const createdAt = getUTCString();
 
   const message = {
     ...args,
@@ -165,7 +167,11 @@ async function clickhouseQuery(data: {
     created_at: createdAt,
   };
 
-  await sendMessage(message, 'event');
+  if (kafka.enabled) {
+    await sendMessage('event', message);
+  } else {
+    await insert('website_event', [message]);
+  }
 
   if (eventData) {
     await saveEventData({
