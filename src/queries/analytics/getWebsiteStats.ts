@@ -1,9 +1,9 @@
 import clickhouse from 'lib/clickhouse';
 import { EVENT_TYPE } from 'lib/constants';
+import { EVENT_COLUMNS } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
-import { EVENT_COLUMNS } from 'lib/constants';
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
@@ -107,7 +107,7 @@ async function clickhouseQuery(
             sum(views) c,
             min(min_time) min_time,
             max(max_time) max_time
-        from umami.website_event_stats_hourly "website_event"
+        from website_event_stats_hourly "website_event"
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type = {eventType:UInt32}

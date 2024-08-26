@@ -108,7 +108,11 @@ async function clickhouseQuery(data: {
     message[`double${i + 1}`] = double;
   });
 
-  await sendMessage('event_data_blob', message);
+  if (kafka.enabled) {
+    await sendMessage('event_data_blob', message);
+  } else {
+    await insert('event_data_blob', [message]);
+  }
 
   return data;
 }
