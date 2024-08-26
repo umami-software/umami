@@ -108,7 +108,7 @@ async function clickhouseQuery(data: {
     message[`double${i + 1}`] = double;
   });
 
-  await sendMessage(message, 'event_data_blob');
+  await sendMessage('event_data_blob', message);
 
   return data;
 }
