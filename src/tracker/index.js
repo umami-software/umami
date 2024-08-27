@@ -222,6 +222,16 @@
     }
   };
 
+  const init = () => {
+    if (!initialized) {
+      track();
+      handlePathChanges();
+      handleTitleChanges();
+      handleClicks();
+      initialized = true;
+    }
+  };
+
   const track = (obj, data) => {
     if (typeof obj === 'string') {
       return send({
@@ -255,19 +265,10 @@
   let initialized;
 
   if (autoTrack && !trackingDisabled()) {
-    handlePathChanges();
-    handleTitleChanges();
-    handleClicks();
-
-    const init = () => {
-      if (document.readyState === 'complete' && !initialized) {
-        track();
-        initialized = true;
-      }
-    };
-
-    document.addEventListener('readystatechange', init, true);
-
-    init();
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      document.addEventListener('readystatechange', init, true);
+    }
   }
 })(window);
