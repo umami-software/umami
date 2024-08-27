@@ -13,7 +13,7 @@ export default function EventsDataTable({
   const queryResult = useWebsiteEvents(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={true}>
+    <DataTable queryResult={queryResult} allowSearch={true} autoFocus={false}>
       {({ data }) => <EventsTable data={data} />}
     </DataTable>
   );

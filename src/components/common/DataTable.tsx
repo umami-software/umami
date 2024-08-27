@@ -15,6 +15,7 @@ export interface DataTableProps {
   searchDelay?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
+  autoFocus?: boolean;
   renderEmpty?: () => ReactNode;
   children: ReactNode | ((data: any) => ReactNode);
 }
@@ -24,6 +25,7 @@ export function DataTable({
   searchDelay = 600,
   allowSearch = true,
   allowPaging = true,
+  autoFocus = true,
   renderEmpty,
   children,
 }: DataTableProps) {
@@ -57,7 +59,7 @@ export function DataTable({
           value={query}
           onSearch={handleSearch}
           delay={searchDelay || DEFAULT_SEARCH_DELAY}
-          autoFocus={true}
+          autoFocus={autoFocus}
           placeholder={formatMessage(labels.search)}
         />
       )}
