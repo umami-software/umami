@@ -3,7 +3,7 @@ import Empty from 'components/common/Empty';
 import FilterButtons from 'components/common/FilterButtons';
 import { useCountryNames, useLocale, useMessages, useTimezone } from 'components/hooks';
 import Icons from 'components/icons';
-import { BROWSERS } from 'lib/constants';
+import { BROWSERS, OS_NAMES } from 'lib/constants';
 import { stringToColor } from 'lib/format';
 import { RealtimeData } from 'lib/types';
 import { safeDecodeURI } from 'next-basics';
@@ -111,7 +111,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
           values={{
             country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
-            os: <b>{os}</b>,
+            os: <b>{OS_NAMES[os] || os}</b>,
             device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
           }}
         />
