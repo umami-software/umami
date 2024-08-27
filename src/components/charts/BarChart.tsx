@@ -36,7 +36,7 @@ export function BarChart(props: BarChartProps) {
         x: {
           type: XAxisType,
           stacked: true,
-          min: unit === 'minute' ? minDate : '',
+          min: unit === 'year' ? '' : minDate,
           max: maxDate,
           time: {
             unit,
