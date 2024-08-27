@@ -42,7 +42,7 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { parseFilters, rawQuery } = clickhouse;
+  const { parseFilters, rawQuery, getDateSQL } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -57,7 +57,7 @@ async function clickhouseQuery(
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at, '${timezone}') as t,
+        ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         count(*) as y
       from website_event
       where website_id = {websiteId:UUID}
@@ -75,7 +75,7 @@ async function clickhouseQuery(
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at, '${timezone}') as t,
+        ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         sum(views)as y
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
