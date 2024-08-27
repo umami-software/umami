@@ -8,13 +8,13 @@
   "label.actions": [
     {
       "type": 0,
-      "value": "액션"
+      "value": "동작"
     }
   ],
   "label.activity": [
     {
       "type": 0,
-      "value": "활동 기록"
+      "value": "활동"
     }
   ],
   "label.add": [
@@ -128,7 +128,7 @@
   "label.change-password": [
     {
       "type": 0,
-      "value": "비밀번호 변경하기"
+      "value": "비밀번호 변경"
     }
   ],
   "label.cities": [
@@ -200,25 +200,25 @@
   "label.create": [
     {
       "type": 0,
-      "value": "생성"
+      "value": "만들기"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "리포트 생성"
+      "value": "보고서 만들기"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "팀 생성"
+      "value": "팀 만들기"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "사용자 생성"
+      "value": "사용자 만들기"
     }
   ],
   "label.created": [
@@ -296,7 +296,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "리포트 삭제"
+      "value": "보고서 삭제"
     }
   ],
   "label.delete-team": [
@@ -326,13 +326,13 @@
   "label.desktop": [
     {
       "type": 0,
-      "value": "데스크탑"
+      "value": "데스크톱"
     }
   ],
   "label.details": [
     {
       "type": 0,
-      "value": "세부 사항"
+      "value": "세부 정보"
     }
   ],
   "label.device": [
@@ -386,7 +386,7 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "회원 편집"
+      "value": "멤버 편집"
     }
   ],
   "label.enable-share-url": [
@@ -398,7 +398,7 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "종료 단계"
+      "value": "마지막 단계"
     }
   ],
   "label.entry": [
@@ -458,7 +458,7 @@
   "label.filter-combined": [
     {
       "type": 0,
-      "value": "합쳐서 보기"
+      "value": "합쳐 보기"
     }
   ],
   "label.filter-raw": [
@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "첫 접속"
     }
   ],
   "label.funnel": [
@@ -506,7 +506,7 @@
   "label.goals-description": [
     {
       "type": 0,
-      "value": "페이지뷰 및 이벤트 목표를 추적합니다."
+      "value": "페이지 조회 및 이벤트 목표를 추적합니다."
     }
   ],
   "label.greater-than": [
@@ -572,13 +572,13 @@
   "label.join": [
     {
       "type": 0,
-      "value": "가입"
+      "value": "가입하기"
     }
   ],
   "label.join-team": [
     {
       "type": 0,
-      "value": "팀 가입"
+      "value": "팀 가입하기"
     }
   ],
   "label.journey": [
@@ -614,7 +614,7 @@
   "label.last-days": [
     {
       "type": 0,
-      "value": "최근 "
+      "value": "지난 "
     },
     {
       "type": 1,
@@ -622,13 +622,13 @@
     },
     {
       "type": 0,
-      "value": " 일"
+      "value": "일"
     }
   ],
   "label.last-hours": [
     {
       "type": 0,
-      "value": "최근 "
+      "value": "지난 "
     },
     {
       "type": 1,
@@ -636,13 +636,13 @@
     },
     {
       "type": 0,
-      "value": " 시간"
+      "value": "시간"
     }
   ],
   "label.last-months": [
     {
       "type": 0,
-      "value": "최근 "
+      "value": "지난 "
     },
     {
       "type": 1,
@@ -650,13 +650,13 @@
     },
     {
       "type": 0,
-      "value": " 개월"
+      "value": "개월"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "마지막 접속"
     }
   ],
   "label.leave": [
@@ -780,31 +780,7 @@
     },
     {
       "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "레코드"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
+      "value": "개 레코드"
     }
   ],
   "label.ok": [
@@ -816,7 +792,7 @@
   "label.os": [
     {
       "type": 0,
-      "value": "운영체제"
+      "value": "운영 체제"
     }
   ],
   "label.overview": [
@@ -833,12 +809,8 @@
   ],
   "label.page-of": [
     {
-      "type": 1,
-      "value": "total"
-    },
-    {
       "type": 0,
-      "value": " 중 "
+      "value": "페이지 "
     },
     {
       "type": 1,
@@ -846,13 +818,17 @@
     },
     {
       "type": 0,
-      "value": " 페이지"
+      "value": "/"
+    },
+    {
+      "type": 1,
+      "value": "total"
     }
   ],
   "label.page-views": [
     {
       "type": 0,
-      "value": "페이지 뷰"
+      "value": "페이지 조회"
     }
   ],
   "label.pageTitle": [
@@ -876,27 +852,23 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "패스"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "패스"
     }
   ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "이 시스템은 "
+      "value": "Powered by "
     },
     {
       "type": 1,
       "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "에서 구동되고 있습니다."
     }
   ],
   "label.previous": [
@@ -926,7 +898,7 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "속성"
     }
   ],
   "label.property": [
@@ -950,7 +922,7 @@
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "쿼리 매개변수"
+      "value": "쿼리 매개 변수"
     }
   ],
   "label.realtime": [
@@ -974,7 +946,7 @@
   "label.refresh": [
     {
       "type": 0,
-      "value": "새로고침"
+      "value": "새로 고침"
     }
   ],
   "label.regenerate": [
@@ -1010,7 +982,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "리포트"
+      "value": "보고서"
     }
   ],
   "label.required": [
@@ -1022,7 +994,7 @@
   "label.reset": [
     {
       "type": 0,
-      "value": "리셋"
+      "value": "초기화"
     }
   ],
   "label.reset-website": [
@@ -1046,19 +1018,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "수익"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "시간대별 수익을 살펴보세요."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "수익 속성"
     }
   ],
   "label.role": [
@@ -1082,7 +1054,7 @@
   "label.screens": [
     {
       "type": 0,
-      "value": "스크린"
+      "value": "화면"
     }
   ],
   "label.search": [
@@ -1118,7 +1090,7 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "세션"
     }
   ],
   "label.sessions": [
@@ -1280,7 +1252,7 @@
   "label.total-records": [
     {
       "type": 0,
-      "value": "총 레코드"
+      "value": "전체 레코드"
     }
   ],
   "label.tracking-code": [
@@ -1292,7 +1264,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "거래"
     }
   ],
   "label.transfer": [
@@ -1328,13 +1300,13 @@
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "순방문자(UV)"
+      "value": "고유 방문자"
     }
   ],
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "고유 고객"
     }
   ],
   "label.unknown": [
@@ -1376,13 +1348,13 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "사용자 속성"
     }
   ],
   "label.username": [
     {
       "type": 0,
-      "value": "사용자명"
+      "value": "사용자 이름"
     }
   ],
   "label.users": [
@@ -1418,7 +1390,7 @@
   "label.view-details": [
     {
       "type": 0,
-      "value": "상세보기"
+      "value": "자세히 보기"
     }
   ],
   "label.view-only": [
@@ -1430,13 +1402,13 @@
   "label.views": [
     {
       "type": 0,
-      "value": "조회수"
+      "value": "조회"
     }
   ],
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "방문당 조회수"
+      "value": "방문당 조회"
     }
   ],
   "label.visit-duration": [
@@ -1448,7 +1420,7 @@
   "label.visitors": [
     {
       "type": 0,
-      "value": "방문객"
+      "value": "방문자"
     }
   ],
   "label.visits": [
@@ -1498,17 +1470,21 @@
     },
     {
       "type": 0,
-      "value": "을(를) 입력하십시오."
+      "value": "을(를) 입력하세요."
     }
   ],
   "message.active-users": [
+    {
+      "type": 0,
+      "value": "현재 방문자 "
+    },
     {
       "type": 1,
       "value": "x"
     },
     {
       "type": 0,
-      "value": "명의 사용자가 보는 중입니다."
+      "value": "명"
     }
   ],
   "message.collected-data": [
@@ -1572,7 +1548,7 @@
   "message.error": [
     {
       "type": 0,
-      "value": "오류가 발생하였습니다."
+      "value": "오류가 발생했습니다."
     }
   ],
   "message.event-log": [
@@ -1598,19 +1574,19 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "사용자 이름/비밀번호가 잘못되었습니다."
+      "value": "사용자 이름 또는 비밀번호를 잘못 입력했습니다."
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "잘못된 도메인"
+      "value": "잘못된 도메인입니다. http/https를 포함하지 마세요."
     }
   ],
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "최소 길이는 "
+      "value": "최소 "
     },
     {
       "type": 1,
@@ -1618,35 +1594,39 @@
     },
     {
       "type": 0,
-      "value": "자입니다"
+      "value": "자여야 합니다"
     }
   ],
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "새 버전이 사용 가능합니다! - Umami "
+      "value": "Umami의 새 버전 "
     },
     {
       "type": 1,
       "value": "version"
+    },
+    {
+      "type": 0,
+      "value": "을(를) 사용할 수 있습니다!"
     }
   ],
   "message.no-data-available": [
     {
       "type": 0,
-      "value": "사용 가능한 데이터가 없습니다."
+      "value": "사용할 수 있는 데이터가 없습니다."
     }
   ],
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "사용 가능한 이벤트 데이터가 없습니다."
+      "value": "사용할 수 있는 이벤트 데이터가 없습니다."
     }
   ],
   "message.no-match-password": [
     {
       "type": 0,
-      "value": "비밀번호가 일치하지 않음"
+      "value": "비밀번호가 일치하지 않습니다."
     }
   ],
   "message.no-results-found": [
@@ -1658,13 +1638,13 @@
   "message.no-team-websites": [
     {
       "type": 0,
-      "value": "이 팀에는 웹사이트가 없습니다."
+      "value": "팀에 웹사이트가 없습니다."
     }
   ],
   "message.no-teams": [
     {
       "type": 0,
-      "value": "생성된 팀이 없습니다."
+      "value": "만든 팀이 없습니다."
     }
   ],
   "message.no-users": [
@@ -1682,13 +1662,13 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "페이지를 찾을 수 없습니다."
+      "value": "페이지를 찾을 수 없음"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "이 웹사이트를 초기화하려면, 아래 상자에 "
+      "value": "이 웹사이트를 초기화하려면 아래 상자에 "
     },
     {
       "type": 1,
@@ -1696,7 +1676,7 @@
     },
     {
       "type": 0,
-      "value": "을(를) 입력하십시오."
+      "value": "을(를) 입력하세요."
     }
   ],
   "message.reset-website-warning": [
@@ -1708,7 +1688,7 @@
   "message.saved": [
     {
       "type": 0,
-      "value": "성공적으로 저장되었습니다."
+      "value": "저장했습니다."
     }
   ],
   "message.share-url": [
@@ -1720,7 +1700,7 @@
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "이미 팀의 회원입니다."
+      "value": "이미 팀 멤버입니다."
     }
   ],
   "message.team-not-found": [
@@ -1732,13 +1712,13 @@
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "웹사이트는 팀의 누구나 볼 수 있습니다."
+      "value": "웹사이트는 팀 멤버 누구나 볼 수 있습니다."
     }
   ],
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "이 웹사이트의 통계를 추적하려면, 다음 코드를 HTML의 "
+      "value": "이 웹사이트의 통계를 추적하려면 다음 코드를 HTML의 "
     },
     {
       "children": [
@@ -1752,7 +1732,7 @@
     },
     {
       "type": 0,
-      "value": " 섹션에 추가하십시오."
+      "value": " 부분에 추가하세요."
     }
   ],
   "message.transfer-team-website-to-user": [
@@ -1764,7 +1744,7 @@
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "이 웹사이트를 전송받을 팀을 선택하십시오."
+      "value": "이 웹사이트를 전송받을 팀을 선택하세요."
     }
   ],
   "message.transfer-website": [
@@ -1782,32 +1762,16 @@
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "사용자가 삭제되었습니다."
+      "value": "사용자를 삭제했습니다."
     }
   ],
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "페이지 조회"
+      "value": "조회한 페이지"
     }
   ],
   "message.visitor-log": [
-    {
-      "type": 1,
-      "value": "country"
-    },
-    {
-      "type": 0,
-      "value": "의 "
-    },
-    {
-      "type": 1,
-      "value": "browser"
-    },
-    {
-      "type": 0,
-      "value": " 브라우저를 사용하는 "
-    },
     {
       "type": 1,
       "value": "os"
@@ -1822,13 +1786,29 @@
     },
     {
       "type": 0,
-      "value": " 방문자"
+      "value": "에서 "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": "을(를) 사용하는 "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": "의 방문자"
     }
   ],
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "방문자가 이탈했습니다"
+      "value": "방문자 이탈함"
     }
   ]
 }
