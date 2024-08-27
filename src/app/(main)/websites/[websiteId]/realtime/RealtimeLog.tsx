@@ -111,7 +111,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
           values={{
             country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
             browser: <b>{BROWSERS[browser]}</b>,
-            os: <b>{OS_NAMES[os]}</b>,
+            os: <b>{OS_NAMES[os] || os}</b>,
             device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
           }}
         />
