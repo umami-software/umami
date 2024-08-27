@@ -64,7 +64,7 @@ export function RetentionTable({ days = DAYS }) {
                     key={day}
                     className={classNames(styles.cell, { [styles.empty]: !percentage })}
                   >
-                    {percentage ? `${percentage.toFixed(2)}%` : ''}
+                    {percentage ? `${Number(percentage).toFixed(2)}%` : ''}
                   </div>
                 );
               })}
