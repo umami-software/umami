@@ -35,7 +35,6 @@ export * from './useFields';
 export * from './useFilters';
 export * from './useForceUpdate';
 export * from './useFormat';
-export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
 export * from './useModified';
