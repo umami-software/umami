@@ -47,7 +47,7 @@ export default function WebsiteChartList({
                 </Button>
               </Link>
             </WebsiteHeader>
-            <WebsiteMetricsBar websiteId={id} />
+            <WebsiteMetricsBar websiteId={id} showChange={true} />
             {showCharts && <WebsiteChart websiteId={id} />}
           </div>
         ) : null;
