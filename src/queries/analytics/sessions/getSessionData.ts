@@ -1,6 +1,6 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
-import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 
 export async function getSessionData(...args: [websiteId: string, sessionId: string]) {
   return runQuery({
@@ -46,7 +46,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
         number_value as numberValue,
         date_value as dateValue,
         created_at as createdAt
-    from session_data final
+    from session_data
     where website_id = {websiteId:UUID}
     and session_id = {sessionId:UUID}
     order by data_key asc

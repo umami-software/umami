@@ -1,6 +1,6 @@
-import prisma from 'lib/prisma';
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import prisma from 'lib/prisma';
 import { QueryFilters, WebsiteEventData } from 'lib/types';
 
 export async function getSessionDataValues(
@@ -55,7 +55,7 @@ async function clickhouseQuery(
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
       count(*) as "total"
-    from session_data final
+    from session_data
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and data_key = {propertyName:String}
