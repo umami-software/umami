@@ -13,7 +13,7 @@ export function LanguagesTable({
   const languageNames = useLanguageNames(locale);
 
   const renderLabel = ({ x }) => {
-    return <div className={locale}>{languageNames[x?.split('-')[0]] ?? x}</div>;
+    return languageNames[x?.split('-')[0]] ?? x;
   };
 
   return (

@@ -12,12 +12,7 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
 
   const renderLink = ({ x: code }) => {
     return (
-      <FilterLink
-        id="country"
-        className={locale}
-        value={countryNames[code] && code}
-        label={formatCountry(code)}
-      >
+      <FilterLink id="country" value={countryNames[code] && code} label={formatCountry(code)}>
         <TypeIcon type="country" value={code?.toLowerCase()} />
       </FilterLink>
     );
