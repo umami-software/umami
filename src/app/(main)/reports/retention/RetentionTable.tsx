@@ -58,13 +58,13 @@ export function RetentionTable({ days = DAYS }) {
                 if (totalDays - rowIndex < day) {
                   return null;
                 }
-                const percentage = records[day]?.percentage;
+                const percentage = records.filter(a => a.day === day)[0]?.percentage;
                 return (
                   <div
                     key={day}
                     className={classNames(styles.cell, { [styles.empty]: !percentage })}
                   >
-                    {percentage ? `${percentage.toFixed(2)}%` : ''}
+                    {percentage ? `${Number(percentage).toFixed(2)}%` : ''}
                   </div>
                 );
               })}

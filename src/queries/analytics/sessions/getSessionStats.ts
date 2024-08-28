@@ -41,8 +41,8 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<{ x: string; y: number }[]> {
-  const { unit = 'day' } = filters;
-  const { parseFilters, rawQuery } = clickhouse;
+  const { timezone = 'utc', unit = 'day' } = filters;
+  const { parseFilters, rawQuery, getDateSQL } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
     eventType: EVENT_TYPE.pageView,
@@ -53,11 +53,11 @@ async function clickhouseQuery(
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item)) || unit === 'minute') {
     sql = `
     select
-      g.t as x, 
+      g.t as x,
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at) as t,
+        ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         count(distinct session_id) as y
       from website_event
       where website_id = {websiteId:UUID}
@@ -71,11 +71,11 @@ async function clickhouseQuery(
   } else {
     sql = `
     select
-      g.t as x, 
+      g.t as x,
       g.y as y
     from (
       select
-        date_trunc('${unit}', created_at) as t,
+        ${getDateSQL('website_event.created_at', unit, timezone)} as t,
         uniq(session_id) as y
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}

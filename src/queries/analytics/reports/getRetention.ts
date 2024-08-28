@@ -110,7 +110,7 @@ async function clickhouseQuery(
   }[]
 > {
   const { startDate, endDate, timezone = 'UTC' } = filters;
-  const { getDateSQL, getDateStringSQL, rawQuery } = clickhouse;
+  const { getDateSQL, rawQuery } = clickhouse;
   const unit = 'day';
 
   return rawQuery(
@@ -152,7 +152,7 @@ async function clickhouseQuery(
       group by 1, 2
     )
     select
-      ${getDateStringSQL('c.cohort_date', unit)} as date,
+      c.cohort_date as date,
       c.day_number as day,
       s.visitors as visitors,
       c.visitors returnVisitors,

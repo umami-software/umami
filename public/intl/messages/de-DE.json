@@ -404,19 +404,19 @@
   "label.entry": [
     {
       "type": 0,
-      "value": "Eintrags-URL"
+      "value": "Eingangs-URL"
     }
   ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Ereigniss"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Eventdaten"
+      "value": "Ereignissdaten"
     }
   ],
   "label.events": [
@@ -476,19 +476,19 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Erstmalig gesehen"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Trichter"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Verstehe die Konversions- und Abbruchrate der Nutzer."
+      "value": "Verstehen Sie die Konversions- und Absprungrate Ihrer Nutzer."
     }
   ],
   "label.goal": [
@@ -542,7 +542,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Vertiefen Sie Ihre Daten mit Hilfe von Segmenten und Filtern."
+      "value": "Vertiefen Sie sich mit Hilfe von Segmenten und Filtern in Ihre Daten."
     }
   ],
   "label.is": [
@@ -590,7 +590,7 @@
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Verstehe, wie Nutzer auf der Webseite navigieren"
+      "value": "Verstehen Sie, wie Nutzer auf Ihrer Website navigieren."
     }
   ],
   "label.language": [
@@ -656,7 +656,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Zuletzt gesehen"
     }
   ],
   "label.leave": [
@@ -752,7 +752,7 @@
   "label.my-websites": [
     {
       "type": 0,
-      "value": "Meine Webseiten"
+      "value": "Meine Websites"
     }
   ],
   "label.name": [
@@ -876,13 +876,13 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Pfad"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Pfade"
     }
   ],
   "label.powered-by": [
@@ -898,7 +898,7 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Vorheriges"
+      "value": "Vorherig"
     }
   ],
   "label.previous-period": [
@@ -922,7 +922,7 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Eigenschaften"
     }
   ],
   "label.property": [
@@ -958,13 +958,13 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Übermittler"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Übermittler"
     }
   ],
   "label.refresh": [
@@ -1030,7 +1030,7 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "Bewahrung"
+      "value": "Erhalt"
     }
   ],
   "label.retention-description": [
@@ -1042,19 +1042,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Umsatz"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Haben Sie einen Blick auf Ihre Umsätze im Laufe der Zeit."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "Umsatzeigenschaften"
     }
   ],
   "label.role": [
@@ -1108,13 +1108,13 @@
   "label.select-website": [
     {
       "type": 0,
-      "value": "Webseite auswählen"
+      "value": "Website auswählen"
     }
   ],
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Sitzung"
     }
   ],
   "label.sessions": [
@@ -1204,7 +1204,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Nur für Team sichtbar"
+      "value": "Nur für Team-Mitglieder sichtbar"
     }
   ],
   "label.team-websites": [
@@ -1288,7 +1288,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Transaktionen"
     }
   ],
   "label.transfer": [
@@ -1318,19 +1318,19 @@
   "label.unique": [
     {
       "type": 0,
-      "value": "Eindeutig"
+      "value": "Einzigartig"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Eindeutige Besucher"
+      "value": "Einzigartige Besucher"
     }
   ],
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Einzigartige Kunden"
     }
   ],
   "label.unknown": [
@@ -1372,7 +1372,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "Benutzereigenschaften"
     }
   ],
   "label.username": [
@@ -1396,7 +1396,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Tracke deine Kampagnen mit UTM parameterns."
+      "value": "Tracken Sie Ihre Kampagnen mit UTM Parametern."
     }
   ],
   "label.value": [
@@ -1456,19 +1456,19 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Webseite"
+      "value": "Website"
     }
   ],
   "label.website-id": [
     {
       "type": 0,
-      "value": "Webseiten-ID"
+      "value": "Website-ID"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Webseiten"
+      "value": "Websites"
     }
   ],
   "label.window": [
@@ -1596,7 +1596,7 @@
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Ein Team zu löschen, wird auch alle Team-Webseiten löschen."
+      "value": "Ein Team zu löschen, wird auch alle Team-Websites löschen."
     }
   ],
   "message.delete-website-warning": [
@@ -1780,25 +1780,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Diese Webseite zu deinem Account transferieren?"
+      "value": "Diese Website zu Ihrem Account transferieren?"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Wähle ein Team aus, zu dem die Webseite transferiert werden soll."
+      "value": "Wählen Sie ein Team aus, zu dem die Website transferiert werden soll."
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Übertrage die Eigentümerrechte zu deinem Account oder einem anderen Team."
+      "value": "Übertragen Sie die Eigentümerrechte zu Ihrem Account oder einem anderen Team."
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Ausgelöstes Event"
+      "value": "Ausgelöstes Ereigniss"
     }
   ],
   "message.user-deleted": [
@@ -1810,7 +1810,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Besuchte Seite"
+      "value": "Seite besucht"
     }
   ],
   "message.visitor-log": [
