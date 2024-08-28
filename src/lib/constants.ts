@@ -311,7 +311,7 @@ export const BROWSERS = {
   instagram: 'Instagram',
   ios: 'iOS',
   'ios-webview': 'iOS (webview)',
-  kakaotalk: 'KaKaoTalk',
+  kakaotalk: 'KakaoTalk',
   miui: 'MIUI',
   opera: 'Opera',
   'opera-mini': 'Opera Mini',
