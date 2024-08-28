@@ -1,4 +1,4 @@
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from 'components/hooks';
+import { useFormat, useMessages, useRegionNames, useTimezone } from 'components/hooks';
 import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
 import Icons from 'components/icons';
@@ -7,11 +7,10 @@ import { useIntl } from 'react-intl';
 
 export default function SessionInfo({ data }) {
   const intl = useIntl();
-  const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { getRegionName } = useRegionNames(locale);
+  const { getRegionName } = useRegionNames();
 
   return (
     <div className={styles.info}>

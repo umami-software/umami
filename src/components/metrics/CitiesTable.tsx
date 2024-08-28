@@ -2,17 +2,15 @@ import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
 import TypeIcon from 'components/common/TypeIcon';
-import { useLocale } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import { useMessages } from 'components/hooks';
-import { useCountryNames } from 'components/hooks';
 
 export function CitiesTable(props: MetricsTableProps) {
-  const { locale } = useLocale();
+  const intl = useIntl();
   const { formatMessage, labels } = useMessages();
-  const { countryNames } = useCountryNames(locale);
 
   const renderLabel = (city: string, country: string) => {
-    const countryName = countryNames[country];
+    const countryName = intl.formatDisplayName(country, { type: 'region' });
     return countryName ? `${city}, ${countryName}` : city;
   };
 

@@ -5,7 +5,7 @@ import { colord } from 'colord';
 import HoverTooltip from 'components/common/HoverTooltip';
 import { ISO_COUNTRIES, MAP_FILE } from 'lib/constants';
 import { useDateRange, useTheme, useWebsiteMetrics } from 'components/hooks';
-import { useCountryNames } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
 import { formatLongNumber } from 'lib/format';
@@ -26,7 +26,7 @@ export function WorldMap({
   const { theme, colors } = useTheme();
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
-  const { countryNames } = useCountryNames(locale);
+  const intl = useIntl();
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
   const {
     dateRange: { startDate, endDate },
@@ -62,7 +62,9 @@ export function WorldMap({
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
     setTooltipPopup(
-      `${countryNames[code]}: ${formatLongNumber(country?.y || 0)} ${visitorsLabel}` as any,
+      `${intl.formatDisplayName(code, { type: 'region' })}: ${formatLongNumber(
+        country?.y || 0,
+      )} ${visitorsLabel}` as any,
     );
   };
 

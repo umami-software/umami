@@ -28,7 +28,6 @@ export * from './queries/useWebsiteEvents';
 export * from './queries/useWebsiteEventsSeries';
 export * from './queries/useWebsiteMetrics';
 export * from './queries/useWebsiteValues';
-export * from './useCountryNames';
 export * from './useDateRange';
 export * from './useDocumentClick';
 export * from './useEscapeKey';

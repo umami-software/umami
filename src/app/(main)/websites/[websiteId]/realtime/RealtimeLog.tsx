@@ -1,7 +1,7 @@
 import useFormat from 'components//hooks/useFormat';
 import Empty from 'components/common/Empty';
 import FilterButtons from 'components/common/FilterButtons';
-import { useCountryNames, useLocale, useMessages, useTimezone } from 'components/hooks';
+import { useMessages, useTimezone } from 'components/hooks';
 import Icons from 'components/icons';
 import { BROWSERS, OS_NAMES } from 'lib/constants';
 import { stringToColor } from 'lib/format';
@@ -31,9 +31,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const [search, setSearch] = useState('');
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
   const { formatValue } = useFormat();
-  const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
-  const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
   const buttons = [
@@ -112,7 +110,12 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
         <FormattedMessage
           {...messages.visitorLog}
           values={{
-            country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
+            country: (
+              <b>
+                {intl.formatDisplayName(country, { type: 'region' }) ||
+                  formatMessage(labels.unknown)}
+              </b>
+            ),
             browser: <b>{BROWSERS[browser]}</b>,
             os: <b>{OS_NAMES[os] || os}</b>,
             device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
