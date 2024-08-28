@@ -14,17 +14,17 @@ const log = debug('umami:prisma');
 const MYSQL_DATE_FORMATS = {
   minute: '%Y-%m-%dT%H:%i:00',
   hour: '%Y-%m-%d %H:00:00',
-  day: '%Y-%m-%d',
-  month: '%Y-%m-01',
-  year: '%Y-01-01',
+  day: '%Y-%m-%d 00:00:00',
+  month: '%Y-%m-01 00:00:00',
+  year: '%Y-01-01 00:00:00',
 };
 
 const POSTGRESQL_DATE_FORMATS = {
   minute: 'YYYY-MM-DD HH24:MI:00',
   hour: 'YYYY-MM-DD HH24:00:00',
-  day: 'YYYY-MM-DD',
-  month: 'YYYY-MM-01',
-  year: 'YYYY-01-01',
+  day: 'YYYY-MM-DD HH24:00:00',
+  month: 'YYYY-MM-01 HH24:00:00',
+  year: 'YYYY-01-01 HH24:00:00',
 };
 
 function getAddIntervalQuery(field: string, interval: string): string {
