@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import BarChart, { BarChartProps } from 'components/charts/BarChart';
 import { useLocale, useTheme, useMessages } from 'components/hooks';
 import { renderDateLabels } from 'lib/charts';
+import { useIntl } from 'react-intl';
 
 export interface PagepageviewsChartProps extends BarChartProps {
   data: {
@@ -20,6 +21,7 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
   const { locale } = useLocale();
+  const intl = useIntl();
 
   const chartData = useMemo(() => {
     if (!data) {
@@ -74,7 +76,7 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
       data={chartData}
       unit={unit}
       isLoading={isLoading}
-      renderXLabel={renderDateLabels(unit, locale)}
+      renderXLabel={renderDateLabels(intl, unit)}
     />
   );
 }

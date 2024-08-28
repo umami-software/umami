@@ -27,7 +27,6 @@ import {
   differenceInCalendarWeeks,
   differenceInCalendarMonths,
   differenceInCalendarYears,
-  format,
   max,
   min,
   isDate,
@@ -286,16 +285,6 @@ export function getDateArray(data: any[], startDate: Date, endDate: Date, unit: 
   }
 
   return arr;
-}
-
-export function formatDate(date: string | number | Date, str: string, locale = 'en-US') {
-  return format(
-    typeof date === 'string' ? new Date(date) : date,
-    CUSTOM_FORMATS?.[locale]?.[str] || str,
-    {
-      locale: getDateLocale(locale),
-    },
-  );
 }
 
 export function maxDate(...args: Date[]) {

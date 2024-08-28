@@ -6,6 +6,7 @@ import { renderDateLabels } from 'lib/charts';
 import { formatLongNumber } from 'lib/format';
 import { useContext, useMemo } from 'react';
 import { ReportContext } from '../[reportId]/Report';
+import { useIntl } from 'react-intl';
 
 export interface PageviewsChartProps extends BarChartProps {
   isLoading?: boolean;
@@ -14,6 +15,7 @@ export interface PageviewsChartProps extends BarChartProps {
 export function RevenueChart({ isLoading, ...props }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
+  const intl = useIntl();
   const { report } = useContext(ReportContext);
   const { data, parameters } = report || {};
 
@@ -88,7 +90,7 @@ export function RevenueChart({ isLoading, ...props }: PageviewsChartProps) {
           data={chartData}
           unit={parameters?.dateRange.unit}
           isLoading={isLoading}
-          renderXLabel={renderDateLabels(parameters?.dateRange.unit, locale)}
+          renderXLabel={renderDateLabels(intl, parameters?.dateRange.unit)}
         />
       )}
     </>
