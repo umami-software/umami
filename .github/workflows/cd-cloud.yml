@@ -25,6 +25,6 @@ jobs:
           buildArgs: DATABASE_TYPE=postgresql
           registry: ghcr.io
           multiPlatform: true
-          platform: linux/amd64,linux/arm64
+          platform: linux/amd64
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
