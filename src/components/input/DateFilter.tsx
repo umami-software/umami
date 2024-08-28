@@ -177,9 +177,9 @@ const CustomRange = ({ startDate, endDate, unit, onClick }) => {
           <>{intl.formatDate(startDate, { year: 'numeric', month: 'long' })}</>
         ) : (
           <>
-            {intl.formatDate(startDate, { dateStyle: 'medium' })}
-            {!isSameDay(startDate, endDate) &&
-              ` — ${intl.formatDate(endDate, { dateStyle: 'medium' })}`}
+            {isSameDay(startDate, endDate)
+              ? intl.formatDate(startDate, { dateStyle: 'medium' })
+              : intl.formatDateTimeRange(startDate, endDate)}
           </>
         )}
       </Text>
