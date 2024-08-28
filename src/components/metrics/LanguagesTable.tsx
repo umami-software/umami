@@ -11,10 +11,13 @@ export function LanguagesTable({
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const intl = useIntl();
-  const languageNames = intl.formatDisplayName(locale, { type: 'language' });
 
   const renderLabel = ({ x }) => {
-    return <div className={locale}>{languageNames[x?.split('-')[0]] ?? x}</div>;
+    return (
+      <div className={locale}>
+        {intl.formatDisplayName(x?.split('-')[0], { type: 'language' }) ?? x}
+      </div>
+    );
   };
 
   return (
