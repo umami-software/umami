@@ -12,6 +12,7 @@ import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
+import { useIntl } from 'react-intl';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -25,6 +26,7 @@ const icons = {
 };
 
 export function RealtimeLog({ data }: { data: RealtimeData }) {
+  const intl = useIntl();
   const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
   const { formatMessage, labels, messages, FormattedMessage } = useMessages();
@@ -53,7 +55,8 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) =>
+    formatTimezoneDate(intl, firstAt || createdAt, { timeStyle: 'medium' });
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 

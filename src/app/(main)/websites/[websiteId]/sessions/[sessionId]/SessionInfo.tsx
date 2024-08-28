@@ -3,8 +3,10 @@ import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
 import Icons from 'components/icons';
 import styles from './SessionInfo.module.css';
+import { useIntl } from 'react-intl';
 
 export default function SessionInfo({ data }) {
+  const intl = useIntl();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
@@ -20,10 +22,14 @@ export default function SessionInfo({ data }) {
         </dd>
 
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
+        <dd>
+          {formatTimezoneDate(intl, data?.lastAt, { dateStyle: 'full', timeStyle: 'medium' })}
+        </dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
+        <dd>
+          {formatTimezoneDate(intl, data?.firstAt, { dateStyle: 'full', timeStyle: 'medium' })}
+        </dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>

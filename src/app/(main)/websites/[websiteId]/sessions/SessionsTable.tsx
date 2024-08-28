@@ -4,8 +4,10 @@ import { useFormat, useMessages, useTimezone } from 'components/hooks';
 import Avatar from 'components/common/Avatar';
 import styles from './SessionsTable.module.css';
 import TypeIcon from 'components/common/TypeIcon';
+import { useIntl } from 'react-intl';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
+  const intl = useIntl();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
@@ -51,7 +53,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         )}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
-        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
+        {row => formatTimezoneDate(intl, row.createdAt, { dateStyle: 'long', timeStyle: 'medium' })}
       </GridColumn>
     </GridTable>
   );
