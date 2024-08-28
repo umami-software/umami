@@ -15,6 +15,7 @@ export function useTimezone() {
   };
 
   const formatTimezoneDate = (intl: IntlShape, date: string, options?: FormatDateOptions) => {
+    options.timeZone = timezone;
     return intl.formatDate(date, options);
   };
 
