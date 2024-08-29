@@ -37,6 +37,7 @@ export function WebsiteMetricsBar({
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
   const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumSignificantDigits: 3 };
+  const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
   const optionsPercent: FormatNumberOptions = { style: 'percent' };
 
   const metrics = data
@@ -45,19 +46,22 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
+          formatValue: (n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
+          formatValue: (n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
+          formatValue: (n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
         },
         {
           label: formatMessage(labels.bounceRate),
