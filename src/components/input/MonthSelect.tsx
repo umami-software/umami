@@ -11,8 +11,8 @@ import {
 import { startOfMonth, endOfMonth } from 'date-fns';
 import Icons from 'components/icons';
 import { useLocale } from 'components/hooks';
-import styles from './MonthSelect.module.css';
 import { useIntl } from 'react-intl';
+import styles from './MonthSelect.module.css';
 
 export function MonthSelect({ date = new Date(), onChange }) {
   const { dateLocale } = useLocale();

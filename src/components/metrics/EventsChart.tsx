@@ -2,9 +2,9 @@ import { useMemo } from 'react';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
 import { useDateRange, useWebsiteEventsSeries } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import { CHART_COLORS } from 'lib/constants';
 import { renderDateLabels } from 'lib/charts';
-import { useIntl } from 'react-intl';
 
 export interface EventsChartProps {
   websiteId: string;

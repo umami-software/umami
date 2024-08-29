@@ -1,8 +1,8 @@
 import { setItem } from 'next-basics';
 import { TIMEZONE_CONFIG } from 'lib/constants';
 import { zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
-import useStore, { setTimezone } from 'store/app';
 import type { FormatDateOptions, IntlShape } from 'react-intl';
+import useStore, { setTimezone } from 'store/app';
 
 const selector = (state: { timezone: string }) => state.timezone;
 

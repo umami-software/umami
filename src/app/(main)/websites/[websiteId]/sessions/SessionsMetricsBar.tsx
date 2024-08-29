@@ -4,8 +4,8 @@ import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
 import { formatLongNumberOptions } from 'lib/format';
-import { Flexbox } from 'react-basics';
 import { useIntl } from 'react-intl';
+import { Flexbox } from 'react-basics';
 
 export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();

@@ -1,9 +1,9 @@
 import { useFormat, useMessages, useRegionNames, useTimezone } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
 import Icons from 'components/icons';
 import styles from './SessionInfo.module.css';
-import { useIntl } from 'react-intl';
 
 export default function SessionInfo({ data }) {
   const intl = useIntl();

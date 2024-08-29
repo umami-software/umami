@@ -2,6 +2,7 @@ import useFormat from 'components//hooks/useFormat';
 import Empty from 'components/common/Empty';
 import FilterButtons from 'components/common/FilterButtons';
 import { useMessages, useTimezone } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import Icons from 'components/icons';
 import { BROWSERS, OS_NAMES } from 'lib/constants';
 import { stringToColor } from 'lib/format';
@@ -12,7 +13,6 @@ import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
-import { useIntl } from 'react-intl';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';

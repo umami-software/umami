@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { ReportContext } from '../[reportId]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { useMessages } from 'components/hooks';
-import styles from './RetentionTable.module.css';
 import { useIntl } from 'react-intl';
+import styles from './RetentionTable.module.css';
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
 

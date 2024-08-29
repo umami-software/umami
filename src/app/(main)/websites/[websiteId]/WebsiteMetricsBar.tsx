@@ -4,12 +4,12 @@ import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
 import { formatLongNumberOptions, formatShortTime } from 'lib/format';
+import { useIntl } from 'react-intl';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
 import { Dropdown, Item } from 'react-basics';
 import useStore, { setWebsiteDateCompare } from 'store/websites';
-import { useIntl } from 'react-intl';
 
 export function WebsiteMetricsBar({
   websiteId,

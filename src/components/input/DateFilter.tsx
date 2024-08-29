@@ -3,11 +3,11 @@ import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
 import { useMessages } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import Icons from 'components/icons';
 import { parseDateValue } from 'lib/date';
 import styles from './DateFilter.module.css';
 import classNames from 'classnames';
-import { useIntl } from 'react-intl';
 
 export interface DateFilterProps {
   value: string;
