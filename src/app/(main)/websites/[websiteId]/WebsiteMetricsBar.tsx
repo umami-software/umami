@@ -3,13 +3,13 @@ import { useDateRange, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime } from 'lib/format';
+import { formatLongNumberOptions, formatShortTime } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
 import { Dropdown, Item } from 'react-basics';
 import useStore, { setWebsiteDateCompare } from 'store/websites';
-import { type FormatNumberOptions, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -36,8 +36,6 @@ export function WebsiteMetricsBar({
   const intl = useIntl();
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
-  const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumSignificantDigits: 3 };
-  const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
 
   const metrics = data
     ? [
@@ -45,22 +43,19 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
         },
         {
           label: formatMessage(labels.bounceRate),

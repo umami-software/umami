@@ -1,3 +1,5 @@
+import type { FormatNumberOptions } from 'react-intl';
+
 export function parseTime(val: number) {
   const days = ~~(val / 86400);
   const hours = ~~(val / 3600) - days * 24;
@@ -61,6 +63,18 @@ export function formatLongNumber(value: number) {
   }
 
   return formatNumber(n);
+}
+
+export function formatLongNumberOptions(value: number): FormatNumberOptions {
+  return value < 100
+    ? {
+        notation: 'compact',
+        maximumFractionDigits: 0,
+      }
+    : {
+        notation: 'compact',
+        maximumSignificantDigits: 3,
+      };
 }
 
 export function stringToColor(str: string) {
