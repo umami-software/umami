@@ -33,21 +33,13 @@ export function WebsiteMetricsBar({
     compareMode && dateCompare,
   );
   const isAllTime = dateRange.value === 'all';
-  const { locale } = useLocale();
+  const { maxInt } = useLocale();
   const intl = useIntl();
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
   const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumFractionDigits: 2 };
   const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
   const optionsPercent: FormatNumberOptions = { style: 'percent' };
-  const minimum = {
-    'de-CH': 1000000,
-    'de-DE': 1000000,
-    'it-IT': 1000000,
-    'ja-JP': 10000,
-    'zh-CN': 10000,
-    'zh-TW': 10000,
-  };
 
   const metrics = data
     ? [
@@ -56,30 +48,21 @@ export function WebsiteMetricsBar({
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
           formatValue: (n: number) =>
-            intl.formatNumber(
-              +n,
-              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
-            ),
+            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
           formatValue: (n: number) =>
-            intl.formatNumber(
-              +n,
-              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
-            ),
+            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
           formatValue: (n: number) =>
-            intl.formatNumber(
-              +n,
-              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
-            ),
+            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
         },
         {
           label: formatMessage(labels.bounceRate),
