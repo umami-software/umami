@@ -3,6 +3,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { formatNumber } from 'lib/format';
 import ChangeLabel from 'components/metrics/ChangeLabel';
 import styles from './MetricCard.module.css';
+import { useIntl } from 'react-intl';
 
 export interface MetricCardProps {
   value: number;
@@ -33,6 +34,7 @@ export const MetricCard = ({
   const props = useSpring({ x: Number(value) || 0, from: { x: 0 } });
   const changeProps = useSpring({ x: Number(pct) || 0, from: { x: 0 } });
   const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
+  const intl = useIntl();
 
   return (
     <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
@@ -47,7 +49,9 @@ export const MetricCard = ({
           title={formatValue(change)}
           reverseColors={reverseColors}
         >
-          <animated.span>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</animated.span>
+          <animated.span>
+            {changeProps?.x?.to(x => intl.formatNumber(Math.abs(~~x) / 100, { style: 'percent' }))}
+          </animated.span>
         </ChangeLabel>
       )}
       {showPrevious && (

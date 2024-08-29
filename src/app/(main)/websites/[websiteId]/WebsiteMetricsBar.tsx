@@ -38,7 +38,6 @@ export function WebsiteMetricsBar({
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
   const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumSignificantDigits: 3 };
   const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
-  const optionsPercent: FormatNumberOptions = { style: 'percent' };
 
   const metrics = data
     ? [
@@ -70,7 +69,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visits.value, bounces.value) / visits.value) * 100 -
             (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
-          formatValue: (n: number) => intl.formatNumber(+n / 100, optionsPercent),
+          formatValue: (n: number) => intl.formatNumber(+n / 100, { style: 'percent' }),
           reverseColors: true,
         },
         {
