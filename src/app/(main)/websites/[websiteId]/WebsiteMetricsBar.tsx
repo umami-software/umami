@@ -1,14 +1,15 @@
 import classNames from 'classnames';
-import { useDateRange, useMessages, useSticky } from 'components/hooks';
+import { useDateRange, useLocale, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime, formatLongNumber } from 'lib/format';
+import { formatShortTime } from 'lib/format';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
 import { Dropdown, Item } from 'react-basics';
 import useStore, { setWebsiteDateCompare } from 'store/websites';
+import { type FormatNumberOptions, useIntl } from 'react-intl';
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -32,8 +33,21 @@ export function WebsiteMetricsBar({
     compareMode && dateCompare,
   );
   const isAllTime = dateRange.value === 'all';
+  const { locale } = useLocale();
+  const intl = useIntl();
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
+  const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumFractionDigits: 2 };
+  const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
+  const optionsPercent: FormatNumberOptions = { style: 'percent' };
+  const minimum = {
+    'de-CH': 1000000,
+    'de-DE': 1000000,
+    'it-IT': 1000000,
+    'ja-JP': 10000,
+    'zh-CN': 10000,
+    'zh-TW': 10000,
+  };
 
   const metrics = data
     ? [
@@ -41,19 +55,31 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) =>
+            intl.formatNumber(
+              +n,
+              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
+            ),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) =>
+            intl.formatNumber(
+              +n,
+              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
+            ),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) =>
+            intl.formatNumber(
+              +n,
+              +n < (minimum[locale] || 1000) ? optionsSmallNumber : optionsNumber,
+            ),
         },
         {
           label: formatMessage(labels.bounceRate),
@@ -62,7 +88,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visits.value, bounces.value) / visits.value) * 100 -
             (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
-          formatValue: n => Math.round(+n) + '%',
+          formatValue: (n: number) => intl.formatNumber(+n / 100, optionsPercent),
           reverseColors: true,
         },
         {
@@ -70,7 +96,7 @@ export function WebsiteMetricsBar({
           value: totaltime.value / visits.value,
           prev: totaltime.prev / visits.prev,
           change: totaltime.value / visits.value - totaltime.prev / visits.prev,
-          formatValue: n =>
+          formatValue: (n: number) =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
         },
       ]
