@@ -55,8 +55,8 @@ export const languages = {
   'ca-ES': { label: 'Català', dateLocale: ca },
   'cs-CZ': { label: 'Čeština', dateLocale: cs },
   'da-DK': { label: 'Dansk', dateLocale: da },
-  'de-CH': { label: 'Schwiizerdütsch', dateLocale: de, maxInt: 1000000 },
-  'de-DE': { label: 'Deutsch', dateLocale: de, maxInt: 1000000 },
+  'de-CH': { label: 'Schwiizerdütsch', dateLocale: de },
+  'de-DE': { label: 'Deutsch', dateLocale: de },
   'el-GR': { label: 'Ελληνικά', dateLocale: el },
   'en-GB': { label: 'English (UK)', dateLocale: enGB },
   'en-US': { label: 'English (US)', dateLocale: enUS },
@@ -71,8 +71,8 @@ export const languages = {
   'hr-HR': { label: 'Hrvatski', dateLocale: hr },
   'hu-HU': { label: 'Hungarian', dateLocale: hu },
   'id-ID': { label: 'Bahasa Indonesia', dateLocale: id },
-  'it-IT': { label: 'Italiano', dateLocale: it, maxInt: 1000000 },
-  'ja-JP': { label: '日本語', dateLocale: ja, maxInt: 10000 },
+  'it-IT': { label: 'Italiano', dateLocale: it },
+  'ja-JP': { label: '日本語', dateLocale: ja },
   'km-KH': { label: 'ភាសាខ្មែរ', dateLocale: km },
   'ko-KR': { label: '한국어', dateLocale: ko },
   'lt-LT': { label: 'Lietuvių', dateLocale: lt },
@@ -96,8 +96,8 @@ export const languages = {
   'uk-UA': { label: 'українська', dateLocale: uk },
   'ur-PK': { label: 'Urdu (Pakistan)', dateLocale: uk, dir: 'rtl' },
   'vi-VN': { label: 'Tiếng Việt', dateLocale: vi },
-  'zh-CN': { label: '中文', dateLocale: zhCN, maxInt: 10000 },
-  'zh-TW': { label: '中文(繁體)', dateLocale: zhTW, maxInt: 10000 },
+  'zh-CN': { label: '中文', dateLocale: zhCN },
+  'zh-TW': { label: '中文(繁體)', dateLocale: zhTW },
 };
 
 export function getDateLocale(locale: string) {
@@ -106,8 +106,4 @@ export function getDateLocale(locale: string) {
 
 export function getTextDirection(locale: string) {
   return languages[locale]?.dir || 'ltr';
-}
-
-export function getMaxInt(locale: string) {
-  return languages[locale]?.maxInt || 1000;
 }

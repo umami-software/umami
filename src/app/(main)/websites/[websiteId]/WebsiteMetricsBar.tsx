@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useDateRange, useLocale, useMessages, useSticky } from 'components/hooks';
+import { useDateRange, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
@@ -33,12 +33,10 @@ export function WebsiteMetricsBar({
     compareMode && dateCompare,
   );
   const isAllTime = dateRange.value === 'all';
-  const { maxInt } = useLocale();
   const intl = useIntl();
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
-  const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumFractionDigits: 2 };
-  const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
+  const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumSignificantDigits: 3 };
   const optionsPercent: FormatNumberOptions = { style: 'percent' };
 
   const metrics = data
@@ -47,22 +45,19 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: (n: number) =>
-            intl.formatNumber(+n, +n < maxInt ? optionsSmallNumber : optionsNumber),
+          formatValue: (n: number) => intl.formatNumber(+n, optionsNumber),
         },
         {
           label: formatMessage(labels.bounceRate),

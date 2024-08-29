@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { httpGet, setItem } from 'next-basics';
 import { LOCALE_CONFIG } from 'lib/constants';
-import { getDateLocale, getTextDirection, getMaxInt } from 'lib/lang';
+import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';
 import { useForceUpdate } from './useForceUpdate';
 
@@ -14,7 +14,6 @@ export function useLocale() {
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
-  const maxInt = getMaxInt(locale);
 
   async function loadMessages(locale: string) {
     const { ok, data } = await httpGet(
@@ -57,7 +56,7 @@ export function useLocale() {
     }
   }, []);
 
-  return { locale, saveLocale, messages, dir, dateLocale, maxInt };
+  return { locale, saveLocale, messages, dir, dateLocale };
 }
 
 export default useLocale;
