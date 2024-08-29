@@ -3,12 +3,16 @@ import useWebsiteSessionStats from 'components/hooks/queries/useWebsiteSessionSt
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatLongNumber } from 'lib/format';
 import { Flexbox } from 'react-basics';
+import { type FormatNumberOptions, useIntl } from 'react-intl';
 
 export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { data, isLoading, isFetched, error } = useWebsiteSessionStats(websiteId);
+  const intl = useIntl();
+
+  const optionsNumber: FormatNumberOptions = { notation: 'compact', maximumSignificantDigits: 3 };
+  const optionsSmallNumber: FormatNumberOptions = { notation: 'compact' };
 
   return (
     <Flexbox direction="row" justifyContent="space-between" style={{ minHeight: 120 }}>
@@ -16,22 +20,30 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
         <MetricCard
           value={data?.visitors?.value}
           label={formatMessage(labels.visitors)}
-          formatValue={formatLongNumber}
+          formatValue={(n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber)
+          }
         />
         <MetricCard
           value={data?.visits?.value}
           label={formatMessage(labels.visits)}
-          formatValue={formatLongNumber}
+          formatValue={(n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber)
+          }
         />
         <MetricCard
           value={data?.pageviews?.value}
           label={formatMessage(labels.views)}
-          formatValue={formatLongNumber}
+          formatValue={(n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber)
+          }
         />
         <MetricCard
           value={data?.countries?.value}
           label={formatMessage(labels.countries)}
-          formatValue={formatLongNumber}
+          formatValue={(n: number) =>
+            intl.formatNumber(+n, +n < 100 ? optionsSmallNumber : optionsNumber)
+          }
         />
       </MetricsBar>
       <WebsiteDateFilter websiteId={websiteId} />
