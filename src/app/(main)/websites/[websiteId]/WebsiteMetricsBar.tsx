@@ -43,19 +43,19 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: (n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n)),
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           label: formatMessage(labels.bounceRate),

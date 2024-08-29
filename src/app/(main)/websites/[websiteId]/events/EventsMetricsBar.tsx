@@ -18,22 +18,22 @@ export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
         <MetricCard
           value={data?.visitors?.value}
           label={formatMessage(labels.visitors)}
-          formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+          formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
         />
         <MetricCard
           value={data?.visits?.value}
           label={formatMessage(labels.visits)}
-          formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+          formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
         />
         <MetricCard
           value={data?.pageviews?.value}
           label={formatMessage(labels.views)}
-          formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+          formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
         />
         <MetricCard
           value={data?.events?.value}
           label={formatMessage(labels.events)}
-          formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+          formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
         />
       </MetricsBar>
       <WebsiteDateFilter websiteId={websiteId} />

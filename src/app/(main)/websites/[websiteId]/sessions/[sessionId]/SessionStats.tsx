@@ -13,17 +13,17 @@ export function SessionStats({ data }) {
       <MetricCard
         label={formatMessage(labels.visits)}
         value={data?.visits}
-        formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+        formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
       />
       <MetricCard
         label={formatMessage(labels.views)}
         value={data?.views}
-        formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+        formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
       />
       <MetricCard
         label={formatMessage(labels.events)}
         value={data?.events}
-        formatValue={(n: number) => intl.formatNumber(+n, formatLongNumberOptions(+n))}
+        formatValue={(n: number) => intl.formatNumber(n, formatLongNumberOptions(n))}
       />
       <MetricCard
         label={formatMessage(labels.visitDuration)}
