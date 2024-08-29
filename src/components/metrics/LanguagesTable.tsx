@@ -1,7 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { percentFilter } from 'lib/filters';
 import { useIntl } from 'react-intl';
-import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
 
 export function LanguagesTable({
@@ -9,15 +8,10 @@ export function LanguagesTable({
   ...props
 }: { onDataLoad: (data: any) => void } & MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { locale } = useLocale();
   const intl = useIntl();
 
   const renderLabel = ({ x }) => {
-    return (
-      <div className={locale}>
-        {intl.formatDisplayName(x?.split('-')[0], { type: 'language' }) ?? x}
-      </div>
-    );
+    return intl.formatDisplayName(x?.split('-')[0], { type: 'language' }) ?? x;
   };
 
   return (
