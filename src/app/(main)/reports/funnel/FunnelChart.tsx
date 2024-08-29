@@ -39,7 +39,7 @@ export function FunnelChart({ className }: FunnelChartProps) {
                   {formatMessage(labels.visitors)}
                 </div>
                 <div className={styles.percent}>
-                  {intl.formatNumber(+remaining, { style: 'percent', maximumFractionDigits: 2 })}
+                  {intl.formatNumber(+remaining, { style: 'percent', maximumFractionDigits: 1 })}
                 </div>
               </div>
               <div className={styles.track}>
@@ -49,7 +49,7 @@ export function FunnelChart({ className }: FunnelChartProps) {
                 <div className={styles.info}>
                   <b>{intl.formatNumber(+dropped, formatLongNumberOptions(+dropped))}</b>{' '}
                   {formatMessage(labels.visitorsDroppedOff)} (
-                  {intl.formatNumber(+dropoff, { style: 'percent', maximumFractionDigits: 2 })})
+                  {intl.formatNumber(+dropoff, { style: 'percent', maximumFractionDigits: 1 })})
                 </div>
               )}
             </div>
