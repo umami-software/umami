@@ -47,6 +47,8 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
 
   return (
     <BarChart
+      minDate={startDate.toISOString()}
+      maxDate={endDate.toISOString()}
       className={className}
       data={chartData}
       unit={unit}
