@@ -10,7 +10,7 @@ const logError = (error: Error, info: ErrorInfo) => {
 };
 
 export function ErrorBoundary({ children }: { children: ReactNode }) {
-  const { formatMessage, messages } = useMessages();
+  const { formatMessage, messages, labels } = useMessages();
 
   const fallbackRender = ({ error, resetErrorBoundary }) => {
     return (
@@ -18,7 +18,7 @@ export function ErrorBoundary({ children }: { children: ReactNode }) {
         <h1>{formatMessage(messages.error)}</h1>
         <h3>{error.message}</h3>
         <pre>{error.stack}</pre>
-        <Button onClick={resetErrorBoundary}>OK</Button>
+        <Button onClick={resetErrorBoundary}>{formatMessage(labels.ok)}</Button>
       </div>
     );
   };
