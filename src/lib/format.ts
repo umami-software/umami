@@ -16,15 +16,6 @@ export function parseTime(val: number) {
   };
 }
 
-export function formatTime(val: number) {
-  const { hours, minutes, seconds } = parseTime(val);
-  const h = hours > 0 ? `${hours}:` : '';
-  const m = hours > 0 ? minutes.toString().padStart(2, '0') : minutes;
-  const s = seconds.toString().padStart(2, '0');
-
-  return `${h}${m}:${s}`;
-}
-
 export function formatShortTime(
   intl: IntlShape,
   useMessages: any,
