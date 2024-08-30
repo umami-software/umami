@@ -25,15 +25,26 @@ export function formatTime(val: number) {
   return `${h}${m}:${s}`;
 }
 
-export function formatShortTime(intl: IntlShape, val: number, formats = ['m', 's']) {
+export function formatShortTime(
+  intl: IntlShape,
+  useMessages: any,
+  val: number,
+  formats = ['m', 's'],
+) {
+  const { formatMessage, labels } = useMessages;
   const { days, hours, minutes, seconds, ms } = parseTime(val);
   let t = '';
 
-  if (days > 0 && formats.indexOf('d') !== -1) t += `${intl.formatNumber(days)}d `;
-  if (hours > 0 && formats.indexOf('h') !== -1) t += `${intl.formatNumber(hours)}h `;
-  if (minutes > 0 && formats.indexOf('m') !== -1) t += `${intl.formatNumber(minutes)}m `;
-  if (seconds > 0 && formats.indexOf('s') !== -1) t += `${intl.formatNumber(seconds)}s `;
-  if (ms > 0 && formats.indexOf('ms') !== -1) t += `${intl.formatNumber(ms)}ms`;
+  if (days > 0 && formats.indexOf('d') !== -1)
+    t += `${formatMessage(labels.days, { x: intl.formatNumber(days) })} `;
+  if (hours > 0 && formats.indexOf('h') !== -1)
+    t += `${formatMessage(labels.hours, { x: intl.formatNumber(hours) })} `;
+  if (minutes > 0 && formats.indexOf('m') !== -1)
+    t += `${formatMessage(labels.minutes, { x: intl.formatNumber(minutes) })} `;
+  if (seconds > 0 && formats.indexOf('s') !== -1)
+    t += `${formatMessage(labels.seconds, { x: intl.formatNumber(seconds) })} `;
+  if (ms > 0 && formats.indexOf('ms') !== -1)
+    t += formatMessage(labels.milliseconds, { x: intl.formatNumber(ms) });
 
   if (!t) {
     return `0${formats[formats.length - 1]}`;

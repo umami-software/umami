@@ -278,6 +278,11 @@ export const labels = defineMessages({
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
+  days: { id: 'label.days', defaultMessage: '{x}d' },
+  hours: { id: 'label.hours', defaultMessage: '{x}h' },
+  minutes: { id: 'label.minutes', defaultMessage: '{x}m' },
+  seconds: { id: 'label.seconds', defaultMessage: '{x}s' },
+  milliseconds: { id: 'label.milliseconds', defaultMessage: '{x}ms' },
 });
 
 export const messages = defineMessages({

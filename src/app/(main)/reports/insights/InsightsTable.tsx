@@ -67,7 +67,11 @@ export function InsightsTable() {
       >
         {row => {
           const n = row?.totaltime / row?.visits;
-          return `${+n < 0 ? '-' : ''}${formatShortTime(intl, Math.abs(~~n))}`;
+          return `${+n < 0 ? '-' : ''}${formatShortTime(
+            intl,
+            { formatMessage, labels },
+            Math.abs(~~n),
+          )}`;
         }}
       </GridColumn>
     </GridTable>

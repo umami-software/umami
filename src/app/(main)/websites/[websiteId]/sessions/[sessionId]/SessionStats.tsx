@@ -28,7 +28,9 @@ export function SessionStats({ data }) {
       <MetricCard
         label={formatMessage(labels.visitDuration)}
         value={data?.totaltime / data?.visits}
-        formatValue={n => `${+n < 0 ? '-' : ''}${formatShortTime(intl, Math.abs(~~n))}`}
+        formatValue={n =>
+          `${+n < 0 ? '-' : ''}${formatShortTime(intl, { formatMessage, labels }, Math.abs(~~n))}`
+        }
       />
     </MetricsBar>
   );
