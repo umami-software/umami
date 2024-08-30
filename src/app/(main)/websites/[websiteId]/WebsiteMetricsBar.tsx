@@ -72,8 +72,7 @@ export function WebsiteMetricsBar({
           value: totaltime.value / visits.value,
           prev: totaltime.prev / visits.prev,
           change: totaltime.value / visits.value - totaltime.prev / visits.prev,
-          formatValue: (n: number) =>
-            `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+          formatValue: (n: number) => `${+n < 0 ? '-' : ''}${formatShortTime(intl, Math.abs(~~n))}`,
         },
       ]
     : [];

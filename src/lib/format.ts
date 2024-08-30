@@ -1,4 +1,4 @@
-import type { FormatNumberOptions } from 'react-intl';
+import type { FormatNumberOptions, IntlShape } from 'react-intl';
 
 export function parseTime(val: number) {
   const days = ~~(val / 86400);
@@ -25,15 +25,15 @@ export function formatTime(val: number) {
   return `${h}${m}:${s}`;
 }
 
-export function formatShortTime(val: number, formats = ['m', 's'], space = '') {
+export function formatShortTime(intl: IntlShape, val: number, formats = ['m', 's']) {
   const { days, hours, minutes, seconds, ms } = parseTime(val);
   let t = '';
 
-  if (days > 0 && formats.indexOf('d') !== -1) t += `${days}d${space}`;
-  if (hours > 0 && formats.indexOf('h') !== -1) t += `${hours}h${space}`;
-  if (minutes > 0 && formats.indexOf('m') !== -1) t += `${minutes}m${space}`;
-  if (seconds > 0 && formats.indexOf('s') !== -1) t += `${seconds}s${space}`;
-  if (ms > 0 && formats.indexOf('ms') !== -1) t += `${ms}ms`;
+  if (days > 0 && formats.indexOf('d') !== -1) t += `${intl.formatNumber(days)}d `;
+  if (hours > 0 && formats.indexOf('h') !== -1) t += `${intl.formatNumber(hours)}h `;
+  if (minutes > 0 && formats.indexOf('m') !== -1) t += `${intl.formatNumber(minutes)}m `;
+  if (seconds > 0 && formats.indexOf('s') !== -1) t += `${intl.formatNumber(seconds)}s `;
+  if (ms > 0 && formats.indexOf('ms') !== -1) t += `${intl.formatNumber(ms)}ms`;
 
   if (!t) {
     return `0${formats[formats.length - 1]}`;
