@@ -6,7 +6,8 @@ import { useEscapeKey, useMessages } from 'components/hooks';
 import { objectToArray } from 'lib/data';
 import { ReportContext } from '../[reportId]/Report';
 import styles from './JourneyView.module.css';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 
 const NODE_HEIGHT = 60;
 const NODE_GAP = 10;
@@ -18,6 +19,7 @@ export default function JourneyView() {
   const { report } = useContext(ReportContext);
   const { data, parameters } = report || {};
   const { formatMessage, labels } = useMessages();
+  const intl = useIntl();
 
   useEscapeKey(() => setSelectedNode(null));
 
@@ -141,7 +143,7 @@ export default function JourneyView() {
     <div className={styles.container}>
       <div className={styles.view}>
         {columns.map((column, columnIndex) => {
-          const dropOffPercent = `${~~column.dropOff}%`;
+          const dropOffPercent = intl.formatNumber(column.dropOff / 100, { style: 'percent' });
           return (
             <div
               key={columnIndex}
@@ -154,7 +156,11 @@ export default function JourneyView() {
                 <div className={styles.num}>{columnIndex + 1}</div>
                 <div className={styles.stats}>
                   <div className={styles.visitors} title={column.visitorCount}>
-                    {formatLongNumber(column.visitorCount)} {formatMessage(labels.visitors)}
+                    {intl.formatNumber(
+                      column.visitorCount,
+                      formatLongNumberOptions(column.visitorCount),
+                    )}{' '}
+                    {formatMessage(labels.visitors)}
                   </div>
                   {columnIndex > 0 && <div className={styles.dropoff}>{dropOffPercent}</div>}
                 </div>
@@ -196,7 +202,7 @@ export default function JourneyView() {
                           </div>
                           <TooltipPopup label={dropOffPercent} disabled={!selected}>
                             <div className={styles.count} title={nodeCount}>
-                              {formatLongNumber(nodeCount)}
+                              {intl.formatNumber(nodeCount, formatLongNumberOptions(nodeCount))}
                             </div>
                           </TooltipPopup>
                           {columnIndex < columns.length &&
