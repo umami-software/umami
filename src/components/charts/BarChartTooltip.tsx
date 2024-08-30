@@ -1,5 +1,5 @@
 import { Flexbox, StatusLight } from 'react-basics';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
 import { useIntl } from 'react-intl';
 
 const formats = {
@@ -31,7 +31,8 @@ export default function BarChartTooltip({ tooltip, unit }) {
       <div>{intl.formatDate(dataPoints[0].raw.d || dataPoints[0].raw.x, formats[unit])}</div>
       <div>
         <StatusLight color={labelColors?.[0]?.backgroundColor}>
-          {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}
+          {intl.formatNumber(dataPoints[0].raw.y, formatLongNumberOptions(dataPoints[0].raw.y))}{' '}
+          {dataPoints[0].dataset.label}
         </StatusLight>
       </div>
     </Flexbox>

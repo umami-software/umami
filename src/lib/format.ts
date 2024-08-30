@@ -46,25 +46,6 @@ export function formatNumber(n: string | number) {
   return Number(n).toFixed(0);
 }
 
-export function formatLongNumber(value: number) {
-  const n = Number(value);
-
-  if (n >= 1000000) {
-    return `${(n / 1000000).toFixed(1)}m`;
-  }
-  if (n >= 100000) {
-    return `${(n / 1000).toFixed(0)}k`;
-  }
-  if (n >= 10000) {
-    return `${(n / 1000).toFixed(1)}k`;
-  }
-  if (n >= 1000) {
-    return `${(n / 1000).toFixed(2)}k`;
-  }
-
-  return formatNumber(n);
-}
-
 export function formatLongNumberOptions(value: number): FormatNumberOptions {
   return value < 100
     ? {

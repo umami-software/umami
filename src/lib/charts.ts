@@ -1,9 +1,4 @@
-import { formatLongNumber } from 'lib/format';
 import { type IntlShape } from 'react-intl';
-
-export function renderNumberLabels(label: string) {
-  return +label > 1000 ? formatLongNumber(+label) : label;
-}
 
 export function renderDateLabels(intl: IntlShape, unit: string) {
   return (label: string, index: number, values: any[]) => {

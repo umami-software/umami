@@ -8,7 +8,7 @@ import { useDateRange, useTheme, useWebsiteMetrics } from 'components/hooks';
 import { useIntl } from 'react-intl';
 import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
 import { percentFilter } from 'lib/filters';
 import styles from './WorldMap.module.css';
 
@@ -62,8 +62,9 @@ export function WorldMap({
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
     setTooltipPopup(
-      `${intl.formatDisplayName(code, { type: 'region' })}: ${formatLongNumber(
+      `${intl.formatDisplayName(code, { type: 'region' })}: ${intl.formatNumber(
         country?.y || 0,
+        formatLongNumberOptions(country?.y || 0),
       )} ${visitorsLabel}` as any,
     );
   };

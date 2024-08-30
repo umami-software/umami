@@ -1,7 +1,8 @@
 import BarChartTooltip from 'components/charts/BarChartTooltip';
 import Chart, { ChartProps } from 'components/charts/Chart';
 import { useTheme } from 'components/hooks';
-import { renderNumberLabels } from 'lib/charts';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 import { useMemo, useState } from 'react';
 
 export interface BarChartProps extends ChartProps {
@@ -18,6 +19,7 @@ export interface BarChartProps extends ChartProps {
 export function BarChart(props: BarChartProps) {
   const [tooltip, setTooltip] = useState(null);
   const { colors } = useTheme();
+  const intl = useIntl();
   const {
     renderXLabel,
     renderYLabel,
@@ -66,7 +68,8 @@ export function BarChart(props: BarChartProps) {
           },
           ticks: {
             color: colors.chart.text,
-            callback: renderYLabel || renderNumberLabels,
+            callback: (n: number) =>
+              renderYLabel || intl.formatNumber(n, formatLongNumberOptions(n)),
           },
         },
       },

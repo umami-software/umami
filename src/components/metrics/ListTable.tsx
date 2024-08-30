@@ -104,7 +104,7 @@ const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentag
         <div className={styles.percent}>
           <animated.div className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
           <animated.span>
-            {props.width.to(n => intl.formatNumber(+n / 100, { style: 'percent' }))}
+            {props.width.to(n => intl.formatNumber(n / 100, { style: 'percent' }))}
           </animated.span>
         </div>
       )}
