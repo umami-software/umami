@@ -39,7 +39,7 @@ export const MetricCard = ({
   return (
     <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
       {showLabel && <div className={styles.label}>{label}</div>}
-      <animated.div className={styles.value} title={value?.toString()}>
+      <animated.div className={styles.value} title={intl.formatNumber(value)}>
         {props?.x?.to(x => formatValue(x))}
       </animated.div>
       {showChange && (
