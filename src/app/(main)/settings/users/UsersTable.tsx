@@ -18,14 +18,14 @@ export function UsersTable({
   return (
     <GridTable data={data}>
       <GridColumn name="username" label={formatMessage(labels.username)} style={{ minWidth: 0 }} />
-      <GridColumn name="role" label={formatMessage(labels.role)} width={'120px'}>
+      <GridColumn name="role" label={formatMessage(labels.role)} width="120px">
         {row =>
           formatMessage(
             labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
           )
         }
       </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)} width={'150px'}>
+      <GridColumn name="created" label={formatMessage(labels.created)} width="150px">
         {row =>
           formatDistance(new Date(row.createdAt), new Date(), {
             addSuffix: true,
@@ -33,7 +33,7 @@ export function UsersTable({
           })
         }
       </GridColumn>
-      <GridColumn name="websites" label={formatMessage(labels.websites)} width={'120px'}>
+      <GridColumn name="websites" label={formatMessage(labels.websites)} width="120px">
         {row => row._count.website}
       </GridColumn>
       {showActions && (
