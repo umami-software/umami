@@ -96,7 +96,10 @@ const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentag
       <div className={styles.label}>{label}</div>
       <div className={styles.value}>
         {change}
-        <animated.div className={styles.value} title={props?.y as any}>
+        <animated.div
+          className={styles.value}
+          title={props?.y.to((n: number) => intl.formatNumber(n))}
+        >
           {props.y?.to((n: number) => intl.formatNumber(n, formatLongNumberOptions(n)))}
         </animated.div>
       </div>
