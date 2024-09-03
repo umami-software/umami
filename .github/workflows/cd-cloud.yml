@@ -18,13 +18,11 @@ jobs:
         run: echo "hash=$(openssl rand -hex 4)" >> $GITHUB_OUTPUT
 
       - uses: mr-smithers-excellent/docker-build-push@v6
-        name: Build & push Docker image to ghcr.io
+        name: Build & push Docker image to docker.io
         with:
-          image: umami
+          image: umamisoftware/umami
           tags: cloud-${{ steps.random_hash.outputs.hash }}, cloud-latest
           buildArgs: DATABASE_TYPE=postgresql
-          registry: ghcr.io
-          multiPlatform: true
-          platform: linux/amd64
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
