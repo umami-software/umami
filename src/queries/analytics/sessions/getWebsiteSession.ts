@@ -49,7 +49,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
           sum(case when website_event.event_type = 1 then 1 else 0 end) as views,
           sum(case when website_event.event_type = 1 then 1 else 0 end) as events
     from session
-    left outer join website_event on website_event.session_id = session.session_id
+    left inner join website_event on website_event.session_id = session.session_id
     where session.website_id = {{websiteId::uuid}}
       and session.session_id = {{sessionId::uuid}}
     group by session.session_id, visit_id, session.website_id, session.hostname, session.browser, session.os, session.device, session.screen, session.language, session.country, session.subdivision1, session.city) t
