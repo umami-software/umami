@@ -54,8 +54,8 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
           </GridColumn>
           <GridColumn name="total" label={formatMessage(labels.count)} alignment="end">
             {row => (
-              <span title={intl.formatNumber(row.count)}>
-                {intl.formatNumber(row.count, formatLongNumberOptions(row.count))}
+              <span title={intl.formatNumber(row.total)}>
+                {intl.formatNumber(row.total, formatLongNumberOptions(row.total))}
               </span>
             )}
           </GridColumn>
