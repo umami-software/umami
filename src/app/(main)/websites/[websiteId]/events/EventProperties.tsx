@@ -5,8 +5,11 @@ import PieChart from 'components/charts/PieChart';
 import { useState } from 'react';
 import { CHART_COLORS } from 'lib/constants';
 import styles from './EventProperties.module.css';
+import { useIntl } from 'react-intl';
+import { formatLongNumberOptions } from 'lib/format';
 
 export function EventProperties({ websiteId }: { websiteId: string }) {
+  const intl = useIntl();
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
   const { formatMessage, labels } = useMessages();
@@ -49,7 +52,13 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               </div>
             )}
           </GridColumn>
-          <GridColumn name="total" label={formatMessage(labels.count)} alignment="end" />
+          <GridColumn name="total" label={formatMessage(labels.count)} alignment="end">
+            {row => (
+              <span title={intl.formatNumber(row.count)}>
+                {intl.formatNumber(row.count, formatLongNumberOptions(row.count))}
+              </span>
+            )}
+          </GridColumn>
         </GridTable>
         {propertyName && (
           <div className={styles.chart}>
