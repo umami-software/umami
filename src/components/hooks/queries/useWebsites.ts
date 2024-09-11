@@ -1,5 +1,5 @@
 import { useApi } from './useApi';
-import { useFilterQuery } from './useFilterQuery';
+import { usePagedQuery } from './usePagedQuery';
 import { useLogin } from './useLogin';
 import useModified from '../useModified';
 
@@ -11,7 +11,7 @@ export function useWebsites(
   const { user } = useLogin();
   const { modified } = useModified(`websites`);
 
-  return useFilterQuery({
+  return usePagedQuery({
     queryKey: ['websites', { userId, teamId, modified, ...params }],
     queryFn: (data: any) => {
       return get(teamId ? `/teams/${teamId}/websites` : `/users/${userId || user.id}/websites`, {

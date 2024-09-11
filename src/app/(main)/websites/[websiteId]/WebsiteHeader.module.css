@@ -1,7 +1,9 @@
 .header {
-  display: grid;
-  grid-template-columns: 1fr max-content;
+  display: flex;
+  gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  padding: 20px 0px;
 }
 
 .title {
@@ -12,7 +14,7 @@
   font-size: 24px;
   font-weight: 700;
   overflow: hidden;
-  height: 100px;
+  height: 60px;
 }
 
 .actions {
@@ -22,6 +24,7 @@
   justify-content: flex-end;
   gap: 30px;
   min-height: 0;
+  margin-left: auto;
 }
 
 .selected {

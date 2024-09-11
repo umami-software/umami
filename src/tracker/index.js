@@ -44,7 +44,7 @@
       if (result !== str) {
         return result;
       }
-    } catch {
+    } catch (e) {
       return str;
     }
 
@@ -55,7 +55,7 @@
     try {
       const { pathname, search } = new URL(url);
       url = pathname + search;
-    } catch {
+    } catch (e) {
       /* empty */
     }
     return excludeSearch ? url.split('?')[0] : url;
@@ -217,8 +217,18 @@
       const text = await res.text();
 
       return (cache = text);
-    } catch {
+    } catch (e) {
       /* empty */
+    }
+  };
+
+  const init = () => {
+    if (!initialized) {
+      track();
+      handlePathChanges();
+      handleTitleChanges();
+      handleClicks();
+      initialized = true;
     }
   };
 
@@ -255,19 +265,10 @@
   let initialized;
 
   if (autoTrack && !trackingDisabled()) {
-    handlePathChanges();
-    handleTitleChanges();
-    handleClicks();
-
-    const init = () => {
-      if (document.readyState === 'complete' && !initialized) {
-        track();
-        initialized = true;
-      }
-    };
-
-    document.addEventListener('readystatechange', init, true);
-
-    init();
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      document.addEventListener('readystatechange', init, true);
+    }
   }
 })(window);

@@ -23,7 +23,7 @@ async function relationalQuery(
     y: number;
   }[]
 > {
-  const { getTimestampDiffQuery, parseFilters, rawQuery } = prisma;
+  const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSession, params } = await parseFilters(
     websiteId,
     {
@@ -42,7 +42,7 @@ async function relationalQuery(
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       sum(case when t.c = 1 then 1 else 0 end) as "bounces",
-      sum(${getTimestampDiffQuery('t.min_time', 't.max_time')}) as "totaltime",
+      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime",
       ${parseFieldsByName(fields)}
     from (
       select

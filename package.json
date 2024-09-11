@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.12.1",
+  "version": "2.13.2",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -64,9 +64,12 @@
     ".next/cache"
   ],
   "dependencies": {
-    "@clickhouse/client": "^1.0.2",
+    "@clickhouse/client": "^1.4.1",
+    "@date-fns/utc": "^1.2.0",
+    "@dicebear/collection": "^9.2.1",
+    "@dicebear/core": "^9.2.1",
     "@fontsource/inter": "^4.5.15",
-    "@prisma/client": "5.14.0",
+    "@prisma/client": "5.17",
     "@prisma/extension-read-replicas": "^0.3.0",
     "@react-spring/web": "^9.7.3",
     "@tanstack/react-query": "^5.28.6",
@@ -81,7 +84,6 @@
     "cross-spawn": "^7.0.3",
     "date-fns": "^2.23.0",
     "date-fns-tz": "^1.1.4",
-    "dateformat": "^5.0.3",
     "debug": "^4.3.4",
     "del": "^6.0.0",
     "detect-browser": "^5.2.0",
@@ -93,18 +95,18 @@
     "is-ci": "^3.0.1",
     "is-docker": "^3.0.0",
     "is-localhost-ip": "^1.4.0",
-    "isbot": "^5.1.1",
+    "isbot": "^5.1.16",
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.6",
     "md5": "^2.3.0",
     "moment-timezone": "^0.5.35",
-    "next": "14.2.3",
+    "next": "14.2.5",
     "next-basics": "^0.39.0",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
-    "prisma": "5.14.0",
+    "prisma": "5.17",
     "react": "^18.2.0",
-    "react-basics": "^0.123.0",
+    "react-basics": "^0.125.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^4.0.4",
@@ -117,7 +119,7 @@
     "thenby": "^1.3.4",
     "uuid": "^9.0.0",
     "yup": "^0.32.11",
-    "zustand": "^4.3.8"
+    "zustand": "^4.5.5"
   },
   "devDependencies": {
     "@formatjs/cli": "^4.2.29",
@@ -175,6 +177,6 @@
     "tar": "^6.1.2",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.4.3"
+    "typescript": "^5.5.3"
   }
 }

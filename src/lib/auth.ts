@@ -106,7 +106,7 @@ export async function canTransferWebsiteToUser({ user }: Auth, websiteId: string
   if (website.teamId && user.id === userId) {
     const teamUser = await getTeamUser(website.teamId, userId);
 
-    return teamUser?.role === ROLES.teamOwner;
+    return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteTransferToUser);
   }
 
   return false;
@@ -118,7 +118,7 @@ export async function canTransferWebsiteToTeam({ user }: Auth, websiteId: string
   if (website.userId && website.userId === user.id) {
     const teamUser = await getTeamUser(teamId, user.id);
 
-    return teamUser?.role === ROLES.teamOwner;
+    return teamUser && hasPermission(teamUser.role, PERMISSIONS.websiteTransferToTeam);
   }
 
   return false;

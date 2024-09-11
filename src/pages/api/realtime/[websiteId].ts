@@ -7,16 +7,17 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRealtimeData } from 'queries';
 import * as yup from 'yup';
 import { REALTIME_RANGE } from 'lib/constants';
+import { TimezoneTest } from 'lib/yup';
 
 export interface RealtimeRequestQuery {
   websiteId: string;
-  timezone: string;
+  timezone?: string;
 }
 
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
-    timezone: yup.string().required(),
+    timezone: TimezoneTest,
   }),
 };
 

@@ -1,4 +1,4 @@
-import { GridColumn, GridTable, Icon, Icons, Text, useBreakpoint } from 'react-basics';
+import { GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
 import LinkButton from 'components/common/LinkButton';
 import { useMessages, useLogin, useTeamUrl } from 'components/hooks';
 import { REPORT_TYPES } from 'lib/constants';
@@ -7,11 +7,10 @@ import ReportDeleteButton from './ReportDeleteButton';
 export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
-  const breakpoint = useBreakpoint();
   const { renderTeamUrl } = useTeamUrl();
 
   return (
-    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
+    <GridTable data={data}>
       <GridColumn name="name" label={formatMessage(labels.name)} />
       <GridColumn name="description" label={formatMessage(labels.description)} />
       <GridColumn name="type" label={formatMessage(labels.type)}>
