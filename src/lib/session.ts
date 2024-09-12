@@ -58,6 +58,7 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
       subdivision1,
       subdivision2,
       city,
+      ip,
     };
   }
 
@@ -80,6 +81,7 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
         subdivision1,
         subdivision2,
         city,
+        ip,
       });
     } catch (e: any) {
       if (!e.message.toLowerCase().includes('unique constraint')) {

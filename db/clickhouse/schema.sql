@@ -16,6 +16,7 @@ CREATE TABLE umami.website_event
     subdivision1 LowCardinality(String),
     subdivision2 LowCardinality(String),
     city String,
+    ip String,
     --pageviews
     url_path String,
     url_query String,

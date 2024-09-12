@@ -19,8 +19,8 @@ model User {
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  websiteUser       Website[] @relation("user")
-  websiteCreateUser Website[] @relation("createUser")
+  websiteUser       Website[]  @relation("user")
+  websiteCreateUser Website[]  @relation("createUser")
   teamUser          TeamUser[]
   report            Report[]
 
@@ -40,6 +40,7 @@ model Session {
   subdivision1 String?   @db.VarChar(20)
   subdivision2 String?   @db.VarChar(50)
   city         String?   @db.VarChar(50)
+  ip           String?   @db.VarChar(100)
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 
   websiteEvent WebsiteEvent[]
@@ -147,7 +148,7 @@ model SessionData {
   id          String    @id() @map("session_data_id") @db.Uuid
   websiteId   String    @map("website_id") @db.Uuid
   sessionId   String    @map("session_id") @db.Uuid
-  dataKey    String    @map("data_key") @db.VarChar(500)
+  dataKey     String    @map("data_key") @db.VarChar(500)
   stringValue String?   @map("string_value") @db.VarChar(500)
   numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue   DateTime? @map("date_value") @db.Timestamptz(6)
