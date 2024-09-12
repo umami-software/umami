@@ -153,6 +153,7 @@ export const labels = defineMessages({
   regions: { id: 'label.regions', defaultMessage: 'Regions' },
   reports: { id: 'label.reports', defaultMessage: 'Reports' },
   eventData: { id: 'label.event-data', defaultMessage: 'Event data' },
+  sessionData: { id: 'label.session-data', defaultMessage: 'Session data' },
   funnel: { id: 'label.funnel', defaultMessage: 'Funnel' },
   funnelDescription: {
     id: 'label.funnel-description',
