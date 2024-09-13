@@ -33,6 +33,7 @@
 .time {
   min-width: 60px;
   overflow: hidden;
+  font-variant-numeric: tabular-nums;
 }
 
 .detail {
