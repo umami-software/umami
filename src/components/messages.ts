@@ -217,6 +217,7 @@ export const labels = defineMessages({
   country: { id: 'label.country', defaultMessage: 'Country' },
   region: { id: 'label.region', defaultMessage: 'Region' },
   city: { id: 'label.city', defaultMessage: 'City' },
+  ip: { id: 'label.ip', defaultMessage: 'IP' },
   browser: { id: 'label.browser', defaultMessage: 'Browser' },
   device: { id: 'label.device', defaultMessage: 'Device' },
   pageTitle: { id: 'label.pageTitle', defaultMessage: 'Page title' },
