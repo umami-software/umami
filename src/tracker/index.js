@@ -63,7 +63,7 @@
 
   const getPayload = () => ({
     website,
-    hostname,
+    hostname || 'none',
     screen,
     language,
     title: encode(title),
