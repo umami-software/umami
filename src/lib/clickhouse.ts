@@ -2,9 +2,9 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
+import { getWebsite } from 'queries/index';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { maxDate } from './date';
-import { fetchWebsite } from './load';
 import { filtersToArray } from './params';
 import { PageParams, QueryFilters, QueryOptions } from './types';
 
@@ -132,7 +132,7 @@ function getFilterParams(filters: QueryFilters = {}) {
 }
 
 async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
-  const website = await fetchWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   return {
     filterQuery: getFilterQuery(filters, options),
