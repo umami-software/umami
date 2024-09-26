@@ -47,7 +47,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
           min(website_event.created_at) as min_time,
           max(website_event.created_at) as max_time,
           sum(case when website_event.event_type = 1 then 1 else 0 end) as views,
-          sum(case when website_event.event_type = 1 then 1 else 0 end) as events
+          sum(case when website_event.event_type = 2 then 1 else 0 end) as events
     from session
     join website_event on website_event.session_id = session.session_id
     where session.website_id = {{websiteId::uuid}}
