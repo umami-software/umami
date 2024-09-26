@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import useStore, { setConfig } from 'store/app';
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 
 let loading = false;
 

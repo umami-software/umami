@@ -1,8 +1,8 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useApi } from './useApi';
 import { PageResult, PageParams, PagedQueryResult } from 'lib/types';
-import { useNavigation } from '../useNavigation';
+import { useApi } from './useApi';
+import { useNavigation } from './useNavigation';
 
 export function usePagedQuery<T = any>({
   queryKey,

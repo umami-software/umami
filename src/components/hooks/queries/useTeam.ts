@@ -1,4 +1,4 @@
-import useApi from './useApi';
+import { useApi } from '../useApi';
 
 export function useTeam(teamId: string) {
   const { get, useQuery } = useApi();
