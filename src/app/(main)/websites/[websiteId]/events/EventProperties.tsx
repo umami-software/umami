@@ -54,7 +54,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
         {propertyName && (
           <div className={styles.chart}>
             <div className={styles.title}>{propertyName}</div>
-            <PieChart key={propertyName} type="doughnut" data={chartData} />
+            <PieChart key={propertyName + eventName} type="doughnut" data={chartData} />
           </div>
         )}
       </div>

@@ -1,0 +1,5 @@
+.container {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 40px;
+}

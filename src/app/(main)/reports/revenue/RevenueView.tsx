@@ -1,0 +1,140 @@
+import { colord } from 'colord';
+import BarChart from 'components/charts/BarChart';
+import PieChart from 'components/charts/PieChart';
+import { useLocale, useMessages } from 'components/hooks';
+import { GridRow } from 'components/layout/Grid';
+import ListTable from 'components/metrics/ListTable';
+import MetricCard from 'components/metrics/MetricCard';
+import MetricsBar from 'components/metrics/MetricsBar';
+import { renderDateLabels } from 'lib/charts';
+import { CHART_COLORS } from 'lib/constants';
+import { formatLongCurrency, formatLongNumber } from 'lib/format';
+import { useContext, useMemo } from 'react';
+import { ReportContext } from '../[reportId]/Report';
+import RevenueTable from './RevenueTable';
+import styles from './RevenueView.module.css';
+
+export interface RevenueViewProps {
+  isLoading?: boolean;
+}
+
+export function RevenueView({ isLoading }: RevenueViewProps) {
+  const { formatMessage, labels } = useMessages();
+  const { locale } = useLocale();
+  const { report } = useContext(ReportContext);
+  const {
+    data,
+    parameters: { dateRange, currency },
+  } = report || {};
+  const showTable = data?.table.length > 1;
+
+  const chartData = useMemo(() => {
+    if (!data) return [];
+
+    const map = (data.chart as any[]).reduce((obj, { x, t, y }) => {
+      if (!obj[x]) {
+        obj[x] = [];
+      }
+
+      obj[x].push({ x: t, y });
+
+      return obj;
+    }, {});
+
+    return {
+      datasets: Object.keys(map).map((key, index) => {
+        const color = colord(CHART_COLORS[index % CHART_COLORS.length]);
+        return {
+          label: key,
+          data: map[key],
+          lineTension: 0,
+          backgroundColor: color.alpha(0.6).toRgbString(),
+          borderColor: color.alpha(0.7).toRgbString(),
+          borderWidth: 1,
+        };
+      }),
+    };
+  }, [data]);
+
+  const countryData = useMemo(() => {
+    if (!data) return [];
+
+    const labels = data.country.map(({ name }) => name);
+    const datasets = [
+      {
+        data: data.country.map(({ value }) => value),
+        backgroundColor: CHART_COLORS,
+        borderWidth: 0,
+      },
+    ];
+
+    return { labels, datasets };
+  }, [data]);
+
+  const metricData = useMemo(() => {
+    if (!data) return [];
+
+    const { sum, avg, count, uniqueCount } = data.total;
+
+    return [
+      {
+        value: sum,
+        label: formatMessage(labels.total),
+        formatValue: n => formatLongCurrency(n, currency),
+      },
+      {
+        value: avg,
+        label: formatMessage(labels.average),
+        formatValue: n => formatLongCurrency(n, currency),
+      },
+      {
+        value: count,
+        label: formatMessage(labels.transactions),
+        formatValue: formatLongNumber,
+      },
+      {
+        value: uniqueCount,
+        label: formatMessage(labels.uniqueCustomers),
+        formatValue: formatLongNumber,
+      },
+    ] as any;
+  }, [data, locale]);
+
+  return (
+    <>
+      <div className={styles.container}>
+        <MetricsBar isFetched={data}>
+          {metricData?.map(({ label, value, formatValue }) => {
+            return <MetricCard key={label} value={value} label={label} formatValue={formatValue} />;
+          })}
+        </MetricsBar>
+        <BarChart
+          minDate={dateRange?.startDate}
+          maxDate={dateRange?.endDate}
+          data={chartData}
+          unit={dateRange?.unit}
+          stacked={true}
+          currency={currency}
+          renderXLabel={renderDateLabels(dateRange?.unit, locale)}
+          isLoading={isLoading}
+        />
+        {data && (
+          <GridRow columns="one-two">
+            <ListTable
+              metric={formatMessage(labels.country)}
+              data={data?.country.map(({ name, value }) => ({
+                x: name,
+                y: value,
+                z: (value / data?.total.sum) * 100,
+              }))}
+            />
+            <PieChart type="doughnut" data={countryData} />
+          </GridRow>
+        )}
+        {showTable && <RevenueTable />}
+      </div>
+    </>
+  );
+}
+
+export default RevenueView;
