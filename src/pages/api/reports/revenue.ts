@@ -7,34 +7,30 @@ import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRevenue } from 'queries/analytics/reports/getRevenue';
 import * as yup from 'yup';
 
-export interface RetentionRequestBody {
+export interface RevenueRequestBody {
   websiteId: string;
-  dateRange: { startDate: string; endDate: string; unit?: string; timezone?: string };
-  eventName: string;
-  revenueProperty: string;
-  userProperty: string;
+  currency: string;
+  timezone: string;
+  dateRange: { startDate: string; endDate: string; unit?: string };
 }
 
 const schema = {
   POST: yup.object().shape({
     websiteId: yup.string().uuid().required(),
+    timezone: TimezoneTest,
     dateRange: yup
       .object()
       .shape({
         startDate: yup.date().required(),
         endDate: yup.date().required(),
         unit: UnitTypeTest,
-        timezone: TimezoneTest,
       })
       .required(),
-    eventName: yup.string().required(),
-    revenueProperty: yup.string().required(),
-    userProperty: yup.string(),
   }),
 };
 
 export default async (
-  req: NextApiRequestQueryBody<any, RetentionRequestBody>,
+  req: NextApiRequestQueryBody<any, RevenueRequestBody>,
   res: NextApiResponse,
 ) => {
   await useCors(req, res);
@@ -44,10 +40,9 @@ export default async (
   if (req.method === 'POST') {
     const {
       websiteId,
-      dateRange: { startDate, endDate, unit, timezone },
-      eventName,
-      revenueProperty,
-      userProperty,
+      currency,
+      timezone,
+      dateRange: { startDate, endDate, unit },
     } = req.body;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -59,9 +54,7 @@ export default async (
       endDate: new Date(endDate),
       unit,
       timezone,
-      eventName,
-      revenueProperty,
-      userProperty,
+      currency,
     });
 
     return ok(res, data);
