@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import { Button, Icon, Icons } from 'react-basics';
 import { useMessages } from 'components/hooks';
 import styles from './Pager.module.css';
+import { useIntl } from 'react-intl';
 
 export interface PagerProps {
   page: number;
@@ -12,6 +13,7 @@ export interface PagerProps {
 }
 
 export function Pager({ page, pageSize, count, onPageChange, className }: PagerProps) {
+  const intl = useIntl();
   const { formatMessage, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(count / pageSize) : 0;
   const lastPage = page === maxPage;
@@ -35,7 +37,9 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
 
   return (
     <div className={classNames(styles.pager, className)}>
-      <div className={styles.count}>{formatMessage(labels.numberOfRecords, { x: count })}</div>
+      <div className={styles.count}>
+        {formatMessage(labels.numberOfRecords, { x: intl.formatNumber(count) })}
+      </div>
       <div className={styles.nav}>
         <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
           <Icon rotate={90}>
