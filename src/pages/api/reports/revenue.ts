@@ -5,12 +5,13 @@ import { TimezoneTest, UnitTypeTest } from 'lib/yup';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRevenue } from 'queries/analytics/reports/getRevenue';
+import { getRevenueValues } from 'queries/analytics/reports/getRevenueValues';
 import * as yup from 'yup';
 
 export interface RevenueRequestBody {
   websiteId: string;
-  currency: string;
-  timezone: string;
+  currency?: string;
+  timezone?: string;
   dateRange: { startDate: string; endDate: string; unit?: string };
 }
 
@@ -36,6 +37,21 @@ export default async (
   await useCors(req, res);
   await useAuth(req, res);
   await useValidate(schema, req, res);
+
+  if (req.method === 'GET') {
+    const { websiteId, startDate, endDate } = req.query;
+
+    if (!(await canViewWebsite(req.auth, websiteId))) {
+      return unauthorized(res);
+    }
+
+    const data = await getRevenueValues(websiteId, {
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
+    });
+
+    return ok(res, data);
+  }
 
   if (req.method === 'POST') {
     const {

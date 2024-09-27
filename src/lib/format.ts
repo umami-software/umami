@@ -83,10 +83,22 @@ export function stringToColor(str: string) {
 }
 
 export function formatCurrency(value: number, currency: string, locale = 'en-US') {
-  return new Intl.NumberFormat(locale, {
-    style: 'currency',
-    currency: currency,
-  }).format(value);
+  let formattedValue;
+
+  try {
+    formattedValue = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency,
+    });
+  } catch (error) {
+    // Fallback to default currency format if an error occurs
+    formattedValue = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD',
+    });
+  }
+
+  return formattedValue.format(value);
 }
 
 export function formatLongCurrency(value: number, currency: string, locale = 'en-US') {

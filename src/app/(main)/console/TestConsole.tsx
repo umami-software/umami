@@ -56,11 +56,11 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
     }));
     window['umami'].track('checkout-cart', {
       revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-      currency: 'USD',
+      currency: 'SHIBA',
     });
     window['umami'].track('affiliate-link', {
       revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-      currency: 'USD',
+      currency: 'ETH',
     });
     window['umami'].track('promotion-link', {
       revenue: parseFloat((Math.random() * 100000).toFixed(2)),
