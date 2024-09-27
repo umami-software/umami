@@ -47,7 +47,10 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
           </Icon>
         </Button>
         <div className={styles.text}>
-          {formatMessage(labels.pageOf, { current: page, total: maxPage })}
+          {formatMessage(labels.pageOf, {
+            current: intl.formatNumber(page),
+            total: intl.formatNumber(maxPage),
+          })}
         </div>
         <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
           <Icon rotate={270}>
