@@ -1,7 +1,9 @@
+import classNames from 'classnames';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
 import PieChart from 'components/charts/PieChart';
-import { useLocale, useMessages } from 'components/hooks';
+import TypeIcon from 'components/common/TypeIcon';
+import { useCountryNames, useLocale, useMessages } from 'components/hooks';
 import { GridRow } from 'components/layout/Grid';
 import ListTable from 'components/metrics/ListTable';
 import MetricCard from 'components/metrics/MetricCard';
@@ -9,7 +11,7 @@ import MetricsBar from 'components/metrics/MetricsBar';
 import { renderDateLabels } from 'lib/charts';
 import { CHART_COLORS } from 'lib/constants';
 import { formatLongCurrency, formatLongNumber } from 'lib/format';
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { ReportContext } from '../[reportId]/Report';
 import RevenueTable from './RevenueTable';
 import styles from './RevenueView.module.css';
@@ -21,12 +23,23 @@ export interface RevenueViewProps {
 export function RevenueView({ isLoading }: RevenueViewProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
+  const { countryNames } = useCountryNames(locale);
   const { report } = useContext(ReportContext);
   const {
     data,
     parameters: { dateRange, currency },
   } = report || {};
   const showTable = data?.table.length > 1;
+
+  const renderCountryName = useCallback(
+    ({ x: code }) => (
+      <span className={classNames(locale, styles.row)}>
+        <TypeIcon type="country" value={code?.toLowerCase()} />
+        {countryNames[code]}
+      </span>
+    ),
+    [countryNames, locale],
+  );
 
   const chartData = useMemo(() => {
     if (!data) return [];
@@ -119,7 +132,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
           isLoading={isLoading}
         />
         {data && (
-          <GridRow columns="one-two">
+          <GridRow columns="two">
             <ListTable
               metric={formatMessage(labels.country)}
               data={data?.country.map(({ name, value }) => ({
@@ -127,6 +140,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
                 y: value,
                 z: (value / data?.total.sum) * 100,
               }))}
+              renderLabel={renderCountryName}
             />
             <PieChart type="doughnut" data={countryData} />
           </GridRow>
