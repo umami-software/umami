@@ -264,6 +264,18 @@
   let cache;
   let initialized;
 
+  // Save referrer
+  if (currentRef && localStorage) {
+    try {
+      const { hostname: refHostname } = new URL(currentRef);
+      if (refHostname !== hostname) {
+        localStorage.setItem('umami.referrer', currentRef);
+      }
+    } catch (e) {
+      /* empty */
+    }
+  }
+
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
       init();
