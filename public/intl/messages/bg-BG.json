@@ -1,0 +1,1874 @@
+{
+  "label.access-code": [
+    {
+      "type": 0,
+      "value": "Код за достъп"
+    }
+  ],
+  "label.actions": [
+    {
+      "type": 0,
+      "value": "Действия"
+    }
+  ],
+  "label.activity": [
+    {
+      "type": 0,
+      "value": "Активностти"
+    }
+  ],
+  "label.add": [
+    {
+      "type": 0,
+      "value": "Добави"
+    }
+  ],
+  "label.add-description": [
+    {
+      "type": 0,
+      "value": "Добави описание"
+    }
+  ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "Добави член"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Добави стъпка"
+    }
+  ],
+  "label.add-website": [
+    {
+      "type": 0,
+      "value": "Добави уебсайт"
+    }
+  ],
+  "label.admin": [
+    {
+      "type": 0,
+      "value": "Администратор"
+    }
+  ],
+  "label.after": [
+    {
+      "type": 0,
+      "value": "След"
+    }
+  ],
+  "label.all": [
+    {
+      "type": 0,
+      "value": "Всички"
+    }
+  ],
+  "label.all-time": [
+    {
+      "type": 0,
+      "value": "За всички времена"
+    }
+  ],
+  "label.analytics": [
+    {
+      "type": 0,
+      "value": "Анализи"
+    }
+  ],
+  "label.average": [
+    {
+      "type": 0,
+      "value": "Средно"
+    }
+  ],
+  "label.back": [
+    {
+      "type": 0,
+      "value": "Назад"
+    }
+  ],
+  "label.before": [
+    {
+      "type": 0,
+      "value": "Преди"
+    }
+  ],
+  "label.bounce-rate": [
+    {
+      "type": 0,
+      "value": "Kоефициент на отказ"
+    }
+  ],
+  "label.breakdown": [
+    {
+      "type": 0,
+      "value": "Разбивка"
+    }
+  ],
+  "label.browser": [
+    {
+      "type": 0,
+      "value": "Браузър"
+    }
+  ],
+  "label.browsers": [
+    {
+      "type": 0,
+      "value": "Браузъри"
+    }
+  ],
+  "label.cancel": [
+    {
+      "type": 0,
+      "value": "Отмени"
+    }
+  ],
+  "label.change-password": [
+    {
+      "type": 0,
+      "value": "Смени парола"
+    }
+  ],
+  "label.cities": [
+    {
+      "type": 0,
+      "value": "Градове"
+    }
+  ],
+  "label.city": [
+    {
+      "type": 0,
+      "value": "Град"
+    }
+  ],
+  "label.clear-all": [
+    {
+      "type": 0,
+      "value": "Изчисти всички"
+    }
+  ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Compare"
+    }
+  ],
+  "label.confirm": [
+    {
+      "type": 0,
+      "value": "Потвърди"
+    }
+  ],
+  "label.confirm-password": [
+    {
+      "type": 0,
+      "value": "Потвърди парола"
+    }
+  ],
+  "label.contains": [
+    {
+      "type": 0,
+      "value": "Съдържа"
+    }
+  ],
+  "label.continue": [
+    {
+      "type": 0,
+      "value": "Продължи"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Count"
+    }
+  ],
+  "label.countries": [
+    {
+      "type": 0,
+      "value": "Държави"
+    }
+  ],
+  "label.country": [
+    {
+      "type": 0,
+      "value": "Държава"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Създай"
+    }
+  ],
+  "label.create-report": [
+    {
+      "type": 0,
+      "value": "Създай отчет"
+    }
+  ],
+  "label.create-team": [
+    {
+      "type": 0,
+      "value": "Създай екип"
+    }
+  ],
+  "label.create-user": [
+    {
+      "type": 0,
+      "value": "Създай потребител"
+    }
+  ],
+  "label.created": [
+    {
+      "type": 0,
+      "value": "Създадено"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Създадено от"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Current"
+    }
+  ],
+  "label.current-password": [
+    {
+      "type": 0,
+      "value": "Текуща парола"
+    }
+  ],
+  "label.custom-range": [
+    {
+      "type": 0,
+      "value": "Обхват"
+    }
+  ],
+  "label.dashboard": [
+    {
+      "type": 0,
+      "value": "Табло"
+    }
+  ],
+  "label.data": [
+    {
+      "type": 0,
+      "value": "Данни"
+    }
+  ],
+  "label.date": [
+    {
+      "type": 0,
+      "value": "Дата"
+    }
+  ],
+  "label.date-range": [
+    {
+      "type": 0,
+      "value": "Диапазон от дати"
+    }
+  ],
+  "label.day": [
+    {
+      "type": 0,
+      "value": "Ден"
+    }
+  ],
+  "label.default-date-range": [
+    {
+      "type": 0,
+      "value": "Диапазон от дати по подразбиране"
+    }
+  ],
+  "label.delete": [
+    {
+      "type": 0,
+      "value": "Изтрий"
+    }
+  ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "Изтрий отчет"
+    }
+  ],
+  "label.delete-team": [
+    {
+      "type": 0,
+      "value": "Изтрий екип"
+    }
+  ],
+  "label.delete-user": [
+    {
+      "type": 0,
+      "value": "Изтрий потребител"
+    }
+  ],
+  "label.delete-website": [
+    {
+      "type": 0,
+      "value": "Изтрий уебсайт"
+    }
+  ],
+  "label.description": [
+    {
+      "type": 0,
+      "value": "Описание"
+    }
+  ],
+  "label.desktop": [
+    {
+      "type": 0,
+      "value": "Десктоп"
+    }
+  ],
+  "label.details": [
+    {
+      "type": 0,
+      "value": "Детайли"
+    }
+  ],
+  "label.device": [
+    {
+      "type": 0,
+      "value": "Устройство"
+    }
+  ],
+  "label.devices": [
+    {
+      "type": 0,
+      "value": "Устройства"
+    }
+  ],
+  "label.dismiss": [
+    {
+      "type": 0,
+      "value": "Отхвърли"
+    }
+  ],
+  "label.does-not-contain": [
+    {
+      "type": 0,
+      "value": "Не съдържа"
+    }
+  ],
+  "label.domain": [
+    {
+      "type": 0,
+      "value": "Домейн"
+    }
+  ],
+  "label.dropoff": [
+    {
+      "type": 0,
+      "value": "Отпадане"
+    }
+  ],
+  "label.edit": [
+    {
+      "type": 0,
+      "value": "Редактирай"
+    }
+  ],
+  "label.edit-dashboard": [
+    {
+      "type": 0,
+      "value": "Редактирай табло"
+    }
+  ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "Редактирай член"
+    }
+  ],
+  "label.enable-share-url": [
+    {
+      "type": 0,
+      "value": "Активирай Линк за споделяне"
+    }
+  ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Entry URL"
+    }
+  ],
+  "label.event": [
+    {
+      "type": 0,
+      "value": "Събитие"
+    }
+  ],
+  "label.event-data": [
+    {
+      "type": 0,
+      "value": "Данни за събитие"
+    }
+  ],
+  "label.events": [
+    {
+      "type": 0,
+      "value": "Събития"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
+    }
+  ],
+  "label.false": [
+    {
+      "type": 0,
+      "value": "Грешно"
+    }
+  ],
+  "label.field": [
+    {
+      "type": 0,
+      "value": "Поле"
+    }
+  ],
+  "label.fields": [
+    {
+      "type": 0,
+      "value": "Полета"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Филтър"
+    }
+  ],
+  "label.filter-combined": [
+    {
+      "type": 0,
+      "value": "Комбиниран"
+    }
+  ],
+  "label.filter-raw": [
+    {
+      "type": 0,
+      "value": "Суров"
+    }
+  ],
+  "label.filters": [
+    {
+      "type": 0,
+      "value": "Филтри"
+    }
+  ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
+  "label.funnel": [
+    {
+      "type": 0,
+      "value": "Фуния"
+    }
+  ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Разберете процента на конверсия и отпадане на потребителите."
+    }
+  ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Goal"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Goals"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Track your goals for pageviews and events."
+    }
+  ],
+  "label.greater-than": [
+    {
+      "type": 0,
+      "value": "По-голямо от"
+    }
+  ],
+  "label.greater-than-equals": [
+    {
+      "type": 0,
+      "value": "По-голямо или равно на"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
+    }
+  ],
+  "label.insights": [
+    {
+      "type": 0,
+      "value": "Изводи"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Навлезте по-дълбоко в данните си, като използвате сегменти и филтри."
+    }
+  ],
+  "label.is": [
+    {
+      "type": 0,
+      "value": "Е"
+    }
+  ],
+  "label.is-not": [
+    {
+      "type": 0,
+      "value": "Не е"
+    }
+  ],
+  "label.is-not-set": [
+    {
+      "type": 0,
+      "value": "Не е зададено"
+    }
+  ],
+  "label.is-set": [
+    {
+      "type": 0,
+      "value": "Зададено е"
+    }
+  ],
+  "label.join": [
+    {
+      "type": 0,
+      "value": "Присъедини се"
+    }
+  ],
+  "label.join-team": [
+    {
+      "type": 0,
+      "value": "Присъедини се към екип"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Understand how users navigate through your website."
+    }
+  ],
+  "label.language": [
+    {
+      "type": 0,
+      "value": "Език"
+    }
+  ],
+  "label.languages": [
+    {
+      "type": 0,
+      "value": "Езици"
+    }
+  ],
+  "label.laptop": [
+    {
+      "type": 0,
+      "value": "Лаптоп"
+    }
+  ],
+  "label.last-days": [
+    {
+      "type": 0,
+      "value": "Последните "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " дни"
+    }
+  ],
+  "label.last-hours": [
+    {
+      "type": 0,
+      "value": "Последните "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " часа"
+    }
+  ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Последните "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " месеца"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
+  "label.leave": [
+    {
+      "type": 0,
+      "value": "Напусни"
+    }
+  ],
+  "label.leave-team": [
+    {
+      "type": 0,
+      "value": "Напусни екип"
+    }
+  ],
+  "label.less-than": [
+    {
+      "type": 0,
+      "value": "По-малко от"
+    }
+  ],
+  "label.less-than-equals": [
+    {
+      "type": 0,
+      "value": "По-малко или равно на"
+    }
+  ],
+  "label.login": [
+    {
+      "type": 0,
+      "value": "Вход"
+    }
+  ],
+  "label.logout": [
+    {
+      "type": 0,
+      "value": "Изход"
+    }
+  ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "Управлявай"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
+    }
+  ],
+  "label.max": [
+    {
+      "type": 0,
+      "value": "Максимум"
+    }
+  ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "Член"
+    }
+  ],
+  "label.members": [
+    {
+      "type": 0,
+      "value": "Членове"
+    }
+  ],
+  "label.min": [
+    {
+      "type": 0,
+      "value": "Минимум"
+    }
+  ],
+  "label.mobile": [
+    {
+      "type": 0,
+      "value": "Мобилен"
+    }
+  ],
+  "label.more": [
+    {
+      "type": 0,
+      "value": "Още"
+    }
+  ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "Моят акаунт"
+    }
+  ],
+  "label.my-websites": [
+    {
+      "type": 0,
+      "value": "Моите уебсайтове"
+    }
+  ],
+  "label.name": [
+    {
+      "type": 0,
+      "value": "Име"
+    }
+  ],
+  "label.new-password": [
+    {
+      "type": 0,
+      "value": "Нова парола"
+    }
+  ],
+  "label.none": [
+    {
+      "type": 0,
+      "value": "Няма"
+    }
+  ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "един"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "други"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "Добре"
+    }
+  ],
+  "label.os": [
+    {
+      "type": 0,
+      "value": "ОС"
+    }
+  ],
+  "label.overview": [
+    {
+      "type": 0,
+      "value": "Общ преглед"
+    }
+  ],
+  "label.owner": [
+    {
+      "type": 0,
+      "value": "Собственик"
+    }
+  ],
+  "label.page-of": [
+    {
+      "type": 0,
+      "value": "Страница "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": " от "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    }
+  ],
+  "label.page-views": [
+    {
+      "type": 0,
+      "value": "Прегледи на страницата"
+    }
+  ],
+  "label.pageTitle": [
+    {
+      "type": 0,
+      "value": "Заглавие на страница"
+    }
+  ],
+  "label.pages": [
+    {
+      "type": 0,
+      "value": "Страници"
+    }
+  ],
+  "label.password": [
+    {
+      "type": 0,
+      "value": "Парола"
+    }
+  ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
+  "label.powered-by": [
+    {
+      "type": 0,
+      "value": "Поддържано от "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Previous"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Previous period"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Previous year"
+    }
+  ],
+  "label.profile": [
+    {
+      "type": 0,
+      "value": "Профил"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
+    }
+  ],
+  "label.queries": [
+    {
+      "type": 0,
+      "value": "Запитвания"
+    }
+  ],
+  "label.query": [
+    {
+      "type": 0,
+      "value": "Запитване"
+    }
+  ],
+  "label.query-parameters": [
+    {
+      "type": 0,
+      "value": "Параметри на търсене"
+    }
+  ],
+  "label.realtime": [
+    {
+      "type": 0,
+      "value": "В реално време"
+    }
+  ],
+  "label.referrer": [
+    {
+      "type": 0,
+      "value": "Референт"
+    }
+  ],
+  "label.referrers": [
+    {
+      "type": 0,
+      "value": "Референти"
+    }
+  ],
+  "label.refresh": [
+    {
+      "type": 0,
+      "value": "Обнови"
+    }
+  ],
+  "label.regenerate": [
+    {
+      "type": 0,
+      "value": "Регенерирай"
+    }
+  ],
+  "label.region": [
+    {
+      "type": 0,
+      "value": "Регион"
+    }
+  ],
+  "label.regions": [
+    {
+      "type": 0,
+      "value": "Региони"
+    }
+  ],
+  "label.remove": [
+    {
+      "type": 0,
+      "value": "Премахни"
+    }
+  ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "Премахни член"
+    }
+  ],
+  "label.reports": [
+    {
+      "type": 0,
+      "value": "Отчети"
+    }
+  ],
+  "label.required": [
+    {
+      "type": 0,
+      "value": "Задължително"
+    }
+  ],
+  "label.reset": [
+    {
+      "type": 0,
+      "value": "Нулирай"
+    }
+  ],
+  "label.reset-website": [
+    {
+      "type": 0,
+      "value": "Нулирай уебсайт"
+    }
+  ],
+  "label.retention": [
+    {
+      "type": 0,
+      "value": "Привързване"
+    }
+  ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Измерете привързаността към вашия уебсайт, като проследявате колко често потребителите се връщат."
+    }
+  ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
+  "label.role": [
+    {
+      "type": 0,
+      "value": "Роля"
+    }
+  ],
+  "label.run-query": [
+    {
+      "type": 0,
+      "value": "Изпълни запитване"
+    }
+  ],
+  "label.save": [
+    {
+      "type": 0,
+      "value": "Запази"
+    }
+  ],
+  "label.screens": [
+    {
+      "type": 0,
+      "value": "Екрани"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Търсене"
+    }
+  ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "Избери"
+    }
+  ],
+  "label.select-date": [
+    {
+      "type": 0,
+      "value": "Избери дата"
+    }
+  ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "Избери роля"
+    }
+  ],
+  "label.select-website": [
+    {
+      "type": 0,
+      "value": "Избери уебсайт"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
+    }
+  ],
+  "label.sessions": [
+    {
+      "type": 0,
+      "value": "Сесии"
+    }
+  ],
+  "label.settings": [
+    {
+      "type": 0,
+      "value": "Настройки"
+    }
+  ],
+  "label.share-url": [
+    {
+      "type": 0,
+      "value": "Сподели Линк"
+    }
+  ],
+  "label.single-day": [
+    {
+      "type": 0,
+      "value": "Един ден"
+    }
+  ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Start Step"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Стъпки"
+    }
+  ],
+  "label.sum": [
+    {
+      "type": 0,
+      "value": "Сума"
+    }
+  ],
+  "label.tablet": [
+    {
+      "type": 0,
+      "value": "Таблет"
+    }
+  ],
+  "label.team": [
+    {
+      "type": 0,
+      "value": "Екип"
+    }
+  ],
+  "label.team-id": [
+    {
+      "type": 0,
+      "value": "ID на екип"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team manager"
+    }
+  ],
+  "label.team-member": [
+    {
+      "type": 0,
+      "value": "Член на екипа"
+    }
+  ],
+  "label.team-name": [
+    {
+      "type": 0,
+      "value": "Име на екипа"
+    }
+  ],
+  "label.team-owner": [
+    {
+      "type": 0,
+      "value": "Собственик на екипа"
+    }
+  ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "Видимо само за членове на екипа"
+    }
+  ],
+  "label.team-websites": [
+    {
+      "type": 0,
+      "value": "Уебсайтове на екипа"
+    }
+  ],
+  "label.teams": [
+    {
+      "type": 0,
+      "value": "Екипи"
+    }
+  ],
+  "label.theme": [
+    {
+      "type": 0,
+      "value": "Тема"
+    }
+  ],
+  "label.this-month": [
+    {
+      "type": 0,
+      "value": "Този месец"
+    }
+  ],
+  "label.this-week": [
+    {
+      "type": 0,
+      "value": "Тази седмица"
+    }
+  ],
+  "label.this-year": [
+    {
+      "type": 0,
+      "value": "Тази година"
+    }
+  ],
+  "label.timezone": [
+    {
+      "type": 0,
+      "value": "Часова зона"
+    }
+  ],
+  "label.title": [
+    {
+      "type": 0,
+      "value": "Заглавие"
+    }
+  ],
+  "label.today": [
+    {
+      "type": 0,
+      "value": "Днес"
+    }
+  ],
+  "label.toggle-charts": [
+    {
+      "type": 0,
+      "value": "Виж диаграми"
+    }
+  ],
+  "label.total": [
+    {
+      "type": 0,
+      "value": "Общо"
+    }
+  ],
+  "label.total-records": [
+    {
+      "type": 0,
+      "value": "Общо записи"
+    }
+  ],
+  "label.tracking-code": [
+    {
+      "type": 0,
+      "value": "Код за проследяване"
+    }
+  ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "Прехвърли"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Прехвърляне на уебсайт"
+    }
+  ],
+  "label.true": [
+    {
+      "type": 0,
+      "value": "Вярно"
+    }
+  ],
+  "label.type": [
+    {
+      "type": 0,
+      "value": "Вид"
+    }
+  ],
+  "label.unique": [
+    {
+      "type": 0,
+      "value": "Уникален"
+    }
+  ],
+  "label.unique-visitors": [
+    {
+      "type": 0,
+      "value": "Уникални посетители"
+    }
+  ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
+  "label.unknown": [
+    {
+      "type": 0,
+      "value": "Неизвестен"
+    }
+  ],
+  "label.untitled": [
+    {
+      "type": 0,
+      "value": "Без заглавие"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Актуализирай"
+    }
+  ],
+  "label.url": [
+    {
+      "type": 0,
+      "value": "URL адрес"
+    }
+  ],
+  "label.urls": [
+    {
+      "type": 0,
+      "value": "URL адреси"
+    }
+  ],
+  "label.user": [
+    {
+      "type": 0,
+      "value": "Потребител"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
+    }
+  ],
+  "label.username": [
+    {
+      "type": 0,
+      "value": "Потребителско име"
+    }
+  ],
+  "label.users": [
+    {
+      "type": 0,
+      "value": "Потребители"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Следете кампаниите си чрез UTM параметри."
+    }
+  ],
+  "label.value": [
+    {
+      "type": 0,
+      "value": "Стойност"
+    }
+  ],
+  "label.view": [
+    {
+      "type": 0,
+      "value": "Преглед"
+    }
+  ],
+  "label.view-details": [
+    {
+      "type": 0,
+      "value": "Преглед на детайлите"
+    }
+  ],
+  "label.view-only": [
+    {
+      "type": 0,
+      "value": "Само за преглед"
+    }
+  ],
+  "label.views": [
+    {
+      "type": 0,
+      "value": "Прегледи"
+    }
+  ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Прегледи на посещение"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Visit duration"
+    }
+  ],
+  "label.visitors": [
+    {
+      "type": 0,
+      "value": "Посетители"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Посещения"
+    }
+  ],
+  "label.website": [
+    {
+      "type": 0,
+      "value": "Уебсайт"
+    }
+  ],
+  "label.website-id": [
+    {
+      "type": 0,
+      "value": "Идентификатор на уебсайт"
+    }
+  ],
+  "label.websites": [
+    {
+      "type": 0,
+      "value": "Уебсайтове"
+    }
+  ],
+  "label.window": [
+    {
+      "type": 0,
+      "value": "Прозорец"
+    }
+  ],
+  "label.yesterday": [
+    {
+      "type": 0,
+      "value": "Вчера"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "Въведете "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " в полето по-долу, за да потвърдите."
+    }
+  ],
+  "message.active-users": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "активен един"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "активни други"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
+    }
+  ],
+  "message.confirm-delete": [
+    {
+      "type": 0,
+      "value": "Сигурни ли сте, че искате да изтриете "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-leave": [
+    {
+      "type": 0,
+      "value": "Сигурни ли сте, че искате да напуснете "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-remove": [
+    {
+      "type": 0,
+      "value": "Сигурни ли сте, че искате да премахнете "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.confirm-reset": [
+    {
+      "type": 0,
+      "value": "Сигурни ли сте, че искате да нулирате "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
+  "message.delete-team-warning": [
+    {
+      "type": 0,
+      "value": "Изтриването на екип ще изтрие и всички уебсайтове създадени от екипа."
+    }
+  ],
+  "message.delete-website-warning": [
+    {
+      "type": 0,
+      "value": "Всички данни за уебсайта ще бъдат изтрити."
+    }
+  ],
+  "message.error": [
+    {
+      "type": 0,
+      "value": "Възникна грешка."
+    }
+  ],
+  "message.event-log": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " на "
+    },
+    {
+      "type": 1,
+      "value": "url"
+    }
+  ],
+  "message.go-to-settings": [
+    {
+      "type": 0,
+      "value": "Отидете в настройките"
+    }
+  ],
+  "message.incorrect-username-password": [
+    {
+      "type": 0,
+      "value": "Неправилно потребителско име и/или парола."
+    }
+  ],
+  "message.invalid-domain": [
+    {
+      "type": 0,
+      "value": "Невалиден домейн. Не включвайте http/https."
+    }
+  ],
+  "message.min-password-length": [
+    {
+      "type": 0,
+      "value": "Минимална дължина от "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " символа"
+    }
+  ],
+  "message.new-version-available": [
+    {
+      "type": 0,
+      "value": "Има нова версия на Umami "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": "!"
+    }
+  ],
+  "message.no-data-available": [
+    {
+      "type": 0,
+      "value": "Няма налични данни."
+    }
+  ],
+  "message.no-event-data": [
+    {
+      "type": 0,
+      "value": "Няма налични данни за събитие."
+    }
+  ],
+  "message.no-match-password": [
+    {
+      "type": 0,
+      "value": "Паролите не съвпадат."
+    }
+  ],
+  "message.no-results-found": [
+    {
+      "type": 0,
+      "value": "Няма намерени резултати."
+    }
+  ],
+  "message.no-team-websites": [
+    {
+      "type": 0,
+      "value": "Този екип няма никакви уебсайтове."
+    }
+  ],
+  "message.no-teams": [
+    {
+      "type": 0,
+      "value": "Няма създадени екипи."
+    }
+  ],
+  "message.no-users": [
+    {
+      "type": 0,
+      "value": "Няма потребители."
+    }
+  ],
+  "message.no-websites-configured": [
+    {
+      "type": 0,
+      "value": "Нямате конфигурирани уебсайтове."
+    }
+  ],
+  "message.page-not-found": [
+    {
+      "type": 0,
+      "value": "Страницата не е намерена"
+    }
+  ],
+  "message.reset-website": [
+    {
+      "type": 0,
+      "value": "За да нулирате този уебсайт, въведете "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " в полето по-долу, за да потвърдите."
+    }
+  ],
+  "message.reset-website-warning": [
+    {
+      "type": 0,
+      "value": "Всички статистически данни за този уебсайт ще бъдат изтрити, но вашите настройки ще останат непроменени."
+    }
+  ],
+  "message.saved": [
+    {
+      "type": 0,
+      "value": "Запазено."
+    }
+  ],
+  "message.share-url": [
+    {
+      "type": 0,
+      "value": "Статистиката за вашия уебсайт е публично достъпна на следния URL адрес:"
+    }
+  ],
+  "message.team-already-member": [
+    {
+      "type": 0,
+      "value": "Вече сте член на екипа."
+    }
+  ],
+  "message.team-not-found": [
+    {
+      "type": 0,
+      "value": "Екипът не е намерен."
+    }
+  ],
+  "message.team-websites-info": [
+    {
+      "type": 0,
+      "value": "Уебсайтовете могат да бъдат преглеждани от всеки член на екипа."
+    }
+  ],
+  "message.tracking-code": [
+    {
+      "type": 0,
+      "value": "За активирате проследяването на статистиката във вашият уебсайт, поставете следния код в секцията "
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "..."
+        }
+      ],
+      "type": 8,
+      "value": "head"
+    },
+    {
+      "type": 0,
+      "value": " намираща се в вашия HTML."
+    }
+  ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "Искате да прехвърлите този уебсайт към вашия акаунт?"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "Изберете екипът на който да бъде прехвърлен уебсайта."
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Прехвърли собствеността на уебсайта към вашия акаунт или към друг екип."
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "Активирано събитие"
+    }
+  ],
+  "message.user-deleted": [
+    {
+      "type": 0,
+      "value": "Потребителят е изтрит."
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "Страницата е видяна"
+    }
+  ],
+  "message.visitor-log": [
+    {
+      "type": 0,
+      "value": "Посетител от "
+    },
+    {
+      "type": 1,
+      "value": "country"
+    },
+    {
+      "type": 0,
+      "value": ", използващ "
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " на "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "Спад на посетителите"
+    }
+  ]
+}

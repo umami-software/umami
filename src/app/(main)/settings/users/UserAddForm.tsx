@@ -10,9 +10,8 @@ import {
   SubmitButton,
   Button,
 } from 'react-basics';
-import useApi from 'components/hooks/useApi';
+import { useApi, useMessages } from 'components/hooks';
 import { ROLES } from 'lib/constants';
-import useMessages from 'components/hooks/useMessages';
 
 export function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
@@ -30,7 +29,7 @@ export function UserAddForm({ onSave, onClose }) {
     });
   };
 
-  const renderValue = value => {
+  const renderValue = (value: string) => {
     if (value === ROLES.user) {
       return formatMessage(labels.user);
     }

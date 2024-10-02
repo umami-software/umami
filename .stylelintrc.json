@@ -5,13 +5,7 @@
     "stylelint-config-prettier"
   ],
   "rules": {
-    "no-descending-specificity": null,
-    "selector-pseudo-class-no-unknown": [
-      true,
-      {
-        "ignorePseudoClasses": ["global", "horizontal", "vertical"]
-      }
-    ]
+    "no-descending-specificity": null
   },
   "ignoreFiles": ["**/*.js", "**/*.md"]
 }

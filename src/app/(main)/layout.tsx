@@ -1,9 +1,14 @@
+import { Metadata } from 'next';
 import App from './App';
 import NavBar from './NavBar';
 import Page from 'components/layout/Page';
 import styles from './layout.module.css';
 
 export default function ({ children }) {
+  if (process.env.DISABLE_UI) {
+    return null;
+  }
+
   return (
     <App>
       <main className={styles.layout}>
@@ -17,3 +22,10 @@ export default function ({ children }) {
     </App>
   );
 }
+
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Umami',
+    default: 'Umami',
+  },
+};

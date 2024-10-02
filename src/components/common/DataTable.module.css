@@ -1,20 +1,6 @@
-.table {
-  grid-template-rows: repeat(auto-fit, max-content);
-}
-
-.table td {
-  align-items: center;
-  max-height: max-content;
-}
-
 .search {
   max-width: 300px;
   margin: 20px 0;
-}
-
-.action {
-  justify-content: flex-end;
-  gap: 5px;
 }
 
 .body {
@@ -29,10 +15,6 @@
   gap: 10px;
   min-height: 70px;
   align-items: center;
-  min-width: min-content;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .body > div > div > div {

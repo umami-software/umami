@@ -1,0 +1,36 @@
+.menu {
+  position: absolute;
+  max-width: 300px;
+  max-height: 210px;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dropdown {
+  min-width: 200px;
+}
+
+.text {
+  min-width: 200px;
+}
+
+.selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  white-space: nowrap;
+  min-width: 200px;
+  font-weight: 900;
+  background: var(--base100);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+
+.search {
+  position: relative;
+}

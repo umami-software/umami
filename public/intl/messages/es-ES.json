@@ -11,7 +11,7 @@
       "value": "Acciones"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Registro de actividad"
@@ -27,6 +27,18 @@
     {
       "type": 0,
       "value": "Añadir descripción"
+    }
+  ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "Añadir miembro"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Añadir paso"
     }
   ],
   "label.add-website": [
@@ -69,12 +81,6 @@
     {
       "type": 0,
       "value": "Media"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Tiempo promedio de visita"
     }
   ],
   "label.back": [
@@ -143,6 +149,12 @@
       "value": "Limpiar todo"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Comparar"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -165,6 +177,12 @@
     {
       "type": 0,
       "value": "Continuar"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Contar"
     }
   ],
   "label.countries": [
@@ -207,6 +225,18 @@
     {
       "type": 0,
       "value": "Creado"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Creado por"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Actual"
     }
   ],
   "label.current-password": [
@@ -261,6 +291,12 @@
     {
       "type": 0,
       "value": "Eliminar"
+    }
+  ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "Eliminar reporte"
     }
   ],
   "label.delete-team": [
@@ -347,10 +383,28 @@
       "value": "Editar panel"
     }
   ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "Editar miembro"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
       "value": "Habilitar compartir URL"
+    }
+  ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "Paso final"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "URL de entrada"
     }
   ],
   "label.event": [
@@ -369,6 +423,12 @@
     {
       "type": 0,
       "value": "Eventos"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "URL de salida"
     }
   ],
   "label.false": [
@@ -413,16 +473,40 @@
       "value": "Filtros"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Embudo"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
       "value": "Comprender conversión y abandono de usuarios."
+    }
+  ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Objetivo"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Objetivos"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Realice un seguimiento de sus objetivos de páginas vistas y eventos."
     }
   ],
   "label.greater-than": [
@@ -437,6 +521,18 @@
       "value": "Mayor que o igual a"
     }
   ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
+    }
+  ],
   "label.insights": [
     {
       "type": 0,
@@ -446,7 +542,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Profundice en sus datos mediante el uso de segmentos y filtros."
     }
   ],
   "label.is": [
@@ -464,7 +560,7 @@
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "No está establecido"
     }
   ],
   "label.is-set": [
@@ -483,6 +579,18 @@
     {
       "type": 0,
       "value": "Unirse al equipo"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Viaje"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Comprenda cómo los usuarios navegan por su sitio web."
     }
   ],
   "label.language": [
@@ -531,6 +639,26 @@
       "value": " horas"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Últimos "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " meses"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -567,10 +695,28 @@
       "value": "Cerrar sesión"
     }
   ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "Administrar"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
+    }
+  ],
   "label.max": [
     {
       "type": 0,
-      "value": "Máx"
+      "value": "Max"
+    }
+  ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "Miembro"
     }
   ],
   "label.members": [
@@ -582,7 +728,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Mín"
+      "value": "Min"
     }
   ],
   "label.mobile": [
@@ -595,6 +741,12 @@
     {
       "type": 0,
       "value": "Más"
+    }
+  ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "Mi cuenta"
     }
   ],
   "label.my-websites": [
@@ -619,6 +771,46 @@
     {
       "type": 0,
       "value": "Ninguno"
+    }
+  ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "record"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "records"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "OK"
     }
   ],
   "label.os": [
@@ -681,6 +873,18 @@
       "value": "Contraseña"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -691,10 +895,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Anterior"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Periodo anterior"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Año anterior"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Perfil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Propiedad"
     }
   ],
   "label.queries": [
@@ -748,7 +982,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Región"
     }
   ],
   "label.regions": [
@@ -761,6 +995,12 @@
     {
       "type": 0,
       "value": "Quitar"
+    }
+  ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "Eliminar miembro"
     }
   ],
   "label.reports": [
@@ -799,6 +1039,24 @@
       "value": "Medir la frecuencia con la que los usuarios vuelven a tu sitio web."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -829,16 +1087,34 @@
       "value": "Buscar"
     }
   ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "Seleccionar"
+    }
+  ],
   "label.select-date": [
     {
       "type": 0,
       "value": "Seleccionar fecha"
     }
   ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "Seleccionar rol"
+    }
+  ],
   "label.select-website": [
     {
       "type": 0,
       "value": "Seleccionar sitio web"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
     }
   ],
   "label.sessions": [
@@ -865,6 +1141,18 @@
       "value": "Un solo día"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Paso inical"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Pasos"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -883,16 +1171,16 @@
       "value": "Equipo"
     }
   ],
-  "label.team-guest": [
-    {
-      "type": 0,
-      "value": "Invitado al equipo"
-    }
-  ],
   "label.team-id": [
     {
       "type": 0,
       "value": "ID del equipo"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Jefe de equipo"
     }
   ],
   "label.team-member": [
@@ -911,6 +1199,12 @@
     {
       "type": 0,
       "value": "Admin. del equipo"
+    }
+  ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "Vista solo del equipo"
     }
   ],
   "label.team-websites": [
@@ -991,6 +1285,24 @@
       "value": "Código de rastreo"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "Transferir"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Transferir sitio web"
+    }
+  ],
   "label.true": [
     {
       "type": 0,
@@ -1015,6 +1327,12 @@
       "value": "Visitantes únicos"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1025,6 +1343,12 @@
     {
       "type": 0,
       "value": "Sin título"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Actualizar"
     }
   ],
   "label.url": [
@@ -1045,6 +1369,12 @@
       "value": "Usuario"
     }
   ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
+    }
+  ],
   "label.username": [
     {
       "type": 0,
@@ -1055,6 +1385,18 @@
     {
       "type": 0,
       "value": "Usuarios"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Realice un seguimiento de sus campañas a través de parámetros UTM."
     }
   ],
   "label.value": [
@@ -1087,10 +1429,28 @@
       "value": "Vistas"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Vistas por visita"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Tiempo promedio de visita"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Visitantes"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Visitas"
     }
   ],
   "label.website": [
@@ -1121,6 +1481,20 @@
     {
       "type": 0,
       "value": "Ayer"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "Escriba "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " en el cuadro a continuación para confirmar."
     }
   ],
   "message.active-users": [
@@ -1157,6 +1531,12 @@
       "value": "x"
     }
   ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Datos obtenidos"
+    }
+  ],
   "message.confirm-delete": [
     {
       "type": 0,
@@ -1185,6 +1565,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-remove": [
+    {
+      "type": 0,
+      "value": "¿Estás seguro de que desea eliminar "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -1199,32 +1593,10 @@
       "value": "?"
     }
   ],
-  "message.delete-account": [
+  "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Para borrar esta cuenta, escribe "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " a continuación para confirmar."
-    }
-  ],
-  "message.delete-website": [
-    {
-      "type": 0,
-      "value": "Para borrar este sitio web, escribe "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " a continuación para confirmar."
+      "value": "Al eliminar un equipo, también se eliminarán todos los sitios web del equipo."
     }
   ],
   "message.delete-website-warning": [
@@ -1417,10 +1789,40 @@
       "value": "Código de rastreo"
     }
   ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "¿Transferir este sitio web a su cuenta?"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "Seleccione el equipo al que transferir este sitio web."
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Seleccione el equipo al que transferir este sitio web."
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "Evento lanzado"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
       "value": "Usuario eliminado."
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "Página vista"
     }
   ],
   "message.visitor-log": [
@@ -1455,6 +1857,12 @@
     {
       "type": 1,
       "value": "device"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "Los visitantes salieron"
     }
   ]
 }

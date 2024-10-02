@@ -1,0 +1,29 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.item {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: nowrap;
+  padding: 12px;
+  border: 1px solid var(--base400);
+  border-radius: var(--border-radius);
+  box-shadow: 1px 1px 1px var(--base400);
+}
+
+.value {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.icon,
+.close {
+  height: 1.5rem;
+}

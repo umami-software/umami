@@ -1,7 +1,5 @@
-import { Button, Form, FormButtons, SubmitButton } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
-import { setValue } from 'store/cache';
+import { useApi, useMessages, useModified } from 'components/hooks';
+import ConfirmationForm from 'components/common/ConfirmationForm';
 
 export function TeamLeaveForm({
   teamId,
@@ -21,11 +19,12 @@ export function TeamLeaveForm({
   const { mutate, error, isPending } = useMutation({
     mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
   });
+  const { touch } = useModified();
 
-  const handleSubmit = async () => {
+  const handleConfirm = async () => {
     mutate(null, {
       onSuccess: async () => {
-        setValue('team:members', Date.now());
+        touch('teams:members');
         onSave();
         onClose();
       },
@@ -33,17 +32,16 @@ export function TeamLeaveForm({
   };
 
   return (
-    <Form onSubmit={handleSubmit} error={error}>
-      <p>
-        <FormattedMessage {...messages.confirmDelete} values={{ target: <b>{teamName}</b> }} />
-      </p>
-      <FormButtons flex>
-        <SubmitButton variant="danger" disabled={isPending}>
-          {formatMessage(labels.leave)}
-        </SubmitButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
-      </FormButtons>
-    </Form>
+    <ConfirmationForm
+      buttonLabel={formatMessage(labels.leave)}
+      message={
+        <FormattedMessage {...messages.confirmLeave} values={{ target: <b>{teamName}</b> }} />
+      }
+      onConfirm={handleConfirm}
+      onClose={onClose}
+      isLoading={isPending}
+      error={error}
+    />
   );
 }
 

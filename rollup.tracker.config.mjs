@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import buble from '@rollup/plugin-buble';
 import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
@@ -11,11 +10,11 @@ export default {
   },
   plugins: [
     replace({
-      '/api/send': process.env.COLLECT_API_ENDPOINT || '/api/send',
+      '__COLLECT_API_HOST__': process.env.COLLECT_API_HOST || '',
+      '__COLLECT_API_ENDPOINT__': process.env.COLLECT_API_ENDPOINT || '/api/send',
       delimiters: ['', ''],
       preventAssignment: true,
     }),
-    buble({ objectAssign: true }),
     terser({ compress: { evaluate: false } }),
   ],
 };

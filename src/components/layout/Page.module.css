@@ -8,4 +8,5 @@
   margin: 0 auto;
   padding: 0 20px;
   min-height: calc(100vh - 60px);
+  min-height: calc(100dvh - 60px);
 }

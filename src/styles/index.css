@@ -89,3 +89,18 @@ main::-webkit-scrollbar-track {
   background-color: var(--base800);
   background-clip: padding-box;
 }
+
+:root {
+  --dark50: #111111;
+  --dark75: #191919;
+  --dark100: #222222;
+  --dark150: #2a2a2a;
+  --dark200: #313131;
+  --dark300: #3a3a3a;
+  --dark400: #484848;
+  --dark500: #606060;
+  --dark600: #6e6e6e;
+  --dark700: #7b7b7b;
+  --dark800: #b4b4b4;
+  --dark900: #eeeeee;
+}

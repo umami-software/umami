@@ -11,7 +11,7 @@
       "value": "Acciones"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Registro de actividad"
@@ -71,7 +71,7 @@
       "value": "Average"
     }
   ],
-  "label.average-visit-time": [
+  "label.visit-duration": [
     {
       "type": 0,
       "value": "Tiempo promedio de visita"

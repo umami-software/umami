@@ -1,5 +1,4 @@
 import redis from '@umami/redis-client';
-import debug from 'debug';
 import { saveAuth } from 'lib/auth';
 import { secret } from 'lib/crypto';
 import { useValidate } from 'lib/middleware';
@@ -16,8 +15,6 @@ import {
 import { getUserByUsername } from 'queries';
 import * as yup from 'yup';
 import { ROLES } from 'lib/constants';
-
-const log = debug('umami:auth');
 
 export interface LoginRequestBody {
   username: string;
@@ -66,8 +63,6 @@ export default async (
         user: { id, username, role, createdAt, isAdmin: role === ROLES.admin },
       });
     }
-
-    log('Login failed:', { username, user });
 
     return unauthorized(res, 'message.incorrect-username-password');
   }

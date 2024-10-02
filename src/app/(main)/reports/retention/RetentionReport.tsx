@@ -1,10 +1,9 @@
-'use client';
 import RetentionTable from './RetentionTable';
 import RetentionParameters from './RetentionParameters';
-import Report from '../[id]/Report';
-import ReportHeader from '../[id]/ReportHeader';
-import ReportMenu from '../[id]/ReportMenu';
-import ReportBody from '../[id]/ReportBody';
+import Report from '../[reportId]/Report';
+import ReportHeader from '../[reportId]/ReportHeader';
+import ReportMenu from '../[reportId]/ReportMenu';
+import ReportBody from '../[reportId]/ReportBody';
 import Magnet from 'assets/magnet.svg';
 import { REPORT_TYPES } from 'lib/constants';
 import { parseDateRange } from 'lib/date';
@@ -19,7 +18,7 @@ const defaultParameters = {
   },
 };
 
-export default function RetentionReport({ reportId }: { reportId: string }) {
+export default function RetentionReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Magnet />} />

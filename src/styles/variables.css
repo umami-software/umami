@@ -4,3 +4,10 @@ html body {
   --primary600: var(--blue1000);
   --primary700: var(--blue1100);
 }
+
+[data-theme='dark'] {
+  --primary400: var(--blue600);
+  --primary500: var(--blue700);
+  --primary600: var(--blue800);
+  --primary700: var(--blue900);
+}

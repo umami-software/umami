@@ -4,11 +4,14 @@ import Bars from 'assets/bars.svg';
 import BarChart from 'assets/bar-chart.svg';
 import Bolt from 'assets/bolt.svg';
 import Calendar from 'assets/calendar.svg';
+import Change from 'assets/change.svg';
 import Clock from 'assets/clock.svg';
+import Compare from 'assets/compare.svg';
 import Dashboard from 'assets/dashboard.svg';
 import Eye from 'assets/eye.svg';
 import Gear from 'assets/gear.svg';
 import Globe from 'assets/globe.svg';
+import Location from 'assets/location.svg';
 import Lock from 'assets/lock.svg';
 import Logo from 'assets/logo.svg';
 import Magnet from 'assets/magnet.svg';
@@ -29,11 +32,14 @@ const icons = {
   BarChart,
   Bolt,
   Calendar,
+  Change,
   Clock,
+  Compare,
   Dashboard,
   Eye,
   Gear,
   Globe,
+  Location,
   Lock,
   Logo,
   Magnet,
