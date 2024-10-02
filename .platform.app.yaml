@@ -36,8 +36,7 @@ mounts:
         source_path: uploads
 
 # The size of the persistent disk of the application (in MB).
-# We need to let 2GB for the system, so the minimum disk size is 3072MB. (of 5GB)
-disk: 3072
+disk: 512
 
 # current: 0.65 CPUs & 0.65 GB Memory
 # formula base_memory + (0.5 * memory_ratio) = 
