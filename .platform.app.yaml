@@ -36,7 +36,7 @@ mounts:
         source_path: uploads
 
 # The size of the persistent disk of the application (in MB).
-disk: 4096
+# disk: 4096
 
 # Default resources will take place if we don't specify any.
 # resources:
