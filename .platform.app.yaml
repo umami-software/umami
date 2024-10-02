@@ -42,7 +42,7 @@ disk: 3072
 # current: 0.65 CPUs & 0.65 GB Memory
 resources:
     base_memory: 512
-    memory_ratio: 512
+    memory_ratio: 412
 
 # The relationships of the application with services or other applications.
 #
