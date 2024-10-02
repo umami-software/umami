@@ -36,10 +36,10 @@ mounts:
         source_path: uploads
 
 # The size of the persistent disk of the application (in MB).
-disk: 2048
+disk: 256
 
 resources:
-    base_memory: 256
+    base_memory: 462
     memory_ratio: 128
 
 # The relationships of the application with services or other applications.
