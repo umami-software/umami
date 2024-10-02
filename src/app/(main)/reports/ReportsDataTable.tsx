@@ -14,12 +14,8 @@ export default function ReportsDataTable({
 }) {
   const queryResult = useReports({ websiteId, teamId });
 
-  if (queryResult?.result?.data?.length === 0) {
-    return children;
-  }
-
   return (
-    <DataTable queryResult={queryResult}>
+    <DataTable queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => <ReportsTable data={data} showDomain={!websiteId} />}
     </DataTable>
   );

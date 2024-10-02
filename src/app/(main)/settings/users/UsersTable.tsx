@@ -1,4 +1,4 @@
-import { Text, Icon, Icons, GridTable, GridColumn, useBreakpoint } from 'react-basics';
+import { Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import { ROLES } from 'lib/constants';
 import { useMessages, useLocale } from 'components/hooks';
@@ -14,10 +14,9 @@ export function UsersTable({
 }) {
   const { formatMessage, labels } = useMessages();
   const { dateLocale } = useLocale();
-  const breakpoint = useBreakpoint();
 
   return (
-    <GridTable data={data} cardMode={['xs', 'sm', 'md'].includes(breakpoint)}>
+    <GridTable data={data}>
       <GridColumn name="username" label={formatMessage(labels.username)} style={{ minWidth: 0 }} />
       <GridColumn name="role" label={formatMessage(labels.role)} width={'120px'}>
         {row =>

@@ -1,11 +1,11 @@
 import useApi from './useApi';
-import useFilterQuery from './useFilterQuery';
+import usePagedQuery from './usePagedQuery';
 import useModified from '../useModified';
 
 export function useReports({ websiteId, teamId }: { websiteId?: string; teamId?: string }) {
   const { modified } = useModified(`reports`);
   const { get, del, useMutation } = useApi();
-  const queryResult = useFilterQuery({
+  const queryResult = usePagedQuery({
     queryKey: ['reports', { websiteId, teamId, modified }],
     queryFn: (params: any) => {
       return get('/reports', { websiteId, teamId, ...params });

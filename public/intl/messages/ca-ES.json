@@ -11,7 +11,7 @@
       "value": "Accions"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Registre d'activitat"
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Comparar"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Recompte"
     }
   ],
   "label.countries": [
@@ -236,7 +236,7 @@
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Actual"
     }
   ],
   "label.current-password": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Pas Final"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL d'entrada"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL de sortida"
     }
   ],
   "label.false": [
@@ -473,6 +473,12 @@
       "value": "Filtres"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "Vist per primer cop"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -488,19 +494,19 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Meta"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Metes"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Feu un seguiment de les seves metes per a pàgines vistes i esdeveniments."
     }
   ],
   "label.greater-than": [
@@ -518,13 +524,13 @@
   "label.host": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "Amfitrió"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "Amfitrions"
     }
   ],
   "label.insights": [
@@ -578,13 +584,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Trajecte"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users nagivate through your website."
+      "value": "Entengui com naveguen els usuaris pel seu lloc web."
     }
   ],
   "label.language": [
@@ -645,6 +651,12 @@
     {
       "type": 0,
       "value": " mesos"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Vist per últim cop"
     }
   ],
   "label.leave": [
@@ -777,7 +789,7 @@
           "value": [
             {
               "type": 0,
-              "value": "record"
+              "value": "registre"
             }
           ]
         },
@@ -785,7 +797,7 @@
           "value": [
             {
               "type": 0,
-              "value": "records"
+              "value": "registres"
             }
           ]
         }
@@ -861,6 +873,18 @@
       "value": "Contrasenya"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Camí"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Camins"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -874,19 +898,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Anterior"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Període anterior"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Any anterior"
     }
   ],
   "label.profile": [
@@ -895,10 +919,16 @@
       "value": "Perfil"
     }
   ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Propietats"
+    }
+  ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Propietat"
     }
   ],
   "label.queries": [
@@ -1009,6 +1039,24 @@
       "value": "Mesuri la retenció del seu lloc web fent un seguiment de la freqüència amb què tornen els usuaris."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Ingressos"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Observi els seus ingressos al llarg del temps."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Propietat d'Ingressos"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -1063,6 +1111,12 @@
       "value": "Seleccionar lloc web"
     }
   ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Sessió"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1090,7 +1144,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Pas inicial"
     }
   ],
   "label.steps": [
@@ -1126,7 +1180,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Responsable d'equip"
     }
   ],
   "label.team-member": [
@@ -1231,6 +1285,12 @@
       "value": "Codi de seguiment"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transaccions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1267,6 +1327,12 @@
       "value": "Visitants únics"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Clients Únics"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1301,6 +1367,12 @@
     {
       "type": 0,
       "value": "Usuari"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Propietat d'Usuari"
     }
   ],
   "label.username": [
@@ -1360,7 +1432,7 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Vistes per visita"
     }
   ],
   "label.visit-duration": [
@@ -1462,7 +1534,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Dades recol·lectades"
     }
   ],
   "message.confirm-delete": [
@@ -1790,7 +1862,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Els visitants han sortit"
+      "value": "Visitants han sortit"
     }
   ]
 }

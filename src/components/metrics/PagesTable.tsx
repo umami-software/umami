@@ -25,7 +25,7 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
 
   const buttons = [
     {
-      label: 'URL',
+      label: formatMessage(labels.path),
       key: 'url',
     },
     {

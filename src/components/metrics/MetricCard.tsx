@@ -10,7 +10,7 @@ export interface MetricCardProps {
   change?: number;
   label?: string;
   reverseColors?: boolean;
-  formatValue?: typeof formatNumber;
+  formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
   showPrevious?: boolean;

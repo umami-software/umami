@@ -79,18 +79,20 @@ export function Chart({
   };
 
   const updateChart = (data: any) => {
-    if (data.datasets.length === chart.current.data.datasets.length) {
-      chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
-        if (data?.datasets[index]) {
-          dataset.data = data?.datasets[index]?.data;
+    if (data.datasets) {
+      if (data.datasets.length === chart.current.data.datasets.length) {
+        chart.current.data.datasets.forEach((dataset: { data: any }, index: string | number) => {
+          if (data?.datasets[index]) {
+            dataset.data = data?.datasets[index]?.data;
 
-          if (chart.current.legend.legendItems[index]) {
-            chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+            if (chart.current.legend.legendItems[index]) {
+              chart.current.legend.legendItems[index].text = data?.datasets[index]?.label;
+            }
           }
-        }
-      });
-    } else {
-      chart.current.data.datasets = data.datasets;
+        });
+      } else {
+        chart.current.data.datasets = data.datasets;
+      }
     }
 
     chart.current.options = options;

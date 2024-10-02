@@ -1,28 +1,18 @@
 import FilterLink from 'components/common/FilterLink';
 import { emptyFilter } from 'lib/filters';
-import { useLocale } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import { useCountryNames } from 'components/hooks';
+import { useMessages, useLocale, useRegionNames } from 'components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import regions from '../../../public/iso-3166-2.json';
+import TypeIcon from 'components/common/TypeIcon';
 
 export function RegionsTable(props: MetricsTableProps) {
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
-  const countryNames = useCountryNames(locale);
-
-  const renderLabel = (code: string, country: string) => {
-    const region = code.includes('-') ? code : `${country}-${code}`;
-    return regions[region] ? `${regions[region]}, ${countryNames[country]}` : region;
-  };
+  const { getRegionName } = useRegionNames(locale);
 
   const renderLink = ({ x: code, country }) => {
     return (
-      <FilterLink id="region" className={locale} value={code} label={renderLabel(code, country)}>
-        <img
-          src={`${process.env.basePath || ''}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
-          alt={code}
-        />
+      <FilterLink id="region" className={locale} value={code} label={getRegionName(code, country)}>
+        <TypeIcon type="country" value={country?.toLowerCase()} />
       </FilterLink>
     );
   };

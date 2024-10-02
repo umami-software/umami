@@ -6,7 +6,6 @@ import { useNavigation } from 'components/hooks';
 import { FILTER_COLUMNS } from 'lib/constants';
 import WebsiteChart from '../WebsiteChart';
 import WebsiteCompareTables from './WebsiteCompareTables';
-import WebsiteProvider from '../WebsiteProvider';
 
 export function WebsiteComparePage({ websiteId }) {
   const { query } = useNavigation();
@@ -19,13 +18,13 @@ export function WebsiteComparePage({ websiteId }) {
   }, {});
 
   return (
-    <WebsiteProvider websiteId={websiteId}>
+    <>
       <WebsiteHeader websiteId={websiteId} />
       <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} compareMode={true} showFilter={true} />
       <WebsiteChart websiteId={websiteId} compareMode={true} />
       <WebsiteCompareTables websiteId={websiteId} />
-    </WebsiteProvider>
+    </>
   );
 }
 

@@ -5,6 +5,7 @@ import Page from 'components/layout/Page';
 import Header from './Header';
 import Footer from './Footer';
 import styles from './SharePage.module.css';
+import { WebsiteProvider } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export default function SharePage({ shareId }) {
   const { shareToken, isLoading } = useShareToken(shareId);
@@ -17,7 +18,9 @@ export default function SharePage({ shareId }) {
     <div className={styles.container}>
       <Page>
         <Header />
-        <WebsiteDetailsPage websiteId={shareToken.websiteId} />
+        <WebsiteProvider websiteId={shareToken.websiteId}>
+          <WebsiteDetailsPage websiteId={shareToken.websiteId} />
+        </WebsiteProvider>
         <Footer />
       </Page>
     </div>

@@ -22,10 +22,6 @@ if (!process.env.SKIP_DB_CHECK && !process.env.DATABASE_TYPE) {
   checkMissing(['DATABASE_URL']);
 }
 
-if (process.env.CLICKHOUSE_URL) {
-  checkMissing(['KAFKA_BROKER', 'KAFKA_URL', 'REDIS_URL']);
-}
-
 if (process.env.CLOUD_MODE) {
-  checkMissing(['CLOUD_URL']);
+  checkMissing(['CLOUD_URL', 'KAFKA_BROKER', 'KAFKA_URL', 'REDIS_URL']);
 }

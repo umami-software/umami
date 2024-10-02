@@ -13,11 +13,18 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { teamId, renderTeamUrl } = useTeamUrl();
   const router = useRouter();
   const { result } = useTeams(user.id);
-  const hasTeams = result?.data?.length > 0;
-  const isTeamOwner =
-    (!teamId && hasTeams) ||
-    (hasTeams &&
-      result?.data
+  const canTransferWebsite =
+    (
+      !teamId &&
+      result.data.filter(({ teamUser }) =>
+        teamUser.find(
+          ({ role, userId }) =>
+            [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
+        ),
+      )
+    ).length > 0 ||
+    (teamId &&
+      !!result?.data
         ?.find(({ id }) => id === teamId)
         ?.teamUser.find(({ role, userId }) => role === ROLES.teamOwner && userId === user.id));
 
@@ -37,8 +44,8 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
         label={formatMessage(labels.transferWebsite)}
         description={formatMessage(messages.transferWebsite)}
       >
-        <ModalTrigger disabled={!isTeamOwner}>
-          <Button variant="secondary" disabled={!isTeamOwner}>
+        <ModalTrigger disabled={!canTransferWebsite}>
+          <Button variant="secondary" disabled={!canTransferWebsite}>
             {formatMessage(labels.transfer)}
           </Button>
           <Modal title={formatMessage(labels.transferWebsite)}>
