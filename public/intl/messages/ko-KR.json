@@ -1012,7 +1012,7 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "사용자가 얼마나 자주 돌아오는지를 추적하여 웹사이트의 리텐션을 측정하십시오."
+      "value": "사용자가 얼마나 자주 돌아오는지를 추적하여 웹사이트의 리텐션을 측정하세요."
     }
   ],
   "label.revenue": [
@@ -1372,7 +1372,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "UTM 매개변수를 통해 캠페인을 추적합니다."
+      "value": "UTM 매개변수를 통해 캠페인을 추적하세요."
     }
   ],
   "label.value": [
@@ -1414,7 +1414,7 @@
   "label.visit-duration": [
     {
       "type": 0,
-      "value": "평균 방문 시간"
+      "value": "방문 시간"
     }
   ],
   "label.visitors": [
@@ -1548,7 +1548,7 @@
   "message.error": [
     {
       "type": 0,
-      "value": "오류가 발생했습니다."
+      "value": "문제가 발생했습니다."
     }
   ],
   "message.event-log": [
