@@ -1,4 +1,4 @@
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 
 export function useRevenueValues(websiteId: string, startDate: Date, endDate: Date) {
   const { get, useQuery } = useApi();
