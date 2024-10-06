@@ -20,11 +20,26 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Extract version parts from input
+        id: extract_version
+        run: |
+          echo "version=$(echo ${{ github.event.inputs.version }})" >> $GITHUB_ENV
+          echo "major=$(echo ${{ github.event.inputs.version }} | cut -d. -f1)" >> $GITHUB_ENV
+          echo "minor=$(echo ${{ github.event.inputs.version }} | cut -d. -f2)" >> $GITHUB_ENV
+
+      - name: Generate tags
+        id: generate_tags
+        run: |
+          echo "tag_major=$(echo ${{ matrix.db-type }}-${{ env.major }})" >> $GITHUB_ENV
+          echo "tag_minor=$(echo ${{ matrix.db-type }}-${{ env.major }}.${{ env.minor }})" >> $GITHUB_ENV
+          echo "tag_patch=$(echo ${{ matrix.db-type }}-${{ env.version }})" >> $GITHUB_ENV
+          echo "tag_latest=$(echo ${{ matrix.db-type }}-latest)" >> $GITHUB_ENV
+
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
         with:
           image: umami
-          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true
@@ -36,7 +51,7 @@ jobs:
         name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
         with:
           image: umamisoftware/umami
-          tags: ${{ matrix.db-type }}-${{ inputs.version }}, ${{ matrix.db-type }}-latest
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}

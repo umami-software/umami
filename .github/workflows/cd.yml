@@ -17,14 +17,21 @@ jobs:
 
       - name: Set env
         run: |
-          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
           echo "NOW=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> $GITHUB_ENV
+          
+      - name: Generate tags
+        id: generate_tags
+        run: |
+          echo "tag_patch=$(echo ${{ matrix.db-type }})-${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "tag_minor=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1,2)" >> $GITHUB_ENV
+          echo "tag_major=$(echo ${{ matrix.db-type }})-$(echo ${GITHUB_REF#refs/tags/} | cut -d. -f1)" >> $GITHUB_ENV
+          echo "tag_latest=$(echo ${{ matrix.db-type }})-latest" >> $GITHUB_ENV
 
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image to ghcr.io for ${{ matrix.db-type }}
         with:
           image: umami
-          tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: ghcr.io
           multiPlatform: true
@@ -32,12 +39,11 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-
       - uses: mr-smithers-excellent/docker-build-push@v6
         name: Build & push Docker image to docker.io for ${{ matrix.db-type }}
         with:
           image: umamisoftware/umami
-          tags: ${{ matrix.db-type }}-${{ env.RELEASE_VERSION }}, ${{ matrix.db-type }}-latest
+          tags: ${{ env.tag_major }}, ${{ env.tag_minor }}, ${{ env.tag_patch }}, ${{ env.tag_latest }}
           buildArgs: DATABASE_TYPE=${{ matrix.db-type }}
           registry: docker.io
           username: ${{ secrets.DOCKER_USERNAME }}
