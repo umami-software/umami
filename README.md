@@ -107,6 +107,16 @@ docker pull docker.umami.is/umami-software/umami:mysql-latest
 
 ---
 
+## 💻 One-click Deploy
+
+### Elestio
+
+You can deploy Umami on Elestio using one-click deployment. Elestio supports Umami by providing revenue share so go ahead and click below to deploy and use Umami.
+
+[![Deploy on Elestio](https://elest.io/images/logos/deploy-to-elestio-btn.png)](https://elest.io/open-source/umami)
+
+---
+
 ## 🔄 Getting Updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
