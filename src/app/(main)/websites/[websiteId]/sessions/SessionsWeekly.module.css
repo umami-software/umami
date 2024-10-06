@@ -13,7 +13,7 @@
 .day {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: flex-center;
   justify-content: flex-start;
   gap: 1px;
   position: relative;
@@ -33,6 +33,8 @@
   font-weight: 700;
   color: var(--font-color300);
   height: 20px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .block {

@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { Loading, cloneChildren } from 'react-basics';
 import ErrorMessage from 'components/common/ErrorMessage';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 import styles from './MetricsBar.module.css';
 
 export interface MetricsBarProps {
@@ -12,7 +13,8 @@ export interface MetricsBarProps {
 }
 
 export function MetricsBar({ children, isLoading, isFetched, error }: MetricsBarProps) {
-  const formatFunc = n => (n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`);
+  const intl = useIntl();
+  const formatFunc = (n: number) => intl.formatNumber(n, formatLongNumberOptions(n));
 
   return (
     <div className={styles.bar}>

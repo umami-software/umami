@@ -1,15 +1,17 @@
-import { format, startOfDay, addHours } from 'date-fns';
+import { format } from 'date-fns';
 import { useLocale, useMessages, useWebsiteSessionsWeekly } from 'components/hooks';
 import { LoadingPanel } from 'components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from 'lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
 import { TooltipPopup } from 'react-basics';
+import { useIntl } from 'react-intl';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
   const { data, ...props } = useWebsiteSessionsWeekly(websiteId);
   const { dateLocale } = useLocale();
   const { labels, formatMessage } = useMessages();
+  const intl = useIntl();
 
   const [, max] = data
     ? data.reduce((arr: number[], hours: number[], index: number) => {
@@ -40,10 +42,9 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
           {Array(24)
             .fill(null)
             .map((_, i) => {
-              const label = format(addHours(startOfDay(new Date()), i), 'haaa');
               return (
                 <div key={i} className={styles.hour}>
-                  {label}
+                  {intl.formatTime(new Date().setHours(i), { hour: 'numeric' })}
                 </div>
               );
             })}

@@ -1,3 +1,5 @@
+import type { FormatNumberOptions, IntlShape } from 'react-intl';
+
 export function parseTime(val: number) {
   const days = ~~(val / 86400);
   const hours = ~~(val / 3600) - days * 24;
@@ -14,24 +16,26 @@ export function parseTime(val: number) {
   };
 }
 
-export function formatTime(val: number) {
-  const { hours, minutes, seconds } = parseTime(val);
-  const h = hours > 0 ? `${hours}:` : '';
-  const m = hours > 0 ? minutes.toString().padStart(2, '0') : minutes;
-  const s = seconds.toString().padStart(2, '0');
-
-  return `${h}${m}:${s}`;
-}
-
-export function formatShortTime(val: number, formats = ['m', 's'], space = '') {
+export function formatShortTime(
+  intl: IntlShape,
+  useMessages: any,
+  val: number,
+  formats = ['m', 's'],
+) {
+  const { formatMessage, labels } = useMessages;
   const { days, hours, minutes, seconds, ms } = parseTime(val);
   let t = '';
 
-  if (days > 0 && formats.indexOf('d') !== -1) t += `${days}d${space}`;
-  if (hours > 0 && formats.indexOf('h') !== -1) t += `${hours}h${space}`;
-  if (minutes > 0 && formats.indexOf('m') !== -1) t += `${minutes}m${space}`;
-  if (seconds > 0 && formats.indexOf('s') !== -1) t += `${seconds}s${space}`;
-  if (ms > 0 && formats.indexOf('ms') !== -1) t += `${ms}ms`;
+  if (days > 0 && formats.indexOf('d') !== -1)
+    t += `${formatMessage(labels.days, { x: intl.formatNumber(days) })} `;
+  if (hours > 0 && formats.indexOf('h') !== -1)
+    t += `${formatMessage(labels.hours, { x: intl.formatNumber(hours) })} `;
+  if (minutes > 0 && formats.indexOf('m') !== -1)
+    t += `${formatMessage(labels.minutes, { x: intl.formatNumber(minutes) })} `;
+  if (seconds > 0 && formats.indexOf('s') !== -1)
+    t += `${formatMessage(labels.seconds, { x: intl.formatNumber(seconds) })} `;
+  if (ms > 0 && formats.indexOf('ms') !== -1)
+    t += formatMessage(labels.milliseconds, { x: intl.formatNumber(ms) });
 
   if (!t) {
     return `0${formats[formats.length - 1]}`;
@@ -44,23 +48,16 @@ export function formatNumber(n: string | number) {
   return Number(n).toFixed(0);
 }
 
-export function formatLongNumber(value: number) {
-  const n = Number(value);
-
-  if (n >= 1000000) {
-    return `${(n / 1000000).toFixed(1)}m`;
-  }
-  if (n >= 100000) {
-    return `${(n / 1000).toFixed(0)}k`;
-  }
-  if (n >= 10000) {
-    return `${(n / 1000).toFixed(1)}k`;
-  }
-  if (n >= 1000) {
-    return `${(n / 1000).toFixed(2)}k`;
-  }
-
-  return formatNumber(n);
+export function formatLongNumberOptions(value: number): FormatNumberOptions {
+  return value < 100
+    ? {
+        notation: 'compact',
+        maximumFractionDigits: 0,
+      }
+    : {
+        notation: 'compact',
+        maximumSignificantDigits: 3,
+      };
 }
 
 export function stringToColor(str: string) {

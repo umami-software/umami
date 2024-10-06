@@ -11,13 +11,14 @@ import {
 import { startOfMonth, endOfMonth } from 'date-fns';
 import Icons from 'components/icons';
 import { useLocale } from 'components/hooks';
-import { formatDate } from 'lib/date';
+import { useIntl } from 'react-intl';
 import styles from './MonthSelect.module.css';
 
 export function MonthSelect({ date = new Date(), onChange }) {
-  const { locale, dateLocale } = useLocale();
-  const month = formatDate(date, 'MMMM', locale);
-  const year = date.getFullYear();
+  const { dateLocale } = useLocale();
+  const intl = useIntl();
+  const month = intl.formatDate(date, { month: 'numeric' });
+  const year = intl.formatDate(date, { year: 'numeric' });
   const ref = useRef();
 
   const handleChange = (close: () => void, date: Date) => {

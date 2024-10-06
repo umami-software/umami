@@ -1,15 +1,16 @@
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from 'components/hooks';
+import { useFormat, useMessages, useRegionNames, useTimezone } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import TypeIcon from 'components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
 import Icons from 'components/icons';
 import styles from './SessionInfo.module.css';
 
 export default function SessionInfo({ data }) {
-  const { locale } = useLocale();
+  const intl = useIntl();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const { getRegionName } = useRegionNames(locale);
+  const { getRegionName } = useRegionNames();
 
   return (
     <div className={styles.info}>
@@ -20,10 +21,14 @@ export default function SessionInfo({ data }) {
         </dd>
 
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
+        <dd>
+          {formatTimezoneDate(intl, data?.lastAt, { dateStyle: 'full', timeStyle: 'medium' })}
+        </dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
+        <dd>
+          {formatTimezoneDate(intl, data?.firstAt, { dateStyle: 'full', timeStyle: 'medium' })}
+        </dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>

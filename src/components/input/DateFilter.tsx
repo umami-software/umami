@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
 import DatePickerForm from 'components/metrics/DatePickerForm';
-import { useLocale, useMessages } from 'components/hooks';
+import { useMessages } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import Icons from 'components/icons';
-import { formatDate, parseDateValue } from 'lib/date';
+import { parseDateValue } from 'lib/date';
 import styles from './DateFilter.module.css';
 import classNames from 'classnames';
 
@@ -31,7 +32,7 @@ export function DateFilter({
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
-  const { locale } = useLocale();
+  const intl = useIntl();
 
   const options = [
     { label: formatMessage(labels.today), value: '0day' },
@@ -101,11 +102,11 @@ export function DateFilter({
     const { unit } = parseDateValue(value) || {};
 
     if (offset && unit === 'year') {
-      return formatDate(startDate, 'yyyy', locale);
+      return intl.formatDate(startDate, { year: 'numeric' });
     }
 
     if (offset && unit === 'month') {
-      return formatDate(startDate, 'MMMM yyyy', locale);
+      return intl.formatDate(startDate, { year: 'numeric', month: 'long' });
     }
 
     if (value.startsWith('range') || offset) {
@@ -156,7 +157,7 @@ export function DateFilter({
 }
 
 const CustomRange = ({ startDate, endDate, unit, onClick }) => {
-  const { locale } = useLocale();
+  const intl = useIntl();
 
   const monthFormat = unit === 'month';
 
@@ -173,11 +174,12 @@ const CustomRange = ({ startDate, endDate, unit, onClick }) => {
       </Icon>
       <Text>
         {monthFormat ? (
-          <>{formatDate(startDate, 'MMMM yyyy', locale)}</>
+          <>{intl.formatDate(startDate, { year: 'numeric', month: 'long' })}</>
         ) : (
           <>
-            {formatDate(startDate, 'd LLL y', locale)}
-            {!isSameDay(startDate, endDate) && ` — ${formatDate(endDate, 'd LLL y', locale)}`}
+            {isSameDay(startDate, endDate)
+              ? intl.formatDate(startDate, { dateStyle: 'medium' })
+              : intl.formatDateTimeRange(startDate, endDate)}
           </>
         )}
       </Text>

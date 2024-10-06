@@ -3,6 +3,7 @@ import { Loading, Icon, StatusLight } from 'react-basics';
 import Icons from 'components/icons';
 import { useSessionActivity, useTimezone } from 'components/hooks';
 import styles from './SessionActivity.module.css';
+import { useIntl } from 'react-intl';
 
 export function SessionActivity({
   websiteId,
@@ -15,6 +16,7 @@ export function SessionActivity({
   startDate: Date;
   endDate: Date;
 }) {
+  const intl = useIntl();
   const { formatTimezoneDate } = useTimezone();
   const { data, isLoading } = useSessionActivity(websiteId, sessionId, startDate, endDate);
 
@@ -33,12 +35,14 @@ export function SessionActivity({
         return (
           <>
             {showHeader && (
-              <div className={styles.header}>{formatTimezoneDate(createdAt, 'EEEE, PPP')}</div>
+              <div className={styles.header}>
+                {formatTimezoneDate(intl, createdAt, { dateStyle: 'full' })}
+              </div>
             )}
             <div key={eventId} className={styles.row}>
               <div className={styles.time}>
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
-                  {formatTimezoneDate(createdAt, 'h:mm:ss aaa')}
+                  {formatTimezoneDate(intl, createdAt, { timeStyle: 'medium' })}
                 </StatusLight>
               </div>
               <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>

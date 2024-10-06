@@ -2,7 +2,8 @@ import { FixedSizeList } from 'react-window';
 import { useSpring, animated, config } from '@react-spring/web';
 import classNames from 'classnames';
 import Empty from 'components/common/Empty';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 import { useMessages } from 'components/hooks';
 import styles from './ListTable.module.css';
 import { ReactNode } from 'react';
@@ -82,6 +83,7 @@ export function ListTable({
 }
 
 const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentage = true }) => {
+  const intl = useIntl();
   const props = useSpring({
     width: percent,
     y: value,
@@ -94,14 +96,20 @@ const AnimatedRow = ({ label, value = 0, percent, change, animate, showPercentag
       <div className={styles.label}>{label}</div>
       <div className={styles.value}>
         {change}
-        <animated.div className={styles.value} title={props?.y as any}>
-          {props.y?.to(formatLongNumber)}
+        <animated.div
+          className={styles.value}
+          title={props?.y.to((n: number) => intl.formatNumber(n))}
+          style={{ fontVariantNumeric: 'tabular-nums' }}
+        >
+          {props.y?.to((n: number) => intl.formatNumber(n, formatLongNumberOptions(n)))}
         </animated.div>
       </div>
       {showPercentage && (
         <div className={styles.percent}>
           <animated.div className={styles.bar} style={{ width: props.width.to(n => `${n}%`) }} />
-          <animated.span>{props.width.to(n => `${n?.toFixed?.(0)}%`)}</animated.span>
+          <animated.span style={{ fontVariantNumeric: 'tabular-nums' }}>
+            {props.width.to(n => intl.formatNumber(n / 100, { style: 'percent' }))}
+          </animated.span>
         </div>
       )}
     </div>

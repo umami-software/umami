@@ -1,25 +1,20 @@
-import { formatDate } from 'lib/date';
-import { formatLongNumber } from 'lib/format';
+import { type IntlShape } from 'react-intl';
 
-export function renderNumberLabels(label: string) {
-  return +label > 1000 ? formatLongNumber(+label) : label;
-}
-
-export function renderDateLabels(unit: string, locale: string) {
+export function renderDateLabels(intl: IntlShape, unit: string) {
   return (label: string, index: number, values: any[]) => {
     const d = new Date(values[index].value);
 
     switch (unit) {
       case 'minute':
-        return formatDate(d, 'h:mm', locale);
+        return intl.formatDate(d, { timeStyle: 'short' });
       case 'hour':
-        return formatDate(d, 'p', locale);
+        return intl.formatDate(d, { timeStyle: 'short' });
       case 'day':
-        return formatDate(d, 'MMM d', locale);
+        return intl.formatDate(d, { month: 'short', day: 'numeric' });
       case 'month':
-        return formatDate(d, 'MMM', locale);
+        return intl.formatDate(d, { month: 'short' });
       case 'year':
-        return formatDate(d, 'YYY', locale);
+        return intl.formatDate(d, { year: 'numeric' });
       default:
         return label;
     }

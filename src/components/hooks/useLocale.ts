@@ -4,11 +4,8 @@ import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';
 import { useForceUpdate } from './useForceUpdate';
-import enUS from '../../../public/intl/country/en-US.json';
 
-const messages = {
-  'en-US': enUS,
-};
+const messages = {};
 
 const selector = (state: { locale: any }) => state.locale;
 

@@ -4,8 +4,11 @@ import { useFormat, useMessages, useTimezone } from 'components/hooks';
 import Avatar from 'components/common/Avatar';
 import styles from './SessionsTable.module.css';
 import TypeIcon from 'components/common/TypeIcon';
+import { useIntl } from 'react-intl';
+import { formatLongNumberOptions } from 'lib/format';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
+  const intl = useIntl();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
@@ -19,8 +22,20 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
           </Link>
         )}
       </GridColumn>
-      <GridColumn name="visits" label={formatMessage(labels.visits)} width="100px" />
-      <GridColumn name="views" label={formatMessage(labels.views)} width="100px" />
+      <GridColumn name="visits" label={formatMessage(labels.visits)} width="100px">
+        {row => (
+          <span title={intl.formatNumber(row.visits)}>
+            {intl.formatNumber(row.visits, formatLongNumberOptions(row.visits))}
+          </span>
+        )}
+      </GridColumn>
+      <GridColumn name="views" label={formatMessage(labels.views)} width="100px">
+        {row => (
+          <span title={intl.formatNumber(row.views)}>
+            {intl.formatNumber(row.views, formatLongNumberOptions(row.views))}
+          </span>
+        )}
+      </GridColumn>
       <GridColumn name="country" label={formatMessage(labels.country)}>
         {row => (
           <TypeIcon type="country" value={row.country}>
@@ -51,7 +66,7 @@ export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean
         )}
       </GridColumn>
       <GridColumn name="lastAt" label={formatMessage(labels.lastSeen)}>
-        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
+        {row => formatTimezoneDate(intl, row.createdAt, { dateStyle: 'long', timeStyle: 'medium' })}
       </GridColumn>
     </GridTable>
   );

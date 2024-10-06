@@ -1,13 +1,11 @@
 import useMessages from './useMessages';
 import { BROWSERS, OS_NAMES } from 'lib/constants';
-import useLocale from './useLocale';
-import useCountryNames from './useCountryNames';
+import { useIntl } from 'react-intl';
 import regions from '../../../public/iso-3166-2.json';
 
 export function useFormat() {
   const { formatMessage, labels } = useMessages();
-  const { locale } = useLocale();
-  const { countryNames } = useCountryNames(locale);
+  const intl = useIntl();
 
   const formatOS = (value: string): string => {
     return OS_NAMES[value] || value;
@@ -22,16 +20,20 @@ export function useFormat() {
   };
 
   const formatCountry = (value: string): string => {
-    return countryNames[value] || value;
+    return intl.formatDisplayName(value, { type: 'region' }) || value;
   };
 
   const formatRegion = (value: string): string => {
     const [country] = value.split('-');
-    return regions[value] ? `${regions[value]}, ${countryNames[country]}` : value;
+    return regions[value]
+      ? `${regions[value]}, ${intl.formatDisplayName(country, { type: 'region' })}`
+      : value;
   };
 
   const formatCity = (value: string, country?: string): string => {
-    return countryNames[country] ? `${value}, ${countryNames[country]}` : value;
+    return intl.formatDisplayName(country, { type: 'region' })
+      ? `${value}, ${intl.formatDisplayName(country, { type: 'region' })}`
+      : value;
   };
 
   const formatValue = (value: string, type: string, data?: { [key: string]: any }): string => {

@@ -3,7 +3,8 @@ import { useDateRange, useMessages, useSticky } from 'components/hooks';
 import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime, formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions, formatShortTime } from 'lib/format';
+import { useIntl } from 'react-intl';
 import WebsiteFilterButton from './WebsiteFilterButton';
 import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
 import styles from './WebsiteMetricsBar.module.css';
@@ -32,6 +33,7 @@ export function WebsiteMetricsBar({
     compareMode && dateCompare,
   );
   const isAllTime = dateRange.value === 'all';
+  const intl = useIntl();
 
   const { pageviews, visitors, visits, bounces, totaltime } = data || {};
 
@@ -41,19 +43,19 @@ export function WebsiteMetricsBar({
           ...pageviews,
           label: formatMessage(labels.views),
           change: pageviews.value - pageviews.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           ...visits,
           label: formatMessage(labels.visits),
           change: visits.value - visits.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           ...visitors,
           label: formatMessage(labels.visitors),
           change: visitors.value - visitors.prev,
-          formatValue: formatLongNumber,
+          formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
         },
         {
           label: formatMessage(labels.bounceRate),
@@ -62,7 +64,7 @@ export function WebsiteMetricsBar({
           change:
             (Math.min(visits.value, bounces.value) / visits.value) * 100 -
             (Math.min(visits.prev, bounces.prev) / visits.prev) * 100,
-          formatValue: n => Math.round(+n) + '%',
+          formatValue: (n: number) => intl.formatNumber(+n / 100, { style: 'percent' }),
           reverseColors: true,
         },
         {
@@ -70,8 +72,12 @@ export function WebsiteMetricsBar({
           value: totaltime.value / visits.value,
           prev: totaltime.prev / visits.prev,
           change: totaltime.value / visits.value - totaltime.prev / visits.prev,
-          formatValue: n =>
-            `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
+          formatValue: (n: number) =>
+            `${+n < 0 ? '-' : ''}${formatShortTime(
+              intl,
+              { formatMessage, labels },
+              Math.abs(~~n),
+            )}`,
         },
       ]
     : [];

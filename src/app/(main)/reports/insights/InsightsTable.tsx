@@ -4,12 +4,14 @@ import { useFormat, useMessages } from 'components/hooks';
 import { ReportContext } from '../[reportId]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
 import { formatShortTime } from 'lib/format';
+import { useIntl } from 'react-intl';
 
 export function InsightsTable() {
   const [fields, setFields] = useState([]);
   const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
+  const intl = useIntl();
 
   useEffect(
     () => {
@@ -65,7 +67,11 @@ export function InsightsTable() {
       >
         {row => {
           const n = row?.totaltime / row?.visits;
-          return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
+          return `${+n < 0 ? '-' : ''}${formatShortTime(
+            intl,
+            { formatMessage, labels },
+            Math.abs(~~n),
+          )}`;
         }}
       </GridColumn>
     </GridTable>

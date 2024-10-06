@@ -1,8 +1,8 @@
-import useCountryNames from './useCountryNames';
+import { useIntl } from 'react-intl';
 import regions from '../../../public/iso-3166-2.json';
 
-export function useRegionNames(locale: string) {
-  const { countryNames } = useCountryNames(locale);
+export function useRegionNames() {
+  const intl = useIntl();
 
   const getRegionName = (regionCode: string, countryCode?: string) => {
     if (!countryCode) {
@@ -10,7 +10,9 @@ export function useRegionNames(locale: string) {
     }
 
     const region = regionCode.includes('-') ? regionCode : `${countryCode}-${regionCode}`;
-    return regions[region] ? `${regions[region]}, ${countryNames[countryCode]}` : region;
+    return regions[region]
+      ? `${regions[region]}, ${intl.formatDisplayName(countryCode, { type: 'region' })}`
+      : region;
   };
 
   return { regionNames: regions, getRegionName };

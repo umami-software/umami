@@ -4,8 +4,10 @@ import Empty from 'components/common/Empty';
 import Avatar from 'components/common/Avatar';
 import Link from 'next/link';
 import Icons from 'components/icons';
+import { useIntl } from 'react-intl';
 
 export function EventsTable({ data = [] }) {
+  const intl = useIntl();
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl } = useTeamUrl();
@@ -35,7 +37,7 @@ export function EventsTable({ data = [] }) {
         }}
       </GridColumn>
       <GridColumn name="created" label={formatMessage(labels.created)} width={'300px'}>
-        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
+        {row => formatTimezoneDate(intl, row.createdAt, { dateStyle: 'long', timeStyle: 'medium' })}
       </GridColumn>
     </GridTable>
   );

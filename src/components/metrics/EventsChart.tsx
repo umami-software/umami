@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { colord } from 'colord';
 import BarChart from 'components/charts/BarChart';
-import { useLocale, useDateRange, useWebsiteEventsSeries } from 'components/hooks';
+import { useDateRange, useWebsiteEventsSeries } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import { CHART_COLORS } from 'lib/constants';
 import { renderDateLabels } from 'lib/charts';
 
@@ -14,8 +15,8 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange(websiteId);
-  const { locale } = useLocale();
   const { data, isLoading } = useWebsiteEventsSeries(websiteId);
+  const intl = useIntl();
 
   const chartData = useMemo(() => {
     if (!data) return [];
@@ -53,7 +54,7 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
       data={chartData}
       unit={unit}
       stacked={true}
-      renderXLabel={renderDateLabels(unit, locale)}
+      renderXLabel={renderDateLabels(intl, unit)}
       isLoading={isLoading}
     />
   );

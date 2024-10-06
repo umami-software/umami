@@ -1,7 +1,8 @@
 import { Chart, ChartProps } from 'components/charts/Chart';
 import { useState } from 'react';
 import { StatusLight } from 'react-basics';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 
 export interface BubbleChartProps extends ChartProps {
   type?: 'bubble';
@@ -10,6 +11,7 @@ export interface BubbleChartProps extends ChartProps {
 export default function BubbleChart(props: BubbleChartProps) {
   const [tooltip, setTooltip] = useState(null);
   const { type = 'bubble' } = props;
+  const intl = useIntl();
 
   const handleTooltip = ({ tooltip }) => {
     const { labelColors, dataPoints } = tooltip;
@@ -17,7 +19,8 @@ export default function BubbleChart(props: BubbleChartProps) {
     setTooltip(
       tooltip.opacity ? (
         <StatusLight color={labelColors?.[0]?.backgroundColor}>
-          {formatLongNumber(dataPoints?.[0]?.raw)} {dataPoints?.[0]?.label}
+          {intl.formatNumber(dataPoints?.[0]?.raw, formatLongNumberOptions(dataPoints?.[0]?.raw))}{' '}
+          {dataPoints?.[0]?.label}
         </StatusLight>
       ) : null,
     );

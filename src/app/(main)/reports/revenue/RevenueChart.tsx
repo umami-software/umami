@@ -3,9 +3,10 @@ import { useLocale, useMessages } from 'components/hooks';
 import MetricCard from 'components/metrics/MetricCard';
 import MetricsBar from 'components/metrics/MetricsBar';
 import { renderDateLabels } from 'lib/charts';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
 import { useContext, useMemo } from 'react';
 import { ReportContext } from '../[reportId]/Report';
+import { useIntl } from 'react-intl';
 
 export interface PageviewsChartProps extends BarChartProps {
   isLoading?: boolean;
@@ -14,6 +15,7 @@ export interface PageviewsChartProps extends BarChartProps {
 export function RevenueChart({ isLoading, ...props }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
+  const intl = useIntl();
   const { report } = useContext(ReportContext);
   const { data, parameters } = report || {};
 
@@ -55,22 +57,22 @@ export function RevenueChart({ isLoading, ...props }: PageviewsChartProps) {
       {
         value: sum,
         label: formatMessage(labels.total),
-        formatValue: formatLongNumber,
+        formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
       },
       {
         value: avg,
         label: formatMessage(labels.average),
-        formatValue: formatLongNumber,
+        formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
       },
       {
         value: count,
         label: formatMessage(labels.transactions),
-        formatValue: formatLongNumber,
+        formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
       },
       {
         value: uniqueCount,
         label: formatMessage(labels.uniqueCustomers),
-        formatValue: formatLongNumber,
+        formatValue: (n: number) => intl.formatNumber(n, formatLongNumberOptions(n)),
       },
     ] as any;
   }, [data, locale]);
@@ -88,7 +90,7 @@ export function RevenueChart({ isLoading, ...props }: PageviewsChartProps) {
           data={chartData}
           unit={parameters?.dateRange.unit}
           isLoading={isLoading}
-          renderXLabel={renderDateLabels(parameters?.dateRange.unit, locale)}
+          renderXLabel={renderDateLabels(intl, parameters?.dateRange.unit)}
         />
       )}
     </>

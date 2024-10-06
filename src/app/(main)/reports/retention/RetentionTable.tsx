@@ -2,15 +2,15 @@ import { useContext } from 'react';
 import classNames from 'classnames';
 import { ReportContext } from '../[reportId]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useMessages, useLocale } from 'components/hooks';
-import { formatDate } from 'lib/date';
+import { useMessages } from 'components/hooks';
+import { useIntl } from 'react-intl';
 import styles from './RetentionTable.module.css';
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
 
 export function RetentionTable({ days = DAYS }) {
   const { formatMessage, labels } = useMessages();
-  const { locale } = useLocale();
+  const intl = useIntl();
   const { report } = useContext(ReportContext);
   const { data } = report || {};
 
@@ -52,7 +52,7 @@ export function RetentionTable({ days = DAYS }) {
         {rows.map(({ date, visitors, records }, rowIndex) => {
           return (
             <div key={rowIndex} className={styles.row}>
-              <div className={styles.date}>{formatDate(date, 'PP', locale)}</div>
+              <div className={styles.date}>{intl.formatDate(date, { dateStyle: 'medium' })}</div>
               <div className={styles.visitors}>{visitors}</div>
               {days.map(day => {
                 if (totalDays - rowIndex < day) {

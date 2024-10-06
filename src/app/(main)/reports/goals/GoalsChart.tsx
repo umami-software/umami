@@ -2,12 +2,14 @@ import { useContext } from 'react';
 import classNames from 'classnames';
 import { useMessages } from 'components/hooks';
 import { ReportContext } from '../[reportId]/Report';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumberOptions } from 'lib/format';
+import { useIntl } from 'react-intl';
 import styles from './GoalsChart.module.css';
 
 export function GoalsChart({ className }: { className?: string; isLoading?: boolean }) {
   const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
+  const intl = useIntl();
 
   const { data } = report || {};
 
@@ -58,10 +60,15 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
               </div>
               <div className={styles.metric}>
                 <div className={styles.value}>
-                  {formatLongNumber(result)}
-                  <span className={styles.total}> / {formatLongNumber(goal)}</span>
+                  {intl.formatNumber(result, formatLongNumberOptions(result))}
+                  <span className={styles.total}>
+                    {' '}
+                    / {intl.formatNumber(goal, formatLongNumberOptions(goal))}
+                  </span>
                 </div>
-                <div className={styles.percent}>{((result / goal) * 100).toFixed(2)}%</div>
+                <div className={styles.percent}>
+                  {intl.formatNumber(result / goal, { style: 'percent', maximumFractionDigits: 1 })}
+                </div>
               </div>
             </div>
           </div>
