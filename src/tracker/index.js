@@ -6,9 +6,9 @@
     document,
     history,
   } = window;
-  const localStorage = location.href.startsWith('data:') ? undefined : window.localStorage
   const { hostname, href } = location;
   const { currentScript, referrer } = document;
+  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
   if (!currentScript) return;
 
@@ -63,7 +63,7 @@
 
   const getPayload = () => ({
     website,
-    hostname || 'none',
+    hostname,
     screen,
     language,
     title: encode(title),
