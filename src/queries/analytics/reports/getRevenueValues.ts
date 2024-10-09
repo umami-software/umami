@@ -34,8 +34,8 @@ async function relationalQuery(
     `
     select distinct string_value as currency
     from event_data
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    where website_id = {{websiteId::uuid}}
+      and created_at between {{startDate}} and {{endDate}}
       and data_key ${like} '%currency%'
     order by currency   
     `,

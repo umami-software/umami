@@ -29,7 +29,7 @@ export function RevenueTable() {
         {row => row.count}
       </GridColumn>
       <GridColumn name="currency" label={formatMessage(labels.uniqueCustomers)} alignment="end">
-        {row => row.uniqueCount}
+        {row => row.unique_count}
       </GridColumn>
     </GridTable>
   );

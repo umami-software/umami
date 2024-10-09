@@ -87,7 +87,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
   const metricData = useMemo(() => {
     if (!data) return [];
 
-    const { sum, avg, count, uniqueCount } = data.total;
+    const { sum, avg, count, unique_count } = data.total;
 
     return [
       {
@@ -106,7 +106,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
         formatValue: formatLongNumber,
       },
       {
-        value: uniqueCount,
+        value: unique_count,
         label: formatMessage(labels.uniqueCustomers),
         formatValue: formatLongNumber,
       },
@@ -121,29 +121,31 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
             return <MetricCard key={label} value={value} label={label} formatValue={formatValue} />;
           })}
         </MetricsBar>
-        <BarChart
-          minDate={dateRange?.startDate}
-          maxDate={dateRange?.endDate}
-          data={chartData}
-          unit={dateRange?.unit}
-          stacked={true}
-          currency={currency}
-          renderXLabel={renderDateLabels(dateRange?.unit, locale)}
-          isLoading={isLoading}
-        />
         {data && (
-          <GridRow columns="two">
-            <ListTable
-              metric={formatMessage(labels.country)}
-              data={data?.country.map(({ name, value }) => ({
-                x: name,
-                y: value,
-                z: (value / data?.total.sum) * 100,
-              }))}
-              renderLabel={renderCountryName}
+          <>
+            <BarChart
+              minDate={dateRange?.startDate}
+              maxDate={dateRange?.endDate}
+              data={chartData}
+              unit={dateRange?.unit}
+              stacked={true}
+              currency={currency}
+              renderXLabel={renderDateLabels(dateRange?.unit, locale)}
+              isLoading={isLoading}
             />
-            <PieChart type="doughnut" data={countryData} />
-          </GridRow>
+            <GridRow columns="two">
+              <ListTable
+                metric={formatMessage(labels.country)}
+                data={data?.country.map(({ name, value }) => ({
+                  x: name,
+                  y: Number(value),
+                  z: (value / data?.total.sum) * 100,
+                }))}
+                renderLabel={renderCountryName}
+              />
+              <PieChart type="doughnut" data={countryData} />
+            </GridRow>
+          </>
         )}
         {showTable && <RevenueTable />}
       </div>
