@@ -11,7 +11,11 @@ export function RevenueParameters() {
   const { id, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
   const queryEnabled = websiteId && dateRange;
-  const { data: values = [] } = useRevenueValues(websiteId, dateRange.startDate, dateRange.endDate);
+  const { data: values = [] } = useRevenueValues(
+    websiteId,
+    dateRange?.startDate,
+    dateRange?.endDate,
+  );
 
   const handleSubmit = (data: any, e: any) => {
     e.stopPropagation();
