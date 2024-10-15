@@ -170,7 +170,8 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
               <Button
                 id="generate-revenue-button"
                 data-umami-event="checkout-cart"
-                data-umami-event-revenue={(Math.random() * 100).toFixed(2).toString()}
+                data-umami-event-revenue={(Math.random() * 10000).toFixed(2).toString()}
+                data-umami-event-currency="USD"
                 variant="primary"
               >
                 Generate revenue data
