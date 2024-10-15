@@ -87,7 +87,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
   const metricData = useMemo(() => {
     if (!data) return [];
 
-    const { sum, avg, count, unique_count } = data.total;
+    const { sum, count, unique_count } = data.total;
 
     return [
       {
@@ -96,7 +96,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
         formatValue: n => formatLongCurrency(n, currency),
       },
       {
-        value: avg,
+        value: count ? sum / count : 0,
         label: formatMessage(labels.average),
         formatValue: n => formatLongCurrency(n, currency),
       },

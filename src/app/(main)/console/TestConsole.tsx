@@ -55,35 +55,35 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
       referrer: 'https://www.google.com',
     }));
     window['umami'].track('checkout-cart', {
-      revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-      currency: 'SHIBA',
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'USD',
     });
     window['umami'].track('affiliate-link', {
-      revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-      currency: 'ETH',
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'USD',
     });
     window['umami'].track('promotion-link', {
-      revenue: parseFloat((Math.random() * 100000).toFixed(2)),
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
       currency: 'USD',
     });
     window['umami'].track('checkout-cart', {
-      revenue: parseFloat((Math.random() * 100000).toFixed(2)),
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
       currency: 'EUR',
     });
     window['umami'].track('promotion-link', {
-      revenue: parseFloat((Math.random() * 100000).toFixed(2)),
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
       currency: 'EUR',
     });
     window['umami'].track('affiliate-link', {
       item1: {
         productIdentity: 'ABC424',
-        revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-        currency: 'MXN',
+        revenue: parseFloat((Math.random() * 10000).toFixed(2)),
+        currency: 'JPY',
       },
       item2: {
         productIdentity: 'ZYW684',
-        revenue: parseFloat((Math.random() * 100000).toFixed(2)),
-        currency: 'MXN',
+        revenue: parseFloat((Math.random() * 10000).toFixed(2)),
+        currency: 'JPY',
       },
     });
   }

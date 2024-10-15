@@ -32,11 +32,10 @@ async function relationalQuery(
 ): Promise<{
   chart: { x: string; t: string; y: number }[];
   country: { name: string; value: number }[];
-  total: { sum: number; avg: number; count: number; unique_count: number };
+  total: { sum: number; count: number; unique_count: number };
   table: {
     currency: string;
     sum: number;
-    avg: number;
     count: number;
     unique_count: number;
   }[];
@@ -96,7 +95,6 @@ async function relationalQuery(
     `
     select
       sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
-      avg(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as avg,
       count(distinct event_id) as count,
       count(distinct session_id) as unique_count
     from event_data ed
@@ -119,7 +117,6 @@ async function relationalQuery(
     select
       c.currency,
       sum(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as sum,
-      avg(coalesce(cast(number_value as decimal(10,2)), cast(string_value as decimal(10,2)))) as avg,
       count(distinct ed.website_event_id) as count,
       count(distinct we.session_id) as unique_count
     from event_data ed
@@ -153,11 +150,10 @@ async function clickhouseQuery(
 ): Promise<{
   chart: { x: string; t: string; y: number }[];
   country: { name: string; value: number }[];
-  total: { sum: number; avg: number; count: number; unique_count: number };
+  total: { sum: number; count: number; unique_count: number };
   table: {
     currency: string;
     sum: number;
-    avg: number;
     count: number;
     unique_count: number;
   }[];
@@ -230,7 +226,6 @@ async function clickhouseQuery(
     `
     select
       sum(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as sum,
-      avg(coalesce(toDecimal64(number_value, 2), toDecimal64(string_value, 2))) as avg,
       uniqExact(event_id) as count,
       uniqExact(session_id) as unique_count
     from event_data
@@ -259,7 +254,6 @@ async function clickhouseQuery(
     select
       c.currency,
       sum(coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2))) as sum,
-      avg(coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2))) as avg,
       uniqExact(ed.event_id) as count,
       uniqExact(ed.session_id) as unique_count
     from event_data ed

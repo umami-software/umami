@@ -23,7 +23,7 @@ export function RevenueTable() {
         {row => formatLongCurrency(row.sum, row.currency)}
       </GridColumn>
       <GridColumn name="currency" label={formatMessage(labels.average)} alignment="end">
-        {row => formatLongCurrency(row.avg, row.currency)}
+        {row => formatLongCurrency(row.count ? row.sum / row.count : 0, row.currency)}
       </GridColumn>
       <GridColumn name="currency" label={formatMessage(labels.transactions)} alignment="end">
         {row => row.count}

@@ -114,5 +114,5 @@ export function formatLongCurrency(value: number, currency: string, locale = 'en
     return `${formatCurrency(n / 1000, currency, locale)}k`;
   }
 
-  return formatCurrency(n / 1000, currency, locale);
+  return formatCurrency(n, currency, locale);
 }
