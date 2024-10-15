@@ -33,7 +33,7 @@ export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
 
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
-export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event'];
+export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'tag'];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -63,6 +63,7 @@ export const FILTER_COLUMNS = {
   city: 'city',
   language: 'language',
   event: 'event_name',
+  tag: 'tag',
 };
 
 export const COLLECTION_TYPE = {

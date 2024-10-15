@@ -1,6 +1,6 @@
 -- add tag column
 ALTER TABLE umami.website_event ADD COLUMN "tag" String AFTER "event_name";
-ALTER TABLE umami.website_event_stats_hourly ADD COLUMN "tag" String AFTER "max_time";
+ALTER TABLE umami.website_event_stats_hourly ADD COLUMN "tag" SimpleAggregateFunction(groupArrayArray, Array(String)) AFTER "max_time";
 
 -- update materialized view
 DROP TABLE umami.website_event_stats_hourly_mv;
@@ -58,7 +58,7 @@ FROM (SELECT
     sumIf(1, event_type = 1) views,
     min(created_at) min_time,
     max(created_at) max_time,
-    tag,
+    arrayFilter(x -> x != '', groupArray(tag)) tag,
     toStartOfHour(created_at) timestamp
 FROM umami.website_event
 GROUP BY website_id,
@@ -74,5 +74,4 @@ GROUP BY website_id,
     subdivision1,
     city,
     event_type,
-    tag,
     timestamp);
