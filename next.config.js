@@ -61,7 +61,7 @@ if (trackerScriptName) {
     names.forEach(name => {
       rewrites.push({
         source: `/${name.replace(/^\/+/, '')}`,
-        destination: '/script.js',
+        destination: '/tracker.js',
       });
     });
   }
@@ -163,6 +163,10 @@ const config = {
   async rewrites() {
     return [
       ...rewrites,
+      {
+        source: '/script.js',
+        destination: 'https://tracker-script.umami.dev/',
+      },
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',

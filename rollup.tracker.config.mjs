@@ -5,7 +5,7 @@ import { terser } from 'rollup-plugin-terser';
 export default {
   input: 'src/tracker/index.js',
   output: {
-    file: 'public/script.js',
+    file: 'public/tracker.js',
     format: 'iife',
   },
   plugins: [
