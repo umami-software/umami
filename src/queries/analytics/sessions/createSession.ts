@@ -15,6 +15,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
     subdivision1,
     subdivision2,
     city,
+    ip,
   } = data;
 
   return prisma.client.session.create({
@@ -31,6 +32,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
       subdivision1,
       subdivision2,
       city,
+      ip,
     },
   });
 }

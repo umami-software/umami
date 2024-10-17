@@ -46,7 +46,13 @@ export default function SessionInfo({ data }) {
           </Icon>
           {data?.city}
         </dd>
-
+        <dt>{formatMessage(labels.ip)}</dt>
+        <dd>
+          <Icon>
+            <Icons.IP />
+          </Icon>
+          {data?.ip}
+        </dd>
         <dt>{formatMessage(labels.os)}</dt>
         <dd>
           <TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
