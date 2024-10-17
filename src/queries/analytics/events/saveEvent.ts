@@ -151,7 +151,7 @@ async function clickhouseQuery(data: {
     website_id: websiteId,
     session_id: sessionId,
     visit_id: visitId,
-    event_id: uuid(),
+    event_id: eventId,
     country: country,
     subdivision1:
       country && subdivision1
