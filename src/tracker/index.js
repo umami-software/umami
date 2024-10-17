@@ -53,8 +53,10 @@
 
   const parseURL = url => {
     try {
-      const { pathname, search } = new URL(url);
-      url = pathname + search;
+      // use location.origin as the base to handle cases where the url is a relative path
+      const { href, origin } = new URL(url, location.origin);
+      const originStartReg = new RegExp(`^${origin}`);
+      url = href.replace(originStartReg, '');
     } catch (e) {
       /* empty */
     }
