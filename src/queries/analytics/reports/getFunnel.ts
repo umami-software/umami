@@ -70,9 +70,26 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const operator = cv.type === 'url' && cv.value.endsWith('*') ? 'like' : '=';
         const column = cv.type === 'url' ? 'url_path' : 'event_name';
-        const paramValue = cv.value.endsWith('*') ? cv.value.replace('*', '%') : cv.value;
+
+        let operator: string;
+        let paramValue: string;
+
+        if (cv.type === 'url') {
+          if (cv.value.includes('*')) {
+            operator = '~';
+            paramValue = cv.value.replace(/\*/g, '.*');
+          } else if (cv.value.endsWith('*')) {
+            operator = 'like';
+            paramValue = cv.value.replace('*', '%');
+          } else {
+            operator = '=';
+            paramValue = cv.value;
+          }
+        } else {
+          operator = '=';
+          paramValue = cv.value;
+        }
 
         if (levelNumber === 1) {
           pv.levelOneQuery = `
@@ -167,9 +184,26 @@ async function clickhouseQuery(
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const operator = cv.type === 'url' && cv.value.endsWith('*') ? 'like' : '=';
         const column = cv.type === 'url' ? 'url_path' : 'event_name';
-        const paramValue = cv.value.endsWith('*') ? cv.value.replace('*', '%') : cv.value;
+
+        let operator: string;
+        let paramValue: string;
+
+        if (cv.type === 'url') {
+          if (cv.value.includes('*')) {
+            operator = 'match';
+            paramValue = cv.value.replace(/\*/g, '.*');
+          } else if (cv.value.endsWith('*')) {
+            operator = 'like';
+            paramValue = cv.value.replace('*', '%');
+          } else {
+            operator = '=';
+            paramValue = cv.value;
+          }
+        } else {
+          operator = '=';
+          paramValue = cv.value;
+        }
 
         if (levelNumber === 1) {
           pv.levelOneQuery = `\n
