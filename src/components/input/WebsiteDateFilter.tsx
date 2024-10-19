@@ -1,10 +1,12 @@
 import { useDateRange, useLocale } from 'components/hooks';
 import { isAfter } from 'date-fns';
 import { getOffsetDateRange } from 'lib/date';
+import { DateRange } from 'lib/types';
+import { useState } from 'react';
 import { Button, Icon, Icons } from 'react-basics';
 import DateFilter from './DateFilter';
+import WebsiteChartSettings from './WebsiteChartSettings';
 import styles from './WebsiteDateFilter.module.css';
-import { DateRange } from 'lib/types';
 
 export function WebsiteDateFilter({
   websiteId,
@@ -16,6 +18,7 @@ export function WebsiteDateFilter({
   const { dir } = useLocale();
   const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, startDate, endDate, offset } = dateRange;
+  const [showChartParams, setShowChartParams] = useState(false);
   const disableForward =
     value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
 
@@ -51,6 +54,18 @@ export function WebsiteDateFilter({
             </Icon>
           </Button>
         </div>
+      )}
+      <Button onClick={() => setShowChartParams(true)}>
+        <Icon rotate={dir === 'rtl' ? 270 : 90}>
+          <Icons.Menu />
+        </Icon>
+      </Button>
+      {showChartParams && (
+        <WebsiteChartSettings
+          isOpened={showChartParams}
+          onClose={() => setShowChartParams(false)}
+          onChange={handleChange}
+        />
       )}
     </div>
   );

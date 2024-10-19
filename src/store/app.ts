@@ -1,15 +1,17 @@
-import { create } from 'zustand';
 import {
   DATE_RANGE_CONFIG,
   DEFAULT_DATE_RANGE,
   DEFAULT_LOCALE,
   DEFAULT_THEME,
+  DEFAULT_TIME_UNIT,
   LOCALE_CONFIG,
   THEME_CONFIG,
+  TIME_UNIT_CONFIG,
   TIMEZONE_CONFIG,
 } from 'lib/constants';
-import { getItem } from 'next-basics';
 import { getTimezone } from 'lib/date';
+import { getItem } from 'next-basics';
+import { create } from 'zustand';
 
 function getDefaultTheme() {
   return typeof window !== 'undefined'
@@ -24,6 +26,7 @@ const initialState = {
   theme: getItem(THEME_CONFIG) || getDefaultTheme() || DEFAULT_THEME,
   timezone: getItem(TIMEZONE_CONFIG) || getTimezone(),
   dateRange: getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE,
+  timeUnit: getItem(TIME_UNIT_CONFIG) || DEFAULT_TIME_UNIT,
   shareToken: null,
   user: null,
   config: null,
@@ -57,6 +60,10 @@ export function setConfig(config: object) {
 
 export function setDateRange(dateRange: string | object) {
   store.setState({ dateRange });
+}
+
+export function setTimeUnit(timeUnit: string | object) {
+  store.setState({ timeUnit });
 }
 
 export default store;
