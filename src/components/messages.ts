@@ -70,6 +70,7 @@ export const labels = defineMessages({
   confirmPassword: { id: 'label.confirm-password', defaultMessage: 'Confirm password' },
   timezone: { id: 'label.timezone', defaultMessage: 'Timezone' },
   defaultDateRange: { id: 'label.default-date-range', defaultMessage: 'Default date range' },
+  timeUnit: { id: 'label.time-unit', defaultMessage: 'Time Unit' },
   language: { id: 'label.language', defaultMessage: 'Language' },
   theme: { id: 'label.theme', defaultMessage: 'Theme' },
   profile: { id: 'label.profile', defaultMessage: 'Profile' },
