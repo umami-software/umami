@@ -1,3 +1,20 @@
-.dropdown span {
-  white-space: nowrap;
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.buttons button:first-child {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-end: 1px solid var(--base400);
+}
+
+.buttons button:last-child {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
 }
