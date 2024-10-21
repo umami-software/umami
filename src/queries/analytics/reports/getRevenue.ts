@@ -81,7 +81,7 @@ async function relationalQuery(
     join (select website_event_id
           from event_data
           where data_key ${like} '%currency%'
-            and string_value = 'USD') currency
+            and string_value = {{currency}}) currency
     on currency.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
       and ed.created_at between {{startDate}} and {{endDate}}
@@ -103,7 +103,7 @@ async function relationalQuery(
     join (select website_event_id
           from event_data
           where data_key ${like} '%currency%'
-            and string_value = 'USD') currency
+            and string_value = {{currency}}) currency
       on currency.website_event_id = ed.website_event_id
     where ed.website_id = {{websiteId::uuid}}
       and ed.created_at between {{startDate}} and {{endDate}}
