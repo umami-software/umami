@@ -25,6 +25,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       country,
       subdivision1,
       city,
+      ip,
       min(min_time) as "firstAt",
       max(max_time) as "lastAt",
       count(distinct visit_id) as visits,
@@ -44,6 +45,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
           session.country,
           session.subdivision1,
           session.city,
+          session.ip,
           min(website_event.created_at) as min_time,
           max(website_event.created_at) as max_time,
           sum(case when website_event.event_type = 1 then 1 else 0 end) as views,
@@ -52,8 +54,8 @@ async function relationalQuery(websiteId: string, sessionId: string) {
     join website_event on website_event.session_id = session.session_id
     where session.website_id = {{websiteId::uuid}}
       and session.session_id = {{sessionId::uuid}}
-    group by session.session_id, visit_id, session.website_id, session.hostname, session.browser, session.os, session.device, session.screen, session.language, session.country, session.subdivision1, session.city) t
-    group by id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city;
+    group by session.session_id, visit_id, session.website_id, session.hostname, session.browser, session.os, session.device, session.screen, session.language, session.country, session.subdivision1, session.city, session.ip) t
+    group by id, website_id, hostname, browser, os, device, screen, language, country, subdivision1, city, ip;
     `,
     { websiteId, sessionId },
   ).then(result => result?.[0]);
@@ -75,6 +77,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       country,
       subdivision1,
       city,
+      ip,
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) visits,
@@ -94,6 +97,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
               country,
               subdivision1,
               city,
+              ip,
               min(min_time) as min_time,
               max(max_time) as max_time,
               sum(views) as views,
