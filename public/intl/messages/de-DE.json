@@ -20,7 +20,7 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Hinzufügen"
     }
   ],
   "label.add-description": [
@@ -32,7 +32,7 @@
   "label.add-website": [
     {
       "type": 0,
-      "value": "Webseite hinzufügen"
+      "value": "Website hinzufügen"
     }
   ],
   "label.admin": [
@@ -44,7 +44,7 @@
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Nach"
     }
   ],
   "label.all": [
@@ -86,7 +86,7 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Vor"
     }
   ],
   "label.bounce-rate": [
@@ -134,7 +134,7 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Stadt"
     }
   ],
   "label.clear-all": [
@@ -158,7 +158,7 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Enthält"
     }
   ],
   "label.continue": [
@@ -176,13 +176,19 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Land"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Create"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Report erstellen"
+      "value": "Bericht erstellen"
     }
   ],
   "label.create-team": [
@@ -230,7 +236,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Datum"
     }
   ],
   "label.date-range": [
@@ -242,7 +248,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Tag"
     }
   ],
   "label.default-date-range": [
@@ -272,7 +278,7 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Webseite löschen"
+      "value": "Website löschen"
     }
   ],
   "label.description": [
@@ -296,7 +302,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Gerät"
     }
   ],
   "label.devices": [
@@ -314,7 +320,7 @@
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Enthält nicht"
     }
   ],
   "label.domain": [
@@ -356,7 +362,7 @@
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event daten"
+      "value": "Eventdaten"
     }
   ],
   "label.events": [
@@ -368,19 +374,25 @@
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Falsch"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Feld"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Felder"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filter"
     }
   ],
   "label.filter-combined": [
@@ -398,13 +410,19 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filter"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
       "value": "Funnel"
+    }
+  ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Understand the conversion and drop-off rate of users."
     }
   ],
   "label.greater-than": [
@@ -425,28 +443,34 @@
       "value": "Insights"
     }
   ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Dive deeper into your data by using segments and filters."
+    }
+  ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Ist"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Ist nicht"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Ist nicht gesetzt"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Ist gesetzt"
     }
   ],
   "label.join": [
@@ -576,7 +600,7 @@
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Meine Websites"
     }
   ],
   "label.name": [
@@ -618,7 +642,7 @@
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Seite "
     },
     {
       "type": 1,
@@ -626,7 +650,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " von "
     },
     {
       "type": 1,
@@ -642,7 +666,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Seitentitel"
     }
   ],
   "label.pages": [
@@ -742,7 +766,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reporte"
+      "value": "Berichte"
     }
   ],
   "label.required": [
@@ -769,6 +793,12 @@
       "value": "Retention"
     }
   ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Measure your website stickiness by tracking how often users return."
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -793,6 +823,12 @@
       "value": "Bildschirmauflösungen"
     }
   ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
+    }
+  ],
   "label.select-date": [
     {
       "type": 0,
@@ -808,7 +844,7 @@
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Sitzungen"
     }
   ],
   "label.settings": [
@@ -850,37 +886,37 @@
   "label.team-guest": [
     {
       "type": 0,
-      "value": "Team Gast"
+      "value": "Gast des Teams"
     }
   ],
   "label.team-id": [
     {
       "type": 0,
-      "value": "Team ID"
+      "value": "Team-ID"
     }
   ],
   "label.team-member": [
     {
       "type": 0,
-      "value": "Team Mitglied"
+      "value": "Team-Mitglied"
     }
   ],
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Name des Teams"
     }
   ],
   "label.team-owner": [
     {
       "type": 0,
-      "value": "Team Eigentümer"
+      "value": "Team-Eigentümer"
     }
   ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Team-Websites"
     }
   ],
   "label.teams": [
@@ -940,13 +976,13 @@
   "label.total": [
     {
       "type": 0,
-      "value": "Total"
+      "value": "Gesamt"
     }
   ],
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Datensätze insgesamt"
     }
   ],
   "label.tracking-code": [
@@ -958,19 +994,19 @@
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Wahr"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Typ"
     }
   ],
   "label.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Eindeutig"
     }
   ],
   "label.unique-visitors": [
@@ -988,7 +1024,7 @@
   "label.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Unbenannt"
     }
   ],
   "label.url": [
@@ -1024,7 +1060,7 @@
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Wert"
     }
   ],
   "label.view": [
@@ -1042,7 +1078,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Nur ansehen"
     }
   ],
   "label.views": [
@@ -1060,25 +1096,25 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Webseite"
+      "value": "Website"
     }
   ],
   "label.website-id": [
     {
       "type": 0,
-      "value": "Webseite ID"
+      "value": "Website ID"
     }
   ],
   "label.websites": [
     {
       "type": 0,
-      "value": "Webseiten"
+      "value": "Websites"
     }
   ],
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Fenster"
     }
   ],
   "label.yesterday": [
@@ -1166,7 +1202,7 @@
   "message.delete-account": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Um dieses Konto zu löschen, geben Sie zur Bestätigung "
     },
     {
       "type": 1,
@@ -1174,13 +1210,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " in das Feld unten ein."
     }
   ],
   "message.delete-website": [
     {
       "type": 0,
-      "value": "To delete this website, type "
+      "value": "Um diese Website zu löschen, geben Sie zur Bestätigung "
     },
     {
       "type": 1,
@@ -1188,7 +1224,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " in das Feld unten ein."
     }
   ],
   "message.delete-website-warning": [
@@ -1238,7 +1274,7 @@
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "Minimale länge von "
+      "value": "Minimale Länge von "
     },
     {
       "type": 1,
@@ -1252,15 +1288,11 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Eine neue Version von Umami ist verfügbar: "
     },
     {
       "type": 1,
       "value": "version"
-    },
-    {
-      "type": 0,
-      "value": " is available!"
     }
   ],
   "message.no-data-available": [
@@ -1272,7 +1304,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Es sind keine Ereignisdaten verfügbar."
     }
   ],
   "message.no-match-password": [
@@ -1308,7 +1340,7 @@
   "message.no-websites-configured": [
     {
       "type": 0,
-      "value": "Es ist keine Webseite vorhanden."
+      "value": "Es ist keine Website vorhanden."
     }
   ],
   "message.page-not-found": [
@@ -1320,7 +1352,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Um diese Website zurückzusetzen, geben Sie zur Bestätigung "
     },
     {
       "type": 1,
@@ -1328,13 +1360,13 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " in das Feld unten ein."
     }
   ],
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "Alle Daten für diese Webseite werden gelöscht, jedoch bleibt der Tracking Code bestehen."
+      "value": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der Tracking Code bestehen."
     }
   ],
   "message.saved": [
@@ -1346,7 +1378,7 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "Ihre Webseitenstatistik ist unter der folgenden URL öffentlich zugänglich:"
+      "value": "Die Statistiken Ihrer Website sind unter folgender URL öffentlich zugänglich:"
     }
   ],
   "message.team-already-member": [
@@ -1364,7 +1396,7 @@
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "Webseiten können von jedem im Team eingesehen werden."
+      "value": "Websites können von jedem im Team eingesehen werden."
     }
   ],
   "message.tracking-code": [

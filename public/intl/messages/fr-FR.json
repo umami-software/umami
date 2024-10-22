@@ -104,7 +104,7 @@
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Navigateur"
     }
   ],
   "label.browsers": [
@@ -134,7 +134,7 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Ville"
     }
   ],
   "label.clear-all": [
@@ -176,7 +176,13 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Pays"
+    }
+  ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Créer"
     }
   ],
   "label.create-report": [
@@ -242,7 +248,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Jour"
     }
   ],
   "label.default-date-range": [
@@ -296,7 +302,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Appareil"
     }
   ],
   "label.devices": [
@@ -326,7 +332,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Abandons"
     }
   ],
   "label.edit": [
@@ -350,19 +356,19 @@
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Évènement"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Données d'événements"
+      "value": "Données d'évènements"
     }
   ],
   "label.events": [
     {
       "type": 0,
-      "value": "Événements"
+      "value": "Évènements"
     }
   ],
   "label.false": [
@@ -381,6 +387,12 @@
     {
       "type": 0,
       "value": "Champs"
+    }
+  ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filtrer"
     }
   ],
   "label.filter-combined": [
@@ -407,6 +419,12 @@
       "value": "Entonnoir"
     }
   ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Suivi des conversions et des taux d'abandons."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -425,28 +443,34 @@
       "value": "Insights"
     }
   ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Analyse précise des données en utilisant des segments et des filtres."
+    }
+  ],
   "label.is": [
     {
       "type": 0,
-      "value": "Est égal"
+      "value": "Est"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "N'est pas égal"
+      "value": "N'est pas"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "N'est pas défini"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Est défini"
     }
   ],
   "label.join": [
@@ -568,7 +592,7 @@
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Mes sites"
     }
   ],
   "label.name": [
@@ -618,7 +642,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " sur "
     },
     {
       "type": 1,
@@ -634,7 +658,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Titre de page"
     }
   ],
   "label.pages": [
@@ -680,7 +704,7 @@
   "label.query-parameters": [
     {
       "type": 0,
-      "value": "Paramètres d'URL"
+      "value": "Paramètres de requête"
     }
   ],
   "label.realtime": [
@@ -692,7 +716,7 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Site référent"
     }
   ],
   "label.referrers": [
@@ -716,7 +740,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Région"
     }
   ],
   "label.regions": [
@@ -758,7 +782,13 @@
   "label.retention": [
     {
       "type": 0,
-      "value": "Retention"
+      "value": "Rétention"
+    }
+  ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Mesure de l'atractivité du site en visualisant les taux d'utilisateurs qui reviennent."
     }
   ],
   "label.role": [
@@ -783,6 +813,12 @@
     {
       "type": 0,
       "value": "Résolutions d'écran"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Rechercher"
     }
   ],
   "label.select-date": [
@@ -860,7 +896,7 @@
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Nom de l'équipe"
     }
   ],
   "label.team-owner": [
@@ -872,7 +908,7 @@
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Sites d'équipes"
     }
   ],
   "label.teams": [
@@ -1052,7 +1088,7 @@
   "label.website": [
     {
       "type": 0,
-      "value": "Website"
+      "value": "Site"
     }
   ],
   "label.website-id": [
@@ -1248,7 +1284,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Une nouvelle version d'Umami "
     },
     {
       "type": 1,
@@ -1256,7 +1292,7 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": " est disponible !"
     }
   ],
   "message.no-data-available": [
@@ -1336,7 +1372,7 @@
   "message.saved": [
     {
       "type": 0,
-      "value": "Enregistré avec succès."
+      "value": "Enregistré."
     }
   ],
   "message.share-url": [

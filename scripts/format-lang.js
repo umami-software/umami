@@ -3,7 +3,7 @@ const path = require('path');
 const del = require('del');
 const prettier = require('prettier');
 
-const src = path.resolve(__dirname, '../lang');
+const src = path.resolve(__dirname, '../src/lang');
 const dest = path.resolve(__dirname, '../build/messages');
 const files = fs.readdirSync(src);
 
@@ -17,7 +17,7 @@ async function run() {
   await fs.ensureDir(dest);
 
   files.forEach(file => {
-    const lang = require(`../lang/${file}`);
+    const lang = require(`../src/lang/${file}`);
     const keys = Object.keys(lang).sort();
 
     const formatted = keys.reduce((obj, key) => {

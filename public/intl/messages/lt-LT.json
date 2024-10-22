@@ -179,6 +179,12 @@
       "value": "Country"
     }
   ],
+  "label.create": [
+    {
+      "type": 0,
+      "value": "Create"
+    }
+  ],
   "label.create-report": [
     {
       "type": 0,
@@ -383,6 +389,12 @@
       "value": "Fields"
     }
   ],
+  "label.filter": [
+    {
+      "type": 0,
+      "value": "Filter"
+    }
+  ],
   "label.filter-combined": [
     {
       "type": 0,
@@ -407,6 +419,12 @@
       "value": "Funnel"
     }
   ],
+  "label.funnel-description": [
+    {
+      "type": 0,
+      "value": "Understand the conversion and drop-off rate of users."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -423,6 +441,12 @@
     {
       "type": 0,
       "value": "Insights"
+    }
+  ],
+  "label.insights-description": [
+    {
+      "type": 0,
+      "value": "Dive deeper into your data by using segments and filters."
     }
   ],
   "label.is": [
@@ -874,6 +898,12 @@
       "value": "Retention"
     }
   ],
+  "label.retention-description": [
+    {
+      "type": 0,
+      "value": "Measure your website stickiness by tracking how often users return."
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -896,6 +926,12 @@
     {
       "type": 0,
       "value": "Screens"
+    }
+  ],
+  "label.search": [
+    {
+      "type": 0,
+      "value": "Search"
     }
   ],
   "label.select-date": [

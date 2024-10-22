@@ -19,22 +19,21 @@
     "plugin:@typescript-eslint/recommended",
     "next"
   ],
-
   "plugins": ["@typescript-eslint", "prettier"],
   "settings": {
     "import/resolver": {
       "alias": {
         "map": [
-          ["assets", "./assets"],
-          ["components", "./components"],
+          ["assets", "./src/assets"],
+          ["components", "./src/components"],
           ["db", "./db"],
-          ["hooks", "./hooks"],
-          ["lang", "./lang"],
-          ["lib", "./lib"],
+          ["hooks", "./src/components/hooks"],
+          ["lang", "./src/lang"],
+          ["lib", "./src/lib"],
           ["public", "./public"],
-          ["queries", "./queries"],
-          ["store", "./store"],
-          ["styles", "./styles"]
+          ["queries", "./src/queries"],
+          ["store", "./src/store"],
+          ["styles", "./src/styles"]
         ],
         "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
       }
@@ -51,7 +50,8 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",
-    "@typescript-eslint/no-empty-interface": "off"
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
   },
   "globals": {
     "React": "writable"

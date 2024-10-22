@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
+const path = require('path');
 const pkg = require('./package.json');
 
 const contentSecurityPolicy = `
@@ -58,7 +59,9 @@ if (process.env.TRACKER_SCRIPT_NAME) {
 const redirects = [
   {
     source: '/settings',
-    destination: process.env.CLOUD_MODE ? '/settings/profile' : '/settings/websites',
+    destination: process.env.CLOUD_MODE
+      ? `${process.env.CLOUD_URL}/settings/websites`
+      : '/settings/websites',
     permanent: true,
   },
 ];
@@ -73,6 +76,9 @@ if (process.env.CLOUD_MODE && process.env.CLOUD_URL && process.env.DISABLE_LOGIN
 
 const config = {
   env: {
+    cloudMode: process.env.CLOUD_MODE,
+    cloudUrl: process.env.CLOUD_URL,
+    configUrl: '/config',
     currentVersion: pkg.version,
     defaultLocale: process.env.DEFAULT_LOCALE,
     isProduction: process.env.NODE_ENV === 'production',
@@ -91,6 +97,8 @@ const config = {
       issuer: /\.{js|jsx|ts|tsx}$/,
       use: ['@svgr/webpack'],
     });
+
+    config.resolve.alias['public'] = path.resolve('./public');
 
     return config;
   },
