@@ -12,7 +12,7 @@ export function RealtimeCountries({ data }) {
 
   const renderCountryName = useCallback(
     ({ x: code }) => (
-      <span className={classNames(locale, styles.row)}>
+      <span className={classNames(styles.row)}>
         <TypeIcon type="country" value={code?.toLowerCase()} />
         {countryNames[code]}
       </span>

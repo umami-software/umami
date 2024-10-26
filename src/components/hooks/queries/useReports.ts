@@ -1,5 +1,5 @@
-import useApi from './useApi';
-import usePagedQuery from './usePagedQuery';
+import useApi from '../useApi';
+import usePagedQuery from '../usePagedQuery';
 import useModified from '../useModified';
 
 export function useReports({ websiteId, teamId }: { websiteId?: string; teamId?: string }) {

@@ -1,4 +1,4 @@
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 import useModified from '../useModified';
 import { useFilterParams } from 'components/hooks/useFilterParams';
 

@@ -1,5 +1,5 @@
-import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
+import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 
 export function useEventDataValues(
@@ -12,7 +12,7 @@ export function useEventDataValues(
   const params = useFilterParams(websiteId);
 
   return useQuery<any>({
-    queryKey: ['websites:event-data:values', { websiteId, propertyName, ...params }],
+    queryKey: ['websites:event-data:values', { websiteId, eventName, propertyName, ...params }],
     queryFn: () =>
       get(`/websites/${websiteId}/event-data/values`, { ...params, eventName, propertyName }),
     enabled: !!(websiteId && propertyName),

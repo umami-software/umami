@@ -185,6 +185,10 @@ const config = {
     return [
       ...rewrites,
       {
+        source: '/script.js',
+        destination: 'https://tracker-script.umami.dev/',
+      },
+      {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
       },

@@ -3,12 +3,12 @@
     screen: { width, height },
     navigator: { language },
     location,
-    localStorage,
     document,
     history,
   } = window;
   const { hostname, href } = location;
   const { currentScript, referrer } = document;
+  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
   if (!currentScript) return;
 

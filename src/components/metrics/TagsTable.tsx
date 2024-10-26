@@ -3,18 +3,13 @@ import FilterLink from 'components/common/FilterLink';
 import { useMessages } from 'components/hooks';
 import { Flexbox } from 'react-basics';
 
-export function HostsTable(props: MetricsTableProps) {
+export function TagsTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
-  const renderLink = ({ x: host }) => {
+  const renderLink = ({ x: tag }) => {
     return (
       <Flexbox alignItems="center">
-        <FilterLink
-          id="host"
-          value={host}
-          externalUrl={`https://${host}`}
-          label={!host && formatMessage(labels.none)}
-        />
+        <FilterLink id="tag" value={tag} label={!tag && formatMessage(labels.none)} />
       </Flexbox>
     );
   };
@@ -23,13 +18,13 @@ export function HostsTable(props: MetricsTableProps) {
     <>
       <MetricsTable
         {...props}
-        title={formatMessage(labels.hosts)}
-        type="host"
-        metric={formatMessage(labels.visitors)}
+        title={formatMessage(labels.tags)}
+        type="tag"
+        metric={formatMessage(labels.views)}
         renderLabel={renderLink}
       />
     </>
   );
 }
 
-export default HostsTable;
+export default TagsTable;
