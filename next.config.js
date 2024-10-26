@@ -24,7 +24,7 @@ const contentSecurityPolicy = [
   `frame-ancestors 'self' ${frameAncestors}`,
 ];
 
-const headers = [
+const defaultHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
     value: 'on',
@@ -39,11 +39,29 @@ const headers = [
 ];
 
 if (forceSSL) {
-  headers.push({
+  defaultHeaders.push({
     key: 'Strict-Transport-Security',
     value: 'max-age=63072000; includeSubDomains; preload',
   });
 }
+
+const trackerHeaders = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+];
+
+const headers = [
+  {
+    source: '/:path*',
+    headers: defaultHeaders,
+  },
+  {
+    source: '/script.js',
+    headers: trackerHeaders,
+  },
+];
 
 const rewrites = [];
 
@@ -52,19 +70,6 @@ if (collectApiEndpoint) {
     source: collectApiEndpoint,
     destination: '/api/send',
   });
-}
-
-if (trackerScriptName) {
-  const names = trackerScriptName?.split(',').map(name => name.trim());
-
-  if (names) {
-    names.forEach(name => {
-      rewrites.push({
-        source: `/${name.replace(/^\/+/, '')}`,
-        destination: '/tracker.js',
-      });
-    });
-  }
 }
 
 const redirects = [
@@ -84,6 +89,27 @@ const redirects = [
     permanent: true,
   },
 ];
+
+// Adding rewrites + headers for all alternative tracker script names.
+if (trackerScriptName) {
+  const names = trackerScriptName?.split(',').map(name => name.trim());
+
+  if (names) {
+    names.forEach(name => {
+      const normalizedSource = `/${name.replace(/^\/+/, '')}`;
+
+      rewrites.push({
+        source: normalizedSource,
+        destination: '/script.js',
+      });
+
+      headers.push({
+        source: normalizedSource,
+        headers: trackerHeaders,
+      });
+    });
+  }
+}
 
 if (cloudMode && cloudUrl) {
   redirects.push({
@@ -153,12 +179,7 @@ const config = {
     return config;
   },
   async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers,
-      },
-    ];
+    return headers;
   },
   async rewrites() {
     return [
