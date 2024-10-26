@@ -124,7 +124,7 @@
   "label.name": "Имя",
   "label.new-password": "Новый пароль",
   "label.none": "Не указано",
-  "label.number-of-records": "{x} {x, множественное число, один {запись} другие {записи}}",
+  "label.number-of-records": "{x} {x, plural, one {запись} other {записи}}",
   "label.ok": "OK",
   "label.os": "OS",
   "label.overview": "Обзор",

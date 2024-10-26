@@ -410,13 +410,13 @@
   "label.event": [
     {
       "type": 0,
-      "value": "Ereigniss"
+      "value": "Ereignis"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Ereignissdaten"
+      "value": "Ereignisdaten"
     }
   ],
   "label.events": [
@@ -1798,7 +1798,7 @@
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Ausgelöstes Ereigniss"
+      "value": "Ereignis ausgelöst"
     }
   ],
   "message.user-deleted": [
