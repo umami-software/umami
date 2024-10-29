@@ -3,6 +3,8 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
+const TRACKER_SCRIPT = '/script.js';
+
 const basePath = process.env.BASE_PATH;
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
 const cloudMode = process.env.CLOUD_MODE;
@@ -14,6 +16,7 @@ const forceSSL = process.env.FORCE_SSL;
 const frameAncestors = process.env.ALLOWED_FRAME_URLS;
 const privateMode = process.env.PRIVATE_MODE;
 const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
+const trackerScriptURL = process.env.TRACKER_SCRIPT_URL;
 
 const contentSecurityPolicy = [
   `default-src 'self'`,
@@ -58,12 +61,19 @@ const headers = [
     headers: defaultHeaders,
   },
   {
-    source: '/script.js',
+    source: TRACKER_SCRIPT,
     headers: trackerHeaders,
   },
 ];
 
 const rewrites = [];
+
+if (trackerScriptURL) {
+  rewrites.push({
+    source: TRACKER_SCRIPT,
+    destination: trackerScriptURL,
+  });
+}
 
 if (collectApiEndpoint) {
   rewrites.push({
@@ -100,7 +110,7 @@ if (trackerScriptName) {
 
       rewrites.push({
         source: normalizedSource,
-        destination: '/script.js',
+        destination: TRACKER_SCRIPT,
       });
 
       headers.push({
@@ -184,10 +194,6 @@ const config = {
   async rewrites() {
     return [
       ...rewrites,
-      {
-        source: '/script.js',
-        destination: 'https://tracker-script.umami.dev/',
-      },
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
