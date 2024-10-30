@@ -106,7 +106,13 @@ docker pull docker.umami.is/umami-software/umami:mysql-latest
 ```
 
 ---
+## 🚀 One Click DeployMent
 
+<a href="https://computenest.console.aliyun.com/service/instance/create/default?type=user&ServiceName=Umami%E7%A4%BE%E5%8C%BA%E7%89%88" >
+	<img src="https://service-info-public.oss-cn-hangzhou.aliyuncs.com/computenest-en.svg" alt="Deploy to Alibaba Cloud" height="30" />
+</a>
+
+---
 ## 🔄 Getting Updates
 
 To get the latest features, simply do a pull, install any new dependencies, and rebuild:
