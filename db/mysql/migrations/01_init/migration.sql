@@ -11,7 +11,7 @@ CREATE TABLE `user` (
     UNIQUE INDEX `user_user_id_key`(`user_id`),
     UNIQUE INDEX `user_username_key`(`username`),
     PRIMARY KEY (`user_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `session` (
@@ -33,7 +33,7 @@ CREATE TABLE `session` (
     INDEX `session_created_at_idx`(`created_at`),
     INDEX `session_website_id_idx`(`website_id`),
     PRIMARY KEY (`session_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `website` (
@@ -53,7 +53,7 @@ CREATE TABLE `website` (
     INDEX `website_created_at_idx`(`created_at`),
     INDEX `website_share_id_idx`(`share_id`),
     PRIMARY KEY (`website_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `website_event` (
@@ -76,7 +76,7 @@ CREATE TABLE `website_event` (
     INDEX `website_event_website_id_created_at_idx`(`website_id`, `created_at`),
     INDEX `website_event_website_id_session_id_created_at_idx`(`website_id`, `session_id`, `created_at`),
     PRIMARY KEY (`event_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `event_data` (
@@ -95,7 +95,7 @@ CREATE TABLE `event_data` (
     INDEX `event_data_website_event_id_idx`(`website_event_id`),
     INDEX `event_data_website_id_website_event_id_created_at_idx`(`website_id`, `website_event_id`, `created_at`),
     PRIMARY KEY (`event_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `team` (
@@ -109,7 +109,7 @@ CREATE TABLE `team` (
     UNIQUE INDEX `team_access_code_key`(`access_code`),
     INDEX `team_access_code_idx`(`access_code`),
     PRIMARY KEY (`team_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `team_user` (
@@ -124,7 +124,7 @@ CREATE TABLE `team_user` (
     INDEX `team_user_team_id_idx`(`team_id`),
     INDEX `team_user_user_id_idx`(`user_id`),
     PRIMARY KEY (`team_user_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `team_website` (
@@ -137,7 +137,7 @@ CREATE TABLE `team_website` (
     INDEX `team_website_team_id_idx`(`team_id`),
     INDEX `team_website_website_id_idx`(`website_id`),
     PRIMARY KEY (`team_website_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddSystemUser
 INSERT INTO user (user_id, username, role, password) VALUES ('41e2b680-648e-4b09-bcd7-3e2b10c06264' , 'admin', 'admin', '$2b$10$BUli0c.muyCW1ErNJc3jL.vFRFtFJWrT8/GcR4A.sUdCznaXiqFXa');
