@@ -223,12 +223,14 @@
   };
 
   const init = () => {
-    if (!initialized) {
-      track();
-      handlePathChanges();
-      handleTitleChanges();
-      handleClicks();
-      initialized = true;
+    if(document.readyState==='complete'){
+      if (!initialized) {
+        track();
+        handlePathChanges();
+        handleTitleChanges();
+        handleClicks();
+        initialized = true;
+      }
     }
   };
 
