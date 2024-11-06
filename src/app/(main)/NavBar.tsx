@@ -10,6 +10,8 @@ import TeamsButton from 'components/input/TeamsButton';
 import Icons from 'components/icons';
 import { useMessages, useNavigation, useTeamUrl } from 'components/hooks';
 import styles from './NavBar.module.css';
+import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 
 export function NavBar() {
   const { formatMessage, labels } = useMessages();
@@ -74,9 +76,20 @@ export function NavBar() {
 
   const handleTeamChange = (teamId: string) => {
     const url = teamId ? `/teams/${teamId}` : '/';
-
+    Cookies.set('teamId', teamId);
     router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
   };
+
+  useEffect(() => {
+    const teamIdCookie = Cookies.get('teamId');
+    if (teamIdCookie && pathname !== '/' && pathname !== '/dashboard') {
+      const url = '/';
+      router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
+    } else if (teamIdCookie) {
+      const url = `/teams/${teamIdCookie}/dashboard`;
+      router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
+    }
+  }, []);
 
   return (
     <div className={styles.navbar}>
