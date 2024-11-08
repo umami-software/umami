@@ -158,6 +158,16 @@ const config = {
         source: '/:path*',
         headers,
       },
+      {
+        source: '/script.js',
+        headers: [
+          ...headers,
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, must-revalidate',
+          },
+        ],
+      },
     ];
   },
   async rewrites() {
