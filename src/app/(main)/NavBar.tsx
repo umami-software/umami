@@ -11,6 +11,7 @@ import Icons from 'components/icons';
 import { useMessages, useNavigation, useTeamUrl } from 'components/hooks';
 import styles from './NavBar.module.css';
 import { useEffect } from 'react';
+import { getItem, setItem } from 'next-basics';
 
 export function NavBar() {
   const { formatMessage, labels } = useMessages();
@@ -75,12 +76,12 @@ export function NavBar() {
 
   const handleTeamChange = (teamId: string) => {
     const url = teamId ? `/teams/${teamId}` : '/';
-    localStorage.setItem('teamId', teamId);
+    setItem('umami.team', { id: teamId });
     router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
   };
 
   useEffect(() => {
-    const teamIdLocal = localStorage.getItem('teamId');
+    const teamIdLocal = getItem('umami.team')?.id;
     if (teamIdLocal && pathname !== '/' && pathname !== '/dashboard') {
       const url = '/';
       router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
