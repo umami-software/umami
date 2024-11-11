@@ -6,6 +6,7 @@ export const initialState = {
   showCharts: true,
   limit: DEFAULT_WEBSITE_LIMIT,
   websiteOrder: [],
+  websiteActive: [],
   editing: false,
 };
 

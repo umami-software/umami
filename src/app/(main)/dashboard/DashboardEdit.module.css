@@ -7,6 +7,19 @@
 
 .item {
   padding: 5px 0;
+  position: relative;
+}
+
+.pinActive {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px;
+}
+
+.pin {
+  width: 20px;
+  height: 20px;
 }
 
 .item h1 {
@@ -24,6 +37,10 @@
   border-radius: 5px;
   border: 1px solid var(--base400);
   background: var(--base50);
+}
+
+.websiteActive .text {
+  border: 1px solid var(--base800);
 }
 
 .active .text {

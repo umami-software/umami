@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 import { Button, Loading } from 'react-basics';
+import Icons from 'components/icons';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
 import { useMessages, useWebsites } from 'components/hooks';
@@ -11,9 +12,10 @@ const DRAG_ID = 'dashboard-website-ordering';
 
 export function DashboardEdit({ teamId }: { teamId: string }) {
   const settings = useDashboard();
-  const { websiteOrder } = settings;
+  const { websiteOrder, websiteActive } = settings;
   const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
+  const [active, setActive] = useState(websiteActive || []);
   const {
     result,
     query: { isLoading },
@@ -40,19 +42,27 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
     setOrder(orderedWebsites.map(website => website?.id || 0));
   }
 
+  function handleActiveWebsites(id: string) {
+    setActive(prevActive =>
+      prevActive.includes(id) ? prevActive.filter(a => a !== id) : [...prevActive, id],
+    );
+  }
+
   function handleSave() {
     saveDashboard({
       editing: false,
       websiteOrder: order,
+      websiteActive: active,
     });
   }
 
   function handleCancel() {
-    saveDashboard({ editing: false, websiteOrder });
+    saveDashboard({ editing: false, websiteOrder, websiteActive });
   }
 
   function handleReset() {
     setOrder([]);
+    setActive([]);
   }
 
   if (isLoading) {
@@ -88,11 +98,16 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
                         ref={provided.innerRef}
                         className={classNames(styles.item, {
                           [styles.active]: snapshot.isDragging,
+                          [styles.websiteActive]: active.includes(id),
                         })}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
+                        onClick={() => handleActiveWebsites(id)}
                       >
                         <div className={styles.text}>
+                          <div className={styles.pinActive}>
+                            {active.includes(id) ? <Icons.PushPin className={styles.pin} /> : null}
+                          </div>
                           <h1>{name}</h1>
                           <h2>{domain}</h2>
                         </div>
