@@ -20,12 +20,8 @@ export function useWebsiteMetrics(
       },
     ],
     queryFn: async () => {
-      const filters = { ...params };
-
-      filters[queryParams.type] = undefined;
-
       const data = await get(`/websites/${websiteId}/metrics`, {
-        ...filters,
+        ...params,
         ...queryParams,
       });
 
