@@ -22,15 +22,9 @@ export function useWebsiteMetrics(
       },
     ],
     queryFn: async () => {
-      const filters = { ...params };
-      const view = searchParams.get('view');
-
-      if (view && filters[view]) {
-        filters[view] = undefined;
-      }
-
       const data = await get(`/websites/${websiteId}/metrics`, {
-        ...filters,
+        ...params,
+        [searchParams.get('view')]: undefined,
         ...queryParams,
       });
 
