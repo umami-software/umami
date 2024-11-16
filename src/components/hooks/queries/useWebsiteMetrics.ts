@@ -1,6 +1,7 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import useApi from './useApi';
 import { useFilterParams } from '../useFilterParams';
+import { useSearchParams } from 'next/navigation';
 
 export function useWebsiteMetrics(
   websiteId: string,
@@ -9,6 +10,7 @@ export function useWebsiteMetrics(
 ) {
   const { get, useQuery } = useApi();
   const params = useFilterParams(websiteId);
+  const searchParams = useSearchParams();
 
   return useQuery({
     queryKey: [
@@ -20,8 +22,15 @@ export function useWebsiteMetrics(
       },
     ],
     queryFn: async () => {
+      const filters = { ...params };
+      const view = searchParams.get('view');
+
+      if (view && filters[view]) {
+        filters[view] = undefined;
+      }
+
       const data = await get(`/websites/${websiteId}/metrics`, {
-        ...params,
+        ...filters,
         ...queryParams,
       });
 
