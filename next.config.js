@@ -53,6 +53,10 @@ const trackerHeaders = [
     key: 'Access-Control-Allow-Origin',
     value: '*',
   },
+  {
+    key: 'Cache-Control',
+    value: 'public, max-age=86400, must-revalidate',
+  },
 ];
 
 const headers = [
@@ -189,22 +193,7 @@ const config = {
     return config;
   },
   async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers,
-      },
-      {
-        source: '/script.js',
-        headers: [
-          ...headers,
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=86400, must-revalidate',
-          },
-        ],
-      },
-    ];
+    return headers;
   },
   async rewrites() {
     return [
