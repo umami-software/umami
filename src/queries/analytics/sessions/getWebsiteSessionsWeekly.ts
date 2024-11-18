@@ -34,8 +34,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery } = clickhouse;
-  const { startDate, endDate } = filters;
+  const { rawQuery, parseFilters } = clickhouse;
+  const { params } = await parseFilters(websiteId, filters);
 
   return rawQuery(
     `
@@ -48,7 +48,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     group by time
     order by time
     `,
-    { websiteId, startDate, endDate },
+    params,
   ).then(formatResults);
 }
 

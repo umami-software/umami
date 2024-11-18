@@ -6,7 +6,7 @@ const path = require('path');
 const endPoint = process.env.COLLECT_API_ENDPOINT;
 
 if (endPoint) {
-  const file = path.resolve(__dirname, '../public/script.js');
+  const file = path.resolve(__dirname, '../public/tracker.js');
 
   const tracker = fs.readFileSync(file);
 

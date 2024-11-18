@@ -25,7 +25,7 @@ export function HostsTable(props: MetricsTableProps) {
         {...props}
         title={formatMessage(labels.hosts)}
         type="host"
-        metric={formatMessage(labels.views)}
+        metric={formatMessage(labels.visitors)}
         renderLabel={renderLink}
       />
     </>

@@ -102,6 +102,7 @@ model WebsiteEvent {
   pageTitle      String?   @map("page_title") @db.VarChar(500)
   eventType      Int       @default(1) @map("event_type") @db.UnsignedInt
   eventName      String?   @map("event_name") @db.VarChar(50)
+  tag            String?   @db.VarChar(50)
 
   eventData EventData[]
   session   Session     @relation(fields: [sessionId], references: [id])
@@ -116,6 +117,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, referrerDomain])
   @@index([websiteId, createdAt, pageTitle])
   @@index([websiteId, createdAt, eventName])
+  @@index([websiteId, createdAt, tag])
   @@index([websiteId, sessionId, createdAt])
   @@index([websiteId, visitId, createdAt])
   @@map("website_event")

@@ -29,6 +29,7 @@ export interface WebsiteMetricsRequestQuery {
   limit?: number;
   offset?: number;
   search?: string;
+  tag?: string;
 }
 
 const schema = {
@@ -53,6 +54,7 @@ const schema = {
     limit: yup.number(),
     offset: yup.number(),
     search: yup.string(),
+    tag: yup.string(),
   }),
 };
 

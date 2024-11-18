@@ -47,6 +47,9 @@ export function formatNumber(n: string | number) {
 export function formatLongNumber(value: number) {
   const n = Number(value);
 
+  if (n >= 1000000000) {
+    return `${(n / 1000000).toFixed(1)}b`;
+  }
   if (n >= 1000000) {
     return `${(n / 1000000).toFixed(1)}m`;
   }
@@ -77,4 +80,39 @@ export function stringToColor(str: string) {
     color += ('00' + value.toString(16)).slice(-2);
   }
   return color;
+}
+
+export function formatCurrency(value: number, currency: string, locale = 'en-US') {
+  let formattedValue;
+
+  try {
+    formattedValue = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency,
+    });
+  } catch (error) {
+    // Fallback to default currency format if an error occurs
+    formattedValue = new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'USD',
+    });
+  }
+
+  return formattedValue.format(value);
+}
+
+export function formatLongCurrency(value: number, currency: string, locale = 'en-US') {
+  const n = Number(value);
+
+  if (n >= 1000000000) {
+    return `${formatCurrency(n / 1000000000, currency, locale)}b`;
+  }
+  if (n >= 1000000) {
+    return `${formatCurrency(n / 1000000, currency, locale)}m`;
+  }
+  if (n >= 1000) {
+    return `${formatCurrency(n / 1000, currency, locale)}k`;
+  }
+
+  return formatCurrency(n, currency, locale);
 }
