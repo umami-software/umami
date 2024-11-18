@@ -189,7 +189,22 @@ const config = {
     return config;
   },
   async headers() {
-    return headers;
+    return [
+      {
+        source: '/:path*',
+        headers,
+      },
+      {
+        source: '/script.js',
+        headers: [
+          ...headers,
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=86400, must-revalidate',
+          },
+        ],
+      },
+    ];
   },
   async rewrites() {
     return [
