@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
 import { Button, Loading } from 'react-basics';
@@ -16,12 +16,25 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
   const { formatMessage, labels } = useMessages();
   const [order, setOrder] = useState(websiteOrder || []);
   const [active, setActive] = useState(websiteActive || []);
+  const [websites, setWebsites] = useState([]);
+
   const {
     result,
     query: { isLoading },
+    setParams,
   } = useWebsites({ teamId });
 
-  const websites = result?.data;
+  useEffect(() => {
+    if (result?.data) {
+      setWebsites(prevWebsites => {
+        const newWebsites = [...prevWebsites, ...result.data];
+        if (newWebsites.length < result.count) {
+          setParams(prevParams => ({ ...prevParams, page: prevParams.page + 1 }));
+        }
+        return newWebsites;
+      });
+    }
+  }, [result]);
 
   const ordered = useMemo(() => {
     if (websites) {

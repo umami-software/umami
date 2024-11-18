@@ -404,7 +404,7 @@
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL d'entrée"
     }
   ],
   "label.event": [
@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Vu pour la première fois"
     }
   ],
   "label.funnel": [
@@ -506,7 +506,7 @@
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Suivez vos objectifs en matière de pages vues et d'événements."
     }
   ],
   "label.greater-than": [
@@ -590,7 +590,7 @@
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Comprendre comment les utilisateurs naviguent sur votre site web."
     }
   ],
   "label.language": [
@@ -886,19 +886,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Précédent"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Période précédente"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Année précédente"
     }
   ],
   "label.profile": [
@@ -910,13 +910,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Propriétés"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Propriété"
     }
   ],
   "label.queries": [
@@ -1036,13 +1036,13 @@
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Examinez vos revenus au fil du temps."
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "Propriétés des revenues"
     }
   ],
   "label.role": [
@@ -1078,7 +1078,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Selectionner"
     }
   ],
   "label.select-date": [
@@ -1132,7 +1132,7 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Etape de démarrage"
     }
   ],
   "label.steps": [
@@ -1168,7 +1168,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Manager de l'équipe"
     }
   ],
   "label.team-member": [
@@ -1192,7 +1192,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Vue d'équipe uniquement"
     }
   ],
   "label.team-websites": [
@@ -1318,7 +1318,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Clients uniques"
     }
   ],
   "label.unknown": [
@@ -1360,7 +1360,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "Propriétés d'utilisateurs"
     }
   ],
   "label.username": [
