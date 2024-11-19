@@ -8,6 +8,7 @@ export const initialState = {
   websiteOrder: [],
   websiteActive: [],
   editing: false,
+  isEdited: false,
 };
 
 const store = create(() => ({ ...initialState, ...getItem(DASHBOARD_CONFIG) }));
