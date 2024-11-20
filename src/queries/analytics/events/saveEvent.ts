@@ -18,6 +18,7 @@ export async function saveEvent(args: {
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
+  eventBatchData?: any[];
   hostname?: string;
   browser?: string;
   os?: string;
@@ -47,6 +48,7 @@ async function relationalQuery(data: {
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
+  eventBatchData?: Array<any>;
 }) {
   const {
     websiteId,
@@ -60,6 +62,7 @@ async function relationalQuery(data: {
     eventName,
     eventData,
     pageTitle,
+    eventBatchData,
   } = data;
   const websiteEventId = uuid();
 
@@ -80,7 +83,7 @@ async function relationalQuery(data: {
     },
   });
 
-  if (eventData) {
+  if (eventData || eventBatchData) {
     await saveEventData({
       websiteId,
       sessionId,
@@ -89,6 +92,7 @@ async function relationalQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
+      eventBatchData,
     });
   }
 
@@ -107,6 +111,7 @@ async function clickhouseQuery(data: {
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
+  eventBatchData?: any[];
   hostname?: string;
   browser?: string;
   os?: string;
@@ -130,6 +135,7 @@ async function clickhouseQuery(data: {
     pageTitle,
     eventName,
     eventData,
+    eventBatchData,
     country,
     subdivision1,
     subdivision2,
@@ -173,7 +179,7 @@ async function clickhouseQuery(data: {
     await insert('website_event', [message]);
   }
 
-  if (eventData) {
+  if (eventData || eventBatchData) {
     await saveEventData({
       websiteId,
       sessionId,
@@ -182,6 +188,7 @@ async function clickhouseQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
+      eventBatchData,
       createdAt,
     });
   }
