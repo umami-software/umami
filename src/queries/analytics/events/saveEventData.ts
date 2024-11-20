@@ -6,7 +6,7 @@ import { flattenDynamicData, flattenJSON, getStringValue } from 'lib/data';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
-import { DynamicData } from 'lib/types';
+import { DynamicData, JsonKeyDynamicData } from 'lib/types';
 
 export async function saveEventData(data: {
   websiteId: string;
@@ -15,7 +15,8 @@ export async function saveEventData(data: {
   visitId?: string;
   urlPath?: string;
   eventName?: string;
-  eventData: DynamicData;
+  eventData?: DynamicData;
+  eventBatchData?: Array<DynamicData>;
   createdAt?: string;
 }) {
   return runQuery({
@@ -27,11 +28,17 @@ export async function saveEventData(data: {
 async function relationalQuery(data: {
   websiteId: string;
   eventId: string;
-  eventData: DynamicData;
+  eventData?: DynamicData;
+  eventBatchData?: Array<DynamicData>;
 }): Promise<Prisma.BatchPayload> {
-  const { websiteId, eventId, eventData } = data;
+  const { websiteId, eventId, eventData, eventBatchData } = data;
 
-  const jsonKeys = flattenJSON(eventData);
+  let jsonKeys: Array<JsonKeyDynamicData> = [];
+  if (eventData) {
+    jsonKeys = flattenJSON(eventData);
+  } else if (eventBatchData) {
+    jsonKeys = eventBatchData.flatMap(d => flattenJSON(d));
+  }
 
   // id, websiteEventId, eventStringValue
   const flattenedData = jsonKeys.map(a => ({
@@ -57,15 +64,31 @@ async function clickhouseQuery(data: {
   visitId?: string;
   urlPath?: string;
   eventName?: string;
-  eventData: DynamicData;
+  eventData?: DynamicData;
+  eventBatchData?: Array<DynamicData>;
   createdAt?: string;
 }) {
-  const { websiteId, sessionId, visitId, eventId, urlPath, eventName, eventData, createdAt } = data;
+  const {
+    websiteId,
+    sessionId,
+    visitId,
+    eventId,
+    urlPath,
+    eventName,
+    eventData,
+    eventBatchData,
+    createdAt,
+  } = data;
 
   const { sendMessages, sendMessage } = kafka;
   const { insert, getUTCString } = clickhouse;
 
-  const jsonKeys = flattenJSON(eventData);
+  let jsonKeys: Array<JsonKeyDynamicData> = [];
+  if (eventData) {
+    jsonKeys = flattenJSON(eventData);
+  } else if (eventBatchData) {
+    jsonKeys = eventBatchData.flatMap(d => flattenJSON(d));
+  }
 
   const messages = jsonKeys.map(({ key, value, dataType }) => {
     return {

@@ -234,10 +234,21 @@
 
   const track = (obj, data) => {
     if (typeof obj === 'string') {
+      let singleData = undefined;
+      let batchData = undefined;
+      if (typeof data === 'object') {
+        if (Array.isArray(data)) {
+          batchData = data;
+        } else {
+          singleData = data;
+        }
+      }
+
       return send({
         ...getPayload(),
         name: obj,
-        data: typeof data === 'object' ? data : undefined,
+        data: singleData,
+        batchData,
       });
     } else if (typeof obj === 'object') {
       return send(obj);

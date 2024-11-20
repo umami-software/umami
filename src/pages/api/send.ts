@@ -21,6 +21,7 @@ export interface CollectRequestBody {
   payload: {
     website: string;
     data?: { [key: string]: any };
+    batchData?: Array<{ [key: string]: any }>;
     hostname?: string;
     ip?: string;
     language?: string;
@@ -61,7 +62,8 @@ const schema = {
     payload: yup
       .object()
       .shape({
-        data: yup.object(),
+        data: yup.object().optional(),
+        batchData: yup.array().of(yup.object()).optional(),
         hostname: yup.string().matches(HOSTNAME_REGEX).max(100),
         ip: yup.string().matches(IP_REGEX),
         language: yup.string().max(35),
@@ -90,13 +92,16 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     await useValidate(schema, req, res);
+    if (req.body.payload.batchData && req.body.payload.data) {
+      return badRequest(res, 'cannot send both data and batchData.');
+    }
 
     if (hasBlockedIp(req)) {
       return forbidden(res);
     }
 
     const { type, payload } = req.body;
-    const { url, referrer, name: eventName, data, title } = payload;
+    const { url, referrer, name: eventName, data, title, batchData } = payload;
     const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
@@ -141,6 +146,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         pageTitle,
         eventName,
         eventData: data,
+        eventBatchData: batchData,
         ...session,
         sessionId: session.id,
       });

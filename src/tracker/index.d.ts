@@ -75,6 +75,7 @@ export type EventProperties = {
    */
   name: string;
   data?: EventData;
+  batchData?: EventData[];
 } & WithRequired<TrackedProperties, 'website'>;
 export type PageViewProperties = WithRequired<TrackedProperties, 'website'>;
 export type CustomEventFunction = (
@@ -125,7 +126,7 @@ export type UmamiTracker = {
      * umami.track('signup-button', { name: 'newsletter', id: 123 });
      * ```
      */
-    (eventName: string, obj: EventData): Promise<string>;
+    (eventName: string, obj: EventData | Array<EventData>): Promise<string>;
 
     /**
      * Tracks a page view with custom properties
