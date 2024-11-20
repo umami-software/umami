@@ -6,7 +6,7 @@
     document,
     history,
   } = window;
-  const { hostname, href } = location;
+  const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
   const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
@@ -260,7 +260,7 @@
   }
 
   let currentUrl = parseURL(href);
-  let currentRef = referrer !== hostname ? referrer : '';
+  let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let title = document.title;
   let cache;
   let initialized;
