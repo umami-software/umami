@@ -28,6 +28,7 @@ export function WorldMap({
   const { formatMessage, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);
   const visitorsLabel = formatMessage(labels.visitors).toLocaleLowerCase(locale);
+  const unknownLabel = formatMessage(labels.unknown);
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
@@ -62,7 +63,9 @@ export function WorldMap({
     if (code === 'AQ') return;
     const country = metrics?.find(({ x }) => x === code);
     setTooltipPopup(
-      `${countryNames[code]}: ${formatLongNumber(country?.y || 0)} ${visitorsLabel}` as any,
+      `${countryNames[code] || unknownLabel}: ${formatLongNumber(
+        country?.y || 0,
+      )} ${visitorsLabel}` as any,
     );
   };
 
