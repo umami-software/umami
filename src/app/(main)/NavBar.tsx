@@ -76,20 +76,25 @@ export function NavBar() {
 
   const handleTeamChange = (teamId: string) => {
     const url = teamId ? `/teams/${teamId}` : '/';
-    setItem('umami.team', { id: teamId });
+    if (!cloudMode) {
+      setItem('umami.team', { id: teamId });
+    }
     router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
   };
 
   useEffect(() => {
-    const teamIdLocal = getItem('umami.team')?.id;
-    if (teamIdLocal && pathname !== '/' && pathname !== '/dashboard') {
-      const url = '/';
-      router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
-    } else if (teamIdLocal) {
-      const url = `/teams/${teamIdLocal}/dashboard`;
-      router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
+    if (!cloudMode) {
+      const teamIdLocal = getItem('umami.team')?.id;
+
+      if (teamIdLocal && pathname !== '/' && pathname !== '/dashboard') {
+        const url = '/';
+        router.push(url);
+      } else if (teamIdLocal) {
+        const url = `/teams/${teamIdLocal}/dashboard`;
+        router.push(url);
+      }
     }
-  }, []);
+  }, [cloudMode]);
 
   return (
     <div className={styles.navbar}>
