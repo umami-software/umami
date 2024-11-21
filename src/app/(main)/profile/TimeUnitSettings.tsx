@@ -5,17 +5,17 @@ import styles from './TimeUnitSettings.module.css';
 
 export function TimeUnitSettings() {
   const { formatMessage, labels } = useMessages();
-  const { currentTimeUnit, timeUnitOptions, saveTimeUnit } = useTimeUnit();
+  const { timeUnit, timeUnitOptions, updateTimeUnit } = useTimeUnit();
 
-  const handleReset = () => saveTimeUnit('hour');
+  const handleReset = () => updateTimeUnit('hour');
 
   return (
     <Flexbox gap={10}>
       <Dropdown
         className={styles.dropdown}
         items={timeUnitOptions}
-        value={currentTimeUnit}
-        onChange={(value: any) => saveTimeUnit(value)}
+        value={timeUnit}
+        onChange={(value: any) => updateTimeUnit(value)}
         menuProps={{ className: styles.menu }}
       >
         {item => <Item key={item}>{item}</Item>}
