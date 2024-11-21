@@ -1,11 +1,17 @@
 .container {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 100px;
 }
 
 .buttons {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .buttons button:first-child {
