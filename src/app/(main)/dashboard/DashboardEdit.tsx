@@ -1,8 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
-import { Button, Icon, Loading } from 'react-basics';
-import Icons from 'components/icons';
+import { Button, Loading, Toggle, SearchField } from 'react-basics';
 import { firstBy } from 'thenby';
 import useDashboard, { saveDashboard } from 'store/dashboard';
 import { useMessages, useWebsites } from 'components/hooks';
@@ -18,6 +17,7 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
   const [active, setActive] = useState(websiteActive || []);
   const [edited, setEdited] = useState(isEdited);
   const [websites, setWebsites] = useState([]);
+  const [search, setSearch] = useState('');
 
   const {
     result,
@@ -92,16 +92,19 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
 
   return (
     <>
-      <div className={styles.buttons}>
-        <Button onClick={handleSave} variant="primary" size="sm">
-          {formatMessage(labels.save)}
-        </Button>
-        <Button onClick={handleCancel} size="sm">
-          {formatMessage(labels.cancel)}
-        </Button>
-        <Button onClick={handleReset} size="sm">
-          {formatMessage(labels.reset)}
-        </Button>
+      <div className={styles.header}>
+        <SearchField className={styles.search} value={search} onSearch={setSearch} />
+        <div className={styles.buttons}>
+          <Button onClick={handleSave} variant="primary" size="sm">
+            {formatMessage(labels.save)}
+          </Button>
+          <Button onClick={handleCancel} size="sm">
+            {formatMessage(labels.cancel)}
+          </Button>
+          <Button onClick={handleReset} size="sm">
+            {formatMessage(labels.reset)}
+          </Button>
+        </div>
       </div>
       <div className={styles.dragActive}>
         <DragDropContext onDragEnd={handleWebsiteDrag}>
@@ -112,33 +115,38 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
                 ref={provided.innerRef}
                 style={{ marginBottom: snapshot.isDraggingOver ? 260 : null }}
               >
-                {ordered.map(({ id, name, domain }, index) => (
-                  <Draggable key={id} draggableId={`${DRAG_ID}-${id}`} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        className={classNames(styles.item, {
-                          [styles.active]: snapshot.isDragging,
-                          [styles.websiteActive]: active.includes(id),
-                        })}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <div className={styles.text}>
-                          <div className={styles.pinActive}>
-                            <Button size="sm" onClick={() => handleActiveWebsites(id)}>
-                              <Icon rotate={active.includes(id) ? 0 : 45}>
-                                <Icons.PushPin />
-                              </Icon>
-                            </Button>
+                {ordered.map(({ id, name, domain }, index) => {
+                  if (
+                    search &&
+                    !`${name.toLowerCase()}${domain.toLowerCase()}`.includes(search.toLowerCase())
+                  ) {
+                    return null;
+                  }
+
+                  return (
+                    <Draggable key={id} draggableId={`${DRAG_ID}-${id}`} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          className={classNames(styles.item, {
+                            [styles.active]: snapshot.isDragging,
+                          })}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <div className={styles.text}>
+                            <div className={styles.name}>{name}</div>
+                            <div className={styles.domain}>{domain}</div>
                           </div>
-                          <h1>{name}</h1>
-                          <h2>{domain}</h2>
+                          <Toggle
+                            checked={active.includes(id)}
+                            onChange={() => handleActiveWebsites(id)}
+                          />
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                      )}
+                    </Draggable>
+                  );
+                })}
                 {provided.placeholder}
               </div>
             )}
