@@ -1,20 +1,21 @@
-import { Icons, Icon, Text, Dropdown, Item } from 'react-basics';
+import LinkButton from 'components/common/LinkButton';
+import { useLocale, useMessages, useNavigation } from 'components/hooks';
+import SideNav from 'components/layout/SideNav';
 import BrowsersTable from 'components/metrics/BrowsersTable';
-import CountriesTable from 'components/metrics/CountriesTable';
-import RegionsTable from 'components/metrics/RegionsTable';
 import CitiesTable from 'components/metrics/CitiesTable';
+import CountriesTable from 'components/metrics/CountriesTable';
 import DevicesTable from 'components/metrics/DevicesTable';
+import EventsTable from 'components/metrics/EventsTable';
+import HostsTable from 'components/metrics/HostsTable';
 import LanguagesTable from 'components/metrics/LanguagesTable';
 import OSTable from 'components/metrics/OSTable';
 import PagesTable from 'components/metrics/PagesTable';
 import QueryParametersTable from 'components/metrics/QueryParametersTable';
 import ReferrersTable from 'components/metrics/ReferrersTable';
-import HostsTable from 'components/metrics/HostsTable';
+import RegionsTable from 'components/metrics/RegionsTable';
 import ScreenTable from 'components/metrics/ScreenTable';
-import EventsTable from 'components/metrics/EventsTable';
-import SideNav from 'components/layout/SideNav';
-import { useNavigation, useMessages, useLocale } from 'components/hooks';
-import LinkButton from 'components/common/LinkButton';
+import TagsTable from 'components/metrics/TagsTable';
+import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
 import styles from './WebsiteExpandedView.module.css';
 
 const views = {
@@ -34,6 +35,7 @@ const views = {
   language: LanguagesTable,
   event: EventsTable,
   query: QueryParametersTable,
+  tag: TagsTable,
 };
 
 export default function WebsiteExpandedView({
@@ -116,6 +118,11 @@ export default function WebsiteExpandedView({
       key: 'host',
       label: formatMessage(labels.hosts),
       url: renderUrl({ view: 'host' }),
+    },
+    {
+      key: 'tag',
+      label: formatMessage(labels.tags),
+      url: renderUrl({ view: 'tag' }),
     },
   ];
 

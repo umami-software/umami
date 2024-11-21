@@ -15,9 +15,9 @@ async function sendTelemetry(type) {
       node: process.version,
       platform: os.platform(),
       arch: os.arch(),
-      os: `${os.type()} (${os.version()})`,
-      isDocker: isDocker(),
-      isCi: isCI,
+      os: `${os.type()} ${os.version()}`,
+      is_docker: isDocker(),
+      is_ci: isCI,
     },
   };
 

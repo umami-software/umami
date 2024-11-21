@@ -164,6 +164,9 @@ export async function resetWebsite(
     client.eventData.deleteMany({
       where: { websiteId },
     }),
+    client.sessionData.deleteMany({
+      where: { websiteId },
+    }),
     client.websiteEvent.deleteMany({
       where: { websiteId },
     }),
@@ -193,6 +196,9 @@ export async function deleteWebsite(
 
   return transaction([
     client.eventData.deleteMany({
+      where: { websiteId },
+    }),
+    client.sessionData.deleteMany({
       where: { websiteId },
     }),
     client.websiteEvent.deleteMany({
