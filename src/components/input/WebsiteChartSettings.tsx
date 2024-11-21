@@ -1,19 +1,22 @@
 import TimeUnitSettings from 'app/(main)/profile/TimeUnitSettings';
 import { useMessages } from 'components/hooks';
+import useTimeUnit from 'components/hooks/useTimeUnit';
 import { Button, Form, FormRow, Modal } from 'react-basics';
 import styles from './WebsiteChartSettings.module.css';
 
 export interface WebsiteChartSettingsProps {
   isOpened?: boolean;
-  onClose?: () => void;
+  onClose: () => void;
   onChange?: (value: string) => void;
 }
 
 export function WebsiteChartSettings({ onClose }: WebsiteChartSettingsProps) {
   const { formatMessage, labels } = useMessages();
+  const { saveTimeUnit } = useTimeUnit();
 
   const handleSave = () => {
-    // Save the settings
+    saveTimeUnit();
+    onClose();
   };
 
   const handleClose = () => onClose();
