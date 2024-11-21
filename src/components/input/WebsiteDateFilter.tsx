@@ -62,6 +62,7 @@ export function WebsiteDateFilter({
       </Button>
       {showChartParams && (
         <WebsiteChartSettings
+          websiteId={websiteId}
           isOpened={showChartParams}
           onClose={() => setShowChartParams(false)}
           onChange={handleChange}
