@@ -29,6 +29,7 @@ export async function saveEvent(args: {
   subdivision1?: string;
   subdivision2?: string;
   city?: string;
+  tag?: string;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
@@ -49,6 +50,7 @@ async function relationalQuery(data: {
   eventName?: string;
   eventData?: any;
   eventBatchData?: Array<any>;
+  tag?: string;
 }) {
   const {
     websiteId,
@@ -63,6 +65,7 @@ async function relationalQuery(data: {
     eventData,
     pageTitle,
     eventBatchData,
+    tag,
   } = data;
   const websiteEventId = uuid();
 
@@ -80,6 +83,7 @@ async function relationalQuery(data: {
       pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+      tag,
     },
   });
 
@@ -122,6 +126,7 @@ async function clickhouseQuery(data: {
   subdivision1?: string;
   subdivision2?: string;
   city?: string;
+  tag?: string;
 }) {
   const {
     websiteId,
@@ -140,6 +145,7 @@ async function clickhouseQuery(data: {
     subdivision1,
     subdivision2,
     city,
+    tag,
     ...args
   } = data;
   const { insert, getUTCString } = clickhouse;
@@ -170,6 +176,7 @@ async function clickhouseQuery(data: {
     page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+    tag: tag,
     created_at: createdAt,
   };
 

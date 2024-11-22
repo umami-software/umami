@@ -1,4 +1,9 @@
 import { isbot } from 'isbot';
+import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
+import { secret, uuid, visitSalt } from 'lib/crypto';
+import { hasBlockedIp } from 'lib/detect';
+import { useCors, useSession, useValidate } from 'lib/middleware';
+import { CollectionType, YupRequest } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
   badRequest,
@@ -9,11 +14,6 @@ import {
   safeDecodeURI,
   send,
 } from 'next-basics';
-import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
-import { secret, visitSalt, uuid } from 'lib/crypto';
-import { hasBlockedIp } from 'lib/detect';
-import { useCors, useSession, useValidate } from 'lib/middleware';
-import { CollectionType, YupRequest } from 'lib/types';
 import { saveEvent, saveSessionData } from 'queries';
 import * as yup from 'yup';
 
@@ -101,7 +101,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-    const { url, referrer, name: eventName, data, title, batchData } = payload;
+    const { url, referrer, name: eventName, data, title, batchData, tag } = payload;
     const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
@@ -149,6 +149,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventBatchData: batchData,
         ...session,
         sessionId: session.id,
+        tag,
       });
     } else if (type === COLLECTION_TYPE.identify) {
       if (!data) {

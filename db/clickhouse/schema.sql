@@ -29,6 +29,7 @@ CREATE TABLE website_event
     --events
     event_type UInt32,
     event_name String,
+    tag String,
     created_at DateTime('UTC'),
     job_id Nullable(UUID)
 )
@@ -152,6 +153,7 @@ CREATE TABLE website_event_stats_hourly
     views SimpleAggregateFunction(sum, UInt64),
     min_time SimpleAggregateFunction(min, DateTime('UTC')),
     max_time SimpleAggregateFunction(max, DateTime('UTC')),
+    tag SimpleAggregateFunction(groupArrayArray, Array(String)),
     created_at Datetime('UTC')
 )
 ENGINE = AggregatingMergeTree
@@ -192,6 +194,7 @@ SELECT
     views,
     min_time,
     max_time,
+    tag,
     timestamp as created_at
 FROM (SELECT
     website_id,
@@ -217,6 +220,7 @@ FROM (SELECT
     sumIf(1, event_type = 1) views,
     min(created_at) min_time,
     max(created_at) max_time,
+    arrayFilter(x -> x != '', groupArray(tag)) tag,
     toStartOfHour(created_at) timestamp
 FROM website_event
 GROUP BY website_id,

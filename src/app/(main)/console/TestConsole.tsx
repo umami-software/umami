@@ -48,6 +48,46 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
     });
   }
 
+  function handleRunRevenue() {
+    window['umami'].track(props => ({
+      ...props,
+      url: '/checkout-cart',
+      referrer: 'https://www.google.com',
+    }));
+    window['umami'].track('checkout-cart', {
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'USD',
+    });
+    window['umami'].track('affiliate-link', {
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'USD',
+    });
+    window['umami'].track('promotion-link', {
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'USD',
+    });
+    window['umami'].track('checkout-cart', {
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'EUR',
+    });
+    window['umami'].track('promotion-link', {
+      revenue: parseFloat((Math.random() * 1000).toFixed(2)),
+      currency: 'EUR',
+    });
+    window['umami'].track('affiliate-link', {
+      item1: {
+        productIdentity: 'ABC424',
+        revenue: parseFloat((Math.random() * 10000).toFixed(2)),
+        currency: 'JPY',
+      },
+      item2: {
+        productIdentity: 'ZYW684',
+        revenue: parseFloat((Math.random() * 10000).toFixed(2)),
+        currency: 'JPY',
+      },
+    });
+  }
+
   function handleRunIdentify() {
     window['umami'].identify({
       userId: 123,
@@ -128,9 +168,18 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
                 Send event with data
               </Button>
               <Button
+                id="generate-revenue-button"
+                data-umami-event="checkout-cart"
+                data-umami-event-revenue={(Math.random() * 10000).toFixed(2).toString()}
+                data-umami-event-currency="USD"
+                variant="primary"
+              >
+                Generate revenue data
+              </Button>
+              <Button
                 id="button-with-div-button"
                 data-umami-event="button-click"
-                data-umami-event-name="bob"
+                data-umami-event-name={'bob'}
                 data-umami-event-id="123"
                 variant="primary"
               >
@@ -154,6 +203,9 @@ export function TestConsole({ websiteId }: { websiteId: string }) {
               </Button>
               <Button id="manual-button" variant="primary" onClick={handleRunIdentify}>
                 Run identify
+              </Button>
+              <Button id="manual-button" variant="primary" onClick={handleRunRevenue}>
+                Revenue script
               </Button>
             </div>
           </div>

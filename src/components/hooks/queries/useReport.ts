@@ -1,6 +1,6 @@
 import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
 

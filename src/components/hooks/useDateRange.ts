@@ -5,7 +5,7 @@ import websiteStore, { setWebsiteDateRange, setWebsiteDateCompare } from 'store/
 import appStore, { setDateRange } from 'store/app';
 import { DateRange } from 'lib/types';
 import { useLocale } from './useLocale';
-import { useApi } from './queries/useApi';
+import { useApi } from './useApi';
 
 export function useDateRange(websiteId?: string): {
   dateRange: DateRange;

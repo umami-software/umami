@@ -23,6 +23,7 @@ export interface WebsiteSessionStatsRequestQuery {
   country?: string;
   region?: string;
   city?: string;
+  tag?: string;
 }
 
 const schema = {
@@ -42,6 +43,7 @@ const schema = {
     country: yup.string(),
     region: yup.string(),
     city: yup.string(),
+    tag: yup.string(),
   }),
 };
 

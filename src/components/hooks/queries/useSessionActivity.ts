@@ -1,4 +1,4 @@
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 
 export function useSessionActivity(
   websiteId: string,
