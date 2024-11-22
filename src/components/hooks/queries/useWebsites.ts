@@ -1,5 +1,5 @@
-import { useApi } from './useApi';
-import { usePagedQuery } from './usePagedQuery';
+import { useApi } from '../useApi';
+import { usePagedQuery } from '../usePagedQuery';
 import { useLogin } from './useLogin';
 import useModified from '../useModified';
 

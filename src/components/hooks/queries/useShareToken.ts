@@ -1,5 +1,5 @@
 import useStore, { setShareToken } from 'store/app';
-import useApi from './useApi';
+import { useApi } from '../useApi';
 
 const selector = (state: { shareToken: string }) => state.shareToken;
 

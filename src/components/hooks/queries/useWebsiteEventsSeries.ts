@@ -1,4 +1,4 @@
-import useApi from './useApi';
+import { useApi } from '../useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
 

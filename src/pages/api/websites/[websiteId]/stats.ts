@@ -24,6 +24,7 @@ export interface WebsiteStatsRequestQuery {
   country?: string;
   region?: string;
   city?: string;
+  tag?: string;
   compare?: string;
 }
 
@@ -44,6 +45,7 @@ const schema = {
     country: yup.string(),
     region: yup.string(),
     city: yup.string(),
+    tag: yup.string(),
     compare: yup.string(),
   }),
 };

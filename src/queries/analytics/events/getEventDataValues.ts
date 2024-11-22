@@ -49,7 +49,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters & { eventName?: string; propertyName?: string },
-): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
+): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, params } = await parseFilters(websiteId, filters);
 
@@ -66,7 +66,7 @@ async function clickhouseQuery(
       and data_key = {propertyName:String}
       and event_name = {eventName:String}
     ${filterQuery}
-    group by event_name, value
+    group by value
     order by 2 desc
     limit 100
     `,

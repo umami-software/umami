@@ -38,13 +38,13 @@
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Adaugă pas"
     }
   ],
   "label.add-website": [
     {
       "type": 0,
-      "value": "Adăugare site web"
+      "value": "Adaugă site web"
     }
   ],
   "label.admin": [
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "Compară"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "Număr"
     }
   ],
   "label.countries": [
@@ -230,13 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Creat de"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "Curent"
     }
   ],
   "label.current-password": [
@@ -266,13 +266,13 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Data"
+      "value": "Dată"
     }
   ],
   "label.date-range": [
     {
       "type": 0,
-      "value": "Interval de date"
+      "value": "Interval"
     }
   ],
   "label.day": [
@@ -284,7 +284,7 @@
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Interval de date implicit"
+      "value": "Interval implicit"
     }
   ],
   "label.delete": [
@@ -314,7 +314,7 @@
   "label.delete-website": [
     {
       "type": 0,
-      "value": "Ștergere site web"
+      "value": "Șterge site web"
     }
   ],
   "label.description": [
@@ -398,13 +398,13 @@
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "Pas final"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "URL de intrare"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "URL de ieșire"
     }
   ],
   "label.false": [
@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "Văzut pentru prima dată"
     }
   ],
   "label.funnel": [
@@ -494,19 +494,19 @@
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "Obiectiv"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "Obiective"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "Urmărește obiectivele de vizualizări și evenimente."
     }
   ],
   "label.greater-than": [
@@ -584,13 +584,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "Traseu"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "Înțelege cum navighează vizitatorii prin website."
     }
   ],
   "label.language": [
@@ -642,7 +642,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Ultimele "
     },
     {
       "type": 1,
@@ -650,13 +650,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " luni"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "Văzut ultima dată"
     }
   ],
   "label.leave": [
@@ -876,13 +876,13 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "Rută"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "Rute"
     }
   ],
   "label.powered-by": [
@@ -898,19 +898,19 @@
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "Anterior"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "Perioda anterioară"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "Anul anterior"
     }
   ],
   "label.profile": [
@@ -922,13 +922,13 @@
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "Proprietăți"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "Proprietate"
     }
   ],
   "label.queries": [
@@ -1042,13 +1042,13 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "Venit"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "Urmărește venitul în timp."
     }
   ],
   "label.revenue-property": [
@@ -1114,7 +1114,7 @@
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "Sesiune"
     }
   ],
   "label.sessions": [
@@ -1144,13 +1144,13 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "Pas de început"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Pași"
     }
   ],
   "label.sum": [
@@ -1174,13 +1174,13 @@
   "label.team-id": [
     {
       "type": 0,
-      "value": "ID Echipa"
+      "value": "ID Echipă"
     }
   ],
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "Manager echipă"
     }
   ],
   "label.team-member": [
@@ -1288,7 +1288,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "Tranzacții"
     }
   ],
   "label.transfer": [
@@ -1330,7 +1330,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "Clienți unici"
     }
   ],
   "label.unknown": [
@@ -1372,7 +1372,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "Proprietatea utilizatorului"
     }
   ],
   "label.username": [
@@ -1396,7 +1396,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "Urmărește campaniile tale cu parametri UTM."
     }
   ],
   "label.value": [
@@ -1432,7 +1432,7 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Vizualizări per vizită"
     }
   ],
   "label.visit-duration": [
@@ -1450,7 +1450,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Vizite"
     }
   ],
   "label.website": [
@@ -1534,7 +1534,7 @@
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "Date colectate"
     }
   ],
   "message.confirm-delete": [
