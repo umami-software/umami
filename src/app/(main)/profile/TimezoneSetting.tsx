@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { Dropdown, Item, Button, Flexbox } from 'react-basics';
-import moment from 'moment-timezone';
 import { useTimezone, useMessages } from 'components/hooks';
 import { getTimezone } from 'lib/date';
 import styles from './TimezoneSetting.module.css';
 
-const timezones = moment.tz.names();
+const timezones = Intl.supportedValuesOf('timeZone');
 
 export function TimezoneSetting() {
   const [search, setSearch] = useState('');
