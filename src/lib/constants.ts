@@ -4,6 +4,7 @@ export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
+export const TIME_UNIT_CONFIG = 'umami.time-unit';
 export const THEME_CONFIG = 'umami.theme';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
 export const VERSION_CHECK = 'umami.version-check';
@@ -17,6 +18,7 @@ export const DEFAULT_LOCALE = process.env.defaultLocale || 'en-US';
 export const DEFAULT_THEME = 'light';
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE = '24hour';
+export const DEFAULT_TIME_UNIT = 'day';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 10;
@@ -24,6 +26,7 @@ export const DEFAULT_DATE_COMPARE = 'prev';
 
 export const REALTIME_RANGE = 30;
 export const REALTIME_INTERVAL = 10000;
+export const MAX_CHART_POINTS = 720;
 
 export const FILTER_COMBINED = 'filter-combined';
 export const FILTER_RAW = 'filter-raw';
