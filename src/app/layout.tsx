@@ -7,7 +7,6 @@ import '@fontsource/inter/700.css';
 import 'react-basics/dist/styles.css';
 import 'styles/index.css';
 import 'styles/variables.css';
-import '@umami/react-zen/dist/styles.css';
 
 export default function ({ children }) {
   return (
