@@ -67,10 +67,44 @@ async function relationalQuery(data: {
     eventBatchData,
     tag,
   } = data;
-  const websiteEventId = uuid();
 
-  const websiteEvent = prisma.client.websiteEvent.create({
-    data: {
+  const websiteEventData = [];
+  const eventsData = [];
+
+  if (eventBatchData) {
+    for (const eventData of eventBatchData) {
+      const websiteEventId = uuid();
+
+      websiteEventData.push({
+        id: websiteEventId,
+        websiteId,
+        sessionId,
+        visitId,
+        urlPath: urlPath?.substring(0, URL_LENGTH),
+        urlQuery: urlQuery?.substring(0, URL_LENGTH),
+        referrerPath: referrerPath?.substring(0, URL_LENGTH),
+        referrerQuery: referrerQuery?.substring(0, URL_LENGTH),
+        referrerDomain: referrerDomain?.substring(0, URL_LENGTH),
+        pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
+        eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+        eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+        tag,
+      });
+
+      eventsData.push({
+        websiteId,
+        sessionId,
+        visitId,
+        eventId: websiteEventId,
+        urlPath: urlPath?.substring(0, URL_LENGTH),
+        eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
+        eventData,
+      });
+    }
+  } else {
+    const websiteEventId = uuid();
+
+    websiteEventData.push({
       id: websiteEventId,
       websiteId,
       sessionId,
@@ -84,11 +118,9 @@ async function relationalQuery(data: {
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
-    },
-  });
+    });
 
-  if (eventData || eventBatchData) {
-    await saveEventData({
+    eventsData.push({
       websiteId,
       sessionId,
       visitId,
@@ -96,11 +128,18 @@ async function relationalQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
-      eventBatchData,
     });
   }
 
-  return websiteEvent;
+  const websiteEvents = prisma.client.websiteEvent.createMany({
+    data: websiteEventData,
+  });
+
+  if (eventData || eventBatchData) {
+    await saveEventData(eventsData);
+  }
+
+  return websiteEvents;
 }
 
 async function clickhouseQuery(data: {

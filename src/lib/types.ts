@@ -52,12 +52,6 @@ export interface DynamicData {
   [key: string]: number | string | number[] | string[];
 }
 
-export interface JsonKeyDynamicData {
-  key: string;
-  value: any;
-  dataType: DynamicDataType;
-}
-
 export interface Auth {
   user?: {
     id: string;
