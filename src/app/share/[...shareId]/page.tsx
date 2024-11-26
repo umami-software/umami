@@ -1,5 +1,7 @@
 import SharePage from './SharePage';
 
-export default function ({ params: { shareId } }) {
+export default async function ({ params }: { params: { shareId: string } }) {
+  const { shareId } = await params;
+
   return <SharePage shareId={shareId[0]} />;
 }
