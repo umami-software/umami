@@ -189,54 +189,103 @@ async function clickhouseQuery(data: {
   } = data;
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
-  const eventId = uuid();
   const createdAt = getUTCString();
 
-  const message = {
-    ...args,
-    website_id: websiteId,
-    session_id: sessionId,
-    visit_id: visitId,
-    event_id: eventId,
-    country: country,
-    subdivision1:
-      country && subdivision1
-        ? subdivision1.includes('-')
-          ? subdivision1
-          : `${country}-${subdivision1}`
-        : null,
-    subdivision2: subdivision2,
-    city: city,
-    url_path: urlPath?.substring(0, URL_LENGTH),
-    url_query: urlQuery?.substring(0, URL_LENGTH),
-    referrer_path: referrerPath?.substring(0, URL_LENGTH),
-    referrer_query: referrerQuery?.substring(0, URL_LENGTH),
-    referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
-    page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
-    event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
-    event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
-    tag: tag,
-    created_at: createdAt,
-  };
+  const websiteEventData = [];
+  const eventsData = [];
 
-  if (kafka.enabled) {
-    await sendMessage('event', message);
+  if (eventBatchData) {
+    for (const eventData of eventBatchData) {
+      const websiteEventId = uuid();
+
+      websiteEventData.push({
+        ...args,
+        website_id: websiteId,
+        session_id: sessionId,
+        visit_id: visitId,
+        event_id: websiteEventId,
+        country: country,
+        subdivision1:
+          country && subdivision1
+            ? subdivision1.includes('-')
+              ? subdivision1
+              : `${country}-${subdivision1}`
+            : null,
+        subdivision2: subdivision2,
+        city: city,
+        url_path: urlPath?.substring(0, URL_LENGTH),
+        url_query: urlQuery?.substring(0, URL_LENGTH),
+        referrer_path: referrerPath?.substring(0, URL_LENGTH),
+        referrer_query: referrerQuery?.substring(0, URL_LENGTH),
+        referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
+        page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
+        event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+        event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+        tag: tag,
+        created_at: createdAt,
+      });
+
+      eventsData.push({
+        websiteId,
+        sessionId,
+        visitId,
+        eventId: websiteEventId,
+        urlPath: urlPath?.substring(0, URL_LENGTH),
+        eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
+        eventData,
+        createdAt,
+      });
+    }
   } else {
-    await insert('website_event', [message]);
-  }
+    const websiteEventId = uuid();
 
-  if (eventData || eventBatchData) {
-    await saveEventData({
+    websiteEventData.push({
+      ...args,
+      website_id: websiteId,
+      session_id: sessionId,
+      visit_id: visitId,
+      event_id: websiteEventId,
+      country: country,
+      subdivision1:
+        country && subdivision1
+          ? subdivision1.includes('-')
+            ? subdivision1
+            : `${country}-${subdivision1}`
+          : null,
+      subdivision2: subdivision2,
+      city: city,
+      url_path: urlPath?.substring(0, URL_LENGTH),
+      url_query: urlQuery?.substring(0, URL_LENGTH),
+      referrer_path: referrerPath?.substring(0, URL_LENGTH),
+      referrer_query: referrerQuery?.substring(0, URL_LENGTH),
+      referrer_domain: referrerDomain?.substring(0, URL_LENGTH),
+      page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
+      event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
+      event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+      tag: tag,
+      created_at: createdAt,
+    });
+
+    eventsData.push({
       websiteId,
       sessionId,
       visitId,
-      eventId,
+      eventId: websiteEventId,
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
-      eventBatchData,
       createdAt,
     });
+  }
+
+  if (kafka.enabled) {
+    await sendMessage('event', websiteEventData);
+  } else {
+    await insert('website_event', websiteEventData);
+  }
+
+  if (eventData || eventBatchData) {
+    await saveEventData(eventsData);
   }
 
   return data;
