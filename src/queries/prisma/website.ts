@@ -21,6 +21,7 @@ export async function getSharedWebsite(shareId: string) {
   return findWebsite({
     where: {
       shareId,
+      deletedAt: null,
     },
   });
 }
