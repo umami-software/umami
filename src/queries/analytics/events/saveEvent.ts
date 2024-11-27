@@ -188,7 +188,7 @@ async function clickhouseQuery(data: {
     ...args
   } = data;
   const { insert, getUTCString } = clickhouse;
-  const { sendMessage } = kafka;
+  const { sendMessages } = kafka;
   const createdAt = getUTCString();
 
   const websiteEventData = [];
@@ -279,7 +279,7 @@ async function clickhouseQuery(data: {
   }
 
   if (kafka.enabled) {
-    await sendMessage('event', websiteEventData);
+    await sendMessages('event', websiteEventData);
   } else {
     await insert('website_event', websiteEventData);
   }
