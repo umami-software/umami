@@ -86,12 +86,10 @@ export function NavBar() {
     if (!cloudMode) {
       const teamIdLocal = getItem('umami.team')?.id;
 
-      if (teamIdLocal && pathname !== '/' && pathname !== '/dashboard') {
-        const url = '/';
-        router.push(url);
-      } else if (teamIdLocal) {
-        const url = `/teams/${teamIdLocal}/dashboard`;
-        router.push(url);
+      if (teamIdLocal && teamIdLocal !== teamId) {
+        router.push(
+          pathname !== '/' && pathname !== '/dashboard' ? '/' : `/teams/${teamIdLocal}/dashboard`,
+        );
       }
     }
   }, [cloudMode]);
