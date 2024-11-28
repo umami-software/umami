@@ -119,11 +119,11 @@ function getTimestampDiffSQL(field1: string, field2: string): string {
   }
 }
 
-function getSearchSQL(column: string): string {
+function getSearchSQL(column: string, param: string = 'search'): string {
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
-  return `and ${column} ${like} {{search}}`;
+  return `and ${column} ${like} {{${param}}`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = '') {

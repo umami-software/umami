@@ -28,12 +28,15 @@ export function useWebsiteValues({
   const getSearch = (type: string, value: string) => {
     if (value) {
       const values = names[type];
-      return Object.keys(values).reduce((code: string, key: string) => {
-        if (!code && values[key].toLowerCase().includes(value.toLowerCase())) {
-          code = key;
-        }
-        return code;
-      }, '');
+      return Object.keys(values)
+        .reduce((arr: string[], key: string) => {
+          if (values[key].toLowerCase().includes(value.toLowerCase())) {
+            return arr.concat(key);
+          }
+          return arr;
+        }, [])
+        .slice(0, 5)
+        .join(',');
     }
   };
 
