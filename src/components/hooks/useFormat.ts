@@ -2,12 +2,14 @@ import useMessages from './useMessages';
 import { BROWSERS, OS_NAMES } from 'lib/constants';
 import useLocale from './useLocale';
 import useCountryNames from './useCountryNames';
+import useLanguageNames from './useLanguageNames';
 import regions from '../../../public/iso-3166-2.json';
 
 export function useFormat() {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
+  const { languageNames } = useLanguageNames(locale);
 
   const formatOS = (value: string): string => {
     return OS_NAMES[value] || value;
@@ -34,6 +36,10 @@ export function useFormat() {
     return countryNames[country] ? `${value}, ${countryNames[country]}` : value;
   };
 
+  const formatLanguage = (value: string): string => {
+    return languageNames[value?.split('-')[0]] || value;
+  };
+
   const formatValue = (value: string, type: string, data?: { [key: string]: any }): string => {
     switch (type) {
       case 'os':
@@ -48,12 +54,23 @@ export function useFormat() {
         return formatRegion(value);
       case 'city':
         return formatCity(value, data?.country);
+      case 'language':
+        return formatLanguage(value);
       default:
         return value;
     }
   };
 
-  return { formatOS, formatBrowser, formatDevice, formatCountry, formatRegion, formatValue };
+  return {
+    formatOS,
+    formatBrowser,
+    formatDevice,
+    formatCountry,
+    formatRegion,
+    formatCity,
+    formatLanguage,
+    formatValue,
+  };
 }
 
 export default useFormat;

@@ -25,6 +25,7 @@ export function RegionsTable(props: MetricsTableProps) {
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }

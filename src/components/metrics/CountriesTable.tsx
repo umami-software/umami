@@ -29,6 +29,8 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
       type="country"
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
+      onDataLoad={handleDataLoad}
+      searchFormattedValues={true}
     />
   );
 }
