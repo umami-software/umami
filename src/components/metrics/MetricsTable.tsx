@@ -55,22 +55,8 @@ export function MetricsTable({
 
   const { data, isLoading, isFetched, error } = useWebsiteMetrics(
     websiteId,
-    { type, limit, search, ...params },
+    { type, limit, search: searchFormattedValues ? undefined : search, ...params },
     {
-      type,
-      startAt: +startDate,
-      endAt: +endDate,
-      url,
-      referrer,
-      os,
-      title,
-      browser,
-      device,
-      country,
-      region,
-      city,
-      limit,
-      search: (searchFormattedValues) ? undefined : search,
       retryDelay: delay || DEFAULT_ANIMATION_DURATION,
       onDataLoad,
     },

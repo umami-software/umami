@@ -1,9 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
-
-import TypeIcon from 'components/common/TypeIcon';
-import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
 import { useFormat } from 'components/hooks';
 
@@ -16,7 +13,9 @@ export function CitiesTable(props: MetricsTableProps) {
       <FilterLink id="city" value={city} label={formatCity(city, country)}>
         {country && (
           <img
-            src={`${process.env.basePath}/images/flags/${country?.toLowerCase() || 'xx'}.png`}
+            src={`${process.env.basePath || ''}/images/country/${
+              country?.toLowerCase() || 'xx'
+            }.png`}
             alt={country}
           />
         )}
