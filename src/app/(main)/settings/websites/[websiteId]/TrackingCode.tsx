@@ -12,8 +12,8 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
 
   const url = trackerScriptName?.startsWith('http')
     ? trackerScriptName
-    : `${hostUrl || process.env.hostUrl || window?.location.origin}${
-        process.env.basePath
+    : `${hostUrl || window?.location.origin || ''}${
+        process.env.basePath || ''
       }/${trackerScriptName}`;
 
   const code = `<script defer src="${url}" data-website-id="${websiteId}"></script>`;

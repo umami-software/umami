@@ -1,33 +1,19 @@
-import useApi from './useApi';
+import { useApi } from '../useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
-import { useDateRange, useNavigation, useTimezone } from 'components/hooks';
-import { zonedTimeToUtc } from 'date-fns-tz';
+import { useFilterParams } from '../useFilterParams';
+import { usePagedQuery } from '../usePagedQuery';
 
 export function useWebsiteEvents(
   websiteId: string,
   options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
 ) {
-  const { get, useQuery } = useApi();
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit, offset } = dateRange;
-  const { timezone } = useTimezone();
-  const {
-    query: { url, event },
-  } = useNavigation();
+  const { get } = useApi();
+  const params = useFilterParams(websiteId);
 
-  const params = {
-    startAt: +zonedTimeToUtc(startDate, timezone),
-    endAt: +zonedTimeToUtc(endDate, timezone),
-    unit,
-    offset,
-    timezone,
-    url,
-    event,
-  };
-
-  return useQuery({
-    queryKey: ['events', { ...params }],
-    queryFn: () => get(`/websites/${websiteId}/events`, { ...params }),
+  return usePagedQuery({
+    queryKey: ['websites:events', { websiteId, ...params }],
+    queryFn: pageParams =>
+      get(`/websites/${websiteId}/events`, { ...params, ...pageParams, pageSize: 20 }),
     enabled: !!websiteId,
     ...options,
   });

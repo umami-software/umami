@@ -1,4 +1,4 @@
-import { Key, useContext, useMemo, useState } from 'react';
+import { Key, useContext, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import thenby from 'thenby';
 import { percentFilter } from 'lib/filters';
@@ -11,7 +11,7 @@ import { WebsiteContext } from '../WebsiteProvider';
 export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
   const { formatMessage, labels } = useMessages();
-  const { pageviews } = data || {};
+  const { referrers, urls } = data || {};
   const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
   const limit = 15;
 
@@ -35,47 +35,29 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
     );
   };
 
-  const [referrers = [], pages = []] = useMemo(() => {
-    if (pageviews) {
-      const referrers = percentFilter(
-        pageviews
-          .reduce((arr, { referrerDomain }) => {
-            if (referrerDomain) {
-              const row = arr.find(({ x }) => x === referrerDomain);
+  const domains = percentFilter(
+    Object.keys(referrers)
+      .map(key => {
+        return {
+          x: key,
+          y: referrers[key],
+        };
+      })
+      .sort(thenby.firstBy('y', -1))
+      .slice(0, limit),
+  );
 
-              if (!row) {
-                arr.push({ x: referrerDomain, y: 1 });
-              } else {
-                row.y += 1;
-              }
-            }
-            return arr;
-          }, [])
-          .sort(thenby.firstBy('y', -1))
-          .slice(0, limit),
-      );
-
-      const pages = percentFilter(
-        pageviews
-          .reduce((arr, { urlPath }) => {
-            const row = arr.find(({ x }) => x === urlPath);
-
-            if (!row) {
-              arr.push({ x: urlPath, y: 1 });
-            } else {
-              row.y += 1;
-            }
-            return arr;
-          }, [])
-          .sort(thenby.firstBy('y', -1))
-          .slice(0, limit),
-      );
-
-      return [referrers, pages];
-    }
-
-    return [];
-  }, [pageviews]);
+  const pages = percentFilter(
+    Object.keys(urls)
+      .map(key => {
+        return {
+          x: key,
+          y: urls[key],
+        };
+      })
+      .sort(thenby.firstBy('y', -1))
+      .slice(0, limit),
+  );
 
   return (
     <>
@@ -89,7 +71,7 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
           title={formatMessage(labels.referrers)}
           metric={formatMessage(labels.views)}
           renderLabel={renderLink}
-          data={referrers}
+          data={domains}
         />
       )}
       {filter === FILTER_PAGES && (

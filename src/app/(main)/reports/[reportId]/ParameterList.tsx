@@ -24,18 +24,21 @@ export function ParameterList({ children }: ParameterListProps) {
 const Item = ({
   children,
   className,
+  icon,
   onClick,
   onRemove,
 }: {
   children?: ReactNode;
   className?: string;
+  icon?: ReactNode;
   onClick?: () => void;
   onRemove?: () => void;
 }) => {
   return (
     <div className={classNames(styles.item, className)} onClick={onClick}>
-      {children}
-      <Icon onClick={onRemove}>
+      {icon && <Icon className={styles.icon}>{icon}</Icon>}
+      <div className={styles.value}>{children}</div>
+      <Icon className={styles.close} onClick={onRemove}>
         <Icons.Close />
       </Icon>
     </div>

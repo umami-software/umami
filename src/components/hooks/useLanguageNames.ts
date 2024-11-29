@@ -10,7 +10,7 @@ export function useLanguageNames(locale) {
   const [list, setList] = useState(languageNames[locale] || enUS);
 
   async function loadData(locale) {
-    const { data } = await httpGet(`${process.env.basePath}/intl/language/${locale}.json`);
+    const { data } = await httpGet(`${process.env.basePath || ''}/intl/language/${locale}.json`);
 
     if (data) {
       languageNames[locale] = data;
@@ -28,7 +28,7 @@ export function useLanguageNames(locale) {
     }
   }, [locale]);
 
-  return list;
+  return { languageNames: list };
 }
 
 export default useLanguageNames;

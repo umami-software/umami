@@ -2,14 +2,14 @@ import { canCreateUser } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, Role, SearchFilter, User } from 'lib/types';
+import { NextApiRequestQueryBody, Role, PageParams, User } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { badRequest, hashPassword, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createUser, getUserByUsername } from 'queries';
 import * as yup from 'yup';
 
-export interface UsersRequestQuery extends SearchFilter {}
+export interface UsersRequestQuery extends PageParams {}
 export interface UsersRequestBody {
   username: string;
   password: string;

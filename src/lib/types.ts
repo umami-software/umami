@@ -24,31 +24,7 @@ export type DynamicDataType = ObjectValues<typeof DATA_TYPE>;
 export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
-export interface WebsiteSearchFilter extends SearchFilter {
-  userId?: string;
-  teamId?: string;
-  includeTeams?: boolean;
-  onlyTeams?: boolean;
-}
-
-export interface UserSearchFilter extends SearchFilter {
-  teamId?: string;
-}
-
-export interface TeamSearchFilter extends SearchFilter {
-  userId?: string;
-}
-
-export interface TeamUserSearchFilter extends SearchFilter {
-  teamId?: string;
-}
-
-export interface ReportSearchFilter extends SearchFilter {
-  userId?: string;
-  websiteId?: string;
-}
-
-export interface SearchFilter {
+export interface PageParams {
   query?: string;
   page?: number;
   pageSize?: number;
@@ -56,7 +32,7 @@ export interface SearchFilter {
   sortDescending?: boolean;
 }
 
-export interface FilterResult<T> {
+export interface PageResult<T> {
   data: T;
   count: number;
   page: number;
@@ -65,11 +41,11 @@ export interface FilterResult<T> {
   sortDescending?: boolean;
 }
 
-export interface FilterQueryResult<T> {
-  result: FilterResult<T>;
+export interface PagedQueryResult<T> {
+  result: PageResult<T>;
   query: any;
-  params: SearchFilter;
-  setParams: Dispatch<SetStateAction<T | SearchFilter>>;
+  params: PageParams;
+  setParams: Dispatch<SetStateAction<T | PageParams>>;
 }
 
 export interface DynamicData {
@@ -149,9 +125,9 @@ export interface WebsiteEventMetric {
 
 export interface WebsiteEventData {
   eventName?: string;
-  fieldName: string;
+  propertyName: string;
   dataType: number;
-  fieldValue?: string;
+  propertyValue?: string;
   total: number;
 }
 
@@ -167,23 +143,11 @@ export interface WebsitePageviews {
 }
 
 export interface WebsiteStats {
-  pageviews: { value: number; change: number };
-  uniques: { value: number; change: number };
-  bounces: { value: number; change: number };
-  totalTime: { value: number; change: number };
-}
-
-export interface RealtimeInit {
-  websites: Website[];
-  token: string;
-  data: RealtimeUpdate;
-}
-
-export interface RealtimeUpdate {
-  pageviews: any[];
-  sessions: any[];
-  events: any[];
-  timestamp: number;
+  pageviews: { value: number; prev: number };
+  visitors: { value: number; prev: number };
+  visits: { value: number; prev: number };
+  bounces: { value: number; prev: number };
+  totalTime: { value: number; prev: number };
 }
 
 export interface DateRange {
@@ -205,6 +169,7 @@ export interface QueryFilters {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -214,6 +179,7 @@ export interface QueryFilters {
   language?: string;
   event?: string;
   search?: string;
+  tag?: string;
 }
 
 export interface QueryOptions {
@@ -223,10 +189,37 @@ export interface QueryOptions {
 }
 
 export interface RealtimeData {
-  pageviews: any[];
-  sessions: any[];
+  countries: { [key: string]: number };
   events: any[];
+  pageviews: any[];
+  referrers: { [key: string]: number };
   timestamp: number;
-  countries?: any[];
-  visitors?: any[];
+  series: {
+    views: any[];
+    visitors: any[];
+  };
+  totals: {
+    views: number;
+    visitors: number;
+    events: number;
+    countries: number;
+  };
+  urls: { [key: string]: number };
+  visitors: any[];
+}
+
+export interface SessionData {
+  id: string;
+  websiteId: string;
+  visitId: string;
+  hostname: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  country: string;
+  subdivision1: string;
+  subdivision2: string;
+  city: string;
 }

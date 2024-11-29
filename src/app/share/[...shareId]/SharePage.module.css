@@ -1,4 +1,5 @@
 .container {
   flex: 1;
   min-height: calc(100vh - 200px);
+  min-height: calc(100dvh - 200px);
 }

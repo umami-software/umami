@@ -5,6 +5,10 @@ import Page from 'components/layout/Page';
 import styles from './layout.module.css';
 
 export default function ({ children }) {
+  if (process.env.DISABLE_UI) {
+    return null;
+  }
+
   return (
     <App>
       <main className={styles.layout}>

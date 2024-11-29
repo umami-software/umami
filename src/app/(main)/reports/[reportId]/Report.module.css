@@ -3,4 +3,5 @@
   grid-template-rows: max-content 1fr;
   grid-template-columns: max-content 1fr;
   margin-bottom: 60px;
+  height: 90vh;
 }

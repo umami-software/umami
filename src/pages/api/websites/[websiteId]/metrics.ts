@@ -17,6 +17,7 @@ export interface WebsiteMetricsRequestQuery {
   referrer?: string;
   title?: string;
   query?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
@@ -28,6 +29,7 @@ export interface WebsiteMetricsRequestQuery {
   limit?: number;
   offset?: number;
   search?: string;
+  tag?: string;
 }
 
 const schema = {
@@ -40,6 +42,7 @@ const schema = {
     referrer: yup.string(),
     title: yup.string(),
     query: yup.string(),
+    host: yup.string(),
     os: yup.string(),
     browser: yup.string(),
     device: yup.string(),
@@ -51,6 +54,7 @@ const schema = {
     limit: yup.number(),
     offset: yup.number(),
     search: yup.string(),
+    tag: yup.string(),
   }),
 };
 

@@ -1,12 +1,12 @@
-import cache from 'lib/cache';
-import { getSession, getUser, getWebsite } from 'queries';
-import { User, Website, Session } from '@prisma/client';
+import { getWebsiteSession, getWebsite } from 'queries';
+import { Website, Session } from '@prisma/client';
+import redis from '@umami/redis-client';
 
-export async function loadWebsite(websiteId: string): Promise<Website> {
-  let website;
+export async function fetchWebsite(websiteId: string): Promise<Website> {
+  let website = null;
 
-  if (cache.enabled) {
-    website = await cache.fetchWebsite(websiteId);
+  if (redis.enabled) {
+    website = await redis.client.fetch(`website:${websiteId}`, () => getWebsite(websiteId), 86400);
   } else {
     website = await getWebsite(websiteId);
   }
@@ -18,13 +18,17 @@ export async function loadWebsite(websiteId: string): Promise<Website> {
   return website;
 }
 
-export async function loadSession(sessionId: string): Promise<Session> {
-  let session;
+export async function fetchSession(websiteId: string, sessionId: string): Promise<Session> {
+  let session = null;
 
-  if (cache.enabled) {
-    session = await cache.fetchSession(sessionId);
+  if (redis.enabled) {
+    session = await redis.client.fetch(
+      `session:${sessionId}`,
+      () => getWebsiteSession(websiteId, sessionId),
+      86400,
+    );
   } else {
-    session = await getSession(sessionId);
+    session = await getWebsiteSession(websiteId, sessionId);
   }
 
   if (!session) {
@@ -32,20 +36,4 @@ export async function loadSession(sessionId: string): Promise<Session> {
   }
 
   return session;
-}
-
-export async function loadUser(userId: string): Promise<User> {
-  let user;
-
-  if (cache.enabled) {
-    user = await cache.fetchUser(userId);
-  } else {
-    user = await getUser(userId);
-  }
-
-  if (!user || user.deletedAt) {
-    return null;
-  }
-
-  return user;
 }

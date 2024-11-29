@@ -3,29 +3,31 @@ require('dotenv').config();
 const path = require('path');
 const pkg = require('./package.json');
 
-const basePath = process.env.BASE_PATH || '';
-const forceSSL = process.env.FORCE_SSL || '';
-const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT || '';
-const defaultLocale = process.env.DEFAULT_LOCALE || '';
-const trackerScriptName = process.env.TRACKER_SCRIPT_NAME || '';
-const cloudMode = process.env.CLOUD_MODE || '';
-const cloudUrl = process.env.CLOUD_URL || '';
-const frameAncestors = process.env.ALLOWED_FRAME_URLS || '';
-const disableLogin = process.env.DISABLE_LOGIN || '';
-const disableUI = process.env.DISABLE_UI || '';
-const hostURL = process.env.HOST_URL || '';
-const privateMode = process.env.PRIVATE_MODE || '';
+const TRACKER_SCRIPT = '/script.js';
+
+const basePath = process.env.BASE_PATH;
+const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
+const cloudMode = process.env.CLOUD_MODE;
+const cloudUrl = process.env.CLOUD_URL;
+const defaultLocale = process.env.DEFAULT_LOCALE;
+const disableLogin = process.env.DISABLE_LOGIN;
+const disableUI = process.env.DISABLE_UI;
+const forceSSL = process.env.FORCE_SSL;
+const frameAncestors = process.env.ALLOWED_FRAME_URLS;
+const privateMode = process.env.PRIVATE_MODE;
+const trackerScriptName = process.env.TRACKER_SCRIPT_NAME;
+const trackerScriptURL = process.env.TRACKER_SCRIPT_URL;
 
 const contentSecurityPolicy = [
   `default-src 'self'`,
-  `img-src *`,
+  `img-src * data:`,
   `script-src 'self' 'unsafe-eval' 'unsafe-inline'`,
   `style-src 'self' 'unsafe-inline'`,
   `connect-src 'self' api.umami.is cloud.umami.is`,
   `frame-ancestors 'self' ${frameAncestors}`,
 ];
 
-const headers = [
+const defaultHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',
     value: 'on',
@@ -40,32 +42,48 @@ const headers = [
 ];
 
 if (forceSSL) {
-  headers.push({
+  defaultHeaders.push({
     key: 'Strict-Transport-Security',
     value: 'max-age=63072000; includeSubDomains; preload',
   });
 }
 
+const trackerHeaders = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+  {
+    key: 'Cache-Control',
+    value: 'public, max-age=86400, must-revalidate',
+  },
+];
+
+const headers = [
+  {
+    source: '/:path*',
+    headers: defaultHeaders,
+  },
+  {
+    source: TRACKER_SCRIPT,
+    headers: trackerHeaders,
+  },
+];
+
 const rewrites = [];
+
+if (trackerScriptURL) {
+  rewrites.push({
+    source: TRACKER_SCRIPT,
+    destination: trackerScriptURL,
+  });
+}
 
 if (collectApiEndpoint) {
   rewrites.push({
     source: collectApiEndpoint,
     destination: '/api/send',
   });
-}
-
-if (trackerScriptName) {
-  const names = trackerScriptName?.split(',').map(name => name.trim());
-
-  if (names) {
-    names.forEach(name => {
-      rewrites.push({
-        source: `/${name.replace(/^\/+/, '')}`,
-        destination: '/script.js',
-      });
-    });
-  }
 }
 
 const redirects = [
@@ -85,6 +103,27 @@ const redirects = [
     permanent: true,
   },
 ];
+
+// Adding rewrites + headers for all alternative tracker script names.
+if (trackerScriptName) {
+  const names = trackerScriptName?.split(',').map(name => name.trim());
+
+  if (names) {
+    names.forEach(name => {
+      const normalizedSource = `/${name.replace(/^\/+/, '')}`;
+
+      rewrites.push({
+        source: normalizedSource,
+        destination: TRACKER_SCRIPT,
+      });
+
+      headers.push({
+        source: normalizedSource,
+        headers: trackerHeaders,
+      });
+    });
+  }
+}
 
 if (cloudMode && cloudUrl) {
   redirects.push({
@@ -120,7 +159,6 @@ const config = {
     defaultLocale,
     disableLogin,
     disableUI,
-    hostURL,
     privateMode,
   },
   basePath,
@@ -155,12 +193,7 @@ const config = {
     return config;
   },
   async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers,
-      },
-    ];
+    return headers;
   },
   async rewrites() {
     return [
@@ -168,6 +201,10 @@ const config = {
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',
+      },
+      {
+        source: '/teams/:teamId/:path((?!settings).*)*',
+        destination: '/:path*',
       },
     ];
   },

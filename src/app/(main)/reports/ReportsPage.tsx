@@ -2,8 +2,11 @@
 import { Metadata } from 'next';
 import ReportsHeader from './ReportsHeader';
 import ReportsDataTable from './ReportsDataTable';
+import { useTeamUrl } from 'components/hooks';
 
-export default function ReportsPage({ teamId }: { teamId: string }) {
+export default function ReportsPage() {
+  const { teamId } = useTeamUrl();
+
   return (
     <>
       <ReportsHeader />

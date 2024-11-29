@@ -1,7 +1,38 @@
 .menu {
+  position: relative;
   width: 300px;
+  padding-top: 20px;
   padding-inline-end: 20px;
   border-inline-end: 1px solid var(--base300);
   grid-row: 2 / 3;
   grid-column: 1 / 2;
+}
+
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  place-content: center;
+  border: 1px solid var(--base400);
+  border-right: 0;
+  width: 30px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 4px 0 0 4px;
+  z-index: 1;
+}
+
+.button:hover {
+  background: var(--base75);
+}
+
+.menu.collapsed {
+  width: 0;
+  padding: 0;
+}
+
+.menu.collapsed .button {
+  right: 0;
+  border-radius: 4px 0 0 4px;
 }

@@ -11,7 +11,7 @@
       "value": "Acciones"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Registro de actividad"
@@ -38,7 +38,7 @@
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "Añadir paso"
     }
   ],
   "label.add-website": [
@@ -81,12 +81,6 @@
     {
       "type": 0,
       "value": "Media"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Tiempo promedio de visita"
     }
   ],
   "label.back": [
@@ -155,6 +149,12 @@
       "value": "Limpiar todo"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Comparar"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -177,6 +177,12 @@
     {
       "type": 0,
       "value": "Continuar"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Contar"
     }
   ],
   "label.countries": [
@@ -224,7 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "Creado por"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Actual"
     }
   ],
   "label.current-password": [
@@ -374,13 +386,25 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "Editar miembro"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
       "value": "Habilitar compartir URL"
+    }
+  ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "Paso final"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "URL de entrada"
     }
   ],
   "label.event": [
@@ -399,6 +423,12 @@
     {
       "type": 0,
       "value": "Eventos"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "URL de salida"
     }
   ],
   "label.false": [
@@ -443,16 +473,40 @@
       "value": "Filtros"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Embudo"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
       "value": "Comprender conversión y abandono de usuarios."
+    }
+  ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Objetivo"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Objetivos"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Realice un seguimiento de sus objetivos de páginas vistas y eventos."
     }
   ],
   "label.greater-than": [
@@ -465,6 +519,18 @@
     {
       "type": 0,
       "value": "Mayor que o igual a"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -513,6 +579,18 @@
     {
       "type": 0,
       "value": "Unirse al equipo"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Viaje"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Comprenda cómo los usuarios navegan por su sitio web."
     }
   ],
   "label.language": [
@@ -564,7 +642,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "Últimos "
     },
     {
       "type": 1,
@@ -572,7 +650,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " meses"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
     }
   ],
   "label.leave": [
@@ -617,10 +701,16 @@
       "value": "Administrar"
     }
   ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
+    }
+  ],
   "label.max": [
     {
       "type": 0,
-      "value": "Máx"
+      "value": "Max"
     }
   ],
   "label.member": [
@@ -638,7 +728,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "Mín"
+      "value": "Min"
     }
   ],
   "label.mobile": [
@@ -783,6 +873,18 @@
       "value": "Contraseña"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -793,10 +895,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Anterior"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Periodo anterior"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Año anterior"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Perfil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Propiedad"
     }
   ],
   "label.queries": [
@@ -850,7 +982,7 @@
   "label.region": [
     {
       "type": 0,
-      "value": "Region"
+      "value": "Región"
     }
   ],
   "label.regions": [
@@ -907,6 +1039,24 @@
       "value": "Medir la frecuencia con la que los usuarios vuelven a tu sitio web."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -940,7 +1090,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Seleccionar"
     }
   ],
   "label.select-date": [
@@ -959,6 +1109,12 @@
     {
       "type": 0,
       "value": "Seleccionar sitio web"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
     }
   ],
   "label.sessions": [
@@ -985,10 +1141,16 @@
       "value": "Un solo día"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Paso inical"
+    }
+  ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "Pasos"
     }
   ],
   "label.sum": [
@@ -1013,6 +1175,12 @@
     {
       "type": 0,
       "value": "ID del equipo"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Jefe de equipo"
     }
   ],
   "label.team-member": [
@@ -1117,6 +1285,12 @@
       "value": "Código de rastreo"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1153,6 +1327,12 @@
       "value": "Visitantes únicos"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1168,7 +1348,7 @@
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "Actualizar"
     }
   ],
   "label.url": [
@@ -1187,6 +1367,12 @@
     {
       "type": 0,
       "value": "Usuario"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1210,7 +1396,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "Realice un seguimiento de sus campañas a través de parámetros UTM."
     }
   ],
   "label.value": [
@@ -1246,7 +1432,13 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "Vistas por visita"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Tiempo promedio de visita"
     }
   ],
   "label.visitors": [
@@ -1258,7 +1450,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "Visitas"
     }
   ],
   "label.website": [
@@ -1337,6 +1529,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "x"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Datos obtenidos"
     }
   ],
   "message.confirm-delete": [
@@ -1600,7 +1798,7 @@
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "Seleccione el equipo al que transferir este sitio web."
     }
   ],
   "message.transfer-website": [

@@ -8,8 +8,8 @@ import regions from '../../../public/iso-3166-2.json';
 export function useFormat() {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
-  const languageNames = useLanguageNames(locale);
+  const { countryNames } = useCountryNames(locale);
+  const { languageNames } = useLanguageNames(locale);
 
   const formatOS = (value: string): string => {
     return OS_NAMES[value] || value;

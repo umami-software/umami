@@ -1,7 +1,7 @@
-import { formatDate } from 'lib/date';
-import { Flexbox, StatusLight } from 'react-basics';
-import { formatLongNumber } from 'lib/format';
 import { useLocale } from 'components/hooks';
+import { formatDate } from 'lib/date';
+import { formatLongCurrency, formatLongNumber } from 'lib/format';
+import { Flexbox, StatusLight } from 'react-basics';
 
 const formats = {
   millisecond: 'T',
@@ -15,16 +15,21 @@ const formats = {
   year: 'yyyy',
 };
 
-export default function BarChartTooltip({ tooltip, unit }) {
+export default function BarChartTooltip({ tooltip, unit, currency }) {
   const { locale } = useLocale();
   const { labelColors, dataPoints } = tooltip;
 
   return (
     <Flexbox direction="column" gap={10}>
-      <div>{formatDate(new Date(dataPoints[0].raw.x), formats[unit], locale)}</div>
+      <div>
+        {formatDate(new Date(dataPoints[0].raw.d || dataPoints[0].raw.x), formats[unit], locale)}
+      </div>
       <div>
         <StatusLight color={labelColors?.[0]?.backgroundColor}>
-          {formatLongNumber(dataPoints[0].raw.y)} {dataPoints[0].dataset.label}
+          {currency
+            ? formatLongCurrency(dataPoints[0].raw.y, currency)
+            : formatLongNumber(dataPoints[0].raw.y)}{' '}
+          {dataPoints[0].dataset.label}
         </StatusLight>
       </div>
     </Flexbox>

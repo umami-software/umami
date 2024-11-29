@@ -1,34 +1,19 @@
-import { zonedTimeToUtc } from 'date-fns-tz';
-import { useApi, useDateRange, useNavigation, useTimezone } from 'components/hooks';
+import { UseQueryOptions } from '@tanstack/react-query';
+import { useApi } from '../useApi';
+import { useFilterParams } from '..//useFilterParams';
 
-export function useWebsitePageviews(websiteId: string, options?: { [key: string]: string }) {
+export function useWebsitePageviews(
+  websiteId: string,
+  compare?: string,
+  options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
+) {
   const { get, useQuery } = useApi();
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate, unit } = dateRange;
-  const { timezone } = useTimezone();
-  const {
-    query: { url, referrer, os, browser, device, country, region, city, title },
-  } = useNavigation();
-
-  const params = {
-    startAt: +zonedTimeToUtc(startDate, timezone),
-    endAt: +zonedTimeToUtc(endDate, timezone),
-    unit,
-    timezone,
-    url,
-    referrer,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-    title,
-  };
+  const params = useFilterParams(websiteId);
 
   return useQuery({
-    queryKey: ['websites:pageviews', { websiteId, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/pageviews`, params),
+    queryKey: ['websites:pageviews', { websiteId, ...params, compare }],
+    queryFn: () => get(`/websites/${websiteId}/pageviews`, { ...params, compare }),
+    enabled: !!websiteId,
     ...options,
   });
 }

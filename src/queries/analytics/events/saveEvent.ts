@@ -1,9 +1,10 @@
 import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
+import clickhouse from 'lib/clickhouse';
 import kafka from 'lib/kafka';
 import prisma from 'lib/prisma';
 import { uuid } from 'lib/crypto';
-import { saveEventData } from 'queries/analytics/eventData/saveEventData';
+import { saveEventData } from './saveEventData';
 
 export async function saveEvent(args: {
   websiteId: string;
@@ -27,6 +28,7 @@ export async function saveEvent(args: {
   subdivision1?: string;
   subdivision2?: string;
   city?: string;
+  tag?: string;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
@@ -46,6 +48,7 @@ async function relationalQuery(data: {
   pageTitle?: string;
   eventName?: string;
   eventData?: any;
+  tag?: string;
 }) {
   const {
     websiteId,
@@ -59,6 +62,7 @@ async function relationalQuery(data: {
     eventName,
     eventData,
     pageTitle,
+    tag,
   } = data;
   const websiteEventId = uuid();
 
@@ -76,6 +80,7 @@ async function relationalQuery(data: {
       pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+      tag,
     },
   });
 
@@ -115,6 +120,7 @@ async function clickhouseQuery(data: {
   subdivision1?: string;
   subdivision2?: string;
   city?: string;
+  tag?: string;
 }) {
   const {
     websiteId,
@@ -132,18 +138,20 @@ async function clickhouseQuery(data: {
     subdivision1,
     subdivision2,
     city,
+    tag,
     ...args
   } = data;
-  const { getDateFormat, sendMessage } = kafka;
+  const { insert, getUTCString } = clickhouse;
+  const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAt = getDateFormat(new Date());
+  const createdAt = getUTCString();
 
   const message = {
     ...args,
     website_id: websiteId,
     session_id: sessionId,
     visit_id: visitId,
-    event_id: uuid(),
+    event_id: eventId,
     country: country,
     subdivision1:
       country && subdivision1
@@ -161,10 +169,15 @@ async function clickhouseQuery(data: {
     page_title: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+    tag: tag,
     created_at: createdAt,
   };
 
-  await sendMessage(message, 'event');
+  if (kafka.enabled) {
+    await sendMessage('event', message);
+  } else {
+    await insert('website_event', [message]);
+  }
 
   if (eventData) {
     await saveEventData({

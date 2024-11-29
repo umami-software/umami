@@ -13,9 +13,9 @@ import LinkButton from 'components/common/LinkButton';
 export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
   const { teamId, renderTeamUrl } = useTeamUrl();
-  const { showCharts, editing } = useDashboard();
+  const { showCharts, editing, isEdited } = useDashboard();
   const { dir } = useLocale();
-  const pageSize = 10;
+  const pageSize = isEdited ? 200 : 10;
 
   const { result, query, params, setParams } = useWebsites({ teamId }, { pageSize });
   const { page } = params;

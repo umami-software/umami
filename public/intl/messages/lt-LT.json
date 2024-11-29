@@ -11,7 +11,7 @@
       "value": "Veiksmai"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Veiklos žurnalas"
@@ -83,12 +83,6 @@
       "value": "Vidurkis"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Vidutinė vizito trukmė"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -155,6 +149,12 @@
       "value": "Išvalyti visus"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Compare"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -177,6 +177,12 @@
     {
       "type": 0,
       "value": "Continue"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Count"
     }
   ],
   "label.countries": [
@@ -225,6 +231,12 @@
     {
       "type": 0,
       "value": "Created By"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Current"
     }
   ],
   "label.current-password": [
@@ -383,6 +395,18 @@
       "value": "Įjungti bendrinimą su nuoroda"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Entry URL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
@@ -399,6 +423,12 @@
     {
       "type": 0,
       "value": "Įvykiai"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
     }
   ],
   "label.false": [
@@ -443,6 +473,12 @@
       "value": "Filtrai"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -455,6 +491,24 @@
       "value": "Understand the conversion and drop-off rate of users."
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Goal"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Goals"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Track your goals for pageviews and events."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -465,6 +519,18 @@
     {
       "type": 0,
       "value": "Greater than or equals"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -513,6 +579,18 @@
     {
       "type": 0,
       "value": "Prisijungti į komandą"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Understand how users navigate through your website."
     }
   ],
   "label.language": [
@@ -680,6 +758,12 @@
       "value": " months"
     }
   ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -720,6 +804,12 @@
     {
       "type": 0,
       "value": "Tvarkyti"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
     }
   ],
   "label.max": [
@@ -888,6 +978,18 @@
       "value": "Slaptažodis"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -898,10 +1000,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Previous"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Previous period"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Previous year"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profilis"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
     }
   ],
   "label.queries": [
@@ -1012,6 +1144,24 @@
       "value": "Measure your website stickiness by tracking how often users return."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -1066,6 +1216,12 @@
       "value": "Pasirinkti svetainę"
     }
   ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -1088,6 +1244,12 @@
     {
       "type": 0,
       "value": "Viena diena"
+    }
+  ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Start Step"
     }
   ],
   "label.steps": [
@@ -1118,6 +1280,12 @@
     {
       "type": 0,
       "value": "Komandos ID"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team manager"
     }
   ],
   "label.team-member": [
@@ -1222,6 +1390,12 @@
       "value": "Sekimo kodas"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1258,6 +1432,12 @@
       "value": "Unikalūs lankytojai"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1292,6 +1472,12 @@
     {
       "type": 0,
       "value": "Vartotojas"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
     }
   ],
   "label.username": [
@@ -1352,6 +1538,12 @@
     {
       "type": 0,
       "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Vidutinė vizito trukmė"
     }
   ],
   "label.visitors": [
@@ -1462,6 +1654,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "x"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
     }
   ],
   "message.confirm-delete": [

@@ -48,7 +48,7 @@ export function EventDataParameters() {
     groups,
   };
 
-  const handleSubmit = values => {
+  const handleSubmit = (values: any) => {
     runReport(values);
   };
 

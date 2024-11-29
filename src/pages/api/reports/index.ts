@@ -27,7 +27,7 @@ const schema = {
     name: yup.string().max(200).required(),
     type: yup
       .string()
-      .matches(/funnel|insights|retention|utm/i)
+      .matches(/funnel|insights|retention|utm|goals|journey|revenue/i)
       .required(),
     description: yup.string().max(500),
     parameters: yup
@@ -66,11 +66,29 @@ export default async (
     const data = await getReports(
       {
         where: {
-          userId: !teamId && !websiteId ? userId : undefined,
-          websiteId,
-          website: {
-            teamId,
-          },
+          OR: [
+            ...(websiteId ? [{ websiteId }] : []),
+            ...(teamId
+              ? [
+                  {
+                    website: {
+                      deletedAt: null,
+                      teamId,
+                    },
+                  },
+                ]
+              : []),
+            ...(userId && !websiteId && !teamId
+              ? [
+                  {
+                    website: {
+                      deletedAt: null,
+                      userId,
+                    },
+                  },
+                ]
+              : []),
+          ],
         },
         include: {
           website: {

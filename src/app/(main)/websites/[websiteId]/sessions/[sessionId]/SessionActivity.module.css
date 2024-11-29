@@ -1,0 +1,21 @@
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: max-content max-content 1fr;
+  align-items: center;
+  gap: 20px;
+}
+
+.time {
+  color: var(--font-color200);
+  width: 150px;
+}
+
+.header {
+  font-weight: bold;
+}

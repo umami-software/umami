@@ -6,7 +6,6 @@ import LinkButton from 'components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from 'lib/constants';
 import { percentFilter } from 'lib/filters';
 import {
-  useDateRange,
   useNavigation,
   useWebsiteMetrics,
   useMessages,
@@ -19,7 +18,6 @@ import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
-  domainName: string;
   type?: string;
   className?: string;
   dataFilter?: (data: any) => any;
@@ -29,6 +27,8 @@ export interface MetricsTableProps extends ListTableProps {
   onSearch?: (search: string) => void;
   allowSearch?: boolean;
   searchFormattedValues?: boolean;
+  showMore?: boolean;
+  params?: { [key: string]: any };
   children?: ReactNode;
 }
 
@@ -42,21 +42,20 @@ export function MetricsTable({
   delay = null,
   allowSearch = false,
   searchFormattedValues = false,
+  showMore = true,
+  params,
   children,
   ...props
 }: MetricsTableProps) {
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
-  const [{ startDate, endDate }] = useDateRange(websiteId);
-  const {
-    renderUrl,
-    query: { url, referrer, title, os, browser, device, country, region, city },
-  } = useNavigation();
+  const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
   const { dir } = useLocale();
 
   const { data, isLoading, isFetched, error } = useWebsiteMetrics(
     websiteId,
+    { type, limit, search, ...params },
     {
       type,
       startAt: +startDate,
@@ -72,8 +71,9 @@ export function MetricsTable({
       city,
       limit,
       search: (searchFormattedValues) ? undefined : search,
+      retryDelay: delay || DEFAULT_ANIMATION_DURATION,
+      onDataLoad,
     },
-    { retryDelay: delay || DEFAULT_ANIMATION_DURATION, onDataLoad },
   );
 
   const filteredData = useMemo(() => {
@@ -125,7 +125,7 @@ export function MetricsTable({
       )}
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
       <div className={styles.footer}>
-        {data && !error && limit && (
+        {showMore && data && !error && limit && (
           <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
             <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>

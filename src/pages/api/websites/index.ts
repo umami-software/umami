@@ -1,7 +1,7 @@
 import { canCreateTeamWebsite, canCreateWebsite } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
@@ -9,7 +9,7 @@ import userWebsitesRoute from 'pages/api/users/[userId]/websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 
-export interface WebsitesRequestQuery extends SearchFilter {}
+export interface WebsitesRequestQuery extends PageParams {}
 
 export interface WebsitesRequestBody {
   name: string;

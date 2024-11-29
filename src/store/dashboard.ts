@@ -6,7 +6,9 @@ export const initialState = {
   showCharts: true,
   limit: DEFAULT_WEBSITE_LIMIT,
   websiteOrder: [],
+  websiteActive: [],
   editing: false,
+  isEdited: false,
 };
 
 const store = create(() => ({ ...initialState, ...getItem(DASHBOARD_CONFIG) }));

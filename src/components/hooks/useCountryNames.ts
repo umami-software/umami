@@ -10,7 +10,7 @@ export function useCountryNames(locale: string) {
   const [list, setList] = useState(countryNames[locale] || enUS);
 
   async function loadData(locale: string) {
-    const { data } = await httpGet(`${process.env.basePath}/intl/country/${locale}.json`);
+    const { data } = await httpGet(`${process.env.basePath || ''}/intl/country/${locale}.json`);
 
     if (data) {
       countryNames[locale] = data;
@@ -28,7 +28,7 @@ export function useCountryNames(locale: string) {
     }
   }, [locale]);
 
-  return list;
+  return { countryNames: list };
 }
 
 export default useCountryNames;

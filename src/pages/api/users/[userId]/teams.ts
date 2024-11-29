@@ -1,12 +1,12 @@
 import * as yup from 'yup';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getUserTeams } from 'queries';
 
-export interface UserTeamsRequestQuery extends SearchFilter {
+export interface UserTeamsRequestQuery extends PageParams {
   userId: string;
 }
 

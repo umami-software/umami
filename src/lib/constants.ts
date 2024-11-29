@@ -20,9 +20,10 @@ export const DEFAULT_DATE_RANGE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 10;
+export const DEFAULT_DATE_COMPARE = 'prev';
 
 export const REALTIME_RANGE = 30;
-export const REALTIME_INTERVAL = 5000;
+export const REALTIME_INTERVAL = 10000;
 
 export const FILTER_COMBINED = 'filter-combined';
 export const FILTER_RAW = 'filter-raw';
@@ -30,8 +31,9 @@ export const FILTER_DAY = 'filter-day';
 export const FILTER_RANGE = 'filter-range';
 export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
-export const UNIT_TYPES = ['year', 'month', 'hour', 'day'];
-export const EVENT_COLUMNS = ['url', 'referrer', 'title', 'query', 'event'];
+
+export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
+export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'tag'];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -42,11 +44,15 @@ export const SESSION_COLUMNS = [
   'country',
   'region',
   'city',
+  'host',
 ];
 
 export const FILTER_COLUMNS = {
   url: 'url_path',
+  entry: 'url_path',
+  exit: 'url_path',
   referrer: 'referrer_domain',
+  host: 'hostname',
   title: 'page_title',
   query: 'url_query',
   os: 'os',
@@ -57,6 +63,7 @@ export const FILTER_COLUMNS = {
   city: 'city',
   language: 'language',
   event: 'event_name',
+  tag: 'tag',
 };
 
 export const COLLECTION_TYPE = {
@@ -111,9 +118,12 @@ export const DATA_TYPES = {
 
 export const REPORT_TYPES = {
   funnel: 'funnel',
+  goals: 'goals',
   insights: 'insights',
   retention: 'retention',
   utm: 'utm',
+  journey: 'journey',
+  revenue: 'revenue',
 } as const;
 
 export const REPORT_PARAMETERS = {
@@ -132,6 +142,7 @@ export const ROLES = {
   user: 'user',
   viewOnly: 'view-only',
   teamOwner: 'team-owner',
+  teamManager: 'team-manager',
   teamMember: 'team-member',
   teamViewOnly: 'team-view-only',
 } as const;
@@ -141,6 +152,8 @@ export const PERMISSIONS = {
   websiteCreate: 'website:create',
   websiteUpdate: 'website:update',
   websiteDelete: 'website:delete',
+  websiteTransferToTeam: 'website:transfer-to-team',
+  websiteTransferToUser: 'website:transfer-to-user',
   teamCreate: 'team:create',
   teamUpdate: 'team:update',
   teamDelete: 'team:delete',
@@ -161,6 +174,15 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS.websiteCreate,
     PERMISSIONS.websiteUpdate,
     PERMISSIONS.websiteDelete,
+    PERMISSIONS.websiteTransferToTeam,
+    PERMISSIONS.websiteTransferToUser,
+  ],
+  [ROLES.teamManager]: [
+    PERMISSIONS.teamUpdate,
+    PERMISSIONS.websiteCreate,
+    PERMISSIONS.websiteUpdate,
+    PERMISSIONS.websiteDelete,
+    PERMISSIONS.websiteTransferToTeam,
   ],
   [ROLES.teamMember]: [
     PERMISSIONS.websiteCreate,
@@ -217,13 +239,14 @@ export const CHART_COLORS = [
 ];
 
 export const DOMAIN_REGEX =
-  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
+  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-_]{1,63}\.)(xn--)?[a-z0-9-_]+(-[a-z0-9-_]+)*\.)+(xn--)?[a-z0-9-_]{2,63})$/;
 export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,16}$/;
 export const UUID_REGEX =
   /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
 export const HOSTNAME_REGEX =
-  /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
-export const IP_REGEX = /^((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$/;
+  /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-_]*[A-Za-z0-9])$/;
+export const IP_REGEX =
+  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:(?:(:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]+|::(ffff(:0{1,4})?:)?((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9]))$/;
 export const DATETIME_REGEX =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
 
@@ -289,7 +312,7 @@ export const BROWSERS = {
   instagram: 'Instagram',
   ios: 'iOS',
   'ios-webview': 'iOS (webview)',
-  kakaotalk: 'KaKaoTalk',
+  kakaotalk: 'KakaoTalk',
   miui: 'MIUI',
   opera: 'Opera',
   'opera-mini': 'Opera Mini',

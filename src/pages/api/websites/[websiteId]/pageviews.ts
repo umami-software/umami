@@ -1,3 +1,4 @@
+import * as yup from 'yup';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useCors, useValidate } from 'lib/middleware';
 import { getRequestFilters, getRequestDateRange } from 'lib/request';
@@ -5,6 +6,8 @@ import { NextApiRequestQueryBody, WebsitePageviews } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getPageviewStats, getSessionStats } from 'queries';
+import { TimezoneTest, UnitTypeTest } from 'lib/yup';
+import { getCompareDate } from 'lib/date';
 
 export interface WebsitePageviewRequestQuery {
   websiteId: string;
@@ -15,16 +18,17 @@ export interface WebsitePageviewRequestQuery {
   url?: string;
   referrer?: string;
   title?: string;
+  host?: string;
   os?: string;
   browser?: string;
   device?: string;
   country?: string;
   region: string;
   city?: string;
+  tag?: string;
+  compare?: string;
 }
 
-import { TimezoneTest, UnitTypeTest } from 'lib/yup';
-import * as yup from 'yup';
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
@@ -35,12 +39,15 @@ const schema = {
     url: yup.string(),
     referrer: yup.string(),
     title: yup.string(),
+    host: yup.string(),
     os: yup.string(),
     browser: yup.string(),
     device: yup.string(),
     country: yup.string(),
     region: yup.string(),
     city: yup.string(),
+    tag: yup.string(),
+    compare: yup.string(),
   }),
 };
 
@@ -52,7 +59,7 @@ export default async (
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
-  const { websiteId, timezone } = req.query;
+  const { websiteId, timezone, compare } = req.query;
 
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
@@ -73,6 +80,40 @@ export default async (
       getPageviewStats(websiteId, filters),
       getSessionStats(websiteId, filters),
     ]);
+
+    if (compare) {
+      const { startDate: compareStartDate, endDate: compareEndDate } = getCompareDate(
+        compare,
+        startDate,
+        endDate,
+      );
+
+      const [comparePageviews, compareSessions] = await Promise.all([
+        getPageviewStats(websiteId, {
+          ...filters,
+          startDate: compareStartDate,
+          endDate: compareEndDate,
+        }),
+        getSessionStats(websiteId, {
+          ...filters,
+          startDate: compareStartDate,
+          endDate: compareEndDate,
+        }),
+      ]);
+
+      return ok(res, {
+        pageviews,
+        sessions,
+        startDate,
+        endDate,
+        compare: {
+          pageviews: comparePageviews,
+          sessions: compareSessions,
+          startDate: compareStartDate,
+          endDate: compareEndDate,
+        },
+      });
+    }
 
     return ok(res, { pageviews, sessions });
   }

@@ -1,28 +1,8 @@
 import { useMemo, useRef } from 'react';
-import { format, startOfMinute, subMinutes, isBefore } from 'date-fns';
+import { startOfMinute, subMinutes, isBefore } from 'date-fns';
 import PageviewsChart from './PageviewsChart';
-import { getDateArray } from 'lib/date';
 import { DEFAULT_ANIMATION_DURATION, REALTIME_RANGE } from 'lib/constants';
 import { RealtimeData } from 'lib/types';
-
-function mapData(data: any[]) {
-  let last = 0;
-  const arr = [];
-
-  data?.reduce((obj, { timestamp }) => {
-    const t = startOfMinute(new Date(timestamp));
-    if (t.getTime() > last) {
-      obj = { x: format(t, 'yyyy-LL-dd HH:mm:00'), y: 1 };
-      arr.push(obj);
-      last = t.getTime();
-    } else {
-      obj.y += 1;
-    }
-    return obj;
-  }, {});
-
-  return arr;
-}
 
 export interface RealtimeChartProps {
   data: RealtimeData;
@@ -41,8 +21,8 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
     }
 
     return {
-      pageviews: getDateArray(mapData(data.pageviews), startDate, endDate, unit),
-      sessions: getDateArray(mapData(data.visitors), startDate, endDate, unit),
+      pageviews: data.series.views,
+      sessions: data.series.visitors,
     };
   }, [data, startDate, endDate, unit]);
 
@@ -56,7 +36,14 @@ export function RealtimeChart({ data, unit, ...props }: RealtimeChartProps) {
   }, [endDate]);
 
   return (
-    <PageviewsChart {...props} unit={unit} data={chartData} animationDuration={animationDuration} />
+    <PageviewsChart
+      {...props}
+      minDate={startDate.toISOString()}
+      maxDate={endDate.toISOString()}
+      unit={unit}
+      data={chartData}
+      animationDuration={animationDuration}
+    />
   );
 }
 

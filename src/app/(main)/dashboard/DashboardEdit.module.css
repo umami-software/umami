@@ -1,34 +1,34 @@
 .buttons {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  margin-bottom: 20px;
 }
 
 .item {
-  padding: 5px 0;
-}
-
-.item h1 {
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.item h2 {
-  font-size: 14px;
-  color: var(--base700);
-}
-
-.text {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   padding: 20px;
   border-radius: 5px;
   border: 1px solid var(--base400);
   background: var(--base50);
+  margin-bottom: 10px;
 }
 
-.active .text {
-  border-color: var(--base600);
-  box-shadow: 4px 4px 4px var(--base100);
+.text {
+  position: relative;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.domain {
+  font-size: 14px;
+  color: var(--base700);
 }
 
 .dragActive {
@@ -37,4 +37,21 @@
 
 .dragActive:active {
   cursor: grabbing;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.search {
+  max-width: 360px;
+}
+
+.active {
+  border-color: var(--base600);
+  box-shadow: 4px 4px 4px var(--base100);
 }

@@ -3,6 +3,7 @@ import { GridTable, GridColumn } from 'react-basics';
 import { useFormat, useMessages } from 'components/hooks';
 import { ReportContext } from '../[reportId]/Report';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import { formatShortTime } from 'lib/format';
 
 export function InsightsTable() {
   const [fields, setFields] = useState([]);
@@ -31,6 +32,12 @@ export function InsightsTable() {
           </GridColumn>
         );
       })}
+      <GridColumn name="views" label={formatMessage(labels.views)} width="100px" alignment="end">
+        {row => row?.views?.toLocaleString()}
+      </GridColumn>
+      <GridColumn name="visits" label={formatMessage(labels.visits)} width="100px" alignment="end">
+        {row => row?.visits?.toLocaleString()}
+      </GridColumn>
       <GridColumn
         name="visitors"
         label={formatMessage(labels.visitors)}
@@ -39,8 +46,27 @@ export function InsightsTable() {
       >
         {row => row?.visitors?.toLocaleString()}
       </GridColumn>
-      <GridColumn name="views" label={formatMessage(labels.views)} width="100px" alignment="end">
-        {row => row?.views?.toLocaleString()}
+      <GridColumn
+        name="bounceRate"
+        label={formatMessage(labels.bounceRate)}
+        width="100px"
+        alignment="end"
+      >
+        {row => {
+          const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
+          return Math.round(+n) + '%';
+        }}
+      </GridColumn>
+      <GridColumn
+        name="visitDuration"
+        label={formatMessage(labels.visitDuration)}
+        width="100px"
+        alignment="end"
+      >
+        {row => {
+          const n = row?.totaltime / row?.visits;
+          return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
+        }}
       </GridColumn>
     </GridTable>
   );

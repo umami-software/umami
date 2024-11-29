@@ -1,46 +1,40 @@
 import { startOfMinute, subMinutes } from 'date-fns';
 import { canViewWebsite } from 'lib/auth';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, RealtimeInit } from 'lib/types';
+import { NextApiRequestQueryBody } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { getRealtimeData } from 'queries';
 import * as yup from 'yup';
 import { REALTIME_RANGE } from 'lib/constants';
+import { TimezoneTest } from 'lib/yup';
 
 export interface RealtimeRequestQuery {
   websiteId: string;
-  startAt: number;
+  timezone?: string;
 }
 
 const schema = {
   GET: yup.object().shape({
     websiteId: yup.string().uuid().required(),
-    startAt: yup.number().integer().required(),
+    timezone: TimezoneTest,
   }),
 };
 
-export default async (
-  req: NextApiRequestQueryBody<RealtimeRequestQuery>,
-  res: NextApiResponse<RealtimeInit>,
-) => {
+export default async (req: NextApiRequestQueryBody<RealtimeRequestQuery>, res: NextApiResponse) => {
   await useAuth(req, res);
   await useValidate(schema, req, res);
 
   if (req.method === 'GET') {
-    const { websiteId, startAt } = req.query;
+    const { websiteId, timezone } = req.query;
 
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
     }
 
-    let startTime = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
+    const startDate = subMinutes(startOfMinute(new Date()), REALTIME_RANGE);
 
-    if (+startAt > startTime.getTime()) {
-      startTime = new Date(+startAt);
-    }
-
-    const data = await getRealtimeData(websiteId, startTime);
+    const data = await getRealtimeData(websiteId, { startDate, timezone });
 
     return ok(res, data);
   }

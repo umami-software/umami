@@ -2,6 +2,7 @@ import FilterLink from 'components/common/FilterLink';
 import MetricsTable, { MetricsTableProps } from 'components/metrics/MetricsTable';
 import { useMessages } from 'components/hooks';
 import { useFormat } from 'components/hooks';
+import TypeIcon from 'components/common/TypeIcon';
 
 export function BrowsersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -10,12 +11,7 @@ export function BrowsersTable(props: MetricsTableProps) {
   function renderLink({ x: browser }) {
     return (
       <FilterLink id="browser" value={browser} label={formatBrowser(browser)}>
-        <img
-          src={`${process.env.basePath}/images/browsers/${browser || 'unknown'}.png`}
-          alt={browser}
-          width={16}
-          height={16}
-        />
+        <TypeIcon type="browser" value={browser} />
       </FilterLink>
     );
   }

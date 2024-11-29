@@ -11,7 +11,7 @@
       "value": "Actions"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Journal d'activité"
@@ -83,12 +83,6 @@
       "value": "Moyenne"
     }
   ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Temps de visite moyen"
-    }
-  ],
   "label.back": [
     {
       "type": 0,
@@ -155,6 +149,12 @@
       "value": "Réinitialiser"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Compare"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -177,6 +177,12 @@
     {
       "type": 0,
       "value": "Continuer"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Count"
     }
   ],
   "label.countries": [
@@ -225,6 +231,12 @@
     {
       "type": 0,
       "value": "Crée par"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Current"
     }
   ],
   "label.current-password": [
@@ -383,6 +395,18 @@
       "value": "Activer l'URL de partage"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "URL d'entrée"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
@@ -399,6 +423,12 @@
     {
       "type": 0,
       "value": "Évènements"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
     }
   ],
   "label.false": [
@@ -443,6 +473,12 @@
       "value": "Filtres"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "Vu pour la première fois"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -455,6 +491,24 @@
       "value": "Suivi des conversions et des taux d'abandons."
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Goal"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Goals"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Suivez vos objectifs en matière de pages vues et d'événements."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -465,6 +519,18 @@
     {
       "type": 0,
       "value": "Supérieur ou égal à"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -515,6 +581,18 @@
       "value": "Rejoindre une équipe"
     }
   ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Comprendre comment les utilisateurs naviguent sur votre site web."
+    }
+  ],
   "label.language": [
     {
       "type": 0,
@@ -563,6 +641,12 @@
       "value": " derniers mois"
     }
   ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -603,6 +687,12 @@
     {
       "type": 0,
       "value": "Gérer"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
     }
   ],
   "label.max": [
@@ -771,6 +861,18 @@
       "value": "Mot de passe"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Path"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Paths"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -781,10 +883,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Précédent"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Période précédente"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Année précédente"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Propriétés"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Propriété"
     }
   ],
   "label.queries": [
@@ -895,6 +1027,24 @@
       "value": "Mesure de l'attractivité du site en visualisant les taux de visiteurs qui reviennent."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Examinez vos revenus au fil du temps."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Propriétés des revenues"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -928,7 +1078,7 @@
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "Selectionner"
     }
   ],
   "label.select-date": [
@@ -947,6 +1097,12 @@
     {
       "type": 0,
       "value": "Choisir un site"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
     }
   ],
   "label.sessions": [
@@ -971,6 +1127,12 @@
     {
       "type": 0,
       "value": "Journée"
+    }
+  ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Etape de démarrage"
     }
   ],
   "label.steps": [
@@ -1003,6 +1165,12 @@
       "value": "ID d'équipe"
     }
   ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Manager de l'équipe"
+    }
+  ],
   "label.team-member": [
     {
       "type": 0,
@@ -1024,7 +1192,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "Vue d'équipe uniquement"
     }
   ],
   "label.team-websites": [
@@ -1105,6 +1273,12 @@
       "value": "Code de suivi"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1141,6 +1315,12 @@
       "value": "Visiteurs uniques"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Clients uniques"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1175,6 +1355,12 @@
     {
       "type": 0,
       "value": "Utilisateur"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Propriétés d'utilisateurs"
     }
   ],
   "label.username": [
@@ -1235,6 +1421,12 @@
     {
       "type": 0,
       "value": "Vues par visite"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Temps de visite moyen"
     }
   ],
   "label.visitors": [
@@ -1329,6 +1521,12 @@
     {
       "type": 0,
       "value": " actuellement"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
     }
   ],
   "message.confirm-delete": [

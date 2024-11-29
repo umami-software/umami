@@ -1,7 +1,9 @@
 import UserPage from './UserPage';
 import { Metadata } from 'next';
 
-export default function ({ params: { userId } }) {
+export default async function ({ params }: { params: { userId: string } }) {
+  const { userId } = await params;
+
   return <UserPage userId={userId} />;
 }
 

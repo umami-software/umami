@@ -1,6 +1,6 @@
 .container {
   display: grid;
-  grid-template-columns: 1fr max-content;
+  grid-template-columns: 2fr 1fr;
   justify-content: space-between;
   align-items: center;
   background: var(--base50);
@@ -11,10 +11,22 @@
 
 .actions {
   display: flex;
-  align-items: center;
-  flex-direction: row;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-basis: 100%;
+  gap: 10px;
+}
+
+.dropdown {
+  min-width: 200px;
 }
 
 @media screen and (max-width: 1200px) {
@@ -36,11 +48,5 @@
   .isSticky {
     padding: 10px 0;
     border-bottom: 1px solid var(--base300);
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .button {
-    display: none;
   }
 }

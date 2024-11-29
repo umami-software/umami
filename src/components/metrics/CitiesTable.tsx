@@ -1,6 +1,9 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import { emptyFilter } from 'lib/filters';
 import FilterLink from 'components/common/FilterLink';
+
+import TypeIcon from 'components/common/TypeIcon';
+import { useLocale } from 'components/hooks';
 import { useMessages } from 'components/hooks';
 import { useFormat } from 'components/hooks';
 

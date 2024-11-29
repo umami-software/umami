@@ -1,12 +1,12 @@
 import { produce } from 'immer';
 import { useCallback, useEffect, useState } from 'react';
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
 
 export function useReport(
   reportId: string,
-  defaultParameters: { type: string; parameters: { [key: string]: any } },
+  defaultParameters?: { type: string; parameters: { [key: string]: any } },
 ) {
   const [report, setReport] = useState(null);
   const [isRunning, setIsRunning] = useState(false);

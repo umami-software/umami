@@ -18,17 +18,16 @@ export default function WebsiteChartList({
   limit?: number;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { websiteOrder } = useDashboard();
+  const { websiteOrder, websiteActive } = useDashboard();
   const { renderTeamUrl } = useTeamUrl();
   const { dir } = useLocale();
 
-  const ordered = useMemo(
-    () =>
-      websites
-        .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
-        .sort(firstBy('order')),
-    [websites, websiteOrder],
-  );
+  const ordered = useMemo(() => {
+    return websites
+      .filter(website => (websiteActive.length ? websiteActive.includes(website.id) : true))
+      .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
+      .sort(firstBy('order'));
+  }, [websites, websiteOrder, websiteActive]);
 
   return (
     <div>
@@ -47,7 +46,7 @@ export default function WebsiteChartList({
                 </Button>
               </Link>
             </WebsiteHeader>
-            <WebsiteMetricsBar websiteId={id} showFilter={false} />
+            <WebsiteMetricsBar websiteId={id} showChange={true} />
             {showCharts && <WebsiteChart websiteId={id} />}
           </div>
         ) : null;

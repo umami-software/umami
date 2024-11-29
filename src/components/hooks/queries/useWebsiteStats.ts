@@ -1,30 +1,18 @@
-import { useApi, useDateRange, useNavigation } from 'components/hooks';
+import { useApi } from '../useApi';
+import { useFilterParams } from '../useFilterParams';
 
-export function useWebsiteStats(websiteId: string, options?: { [key: string]: string }) {
+export function useWebsiteStats(
+  websiteId: string,
+  compare?: string,
+  options?: { [key: string]: string },
+) {
   const { get, useQuery } = useApi();
-  const [dateRange] = useDateRange(websiteId);
-  const { startDate, endDate } = dateRange;
-  const {
-    query: { url, referrer, title, os, browser, device, country, region, city },
-  } = useNavigation();
-
-  const params = {
-    startAt: +startDate,
-    endAt: +endDate,
-    url,
-    referrer,
-    title,
-    os,
-    browser,
-    device,
-    country,
-    region,
-    city,
-  };
+  const params = useFilterParams(websiteId);
 
   return useQuery({
-    queryKey: ['websites:stats', { websiteId, ...params }],
-    queryFn: () => get(`/websites/${websiteId}/stats`, params),
+    queryKey: ['websites:stats', { websiteId, ...params, compare }],
+    queryFn: () => get(`/websites/${websiteId}/stats`, { ...params, compare }),
+    enabled: !!websiteId,
     ...options,
   });
 }

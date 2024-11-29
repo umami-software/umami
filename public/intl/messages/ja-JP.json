@@ -11,7 +11,7 @@
       "value": "アクション"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "アクティビティログ"
@@ -38,7 +38,7 @@
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "ステップを追加"
     }
   ],
   "label.add-website": [
@@ -81,12 +81,6 @@
     {
       "type": 0,
       "value": "平均"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "平均滞在時間"
     }
   ],
   "label.back": [
@@ -155,6 +149,12 @@
       "value": "すべてクリア"
     }
   ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "比較"
+    }
+  ],
   "label.confirm": [
     {
       "type": 0,
@@ -177,6 +177,12 @@
     {
       "type": 0,
       "value": "続ける"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "回数"
     }
   ],
   "label.countries": [
@@ -224,7 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "作成者"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "現在"
     }
   ],
   "label.current-password": [
@@ -383,6 +395,18 @@
       "value": "共有URLを有効にする"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "最終ステップ"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "訪問時のURL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
@@ -399,6 +423,12 @@
     {
       "type": 0,
       "value": "イベント"
+    }
+  ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "退出時のURL"
     }
   ],
   "label.false": [
@@ -443,6 +473,12 @@
       "value": "フィルター"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "初回ログイン"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
@@ -455,6 +491,24 @@
       "value": "ユーザーのコンバージョン率と離脱率を分析します。"
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "目標"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "目標"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "ページビューとイベントの目標を追跡します。"
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -465,6 +519,18 @@
     {
       "type": 0,
       "value": "以上"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "ホスト"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "ホスト"
     }
   ],
   "label.insights": [
@@ -513,6 +579,18 @@
     {
       "type": 0,
       "value": "チームに参加"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "ジャーニー"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "ユーザーがWebサイト内をどのように移動するかを把握します。"
     }
   ],
   "label.language": [
@@ -564,7 +642,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "過去"
     },
     {
       "type": 1,
@@ -572,7 +650,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": "月間"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "最終ログイン"
     }
   ],
   "label.leave": [
@@ -615,6 +699,12 @@
     {
       "type": 0,
       "value": "管理"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "管理者"
     }
   ],
   "label.max": [
@@ -783,6 +873,18 @@
       "value": "パスワード"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "パス"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "パス"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -793,10 +895,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "以前"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "前期"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "前年"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "プロフィール"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "プロパティ"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "プロパティ"
     }
   ],
   "label.queries": [
@@ -907,6 +1039,24 @@
       "value": "ユーザーの再訪問回数を記録して、Webサイトのリテンション率を計測します。"
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "レベニュー"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "時間あたりの売上高を確認します。"
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "レベニュープロパティ"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -961,6 +1111,12 @@
       "value": "Webサイトを選択"
     }
   ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "セッション"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
@@ -985,10 +1141,16 @@
       "value": "一日"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "最初のステップ"
+    }
+  ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "ステップ"
     }
   ],
   "label.sum": [
@@ -1015,6 +1177,12 @@
       "value": "チームID"
     }
   ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "チーム管理者"
+    }
+  ],
   "label.team-member": [
     {
       "type": 0,
@@ -1030,7 +1198,7 @@
   "label.team-owner": [
     {
       "type": 0,
-      "value": "チーム所有者"
+      "value": "チームオーナー"
     }
   ],
   "label.team-view-only": [
@@ -1117,6 +1285,12 @@
       "value": "トラッキングコード"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "トランザクション"
+    }
+  ],
   "label.transfer": [
     {
       "type": 0,
@@ -1153,6 +1327,12 @@
       "value": "ユニーク訪問者数"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "ユニーク顧客数"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1168,7 +1348,7 @@
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "更新"
     }
   ],
   "label.url": [
@@ -1187,6 +1367,12 @@
     {
       "type": 0,
       "value": "ユーザー"
+    }
+  ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "ユーザープロパティ"
     }
   ],
   "label.username": [
@@ -1210,7 +1396,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "UTMパラメーターを使用してキャンペーンを追跡します。"
     }
   ],
   "label.value": [
@@ -1246,7 +1432,13 @@
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "訪問あたりの閲覧数"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "平均滞在時間"
     }
   ],
   "label.visitors": [
@@ -1258,7 +1450,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "訪問者数"
     }
   ],
   "label.website": [
@@ -1337,6 +1529,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "x"
+    }
+  ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "収集されたデータ"
     }
   ],
   "message.confirm-delete": [

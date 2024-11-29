@@ -13,6 +13,7 @@ import FieldFilterEditForm from 'app/(main)/reports/[reportId]/FieldFilterEditFo
 import { OPERATOR_PREFIXES } from 'lib/constants';
 import { isSearchOperator, parseParameterValue } from 'lib/params';
 import styles from './FilterTags.module.css';
+import WebsiteFilterButton from 'app/(main)/websites/[websiteId]/WebsiteFilterButton';
 
 export function FilterTags({
   websiteId,
@@ -23,7 +24,7 @@ export function FilterTags({
 }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
-  const [dateRange] = useDateRange(websiteId);
+  const { dateRange } = useDateRange(websiteId);
   const {
     router,
     renderUrl,
@@ -100,6 +101,7 @@ export function FilterTags({
           </PopupTrigger>
         );
       })}
+      <WebsiteFilterButton websiteId={websiteId} alignment="center" showText={false} />
       <Button className={styles.close} variant="quiet" onClick={handleResetFilter}>
         <Icon>
           <Icons.Close />

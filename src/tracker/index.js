@@ -3,12 +3,12 @@
     screen: { width, height },
     navigator: { language },
     location,
-    localStorage,
     document,
     history,
   } = window;
-  const { hostname, pathname, search } = location;
+  const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
+  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
   if (!currentScript) return;
 
@@ -44,7 +44,7 @@
       if (result !== str) {
         return result;
       }
-    } catch {
+    } catch (e) {
       return str;
     }
 
@@ -52,6 +52,13 @@
   };
 
   const parseURL = url => {
+    try {
+      // use location.origin as the base to handle cases where the url is a relative path
+      const { pathname, search, hash } = new URL(url, origin);
+      url = pathname + search + hash;
+    } catch (e) {
+      /* empty */
+    }
     return excludeSearch ? url.split('?')[0] : url;
   };
 
@@ -187,17 +194,21 @@
   /* Tracking functions */
 
   const trackingDisabled = () =>
+    !website ||
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (domain && !domains.includes(hostname));
 
   const send = async (payload, type = 'event') => {
     if (trackingDisabled()) return;
+
     const headers = {
       'Content-Type': 'application/json',
     };
+
     if (typeof cache !== 'undefined') {
       headers['x-umami-cache'] = cache;
     }
+
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -207,8 +218,18 @@
       const text = await res.text();
 
       return (cache = text);
-    } catch {
+    } catch (e) {
       /* empty */
+    }
+  };
+
+  const init = () => {
+    if (!initialized) {
+      track();
+      handlePathChanges();
+      handleTitleChanges();
+      handleClicks();
+      initialized = true;
     }
   };
 
@@ -238,26 +259,17 @@
     };
   }
 
-  let currentUrl = `${pathname}${search}`;
-  let currentRef = referrer !== hostname ? referrer : '';
+  let currentUrl = parseURL(href);
+  let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let title = document.title;
   let cache;
   let initialized;
 
   if (autoTrack && !trackingDisabled()) {
-    handlePathChanges();
-    handleTitleChanges();
-    handleClicks();
-
-    const init = () => {
-      if (document.readyState === 'complete' && !initialized) {
-        track();
-        initialized = true;
-      }
-    };
-
-    document.addEventListener('readystatechange', init, true);
-
-    init();
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      document.addEventListener('readystatechange', init, true);
+    }
   }
 })(window);

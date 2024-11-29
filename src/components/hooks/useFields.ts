@@ -14,6 +14,8 @@ export function useFields() {
     { name: 'country', type: 'string', label: formatMessage(labels.country) },
     { name: 'region', type: 'string', label: formatMessage(labels.region) },
     { name: 'city', type: 'string', label: formatMessage(labels.city) },
+    { name: 'host', type: 'string', label: formatMessage(labels.host) },
+    { name: 'tag', type: 'string', label: formatMessage(labels.tag) },
   ];
 
   return { fields };

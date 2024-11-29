@@ -3,13 +3,13 @@ import { Team } from '@prisma/client';
 import { canCreateTeam } from 'lib/auth';
 import { uuid } from 'lib/crypto';
 import { useAuth, useValidate } from 'lib/middleware';
-import { NextApiRequestQueryBody, SearchFilter } from 'lib/types';
+import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { getRandomChars, methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createTeam } from 'queries';
 
-export interface TeamsRequestQuery extends SearchFilter {}
+export interface TeamsRequestQuery extends PageParams {}
 export interface TeamsRequestBody {
   name: string;
 }

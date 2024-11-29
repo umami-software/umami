@@ -1,19 +1,25 @@
 import { getMinimumUnit, parseDateRange } from 'lib/date';
 import { setItem } from 'next-basics';
-import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE } from 'lib/constants';
-import websiteStore, { setWebsiteDateRange } from 'store/websites';
+import { DATE_RANGE_CONFIG, DEFAULT_DATE_COMPARE, DEFAULT_DATE_RANGE } from 'lib/constants';
+import websiteStore, { setWebsiteDateRange, setWebsiteDateCompare } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';
 import { DateRange } from 'lib/types';
 import { useLocale } from './useLocale';
-import { useApi } from './queries/useApi';
+import { useApi } from './useApi';
 
-export function useDateRange(websiteId?: string): [DateRange, (value: string | DateRange) => void] {
+export function useDateRange(websiteId?: string): {
+  dateRange: DateRange;
+  saveDateRange: (value: string | DateRange) => void;
+  dateCompare: string;
+  saveDateCompare: (value: string) => void;
+} {
   const { get } = useApi();
   const { locale } = useLocale();
   const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
   const defaultConfig = DEFAULT_DATE_RANGE;
   const globalConfig = appStore(state => state.dateRange);
   const dateRange = parseDateRange(websiteConfig || globalConfig || defaultConfig, locale);
+  const dateCompare = websiteStore(state => state[websiteId]?.dateCompare || DEFAULT_DATE_COMPARE);
 
   const saveDateRange = async (value: DateRange | string) => {
     if (websiteId) {
@@ -45,7 +51,11 @@ export function useDateRange(websiteId?: string): [DateRange, (value: string | D
     }
   };
 
-  return [dateRange, saveDateRange];
+  const saveDateCompare = (value: string) => {
+    setWebsiteDateCompare(websiteId, value);
+  };
+
+  return { dateRange, saveDateRange, dateCompare, saveDateCompare };
 }
 
 export default useDateRange;
