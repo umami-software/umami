@@ -10,7 +10,7 @@ export function LanguagesTable({
 }: { onDataLoad: (data: any) => void } & MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
-  const languageNames = useLanguageNames(locale);
+  const { languageNames } = useLanguageNames(locale);
 
   const renderLabel = ({ x }) => {
     return languageNames[x?.split('-')[0]] ?? x;
