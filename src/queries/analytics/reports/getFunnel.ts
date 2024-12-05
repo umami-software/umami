@@ -76,12 +76,9 @@ async function relationalQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (isURL && cv.value.includes('*')) {
-          operator = '~';
-          paramValue = cv.value.replace(/\*/g, '.*');
-        } else if (isURL && cv.value.endsWith('*')) {
+        if (cv.value.includes('*')) {
           operator = 'like';
-          paramValue = cv.value.replace('*', '%');
+          paramValue = cv.value.replaceAll('*', '%');
         }
 
         if (levelNumber === 1) {
@@ -177,25 +174,15 @@ async function clickhouseQuery(
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const column = cv.type === 'url' ? 'url_path' : 'event_name';
+        const isURL = cv.type === 'url';
+        const column = isURL ? 'url_path' : 'event_name';
 
-        let operator: string;
-        let paramValue: string;
+        let operator = '=';
+        let paramValue = cv.value;
 
-        if (cv.type === 'url') {
-          if (cv.value.includes('*')) {
-            operator = 'match';
-            paramValue = cv.value.replace(/\*/g, '.*');
-          } else if (cv.value.endsWith('*')) {
-            operator = 'like';
-            paramValue = cv.value.replace('*', '%');
-          } else {
-            operator = '=';
-            paramValue = cv.value;
-          }
-        } else {
-          operator = '=';
-          paramValue = cv.value;
+        if (cv.value.includes('*')) {
+          operator = 'like';
+          paramValue = cv.value.replaceAll('*', '%');
         }
 
         if (levelNumber === 1) {
