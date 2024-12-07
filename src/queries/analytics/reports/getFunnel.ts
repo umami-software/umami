@@ -76,9 +76,9 @@ async function relationalQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.includes('*')) {
+        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
           operator = 'like';
-          paramValue = cv.value.replaceAll('*', '%');
+          paramValue = cv.value.replace(/^\*|\*$/g, '%');
         }
 
         if (levelNumber === 1) {
@@ -180,9 +180,9 @@ async function clickhouseQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.includes('*')) {
+        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
           operator = 'like';
-          paramValue = cv.value.replaceAll('*', '%');
+          paramValue = cv.value.replace(/^\*|\*$/g, '%');
         }
 
         if (levelNumber === 1) {
