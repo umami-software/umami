@@ -102,6 +102,11 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     await useSession(req, res);
 
     const session = req.session;
+
+    if (!session?.id) {
+      return;
+    }
+
     const iat = Math.floor(new Date().getTime() / 1000);
 
     // expire visitId after 30 minutes
@@ -110,10 +115,6 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     session.iat = iat;
-
-    if (!session.websiteId) {
-      return;
-    }
 
     if (type === COLLECTION_TYPE.event) {
       // eslint-disable-next-line prefer-const
