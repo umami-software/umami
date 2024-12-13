@@ -22,6 +22,8 @@
     "jsx": "preserve",
     "incremental": false,
     "baseUrl": "./src",
+    "types": ["jest"],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "react": ["./node_modules/@types/react"],
       "assets/*": ["./assets/*"],
