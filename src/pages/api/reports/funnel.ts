@@ -31,7 +31,10 @@ const schema = {
       .of(
         yup.object().shape({
           type: yup.string().required(),
-          value: yup.string().required(),
+          value: yup
+            .string()
+            .matches(/^[a-zA-Z0-9/*-_]+$/, 'Invalid URL pattern')
+            .required(),
         }),
       )
       .min(2)

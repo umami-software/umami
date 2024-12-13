@@ -67,6 +67,14 @@ function getRegionCode(country: string, region: string) {
   return region.includes('-') ? region : `${country}-${region}`;
 }
 
+function safeDecodeCfHeader(s: string | undefined | null): string | undefined | null {
+  if (s === undefined || s === null) {
+    return s;
+  }
+
+  return Buffer.from(s, 'latin1').toString('utf-8');
+}
+
 export async function getLocation(ip: string, req: NextApiRequestCollect) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
@@ -75,9 +83,9 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
 
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
-    const country = safeDecodeURIComponent(req.headers['cf-ipcountry']);
-    const subdivision1 = safeDecodeURIComponent(req.headers['cf-region-code']);
-    const city = safeDecodeURIComponent(req.headers['cf-ipcity']);
+    const country = safeDecodeCfHeader(req.headers['cf-ipcountry']);
+    const subdivision1 = safeDecodeCfHeader(req.headers['cf-region-code']);
+    const city = safeDecodeCfHeader(req.headers['cf-ipcity']);
 
     return {
       country,
