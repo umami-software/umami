@@ -75,7 +75,7 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
 
   if (db === MYSQL) {
     if (timezone) {
-      const tz = formatInTimeZone(new Date(), timezone, 'yyyy-MM-dd HH:mm:ss');
+      const tz = formatInTimeZone(new Date(), timezone, 'xxx');
       return `date_format(convert_tz(${field},'+00:00','${tz}'), '${MYSQL_DATE_FORMATS[unit]}')`;
     }
     return `date_format(${field}, '${MYSQL_DATE_FORMATS[unit]}')`;
@@ -90,7 +90,7 @@ function getDateWeeklySQL(field: string, timezone?: string) {
   }
 
   if (db === MYSQL) {
-    const tz = formatInTimeZone(new Date(), timezone, 'yyyy-MM-dd HH:mm:ss');
+    const tz = formatInTimeZone(new Date(), timezone, 'xxx');
     return `date_format(convert_tz(${field},'+00:00','${tz}'), '%w:%H')`;
   }
 }

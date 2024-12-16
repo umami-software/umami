@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -19,10 +20,10 @@ model User {
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamp(0)
 
-  websiteUser       Website[] @relation("user")
-  websiteCreateUser Website[] @relation("createUser")
-  teamUser TeamUser[]
-  report   Report[]
+  websiteUser       Website[]  @relation("user")
+  websiteCreateUser Website[]  @relation("createUser")
+  teamUser          TeamUser[]
+  report            Report[]
 
   @@map("user")
 }
@@ -176,8 +177,8 @@ model Team {
   updatedAt  DateTime? @updatedAt @map("updated_at") @db.Timestamp(0)
   deletedAt  DateTime? @map("deleted_at") @db.Timestamp(0)
 
-  website     Website[]
-  teamUser    TeamUser[]
+  website  Website[]
+  teamUser TeamUser[]
 
   @@index([accessCode])
   @@map("team")

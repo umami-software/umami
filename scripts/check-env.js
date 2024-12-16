@@ -23,5 +23,12 @@ if (!process.env.SKIP_DB_CHECK && !process.env.DATABASE_TYPE) {
 }
 
 if (process.env.CLOUD_MODE) {
-  checkMissing(['CLOUD_URL', 'KAFKA_BROKER', 'KAFKA_URL', 'REDIS_URL']);
+  checkMissing([
+    'CLOUD_URL',
+    'KAFKA_BROKER',
+    'KAFKA_URL',
+    'REDIS_URL',
+    'KAFKA_SASL_MECHANISM',
+    'KAFKA_SSL',
+  ]);
 }
