@@ -19,6 +19,7 @@ import Moon from 'assets/moon.svg';
 import Nodes from 'assets/nodes.svg';
 import Overview from 'assets/overview.svg';
 import Profile from 'assets/profile.svg';
+import PushPin from 'assets/pushpin.svg';
 import Reports from 'assets/reports.svg';
 import Sun from 'assets/sun.svg';
 import User from 'assets/user.svg';
@@ -47,6 +48,7 @@ const icons = {
   Nodes,
   Overview,
   Profile,
+  PushPin,
   Reports,
   Sun,
   User,

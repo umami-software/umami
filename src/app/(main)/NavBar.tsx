@@ -10,6 +10,8 @@ import TeamsButton from 'components/input/TeamsButton';
 import Icons from 'components/icons';
 import { useMessages, useNavigation, useTeamUrl } from 'components/hooks';
 import styles from './NavBar.module.css';
+import { useEffect } from 'react';
+import { getItem, setItem } from 'next-basics';
 
 export function NavBar() {
   const { formatMessage, labels } = useMessages();
@@ -74,9 +76,23 @@ export function NavBar() {
 
   const handleTeamChange = (teamId: string) => {
     const url = teamId ? `/teams/${teamId}` : '/';
-
+    if (!cloudMode) {
+      setItem('umami.team', { id: teamId });
+    }
     router.push(cloudMode ? `${process.env.cloudUrl}${url}` : url);
   };
+
+  useEffect(() => {
+    if (!cloudMode) {
+      const teamIdLocal = getItem('umami.team')?.id;
+
+      if (teamIdLocal && teamIdLocal !== teamId) {
+        router.push(
+          pathname !== '/' && pathname !== '/dashboard' ? '/' : `/teams/${teamIdLocal}/dashboard`,
+        );
+      }
+    }
+  }, [cloudMode]);
 
   return (
     <div className={styles.navbar}>
