@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider     = "postgresql"
   url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_DATABASE_URL") ## @see https://blog.atrera.com/post/hosting-your-own-analytics-a-guide-with-umami-vercel-and-supabase/
   relationMode = "prisma"
 }
 
