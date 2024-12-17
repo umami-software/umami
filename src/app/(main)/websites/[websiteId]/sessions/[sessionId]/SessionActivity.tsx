@@ -42,7 +42,7 @@ export function SessionActivity({
                 </StatusLight>
               </div>
               <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
-              <div className={styles.value}>{eventName || urlPath}</div>
+              <div>{eventName || urlPath}</div>
             </div>
           </>
         );

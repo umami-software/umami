@@ -68,6 +68,10 @@ function getDateSQL(field: string, unit: string, timezone?: string) {
   return `toDateTime(date_trunc('${unit}', ${field}))`;
 }
 
+function getSearchSQL(column: string, param: string = 'search'): string {
+  return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
+}
+
 function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
   const value = `{${name}:${type}}`;
 
@@ -229,6 +233,7 @@ export default {
   connect,
   getDateStringSQL,
   getDateSQL,
+  getSearchSQL,
   getFilterQuery,
   getUTCString,
   parseFilters,

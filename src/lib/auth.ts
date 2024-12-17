@@ -1,7 +1,7 @@
 import { Report } from '@prisma/client';
-import redis from '@umami/redis-client';
+import { getClient } from '@umami/redis-client';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER, ROLES } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { NextApiRequest } from 'next';
 import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
@@ -14,10 +14,12 @@ const cloudMode = process.env.CLOUD_MODE;
 export async function saveAuth(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
 
-  await redis.client.set(authKey, data);
+  const redis = getClient();
+
+  await redis.set(authKey, data);
 
   if (expire) {
-    await redis.client.expire(authKey, expire);
+    await redis.expire(authKey, expire);
   }
 
   return createSecureToken({ authKey }, secret());

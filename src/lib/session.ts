@@ -88,5 +88,5 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
     }
   }
 
-  return { ...session, visitId: visitId };
+  return { ...session, visitId };
 }

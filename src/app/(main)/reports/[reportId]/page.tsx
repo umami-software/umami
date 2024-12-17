@@ -1,7 +1,9 @@
 import { Metadata } from 'next';
 import ReportPage from './ReportPage';
 
-export default function ({ params: { reportId } }) {
+export default async function ({ params }: { params: { reportId: string } }) {
+  const { reportId } = await params;
+
   return <ReportPage reportId={reportId} />;
 }
 

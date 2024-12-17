@@ -19,10 +19,25 @@ async function relationalQuery(
   search: string,
 ) {
   const { rawQuery, getSearchSQL } = prisma;
+  const params = {};
   let searchQuery = '';
 
   if (search) {
-    searchQuery = getSearchSQL(column);
+    if (decodeURIComponent(search).includes(',')) {
+      searchQuery = `AND (${decodeURIComponent(search)
+        .split(',')
+        .slice(0, 5)
+        .map((value: string, index: number) => {
+          const key = `search${index}`;
+
+          params[key] = value;
+
+          return getSearchSQL(column, key).replace('and ', '');
+        })
+        .join(' OR ')})`;
+    } else {
+      searchQuery = getSearchSQL(column);
+    }
   }
 
   return rawQuery(
@@ -43,6 +58,7 @@ async function relationalQuery(
       startDate,
       endDate,
       search: `%${search}%`,
+      ...params,
     },
   );
 }
@@ -54,11 +70,30 @@ async function clickhouseQuery(
   endDate: Date,
   search: string,
 ) {
-  const { rawQuery } = clickhouse;
+  const { rawQuery, getSearchSQL } = clickhouse;
+  const params = {};
   let searchQuery = '';
 
   if (search) {
     searchQuery = `and positionCaseInsensitive(${column}, {search:String}) > 0`;
+  }
+
+  if (search) {
+    if (decodeURIComponent(search).includes(',')) {
+      searchQuery = `AND (${decodeURIComponent(search)
+        .split(',')
+        .slice(0, 5)
+        .map((value: string, index: number) => {
+          const key = `search${index}`;
+
+          params[key] = value;
+
+          return getSearchSQL(column, key).replace('and ', '');
+        })
+        .join(' OR ')})`;
+    } else {
+      searchQuery = getSearchSQL(column);
+    }
   }
 
   return rawQuery(
@@ -77,6 +112,7 @@ async function clickhouseQuery(
       startDate,
       endDate,
       search,
+      ...params,
     },
   );
 }

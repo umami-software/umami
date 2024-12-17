@@ -1,6 +1,6 @@
 import cors from 'cors';
 import debug from 'debug';
-import redis from '@umami/redis-client';
+import { getClient, redisEnabled } from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { secret } from 'lib/crypto';
@@ -54,8 +54,10 @@ export const useAuth = createMiddleware(async (req, res, next) => {
 
   if (userId) {
     user = await getUser(userId);
-  } else if (redis.enabled && authKey) {
-    const key = await redis.client.get(authKey);
+  } else if (redisEnabled && authKey) {
+    const redis = getClient();
+
+    const key = await redis.get(authKey);
 
     if (key?.userId) {
       user = await getUser(key.userId);

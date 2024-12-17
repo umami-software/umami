@@ -1,5 +1,5 @@
-import moment from 'moment-timezone';
 import * as yup from 'yup';
+import { isValidTimezone } from 'lib/date';
 import { UNIT_TYPES } from './constants';
 
 export const TimezoneTest = yup
@@ -8,7 +8,7 @@ export const TimezoneTest = yup
   .test(
     'timezone',
     () => `Invalid timezone`,
-    value => moment.tz.zone(value) !== null,
+    value => isValidTimezone(value),
   );
 
 export const UnitTypeTest = yup.string().test(

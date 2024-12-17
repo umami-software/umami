@@ -12,6 +12,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    init: true
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]

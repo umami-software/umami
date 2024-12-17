@@ -1,7 +1,9 @@
 import WebsiteRealtimePage from './WebsiteRealtimePage';
 import { Metadata } from 'next';
 
-export default function ({ params: { websiteId } }) {
+export default async function ({ params }: { params: { websiteId: string } }) {
+  const { websiteId } = await params;
+
   return <WebsiteRealtimePage websiteId={websiteId} />;
 }
 

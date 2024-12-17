@@ -49,13 +49,7 @@ export default async (req: NextApiRequestQueryBody<ValuesRequestQuery>, res: Nex
       return unauthorized(res);
     }
 
-    const values = await getValues(
-      websiteId,
-      FILTER_COLUMNS[type as string],
-      startDate,
-      endDate,
-      search,
-    );
+    const values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);
 
     return ok(
       res,

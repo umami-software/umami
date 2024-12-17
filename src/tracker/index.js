@@ -54,7 +54,7 @@
   const parseURL = url => {
     try {
       // use location.origin as the base to handle cases where the url is a relative path
-      const { pathname, search, hash } = new URL(url, origin);
+      const { pathname, search, hash } = new URL(url, location.href);
       url = pathname + search + hash;
     } catch (e) {
       /* empty */

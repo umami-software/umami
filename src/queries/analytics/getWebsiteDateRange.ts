@@ -38,7 +38,7 @@ async function clickhouseQuery(websiteId: string) {
     select
       min(created_at) as mindate,
       max(created_at) as maxdate
-    from website_event
+    from website_event_stats_hourly
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}
     `,

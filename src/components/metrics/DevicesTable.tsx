@@ -23,6 +23,7 @@ export function DevicesTable(props: MetricsTableProps) {
       type="device"
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }

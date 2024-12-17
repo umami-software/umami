@@ -28,7 +28,7 @@ export function useLanguageNames(locale) {
     }
   }, [locale]);
 
-  return list;
+  return { languageNames: list };
 }
 
 export default useLanguageNames;

@@ -1,5 +1,5 @@
 import { Prisma, Website } from '@prisma/client';
-import redis from '@umami/redis-client';
+import { getClient } from '@umami/redis-client';
 import prisma from 'lib/prisma';
 import { PageResult, PageParams } from 'lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
@@ -21,6 +21,7 @@ export async function getSharedWebsite(shareId: string) {
   return findWebsite({
     where: {
       shareId,
+      deletedAt: null,
     },
   });
 }
@@ -181,7 +182,9 @@ export async function resetWebsite(
     }),
   ]).then(async data => {
     if (cloudMode) {
-      await redis.client.set(`website:${websiteId}`, data[3]);
+      const redis = getClient();
+
+      await redis.set(`website:${websiteId}`, data[3]);
     }
 
     return data;
@@ -224,7 +227,9 @@ export async function deleteWebsite(
         }),
   ]).then(async data => {
     if (cloudMode) {
-      await redis.client.del(`website:${websiteId}`);
+      const redis = getClient();
+
+      await redis.del(`website:${websiteId}`);
     }
 
     return data;

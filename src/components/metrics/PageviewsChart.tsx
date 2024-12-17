@@ -14,9 +14,16 @@ export interface PagepageviewsChartProps extends BarChartProps {
   };
   unit: string;
   isLoading?: boolean;
+  isAllTime?: boolean;
 }
 
-export function PagepageviewsChart({ data, unit, isLoading, ...props }: PagepageviewsChartProps) {
+export function PagepageviewsChart({
+  data,
+  unit,
+  isLoading,
+  isAllTime,
+  ...props
+}: PagepageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
   const { locale } = useLocale();
@@ -74,6 +81,7 @@ export function PagepageviewsChart({ data, unit, isLoading, ...props }: Pagepage
       data={chartData}
       unit={unit}
       isLoading={isLoading}
+      isAllTime={isAllTime}
       renderXLabel={renderDateLabels(unit, locale)}
     />
   );

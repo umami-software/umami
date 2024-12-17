@@ -12,7 +12,11 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
 
   const renderLink = ({ x: code }) => {
     return (
-      <FilterLink id="country" value={countryNames[code] && code} label={formatCountry(code)}>
+      <FilterLink
+        id="country"
+        value={(countryNames[code] && code) || code}
+        label={formatCountry(code)}
+      >
         <TypeIcon type="country" value={code?.toLowerCase()} />
       </FilterLink>
     );
@@ -25,6 +29,7 @@ export function CountriesTable({ ...props }: MetricsTableProps) {
       type="country"
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }
