@@ -12,13 +12,14 @@ const enabled = Boolean(process.env.KAFKA_URL && process.env.KAFKA_BROKER);
 function getClient() {
   const { username, password } = new URL(process.env.KAFKA_URL);
   const brokers = process.env.KAFKA_BROKER.split(',');
-  const sslEnabled = process.env.KAFKA_SSL.toLowerCase() === 'true';
   const mechanism = process.env.KAFKA_SASL_MECHANISM as 'plain' | 'scram-sha-256' | 'scram-sha-512';
 
   const ssl: { ssl?: tls.ConnectionOptions | boolean; sasl?: SASLOptions } =
     username && password
       ? {
-          ssl: sslEnabled,
+          ssl: {
+            rejectUnauthorized: false,
+          },
           sasl: {
             mechanism,
             username,
