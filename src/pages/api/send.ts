@@ -103,7 +103,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     const session = req.session;
 
     if (!session?.id || !session?.websiteId) {
-      return;
+      return ok(res, {});
     }
 
     const iat = Math.floor(new Date().getTime() / 1000);
