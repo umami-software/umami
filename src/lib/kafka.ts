@@ -71,7 +71,7 @@ async function sendMessage(
         value: JSON.stringify(message),
       },
     ],
-    acks: -1,
+    acks: 1,
   });
 }
 
