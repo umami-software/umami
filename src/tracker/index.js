@@ -21,6 +21,7 @@
   const tag = attr(_data + 'tag');
   const autoTrack = attr(_data + 'auto-track') !== _false;
   const excludeSearch = attr(_data + 'exclude-search') === _true;
+  const excludeHash = attr(_data + 'exclude-hash') === _true;
   const domain = attr(_data + 'domains') || '';
   const domains = domain.split(',').map(n => n.trim());
   const host =
@@ -53,13 +54,12 @@
 
   const parseURL = url => {
     try {
-      // use location.origin as the base to handle cases where the url is a relative path
       const { pathname, search, hash } = new URL(url, location.href);
-      url = pathname + search + hash;
+
+      return pathname + (excludeSearch ? '' : search) + (excludeHash ? '' : hash);
     } catch (e) {
-      /* empty */
+      return url;
     }
-    return excludeSearch ? url.split('?')[0] : url;
   };
 
   const getPayload = () => ({
@@ -194,6 +194,7 @@
   /* Tracking functions */
 
   const trackingDisabled = () =>
+    disabled ||
     !website ||
     (localStorage && localStorage.getItem('umami.disabled')) ||
     (domain && !domains.includes(hostname));
@@ -215,9 +216,11 @@
         body: JSON.stringify({ type, payload }),
         headers,
       });
-      const text = await res.text();
 
-      return (cache = text);
+      const data = await res.json();
+
+      disabled = res.status === 429;
+      cache = data?.cache;
     } catch (e) {
       /* empty */
     }
@@ -264,6 +267,7 @@
   let title = document.title;
   let cache;
   let initialized;
+  let disabled = false;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {

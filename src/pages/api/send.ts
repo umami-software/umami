@@ -7,7 +7,6 @@ import {
   methodNotAllowed,
   ok,
   safeDecodeURI,
-  send,
 } from 'next-basics';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
 import { secret, visitSalt, uuid } from 'lib/crypto';
@@ -103,8 +102,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     const session = req.session;
 
-    if (!session?.id) {
-      return;
+    if (!session?.id || !session?.websiteId) {
+      return ok(res, {});
     }
 
     const iat = Math.floor(new Date().getTime() / 1000);
@@ -162,9 +161,9 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       });
     }
 
-    const token = createToken(session, secret());
+    const cache = createToken(session, secret());
 
-    return send(res, token);
+    return ok(res, { cache });
   }
 
   return methodNotAllowed(res);
