@@ -122,7 +122,7 @@ function getSearchSQL(column: string, param: string = 'search'): string {
   const db = getDatabaseType();
   const like = db === POSTGRESQL ? 'ilike' : 'like';
 
-  return `and ${column} ${like} {{${param}}`;
+  return `and ${column} ${like} {{${param}}}`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = '') {
