@@ -81,6 +81,23 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     return;
   }
 
+  const customHeader = String(process.env.CLIENT_IPCOUNTRY_HEADER).toLowerCase();
+
+  if (customHeader !== 'undefined' && req.headers[customHeader]) {
+    const reginCodeHeader = String(process.env.CLIENT_REGION_CODE_HEADER).toLowerCase();
+    const cityHeader = String(process.env.CLIENT_CITY_HEADER).toLowerCase();
+
+    const country = req.headers[customHeader];
+    const subdivision1 = req.headers[reginCodeHeader];
+    const city = req.headers[cityHeader];
+
+    return {
+      country,
+      subdivision1: getRegionCode(country, subdivision1),
+      city,
+    };
+  }
+
   // Cloudflare headers
   if (req.headers['cf-ipcountry']) {
     const country = safeDecodeCfHeader(req.headers['cf-ipcountry']);
