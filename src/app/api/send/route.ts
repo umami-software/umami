@@ -26,6 +26,7 @@ const schema = z.object({
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
+    createdAt: yup.number().optional(),
   }),
 });
 
@@ -55,6 +56,7 @@ export async function POST(request: Request) {
       data,
       title,
       tag,
+      reqCreatedAt,
     } = payload;
 
     // Cache check
@@ -119,14 +121,14 @@ export async function POST(request: Request) {
     }
 
     // Visit info
-    const now = Math.floor(new Date().getTime() / 1000);
+    const createdAt = Math.floor((reqCreatedAt || new Date()).getTime() / 1000);
     let visitId = cache?.visitId || uuid(sessionId, visitSalt());
-    let iat = cache?.iat || now;
+    let iat = cache?.iat || createdAt;
 
     // Expire visit after 30 minutes
-    if (now - iat > 1800) {
+    if (createdAt - iat > 1800) {
       visitId = uuid(sessionId, visitSalt());
-      iat = now;
+      iat = createdAt;
     }
 
     if (type === COLLECTION_TYPE.event) {
@@ -179,6 +181,7 @@ export async function POST(request: Request) {
         subdivision2,
         city,
         tag,
+	createdAt,
       });
     }
 
