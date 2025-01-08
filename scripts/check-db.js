@@ -10,7 +10,7 @@ if (process.env.SKIP_DB_CHECK) {
   process.exit(0);
 }
 
-function getDatabaseType(url = process.env.DATABASE_URL) {
+function getDatabaseType(url = process.env.UMAMI_DATABASE_URL || process.env.DATABASE_URL) {
   const type = url && url.split(':')[0];
 
   if (type === 'postgres') {
@@ -31,10 +31,10 @@ function error(msg) {
 }
 
 async function checkEnv() {
-  if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is not defined.');
+  if (!process.env.UMAMI_DATABASE_URL && !process.env.DATABASE_URL) {
+    throw new Error('Neither UMAMI_DATABASE_URL nor DATABASE_URL is defined.');
   } else {
-    success('DATABASE_URL is defined.');
+    success('Database URL is defined.');
   }
 }
 

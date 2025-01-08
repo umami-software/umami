@@ -19,7 +19,10 @@ function checkMissing(vars) {
 }
 
 if (!process.env.SKIP_DB_CHECK && !process.env.DATABASE_TYPE) {
-  checkMissing(['DATABASE_URL']);
+  if (!process.env.UMAMI_DATABASE_URL && !process.env.DATABASE_URL) {
+    console.log('Neither UMAMI_DATABASE_URL nor DATABASE_URL is defined.');
+    process.exit(1);
+  }
 }
 
 if (process.env.CLOUD_MODE) {
