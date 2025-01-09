@@ -219,8 +219,10 @@
 
       const data = await res.json();
 
-      disabled = res.status === 429;
-      cache = data?.cache;
+      if (data) {
+        disabled = !!data.disabled;
+        cache = data.cache;
+      }
     } catch (e) {
       /* empty */
     }

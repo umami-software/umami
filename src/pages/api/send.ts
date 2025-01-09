@@ -21,7 +21,6 @@ export interface CollectRequestBody {
     website: string;
     data?: { [key: string]: any };
     hostname?: string;
-    ip?: string;
     language?: string;
     name?: string;
     referrer?: string;
@@ -29,6 +28,8 @@ export interface CollectRequestBody {
     tag?: string;
     title?: string;
     url: string;
+    ip?: string;
+    userAgent?: string;
   };
   type: CollectionType;
 }
@@ -62,7 +63,6 @@ const schema = {
       .shape({
         data: yup.object(),
         hostname: yup.string().matches(HOSTNAME_REGEX).max(100),
-        ip: yup.string().matches(IP_REGEX),
         language: yup.string().max(35),
         referrer: yup.string(),
         screen: yup.string().max(11),
@@ -71,6 +71,8 @@ const schema = {
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
         tag: yup.string().max(50).nullable(),
+        ip: yup.string().matches(IP_REGEX),
+        userAgent: yup.string(),
       })
       .required(),
     type: yup
@@ -95,8 +97,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-    const { url, referrer, name: eventName, data, title, tag } = payload;
-    const pageTitle = safeDecodeURI(title);
+    const { url, referrer, name, data, title, tag } = payload;
 
     await useSession(req, res);
 
@@ -142,8 +143,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         referrerPath,
         referrerQuery,
         referrerDomain,
-        pageTitle,
-        eventName,
+        pageTitle: title,
+        eventName: name,
         eventData: data,
         ...session,
         sessionId: session.id,

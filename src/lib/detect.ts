@@ -132,7 +132,7 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
 }
 
 export async function getClientInfo(req: NextApiRequestCollect) {
-  const userAgent = req.headers['user-agent'];
+  const userAgent = req.body?.payload?.userAgent || req.headers['user-agent'];
   const ip = req.body?.payload?.ip || getIpAddress(req);
   const location = await getLocation(ip, req);
   const country = location?.country;
