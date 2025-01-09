@@ -164,7 +164,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     const cache = createToken(session, secret());
 
-    return ok(res, { ...session, cache });
+    return ok(res, { cache });
   }
 
   return methodNotAllowed(res);
