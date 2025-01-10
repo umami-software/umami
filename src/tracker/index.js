@@ -34,24 +34,6 @@
 
   /* Helper functions */
 
-  const encode = str => {
-    if (!str) {
-      return undefined;
-    }
-
-    try {
-      const result = decodeURI(str);
-
-      if (result !== str) {
-        return result;
-      }
-    } catch (e) {
-      return str;
-    }
-
-    return encodeURI(str);
-  };
-
   const parseURL = url => {
     try {
       const { pathname, search, hash } = new URL(url, location.href);
@@ -67,9 +49,9 @@
     hostname,
     screen,
     language,
-    title: encode(title),
-    url: encode(currentUrl),
-    referrer: encode(currentRef),
+    title,
+    url: currentUrl,
+    referrer: currentRef,
     tag: tag ? tag : undefined,
   });
 

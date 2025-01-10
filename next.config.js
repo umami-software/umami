@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
-const path = require('path');
 const pkg = require('./package.json');
 
 const TRACKER_SCRIPT = '/script.js';
@@ -169,27 +168,22 @@ const config = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   webpack(config) {
-    const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.('.svg'));
-
-    config.module.rules.push(
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/,
-      },
-      {
-        test: /\.svg$/i,
-        issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
-        use: ['@svgr/webpack'],
-      },
-    );
-
-    fileLoaderRule.exclude = /\.svg$/i;
-
-    config.resolve.alias['public'] = path.resolve('./public');
-
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: /\.(js|ts)x?$/,
+      use: ['@svgr/webpack'],
+    });
     return config;
   },
   async headers() {
