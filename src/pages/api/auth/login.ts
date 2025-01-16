@@ -37,7 +37,7 @@ export default async (
   req: NextApiRequestQueryBody<any, LoginRequestBody>,
   res: NextApiResponse<LoginResponse>,
 ) => {
-  if (process.env.DISABLE_LOGIN) {
+  if (process.env.disableLogin) {
     return forbidden(res);
   }
 
