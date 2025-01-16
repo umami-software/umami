@@ -29,8 +29,11 @@ RUN yarn build-docker
 FROM node:18-alpine AS runner
 WORKDIR /app
 
+ARG NODE_OPTIONS
+
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_OPTIONS $NODE_OPTIONS
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
