@@ -1,3 +1,4 @@
+import { serializeError } from 'serialize-error';
 import debug from 'debug';
 import { Kafka, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
 import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
@@ -63,33 +64,29 @@ async function getProducer(): Promise<Producer> {
 
 async function sendMessage(
   topic: string,
-  message: { [key: string]: string | number },
+  message: { [key: string]: string | number } | { [key: string]: string | number }[],
 ): Promise<RecordMetadata[]> {
-  await connect();
+  try {
+    await connect();
 
-  return producer.send({
-    topic,
-    messages: [
-      {
-        value: JSON.stringify(message),
-      },
-    ],
-    timeout: SEND_TIMEOUT,
-    acks: ACKS,
-  });
-}
-
-async function sendMessages(topic: string, messages: { [key: string]: string | number }[]) {
-  await connect();
-
-  await producer.send({
-    topic,
-    messages: messages.map(a => {
-      return { value: JSON.stringify(a) };
-    }),
-    timeout: SEND_TIMEOUT,
-    acks: ACKS,
-  });
+    return producer.send({
+      topic,
+      messages: Array.isArray(message)
+        ? message.map(a => {
+            return { value: JSON.stringify(a) };
+          })
+        : [
+            {
+              value: JSON.stringify(message),
+            },
+          ],
+      timeout: SEND_TIMEOUT,
+      acks: ACKS,
+    });
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.log('KAFKA ERROR:', serializeError(e));
+  }
 }
 
 async function connect(): Promise<Kafka> {
@@ -111,5 +108,4 @@ export default {
   log,
   connect,
   sendMessage,
-  sendMessages,
 };

@@ -61,7 +61,7 @@ async function clickhouseQuery(data: {
   const { websiteId, sessionId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
   const { insert, getUTCString } = clickhouse;
-  const { sendMessages } = kafka;
+  const { sendMessage } = kafka;
 
   const jsonKeys = flattenJSON(eventData);
 
@@ -82,7 +82,7 @@ async function clickhouseQuery(data: {
   });
 
   if (kafka.enabled) {
-    await sendMessages('event_data', messages);
+    await sendMessage('event_data', messages);
   } else {
     await insert('event_data', messages);
   }
