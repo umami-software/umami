@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { isbot } from 'isbot';
 import { NextApiRequest, NextApiResponse } from 'next';
 import {
@@ -84,6 +85,16 @@ const schema = {
 
 export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
+
+  req.socket.on('close', () => {
+    console.log('Client closed connection');
+  });
+
+  const abortController = new AbortController();
+  req.on('close', () => {
+    console.log('Request closed');
+    abortController.abort();
+  });
 
   if (req.method === 'POST') {
     if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
