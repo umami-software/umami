@@ -4,6 +4,9 @@ import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
 import * as tls from 'tls';
 
 const log = debug('umami:kafka');
+const CONNECT_TIMEOUT = 5000;
+const SEND_TIMEOUT = 3000;
+const ACKS = 1;
 
 let kafka: Kafka;
 let producer: Producer;
@@ -31,7 +34,7 @@ function getClient() {
   const client: Kafka = new Kafka({
     clientId: 'umami',
     brokers: brokers,
-    connectionTimeout: 3000,
+    connectionTimeout: CONNECT_TIMEOUT,
     logLevel: logLevel.ERROR,
     ...ssl,
   });
@@ -71,7 +74,8 @@ async function sendMessage(
         value: JSON.stringify(message),
       },
     ],
-    acks: 1,
+    timeout: SEND_TIMEOUT,
+    acks: ACKS,
   });
 }
 
@@ -83,7 +87,8 @@ async function sendMessages(topic: string, messages: { [key: string]: string | n
     messages: messages.map(a => {
       return { value: JSON.stringify(a) };
     }),
-    acks: 1,
+    timeout: SEND_TIMEOUT,
+    acks: ACKS,
   });
 }
 
