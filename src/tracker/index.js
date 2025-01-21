@@ -197,6 +197,7 @@
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers,
+        credentials: 'omit',
       });
 
       const data = await res.json();
