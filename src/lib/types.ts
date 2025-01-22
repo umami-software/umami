@@ -25,7 +25,7 @@ export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
 export interface PageParams {
-  query?: string;
+  search?: string;
   page?: number;
   pageSize?: number;
   orderBy?: string;
@@ -43,7 +43,7 @@ export interface PageResult<T> {
 
 export interface PagedQueryResult<T> {
   result: PageResult<T>;
-  query: any;
+  search: any;
   params: PageParams;
   setParams: Dispatch<SetStateAction<T | PageParams>>;
 }

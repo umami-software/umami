@@ -1,15 +1,63 @@
 import { Report } from '@prisma/client';
-import { getClient } from '@umami/redis-client';
+import { getClient, redisEnabled } from '@umami/redis-client';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, SHARE_TOKEN_HEADER } from 'lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from 'lib/constants';
 import { secret } from 'lib/crypto';
 import { NextApiRequest } from 'next';
-import { createSecureToken, ensureArray, getRandomChars, parseToken } from 'next-basics';
-import { getTeamUser, getWebsite } from 'queries';
+import {
+  createSecureToken,
+  ensureArray,
+  getRandomChars,
+  parseSecureToken,
+  parseToken,
+} from 'next-basics';
+import { getTeamUser, getUser, getWebsite } from 'queries';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
+
+export async function checkAuth(request: Request) {
+  const token = request.headers.get('authorization')?.split(' ')?.[1];
+  const payload = parseSecureToken(token, secret());
+  const shareToken = await parseShareToken(request as any);
+
+  let user = null;
+  const { userId, authKey, grant } = payload || {};
+
+  if (userId) {
+    user = await getUser(userId);
+  } else if (redisEnabled && authKey) {
+    const redis = getClient();
+
+    const key = await redis.get(authKey);
+
+    if (key?.userId) {
+      user = await getUser(key.userId);
+    }
+  }
+
+  if (process.env.NODE_ENV === 'development') {
+    log('checkAuth:', { token, shareToken, payload, user, grant });
+  }
+
+  if (!user?.id && !shareToken) {
+    log('checkAuth: User not authorized');
+    return null;
+  }
+
+  if (user) {
+    user.isAdmin = user.role === ROLES.admin;
+  }
+
+  return {
+    user,
+    grant,
+    token,
+    shareToken,
+    authKey,
+  };
+}
 
 export async function saveAuth(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;

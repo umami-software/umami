@@ -5,7 +5,7 @@ import { NextApiRequestQueryBody, PageParams } from 'lib/types';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed, ok, unauthorized } from 'next-basics';
 import { createWebsite } from 'queries';
-import userWebsitesRoute from 'pages/api/users/[userId]/websites';
+import userWebsitesRoute from 'pages/api/users/[userId]/_websites';
 import * as yup from 'yup';
 import { pageInfo } from 'lib/schema';
 

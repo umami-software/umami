@@ -1,10 +1,28 @@
-import { NextApiRequest } from 'next';
+import { ZodObject } from 'zod';
 import { getAllowedUnits, getMinimumUnit } from './date';
 import { getWebsiteDateRange } from '../queries';
 import { FILTER_COLUMNS } from 'lib/constants';
 
-export async function getRequestDateRange(req: NextApiRequest) {
-  const { websiteId, startAt, endAt, unit } = req.query;
+export async function getJsonBody(request: Request) {
+  try {
+    return await request.clone().json();
+  } catch {
+    return null;
+  }
+}
+
+export async function checkRequest(request: Request, schema: ZodObject<any>) {
+  const url = new URL(request.url);
+  const query = Object.fromEntries(url.searchParams);
+  const body = await getJsonBody(request);
+
+  const result = schema.safeParse(request.method === 'GET' ? query : body);
+
+  return { query, body, error: result.error };
+}
+
+export async function getRequestDateRange(query: Record<string, any>) {
+  const { websiteId, startAt, endAt, unit } = query;
 
   // All-time
   if (+startAt === 0 && +endAt === 1) {
@@ -31,9 +49,9 @@ export async function getRequestDateRange(req: NextApiRequest) {
   };
 }
 
-export function getRequestFilters(req: NextApiRequest) {
+export function getRequestFilters(query: Record<string, any>) {
   return Object.keys(FILTER_COLUMNS).reduce((obj, key) => {
-    const value = req.query[key];
+    const value = query[key];
 
     if (value !== undefined) {
       obj[key] = value;

@@ -30,11 +30,11 @@ export async function getWebsites(
   criteria: WebsiteFindManyArgs,
   pageParams: PageParams,
 ): Promise<PageResult<Website[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [
+    ...prisma.getSearchParameters(search, [
       {
         name: 'contains',
       },

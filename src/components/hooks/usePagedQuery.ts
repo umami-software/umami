@@ -11,7 +11,7 @@ export function usePagedQuery<T = any>({
 }: Omit<UseQueryOptions, 'queryFn'> & { queryFn: (params?: object) => any }): PagedQueryResult<T> {
   const { query: queryParams } = useNavigation();
   const [params, setParams] = useState<PageParams>({
-    query: '',
+    search: '',
     page: +queryParams.page || 1,
   });
 

@@ -3,7 +3,7 @@ import { NextApiRequestQueryBody } from 'lib/types';
 import { pageInfo } from 'lib/schema';
 import { NextApiResponse } from 'next';
 import { methodNotAllowed } from 'next-basics';
-import userTeamsRoute from 'pages/api/users/[userId]/teams';
+import userTeamsRoute from 'pages/api/users/[userId]/_teams';
 import * as yup from 'yup';
 
 const schema = {

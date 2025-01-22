@@ -33,12 +33,12 @@ export default async (
       return unauthorized(res);
     }
 
-    const { page, query, pageSize } = req.query;
+    const { page, search, pageSize } = req.query;
 
     const data = await getWebsiteReports(websiteId, {
       page,
       pageSize,
-      query,
+      search,
     });
 
     return ok(res, data);
