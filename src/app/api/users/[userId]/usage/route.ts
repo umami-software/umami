@@ -6,12 +6,12 @@ import { getEventDataUsage } from 'queries/analytics/events/getEventDataUsage';
 import { checkAuth } from 'lib/auth';
 import { checkRequest } from 'lib/request';
 
-const schema = z.object({
-  startAt: z.coerce.number(),
-  endAt: z.coerce.number(),
-});
-
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+  const schema = z.object({
+    startAt: z.coerce.number().int(),
+    endAt: z.coerce.number().int(),
+  });
+
   const { query, error } = await checkRequest(request, schema);
 
   if (error) {

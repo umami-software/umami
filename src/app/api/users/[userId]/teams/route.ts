@@ -5,18 +5,18 @@ import { checkAuth } from 'lib/auth';
 import { unauthorized, badRequest, json } from 'lib/response';
 import { checkRequest } from 'lib/request';
 
-const schema = z.object({
-  ...pagingParams,
-});
-
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
-  const { userId } = await params;
+  const schema = z.object({
+    ...pagingParams,
+  });
 
   const { query, error } = await checkRequest(request, schema);
 
   if (error) {
     return badRequest(error);
   }
+
+  const { userId } = await params;
 
   const auth = await checkAuth(request);
 

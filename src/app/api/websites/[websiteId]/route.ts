@@ -9,15 +9,11 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
-  }
-
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  const auth = await checkAuth(request);
+
+  if (!auth || !(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -42,9 +38,10 @@ export async function POST(
     return badRequest(error);
   }
 
-  const auth = await checkAuth(request);
   const { websiteId } = await params;
   const { name, domain, shareId } = body;
+
+  const auth = await checkAuth(request);
 
   if (!auth || !(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
@@ -67,15 +64,11 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
-  }
-
   const { websiteId } = await params;
 
-  if (!(await canDeleteWebsite(auth, websiteId))) {
+  const auth = await checkAuth(request);
+
+  if (!auth || !(await canDeleteWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

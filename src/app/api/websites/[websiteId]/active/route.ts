@@ -6,15 +6,11 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
-  }
-
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  const auth = await checkAuth(request);
+
+  if (!auth || !(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

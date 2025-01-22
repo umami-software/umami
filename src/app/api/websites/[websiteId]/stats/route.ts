@@ -3,41 +3,30 @@ import { checkRequest, getRequestDateRange, getRequestFilters } from 'lib/reques
 import { badRequest, unauthorized, json } from 'lib/response';
 import { checkAuth, canViewWebsite } from 'lib/auth';
 import { getCompareDate } from 'lib/date';
+import { filterParams } from 'lib/schema';
 import { getWebsiteStats } from 'queries';
-
-const schema = z.object({
-  startAt: z.coerce.number(),
-  endAt: z.coerce.number(),
-  // optional
-  url: z.string().optional(),
-  referrer: z.string().optional(),
-  title: z.string().optional(),
-  query: z.string().optional(),
-  event: z.string().optional(),
-  host: z.string().optional(),
-  os: z.string().optional(),
-  browser: z.string().optional(),
-  device: z.string().optional(),
-  country: z.string().optional(),
-  region: z.string().optional(),
-  city: z.string().optional(),
-  tag: z.string().optional(),
-  compare: z.string().optional(),
-});
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  const schema = z.object({
+    startAt: z.coerce.number().int(),
+    endAt: z.coerce.number().int(),
+    compare: z.string().optional(),
+    ...filterParams,
+  });
+
   const { query, error } = await checkRequest(request, schema);
 
   if (error) {
     return badRequest(error);
   }
 
-  const auth = await checkAuth(request);
   const { websiteId } = await params;
   const { compare } = query;
+
+  const auth = await checkAuth(request);
 
   if (!auth || !(await canViewWebsite(auth, websiteId))) {
     return unauthorized();

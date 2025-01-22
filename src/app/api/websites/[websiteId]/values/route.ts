@@ -5,27 +5,28 @@ import { getValues } from 'queries';
 import { checkRequest, getRequestDateRange } from 'lib/request';
 import { badRequest, json, unauthorized } from 'lib/response';
 
-const schema = z.object({
-  type: z.string(),
-  startAt: z.coerce.number(),
-  endAt: z.coerce.number(),
-  search: z.string().optional(),
-});
-
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  const schema = z.object({
+    type: z.string(),
+    startAt: z.coerce.number().int(),
+    endAt: z.coerce.number().int(),
+    search: z.string().optional(),
+  });
+
   const { query, error } = await checkRequest(request, schema);
 
   if (error) {
     return badRequest(error);
   }
 
-  const auth = await checkAuth(request);
   const { websiteId } = await params;
   const { type, search } = query;
   const { startDate, endDate } = await getRequestDateRange(request);
+
+  const auth = await checkAuth(request);
 
   if (!auth || !(await canViewWebsite(auth, websiteId))) {
     return unauthorized();

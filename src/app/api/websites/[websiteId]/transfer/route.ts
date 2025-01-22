@@ -4,24 +4,25 @@ import { updateWebsite } from 'queries';
 import { checkRequest } from 'lib/request';
 import { badRequest, unauthorized, json } from 'lib/response';
 
-const schema = z.object({
-  userId: z.string().uuid().optional(),
-  teamId: z.string().uuid().optional(),
-});
-
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  const schema = z.object({
+    userId: z.string().uuid().optional(),
+    teamId: z.string().uuid().optional(),
+  });
+
   const { body, error } = await checkRequest(request, schema);
 
   if (error) {
     return badRequest(error);
   }
 
-  const auth = await checkAuth(request);
   const { websiteId } = await params;
   const { userId, teamId } = body;
+
+  const auth = await checkAuth(request);
 
   if (!auth) {
     return unauthorized();

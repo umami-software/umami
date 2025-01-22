@@ -7,6 +7,7 @@ import { checkRequest } from 'lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const { userId } = await params;
+
   const auth = await checkAuth(request);
 
   if (!auth || !(await canViewUser(auth, userId))) {
@@ -32,6 +33,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   }
 
   const { userId } = await params;
+
   const auth = await checkAuth(request);
 
   if (!auth || !(await canUpdateUser(auth, userId))) {

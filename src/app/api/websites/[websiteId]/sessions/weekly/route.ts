@@ -1,15 +1,18 @@
 import { z } from 'zod';
-import { canViewWebsite, checkAuth } from 'lib/auth';
-import { getWebsiteReports } from 'queries';
-import { pagingParams } from 'lib/schema';
 import { checkRequest } from 'lib/request';
 import { badRequest, unauthorized, json } from 'lib/response';
+import { canViewWebsite, checkAuth } from 'lib/auth';
+import { pagingParams, timezoneParam } from 'lib/schema';
+import { getWebsiteSessionsWeekly } from 'queries';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
   const schema = z.object({
+    startAt: z.coerce.number().int(),
+    endAt: z.coerce.number().int(),
+    timezone: timezoneParam,
     ...pagingParams,
   });
 
@@ -20,7 +23,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { page, pageSize, search } = query;
+  const { startAt, endAt, timezone } = query;
 
   const auth = await checkAuth(request);
 
@@ -28,11 +31,10 @@ export async function GET(
     return unauthorized();
   }
 
-  const data = await getWebsiteReports(websiteId, {
-    page: +page,
-    pageSize: +pageSize,
-    search,
-  });
+  const startDate = new Date(+startAt);
+  const endDate = new Date(+endAt);
+
+  const data = await getWebsiteSessionsWeekly(websiteId, { startDate, endDate, timezone });
 
   return json(data);
 }

@@ -22,10 +22,27 @@ export const pagingParams = {
   query: z.string().optional(),
 };
 
-export const timezone = z.string().refine(value => isValidTimezone(value), {
+export const timezoneParam = z.string().refine(value => isValidTimezone(value), {
   message: 'Invalid timezone',
 });
 
-export const unit = z.string().refine(value => UNIT_TYPES.includes(value), {
+export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
   message: 'Invalid unit',
 });
+
+export const filterParams = {
+  url: z.string().optional(),
+  referrer: z.string().optional(),
+  title: z.string().optional(),
+  query: z.string().optional(),
+  os: z.string().optional(),
+  browser: z.string().optional(),
+  device: z.string().optional(),
+  country: z.string().optional(),
+  region: z.string().optional(),
+  city: z.string().optional(),
+  tag: z.string().optional(),
+  host: z.string().optional(),
+  language: z.string().optional(),
+  event: z.string().optional(),
+};

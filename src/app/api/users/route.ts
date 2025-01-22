@@ -7,14 +7,14 @@ import { checkRequest } from 'lib/request';
 import { unauthorized, json, badRequest } from 'lib/response';
 import { createUser, getUserByUsername } from 'queries';
 
-const schema = z.object({
-  username: z.string().max(255),
-  password: z.string(),
-  id: z.string().uuid(),
-  role: z.string().regex(/admin|user|view-only/i),
-});
-
 export async function POST(request: Request) {
+  const schema = z.object({
+    username: z.string().max(255),
+    password: z.string(),
+    id: z.string().uuid(),
+    role: z.string().regex(/admin|user|view-only/i),
+  });
+
   const { body, error } = await checkRequest(request, schema);
 
   if (error) {

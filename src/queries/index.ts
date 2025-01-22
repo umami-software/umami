@@ -27,6 +27,7 @@ export * from './analytics/sessions/getSessionDataProperties';
 export * from './analytics/sessions/getSessionDataValues';
 export * from './analytics/sessions/getSessionMetrics';
 export * from './analytics/sessions/getWebsiteSessions';
+export * from './analytics/sessions/getWebsiteSessionStats';
 export * from './analytics/sessions/getWebsiteSessionsWeekly';
 export * from './analytics/sessions/getSessionActivity';
 export * from './analytics/sessions/getSessionStats';

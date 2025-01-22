@@ -6,8 +6,9 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const auth = await checkAuth(request);
   const { websiteId } = await params;
+
+  const auth = await checkAuth(request);
 
   if (!auth || !(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
