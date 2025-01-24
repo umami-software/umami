@@ -11,7 +11,7 @@
       "value": "Aktione"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
       "value": "Aktivitätsverlauf"
@@ -20,13 +20,25 @@
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "hinzuefüege"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Beschriibig hinzuefüege"
+    }
+  ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "Mitglied hinzuefüege"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Schritt hinzuefüege"
     }
   ],
   "label.add-website": [
@@ -44,7 +56,7 @@
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Nach"
     }
   ],
   "label.all": [
@@ -56,7 +68,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "Gesamte Zitruum"
+      "value": "Gsamte Zitruum"
     }
   ],
   "label.analytics": [
@@ -68,13 +80,7 @@
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Durchschn. Bsuechsziit"
+      "value": "Durchschnitt"
     }
   ],
   "label.back": [
@@ -86,7 +92,7 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Vor"
     }
   ],
   "label.bounce-rate": [
@@ -98,7 +104,7 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "Breakdown"
+      "value": "Uufschlüsselig"
     }
   ],
   "label.browser": [
@@ -134,13 +140,19 @@
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Stadt"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
       "value": "Alles lösche"
+    }
+  ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Vergliiche"
     }
   ],
   "label.confirm": [
@@ -158,13 +170,19 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Enthaltet"
     }
   ],
   "label.continue": [
     {
       "type": 0,
       "value": "Wiiter"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Azahl"
     }
   ],
   "label.countries": [
@@ -176,19 +194,19 @@
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Land"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Erstelle"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Bricht erstelle"
     }
   ],
   "label.create-team": [
@@ -209,10 +227,22 @@
       "value": "Erstellt"
     }
   ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Aktuell"
+    }
+  ],
   "label.current-password": [
     {
       "type": 0,
-      "value": "Jetzigs Passwort"
+      "value": "Aktuells Passwort"
     }
   ],
   "label.custom-range": [
@@ -236,7 +266,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Datum"
     }
   ],
   "label.date-range": [
@@ -248,19 +278,25 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Tag"
     }
   ],
   "label.default-date-range": [
     {
       "type": 0,
-      "value": "Vorigstellte Datumsbereich"
+      "value": "Voriigstellte Datumsbereich"
     }
   ],
   "label.delete": [
     {
       "type": 0,
       "value": "Lösche"
+    }
+  ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "Bricht lösche"
     }
   ],
   "label.delete-team": [
@@ -284,7 +320,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Beschriibig"
     }
   ],
   "label.desktop": [
@@ -302,7 +338,7 @@
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Grät"
     }
   ],
   "label.devices": [
@@ -314,13 +350,13 @@
   "label.dismiss": [
     {
       "type": 0,
-      "value": "Verwerfe"
+      "value": "Verwärfe"
     }
   ],
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Enthaltet nid"
     }
   ],
   "label.domain": [
@@ -332,7 +368,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "Dropoff"
+      "value": "Absprung"
     }
   ],
   "label.edit": [
@@ -347,22 +383,40 @@
       "value": "Dashboard bearbeite"
     }
   ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "Mitglied bearbeite"
+    }
+  ],
   "label.enable-share-url": [
     {
       "type": 0,
       "value": "Freigab-URL aktiviere"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "Schlussschritt"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Iigangs URL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Ereigniss"
     }
   ],
   "label.event-data": [
     {
       "type": 0,
-      "value": "Event data"
+      "value": "Ereigniss Date"
     }
   ],
   "label.events": [
@@ -371,22 +425,28 @@
       "value": "Ereigniss"
     }
   ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Uusgangs URL"
+    }
+  ],
   "label.false": [
     {
       "type": 0,
-      "value": "False"
+      "value": "Falsch"
     }
   ],
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Fäld"
     }
   ],
   "label.fields": [
     {
       "type": 0,
-      "value": "Fields"
+      "value": "Fälder"
     }
   ],
   "label.filter": [
@@ -413,64 +473,100 @@
       "value": "Filters"
     }
   ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "Erstmal gse"
+    }
+  ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "Funnel"
+      "value": "Tunnel"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "Understand the conversion and drop-off rate of users."
+      "value": "Verstönd Sie d Konversions- und Abspruungsrate vo Nutzer."
+    }
+  ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Ziel"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Ziele"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "verfolged Sie Ihri Ziel für Siitenufrüef und Ereigniss."
     }
   ],
   "label.greater-than": [
     {
       "type": 0,
-      "value": "Greater than"
+      "value": "Grösser als"
     }
   ],
   "label.greater-than-equals": [
     {
       "type": 0,
-      "value": "Greater than or equals"
+      "value": "Grösser oder gliich"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
     {
       "type": 0,
-      "value": "Insights"
+      "value": "Iiblick"
     }
   ],
   "label.insights-description": [
     {
       "type": 0,
-      "value": "Dive deeper into your data by using segments and filters."
+      "value": "Vertüfed Sie sich i Ihri Date, mit Hilf vo Segment und Filter."
     }
   ],
   "label.is": [
     {
       "type": 0,
-      "value": "Is"
+      "value": "Isch"
     }
   ],
   "label.is-not": [
     {
       "type": 0,
-      "value": "Is not"
+      "value": "Isch nid"
     }
   ],
   "label.is-not-set": [
     {
       "type": 0,
-      "value": "Is not set"
+      "value": "Isch ned gsetzt"
     }
   ],
   "label.is-set": [
     {
       "type": 0,
-      "value": "Is set"
+      "value": "Isch gsetzt"
     }
   ],
   "label.join": [
@@ -483,6 +579,18 @@
     {
       "type": 0,
       "value": "Team biträte"
+    }
+  ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Reis"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Verstönd Sie, wie Nutzer dur Ihri Website navigiered."
     }
   ],
   "label.language": [
@@ -531,6 +639,26 @@
       "value": " Stunde"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Letzti "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " Mönet"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Zletzt gse"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
@@ -546,31 +674,49 @@
   "label.less-than": [
     {
       "type": 0,
-      "value": "Less than"
+      "value": "Kliiner als"
     }
   ],
   "label.less-than-equals": [
     {
       "type": 0,
-      "value": "Less than or equals"
+      "value": "Kliiner oder gliich"
     }
   ],
   "label.login": [
     {
       "type": 0,
-      "value": "Aamelde"
+      "value": "Aamälde"
     }
   ],
   "label.logout": [
     {
       "type": 0,
-      "value": "Abmelde"
+      "value": "Abmälde"
+    }
+  ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "Verwalte"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Manager"
     }
   ],
   "label.max": [
     {
       "type": 0,
       "value": "Max"
+    }
+  ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "Mitglied"
     }
   ],
   "label.members": [
@@ -588,7 +734,7 @@
   "label.mobile": [
     {
       "type": 0,
-      "value": "Handy"
+      "value": "Händy"
     }
   ],
   "label.more": [
@@ -597,10 +743,16 @@
       "value": "Meh"
     }
   ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "Min Account"
+    }
+  ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Mini Websiite"
     }
   ],
   "label.name": [
@@ -621,6 +773,46 @@
       "value": "Keis"
     }
   ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "record"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "records"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "OK"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
@@ -630,7 +822,7 @@
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Übersicht"
     }
   ],
   "label.owner": [
@@ -642,7 +834,7 @@
   "label.page-of": [
     {
       "type": 0,
-      "value": "Page "
+      "value": "Siite "
     },
     {
       "type": 1,
@@ -650,7 +842,7 @@
     },
     {
       "type": 0,
-      "value": " of "
+      "value": " vo "
     },
     {
       "type": 1,
@@ -666,7 +858,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Siitetitel"
     }
   ],
   "label.pages": [
@@ -681,20 +873,62 @@
       "value": "Passwort"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Pfad"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Pfade"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
-      "value": "Betribe dur "
+      "value": "Betriibe dur "
     },
     {
       "type": 1,
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Vorherig"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Vorherigi Periode"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Vorherigs Jahr"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
     }
   ],
   "label.queries": [
@@ -706,7 +940,7 @@
   "label.query": [
     {
       "type": 0,
-      "value": "Query"
+      "value": "Abfrag"
     }
   ],
   "label.query-parameters": [
@@ -724,13 +958,13 @@
   "label.referrer": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Verwiiser"
     }
   ],
   "label.referrers": [
     {
       "type": 0,
-      "value": "Referrer"
+      "value": "Verwiisendi"
     }
   ],
   "label.refresh": [
@@ -763,10 +997,16 @@
       "value": "Entferne"
     }
   ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "Mitglied entferne"
+    }
+  ],
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "Brichte"
     }
   ],
   "label.required": [
@@ -796,7 +1036,25 @@
   "label.retention-description": [
     {
       "type": 0,
-      "value": "Measure your website stickiness by tracking how often users return."
+      "value": "Mässed Sie d Verwiilduur vo Ihrere Website, indem Sie verfolged wie oft ihri Nutzer zruggkehred."
+    }
+  ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Umsatz"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Lueged Sie sich Ihre Umsatz im Lauf vor Ziit a."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Umsatzeigenschafte"
     }
   ],
   "label.role": [
@@ -808,7 +1066,7 @@
   "label.run-query": [
     {
       "type": 0,
-      "value": "Run query"
+      "value": "Abfrag starte"
     }
   ],
   "label.save": [
@@ -826,13 +1084,25 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "Sueche"
+    }
+  ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "Auswähle"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "Select date"
+      "value": "Datä uuswähle"
+    }
+  ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "Rollä uuswähle"
     }
   ],
   "label.select-website": [
@@ -841,10 +1111,16 @@
       "value": "Websiite uuswähle"
     }
   ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Sitzig"
+    }
+  ],
   "label.sessions": [
     {
       "type": 0,
-      "value": "Sessions"
+      "value": "Sitzige"
     }
   ],
   "label.settings": [
@@ -865,10 +1141,22 @@
       "value": "Ein Tag"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Startschritt"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Schritt"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
-      "value": "Sum"
+      "value": "Summe"
     }
   ],
   "label.tablet": [
@@ -883,16 +1171,16 @@
       "value": "Team"
     }
   ],
-  "label.team-guest": [
-    {
-      "type": 0,
-      "value": "Team Gast"
-    }
-  ],
   "label.team-id": [
     {
       "type": 0,
       "value": "Team ID"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team Manager"
     }
   ],
   "label.team-member": [
@@ -904,7 +1192,7 @@
   "label.team-name": [
     {
       "type": 0,
-      "value": "Team name"
+      "value": "Team Name"
     }
   ],
   "label.team-owner": [
@@ -913,10 +1201,16 @@
       "value": "Team Bsitzer"
     }
   ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "Nur für Teammitglieder sichtbar"
+    }
+  ],
   "label.team-websites": [
     {
       "type": 0,
-      "value": "Team websites"
+      "value": "Team Websiite"
     }
   ],
   "label.teams": [
@@ -934,19 +1228,19 @@
   "label.this-month": [
     {
       "type": 0,
-      "value": "De Monet"
+      "value": "Dä Monet"
     }
   ],
   "label.this-week": [
     {
       "type": 0,
-      "value": "Die Wuche"
+      "value": "Diä Wuuche"
     }
   ],
   "label.this-year": [
     {
       "type": 0,
-      "value": "Das Jahr"
+      "value": "Das Johr"
     }
   ],
   "label.timezone": [
@@ -970,7 +1264,7 @@
   "label.toggle-charts": [
     {
       "type": 0,
-      "value": "Schaubilder umschalte"
+      "value": "Charts umschalte"
     }
   ],
   "label.total": [
@@ -982,7 +1276,7 @@
   "label.total-records": [
     {
       "type": 0,
-      "value": "Total records"
+      "value": "Gsamti Datesätz"
     }
   ],
   "label.tracking-code": [
@@ -991,28 +1285,52 @@
       "value": "Tracking Code"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transaktione"
+    }
+  ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "Transferiere"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Websiite transferiere"
+    }
+  ],
   "label.true": [
     {
       "type": 0,
-      "value": "True"
+      "value": "Wahr"
     }
   ],
   "label.type": [
     {
       "type": 0,
-      "value": "Type"
+      "value": "Typ"
     }
   ],
   "label.unique": [
     {
       "type": 0,
-      "value": "Unique"
+      "value": "Einzigartigi"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "Eidütigi Bsuecher"
+      "value": "Einzigartigi Bsuecher"
+    }
+  ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Einzigartigi Kunde"
     }
   ],
   "label.unknown": [
@@ -1024,7 +1342,13 @@
   "label.untitled": [
     {
       "type": 0,
-      "value": "Untitled"
+      "value": "Unbennant"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
     }
   ],
   "label.url": [
@@ -1045,6 +1369,12 @@
       "value": "Benutzer"
     }
   ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "Benutzereigeschafte"
+    }
+  ],
   "label.username": [
     {
       "type": 0,
@@ -1057,10 +1387,22 @@
       "value": "Benutzer"
     }
   ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Tracked Sie Ihri Kampagnen mit UTM Parameters."
+    }
+  ],
   "label.value": [
     {
       "type": 0,
-      "value": "Value"
+      "value": "Wärt"
     }
   ],
   "label.view": [
@@ -1078,7 +1420,7 @@
   "label.view-only": [
     {
       "type": 0,
-      "value": "View only"
+      "value": "Nume aluege"
     }
   ],
   "label.views": [
@@ -1087,10 +1429,28 @@
       "value": "Ufrüef"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Ufrüef pro Bsuech"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Durchschn. Bsuechsziit"
+    }
+  ],
   "label.visitors": [
     {
       "type": 0,
       "value": "Bsuecher"
+    }
+  ],
+  "label.visits": [
+    {
+      "type": 0,
+      "value": "Bsüech"
     }
   ],
   "label.website": [
@@ -1114,13 +1474,27 @@
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Fenster"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
       "value": "Gester"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "Typed Sie "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " is Feld underhalb um z bestätige."
     }
   ],
   "message.active-users": [
@@ -1157,6 +1531,12 @@
       "value": "x"
     }
   ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Gsammleti Date"
+    }
+  ],
   "message.confirm-delete": [
     {
       "type": 0,
@@ -1185,10 +1565,10 @@
       "value": " zverlah?"
     }
   ],
-  "message.confirm-reset": [
+  "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Sind Sie sicher, dass Sie dStatistike vo "
+      "value": "Sind Sie sich sicher, dass Sie "
     },
     {
       "type": 1,
@@ -1196,47 +1576,39 @@
     },
     {
       "type": 0,
-      "value": " zruggsetze wend?"
+      "value": " wänd entferne?"
     }
   ],
-  "message.delete-account": [
+  "message.confirm-reset": [
     {
       "type": 0,
-      "value": "To delete this account, type "
+      "value": "Sind Sie sicher, dass Sie d Statistike vo "
     },
     {
       "type": 1,
-      "value": "confirmation"
+      "value": "target"
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " zruggsetze wänd?"
     }
   ],
-  "message.delete-website": [
+  "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "To delete this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
+      "value": "Es Team lösche dued ebefalls alli team Websiite lösche."
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "Alli dezueghörige Date werdet ebefalls glöscht."
+      "value": "Alli dezueghörige Date werded ebefalls glöscht."
     }
   ],
   "message.error": [
     {
       "type": 0,
-      "value": "Es isch en Fehler uftrete."
+      "value": "Es isch en Fehler ufträte."
     }
   ],
   "message.event-log": [
@@ -1262,7 +1634,7 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "Falschs Passwort oder Benutzername."
+      "value": "Falsches Passwort oder Benutzername."
     }
   ],
   "message.invalid-domain": [
@@ -1288,7 +1660,7 @@
   "message.new-version-available": [
     {
       "type": 0,
-      "value": "A new version of Umami "
+      "value": "Es isch en neue Version vo Umami "
     },
     {
       "type": 1,
@@ -1296,7 +1668,7 @@
     },
     {
       "type": 0,
-      "value": " is available!"
+      "value": " verfügbar!"
     }
   ],
   "message.no-data-available": [
@@ -1308,7 +1680,7 @@
   "message.no-event-data": [
     {
       "type": 0,
-      "value": "No event data is available."
+      "value": "Es sind kei Event Date verfügbar."
     }
   ],
   "message.no-match-password": [
@@ -1320,7 +1692,7 @@
   "message.no-results-found": [
     {
       "type": 0,
-      "value": "No results were found."
+      "value": "Kei Ergäbnis gfunde."
     }
   ],
   "message.no-team-websites": [
@@ -1356,7 +1728,7 @@
   "message.reset-website": [
     {
       "type": 0,
-      "value": "To reset this website, type "
+      "value": "Um die Websiite zruggzsetze, typed Sie "
     },
     {
       "type": 1,
@@ -1364,7 +1736,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " is Feld unde dran."
     }
   ],
   "message.reset-website-warning": [
@@ -1388,7 +1760,7 @@
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "Sie sind bereits es Mitglied vo dem Team."
+      "value": "Sie sind bereits es Mitglied vo däm Team."
     }
   ],
   "message.team-not-found": [
@@ -1400,7 +1772,7 @@
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "Websiite chönd vo jedem im Team agluegt werde"
+      "value": "Websiite chöi vo jedem im Team agluegt werde"
     }
   ],
   "message.tracking-code": [
@@ -1409,10 +1781,40 @@
       "value": "Tracking Code"
     }
   ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "Websiite uf zu Ihrem Account transferiere?"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "Wähled Sie s Team zum däm Websiite transferiert werde söll."
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Übertraged Sie d Websiite Eigetümerrecht uf Ihre Account oder uf es anders Team"
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "Usglösts Ereigniss"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
-      "value": "Benutzer glöscht."
+      "value": "Bnutzer glöscht."
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "Siite agluegt"
     }
   ],
   "message.visitor-log": [
@@ -1426,7 +1828,7 @@
     },
     {
       "type": 0,
-      "value": " benutzt "
+      "value": " nutzt "
     },
     {
       "type": 1,
@@ -1447,6 +1849,12 @@
     {
       "type": 1,
       "value": "device"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "Bsuercher verlore"
     }
   ]
 }

@@ -1,20 +1,19 @@
 import cors from 'cors';
 import debug from 'debug';
-import redis from '@umami/redis-client';
+import { getClient, redisEnabled } from '@umami/redis-client';
 import { getAuthToken, parseShareToken } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { secret } from 'lib/crypto';
-import { findSession } from 'lib/session';
+import { getSession } from 'lib/session';
 import {
   badRequest,
   createMiddleware,
-  forbidden,
+  notFound,
   parseSecureToken,
-  tooManyRequest,
   unauthorized,
 } from 'next-basics';
 import { NextApiRequestCollect } from 'pages/api/send';
-import { getUserById } from '../queries';
+import { getUser } from '../queries';
 
 const log = debug('umami:middleware');
 
@@ -27,7 +26,7 @@ export const useCors = createMiddleware(
 
 export const useSession = createMiddleware(async (req, res, next) => {
   try {
-    const session = await findSession(req as NextApiRequestCollect);
+    const session = await getSession(req as NextApiRequestCollect);
 
     if (!session) {
       log('useSession: Session not found');
@@ -36,11 +35,8 @@ export const useSession = createMiddleware(async (req, res, next) => {
 
     (req as any).session = session;
   } catch (e: any) {
-    if (e.message === 'Usage Limit.') {
-      return tooManyRequest(res, e.message);
-    }
-    if (e.message.startsWith('Website not found:')) {
-      return forbidden(res, e.message);
+    if (e.message.startsWith('Website not found')) {
+      return notFound(res, e.message);
     }
     return badRequest(res, e.message);
   }
@@ -57,12 +53,14 @@ export const useAuth = createMiddleware(async (req, res, next) => {
   const { userId, authKey, grant } = payload || {};
 
   if (userId) {
-    user = await getUserById(userId);
-  } else if (redis.enabled && authKey) {
-    const key = await redis.client.get(authKey);
+    user = await getUser(userId);
+  } else if (redisEnabled && authKey) {
+    const redis = getClient();
+
+    const key = await redis.get(authKey);
 
     if (key?.userId) {
-      user = await getUserById(key.userId);
+      user = await getUser(key.userId);
     }
   }
 

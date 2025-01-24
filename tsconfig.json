@@ -22,6 +22,8 @@
     "jsx": "preserve",
     "incremental": false,
     "baseUrl": "./src",
+    "types": ["jest"],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "react": ["./node_modules/@types/react"],
       "assets/*": ["./assets/*"],
@@ -39,5 +41,5 @@
     ]
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "next-env.d.ts", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "./cypress.config.ts", "cypress"]
 }

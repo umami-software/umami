@@ -13,12 +13,12 @@
 }
 
 .buttons button:first-child {
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-end: 1px solid var(--base400);
 }
 
 .buttons button:last-child {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left: 1px solid var(--base400) !important;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
 }

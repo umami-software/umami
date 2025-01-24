@@ -1,10 +1,8 @@
-import { JSX, useCallback, useContext, useMemo } from 'react';
-import { Loading, StatusLight } from 'react-basics';
-import useMessages from 'components/hooks/useMessages';
-import useTheme from 'components/hooks/useTheme';
-import BarChart from 'components/metrics/BarChart';
+import { useContext } from 'react';
+import classNames from 'classnames';
+import { useMessages } from 'components/hooks';
+import { ReportContext } from '../[reportId]/Report';
 import { formatLongNumber } from 'lib/format';
-import { ReportContext } from '../[id]/Report';
 import styles from './FunnelChart.module.css';
 
 export interface FunnelChartProps {
@@ -12,73 +10,46 @@ export interface FunnelChartProps {
   isLoading?: boolean;
 }
 
-export function FunnelChart({ className, isLoading }: FunnelChartProps) {
+export function FunnelChart({ className }: FunnelChartProps) {
   const { report } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
-  const { colors } = useTheme();
 
-  const { parameters, data } = report || {};
-
-  const renderXLabel = useCallback(
-    (label: string, index: number) => {
-      return parameters.urls[index];
-    },
-    [parameters],
-  );
-
-  const renderTooltipPopup = useCallback(
-    (
-      setTooltipPopup: (arg0: JSX.Element) => void,
-      model: { tooltip: { opacity: any; labelColors: any; dataPoints: any } },
-    ) => {
-      const { opacity, labelColors, dataPoints } = model.tooltip;
-
-      if (!dataPoints?.length || !opacity) {
-        setTooltipPopup(null);
-        return;
-      }
-
-      setTooltipPopup(
-        <>
-          <div>
-            {formatLongNumber(dataPoints[0].raw.y)} {formatMessage(labels.visitors)}
-          </div>
-          <div>
-            <StatusLight color={labelColors?.[0]?.backgroundColor}>
-              {formatLongNumber(dataPoints[0].raw.z)}% {formatMessage(labels.dropoff)}
-            </StatusLight>
-          </div>
-        </>,
-      );
-    },
-    [],
-  );
-
-  const datasets = useMemo(() => {
-    return [
-      {
-        label: formatMessage(labels.uniqueVisitors),
-        data: data,
-        borderWidth: 1,
-        ...colors.chart.visitors,
-      },
-    ];
-  }, [data, colors, formatMessage, labels]);
-
-  if (isLoading) {
-    return <Loading icon="dots" className={styles.loading} />;
-  }
+  const { data } = report || {};
 
   return (
-    <BarChart
-      className={className}
-      datasets={datasets}
-      unit="day"
-      isLoading={isLoading}
-      renderXLabel={renderXLabel}
-      renderTooltipPopup={renderTooltipPopup}
-      XAxisType="category"
-    />
+    <div className={classNames(styles.chart, className)}>
+      {data?.map(({ type, value, visitors, dropped, dropoff, remaining }, index: number) => {
+        return (
+          <div key={index} className={styles.step}>
+            <div className={styles.num}>{index + 1}</div>
+            <div className={styles.card}>
+              <div className={styles.header}>
+                <span className={styles.label}>
+                  {formatMessage(type === 'url' ? labels.viewedPage : labels.triggeredEvent)}
+                </span>
+                <span className={styles.item}>{value}</span>
+              </div>
+              <div className={styles.metric}>
+                <div>
+                  <span className={styles.visitors}>{formatLongNumber(visitors)}</span>
+                  {formatMessage(labels.visitors)}
+                </div>
+                <div className={styles.percent}>{(remaining * 100).toFixed(2)}%</div>
+              </div>
+              <div className={styles.track}>
+                <div className={styles.bar} style={{ width: `${remaining * 100}%` }}></div>
+              </div>
+              {dropoff > 0 && (
+                <div className={styles.info}>
+                  <b>{formatLongNumber(dropped)}</b> {formatMessage(labels.visitorsDroppedOff)} (
+                  {(dropoff * 100).toFixed(2)}%)
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 }
 

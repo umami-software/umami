@@ -1,6 +1,10 @@
 .menu {
   width: 200px;
   z-index: var(--z-index-popup);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  background: var(--base50);
 }
 
 .item {
@@ -14,5 +18,11 @@
   font-size: 11px;
   color: var(--base600);
   text-align: right;
-  margin-right: 10px;
+  margin-inline-end: 10px;
+}
+
+.name {
+  color: var(--font-color200);
+  background: var(--base75);
+  padding: var(--size300) var(--size600);
 }

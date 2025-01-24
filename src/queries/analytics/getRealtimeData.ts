@@ -1,43 +1,80 @@
-import { getSessions, getEvents } from 'queries/index';
-import { EVENT_TYPE } from 'lib/constants';
+import { getPageviewStats, getRealtimeActivity, getSessionStats } from 'queries/index';
 
-export async function getRealtimeData(websiteId: string, startDate: Date) {
-  const [pageviews, sessions, events] = await Promise.all([
-    getEvents(websiteId, startDate, EVENT_TYPE.pageView),
-    getSessions(websiteId, startDate),
-    getEvents(websiteId, startDate, EVENT_TYPE.customEvent),
+function increment(data: object, key: string) {
+  if (key) {
+    if (!data[key]) {
+      data[key] = 1;
+    } else {
+      data[key] += 1;
+    }
+  }
+}
+
+export async function getRealtimeData(
+  websiteId: string,
+  criteria: { startDate: Date; timezone: string },
+) {
+  const { startDate, timezone } = criteria;
+  const filters = { startDate, endDate: new Date(), unit: 'minute', timezone };
+  const [activity, pageviews, sessions] = await Promise.all([
+    getRealtimeActivity(websiteId, filters),
+    getPageviewStats(websiteId, filters),
+    getSessionStats(websiteId, filters),
   ]);
 
-  const decorate = (type: string, data: any[]) => {
-    return data.map((values: { [key: string]: any }) => ({
-      ...values,
-      __type: type,
-      timestamp: values.timestamp ? values.timestamp * 1000 : new Date(values.createdAt).getTime(),
-    }));
-  };
+  const uniques = new Set();
 
-  const set = new Set();
-  const uniques = (type: string, data: any[]) => {
-    return data.reduce((arr, values: { [key: string]: any }) => {
-      if (!set.has(values.id)) {
-        set.add(values.id);
+  const { countries, urls, referrers, events } = activity.reduce(
+    (
+      obj: { countries: any; urls: any; referrers: any; events: any },
+      event: {
+        sessionId: string;
+        urlPath: string;
+        referrerDomain: string;
+        country: string;
+        eventName: string;
+      },
+    ) => {
+      const { countries, urls, referrers, events } = obj;
+      const { sessionId, urlPath, referrerDomain, country, eventName } = event;
 
-        return arr.concat({
-          ...values,
-          __type: type,
-          timestamp: values.timestamp
-            ? values.timestamp * 1000
-            : new Date(values.createdAt).getTime(),
-        });
+      if (!uniques.has(sessionId)) {
+        uniques.add(sessionId);
+        increment(countries, country);
+
+        events.push({ __type: 'session', ...event });
       }
-      return arr;
-    }, []);
-  };
+
+      increment(urls, urlPath);
+      increment(referrers, referrerDomain);
+
+      events.push({ __type: eventName ? 'event' : 'pageview', ...event });
+
+      return obj;
+    },
+    {
+      countries: {},
+      urls: {},
+      referrers: {},
+      events: [],
+    },
+  );
 
   return {
-    pageviews: decorate('pageview', pageviews),
-    sessions: uniques('session', sessions),
-    events: decorate('event', events),
+    countries,
+    urls,
+    referrers,
+    events: events.reverse(),
+    series: {
+      views: pageviews,
+      visitors: sessions,
+    },
+    totals: {
+      views: pageviews.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
+      visitors: sessions.reduce((sum: number, { y }: { y: number }) => Number(sum) + Number(y), 0),
+      events: activity.filter(e => e.eventName).length,
+      countries: Object.keys(countries).length,
+    },
     timestamp: Date.now(),
   };
 }

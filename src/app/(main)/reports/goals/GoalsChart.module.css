@@ -1,0 +1,95 @@
+.chart {
+  display: grid;
+  gap: 30px;
+}
+
+.goal {
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--base400);
+}
+
+.goal:last-child {
+  border: 0;
+}
+
+.card {
+  display: grid;
+  gap: 20px;
+  margin-top: 14px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.label {
+  color: var(--base600);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.item {
+  font-size: 20px;
+  color: var(--base900);
+  font-weight: 700;
+}
+
+.metric {
+  color: var(--base700);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0;
+  text-transform: lowercase;
+}
+
+.value {
+  color: var(--base900);
+  font-size: 24px;
+  font-weight: 900;
+  margin-right: 10px;
+}
+
+.percent {
+  font-size: 20px;
+  font-weight: 700;
+  align-self: flex-end;
+}
+
+.total {
+  color: var(--base700);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background: var(--base900);
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar.level1 {
+  background: var(--red800);
+}
+.bar.level2 {
+  background: var(--orange200);
+}
+.bar.level3 {
+  background: var(--orange400);
+}
+.bar.level4 {
+  background: var(--orange600);
+}
+.bar.level5 {
+  background: var(--green600);
+}
+
+.track {
+  background-color: var(--base100);
+  border-radius: 5px;
+}

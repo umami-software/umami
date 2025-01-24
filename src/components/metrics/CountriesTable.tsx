@@ -1,35 +1,23 @@
 import FilterLink from 'components/common/FilterLink';
-import useCountryNames from 'components/hooks/useCountryNames';
+import { useCountryNames } from 'components/hooks';
 import { useLocale, useMessages, useFormat } from 'components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import TypeIcon from 'components/common/TypeIcon';
 
-export function CountriesTable({
-  onDataLoad,
-  ...props
-}: {
-  onDataLoad: (data: any) => void;
-} & MetricsTableProps) {
+export function CountriesTable({ ...props }: MetricsTableProps) {
   const { locale } = useLocale();
-  const countryNames = useCountryNames(locale);
+  const { countryNames } = useCountryNames(locale);
   const { formatMessage, labels } = useMessages();
   const { formatCountry } = useFormat();
-
-  const handleDataLoad = (data: any) => {
-    onDataLoad?.(data);
-  };
 
   const renderLink = ({ x: code }) => {
     return (
       <FilterLink
         id="country"
-        className={locale}
-        value={countryNames[code] && code}
+        value={(countryNames[code] && code) || code}
         label={formatCountry(code)}
       >
-        <img
-          src={`${process.env.basePath}/images/flags/${code?.toLowerCase() || 'xx'}.png`}
-          alt={code}
-        />
+        <TypeIcon type="country" value={code?.toLowerCase()} />
       </FilterLink>
     );
   };
@@ -41,7 +29,7 @@ export function CountriesTable({
       type="country"
       metric={formatMessage(labels.visitors)}
       renderLabel={renderLink}
-      onDataLoad={handleDataLoad}
+      searchFormattedValues={true}
     />
   );
 }

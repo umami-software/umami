@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { StatusLight } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useApi } from 'components/hooks';
+import { useMessages } from 'components/hooks';
 import styles from './ActiveUsers.module.css';
 
 export function ActiveUsers({
@@ -24,7 +24,7 @@ export function ActiveUsers({
 
   const count = useMemo(() => {
     if (websiteId) {
-      return data?.[0]?.x || 0;
+      return data?.x || 0;
     }
 
     return value !== undefined ? value : 0;

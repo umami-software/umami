@@ -1,5 +1,5 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import useMessages from 'components/hooks/useMessages';
+import { useMessages } from 'components/hooks';
 
 export function EventsTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();

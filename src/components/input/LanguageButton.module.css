@@ -6,7 +6,7 @@
   z-index: var(--z-index-popup);
   border-radius: 5px;
   border: 1px solid var(--border-color);
-  margin-left: 10px;
+  margin-inline-start: 10px;
 }
 
 .item {

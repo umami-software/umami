@@ -35,14 +35,14 @@ async function relationalQuery(
   }[]
 > {
   const { startDate, endDate, timezone = 'UTC' } = filters;
-  const { getDateQuery, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
+  const { getDateSQL, getDayDiffQuery, getCastColumnQuery, rawQuery } = prisma;
   const unit = 'day';
 
   return rawQuery(
     `
     WITH cohort_items AS (
       select session_id,
-        ${getDateQuery('created_at', unit, timezone)} as cohort_date  
+        ${getDateSQL('created_at', unit, timezone)} as cohort_date  
       from session 
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
@@ -50,10 +50,7 @@ async function relationalQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        ${getDayDiffQuery(
-          getDateQuery('created_at', unit, timezone),
-          'c.cohort_date',
-        )} as day_number
+        ${getDayDiffQuery(getDateSQL('created_at', unit, timezone), 'c.cohort_date')} as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
@@ -93,9 +90,7 @@ async function relationalQuery(
       startDate,
       endDate,
     },
-  ).then(results => {
-    return results.map(i => ({ ...i, percentage: Number(i.percentage) || 0 }));
-  });
+  );
 }
 
 async function clickhouseQuery(
@@ -115,14 +110,14 @@ async function clickhouseQuery(
   }[]
 > {
   const { startDate, endDate, timezone = 'UTC' } = filters;
-  const { getDateQuery, getDateStringQuery, rawQuery } = clickhouse;
+  const { getDateSQL, rawQuery } = clickhouse;
   const unit = 'day';
 
   return rawQuery(
     `
     WITH cohort_items AS (
       select
-        min(${getDateQuery('created_at', unit, timezone)}) as cohort_date,
+        min(${getDateSQL('created_at', unit, timezone)}) as cohort_date,
         session_id
       from website_event
       where website_id = {websiteId:UUID}
@@ -132,7 +127,7 @@ async function clickhouseQuery(
     user_activities AS (
       select distinct
         w.session_id,
-        (${getDateQuery('created_at', unit, timezone)} - c.cohort_date) / 86400 as day_number
+        (${getDateSQL('created_at', unit, timezone)} - c.cohort_date) / 86400 as day_number
       from website_event w
       join cohort_items c
       on w.session_id = c.session_id
@@ -157,7 +152,7 @@ async function clickhouseQuery(
       group by 1, 2
     )
     select
-      ${getDateStringQuery('c.cohort_date', unit)} as date,
+      c.cohort_date as date,
       c.day_number as day,
       s.visitors as visitors,
       c.visitors returnVisitors,
@@ -172,15 +167,5 @@ async function clickhouseQuery(
       startDate,
       endDate,
     },
-  ).then(a => {
-    return Object.values(a).map(a => {
-      return {
-        date: a.date,
-        day: Number(a.day),
-        visitors: Number(a.visitors),
-        returnVisitors: Number(a.returnVisitors),
-        percentage: Number(a.percentage),
-      };
-    });
-  });
+  );
 }

@@ -1,35 +1,56 @@
+import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
-import useApi from 'components/hooks/useApi';
-import useMessages from 'components/hooks/useMessages';
+import { useWebsite, useWebsites, useMessages } from 'components/hooks';
+import Empty from 'components/common/Empty';
 import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({
   websiteId,
+  teamId,
   onSelect,
 }: {
-  websiteId: string;
+  websiteId?: string;
+  teamId?: string;
   onSelect?: (key: any) => void;
 }) {
-  const { formatMessage, labels } = useMessages();
-  const { get, useQuery } = useApi();
-  const { data } = useQuery({
-    queryKey: ['websites:me'],
-    queryFn: () => get('/me/websites', { pageSize: 100 }),
-  });
+  const { formatMessage, labels, messages } = useMessages();
+  const [query, setQuery] = useState('');
+  const [selectedId, setSelectedId] = useState<Key>(websiteId);
 
-  const renderValue = value => {
-    return data?.data?.find(({ id }) => id === value)?.name;
+  const { data: website } = useWebsite(selectedId as string);
+
+  const queryResult = useWebsites({ teamId }, { query, pageSize: 5 });
+
+  const renderValue = () => {
+    return website?.name;
+  };
+
+  const renderEmpty = () => {
+    return <Empty message={formatMessage(messages.noResultsFound)} />;
+  };
+
+  const handleSelect = (value: any) => {
+    setSelectedId(value);
+    onSelect?.(value);
+  };
+
+  const handleSearch = (value: string) => {
+    setQuery(value);
   };
 
   return (
     <Dropdown
       menuProps={{ className: styles.dropdown }}
-      items={data?.data}
-      value={websiteId}
+      items={queryResult?.result?.data as any[]}
+      value={selectedId as string}
       renderValue={renderValue}
-      onChange={onSelect}
+      renderEmpty={renderEmpty}
+      onChange={handleSelect}
       alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
+      allowSearch={true}
+      onSearch={handleSearch}
+      isLoading={queryResult.query.isLoading}
     >
       {({ id, name }) => <Item key={id}>{name}</Item>}
     </Dropdown>

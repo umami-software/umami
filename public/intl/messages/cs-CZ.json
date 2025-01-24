@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "Přístupový kód"
     }
   ],
   "label.actions": [
@@ -11,22 +11,34 @@
       "value": "Akce"
     }
   ],
-  "label.activity-log": [
+  "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "Log aktivity"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "Přidat"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "Přidat popis"
+    }
+  ],
+  "label.add-member": [
+    {
+      "type": 0,
+      "value": "Přidat člena"
+    }
+  ],
+  "label.add-step": [
+    {
+      "type": 0,
+      "value": "Přidat krok"
     }
   ],
   "label.add-website": [
@@ -44,7 +56,7 @@
   "label.after": [
     {
       "type": 0,
-      "value": "After"
+      "value": "Po"
     }
   ],
   "label.all": [
@@ -56,7 +68,7 @@
   "label.all-time": [
     {
       "type": 0,
-      "value": "All time"
+      "value": "Celá doba"
     }
   ],
   "label.analytics": [
@@ -68,13 +80,7 @@
   "label.average": [
     {
       "type": 0,
-      "value": "Average"
-    }
-  ],
-  "label.average-visit-time": [
-    {
-      "type": 0,
-      "value": "Průměrný čas návštěvy"
+      "value": "Průměr"
     }
   ],
   "label.back": [
@@ -86,7 +92,7 @@
   "label.before": [
     {
       "type": 0,
-      "value": "Before"
+      "value": "Před"
     }
   ],
   "label.bounce-rate": [
@@ -104,13 +110,13 @@
   "label.browser": [
     {
       "type": 0,
-      "value": "Browser"
+      "value": "Prohlížeč"
     }
   ],
   "label.browsers": [
     {
       "type": 0,
-      "value": "Prohlížeč"
+      "value": "Prohlížeče"
     }
   ],
   "label.cancel": [
@@ -128,25 +134,31 @@
   "label.cities": [
     {
       "type": 0,
-      "value": "Cities"
+      "value": "Města"
     }
   ],
   "label.city": [
     {
       "type": 0,
-      "value": "City"
+      "value": "Město"
     }
   ],
   "label.clear-all": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Vyčistit vše"
+    }
+  ],
+  "label.compare": [
+    {
+      "type": 0,
+      "value": "Porovnat"
     }
   ],
   "label.confirm": [
     {
       "type": 0,
-      "value": "Confirm"
+      "value": "Potvrdit"
     }
   ],
   "label.confirm-password": [
@@ -158,55 +170,73 @@
   "label.contains": [
     {
       "type": 0,
-      "value": "Contains"
+      "value": "Obsahuje"
     }
   ],
   "label.continue": [
     {
       "type": 0,
-      "value": "Continue"
+      "value": "Pokračovat"
+    }
+  ],
+  "label.count": [
+    {
+      "type": 0,
+      "value": "Počet"
     }
   ],
   "label.countries": [
     {
       "type": 0,
-      "value": "Země"
+      "value": "Státy"
     }
   ],
   "label.country": [
     {
       "type": 0,
-      "value": "Country"
+      "value": "Stát"
     }
   ],
   "label.create": [
     {
       "type": 0,
-      "value": "Create"
+      "value": "Vytvořit"
     }
   ],
   "label.create-report": [
     {
       "type": 0,
-      "value": "Create report"
+      "value": "Vytvořit hlášení"
     }
   ],
   "label.create-team": [
     {
       "type": 0,
-      "value": "Create team"
+      "value": "Vytvořit tým"
     }
   ],
   "label.create-user": [
     {
       "type": 0,
-      "value": "Create user"
+      "value": "Vytvořit uživatele"
     }
   ],
   "label.created": [
     {
       "type": 0,
-      "value": "Created"
+      "value": "Vytvořeno"
+    }
+  ],
+  "label.created-by": [
+    {
+      "type": 0,
+      "value": "Created By"
+    }
+  ],
+  "label.current": [
+    {
+      "type": 0,
+      "value": "Aktuální"
     }
   ],
   "label.current-password": [
@@ -236,7 +266,7 @@
   "label.date": [
     {
       "type": 0,
-      "value": "Date"
+      "value": "Datum"
     }
   ],
   "label.date-range": [
@@ -248,7 +278,7 @@
   "label.day": [
     {
       "type": 0,
-      "value": "Day"
+      "value": "Den"
     }
   ],
   "label.default-date-range": [
@@ -263,16 +293,22 @@
       "value": "Smazat"
     }
   ],
+  "label.delete-report": [
+    {
+      "type": 0,
+      "value": "Smazat hlášení"
+    }
+  ],
   "label.delete-team": [
     {
       "type": 0,
-      "value": "Delete team"
+      "value": "Smazat tým"
     }
   ],
   "label.delete-user": [
     {
       "type": 0,
-      "value": "Delete user"
+      "value": "Smazat uživatele"
     }
   ],
   "label.delete-website": [
@@ -284,7 +320,7 @@
   "label.description": [
     {
       "type": 0,
-      "value": "Description"
+      "value": "Popis"
     }
   ],
   "label.desktop": [
@@ -296,13 +332,13 @@
   "label.details": [
     {
       "type": 0,
-      "value": "Details"
+      "value": "Detaily"
     }
   ],
   "label.device": [
     {
       "type": 0,
-      "value": "Device"
+      "value": "Zařízení"
     }
   ],
   "label.devices": [
@@ -320,7 +356,7 @@
   "label.does-not-contain": [
     {
       "type": 0,
-      "value": "Does not contain"
+      "value": "Neobsahuje"
     }
   ],
   "label.domain": [
@@ -344,7 +380,13 @@
   "label.edit-dashboard": [
     {
       "type": 0,
-      "value": "Edit dashboard"
+      "value": "Upravit dashboard"
+    }
+  ],
+  "label.edit-member": [
+    {
+      "type": 0,
+      "value": "Upravit člena"
     }
   ],
   "label.enable-share-url": [
@@ -353,10 +395,22 @@
       "value": "Povolit sdílení URL"
     }
   ],
+  "label.end-step": [
+    {
+      "type": 0,
+      "value": "End Step"
+    }
+  ],
+  "label.entry": [
+    {
+      "type": 0,
+      "value": "Vstupní URL"
+    }
+  ],
   "label.event": [
     {
       "type": 0,
-      "value": "Event"
+      "value": "Událost"
     }
   ],
   "label.event-data": [
@@ -371,6 +425,12 @@
       "value": "Události"
     }
   ],
+  "label.exit": [
+    {
+      "type": 0,
+      "value": "Exit URL"
+    }
+  ],
   "label.false": [
     {
       "type": 0,
@@ -380,7 +440,7 @@
   "label.field": [
     {
       "type": 0,
-      "value": "Field"
+      "value": "Pole"
     }
   ],
   "label.fields": [
@@ -392,7 +452,7 @@
   "label.filter": [
     {
       "type": 0,
-      "value": "Filter"
+      "value": "Filtr"
     }
   ],
   "label.filter-combined": [
@@ -410,7 +470,13 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "Filtry"
+    }
+  ],
+  "label.first-seen": [
+    {
+      "type": 0,
+      "value": "First seen"
     }
   ],
   "label.funnel": [
@@ -425,6 +491,24 @@
       "value": "Understand the conversion and drop-off rate of users."
     }
   ],
+  "label.goal": [
+    {
+      "type": 0,
+      "value": "Cíl"
+    }
+  ],
+  "label.goals": [
+    {
+      "type": 0,
+      "value": "Cíle"
+    }
+  ],
+  "label.goals-description": [
+    {
+      "type": 0,
+      "value": "Track your goals for pageviews and events."
+    }
+  ],
   "label.greater-than": [
     {
       "type": 0,
@@ -435,6 +519,18 @@
     {
       "type": 0,
       "value": "Greater than or equals"
+    }
+  ],
+  "label.host": [
+    {
+      "type": 0,
+      "value": "Host"
+    }
+  ],
+  "label.hosts": [
+    {
+      "type": 0,
+      "value": "Hosts"
     }
   ],
   "label.insights": [
@@ -485,16 +581,28 @@
       "value": "Join team"
     }
   ],
+  "label.journey": [
+    {
+      "type": 0,
+      "value": "Journey"
+    }
+  ],
+  "label.journey-description": [
+    {
+      "type": 0,
+      "value": "Understand how users navigate through your website."
+    }
+  ],
   "label.language": [
     {
       "type": 0,
-      "value": "Language"
+      "value": "Jazyk"
     }
   ],
   "label.languages": [
     {
       "type": 0,
-      "value": "Languages"
+      "value": "Jazyky"
     }
   ],
   "label.laptop": [
@@ -531,16 +639,36 @@
       "value": " hodin"
     }
   ],
+  "label.last-months": [
+    {
+      "type": 0,
+      "value": "Posledních "
+    },
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " měsíců"
+    }
+  ],
+  "label.last-seen": [
+    {
+      "type": 0,
+      "value": "Last seen"
+    }
+  ],
   "label.leave": [
     {
       "type": 0,
-      "value": "Leave"
+      "value": "Opustit"
     }
   ],
   "label.leave-team": [
     {
       "type": 0,
-      "value": "Leave team"
+      "value": "Opustit tým"
     }
   ],
   "label.less-than": [
@@ -567,16 +695,34 @@
       "value": "Odhlásit"
     }
   ],
+  "label.manage": [
+    {
+      "type": 0,
+      "value": "Spravovat"
+    }
+  ],
+  "label.manager": [
+    {
+      "type": 0,
+      "value": "Správce"
+    }
+  ],
   "label.max": [
     {
       "type": 0,
       "value": "Max"
     }
   ],
+  "label.member": [
+    {
+      "type": 0,
+      "value": "Člen"
+    }
+  ],
   "label.members": [
     {
       "type": 0,
-      "value": "Members"
+      "value": "Členové"
     }
   ],
   "label.min": [
@@ -597,10 +743,16 @@
       "value": "Více"
     }
   ],
+  "label.my-account": [
+    {
+      "type": 0,
+      "value": "Můj účet"
+    }
+  ],
   "label.my-websites": [
     {
       "type": 0,
-      "value": "My websites"
+      "value": "Mé weby"
     }
   ],
   "label.name": [
@@ -621,6 +773,46 @@
       "value": "None"
     }
   ],
+  "label.number-of-records": [
+    {
+      "type": 1,
+      "value": "x"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "offset": 0,
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "record"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "records"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "x"
+    }
+  ],
+  "label.ok": [
+    {
+      "type": 0,
+      "value": "OK"
+    }
+  ],
   "label.os": [
     {
       "type": 0,
@@ -630,13 +822,13 @@
   "label.overview": [
     {
       "type": 0,
-      "value": "Overview"
+      "value": "Přehled"
     }
   ],
   "label.owner": [
     {
       "type": 0,
-      "value": "Owner"
+      "value": "Vlastník"
     }
   ],
   "label.page-of": [
@@ -666,7 +858,7 @@
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "Page title"
+      "value": "Název stránky"
     }
   ],
   "label.pages": [
@@ -681,6 +873,18 @@
       "value": "Heslo"
     }
   ],
+  "label.path": [
+    {
+      "type": 0,
+      "value": "Cesta"
+    }
+  ],
+  "label.paths": [
+    {
+      "type": 0,
+      "value": "Cesty"
+    }
+  ],
   "label.powered-by": [
     {
       "type": 0,
@@ -691,10 +895,40 @@
       "value": "name"
     }
   ],
+  "label.previous": [
+    {
+      "type": 0,
+      "value": "Previous"
+    }
+  ],
+  "label.previous-period": [
+    {
+      "type": 0,
+      "value": "Previous period"
+    }
+  ],
+  "label.previous-year": [
+    {
+      "type": 0,
+      "value": "Previous year"
+    }
+  ],
   "label.profile": [
     {
       "type": 0,
       "value": "Profil"
+    }
+  ],
+  "label.properties": [
+    {
+      "type": 0,
+      "value": "Properties"
+    }
+  ],
+  "label.property": [
+    {
+      "type": 0,
+      "value": "Property"
     }
   ],
   "label.queries": [
@@ -763,6 +997,12 @@
       "value": "Remove"
     }
   ],
+  "label.remove-member": [
+    {
+      "type": 0,
+      "value": "Remove member"
+    }
+  ],
   "label.reports": [
     {
       "type": 0,
@@ -799,6 +1039,24 @@
       "value": "Measure your website stickiness by tracking how often users return."
     }
   ],
+  "label.revenue": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
+  "label.revenue-description": [
+    {
+      "type": 0,
+      "value": "Look into your revenue across time."
+    }
+  ],
+  "label.revenue-property": [
+    {
+      "type": 0,
+      "value": "Revenue Property"
+    }
+  ],
   "label.role": [
     {
       "type": 0,
@@ -829,16 +1087,34 @@
       "value": "Search"
     }
   ],
+  "label.select": [
+    {
+      "type": 0,
+      "value": "Select"
+    }
+  ],
   "label.select-date": [
     {
       "type": 0,
       "value": "Select date"
     }
   ],
+  "label.select-role": [
+    {
+      "type": 0,
+      "value": "Select role"
+    }
+  ],
   "label.select-website": [
     {
       "type": 0,
       "value": "Select website"
+    }
+  ],
+  "label.session": [
+    {
+      "type": 0,
+      "value": "Session"
     }
   ],
   "label.sessions": [
@@ -865,6 +1141,18 @@
       "value": "Jeden den"
     }
   ],
+  "label.start-step": [
+    {
+      "type": 0,
+      "value": "Start Step"
+    }
+  ],
+  "label.steps": [
+    {
+      "type": 0,
+      "value": "Steps"
+    }
+  ],
   "label.sum": [
     {
       "type": 0,
@@ -883,16 +1171,16 @@
       "value": "Team"
     }
   ],
-  "label.team-guest": [
-    {
-      "type": 0,
-      "value": "Team guest"
-    }
-  ],
   "label.team-id": [
     {
       "type": 0,
       "value": "Team ID"
+    }
+  ],
+  "label.team-manager": [
+    {
+      "type": 0,
+      "value": "Team manager"
     }
   ],
   "label.team-member": [
@@ -911,6 +1199,12 @@
     {
       "type": 0,
       "value": "Team owner"
+    }
+  ],
+  "label.team-view-only": [
+    {
+      "type": 0,
+      "value": "Team view only"
     }
   ],
   "label.team-websites": [
@@ -991,6 +1285,24 @@
       "value": "Sledovací kód"
     }
   ],
+  "label.transactions": [
+    {
+      "type": 0,
+      "value": "Transactions"
+    }
+  ],
+  "label.transfer": [
+    {
+      "type": 0,
+      "value": "Transfer"
+    }
+  ],
+  "label.transfer-website": [
+    {
+      "type": 0,
+      "value": "Transfer website"
+    }
+  ],
   "label.true": [
     {
       "type": 0,
@@ -1015,6 +1327,12 @@
       "value": "Jedinečné návštěvy"
     }
   ],
+  "label.uniqueCustomers": [
+    {
+      "type": 0,
+      "value": "Unique Customers"
+    }
+  ],
   "label.unknown": [
     {
       "type": 0,
@@ -1025,6 +1343,12 @@
     {
       "type": 0,
       "value": "Untitled"
+    }
+  ],
+  "label.update": [
+    {
+      "type": 0,
+      "value": "Update"
     }
   ],
   "label.url": [
@@ -1045,6 +1369,12 @@
       "value": "User"
     }
   ],
+  "label.user-property": [
+    {
+      "type": 0,
+      "value": "User Property"
+    }
+  ],
   "label.username": [
     {
       "type": 0,
@@ -1055,6 +1385,18 @@
     {
       "type": 0,
       "value": "Users"
+    }
+  ],
+  "label.utm": [
+    {
+      "type": 0,
+      "value": "UTM"
+    }
+  ],
+  "label.utm-description": [
+    {
+      "type": 0,
+      "value": "Track your campaigns through UTM parameters."
     }
   ],
   "label.value": [
@@ -1087,7 +1429,25 @@
       "value": "Zobrazení"
     }
   ],
+  "label.views-per-visit": [
+    {
+      "type": 0,
+      "value": "Views per visit"
+    }
+  ],
+  "label.visit-duration": [
+    {
+      "type": 0,
+      "value": "Průměrný čas návštěvy"
+    }
+  ],
   "label.visitors": [
+    {
+      "type": 0,
+      "value": "Návštěvníci"
+    }
+  ],
+  "label.visits": [
     {
       "type": 0,
       "value": "Návštěvy"
@@ -1114,13 +1474,27 @@
   "label.window": [
     {
       "type": 0,
-      "value": "Window"
+      "value": "Okno"
     }
   ],
   "label.yesterday": [
     {
       "type": 0,
-      "value": "Yesterday"
+      "value": "Včera"
+    }
+  ],
+  "message.action-confirmation": [
+    {
+      "type": 0,
+      "value": "Type "
+    },
+    {
+      "type": 1,
+      "value": "confirmation"
+    },
+    {
+      "type": 0,
+      "value": " in the box below to confirm."
     }
   ],
   "message.active-users": [
@@ -1157,6 +1531,12 @@
       "value": "x"
     }
   ],
+  "message.collected-data": [
+    {
+      "type": 0,
+      "value": "Collected data"
+    }
+  ],
   "message.confirm-delete": [
     {
       "type": 0,
@@ -1185,6 +1565,20 @@
       "value": "?"
     }
   ],
+  "message.confirm-remove": [
+    {
+      "type": 0,
+      "value": "Are you sure you want to remove "
+    },
+    {
+      "type": 1,
+      "value": "target"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    }
+  ],
   "message.confirm-reset": [
     {
       "type": 0,
@@ -1199,32 +1593,10 @@
       "value": "'s statistics?"
     }
   ],
-  "message.delete-account": [
+  "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "To delete this account, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
-    }
-  ],
-  "message.delete-website": [
-    {
-      "type": 0,
-      "value": "To delete this website, type "
-    },
-    {
-      "type": 1,
-      "value": "confirmation"
-    },
-    {
-      "type": 0,
-      "value": " in the box below to confirm."
+      "value": "Deleting a team will also delete all team websites."
     }
   ],
   "message.delete-website-warning": [
@@ -1417,10 +1789,40 @@
       "value": "Sledovací kód"
     }
   ],
+  "message.transfer-team-website-to-user": [
+    {
+      "type": 0,
+      "value": "Transfer this website to your account?"
+    }
+  ],
+  "message.transfer-user-website-to-team": [
+    {
+      "type": 0,
+      "value": "Select the team to transfer this website to."
+    }
+  ],
+  "message.transfer-website": [
+    {
+      "type": 0,
+      "value": "Transfer website ownership to your account or another team."
+    }
+  ],
+  "message.triggered-event": [
+    {
+      "type": 0,
+      "value": "Triggered event"
+    }
+  ],
   "message.user-deleted": [
     {
       "type": 0,
       "value": "User deleted."
+    }
+  ],
+  "message.viewed-page": [
+    {
+      "type": 0,
+      "value": "Viewed page"
     }
   ],
   "message.visitor-log": [
@@ -1455,6 +1857,12 @@
     {
       "type": 1,
       "value": "device"
+    }
+  ],
+  "message.visitors-dropped-off": [
+    {
+      "type": 0,
+      "value": "Visitors dropped off"
     }
   ]
 }

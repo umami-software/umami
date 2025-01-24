@@ -1,0 +1,21 @@
+.button {
+  font-weight: 700;
+}
+
+.menu {
+  background: var(--base50);
+  min-width: 260px;
+}
+
+.heading {
+  color: var(--base600);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--base300);
+}
+
+.selected {
+  font-weight: bold;
+}

@@ -1,6 +1,7 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
 import FilterLink from 'components/common/FilterLink';
-import useMessages from 'components/hooks/useMessages';
+import Favicon from 'components/common/Favicon';
+import { useMessages } from 'components/hooks';
+import MetricsTable, { MetricsTableProps } from './MetricsTable';
 
 export function ReferrersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
@@ -12,7 +13,9 @@ export function ReferrersTable(props: MetricsTableProps) {
         value={referrer}
         externalUrl={`https://${referrer}`}
         label={!referrer && formatMessage(labels.none)}
-      />
+      >
+        <Favicon domain={referrer} />
+      </FilterLink>
     );
   };
 

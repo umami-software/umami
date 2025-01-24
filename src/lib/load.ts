@@ -1,14 +1,16 @@
-import cache from 'lib/cache';
-import { getSession, getUserById, getWebsiteById } from 'queries';
-import { User, Website, Session } from '@prisma/client';
+import { getWebsiteSession, getWebsite } from 'queries';
+import { Website, Session } from '@prisma/client';
+import { getClient, redisEnabled } from '@umami/redis-client';
 
-export async function loadWebsite(websiteId: string): Promise<Website> {
-  let website;
+export async function fetchWebsite(websiteId: string): Promise<Website> {
+  let website = null;
 
-  if (cache.enabled) {
-    website = await cache.fetchWebsite(websiteId);
+  if (redisEnabled) {
+    const redis = getClient();
+
+    website = await redis.fetch(`website:${websiteId}`, () => getWebsite(websiteId), 86400);
   } else {
-    website = await getWebsiteById(websiteId);
+    website = await getWebsite(websiteId);
   }
 
   if (!website || website.deletedAt) {
@@ -18,13 +20,19 @@ export async function loadWebsite(websiteId: string): Promise<Website> {
   return website;
 }
 
-export async function loadSession(sessionId: string): Promise<Session> {
-  let session;
+export async function fetchSession(websiteId: string, sessionId: string): Promise<Session> {
+  let session = null;
 
-  if (cache.enabled) {
-    session = await cache.fetchSession(sessionId);
+  if (redisEnabled) {
+    const redis = getClient();
+
+    session = await redis.fetch(
+      `session:${sessionId}`,
+      () => getWebsiteSession(websiteId, sessionId),
+      86400,
+    );
   } else {
-    session = await getSession(sessionId);
+    session = await getWebsiteSession(websiteId, sessionId);
   }
 
   if (!session) {
@@ -32,20 +40,4 @@ export async function loadSession(sessionId: string): Promise<Session> {
   }
 
   return session;
-}
-
-export async function loadUser(userId: string): Promise<User> {
-  let user;
-
-  if (cache.enabled) {
-    user = await cache.fetchUser(userId);
-  } else {
-    user = await getUserById(userId);
-  }
-
-  if (!user || user.deletedAt) {
-    return null;
-  }
-
-  return user;
 }

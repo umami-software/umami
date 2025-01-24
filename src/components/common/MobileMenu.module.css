@@ -35,5 +35,5 @@ a.item.selected,
 
 .submenu a.item {
   color: var(--base600);
-  margin-left: 40px;
+  margin-inline-start: 40px;
 }

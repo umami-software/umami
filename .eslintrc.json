@@ -2,15 +2,9 @@
   "env": {
     "browser": true,
     "es2020": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:import/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "next"
-  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -19,29 +13,29 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "prettier"],
   "settings": {
     "import/resolver": {
-      "alias": {
-        "map": [
-          ["assets", "./src/assets"],
-          ["components", "./src/components"],
-          ["db", "./db"],
-          ["hooks", "./src/components/hooks"],
-          ["lang", "./src/lang"],
-          ["lib", "./src/lib"],
-          ["public", "./public"],
-          ["queries", "./src/queries"],
-          ["store", "./src/store"],
-          ["styles", "./src/styles"]
-        ],
-        "extensions": [".ts", ".tsx", ".js", ".jsx", ".json"]
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
       }
     }
   },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "plugin:prettier/recommended",
+    "plugin:import/errors",
+    "plugin:import/typescript",
+    "plugin:css-modules/recommended",
+    "plugin:cypress/recommended",
+    "prettier",
+    "next"
+  ],
+  "plugins": ["@typescript-eslint", "prettier", "promise", "css-modules", "cypress"],
   "rules": {
     "no-console": "error",
     "react/display-name": "off",
+    "react-hooks/exhaustive-deps": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "import/no-anonymous-default-export": "off",

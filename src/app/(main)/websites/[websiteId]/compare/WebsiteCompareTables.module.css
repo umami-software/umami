@@ -1,0 +1,14 @@
+.container {
+  margin-bottom: 60px;
+}
+
+.nav {
+  width: 200px;
+  margin-top: 40px;
+}
+
+.title {
+  color: var(--base800);
+  text-align: center;
+  font-weight: 700;
+}

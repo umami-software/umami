@@ -13,34 +13,32 @@ export async function getActiveVisitors(...args: [websiteId: string]) {
 async function relationalQuery(websiteId: string) {
   const { rawQuery } = prisma;
 
-  return rawQuery(
+  const result = await rawQuery(
     `
     select count(distinct session_id) x
     from website_event
     where website_id = {{websiteId::uuid}}
-    and created_at >= {{startAt}}
+    and created_at >= {{startDate}}
     `,
-    { websiteId, startAt: subMinutes(new Date(), 5) },
+    { websiteId, startDate: subMinutes(new Date(), 5) },
   );
+
+  return result[0] ?? null;
 }
 
 async function clickhouseQuery(websiteId: string): Promise<{ x: number }> {
   const { rawQuery } = clickhouse;
 
-  const result = rawQuery(
+  const result = await rawQuery(
     `
     select
       count(distinct session_id) x
     from website_event
     where website_id = {websiteId:UUID}
-      and created_at >= {startAt:DateTime64}
+      and created_at >= {startDate:DateTime64}
     `,
-    { websiteId, startAt: subMinutes(new Date(), 5) },
-  ).then(a => {
-    return Object.values(a).map(a => {
-      return { x: Number(a.x) };
-    });
-  });
+    { websiteId, startDate: subMinutes(new Date(), 5) },
+  );
 
   return result[0] ?? null;
 }
