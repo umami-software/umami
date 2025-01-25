@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { canTransferWebsiteToTeam, canTransferWebsiteToUser, checkAuth } from 'lib/auth';
+import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from 'lib/auth';
 import { updateWebsite } from 'queries';
-import { checkRequest } from 'lib/request';
+import { parseRequest } from 'lib/request';
 import { badRequest, unauthorized, json } from 'lib/response';
 
 export async function POST(
@@ -13,20 +13,16 @@ export async function POST(
     teamId: z.string().uuid().optional(),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { userId, teamId } = body;
 
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
-  } else if (userId) {
+  if (userId) {
     if (!(await canTransferWebsiteToUser(auth, websiteId, userId))) {
       return unauthorized();
     }
@@ -49,4 +45,6 @@ export async function POST(
 
     return json(website);
   }
+
+  return badRequest();
 }

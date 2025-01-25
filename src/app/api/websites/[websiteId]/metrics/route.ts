@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { canViewWebsite, checkAuth } from 'lib/auth';
+import { canViewWebsite } from 'lib/auth';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from 'lib/constants';
-import { getRequestFilters, getRequestDateRange, checkRequest } from 'lib/request';
+import { getRequestFilters, getRequestDateRange, parseRequest } from 'lib/request';
 import { json, unauthorized, badRequest } from 'lib/response';
 import { getPageviewMetrics, getSessionMetrics } from 'queries';
 import { filterParams } from 'lib/schema';
@@ -20,18 +20,16 @@ export async function GET(
     ...filterParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { type, limit, offset, search } = query;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { checkRequest, getRequestDateRange, getRequestFilters } from 'lib/request';
-import { badRequest, unauthorized, json } from 'lib/response';
-import { checkAuth, canViewWebsite } from 'lib/auth';
+import { parseRequest, getRequestDateRange, getRequestFilters } from 'lib/request';
+import { unauthorized, json } from 'lib/response';
+import { canViewWebsite } from 'lib/auth';
 import { getCompareDate } from 'lib/date';
 import { filterParams } from 'lib/schema';
 import { getWebsiteStats } from 'queries';
@@ -17,18 +17,16 @@ export async function GET(
     ...filterParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { compare } = query;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

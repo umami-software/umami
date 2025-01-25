@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest } from 'lib/response';
-import { canAddUserToTeam, canUpdateTeam, checkAuth } from 'lib/auth';
-import { checkRequest } from 'lib/request';
+import { canAddUserToTeam, canUpdateTeam } from 'lib/auth';
+import { parseRequest } from 'lib/request';
 import { pagingParams, roleParam } from 'lib/schema';
 import { createTeamUser, getTeamUser, getTeamUsers } from 'queries';
 
@@ -10,15 +10,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     ...pagingParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { teamId } = await params;
-
-  const auth = await checkAuth(request);
 
   if (!(await canUpdateTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
@@ -55,17 +53,15 @@ export async function POST(
     role: roleParam,
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { teamId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canAddUserToTeam(auth))) {
+  if (!(await canAddUserToTeam(auth))) {
     return unauthorized();
   }
 

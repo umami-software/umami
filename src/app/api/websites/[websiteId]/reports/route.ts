@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite, checkAuth } from 'lib/auth';
+import { canViewWebsite } from 'lib/auth';
 import { getWebsiteReports } from 'queries';
 import { pagingParams } from 'lib/schema';
-import { checkRequest } from 'lib/request';
-import { badRequest, unauthorized, json } from 'lib/response';
+import { parseRequest } from 'lib/request';
+import { unauthorized, json } from 'lib/response';
 
 export async function GET(
   request: Request,
@@ -13,18 +13,16 @@ export async function GET(
     ...pagingParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { page, pageSize, search } = query;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

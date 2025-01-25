@@ -1,19 +1,23 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, checkAuth, canViewWebsite } from 'lib/auth';
+import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from 'lib/auth';
 import { SHARE_ID_REGEX } from 'lib/constants';
-import { checkRequest } from 'lib/request';
-import { ok, json, badRequest, unauthorized, serverError } from 'lib/response';
+import { parseRequest } from 'lib/request';
+import { ok, json, unauthorized, serverError } from 'lib/response';
 import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
   const { websiteId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -32,18 +36,16 @@ export async function POST(
     shareId: z.string().regex(SHARE_ID_REGEX).nullable(),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { name, domain, shareId } = body;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canUpdateWebsite(auth, websiteId))) {
+  if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -64,11 +66,15 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
   const { websiteId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canDeleteWebsite(auth, websiteId))) {
+  if (!(await canDeleteWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

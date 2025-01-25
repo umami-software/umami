@@ -1,16 +1,20 @@
 import { z } from 'zod';
-import { canUpdateUser, canViewUser, checkAuth } from 'lib/auth';
+import { canUpdateUser, canViewUser } from 'lib/auth';
 import { getUser, getUserByUsername, updateUser } from 'queries';
 import { json, unauthorized, badRequest } from 'lib/response';
 import { hashPassword } from 'next-basics';
-import { checkRequest } from 'lib/request';
+import { parseRequest } from 'lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
   const { userId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewUser(auth, userId))) {
+  if (!(await canViewUser(auth, userId))) {
     return unauthorized();
   }
 
@@ -26,17 +30,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
     role: z.string().regex(/admin|user|view-only/i),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { userId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canUpdateUser(auth, userId))) {
+  if (!(await canUpdateUser(auth, userId))) {
     return unauthorized();
   }
 

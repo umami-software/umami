@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { hashPassword } from 'next-basics';
-import { canCreateUser, checkAuth } from 'lib/auth';
+import { canCreateUser } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
-import { checkRequest } from 'lib/request';
+import { parseRequest } from 'lib/request';
 import { unauthorized, json, badRequest } from 'lib/response';
 import { createUser, getUserByUsername } from 'queries';
 
@@ -15,15 +15,13 @@ export async function POST(request: Request) {
     role: z.string().regex(/admin|user|view-only/i),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canCreateUser(auth))) {
+  if (!(await canCreateUser(auth))) {
     return unauthorized();
   }
 

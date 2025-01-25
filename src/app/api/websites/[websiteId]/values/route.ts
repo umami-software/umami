@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { canViewWebsite, checkAuth } from 'lib/auth';
+import { canViewWebsite } from 'lib/auth';
 import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
 import { getValues } from 'queries';
-import { checkRequest, getRequestDateRange } from 'lib/request';
+import { parseRequest, getRequestDateRange } from 'lib/request';
 import { badRequest, json, unauthorized } from 'lib/response';
 
 export async function GET(
@@ -16,24 +16,22 @@ export async function GET(
     search: z.string().optional(),
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { type, search } = query;
   const { startDate, endDate } = await getRequestDateRange(request);
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type)) {
-    return badRequest();
+    return badRequest('Invalid type.');
   }
 
   const values = await getValues(websiteId, FILTER_COLUMNS[type], startDate, endDate, search);

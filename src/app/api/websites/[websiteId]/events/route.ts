@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { checkRequest } from 'lib/request';
-import { badRequest, unauthorized, json } from 'lib/response';
-import { canViewWebsite, checkAuth } from 'lib/auth';
+import { parseRequest } from 'lib/request';
+import { unauthorized, json } from 'lib/response';
+import { canViewWebsite } from 'lib/auth';
 import { pagingParams } from 'lib/schema';
 import { getWebsiteEvents } from 'queries';
 
@@ -15,18 +15,16 @@ export async function GET(
     ...pagingParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { startAt, endAt } = query;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

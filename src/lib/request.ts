@@ -1,7 +1,9 @@
 import { ZodObject } from 'zod';
+import { FILTER_COLUMNS } from 'lib/constants';
+import { badRequest, unauthorized } from 'lib/response';
 import { getAllowedUnits, getMinimumUnit } from './date';
 import { getWebsiteDateRange } from '../queries';
-import { FILTER_COLUMNS } from 'lib/constants';
+import { checkAuth } from 'lib/auth';
 
 export async function getJsonBody(request: Request) {
   try {
@@ -11,14 +13,27 @@ export async function getJsonBody(request: Request) {
   }
 }
 
-export async function checkRequest(request: Request, schema: ZodObject<any>) {
+export async function parseRequest(request: Request, schema?: ZodObject<any>) {
+  let error: () => void | undefined;
   const url = new URL(request.url);
   const query = Object.fromEntries(url.searchParams);
   const body = await getJsonBody(request);
 
-  const result = schema.safeParse(request.method === 'GET' ? query : body);
+  if (schema) {
+    const result = schema.safeParse(request.method === 'GET' ? query : body);
 
-  return { query, body, error: result.error };
+    if (result.error) {
+      error = () => badRequest(result.error);
+    }
+  }
+
+  const auth = !error ? await checkAuth(request) : null;
+
+  if (!error && !auth) {
+    error = () => unauthorized();
+  }
+
+  return { url, query, body, auth, error };
 }
 
 export async function getRequestDateRange(query: Record<string, any>) {

@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite, checkAuth } from 'lib/auth';
-import { getRequestFilters, getRequestDateRange, checkRequest } from 'lib/request';
+import { canViewWebsite } from 'lib/auth';
+import { getRequestFilters, getRequestDateRange, parseRequest } from 'lib/request';
 import { unitParam, timezoneParam, filterParams } from 'lib/schema';
 import { getCompareDate } from 'lib/date';
-import { badRequest, unauthorized, json } from 'lib/response';
+import { unauthorized, json } from 'lib/response';
 import { getPageviewStats, getSessionStats } from 'queries';
 
 export async function GET(
@@ -19,18 +19,16 @@ export async function GET(
     ...filterParams,
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { websiteId } = await params;
   const { timezone, compare } = query;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

@@ -16,8 +16,8 @@ export const pageInfo = {
 };
 
 export const pagingParams = {
-  page: z.coerce.number().int().positive(),
-  pageSize: z.coerce.number().int().positive(),
+  page: z.coerce.number().int().positive().optional(),
+  pageSize: z.coerce.number().int().positive().optional(),
   orderBy: z.string().optional(),
   query: z.string().optional(),
 };

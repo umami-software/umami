@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { unauthorized, json, badRequest, notFound, ok } from 'lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam, checkAuth } from 'lib/auth';
-import { checkRequest } from 'lib/request';
+import { unauthorized, json, notFound, ok } from 'lib/response';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
+import { parseRequest } from 'lib/request';
 import { deleteTeam, getTeam, updateTeam } from 'queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
@@ -9,17 +9,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     teamId: z.string().uuid(),
   });
 
-  const { error } = await checkRequest(request, schema);
+  const { auth, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { teamId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canViewTeam(auth, teamId))) {
+  if (!(await canViewTeam(auth, teamId))) {
     return unauthorized();
   }
 
@@ -38,17 +36,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     accessCode: z.string().max(50),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { teamId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canUpdateTeam(auth, teamId))) {
+  if (!(await canUpdateTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
   }
 
@@ -61,11 +57,15 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ teamId: string }> },
 ) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
   const { teamId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canDeleteTeam(auth, teamId))) {
+  if (!(await canDeleteTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
   }
 

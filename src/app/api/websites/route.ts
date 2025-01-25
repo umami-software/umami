@@ -1,24 +1,18 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite, checkAuth } from 'lib/auth';
-import { json, badRequest, unauthorized } from 'lib/response';
+import { canCreateTeamWebsite, canCreateWebsite } from 'lib/auth';
+import { json, unauthorized } from 'lib/response';
 import { uuid } from 'lib/crypto';
-import { checkRequest } from 'lib/request';
+import { parseRequest } from 'lib/request';
 import { createWebsite, getUserWebsites } from 'queries';
 import { pagingParams } from 'lib/schema';
 
 export async function GET(request: Request) {
   const schema = z.object({ ...pagingParams });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
-  }
-
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
+    return error();
   }
 
   const websites = await getUserWebsites(auth.user.userId, query);
@@ -34,16 +28,10 @@ export async function POST(request: Request) {
     teamId: z.string().nullable(),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
-  }
-
-  const auth = await checkAuth(request);
-
-  if (!auth) {
-    return unauthorized();
+    return error();
   }
 
   const { name, domain, shareId, teamId } = body;

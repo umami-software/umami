@@ -1,16 +1,20 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest, ok } from 'lib/response';
-import { canDeleteTeam, canUpdateTeam, checkAuth } from 'lib/auth';
-import { checkRequest } from 'lib/request';
+import { canDeleteTeam, canUpdateTeam } from 'lib/auth';
+import { parseRequest } from 'lib/request';
 import { deleteTeam, getTeamUser, updateTeamUser } from 'queries';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ teamId: string; userId: string }> },
 ) {
-  const { teamId, userId } = await params;
+  const { auth, error } = await parseRequest(request);
 
-  const auth = await checkAuth(request);
+  if (error) {
+    return error();
+  }
+
+  const { teamId, userId } = await params;
 
   if (!(await canUpdateTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
@@ -29,15 +33,13 @@ export async function POST(
     role: z.string().regex(/team-member|team-view-only|team-manager/),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
   const { teamId, userId } = await params;
-
-  const auth = await checkAuth(request);
 
   if (!(await canUpdateTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
@@ -58,11 +60,15 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ teamId: string }> },
 ) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
   const { teamId } = await params;
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canDeleteTeam(auth, teamId))) {
+  if (!(await canDeleteTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
   }
 

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest, notFound } from 'lib/response';
-import { canCreateTeam, checkAuth } from 'lib/auth';
-import { checkRequest } from 'lib/request';
+import { canCreateTeam } from 'lib/auth';
+import { parseRequest } from 'lib/request';
 import { ROLES } from 'lib/constants';
 import { createTeamUser, findTeam, getTeamUser } from 'queries';
 
@@ -10,15 +10,13 @@ export async function POST(request: Request) {
     accessCode: z.string().max(50),
   });
 
-  const { body, error } = await checkRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !(await canCreateTeam(auth))) {
+  if (!(await canCreateTeam(auth))) {
     return unauthorized();
   }
 

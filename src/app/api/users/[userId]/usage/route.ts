@@ -1,10 +1,9 @@
 import { z } from 'zod';
-import { json, unauthorized, badRequest } from 'lib/response';
+import { json, unauthorized } from 'lib/response';
 import { getAllUserWebsitesIncludingTeamOwner } from 'queries/prisma/website';
 import { getEventUsage } from 'queries/analytics/events/getEventUsage';
 import { getEventDataUsage } from 'queries/analytics/events/getEventDataUsage';
-import { checkAuth } from 'lib/auth';
-import { checkRequest } from 'lib/request';
+import { parseRequest } from 'lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
@@ -12,15 +11,13 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     endAt: z.coerce.number().int(),
   });
 
-  const { query, error } = await checkRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
-    return badRequest(error);
+    return error();
   }
 
-  const auth = await checkAuth(request);
-
-  if (!auth || !auth.user.isAdmin) {
+  if (!auth.user.isAdmin) {
     return unauthorized();
   }
 
