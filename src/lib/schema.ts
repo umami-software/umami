@@ -30,6 +30,8 @@ export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), 
   message: 'Invalid unit',
 });
 
+export const roleParam = z.string().regex(/team-member|team-view-only|team-manager/);
+
 export const filterParams = {
   url: z.string().optional(),
   referrer: z.string().optional(),

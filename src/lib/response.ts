@@ -12,10 +12,14 @@ export function badRequest(message?: any) {
   return Response.json({ error: 'Bad request', message }, { status: 400 });
 }
 
-export function unauthorized() {
-  return Response.json({ error: 'Unauthorized' }, { status: 401 });
+export function notFound(message?: any) {
+  return Response.json({ error: 'Not found', message, status: 404 });
 }
 
-export function serverError(error: any) {
+export function unauthorized(message?: any) {
+  return Response.json({ error: 'Unauthorized', message }, { status: 401 });
+}
+
+export function serverError(error?: any) {
   return Response.json({ error: 'Server error', message: serializeError(error), status: 500 });
 }
