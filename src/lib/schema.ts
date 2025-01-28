@@ -30,7 +30,17 @@ export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), 
   message: 'Invalid unit',
 });
 
-export const roleParam = z.string().regex(/team-member|team-view-only|team-manager/);
+export const roleParam = z.enum(['team-member', 'team-view-only', 'team-manager']);
+
+export const reportTypeParam = z.enum([
+  'funnel',
+  'insights',
+  'retention',
+  'utm',
+  'goals',
+  'journey',
+  'revenue',
+]);
 
 export const filterParams = {
   url: z.string().optional(),

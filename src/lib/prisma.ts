@@ -243,7 +243,7 @@ async function pagedQuery<T>(model: string, criteria: T, pageParams: PageParams)
   const data = await prisma.client[model].findMany({
     ...criteria,
     ...{
-      ...(size > 0 && { take: +size, skip: +size * (page - 1) }),
+      ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
       ...(orderBy && {
         orderBy: [
           {
@@ -266,7 +266,7 @@ async function pagedRawQuery(
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const offset = +size * (page - 1);
+  const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [

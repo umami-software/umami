@@ -26,8 +26,8 @@ export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
 export interface PageParams {
   search?: string;
-  page?: number;
-  pageSize?: number;
+  page?: string;
+  pageSize?: string;
   orderBy?: string;
   sortDescending?: boolean;
 }
