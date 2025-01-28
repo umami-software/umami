@@ -9,21 +9,26 @@ export async function getJsonBody(request: Request) {
   try {
     return await request.clone().json();
   } catch {
-    return null;
+    return undefined;
   }
 }
 
 export async function parseRequest(request: Request, schema?: ZodObject<any>) {
-  let error: () => void | undefined;
   const url = new URL(request.url);
-  const query = Object.fromEntries(url.searchParams);
-  const body = await getJsonBody(request);
+  let query = Object.fromEntries(url.searchParams);
+  let body = await getJsonBody(request);
+  let error: () => void | undefined;
 
   if (schema) {
-    const result = schema.safeParse(request.method === 'GET' ? query : body);
+    const isGet = request.method === 'GET';
+    const result = schema.safeParse(isGet ? query : body);
 
-    if (result.error) {
+    if (!result.success) {
       error = () => badRequest(result.error);
+    } else if (isGet) {
+      query = result.data;
+    } else {
+      body = result.data;
     }
   }
 
