@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { pagingParams } from 'lib/schema';
 import { getUserTeams } from 'queries';
-import { unauthorized, json } from 'lib/response';
+import { json } from 'lib/response';
 import { parseRequest } from 'lib/request';
 
-export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
   });
@@ -15,13 +15,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
     return error();
   }
 
-  const { userId } = await params;
-
-  if (auth.user.id !== userId && !auth.user.isAdmin) {
-    return unauthorized();
-  }
-
-  const teams = await getUserTeams(userId, query);
+  const teams = await getUserTeams(auth.user.id, query);
 
   return json(teams);
 }

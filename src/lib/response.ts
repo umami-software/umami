@@ -12,12 +12,16 @@ export function badRequest(message?: any) {
   return Response.json({ error: 'Bad request', message }, { status: 400 });
 }
 
-export function notFound(message?: any) {
-  return Response.json({ error: 'Not found', message, status: 404 });
-}
-
 export function unauthorized(message?: any) {
   return Response.json({ error: 'Unauthorized', message }, { status: 401 });
+}
+
+export function forbidden(message?: any) {
+  return Response.json({ error: 'Forbidden', message, status: 403 });
+}
+
+export function notFound(message?: any) {
+  return Response.json({ error: 'Not found', message, status: 404 });
 }
 
 export function serverError(error?: any) {

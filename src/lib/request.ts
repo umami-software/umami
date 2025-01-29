@@ -13,7 +13,11 @@ export async function getJsonBody(request: Request) {
   }
 }
 
-export async function parseRequest(request: Request, schema?: ZodObject<any>) {
+export async function parseRequest(
+  request: Request,
+  schema?: ZodObject<any>,
+  options?: { skipAuth: boolean },
+): Promise<any> {
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
@@ -32,7 +36,7 @@ export async function parseRequest(request: Request, schema?: ZodObject<any>) {
     }
   }
 
-  const auth = !error ? await checkAuth(request) : null;
+  const auth = !error && !options?.skipAuth ? await checkAuth(request) : null;
 
   if (!error && !auth) {
     error = () => unauthorized();
