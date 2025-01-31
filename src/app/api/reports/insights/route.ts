@@ -16,8 +16,8 @@ export async function POST(request: Request) {
   const schema = z.object({
     websiteId: z.string().uuid(),
     dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
+      startDate: z.coerce.date(),
+      endDate: z.coerce.date(),
     }),
     fields: z
       .array(
@@ -34,12 +34,6 @@ export async function POST(request: Request) {
         type: z.string(),
         operator: z.string(),
         value: z.string(),
-      }),
-    ),
-    groups: z.array(
-      z.object({
-        name: z.string(),
-        type: z.string(),
       }),
     ),
   });
