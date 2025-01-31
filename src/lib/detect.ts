@@ -86,7 +86,7 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-export async function getLocation(ip: string, headers: Headers) {
+export async function getLocation(ip: string = '', headers: Headers) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
     return;

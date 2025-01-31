@@ -22,6 +22,7 @@ export async function parseRequest(
   let query = Object.fromEntries(url.searchParams);
   let body = await getJsonBody(request);
   let error: () => void | undefined;
+  let auth = null;
 
   if (schema) {
     const isGet = request.method === 'GET';
@@ -36,10 +37,12 @@ export async function parseRequest(
     }
   }
 
-  const auth = !error && !options?.skipAuth ? await checkAuth(request) : null;
+  if (!options?.skipAuth && !error) {
+    auth = await checkAuth(request);
 
-  if (!error && !auth) {
-    error = () => unauthorized();
+    if (!auth) {
+      error = () => unauthorized();
+    }
   }
 
   return { url, query, body, auth, error };
