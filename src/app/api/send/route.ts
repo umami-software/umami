@@ -118,12 +118,14 @@ export async function POST(request: Request) {
   }
 
   // Visit info
+  const now = Math.floor(new Date().getTime() / 1000);
   let visitId = cache?.visitId || uuid(sessionId, visitSalt());
-  const iat = Math.floor(new Date().getTime() / 1000);
+  let iat = cache?.iat || now;
 
   // Expire visit after 30 minutes
-  if (cache?.iat && iat - cache?.iat > 1800) {
+  if (now - iat > 1800) {
     visitId = uuid(sessionId, visitSalt());
+    iat = now;
   }
 
   if (type === COLLECTION_TYPE.event) {
@@ -187,5 +189,5 @@ export async function POST(request: Request) {
 
   const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
 
-  return json(token);
+  return json({ cache: token });
 }
