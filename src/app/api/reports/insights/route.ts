@@ -3,6 +3,7 @@ import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
 import { getInsights } from 'queries';
+import { reportParms } from 'lib/schema';
 
 function convertFilters(filters: any[]) {
   return filters.reduce((obj, filter) => {
@@ -14,11 +15,7 @@ function convertFilters(filters: any[]) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
-    dateRange: z.object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-    }),
+    ...reportParms,
     fields: z
       .array(
         z.object({

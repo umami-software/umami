@@ -3,14 +3,11 @@ import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
 import { getGoals } from 'queries/analytics/reports/getGoals';
+import { reportParms } from 'lib/schema';
 
 export async function POST(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
-    dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
-    }),
+    ...reportParms,
     goals: z
       .array(
         z.object({

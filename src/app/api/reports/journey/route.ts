@@ -3,14 +3,11 @@ import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
 import { getJourney } from 'queries';
+import { reportParms } from 'lib/schema';
 
 export async function POST(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
-    dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
-    }),
+    ...reportParms,
     steps: z.number().min(3).max(7),
     startStep: z.string(),
     endStep: z.string(),

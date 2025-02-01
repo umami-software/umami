@@ -2,17 +2,13 @@ import { z } from 'zod';
 import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
-import { timezoneParam, unitParam } from 'lib/schema';
+import { reportParms, timezoneParam, unitParam } from 'lib/schema';
 import { getRevenue } from 'queries/analytics/reports/getRevenue';
 import { getRevenueValues } from 'queries/analytics/reports/getRevenueValues';
 
 export async function GET(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
-    dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
-    }),
+    ...reportParms,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

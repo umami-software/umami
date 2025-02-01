@@ -1,18 +1,22 @@
 import { z } from 'zod';
-import * as yup from 'yup';
 import { isValidTimezone } from 'lib/date';
 import { UNIT_TYPES } from './constants';
 
-export const dateRange = {
-  startAt: yup.number().integer().required(),
-  endAt: yup.number().integer().min(yup.ref('startAt')).required(),
-};
-
-export const pageInfo = {
-  query: yup.string(),
-  page: yup.number().integer().positive(),
-  pageSize: yup.number().integer().positive().min(1).max(200),
-  orderBy: yup.string(),
+export const filterParams = {
+  url: z.string().optional(),
+  referrer: z.string().optional(),
+  title: z.string().optional(),
+  query: z.string().optional(),
+  os: z.string().optional(),
+  browser: z.string().optional(),
+  device: z.string().optional(),
+  country: z.string().optional(),
+  region: z.string().optional(),
+  city: z.string().optional(),
+  tag: z.string().optional(),
+  host: z.string().optional(),
+  language: z.string().optional(),
+  event: z.string().optional(),
 };
 
 export const pagingParams = {
@@ -42,19 +46,10 @@ export const reportTypeParam = z.enum([
   'revenue',
 ]);
 
-export const filterParams = {
-  url: z.string().optional(),
-  referrer: z.string().optional(),
-  title: z.string().optional(),
-  query: z.string().optional(),
-  os: z.string().optional(),
-  browser: z.string().optional(),
-  device: z.string().optional(),
-  country: z.string().optional(),
-  region: z.string().optional(),
-  city: z.string().optional(),
-  tag: z.string().optional(),
-  host: z.string().optional(),
-  language: z.string().optional(),
-  event: z.string().optional(),
+export const reportParms = {
+  websiteId: z.string().uuid(),
+  dateRange: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+  }),
 };

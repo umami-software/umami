@@ -3,10 +3,12 @@ import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
 import { getFunnel } from 'queries';
+import { reportParms } from 'lib/schema';
 
 export async function POST(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
+    ...reportParms,
+    window: z.number().positive(),
     steps: z
       .array(
         z.object({
@@ -15,11 +17,6 @@ export async function POST(request: Request) {
         }),
       )
       .min(2),
-    window: z.number().positive(),
-    dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
-    }),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
