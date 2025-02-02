@@ -2,16 +2,12 @@ import { z } from 'zod';
 import { canViewWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
 import { parseRequest } from 'lib/request';
-import { reportParms, timezoneParam, unitParam } from 'lib/schema';
+import { reportParms, timezoneParam } from 'lib/schema';
 import { getRevenue } from 'queries/analytics/reports/getRevenue';
 import { getRevenueValues } from 'queries/analytics/reports/getRevenueValues';
 
 export async function GET(request: Request) {
-  const schema = z.object({
-    ...reportParms,
-  });
-
-  const { auth, query, error } = await parseRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request);
 
   if (error) {
     return error();
@@ -33,12 +29,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
-    websiteId: z.string().uuid(),
-    dateRange: z.object({
-      startDate: z.date(),
-      endDate: z.date(),
-      unit: unitParam,
-    }),
+    ...reportParms,
     timezone: timezoneParam,
   });
 

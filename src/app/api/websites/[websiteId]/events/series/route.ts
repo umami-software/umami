@@ -25,7 +25,7 @@ export async function GET(
 
   const { websiteId } = await params;
   const { timezone } = query;
-  const { startDate, endDate, unit } = await getRequestDateRange(request);
+  const { startDate, endDate, unit } = await getRequestDateRange(query);
 
   if (!(await canViewWebsite(auth, websiteId))) {
     return unauthorized();

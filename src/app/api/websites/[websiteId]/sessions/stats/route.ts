@@ -15,7 +15,7 @@ export async function GET(
     ...filterParams,
   });
 
-  const { auth, error } = await parseRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
     return error();
@@ -27,7 +27,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const { startDate, endDate } = await getRequestDateRange(request);
+  const { startDate, endDate } = await getRequestDateRange(query);
 
   const filters = getRequestFilters(request);
 

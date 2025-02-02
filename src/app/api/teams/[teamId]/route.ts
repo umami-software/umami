@@ -5,11 +5,7 @@ import { parseRequest } from 'lib/request';
 import { deleteTeam, getTeam, updateTeam } from 'queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
-  const schema = z.object({
-    teamId: z.string().uuid(),
-  });
-
-  const { auth, error } = await parseRequest(request, schema);
+  const { auth, error } = await parseRequest(request);
 
   if (error) {
     return error();

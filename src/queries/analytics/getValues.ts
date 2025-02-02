@@ -42,7 +42,7 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} as "value", count(*)
+    select ${column} as "value", count(*) as "count"
     from website_event
     inner join session
       on session.session_id = website_event.session_id
@@ -98,7 +98,7 @@ async function clickhouseQuery(
 
   return rawQuery(
     `
-    select ${column} as value, count(*)
+    select ${column} as "value", count(*) as "count"
     from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}

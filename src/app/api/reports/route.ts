@@ -1,9 +1,10 @@
 import { z } from 'zod';
-import { pagingParams } from 'lib/schema';
+import { uuid } from 'lib/crypto';
+import { pagingParams, reportTypeParam } from 'lib/schema';
 import { parseRequest } from 'lib/request';
-import { canViewTeam, canViewWebsite } from 'lib/auth';
+import { canViewTeam, canViewWebsite, canUpdateWebsite } from 'lib/auth';
 import { unauthorized, json } from 'lib/response';
-import { getReports } from 'queries/prisma/report';
+import { getReports, createReport } from 'queries';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -70,4 +71,38 @@ export async function GET(request: Request) {
   );
 
   return json(data);
+}
+
+export async function POST(request: Request) {
+  const schema = z.object({
+    websiteId: z.string().uuid(),
+    name: z.string().max(200),
+    type: reportTypeParam,
+    description: z.string().max(500),
+    parameters: z.object({}).passthrough(),
+  });
+
+  const { auth, body, error } = await parseRequest(request, schema);
+
+  if (error) {
+    return error();
+  }
+
+  const { websiteId, type, name, description, parameters } = body;
+
+  if (!(await canUpdateWebsite(auth, websiteId))) {
+    return unauthorized();
+  }
+
+  const result = await createReport({
+    id: uuid(),
+    userId: auth.user.id,
+    websiteId,
+    type,
+    name,
+    description,
+    parameters: JSON.stringify(parameters),
+  } as any);
+
+  return json(result);
 }

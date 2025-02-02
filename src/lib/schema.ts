@@ -51,5 +51,9 @@ export const reportParms = {
   dateRange: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
+    num: z.coerce.number().optional(),
+    offset: z.coerce.number().optional(),
+    unit: z.string().optional(),
+    value: z.string().optional(),
   }),
 };

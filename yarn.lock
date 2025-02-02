@@ -9206,10 +9206,10 @@ randombytes@^2.1.0:
   dependencies:
     safe-buffer "^5.1.0"
 
-react-basics@^0.125.0:
-  version "0.125.0"
-  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.125.0.tgz#6baf3fea503fb4475f51877efa05d1a734b232c6"
-  integrity sha512-8swjTaKfenwb+NunwzQo16V+dCA/38Kd+PSYWpBFyNmlFzs3Ax2ZgnysxDhW9IgfFr4wR6/0gzD3S31WzXq6Kw==
+react-basics@^0.126.0:
+  version "0.126.0"
+  resolved "https://registry.yarnpkg.com/react-basics/-/react-basics-0.126.0.tgz#44e7f5e5ab9d411e91e697dd39c6cb53b6222ae0"
+  integrity sha512-TQtNZMeH5FtJjYxSN72rBmZWlIcs9jK3oVSCUUxfZq9LnFdoFSagTLCrihs3YCnX8vZEJXaJHQsp7lKEfyH5sw==
   dependencies:
     "@react-spring/web" "^9.7.3"
     classnames "^2.3.1"

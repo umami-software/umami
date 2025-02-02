@@ -57,7 +57,7 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
               {day?.map((hour: number, n) => {
                 const pct = hour / max;
                 return (
-                  <div key={`${index}_${n}_${hour}`} className={classNames(styles.cell)}>
+                  <div key={n} className={classNames(styles.cell)}>
                     {hour > 0 && (
                       <TooltipPopup
                         label={`${formatMessage(labels.visitors)}: ${hour}`}

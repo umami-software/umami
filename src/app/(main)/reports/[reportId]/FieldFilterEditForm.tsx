@@ -226,7 +226,7 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
 
   return (
     <Menu className={styles.menu} variant="popup" onSelect={onSelect}>
-      {values?.map((value: any) => {
+      {values?.map(({ value }) => {
         return <Item key={value}>{formatValue(value, type)}</Item>;
       })}
     </Menu>
