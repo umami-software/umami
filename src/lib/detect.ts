@@ -28,7 +28,7 @@ export function getIpAddress(headers: Headers) {
   const ip = headers.get(header);
 
   if (header === 'x-forwarded-for') {
-    return ip?.split[',']?.[0]?.trim();
+    return ip?.split(',')?.[0]?.trim();
   }
 
   if (header === 'forwarded') {
