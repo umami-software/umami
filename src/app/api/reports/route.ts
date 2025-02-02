@@ -8,6 +8,8 @@ import { getReports, createReport } from 'queries';
 
 export async function GET(request: Request) {
   const schema = z.object({
+    websiteId: z.string().uuid().optional(),
+    teamId: z.string().uuid().optional(),
     ...pagingParams,
   });
 

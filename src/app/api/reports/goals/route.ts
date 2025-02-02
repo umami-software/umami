@@ -10,16 +10,23 @@ export async function POST(request: Request) {
     ...reportParms,
     goals: z
       .array(
-        z.object({
-          type: z.string().regex(/url|event|event-data/),
-          value: z.string(),
-          goal: z.number(),
-          operator: z
-            .string()
-            .regex(/count|sum|average/)
-            .refine(data => data['type'] === 'event-data'),
-          property: z.string().refine(data => data['type'] === 'event-data'),
-        }),
+        z
+          .object({
+            type: z.string().regex(/url|event|event-data/),
+            value: z.string(),
+            goal: z.coerce.number(),
+            operator: z
+              .string()
+              .regex(/count|sum|average/)
+              .optional(),
+            property: z.string().optional(),
+          })
+          .refine(data => {
+            if (data['type'] === 'event-data') {
+              return data['operator'] && data['property'];
+            }
+            return true;
+          }),
       )
       .min(1),
   });
