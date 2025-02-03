@@ -12,7 +12,7 @@ export function ReferrersTable(props: MetricsTableProps) {
         id="referrer"
         value={referrer}
         externalUrl={`https://${referrer}`}
-        label={!referrer && formatMessage(labels.none)}
+        label={!referrer && formatMessage(labels.directNone)}
       >
         <Favicon domain={referrer} />
       </FilterLink>
