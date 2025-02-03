@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 import { Button, Loading, Toggle, SearchField } from 'react-basics';
 import { firstBy } from 'thenby';

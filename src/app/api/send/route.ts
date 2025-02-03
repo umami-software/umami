@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
-import { serializeError } from 'serialize-error';
 import { createToken, parseToken, safeDecodeURI } from 'next-basics';
 import clickhouse from 'lib/clickhouse';
 import { parseRequest } from 'lib/request';
@@ -111,7 +110,7 @@ export async function POST(request: Request) {
         });
       } catch (e: any) {
         if (!e.message.toLowerCase().includes('unique constraint')) {
-          return serverError(serializeError(e));
+          return serverError(e);
         }
       }
     }

@@ -35,7 +35,7 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
   };
 
   const handleCheck = (checked: boolean) => {
-    const data = { shareId: checked ? generateId() : null };
+    const data = { name: website.name, shareId: checked ? generateId() : null };
     mutate(data, {
       onSuccess: async () => {
         touch(`website:${website.id}`);
