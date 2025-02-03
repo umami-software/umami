@@ -41,7 +41,7 @@ export interface PageResult<T> {
 
 export interface PagedQueryResult<T> {
   result: PageResult<T>;
-  search: any;
+  query: any;
   params: PageParams;
   setParams: Dispatch<SetStateAction<T | PageParams>>;
 }
