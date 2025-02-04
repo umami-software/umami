@@ -17,13 +17,13 @@ export function unauthorized(message?: any) {
 }
 
 export function forbidden(message?: any) {
-  return Response.json({ error: 'Forbidden', message, status: 403 });
+  return Response.json({ error: 'Forbidden', message }, { status: 403 });
 }
 
 export function notFound(message?: any) {
-  return Response.json({ error: 'Not found', message, status: 404 });
+  return Response.json({ error: 'Not found', message }, { status: 404 });
 }
 
 export function serverError(error?: any) {
-  return Response.json({ error: 'Server error', message: serializeError(error), status: 500 });
+  return Response.json({ error: 'Server error', message: serializeError(error) }, { status: 500 });
 }

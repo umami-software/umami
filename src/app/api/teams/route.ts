@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       name,
       accessCode: `team_${getRandomChars(16)}`,
     },
-    auth.user.userId,
+    auth.user.id,
   );
 
   return json(team);

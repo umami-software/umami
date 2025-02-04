@@ -15,7 +15,7 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const websites = await getUserWebsites(auth.user.userId, query);
+  const websites = await getUserWebsites(auth.user.id, query);
 
   return json(websites);
 }
@@ -24,8 +24,8 @@ export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
     domain: z.string().max(500),
-    shareId: z.string().max(50).nullable(),
-    teamId: z.string().nullable(),
+    shareId: z.string().max(50).nullable().optional(),
+    teamId: z.string().nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
   const data: any = {
     id: uuid(),
-    createdBy: auth.user.userId,
+    createdBy: auth.user.id,
     name,
     domain,
     shareId,
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
   };
 
   if (!teamId) {
-    data.userId = auth.user.userId;
+    data.userId = auth.user.id;
   }
 
   const website = await createWebsite(data);

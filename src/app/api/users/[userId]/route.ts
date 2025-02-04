@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { canUpdateUser, canViewUser } from 'lib/auth';
-import { getUser, getUserByUsername, updateUser } from 'queries';
-import { json, unauthorized, badRequest } from 'lib/response';
+import { canUpdateUser, canViewUser, canDeleteUser } from 'lib/auth';
+import { getUser, getUserByUsername, updateUser, deleteUser } from 'queries';
+import { json, unauthorized, badRequest, ok } from 'lib/response';
 import { hashPassword } from 'next-basics';
 import { parseRequest } from 'lib/request';
 
@@ -73,4 +73,29 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   const updated = await updateUser(userId, data);
 
   return json(updated);
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ userId: string }> },
+) {
+  const { auth, error } = await parseRequest(request);
+
+  if (error) {
+    return error();
+  }
+
+  const { userId } = await params;
+
+  if (!(await canDeleteUser(auth))) {
+    return unauthorized();
+  }
+
+  if (userId === auth.user.id) {
+    return badRequest('You cannot delete yourself.');
+  }
+
+  await deleteUser(userId);
+
+  return ok();
 }
