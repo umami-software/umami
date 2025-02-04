@@ -42,7 +42,7 @@ export function FilterLink({
           {safeDecodeURIComponent(label || value)}
         </Link>
       )}
-      {value && (
+      {externalUrl && (
         <a className={styles.link} href={externalUrl} target="_blank" rel="noreferrer noopener">
           <Icon className={styles.icon}>
             <Icons.External />

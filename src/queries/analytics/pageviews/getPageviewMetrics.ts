@@ -34,7 +34,8 @@ async function relationalQuery(
   let entryExitQuery = '';
   let excludeDomain = '';
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != {{websiteDomain}}`;
+    excludeDomain = `and website_event.referrer_domain != {{websiteDomain}}
+      and website_event.referrer_domain is not null`;
   }
 
   if (type === 'entry' || type === 'exit') {
@@ -96,7 +97,7 @@ async function clickhouseQuery(
     let entryExitQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != {websiteDomain:String}`;
+      excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
     }
 
     if (type === 'entry' || type === 'exit') {
