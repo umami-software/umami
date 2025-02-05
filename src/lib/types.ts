@@ -125,7 +125,7 @@ export interface WebsiteStats {
   visitors: { value: number; prev: number };
   visits: { value: number; prev: number };
   bounces: { value: number; prev: number };
-  totalTime: { value: number; prev: number };
+  totaltime: { value: number; prev: number };
 }
 
 export interface DateRange {
