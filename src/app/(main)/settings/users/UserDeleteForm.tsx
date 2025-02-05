@@ -1,5 +1,5 @@
-import { useApi, useMessages, useModified } from 'components/hooks';
-import ConfirmationForm from 'components/common/ConfirmationForm';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import ConfirmationForm from '@/components/common/ConfirmationForm';
 
 export function UserDeleteForm({ userId, username, onSave, onClose }) {
   const { FormattedMessage, messages, labels, formatMessage } = useMessages();

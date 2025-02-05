@@ -7,10 +7,6 @@
   height: 100px;
 }
 
-.row {
-  align-items: center;
-}
-
 .title {
   display: flex;
   flex-direction: row;

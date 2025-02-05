@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { parseRequest } from 'lib/request';
-import { unauthorized, json } from 'lib/response';
-import { canViewWebsite } from 'lib/auth';
-import { getEventDataFields } from 'queries';
+import { parseRequest } from '@/lib/request';
+import { unauthorized, json } from '@/lib/response';
+import { canViewWebsite } from '@/lib/auth';
+import { getEventDataFields } from '@/queries';
 
 export async function GET(
   request: Request,

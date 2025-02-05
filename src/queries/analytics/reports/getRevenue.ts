@@ -1,6 +1,6 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, getDatabaseType, POSTGRESQL, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
 
 export async function getRevenue(
   ...args: [

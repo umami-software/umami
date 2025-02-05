@@ -1,6 +1,6 @@
-import ConfirmationForm from 'components/common/ConfirmationForm';
-import { useApi, useMessages, useModified } from 'components/hooks';
-import { messages } from 'components/messages';
+import ConfirmationForm from '@/components/common/ConfirmationForm';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import { messages } from '@/components/messages';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import { FormattedMessage } from 'react-intl';
 

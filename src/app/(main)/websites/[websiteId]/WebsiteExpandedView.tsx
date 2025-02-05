@@ -1,21 +1,22 @@
-import LinkButton from 'components/common/LinkButton';
-import { useLocale, useMessages, useNavigation } from 'components/hooks';
-import SideNav from 'components/layout/SideNav';
-import BrowsersTable from 'components/metrics/BrowsersTable';
-import CitiesTable from 'components/metrics/CitiesTable';
-import CountriesTable from 'components/metrics/CountriesTable';
-import DevicesTable from 'components/metrics/DevicesTable';
-import EventsTable from 'components/metrics/EventsTable';
-import HostsTable from 'components/metrics/HostsTable';
-import LanguagesTable from 'components/metrics/LanguagesTable';
-import OSTable from 'components/metrics/OSTable';
-import PagesTable from 'components/metrics/PagesTable';
-import QueryParametersTable from 'components/metrics/QueryParametersTable';
-import ReferrersTable from 'components/metrics/ReferrersTable';
-import RegionsTable from 'components/metrics/RegionsTable';
-import ScreenTable from 'components/metrics/ScreenTable';
-import TagsTable from 'components/metrics/TagsTable';
 import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
+import LinkButton from '@/components/common/LinkButton';
+import { useLocale, useMessages, useNavigation } from '@/components/hooks';
+import SideNav from '@/components/layout/SideNav';
+import BrowsersTable from '@/components/metrics/BrowsersTable';
+import CitiesTable from '@/components/metrics/CitiesTable';
+import CountriesTable from '@/components/metrics/CountriesTable';
+import DevicesTable from '@/components/metrics/DevicesTable';
+import EventsTable from '@/components/metrics/EventsTable';
+import HostsTable from '@/components/metrics/HostsTable';
+import LanguagesTable from '@/components/metrics/LanguagesTable';
+import OSTable from '@/components/metrics/OSTable';
+import PagesTable from '@/components/metrics/PagesTable';
+import QueryParametersTable from '@/components/metrics/QueryParametersTable';
+import ReferrersTable from '@/components/metrics/ReferrersTable';
+import RegionsTable from '@/components/metrics/RegionsTable';
+import ScreenTable from '@/components/metrics/ScreenTable';
+import TagsTable from '@/components/metrics/TagsTable';
+import ChannelsTable from '@/components/metrics/ChannelsTable';
 import styles from './WebsiteExpandedView.module.css';
 
 const views = {
@@ -36,6 +37,7 @@ const views = {
   event: EventsTable,
   query: QueryParametersTable,
   tag: TagsTable,
+  channel: ChannelsTable,
 };
 
 export default function WebsiteExpandedView({
@@ -63,6 +65,11 @@ export default function WebsiteExpandedView({
       key: 'referrer',
       label: formatMessage(labels.referrers),
       url: renderUrl({ view: 'referrer' }),
+    },
+    {
+      key: 'channel',
+      label: formatMessage(labels.channels),
+      url: renderUrl({ view: 'channel' }),
     },
     {
       key: 'browser',

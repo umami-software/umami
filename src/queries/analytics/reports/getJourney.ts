@@ -1,6 +1,6 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
 
 interface JourneyResult {
   e1: string;

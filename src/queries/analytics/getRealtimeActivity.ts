@@ -1,7 +1,7 @@
-import prisma from 'lib/prisma';
-import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
-import { QueryFilters } from 'lib/types';
+import prisma from '@/lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
+import { QueryFilters } from '@/lib/types';
 
 export async function getRealtimeActivity(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({

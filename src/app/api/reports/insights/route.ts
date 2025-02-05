@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite } from 'lib/auth';
-import { unauthorized, json } from 'lib/response';
-import { parseRequest } from 'lib/request';
-import { getInsights } from 'queries';
-import { reportParms } from 'lib/schema';
+import { canViewWebsite } from '@/lib/auth';
+import { unauthorized, json } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
+import { getInsights } from '@/queries';
+import { reportParms } from '@/lib/schema';
 
 function convertFilters(filters: any[]) {
   return filters.reduce((obj, filter) => {

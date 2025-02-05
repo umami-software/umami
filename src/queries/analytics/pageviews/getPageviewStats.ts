@@ -1,8 +1,8 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
-import { EVENT_COLUMNS, EVENT_TYPE } from 'lib/constants';
-import { QueryFilters } from 'lib/types';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
+import { QueryFilters } from '@/lib/types';
 
 export async function getPageviewStats(...args: [websiteId: string, filters: QueryFilters]) {
   return runQuery({

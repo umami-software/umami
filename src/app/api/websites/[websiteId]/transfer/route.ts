@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from 'lib/auth';
-import { updateWebsite } from 'queries';
-import { parseRequest } from 'lib/request';
-import { badRequest, unauthorized, json } from 'lib/response';
+import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/lib/auth';
+import { updateWebsite } from '@/queries';
+import { parseRequest } from '@/lib/request';
+import { badRequest, unauthorized, json } from '@/lib/response';
 
 export async function POST(
   request: Request,

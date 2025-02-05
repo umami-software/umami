@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite } from 'lib/auth';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
-import { getValues } from 'queries';
-import { parseRequest, getRequestDateRange } from 'lib/request';
-import { badRequest, json, unauthorized } from 'lib/response';
+import { canViewWebsite } from '@/lib/auth';
+import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { getValues } from '@/queries';
+import { parseRequest, getRequestDateRange } from '@/lib/request';
+import { badRequest, json, unauthorized } from '@/lib/response';
 
 export async function GET(
   request: Request,

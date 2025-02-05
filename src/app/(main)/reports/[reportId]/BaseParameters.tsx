@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { FormRow } from 'react-basics';
-import { parseDateRange } from 'lib/date';
-import DateFilter from 'components/input/DateFilter';
-import WebsiteSelect from 'components/input/WebsiteSelect';
-import { useMessages, useTeamUrl, useWebsite } from 'components/hooks';
+import { parseDateRange } from '@/lib/date';
+import DateFilter from '@/components/input/DateFilter';
+import WebsiteSelect from '@/components/input/WebsiteSelect';
+import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
 import { ReportContext } from './Report';
 import styles from './BaseParameters.module.css';
 

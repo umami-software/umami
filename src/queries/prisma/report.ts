@@ -1,6 +1,6 @@
 import { Prisma, Report } from '@prisma/client';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
 async function findReport(criteria: Prisma.ReportFindUniqueArgs): Promise<Report> {

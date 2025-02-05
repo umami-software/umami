@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { StatusLight } from 'react-basics';
-import { useApi } from 'components/hooks';
-import { useMessages } from 'components/hooks';
+import { useApi } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './ActiveUsers.module.css';
 
 export function ActiveUsers({

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useMessages, useNavigation } from 'components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import { Icon, Icons } from 'react-basics';

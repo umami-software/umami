@@ -1,8 +1,8 @@
-import clickhouse from 'lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from 'lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
-import { QueryFilters } from 'lib/types';
+import clickhouse from '@/lib/clickhouse';
+import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import { QueryFilters } from '@/lib/types';
 
 export async function getPageviewMetrics(
   ...args: [

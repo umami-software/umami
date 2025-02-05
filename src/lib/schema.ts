@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isValidTimezone } from 'lib/date';
+import { isValidTimezone } from '@/lib/date';
 import { UNIT_TYPES } from './constants';
 
 export const filterParams = {

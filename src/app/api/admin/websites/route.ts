@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { parseRequest } from 'lib/request';
-import { json, unauthorized } from 'lib/response';
-import { pagingParams } from 'lib/schema';
-import { canViewAllWebsites } from 'lib/auth';
-import { getWebsites } from 'queries/prisma/website';
-import { ROLES } from 'lib/constants';
+import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { pagingParams } from '@/lib/schema';
+import { canViewAllWebsites } from '@/lib/auth';
+import { getWebsites } from '@/queries/prisma/website';
+import { ROLES } from '@/lib/constants';
 
 export async function GET(request: Request) {
   const schema = z.object({

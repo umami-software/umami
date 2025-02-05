@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import * as reactQuery from '@tanstack/react-query';
-import { getClientAuthToken } from 'lib/client';
-import { SHARE_TOKEN_HEADER } from 'lib/constants';
-import { httpGet, httpPost, httpPut, httpDelete } from 'lib/fetch';
-import useStore from 'store/app';
+import { getClientAuthToken } from '@/lib/client';
+import { SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { httpGet, httpPost, httpPut, httpDelete } from '@/lib/fetch';
+import useStore from '@/store/app';
 
 const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 

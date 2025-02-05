@@ -1,6 +1,6 @@
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useState } from 'react';
-import { PageResult, PageParams, PagedQueryResult } from 'lib/types';
+import { PageResult, PageParams, PagedQueryResult } from '@/lib/types';
 import { useApi } from './useApi';
 import { useNavigation } from './useNavigation';
 

@@ -1,12 +1,12 @@
 import { Prisma } from '@prisma/client';
-import { DATA_TYPE } from 'lib/constants';
-import { uuid } from 'lib/crypto';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { flattenJSON, getStringValue } from 'lib/data';
-import clickhouse from 'lib/clickhouse';
-import kafka from 'lib/kafka';
-import prisma from 'lib/prisma';
-import { DynamicData } from 'lib/types';
+import { DATA_TYPE } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { flattenJSON, getStringValue } from '@/lib/data';
+import clickhouse from '@/lib/clickhouse';
+import kafka from '@/lib/kafka';
+import prisma from '@/lib/prisma';
+import { DynamicData } from '@/lib/types';
 
 export async function saveEventData(data: {
   websiteId: string;

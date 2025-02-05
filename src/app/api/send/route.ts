@@ -1,15 +1,15 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
-import { createToken, parseToken } from 'lib/jwt';
-import { safeDecodeURI } from 'lib/url';
-import clickhouse from 'lib/clickhouse';
-import { parseRequest } from 'lib/request';
-import { badRequest, json, forbidden, serverError } from 'lib/response';
-import { fetchSession, fetchWebsite } from 'lib/load';
-import { getClientInfo, hasBlockedIp } from 'lib/detect';
-import { secret, uuid, visitSalt } from 'lib/crypto';
-import { COLLECTION_TYPE } from 'lib/constants';
-import { createSession, saveEvent, saveSessionData } from 'queries';
+import { createToken, parseToken } from '@/lib/jwt';
+import { safeDecodeURI } from '@/lib/url';
+import clickhouse from '@/lib/clickhouse';
+import { parseRequest } from '@/lib/request';
+import { badRequest, json, forbidden, serverError } from '@/lib/response';
+import { fetchSession, fetchWebsite } from '@/lib/load';
+import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { secret, uuid, visitSalt } from '@/lib/crypto';
+import { COLLECTION_TYPE } from '@/lib/constants';
+import { createSession, saveEvent, saveSessionData } from '@/queries';
 
 export async function POST(request: Request) {
   // Bot check

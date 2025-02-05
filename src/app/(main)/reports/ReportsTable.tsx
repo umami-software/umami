@@ -1,7 +1,7 @@
 import { GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
-import LinkButton from 'components/common/LinkButton';
-import { useMessages, useLogin, useTeamUrl } from 'components/hooks';
-import { REPORT_TYPES } from 'lib/constants';
+import LinkButton from '@/components/common/LinkButton';
+import { useMessages, useLogin, useTeamUrl } from '@/components/hooks';
+import { REPORT_TYPES } from '@/lib/constants';
 import ReportDeleteButton from './ReportDeleteButton';
 
 export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomain?: boolean }) {

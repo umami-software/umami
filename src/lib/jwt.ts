@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { decrypt, encrypt } from 'lib/crypto';
+import { decrypt, encrypt } from '@/lib/crypto';
 
 export function createToken(payload: any, secret: any, options?: any) {
   return jwt.sign(payload, secret, options);

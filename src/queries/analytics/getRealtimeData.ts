@@ -1,4 +1,4 @@
-import { getPageviewStats, getRealtimeActivity, getSessionStats } from 'queries/index';
+import { getPageviewStats, getRealtimeActivity, getSessionStats } from '@/queries/index';
 
 function increment(data: object, key: string) {
   if (key) {

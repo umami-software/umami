@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Button, ButtonGroup, Calendar } from 'react-basics';
 import { isAfter, isBefore, isSameDay, startOfDay, endOfDay } from 'date-fns';
-import { useLocale } from 'components/hooks';
-import { FILTER_DAY, FILTER_RANGE } from 'lib/constants';
-import { useMessages } from 'components/hooks';
+import { useLocale } from '@/components/hooks';
+import { FILTER_DAY, FILTER_RANGE } from '@/lib/constants';
+import { useMessages } from '@/components/hooks';
 import styles from './DatePickerForm.module.css';
 
 export function DatePickerForm({

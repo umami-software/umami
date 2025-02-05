@@ -1,13 +1,13 @@
 import { z } from 'zod';
-import { checkPassword } from 'lib/auth';
-import { createSecureToken } from 'lib/jwt';
+import { checkPassword } from '@/lib/auth';
+import { createSecureToken } from '@/lib/jwt';
 import { redisEnabled } from '@umami/redis-client';
-import { getUserByUsername } from 'queries';
-import { json, unauthorized } from 'lib/response';
-import { parseRequest } from 'lib/request';
-import { saveAuth } from 'lib/auth';
-import { secret } from 'lib/crypto';
-import { ROLES } from 'lib/constants';
+import { getUserByUsername } from '@/queries';
+import { json, unauthorized } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
+import { saveAuth } from '@/lib/auth';
+import { secret } from '@/lib/crypto';
+import { ROLES } from '@/lib/constants';
 
 export async function POST(request: Request) {
   const schema = z.object({

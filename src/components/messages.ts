@@ -280,6 +280,7 @@ export const labels = defineMessages({
   lastSeen: { id: 'label.last-seen', defaultMessage: 'Last seen' },
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
+  channels: { id: 'label.channels', defaultMessage: 'Channels' },
 });
 
 export const messages = defineMessages({

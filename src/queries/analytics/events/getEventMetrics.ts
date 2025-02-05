@@ -1,8 +1,8 @@
-import clickhouse from 'lib/clickhouse';
-import { EVENT_TYPE } from 'lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
-import { QueryFilters, WebsiteEventMetric } from 'lib/types';
+import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import { QueryFilters, WebsiteEventMetric } from '@/lib/types';
 
 export async function getEventMetrics(
   ...args: [websiteId: string, filters: QueryFilters]

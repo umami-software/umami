@@ -1,7 +1,7 @@
 import debug from 'debug';
 import prisma from '@umami/prisma-client';
 import { formatInTimeZone } from 'date-fns-tz';
-import { MYSQL, POSTGRESQL, getDatabaseType } from 'lib/db';
+import { MYSQL, POSTGRESQL, getDatabaseType } from '@/lib/db';
 import { SESSION_COLUMNS, OPERATORS, DEFAULT_PAGE_SIZE } from './constants';
 import { fetchWebsite } from './load';
 import { maxDate } from './date';

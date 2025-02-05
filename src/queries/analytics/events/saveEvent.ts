@@ -1,9 +1,9 @@
-import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import clickhouse from 'lib/clickhouse';
-import kafka from 'lib/kafka';
-import prisma from 'lib/prisma';
-import { uuid } from 'lib/crypto';
+import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import clickhouse from '@/lib/clickhouse';
+import kafka from '@/lib/kafka';
+import prisma from '@/lib/prisma';
+import { uuid } from '@/lib/crypto';
 import { saveEventData } from './saveEventData';
 
 export async function saveEvent(args: {

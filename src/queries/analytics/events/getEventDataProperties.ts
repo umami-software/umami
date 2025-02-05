@@ -1,7 +1,7 @@
-import prisma from 'lib/prisma';
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import { QueryFilters, WebsiteEventData } from 'lib/types';
+import prisma from '@/lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { QueryFilters, WebsiteEventData } from '@/lib/types';
 
 export async function getEventDataProperties(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]

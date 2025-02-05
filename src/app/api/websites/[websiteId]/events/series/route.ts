@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { parseRequest, getRequestDateRange, getRequestFilters } from 'lib/request';
-import { unauthorized, json } from 'lib/response';
-import { canViewWebsite } from 'lib/auth';
-import { filterParams, timezoneParam, unitParam } from 'lib/schema';
-import { getEventMetrics } from 'queries';
+import { parseRequest, getRequestDateRange, getRequestFilters } from '@/lib/request';
+import { unauthorized, json } from '@/lib/response';
+import { canViewWebsite } from '@/lib/auth';
+import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
+import { getEventMetrics } from '@/queries';
 
 export async function GET(
   request: Request,

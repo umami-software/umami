@@ -1,5 +1,5 @@
-import { useApi, useMessages } from 'components/hooks';
-import TypeConfirmationForm from 'components/common/TypeConfirmationForm';
+import { useApi, useMessages } from '@/components/hooks';
+import TypeConfirmationForm from '@/components/common/TypeConfirmationForm';
 
 const CONFIRM_VALUE = 'DELETE';
 

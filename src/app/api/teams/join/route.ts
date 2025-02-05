@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { unauthorized, json, badRequest, notFound } from 'lib/response';
-import { canCreateTeam } from 'lib/auth';
-import { parseRequest } from 'lib/request';
-import { ROLES } from 'lib/constants';
-import { createTeamUser, findTeam, getTeamUser } from 'queries';
+import { unauthorized, json, badRequest, notFound } from '@/lib/response';
+import { canCreateTeam } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
+import { ROLES } from '@/lib/constants';
+import { createTeamUser, findTeam, getTeamUser } from '@/queries';
 
 export async function POST(request: Request) {
   const schema = z.object({

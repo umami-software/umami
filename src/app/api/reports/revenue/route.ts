@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { canViewWebsite } from 'lib/auth';
-import { unauthorized, json } from 'lib/response';
-import { parseRequest } from 'lib/request';
-import { reportParms, timezoneParam } from 'lib/schema';
-import { getRevenue } from 'queries/analytics/reports/getRevenue';
-import { getRevenueValues } from 'queries/analytics/reports/getRevenueValues';
+import { canViewWebsite } from '@/lib/auth';
+import { unauthorized, json } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
+import { reportParms, timezoneParam } from '@/lib/schema';
+import { getRevenue } from '@/queries/analytics/reports/getRevenue';
+import { getRevenueValues } from '@/queries/analytics/reports/getRevenueValues';
 
 export async function GET(request: Request) {
   const { auth, query, error } = await parseRequest(request);

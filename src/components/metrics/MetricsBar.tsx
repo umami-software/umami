@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Loading, cloneChildren } from 'react-basics';
-import ErrorMessage from 'components/common/ErrorMessage';
-import { formatLongNumber } from 'lib/format';
+import ErrorMessage from '@/components/common/ErrorMessage';
+import { formatLongNumber } from '@/lib/format';
 import styles from './MetricsBar.module.css';
 
 export interface MetricsBarProps {

@@ -1,6 +1,6 @@
-import { useReports } from 'components/hooks';
+import { useReports } from '@/components/hooks';
 import ReportsTable from './ReportsTable';
-import DataTable from 'components/common/DataTable';
+import DataTable from '@/components/common/DataTable';
 import { ReactNode } from 'react';
 
 export default function ReportsDataTable({

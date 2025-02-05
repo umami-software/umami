@@ -1,5 +1,5 @@
-import { useApi, useMessages } from 'components/hooks';
-import { ROLES } from 'lib/constants';
+import { useApi, useMessages } from '@/components/hooks';
+import { ROLES } from '@/lib/constants';
 import {
   Button,
   Dropdown,

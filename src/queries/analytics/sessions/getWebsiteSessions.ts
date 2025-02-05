@@ -1,7 +1,7 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
-import { PageParams, QueryFilters } from 'lib/types';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
+import { PageParams, QueryFilters } from '@/lib/types';
 
 export async function getWebsiteSessions(
   ...args: [websiteId: string, filters?: QueryFilters, pageParams?: PageParams]

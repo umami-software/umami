@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
-import { useFormat, useMessages } from 'components/hooks';
+import { useFormat, useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { formatShortTime } from 'lib/format';
+import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { formatShortTime } from '@/lib/format';
 
 export function InsightsTable() {
   const [fields, setFields] = useState([]);

@@ -1,9 +1,9 @@
 import { ZodObject } from 'zod';
-import { FILTER_COLUMNS } from 'lib/constants';
-import { badRequest, unauthorized } from 'lib/response';
-import { getAllowedUnits, getMinimumUnit } from 'lib/date';
-import { checkAuth } from 'lib/auth';
-import { getWebsiteDateRange } from 'queries';
+import { FILTER_COLUMNS } from '@/lib/constants';
+import { badRequest, unauthorized } from '@/lib/response';
+import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
+import { checkAuth } from '@/lib/auth';
+import { getWebsiteDateRange } from '@/queries';
 
 export async function getJsonBody(request: Request) {
   try {

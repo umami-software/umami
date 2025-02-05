@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { parseRequest } from 'lib/request';
-import { json, unauthorized } from 'lib/response';
-import { pagingParams } from 'lib/schema';
-import { canViewUsers } from 'lib/auth';
-import { getUsers } from 'queries/prisma/user';
+import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { pagingParams } from '@/lib/schema';
+import { canViewUsers } from '@/lib/auth';
+import { getUsers } from '@/queries/prisma/user';
 
 export async function GET(request: Request) {
   const schema = z.object({

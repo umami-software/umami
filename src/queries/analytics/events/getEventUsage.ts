@@ -1,5 +1,5 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery, notImplemented } from 'lib/db';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery, notImplemented } from '@/lib/db';
 
 export function getEventUsage(...args: [websiteIds: string[], startDate: Date, endDate: Date]) {
   return runQuery({

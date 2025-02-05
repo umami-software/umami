@@ -1,6 +1,6 @@
-import prisma from 'lib/prisma';
-import clickhouse from 'lib/clickhouse';
-import { runQuery, PRISMA, CLICKHOUSE } from 'lib/db';
+import prisma from '@/lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { runQuery, PRISMA, CLICKHOUSE } from '@/lib/db';
 
 export async function getWebsiteSession(...args: [websiteId: string, sessionId: string]) {
   return runQuery({

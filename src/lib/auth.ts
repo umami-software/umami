@@ -2,11 +2,11 @@ import bcrypt from 'bcryptjs';
 import { Report } from '@prisma/client';
 import { getClient, redisEnabled } from '@umami/redis-client';
 import debug from 'debug';
-import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret, getRandomChars } from 'lib/crypto';
-import { createSecureToken, parseSecureToken, parseToken } from 'lib/jwt';
-import { ensureArray } from 'lib/utils';
-import { getTeamUser, getUser, getWebsite } from 'queries';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
+import { secret, getRandomChars } from '@/lib/crypto';
+import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { ensureArray } from '@/lib/utils';
+import { getTeamUser, getUser, getWebsite } from '@/queries';
 import { Auth } from './types';
 
 const log = debug('umami:auth');

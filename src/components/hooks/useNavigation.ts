@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { buildUrl } from 'lib/url';
+import { buildUrl } from '@/lib/url';
 
 export function useNavigation(): {
   pathname: string;

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { unauthorized, json, notFound, ok } from 'lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam } from 'lib/auth';
-import { parseRequest } from 'lib/request';
-import { deleteTeam, getTeam, updateTeam } from 'queries';
+import { unauthorized, json, notFound, ok } from '@/lib/response';
+import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
+import { deleteTeam, getTeam, updateTeam } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const { auth, error } = await parseRequest(request);

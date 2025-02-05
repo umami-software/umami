@@ -1,11 +1,11 @@
 import { Key, useContext, useState } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import thenby from 'thenby';
-import { percentFilter } from 'lib/filters';
-import ListTable from 'components/metrics/ListTable';
-import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
-import { useMessages } from 'components/hooks';
-import { RealtimeData } from 'lib/types';
+import { percentFilter } from '@/lib/filters';
+import ListTable from '@/components/metrics/ListTable';
+import { FILTER_PAGES, FILTER_REFERRERS } from '@/lib/constants';
+import { useMessages } from '@/components/hooks';
+import { RealtimeData } from '@/lib/types';
 import { WebsiteContext } from '../WebsiteProvider';
 
 export function RealtimeUrls({ data }: { data: RealtimeData }) {

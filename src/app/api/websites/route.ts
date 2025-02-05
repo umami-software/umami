@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { canCreateTeamWebsite, canCreateWebsite } from 'lib/auth';
-import { json, unauthorized } from 'lib/response';
-import { uuid } from 'lib/crypto';
-import { parseRequest } from 'lib/request';
-import { createWebsite, getUserWebsites } from 'queries';
-import { pagingParams } from 'lib/schema';
+import { canCreateTeamWebsite, canCreateWebsite } from '@/lib/auth';
+import { json, unauthorized } from '@/lib/response';
+import { uuid } from '@/lib/crypto';
+import { parseRequest } from '@/lib/request';
+import { createWebsite, getUserWebsites } from '@/queries';
+import { pagingParams } from '@/lib/schema';
 
 export async function GET(request: Request) {
   const schema = z.object({ ...pagingParams });

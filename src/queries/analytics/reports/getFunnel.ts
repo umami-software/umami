@@ -1,6 +1,6 @@
-import clickhouse from 'lib/clickhouse';
-import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
-import prisma from 'lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import prisma from '@/lib/prisma';
 
 const formatResults = (steps: { type: string; value: string }[]) => (results: unknown) => {
   return steps.map((step: { type: string; value: string }, i: number) => {

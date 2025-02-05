@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { hashPassword, canCreateUser } from 'lib/auth';
-import { ROLES } from 'lib/constants';
-import { uuid } from 'lib/crypto';
-import { parseRequest } from 'lib/request';
-import { unauthorized, json, badRequest } from 'lib/response';
-import { createUser, getUserByUsername } from 'queries';
+import { hashPassword, canCreateUser } from '@/lib/auth';
+import { ROLES } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
+import { parseRequest } from '@/lib/request';
+import { unauthorized, json, badRequest } from '@/lib/response';
+import { createUser, getUserByUsername } from '@/queries';
 
 export async function POST(request: Request) {
   const schema = z.object({

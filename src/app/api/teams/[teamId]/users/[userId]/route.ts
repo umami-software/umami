@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { unauthorized, json, badRequest, ok } from 'lib/response';
-import { canDeleteTeam, canUpdateTeam } from 'lib/auth';
-import { parseRequest } from 'lib/request';
-import { deleteTeam, getTeamUser, updateTeamUser } from 'queries';
+import { unauthorized, json, badRequest, ok } from '@/lib/response';
+import { canDeleteTeam, canUpdateTeam } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
+import { deleteTeam, getTeamUser, updateTeamUser } from '@/queries';
 
 export async function GET(
   request: Request,

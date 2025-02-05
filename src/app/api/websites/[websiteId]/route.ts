@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from 'lib/auth';
-import { SHARE_ID_REGEX } from 'lib/constants';
-import { parseRequest } from 'lib/request';
-import { ok, json, unauthorized, serverError } from 'lib/response';
-import { deleteWebsite, getWebsite, updateWebsite } from 'queries';
+import { canUpdateWebsite, canDeleteWebsite, canViewWebsite } from '@/lib/auth';
+import { SHARE_ID_REGEX } from '@/lib/constants';
+import { parseRequest } from '@/lib/request';
+import { ok, json, unauthorized, serverError } from '@/lib/response';
+import { deleteWebsite, getWebsite, updateWebsite } from '@/queries';
 
 export async function GET(
   request: Request,

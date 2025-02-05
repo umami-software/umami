@@ -7,7 +7,7 @@ import {
   TextField,
   SubmitButton,
 } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export function TypeConfirmationForm({
   confirmationValue,

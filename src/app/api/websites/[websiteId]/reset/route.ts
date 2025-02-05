@@ -1,7 +1,7 @@
-import { canUpdateWebsite } from 'lib/auth';
-import { resetWebsite } from 'queries';
-import { unauthorized, ok } from 'lib/response';
-import { parseRequest } from 'lib/request';
+import { canUpdateWebsite } from '@/lib/auth';
+import { resetWebsite } from '@/queries';
+import { unauthorized, ok } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
 
 export async function POST(
   request: Request,

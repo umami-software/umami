@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import FilterButtons from 'components/common/FilterButtons';
-import { emptyFilter, paramFilter } from 'lib/filters';
-import { FILTER_RAW, FILTER_COMBINED } from 'lib/constants';
+import FilterButtons from '@/components/common/FilterButtons';
+import { emptyFilter, paramFilter } from '@/lib/filters';
+import { FILTER_RAW, FILTER_COMBINED } from '@/lib/constants';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './QueryParametersTable.module.css';
 
 const filters = {

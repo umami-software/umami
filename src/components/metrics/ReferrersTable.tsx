@@ -1,6 +1,6 @@
-import FilterLink from 'components/common/FilterLink';
-import Favicon from 'components/common/Favicon';
-import { useMessages } from 'components/hooks';
+import FilterLink from '@/components/common/FilterLink';
+import Favicon from '@/components/common/Favicon';
+import { useMessages } from '@/components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
 
 export function ReferrersTable(props: MetricsTableProps) {

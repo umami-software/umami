@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canUpdateUser, canViewUser, canDeleteUser } from 'lib/auth';
-import { getUser, getUserByUsername, updateUser, deleteUser } from 'queries';
-import { json, unauthorized, badRequest, ok } from 'lib/response';
-import { hashPassword } from 'lib/auth';
-import { parseRequest } from 'lib/request';
+import { canUpdateUser, canViewUser, canDeleteUser } from '@/lib/auth';
+import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries';
+import { json, unauthorized, badRequest, ok } from '@/lib/response';
+import { hashPassword } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const { auth, error } = await parseRequest(request);

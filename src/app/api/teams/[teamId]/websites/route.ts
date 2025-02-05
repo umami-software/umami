@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { unauthorized, json } from 'lib/response';
-import { canViewTeam } from 'lib/auth';
-import { parseRequest } from 'lib/request';
-import { pagingParams } from 'lib/schema';
-import { getTeamWebsites } from 'queries';
+import { unauthorized, json } from '@/lib/response';
+import { canViewTeam } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
+import { pagingParams } from '@/lib/schema';
+import { getTeamWebsites } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({

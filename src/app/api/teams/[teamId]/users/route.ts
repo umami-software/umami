@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { unauthorized, json, badRequest } from 'lib/response';
-import { canAddUserToTeam, canUpdateTeam } from 'lib/auth';
-import { parseRequest } from 'lib/request';
-import { pagingParams, roleParam } from 'lib/schema';
-import { createTeamUser, getTeamUser, getTeamUsers } from 'queries';
+import { unauthorized, json, badRequest } from '@/lib/response';
+import { canAddUserToTeam, canUpdateTeam } from '@/lib/auth';
+import { parseRequest } from '@/lib/request';
+import { pagingParams, roleParam } from '@/lib/schema';
+import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({

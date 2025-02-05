@@ -1,6 +1,6 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useApi, useMessages, useModified } from 'components/hooks';
-import ConfirmationForm from 'components/common/ConfirmationForm';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import ConfirmationForm from '@/components/common/ConfirmationForm';
 
 export function ReportDeleteButton({
   reportId,

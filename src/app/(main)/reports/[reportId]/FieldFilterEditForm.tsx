@@ -1,6 +1,12 @@
-import { useFilters, useFormat, useLocale, useMessages, useWebsiteValues } from 'components/hooks';
-import { OPERATORS } from 'lib/constants';
-import { isEqualsOperator } from 'lib/params';
+import {
+  useFilters,
+  useFormat,
+  useLocale,
+  useMessages,
+  useWebsiteValues,
+} from '@/components/hooks';
+import { OPERATORS } from '@/lib/constants';
+import { isEqualsOperator } from '@/lib/params';
 import { useMemo, useState } from 'react';
 import {
   Button,

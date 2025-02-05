@@ -1,5 +1,5 @@
 import { useApi } from '../useApi';
-import { useCountryNames, useRegionNames } from 'components/hooks';
+import { useCountryNames, useRegionNames } from '@/components/hooks';
 import useLocale from '../useLocale';
 
 export function useWebsiteValues({

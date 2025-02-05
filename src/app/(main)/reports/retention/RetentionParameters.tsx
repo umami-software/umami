@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import { Form, FormButtons, FormRow, SubmitButton } from 'react-basics';
 import { ReportContext } from '../[reportId]/Report';
-import { MonthSelect } from 'components/input/MonthSelect';
+import { MonthSelect } from '@/components/input/MonthSelect';
 import BaseParameters from '../[reportId]/BaseParameters';
-import { parseDateRange } from 'lib/date';
+import { parseDateRange } from '@/lib/date';
 
 export function RetentionParameters() {
   const { report, runReport, isRunning, updateReport } = useContext(ReportContext);

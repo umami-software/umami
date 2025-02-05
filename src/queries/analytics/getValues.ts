@@ -1,6 +1,6 @@
-import prisma from 'lib/prisma';
-import clickhouse from 'lib/clickhouse';
-import { runQuery, CLICKHOUSE, PRISMA } from 'lib/db';
+import prisma from '@/lib/prisma';
+import clickhouse from '@/lib/clickhouse';
+import { runQuery, CLICKHOUSE, PRISMA } from '@/lib/db';
 
 export async function getValues(
   ...args: [websiteId: string, column: string, startDate: Date, endDate: Date, search: string]

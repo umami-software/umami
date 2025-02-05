@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { httpGet } from 'lib/fetch';
+import { httpGet } from '@/lib/fetch';
 import enUS from '../../../public/intl/country/en-US.json';
 
 const countryNames = {

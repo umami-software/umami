@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { json, unauthorized } from 'lib/response';
-import { getAllUserWebsitesIncludingTeamOwner } from 'queries/prisma/website';
-import { getEventUsage } from 'queries/analytics/events/getEventUsage';
-import { getEventDataUsage } from 'queries/analytics/events/getEventDataUsage';
-import { parseRequest } from 'lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { getAllUserWebsitesIncludingTeamOwner } from '@/queries/prisma/website';
+import { getEventUsage } from '@/queries/analytics/events/getEventUsage';
+import { getEventDataUsage } from '@/queries/analytics/events/getEventDataUsage';
+import { parseRequest } from '@/lib/request';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({

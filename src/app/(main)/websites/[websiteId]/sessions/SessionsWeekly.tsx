@@ -1,7 +1,7 @@
 import { format, startOfDay, addHours } from 'date-fns';
-import { useLocale, useMessages, useWebsiteSessionsWeekly } from 'components/hooks';
-import { LoadingPanel } from 'components/common/LoadingPanel';
-import { getDayOfWeekAsDate } from 'lib/date';
+import { useLocale, useMessages, useWebsiteSessionsWeekly } from '@/components/hooks';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { getDayOfWeekAsDate } from '@/lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
 import { TooltipPopup } from 'react-basics';

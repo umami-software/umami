@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { uuid } from 'lib/crypto';
-import { pagingParams, reportTypeParam } from 'lib/schema';
-import { parseRequest } from 'lib/request';
-import { canViewTeam, canViewWebsite, canUpdateWebsite } from 'lib/auth';
-import { unauthorized, json } from 'lib/response';
-import { getReports, createReport } from 'queries';
+import { uuid } from '@/lib/crypto';
+import { pagingParams, reportTypeParam } from '@/lib/schema';
+import { parseRequest } from '@/lib/request';
+import { canViewTeam, canViewWebsite, canUpdateWebsite } from '@/lib/auth';
+import { unauthorized, json } from '@/lib/response';
+import { getReports, createReport } from '@/queries';
 
 export async function GET(request: Request) {
   const schema = z.object({

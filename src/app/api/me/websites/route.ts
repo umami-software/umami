@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { pagingParams } from 'lib/schema';
-import { getUserWebsites } from 'queries';
-import { json } from 'lib/response';
-import { parseRequest } from 'lib/request';
+import { pagingParams } from '@/lib/schema';
+import { getUserWebsites } from '@/queries';
+import { json } from '@/lib/response';
+import { parseRequest } from '@/lib/request';
 
 export async function GET(request: Request) {
   const schema = z.object({

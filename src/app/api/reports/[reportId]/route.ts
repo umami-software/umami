@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { parseRequest } from 'lib/request';
-import { deleteReport, getReport, updateReport } from 'queries';
-import { canDeleteReport, canUpdateReport, canViewReport } from 'lib/auth';
-import { unauthorized, json, notFound, ok } from 'lib/response';
-import { reportTypeParam } from 'lib/schema';
+import { parseRequest } from '@/lib/request';
+import { deleteReport, getReport, updateReport } from '@/queries';
+import { canDeleteReport, canUpdateReport, canViewReport } from '@/lib/auth';
+import { unauthorized, json, notFound, ok } from '@/lib/response';
+import { reportTypeParam } from '@/lib/schema';
 
 export async function GET(request: Request, { params }: { params: Promise<{ reportId: string }> }) {
   const { auth, error } = await parseRequest(request);

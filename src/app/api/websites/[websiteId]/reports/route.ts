@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { canViewWebsite } from 'lib/auth';
-import { getWebsiteReports } from 'queries';
-import { pagingParams } from 'lib/schema';
-import { parseRequest } from 'lib/request';
-import { unauthorized, json } from 'lib/response';
+import { canViewWebsite } from '@/lib/auth';
+import { getWebsiteReports } from '@/queries';
+import { pagingParams } from '@/lib/schema';
+import { parseRequest } from '@/lib/request';
+import { unauthorized, json } from '@/lib/response';
 
 export async function GET(
   request: Request,

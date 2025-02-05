@@ -1,4 +1,4 @@
-import { buildUrl } from 'lib/url';
+import { buildUrl } from '@/lib/url';
 
 export async function request(method: string, url: string, body?: string, headers: object = {}) {
   const res = await fetch(url, {
