@@ -32,7 +32,7 @@ export async function GET(
   }
 
   const filters = {
-    ...getRequestFilters(request),
+    ...getRequestFilters(query),
     startDate,
     endDate,
     timezone,
