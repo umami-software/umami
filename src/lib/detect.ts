@@ -109,6 +109,8 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
 
   // Database lookup
   if (!lookup) {
+    // eslint-disable-next-line no-console
+    console.log('debug: loading GeoLite2-City.mmdb');
     const dir = path.join(process.cwd(), 'geo');
 
     lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
