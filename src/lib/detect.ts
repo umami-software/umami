@@ -40,6 +40,8 @@ async function initializeMaxmind() {
   return lookupPromise;
 }
 
+initializeMaxmind()
+
 export function getIpAddress(req: NextApiRequestCollect) {
   const customHeader = String(process.env.CLIENT_IP_HEADER).toLowerCase();
 
