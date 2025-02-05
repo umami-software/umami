@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import useStore, { setTheme } from 'store/app';
-import { getItem, setItem } from 'next-basics';
+import { getItem, setItem } from 'lib/storage';
 import { DEFAULT_THEME, THEME_COLORS, THEME_CONFIG } from 'lib/constants';
 import { colord } from 'colord';
 

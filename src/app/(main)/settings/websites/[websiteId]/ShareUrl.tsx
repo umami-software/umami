@@ -9,7 +9,7 @@ import {
   LoadingButton,
 } from 'react-basics';
 import { useContext, useState } from 'react';
-import { getRandomChars } from 'next-basics';
+import { getRandomChars } from 'lib/crypto';
 import { useApi, useMessages, useModified } from 'components/hooks';
 import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
 

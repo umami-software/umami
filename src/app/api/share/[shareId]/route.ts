@@ -1,7 +1,7 @@
 import { json, notFound } from 'lib/response';
-import { getSharedWebsite } from 'queries';
-import { createToken } from 'next-basics';
+import { createToken } from 'lib/jwt';
 import { secret } from 'lib/crypto';
+import { getSharedWebsite } from 'queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ shareId: string }> }) {
   const { shareId } = await params;

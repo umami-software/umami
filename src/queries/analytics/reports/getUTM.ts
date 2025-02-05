@@ -1,7 +1,6 @@
 import clickhouse from 'lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import prisma from 'lib/prisma';
-import { safeDecodeURIComponent } from 'next-basics';
 
 export async function getUTM(
   ...args: [
@@ -84,7 +83,7 @@ function parseParameters(data: any[]) {
 
       for (const [key, value] of searchParams) {
         if (key.match(/^utm_(\w+)$/)) {
-          const name = safeDecodeURIComponent(value);
+          const name = value;
           if (!obj[key]) {
             obj[key] = { [name]: Number(num) };
           } else if (!obj[key][name]) {

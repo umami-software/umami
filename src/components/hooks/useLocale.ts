@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { httpGet, setItem } from 'next-basics';
+import { httpGet } from 'lib/fetch';
+import { setItem } from 'lib/storage';
 import { LOCALE_CONFIG } from 'lib/constants';
 import { getDateLocale, getTextDirection } from 'lib/lang';
 import useStore, { setLocale } from 'store/app';

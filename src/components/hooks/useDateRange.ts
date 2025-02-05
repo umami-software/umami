@@ -1,5 +1,5 @@
 import { getMinimumUnit, parseDateRange } from 'lib/date';
-import { setItem } from 'next-basics';
+import { setItem } from 'lib/storage';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_COMPARE, DEFAULT_DATE_RANGE } from 'lib/constants';
 import websiteStore, { setWebsiteDateRange, setWebsiteDateCompare } from 'store/websites';
 import appStore, { setDateRange } from 'store/app';

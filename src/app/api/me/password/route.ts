@@ -1,8 +1,8 @@
 import { z } from 'zod';
+import { checkPassword, hashPassword } from 'lib/auth';
 import { parseRequest } from 'lib/request';
 import { json, badRequest } from 'lib/response';
 import { getUser, updateUser } from 'queries/prisma/user';
-import { checkPassword, hashPassword } from 'next-basics';
 
 export async function POST(request: Request) {
   const schema = z.object({

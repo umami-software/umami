@@ -16,7 +16,7 @@ export function TeamsButton({
 }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
-  const { result } = useTeams(user?.id);
+  const { result } = useTeams(user.id);
   const { teamId } = useTeamUrl();
   const team = result?.data?.find(({ id }) => id === teamId);
 

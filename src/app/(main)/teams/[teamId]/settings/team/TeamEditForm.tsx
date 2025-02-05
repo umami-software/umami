@@ -9,7 +9,7 @@ import {
   Flexbox,
   useToasts,
 } from 'react-basics';
-import { getRandomChars } from 'next-basics';
+import { getRandomChars } from 'lib/crypto';
 import { useContext, useRef, useState } from 'react';
 import { useApi, useMessages, useModified } from 'components/hooks';
 import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';

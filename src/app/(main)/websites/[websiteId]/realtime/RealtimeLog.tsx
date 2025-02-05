@@ -6,7 +6,6 @@ import Icons from 'components/icons';
 import { BROWSERS, OS_NAMES } from 'lib/constants';
 import { stringToColor } from 'lib/format';
 import { RealtimeData } from 'lib/types';
-import { safeDecodeURI } from 'next-basics';
 import { useContext, useMemo, useState } from 'react';
 import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
@@ -99,7 +98,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
           target="_blank"
           rel="noreferrer noopener"
         >
-          {safeDecodeURI(url)}
+          {url}
         </a>
       );
     }

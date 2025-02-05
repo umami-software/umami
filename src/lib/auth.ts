@@ -1,26 +1,30 @@
+import bcrypt from 'bcryptjs';
 import { Report } from '@prisma/client';
 import { getClient, redisEnabled } from '@umami/redis-client';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from 'lib/constants';
-import { secret } from 'lib/crypto';
-import { NextApiRequest } from 'next';
-import {
-  createSecureToken,
-  ensureArray,
-  getRandomChars,
-  parseSecureToken,
-  parseToken,
-} from 'next-basics';
+import { secret, getRandomChars } from 'lib/crypto';
+import { createSecureToken, parseSecureToken, parseToken } from 'lib/jwt';
+import { ensureArray } from 'lib/utils';
 import { getTeamUser, getUser, getWebsite } from 'queries';
 import { Auth } from './types';
 
 const log = debug('umami:auth');
 const cloudMode = process.env.CLOUD_MODE;
+const SALT_ROUNDS = 10;
+
+export function hashPassword(password: string, rounds = SALT_ROUNDS) {
+  return bcrypt.hashSync(password, rounds);
+}
+
+export function checkPassword(password: string, passwordHash: string) {
+  return bcrypt.compareSync(password, passwordHash);
+}
 
 export async function checkAuth(request: Request) {
   const token = request.headers.get('authorization')?.split(' ')?.[1];
   const payload = parseSecureToken(token, secret());
-  const shareToken = await parseShareToken(request as any);
+  const shareToken = await parseShareToken(request.headers);
 
   let user = null;
   const { userId, authKey, grant } = payload || {};
@@ -73,17 +77,9 @@ export async function saveAuth(data: any, expire = 0) {
   return createSecureToken({ authKey }, secret());
 }
 
-export function getAuthToken(req: NextApiRequest) {
+export function parseShareToken(headers: Headers) {
   try {
-    return req.headers.authorization.split(' ')[1];
-  } catch {
-    return null;
-  }
-}
-
-export function parseShareToken(req: Request) {
-  try {
-    return parseToken(req.headers[SHARE_TOKEN_HEADER], secret());
+    return parseToken(headers.get(SHARE_TOKEN_HEADER), secret());
   } catch (e) {
     log(e);
     return null;

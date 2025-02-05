@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { Icon, Text } from 'react-basics';
 import Link from 'next/link';
 import classNames from 'classnames';
@@ -9,9 +10,8 @@ import ProfileButton from 'components/input/ProfileButton';
 import TeamsButton from 'components/input/TeamsButton';
 import Icons from 'components/icons';
 import { useMessages, useNavigation, useTeamUrl } from 'components/hooks';
+import { getItem, setItem } from 'lib/storage';
 import styles from './NavBar.module.css';
-import { useEffect } from 'react';
-import { getItem, setItem } from 'next-basics';
 
 export function NavBar() {
   const { formatMessage, labels } = useMessages();

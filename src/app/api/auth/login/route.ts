@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { checkPassword, createSecureToken } from 'next-basics';
+import { checkPassword } from 'lib/auth';
+import { createSecureToken } from 'lib/jwt';
 import { redisEnabled } from '@umami/redis-client';
 import { getUserByUsername } from 'queries';
 import { json, unauthorized } from 'lib/response';

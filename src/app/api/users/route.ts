@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { hashPassword } from 'next-basics';
-import { canCreateUser } from 'lib/auth';
+import { hashPassword, canCreateUser } from 'lib/auth';
 import { ROLES } from 'lib/constants';
 import { uuid } from 'lib/crypto';
 import { parseRequest } from 'lib/request';
