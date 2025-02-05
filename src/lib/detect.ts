@@ -19,7 +19,6 @@ let lookupPromise: any = null;
 // This function returns the open DB. If it's already opening/open, just return the existing promise.
 export function getLookup() {
   if (!lookupPromise) {
-    console.log('debug: loading GeoLite2-City.mmdb');
     const dir = path.join(process.cwd(), 'geo');
     lookupPromise = maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
   }
@@ -120,8 +119,6 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
   // Database lookup
   const lookup = await getLookup();
   const result = lookup.get(ip);
-
-  console.log('debug_result:', result);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
