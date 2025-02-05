@@ -4,11 +4,7 @@ import NavBar from './NavBar';
 import Page from 'components/layout/Page';
 import styles from './layout.module.css';
 
-export default function ({ children }) {
-  if (process.env.DISABLE_UI) {
-    return null;
-  }
-
+export default async function ({ children }) {
   return (
     <App>
       <main className={styles.layout}>

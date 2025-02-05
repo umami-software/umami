@@ -5,7 +5,13 @@ import prisma from 'lib/prisma';
 import { QueryFilters } from 'lib/types';
 
 export async function getPageviewMetrics(
-  ...args: [websiteId: string, type: string, filters: QueryFilters, limit?: number, offset?: number]
+  ...args: [
+    websiteId: string,
+    type: string,
+    filters: QueryFilters,
+    limit?: number | string,
+    offset?: number | string,
+  ]
 ) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -17,8 +23,8 @@ async function relationalQuery(
   websiteId: string,
   type: string,
   filters: QueryFilters,
-  limit: number = 500,
-  offset: number = 0,
+  limit: number | string = 500,
+  offset: number | string = 0,
 ) {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = prisma;
@@ -80,8 +86,8 @@ async function clickhouseQuery(
   websiteId: string,
   type: string,
   filters: QueryFilters,
-  limit: number = 500,
-  offset: number = 0,
+  limit: number | string = 500,
+  offset: number | string = 0,
 ): Promise<{ x: string; y: number }[]> {
   const column = FILTER_COLUMNS[type] || type;
   const { rawQuery, parseFilters } = clickhouse;

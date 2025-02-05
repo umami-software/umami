@@ -8,6 +8,7 @@ const basePath = process.env.BASE_PATH;
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
 const cloudMode = process.env.CLOUD_MODE;
 const cloudUrl = process.env.CLOUD_URL;
+const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
 const disableLogin = process.env.DISABLE_LOGIN;
 const disableUI = process.env.DISABLE_UI;
@@ -59,6 +60,15 @@ const trackerHeaders = [
 ];
 
 const headers = [
+  {
+    source: '/api/:path*',
+    headers: [
+      { key: 'Access-Control-Allow-Origin', value: '*' },
+      { key: 'Access-Control-Allow-Headers', value: '*' },
+      { key: 'Access-Control-Allow-Methods', value: 'GET, DELETE, POST, PUT' },
+      { key: 'Access-Control-Max-Age', value: corsMaxAge || '86400' },
+    ],
+  },
   {
     source: '/:path*',
     headers: defaultHeaders,

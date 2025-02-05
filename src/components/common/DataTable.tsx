@@ -37,26 +37,26 @@ export function DataTable({
     query: { error, isLoading, isFetched },
   } = queryResult || {};
   const { page, pageSize, count, data } = result || {};
-  const { query } = params || {};
+  const { search } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
-  const noResults = Boolean(query && !hasData);
+  const noResults = Boolean(search && !hasData);
   const { router, renderUrl } = useNavigation();
 
-  const handleSearch = (query: string) => {
-    setParams({ ...params, query, page: params.page ? page : 1 });
+  const handleSearch = (search: string) => {
+    setParams({ ...params, search, page: params.page ? page : 1 });
   };
 
   const handlePageChange = (page: number) => {
-    setParams({ ...params, query, page });
+    setParams({ ...params, search, page });
     router.push(renderUrl({ page }));
   };
 
   return (
     <>
-      {allowSearch && (hasData || query) && (
+      {allowSearch && (hasData || search) && (
         <SearchField
           className={styles.search}
-          value={query}
+          value={search}
           onSearch={handleSearch}
           delay={searchDelay || DEFAULT_SEARCH_DELAY}
           autoFocus={autoFocus}
@@ -71,7 +71,7 @@ export function DataTable({
         >
           {hasData ? (typeof children === 'function' ? children(result) : children) : null}
           {isLoading && <Loading position="page" />}
-          {!isLoading && !hasData && !query && (renderEmpty ? renderEmpty() : <Empty />)}
+          {!isLoading && !hasData && !search && (renderEmpty ? renderEmpty() : <Empty />)}
           {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
         </div>
         {allowPaging && hasData && (

@@ -19,11 +19,11 @@ export async function getReports(
   criteria: ReportFindManyArgs,
   pageParams: PageParams = {},
 ): Promise<PageResult<Report[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.ReportWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [
+    ...prisma.getSearchParameters(search, [
       { name: 'contains' },
       { description: 'contains' },
       { type: 'contains' },
