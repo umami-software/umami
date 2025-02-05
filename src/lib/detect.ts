@@ -14,31 +14,7 @@ import {
 } from './constants';
 import { NextApiRequestCollect } from 'pages/api/send';
 
-
-// 1. Initialize lookup OUTSIDE any function, but make it a Promise.
-let lookupPromise: any = null;
-
-// 2. Create an initialization function.
-async function initializeMaxmind() {
-  if (!lookupPromise) {
-    // eslint-disable-next-line no-console
-    console.log('debug: loading GeoLite2-City.mmdb');
-    const dir = path.join(process.cwd(), 'geo');
-    const dbPath = path.resolve(dir, 'GeoLite2-City.mmdb');
-
-    // Use try/catch for error handling during DB loading
-    try {
-      lookupPromise = maxmind.open(dbPath);
-    } catch (error) {
-      console.error("Error loading GeoLite2 database:", error);
-      //  CRITICAL:  You MUST handle the error here.  Throwing an error
-      //  will cause the server to crash, which is better than running
-      //  without the database.
-      throw error;  // Re-throw to prevent the app from starting.
-    }
-  }
-  return lookupPromise;
-}
+let lookup;
 
 export function getIpAddress(req: NextApiRequestCollect) {
   const customHeader = String(process.env.CLIENT_IP_HEADER).toLowerCase();
@@ -131,10 +107,16 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
     };
   }
 
-  const lookup = await lookupPromise;
-  if (!lookup) { // This check is likely unnecessary, but good for safety.
-    throw new Error("Maxmind database not loaded.");
+  // Database lookup
+  if (!lookup) {
+    // eslint-disable-next-line no-console
+    console.log('debug: loading GeoLite2-City.mmdb');
+    const dir = path.join(process.cwd(), 'geo');
+
+    lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
   }
+
+  const result = lookup.get(ip);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
