@@ -8,22 +8,22 @@ export function json(data: any) {
   return Response.json(data);
 }
 
-export function badRequest(message?: any) {
-  return Response.json({ error: 'Bad request', message }, { status: 400 });
+export function badRequest(error: any = 'Bad request') {
+  return Response.json({ error: serializeError(error) }, { status: 400 });
 }
 
-export function unauthorized(message?: any) {
-  return Response.json({ error: 'Unauthorized', message }, { status: 401 });
+export function unauthorized(error: any = 'Unauthorized') {
+  return Response.json({ error: serializeError(error) }, { status: 401 });
 }
 
-export function forbidden(message?: any) {
-  return Response.json({ error: 'Forbidden', message }, { status: 403 });
+export function forbidden(error: any = 'Forbidden') {
+  return Response.json({ error: serializeError(error) }, { status: 403 });
 }
 
-export function notFound(message?: any) {
-  return Response.json({ error: 'Not found', message }, { status: 404 });
+export function notFound(error: any = 'Not found') {
+  return Response.json({ error: serializeError(error) }, { status: 404 });
 }
 
-export function serverError(error?: any) {
-  return Response.json({ error: 'Server error', message: serializeError(error) }, { status: 500 });
+export function serverError(error: any = 'Server error') {
+  return Response.json({ error: serializeError(error) }, { status: 500 });
 }

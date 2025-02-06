@@ -7,6 +7,17 @@ import useStore from '@/store/app';
 
 const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
+async function handleResponse(data: any): Promise<any> {
+  if (data.error) {
+    return Promise.reject(new Error(data.error));
+  }
+  return Promise.resolve(data);
+}
+
+function handleError(err: Error | string) {
+  return Promise.reject((err as Error)?.message || err || null);
+}
+
 export function useApi() {
   const shareToken = useStore(selector);
 
@@ -16,9 +27,9 @@ export function useApi() {
   };
   const basePath = process.env.basePath;
 
-  function getUrl(url: string, basePath = ''): string {
+  const getUrl = (url: string, basePath = '') => {
     return url.startsWith('http') ? url : `${basePath}/api${url}`;
-  }
+  };
 
   const getHeaders = (headers: any = {}) => {
     return { ...defaultHeaders, ...headers };
@@ -27,28 +38,36 @@ export function useApi() {
   return {
     get: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpGet(getUrl(url, basePath), params, getHeaders(headers));
+        return httpGet(getUrl(url, basePath), params, getHeaders(headers))
+          .then(handleResponse)
+          .catch(handleError);
       },
       [httpGet],
     ),
 
     post: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPost(getUrl(url, basePath), params, getHeaders(headers));
+        return httpPost(getUrl(url, basePath), params, getHeaders(headers))
+          .then(handleResponse)
+          .catch(handleError);
       },
       [httpPost],
     ),
 
     put: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPut(getUrl(url, basePath), params, getHeaders(headers));
+        return httpPut(getUrl(url, basePath), params, getHeaders(headers))
+          .then(handleResponse)
+          .catch(handleError);
       },
       [httpPut],
     ),
 
     del: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpDelete(getUrl(url, basePath), params, getHeaders(headers));
+        return httpDelete(getUrl(url, basePath), params, getHeaders(headers))
+          .then(handleResponse)
+          .catch(handleError);
       },
       [httpDelete],
     ),
