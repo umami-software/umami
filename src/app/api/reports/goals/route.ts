@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
-import { getGoals } from '@/queries/analytics/reports/getGoals';
+import { getGoals } from '@/queries/sql/reports/getGoals';
 import { reportParms } from '@/lib/schema';
 
 export async function POST(request: Request) {

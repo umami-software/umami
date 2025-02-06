@@ -3,7 +3,7 @@ import { canViewWebsite } from '@/lib/auth';
 import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
-import { getPageviewMetrics, getSessionMetrics } from '@/queries';
+import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
 import { filterParams } from '@/lib/schema';
 
 export async function GET(
@@ -74,6 +74,12 @@ export async function GET(
 
   if (EVENT_COLUMNS.includes(type)) {
     const data = await getPageviewMetrics(websiteId, type, filters, limit, offset);
+
+    return json(data);
+  }
+
+  if (type === 'channel') {
+    const data = await getChannelMetrics(websiteId, filters);
 
     return json(data);
   }

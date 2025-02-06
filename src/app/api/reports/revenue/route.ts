@@ -3,8 +3,8 @@ import { canViewWebsite } from '@/lib/auth';
 import { unauthorized, json } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
 import { reportParms, timezoneParam } from '@/lib/schema';
-import { getRevenue } from '@/queries/analytics/reports/getRevenue';
-import { getRevenueValues } from '@/queries/analytics/reports/getRevenueValues';
+import { getRevenue } from '@/queries/sql/reports/getRevenue';
+import { getRevenueValues } from '@/queries/sql/reports/getRevenueValues';
 
 export async function GET(request: Request) {
   const { auth, query, error } = await parseRequest(request);

@@ -27,8 +27,8 @@ export function useApi() {
   };
   const basePath = process.env.basePath;
 
-  const getUrl = (url: string, basePath = '') => {
-    return url.startsWith('http') ? url : `${basePath}/api${url}`;
+  const getUrl = (url: string) => {
+    return url.startsWith('http') ? url : `${basePath || ''}/api${url}`;
   };
 
   const getHeaders = (headers: any = {}) => {
@@ -38,7 +38,7 @@ export function useApi() {
   return {
     get: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpGet(getUrl(url, basePath), params, getHeaders(headers))
+        return httpGet(getUrl(url), params, getHeaders(headers))
           .then(handleResponse)
           .catch(handleError);
       },
@@ -47,7 +47,7 @@ export function useApi() {
 
     post: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPost(getUrl(url, basePath), params, getHeaders(headers))
+        return httpPost(getUrl(url), params, getHeaders(headers))
           .then(handleResponse)
           .catch(handleError);
       },
@@ -56,7 +56,7 @@ export function useApi() {
 
     put: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpPut(getUrl(url, basePath), params, getHeaders(headers))
+        return httpPut(getUrl(url), params, getHeaders(headers))
           .then(handleResponse)
           .catch(handleError);
       },
@@ -65,7 +65,7 @@ export function useApi() {
 
     del: useCallback(
       async (url: string, params: object = {}, headers: object = {}) => {
-        return httpDelete(getUrl(url, basePath), params, getHeaders(headers))
+        return httpDelete(getUrl(url), params, getHeaders(headers))
           .then(handleResponse)
           .catch(handleError);
       },
