@@ -100,7 +100,7 @@
     "isbot": "^5.1.16",
     "jsonwebtoken": "^9.0.2",
     "kafkajs": "^2.1.0",
-    "maxmind": "^4.3.6",
+    "maxmind": "^4.3.24",
     "md5": "^2.3.0",
     "next": "15.0.4",
     "node-fetch": "^3.2.8",

@@ -12,7 +12,7 @@ import {
   IP_ADDRESS_HEADERS,
 } from './constants';
 
-let lookup;
+const MAXMIND = 'maxmind';
 
 export function getIpAddress(headers: Headers) {
   const customHeader = process.env.CLIENT_IP_HEADER;
@@ -121,13 +121,13 @@ export async function getLocation(ip: string = '', headers: Headers) {
   }
 
   // Database lookup
-  if (!lookup) {
+  if (!global[MAXMIND]) {
     const dir = path.join(process.cwd(), 'geo');
 
-    lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+    global[MAXMIND] = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
   }
 
-  const result = lookup.get(ip);
+  const result = global[MAXMIND].get(ip);
 
   if (result) {
     const country = result.country?.iso_code ?? result?.registered_country?.iso_code;
