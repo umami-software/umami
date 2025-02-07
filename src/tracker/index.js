@@ -5,6 +5,7 @@
     location,
     document,
     history,
+    top,
   } = window;
   const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
@@ -158,7 +159,9 @@
                   e.preventDefault();
                 }
                 return trackElement(parentElement).then(() => {
-                  if (!external) location.href = href;
+                  if (!external) {
+                    (target === '_top' ? top.location : location).href = href;
+                  }
                 });
               }
             } else if (parentElement.tagName === 'BUTTON') {
