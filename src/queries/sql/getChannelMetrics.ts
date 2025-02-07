@@ -17,23 +17,15 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-        website_event.session_id as "sessionId",
-        website_event.event_name as "eventName",
-        website_event.created_at as "createdAt",
-        session.browser,
-        session.os,
-        session.device,
-        session.country,
-        website_event.url_path as "urlPath",
-        website_event.referrer_domain as "referrerDomain"
+        referrer_domain as domain,
+    referrer_query as query,
+    count(*) as visitors
     from website_event
-    inner join session
-      on session.session_id = website_event.session_id
-    where website_event.website_id = {{websiteId::uuid}}
-    ${filterQuery}
-    ${dateQuery}
-    order by website_event.created_at desc
-    limit 100
+    where website_id = {websiteId:UUID}
+        ${filterQuery}
+        ${dateQuery}
+    group by 1, 2
+    order by visitors desc
     `,
     params,
   );
@@ -47,20 +39,21 @@ async function clickhouseQuery(
   const { params, filterQuery, dateQuery } = await parseFilters(websiteId, filters);
 
   const sql = `
-        select
-            referrer_domain as x,
-            count(*) as y
-        from website_event
-        where website_id = {websiteId:UUID}
-        ${filterQuery}
-        ${dateQuery}
-        group by 1
-        order by y desc
-    `;
+    select
+      referrer_domain as domain,
+      referrer_query as query,
+      uniq(session_id) as visitors
+    from website_event
+    where website_id = {websiteId:UUID}
+    ${filterQuery}
+    ${dateQuery}
+    group by 1, 2
+    order by visitors desc
+  `;
 
   return rawQuery(sql, params).then(a => {
     return Object.values(a).map(a => {
-      return { x: a.x, y: Number(a.y) };
+      return { ...a, visitors: Number(a.visitors) };
     });
   });
 }
