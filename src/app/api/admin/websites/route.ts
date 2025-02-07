@@ -8,6 +8,9 @@ import { ROLES } from '@/lib/constants';
 
 export async function GET(request: Request) {
   const schema = z.object({
+    userId: z.string().uuid(),
+    includeOwnedTeams: z.string().optional(),
+    includeAllTeams: z.string().optional(),
     ...pagingParams,
   });
 
