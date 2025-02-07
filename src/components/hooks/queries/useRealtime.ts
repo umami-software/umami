@@ -1,4 +1,4 @@
-import { useTimezone } from '@/components/hooks';
+import { useTimezone } from '@/components/hooks/useTimezone';
 import { REALTIME_INTERVAL } from '@/lib/constants';
 import { RealtimeData } from '@/lib/types';
 import { useApi } from '../useApi';

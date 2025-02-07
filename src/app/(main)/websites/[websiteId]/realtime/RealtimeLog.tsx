@@ -26,7 +26,7 @@ const icons = {
 export function RealtimeLog({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const { formatValue } = useFormat();
   const { locale } = useLocale();
   const { formatTimezoneDate } = useTimezone();
@@ -70,24 +70,19 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
     if (__type === TYPE_EVENT) {
-      return (
-        <FormattedMessage
-          {...messages.eventLog}
-          values={{
-            event: <b>{eventName || formatMessage(labels.unknown)}</b>,
-            url: (
-              <a
-                href={`//${website?.domain}${url}`}
-                className={styles.link}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                {url}
-              </a>
-            ),
-          }}
-        />
-      );
+      return formatMessage(messages.eventLog, {
+        event: <b>{eventName || formatMessage(labels.unknown)}</b>,
+        url: (
+          <a
+            href={`//${website?.domain}${url}`}
+            className={styles.link}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            {url}
+          </a>
+        ),
+      });
     }
 
     if (__type === TYPE_PAGEVIEW) {
@@ -104,17 +99,12 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     }
 
     if (__type === TYPE_SESSION) {
-      return (
-        <FormattedMessage
-          {...messages.visitorLog}
-          values={{
-            country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
-            browser: <b>{BROWSERS[browser]}</b>,
-            os: <b>{OS_NAMES[os] || os}</b>,
-            device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
-          }}
-        />
-      );
+      return formatMessage(messages.visitorLog, {
+        country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
+        browser: <b>{BROWSERS[browser]}</b>,
+        os: <b>{OS_NAMES[os] || os}</b>,
+        device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
+      });
     }
   };
 

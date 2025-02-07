@@ -24,9 +24,7 @@
     "types": ["jest"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {
