@@ -17,9 +17,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     select
-        referrer_domain as domain,
-    referrer_query as query,
-    count(*) as visitors
+      referrer_domain as domain,
+      referrer_query as query,
+      count(distinct session_id) as visitors
     from website_event
     where website_id = {websiteId:UUID}
         ${filterQuery}

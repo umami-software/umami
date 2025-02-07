@@ -281,6 +281,20 @@ export const labels = defineMessages({
   firstSeen: { id: 'label.first-seen', defaultMessage: 'First seen' },
   properties: { id: 'label.properties', defaultMessage: 'Properties' },
   channels: { id: 'label.channels', defaultMessage: 'Channels' },
+  direct: { id: 'label.direct', defaultMessage: 'Direct' },
+  referral: { id: 'label.referral', defaultMessage: 'Referral' },
+  affiliate: { id: 'label.affiliate', defaultMessage: 'Affiliate' },
+  email: { id: 'label.email', defaultMessage: 'Email' },
+  sms: { id: 'label.sms', defaultMessage: 'SMS' },
+  organicSearch: { id: 'label.organic-search', defaultMessage: 'Organic search' },
+  organicSocial: { id: 'label.organic-social', defaultMessage: 'Organic social' },
+  organicShopping: { id: 'label.organic-shopping', defaultMessage: 'Organic shopping' },
+  organicVideo: { id: 'label.organic-video', defaultMessage: 'Organic video' },
+  paidAds: { id: 'label.paid-ads', defaultMessage: 'Paid ads' },
+  paidSearch: { id: 'label.paid-search', defaultMessage: 'Paid search' },
+  paidSocial: { id: 'label.paid-social', defaultMessage: 'Paid social' },
+  paidShopping: { id: 'label.paid-shopping', defaultMessage: 'Paid shopping' },
+  paidVideo: { id: 'label.paid-video', defaultMessage: 'Paid video' },
 });
 
 export const messages = defineMessages({

@@ -157,17 +157,17 @@ function getChannels(data: { domain: string; query: string; visitors: number }[]
     direct: 0,
     referral: 0,
     affiliate: 0,
+    email: 0,
     sms: 0,
-    organic_search: 0,
-    organic_social: 0,
-    organic_email: 0,
-    organic_shopping: 0,
-    organic_video: 0,
-    paid_ads: 0,
-    paid_search: 0,
-    paid_social: 0,
-    paid_shopping: 0,
-    paid_video: 0,
+    organicSearch: 0,
+    organicSocial: 0,
+    organicShopping: 0,
+    organicVideo: 0,
+    paidAds: 0,
+    paidSearch: 0,
+    paidSocial: 0,
+    paidShopping: 0,
+    paidVideo: 0,
   };
 
   const match = (value: string) => {
@@ -184,23 +184,23 @@ function getChannels(data: { domain: string; query: string; visitors: number }[]
     const prefix = /utm_medium=(.*cp.*|ppc|retargeting|paid.*)/.test(query) ? 'paid' : 'organic';
 
     if (SEARCH_DOMAINS.some(match(domain)) || /utm_medium=organic/.test(query)) {
-      channels[`${prefix}_search`] += visitors;
+      channels[`${prefix}Search`] += visitors;
     } else if (
       SOCIAL_DOMAINS.some(match(domain)) ||
       /utm_medium=(social|social-network|social-media|sm|social network|social media)/.test(query)
     ) {
-      channels[`${prefix}_social`] += visitors;
+      channels[`${prefix}Social`] += visitors;
     } else if (EMAIL_DOMAINS.some(match(domain)) || /utm_medium=(.*e[-_ ]?mail.*)/.test(query)) {
-      channels.organic_email += visitors;
+      channels.email += visitors;
     } else if (
       SHOPPING_DOMAINS.some(match(domain)) ||
       /utm_campaign=(.*(([^a-df-z]|^)shop|shopping).*)/.test(query)
     ) {
-      channels[`${prefix}_shopping`] += visitors;
+      channels[`${prefix}Shopping`] += visitors;
     } else if (VIDEO_DOMAINS.some(match(domain)) || /utm_medium=(.*video.*)/.test(query)) {
-      channels[`${prefix}_video`] += visitors;
+      channels[`${prefix}Video`] += visitors;
     } else if (PAID_AD_PARAMS.some(match(query))) {
-      channels.paid_ads += visitors;
+      channels.paidAds += visitors;
     } else if (/utm_medium=(referral|app|link)/.test(query)) {
       channels.referral += visitors;
     } else if (/utm_medium=affiliate/.test(query)) {

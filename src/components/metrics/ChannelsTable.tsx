@@ -4,11 +4,16 @@ import { useMessages } from '@/components/hooks';
 export function BrowsersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
+  const renderLabel = ({ x }) => {
+    return formatMessage(labels[x]);
+  };
+
   return (
     <MetricsTable
       {...props}
       title={formatMessage(labels.channels)}
       type="channel"
+      renderLabel={renderLabel}
       metric={formatMessage(labels.visitors)}
     />
   );
