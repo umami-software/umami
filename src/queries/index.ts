@@ -4,6 +4,7 @@ export * from 'queries/prisma/teamUser';
 export * from 'queries/prisma/user';
 export * from 'queries/prisma/website';
 export * from './analytics/events/getEventDataEvents';
+export * from './analytics/events/getEventDataFields';
 export * from './analytics/events/getEventDataProperties';
 export * from './analytics/events/getEventDataValues';
 export * from './analytics/events/getEventDataStats';

@@ -21,7 +21,7 @@ CREATE TABLE `session_data` (
     INDEX `session_data_website_id_idx`(`website_id`),
     INDEX `session_data_session_id_idx`(`session_id`),
     PRIMARY KEY (`session_data_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `report` (
@@ -41,7 +41,7 @@ CREATE TABLE `report` (
     INDEX `report_type_idx`(`type`),
     INDEX `report_name_idx`(`name`),
     PRIMARY KEY (`report_id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- EventData migration
 UPDATE event_data

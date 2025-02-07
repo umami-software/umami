@@ -3,12 +3,12 @@
     screen: { width, height },
     navigator: { language },
     location,
-    localStorage,
     document,
     history,
   } = window;
-  const { hostname, href } = location;
+  const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
+  const localStorage = href.startsWith('data:') ? undefined : window.localStorage;
 
   if (!currentScript) return;
 
@@ -53,8 +53,9 @@
 
   const parseURL = url => {
     try {
-      const { pathname, search } = new URL(url);
-      url = pathname + search;
+      // use location.origin as the base to handle cases where the url is a relative path
+      const { pathname, search, hash } = new URL(url, location.href);
+      url = pathname + search + hash;
     } catch (e) {
       /* empty */
     }
@@ -259,7 +260,7 @@
   }
 
   let currentUrl = parseURL(href);
-  let currentRef = referrer !== hostname ? referrer : '';
+  let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let title = document.title;
   let cache;
   let initialized;

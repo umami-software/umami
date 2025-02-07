@@ -2,9 +2,9 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from 'lib/db';
+import { getWebsite } from 'queries/index';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { maxDate } from './date';
-import { fetchWebsite } from './load';
 import { filtersToArray } from './params';
 import { PageParams, QueryFilters, QueryOptions } from './types';
 
@@ -66,6 +66,10 @@ function getDateSQL(field: string, unit: string, timezone?: string) {
     return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
   }
   return `toDateTime(date_trunc('${unit}', ${field}))`;
+}
+
+function getSearchSQL(column: string, param: string = 'search'): string {
+  return `and positionCaseInsensitive(${column}, {${param}:String}) > 0`;
 }
 
 function mapFilter(column: string, operator: string, name: string, type: string = 'String') {
@@ -132,7 +136,7 @@ function getFilterParams(filters: QueryFilters = {}) {
 }
 
 async function parseFilters(websiteId: string, filters: QueryFilters = {}, options?: QueryOptions) {
-  const website = await fetchWebsite(websiteId);
+  const website = await getWebsite(websiteId);
 
   return {
     filterQuery: getFilterQuery(filters, options),
@@ -229,6 +233,7 @@ export default {
   connect,
   getDateStringSQL,
   getDateSQL,
+  getSearchSQL,
   getFilterQuery,
   getUTCString,
   parseFilters,

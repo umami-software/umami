@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://umami.is/images/umami-logo.png" alt="Umami Logo" width="100">
+  <img src="https://content.umami.is/website/images/umami-logo.png" alt="Umami Logo" width="100">
 </p>
 
 <h1 align="center">Umami</h1>
@@ -35,8 +35,8 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 
 ### Requirements
 
-- A server with Node.js version 16.13 or newer
-- A database. Umami supports [MySQL](https://www.mysql.com/) (minimum v8.0) and [PostgreSQL](https://www.postgresql.org/) (minimum v12.14) databases.
+- A server with Node.js version 18.18 or newer
+- A database. Umami supports [MariaDB](https://www.mariadb.org/) (minimum v10.5), [MySQL](https://www.mysql.com/) (minimum v8.0) and [PostgreSQL](https://www.postgresql.org/) (minimum v12.14) databases.
 
 ### Install Yarn
 

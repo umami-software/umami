@@ -1,5 +1,5 @@
 function getHostName(url: string) {
-  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?(?:www\.)?([^:/\n?=]+)/im);
+  const match = url.match(/^(?:https?:\/\/)?(?:[^@\n]+@)?([^:/\n?=]+)/im);
   return match && match.length > 1 ? match[1] : null;
 }
 

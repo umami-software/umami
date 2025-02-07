@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x", "linux-musl-arm64-openssl-3.0.x"]
 }
 
 datasource db {
@@ -19,8 +20,8 @@ model User {
   updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  websiteUser       Website[] @relation("user")
-  websiteCreateUser Website[] @relation("createUser")
+  websiteUser       Website[]  @relation("user")
+  websiteCreateUser Website[]  @relation("createUser")
   teamUser          TeamUser[]
   report            Report[]
 
@@ -102,6 +103,7 @@ model WebsiteEvent {
   pageTitle      String?   @map("page_title") @db.VarChar(500)
   eventType      Int       @default(1) @map("event_type") @db.Integer
   eventName      String?   @map("event_name") @db.VarChar(50)
+  tag            String?   @db.VarChar(50)
 
   eventData EventData[]
   session   Session     @relation(fields: [sessionId], references: [id])
@@ -116,6 +118,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, referrerDomain])
   @@index([websiteId, createdAt, pageTitle])
   @@index([websiteId, createdAt, eventName])
+  @@index([websiteId, createdAt, tag])
   @@index([websiteId, sessionId, createdAt])
   @@index([websiteId, visitId, createdAt])
   @@map("website_event")
@@ -147,7 +150,7 @@ model SessionData {
   id          String    @id() @map("session_data_id") @db.Uuid
   websiteId   String    @map("website_id") @db.Uuid
   sessionId   String    @map("session_id") @db.Uuid
-  dataKey    String    @map("data_key") @db.VarChar(500)
+  dataKey     String    @map("data_key") @db.VarChar(500)
   stringValue String?   @map("string_value") @db.VarChar(500)
   numberValue Decimal?  @map("number_value") @db.Decimal(19, 4)
   dateValue   DateTime? @map("date_value") @db.Timestamptz(6)

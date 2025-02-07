@@ -179,6 +179,7 @@ export interface QueryFilters {
   language?: string;
   event?: string;
   search?: string;
+  tag?: string;
 }
 
 export interface QueryOptions {

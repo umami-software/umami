@@ -1,4 +1,4 @@
-import { useApi } from './useApi';
+import { useApi } from '../useApi';
 
 export function useWebsiteSession(websiteId: string, sessionId: string) {
   const { get, useQuery } = useApi();

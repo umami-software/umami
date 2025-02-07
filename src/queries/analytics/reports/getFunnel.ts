@@ -70,9 +70,16 @@ async function relationalQuery(
       (pv, cv, i) => {
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union ' : '';
-        const operator = cv.type === 'url' && cv.value.endsWith('*') ? 'like' : '=';
-        const column = cv.type === 'url' ? 'url_path' : 'event_name';
-        const paramValue = cv.value.endsWith('*') ? cv.value.replace('*', '%') : cv.value;
+        const isURL = cv.type === 'url';
+        const column = isURL ? 'url_path' : 'event_name';
+
+        let operator = '=';
+        let paramValue = cv.value;
+
+        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+          operator = 'like';
+          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+        }
 
         if (levelNumber === 1) {
           pv.levelOneQuery = `
@@ -167,9 +174,16 @@ async function clickhouseQuery(
         const levelNumber = i + 1;
         const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
-        const operator = cv.type === 'url' && cv.value.endsWith('*') ? 'like' : '=';
-        const column = cv.type === 'url' ? 'url_path' : 'event_name';
-        const paramValue = cv.value.endsWith('*') ? cv.value.replace('*', '%') : cv.value;
+        const isURL = cv.type === 'url';
+        const column = isURL ? 'url_path' : 'event_name';
+
+        let operator = '=';
+        let paramValue = cv.value;
+
+        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+          operator = 'like';
+          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+        }
 
         if (levelNumber === 1) {
           pv.levelOneQuery = `\n

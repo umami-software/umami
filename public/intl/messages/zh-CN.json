@@ -476,7 +476,7 @@
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "首次出现"
     }
   ],
   "label.funnel": [
@@ -656,7 +656,7 @@
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "最后出现"
     }
   ],
   "label.leave": [
@@ -1050,19 +1050,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "收入"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "查看您的收入随时间的变化。"
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "收入值"
     }
   ],
   "label.role": [
@@ -1296,7 +1296,7 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "交易"
     }
   ],
   "label.transfer": [
@@ -1338,7 +1338,7 @@
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "独特客户"
     }
   ],
   "label.unknown": [
@@ -1380,7 +1380,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "用户属性"
     }
   ],
   "label.username": [

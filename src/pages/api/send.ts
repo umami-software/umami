@@ -96,12 +96,17 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
     }
 
     const { type, payload } = req.body;
-    const { url, referrer, name: eventName, data, title } = payload;
+    const { url, referrer, name: eventName, data, title, tag } = payload;
     const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
 
     const session = req.session;
+
+    if (!session?.id) {
+      return;
+    }
+
     const iat = Math.floor(new Date().getTime() / 1000);
 
     // expire visitId after 30 minutes
@@ -143,6 +148,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventData: data,
         ...session,
         sessionId: session.id,
+        tag,
       });
     } else if (type === COLLECTION_TYPE.identify) {
       if (!data) {

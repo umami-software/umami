@@ -11,7 +11,7 @@ export function RegionsTable(props: MetricsTableProps) {
 
   const renderLink = ({ x: code, country }) => {
     return (
-      <FilterLink id="region" className={locale} value={code} label={getRegionName(code, country)}>
+      <FilterLink id="region" value={code} label={getRegionName(code, country)}>
         <TypeIcon type="country" value={country?.toLowerCase()} />
       </FilterLink>
     );
@@ -25,6 +25,7 @@ export function RegionsTable(props: MetricsTableProps) {
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }
