@@ -1,7 +1,18 @@
 import { z } from 'zod';
 import thenby from 'thenby';
 import { canViewWebsite } from '@/lib/auth';
-import { SESSION_COLUMNS, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import {
+  SESSION_COLUMNS,
+  EVENT_COLUMNS,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SEARCH_DOMAINS,
+  SOCIAL_DOMAINS,
+  EMAIL_DOMAINS,
+  SHOPPING_DOMAINS,
+  VIDEO_DOMAINS,
+  PAID_AD_PARAMS,
+} from '@/lib/constants';
 import { getRequestFilters, getRequestDateRange, parseRequest } from '@/lib/request';
 import { json, unauthorized, badRequest } from '@/lib/response';
 import { getPageviewMetrics, getSessionMetrics, getChannelMetrics } from '@/queries';
@@ -93,64 +104,6 @@ export async function GET(
 
   return badRequest();
 }
-
-const SOCIAL_DOMAINS = [
-  'facebook.com',
-  'fb.com',
-  'instagram.com',
-  'ig.com',
-  'twitter.com',
-  't.co',
-  'x.com',
-  'linkedin.',
-  'tiktok.',
-  'reddit.',
-  'threads.net',
-  'bsky.app',
-  'news.ycombinator.com',
-];
-
-const SEARCH_DOMAINS = [
-  'google.',
-  'bing.com',
-  'msn.com',
-  'duckduckgo.com',
-  'search.brave.com',
-  'yandex.',
-  'baidu.com',
-  'ecosia.org',
-  'chatgpt.com',
-  'perplexity.ai',
-];
-
-const SHOPPING_DOMAINS = [
-  'amazon.',
-  'ebay.com',
-  'walmart.com',
-  'alibab.com',
-  'aliexpress.com',
-  'etsy.com',
-  'bestbuy.com',
-  'target.com',
-  'newegg.com',
-];
-
-const EMAIL_DOMAINS = ['gmail.', 'mail.yahoo.', 'outlook.', 'hotmail.', 'protonmail.', 'proton.me'];
-
-const VIDEO_DOMAINS = ['youtube.', 'twitch.'];
-
-const PAID_AD_PARAMS = [
-  'utm_source=google',
-  'gclid=',
-  'fbclid=',
-  'msclkid=',
-  'dclid=',
-  'twclid=',
-  'li_fat_id=',
-  'epik=',
-  'ttclid=',
-  'scid=',
-];
 
 function getChannels(data: { domain: string; query: string; visitors: number }[]) {
   const channels = {

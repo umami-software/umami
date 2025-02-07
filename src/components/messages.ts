@@ -295,6 +295,8 @@ export const labels = defineMessages({
   paidSocial: { id: 'label.paid-social', defaultMessage: 'Paid social' },
   paidShopping: { id: 'label.paid-shopping', defaultMessage: 'Paid shopping' },
   paidVideo: { id: 'label.paid-video', defaultMessage: 'Paid video' },
+  grouped: { id: 'label.grouped', defaultMessage: 'Grouped' },
+  other: { id: 'label.other', defaultMessage: 'Other' },
 });
 
 export const messages = defineMessages({

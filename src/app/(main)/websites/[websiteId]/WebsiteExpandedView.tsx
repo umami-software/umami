@@ -25,6 +25,7 @@ const views = {
   exit: PagesTable,
   title: PagesTable,
   referrer: ReferrersTable,
+  grouped: ReferrersTable,
   host: HostsTable,
   browser: BrowsersTable,
   os: OSTable,
