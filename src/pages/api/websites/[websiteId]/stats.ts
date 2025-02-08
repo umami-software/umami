@@ -60,6 +60,11 @@ export default async (
 
   const { websiteId, compare } = req.query;
 
+  // 处理 OPTIONS 请求
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end(); // 返回 200 OK 表示允许跨域
+  }
+
   if (req.method === 'GET') {
     if (!(await canViewWebsite(req.auth, websiteId))) {
       return unauthorized(res);
