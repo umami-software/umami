@@ -1,8 +1,8 @@
 import { colord } from 'colord';
-import BarChart from 'components/charts/BarChart';
-import { useDateRange, useLocale, useWebsiteEventsSeries } from 'components/hooks';
-import { renderDateLabels } from 'lib/charts';
-import { CHART_COLORS } from 'lib/constants';
+import BarChart from '@/components/charts/BarChart';
+import { useDateRange, useLocale, useWebsiteEventsSeries } from '@/components/hooks';
+import { renderDateLabels } from '@/lib/charts';
+import { CHART_COLORS } from '@/lib/constants';
 import { useMemo } from 'react';
 
 export interface EventsChartProps {

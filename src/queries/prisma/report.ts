@@ -1,6 +1,6 @@
 import { Prisma, Report } from '@prisma/client';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
 
 async function findReport(criteria: Prisma.ReportFindUniqueArgs): Promise<Report> {
@@ -19,11 +19,11 @@ export async function getReports(
   criteria: ReportFindManyArgs,
   pageParams: PageParams = {},
 ): Promise<PageResult<Report[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.ReportWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [
+    ...prisma.getSearchParameters(search, [
       { name: 'contains' },
       { description: 'contains' },
       { type: 'contains' },

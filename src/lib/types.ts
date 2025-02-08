@@ -1,4 +1,3 @@
-import { NextApiRequest } from 'next';
 import {
   COLLECTION_TYPE,
   DATA_TYPE,
@@ -8,7 +7,6 @@ import {
   REPORT_TYPES,
   ROLES,
 } from './constants';
-import * as yup from 'yup';
 import { TIME_UNIT } from './date';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -25,9 +23,9 @@ export type KafkaTopic = ObjectValues<typeof KAFKA_TOPIC>;
 export type ReportType = ObjectValues<typeof REPORT_TYPES>;
 
 export interface PageParams {
-  query?: string;
-  page?: number;
-  pageSize?: number;
+  search?: string;
+  page?: string;
+  pageSize?: string;
   orderBy?: string;
   sortDescending?: boolean;
 }
@@ -63,26 +61,6 @@ export interface Auth {
   shareToken?: {
     websiteId: string;
   };
-}
-
-export interface YupRequest {
-  GET?: yup.ObjectSchema<any>;
-  POST?: yup.ObjectSchema<any>;
-  PUT?: yup.ObjectSchema<any>;
-  DELETE?: yup.ObjectSchema<any>;
-}
-
-export interface NextApiRequestQueryBody<TQuery = any, TBody = any> extends NextApiRequest {
-  auth?: Auth;
-  query: TQuery & { [key: string]: string | string[] };
-  body: TBody;
-  headers: any;
-  yup: YupRequest;
-}
-
-export interface NextApiRequestAuth extends NextApiRequest {
-  auth?: Auth;
-  headers: any;
 }
 
 export interface User {

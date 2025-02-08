@@ -1,5 +1,5 @@
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { useMessages, useLogin } from 'components/hooks';
+import { useMessages, useLogin } from '@/components/hooks';
 import UserDeleteForm from './UserDeleteForm';
 
 export function UserDeleteButton({

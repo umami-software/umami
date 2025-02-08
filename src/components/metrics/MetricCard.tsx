@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { useSpring, animated } from '@react-spring/web';
-import { formatNumber } from 'lib/format';
-import ChangeLabel from 'components/metrics/ChangeLabel';
+import { formatNumber } from '@/lib/format';
+import ChangeLabel from '@/components/metrics/ChangeLabel';
 import styles from './MetricCard.module.css';
 
 export interface MetricCardProps {

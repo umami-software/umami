@@ -1,9 +1,9 @@
 import { Prisma, Website } from '@prisma/client';
 import { getClient } from '@umami/redis-client';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
-import { ROLES } from 'lib/constants';
+import { ROLES } from '@/lib/constants';
 
 async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
   return prisma.client.website.findUnique(criteria);
@@ -30,11 +30,11 @@ export async function getWebsites(
   criteria: WebsiteFindManyArgs,
   pageParams: PageParams,
 ): Promise<PageResult<Website[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [
+    ...prisma.getSearchParameters(search, [
       {
         name: 'contains',
       },

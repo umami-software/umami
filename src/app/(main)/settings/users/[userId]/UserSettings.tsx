@@ -1,12 +1,12 @@
 import { Key, useContext, useState } from 'react';
 import { Item, Tabs, useToasts } from 'react-basics';
-import Icons from 'components/icons';
+import Icons from '@/components/icons';
 import UserEditForm from './UserEditForm';
-import PageHeader from 'components/layout/PageHeader';
-import { useMessages } from 'components/hooks';
+import PageHeader from '@/components/layout/PageHeader';
+import { useMessages } from '@/components/hooks';
 import UserWebsites from './UserWebsites';
 import { UserContext } from './UserProvider';
-import Breadcrumb from 'components/common/Breadcrumb';
+import Breadcrumb from '@/components/common/Breadcrumb';
 
 export function UserSettings({ userId }: { userId: string }) {
   const { formatMessage, labels, messages } = useMessages();

@@ -1,6 +1,12 @@
-import { useFilters, useFormat, useLocale, useMessages, useWebsiteValues } from 'components/hooks';
-import { OPERATORS } from 'lib/constants';
-import { isEqualsOperator } from 'lib/params';
+import {
+  useFilters,
+  useFormat,
+  useLocale,
+  useMessages,
+  useWebsiteValues,
+} from '@/components/hooks';
+import { OPERATORS } from '@/lib/constants';
+import { isEqualsOperator } from '@/lib/params';
 import { useMemo, useState } from 'react';
 import {
   Button,
@@ -226,7 +232,7 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
 
   return (
     <Menu className={styles.menu} variant="popup" onSelect={onSelect}>
-      {values?.map((value: any) => {
+      {values?.map(({ value }) => {
         return <Item key={value}>{formatValue(value, type)}</Item>;
       })}
     </Menu>

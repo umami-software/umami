@@ -1,7 +1,7 @@
 import { Prisma, TeamUser } from '@prisma/client';
-import { uuid } from 'lib/crypto';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import { uuid } from '@/lib/crypto';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import TeamUserFindManyArgs = Prisma.TeamUserFindManyArgs;
 
 export async function findTeamUser(criteria: Prisma.TeamUserFindUniqueArgs): Promise<TeamUser> {

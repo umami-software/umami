@@ -1,7 +1,7 @@
 import { format, startOfDay, addHours } from 'date-fns';
-import { useLocale, useMessages, useWebsiteSessionsWeekly } from 'components/hooks';
-import { LoadingPanel } from 'components/common/LoadingPanel';
-import { getDayOfWeekAsDate } from 'lib/date';
+import { useLocale, useMessages, useWebsiteSessionsWeekly } from '@/components/hooks';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { getDayOfWeekAsDate } from '@/lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
 import { TooltipPopup } from 'react-basics';
@@ -54,10 +54,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
               <div className={styles.header}>
                 {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
               </div>
-              {day?.map((hour: number) => {
+              {day?.map((hour: number, n) => {
                 const pct = hour / max;
                 return (
-                  <div key={hour} className={classNames(styles.cell)}>
+                  <div key={n} className={classNames(styles.cell)}>
                     {hour > 0 && (
                       <TooltipPopup
                         label={`${formatMessage(labels.visitors)}: ${hour}`}

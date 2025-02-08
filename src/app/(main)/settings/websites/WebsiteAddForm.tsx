@@ -7,9 +7,9 @@ import {
   Button,
   SubmitButton,
 } from 'react-basics';
-import { useApi } from 'components/hooks';
-import { DOMAIN_REGEX } from 'lib/constants';
-import { useMessages } from 'components/hooks';
+import { useApi } from '@/components/hooks';
+import { DOMAIN_REGEX } from '@/lib/constants';
+import { useMessages } from '@/components/hooks';
 
 export function WebsiteAddForm({
   teamId,

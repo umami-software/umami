@@ -324,6 +324,104 @@ export const BROWSERS = {
   yandexbrowser: 'Yandex',
 };
 
+export const IP_ADDRESS_HEADERS = [
+  'cf-connecting-ip',
+  'x-client-ip',
+  'x-forwarded-for',
+  'do-connecting-ip',
+  'fastly-client-ip',
+  'true-client-ip',
+  'x-real-ip',
+  'x-cluster-client-ip',
+  'x-forwarded',
+  'forwarded',
+  'x-appengine-user-ip',
+];
+
+export const SOCIAL_DOMAINS = [
+  'facebook.com',
+  'fb.com',
+  'instagram.com',
+  'ig.com',
+  'twitter.com',
+  't.co',
+  'x.com',
+  'linkedin.',
+  'tiktok.',
+  'reddit.',
+  'threads.net',
+  'bsky.app',
+  'news.ycombinator.com',
+  'snapchat.',
+  'pinterest.',
+];
+
+export const SEARCH_DOMAINS = [
+  'google.',
+  'bing.com',
+  'msn.com',
+  'duckduckgo.com',
+  'search.brave.com',
+  'yandex.',
+  'baidu.com',
+  'ecosia.org',
+  'chatgpt.com',
+  'perplexity.ai',
+];
+
+export const SHOPPING_DOMAINS = [
+  'amazon.',
+  'ebay.com',
+  'walmart.com',
+  'alibab.com',
+  'aliexpress.com',
+  'etsy.com',
+  'bestbuy.com',
+  'target.com',
+  'newegg.com',
+];
+
+export const EMAIL_DOMAINS = [
+  'gmail.',
+  'mail.yahoo.',
+  'outlook.',
+  'hotmail.',
+  'protonmail.',
+  'proton.me',
+];
+
+export const VIDEO_DOMAINS = ['youtube.', 'twitch.'];
+
+export const PAID_AD_PARAMS = [
+  'utm_source=google',
+  'gclid=',
+  'fbclid=',
+  'msclkid=',
+  'dclid=',
+  'twclid=',
+  'li_fat_id=',
+  'epik=',
+  'ttclid=',
+  'scid=',
+];
+
+export const GROUPED_DOMAINS = [
+  { name: 'Google', domain: 'google.com', match: 'google.' },
+  { name: 'Facebook', domain: 'facebook.com', match: 'facebook.' },
+  { name: 'Reddit', domain: 'reddit.com', match: 'reddit.' },
+  { name: 'LinkedIn', domain: 'linkedin.com', match: 'linkedin.' },
+  { name: 'GitHub', domain: 'github.com', match: 'github.' },
+  { name: 'Hacker News', domain: 'news.ycombinator.com', match: 'news.ycombinator.com' },
+  { name: 'Bing', domain: 'bing.com', match: 'bing.' },
+  { name: 'Brave', domain: 'brave.com', match: 'brave.' },
+  { name: 'DuckDuckGo', domain: 'duckduckgo.com', match: 'duckduckgo.' },
+  { name: 'Twitter', domain: 'twitter.com', match: ['twitter.', 't.co', 'x.com'] },
+  { name: 'Instagram', domain: 'instagram.com', match: ['instagram.', 'ig.com'] },
+  { name: 'Snapchat', domain: 'snapchat.com', match: 'snapchat.' },
+  { name: 'Pinterest', domain: 'pinterest.com', match: 'pinterest.' },
+  { name: 'ChatGPT', domain: 'chatgpt.com', match: 'chatgpt.' },
+];
+
 export const MAP_FILE = '/datamaps.world.json';
 
 export const ISO_COUNTRIES = {

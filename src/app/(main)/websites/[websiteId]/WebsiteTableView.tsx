@@ -1,13 +1,13 @@
-import { Grid, GridRow } from 'components/layout/Grid';
-import PagesTable from 'components/metrics/PagesTable';
-import ReferrersTable from 'components/metrics/ReferrersTable';
-import BrowsersTable from 'components/metrics/BrowsersTable';
-import OSTable from 'components/metrics/OSTable';
-import DevicesTable from 'components/metrics/DevicesTable';
-import WorldMap from 'components/metrics/WorldMap';
-import CountriesTable from 'components/metrics/CountriesTable';
-import EventsTable from 'components/metrics/EventsTable';
-import EventsChart from 'components/metrics/EventsChart';
+import { Grid, GridRow } from '@/components/layout/Grid';
+import PagesTable from '@/components/metrics/PagesTable';
+import ReferrersTable from '@/components/metrics/ReferrersTable';
+import BrowsersTable from '@/components/metrics/BrowsersTable';
+import OSTable from '@/components/metrics/OSTable';
+import DevicesTable from '@/components/metrics/DevicesTable';
+import WorldMap from '@/components/metrics/WorldMap';
+import CountriesTable from '@/components/metrics/CountriesTable';
+import EventsTable from '@/components/metrics/EventsTable';
+import EventsChart from '@/components/metrics/EventsChart';
 import { usePathname } from 'next/navigation';
 
 export default function WebsiteTableView({ websiteId }: { websiteId: string }) {

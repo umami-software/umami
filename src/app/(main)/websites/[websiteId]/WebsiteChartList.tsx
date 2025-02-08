@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 import Link from 'next/link';
 import WebsiteChart from './WebsiteChart';
-import useDashboard from 'store/dashboard';
+import useDashboard from '@/store/dashboard';
 import WebsiteHeader from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useLocale, useTeamUrl } from 'components/hooks';
+import { useMessages, useLocale, useTeamUrl } from '@/components/hooks';
 
 export default function WebsiteChartList({
   websites,

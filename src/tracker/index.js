@@ -5,6 +5,7 @@
     location,
     document,
     history,
+    top,
   } = window;
   const { hostname, href, origin } = location;
   const { currentScript, referrer } = document;
@@ -34,19 +35,8 @@
 
   /* Helper functions */
 
-  const parseURL = url => {
-    try {
-      const { pathname, search, hash } = new URL(url, location.href);
-
-      return pathname + (excludeSearch ? '' : search) + (excludeHash ? '' : hash);
-    } catch (e) {
-      return url;
-    }
-  };
-
   const getPayload = () => ({
     website,
-    hostname,
     screen,
     language,
     title,
@@ -61,7 +51,17 @@
     if (!url) return;
 
     currentRef = currentUrl;
-    currentUrl = parseURL(url.toString());
+    currentUrl = new URL(url, location.href);
+
+    if (excludeSearch) {
+      currentUrl.search = '';
+    }
+
+    if (excludeHash) {
+      currentUrl.hash = '';
+    }
+
+    currentUrl = currentUrl.toString();
 
     if (currentUrl !== currentRef) {
       setTimeout(track, delayDuration);
@@ -158,7 +158,9 @@
                   e.preventDefault();
                 }
                 return trackElement(parentElement).then(() => {
-                  if (!external) location.href = href;
+                  if (!external) {
+                    (target === '_top' ? top.location : location).href = href;
+                  }
                 });
               }
             } else if (parentElement.tagName === 'BUTTON') {
@@ -197,6 +199,7 @@
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers,
+        credentials: 'omit',
       });
 
       const data = await res.json();
@@ -246,7 +249,7 @@
     };
   }
 
-  let currentUrl = parseURL(href);
+  let currentUrl = href;
   let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let title = document.title;
   let cache;

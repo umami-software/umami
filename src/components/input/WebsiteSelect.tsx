@@ -1,7 +1,7 @@
 import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
-import { useWebsite, useWebsites, useMessages } from 'components/hooks';
-import Empty from 'components/common/Empty';
+import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
+import Empty from '@/components/common/Empty';
 import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({

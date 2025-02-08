@@ -1,5 +1,5 @@
 import useMessages from './useMessages';
-import { BROWSERS, OS_NAMES } from 'lib/constants';
+import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import useLocale from './useLocale';
 import useCountryNames from './useCountryNames';
 import useLanguageNames from './useLanguageNames';

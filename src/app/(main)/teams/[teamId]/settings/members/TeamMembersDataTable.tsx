@@ -1,6 +1,6 @@
-import DataTable from 'components/common/DataTable';
+import DataTable from '@/components/common/DataTable';
 import TeamMembersTable from './TeamMembersTable';
-import { useTeamMembers } from 'components/hooks';
+import { useTeamMembers } from '@/components/hooks';
 
 export function TeamMembersDataTable({
   teamId,

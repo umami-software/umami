@@ -1,7 +1,7 @@
 import { serializeError } from 'serialize-error';
 import debug from 'debug';
 import { Kafka, Producer, RecordMetadata, SASLOptions, logLevel } from 'kafkajs';
-import { KAFKA, KAFKA_PRODUCER } from 'lib/db';
+import { KAFKA, KAFKA_PRODUCER } from '@/lib/db';
 import * as tls from 'tls';
 
 const log = debug('umami:kafka');

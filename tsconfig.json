@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2021",
+    "target": "es2022",
     "outDir": "./build",
     "module": "esnext",
     "moduleResolution": "node",
@@ -21,18 +21,10 @@
     "noEmit": true,
     "jsx": "preserve",
     "incremental": false,
-    "baseUrl": "./src",
     "types": ["jest"],
     "typeRoots": ["node_modules/@types"],
     "paths": {
-      "react": ["./node_modules/@types/react"],
-      "assets/*": ["./assets/*"],
-      "components/*": ["./components/*"],
-      "lib/*": ["./lib/*"],
-      "pages/*": ["./pages/*"],
-      "queries/*": ["./queries/*"],
-      "store/*": ["./store/*"],
-      "styles/*": ["./styles/*"]
+      "@/*": ["./src/*"]
     },
     "plugins": [
       {

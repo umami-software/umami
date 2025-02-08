@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { safeDecodeURI } from 'next-basics';
-import FilterButtons from 'components/common/FilterButtons';
-import { emptyFilter, paramFilter } from 'lib/filters';
-import { FILTER_RAW, FILTER_COMBINED } from 'lib/constants';
+import FilterButtons from '@/components/common/FilterButtons';
+import { emptyFilter, paramFilter } from '@/lib/filters';
+import { FILTER_RAW, FILTER_COMBINED } from '@/lib/constants';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './QueryParametersTable.module.css';
 
 const filters = {
@@ -39,8 +38,8 @@ export function QueryParametersTable({
           x
         ) : (
           <div className={styles.item}>
-            <div className={styles.param}>{safeDecodeURI(p)}</div>
-            <div className={styles.value}>{safeDecodeURI(v)}</div>
+            <div className={styles.param}>{p}</div>
+            <div className={styles.value}>{v}</div>
           </div>
         )
       }
