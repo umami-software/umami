@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   }
 
   const schema = z.object({
-    type: z.enum(['event', 'identity']),
+    type: z.enum(['event', 'identify']),
     payload: z.object({
       website: z.string().uuid(),
       data: z.object({}).passthrough().optional(),
@@ -189,5 +189,5 @@ export async function POST(request: Request) {
 
   const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
 
-  return json({ cache: token });
+  return json({ cache: token, websiteId, sessionId, visitId, iat });
 }
