@@ -35,19 +35,8 @@
 
   /* Helper functions */
 
-  const parseURL = url => {
-    try {
-      const { pathname, search, hash } = new URL(url, location.href);
-
-      return pathname + (excludeSearch ? '' : search) + (excludeHash ? '' : hash);
-    } catch (e) {
-      return url;
-    }
-  };
-
   const getPayload = () => ({
     website,
-    hostname,
     screen,
     language,
     title,
@@ -62,7 +51,17 @@
     if (!url) return;
 
     currentRef = currentUrl;
-    currentUrl = parseURL(url.toString());
+    currentUrl = new URL(url, location.href);
+
+    if (excludeSearch) {
+      currentUrl.search = '';
+    }
+
+    if (excludeHash) {
+      currentUrl.hash = '';
+    }
+
+    currentUrl = currentUrl.toString();
 
     if (currentUrl !== currentRef) {
       setTimeout(track, delayDuration);
@@ -250,7 +249,7 @@
     };
   }
 
-  let currentUrl = parseURL(href);
+  let currentUrl = href;
   let currentRef = referrer.startsWith(origin) ? '' : referrer;
   let title = document.title;
   let cache;

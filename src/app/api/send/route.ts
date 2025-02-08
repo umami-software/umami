@@ -1,7 +1,6 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
 import { createToken, parseToken } from '@/lib/jwt';
-import { safeDecodeURI } from '@/lib/url';
 import clickhouse from '@/lib/clickhouse';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, forbidden, serverError } from '@/lib/response';
@@ -129,24 +128,30 @@ export async function POST(request: Request) {
   }
 
   if (type === COLLECTION_TYPE.event) {
-    // eslint-disable-next-line prefer-const
-    let [urlPath, urlQuery] = safeDecodeURI(url)?.split('?') || [];
-    let [referrerPath, referrerQuery] = safeDecodeURI(referrer)?.split('?') || [];
-    let referrerDomain = '';
+    const base = hostname ? `http://${hostname}` : 'http://localhost';
+    const currentUrl = new URL(url, base);
 
-    if (!urlPath) {
-      urlPath = '/';
-    }
-
-    if (/^[\w-]+:\/\/\w+/.test(referrerPath)) {
-      const refUrl = new URL(referrer);
-      referrerPath = refUrl.pathname;
-      referrerQuery = refUrl.search.substring(1);
-      referrerDomain = refUrl.hostname.replace(/www\./, '');
-    }
+    let urlPath = currentUrl.pathname;
+    const urlQuery = currentUrl.search.substring(1);
+    const urlDomain = currentUrl.hostname.replace(/^www\./, '');
 
     if (process.env.REMOVE_TRAILING_SLASH) {
       urlPath = urlPath.replace(/(.+)\/$/, '$1');
+    }
+
+    let referrerPath: string;
+    let referrerQuery: string;
+    let referrerDomain: string;
+
+    if (referrer) {
+      const referrerUrl = new URL(referrer, base);
+
+      referrerPath = referrerUrl.pathname;
+      referrerQuery = referrerUrl.search.substring(1);
+
+      if (referrerUrl.hostname !== 'localhost') {
+        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+      }
     }
 
     await saveEvent({
@@ -161,7 +166,7 @@ export async function POST(request: Request) {
       pageTitle: title,
       eventName: name,
       eventData: data,
-      hostname,
+      hostname: hostname || urlDomain,
       browser,
       os,
       device,
