@@ -2,7 +2,7 @@ import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
 import { CLICKHOUSE } from '@/lib/db';
-import { getWebsite } from '@/queries/index';
+import { getWebsite } from '@/queries';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { maxDate } from './date';
 import { filtersToArray } from './params';

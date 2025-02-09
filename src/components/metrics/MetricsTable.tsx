@@ -72,7 +72,7 @@ export function MetricsTable({
             return filter(arr);
           }, items);
         } else {
-          items = dataFilter(data);
+          items = dataFilter(items);
         }
       }
 
