@@ -115,9 +115,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params).then(a => {
-    return Object.values(a).map(a => {
-      return { x: a.x, y: Number(a.y), country: a.country };
-    });
-  });
+  return rawQuery(sql, params);
 }

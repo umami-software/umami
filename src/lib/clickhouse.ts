@@ -95,7 +95,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
       arr.push(`and ${mapFilter(column, operator, name)}`);
 
       if (name === 'referrer') {
-        arr.push('and referrer_domain != {websiteDomain:String}');
+        arr.push('and referrer_domain != hostname');
       }
     }
 
@@ -157,7 +157,7 @@ async function pagedQuery(
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const offset = +size * (page - 1);
+  const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [

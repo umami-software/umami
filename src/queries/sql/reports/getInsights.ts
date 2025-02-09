@@ -115,18 +115,7 @@ async function clickhouseQuery(
     limit 500
     `,
     params,
-  ).then(a => {
-    return Object.values(a).map(a => {
-      return {
-        ...a,
-        views: Number(a.views),
-        visitors: Number(a.visitors),
-        visits: Number(a.visits),
-        bounces: Number(a.bounces),
-        totaltime: Number(a.totaltime),
-      };
-    });
-  });
+  );
 }
 
 function parseFields(fields: { name: any }[]) {

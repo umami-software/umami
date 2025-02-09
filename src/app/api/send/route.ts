@@ -194,5 +194,5 @@ export async function POST(request: Request) {
 
   const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
 
-  return json({ cache: token, websiteId, sessionId, visitId, iat });
+  return json({ cache: token });
 }
