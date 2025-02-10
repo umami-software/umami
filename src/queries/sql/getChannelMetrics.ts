@@ -51,9 +51,5 @@ async function clickhouseQuery(
     order by visitors desc
   `;
 
-  return rawQuery(sql, params).then(a => {
-    return Object.values(a).map(a => {
-      return { ...a, visitors: Number(a.visitors) };
-    });
-  });
+  return rawQuery(sql, params);
 }

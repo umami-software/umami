@@ -2,16 +2,16 @@ import { useCallback } from 'react';
 import * as reactQuery from '@tanstack/react-query';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_TOKEN_HEADER } from '@/lib/constants';
-import { httpGet, httpPost, httpPut, httpDelete } from '@/lib/fetch';
+import { httpGet, httpPost, httpPut, httpDelete, FetchResponse } from '@/lib/fetch';
 import useStore from '@/store/app';
 
 const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
-async function handleResponse(data: any): Promise<any> {
-  if (data.error) {
-    return Promise.reject(new Error(data.error));
+async function handleResponse(res: FetchResponse): Promise<any> {
+  if (!res.ok) {
+    return Promise.reject(new Error(res.error));
   }
-  return Promise.resolve(data);
+  return Promise.resolve(res.data);
 }
 
 function handleError(err: Error | string) {

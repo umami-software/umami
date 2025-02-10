@@ -1,6 +1,18 @@
 import { buildUrl } from '@/lib/url';
 
-export async function request(method: string, url: string, body?: string, headers: object = {}) {
+export interface FetchResponse {
+  ok: boolean;
+  status: number;
+  data?: any;
+  error?: any;
+}
+
+export async function request(
+  method: string,
+  url: string,
+  body?: string,
+  headers: object = {},
+): Promise<FetchResponse> {
   return fetch(url, {
     method,
     cache: 'no-cache',
@@ -10,7 +22,16 @@ export async function request(method: string, url: string, body?: string, header
       ...headers,
     },
     body,
-  }).then(res => res.json());
+  }).then(async res => {
+    const data = await res.json();
+
+    return {
+      ok: res.ok,
+      status: res.status,
+      data: res.ok ? data : undefined,
+      error: res.ok ? undefined : data,
+    };
+  });
 }
 
 export async function httpGet(url: string, params: object = {}, headers: object = {}) {

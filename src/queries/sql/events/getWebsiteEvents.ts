@@ -14,7 +14,7 @@ export function getWebsiteEvents(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { query } = pageParams;
+  const { search } = pageParams;
   const { filterQuery, params } = await parseFilters(websiteId, {
     ...filters,
   });
@@ -43,16 +43,16 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
         and created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
     ${
-      query
-        ? `and ((event_name ${like} {{query}} and event_type = 2)
-           or (url_path ${like} {{query}} and event_type = 1))`
+      search
+        ? `and ((event_name ${like} {{search}} and event_type = 2)
+           or (url_path ${like} {{search}} and event_type = 1))`
         : ''
     }
     order by created_at desc
     limit 1000)
     select * from events
     `,
-    { ...params, query: `%${query}%` },
+    { ...params, query: `%${search}%` },
     pageParams,
   );
 }
@@ -60,7 +60,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, pagePar
 async function clickhouseQuery(websiteId: string, filters: QueryFilters, pageParams?: PageParams) {
   const { pagedQuery, parseFilters } = clickhouse;
   const { params, dateQuery, filterQuery } = await parseFilters(websiteId, filters);
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   return pagedQuery(
     `
@@ -83,16 +83,16 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, pagePar
     ${dateQuery}
     ${filterQuery}
     ${
-      query
-        ? `and ((positionCaseInsensitive(event_name, {query:String}) > 0 and event_type = 2)
-           or (positionCaseInsensitive(url_path, {query:String}) > 0 and event_type = 1))`
+      search
+        ? `and ((positionCaseInsensitive(event_name, {search:String}) > 0 and event_type = 2)
+           or (positionCaseInsensitive(url_path, {search:String}) > 0 and event_type = 1))`
         : ''
     }
     order by created_at desc
     limit 1000)
     select * from events
     `,
-    { ...params, query },
+    { ...params, search },
     pageParams,
   );
 }

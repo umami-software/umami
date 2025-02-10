@@ -40,7 +40,7 @@ async function relationalQuery(
   let entryExitQuery = '';
   let excludeDomain = '';
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != {{websiteDomain}}
+    excludeDomain = `and website_event.referrer_domain != website_event.hostname
       and website_event.referrer_domain is not null`;
   }
 
@@ -175,9 +175,5 @@ async function clickhouseQuery(
     `;
   }
 
-  return rawQuery(sql, params).then((result: any) => {
-    return Object.values(result).map((a: any) => {
-      return { x: a.x, y: Number(a.y) };
-    });
-  });
+  return rawQuery(sql, params);
 }

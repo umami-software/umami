@@ -20,7 +20,9 @@ export function useLocale() {
   const dateLocale = getDateLocale(locale);
 
   async function loadMessages(locale: string) {
-    messages[locale] = await httpGet(`${process.env.basePath || ''}/intl/messages/${locale}.json`);
+    const { data } = await httpGet(`${process.env.basePath || ''}/intl/messages/${locale}.json`);
+
+    messages[locale] = data;
   }
 
   async function saveLocale(value: string) {
