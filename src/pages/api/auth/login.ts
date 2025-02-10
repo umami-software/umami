@@ -50,7 +50,7 @@ export default async (
 
     if (user && checkPassword(password, user.password)) {
       if (redisEnabled) {
-        const token = await saveAuth({ userId: user.id });
+        const token = await saveAuth({ userId: user.id, role: user.role });
 
         return ok(res, { token, user });
       }
