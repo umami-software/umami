@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
   const { id, role, createdAt } = user;
 
-  let token = null;
+  let token: string;
 
   if (redis.enabled) {
     token = await saveAuth({ userId: id, role });
