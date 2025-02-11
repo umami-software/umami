@@ -32,7 +32,6 @@ async function relationalQuery(
     websiteId,
     {
       ...filters,
-      eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
     { joinSession: SESSION_COLUMNS.includes(type) },
   );
@@ -54,7 +53,6 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
-          and event_type = {{eventType}}
         group by visit_id
       ) x
       on x.visit_id = website_event.visit_id
@@ -103,7 +101,7 @@ async function clickhouseQuery(
     let entryExitQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != hostname and hostname != '' and referrer_domain != ''`;
+      excludeDomain = `and referrer_domain != hostname and hostname != ''`;
     }
 
     if (type === 'entry' || type === 'exit') {
