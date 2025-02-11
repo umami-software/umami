@@ -21,11 +21,11 @@ export async function getTeamUsers(
   criteria: TeamUserFindManyArgs,
   filters?: PageParams,
 ): Promise<PageResult<TeamUser[]>> {
-  const { query } = filters;
+  const { search } = filters;
 
   const where: Prisma.TeamUserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [{ user: { username: 'contains' } }]),
+    ...prisma.getSearchParameters(search, [{ user: { username: 'contains' } }]),
   };
 
   return prisma.pagedQuery(

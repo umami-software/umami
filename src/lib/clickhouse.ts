@@ -95,7 +95,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
       arr.push(`and ${mapFilter(column, operator, name)}`);
 
       if (name === 'referrer') {
-        arr.push('and referrer_domain != hostname');
+        arr.push(`and referrer_domain != hostname`);
       }
     }
 
@@ -145,7 +145,6 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
       ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
-      websiteDomain: website.domain,
     },
   };
 }
@@ -162,7 +161,7 @@ async function pagedQuery(
 
   const statements = [
     orderBy && `order by ${orderBy} ${direction}`,
-    +size > 0 && `limit ${+size} offset ${offset}`,
+    +size > 0 && `limit ${+size} offset ${+offset}`,
   ]
     .filter(n => n)
     .join('\n');

@@ -1,7 +1,7 @@
 import MetricsTable, { MetricsTableProps } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
 
-export function BrowsersTable(props: MetricsTableProps) {
+export function ChannelsTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
 
   const renderLabel = ({ x }) => {
@@ -19,4 +19,4 @@ export function BrowsersTable(props: MetricsTableProps) {
   );
 }
 
-export default BrowsersTable;
+export default ChannelsTable;
