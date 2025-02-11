@@ -40,6 +40,7 @@
     screen,
     language,
     title,
+    hostname,
     url: currentUrl,
     referrer: currentRef,
     tag: tag ? tag : undefined,
