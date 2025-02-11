@@ -22,7 +22,7 @@ const schema = z.object({
     screen: z.string().max(11).optional(),
     title: z.string().optional(),
     url: urlOrPathParam,
-    name: z.string().url().max(50).optional(),
+    name: z.string().max(50).optional(),
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
