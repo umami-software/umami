@@ -18,7 +18,7 @@ const schema = z.object({
     data: z.object({}).passthrough().optional(),
     hostname: z.string().max(100).optional(),
     language: z.string().max(35).optional(),
-    referrer: urlOrPathParam,
+    referrer: urlOrPathParam.optional(),
     screen: z.string().max(11).optional(),
     title: z.string().optional(),
     url: urlOrPathParam,
