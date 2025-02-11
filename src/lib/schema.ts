@@ -23,7 +23,7 @@ export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
   orderBy: z.string().optional(),
-  query: z.string().optional(),
+  search: z.string().optional(),
 };
 
 export const timezoneParam = z.string().refine(value => isValidTimezone(value), {

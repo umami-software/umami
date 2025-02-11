@@ -151,7 +151,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}):
 
       if (name === 'referrer') {
         arr.push(
-          'and (website_event.referrer_domain != {{websiteDomain}} or website_event.referrer_domain is null)',
+          `and (website_event.referrer_domain != session.hostname or website_event.referrer_domain is null)`,
         );
       }
     }
@@ -205,7 +205,6 @@ async function parseFilters(
       ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, website?.resetAt),
-      websiteDomain: website.domain,
     },
   };
 }

@@ -103,7 +103,7 @@ async function clickhouseQuery(
     let entryExitQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != {websiteDomain:String} and referrer_domain != ''`;
+      excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
     }
 
     if (type === 'entry' || type === 'exit') {
@@ -139,7 +139,7 @@ async function clickhouseQuery(
     let groupByQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and t != {websiteDomain:String} and t != ''`;
+      excludeDomain = `and t != hostname`;
     }
 
     let columnQuery = `arrayJoin(${column})`;
