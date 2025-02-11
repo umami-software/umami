@@ -10,29 +10,29 @@ import { secret, uuid, visitSalt } from '@/lib/crypto';
 import { COLLECTION_TYPE } from '@/lib/constants';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
 
+const schema = z.object({
+  type: z.enum(['event', 'identify']),
+  payload: z.object({
+    website: z.string().uuid(),
+    data: z.object({}).passthrough().optional(),
+    hostname: z.string().max(100).optional(),
+    language: z.string().max(35).optional(),
+    referrer: z.string().optional(),
+    screen: z.string().max(11).optional(),
+    title: z.string().optional(),
+    url: z.string().optional(),
+    name: z.string().max(50).optional(),
+    tag: z.string().max(50).optional(),
+    ip: z.string().ip().optional(),
+    userAgent: z.string().optional(),
+  }),
+});
+
 export async function POST(request: Request) {
   // Bot check
   if (!process.env.DISABLE_BOT_CHECK && isbot(request.headers.get('user-agent'))) {
     return json({ beep: 'boop' });
   }
-
-  const schema = z.object({
-    type: z.enum(['event', 'identify']),
-    payload: z.object({
-      website: z.string().uuid(),
-      data: z.object({}).passthrough().optional(),
-      hostname: z.string().max(100).optional(),
-      language: z.string().max(35).optional(),
-      referrer: z.string().optional(),
-      screen: z.string().max(11).optional(),
-      title: z.string().optional(),
-      url: z.string().optional(),
-      name: z.string().max(50).optional(),
-      tag: z.string().max(50).optional(),
-      ip: z.string().ip().optional(),
-      userAgent: z.string().optional(),
-    }),
-  });
 
   const { body, error } = await parseRequest(request, schema, { skipAuth: true });
 
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
 
     let urlPath = currentUrl.pathname;
     const urlQuery = currentUrl.search.substring(1);
-    const urlDomain = currentUrl.hostname.replace(/^www\./, '');
+    const urlDomain = currentUrl.hostname;
 
     if (process.env.REMOVE_TRAILING_SLASH) {
       urlPath = urlPath.replace(/(.+)\/$/, '$1');
@@ -150,7 +150,7 @@ export async function POST(request: Request) {
       referrerQuery = referrerUrl.search.substring(1);
 
       if (referrerUrl.hostname !== 'localhost') {
-        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+        referrerDomain = referrerUrl.hostname;
       }
     }
 
