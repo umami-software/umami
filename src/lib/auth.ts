@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import { Report } from '@prisma/client';
-import { getClient, redisEnabled } from '@umami/redis-client';
+import redis from '@/lib/redis';
 import debug from 'debug';
 import { PERMISSIONS, ROLE_PERMISSIONS, ROLES, SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { secret, getRandomChars } from '@/lib/crypto';
@@ -31,10 +31,8 @@ export async function checkAuth(request: Request) {
 
   if (userId) {
     user = await getUser(userId);
-  } else if (redisEnabled && authKey) {
-    const redis = getClient();
-
-    const key = await redis.get(authKey);
+  } else if (redis.enabled && authKey) {
+    const key = await redis.client.get(authKey);
 
     if (key?.userId) {
       user = await getUser(key.userId);
@@ -66,12 +64,12 @@ export async function checkAuth(request: Request) {
 export async function saveAuth(data: any, expire = 0) {
   const authKey = `auth:${getRandomChars(32)}`;
 
-  const redis = getClient();
+  if (redis.enabled) {
+    await redis.client.set(authKey, data);
 
-  await redis.set(authKey, data);
-
-  if (expire) {
-    await redis.expire(authKey, expire);
+    if (expire) {
+      await redis.client.expire(authKey, expire);
+    }
   }
 
   return createSecureToken({ authKey }, secret());

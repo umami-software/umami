@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { checkPassword } from '@/lib/auth';
 import { createSecureToken } from '@/lib/jwt';
-import { redisEnabled } from '@umami/redis-client';
+import redis from '@/lib/redis';
 import { getUserByUsername } from '@/queries';
 import { json, unauthorized } from '@/lib/response';
 import { parseRequest } from '@/lib/request';
@@ -29,14 +29,15 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  if (redisEnabled) {
-    const token = await saveAuth({ userId: user.id });
-
-    return json({ token, user });
-  }
-
-  const token = createSecureToken({ userId: user.id }, secret());
   const { id, role, createdAt } = user;
+
+  let token: string;
+
+  if (redis.enabled) {
+    token = await saveAuth({ userId: id, role });
+  } else {
+    token = createSecureToken({ userId: user.id, role }, secret());
+  }
 
   return json({
     token,
