@@ -9,6 +9,7 @@ import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { secret, uuid, visitSalt } from '@/lib/crypto';
 import { COLLECTION_TYPE } from '@/lib/constants';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
+import { urlOrPathParam } from '@/lib/schema';
 
 const schema = z.object({
   type: z.enum(['event', 'identify']),
@@ -17,11 +18,11 @@ const schema = z.object({
     data: z.object({}).passthrough().optional(),
     hostname: z.string().max(100).optional(),
     language: z.string().max(35).optional(),
-    referrer: z.string().optional(),
+    referrer: urlOrPathParam,
     screen: z.string().max(11).optional(),
     title: z.string().optional(),
-    url: z.string().optional(),
-    name: z.string().max(50).optional(),
+    url: urlOrPathParam,
+    name: z.string().url().max(50).optional(),
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
@@ -129,7 +130,7 @@ export async function POST(request: Request) {
     }
 
     if (type === COLLECTION_TYPE.event) {
-      const base = hostname ? `http://${hostname}` : 'http://localhost';
+      const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
 
       let urlPath = currentUrl.pathname;
