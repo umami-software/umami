@@ -1,13 +1,11 @@
-import { getClient, redisEnabled } from '@umami/redis-client';
+import redis from '@/lib/redis';
 import { ok } from '@/lib/response';
 
 export async function POST(request: Request) {
-  if (redisEnabled) {
-    const redis = getClient();
-
+  if (redis.enabled) {
     const token = request.headers.get('authorization')?.split(' ')?.[1];
 
-    await redis.del(token);
+    await redis.client.del(token);
   }
 
   return ok();
