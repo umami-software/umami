@@ -32,7 +32,6 @@ async function relationalQuery(
     websiteId,
     {
       ...filters,
-      eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
     { joinSession: SESSION_COLUMNS.includes(type) },
   );
@@ -54,7 +53,6 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
-          and event_type = {{eventType}}
         group by visit_id
       ) x
       on x.visit_id = website_event.visit_id
@@ -96,14 +94,14 @@ async function clickhouseQuery(
     eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
   });
 
-  let excludeDomain = '';
   let sql = '';
+  let excludeDomain = '';
 
   if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
     let entryExitQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
+      excludeDomain = `and referrer_domain != hostname and hostname != ''`;
     }
 
     if (type === 'entry' || type === 'exit') {
@@ -115,7 +113,6 @@ async function clickhouseQuery(
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
       group by visit_id) x
       ON x.visit_id = website_event.visit_id
           and x.target_created_at = website_event.created_at`;
@@ -127,7 +124,6 @@ async function clickhouseQuery(
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_type = {eventType:UInt32}
       ${excludeDomain}
       ${filterQuery}
     group by x
@@ -139,7 +135,7 @@ async function clickhouseQuery(
     let groupByQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and t != hostname`;
+      excludeDomain = `and t != hostname and hostname != ''`;
     }
 
     let columnQuery = `arrayJoin(${column})`;
@@ -164,7 +160,6 @@ async function clickhouseQuery(
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = {eventType:UInt32}
         ${excludeDomain}
         ${filterQuery}
       ${groupByQuery}) as g

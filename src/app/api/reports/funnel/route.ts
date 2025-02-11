@@ -8,7 +8,7 @@ import { reportParms } from '@/lib/schema';
 export async function POST(request: Request) {
   const schema = z.object({
     ...reportParms,
-    window: z.number().positive(),
+    window: z.coerce.number().positive(),
     steps: z
       .array(
         z.object({
