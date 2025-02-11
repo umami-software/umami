@@ -88,11 +88,11 @@ export async function POST(request: Request) {
   const sessionId = uuid(websiteId, hostname, ip, userAgent);
 
   // Find session
-  if (!cache?.sessionId) {
+  if (!clickhouse.enabled && !cache?.sessionId) {
     const session = await fetchSession(websiteId, sessionId);
 
     // Create a session if not found
-    if (!session && !clickhouse.enabled) {
+    if (!session) {
       try {
         await createSession({
           id: sessionId,
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
 
     let urlPath = currentUrl.pathname;
     const urlQuery = currentUrl.search.substring(1);
-    const urlDomain = currentUrl.hostname;
+    const urlDomain = currentUrl.hostname.replace(/^www./, '');
 
     if (process.env.REMOVE_TRAILING_SLASH) {
       urlPath = urlPath.replace(/(.+)\/$/, '$1');
@@ -150,7 +150,7 @@ export async function POST(request: Request) {
       referrerQuery = referrerUrl.search.substring(1);
 
       if (referrerUrl.hostname !== 'localhost') {
-        referrerDomain = referrerUrl.hostname;
+        referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
       }
     }
 

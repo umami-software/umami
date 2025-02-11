@@ -7,7 +7,7 @@ import { getWebsiteDateRange } from '@/queries';
 
 export async function getJsonBody(request: Request) {
   try {
-    return request.clone().json();
+    return await request.clone().json();
   } catch {
     return undefined;
   }
