@@ -30,6 +30,7 @@
   const eventRegex = /data-umami-event-([\w-_]+)/;
   const eventNameAttribute = _data + 'umami-event';
   const delayDuration = 300;
+  const urlOverwrite = attr(_data + 'url-overwrite');
 
   /* Helper functions */
 
@@ -59,7 +60,14 @@
     } catch (e) {
       /* empty */
     }
-    return excludeSearch ? url.split('?')[0] : url;
+
+    const parsedUrl = excludeSearch ? url.split('?')[0] : url;
+
+    if (urlOverwrite && typeof window[urlOverwrite] === 'function') {
+      return window[urlOverwrite](parsedUrl) || parsedUrl;
+    }
+
+    return parsedUrl;
   };
 
   const getPayload = () => ({
