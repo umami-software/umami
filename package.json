@@ -143,7 +143,7 @@
     "@typescript-eslint/parser": "^6.7.3",
     "cross-env": "^7.0.3",
     "cypress": "^13.6.6",
-    "esbuild": "^0.17.17",
+    "esbuild": "^0.25.0",
     "eslint": "^8.33.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^8.5.0",
