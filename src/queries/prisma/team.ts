@@ -25,11 +25,11 @@ export async function getTeams(
   filters: PageParams = {},
 ): Promise<PageResult<Team[]>> {
   const { getSearchParameters } = prisma;
-  const { query } = filters;
+  const { search } = filters;
 
   const where: Prisma.TeamWhereInput = {
     ...criteria.where,
-    ...getSearchParameters(query, [{ name: 'contains' }]),
+    ...getSearchParameters(search, [{ name: 'contains' }]),
   };
 
   return prisma.pagedQuery<TeamFindManyArgs>(
