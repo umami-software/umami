@@ -7,7 +7,7 @@ import { badRequest, json, forbidden, serverError } from '@/lib/response';
 import { fetchSession, fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { secret, uuid, visitSalt } from '@/lib/crypto';
-import { COLLECTION_TYPE } from '@/lib/constants';
+import { COLLECTION_TYPE, DOMAIN_REGEX } from '@/lib/constants';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
 import { urlOrPathParam } from '@/lib/schema';
 
@@ -16,7 +16,7 @@ const schema = z.object({
   payload: z.object({
     website: z.string().uuid(),
     data: z.object({}).passthrough().optional(),
-    hostname: z.string().max(100).optional(),
+    hostname: z.string().regex(DOMAIN_REGEX).max(100).optional(),
     language: z.string().max(35).optional(),
     referrer: urlOrPathParam.optional(),
     screen: z.string().max(11).optional(),
