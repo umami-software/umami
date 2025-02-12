@@ -87,7 +87,7 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
         {...props}
         title={formatMessage(labels.referrers)}
         type="referrer"
-        metric={formatMessage(labels.views)}
+        metric={formatMessage(labels.visitors)}
         dataFilter={view === 'grouped' ? groupedFilter : undefined}
         renderLabel={renderLink}
       >
