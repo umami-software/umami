@@ -62,7 +62,8 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} x, count(*) y
+    select ${column} x,
+      ${column === 'referrer_domain' ? 'count(distinct session_id)' : 'count(*)'} as y
     from website_event
     ${joinSession}
     ${entryExitQuery}
@@ -119,7 +120,8 @@ async function clickhouseQuery(
     }
 
     sql = `
-    select ${column} x, count(*) y
+    select ${column} x, 
+      ${column === 'referrer_domain' ? 'uniq(session_id)' : 'count(*)'} as y
     from website_event
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
@@ -133,12 +135,12 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
+    let columnQuery = `arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
       excludeDomain = `and t != hostname and hostname != ''`;
+      columnQuery = `session_id s, arrayJoin(${column})`;
     }
-
-    let columnQuery = `arrayJoin(${column})`;
 
     if (type === 'entry') {
       columnQuery = `visit_id x, argMinMerge(entry_url)`;
@@ -154,7 +156,7 @@ async function clickhouseQuery(
 
     sql = `
     select g.t as x,
-      count(*) as y
+      ${column === 'referrer_domain' ? 'uniq(s)' : 'count(*)'} as y
     from (
       select ${columnQuery} as t
       from website_event_stats_hourly website_event
