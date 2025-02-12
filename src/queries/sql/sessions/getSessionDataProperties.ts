@@ -24,13 +24,16 @@ async function relationalQuery(
   return rawQuery(
     `
     select
-      data_key as "propertyName",
-      count(*) as "total"
-    from session_data
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-    ${filterQuery}
-    group by data_key
+        data_key as "propertyName",
+        count(*) as "total"
+    from website_event e
+    left join session_data d
+        on d.session_id = e.session_id
+    where e.website_id = {{websiteId:uuid}}
+      and e.created_at between {{startDate}} and {{endDate}}
+      and d.data_key is not null
+        ${filterQuery}
+    group by 1
     order by 2 desc
     limit 500
     `,
@@ -52,11 +55,14 @@ async function clickhouseQuery(
     select
       data_key as propertyName,
       count(*) as total
-    from session_data final
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+    from website_event e
+    left join session_data d 
+      on d.session_id = e.session_id
+    where e.website_id = {websiteId:UUID}
+      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and d.data_key != ''
     ${filterQuery}
-    group by data_key
+    group by 1
     order by 2 desc
     limit 500
     `,
