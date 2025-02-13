@@ -18,10 +18,16 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
   const cacheToken = req.headers['x-umami-cache'];
 
   if (cacheToken) {
-    const result = await parseToken(cacheToken, secret());
+    const result: SessionData | undefined = await parseToken(cacheToken, secret());
 
     // Token is valid
     if (result) {
+      // website may differ in payload
+      if (result.websiteId !== payload.website) {
+        await checkWebsite(payload.website);
+        result.websiteId = payload.website;
+      }
+
       return result;
     }
   }
@@ -29,12 +35,8 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
   // Verify payload
   const { website: websiteId, hostname, screen, language } = payload;
 
-  // Find website
-  const website = await fetchWebsite(websiteId);
-
-  if (!website) {
-    throw new Error(`Website not found: ${websiteId}.`);
-  }
+  // check website
+  await checkWebsite(websiteId);
 
   const { userAgent, browser, os, ip, country, subdivision1, subdivision2, city, device } =
     await getClientInfo(req);
@@ -90,3 +92,12 @@ export async function getSession(req: NextApiRequestCollect): Promise<SessionDat
 
   return { ...session, visitId };
 }
+
+const checkWebsite = async (websiteId: string) => {
+  // Find website
+  const website = await fetchWebsite(websiteId);
+
+  if (!website) {
+    throw new Error(`Website not found: ${websiteId}.`);
+  }
+};
