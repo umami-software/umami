@@ -4,16 +4,16 @@ import { useMessages } from '@/components/hooks';
 import styles from './Pager.module.css';
 
 export interface PagerProps {
-  page: number;
-  pageSize: number;
-  count: number;
+  page: string | number;
+  pageSize: string | number;
+  count: string | number;
   onPageChange: (nextPage: number) => void;
   className?: string;
 }
 
 export function Pager({ page, pageSize, count, onPageChange, className }: PagerProps) {
   const { formatMessage, labels } = useMessages();
-  const maxPage = pageSize && count ? Math.ceil(count / pageSize) : 0;
+  const maxPage = pageSize && count ? Math.ceil(+count / +pageSize) : 0;
   const lastPage = page === maxPage;
   const firstPage = page === 1;
 
@@ -22,7 +22,7 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
   }
 
   const handlePageChange = (value: number) => {
-    const nextPage = page + value;
+    const nextPage = +page + +value;
 
     if (nextPage > 0 && nextPage <= maxPage) {
       onPageChange(nextPage);

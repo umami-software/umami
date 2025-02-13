@@ -1,58 +1,63 @@
 import { Key } from 'react';
-import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
+import {
+  Icon,
+  Button,
+  MenuTrigger,
+  Popover,
+  Menu,
+  MenuItem,
+  MenuSeparator,
+  MenuSection,
+  Text,
+} from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import Icons from '@/components/icons';
-import { useMessages, useLogin, useLocale } from '@/components/hooks';
-import { CURRENT_VERSION } from '@/lib/constants';
-import styles from './ProfileButton.module.css';
+import { useMessages, useLogin } from '@/components/hooks';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
   const { user } = useLogin();
   const router = useRouter();
-  const { dir } = useLocale();
   const cloudMode = !!process.env.cloudMode;
 
-  const handleSelect = (key: Key, close: () => void) => {
+  const handleSelect = (key: Key) => {
     if (key === 'profile') {
       router.push('/profile');
     }
     if (key === 'logout') {
       router.push('/logout');
     }
-    close();
   };
 
   return (
-    <PopupTrigger>
+    <MenuTrigger>
       <Button data-test="button-profile" variant="quiet">
         <Icon>
           <Icons.Profile />
         </Icon>
       </Button>
-      <Popup position="bottom" alignment={dir === 'rtl' ? 'start' : 'end'}>
-        {(close: () => void) => (
-          <Menu onSelect={key => handleSelect(key, close)} className={styles.menu}>
-            <Text className={styles.name}>{user.username}</Text>
-            <Item key="profile" className={styles.item} divider={true}>
+      <Popover placement="bottom end">
+        <Menu autoFocus="last" onAction={handleSelect}>
+          <MenuSection title={user.username}>
+            <MenuSeparator />
+            <MenuItem id="profile">
               <Icon>
                 <Icons.User />
               </Icon>
               <Text>{formatMessage(labels.profile)}</Text>
-            </Item>
+            </MenuItem>
             {!cloudMode && (
-              <Item data-test="item-logout" key="logout" className={styles.item}>
+              <MenuItem data-test="item-logout" id="logout">
                 <Icon>
                   <Icons.Logout />
                 </Icon>
                 <Text>{formatMessage(labels.logout)}</Text>
-              </Item>
+              </MenuItem>
             )}
-            <div className={styles.version}>{`v${CURRENT_VERSION}`}</div>
-          </Menu>
-        )}
-      </Popup>
-    </PopupTrigger>
+          </MenuSection>
+        </Menu>
+      </Popover>
+    </MenuTrigger>
   );
 }
 

@@ -1,12 +1,10 @@
 import { useEffect, useCallback, useState } from 'react';
-import { createPortal } from 'react-dom';
-import { Button } from 'react-basics';
+import { Button, AlertBanner, Flexbox } from '@umami/react-zen';
 import { setItem } from '@/lib/storage';
 import useStore, { checkVersion } from '@/store/version';
 import { REPO_URL, VERSION_CHECK } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
 import { usePathname } from 'next/navigation';
-import styles from './UpdateNotice.module.css';
 
 export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -47,19 +45,15 @@ export function UpdateNotice({ user, config }) {
     return null;
   }
 
-  return createPortal(
-    <div className={styles.notice}>
-      <div className={styles.message}>
-        {formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}
-      </div>
-      <div className={styles.buttons}>
-        <Button variant="primary" onClick={handleViewClick}>
+  return (
+    <Flexbox justifyContent="space-between" alignItems="center">
+      <AlertBanner title={formatMessage(messages.newVersionAvailable, { version: `v${latest}` })}>
+        <Button variant="primary" onPress={handleViewClick}>
           {formatMessage(labels.viewDetails)}
         </Button>
-        <Button onClick={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
-      </div>
-    </div>,
-    document.body,
+        <Button onPress={handleDismissClick}>{formatMessage(labels.dismiss)}</Button>
+      </AlertBanner>
+    </Flexbox>
   );
 }
 

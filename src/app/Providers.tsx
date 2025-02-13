@@ -1,11 +1,13 @@
 'use client';
 import { IntlProvider } from 'react-intl';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactBasicsProvider } from 'react-basics';
+import { ZenProvider } from '@umami/react-zen';
 import ErrorBoundary from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import 'chartjs-adapter-date-fns';
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { RouterProvider } from 'react-aria-components';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -32,14 +34,18 @@ function MessagesProvider({ children }) {
 }
 
 export function Providers({ children }) {
+  const router = useRouter();
+
   return (
-    <MessagesProvider>
-      <QueryClientProvider client={client}>
-        <ReactBasicsProvider>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </ReactBasicsProvider>
-      </QueryClientProvider>
-    </MessagesProvider>
+    <ZenProvider>
+      <RouterProvider navigate={router.push}>
+        <MessagesProvider>
+          <QueryClientProvider client={client}>
+            <ErrorBoundary>{children}</ErrorBoundary>
+          </QueryClientProvider>
+        </MessagesProvider>
+      </RouterProvider>
+    </ZenProvider>
   );
 }
 

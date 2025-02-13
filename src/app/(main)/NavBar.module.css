@@ -10,16 +10,6 @@
   z-index: 200;
 }
 
-.logo {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  font-size: 16px;
-  font-weight: 700;
-  min-width: 0;
-}
-
 .links {
   display: flex;
   flex-direction: row;
@@ -48,15 +38,10 @@
   border-bottom: 2px solid var(--primary400);
 }
 
-.actions,
 .mobile {
-  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-}
-
-.mobile {
   display: none;
 }
 
@@ -65,8 +50,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .links,
-  .actions {
+  .links {
     display: none;
   }
 

@@ -1,9 +1,11 @@
 'use client';
-import { Loading } from 'react-basics';
+import { Grid, Loading } from '@umami/react-zen';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import { useLogin, useConfig } from '@/components/hooks';
 import UpdateNotice from './UpdateNotice';
+import NavBar from '@/app/(main)/NavBar';
+import Page from '@/components/layout/Page';
+import { useLogin, useConfig } from '@/components/hooks';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLogin();
@@ -27,13 +29,16 @@ export function App({ children }) {
   }
 
   return (
-    <>
-      {children}
-      <UpdateNotice user={user} config={config} />
-      {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
-        <Script src={`${process.env.basePath || ''}/telemetry.js`} />
-      )}
-    </>
+    <Grid rows="auto 1fr">
+      <NavBar />
+      <Page>
+        <UpdateNotice user={user} config={config} />
+        {children}
+        {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
+          <Script src={`${process.env.basePath || ''}/telemetry.js`} />
+        )}
+      </Page>
+    </Grid>
   );
 }
 

@@ -1,7 +1,7 @@
 'use client';
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Banner, Loading } from 'react-basics';
+import { AlertBanner, Loading } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import styles from './Page.module.css';
 
@@ -19,7 +19,7 @@ export function Page({
   const { formatMessage, messages } = useMessages();
 
   if (error) {
-    return <Banner variant="error">{formatMessage(messages.error)}</Banner>;
+    return <AlertBanner title={formatMessage(messages.error)} variant="error" />;
   }
 
   if (isLoading) {

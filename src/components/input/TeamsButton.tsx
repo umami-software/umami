@@ -1,28 +1,45 @@
-import { Key } from 'react';
-import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
-import classNames from 'classnames';
+import { useState } from 'react';
+import type { Selection } from 'react-aria-components';
+import { useRouter } from 'next/navigation';
+import {
+  Text,
+  Icon,
+  Button,
+  Menu,
+  MenuItem,
+  MenuTrigger,
+  MenuSection,
+  MenuSeparator,
+  Popover,
+  Row,
+  Box,
+} from '@umami/react-zen';
 import Icons from '@/components/icons';
 import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
-import styles from './TeamsButton.module.css';
 
 export function TeamsButton({
   className,
   showText = true,
-  onChange,
 }: {
   className?: string;
   showText?: boolean;
-  onChange?: (value: string) => void;
 }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
   const { result } = useTeams(user.id);
   const { teamId } = useTeamUrl();
+  const router = useRouter();
   const team = result?.data?.find(({ id }) => id === teamId);
+  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([teamId || user.id]));
 
-  const handleSelect = (close: () => void, id: Key) => {
-    onChange?.((id !== user.id ? id : '') as string);
-    close();
+  const handleSelect = (keys: Set<string>) => {
+    if (keys.size > 0) {
+      const [id] = [...keys];
+
+      router.push(id === user.id ? '/dashboard' : `/teams/${id}/dashboard`);
+
+      setSelectedKeys(keys);
+    }
   };
 
   if (!result?.count) {
@@ -30,41 +47,47 @@ export function TeamsButton({
   }
 
   return (
-    <PopupTrigger>
-      <Button className={classNames(styles.button, className)} variant="quiet">
-        <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
-        {showText && <Text>{teamId ? team?.name : user.username}</Text>}
-        <Icon>
-          <Icons.ChevronDown />
-        </Icon>
+    <MenuTrigger>
+      <Button className={className} variant="quiet">
+        <Row alignItems="center" gap="3">
+          <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
+          {showText && <Text weight="bold">{teamId ? team?.name : user.username}</Text>}
+          <Icon>
+            <Icons.ChevronDown />
+          </Icon>
+        </Row>
       </Button>
-      <Popup alignment="end">
-        {(close: () => void) => (
-          <Menu className={styles.menu} variant="popup" onSelect={handleSelect.bind(null, close)}>
-            <div className={styles.heading}>{formatMessage(labels.myAccount)}</div>
-            <Item key={user.id} className={classNames({ [styles.selected]: !teamId })}>
-              <Flexbox gap={10} alignItems="center">
+      <Popover placement="bottom end">
+        <Box minWidth={300}>
+          <Menu
+            selectionMode="single"
+            selectedKeys={selectedKeys}
+            autoFocus="last"
+            onSelectionChange={keys => handleSelect(keys as Set<string>)}
+          >
+            <MenuSection title={formatMessage(labels.myAccount)}>
+              <MenuItem id={user.id}>
                 <Icon>
                   <Icons.User />
                 </Icon>
-                <Text>{user.username}</Text>
-              </Flexbox>
-            </Item>
-            <div className={styles.heading}>{formatMessage(labels.team)}</div>
-            {result?.data?.map(({ id, name }) => (
-              <Item key={id} className={classNames({ [styles.selected]: id === teamId })}>
-                <Flexbox gap={10} alignItems="center">
-                  <Icon>
+                <Text wrap="nowrap">{user.username}</Text>
+              </MenuItem>
+            </MenuSection>
+            <MenuSeparator />
+            <MenuSection title={formatMessage(labels.teams)}>
+              {result?.data?.map(({ id, name }) => (
+                <MenuItem key={id} id={id}>
+                  <Icon size="sm">
                     <Icons.Users />
                   </Icon>
-                  <Text>{name}</Text>
-                </Flexbox>
-              </Item>
-            ))}
+                  <Text wrap="nowrap">{name}</Text>
+                </MenuItem>
+              ))}
+            </MenuSection>
           </Menu>
-        )}
-      </Popup>
-    </PopupTrigger>
+        </Box>
+      </Popover>
+    </MenuTrigger>
   );
 }
 
