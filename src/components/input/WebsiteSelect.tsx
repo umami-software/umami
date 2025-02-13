@@ -19,7 +19,7 @@ export function WebsiteSelect({
 
   const { data: website } = useWebsite(selectedId as string);
 
-  const queryResult = useWebsites({ teamId }, { search });
+  const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
 
   const renderValue = () => {
     return website?.name;
