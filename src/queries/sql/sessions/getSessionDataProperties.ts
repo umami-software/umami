@@ -29,7 +29,7 @@ async function relationalQuery(
     from website_event e
     join session_data d 
         on d.session_id = e.session_id
-    where e.website_id = {{websiteId:uuid}}
+    where e.website_id = {{websiteId::uuid}}
       and e.created_at between {{startDate}} and {{endDate}}
         ${filterQuery}
     group by 1
