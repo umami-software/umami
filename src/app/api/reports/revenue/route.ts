@@ -29,6 +29,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const schema = z.object({
+    currency: z.string(),
     ...reportParms,
     timezone: timezoneParam,
   });
