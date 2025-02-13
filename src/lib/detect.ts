@@ -14,7 +14,16 @@ import {
 } from './constants';
 import { NextApiRequestCollect } from 'pages/api/send';
 
-let lookup;
+let lookupPromise: any = null;
+
+// This function returns the open DB. If it's already opening/open, just return the existing promise.
+export function getLookup() {
+  if (!lookupPromise) {
+    const dir = path.join(process.cwd(), 'geo');
+    lookupPromise = maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+  }
+  return lookupPromise;
+}
 
 export function getIpAddress(req: NextApiRequestCollect) {
   const customHeader = String(process.env.CLIENT_IP_HEADER).toLowerCase();
@@ -108,12 +117,7 @@ export async function getLocation(ip: string, req: NextApiRequestCollect) {
   }
 
   // Database lookup
-  if (!lookup) {
-    const dir = path.join(process.cwd(), 'geo');
-
-    lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
-  }
-
+  const lookup = await getLookup();
   const result = lookup.get(ip);
 
   if (result) {

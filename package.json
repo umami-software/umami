@@ -100,7 +100,7 @@
     "is-localhost-ip": "^1.4.0",
     "isbot": "^5.1.16",
     "kafkajs": "^2.1.0",
-    "maxmind": "^4.3.6",
+    "maxmind": "^4.3.24",
     "md5": "^2.3.0",
     "next": "15.0.4",
     "next-basics": "^0.39.0",
