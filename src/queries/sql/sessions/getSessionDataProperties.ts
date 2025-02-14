@@ -25,13 +25,12 @@ async function relationalQuery(
     `
     select
         data_key as "propertyName",
-        count(*) as "total"
+        count(distinct d.session_id) as "total"
     from website_event e
-    left join session_data d
+    join session_data d 
         on d.session_id = e.session_id
-    where e.website_id = {{websiteId:uuid}}
+    where e.website_id = {{websiteId::uuid}}
       and e.created_at between {{startDate}} and {{endDate}}
-      and d.data_key is not null
         ${filterQuery}
     group by 1
     order by 2 desc
@@ -54,9 +53,9 @@ async function clickhouseQuery(
     `
     select
       data_key as propertyName,
-      count(*) as total
+      count(distinct d.session_id) as total
     from website_event e
-    left join session_data d 
+    join session_data d final
       on d.session_id = e.session_id
     where e.website_id = {websiteId:UUID}
       and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}

@@ -27,11 +27,13 @@ async function relationalQuery(
         when data_type = 4 then ${getDateSQL('date_value', 'hour')} 
         else string_value
       end as "value",
-      count(*) as "total"
-    from session_data
-    where website_id = {{websiteId::uuid}}
-      and created_at between {{startDate}} and {{endDate}}
-      and data_key = {{propertyName}}
+      count(distinct d.session_id) as "total"
+    from website_event e
+    join session_data d 
+        on d.session_id = e.session_id
+    where e.website_id = {{websiteId::uuid}}
+      and e.created_at between {{startDate}} and {{endDate}}
+      and d.data_key = {{propertyName}}
     ${filterQuery}
     group by value
     order by 2 desc
@@ -54,11 +56,13 @@ async function clickhouseQuery(
       multiIf(data_type = 2, replaceAll(string_value, '.0000', ''),
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
-      count(*) as "total"
-    from session_data final
-    where website_id = {websiteId:UUID}
-      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and data_key = {propertyName:String}
+      uniq(d.session_id) as "total"
+    from website_event e
+    join session_data d final
+      on d.session_id = e.session_id
+    where e.website_id = {websiteId:UUID}
+      and e.created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and d.data_key = {propertyName:String}
     ${filterQuery}
     group by value
     order by 2 desc

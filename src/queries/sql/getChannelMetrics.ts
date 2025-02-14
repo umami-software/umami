@@ -21,7 +21,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       referrer_query as query,
       count(distinct session_id) as visitors
     from website_event
-    where website_id = {websiteId:UUID}
+    where website_id = {{websiteId::uuid}}
         ${filterQuery}
         ${dateQuery}
     group by 1, 2

@@ -131,35 +131,35 @@ function getChannels(data: { domain: string; query: string; visitors: number }[]
 
   for (const { domain, query, visitors } of data) {
     if (!domain && !query) {
-      channels.direct += visitors;
+      channels.direct += Number(visitors);
     }
 
     const prefix = /utm_medium=(.*cp.*|ppc|retargeting|paid.*)/.test(query) ? 'paid' : 'organic';
 
     if (SEARCH_DOMAINS.some(match(domain)) || /utm_medium=organic/.test(query)) {
-      channels[`${prefix}Search`] += visitors;
+      channels[`${prefix}Search`] += Number(visitors);
     } else if (
       SOCIAL_DOMAINS.some(match(domain)) ||
       /utm_medium=(social|social-network|social-media|sm|social network|social media)/.test(query)
     ) {
-      channels[`${prefix}Social`] += visitors;
+      channels[`${prefix}Social`] += Number(visitors);
     } else if (EMAIL_DOMAINS.some(match(domain)) || /utm_medium=(.*e[-_ ]?mail.*)/.test(query)) {
-      channels.email += visitors;
+      channels.email += Number(visitors);
     } else if (
       SHOPPING_DOMAINS.some(match(domain)) ||
       /utm_campaign=(.*(([^a-df-z]|^)shop|shopping).*)/.test(query)
     ) {
-      channels[`${prefix}Shopping`] += visitors;
+      channels[`${prefix}Shopping`] += Number(visitors);
     } else if (VIDEO_DOMAINS.some(match(domain)) || /utm_medium=(.*video.*)/.test(query)) {
-      channels[`${prefix}Video`] += visitors;
+      channels[`${prefix}Video`] += Number(visitors);
     } else if (PAID_AD_PARAMS.some(match(query))) {
-      channels.paidAds += visitors;
+      channels.paidAds += Number(visitors);
     } else if (/utm_medium=(referral|app|link)/.test(query)) {
-      channels.referral += visitors;
+      channels.referral += Number(visitors);
     } else if (/utm_medium=affiliate/.test(query)) {
-      channels.affiliate += visitors;
+      channels.affiliate += Number(visitors);
     } else if (/utm_(source|medium)=sms/.test(query)) {
-      channels.sms += visitors;
+      channels.sms += Number(visitors);
     }
   }
 
