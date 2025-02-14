@@ -50,6 +50,7 @@ export async function POST(
   { params }: { params: Promise<{ teamId: string; userId: string }> },
 ) {
   const schema = z.object({
+    userId: z.string(),
     role: roleParam,
   });
 

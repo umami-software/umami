@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import { unauthorized, json, badRequest, ok } from '@/lib/response';
-import { canDeleteTeam, canUpdateTeam } from '@/lib/auth';
+import { canDeleteTeamUser, canUpdateTeam } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
-import { deleteTeam, getTeamUser, updateTeamUser } from '@/queries';
+import { badRequest, json, ok, unauthorized } from '@/lib/response';
+import { deleteTeamUser, getTeamUser, updateTeamUser } from '@/queries';
+import { z } from 'zod';
 
 export async function GET(
   request: Request,
@@ -58,7 +58,7 @@ export async function POST(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ teamId: string }> },
+  { params }: { params: Promise<{ teamId: string; userId: string }> },
 ) {
   const { auth, error } = await parseRequest(request);
 
@@ -66,13 +66,19 @@ export async function DELETE(
     return error();
   }
 
-  const { teamId } = await params;
+  const { teamId, userId } = await params;
 
-  if (!(await canDeleteTeam(auth, teamId))) {
+  if (!(await canDeleteTeamUser(auth, teamId, userId))) {
     return unauthorized('You must be the owner of this team.');
   }
 
-  await deleteTeam(teamId);
+  const teamUser = await getTeamUser(teamId, userId);
+
+  if (!teamUser) {
+    return badRequest('The User does not exists on this team.');
+  }
+
+  await deleteTeamUser(teamId, userId);
 
   return ok();
 }
