@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { unauthorized, json, badRequest } from '@/lib/response';
-import { canAddUserToTeam, canUpdateTeam } from '@/lib/auth';
+import { canAddUserToTeam, canViewTeam } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
 import { pagingParams, roleParam } from '@/lib/schema';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
@@ -18,7 +18,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 
   const { teamId } = await params;
 
-  if (!(await canUpdateTeam(auth, teamId))) {
+  if (!(await canViewTeam(auth, teamId))) {
     return unauthorized('You must be the owner of this team.');
   }
 
