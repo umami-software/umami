@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import EventsPage from './EventsPage';
+import { EventsPage } from './EventsPage';
 
 export default async function ({ params }: { params: { websiteId: string } }) {
   const { websiteId } = await params;

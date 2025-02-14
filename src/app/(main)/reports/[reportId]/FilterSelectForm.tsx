@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import FieldSelectForm from './FieldSelectForm';
-import FieldFilterEditForm from './FieldFilterEditForm';
+import { FieldSelectForm } from './FieldSelectForm';
+import { FieldFilterEditForm } from './FieldFilterEditForm';
 
 export interface FilterSelectFormProps {
   websiteId?: string;
@@ -11,7 +11,7 @@ export interface FilterSelectFormProps {
   allowFilterSelect?: boolean;
 }
 
-export default function FilterSelectForm({
+export function FilterSelectForm({
   websiteId,
   fields,
   startDate,

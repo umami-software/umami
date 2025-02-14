@@ -1,4 +1,4 @@
-import SettingsLayout from './SettingsLayout';
+import { SettingsLayout } from './SettingsLayout';
 import { Metadata } from 'next';
 
 export default function ({ children }) {

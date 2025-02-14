@@ -17,5 +17,3 @@ export function useWebsitePageviews(
     ...options,
   });
 }
-
-export default useWebsitePageviews;

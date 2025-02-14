@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
-import usePagedQuery from '../usePagedQuery';
-import useModified from '../useModified';
+import { usePagedQuery } from '../usePagedQuery';
+import { useModified } from '../useModified';
 
 export function useTeamMembers(teamId: string) {
   const { get } = useApi();
@@ -14,5 +14,3 @@ export function useTeamMembers(teamId: string) {
     enabled: !!teamId,
   });
 }
-
-export default useTeamMembers;

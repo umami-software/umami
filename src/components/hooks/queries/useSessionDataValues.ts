@@ -17,5 +17,3 @@ export function useSessionDataValues(
     ...options,
   });
 }
-
-export default useSessionDataValues;

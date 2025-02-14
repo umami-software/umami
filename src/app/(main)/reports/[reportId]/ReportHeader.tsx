@@ -4,7 +4,7 @@ import { useMessages, useApi, useNavigation, useTeamUrl } from '@/components/hoo
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from '@/lib/constants';
-import Breadcrumb from '@/components/common/Breadcrumb';
+import { Breadcrumb } from '@/components/common/Breadcrumb';
 
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
@@ -102,5 +102,3 @@ export function ReportHeader({ icon }) {
     </div>
   );
 }
-
-export default ReportHeader;

@@ -11,7 +11,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useMessages, useLogin } from '@/components/hooks';
 
 export function ProfileButton() {
@@ -60,5 +60,3 @@ export function ProfileButton() {
     </MenuTrigger>
   );
 }
-
-export default ProfileButton;

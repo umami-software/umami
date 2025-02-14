@@ -20,5 +20,3 @@ export function UserProvider({ userId, children }: { userId: string; children: R
 
   return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
 }
-
-export default UserProvider;

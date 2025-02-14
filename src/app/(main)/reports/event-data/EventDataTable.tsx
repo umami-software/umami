@@ -15,5 +15,3 @@ export function EventDataTable() {
     </GridTable>
   );
 }
-
-export default EventDataTable;

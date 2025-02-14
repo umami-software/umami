@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import UTMReportPage from './UTMReportPage';
+import { UTMReportPage } from './UTMReportPage';
 
 export default function () {
   return <UTMReportPage />;

@@ -73,5 +73,3 @@ export function UserAddForm({ onSave, onClose }) {
     </Form>
   );
 }
-
-export default UserAddForm;

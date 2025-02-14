@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import classNames from 'classnames';
 import { ReportContext } from '../[reportId]/Report';
-import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages, useLocale } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import styles from './RetentionTable.module.css';
@@ -75,5 +75,3 @@ export function RetentionTable({ days = DAYS }) {
     </>
   );
 }
-
-export default RetentionTable;

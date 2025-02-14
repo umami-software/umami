@@ -1,5 +1,5 @@
-import FunnelChart from './FunnelChart';
-import FunnelParameters from './FunnelParameters';
+import { FunnelChart } from './FunnelChart';
+import { FunnelParameters } from './FunnelParameters';
 import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
@@ -12,7 +12,7 @@ const defaultParameters = {
   parameters: { window: 60, steps: [] },
 };
 
-export default function FunnelReport({ reportId }: { reportId?: string }) {
+export function FunnelReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Funnel />} />

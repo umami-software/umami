@@ -1,4 +1,4 @@
-import TeamProvider from './TeamProvider';
+import { TeamProvider } from './TeamProvider';
 import { Metadata } from 'next';
 import TeamSettingsLayout from './settings/TeamSettingsLayout';
 

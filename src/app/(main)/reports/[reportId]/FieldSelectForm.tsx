@@ -9,11 +9,7 @@ export interface FieldSelectFormProps {
   showType?: boolean;
 }
 
-export default function FieldSelectForm({
-  fields = [],
-  onSelect,
-  showType = true,
-}: FieldSelectFormProps) {
+export function FieldSelectForm({ fields = [], onSelect, showType = true }: FieldSelectFormProps) {
   const { formatMessage, labels } = useMessages();
 
   return (

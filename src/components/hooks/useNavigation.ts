@@ -28,5 +28,3 @@ export function useNavigation(): {
 
   return { pathname, query, router, renderUrl };
 }
-
-export default useNavigation;

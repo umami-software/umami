@@ -1,6 +1,6 @@
-import DataTable from '@/components/common/DataTable';
+import { DataTable } from '@/components/common/DataTable';
 import { useUsers } from '@/components/hooks';
-import UsersTable from './UsersTable';
+import { UsersTable } from './UsersTable';
 import { ReactNode } from 'react';
 
 export function UsersDataTable({
@@ -18,5 +18,3 @@ export function UsersDataTable({
     </DataTable>
   );
 }
-
-export default UsersDataTable;

@@ -1,5 +1,5 @@
 import { useFields, useMessages } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useContext } from 'react';
 import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
 import FieldSelectForm from '../[reportId]/FieldSelectForm';
@@ -59,5 +59,3 @@ export function FieldParameters() {
     </FormRow>
   );
 }
-
-export default FieldParameters;

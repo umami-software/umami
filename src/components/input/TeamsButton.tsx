@@ -14,7 +14,7 @@ import {
   Row,
   Box,
 } from '@umami/react-zen';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
 
 export function TeamsButton({
@@ -90,5 +90,3 @@ export function TeamsButton({
     </MenuTrigger>
   );
 }
-
-export default TeamsButton;

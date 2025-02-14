@@ -12,5 +12,3 @@ export function useWebsiteSessionStats(websiteId: string, options?: { [key: stri
     ...options,
   });
 }
-
-export default useWebsiteSessionStats;

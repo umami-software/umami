@@ -3,8 +3,8 @@ import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
 import ReportBody from '../[reportId]/ReportBody';
-import JourneyParameters from './JourneyParameters';
-import JourneyView from './JourneyView';
+import { JourneyParameters } from './JourneyParameters';
+import { JourneyView } from './JourneyView';
 import Path from '@/assets/path.svg';
 import { REPORT_TYPES } from '@/lib/constants';
 
@@ -13,7 +13,7 @@ const defaultParameters = {
   parameters: { steps: 5 },
 };
 
-export default function JourneyReport({ reportId }: { reportId?: string }) {
+export function JourneyReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Path />} />

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import TeamPage from './TeamPage';
+import { TeamPage } from './TeamPage';
 
 export default async function ({ params }: { params: { teamId: string } }) {
   const { teamId } = await params;

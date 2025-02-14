@@ -1,14 +1,14 @@
 'use client';
 import { Icon, Icons, Loading, Text } from 'react-basics';
-import PageHeader from '@/components/layout/PageHeader';
-import Pager from '@/components/common/Pager';
-import WebsiteChartList from '../websites/[websiteId]/WebsiteChartList';
-import DashboardSettingsButton from '@/app/(main)/dashboard/DashboardSettingsButton';
-import DashboardEdit from '@/app/(main)/dashboard/DashboardEdit';
-import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Pager } from '@/components/common/Pager';
+import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';
+import { DashboardSettingsButton } from '@/app/(main)/dashboard/DashboardSettingsButton';
+import { DashboardEdit } from '@/app/(main)/dashboard/DashboardEdit';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages, useLocale, useTeamUrl, useWebsites } from '@/components/hooks';
-import useDashboard from '@/store/dashboard';
-import LinkButton from '@/components/common/LinkButton';
+import { useDashboard } from '@/store/dashboard';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
@@ -67,5 +67,3 @@ export function DashboardPage() {
     </section>
   );
 }
-
-export default DashboardPage;

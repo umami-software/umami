@@ -1,4 +1,4 @@
-import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
 import { GridColumn, GridTable } from 'react-basics';
@@ -34,5 +34,3 @@ export function RevenueTable() {
     </GridTable>
   );
 }
-
-export default RevenueTable;

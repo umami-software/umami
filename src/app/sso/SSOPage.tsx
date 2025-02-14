@@ -4,7 +4,7 @@ import { Loading } from 'react-basics';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { setClientAuthToken } from '@/lib/client';
 
-export default function SSOPage() {
+export function SSOPage() {
   const router = useRouter();
   const search = useSearchParams();
   const url = search.get('url');

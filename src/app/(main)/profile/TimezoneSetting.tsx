@@ -33,5 +33,3 @@ export function TimezoneSetting() {
     </Flexbox>
   );
 }
-
-export default TimezoneSetting;

@@ -1,4 +1,4 @@
-import { Icons } from 'react-basics';
+import { Icons as ReactBasicsIcons } from 'react-basics';
 import AddUser from '@/assets/add-user.svg';
 import Bars from '@/assets/bars.svg';
 import BarChart from '@/assets/bar-chart.svg';
@@ -27,7 +27,7 @@ import Users from '@/assets/users.svg';
 import Visitor from '@/assets/visitor.svg';
 
 const icons = {
-  ...Icons,
+  ...ReactBasicsIcons,
   AddUser,
   Bars,
   BarChart,
@@ -56,4 +56,4 @@ const icons = {
   Visitor,
 };
 
-export default icons;
+export const Icons = icons;

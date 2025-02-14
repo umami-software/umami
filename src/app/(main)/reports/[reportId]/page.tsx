@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import ReportPage from './ReportPage';
+import { ReportPage } from './ReportPage';
 
 export default async function ({ params }: { params: { reportId: string } }) {
   const { reportId } = await params;

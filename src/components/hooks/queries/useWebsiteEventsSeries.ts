@@ -16,5 +16,3 @@ export function useWebsiteEventsSeries(
     ...options,
   });
 }
-
-export default useWebsiteEventsSeries;

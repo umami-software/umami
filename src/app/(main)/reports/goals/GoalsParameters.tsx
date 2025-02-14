@@ -1,5 +1,5 @@
 import { useMessages } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { formatNumber } from '@/lib/format';
 import { useContext } from 'react';
 import {
@@ -17,7 +17,7 @@ import BaseParameters from '../[reportId]/BaseParameters';
 import ParameterList from '../[reportId]/ParameterList';
 import PopupForm from '../[reportId]/PopupForm';
 import { ReportContext } from '../[reportId]/Report';
-import GoalsAddForm from './GoalsAddForm';
+import { GoalsAddForm } from './GoalsAddForm';
 import styles from './GoalsParameters.module.css';
 
 export function GoalsParameters() {
@@ -137,5 +137,3 @@ export function GoalsParameters() {
     </Form>
   );
 }
-
-export default GoalsParameters;

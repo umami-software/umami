@@ -1,6 +1,6 @@
 'use client';
-import EventDataReport from './EventDataReport';
+import { EventDataReport } from './EventDataReport';
 
-export default function EventDataReportPage() {
+export function EventDataReportPage() {
   return <EventDataReport />;
 }

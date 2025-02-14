@@ -1,5 +1,5 @@
-import BarChartTooltip from '@/components/charts/BarChartTooltip';
-import Chart, { ChartProps } from '@/components/charts/Chart';
+import { BarChartTooltip } from '@/components/charts/BarChartTooltip';
+import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useTheme } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { useMemo, useState } from 'react';
@@ -95,5 +95,3 @@ export function BarChart(props: BarChartProps) {
     />
   );
 }
-
-export default BarChart;

@@ -1,6 +1,6 @@
-import PageHeader from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useMessages } from '@/components/hooks';
-import UserAddButton from './UserAddButton';
+import { UserAddButton } from './UserAddButton';
 
 export function UsersHeader({ onAdd }: { onAdd?: () => void }) {
   const { formatMessage, labels } = useMessages();
@@ -11,5 +11,3 @@ export function UsersHeader({ onAdd }: { onAdd?: () => void }) {
     </PageHeader>
   );
 }
-
-export default UsersHeader;

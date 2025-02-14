@@ -1,8 +1,8 @@
-import useFormat from '@/components//hooks/useFormat';
-import Empty from '@/components/common/Empty';
-import FilterButtons from '@/components/common/FilterButtons';
+import { useFormat } from '@/components//hooks/useFormat';
+import { Empty } from '@/components/common/Empty';
+import { FilterButtons } from '@/components/common/FilterButtons';
 import { useCountryNames, useLocale, useMessages, useTimezone } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { RealtimeData } from '@/lib/types';
@@ -173,5 +173,3 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     </div>
   );
 }
-
-export default RealtimeLog;

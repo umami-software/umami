@@ -1,10 +1,10 @@
 'use client';
 import { Icon, Text, ThemeButton, Row } from '@umami/react-zen';
 import Link from 'next/link';
-import LanguageButton from '@/components/input/LanguageButton';
-import ProfileButton from '@/components/input/ProfileButton';
-import TeamsButton from '@/components/input/TeamsButton';
-import Icons from '@/components/icons';
+import { LanguageButton } from '@/components/input/LanguageButton';
+import { ProfileButton } from '@/components/input/ProfileButton';
+import { TeamsButton } from '@/components/input/TeamsButton';
+import { Icons } from '@/components/icons';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 
 export function NavBar() {
@@ -46,5 +46,3 @@ export function NavBar() {
     </Row>
   );
 }
-
-export default NavBar;

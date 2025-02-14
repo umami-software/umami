@@ -10,5 +10,3 @@ export function useWebsiteSession(websiteId: string, sessionId: string) {
     },
   });
 }
-
-export default useWebsiteSession;

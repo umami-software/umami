@@ -87,5 +87,3 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
     </Form>
   );
 }
-
-export default UserEditForm;

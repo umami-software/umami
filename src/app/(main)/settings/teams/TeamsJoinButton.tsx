@@ -1,7 +1,7 @@
 import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useMessages, useModified } from '@/components/hooks';
-import TeamJoinForm from './TeamJoinForm';
+import { TeamJoinForm } from './TeamJoinForm';
 
 export function TeamsJoinButton() {
   const { formatMessage, labels, messages } = useMessages();
@@ -27,5 +27,3 @@ export function TeamsJoinButton() {
     </ModalTrigger>
   );
 }
-
-export default TeamsJoinButton;

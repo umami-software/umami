@@ -1,9 +1,9 @@
 'use client';
-import WebsitesHeader from '@/app/(main)/settings/websites/WebsitesHeader';
-import WebsitesDataTable from '@/app/(main)/settings/websites/WebsitesDataTable';
+import { WebsitesHeader } from '@/app/(main)/settings/websites/WebsitesHeader';
+import { WebsitesDataTable } from '@/app/(main)/settings/websites/WebsitesDataTable';
 import { useTeamUrl } from '@/components/hooks';
 
-export default function WebsitesPage() {
+export function WebsitesPage() {
   const { teamId } = useTeamUrl();
 
   return (

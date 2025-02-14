@@ -1,11 +1,11 @@
 'use client';
-import WebsiteHeader from '../WebsiteHeader';
-import WebsiteMetricsBar from '../WebsiteMetricsBar';
-import FilterTags from '@/components/metrics/FilterTags';
+import { WebsiteHeader } from '../WebsiteHeader';
+import { WebsiteMetricsBar } from '../WebsiteMetricsBar';
+import { FilterTags } from '@/components/metrics/FilterTags';
 import { useNavigation } from '@/components/hooks';
 import { FILTER_COLUMNS } from '@/lib/constants';
-import WebsiteChart from '../WebsiteChart';
-import WebsiteCompareTables from './WebsiteCompareTables';
+import { WebsiteChart } from '../WebsiteChart';
+import { WebsiteCompareTables } from './WebsiteCompareTables';
 
 export function WebsiteComparePage({ websiteId }) {
   const { query } = useNavigation();
@@ -27,5 +27,3 @@ export function WebsiteComparePage({ websiteId }) {
     </>
   );
 }
-
-export default WebsiteComparePage;

@@ -18,5 +18,3 @@ export function useWebsiteEvents(
     ...options,
   });
 }
-
-export default useWebsiteEvents;

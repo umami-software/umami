@@ -1,6 +1,6 @@
 import { TextOverflow } from 'react-basics';
 import { useMessages, useSessionData } from '@/components/hooks';
-import Empty from '@/components/common/Empty';
+import { Empty } from '@/components/common/Empty';
 import { DATA_TYPES } from '@/lib/constants';
 import styles from './SessionData.module.css';
 import { LoadingPanel } from '@/components/common/LoadingPanel';

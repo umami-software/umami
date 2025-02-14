@@ -1,6 +1,6 @@
 import { useMessages } from '@/components/hooks';
-import MetricCard from '@/components/metrics/MetricCard';
-import MetricsBar from '@/components/metrics/MetricsBar';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime } from '@/lib/format';
 
 export function SessionStats({ data }) {

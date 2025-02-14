@@ -78,5 +78,3 @@ export function TeamMemberEditForm({
     </Form>
   );
 }
-
-export default TeamMemberEditForm;

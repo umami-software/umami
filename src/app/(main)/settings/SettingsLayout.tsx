@@ -1,9 +1,9 @@
 'use client';
 import { ReactNode } from 'react';
 import { useLogin, useMessages } from '@/components/hooks';
-import MenuLayout from '@/components/layout/MenuLayout';
+import { MenuLayout } from '@/components/layout/MenuLayout';
 
-export default function SettingsLayout({ children }: { children: ReactNode }) {
+export function SettingsLayout({ children }: { children: ReactNode }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
 

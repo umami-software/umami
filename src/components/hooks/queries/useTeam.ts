@@ -8,5 +8,3 @@ export function useTeam(teamId: string) {
     enabled: !!teamId,
   });
 }
-
-export default useTeam;

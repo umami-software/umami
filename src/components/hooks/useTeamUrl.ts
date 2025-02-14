@@ -13,5 +13,3 @@ export function useTeamUrl(): {
 
   return { teamId, renderTeamUrl };
 }
-
-export default useTeamUrl;

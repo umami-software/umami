@@ -1,6 +1,6 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { emptyFilter } from '@/lib/filters';
-import FilterLink from '@/components/common/FilterLink';
+import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages } from '@/components/hooks';
 import { useFormat } from '@/components/hooks';
 
@@ -35,5 +35,3 @@ export function CitiesTable(props: MetricsTableProps) {
     />
   );
 }
-
-export default CitiesTable;

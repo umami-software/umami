@@ -34,5 +34,3 @@ export function Breadcrumb({ data }: BreadcrumbProps) {
     </Flexbox>
   );
 }
-
-export default Breadcrumb;

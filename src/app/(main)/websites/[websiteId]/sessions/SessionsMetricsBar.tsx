@@ -1,8 +1,8 @@
 import { useMessages } from '@/components/hooks';
-import useWebsiteSessionStats from '@/components/hooks/queries/useWebsiteSessionStats';
-import WebsiteDateFilter from '@/components/input/WebsiteDateFilter';
-import MetricCard from '@/components/metrics/MetricCard';
-import MetricsBar from '@/components/metrics/MetricsBar';
+import { useWebsiteSessionStats } from '@/components/hooks/queries/useWebsiteSessionStats';
+import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
 import { Flexbox } from 'react-basics';
 
@@ -38,5 +38,3 @@ export function SessionsMetricsBar({ websiteId }: { websiteId: string }) {
     </Flexbox>
   );
 }
-
-export default SessionsMetricsBar;

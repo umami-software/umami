@@ -26,5 +26,3 @@ export function TypeIcon({
     </>
   );
 }
-
-export default TypeIcon;

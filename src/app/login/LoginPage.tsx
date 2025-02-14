@@ -1,5 +1,5 @@
 'use client';
-import LoginForm from './LoginForm';
+import { LoginForm } from './LoginForm';
 import styles from './LoginPage.module.css';
 
 export function LoginPage() {
@@ -13,5 +13,3 @@ export function LoginPage() {
     </div>
   );
 }
-
-export default LoginPage;

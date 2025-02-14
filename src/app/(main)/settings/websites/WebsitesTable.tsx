@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import { useMessages, useTeamUrl } from '@/components/hooks';
-import LinkButton from '@/components/common/LinkButton';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -61,5 +61,3 @@ export function WebsitesTable({
     </GridTable>
   );
 }
-
-export default WebsitesTable;

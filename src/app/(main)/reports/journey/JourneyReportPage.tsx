@@ -1,5 +1,5 @@
-import JourneyReport from './JourneyReport';
+import { JourneyReport } from './JourneyReport';
 
-export default function JourneyReportPage() {
+export function JourneyReportPage() {
   return <JourneyReport />;
 }

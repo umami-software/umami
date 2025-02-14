@@ -2,8 +2,8 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 import { Loading, SearchField } from 'react-basics';
 import { useMessages, useNavigation } from '@/components/hooks';
-import Empty from '@/components/common/Empty';
-import Pager from '@/components/common/Pager';
+import { Empty } from '@/components/common/Empty';
+import { Pager } from '@/components/common/Pager';
 import { PagedQueryResult } from '@/lib/types';
 import styles from './DataTable.module.css';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -87,5 +87,3 @@ export function DataTable({
     </>
   );
 }
-
-export default DataTable;

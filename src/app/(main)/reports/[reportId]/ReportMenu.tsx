@@ -23,5 +23,3 @@ export function ReportMenu({ children }) {
     </div>
   );
 }
-
-export default ReportMenu;

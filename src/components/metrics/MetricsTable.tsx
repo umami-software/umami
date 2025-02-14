@@ -1,8 +1,8 @@
 import { ReactNode, useMemo, useState } from 'react';
 import { Loading, Icon, Text, SearchField } from 'react-basics';
 import classNames from 'classnames';
-import ErrorMessage from '@/components/common/ErrorMessage';
-import LinkButton from '@/components/common/LinkButton';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
 import {
@@ -12,8 +12,8 @@ import {
   useLocale,
   useFormat,
 } from '@/components/hooks';
-import Icons from '@/components/icons';
-import ListTable, { ListTableProps } from './ListTable';
+import { Icons } from '@/components/icons';
+import { ListTable, ListTableProps } from './ListTable';
 import styles from './MetricsTable.module.css';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -123,5 +123,3 @@ export function MetricsTable({
     </div>
   );
 }
-
-export default MetricsTable;

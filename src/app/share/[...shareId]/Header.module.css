@@ -28,10 +28,4 @@
   .header .buttons {
     flex: 1;
   }
-
-  .links {
-    order: 2;
-    margin: 20px 0;
-    min-width: 100%;
-  }
 }

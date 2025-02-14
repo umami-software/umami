@@ -3,7 +3,7 @@ import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 import { Button, Loading, Toggle, SearchField } from 'react-basics';
 import { firstBy } from 'thenby';
-import useDashboard, { saveDashboard } from '@/store/dashboard';
+import { useDashboard, saveDashboard } from '@/store/dashboard';
 import { useMessages, useWebsites } from '@/components/hooks';
 import styles from './DashboardEdit.module.css';
 
@@ -156,5 +156,3 @@ export function DashboardEdit({ teamId }: { teamId: string }) {
     </>
   );
 }
-
-export default DashboardEdit;

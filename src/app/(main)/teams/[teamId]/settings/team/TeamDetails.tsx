@@ -1,13 +1,13 @@
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { useLogin, useMessages } from '@/components/hooks';
-import Icons from '@/components/icons';
-import PageHeader from '@/components/layout/PageHeader';
+import { Icons } from '@/components/icons';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useContext, useState } from 'react';
 import { Flexbox, Item, Tabs } from 'react-basics';
-import TeamLeaveButton from '@/app/(main)/settings/teams/TeamLeaveButton';
-import TeamManage from './TeamManage';
-import TeamEditForm from './TeamEditForm';
+import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
+import { TeamManage } from './TeamManage';
+import { TeamEditForm } from './TeamEditForm';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -39,5 +39,3 @@ export function TeamDetails({ teamId }: { teamId: string }) {
     </Flexbox>
   );
 }
-
-export default TeamDetails;

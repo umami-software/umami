@@ -1,4 +1,4 @@
-import TypeConfirmationForm from '@/components/common/TypeConfirmationForm';
+import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 import { useApi, useMessages } from '@/components/hooks';
 
 const CONFIRM_VALUE = 'DELETE';
@@ -39,5 +39,3 @@ export function TeamDeleteForm({
     />
   );
 }
-
-export default TeamDeleteForm;

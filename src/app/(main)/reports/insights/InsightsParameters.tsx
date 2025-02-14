@@ -32,5 +32,3 @@ export function InsightsParameters() {
     </Form>
   );
 }
-
-export default InsightsParameters;

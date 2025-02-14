@@ -20,5 +20,3 @@ export function useFields() {
 
   return { fields };
 }
-
-export default useFields;

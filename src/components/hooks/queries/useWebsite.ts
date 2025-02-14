@@ -10,5 +10,3 @@ export function useWebsite(websiteId: string, options?: { [key: string]: any }) 
     ...options,
   });
 }
-
-export default useWebsite;

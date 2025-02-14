@@ -1,4 +1,4 @@
-import MetricsTable, { MetricsTableProps } from '@/components/metrics/MetricsTable';
+import { MetricsTable, MetricsTableProps } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
 
 export function ChannelsTable(props: MetricsTableProps) {
@@ -18,5 +18,3 @@ export function ChannelsTable(props: MetricsTableProps) {
     />
   );
 }
-
-export default ChannelsTable;

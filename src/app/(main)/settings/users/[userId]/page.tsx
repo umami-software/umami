@@ -1,4 +1,4 @@
-import UserPage from './UserPage';
+import { UserPage } from './UserPage';
 import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { userId: string } }) {

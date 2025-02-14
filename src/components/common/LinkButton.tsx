@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useLocale } from '@/components/hooks';
+// eslint-disable-next-line css-modules/no-unused-class
 import styles from './LinkButton.module.css';
 
 export interface LinkButtonProps {
@@ -26,5 +27,3 @@ export function LinkButton({ href, className, variant, scroll = true, children }
     </Link>
   );
 }
-
-export default LinkButton;

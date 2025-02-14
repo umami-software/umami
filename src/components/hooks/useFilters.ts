@@ -49,5 +49,3 @@ export function useFilters() {
 
   return { filters, operatorLabels, typeFilters, getFilters };
 }
-
-export default useFilters;

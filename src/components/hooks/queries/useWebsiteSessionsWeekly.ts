@@ -1,5 +1,5 @@
 import { useApi } from '../useApi';
-import useModified from '../useModified';
+import { useModified } from '../useModified';
 import { useFilterParams } from '@/components/hooks/useFilterParams';
 
 export function useWebsiteSessionsWeekly(
@@ -20,5 +20,3 @@ export function useWebsiteSessionsWeekly(
     },
   });
 }
-
-export default useWebsiteSessionsWeekly;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import FilterButtons from '@/components/common/FilterButtons';
+import { FilterButtons } from '@/components/common/FilterButtons';
 import { emptyFilter, paramFilter } from '@/lib/filters';
 import { FILTER_RAW, FILTER_COMBINED } from '@/lib/constants';
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { useMessages } from '@/components/hooks';
 import styles from './QueryParametersTable.module.css';
 
@@ -49,5 +49,3 @@ export function QueryParametersTable({
     </MetricsTable>
   );
 }
-
-export default QueryParametersTable;

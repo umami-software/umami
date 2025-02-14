@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import UsersSettingsPage from './UsersSettingsPage';
+import { UsersSettingsPage } from './UsersSettingsPage';
 
 export default function () {
   return <UsersSettingsPage />;

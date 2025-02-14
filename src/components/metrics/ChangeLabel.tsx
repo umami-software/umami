@@ -42,5 +42,3 @@ export function ChangeLabel({
     </div>
   );
 }
-
-export default ChangeLabel;

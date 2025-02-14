@@ -1,6 +1,6 @@
 'use client';
-import InsightsReport from './InsightsReport';
+import { InsightsReport } from './InsightsReport';
 
-export default function InsightsReportPage() {
+export function InsightsReportPage() {
   return <InsightsReport />;
 }

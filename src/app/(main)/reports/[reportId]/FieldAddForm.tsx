@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { REPORT_PARAMETERS } from '@/lib/constants';
-import PopupForm from './PopupForm';
-import FieldSelectForm from './FieldSelectForm';
+import { PopupForm } from './PopupForm';
+import { FieldSelectForm } from './FieldSelectForm';
 
 export function FieldAddForm({
   fields = [],
@@ -45,5 +45,3 @@ export function FieldAddForm({
     document.body,
   );
 }
-
-export default FieldAddForm;

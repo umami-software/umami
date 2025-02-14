@@ -1,6 +1,6 @@
 'use client';
-import ReportTemplates from './ReportTemplates';
+import { ReportTemplates } from './ReportTemplates';
 
-export default function ReportCreatePage() {
+export function ReportCreatePage() {
   return <ReportTemplates />;
 }

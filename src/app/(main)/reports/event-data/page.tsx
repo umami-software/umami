@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import EventDataReportPage from './EventDataReportPage';
+import { EventDataReportPage } from './EventDataReportPage';
 
 export default function () {
   return <EventDataReportPage />;

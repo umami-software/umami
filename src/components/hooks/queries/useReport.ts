@@ -92,5 +92,3 @@ export function useReport(
 
   return { report, runReport, updateReport, isRunning };
 }
-
-export default useReport;

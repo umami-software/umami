@@ -36,5 +36,3 @@ export function useWebsiteMetrics(
     ...options,
   });
 }
-
-export default useWebsiteMetrics;

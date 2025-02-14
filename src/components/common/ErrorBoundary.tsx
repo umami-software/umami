@@ -29,5 +29,3 @@ export function ErrorBoundary({ children }: { children: ReactNode }) {
     </Boundary>
   );
 }
-
-export default ErrorBoundary;

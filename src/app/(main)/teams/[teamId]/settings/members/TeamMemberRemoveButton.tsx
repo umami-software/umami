@@ -1,4 +1,4 @@
-import ConfirmationForm from '@/components/common/ConfirmationForm';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { messages } from '@/components/messages';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
@@ -55,5 +55,3 @@ export function TeamMemberRemoveButton({
     </ModalTrigger>
   );
 }
-
-export default TeamMemberRemoveButton;

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
-import App from './App';
+import { App } from './App';
 
-export default async function ({ children }) {
+export default function ({ children }) {
   return <App>{children}</App>;
 }
 

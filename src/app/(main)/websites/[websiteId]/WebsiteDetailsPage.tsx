@@ -1,15 +1,15 @@
 'use client';
 import { usePathname } from 'next/navigation';
-import FilterTags from '@/components/metrics/FilterTags';
+import { FilterTags } from '@/components/metrics/FilterTags';
 import { useNavigation } from '@/components/hooks';
-import WebsiteChart from './WebsiteChart';
-import WebsiteExpandedView from './WebsiteExpandedView';
-import WebsiteHeader from './WebsiteHeader';
-import WebsiteMetricsBar from './WebsiteMetricsBar';
-import WebsiteTableView from './WebsiteTableView';
+import { WebsiteChart } from './WebsiteChart';
+import { WebsiteExpandedView } from './WebsiteExpandedView';
+import { WebsiteHeader } from './WebsiteHeader';
+import { WebsiteMetricsBar } from './WebsiteMetricsBar';
+import { WebsiteTableView } from './WebsiteTableView';
 import { FILTER_COLUMNS } from '@/lib/constants';
 
-export default function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
+export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const pathname = usePathname();
   const { query } = useNavigation();
 

@@ -25,5 +25,3 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
     </LoadingButton>
   );
 }
-
-export default TeamWebsiteRemoveButton;

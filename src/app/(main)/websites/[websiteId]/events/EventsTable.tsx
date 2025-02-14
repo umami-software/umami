@@ -1,9 +1,9 @@
 import { GridTable, GridColumn, Icon } from 'react-basics';
 import { useMessages, useTeamUrl, useTimezone } from '@/components/hooks';
-import Empty from '@/components/common/Empty';
-import Avatar from '@/components/common/Avatar';
+import { Empty } from '@/components/common/Empty';
+import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 
 export function EventsTable({ data = [] }) {
   const { formatTimezoneDate } = useTimezone();
@@ -40,5 +40,3 @@ export function EventsTable({ data = [] }) {
     </GridTable>
   );
 }
-
-export default EventsTable;

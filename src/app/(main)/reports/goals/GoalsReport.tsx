@@ -1,5 +1,5 @@
-import GoalsChart from './GoalsChart';
-import GoalsParameters from './GoalsParameters';
+import { GoalsChart } from './GoalsChart';
+import { GoalsParameters } from './GoalsParameters';
 import Report from '../[reportId]/Report';
 import ReportHeader from '../[reportId]/ReportHeader';
 import ReportMenu from '../[reportId]/ReportMenu';
@@ -12,7 +12,7 @@ const defaultParameters = {
   parameters: { goals: [] },
 };
 
-export default function GoalsReport({ reportId }: { reportId?: string }) {
+export function GoalsReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
       <ReportHeader icon={<Target />} />

@@ -1,4 +1,4 @@
-import useCountryNames from './useCountryNames';
+import { useCountryNames } from './useCountryNames';
 import regions from '../../../public/iso-3166-2.json';
 
 export function useRegionNames(locale: string) {
@@ -15,5 +15,3 @@ export function useRegionNames(locale: string) {
 
   return { regionNames: regions, getRegionName };
 }
-
-export default useRegionNames;

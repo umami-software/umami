@@ -1,7 +1,7 @@
 import { useApi } from '../useApi';
 import { useCountryNames } from '@/components/hooks/useCountryNames';
 import { useRegionNames } from '@/components/hooks/useRegionNames';
-import useLocale from '../useLocale';
+import { useLocale } from '../useLocale';
 
 export function useWebsiteValues({
   websiteId,
@@ -60,5 +60,3 @@ export function useWebsiteValues({
     enabled: !!(websiteId && type && startDate && endDate),
   });
 }
-
-export default useWebsiteValues;

@@ -55,5 +55,3 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
     </div>
   );
 }
-
-export default Pager;

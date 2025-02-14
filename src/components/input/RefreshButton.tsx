@@ -1,7 +1,7 @@
 import { LoadingButton, Icon, TooltipPopup } from 'react-basics';
 import { setWebsiteDateRange } from '@/store/websites';
 import { useDateRange } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export function RefreshButton({
@@ -30,5 +30,3 @@ export function RefreshButton({
     </TooltipPopup>
   );
 }
-
-export default RefreshButton;

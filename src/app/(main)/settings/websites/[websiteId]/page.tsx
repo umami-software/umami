@@ -1,4 +1,4 @@
-import WebsiteSettingsPage from './WebsiteSettingsPage';
+import { WebsiteSettingsPage } from './WebsiteSettingsPage';
 import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { websiteId: string } }) {

@@ -17,5 +17,3 @@ export function useRealtime(websiteId: string) {
 
   return { data, isLoading, error };
 }
-
-export default useRealtime;

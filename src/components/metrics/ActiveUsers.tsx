@@ -40,5 +40,3 @@ export function ActiveUsers({
     </StatusLight>
   );
 }
-
-export default ActiveUsers;

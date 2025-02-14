@@ -1,6 +1,6 @@
 import { useMessages, useModified } from '@/components/hooks';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
-import WebsiteAddForm from './WebsiteAddForm';
+import { WebsiteAddForm } from './WebsiteAddForm';
 
 export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -29,5 +29,3 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
     </ModalTrigger>
   );
 }
-
-export default WebsiteAddButton;

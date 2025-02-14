@@ -1,8 +1,8 @@
-import FilterLink from '@/components/common/FilterLink';
-import Favicon from '@/components/common/Favicon';
+import { FilterLink } from '@/components/common/FilterLink';
+import { Favicon } from '@/components/common/Favicon';
 import { useMessages, useNavigation } from '@/components/hooks';
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import FilterButtons from '@/components/common/FilterButtons';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
+import { FilterButtons } from '@/components/common/FilterButtons';
 import thenby from 'thenby';
 import { GROUPED_DOMAINS } from '@/lib/constants';
 import { Flexbox } from 'react-basics';
@@ -98,5 +98,3 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
     </>
   );
 }
-
-export default ReferrersTable;

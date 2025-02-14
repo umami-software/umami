@@ -32,5 +32,3 @@ export function UTMParameters() {
     </Form>
   );
 }
-
-export default UTMParameters;

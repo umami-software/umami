@@ -1,8 +1,8 @@
 'use client';
 import { Metadata } from 'next';
-import RetentionReport from './RetentionReport';
+import { RetentionReport } from './RetentionReport';
 
-export default function RetentionReportPage() {
+export function RetentionReportPage() {
   return <RetentionReport />;
 }
 

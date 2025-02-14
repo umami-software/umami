@@ -1,10 +1,10 @@
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
-import FilterButtons from '@/components/common/FilterButtons';
-import FilterLink from '@/components/common/FilterLink';
+import { FilterButtons } from '@/components/common/FilterButtons';
+import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { emptyFilter } from '@/lib/filters';
 import { useContext } from 'react';
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 
 export interface PagesTableProps extends MetricsTableProps {
   allowFilter?: boolean;
@@ -70,5 +70,3 @@ export function PagesTable({ allowFilter, ...props }: PagesTableProps) {
     </MetricsTable>
   );
 }
-
-export default PagesTable;

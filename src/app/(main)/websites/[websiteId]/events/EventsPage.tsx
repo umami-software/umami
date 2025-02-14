@@ -1,16 +1,16 @@
 'use client';
-import WebsiteHeader from '../WebsiteHeader';
-import EventsDataTable from './EventsDataTable';
-import EventsMetricsBar from './EventsMetricsBar';
-import EventsChart from '@/components/metrics/EventsChart';
+import { WebsiteHeader } from '../WebsiteHeader';
+import { EventsDataTable } from './EventsDataTable';
+import { EventsMetricsBar } from './EventsMetricsBar';
+import { EventsChart } from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/layout/Grid';
-import MetricsTable from '@/components/metrics/MetricsTable';
+import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
 import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
-import EventProperties from './EventProperties';
+import { EventProperties } from './EventProperties';
 
-export default function EventsPage({ websiteId }) {
+export function EventsPage({ websiteId }) {
   const [tab, setTab] = useState('activity');
   const { formatMessage, labels } = useMessages();
 

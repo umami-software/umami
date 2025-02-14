@@ -70,5 +70,3 @@ export function GoalsChart({ className }: { className?: string; isLoading?: bool
     </div>
   );
 }
-
-export default GoalsChart;

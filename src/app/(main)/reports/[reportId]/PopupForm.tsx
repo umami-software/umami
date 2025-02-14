@@ -21,5 +21,3 @@ export function PopupForm({
     </div>
   );
 }
-
-export default PopupForm;

@@ -16,5 +16,3 @@ export function useWebsiteStats(
     ...options,
   });
 }
-
-export default useWebsiteStats;

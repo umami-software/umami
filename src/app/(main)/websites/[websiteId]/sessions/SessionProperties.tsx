@@ -1,7 +1,7 @@
 import { GridColumn, GridTable } from 'react-basics';
 import { useSessionDataProperties, useSessionDataValues, useMessages } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import PieChart from '@/components/charts/PieChart';
+import { PieChart } from '@/components/charts/PieChart';
 import { useState } from 'react';
 import { CHART_COLORS } from '@/lib/constants';
 import styles from './SessionProperties.module.css';
@@ -48,5 +48,3 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
     </LoadingPanel>
   );
 }
-
-export default SessionProperties;

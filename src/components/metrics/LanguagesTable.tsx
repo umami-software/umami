@@ -1,4 +1,4 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { percentFilter } from '@/lib/filters';
 import { useLocale } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
@@ -28,5 +28,3 @@ export function LanguagesTable({
     />
   );
 }
-
-export default LanguagesTable;

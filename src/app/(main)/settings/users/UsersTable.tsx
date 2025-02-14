@@ -2,8 +2,8 @@ import { Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
 import { formatDistance } from 'date-fns';
 import { ROLES } from '@/lib/constants';
 import { useMessages, useLocale } from '@/components/hooks';
-import UserDeleteButton from './UserDeleteButton';
-import LinkButton from '@/components/common/LinkButton';
+import { UserDeleteButton } from './UserDeleteButton';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function UsersTable({
   data = [],
@@ -57,5 +57,3 @@ export function UsersTable({
     </GridTable>
   );
 }
-
-export default UsersTable;

@@ -20,5 +20,3 @@ export function LogoutButton({
     </Link>
   );
 }
-
-export default LogoutButton;

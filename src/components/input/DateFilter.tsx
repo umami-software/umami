@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
 import { endOfYear, isSameDay } from 'date-fns';
-import DatePickerForm from '@/components/metrics/DatePickerForm';
+import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { formatDate, parseDateValue } from '@/lib/date';
 import styles from './DateFilter.module.css';
 import classNames from 'classnames';
@@ -184,5 +184,3 @@ const CustomRange = ({ startDate, endDate, unit, onClick }) => {
     </Flexbox>
   );
 };
-
-export default DateFilter;

@@ -19,5 +19,3 @@ export function useEventDataValues(
     ...options,
   });
 }
-
-export default useEventDataValues;

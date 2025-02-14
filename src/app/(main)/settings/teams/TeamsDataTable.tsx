@@ -1,5 +1,5 @@
-import DataTable from '@/components/common/DataTable';
-import TeamsTable from '@/app/(main)/settings/teams/TeamsTable';
+import { DataTable } from '@/components/common/DataTable';
+import { TeamsTable } from '@/app/(main)/settings/teams/TeamsTable';
 import { useLogin, useTeams } from '@/components/hooks';
 import { ReactNode } from 'react';
 
@@ -23,5 +23,3 @@ export function TeamsDataTable({
     </DataTable>
   );
 }
-
-export default TeamsDataTable;

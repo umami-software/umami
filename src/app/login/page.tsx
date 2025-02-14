@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import LoginPage from './LoginPage';
+import { LoginPage } from './LoginPage';
 
 export default async function () {
   return <LoginPage />;

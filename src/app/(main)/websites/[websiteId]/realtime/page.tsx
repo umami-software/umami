@@ -1,4 +1,4 @@
-import WebsiteRealtimePage from './WebsiteRealtimePage';
+import { WebsiteRealtimePage } from './WebsiteRealtimePage';
 import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { websiteId: string } }) {

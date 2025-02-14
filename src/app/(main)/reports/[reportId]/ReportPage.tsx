@@ -20,7 +20,7 @@ const reports = {
   revenue: RevenueReport,
 };
 
-export default function ReportPage({ reportId }: { reportId: string }) {
+export function ReportPage({ reportId }: { reportId: string }) {
   const { report } = useReport(reportId);
 
   if (!report) {

@@ -5,7 +5,7 @@ import { getColor, getPastel } from '@/lib/colors';
 
 const lib = lorelei;
 
-function Avatar({ seed, size = 128, ...props }: { seed: string; size?: number }) {
+export function Avatar({ seed, size = 128, ...props }: { seed: string; size?: number }) {
   const backgroundColor = getPastel(getColor(seed), 4);
 
   const avatar = useMemo(() => {
@@ -19,5 +19,3 @@ function Avatar({ seed, size = 128, ...props }: { seed: string; size?: number })
 
   return <img src={avatar} alt="Avatar" style={{ borderRadius: '100%' }} />;
 }
-
-export default Avatar;

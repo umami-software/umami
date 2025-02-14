@@ -12,7 +12,7 @@ const NODE_HEIGHT = 60;
 const NODE_GAP = 10;
 const LINE_WIDTH = 3;
 
-export default function JourneyView() {
+export function JourneyView() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
   const { report } = useContext(ReportContext);

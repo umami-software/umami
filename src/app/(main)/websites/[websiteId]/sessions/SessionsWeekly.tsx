@@ -79,5 +79,3 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
     </LoadingPanel>
   );
 }
-
-export default SessionsWeekly;

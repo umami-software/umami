@@ -14,5 +14,3 @@ export function useRevenueValues(websiteId: string, startDate: Date, endDate: Da
     enabled: !!(websiteId && startDate && endDate),
   });
 }
-
-export default useRevenueValues;

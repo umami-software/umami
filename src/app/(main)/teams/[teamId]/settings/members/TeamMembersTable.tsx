@@ -1,8 +1,8 @@
 import { GridColumn, GridTable } from 'react-basics';
 import { useMessages, useLogin } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import TeamMemberRemoveButton from './TeamMemberRemoveButton';
-import TeamMemberEditButton from './TeamMemberEditButton';
+import { TeamMemberRemoveButton } from './TeamMemberRemoveButton';
+import { TeamMemberEditButton } from './TeamMemberEditButton';
 
 export function TeamMembersTable({
   data = [],
@@ -52,5 +52,3 @@ export function TeamMembersTable({
     </GridTable>
   );
 }
-
-export default TeamMembersTable;

@@ -1,9 +1,9 @@
 import { Flexbox } from 'react-basics';
-import PageHeader from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useLogin, useMessages } from '@/components/hooks';
-import TeamsJoinButton from './TeamsJoinButton';
-import TeamsAddButton from './TeamsAddButton';
+import { TeamsJoinButton } from './TeamsJoinButton';
+import { TeamsAddButton } from './TeamsAddButton';
 
 export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
   const { formatMessage, labels } = useMessages();
@@ -19,5 +19,3 @@ export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
     </PageHeader>
   );
 }
-
-export default TeamsHeader;

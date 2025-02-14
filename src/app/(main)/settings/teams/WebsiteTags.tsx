@@ -35,5 +35,3 @@ export function WebsiteTags({
     </div>
   );
 }
-
-export default WebsiteTags;

@@ -1,6 +1,6 @@
-import DataTable from '@/components/common/DataTable';
+import { DataTable } from '@/components/common/DataTable';
 import { useTeamWebsites } from '@/components/hooks';
-import TeamWebsitesTable from './TeamWebsitesTable';
+import { TeamWebsitesTable } from './TeamWebsitesTable';
 
 export function TeamWebsitesDataTable({
   teamId,
@@ -17,5 +17,3 @@ export function TeamWebsitesDataTable({
     </DataTable>
   );
 }
-
-export default TeamWebsitesDataTable;

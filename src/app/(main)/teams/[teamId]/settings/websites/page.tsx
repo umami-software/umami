@@ -1,4 +1,4 @@
-import TeamWebsitesPage from './TeamWebsitesPage';
+import { TeamWebsitesPage } from './TeamWebsitesPage';
 import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { teamId: string } }) {

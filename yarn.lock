@@ -4665,10 +4665,10 @@
     chalk "^4.1.2"
     debug "^4.3.4"
 
-"@umami/react-zen@^0.50.0":
-  version "0.50.0"
-  resolved "https://registry.yarnpkg.com/@umami/react-zen/-/react-zen-0.50.0.tgz#0d63c5270a6220e02206a74f438196079d176df5"
-  integrity sha512-eFCz3/xr0c+QrPZ21FdyvgLr/tE57hrdBQgSwWhYh7AxRyQUD2NyaPnQnJX2RbTb7He3sR0Wyex1IDSAtkkSsA==
+"@umami/react-zen@^0.51.0":
+  version "0.51.0"
+  resolved "https://registry.yarnpkg.com/@umami/react-zen/-/react-zen-0.51.0.tgz#a9767df0356acacde54a2d5c51a4c4ce174895f7"
+  integrity sha512-j/JmJ4cpCC78EpLck9Vy3tI+hqEokOghedc738xviOo3UWv96DrjnLe3F39k4u58nFMhreOYNyPM55i9F8qJHw==
   dependencies:
     "@fontsource/jetbrains-mono" "^5.0.18"
     "@react-spring/web" "^9.7.5"

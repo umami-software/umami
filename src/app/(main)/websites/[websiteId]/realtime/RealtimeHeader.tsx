@@ -1,4 +1,4 @@
-import MetricCard from '@/components/metrics/MetricCard';
+import { MetricCard } from '@/components/metrics/MetricCard';
 import { useMessages } from '@/components/hooks';
 import { RealtimeData } from '@/lib/types';
 import styles from './RealtimeHeader.module.css';
@@ -34,5 +34,3 @@ export function RealtimeHeader({ data }: { data: RealtimeData }) {
     </div>
   );
 }
-
-export default RealtimeHeader;

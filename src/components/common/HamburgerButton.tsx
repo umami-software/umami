@@ -1,6 +1,6 @@
 import { Button, Icon, Icons } from 'react-basics';
 import { useState } from 'react';
-import MobileMenu from './MobileMenu';
+import { MobileMenu } from './MobileMenu';
 
 export function HamburgerButton({ menuItems }: { menuItems: any[] }) {
   const [active, setActive] = useState(false);
@@ -17,5 +17,3 @@ export function HamburgerButton({ menuItems }: { menuItems: any[] }) {
     </>
   );
 }
-
-export default HamburgerButton;

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import useStore, { setConfig } from '@/store/app';
+import { useApp, setConfig } from '@/store/app';
 import { getConfig } from '@/app/actions/getConfig';
 
 export function useConfig() {
-  const { config } = useStore();
+  const { config } = useApp();
 
   async function loadConfig() {
     setConfig(await getConfig());
@@ -17,5 +17,3 @@ export function useConfig() {
 
   return config;
 }
-
-export default useConfig;

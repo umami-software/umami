@@ -1,8 +1,8 @@
 import { getMinimumUnit, parseDateRange } from '@/lib/date';
 import { setItem } from '@/lib/storage';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_COMPARE, DEFAULT_DATE_RANGE } from '@/lib/constants';
-import websiteStore, { setWebsiteDateRange, setWebsiteDateCompare } from '@/store/websites';
-import appStore, { setDateRange } from '@/store/app';
+import { useWebsites, setWebsiteDateRange, setWebsiteDateCompare } from '@/store/websites';
+import { useApp, setDateRange } from '@/store/app';
 import { DateRange } from '@/lib/types';
 import { useLocale } from './useLocale';
 import { useApi } from './useApi';
@@ -15,11 +15,11 @@ export function useDateRange(websiteId?: string): {
 } {
   const { get } = useApi();
   const { locale } = useLocale();
-  const websiteConfig = websiteStore(state => state[websiteId]?.dateRange);
+  const websiteConfig = useWebsites(state => state[websiteId]?.dateRange);
   const defaultConfig = DEFAULT_DATE_RANGE;
-  const globalConfig = appStore(state => state.dateRange);
+  const globalConfig = useApp(state => state.dateRange);
   const dateRange = parseDateRange(websiteConfig || globalConfig || defaultConfig, locale);
-  const dateCompare = websiteStore(state => state[websiteId]?.dateCompare || DEFAULT_DATE_COMPARE);
+  const dateCompare = useWebsites(state => state[websiteId]?.dateCompare || DEFAULT_DATE_COMPARE);
 
   const saveDateRange = async (value: DateRange | string) => {
     if (websiteId) {
@@ -57,5 +57,3 @@ export function useDateRange(websiteId?: string): {
 
   return { dateRange, saveDateRange, dateCompare, saveDateCompare };
 }
-
-export default useDateRange;

@@ -34,5 +34,3 @@ export function Legend({
     </div>
   );
 }
-
-export default Legend;

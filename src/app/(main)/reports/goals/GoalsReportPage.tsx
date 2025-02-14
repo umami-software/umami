@@ -1,6 +1,6 @@
 'use client';
-import GoalReport from './GoalsReport';
+import { GoalReport } from './GoalsReport';
 
-export default function GoalReportPage() {
+export function GoalReportPage() {
   return <GoalReport />;
 }

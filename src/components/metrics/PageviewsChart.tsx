@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import BarChart, { BarChartProps } from '@/components/charts/BarChart';
+import { BarChart, BarChartProps } from '@/components/charts/BarChart';
 import { useLocale, useTheme, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 
-export interface PagepageviewsChartProps extends BarChartProps {
+export interface PageviewsChartProps extends BarChartProps {
   data: {
     pageviews: any[];
     sessions: any[];
@@ -17,13 +17,13 @@ export interface PagepageviewsChartProps extends BarChartProps {
   isAllTime?: boolean;
 }
 
-export function PagepageviewsChart({
+export function PageviewsChart({
   data,
   unit,
   isLoading,
   isAllTime,
   ...props
-}: PagepageviewsChartProps) {
+}: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
   const { colors } = useTheme();
   const { locale } = useLocale();
@@ -86,5 +86,3 @@ export function PagepageviewsChart({
     />
   );
 }
-
-export default PagepageviewsChart;

@@ -27,5 +27,3 @@ export function WebsiteProvider({
 
   return <WebsiteContext.Provider value={website}>{children}</WebsiteContext.Provider>;
 }
-
-export default WebsiteProvider;

@@ -90,5 +90,3 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
     </>
   );
 }
-
-export default ShareUrl;

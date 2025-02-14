@@ -35,5 +35,3 @@ export function ConfirmationForm({
     </Form>
   );
 }
-
-export default ConfirmationForm;

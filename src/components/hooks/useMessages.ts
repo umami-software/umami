@@ -23,5 +23,3 @@ export function useMessages(): any {
 
   return { formatMessage, messages, labels, getMessage };
 }
-
-export default useMessages;

@@ -1,4 +1,4 @@
-import WebsiteReportsPage from './WebsiteReportsPage';
+import { WebsiteReportsPage } from './WebsiteReportsPage';
 import { Metadata } from 'next';
 
 export default async function ({ params }: { params: { websiteId: string } }) {

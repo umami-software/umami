@@ -1,4 +1,4 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { useMessages } from '@/components/hooks';
 
 export function EventsTable(props: MetricsTableProps) {
@@ -18,5 +18,3 @@ export function EventsTable(props: MetricsTableProps) {
     />
   );
 }
-
-export default EventsTable;

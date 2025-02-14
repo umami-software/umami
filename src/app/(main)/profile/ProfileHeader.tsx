@@ -1,4 +1,4 @@
-import PageHeader from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { useMessages } from '@/components/hooks';
 
 export function ProfileHeader() {
@@ -6,5 +6,3 @@ export function ProfileHeader() {
 
   return <PageHeader title={formatMessage(labels.profile)}></PageHeader>;
 }
-
-export default ProfileHeader;

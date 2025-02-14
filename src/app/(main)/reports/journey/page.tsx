@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import JourneyReportPage from './JourneyReportPage';
+import { JourneyReportPage } from './JourneyReportPage';
 
 export default function () {
   return <JourneyReportPage />;

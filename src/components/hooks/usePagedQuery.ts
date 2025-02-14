@@ -29,5 +29,3 @@ export function usePagedQuery<T = any>({
     setParams,
   };
 }
-
-export default usePagedQuery;

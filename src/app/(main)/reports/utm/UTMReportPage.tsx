@@ -1,5 +1,5 @@
-import UTMReport from './UTMReport';
+import { UTMReport } from './UTMReport';
 
-export default function UTMReportPage() {
+export function UTMReportPage() {
   return <UTMReport />;
 }

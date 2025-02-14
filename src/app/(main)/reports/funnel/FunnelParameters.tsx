@@ -12,8 +12,8 @@ import {
   TextField,
   Button,
 } from 'react-basics';
-import Icons from '@/components/icons';
-import FunnelStepAddForm from './FunnelStepAddForm';
+import { Icons } from '@/components/icons';
+import { FunnelStepAddForm } from './FunnelStepAddForm';
 import { ReportContext } from '../[reportId]/Report';
 import BaseParameters from '../[reportId]/BaseParameters';
 import ParameterList from '../[reportId]/ParameterList';
@@ -124,5 +124,3 @@ export function FunnelParameters() {
     </Form>
   );
 }
-
-export default FunnelParameters;

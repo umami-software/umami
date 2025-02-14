@@ -6,7 +6,7 @@ import Path from '@/assets/path.svg';
 import Tag from '@/assets/tag.svg';
 import Target from '@/assets/target.svg';
 import { useMessages, useTeamUrl } from '@/components/hooks';
-import PageHeader from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import Link from 'next/link';
 import { Button, Icon, Icons, Text } from 'react-basics';
 import styles from './ReportTemplates.module.css';
@@ -97,5 +97,3 @@ function ReportItem({ title, description, url, icon }) {
     </div>
   );
 }
-
-export default ReportTemplates;

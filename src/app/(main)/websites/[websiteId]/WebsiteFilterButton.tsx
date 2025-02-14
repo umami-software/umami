@@ -1,6 +1,6 @@
 import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
-import PopupForm from '@/app/(main)/reports/[reportId]/PopupForm';
-import FilterSelectForm from '@/app/(main)/reports/[reportId]/FilterSelectForm';
+import { PopupForm } from '@/app/(main)/reports/[reportId]/PopupForm';
+import { FilterSelectForm } from '@/app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
 import { OPERATOR_PREFIXES } from '@/lib/constants';
 import styles from './WebsiteFilterButton.module.css';
@@ -60,5 +60,3 @@ export function WebsiteFilterButton({
     </PopupTrigger>
   );
 }
-
-export default WebsiteFilterButton;

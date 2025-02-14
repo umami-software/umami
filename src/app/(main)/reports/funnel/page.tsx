@@ -1,4 +1,4 @@
-import FunnelReportPage from './FunnelReportPage';
+import { FunnelReportPage } from './FunnelReportPage';
 import { Metadata } from 'next';
 
 export default function () {

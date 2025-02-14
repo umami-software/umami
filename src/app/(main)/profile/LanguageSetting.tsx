@@ -39,5 +39,3 @@ export function LanguageSetting() {
     </Flexbox>
   );
 }
-
-export default LanguageSetting;

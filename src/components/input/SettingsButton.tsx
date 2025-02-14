@@ -1,7 +1,7 @@
 import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
-import TimezoneSetting from '@/app/(main)/profile/TimezoneSetting';
-import DateRangeSetting from '@/app/(main)/profile/DateRangeSetting';
-import Icons from '@/components/icons';
+import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
+import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
+import { Icons } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 import styles from './SettingsButton.module.css';
 
@@ -28,5 +28,3 @@ export function SettingsButton() {
     </PopupTrigger>
   );
 }
-
-export default SettingsButton;

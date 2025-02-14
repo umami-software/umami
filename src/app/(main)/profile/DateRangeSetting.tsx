@@ -1,4 +1,4 @@
-import DateFilter from '@/components/input/DateFilter';
+import { DateFilter } from '@/components/input/DateFilter';
 import { Button, Flexbox } from 'react-basics';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { DEFAULT_DATE_RANGE } from '@/lib/constants';
@@ -26,5 +26,3 @@ export function DateRangeSetting() {
     </Flexbox>
   );
 }
-
-export default DateRangeSetting;

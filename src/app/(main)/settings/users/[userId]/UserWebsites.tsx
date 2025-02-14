@@ -1,5 +1,5 @@
-import WebsitesTable from '@/app/(main)/settings/websites/WebsitesTable';
-import DataTable from '@/components/common/DataTable';
+import { WebsitesTable } from '@/app/(main)/settings/websites/WebsitesTable';
+import { DataTable } from '@/components/common/DataTable';
 import { useWebsites } from '@/components/hooks';
 
 export function UserWebsites({ userId }) {
@@ -13,5 +13,3 @@ export function UserWebsites({ userId }) {
     </DataTable>
   );
 }
-
-export default UserWebsites;

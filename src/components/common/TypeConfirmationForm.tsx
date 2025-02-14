@@ -51,5 +51,3 @@ export function TypeConfirmationForm({
     </Form>
   );
 }
-
-export default TypeConfirmationForm;

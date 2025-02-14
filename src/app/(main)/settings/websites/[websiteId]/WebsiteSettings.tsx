@@ -1,15 +1,15 @@
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
-import Breadcrumb from '@/components/common/Breadcrumb';
+import { Breadcrumb } from '@/components/common/Breadcrumb';
 import { useMessages } from '@/components/hooks';
-import Icons from '@/components/icons';
-import PageHeader from '@/components/layout/PageHeader';
+import { Icons } from '@/components/icons';
+import { PageHeader } from '@/components/layout/PageHeader';
 import Link from 'next/link';
 import { Key, useContext, useState } from 'react';
 import { Button, Icon, Item, Tabs, Text, useToasts } from 'react-basics';
-import ShareUrl from './ShareUrl';
-import TrackingCode from './TrackingCode';
-import WebsiteData from './WebsiteData';
-import WebsiteEditForm from './WebsiteEditForm';
+import { ShareUrl } from './ShareUrl';
+import { TrackingCode } from './TrackingCode';
+import { WebsiteData } from './WebsiteData';
+import { WebsiteEditForm } from './WebsiteEditForm';
 
 export function WebsiteSettings({
   websiteId,
@@ -66,5 +66,3 @@ export function WebsiteSettings({
     </>
   );
 }
-
-export default WebsiteSettings;

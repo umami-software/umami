@@ -59,4 +59,4 @@ export function setDateRange(dateRange: string | object) {
   store.setState({ dateRange });
 }
 
-export default store;
+export const useApp = store;

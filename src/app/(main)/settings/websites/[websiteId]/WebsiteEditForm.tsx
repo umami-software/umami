@@ -61,5 +61,3 @@ export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSa
     </Form>
   );
 }
-
-export default WebsiteEditForm;

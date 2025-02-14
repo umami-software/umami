@@ -71,5 +71,3 @@ export function WebsiteAddForm({
     </Form>
   );
 }
-
-export default WebsiteAddForm;

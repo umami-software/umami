@@ -76,5 +76,3 @@ export function FunnelStepAddForm({
     </Flexbox>
   );
 }
-
-export default FunnelStepAddForm;

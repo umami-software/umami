@@ -1,6 +1,6 @@
 import { isSameDay } from 'date-fns';
 import { Loading, Icon, StatusLight } from 'react-basics';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { useSessionActivity, useTimezone } from '@/components/hooks';
 import styles from './SessionActivity.module.css';
 import { Fragment } from 'react';

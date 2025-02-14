@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import WebsiteProvider from './WebsiteProvider';
+import { WebsiteProvider } from './WebsiteProvider';
 
 export default async function ({
   children,

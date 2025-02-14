@@ -1,6 +1,6 @@
 import { useMessages } from '@/components/hooks';
-import PageHeader from '@/components/layout/PageHeader';
-import WebsiteAddButton from './WebsiteAddButton';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { WebsiteAddButton } from './WebsiteAddButton';
 
 export interface WebsitesHeaderProps {
   teamId?: string;
@@ -16,5 +16,3 @@ export function WebsitesHeader({ teamId, allowCreate = true }: WebsitesHeaderPro
     </PageHeader>
   );
 }
-
-export default WebsitesHeader;

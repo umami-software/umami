@@ -25,5 +25,3 @@ export function TrackingCode({ websiteId, hostUrl }: { websiteId: string; hostUr
     </>
   );
 }
-
-export default TrackingCode;

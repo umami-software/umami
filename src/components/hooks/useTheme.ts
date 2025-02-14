@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import useStore, { setTheme } from '@/store/app';
+import { useApp, setTheme } from '@/store/app';
 import { getItem, setItem } from '@/lib/storage';
 import { DEFAULT_THEME, THEME_COLORS, THEME_CONFIG } from '@/lib/constants';
 import { colord } from 'colord';
@@ -7,7 +7,7 @@ import { colord } from 'colord';
 const selector = (state: { theme: string }) => state.theme;
 
 export function useTheme() {
-  const theme = useStore(selector) || getItem(THEME_CONFIG) || DEFAULT_THEME;
+  const theme = useApp(selector) || getItem(THEME_CONFIG) || DEFAULT_THEME;
   const primaryColor = colord(THEME_COLORS[theme].primary);
 
   const colors = useMemo(() => {
@@ -60,5 +60,3 @@ export function useTheme() {
 
   return { theme, saveTheme, colors };
 }
-
-export default useTheme;

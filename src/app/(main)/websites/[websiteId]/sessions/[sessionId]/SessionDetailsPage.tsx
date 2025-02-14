@@ -1,15 +1,15 @@
 'use client';
-import Avatar from '@/components/common/Avatar';
+import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useWebsiteSession } from '@/components/hooks';
-import WebsiteHeader from '../../WebsiteHeader';
+import { WebsiteHeader } from '../../WebsiteHeader';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import styles from './SessionDetailsPage.module.css';
-import SessionInfo from './SessionInfo';
+import { SessionInfo } from './SessionInfo';
 import { SessionStats } from './SessionStats';
 
-export default function SessionDetailsPage({
+export function SessionDetailsPage({
   websiteId,
   sessionId,
 }: {

@@ -2,8 +2,8 @@
 import Link from 'next/link';
 import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
 import { useMessages, useTeamUrl } from '@/components/hooks';
-import WebsiteHeader from '../WebsiteHeader';
-import ReportsDataTable from '@/app/(main)/reports/ReportsDataTable';
+import { WebsiteHeader } from '../WebsiteHeader';
+import { ReportsDataTable } from '@/app/(main)/reports/ReportsDataTable';
 
 export function WebsiteReportsPage({ websiteId }) {
   const { formatMessage, labels } = useMessages();
@@ -26,5 +26,3 @@ export function WebsiteReportsPage({ websiteId }) {
     </>
   );
 }
-
-export default WebsiteReportsPage;

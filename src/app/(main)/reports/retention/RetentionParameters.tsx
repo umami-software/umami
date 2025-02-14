@@ -42,5 +42,3 @@ export function RetentionParameters() {
     </Form>
   );
 }
-
-export default RetentionParameters;

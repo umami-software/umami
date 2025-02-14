@@ -23,5 +23,3 @@ export function HoverTooltip({ children }: { children: ReactNode }) {
     </Tooltip>
   );
 }
-
-export default HoverTooltip;

@@ -7,7 +7,7 @@ export interface BubbleChartProps extends ChartProps {
   type?: 'bubble';
 }
 
-export default function BubbleChart(props: BubbleChartProps) {
+export function BubbleChart(props: BubbleChartProps) {
   const [tooltip, setTooltip] = useState(null);
   const { type = 'bubble' } = props;
 

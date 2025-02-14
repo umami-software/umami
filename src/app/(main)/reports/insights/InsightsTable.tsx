@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GridTable, GridColumn } from 'react-basics';
 import { useFormat, useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
-import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { formatShortTime } from '@/lib/format';
 
 export function InsightsTable() {
@@ -71,5 +71,3 @@ export function InsightsTable() {
     </GridTable>
   );
 }
-
-export default InsightsTable;

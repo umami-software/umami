@@ -29,5 +29,3 @@ export function ThemeSetting() {
     </div>
   );
 }
-
-export default ThemeSetting;

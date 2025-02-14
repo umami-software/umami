@@ -52,5 +52,3 @@ export function FunnelChart({ className }: FunnelChartProps) {
     </div>
   );
 }
-
-export default FunnelChart;

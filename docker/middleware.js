@@ -33,7 +33,7 @@ function customScriptName(req) {
   }
 }
 
-export default function middleware(req) {
+export function middleware(req) {
   const fns = [customCollectEndpoint, customScriptName];
 
   for (const fn of fns) {

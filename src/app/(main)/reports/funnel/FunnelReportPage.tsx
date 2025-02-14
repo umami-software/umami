@@ -1,6 +1,6 @@
 'use client';
-import FunnelReport from './FunnelReport';
+import { FunnelReport } from './FunnelReport';
 
-export default function FunnelReportPage() {
+export function FunnelReportPage() {
   return <FunnelReport />;
 }

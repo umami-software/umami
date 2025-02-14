@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
-import WebsitesTable from '@/app/(main)/settings/websites/WebsitesTable';
-import DataTable from '@/components/common/DataTable';
+import { WebsitesTable } from '@/app/(main)/settings/websites/WebsitesTable';
+import { DataTable } from '@/components/common/DataTable';
 import { useWebsites } from '@/components/hooks';
 
 export function WebsitesDataTable({
@@ -32,5 +32,3 @@ export function WebsitesDataTable({
     </DataTable>
   );
 }
-
-export default WebsitesDataTable;

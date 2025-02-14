@@ -16,5 +16,3 @@ export function useSessionDataProperties(
     ...options,
   });
 }
-
-export default useSessionDataProperties;

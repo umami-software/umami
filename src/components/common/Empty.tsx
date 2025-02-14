@@ -16,5 +16,3 @@ export function Empty({ message, className }: EmptyProps) {
     </div>
   );
 }
-
-export default Empty;

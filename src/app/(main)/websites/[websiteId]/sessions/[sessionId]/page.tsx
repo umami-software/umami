@@ -1,4 +1,4 @@
-import SessionDetailsPage from './SessionDetailsPage';
+import { SessionDetailsPage } from './SessionDetailsPage';
 import { Metadata } from 'next';
 
 export default async function WebsitePage({

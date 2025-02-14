@@ -65,5 +65,3 @@ export function PasswordEditForm({ onSave, onClose }) {
     </Form>
   );
 }
-
-export default PasswordEditForm;

@@ -1,19 +1,19 @@
 import classNames from 'classnames';
 import { colord } from 'colord';
-import BarChart from '@/components/charts/BarChart';
-import PieChart from '@/components/charts/PieChart';
-import TypeIcon from '@/components/common/TypeIcon';
+import { BarChart } from '@/components/charts/BarChart';
+import { PieChart } from '@/components/charts/PieChart';
+import { TypeIcon } from '@/components/common/TypeIcon';
 import { useCountryNames, useLocale, useMessages } from '@/components/hooks';
 import { GridRow } from '@/components/layout/Grid';
-import ListTable from '@/components/metrics/ListTable';
-import MetricCard from '@/components/metrics/MetricCard';
-import MetricsBar from '@/components/metrics/MetricsBar';
+import { ListTable } from '@/components/metrics/ListTable';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { useCallback, useContext, useMemo } from 'react';
 import { ReportContext } from '../[reportId]/Report';
-import RevenueTable from './RevenueTable';
+import { RevenueTable } from './RevenueTable';
 import styles from './RevenueView.module.css';
 
 export interface RevenueViewProps {
@@ -152,5 +152,3 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
     </>
   );
 }
-
-export default RevenueView;

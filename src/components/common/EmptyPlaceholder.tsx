@@ -18,5 +18,3 @@ export function EmptyPlaceholder({ message, children }: EmptyPlaceholderProps) {
     </Flexbox>
   );
 }
-
-export default EmptyPlaceholder;

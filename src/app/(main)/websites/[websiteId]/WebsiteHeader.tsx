@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import Favicon from '@/components/common/Favicon';
+import { Favicon } from '@/components/common/Favicon';
 import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
-import Icons from '@/components/icons';
-import ActiveUsers from '@/components/metrics/ActiveUsers';
+import { Icons } from '@/components/icons';
+import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
@@ -98,5 +98,3 @@ export function WebsiteHeader({
     </div>
   );
 }
-
-export default WebsiteHeader;

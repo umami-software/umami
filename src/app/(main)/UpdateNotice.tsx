@@ -1,14 +1,14 @@
 import { useEffect, useCallback, useState } from 'react';
 import { Button, AlertBanner, Flexbox } from '@umami/react-zen';
 import { setItem } from '@/lib/storage';
-import useStore, { checkVersion } from '@/store/version';
+import { useVersion, checkVersion } from '@/store/version';
 import { REPO_URL, VERSION_CHECK } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
 import { usePathname } from 'next/navigation';
 
 export function UpdateNotice({ user, config }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { latest, checked, hasUpdate, releaseUrl } = useStore();
+  const { latest, checked, hasUpdate, releaseUrl } = useVersion();
   const pathname = usePathname();
   const [dismissed, setDismissed] = useState(checked);
   const allowUpdate =
@@ -56,5 +56,3 @@ export function UpdateNotice({ user, config }) {
     </Flexbox>
   );
 }
-
-export default UpdateNotice;

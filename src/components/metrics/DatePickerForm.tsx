@@ -82,5 +82,3 @@ export function DatePickerForm({
     </div>
   );
 }
-
-export default DatePickerForm;

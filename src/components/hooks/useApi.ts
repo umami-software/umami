@@ -3,7 +3,7 @@ import * as reactQuery from '@tanstack/react-query';
 import { getClientAuthToken } from '@/lib/client';
 import { SHARE_TOKEN_HEADER } from '@/lib/constants';
 import { httpGet, httpPost, httpPut, httpDelete, FetchResponse } from '@/lib/fetch';
-import useStore from '@/store/app';
+import { useApp } from '@/store/app';
 
 const selector = (state: { shareToken: { token?: string } }) => state.shareToken;
 
@@ -19,7 +19,7 @@ function handleError(err: Error | string) {
 }
 
 export function useApi() {
-  const shareToken = useStore(selector);
+  const shareToken = useApp(selector);
 
   const defaultHeaders = {
     authorization: `Bearer ${getClientAuthToken()}`,
@@ -74,5 +74,3 @@ export function useApi() {
     ...reactQuery,
   };
 }
-
-export default useApi;

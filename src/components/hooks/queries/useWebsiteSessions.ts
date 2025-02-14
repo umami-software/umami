@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
-import useModified from '../useModified';
+import { useModified } from '../useModified';
 import { useFilterParams } from '@/components/hooks/useFilterParams';
 
 export function useWebsiteSessions(websiteId: string, params?: { [key: string]: string | number }) {
@@ -20,5 +20,3 @@ export function useWebsiteSessions(websiteId: string, params?: { [key: string]: 
     },
   });
 }
-
-export default useWebsiteSessions;

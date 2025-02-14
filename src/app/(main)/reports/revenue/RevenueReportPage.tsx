@@ -1,6 +1,6 @@
 'use client';
-import RevenueReport from './RevenueReport';
+import { RevenueReport } from './RevenueReport';
 
-export default function RevenueReportPage() {
+export function RevenueReportPage() {
   return <RevenueReport />;
 }

@@ -1,5 +1,5 @@
 import { TooltipPopup, Icon, Text, Flexbox, Button } from 'react-basics';
-import Icons from '@/components/icons';
+import { Icons } from '@/components/icons';
 import { saveDashboard } from '@/store/dashboard';
 import { useMessages } from '@/components/hooks';
 
@@ -32,5 +32,3 @@ export function DashboardSettingsButton() {
     </Flexbox>
   );
 }
-
-export default DashboardSettingsButton;

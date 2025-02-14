@@ -1,4 +1,4 @@
-import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { useMessages } from '@/components/hooks';
 
 export function ScreenTable(props: MetricsTableProps) {
@@ -13,5 +13,3 @@ export function ScreenTable(props: MetricsTableProps) {
     />
   );
 }
-
-export default ScreenTable;

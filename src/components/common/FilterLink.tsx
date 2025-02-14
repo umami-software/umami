@@ -51,5 +51,3 @@ export function FilterLink({
     </div>
   );
 }
-
-export default FilterLink;

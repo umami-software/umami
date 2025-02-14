@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Providers from './Providers';
+import { Providers } from './Providers';
 import '@fontsource/inter/300.css';
 import '@fontsource/inter/400.css';
 import '@fontsource/inter/500.css';

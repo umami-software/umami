@@ -79,5 +79,3 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
     </Form>
   );
 }
-
-export default TeamEditForm;

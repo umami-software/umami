@@ -59,5 +59,3 @@ export function JourneyParameters() {
     </Form>
   );
 }
-
-export default JourneyParameters;

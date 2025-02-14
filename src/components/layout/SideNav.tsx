@@ -42,5 +42,3 @@ export function SideNav({
     </Menu>
   );
 }
-
-export default SideNav;

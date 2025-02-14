@@ -9,5 +9,3 @@ export function useUser(userId: string, options?: { [key: string]: any }) {
     ...options,
   });
 }
-
-export default useUser;

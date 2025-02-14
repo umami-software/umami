@@ -1,7 +1,7 @@
-import PageHeader from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Icon, Icons, Text } from 'react-basics';
 import { useLogin, useMessages, useTeamUrl } from '@/components/hooks';
-import LinkButton from '@/components/common/LinkButton';
+import { LinkButton } from '@/components/common/LinkButton';
 import { ROLES } from '@/lib/constants';
 
 export function ReportsHeader() {
@@ -23,5 +23,3 @@ export function ReportsHeader() {
     </PageHeader>
   );
 }
-
-export default ReportsHeader;

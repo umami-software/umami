@@ -1,10 +1,10 @@
 'use client';
 import { Metadata } from 'next';
-import ReportsHeader from './ReportsHeader';
-import ReportsDataTable from './ReportsDataTable';
+import { ReportsHeader } from './ReportsHeader';
+import { ReportsDataTable } from './ReportsDataTable';
 import { useTeamUrl } from '@/components/hooks';
 
-export default function ReportsPage() {
+export function ReportsPage() {
   const { teamId } = useTeamUrl();
 
   return (

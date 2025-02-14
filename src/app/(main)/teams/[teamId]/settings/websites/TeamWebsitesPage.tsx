@@ -1,9 +1,9 @@
 'use client';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
-import WebsiteAddButton from '@/app/(main)/settings/websites/WebsiteAddButton';
+import { WebsiteAddButton } from '@/app/(main)/settings/websites/WebsiteAddButton';
 import { useLogin, useMessages } from '@/components/hooks';
-import PageHeader from '@/components/layout/PageHeader';
-import TeamWebsitesDataTable from './TeamWebsitesDataTable';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';
 import { ROLES } from '@/lib/constants';
 import { useContext } from 'react';
 
@@ -26,5 +26,3 @@ export function TeamWebsitesPage({ teamId }: { teamId: string }) {
     </>
   );
 }
-
-export default TeamWebsitesPage;

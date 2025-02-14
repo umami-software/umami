@@ -25,5 +25,3 @@ export function TeamProvider({ teamId, children }: { teamId?: string; children: 
 
   return <TeamContext.Provider value={team}>{children}</TeamContext.Provider>;
 }
-
-export default TeamProvider;

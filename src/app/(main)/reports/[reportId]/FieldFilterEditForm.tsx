@@ -33,7 +33,7 @@ export interface FieldFilterFormProps {
   isNew?: boolean;
 }
 
-export default function FieldFilterEditForm({
+export function FieldFilterEditForm({
   websiteId,
   name,
   label,

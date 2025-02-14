@@ -1,6 +1,6 @@
 import { Button, Icon, Text, useToasts, ModalTrigger, Modal } from 'react-basics';
-import PasswordEditForm from '@/app/(main)/profile/PasswordEditForm';
-import Icons from '@/components/icons';
+import { PasswordEditForm } from '@/app/(main)/profile/PasswordEditForm';
+import { Icons } from '@/components/icons';
 import { useMessages } from '@/components/hooks';
 
 export function PasswordChangeButton() {
@@ -27,5 +27,3 @@ export function PasswordChangeButton() {
     </>
   );
 }
-
-export default PasswordChangeButton;

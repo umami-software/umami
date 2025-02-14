@@ -1,7 +1,7 @@
 import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
 import { useLogin } from './useLogin';
-import useModified from '../useModified';
+import { useModified } from '../useModified';
 
 export function useWebsites(
   { userId, teamId }: { userId?: string; teamId?: string },
@@ -21,5 +21,3 @@ export function useWebsites(
     },
   });
 }
-
-export default useWebsites;

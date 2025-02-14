@@ -15,7 +15,7 @@ const formats = {
   year: 'yyyy',
 };
 
-export default function BarChartTooltip({ tooltip, unit, currency }) {
+export function BarChartTooltip({ tooltip, unit, currency }) {
   const { locale } = useLocale();
   const { labelColors, dataPoints } = tooltip;
 

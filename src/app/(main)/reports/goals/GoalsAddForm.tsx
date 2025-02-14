@@ -139,5 +139,3 @@ export function GoalsAddForm({
     </Flexbox>
   );
 }
-
-export default GoalsAddForm;

@@ -1,7 +1,7 @@
 import { useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
-import TeamDeleteForm from './TeamDeleteForm';
+import { TeamDeleteForm } from './TeamDeleteForm';
 
 export function TeamManage({ teamId }: { teamId: string }) {
   const { formatMessage, labels, messages } = useMessages();
@@ -29,5 +29,3 @@ export function TeamManage({ teamId }: { teamId: string }) {
     </ActionForm>
   );
 }
-
-export default TeamManage;

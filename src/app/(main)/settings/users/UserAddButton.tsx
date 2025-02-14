@@ -1,5 +1,5 @@
 import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
-import UserAddForm from './UserAddForm';
+import { UserAddForm } from './UserAddForm';
 import { useMessages, useModified } from '@/components/hooks';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
@@ -27,5 +27,3 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
     </ModalTrigger>
   );
 }
-
-export default UserAddButton;

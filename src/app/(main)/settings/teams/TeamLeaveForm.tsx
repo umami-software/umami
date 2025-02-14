@@ -1,5 +1,5 @@
 import { useApi, useMessages, useModified } from '@/components/hooks';
-import ConfirmationForm from '@/components/common/ConfirmationForm';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 
 export function TeamLeaveForm({
   teamId,
@@ -42,5 +42,3 @@ export function TeamLeaveForm({
     />
   );
 }
-
-export default TeamLeaveForm;

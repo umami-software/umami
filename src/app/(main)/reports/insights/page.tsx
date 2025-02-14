@@ -1,4 +1,4 @@
-import InsightsReportPage from './InsightsReportPage';
+import { InsightsReportPage } from './InsightsReportPage';
 import { Metadata } from 'next';
 
 export default function () {

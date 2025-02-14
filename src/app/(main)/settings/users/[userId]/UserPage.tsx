@@ -1,6 +1,6 @@
 'use client';
-import UserSettings from './UserSettings';
-import UserProvider from './UserProvider';
+import { UserSettings } from './UserSettings';
+import { UserProvider } from './UserProvider';
 
 export default function ({ userId }: { userId: string }) {
   return (

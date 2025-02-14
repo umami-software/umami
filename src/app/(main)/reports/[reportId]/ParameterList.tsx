@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Icon } from 'react-basics';
-import Icons from '@/components/icons';
-import Empty from '@/components/common/Empty';
+import { Icons } from '@/components/icons';
+import { Empty } from '@/components/common/Empty';
 import { useMessages } from '@/components/hooks';
 import styles from './ParameterList.module.css';
 import classNames from 'classnames';
@@ -46,5 +46,3 @@ const Item = ({
 };
 
 ParameterList.Item = Item;
-
-export default ParameterList;

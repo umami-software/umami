@@ -1,8 +1,8 @@
 'use client';
-import TeamsDataTable from './TeamsDataTable';
-import TeamsHeader from './TeamsHeader';
+import { TeamsDataTable } from './TeamsDataTable';
+import { TeamsHeader } from './TeamsHeader';
 
-export default function TeamsSettingsPage() {
+export function TeamsSettingsPage() {
   return (
     <>
       <TeamsHeader />

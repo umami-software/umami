@@ -2,7 +2,7 @@ import { useState, useMemo, HTMLAttributes } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
-import HoverTooltip from '@/components/common/HoverTooltip';
+import { HoverTooltip } from '@/components/common/HoverTooltip';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
 import { useDateRange, useTheme, useWebsiteMetrics } from '@/components/hooks';
 import { useCountryNames } from '@/components/hooks';
@@ -108,5 +108,3 @@ export function WorldMap({
     </div>
   );
 }
-
-export default WorldMap;

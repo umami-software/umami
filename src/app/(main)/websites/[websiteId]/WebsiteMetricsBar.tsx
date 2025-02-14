@@ -1,13 +1,13 @@
 import { Dropdown, Item } from 'react-basics';
 import classNames from 'classnames';
 import { useDateRange, useMessages, useSticky } from '@/components/hooks';
-import WebsiteDateFilter from '@/components/input/WebsiteDateFilter';
-import MetricCard from '@/components/metrics/MetricCard';
-import MetricsBar from '@/components/metrics/MetricsBar';
+import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
+import { MetricCard } from '@/components/metrics/MetricCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime, formatLongNumber } from '@/lib/format';
-import useWebsiteStats from '@/components/hooks/queries/useWebsiteStats';
-import useStore, { setWebsiteDateCompare } from '@/store/websites';
-import WebsiteFilterButton from './WebsiteFilterButton';
+import { useWebsiteStats } from '@/components/hooks/queries/useWebsiteStats';
+import { useWebsites, setWebsiteDateCompare } from '@/store/websites';
+import { WebsiteFilterButton } from './WebsiteFilterButton';
 import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({
@@ -25,7 +25,7 @@ export function WebsiteMetricsBar({
 }) {
   const { dateRange } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
-  const dateCompare = useStore(state => state[websiteId]?.dateCompare);
+  const dateCompare = useWebsites(state => state[websiteId]?.dateCompare);
   const { ref, isSticky } = useSticky({ enabled: sticky });
   const { data, isLoading, isFetched, error } = useWebsiteStats(
     websiteId,
@@ -132,5 +132,3 @@ export function WebsiteMetricsBar({
     </div>
   );
 }
-
-export default WebsiteMetricsBar;

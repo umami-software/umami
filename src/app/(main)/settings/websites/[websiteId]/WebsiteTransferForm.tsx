@@ -96,5 +96,3 @@ export function WebsiteTransferForm({
     </Form>
   );
 }
-
-export default WebsiteTransferForm;

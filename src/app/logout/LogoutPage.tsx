@@ -28,5 +28,3 @@ export function LogoutPage() {
 
   return null;
 }
-
-export default LogoutPage;

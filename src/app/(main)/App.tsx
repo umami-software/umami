@@ -2,9 +2,9 @@
 import { Grid, Loading } from '@umami/react-zen';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import UpdateNotice from './UpdateNotice';
-import NavBar from '@/app/(main)/NavBar';
-import Page from '@/components/layout/Page';
+import { UpdateNotice } from './UpdateNotice';
+import { NavBar } from '@/app/(main)/NavBar';
+import { Page } from '@/components/layout/Page';
 import { useLogin, useConfig } from '@/components/hooks';
 
 export function App({ children }) {
@@ -41,5 +41,3 @@ export function App({ children }) {
     </Grid>
   );
 }
-
-export default App;

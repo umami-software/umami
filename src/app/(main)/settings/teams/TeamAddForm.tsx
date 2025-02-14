@@ -43,5 +43,3 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
     </Form>
   );
 }
-
-export default TeamAddForm;

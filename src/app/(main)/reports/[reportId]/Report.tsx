@@ -29,5 +29,3 @@ export function Report({
     </ReportContext.Provider>
   );
 }
-
-export default Report;

@@ -28,5 +28,3 @@ export function Page({
 
   return <div className={classNames(styles.page, className)}>{children}</div>;
 }
-
-export default Page;

@@ -16,5 +16,3 @@ export function FilterButtons({ items, selectedKey, onSelect }: FilterButtonsPro
     </Flexbox>
   );
 }
-
-export default FilterButtons;

@@ -1,5 +1,5 @@
-import DataTable from '@/components/common/DataTable';
-import TeamMembersTable from './TeamMembersTable';
+import { DataTable } from '@/components/common/DataTable';
+import { TeamMembersTable } from './TeamMembersTable';
 import { useTeamMembers } from '@/components/hooks';
 
 export function TeamMembersDataTable({
@@ -17,5 +17,3 @@ export function TeamMembersDataTable({
     </DataTable>
   );
 }
-
-export default TeamMembersDataTable;

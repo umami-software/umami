@@ -1,8 +1,8 @@
-import useMessages from './useMessages';
+import { useMessages } from './useMessages';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import useLocale from './useLocale';
-import useCountryNames from './useCountryNames';
-import useLanguageNames from './useLanguageNames';
+import { useLocale } from './useLocale';
+import { useCountryNames } from './useCountryNames';
+import { useLanguageNames } from './useLanguageNames';
 import regions from '../../../public/iso-3166-2.json';
 
 export function useFormat() {
@@ -72,5 +72,3 @@ export function useFormat() {
     formatValue,
   };
 }
-
-export default useFormat;
