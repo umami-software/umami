@@ -1,13 +1,7 @@
-import {
-  useFilters,
-  useFormat,
-  useLocale,
-  useMessages,
-  useWebsiteValues,
-} from '@/components/hooks';
+import { useMemo, useState } from 'react';
+import { useFilters, useFormat, useMessages, useWebsiteValues } from '@/components/hooks';
 import { OPERATORS } from '@/lib/constants';
 import { isEqualsOperator } from '@/lib/params';
-import { useMemo, useState } from 'react';
 import {
   Button,
   Dropdown,
@@ -61,7 +55,6 @@ export default function FieldFilterEditForm({
   const [selected, setSelected] = useState(isEquals ? value : '');
   const { filters } = useFilters();
   const { formatValue } = useFormat();
-  const { locale } = useLocale();
   const isDisabled = !operator || (isEquals && !selected) || (!isEquals && !value);
   const {
     data: values = [],
@@ -86,29 +79,17 @@ export default function FieldFilterEditForm({
   };
 
   const formattedValues = useMemo(() => {
-    if (!values) {
-      return {};
-    }
-    const formatted = {};
-    const format = (val: string) => {
-      formatted[val] = formatValue(val, name);
-      return formatted[val];
-    };
+    return values.reduce((obj: { [x: string]: string }, { value }: { value: string }) => {
+      obj[value] = formatValue(value, name);
 
-    if (values?.length !== 1) {
-      const { compare } = new Intl.Collator(locale, { numeric: true });
-      values.sort((a, b) => compare(formatted[a] ?? format(a), formatted[b] ?? format(b)));
-    } else {
-      format(values[0]);
-    }
-
-    return formatted;
-  }, [formatValue, locale, name, values]);
+      return obj;
+    }, {});
+  }, [formatValue, name, values]);
 
   const filteredValues = useMemo(() => {
     return value
       ? values.filter((n: string | number) =>
-          formattedValues[n].toLowerCase().includes(value.toLowerCase()),
+          formattedValues[n]?.toLowerCase()?.includes(value.toLowerCase()),
         )
       : values;
   }, [value, formattedValues]);

@@ -32,15 +32,17 @@ async function relationalQuery(
     websiteId,
     {
       ...filters,
+      eventType: column === 'event_name' ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     },
-    { joinSession: SESSION_COLUMNS.includes(type) },
+    { joinSession: SESSION_COLUMNS.includes(type) || column === 'referrer_domain' },
   );
 
   let entryExitQuery = '';
   let excludeDomain = '';
+
   if (column === 'referrer_domain') {
-    excludeDomain = `and website_event.referrer_domain != website_event.hostname
-      and website_event.referrer_domain is not null`;
+    excludeDomain = `and website_event.referrer_domain != session.hostname
+      and website_event.referrer_domain != ''`;
   }
 
   if (type === 'entry' || type === 'exit') {
@@ -53,6 +55,7 @@ async function relationalQuery(
         from website_event
         where website_event.website_id = {{websiteId::uuid}}
           and website_event.created_at between {{startDate}} and {{endDate}}
+          and event_type = {{eventType}}
         group by visit_id
       ) x
       on x.visit_id = website_event.visit_id
@@ -62,7 +65,8 @@ async function relationalQuery(
 
   return rawQuery(
     `
-    select ${column} x, count(*) y
+    select ${column} x,
+      ${column === 'referrer_domain' ? 'count(distinct website_event.session_id)' : 'count(*)'} as y
     from website_event
     ${joinSession}
     ${entryExitQuery}
@@ -101,7 +105,7 @@ async function clickhouseQuery(
     let entryExitQuery = '';
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and referrer_domain != hostname and hostname != ''`;
+      excludeDomain = `and referrer_domain != hostname and referrer_domain != ''`;
     }
 
     if (type === 'entry' || type === 'exit') {
@@ -113,17 +117,20 @@ async function clickhouseQuery(
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
       group by visit_id) x
       ON x.visit_id = website_event.visit_id
           and x.target_created_at = website_event.created_at`;
     }
 
     sql = `
-    select ${column} x, count(*) y
+    select ${column} x, 
+      ${column === 'referrer_domain' ? 'uniq(session_id)' : 'count(*)'} as y
     from website_event
     ${entryExitQuery}
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type = {eventType:UInt32}
       ${excludeDomain}
       ${filterQuery}
     group by x
@@ -133,12 +140,12 @@ async function clickhouseQuery(
     `;
   } else {
     let groupByQuery = '';
+    let columnQuery = `arrayJoin(${column})`;
 
     if (column === 'referrer_domain') {
-      excludeDomain = `and t != hostname and hostname != ''`;
+      excludeDomain = `and t != hostname and t != ''`;
+      columnQuery = `session_id s, arrayJoin(${column})`;
     }
-
-    let columnQuery = `arrayJoin(${column})`;
 
     if (type === 'entry') {
       columnQuery = `visit_id x, argMinMerge(entry_url)`;
@@ -154,12 +161,13 @@ async function clickhouseQuery(
 
     sql = `
     select g.t as x,
-      count(*) as y
+      ${column === 'referrer_domain' ? 'uniq(s)' : 'count(*)'} as y
     from (
       select ${columnQuery} as t
       from website_event_stats_hourly website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type = {eventType:UInt32}
         ${excludeDomain}
         ${filterQuery}
       ${groupByQuery}) as g

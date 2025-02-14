@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import { parseRequest } from '@/lib/request';
-import { unauthorized, json } from '@/lib/response';
 import { canViewWebsite } from '@/lib/auth';
-import { getEventDataEvents } from '@/queries/sql/events/getEventDataEvents';
+import { parseRequest } from '@/lib/request';
+import { json, unauthorized } from '@/lib/response';
+import { getSessionDataValues } from '@/queries';
+import { z } from 'zod';
 
 export async function GET(
   request: Request,
@@ -20,7 +20,7 @@ export async function GET(
     return error();
   }
 
-  const { startAt, endAt, event } = query;
+  const { startAt, endAt, propertyName } = query;
   const { websiteId } = await params;
 
   if (!(await canViewWebsite(auth, websiteId))) {
@@ -30,10 +30,10 @@ export async function GET(
   const startDate = new Date(+startAt);
   const endDate = new Date(+endAt);
 
-  const data = await getEventDataEvents(websiteId, {
+  const data = await getSessionDataValues(websiteId, {
     startDate,
     endDate,
-    event,
+    propertyName,
   });
 
   return json(data);
