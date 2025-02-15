@@ -10,6 +10,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
   const { data, ...props } = useWebsiteSessionsWeekly(websiteId);
   const { dateLocale } = useLocale();
   const { labels, formatMessage } = useMessages();
+  const { weekStartsOn } = dateLocale.options;
+  const daysOfWeek = Array(7)
+    .fill(weekStartsOn)
+    .map((d, i) => (d + i) % 7);
 
   const [, max] = data
     ? data.reduce((arr: number[], hours: number[], index: number) => {
@@ -50,33 +54,35 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
               );
             })}
         </div>
-        {data?.map((day: number[], index: number) => {
-          return (
-            <div key={index} className={styles.day}>
-              <div className={styles.header}>
-                {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+        {data &&
+          daysOfWeek.map((index: number) => {
+            const day = data[index];
+            return (
+              <div key={index} className={styles.day}>
+                <div className={styles.header}>
+                  {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+                </div>
+                {day?.map((hour: number) => {
+                  const pct = hour / max;
+                  return (
+                    <div key={hour} className={classNames(styles.cell)}>
+                      {hour > 0 && (
+                        <TooltipPopup
+                          label={`${formatMessage(labels.visitors)}: ${hour}`}
+                          position="right"
+                        >
+                          <div
+                            className={styles.block}
+                            style={{ opacity: pct, transform: `scale(${pct})` }}
+                          />
+                        </TooltipPopup>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-              {day?.map((hour: number) => {
-                const pct = hour / max;
-                return (
-                  <div key={hour} className={classNames(styles.cell)}>
-                    {hour > 0 && (
-                      <TooltipPopup
-                        label={`${formatMessage(labels.visitors)}: ${hour}`}
-                        position="right"
-                      >
-                        <div
-                          className={styles.block}
-                          style={{ opacity: pct, transform: `scale(${pct})` }}
-                        />
-                      </TooltipPopup>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
     </LoadingPanel>
   );
