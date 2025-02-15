@@ -20,10 +20,10 @@ export default function SessionInfo({ data }) {
         </dd>
 
         <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</dd>
 
         <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'EEEE, PPPpp')}</dd>
+        <dd>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</dd>
 
         <dt>{formatMessage(labels.country)}</dt>
         <dd>
