@@ -40,7 +40,9 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
           {Array(24)
             .fill(null)
             .map((_, i) => {
-              const label = format(addHours(startOfDay(new Date()), i), 'haaa');
+              const label = format(addHours(startOfDay(new Date()), i), 'p', { locale: dateLocale })
+                .replace(/\D00 ?/, '')
+                .toLowerCase();
               return (
                 <div key={i} className={styles.hour}>
                   {label}
