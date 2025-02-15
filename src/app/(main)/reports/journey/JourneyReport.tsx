@@ -1,8 +1,8 @@
 'use client';
-import Report from '../[reportId]/Report';
-import ReportHeader from '../[reportId]/ReportHeader';
-import ReportMenu from '../[reportId]/ReportMenu';
-import ReportBody from '../[reportId]/ReportBody';
+import { Report } from '../[reportId]/Report';
+import { ReportHeader } from '../[reportId]/ReportHeader';
+import { ReportMenu } from '../[reportId]/ReportMenu';
+import { ReportBody } from '../[reportId]/ReportBody';
 import { JourneyParameters } from './JourneyParameters';
 import { JourneyView } from './JourneyView';
 import Path from '@/assets/path.svg';

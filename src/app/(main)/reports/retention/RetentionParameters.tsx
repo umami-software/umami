@@ -3,7 +3,7 @@ import { useMessages } from '@/components/hooks';
 import { Form, FormButtons, FormRow, SubmitButton } from 'react-basics';
 import { ReportContext } from '../[reportId]/Report';
 import { MonthSelect } from '@/components/input/MonthSelect';
-import BaseParameters from '../[reportId]/BaseParameters';
+import { BaseParameters } from '../[reportId]/BaseParameters';
 import { parseDateRange } from '@/lib/date';
 
 export function RetentionParameters() {

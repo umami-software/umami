@@ -11,7 +11,7 @@ import {
   TextField,
 } from 'react-basics';
 import { ReportContext } from '../[reportId]/Report';
-import BaseParameters from '../[reportId]/BaseParameters';
+import { BaseParameters } from '../[reportId]/BaseParameters';
 
 export function JourneyParameters() {
   const { report, runReport, isRunning } = useContext(ReportContext);

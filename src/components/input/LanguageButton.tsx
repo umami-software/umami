@@ -26,7 +26,7 @@ export function LanguageButton() {
                 <Button key={value} variant="quiet" onPress={() => handleSelect(value)}>
                   <Text
                     weight={value === locale ? 'bold' : 'normal'}
-                    color={value === locale ? 'primary' : 'muted'}
+                    color={value === locale ? undefined : 'muted'}
                   >
                     {label}
                   </Text>

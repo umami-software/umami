@@ -2,11 +2,11 @@ import { useContext } from 'react';
 import { useMessages, useFormat, useFilters, useFields } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
-import FilterSelectForm from '../[reportId]/FilterSelectForm';
-import ParameterList from '../[reportId]/ParameterList';
-import PopupForm from '../[reportId]/PopupForm';
+import { FilterSelectForm } from '../[reportId]/FilterSelectForm';
+import { ParameterList } from '../[reportId]/ParameterList';
+import { PopupForm } from '../[reportId]/PopupForm';
 import { ReportContext } from './Report';
-import FieldFilterEditForm from '../[reportId]/FieldFilterEditForm';
+import { FieldFilterEditForm } from '../[reportId]/FieldFilterEditForm';
 import { isSearchOperator } from '@/lib/params';
 import styles from './FilterParameters.module.css';
 

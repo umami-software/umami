@@ -1,7 +1,7 @@
-import Report from '../[reportId]/Report';
-import ReportHeader from '../[reportId]/ReportHeader';
-import ReportMenu from '../[reportId]/ReportMenu';
-import ReportBody from '../[reportId]/ReportBody';
+import { Report } from '../[reportId]/Report';
+import { ReportHeader } from '../[reportId]/ReportHeader';
+import { ReportMenu } from '../[reportId]/ReportMenu';
+import { ReportBody } from '../[reportId]/ReportBody';
 import { InsightsParameters } from './InsightsParameters';
 import { InsightsTable } from './InsightsTable';
 import Lightbulb from '@/assets/lightbulb.svg';

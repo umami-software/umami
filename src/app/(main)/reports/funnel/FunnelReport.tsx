@@ -1,9 +1,9 @@
 import { FunnelChart } from './FunnelChart';
 import { FunnelParameters } from './FunnelParameters';
-import Report from '../[reportId]/Report';
-import ReportHeader from '../[reportId]/ReportHeader';
-import ReportMenu from '../[reportId]/ReportMenu';
-import ReportBody from '../[reportId]/ReportBody';
+import { Report } from '../[reportId]/Report';
+import { ReportHeader } from '../[reportId]/ReportHeader';
+import { ReportMenu } from '../[reportId]/ReportMenu';
+import { ReportBody } from '../[reportId]/ReportBody';
 import Funnel from '@/assets/funnel.svg';
 import { REPORT_TYPES } from '@/lib/constants';
 

@@ -1,10 +1,10 @@
 import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
 import { Form, FormButtons, SubmitButton } from 'react-basics';
-import BaseParameters from '../[reportId]/BaseParameters';
+import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ReportContext } from '../[reportId]/Report';
-import FieldParameters from '../[reportId]/FieldParameters';
-import FilterParameters from '../[reportId]/FilterParameters';
+import { FieldParameters } from '../[reportId]/FieldParameters';
+import { FilterParameters } from '../[reportId]/FilterParameters';
 
 export function InsightsParameters() {
   const { report, runReport, isRunning } = useContext(ReportContext);

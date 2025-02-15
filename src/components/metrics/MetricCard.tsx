@@ -1,6 +1,7 @@
 import classNames from 'classnames';
-import { useSpring, animated } from '@react-spring/web';
+import { useSpring } from '@react-spring/web';
 import { formatNumber } from '@/lib/format';
+import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import styles from './MetricCard.module.css';
 
@@ -37,9 +38,9 @@ export const MetricCard = ({
   return (
     <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
       {showLabel && <div className={styles.label}>{label}</div>}
-      <animated.div className={styles.value} title={value?.toString()}>
+      <AnimatedDiv className={styles.value} title={value?.toString()}>
         {props?.x?.to(x => formatValue(x))}
-      </animated.div>
+      </AnimatedDiv>
       {showChange && (
         <ChangeLabel
           className={styles.change}
@@ -47,13 +48,13 @@ export const MetricCard = ({
           title={formatValue(change)}
           reverseColors={reverseColors}
         >
-          <animated.span>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</animated.span>
+          <AnimatedDiv>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</AnimatedDiv>
         </ChangeLabel>
       )}
       {showPrevious && (
-        <animated.div className={classNames(styles.value, styles.prev)} title={diff.toString()}>
+        <AnimatedDiv className={classNames(styles.value, styles.prev)} title={diff.toString()}>
           {prevProps?.x?.to(x => formatValue(x))}
-        </animated.div>
+        </AnimatedDiv>
       )}
     </div>
   );

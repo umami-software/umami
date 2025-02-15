@@ -15,9 +15,9 @@ import {
 import { Icons } from '@/components/icons';
 import { FunnelStepAddForm } from './FunnelStepAddForm';
 import { ReportContext } from '../[reportId]/Report';
-import BaseParameters from '../[reportId]/BaseParameters';
-import ParameterList from '../[reportId]/ParameterList';
-import PopupForm from '../[reportId]/PopupForm';
+import { BaseParameters } from '../[reportId]/BaseParameters';
+import { ParameterList } from '../[reportId]/ParameterList';
+import { PopupForm } from '../[reportId]/PopupForm';
 import styles from './FunnelParameters.module.css';
 
 export function FunnelParameters() {

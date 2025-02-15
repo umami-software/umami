@@ -5,9 +5,9 @@ import { Icons } from '@/components/icons';
 import { useApi, useMessages } from '@/components/hooks';
 import { DATA_TYPES, REPORT_PARAMETERS } from '@/lib/constants';
 import { ReportContext } from '../[reportId]/Report';
-import FieldAddForm from '../[reportId]/FieldAddForm';
-import ParameterList from '../[reportId]/ParameterList';
-import BaseParameters from '../[reportId]/BaseParameters';
+import { FieldAddForm } from '../[reportId]/FieldAddForm';
+import { ParameterList } from '../[reportId]/ParameterList';
+import { BaseParameters } from '../[reportId]/BaseParameters';
 import styles from './EventDataParameters.module.css';
 
 function useFields(websiteId, startDate, endDate) {

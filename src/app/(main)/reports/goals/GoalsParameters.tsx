@@ -13,9 +13,9 @@ import {
   PopupTrigger,
   SubmitButton,
 } from 'react-basics';
-import BaseParameters from '../[reportId]/BaseParameters';
-import ParameterList from '../[reportId]/ParameterList';
-import PopupForm from '../[reportId]/PopupForm';
+import { BaseParameters } from '../[reportId]/BaseParameters';
+import { ParameterList } from '../[reportId]/ParameterList';
+import { PopupForm } from '../[reportId]/PopupForm';
 import { ReportContext } from '../[reportId]/Report';
 import { GoalsAddForm } from './GoalsAddForm';
 import styles from './GoalsParameters.module.css';
