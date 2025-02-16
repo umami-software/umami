@@ -30,6 +30,7 @@ export interface CollectRequestBody {
     tag?: string;
     title?: string;
     url: string;
+    createdAt?: number;
   };
   type: CollectionType;
 }
@@ -72,6 +73,7 @@ const schema = {
         website: yup.string().uuid().required(),
         name: yup.string().max(50),
         tag: yup.string().max(50).nullable(),
+        createdAt: yup.number(),
       })
       .required(),
     type: yup
@@ -83,7 +85,6 @@ const schema = {
 
 export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
   await useCors(req, res);
-
   if (req.method === 'POST') {
     if (!process.env.DISABLE_BOT_CHECK && isbot(req.headers['user-agent'])) {
       return ok(res, { beep: 'boop' });
@@ -97,6 +98,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
 
     const { type, payload } = req.body;
     const { url, referrer, name: eventName, data, title, tag } = payload;
+    const createdAt = payload.createdAt ? new Date(payload.createdAt * 1000) : undefined;
     const pageTitle = safeDecodeURI(title);
 
     await useSession(req, res);
@@ -107,7 +109,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
       return;
     }
 
-    const iat = Math.floor(new Date().getTime() / 1000);
+    const iat = Math.floor((createdAt || new Date()).getTime() / 1000);
 
     // expire visitId after 30 minutes
     if (session.iat && iat - session.iat > 1800) {
@@ -147,6 +149,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         eventName,
         eventData: data,
         ...session,
+        createdAt,
         sessionId: session.id,
         tag,
       });
