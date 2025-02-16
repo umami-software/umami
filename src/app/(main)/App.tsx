@@ -6,6 +6,7 @@ import { UpdateNotice } from './UpdateNotice';
 import { NavBar } from '@/app/(main)/NavBar';
 import { Page } from '@/components/layout/Page';
 import { useLogin, useConfig } from '@/components/hooks';
+import { SideNav } from '@/app/(main)/SideNav';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLogin();
@@ -29,15 +30,18 @@ export function App({ children }) {
   }
 
   return (
-    <Grid rows="auto 1fr">
-      <NavBar />
-      <Page>
-        <UpdateNotice user={user} config={config} />
-        {children}
-        {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
-          <Script src={`${process.env.basePath || ''}/telemetry.js`} />
-        )}
-      </Page>
+    <Grid>
+      <SideNav />
+      <Grid rows="auto 1fr">
+        <NavBar />
+        <Page>
+          <UpdateNotice user={user} config={config} />
+          {children}
+          {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
+            <Script src={`${process.env.basePath || ''}/telemetry.js`} />
+          )}
+        </Page>
+      </Grid>
     </Grid>
   );
 }

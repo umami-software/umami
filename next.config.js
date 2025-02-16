@@ -172,6 +172,9 @@ const config = {
   },
   basePath,
   output: 'standalone',
+  devIndicators: {
+    appIsrStatus: false,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },

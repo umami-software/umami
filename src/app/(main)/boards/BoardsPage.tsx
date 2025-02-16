@@ -1,3 +1,5 @@
+import { Board } from './Board';
+
 export function BoardsPage() {
-  return <h1>hi.</h1>;
+  return <Board />;
 }

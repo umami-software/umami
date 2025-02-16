@@ -297,6 +297,7 @@ export const labels = defineMessages({
   paidVideo: { id: 'label.paid-video', defaultMessage: 'Paid video' },
   grouped: { id: 'label.grouped', defaultMessage: 'Grouped' },
   other: { id: 'label.other', defaultMessage: 'Other' },
+  boards: { id: 'label.boards', defaultMessage: 'Boards' },
 });
 
 export const messages = defineMessages({

@@ -4,6 +4,7 @@ body {
   color: var(--font-color);
   font-size: var(--font-size);
   background-color: var(--background-color);
+  min-height: 100vh;
 }
 
 a,

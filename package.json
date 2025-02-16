@@ -10,7 +10,7 @@
     "url": "https://github.com/umami-software/umami.git"
   },
   "scripts": {
-    "dev": "next dev -p 3000 --turbo",
+    "dev": "next dev -p 3000",
     "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
@@ -75,7 +75,7 @@
     "@react-spring/web": "^9.7.5",
     "@tanstack/react-query": "^5.28.6",
     "@umami/prisma-client": "^0.14.0",
-    "@umami/react-zen": "^0.51.0",
+    "@umami/react-zen": "^0.54.0",
     "@umami/redis-client": "^0.26.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.1",
@@ -103,7 +103,7 @@
     "kafkajs": "^2.1.0",
     "maxmind": "^4.3.24",
     "md5": "^2.3.0",
-    "next": "15.0.4",
+    "next": "15.1.7",
     "node-fetch": "^3.2.8",
     "npm-run-all": "^4.1.5",
     "prisma": "6.1.0",
