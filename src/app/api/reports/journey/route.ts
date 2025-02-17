@@ -8,7 +8,7 @@ import { reportParms } from '@/lib/schema';
 export async function POST(request: Request) {
   const schema = z.object({
     ...reportParms,
-    steps: z.number().min(3).max(7),
+    steps: z.coerce.number().min(3).max(7),
     startStep: z.string(),
     endStep: z.string(),
   });
