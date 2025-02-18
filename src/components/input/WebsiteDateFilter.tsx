@@ -1,10 +1,10 @@
-import { useDateRange, useLocale } from 'components/hooks';
+import { useDateRange, useLocale } from '@/components/hooks';
 import { isAfter } from 'date-fns';
-import { getOffsetDateRange } from 'lib/date';
+import { getOffsetDateRange } from '@/lib/date';
 import { Button, Icon, Icons } from 'react-basics';
 import DateFilter from './DateFilter';
 import styles from './WebsiteDateFilter.module.css';
-import { DateRange } from 'lib/types';
+import { DateRange } from '@/lib/types';
 
 export function WebsiteDateFilter({
   websiteId,

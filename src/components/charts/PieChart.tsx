@@ -1,7 +1,7 @@
-import { Chart, ChartProps } from 'components/charts/Chart';
+import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useState } from 'react';
 import { StatusLight } from 'react-basics';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumber } from '@/lib/format';
 
 export interface PieChartProps extends ChartProps {
   type?: 'doughnut' | 'pie';

@@ -9,10 +9,10 @@ import {
   Icon,
 } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useApi, useMessages } from 'components/hooks';
-import { setUser } from 'store/app';
-import { setClientAuthToken } from 'lib/client';
-import Logo from 'assets/logo.svg';
+import { useApi, useMessages } from '@/components/hooks';
+import { setUser } from '@/store/app';
+import { setClientAuthToken } from '@/lib/client';
+import Logo from '@/assets/logo.svg';
 import styles from './LoginForm.module.css';
 
 export function LoginForm() {

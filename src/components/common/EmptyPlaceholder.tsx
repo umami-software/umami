@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Icon, Text, Flexbox } from 'react-basics';
-import Logo from 'assets/logo.svg';
+import Logo from '@/assets/logo.svg';
 
 export interface EmptyPlaceholderProps {
   message?: string;

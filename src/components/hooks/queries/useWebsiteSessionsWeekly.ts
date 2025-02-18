@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 import useModified from '../useModified';
-import { useFilterParams } from 'components/hooks/useFilterParams';
+import { useFilterParams } from '@/components/hooks/useFilterParams';
 
 export function useWebsiteSessionsWeekly(
   websiteId: string,

@@ -1,5 +1,5 @@
-import { useMessages } from 'components/hooks';
-import useRevenueValues from 'components/hooks/queries/useRevenueValues';
+import { useMessages } from '@/components/hooks';
+import useRevenueValues from '@/components/hooks/queries/useRevenueValues';
 import { useContext } from 'react';
 import { Dropdown, Form, FormButtons, FormInput, FormRow, Item, SubmitButton } from 'react-basics';
 import BaseParameters from '../[reportId]/BaseParameters';

@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { Loading } from 'react-basics';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { setClientAuthToken } from 'lib/client';
+import { setClientAuthToken } from '@/lib/client';
 
 export default function SSOPage() {
   const router = useRouter();

@@ -1,5 +1,5 @@
-import { setItem } from 'next-basics';
-import { TIMEZONE_CONFIG } from 'lib/constants';
+import { setItem } from '@/lib/storage';
+import { TIMEZONE_CONFIG } from '@/lib/constants';
 import { formatInTimeZone, zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
 import useStore, { setTimezone } from 'store/app';
 import useLocale from './useLocale';

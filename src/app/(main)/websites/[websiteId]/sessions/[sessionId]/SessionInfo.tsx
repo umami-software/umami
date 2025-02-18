@@ -1,7 +1,7 @@
-import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from 'components/hooks';
-import TypeIcon from 'components/common/TypeIcon';
+import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
+import TypeIcon from '@/components/common/TypeIcon';
 import { Icon, CopyIcon } from 'react-basics';
-import Icons from 'components/icons';
+import Icons from '@/components/icons';
 import styles from './SessionInfo.module.css';
 
 export default function SessionInfo({ data }) {

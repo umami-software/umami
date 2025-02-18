@@ -1,6 +1,6 @@
 import { Icon, Icons, Text } from 'react-basics';
 import styles from './ErrorMessage.module.css';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export function ErrorMessage() {
   const { formatMessage, messages } = useMessages();

@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { ROLES } from 'lib/constants';
-import prisma from 'lib/prisma';
-import { PageResult, Role, User, PageParams } from 'lib/types';
-import { getRandomChars } from 'next-basics';
+import { ROLES } from '@/lib/constants';
+import prisma from '@/lib/prisma';
+import { PageResult, Role, User, PageParams } from '@/lib/types';
+import { getRandomChars } from '@/lib/crypto';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {

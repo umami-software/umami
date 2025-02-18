@@ -1,5 +1,5 @@
-import Money from 'assets/money.svg';
-import { REPORT_TYPES } from 'lib/constants';
+import Money from '@/assets/money.svg';
+import { REPORT_TYPES } from '@/lib/constants';
 import Report from '../[reportId]/Report';
 import ReportBody from '../[reportId]/ReportBody';
 import ReportHeader from '../[reportId]/ReportHeader';

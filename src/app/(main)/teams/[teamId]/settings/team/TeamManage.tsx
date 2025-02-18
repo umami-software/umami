@@ -1,4 +1,4 @@
-import { useMessages, useModified } from 'components/hooks';
+import { useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
 import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
 import TeamDeleteForm from './TeamDeleteForm';

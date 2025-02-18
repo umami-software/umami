@@ -1,4 +1,4 @@
-import { useLocale, useLogin, useMessages, useModified } from 'components/hooks';
+import { useLocale, useLogin, useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
 import TeamDeleteForm from './TeamLeaveForm';

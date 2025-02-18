@@ -1,6 +1,6 @@
 import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
 import UserAddForm from './UserAddForm';
-import { useMessages, useModified } from 'components/hooks';
+import { useMessages, useModified } from '@/components/hooks';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();

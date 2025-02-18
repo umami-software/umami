@@ -1,6 +1,6 @@
-import { useLocale } from 'components/hooks';
-import { formatDate } from 'lib/date';
-import { formatLongCurrency, formatLongNumber } from 'lib/format';
+import { useLocale } from '@/components/hooks';
+import { formatDate } from '@/lib/date';
+import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 import { Flexbox, StatusLight } from 'react-basics';
 
 const formats = {

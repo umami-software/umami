@@ -1,5 +1,5 @@
-import { formatDate } from 'lib/date';
-import { formatLongNumber } from 'lib/format';
+import { formatDate } from '@/lib/date';
+import { formatLongNumber } from '@/lib/format';
 
 export function renderNumberLabels(label: string) {
   return +label > 1000 ? formatLongNumber(+label) : label;
