@@ -1,7 +1,7 @@
 import { Icon, Button, MenuTrigger, Popover, Grid, Text, Dialog } from '@umami/react-zen';
 import { languages } from '@/lib/lang';
 import { useLocale } from '@/components/hooks';
-import { Icons } from '@/components/icons';
+import { Globe } from 'lucide-react';
 
 export function LanguageButton() {
   const { locale, saveLocale } = useLocale();
@@ -15,7 +15,7 @@ export function LanguageButton() {
     <MenuTrigger key="language">
       <Button variant="quiet">
         <Icon>
-          <Icons.Globe />
+          <Globe />
         </Icon>
       </Button>
       <Popover placement="bottom end">

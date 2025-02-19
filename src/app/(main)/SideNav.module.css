@@ -4,7 +4,7 @@
   width: 200px;
   height: 100vh;
   background-color: var(--layer-color-1);
-  border-right: 1px solid var(--layer-color-2);
+  border-right: 1px solid var(--border-color);
 }
 
 .header {

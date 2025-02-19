@@ -1,13 +1,13 @@
 import { TeamProvider } from './TeamProvider';
 import { Metadata } from 'next';
-import TeamSettingsLayout from './settings/TeamSettingsLayout';
+import { TeamSettingsLayout } from './settings/TeamSettingsLayout';
 
 export default async function ({
   children,
   params,
 }: {
   children: any;
-  params: { teamId: string };
+  params: Promise<{ teamId: string }>;
 }) {
   const { teamId } = await params;
 

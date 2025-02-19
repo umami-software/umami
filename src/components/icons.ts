@@ -1,4 +1,5 @@
 import { Icons as ReactBasicsIcons } from 'react-basics';
+import * as lucide from 'lucide-react';
 import AddUser from '@/assets/add-user.svg';
 import Bars from '@/assets/bars.svg';
 import BarChart from '@/assets/bar-chart.svg';
@@ -55,5 +56,7 @@ const icons = {
   Users,
   Visitor,
 };
+
+export const Lucide = lucide;
 
 export const Icons = icons;

@@ -13,8 +13,9 @@ import {
   Popover,
   Row,
   Box,
+  Icons,
 } from '@umami/react-zen';
-import { Icons } from '@/components/icons';
+import { User, Users } from 'lucide-react';
 import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
 
 export function TeamsButton({
@@ -50,10 +51,10 @@ export function TeamsButton({
     <MenuTrigger>
       <Button className={className} variant="quiet">
         <Row alignItems="center" gap="3">
-          <Icon>{teamId ? <Icons.Users /> : <Icons.User />}</Icon>
+          <Icon>{teamId ? <Users /> : <User />}</Icon>
           {showText && <Text weight="bold">{teamId ? team?.name : user.username}</Text>}
-          <Icon>
-            <Icons.ChevronDown />
+          <Icon rotate={90} size="sm">
+            <Icons.Chevron />
           </Icon>
         </Row>
       </Button>
@@ -68,7 +69,7 @@ export function TeamsButton({
             <MenuSection title={formatMessage(labels.myAccount)}>
               <MenuItem id={user.id}>
                 <Icon>
-                  <Icons.User />
+                  <User />
                 </Icon>
                 <Text wrap="nowrap">{user.username}</Text>
               </MenuItem>
@@ -78,7 +79,7 @@ export function TeamsButton({
               {result?.data?.map(({ id, name }) => (
                 <MenuItem key={id} id={id}>
                   <Icon size="sm">
-                    <Icons.Users />
+                    <Users />
                   </Icon>
                   <Text wrap="nowrap">{name}</Text>
                 </MenuItem>

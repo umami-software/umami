@@ -11,7 +11,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { Icons } from '@/components/icons';
+import { User, LogOut, CircleUserRound } from 'lucide-react';
 import { useMessages, useLogin } from '@/components/hooks';
 
 export function ProfileButton() {
@@ -33,7 +33,7 @@ export function ProfileButton() {
     <MenuTrigger>
       <Button data-test="button-profile" variant="quiet">
         <Icon>
-          <Icons.Profile />
+          <CircleUserRound />
         </Icon>
       </Button>
       <Popover placement="bottom end">
@@ -42,14 +42,14 @@ export function ProfileButton() {
             <MenuSeparator />
             <MenuItem id="profile">
               <Icon>
-                <Icons.User />
+                <User />
               </Icon>
               <Text>{formatMessage(labels.profile)}</Text>
             </MenuItem>
             {!cloudMode && (
               <MenuItem data-test="item-logout" id="logout">
                 <Icon>
-                  <Icons.Logout />
+                  <LogOut />
                 </Icon>
                 <Text>{formatMessage(labels.logout)}</Text>
               </MenuItem>
