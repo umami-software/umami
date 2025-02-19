@@ -1,7 +1,7 @@
 import { setItem } from '@/lib/storage';
 import { TIMEZONE_CONFIG } from '@/lib/constants';
 import { formatInTimeZone, zonedTimeToUtc, utcToZonedTime } from 'date-fns-tz';
-import useStore, { setTimezone } from 'store/app';
+import useStore, { setTimezone } from '@/store/app';
 import useLocale from './useLocale';
 
 const selector = (state: { timezone: string }) => state.timezone;
