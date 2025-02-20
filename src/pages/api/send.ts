@@ -11,7 +11,7 @@ import {
 } from 'next-basics';
 import { COLLECTION_TYPE, HOSTNAME_REGEX, IP_REGEX } from 'lib/constants';
 import { secret, visitSalt, uuid } from 'lib/crypto';
-import { hasBlockedIp } from 'lib/detect';
+import { getIpAddress, hasBlockedIp } from 'lib/detect';
 import { useCors, useSession, useValidate } from 'lib/middleware';
 import { CollectionType, YupRequest } from 'lib/types';
 import { saveEvent, saveSessionData } from 'queries';
@@ -137,6 +137,8 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
 
+      const ip = req.body?.payload?.ip || getIpAddress(req);
+
       await saveEvent({
         urlPath,
         urlQuery,
@@ -149,6 +151,7 @@ export default async (req: NextApiRequestCollect, res: NextApiResponse) => {
         ...session,
         sessionId: session.id,
         tag,
+        ip,
       });
     } else if (type === COLLECTION_TYPE.identify) {
       if (!data) {

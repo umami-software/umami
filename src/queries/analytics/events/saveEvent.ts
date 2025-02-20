@@ -40,6 +40,7 @@ export async function saveEvent(args: {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Forwarded-For': args.ip,
       },
       body: JSON.stringify({
         fingerprint: args.sessionId,
@@ -53,6 +54,7 @@ export async function saveEvent(args: {
         device: args.device,
         screen: args.screen,
         language: args.language,
+        ip: args.ip,
       }),
     });
 
