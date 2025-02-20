@@ -45,12 +45,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
   return json(users);
 }
 
-export async function POST(
-  request: Request,
-  { params }: { params: Promise<{ teamId: string; userId: string }> },
-) {
+export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
-    userId: z.string(),
+    userId: z.string().uuid(),
     role: roleParam,
   });
 
