@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Umami Pixel Test Page</title>
+    <!-- Umami Tracking Script -->
+    <script
+      defer
+      src="http://localhost:3000/script.js"
+      data-website-id="c9be921b-b386-4a9c-aa7b-f153a3748299"
+      data-debug="true"
+    ></script>
+    <style>
+      .section {
+        height: 1800px;
+        padding: 20px;
+        margin: 20px 0;
+        background-color: #f5f5f5;
+        border-radius: 8px;
+      }
+      .first-section {
+        height: 800px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Umami Analytics Test Page</h1>
+
+    <button onclick="umami.track('button_click', { location: 'top' })">Track Click Event</button>
+
+    <div class="section first-section">
+      <h2>Section 1</h2>
+      <p>Scroll depth: 0%</p>
+    </div>
+
+    <div class="section">
+      <h2>Section 2</h2>
+      <p>Scroll depth: ~20%</p>
+    </div>
+
+    <div class="section">
+      <h2>Section 3</h2>
+      <p>Scroll depth: ~40%</p>
+    </div>
+
+    <div class="section">
+      <h2>Section 4</h2>
+      <p>Scroll depth: ~60%</p>
+    </div>
+
+    <div class="section">
+      <h2>Section 5</h2>
+      <p>Scroll depth: ~80%</p>
+    </div>
+
+    <div class="section">
+      <h2>Section 6</h2>
+      <p>Scroll depth: 100%</p>
+    </div>
+
+    <script>
+      // Track scroll depth
+      window.addEventListener('scroll', () => {
+        const scrollPercent = Math.round(
+          (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100,
+        );
+        if (typeof umami !== 'undefined') {
+          umami.track('scroll_depth', { depth: scrollPercent });
+        }
+      });
+    </script>
+  </body>
+</html>
