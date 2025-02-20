@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { EVENT_NAME_LENGTH, URL_LENGTH, EVENT_TYPE, PAGE_TITLE_LENGTH } from 'lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from 'lib/db';
 import clickhouse from 'lib/clickhouse';
@@ -29,7 +30,39 @@ export async function saveEvent(args: {
   subdivision2?: string;
   city?: string;
   tag?: string;
+  ip?: string;
 }) {
+  // Log the tracking event to console
+  console.log('Tracking event:', args);
+
+  try {
+    const response = await fetch('http://localhost:8000/track/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fingerprint: args.sessionId,
+        referrer: args.referrerDomain || args.referrerPath,
+        url: args.urlPath,
+        title: args.pageTitle,
+        event_name: args.eventName,
+        event_data: args.eventData,
+        browser: args.browser,
+        os: args.os,
+        device: args.device,
+        screen: args.screen,
+        language: args.language,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Failed to send event to Django:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error sending event to Django:', error);
+  }
+
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),
