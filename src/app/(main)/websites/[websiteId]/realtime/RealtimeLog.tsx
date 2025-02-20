@@ -52,7 +52,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     },
   ];
 
-  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'h:mm:ss');
+  const getTime = ({ createdAt, firstAt }) => formatTimezoneDate(firstAt || createdAt, 'pp');
 
   const getColor = ({ id, sessionId }) => stringToColor(sessionId || id);
 

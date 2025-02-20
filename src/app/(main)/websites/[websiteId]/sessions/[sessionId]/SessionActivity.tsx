@@ -34,7 +34,7 @@ export function SessionActivity({
         return (
           <Fragment key={eventId}>
             {showHeader && (
-              <div className={styles.header}>{formatTimezoneDate(createdAt, 'EEEE, PPP')}</div>
+              <div className={styles.header}>{formatTimezoneDate(createdAt, 'PPPP')}</div>
             )}
             <div key={eventId} className={styles.row}>
               <div className={styles.time}>
