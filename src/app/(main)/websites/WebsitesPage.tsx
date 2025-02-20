@@ -8,7 +8,7 @@ export function WebsitesPage() {
 
   return (
     <>
-      <WebsitesHeader teamId={teamId} allowCreate={false} />
+      <WebsitesHeader />
       <WebsitesDataTable teamId={teamId} allowEdit={false} />
     </>
   );

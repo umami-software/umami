@@ -1,6 +1,6 @@
 'use client';
+import { Column } from '@umami/react-zen';
 import { LoginForm } from './LoginForm';
-import styles from './LoginPage.module.css';
 
 export function LoginPage() {
   if (process.env.disableLogin) {
@@ -8,8 +8,8 @@ export function LoginPage() {
   }
 
   return (
-    <div className={styles.page}>
+    <Column justifyContent="center" alignItems="center" height="100vh" backgroundColor="2">
       <LoginForm />
-    </div>
+    </Column>
   );
 }

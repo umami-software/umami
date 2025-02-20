@@ -1,12 +1,9 @@
-import classNames from 'classnames';
-import React, { ReactNode } from 'react';
-import { Icon } from 'react-basics';
-import styles from './PageHeader.module.css';
+import { ReactNode } from 'react';
+import { Heading, Icon, Breadcrumbs, Breadcrumb, Row } from '@umami/react-zen';
 
 export function PageHeader({
   title,
   icon,
-  className,
   breadcrumb,
   children,
 }: {
@@ -18,17 +15,15 @@ export function PageHeader({
 }) {
   return (
     <>
-      <div className={styles.breadcrumb}>{breadcrumb}</div>
-      <div className={classNames(styles.header, className)}>
-        {icon && (
-          <Icon size="lg" className={styles.icon}>
-            {icon}
-          </Icon>
-        )}
+      <Breadcrumbs>
+        <Breadcrumb>{breadcrumb}</Breadcrumb>
+      </Breadcrumbs>
+      <Row justifyContent="space-between" paddingY="6">
+        {icon && <Icon size="lg">{icon}</Icon>}
 
-        {title && <div className={styles.title}>{title}</div>}
-        <div className={styles.actions}>{children}</div>
-      </div>
+        {title && <Heading>{title}</Heading>}
+        <Row justifyContent="flex-end">{children}</Row>
+      </Row>
     </>
   );
 }

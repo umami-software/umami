@@ -429,4 +429,24 @@ export const messages = defineMessages({
     id: 'message.transfer-user-website-to-team',
     defaultMessage: 'Select the team to transfer this website to.',
   },
+  unauthorized: {
+    id: 'message.unauthorized',
+    defaultMessage: 'Unauthorized',
+  },
+  badRequest: {
+    id: 'message.bad-request',
+    defaultMessage: 'Bad request',
+  },
+  forbidden: {
+    id: 'message.forbidden',
+    defaultMessage: 'Forbidden',
+  },
+  notFound: {
+    id: 'message.not-found',
+    defaultMessage: 'Not found',
+  },
+  serverError: {
+    id: 'message.sever-error',
+    defaultMessage: 'Server error',
+  },
 });

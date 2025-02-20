@@ -1,22 +1,22 @@
 import {
   Form,
-  FormRow,
-  FormInput,
   FormButtons,
+  FormField,
+  FormSubmitButton,
   TextField,
   PasswordField,
-  SubmitButton,
   Icon,
-} from 'react-basics';
+  Column,
+  Heading,
+} from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useApi, useMessages } from '@/components/hooks';
 import { setUser } from '@/store/app';
 import { setClientAuthToken } from '@/lib/client';
 import Logo from '@/assets/logo.svg';
-import styles from './LoginForm.module.css';
 
 export function LoginForm() {
-  const { formatMessage, labels } = useMessages();
+  const { formatMessage, labels, getMessage } = useMessages();
   const router = useRouter();
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
@@ -35,41 +35,47 @@ export function LoginForm() {
   };
 
   return (
-    <div className={styles.login}>
-      <Icon className={styles.icon} size="xl">
+    <Column
+      justifyContent="center"
+      alignItems="center"
+      padding="8"
+      gap="6"
+      backgroundColor="1"
+      borderRadius="3"
+      shadow="3"
+    >
+      <Icon size="lg">
         <Logo />
       </Icon>
-      <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
-        <FormRow label={formatMessage(labels.username)}>
-          <FormInput
-            data-test="input-username"
-            name="username"
-            rules={{ required: formatMessage(labels.required) }}
-          >
-            <TextField autoComplete="off" />
-          </FormInput>
-        </FormRow>
-        <FormRow label={formatMessage(labels.password)}>
-          <FormInput
-            data-test="input-password"
-            name="password"
-            rules={{ required: formatMessage(labels.required) }}
-          >
-            <PasswordField />
-          </FormInput>
-        </FormRow>
+      <Heading>umami</Heading>
+      <Form onSubmit={handleSubmit} error={getMessage(error)}>
+        <FormField
+          label={formatMessage(labels.username)}
+          data-test="input-username"
+          name="username"
+          rules={{ required: formatMessage(labels.required) }}
+        >
+          <TextField autoComplete="off" />
+        </FormField>
+        <FormField
+          label={formatMessage(labels.password)}
+          data-test="input-password"
+          name="password"
+          rules={{ required: formatMessage(labels.required) }}
+        >
+          <PasswordField />
+        </FormField>
         <FormButtons>
-          <SubmitButton
+          <FormSubmitButton
             data-test="button-submit"
-            className={styles.button}
             variant="primary"
             disabled={isPending}
+            style={{ flex: 1 }}
           >
             {formatMessage(labels.login)}
-          </SubmitButton>
+          </FormSubmitButton>
         </FormButtons>
       </Form>
-    </div>
+    </Column>
   );
 }

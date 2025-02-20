@@ -5,7 +5,7 @@ export function useMessages(): any {
   const intl = useIntl();
 
   const getMessage = (id: string) => {
-    const message = Object.values(messages).find(value => value.id === id);
+    const message = Object.values(messages).find(value => value.id === `message.${id}`);
 
     return message ? formatMessage(message) : id;
   };
