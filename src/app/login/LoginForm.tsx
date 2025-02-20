@@ -16,7 +16,7 @@ import Logo from '@/assets/logo.svg';
 import styles from './LoginForm.module.css';
 
 export function LoginForm() {
-  const { formatMessage, labels, getMessage } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const router = useRouter();
   const { post, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
@@ -40,7 +40,7 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <div className={styles.title}>umami</div>
-      <Form className={styles.form} onSubmit={handleSubmit} error={getMessage(error)}>
+      <Form className={styles.form} onSubmit={handleSubmit} error={error}>
         <FormRow label={formatMessage(labels.username)}>
           <FormInput
             data-test="input-username"

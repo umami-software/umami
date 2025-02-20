@@ -51,11 +51,11 @@ export async function getUsers(
   criteria: UserFindManyArgs,
   pageParams?: PageParams,
 ): Promise<PageResult<User[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [{ username: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ username: 'contains' }]),
     deletedAt: null,
   };
 
