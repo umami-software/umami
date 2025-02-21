@@ -1,8 +1,8 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 import semver from 'semver';
-import { CURRENT_VERSION, VERSION_CHECK, UPDATES_URL } from 'lib/constants';
-import { getItem } from 'next-basics';
+import { CURRENT_VERSION, VERSION_CHECK, UPDATES_URL } from '@/lib/constants';
+import { getItem } from '@/lib/storage';
 
 const initialState = {
   current: CURRENT_VERSION,

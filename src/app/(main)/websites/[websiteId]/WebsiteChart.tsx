@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import PageviewsChart from 'components/metrics/PageviewsChart';
-import useWebsitePageviews from 'components/hooks/queries/useWebsitePageviews';
-import { useDateRange } from 'components/hooks';
+import PageviewsChart from '@/components/metrics/PageviewsChart';
+import useWebsitePageviews from '@/components/hooks/queries/useWebsitePageviews';
+import { useDateRange } from '@/components/hooks';
 
 export function WebsiteChart({
   websiteId,

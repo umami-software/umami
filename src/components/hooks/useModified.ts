@@ -1,4 +1,4 @@
-import useStore from 'store/modified';
+import useStore from '@/store/modified';
 
 export function useModified(key?: string) {
   const modified = useStore(state => state?.[key]);

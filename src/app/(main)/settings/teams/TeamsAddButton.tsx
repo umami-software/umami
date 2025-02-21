@@ -1,8 +1,8 @@
 import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
-import Icons from 'components/icons';
-import { useMessages, useModified } from 'components/hooks';
+import Icons from '@/components/icons';
+import { useMessages, useModified } from '@/components/hooks';
 import TeamAddForm from './TeamAddForm';
-import { messages } from 'components/messages';
+import { messages } from '@/components/messages';
 
 export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels } = useMessages();

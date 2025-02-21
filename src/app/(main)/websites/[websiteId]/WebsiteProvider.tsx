@@ -1,6 +1,6 @@
 'use client';
 import { createContext, ReactNode, useEffect } from 'react';
-import { useModified, useWebsite } from 'components/hooks';
+import { useModified, useWebsite } from '@/components/hooks';
 import { Loading } from 'react-basics';
 
 export const WebsiteContext = createContext(null);

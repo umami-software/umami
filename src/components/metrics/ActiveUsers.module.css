@@ -10,8 +10,3 @@
   font-size: var(--font-size-md);
   font-weight: 400;
 }
-
-.value {
-  font-weight: 600;
-  margin-inline-end: 4px;
-}

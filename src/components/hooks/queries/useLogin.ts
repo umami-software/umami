@@ -1,5 +1,5 @@
 import { UseQueryResult } from '@tanstack/react-query';
-import useStore, { setUser } from 'store/app';
+import useStore, { setUser } from '@/store/app';
 import { useApi } from '../useApi';
 
 const selector = (state: { user: any }) => state.user;

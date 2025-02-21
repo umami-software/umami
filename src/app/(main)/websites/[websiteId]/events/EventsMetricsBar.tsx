@@ -1,9 +1,9 @@
-import { useMessages } from 'components/hooks';
-import useWebsiteSessionStats from 'components/hooks/queries/useWebsiteSessionStats';
-import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
-import MetricCard from 'components/metrics/MetricCard';
-import MetricsBar from 'components/metrics/MetricsBar';
-import { formatLongNumber } from 'lib/format';
+import { useMessages } from '@/components/hooks';
+import useWebsiteSessionStats from '@/components/hooks/queries/useWebsiteSessionStats';
+import WebsiteDateFilter from '@/components/input/WebsiteDateFilter';
+import MetricCard from '@/components/metrics/MetricCard';
+import MetricsBar from '@/components/metrics/MetricsBar';
+import { formatLongNumber } from '@/lib/format';
 import { Flexbox } from 'react-basics';
 
 export function EventsMetricsBar({ websiteId }: { websiteId: string }) {

@@ -1,10 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
 import { Button, Loading, Toggle, SearchField } from 'react-basics';
 import { firstBy } from 'thenby';
-import useDashboard, { saveDashboard } from 'store/dashboard';
-import { useMessages, useWebsites } from 'components/hooks';
+import useDashboard, { saveDashboard } from '@/store/dashboard';
+import { useMessages, useWebsites } from '@/components/hooks';
 import styles from './DashboardEdit.module.css';
 
 const DRAG_ID = 'dashboard-website-ordering';

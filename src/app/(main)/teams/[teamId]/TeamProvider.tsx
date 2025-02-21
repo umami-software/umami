@@ -1,6 +1,6 @@
 'use client';
 import { createContext, ReactNode, useEffect } from 'react';
-import { useTeam, useModified } from 'components/hooks';
+import { useTeam, useModified } from '@/components/hooks';
 import { Loading } from 'react-basics';
 
 export const TeamContext = createContext(null);

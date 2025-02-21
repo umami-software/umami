@@ -1,8 +1,9 @@
 import { isSameDay } from 'date-fns';
 import { Loading, Icon, StatusLight } from 'react-basics';
-import Icons from 'components/icons';
-import { useSessionActivity, useTimezone } from 'components/hooks';
+import Icons from '@/components/icons';
+import { useSessionActivity, useTimezone } from '@/components/hooks';
 import styles from './SessionActivity.module.css';
+import { Fragment } from 'react';
 
 export function SessionActivity({
   websiteId,
@@ -31,9 +32,9 @@ export function SessionActivity({
         lastDay = createdAt;
 
         return (
-          <>
+          <Fragment key={eventId}>
             {showHeader && (
-              <div className={styles.header}>{formatTimezoneDate(createdAt, 'EEEE, PPP')}</div>
+              <div className={styles.header}>{formatTimezoneDate(createdAt, 'PPPP')}</div>
             )}
             <div key={eventId} className={styles.row}>
               <div className={styles.time}>
@@ -44,7 +45,7 @@ export function SessionActivity({
               <Icon>{eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
               <div>{eventName || urlPath}</div>
             </div>
-          </>
+          </Fragment>
         );
       })}
     </div>

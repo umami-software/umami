@@ -1,8 +1,8 @@
-import FilterLink from 'components/common/FilterLink';
-import MetricsTable, { MetricsTableProps } from 'components/metrics/MetricsTable';
-import { useMessages } from 'components/hooks';
-import { useFormat } from 'components/hooks';
-import TypeIcon from 'components/common/TypeIcon';
+import FilterLink from '@/components/common/FilterLink';
+import MetricsTable, { MetricsTableProps } from '@/components/metrics/MetricsTable';
+import { useMessages } from '@/components/hooks';
+import { useFormat } from '@/components/hooks';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function BrowsersTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();

@@ -1,5 +1,5 @@
-import PageHeader from 'components/layout/PageHeader';
-import { useMessages } from 'components/hooks';
+import PageHeader from '@/components/layout/PageHeader';
+import { useMessages } from '@/components/hooks';
 
 export function ProfileHeader() {
   const { formatMessage, labels } = useMessages();

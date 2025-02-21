@@ -1,9 +1,9 @@
 import { Key } from 'react';
 import { Icon, Button, PopupTrigger, Popup, Menu, Item, Text } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import Icons from 'components/icons';
-import { useMessages, useLogin, useLocale } from 'components/hooks';
-import { CURRENT_VERSION } from 'lib/constants';
+import Icons from '@/components/icons';
+import { useMessages, useLogin, useLocale } from '@/components/hooks';
+import { CURRENT_VERSION } from '@/lib/constants';
 import styles from './ProfileButton.module.css';
 
 export function ProfileButton() {

@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import classNames from 'classnames';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
-import { formatLongNumber } from 'lib/format';
+import { formatLongNumber } from '@/lib/format';
 import styles from './FunnelChart.module.css';
 
 export interface FunnelChartProps {

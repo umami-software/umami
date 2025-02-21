@@ -1,5 +1,5 @@
 import { useMessages } from './useMessages';
-import { OPERATORS } from 'lib/constants';
+import { OPERATORS } from '@/lib/constants';
 
 export function useFilters() {
   const { formatMessage, labels } = useMessages();

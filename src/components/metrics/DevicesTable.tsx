@@ -1,8 +1,8 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import FilterLink from 'components/common/FilterLink';
-import { useMessages } from 'components/hooks';
-import { useFormat } from 'components/hooks';
-import TypeIcon from 'components/common/TypeIcon';
+import FilterLink from '@/components/common/FilterLink';
+import { useMessages } from '@/components/hooks';
+import { useFormat } from '@/components/hooks';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function DevicesTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();
