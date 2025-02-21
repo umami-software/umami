@@ -133,13 +133,15 @@ export async function POST(request: Request) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
 
-      let urlPath = currentUrl.pathname + currentUrl.hash;
+      let urlPath = currentUrl.pathname;
       const urlQuery = currentUrl.search.substring(1);
       const urlDomain = currentUrl.hostname.replace(/^www./, '');
 
       if (process.env.REMOVE_TRAILING_SLASH) {
         urlPath = urlPath.replace(/(.+)\/$/, '$1');
       }
+
+      urlPath = urlPath + currentUrl.hash;
 
       let referrerPath: string;
       let referrerQuery: string;
