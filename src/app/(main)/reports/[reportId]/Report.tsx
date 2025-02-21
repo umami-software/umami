@@ -1,7 +1,7 @@
 import { createContext, ReactNode } from 'react';
 import { Loading } from 'react-basics';
 import classNames from 'classnames';
-import { useReport } from 'components/hooks';
+import { useReport } from '@/components/hooks';
 import styles from './Report.module.css';
 
 export const ReportContext = createContext(null);

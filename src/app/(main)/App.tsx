@@ -2,7 +2,7 @@
 import { Loading } from 'react-basics';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
-import { useLogin, useConfig } from 'components/hooks';
+import { useLogin, useConfig } from '@/components/hooks';
 import UpdateNotice from './UpdateNotice';
 
 export function App({ children }) {
@@ -19,6 +19,10 @@ export function App({ children }) {
   }
 
   if (!user || !config) {
+    return null;
+  }
+
+  if (config.uiDisabled) {
     return null;
   }
 

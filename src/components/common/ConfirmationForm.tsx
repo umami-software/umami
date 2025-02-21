@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Button, LoadingButton, Form, FormButtons } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export interface ConfirmationFormProps {
   message: ReactNode;

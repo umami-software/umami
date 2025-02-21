@@ -1,5 +1,5 @@
-import DataTable from 'components/common/DataTable';
-import { useTeamWebsites } from 'components/hooks';
+import DataTable from '@/components/common/DataTable';
+import { useTeamWebsites } from '@/components/hooks';
 import TeamWebsitesTable from './TeamWebsitesTable';
 
 export function TeamWebsitesDataTable({

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Page from 'components/layout/Page';
-import PageHeader from 'components/layout/PageHeader';
-import { useApi, useMessages } from 'components/hooks';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import Page from '@/components/layout/Page';
+import PageHeader from '@/components/layout/PageHeader';
+import { useApi, useMessages } from '@/components/hooks';
+import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
 
 export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();

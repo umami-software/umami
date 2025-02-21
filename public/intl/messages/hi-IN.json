@@ -2,7 +2,7 @@
   "label.access-code": [
     {
       "type": 0,
-      "value": "Access code"
+      "value": "पहुंच कोड"
     }
   ],
   "label.actions": [
@@ -14,19 +14,19 @@
   "label.activity": [
     {
       "type": 0,
-      "value": "Activity log"
+      "value": "गतिविधि लॉग"
     }
   ],
   "label.add": [
     {
       "type": 0,
-      "value": "Add"
+      "value": "जोडो"
     }
   ],
   "label.add-description": [
     {
       "type": 0,
-      "value": "Add description"
+      "value": "विवरण लिखें"
     }
   ],
   "label.add-member": [
@@ -1006,7 +1006,7 @@
   "label.reports": [
     {
       "type": 0,
-      "value": "Reports"
+      "value": "प्रतिवेदन"
     }
   ],
   "label.required": [

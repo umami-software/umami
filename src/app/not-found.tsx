@@ -1,6 +1,6 @@
 'use client';
 import { Flexbox } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export default function () {
   const { formatMessage, labels } = useMessages();

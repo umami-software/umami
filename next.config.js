@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require('dotenv').config();
-const path = require('path');
 const pkg = require('./package.json');
 
 const TRACKER_SCRIPT = '/script.js';
@@ -9,6 +8,7 @@ const basePath = process.env.BASE_PATH;
 const collectApiEndpoint = process.env.COLLECT_API_ENDPOINT;
 const cloudMode = process.env.CLOUD_MODE;
 const cloudUrl = process.env.CLOUD_URL;
+const corsMaxAge = process.env.CORS_MAX_AGE;
 const defaultLocale = process.env.DEFAULT_LOCALE;
 const disableLogin = process.env.DISABLE_LOGIN;
 const disableUI = process.env.DISABLE_UI;
@@ -60,6 +60,15 @@ const trackerHeaders = [
 ];
 
 const headers = [
+  {
+    source: '/api/:path*',
+    headers: [
+      { key: 'Access-Control-Allow-Origin', value: '*' },
+      { key: 'Access-Control-Allow-Headers', value: '*' },
+      { key: 'Access-Control-Allow-Methods', value: 'GET, DELETE, POST, PUT' },
+      { key: 'Access-Control-Max-Age', value: corsMaxAge || '86400' },
+    ],
+  },
   {
     source: '/:path*',
     headers: defaultHeaders,
@@ -169,27 +178,22 @@ const config = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
   webpack(config) {
-    const fileLoaderRule = config.module.rules.find(rule => rule.test?.test?.('.svg'));
-
-    config.module.rules.push(
-      {
-        ...fileLoaderRule,
-        test: /\.svg$/i,
-        resourceQuery: /url/,
-      },
-      {
-        test: /\.svg$/i,
-        issuer: fileLoaderRule.issuer,
-        resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] },
-        use: ['@svgr/webpack'],
-      },
-    );
-
-    fileLoaderRule.exclude = /\.svg$/i;
-
-    config.resolve.alias['public'] = path.resolve('./public');
-
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: /\.(js|ts)x?$/,
+      use: ['@svgr/webpack'],
+    });
     return config;
   },
   async headers() {

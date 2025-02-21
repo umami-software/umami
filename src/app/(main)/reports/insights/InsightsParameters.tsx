@@ -1,4 +1,4 @@
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
 import { Form, FormButtons, SubmitButton } from 'react-basics';
 import BaseParameters from '../[reportId]/BaseParameters';

@@ -1,8 +1,8 @@
 import { GridColumn, GridTable, Icon, Text } from 'react-basics';
-import { useMessages } from 'components/hooks';
-import Icons from 'components/icons';
-import { ROLES } from 'lib/constants';
-import LinkButton from 'components/common/LinkButton';
+import { useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
+import { ROLES } from '@/lib/constants';
+import LinkButton from '@/components/common/LinkButton';
 
 export function TeamsTable({
   data = [],

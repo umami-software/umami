@@ -3,7 +3,7 @@ import { Icon, Text, TooltipPopup } from 'react-basics';
 import classNames from 'classnames';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import Icons from 'components/icons';
+import Icons from '@/components/icons';
 import styles from './NavGroup.module.css';
 
 export interface NavGroupProps {

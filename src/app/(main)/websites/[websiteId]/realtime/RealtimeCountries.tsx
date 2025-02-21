@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import ListTable from 'components/metrics/ListTable';
-import { useLocale, useCountryNames, useMessages } from 'components/hooks';
+import ListTable from '@/components/metrics/ListTable';
+import { useLocale, useCountryNames, useMessages } from '@/components/hooks';
 import classNames from 'classnames';
 import styles from './RealtimeCountries.module.css';
-import TypeIcon from 'components/common/TypeIcon';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();

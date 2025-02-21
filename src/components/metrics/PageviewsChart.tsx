@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import BarChart, { BarChartProps } from 'components/charts/BarChart';
-import { useLocale, useTheme, useMessages } from 'components/hooks';
-import { renderDateLabels } from 'lib/charts';
+import BarChart, { BarChartProps } from '@/components/charts/BarChart';
+import { useLocale, useTheme, useMessages } from '@/components/hooks';
+import { renderDateLabels } from '@/lib/charts';
 
 export interface PagepageviewsChartProps extends BarChartProps {
   data: {

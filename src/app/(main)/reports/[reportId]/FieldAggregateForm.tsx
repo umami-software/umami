@@ -1,5 +1,5 @@
 import { Form, FormRow, Menu, Item } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export default function FieldAggregateForm({
   name,
