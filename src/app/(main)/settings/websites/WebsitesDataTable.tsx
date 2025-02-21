@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import WebsitesTable from 'app/(main)/settings/websites/WebsitesTable';
-import DataTable from 'components/common/DataTable';
-import { useWebsites } from 'components/hooks';
+import WebsitesTable from '@/app/(main)/settings/websites/WebsitesTable';
+import DataTable from '@/components/common/DataTable';
+import { useWebsites } from '@/components/hooks';
 
 export function WebsitesDataTable({
   teamId,

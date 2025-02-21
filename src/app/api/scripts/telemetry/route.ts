@@ -1,4 +1,4 @@
-import { CURRENT_VERSION, TELEMETRY_PIXEL } from 'lib/constants';
+import { CURRENT_VERSION, TELEMETRY_PIXEL } from '@/lib/constants';
 
 export async function GET() {
   if (

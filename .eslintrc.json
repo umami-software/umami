@@ -13,13 +13,6 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["node_modules", "src/"]
-      }
-    }
-  },
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "eslint:recommended",

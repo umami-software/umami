@@ -1,10 +1,10 @@
 import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
 import { useRouter } from 'next/navigation';
-import { useLogin, useMessages, useModified, useTeams, useTeamUrl } from 'components/hooks';
+import { useLogin, useMessages, useModified, useTeams, useTeamUrl } from '@/components/hooks';
 import WebsiteDeleteForm from './WebsiteDeleteForm';
 import WebsiteResetForm from './WebsiteResetForm';
 import WebsiteTransferForm from './WebsiteTransferForm';
-import { ROLES } from 'lib/constants';
+import { ROLES } from '@/lib/constants';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();

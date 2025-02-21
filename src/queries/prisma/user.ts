@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { ROLES } from 'lib/constants';
-import prisma from 'lib/prisma';
-import { PageResult, Role, User, PageParams } from 'lib/types';
-import { getRandomChars } from 'next-basics';
+import { ROLES } from '@/lib/constants';
+import prisma from '@/lib/prisma';
+import { PageResult, Role, User, PageParams } from '@/lib/types';
+import { getRandomChars } from '@/lib/crypto';
 import UserFindManyArgs = Prisma.UserFindManyArgs;
 
 export interface GetUserOptions {
@@ -51,11 +51,11 @@ export async function getUsers(
   criteria: UserFindManyArgs,
   pageParams?: PageParams,
 ): Promise<PageResult<User[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.UserWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [{ username: 'contains' }]),
+    ...prisma.getSearchParameters(search, [{ username: 'contains' }]),
     deletedAt: null,
   };
 

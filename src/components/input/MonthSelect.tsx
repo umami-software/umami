@@ -9,9 +9,9 @@ import {
   Popup,
 } from 'react-basics';
 import { startOfMonth, endOfMonth } from 'date-fns';
-import Icons from 'components/icons';
-import { useLocale } from 'components/hooks';
-import { formatDate } from 'lib/date';
+import Icons from '@/components/icons';
+import { useLocale } from '@/components/hooks';
+import { formatDate } from '@/lib/date';
 import styles from './MonthSelect.module.css';
 
 export function MonthSelect({ date = new Date(), onChange }) {

@@ -9,8 +9,8 @@ import {
   SubmitButton,
   PasswordField,
 } from 'react-basics';
-import { useApi, useLogin, useMessages } from 'components/hooks';
-import { ROLES } from 'lib/constants';
+import { useApi, useLogin, useMessages } from '@/components/hooks';
+import { ROLES } from '@/lib/constants';
 import { useContext, useRef } from 'react';
 import { UserContext } from './UserProvider';
 

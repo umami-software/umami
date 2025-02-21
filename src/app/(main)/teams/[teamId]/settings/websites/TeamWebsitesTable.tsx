@@ -1,7 +1,7 @@
 import { GridColumn, GridTable, Icon, Text } from 'react-basics';
-import { useLogin, useMessages } from 'components/hooks';
-import Icons from 'components/icons';
-import LinkButton from 'components/common/LinkButton';
+import { useLogin, useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
+import LinkButton from '@/components/common/LinkButton';
 
 export function TeamWebsitesTable({
   teamId,

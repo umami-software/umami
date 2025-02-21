@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useApi } from '../useApi';
 import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
+import { parseDateRange } from '@/lib/date';
 
 export function useReport(
   reportId: string,
@@ -24,14 +25,12 @@ export function useReport(
     const data: any = await get(`/reports/${id}`);
 
     const { dateRange } = data?.parameters || {};
-    const { startDate, endDate } = dateRange || {};
 
-    if (startDate && endDate) {
-      dateRange.startDate = new Date(startDate);
-      dateRange.endDate = new Date(endDate);
-    }
-
-    data.parameters = { ...defaultParameters?.parameters, ...data.parameters };
+    data.parameters = {
+      ...defaultParameters?.parameters,
+      ...data.parameters,
+      dateRange: parseDateRange(dateRange.value),
+    };
 
     setReport(data);
   };

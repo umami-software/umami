@@ -1,6 +1,6 @@
-import { useMessages } from 'components/hooks';
-import Icons from 'components/icons';
-import { formatNumber } from 'lib/format';
+import { useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
+import { formatNumber } from '@/lib/format';
 import { useContext } from 'react';
 import {
   Button,

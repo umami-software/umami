@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { REPORT_PARAMETERS } from 'lib/constants';
+import { REPORT_PARAMETERS } from '@/lib/constants';
 import PopupForm from './PopupForm';
 import FieldSelectForm from './FieldSelectForm';
 

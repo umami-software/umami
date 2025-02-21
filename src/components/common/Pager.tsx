@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Button, Icon, Icons } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './Pager.module.css';
 
 export interface PagerProps {

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { GridColumn, GridTable } from 'react-basics';
-import { useFormat, useMessages, useTimezone } from 'components/hooks';
-import Avatar from 'components/common/Avatar';
+import { useFormat, useMessages, useTimezone } from '@/components/hooks';
+import Avatar from '@/components/common/Avatar';
 import styles from './SessionsTable.module.css';
-import TypeIcon from 'components/common/TypeIcon';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function SessionsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
   const { formatTimezoneDate } = useTimezone();

@@ -1,5 +1,5 @@
 'use client';
-import { useReport } from 'components/hooks';
+import { useReport } from '@/components/hooks';
 import EventDataReport from '../event-data/EventDataReport';
 import FunnelReport from '../funnel/FunnelReport';
 import GoalReport from '../goals/GoalsReport';

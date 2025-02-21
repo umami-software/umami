@@ -1,8 +1,8 @@
 import { useContext, useRef } from 'react';
 import { SubmitButton, Form, FormInput, FormRow, FormButtons, TextField } from 'react-basics';
-import { useApi, useMessages, useModified } from 'components/hooks';
-import { DOMAIN_REGEX } from 'lib/constants';
-import { WebsiteContext } from 'app/(main)/websites/[websiteId]/WebsiteProvider';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import { DOMAIN_REGEX } from '@/lib/constants';
+import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export function WebsiteEditForm({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const website = useContext(WebsiteContext);
