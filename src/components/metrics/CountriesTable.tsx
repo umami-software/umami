@@ -1,8 +1,8 @@
-import FilterLink from 'components/common/FilterLink';
-import { useCountryNames } from 'components/hooks';
-import { useLocale, useMessages, useFormat } from 'components/hooks';
+import FilterLink from '@/components/common/FilterLink';
+import { useCountryNames } from '@/components/hooks';
+import { useLocale, useMessages, useFormat } from '@/components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import TypeIcon from 'components/common/TypeIcon';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function CountriesTable({ ...props }: MetricsTableProps) {
   const { locale } = useLocale();

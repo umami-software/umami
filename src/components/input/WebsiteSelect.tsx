@@ -1,7 +1,7 @@
 import { useState, Key } from 'react';
 import { Dropdown, Item } from 'react-basics';
-import { useWebsite, useWebsites, useMessages } from 'components/hooks';
-import Empty from 'components/common/Empty';
+import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
+import Empty from '@/components/common/Empty';
 import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({
@@ -14,12 +14,12 @@ export function WebsiteSelect({
   onSelect?: (key: any) => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const [query, setQuery] = useState('');
+  const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState<Key>(websiteId);
 
   const { data: website } = useWebsite(selectedId as string);
 
-  const queryResult = useWebsites({ teamId }, { query, pageSize: 5 });
+  const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
 
   const renderValue = () => {
     return website?.name;
@@ -35,7 +35,7 @@ export function WebsiteSelect({
   };
 
   const handleSearch = (value: string) => {
-    setQuery(value);
+    setSearch(value);
   };
 
   return (

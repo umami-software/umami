@@ -1,8 +1,8 @@
-import PageHeader from 'components/layout/PageHeader';
+import PageHeader from '@/components/layout/PageHeader';
 import { Icon, Icons, Text } from 'react-basics';
-import { useLogin, useMessages, useTeamUrl } from 'components/hooks';
-import LinkButton from 'components/common/LinkButton';
-import { ROLES } from 'lib/constants';
+import { useLogin, useMessages, useTeamUrl } from '@/components/hooks';
+import LinkButton from '@/components/common/LinkButton';
+import { ROLES } from '@/lib/constants';
 
 export function ReportsHeader() {
   const { formatMessage, labels } = useMessages();

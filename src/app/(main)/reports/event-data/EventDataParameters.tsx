@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
-import Empty from 'components/common/Empty';
-import Icons from 'components/icons';
-import { useApi, useMessages } from 'components/hooks';
-import { DATA_TYPES, REPORT_PARAMETERS } from 'lib/constants';
+import Empty from '@/components/common/Empty';
+import Icons from '@/components/icons';
+import { useApi, useMessages } from '@/components/hooks';
+import { DATA_TYPES, REPORT_PARAMETERS } from '@/lib/constants';
 import { ReportContext } from '../[reportId]/Report';
 import FieldAddForm from '../[reportId]/FieldAddForm';
 import ParameterList from '../[reportId]/ParameterList';

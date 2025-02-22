@@ -1,14 +1,14 @@
-import classNames from 'classnames';
-import { useDateRange, useMessages, useSticky } from 'components/hooks';
-import WebsiteDateFilter from 'components/input/WebsiteDateFilter';
-import MetricCard from 'components/metrics/MetricCard';
-import MetricsBar from 'components/metrics/MetricsBar';
-import { formatShortTime, formatLongNumber } from 'lib/format';
-import WebsiteFilterButton from './WebsiteFilterButton';
-import useWebsiteStats from 'components/hooks/queries/useWebsiteStats';
-import styles from './WebsiteMetricsBar.module.css';
 import { Dropdown, Item } from 'react-basics';
-import useStore, { setWebsiteDateCompare } from 'store/websites';
+import classNames from 'classnames';
+import { useDateRange, useMessages, useSticky } from '@/components/hooks';
+import WebsiteDateFilter from '@/components/input/WebsiteDateFilter';
+import MetricCard from '@/components/metrics/MetricCard';
+import MetricsBar from '@/components/metrics/MetricsBar';
+import { formatShortTime, formatLongNumber } from '@/lib/format';
+import useWebsiteStats from '@/components/hooks/queries/useWebsiteStats';
+import useStore, { setWebsiteDateCompare } from '@/store/websites';
+import WebsiteFilterButton from './WebsiteFilterButton';
+import styles from './WebsiteMetricsBar.module.css';
 
 export function WebsiteMetricsBar({
   websiteId,

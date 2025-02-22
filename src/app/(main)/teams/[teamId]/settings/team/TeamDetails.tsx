@@ -1,11 +1,11 @@
-import { TeamContext } from 'app/(main)/teams/[teamId]/TeamProvider';
-import { useLogin, useMessages } from 'components/hooks';
-import Icons from 'components/icons';
-import PageHeader from 'components/layout/PageHeader';
-import { ROLES } from 'lib/constants';
+import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
+import { useLogin, useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
+import PageHeader from '@/components/layout/PageHeader';
+import { ROLES } from '@/lib/constants';
 import { useContext, useState } from 'react';
 import { Flexbox, Item, Tabs } from 'react-basics';
-import TeamLeaveButton from 'app/(main)/settings/teams/TeamLeaveButton';
+import TeamLeaveButton from '@/app/(main)/settings/teams/TeamLeaveButton';
 import TeamManage from './TeamManage';
 import TeamEditForm from './TeamEditForm';
 

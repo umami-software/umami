@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './Empty.module.css';
 
 export interface EmptyProps {

@@ -1,8 +1,8 @@
 import { Icon, Button, PopupTrigger, Popup } from 'react-basics';
 import classNames from 'classnames';
-import { languages } from 'lib/lang';
-import { useLocale } from 'components/hooks';
-import Icons from 'components/icons';
+import { languages } from '@/lib/lang';
+import { useLocale } from '@/components/hooks';
+import Icons from '@/components/icons';
 import styles from './LanguageButton.module.css';
 
 export function LanguageButton() {

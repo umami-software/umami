@@ -1,5 +1,5 @@
 import { TextArea } from 'react-basics';
-import { useMessages, useConfig } from 'components/hooks';
+import { useMessages, useConfig } from '@/components/hooks';
 
 const SCRIPT_NAME = 'script.js';
 

@@ -1,9 +1,9 @@
 import { GridColumn, GridTable } from 'react-basics';
-import { useEventDataProperties, useEventDataValues, useMessages } from 'components/hooks';
-import { LoadingPanel } from 'components/common/LoadingPanel';
-import PieChart from 'components/charts/PieChart';
+import { useEventDataProperties, useEventDataValues, useMessages } from '@/components/hooks';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
+import PieChart from '@/components/charts/PieChart';
 import { useState } from 'react';
-import { CHART_COLORS } from 'lib/constants';
+import { CHART_COLORS } from '@/lib/constants';
 import styles from './EventProperties.module.css';
 
 export function EventProperties({ websiteId }: { websiteId: string }) {

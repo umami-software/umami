@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect } from 'react';
-import { useModified, useUser } from 'components/hooks';
+import { useModified, useUser } from '@/components/hooks';
 import { Loading } from 'react-basics';
 
 export const UserContext = createContext(null);
