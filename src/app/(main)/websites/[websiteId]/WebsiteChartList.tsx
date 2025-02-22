@@ -6,7 +6,7 @@ import { Button, Icon, Icons, Text } from 'react-basics';
 import { firstBy } from 'thenby';
 import WebsiteChart from './WebsiteChart';
 import WebsiteHeader from './WebsiteHeader';
-import { WebsiteMetrics } from './WebsiteMetrics';
+import WebsiteMetrics from './WebsiteMetrics';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 
 export default function WebsiteChartList({

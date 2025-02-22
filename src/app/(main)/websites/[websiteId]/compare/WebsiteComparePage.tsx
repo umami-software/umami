@@ -4,7 +4,7 @@ import FilterTags from '@/components/metrics/FilterTags';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import WebsiteChart from '../WebsiteChart';
 import WebsiteHeader from '../WebsiteHeader';
-import { WebsiteMetrics } from '../WebsiteMetrics';
+import WebsiteMetrics from '../WebsiteMetrics';
 import WebsiteMetricsBar from '../WebsiteMetricsBar';
 import WebsiteCompareTables from './WebsiteCompareTables';
 

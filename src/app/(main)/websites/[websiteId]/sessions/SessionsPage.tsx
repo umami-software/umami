@@ -5,7 +5,7 @@ import WorldMap from '@/components/metrics/WorldMap';
 import { useState } from 'react';
 import { Item, Tabs } from 'react-basics';
 import WebsiteHeader from '../WebsiteHeader';
-import { WebsiteMetrics } from '../WebsiteMetrics';
+import WebsiteMetrics from '../WebsiteMetrics';
 import SessionProperties from './SessionProperties';
 import SessionsDataTable from './SessionsDataTable';
 import SessionsMetricsBar from './SessionsMetricsBar';

@@ -6,7 +6,7 @@ import MetricsTable from '@/components/metrics/MetricsTable';
 import { useState } from 'react';
 import { Item, Tabs } from 'react-basics';
 import WebsiteHeader from '../WebsiteHeader';
-import { WebsiteMetrics } from '../WebsiteMetrics';
+import WebsiteMetrics from '../WebsiteMetrics';
 import EventProperties from './EventProperties';
 import EventsDataTable from './EventsDataTable';
 import EventsMetricsBar from './EventsMetricsBar';

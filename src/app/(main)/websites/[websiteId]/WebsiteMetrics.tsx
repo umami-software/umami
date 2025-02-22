@@ -62,3 +62,5 @@ export function WebsiteMetrics({
     </div>
   );
 }
+
+export default WebsiteMetrics;

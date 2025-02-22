@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import WebsiteChart from './WebsiteChart';
 import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
-import { WebsiteMetrics } from './WebsiteMetrics';
+import WebsiteMetrics from './WebsiteMetrics';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
 
