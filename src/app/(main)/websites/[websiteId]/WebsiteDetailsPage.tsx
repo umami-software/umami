@@ -1,13 +1,14 @@
 'use client';
-import { usePathname } from 'next/navigation';
-import FilterTags from '@/components/metrics/FilterTags';
 import { useNavigation } from '@/components/hooks';
+import FilterTags from '@/components/metrics/FilterTags';
+import { FILTER_COLUMNS } from '@/lib/constants';
+import { usePathname } from 'next/navigation';
 import WebsiteChart from './WebsiteChart';
 import WebsiteExpandedView from './WebsiteExpandedView';
 import WebsiteHeader from './WebsiteHeader';
+import { WebsiteMetrics } from './WebsiteMetrics';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
-import { FILTER_COLUMNS } from '@/lib/constants';
 
 export default function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const pathname = usePathname();
@@ -27,7 +28,9 @@ export default function WebsiteDetailsPage({ websiteId }: { websiteId: string })
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} sticky={true} />
+      <WebsiteMetrics websiteId={websiteId} showFilter={true} sticky={true}>
+        <WebsiteMetricsBar websiteId={websiteId} showChange={true} />
+      </WebsiteMetrics>
       <WebsiteChart websiteId={websiteId} />
       {!view && <WebsiteTableView websiteId={websiteId} />}
       {view && <WebsiteExpandedView websiteId={websiteId} />}

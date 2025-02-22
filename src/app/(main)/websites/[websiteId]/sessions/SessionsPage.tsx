@@ -1,13 +1,14 @@
 'use client';
+import { useMessages } from '@/components/hooks';
+import { GridRow } from '@/components/layout/Grid';
+import WorldMap from '@/components/metrics/WorldMap';
+import { useState } from 'react';
+import { Item, Tabs } from 'react-basics';
 import WebsiteHeader from '../WebsiteHeader';
+import { WebsiteMetrics } from '../WebsiteMetrics';
+import SessionProperties from './SessionProperties';
 import SessionsDataTable from './SessionsDataTable';
 import SessionsMetricsBar from './SessionsMetricsBar';
-import SessionProperties from './SessionProperties';
-import WorldMap from '@/components/metrics/WorldMap';
-import { GridRow } from '@/components/layout/Grid';
-import { Item, Tabs } from 'react-basics';
-import { useState } from 'react';
-import { useMessages } from '@/components/hooks';
 import SessionsWeekly from './SessionsWeekly';
 
 export function SessionsPage({ websiteId }) {
@@ -17,7 +18,9 @@ export function SessionsPage({ websiteId }) {
   return (
     <>
       <WebsiteHeader websiteId={websiteId} />
-      <SessionsMetricsBar websiteId={websiteId} />
+      <WebsiteMetrics websiteId={websiteId}>
+        <SessionsMetricsBar websiteId={websiteId} />
+      </WebsiteMetrics>
       <GridRow columns="two-one">
         <WorldMap websiteId={websiteId} />
         <SessionsWeekly websiteId={websiteId} />

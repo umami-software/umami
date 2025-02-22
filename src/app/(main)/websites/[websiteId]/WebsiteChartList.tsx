@@ -1,12 +1,13 @@
-import { Button, Text, Icon, Icons } from 'react-basics';
-import { useMemo } from 'react';
-import { firstBy } from 'thenby';
-import Link from 'next/link';
-import WebsiteChart from './WebsiteChart';
+import { useLocale, useMessages, useTeamUrl } from '@/components/hooks';
 import useDashboard from '@/store/dashboard';
+import Link from 'next/link';
+import { useMemo } from 'react';
+import { Button, Icon, Icons, Text } from 'react-basics';
+import { firstBy } from 'thenby';
+import WebsiteChart from './WebsiteChart';
 import WebsiteHeader from './WebsiteHeader';
+import { WebsiteMetrics } from './WebsiteMetrics';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useLocale, useTeamUrl } from '@/components/hooks';
 
 export default function WebsiteChartList({
   websites,
@@ -46,7 +47,9 @@ export default function WebsiteChartList({
                 </Button>
               </Link>
             </WebsiteHeader>
-            <WebsiteMetricsBar websiteId={id} showChange={true} />
+            <WebsiteMetrics websiteId={id}>
+              <WebsiteMetricsBar websiteId={id} showChange={true} />
+            </WebsiteMetrics>
             {showCharts && <WebsiteChart websiteId={id} />}
           </div>
         ) : null;

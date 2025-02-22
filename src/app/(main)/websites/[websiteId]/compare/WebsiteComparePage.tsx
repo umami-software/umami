@@ -1,10 +1,11 @@
 'use client';
-import WebsiteHeader from '../WebsiteHeader';
-import WebsiteMetricsBar from '../WebsiteMetricsBar';
-import FilterTags from '@/components/metrics/FilterTags';
 import { useNavigation } from '@/components/hooks';
+import FilterTags from '@/components/metrics/FilterTags';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import WebsiteChart from '../WebsiteChart';
+import WebsiteHeader from '../WebsiteHeader';
+import { WebsiteMetrics } from '../WebsiteMetrics';
+import WebsiteMetricsBar from '../WebsiteMetricsBar';
 import WebsiteCompareTables from './WebsiteCompareTables';
 
 export function WebsiteComparePage({ websiteId }) {
@@ -21,7 +22,9 @@ export function WebsiteComparePage({ websiteId }) {
     <>
       <WebsiteHeader websiteId={websiteId} />
       <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} compareMode={true} showFilter={true} />
+      <WebsiteMetrics websiteId={websiteId} compareMode={true} showFilter={true}>
+        <WebsiteMetricsBar websiteId={websiteId} compareMode={true} />
+      </WebsiteMetrics>
       <WebsiteChart websiteId={websiteId} compareMode={true} />
       <WebsiteCompareTables websiteId={websiteId} />
     </>
