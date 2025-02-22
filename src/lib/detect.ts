@@ -86,13 +86,13 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-export async function getLocation(ip: string = '', headers: Headers) {
+export async function getLocation(ip: string = '', headers: Headers, hasPayloadIP: boolean) {
   // Ignore local ips
   if (await isLocalhost(ip)) {
     return;
   }
 
-  if (!process.env.SKIP_LOCATION_HEADERS) {
+  if (!hasPayloadIP && !process.env.SKIP_LOCATION_HEADERS) {
     // Cloudflare headers
     if (headers.get('cf-ipcountry')) {
       const country = decodeHeader(headers.get('cf-ipcountry'));
@@ -147,7 +147,7 @@ export async function getLocation(ip: string = '', headers: Headers) {
 export async function getClientInfo(request: Request, payload: Record<string, any>) {
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
   const ip = payload?.ip || getIpAddress(request.headers);
-  const location = await getLocation(ip, request.headers);
+  const location = await getLocation(ip, request.headers, !!payload?.ip);
   const country = payload?.userAgent || location?.country;
   const subdivision1 = location?.subdivision1;
   const subdivision2 = location?.subdivision2;
