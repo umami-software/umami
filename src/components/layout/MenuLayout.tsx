@@ -1,22 +1,18 @@
 import { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
-import { SideNav } from '@/components/layout/SideNav';
-import styles from './MenuLayout.module.css';
+import { Grid, Column } from '@umami/react-zen';
+import { MenuNav } from '@/components/layout/MenuNav';
 
 export function MenuLayout({ items = [], children }: { items: any[]; children: ReactNode }) {
-  const pathname = usePathname();
   const cloudMode = !!process.env.cloudMode;
 
-  const getKey = () => items.find(({ url }) => pathname === url)?.key;
-
   return (
-    <div className={styles.layout}>
+    <Grid columns="auto 1fr" gap="5">
       {!cloudMode && (
-        <div className={styles.menu}>
-          <SideNav items={items} shallow={true} selectedKey={getKey()} />
-        </div>
+        <Column width="240px">
+          <MenuNav items={items} shallow={true} />
+        </Column>
       )}
-      <div className={styles.content}>{children}</div>
-    </div>
+      <Column>{children}</Column>
+    </Grid>
   );
 }

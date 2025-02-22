@@ -14,7 +14,7 @@ export function App({ children }) {
   const pathname = usePathname();
 
   if (isLoading) {
-    return <Loading />;
+    return <Loading position="page" />;
   }
 
   if (error) {

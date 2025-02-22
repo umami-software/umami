@@ -1,4 +1,4 @@
-import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
+import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { useMessages, useLogin } from '@/components/hooks';
 import { UserDeleteForm } from './UserDeleteForm';
 
@@ -15,18 +15,20 @@ export function UserDeleteButton({
   const { user } = useLogin();
 
   return (
-    <ModalTrigger disabled={userId === user?.id}>
-      <Button disabled={userId === user?.id} variant="quiet">
-        <Icon>
+    <DialogTrigger>
+      <Button isDisabled={userId === user?.id}>
+        <Icon size="sm">
           <Icons.Trash />
         </Icon>
         <Text>{formatMessage(labels.delete)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.deleteUser)}>
-        {(close: () => void) => (
-          <UserDeleteForm userId={userId} username={username} onSave={onDelete} onClose={close} />
-        )}
+      <Modal>
+        <Dialog title={formatMessage(labels.deleteUser)}>
+          {({ close }) => (
+            <UserDeleteForm userId={userId} username={username} onSave={onDelete} onClose={close} />
+          )}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

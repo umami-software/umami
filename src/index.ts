@@ -44,7 +44,7 @@ export * from '@/app/(main)/teams/[teamId]/TeamProvider';
 export * from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 
 export * from '@/components/common/ConfirmationForm';
-export * from '@/components/common/DataTable';
+export * from '@/components/common/DataGrid';
 export * from '@/components/common/Empty';
 export * from '@/components/common/ErrorBoundary';
 export * from '@/components/common/ErrorMessage';
@@ -59,6 +59,5 @@ export * from '@/components/common/Pager';
 export * from '@/components/common/TypeConfirmationForm';
 
 export * from '@/components/input/TeamsButton';
-export * from '@/components/input/ThemeButton';
 
 export { ROLES } from '@/lib/constants';

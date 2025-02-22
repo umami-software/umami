@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { TeamMembersTable } from './TeamMembersTable';
 import { useTeamMembers } from '@/components/hooks';
 
@@ -12,8 +12,8 @@ export function TeamMembersDataTable({
   const queryResult = useTeamMembers(teamId);
 
   return (
-    <DataTable queryResult={queryResult}>
+    <DataGrid queryResult={queryResult}>
       {({ data }) => <TeamMembersTable data={data} teamId={teamId} allowEdit={allowEdit} />}
-    </DataTable>
+    </DataGrid>
   );
 }

@@ -1,7 +1,7 @@
 import { TeamWebsitesPage } from './TeamWebsitesPage';
 import { Metadata } from 'next';
 
-export default async function ({ params }: { params: { teamId: string } }) {
+export default async function ({ params }: { params: Promise<{ teamId: string }> }) {
   const { teamId } = await params;
 
   return <TeamWebsitesPage teamId={teamId} />;

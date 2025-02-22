@@ -5,7 +5,7 @@ async function getEnabled() {
   return !!process.env.ENABLE_TEST_CONSOLE;
 }
 
-export default async function ({ params }: { params: { websiteId: string } }) {
+export default async function ({ params }: { params: Promise<{ websiteId: string }> }) {
   const { websiteId } = await params;
 
   const enabled = await getEnabled();

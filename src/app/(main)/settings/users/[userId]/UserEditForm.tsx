@@ -1,22 +1,27 @@
 import {
-  Dropdown,
-  Item,
+  Select,
+  ListItem,
   Form,
-  FormRow,
+  FormField,
   FormButtons,
-  FormInput,
   TextField,
-  SubmitButton,
+  FormSubmitButton,
   PasswordField,
-} from 'react-basics';
-import { useApi, useLogin, useMessages } from '@/components/hooks';
+  useToast,
+} from '@umami/react-zen';
+import { useApi, useLogin, useMessages, useModified } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import { UserContext } from './UserProvider';
 
 export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () => void }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels, messages, getMessage } = useMessages();
   const { post, useMutation } = useApi();
+  const user = useContext(UserContext);
+  const { user: login } = useLogin();
+  const { toast } = useToast();
+  const { touch } = useModified();
+
   const { mutate, error } = useMutation({
     mutationFn: ({
       username,
@@ -28,61 +33,47 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
       role: string;
     }) => post(`/users/${userId}`, { username, password, role }),
   });
-  const ref = useRef(null);
-  const user = useContext(UserContext);
-  const { user: login } = useLogin();
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        ref.current.reset(data);
+        toast(formatMessage(messages.saved));
+        touch(`user:${user.id}`);
         onSave?.();
       },
     });
   };
 
-  const renderValue = (value: string) => {
-    if (value === ROLES.user) {
-      return formatMessage(labels.user);
-    }
-    if (value === ROLES.admin) {
-      return formatMessage(labels.admin);
-    }
-    if (value === ROLES.viewOnly) {
-      return formatMessage(labels.viewOnly);
-    }
-  };
-
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={user} style={{ width: 300 }}>
-      <FormRow label={formatMessage(labels.username)}>
-        <FormInput name="username">
-          <TextField />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.password)}>
-        <FormInput
-          name="password"
-          rules={{
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
-          }}
-        >
-          <PasswordField autoComplete="new-password" />
-        </FormInput>
-      </FormRow>
+    <Form onSubmit={handleSubmit} error={getMessage(error)} values={user} style={{ width: 300 }}>
+      <FormField name="username" label={formatMessage(labels.username)}>
+        <TextField />
+      </FormField>
+      <FormField
+        name="password"
+        label={formatMessage(labels.password)}
+        rules={{
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+        }}
+      >
+        <PasswordField autoComplete="new-password" />
+      </FormField>
+
       {user.id !== login.id && (
-        <FormRow label={formatMessage(labels.role)}>
-          <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-            <Dropdown renderValue={renderValue}>
-              <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
-              <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-              <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
-            </Dropdown>
-          </FormInput>
-        </FormRow>
+        <FormField
+          name="role"
+          label={formatMessage(labels.role)}
+          rules={{ required: formatMessage(labels.required) }}
+        >
+          <Select defaultSelectedKey={user.role}>
+            <ListItem id={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</ListItem>
+            <ListItem id={ROLES.user}>{formatMessage(labels.user)}</ListItem>
+            <ListItem id={ROLES.admin}>{formatMessage(labels.admin)}</ListItem>
+          </Select>
+        </FormField>
       )}
       <FormButtons>
-        <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+        <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

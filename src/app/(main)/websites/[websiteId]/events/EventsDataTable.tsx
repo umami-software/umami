@@ -1,6 +1,6 @@
 import { useWebsiteEvents } from '@/components/hooks';
 import { EventsTable } from './EventsTable';
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
 
 export function EventsDataTable({
@@ -13,8 +13,8 @@ export function EventsDataTable({
   const queryResult = useWebsiteEvents(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={true} autoFocus={false}>
+    <DataGrid queryResult={queryResult} allowSearch={true} autoFocus={false}>
       {({ data }) => <EventsTable data={data} />}
-    </DataTable>
+    </DataGrid>
   );
 }

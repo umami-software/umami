@@ -35,15 +35,7 @@ export function LoginForm() {
   };
 
   return (
-    <Column
-      justifyContent="center"
-      alignItems="center"
-      padding="8"
-      gap="6"
-      backgroundColor="1"
-      borderRadius="3"
-      shadow="3"
-    >
+    <Column justifyContent="center" alignItems="center" padding="8" gap="6">
       <Icon size="lg">
         <Logo />
       </Icon>

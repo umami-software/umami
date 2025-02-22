@@ -1,9 +1,9 @@
-import { Text, Icon, Icons, GridTable, GridColumn } from 'react-basics';
+import { Row, Button, Text, Icon, Icons, DataTable, DataColumn } from '@umami/react-zen';
+import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { ROLES } from '@/lib/constants';
 import { useMessages, useLocale } from '@/components/hooks';
 import { UserDeleteButton } from './UserDeleteButton';
-import { LinkButton } from '@/components/common/LinkButton';
 
 export function UsersTable({
   data = [],
@@ -16,44 +16,46 @@ export function UsersTable({
   const { dateLocale } = useLocale();
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="username" label={formatMessage(labels.username)} style={{ minWidth: 0 }} />
-      <GridColumn name="role" label={formatMessage(labels.role)} width={'120px'}>
-        {row =>
+    <DataTable data={data}>
+      <DataColumn id="username" label={formatMessage(labels.username)} style={{ minWidth: 0 }} />
+      <DataColumn id="role" label={formatMessage(labels.role)} style={{ maxWidth: 60 }}>
+        {(row: any) =>
           formatMessage(
             labels[Object.keys(ROLES).find(key => ROLES[key] === row.role)] || labels.unknown,
           )
         }
-      </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)} width={'150px'}>
-        {row =>
+      </DataColumn>
+      <DataColumn id="created" label={formatMessage(labels.created)} style={{ maxWidth: 60 }}>
+        {(row: any) =>
           formatDistance(new Date(row.createdAt), new Date(), {
             addSuffix: true,
             locale: dateLocale,
           })
         }
-      </GridColumn>
-      <GridColumn name="websites" label={formatMessage(labels.websites)} width={'120px'}>
-        {row => row._count.website}
-      </GridColumn>
+      </DataColumn>
+      <DataColumn id="websites" label={formatMessage(labels.websites)} style={{ maxWidth: 60 }}>
+        {(row: any) => row._count.websiteUser}
+      </DataColumn>
       {showActions && (
-        <GridColumn name="action" label=" " alignment="end">
-          {row => {
+        <DataColumn id="action" align="end">
+          {(row: any) => {
             const { id, username } = row;
             return (
-              <>
+              <Row gap="3">
                 <UserDeleteButton userId={id} username={username} />
-                <LinkButton href={`/settings/users/${id}`}>
-                  <Icon>
-                    <Icons.Edit />
-                  </Icon>
-                  <Text>{formatMessage(labels.edit)}</Text>
-                </LinkButton>
-              </>
+                <Button asChild>
+                  <Link href={`/settings/users/${id}`}>
+                    <Icon>
+                      <Icons.Edit />
+                    </Icon>
+                    <Text>{formatMessage(labels.edit)}</Text>
+                  </Link>
+                </Button>
+              </Row>
             );
           }}
-        </GridColumn>
+        </DataColumn>
       )}
-    </GridTable>
+    </DataTable>
   );
 }

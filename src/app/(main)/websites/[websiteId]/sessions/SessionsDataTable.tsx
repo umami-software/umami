@@ -1,6 +1,6 @@
 import { useWebsiteSessions } from '@/components/hooks';
 import { SessionsTable } from './SessionsTable';
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
 
 export function SessionsDataTable({
@@ -14,8 +14,8 @@ export function SessionsDataTable({
   const queryResult = useWebsiteSessions(websiteId);
 
   return (
-    <DataTable queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>
+    <DataGrid queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>
       {({ data }) => <SessionsTable data={data} showDomain={!websiteId} />}
-    </DataTable>
+    </DataGrid>
   );
 }

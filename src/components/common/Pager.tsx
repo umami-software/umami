@@ -1,7 +1,5 @@
-import classNames from 'classnames';
-import { Button, Icon, Icons } from 'react-basics';
+import { Button, Icon, Icons, Row, Text } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import styles from './Pager.module.css';
 
 export interface PagerProps {
   page: string | number;
@@ -11,7 +9,7 @@ export interface PagerProps {
   className?: string;
 }
 
-export function Pager({ page, pageSize, count, onPageChange, className }: PagerProps) {
+export function Pager({ page, pageSize, count, onPageChange }: PagerProps) {
   const { formatMessage, labels } = useMessages();
   const maxPage = pageSize && count ? Math.ceil(+count / +pageSize) : 0;
   const lastPage = page === maxPage;
@@ -34,24 +32,21 @@ export function Pager({ page, pageSize, count, onPageChange, className }: PagerP
   }
 
   return (
-    <div className={classNames(styles.pager, className)}>
-      <div className={styles.count}>{formatMessage(labels.numberOfRecords, { x: count })}</div>
-      <div className={styles.nav}>
-        <Button onClick={() => handlePageChange(-1)} disabled={firstPage}>
-          <Icon rotate={90}>
-            <Icons.ChevronDown />
+    <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1}>
+      <Text>{formatMessage(labels.numberOfRecords, { x: count })}</Text>
+      <Row alignItems="center" justifyContent="flex-end" gap="3">
+        <Text>{formatMessage(labels.pageOf, { current: page, total: maxPage })}</Text>
+        <Button onPress={() => handlePageChange(-1)} isDisabled={firstPage}>
+          <Icon size="sm" rotate={180}>
+            <Icons.Chevron />
           </Icon>
         </Button>
-        <div className={styles.text}>
-          {formatMessage(labels.pageOf, { current: page, total: maxPage })}
-        </div>
-        <Button onClick={() => handlePageChange(1)} disabled={lastPage}>
-          <Icon rotate={270}>
-            <Icons.ChevronDown />
+        <Button onPress={() => handlePageChange(1)} isDisabled={lastPage}>
+          <Icon size="sm">
+            <Icons.Chevron />
           </Icon>
         </Button>
-      </div>
-      <div></div>
-    </div>
+      </Row>
+    </Row>
   );
 }

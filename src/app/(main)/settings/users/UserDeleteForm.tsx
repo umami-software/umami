@@ -1,3 +1,4 @@
+import { useToast } from '@umami/react-zen';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 
@@ -6,11 +7,13 @@ export function UserDeleteForm({ userId, username, onSave, onClose }) {
   const { del, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({ mutationFn: () => del(`/users/${userId}`) });
   const { touch } = useModified();
+  const { toast } = useToast();
 
   const handleConfirm = async () => {
     mutate(null, {
       onSuccess: async () => {
         touch('users');
+        toast(formatMessage(messages.successMessage));
         onSave?.();
         onClose?.();
       },
@@ -23,6 +26,7 @@ export function UserDeleteForm({ userId, username, onSave, onClose }) {
       onConfirm={handleConfirm}
       onClose={onClose}
       buttonLabel={formatMessage(labels.delete)}
+      buttonVariant="danger"
       isLoading={isPending}
       error={error}
     />

@@ -1,12 +1,10 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
-import { Loading, SearchField } from 'react-basics';
+import { Loading, SearchField, Row, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Pager } from '@/components/common/Pager';
-import { PagedQueryResult } from '@/lib/types';
-import styles from './DataTable.module.css';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { PagedQueryResult } from '@/lib/types';
 
 const DEFAULT_SEARCH_DELAY = 600;
 
@@ -20,7 +18,7 @@ export interface DataTableProps {
   children: ReactNode | ((data: any) => ReactNode);
 }
 
-export function DataTable({
+export function DataGrid({
   queryResult,
   searchDelay = 600,
   allowSearch = true,
@@ -30,12 +28,8 @@ export function DataTable({
   children,
 }: DataTableProps) {
   const { formatMessage, labels, messages } = useMessages();
-  const {
-    result,
-    params,
-    setParams,
-    query: { error, isLoading, isFetched },
-  } = queryResult || {};
+  const { result, params, setParams, query } = queryResult || {};
+  const { error, isLoading, isFetched } = query || {};
   const { page, pageSize, count, data } = result || {};
   const { search } = params || {};
   const hasData = Boolean(!isLoading && data?.length);
@@ -43,45 +37,38 @@ export function DataTable({
   const { router, renderUrl } = useNavigation();
 
   const handleSearch = (search: string) => {
-    setParams({ ...params, search, page: params.page ? page : 1 });
+    setParams({ ...params, search });
   };
 
   const handlePageChange = (page: number) => {
-    setParams({ ...params, search, page });
+    setParams({ ...params, page });
     router.push(renderUrl({ page }));
   };
 
   return (
     <>
       {allowSearch && (hasData || search) && (
-        <SearchField
-          className={styles.search}
-          value={search}
-          onSearch={handleSearch}
-          delay={searchDelay || DEFAULT_SEARCH_DELAY}
-          autoFocus={autoFocus}
-          placeholder={formatMessage(labels.search)}
-        />
+        <Row width="280px" alignItems="center" marginBottom="6">
+          <SearchField
+            value={search}
+            onSearch={handleSearch}
+            delay={searchDelay || DEFAULT_SEARCH_DELAY}
+            autoFocus={autoFocus}
+            placeholder={formatMessage(labels.search)}
+          />
+        </Row>
       )}
       <LoadingPanel data={data} isLoading={isLoading} isFetched={isFetched} error={error}>
-        <div
-          className={classNames(styles.body, {
-            [styles.status]: isLoading || noResults || !hasData,
-          })}
-        >
+        <Column>
           {hasData ? (typeof children === 'function' ? children(result) : children) : null}
           {isLoading && <Loading position="page" />}
           {!isLoading && !hasData && !search && (renderEmpty ? renderEmpty() : <Empty />)}
           {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
-        </div>
+        </Column>
         {allowPaging && hasData && (
-          <Pager
-            className={styles.pager}
-            page={page}
-            pageSize={pageSize}
-            count={count}
-            onPageChange={handlePageChange}
-          />
+          <Row marginTop="6">
+            <Pager page={page} pageSize={pageSize} count={count} onPageChange={handlePageChange} />
+          </Row>
         )}
       </LoadingPanel>
     </>

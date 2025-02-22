@@ -1,46 +1,31 @@
-import { Key, useContext, useState } from 'react';
-import { Item, Tabs, useToasts } from 'react-basics';
+import { useContext } from 'react';
+import { Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { UserEditForm } from './UserEditForm';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { useMessages } from '@/components/hooks';
 import { UserWebsites } from './UserWebsites';
 import { UserContext } from './UserProvider';
-import { Breadcrumb } from '@/components/common/Breadcrumb';
 
 export function UserSettings({ userId }: { userId: string }) {
-  const { formatMessage, labels, messages } = useMessages();
-  const [tab, setTab] = useState<Key>('details');
+  const { formatMessage, labels } = useMessages();
   const user = useContext(UserContext);
-  const { showToast } = useToasts();
-
-  const handleSave = () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
-  };
-
-  const breadcrumb = (
-    <Breadcrumb
-      data={[
-        {
-          label: formatMessage(labels.users),
-          url: '/settings/users',
-        },
-        {
-          label: user.username,
-        },
-      ]}
-    />
-  );
 
   return (
     <>
-      <PageHeader title={user?.username} icon={<Icons.User />} breadcrumb={breadcrumb} />
-      <Tabs selectedKey={tab} onSelect={setTab} style={{ marginBottom: 30, fontSize: 14 }}>
-        <Item key="details">{formatMessage(labels.details)}</Item>
-        <Item key="websites">{formatMessage(labels.websites)}</Item>
+      <PageHeader title={user?.username} icon={<Icons.User />} />
+      <Tabs>
+        <TabList>
+          <Tab id="details">{formatMessage(labels.details)}</Tab>
+          <Tab id="websites">{formatMessage(labels.websites)}</Tab>
+        </TabList>
+        <TabPanel id="details">
+          <UserEditForm userId={userId} />
+        </TabPanel>
+        <TabPanel id="websites">
+          <UserWebsites userId={userId} />
+        </TabPanel>
       </Tabs>
-      {tab === 'details' && <UserEditForm userId={userId} onSave={handleSave} />}
-      {tab === 'websites' && <UserWebsites userId={userId} />}
     </>
   );
 }

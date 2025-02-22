@@ -1,29 +1,23 @@
 import { ReactNode } from 'react';
-import { Heading, Icon, Breadcrumbs, Breadcrumb, Row } from '@umami/react-zen';
+import { Heading, Icon, Row } from '@umami/react-zen';
 
 export function PageHeader({
   title,
   icon,
-  breadcrumb,
   children,
 }: {
   title?: ReactNode;
   icon?: ReactNode;
   className?: string;
-  breadcrumb?: ReactNode;
   children?: ReactNode;
 }) {
   return (
-    <>
-      <Breadcrumbs>
-        <Breadcrumb>{breadcrumb}</Breadcrumb>
-      </Breadcrumbs>
-      <Row justifyContent="space-between" paddingY="6">
+    <Row justifyContent="space-between" alignItems="center" paddingBottom="6">
+      <Row gap="3">
         {icon && <Icon size="lg">{icon}</Icon>}
-
         {title && <Heading>{title}</Heading>}
-        <Row justifyContent="flex-end">{children}</Row>
       </Row>
-    </>
+      <Row justifyContent="flex-end">{children}</Row>
+    </Row>
   );
 }

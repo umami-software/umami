@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect } from 'react';
+import { Loading } from '@umami/react-zen';
 import { useModified, useUser } from '@/components/hooks';
-import { Loading } from 'react-basics';
 
 export const UserContext = createContext(null);
 
@@ -18,5 +18,5 @@ export function UserProvider({ userId, children }: { userId: string; children: R
     return <Loading position="page" />;
   }
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return <UserContext.Provider value={{ ...user, modified }}>{children}</UserContext.Provider>;
 }

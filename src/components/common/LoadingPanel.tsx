@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import classNames from 'classnames';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { Empty } from '@/components/common/Empty';
 import styles from './LoadingPanel.module.css';

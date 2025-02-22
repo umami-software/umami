@@ -1,7 +1,7 @@
 import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useLocale, useMessages, useNavigation } from '@/components/hooks';
-import { SideNav } from '@/components/layout/SideNav';
+import { MenuNav } from '@/components/layout/MenuNav';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
@@ -156,7 +156,7 @@ export function WebsiteExpandedView({
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
+        <MenuNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
         <Dropdown
           className={styles.dropdown}
           items={items}
