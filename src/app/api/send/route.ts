@@ -87,7 +87,7 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
-    const sessionId = uuid(websiteId, hostname, ip, userAgent);
+    const sessionId = uuid(websiteId, ip, userAgent);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
