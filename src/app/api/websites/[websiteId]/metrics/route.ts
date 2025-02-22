@@ -125,7 +125,7 @@ function getChannels(data: { domain: string; query: string; visitors: number }[]
 
   const match = (value: string) => {
     return (str: string | RegExp) => {
-      return typeof str === 'string' ? value.includes(str) : (str as RegExp).test(value);
+      return typeof str === 'string' ? value?.includes(str) : (str as RegExp).test(value);
     };
   };
 
