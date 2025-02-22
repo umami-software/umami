@@ -3,11 +3,11 @@ import WebsiteHeader from '../WebsiteHeader';
 import SessionsDataTable from './SessionsDataTable';
 import SessionsMetricsBar from './SessionsMetricsBar';
 import SessionProperties from './SessionProperties';
-import WorldMap from 'components/metrics/WorldMap';
-import { GridRow } from 'components/layout/Grid';
+import WorldMap from '@/components/metrics/WorldMap';
+import { GridRow } from '@/components/layout/Grid';
 import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import SessionsWeekly from './SessionsWeekly';
 
 export function SessionsPage({ websiteId }) {

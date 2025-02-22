@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { httpGet } from 'next-basics';
+import { httpGet } from '@/lib/fetch';
 import enUS from '../../../public/intl/language/en-US.json';
 
 const languageNames = {

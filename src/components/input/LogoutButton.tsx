@@ -1,6 +1,6 @@
 import { Button, Icon, Icons, TooltipPopup } from 'react-basics';
 import Link from 'next/link';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export function LogoutButton({
   tooltipPosition = 'top',

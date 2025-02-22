@@ -1,8 +1,8 @@
 import { ClickHouseClient, createClient } from '@clickhouse/client';
 import { formatInTimeZone } from 'date-fns-tz';
 import debug from 'debug';
-import { CLICKHOUSE } from 'lib/db';
-import { getWebsite } from 'queries/index';
+import { CLICKHOUSE } from '@/lib/db';
+import { getWebsite } from '@/queries';
 import { DEFAULT_PAGE_SIZE, OPERATORS } from './constants';
 import { maxDate } from './date';
 import { filtersToArray } from './params';
@@ -95,7 +95,7 @@ function getFilterQuery(filters: QueryFilters = {}, options: QueryOptions = {}) 
       arr.push(`and ${mapFilter(column, operator, name)}`);
 
       if (name === 'referrer') {
-        arr.push('and referrer_domain != {websiteDomain:String}');
+        arr.push(`and referrer_domain != hostname`);
       }
     }
 
@@ -145,7 +145,6 @@ async function parseFilters(websiteId: string, filters: QueryFilters = {}, optio
       ...getFilterParams(filters),
       websiteId,
       startDate: maxDate(filters.startDate, new Date(website?.resetAt)),
-      websiteDomain: website.domain,
     },
   };
 }
@@ -157,12 +156,12 @@ async function pagedQuery(
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = pageParams;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
-  const offset = +size * (page - 1);
+  const offset = +size * (+page - 1);
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [
     orderBy && `order by ${orderBy} ${direction}`,
-    +size > 0 && `limit ${+size} offset ${offset}`,
+    +size > 0 && `limit ${+size} offset ${+offset}`,
   ]
     .filter(n => n)
     .join('\n');

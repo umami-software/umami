@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { buildUrl, safeDecodeURIComponent } from 'next-basics';
+import { buildUrl } from '@/lib/url';
 
 export function useNavigation(): {
   pathname: string;
@@ -16,7 +16,7 @@ export function useNavigation(): {
     const obj = {};
 
     for (const [key, value] of params.entries()) {
-      obj[key] = safeDecodeURIComponent(value);
+      obj[key] = value;
     }
 
     return obj;

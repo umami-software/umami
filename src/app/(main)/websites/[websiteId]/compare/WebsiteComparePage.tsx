@@ -1,9 +1,9 @@
 'use client';
 import WebsiteHeader from '../WebsiteHeader';
 import WebsiteMetricsBar from '../WebsiteMetricsBar';
-import FilterTags from 'components/metrics/FilterTags';
-import { useNavigation } from 'components/hooks';
-import { FILTER_COLUMNS } from 'lib/constants';
+import FilterTags from '@/components/metrics/FilterTags';
+import { useNavigation } from '@/components/hooks';
+import { FILTER_COLUMNS } from '@/lib/constants';
 import WebsiteChart from '../WebsiteChart';
 import WebsiteCompareTables from './WebsiteCompareTables';
 

@@ -7,10 +7,6 @@
   height: 100px;
 }
 
-.row {
-  align-items: center;
-}
-
 .title {
   display: flex;
   flex-direction: row;
@@ -31,11 +27,5 @@
 @media only screen and (max-width: 992px) {
   .header .buttons {
     flex: 1;
-  }
-
-  .links {
-    order: 2;
-    margin: 20px 0;
-    min-width: 100%;
   }
 }

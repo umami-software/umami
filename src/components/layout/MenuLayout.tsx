@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import SideNav from 'components/layout/SideNav';
+import SideNav from '@/components/layout/SideNav';
 import styles from './MenuLayout.module.css';
 
 export function MenuLayout({ items = [], children }: { items: any[]; children: ReactNode }) {

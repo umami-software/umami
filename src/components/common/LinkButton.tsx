@@ -1,8 +1,8 @@
+import { ReactNode } from 'react';
 import classNames from 'classnames';
 import Link from 'next/link';
-import { useLocale } from 'components/hooks';
+import { useLocale } from '@/components/hooks';
 import styles from './LinkButton.module.css';
-import { ReactNode } from 'react';
 
 export interface LinkButtonProps {
   href: string;

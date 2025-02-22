@@ -2,10 +2,10 @@
 import WebsiteHeader from '../WebsiteHeader';
 import EventsDataTable from './EventsDataTable';
 import EventsMetricsBar from './EventsMetricsBar';
-import EventsChart from 'components/metrics/EventsChart';
-import { GridRow } from 'components/layout/Grid';
-import MetricsTable from 'components/metrics/MetricsTable';
-import { useMessages } from 'components/hooks';
+import EventsChart from '@/components/metrics/EventsChart';
+import { GridRow } from '@/components/layout/Grid';
+import MetricsTable from '@/components/metrics/MetricsTable';
+import { useMessages } from '@/components/hooks';
 import { Item, Tabs } from 'react-basics';
 import { useState } from 'react';
 import EventProperties from './EventProperties';

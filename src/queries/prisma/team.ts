@@ -1,8 +1,8 @@
 import { Prisma, Team } from '@prisma/client';
-import { ROLES } from 'lib/constants';
-import { uuid } from 'lib/crypto';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import { ROLES } from '@/lib/constants';
+import { uuid } from '@/lib/crypto';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import TeamFindManyArgs = Prisma.TeamFindManyArgs;
 
 export async function findTeam(criteria: Prisma.TeamFindUniqueArgs): Promise<Team> {
@@ -25,11 +25,11 @@ export async function getTeams(
   filters: PageParams = {},
 ): Promise<PageResult<Team[]>> {
   const { getSearchParameters } = prisma;
-  const { query } = filters;
+  const { search } = filters;
 
   const where: Prisma.TeamWhereInput = {
     ...criteria.where,
-    ...getSearchParameters(query, [{ name: 'contains' }]),
+    ...getSearchParameters(search, [{ name: 'contains' }]),
   };
 
   return prisma.pagedQuery<TeamFindManyArgs>(
