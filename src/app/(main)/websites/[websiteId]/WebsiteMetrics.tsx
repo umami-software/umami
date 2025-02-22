@@ -16,7 +16,6 @@ export function WebsiteMetrics({
 }: {
   websiteId: string;
   sticky?: boolean;
-  showChange?: boolean;
   compareMode?: boolean;
   showFilter?: boolean;
   children?: ReactNode;
