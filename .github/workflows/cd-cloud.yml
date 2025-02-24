@@ -1,0 +1,29 @@
+name: Create docker images
+
+on:
+  push:
+    branches:
+      - analytics
+      - cloud
+
+jobs:
+  build:
+    name: Build, push, and deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate random hash
+        id: random_hash
+        run: echo "hash=$(openssl rand -hex 4)" >> $GITHUB_OUTPUT
+
+      - uses: mr-smithers-excellent/docker-build-push@v6
+        name: Build & push Docker image to docker.io
+        with:
+          image: umamisoftware/umami
+          tags: cloud-${{ steps.random_hash.outputs.hash }}, cloud-latest
+          buildArgs: DATABASE_TYPE=postgresql
+          registry: docker.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
