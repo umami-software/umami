@@ -71,9 +71,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
 
     if (__type === TYPE_EVENT) {
       return formatMessage(messages.eventLog, {
-        event: <b>{eventName || formatMessage(labels.unknown)}</b>,
+        event: <b key="b">{eventName || formatMessage(labels.unknown)}</b>,
         url: (
           <a
+            key="a"
             href={`//${website?.domain}${url}`}
             className={styles.link}
             target="_blank"
