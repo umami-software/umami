@@ -101,10 +101,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
 
     if (__type === TYPE_SESSION) {
       return formatMessage(messages.visitorLog, {
-        country: <b>{countryNames[country] || formatMessage(labels.unknown)}</b>,
-        browser: <b>{BROWSERS[browser]}</b>,
-        os: <b>{OS_NAMES[os] || os}</b>,
-        device: <b>{formatMessage(labels[device] || labels.unknown)}</b>,
+        country: <b key="country">{countryNames[country] || formatMessage(labels.unknown)}</b>,
+        browser: <b key="browser">{BROWSERS[browser]}</b>,
+        os: <b key="os">{OS_NAMES[os] || os}</b>,
+        device: <b key="device">{formatMessage(labels[device] || labels.unknown)}</b>,
       });
     }
   };
