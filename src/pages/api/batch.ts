@@ -22,7 +22,13 @@ export default async function handler(req, res) {
 
       const mockRes = {
         ...res,
-        end: () => {}, // Prevent premature response closure
+        status: (code) => {
+          res.status(code);
+          return mockRes;
+        },
+        json: (data) => res.json(data),
+        setHeader: (key, value) => res.setHeader(key, value),
+        end: () => {},
       };
 
       await sendHandler(mockReq, mockRes);
