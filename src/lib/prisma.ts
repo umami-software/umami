@@ -192,7 +192,9 @@ async function parseFilters(
   options: QueryOptions = {},
 ) {
   const website = await fetchWebsite(websiteId);
-  const joinSession = Object.keys(filters).find(key => SESSION_COLUMNS.includes(key));
+  const joinSession = Object.keys(filters).find(key =>
+    ['referrer', ...SESSION_COLUMNS].includes(key),
+  );
 
   return {
     joinSession:
