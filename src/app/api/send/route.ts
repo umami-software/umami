@@ -21,7 +21,7 @@ const schema = z.object({
     referrer: urlOrPathParam.optional(),
     screen: z.string().max(11).optional(),
     title: z.string().optional(),
-    url: urlOrPathParam,
+    url: urlOrPathParam.optional(),
     name: z.string().max(50).optional(),
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),

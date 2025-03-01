@@ -1,4 +1,4 @@
-import { ZodObject } from 'zod';
+import { ZodSchema } from 'zod';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
@@ -15,7 +15,7 @@ export async function getJsonBody(request: Request) {
 
 export async function parseRequest(
   request: Request,
-  schema?: ZodObject<any>,
+  schema?: ZodSchema,
   options?: { skipAuth: boolean },
 ): Promise<any> {
   const url = new URL(request.url);
