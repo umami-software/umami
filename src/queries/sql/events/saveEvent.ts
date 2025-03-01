@@ -83,6 +83,7 @@ async function relationalQuery(data: {
       pageTitle: pageTitle?.substring(0, PAGE_TITLE_LENGTH),
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
+      createdAt,
       tag,
       createdAt,
     },
@@ -193,7 +194,7 @@ async function clickhouseQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
-      createdAt,
+      createdAt: createdAtUTC,
     });
   }
 
