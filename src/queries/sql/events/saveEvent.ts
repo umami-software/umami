@@ -29,6 +29,7 @@ export async function saveEvent(args: {
   subdivision2?: string;
   city?: string;
   tag?: string;
+  createdAt?: Date;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
@@ -49,6 +50,7 @@ async function relationalQuery(data: {
   eventName?: string;
   eventData?: any;
   tag?: string;
+  createdAt?: Date;
 }) {
   const {
     websiteId,
@@ -63,6 +65,7 @@ async function relationalQuery(data: {
     eventData,
     pageTitle,
     tag,
+    createdAt,
   } = data;
   const websiteEventId = uuid();
 
@@ -81,6 +84,7 @@ async function relationalQuery(data: {
       eventType: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       tag,
+      createdAt,
     },
   });
 
@@ -92,6 +96,7 @@ async function relationalQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
+      createdAt,
     });
   }
 
@@ -121,6 +126,7 @@ async function clickhouseQuery(data: {
   subdivision2?: string;
   city?: string;
   tag?: string;
+  createdAt?: Date;
 }) {
   const {
     websiteId,
@@ -139,12 +145,12 @@ async function clickhouseQuery(data: {
     subdivision2,
     city,
     tag,
+    createdAt,
     ...args
   } = data;
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAt = getUTCString();
 
   const message = {
     ...args,
@@ -170,7 +176,7 @@ async function clickhouseQuery(data: {
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     tag: tag,
-    created_at: createdAt,
+    created_at: getUTCString(createdAt),
   };
 
   if (kafka.enabled) {
