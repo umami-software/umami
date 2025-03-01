@@ -85,6 +85,7 @@ async function relationalQuery(data: {
       eventName: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
       createdAt,
       tag,
+      createdAt,
     },
   });
 
@@ -96,6 +97,7 @@ async function relationalQuery(data: {
       urlPath: urlPath?.substring(0, URL_LENGTH),
       eventName: eventName?.substring(0, EVENT_NAME_LENGTH),
       eventData,
+      createdAt,
     });
   }
 
@@ -150,7 +152,6 @@ async function clickhouseQuery(data: {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
   const eventId = uuid();
-  const createdAtUTC = getUTCString(createdAt);
 
   const message = {
     ...args,
@@ -176,7 +177,7 @@ async function clickhouseQuery(data: {
     event_type: eventName ? EVENT_TYPE.customEvent : EVENT_TYPE.pageView,
     event_name: eventName ? eventName?.substring(0, EVENT_NAME_LENGTH) : null,
     tag: tag,
-    created_at: createdAtUTC,
+    created_at: getUTCString(createdAt),
   };
 
   if (kafka.enabled) {

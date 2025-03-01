@@ -7,16 +7,16 @@ import { badRequest, json, forbidden, serverError } from '@/lib/response';
 import { fetchSession, fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { secret, uuid, visitSalt } from '@/lib/crypto';
-import { COLLECTION_TYPE, DOMAIN_REGEX } from '@/lib/constants';
+import { COLLECTION_TYPE } from '@/lib/constants';
+import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
-import { urlOrPathParam } from '@/lib/schema';
 
 const schema = z.object({
   type: z.enum(['event', 'identify']),
   payload: z.object({
     website: z.string().uuid(),
-    data: z.object({}).passthrough().optional(),
-    hostname: z.string().regex(DOMAIN_REGEX).max(100).optional(),
+    data: anyObjectParam.optional(),
+    hostname: z.string().max(100).optional(),
     language: z.string().max(35).optional(),
     referrer: urlOrPathParam.optional(),
     screen: z.string().max(11).optional(),
@@ -26,7 +26,7 @@ const schema = z.object({
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
-    createdAt: yup.number().optional(),
+    timestamp: z.coerce.number().int().optional(),
   }),
 });
 
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
       data,
       title,
       tag,
-      reqCreatedAt,
+      timestamp,
     } = payload;
 
     // Cache check
@@ -90,6 +90,7 @@ export async function POST(request: Request) {
     }
 
     const sessionId = uuid(websiteId, ip, userAgent);
+    const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -181,7 +182,7 @@ export async function POST(request: Request) {
         subdivision2,
         city,
         tag,
-	createdAt,
+        createdAt,
       });
     }
 
@@ -194,6 +195,7 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         sessionData: data,
+        createdAt,
       });
     }
 
