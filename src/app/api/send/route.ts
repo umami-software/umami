@@ -1,12 +1,13 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
-import { createToken, parseToken } from '@/lib/jwt';
+import { startOfHour, startOfMonth } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, forbidden, serverError } from '@/lib/response';
 import { fetchSession, fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
-import { secret, uuid, visitSalt } from '@/lib/crypto';
+import { createToken, parseToken } from '@/lib/jwt';
+import { secret, uuid, hash } from '@/lib/crypto';
 import { COLLECTION_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
@@ -89,8 +90,13 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
-    const sessionId = uuid(websiteId, ip, userAgent);
     const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
+    const now = Math.floor(new Date().getTime() / 1000);
+
+    const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
+    const visitSalt = hash(startOfHour(createdAt).toUTCString());
+
+    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -122,14 +128,13 @@ export async function POST(request: Request) {
     }
 
     // Visit info
-    const createdAt = Math.floor((reqCreatedAt || new Date()).getTime() / 1000);
-    let visitId = cache?.visitId || uuid(sessionId, visitSalt());
-    let iat = cache?.iat || createdAt;
+    let visitId = cache?.visitId || uuid(sessionId, visitSalt);
+    let iat = cache?.iat || now;
 
     // Expire visit after 30 minutes
-    if (createdAt - iat > 1800) {
-      visitId = uuid(sessionId, visitSalt());
-      iat = createdAt;
+    if (!timestamp && now - iat > 1800) {
+      visitId = uuid(sessionId, visitSalt);
+      iat = now;
     }
 
     if (type === COLLECTION_TYPE.event) {
@@ -201,7 +206,7 @@ export async function POST(request: Request) {
 
     const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
 
-    return json({ cache: token });
+    return json({ cache: token, sessionId, visitId });
   } catch (e) {
     return serverError(e);
   }
