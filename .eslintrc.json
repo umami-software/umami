@@ -33,6 +33,7 @@
     "react/prop-types": "off",
     "import/no-anonymous-default-export": "off",
     "import/no-named-as-default": "off",
+    "css-modules/no-unused-class": "off",
     "@next/next/no-img-element": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",

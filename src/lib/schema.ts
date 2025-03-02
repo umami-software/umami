@@ -36,6 +36,8 @@ export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), 
 
 export const roleParam = z.enum(['team-member', 'team-view-only', 'team-manager']);
 
+export const anyObjectParam = z.object({}).passthrough();
+
 export const urlOrPathParam = z.string().refine(
   value => {
     try {

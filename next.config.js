@@ -59,15 +59,29 @@ const trackerHeaders = [
   },
 ];
 
+const apiHeaders = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*'
+  },
+  {
+    key: 'Access-Control-Allow-Headers',
+    value: '*'
+  },
+  {
+    key: 'Access-Control-Allow-Methods',
+    value: 'GET, DELETE, POST, PUT'
+  },
+  {
+    key: 'Access-Control-Max-Age',
+    value: corsMaxAge || '86400'
+  },
+];
+
 const headers = [
   {
     source: '/api/:path*',
-    headers: [
-      { key: 'Access-Control-Allow-Origin', value: '*' },
-      { key: 'Access-Control-Allow-Headers', value: '*' },
-      { key: 'Access-Control-Allow-Methods', value: 'GET, DELETE, POST, PUT' },
-      { key: 'Access-Control-Max-Age', value: corsMaxAge || '86400' },
-    ],
+    headers: apiHeaders
   },
   {
     source: '/:path*',
@@ -89,6 +103,11 @@ if (trackerScriptURL) {
 }
 
 if (collectApiEndpoint) {
+  headers.push({
+    source: collectApiEndpoint,
+    headers: apiHeaders,
+  });
+
   rewrites.push({
     source: collectApiEndpoint,
     destination: '/api/send',
