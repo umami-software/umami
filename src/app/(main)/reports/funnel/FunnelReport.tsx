@@ -4,7 +4,7 @@ import { Report } from '../[reportId]/Report';
 import { ReportHeader } from '../[reportId]/ReportHeader';
 import { ReportMenu } from '../[reportId]/ReportMenu';
 import { ReportBody } from '../[reportId]/ReportBody';
-import Funnel from '@/assets/funnel.svg';
+import { Icons } from '@/components/icons';
 import { REPORT_TYPES } from '@/lib/constants';
 
 const defaultParameters = {
@@ -15,7 +15,7 @@ const defaultParameters = {
 export function FunnelReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Funnel />} />
+      <ReportHeader icon={<Icons.Funnel />} />
       <ReportMenu>
         <FunnelParameters />
       </ReportMenu>

@@ -1,14 +1,8 @@
-import Funnel from '@/assets/funnel.svg';
-import Money from '@/assets/money.svg';
-import Lightbulb from '@/assets/lightbulb.svg';
-import Magnet from '@/assets/magnet.svg';
-import Path from '@/assets/path.svg';
-import Tag from '@/assets/tag.svg';
-import Target from '@/assets/target.svg';
+import { Button, Icon, Text } from '@umami/react-zen';
 import { useMessages, useTeamUrl } from '@/components/hooks';
+import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import Link from 'next/link';
-import { Button, Icon, Icons, Text } from 'react-basics';
 import styles from './ReportTemplates.module.css';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
@@ -20,43 +14,43 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
       title: formatMessage(labels.insights),
       description: formatMessage(labels.insightsDescription),
       url: renderTeamUrl('/reports/insights'),
-      icon: <Lightbulb />,
+      icon: <Icons.Lightbulb />,
     },
     {
       title: formatMessage(labels.funnel),
       description: formatMessage(labels.funnelDescription),
       url: renderTeamUrl('/reports/funnel'),
-      icon: <Funnel />,
+      icon: <Icons.Funnel />,
     },
     {
       title: formatMessage(labels.retention),
       description: formatMessage(labels.retentionDescription),
       url: renderTeamUrl('/reports/retention'),
-      icon: <Magnet />,
+      icon: <Icons.Magnet />,
     },
     {
       title: formatMessage(labels.utm),
       description: formatMessage(labels.utmDescription),
       url: renderTeamUrl('/reports/utm'),
-      icon: <Tag />,
+      icon: <Icons.Tag />,
     },
     {
       title: formatMessage(labels.goals),
       description: formatMessage(labels.goalsDescription),
       url: renderTeamUrl('/reports/goals'),
-      icon: <Target />,
+      icon: <Icons.Target />,
     },
     {
       title: formatMessage(labels.journey),
       description: formatMessage(labels.journeyDescription),
       url: renderTeamUrl('/reports/journey'),
-      icon: <Path />,
+      icon: <Icons.Path />,
     },
     {
       title: formatMessage(labels.revenue),
       description: formatMessage(labels.revenueDescription),
       url: renderTeamUrl('/reports/revenue'),
-      icon: <Money />,
+      icon: <Icons.Money />,
     },
   ];
 

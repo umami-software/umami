@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import { Button, Icon } from 'react-basics';
 import { useTheme } from '@/components/hooks';
-import Sun from '@/assets/sun.svg';
-import Moon from '@/assets/moon.svg';
+import { Icons } from '@/components/icons';
 import styles from './ThemeSetting.module.css';
 
 export function ThemeSetting() {
@@ -15,7 +14,7 @@ export function ThemeSetting() {
         onClick={() => saveTheme('light')}
       >
         <Icon>
-          <Sun />
+          <Icons.Sun />
         </Icon>
       </Button>
       <Button
@@ -23,7 +22,7 @@ export function ThemeSetting() {
         onClick={() => saveTheme('dark')}
       >
         <Icon>
-          <Moon />
+          <Icons.Moon />
         </Icon>
       </Button>
     </div>

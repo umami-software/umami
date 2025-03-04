@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { SideNav as Nav, SideNavHeader, SideNavSection, SideNavItem } from '@umami/react-zen';
-import { Icons, Lucide } from '@/components/icons';
+import { Lucide, Icons } from '@/components/icons';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 
 export function SideNav() {

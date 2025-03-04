@@ -1,4 +1,4 @@
-import Money from '@/assets/money.svg';
+import { Icons } from '@/components/icons';
 import { REPORT_TYPES } from '@/lib/constants';
 import { Report } from '../[reportId]/Report';
 import { ReportBody } from '../[reportId]/ReportBody';
@@ -15,7 +15,7 @@ const defaultParameters = {
 export function RevenueReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Money />} />
+      <ReportHeader icon={<Icons.Money />} />
       <ReportMenu>
         <RevenueParameters />
       </ReportMenu>
