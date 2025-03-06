@@ -27,7 +27,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   const schema = z.object({
     username: z.string().max(255),
     password: z.string().max(255),
-    role: z.string().regex(/admin|user|view-only/i),
+    role: z.enum(['admin', 'user', 'view-only']),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 export default async function WebsitePage({
   params,
 }: {
-  params: { websiteId: string; sessionId: string };
+  params: Promise<{ websiteId: string; sessionId: string }>;
 }) {
   const { websiteId, sessionId } = await params;
 

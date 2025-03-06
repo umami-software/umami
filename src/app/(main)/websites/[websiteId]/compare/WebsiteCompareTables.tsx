@@ -1,6 +1,6 @@
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
 import { Grid, GridRow } from '@/components/layout/Grid';
-import { SideNav } from '@/components/layout/SideNav';
+import { MenuNav } from '@/components/layout/MenuNav';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
@@ -145,7 +145,7 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   return (
     <Grid className={styles.container}>
       <GridRow columns="compare">
-        <SideNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
+        <MenuNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
         <div>
           <div className={styles.title}>{formatMessage(labels.previous)}</div>
           <Component

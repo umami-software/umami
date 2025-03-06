@@ -4,7 +4,7 @@ import { ReportMenu } from '../[reportId]/ReportMenu';
 import { ReportBody } from '../[reportId]/ReportBody';
 import { EventDataParameters } from './EventDataParameters';
 import { EventDataTable } from './EventDataTable';
-import Nodes from '@/assets/nodes.svg';
+import { Icons } from '@/components/icons';
 
 const defaultParameters = {
   type: 'event-data',
@@ -14,7 +14,7 @@ const defaultParameters = {
 export function EventDataReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Nodes />} />
+      <ReportHeader icon={<Icons.Nodes />} />
       <ReportMenu>
         <EventDataParameters />
       </ReportMenu>

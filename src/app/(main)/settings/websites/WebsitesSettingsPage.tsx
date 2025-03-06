@@ -10,7 +10,7 @@ export function WebsitesSettingsPage({ teamId }: { teamId: string }) {
 
   return (
     <>
-      <WebsitesHeader teamId={teamId} allowCreate={canCreate} />
+      <WebsitesHeader allowCreate={canCreate} />
       <WebsitesDataTable teamId={teamId} />
     </>
   );

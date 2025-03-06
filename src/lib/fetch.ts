@@ -1,10 +1,18 @@
 import { buildUrl } from '@/lib/url';
 
+export interface ErrorResponse {
+  error: {
+    status: number;
+    message: string;
+    code?: string;
+  };
+}
+
 export interface FetchResponse {
   ok: boolean;
   status: number;
   data?: any;
-  error?: any;
+  error?: ErrorResponse;
 }
 
 export async function request(

@@ -24,6 +24,7 @@
 }
 
 .selected {
+  color: var(--font-color);
   font-weight: 700;
   background: var(--blue100);
 }

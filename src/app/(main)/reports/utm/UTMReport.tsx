@@ -5,7 +5,7 @@ import { ReportMenu } from '../[reportId]/ReportMenu';
 import { ReportBody } from '../[reportId]/ReportBody';
 import { UTMParameters } from './UTMParameters';
 import { UTMView } from './UTMView';
-import Tag from '@/assets/tag.svg';
+import { Icons } from '@/components/icons';
 import { REPORT_TYPES } from '@/lib/constants';
 
 const defaultParameters = {
@@ -16,7 +16,7 @@ const defaultParameters = {
 export function UTMReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Tag />} />
+      <ReportHeader icon={<Icons.Tag />} />
       <ReportMenu>
         <UTMParameters />
       </ReportMenu>

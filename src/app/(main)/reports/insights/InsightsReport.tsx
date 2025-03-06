@@ -4,7 +4,7 @@ import { ReportMenu } from '../[reportId]/ReportMenu';
 import { ReportBody } from '../[reportId]/ReportBody';
 import { InsightsParameters } from './InsightsParameters';
 import { InsightsTable } from './InsightsTable';
-import Lightbulb from '@/assets/lightbulb.svg';
+import { Icons } from '@/components/icons';
 import { REPORT_TYPES } from '@/lib/constants';
 
 const defaultParameters = {
@@ -15,7 +15,7 @@ const defaultParameters = {
 export function InsightsReport({ reportId }: { reportId?: string }) {
   return (
     <Report reportId={reportId} defaultParameters={defaultParameters}>
-      <ReportHeader icon={<Lightbulb />} />
+      <ReportHeader icon={<Icons.Lightbulb />} />
       <ReportMenu>
         <InsightsParameters />
       </ReportMenu>

@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { useTeamWebsites } from '@/components/hooks';
 import { TeamWebsitesTable } from './TeamWebsitesTable';
 
@@ -12,8 +12,8 @@ export function TeamWebsitesDataTable({
   const queryResult = useTeamWebsites(teamId);
 
   return (
-    <DataTable queryResult={queryResult}>
+    <DataGrid queryResult={queryResult}>
       {({ data }) => <TeamWebsitesTable data={data} teamId={teamId} allowEdit={allowEdit} />}
-    </DataTable>
+    </DataGrid>
   );
 }

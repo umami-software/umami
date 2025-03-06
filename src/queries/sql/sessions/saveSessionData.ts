@@ -11,6 +11,7 @@ export async function saveSessionData(data: {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
+  createdAt?: Date;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
@@ -22,9 +23,10 @@ export async function relationalQuery(data: {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
+  createdAt?: Date;
 }) {
   const { client } = prisma;
-  const { websiteId, sessionId, sessionData } = data;
+  const { websiteId, sessionId, sessionData, createdAt } = data;
 
   const jsonKeys = flattenJSON(sessionData);
 
@@ -37,6 +39,7 @@ export async function relationalQuery(data: {
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
+    createdAt,
   }));
 
   const existing = await client.sessionData.findMany({
@@ -77,12 +80,12 @@ async function clickhouseQuery(data: {
   websiteId: string;
   sessionId: string;
   sessionData: DynamicData;
+  createdAt?: Date;
 }) {
-  const { websiteId, sessionId, sessionData } = data;
+  const { websiteId, sessionId, sessionData, createdAt } = data;
 
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
-  const createdAt = getUTCString();
 
   const jsonKeys = flattenJSON(sessionData);
 
@@ -95,7 +98,7 @@ async function clickhouseQuery(data: {
       string_value: getStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
-      created_at: createdAt,
+      created_at: getUTCString(createdAt),
     };
   });
 

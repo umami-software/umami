@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { WebsitesTable } from '@/app/(main)/settings/websites/WebsitesTable';
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { useWebsites } from '@/components/hooks';
 
 export function WebsitesDataTable({
@@ -19,7 +19,7 @@ export function WebsitesDataTable({
   const queryResult = useWebsites({ teamId });
 
   return (
-    <DataTable queryResult={queryResult} renderEmpty={() => children}>
+    <DataGrid queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => (
         <WebsitesTable
           teamId={teamId}
@@ -29,6 +29,6 @@ export function WebsitesDataTable({
           allowView={allowView}
         />
       )}
-    </DataTable>
+    </DataGrid>
   );
 }

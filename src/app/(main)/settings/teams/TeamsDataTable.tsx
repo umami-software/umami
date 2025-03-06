@@ -1,4 +1,4 @@
-import { DataTable } from '@/components/common/DataTable';
+import { DataGrid } from '@/components/common/DataGrid';
 import { TeamsTable } from '@/app/(main)/settings/teams/TeamsTable';
 import { useLogin, useTeams } from '@/components/hooks';
 import { ReactNode } from 'react';
@@ -16,10 +16,10 @@ export function TeamsDataTable({
   const queryResult = useTeams(user.id);
 
   return (
-    <DataTable queryResult={queryResult} renderEmpty={() => children}>
+    <DataGrid queryResult={queryResult} renderEmpty={() => children}>
       {({ data }) => {
         return <TeamsTable data={data} allowEdit={allowEdit} showActions={showActions} />;
       }}
-    </DataTable>
+    </DataGrid>
   );
 }

@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useApi, useMessages } from '@/components/hooks';
 import { setUser } from '@/store/app';
 import { setClientAuthToken } from '@/lib/client';
-import Logo from '@/assets/logo.svg';
+import { Icons } from '@/components/icons';
 
 export function LoginForm() {
   const { formatMessage, labels, getMessage } = useMessages();
@@ -35,17 +35,9 @@ export function LoginForm() {
   };
 
   return (
-    <Column
-      justifyContent="center"
-      alignItems="center"
-      padding="8"
-      gap="6"
-      backgroundColor="1"
-      borderRadius="3"
-      shadow="3"
-    >
+    <Column justifyContent="center" alignItems="center" padding="8" gap="6">
       <Icon size="lg">
-        <Logo />
+        <Icons.Logo />
       </Icon>
       <Heading>umami</Heading>
       <Form onSubmit={handleSubmit} error={getMessage(error)}>

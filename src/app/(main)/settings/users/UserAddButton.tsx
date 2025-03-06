@@ -1,29 +1,40 @@
-import { Button, Icon, Text, Modal, Icons, ModalTrigger, useToasts } from 'react-basics';
+import {
+  Button,
+  Icon,
+  Text,
+  Modal,
+  Icons,
+  DialogTrigger,
+  Dialog,
+  useToast,
+} from '@umami/react-zen';
 import { UserAddForm } from './UserAddForm';
 import { useMessages, useModified } from '@/components/hooks';
 
 export function UserAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    toast(formatMessage(messages.saved));
     touch('users');
     onSave?.();
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button variant="primary">
         <Icon>
           <Icons.Plus />
         </Icon>
         <Text>{formatMessage(labels.createUser)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.createUser)}>
-        {(close: () => void) => <UserAddForm onSave={handleSave} onClose={close} />}
+      <Modal>
+        <Dialog title={formatMessage(labels.createUser)}>
+          {({ close }) => <UserAddForm onSave={handleSave} onClose={close} />}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }
