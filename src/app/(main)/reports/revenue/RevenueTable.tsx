@@ -1,7 +1,7 @@
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
-import { GridColumn, GridTable } from 'react-basics';
+import { GridColumn, GridTable } from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { formatLongCurrency } from '@/lib/format';
 

@@ -1,4 +1,4 @@
-import { GridColumn, GridTable } from 'react-basics';
+import { GridColumn, GridTable } from '@umami/react-zen';
 import { useEventDataProperties, useEventDataValues, useMessages } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PieChart } from '@/components/charts/PieChart';

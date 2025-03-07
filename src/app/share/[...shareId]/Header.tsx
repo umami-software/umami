@@ -1,5 +1,5 @@
 import { ThemeButton } from '@umami/react-zen';
-import { Icon, Text } from 'react-basics';
+import { Icon, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { SettingsButton } from '@/components/input/SettingsButton';

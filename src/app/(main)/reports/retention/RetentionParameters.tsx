@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 import { useMessages } from '@/components/hooks';
-import { Form, FormButtons, FormRow, SubmitButton } from 'react-basics';
+import { Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
-import { MonthSelect } from '@/components/input/MonthSelect';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { parseDateRange } from '@/lib/date';
 
@@ -31,13 +30,11 @@ export function RetentionParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={false} allowWebsiteSelect={!id} />
-      <FormRow label={formatMessage(labels.date)}>
-        <MonthSelect date={startDate} onChange={handleDateChange} />
-      </FormRow>
+
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

@@ -26,7 +26,7 @@ export function WebsiteSettings({
         <Link href={`/websites/${websiteId}`} target={openExternal ? '_blank' : null}>
           <Button variant="primary">
             <Icon>
-              <Icons.ArrowRight />
+              <Icons.Arrow />
             </Icon>
             <Text>{formatMessage(labels.view)}</Text>
           </Button>

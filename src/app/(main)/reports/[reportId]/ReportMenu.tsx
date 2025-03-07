@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { ReportContext } from './Report';
 import styles from './ReportMenu.module.css';
-import { Icon, Icons } from 'react-basics';
+import { Icon, Icons } from '@umami/react-zen';
 import classNames from 'classnames';
 
 export function ReportMenu({ children }) {

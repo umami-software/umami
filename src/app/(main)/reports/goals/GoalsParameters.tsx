@@ -12,7 +12,7 @@ import {
   Popup,
   PopupTrigger,
   SubmitButton,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ParameterList } from '../[reportId]/ParameterList';
 import { PopupForm } from '../[reportId]/PopupForm';

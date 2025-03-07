@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
-import { Button, FormRow, TextField, Flexbox, Dropdown, Item } from 'react-basics';
+import { Button, FormRow, TextField, Flexbox, Dropdown, Item } from '@umami/react-zen';
 import styles from './FunnelStepAddForm.module.css';
 
 export interface FunnelStepAddFormProps {

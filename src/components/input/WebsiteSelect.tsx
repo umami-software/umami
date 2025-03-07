@@ -1,5 +1,5 @@
 import { useState, Key } from 'react';
-import { Dropdown, Item } from 'react-basics';
+import { Dropdown, Item } from '@umami/react-zen';
 import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import styles from './WebsiteSelect.module.css';

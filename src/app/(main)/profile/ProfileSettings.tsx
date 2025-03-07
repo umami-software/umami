@@ -1,4 +1,4 @@
-import { Form, FormRow } from 'react-basics';
+import { Form, FormRow } from '@umami/react-zen';
 import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
 import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
 import { LanguageSetting } from '@/app/(main)/profile/LanguageSetting';

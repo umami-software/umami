@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useMessages, useFormat, useFilters, useFields } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
+import { Button, FormRow, Icon, Popup, PopupTrigger } from '@umami/react-zen';
 import { FilterSelectForm } from '../[reportId]/FilterSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
 import { PopupForm } from '../[reportId]/PopupForm';

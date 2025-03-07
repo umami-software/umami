@@ -1,6 +1,6 @@
 import { useLocale, useLogin, useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
-import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
+import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { TeamLeaveForm } from './TeamLeaveForm';
 
 export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName: string }) {
@@ -16,24 +16,26 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button variant="secondary">
         <Icon rotate={dir === 'rtl' ? 180 : 0}>
           <Icons.Logout />
         </Icon>
         <Text>{formatMessage(labels.leave)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.leaveTeam)}>
-        {(close: () => void) => (
-          <TeamLeaveForm
-            teamId={teamId}
-            userId={user.id}
-            teamName={teamName}
-            onSave={handleLeave}
-            onClose={close}
-          />
-        )}
+      <Modal>
+        <Dialog title={formatMessage(labels.leaveTeam)}>
+          {({ close }) => (
+            <TeamLeaveForm
+              teamId={teamId}
+              userId={user.id}
+              teamName={teamName}
+              onSave={handleLeave}
+              onClose={close}
+            />
+          )}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

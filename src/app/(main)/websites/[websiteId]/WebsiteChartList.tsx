@@ -1,12 +1,12 @@
-import { Button, Text, Icon, Icons } from 'react-basics';
+import { Text, Icon, Icons } from '@umami/react-zen';
 import { useMemo } from 'react';
 import { firstBy } from 'thenby';
-import Link from 'next/link';
 import { WebsiteChart } from './WebsiteChart';
 import { useDashboard } from '@/store/dashboard';
 import { WebsiteHeader } from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useLocale, useTeamUrl } from '@/components/hooks';
+import { useMessages, useTeamUrl } from '@/components/hooks';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteChartList({
   websites,
@@ -20,7 +20,6 @@ export function WebsiteChartList({
   const { formatMessage, labels } = useMessages();
   const { websiteOrder, websiteActive } = useDashboard();
   const { renderTeamUrl } = useTeamUrl();
-  const { dir } = useLocale();
 
   const ordered = useMemo(() => {
     return websites
@@ -35,16 +34,14 @@ export function WebsiteChartList({
         return index < limit ? (
           <div key={id}>
             <WebsiteHeader websiteId={id} showLinks={false}>
-              <Link href={renderTeamUrl(`/websites/${id}`)}>
-                <Button variant="primary">
-                  <Text>{formatMessage(labels.viewDetails)}</Text>
+              <LinkButton href={renderTeamUrl(`/websites/${id}`)} variant="primary">
+                <Text>{formatMessage(labels.viewDetails)}</Text>
+                <Icon>
                   <Icon>
-                    <Icon rotate={dir === 'rtl' ? 180 : 0}>
-                      <Icons.ArrowRight />
-                    </Icon>
+                    <Icons.Arrow />
                   </Icon>
-                </Button>
-              </Link>
+                </Icon>
+              </LinkButton>
             </WebsiteHeader>
             <WebsiteMetricsBar websiteId={id} showChange={true} />
             {showCharts && <WebsiteChart websiteId={id} />}

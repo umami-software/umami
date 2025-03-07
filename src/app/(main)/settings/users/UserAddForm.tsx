@@ -1,15 +1,14 @@
 import {
-  Dropdown,
-  Item,
+  Select,
+  ListItem,
   Form,
-  FormRow,
+  FormField,
   FormButtons,
-  FormInput,
+  FormSubmitButton,
   TextField,
   PasswordField,
-  SubmitButton,
   Button,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
@@ -29,44 +28,38 @@ export function UserAddForm({ onSave, onClose }) {
     });
   };
 
-  const renderValue = (value: string) => {
-    if (value === ROLES.user) {
-      return formatMessage(labels.user);
-    }
-    if (value === ROLES.admin) {
-      return formatMessage(labels.admin);
-    }
-    if (value === ROLES.viewOnly) {
-      return formatMessage(labels.viewOnly);
-    }
-  };
-
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <FormRow label={formatMessage(labels.username)}>
-        <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
-          <TextField autoComplete="new-username" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.password)}>
-        <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
-          <PasswordField autoComplete="new-password" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.role)}>
-        <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown renderValue={renderValue}>
-            <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
-            <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
-          </Dropdown>
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton variant="primary" disabled={false}>
+      <FormField
+        label={formatMessage(labels.username)}
+        name="username"
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        <TextField autoComplete="new-username" />
+      </FormField>
+      <FormField
+        label={formatMessage(labels.password)}
+        name="password"
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        <PasswordField autoComplete="new-password" />
+      </FormField>
+      <FormField
+        label={formatMessage(labels.role)}
+        name="role"
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        <Select>
+          <ListItem id={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</ListItem>
+          <ListItem id={ROLES.user}>{formatMessage(labels.user)}</ListItem>
+          <ListItem id={ROLES.admin}>{formatMessage(labels.admin)}</ListItem>
+        </Select>
+      </FormField>
+      <FormButtons>
+        <FormSubmitButton variant="primary" disabled={false}>
           {formatMessage(labels.save)}
-        </SubmitButton>
-        <Button disabled={isPending} onClick={onClose}>
+        </FormSubmitButton>
+        <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
       </FormButtons>

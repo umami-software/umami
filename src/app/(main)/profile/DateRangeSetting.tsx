@@ -1,5 +1,5 @@
 import { DateFilter } from '@/components/input/DateFilter';
-import { Button, Flexbox } from 'react-basics';
+import { Button, Flexbox } from '@umami/react-zen';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { DEFAULT_DATE_RANGE } from '@/lib/constants';
 import { DateRange } from '@/lib/types';

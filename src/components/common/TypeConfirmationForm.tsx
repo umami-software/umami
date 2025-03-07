@@ -2,11 +2,10 @@ import {
   Button,
   Form,
   FormButtons,
-  FormRow,
-  FormInput,
+  FormField,
   TextField,
-  SubmitButton,
-} from 'react-basics';
+  FormSubmitButton,
+} from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
 export function TypeConfirmationForm({
@@ -20,7 +19,7 @@ export function TypeConfirmationForm({
 }: {
   confirmationValue: string;
   buttonLabel?: string;
-  buttonVariant?: 'none' | 'primary' | 'secondary' | 'quiet' | 'danger';
+  buttonVariant?: 'primary' | 'secondary' | 'outline' | 'quiet' | 'danger' | 'none';
   isLoading?: boolean;
   error?: string | Error;
   onConfirm?: () => void;
@@ -35,18 +34,22 @@ export function TypeConfirmationForm({
   return (
     <Form onSubmit={onConfirm} error={error}>
       <p>
-        {formatMessage(messages.actionConfirmation, { confirmation: <b>{confirmationValue}</b> })}
+        {formatMessage(messages.actionConfirmation, {
+          confirmation: <b key="value">{confirmationValue}</b>,
+        })}
       </p>
-      <FormRow label={formatMessage(labels.confirm)}>
-        <FormInput name="confirm" rules={{ validate: value => value === confirmationValue }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton isLoading={isLoading} variant={buttonVariant}>
+      <FormField
+        label={formatMessage(labels.confirm)}
+        name="confirm"
+        rules={{ validate: value => value === confirmationValue }}
+      >
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormButtons>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <FormSubmitButton isLoading={isLoading} variant={buttonVariant}>
           {buttonLabel || formatMessage(labels.ok)}
-        </SubmitButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

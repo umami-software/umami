@@ -5,7 +5,7 @@ import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { FilterButtons } from '@/components/common/FilterButtons';
 import thenby from 'thenby';
 import { GROUPED_DOMAINS } from '@/lib/constants';
-import { Flexbox } from 'react-basics';
+import { Flexbox } from '@umami/react-zen';
 
 export interface ReferrersTableProps extends MetricsTableProps {
   allowFilter?: boolean;

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Icon, LoadingButton, InlineEditField, useToasts } from 'react-basics';
+import { Icon, LoadingButton, InlineEditField, useToast } from '@umami/react-zen';
 import { useMessages, useApi, useNavigation, useTeamUrl } from '@/components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
@@ -9,7 +9,7 @@ import { Breadcrumb } from '@/components/common/Breadcrumb';
 export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { router } = useNavigation();
   const { renderTeamUrl } = useTeamUrl();
 
@@ -29,14 +29,14 @@ export function ReportHeader({ icon }) {
     if (!report.id) {
       create(report, {
         onSuccess: async ({ id }) => {
-          showToast({ message: formatMessage(messages.saved), variant: 'success' });
+          toast(formatMessage(messages.saved));
           router.push(renderTeamUrl(`/reports/${id}`));
         },
       });
     } else {
       update(report, {
         onSuccess: async () => {
-          showToast({ message: formatMessage(messages.saved), variant: 'success' });
+          toast(formatMessage(messages.saved));
         },
       });
     }
@@ -94,7 +94,7 @@ export function ReportHeader({ icon }) {
           variant="primary"
           isLoading={isCreating || isUpdating}
           disabled={!websiteId || !dateRange?.value || !name}
-          onClick={handleSave}
+          onPress={handleSave}
         >
           {formatMessage(labels.save)}
         </LoadingButton>

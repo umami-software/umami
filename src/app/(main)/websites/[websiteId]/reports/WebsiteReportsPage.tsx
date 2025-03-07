@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { Button, Flexbox, Icon, Icons, Text } from 'react-basics';
+import { Button, Flexbox, Icon, Icons, Text } from '@umami/react-zen';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 import { WebsiteHeader } from '../WebsiteHeader';
 import { ReportsDataTable } from '@/app/(main)/reports/ReportsDataTable';

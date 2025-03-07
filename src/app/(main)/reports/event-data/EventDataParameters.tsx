@@ -1,5 +1,13 @@
 import { useContext } from 'react';
-import { Form, FormRow, FormButtons, SubmitButton, PopupTrigger, Icon, Popup } from 'react-basics';
+import {
+  Form,
+  FormRow,
+  FormButtons,
+  SubmitButton,
+  PopupTrigger,
+  Icon,
+  Popup,
+} from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
 import { Icons } from '@/components/icons';
 import { useApi, useMessages } from '@/components/hooks';

@@ -1,4 +1,4 @@
-import { StatusLight } from 'react-basics';
+import { StatusLight } from '@umami/react-zen';
 import { colord } from 'colord';
 import classNames from 'classnames';
 import { LegendItem } from 'chart.js/auto';

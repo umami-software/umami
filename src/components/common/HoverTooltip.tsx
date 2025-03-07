@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { Tooltip } from 'react-basics';
+import { Tooltip } from '@umami/react-zen';
 import styles from './HoverTooltip.module.css';
 
 export function HoverTooltip({ children }: { children: ReactNode }) {

@@ -1,20 +1,17 @@
-import { useRef } from 'react';
 import {
   Form,
-  FormRow,
-  FormInput,
+  FormField,
   FormButtons,
   TextField,
   Button,
-  SubmitButton,
-} from 'react-basics';
+  FormSubmitButton,
+} from '@umami/react-zen';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 
 export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();
   const { post, useMutation } = useApi();
   const { mutate, error } = useMutation({ mutationFn: (data: any) => post('/teams/join', data) });
-  const ref = useRef(null);
   const { touch } = useModified();
 
   const handleSubmit = async (data: any) => {
@@ -28,15 +25,17 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error}>
-      <FormRow label={formatMessage(labels.accessCode)}>
-        <FormInput name="accessCode" rules={{ required: formatMessage(labels.required) }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton variant="primary">{formatMessage(labels.join)}</SubmitButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+    <Form onSubmit={handleSubmit} error={error}>
+      <FormField
+        label={formatMessage(labels.accessCode)}
+        name="accessCode"
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormButtons>
+        <FormSubmitButton variant="primary">{formatMessage(labels.join)}</FormSubmitButton>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
       </FormButtons>
     </Form>
   );

@@ -1,6 +1,6 @@
 'use client';
 import { useEffect } from 'react';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { setClientAuthToken } from '@/lib/client';
 

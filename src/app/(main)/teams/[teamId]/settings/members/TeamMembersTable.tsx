@@ -1,4 +1,4 @@
-import { GridColumn, GridTable } from 'react-basics';
+import { DataColumn, DataTable } from '@umami/react-zen';
 import { useMessages, useLogin } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { TeamMemberRemoveButton } from './TeamMemberRemoveButton';
@@ -24,15 +24,15 @@ export function TeamMembersTable({
   };
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="username" label={formatMessage(labels.username)}>
-        {row => row?.user?.username}
-      </GridColumn>
-      <GridColumn name="role" label={formatMessage(labels.role)}>
-        {row => roles[row?.role]}
-      </GridColumn>
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
+    <DataTable data={data}>
+      <DataColumn id="username" label={formatMessage(labels.username)}>
+        {(row: any) => row?.user?.username}
+      </DataColumn>
+      <DataColumn id="role" label={formatMessage(labels.role)}>
+        {(row: any) => roles[row?.role]}
+      </DataColumn>
+      <DataColumn id="action" align="end">
+        {(row: any) => {
           return (
             allowEdit &&
             row?.role !== ROLES.teamOwner &&
@@ -48,7 +48,7 @@ export function TeamMembersTable({
             )
           );
         }}
-      </GridColumn>
-    </GridTable>
+      </DataColumn>
+    </DataTable>
   );
 }

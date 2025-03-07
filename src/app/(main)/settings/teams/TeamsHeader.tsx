@@ -1,4 +1,4 @@
-import { Flexbox } from 'react-basics';
+import { Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useLogin, useMessages } from '@/components/hooks';
@@ -12,10 +12,10 @@ export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
 
   return (
     <PageHeader title={formatMessage(labels.teams)}>
-      <Flexbox gap={10}>
+      <Row gap="3">
         {!cloudMode && <TeamsJoinButton />}
         {allowCreate && user.role !== ROLES.viewOnly && <TeamsAddButton />}
-      </Flexbox>
+      </Row>
     </PageHeader>
   );
 }

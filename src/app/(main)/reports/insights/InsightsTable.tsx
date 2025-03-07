@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { GridTable, GridColumn } from 'react-basics';
+import { GridTable, GridColumn } from '@umami/react-zen';
 import { useFormat, useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';

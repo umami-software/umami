@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dropdown, Item, Button, Flexbox } from 'react-basics';
+import { Dropdown, Item, Button, Flexbox } from '@umami/react-zen';
 import { useTimezone, useMessages } from '@/components/hooks';
 import { getTimezone } from '@/lib/date';
 import styles from './TimezoneSetting.module.css';

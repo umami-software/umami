@@ -1,29 +1,31 @@
-import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
+import { Button, Icon, Modal, DialogTrigger, Dialog, Text, useToast } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { useMessages, useModified } from '@/components/hooks';
 import { TeamJoinForm } from './TeamJoinForm';
 
 export function TeamsJoinButton() {
   const { formatMessage, labels, messages } = useMessages();
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { touch } = useModified();
 
   const handleJoin = () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    toast(formatMessage(messages.saved));
     touch('teams');
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button variant="secondary">
         <Icon>
           <Icons.AddUser />
         </Icon>
         <Text>{formatMessage(labels.joinTeam)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.joinTeam)}>
-        {close => <TeamJoinForm onSave={handleJoin} onClose={close} />}
+      <Modal>
+        <Dialog title={formatMessage(labels.joinTeam)}>
+          {({ close }) => <TeamJoinForm onSave={handleJoin} onClose={close} />}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

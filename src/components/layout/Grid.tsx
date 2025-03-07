@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 import classNames from 'classnames';
-import { mapChildren } from 'react-basics';
+import { mapChildren } from '@/lib/react';
 // eslint-disable-next-line css-modules/no-unused-class
 import styles from './Grid.module.css';
 

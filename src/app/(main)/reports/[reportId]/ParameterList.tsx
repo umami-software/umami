@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon } from 'react-basics';
+import { Icon } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { Empty } from '@/components/common/Empty';
 import { useMessages } from '@/components/hooks';

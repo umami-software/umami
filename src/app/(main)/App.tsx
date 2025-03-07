@@ -6,7 +6,7 @@ import { UpdateNotice } from './UpdateNotice';
 import { NavBar } from '@/app/(main)/NavBar';
 import { Page } from '@/components/layout/Page';
 import { useLogin, useConfig } from '@/components/hooks';
-import { SideNav } from '@/app/(main)/SideNav';
+import { Nav } from '@/app/(main)/Nav';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLogin();
@@ -30,8 +30,8 @@ export function App({ children }) {
   }
 
   return (
-    <Grid>
-      <SideNav />
+    <Grid height="100vh" width="100%" columns="auto 1fr">
+      <Nav />
       <Grid rows="auto 1fr">
         <NavBar />
         <Page>

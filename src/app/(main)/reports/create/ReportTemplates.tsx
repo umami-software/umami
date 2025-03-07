@@ -1,9 +1,8 @@
-import { Button, Icon, Text } from '@umami/react-zen';
+import { Icon, Text, Row, Column, Grid } from '@umami/react-zen';
 import { useMessages, useTeamUrl } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/layout/PageHeader';
-import Link from 'next/link';
-import styles from './ReportTemplates.module.css';
+import { LinkButton } from '@/components/common/LinkButton';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
@@ -57,13 +56,13 @@ export function ReportTemplates({ showHeader = true }: { showHeader?: boolean })
   return (
     <>
       {showHeader && <PageHeader title={formatMessage(labels.reports)} />}
-      <div className={styles.reports}>
+      <Grid columns="repeat(3, minmax(200px, 1fr))" gap="3">
         {reports.map(({ title, description, url, icon }) => {
           return (
             <ReportItem key={title} icon={icon} title={title} description={description} url={url} />
           );
         })}
-      </div>
+      </Grid>
     </>
   );
 }
@@ -72,22 +71,22 @@ function ReportItem({ title, description, url, icon }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <div className={styles.report}>
-      <div className={styles.title}>
-        <Icon size="lg">{icon}</Icon>
-        <Text>{title}</Text>
-      </div>
-      <div className={styles.description}>{description}</div>
-      <div className={styles.buttons}>
-        <Link href={url}>
-          <Button variant="primary">
-            <Icon>
-              <Icons.Plus />
-            </Icon>
-            <Text>{formatMessage(labels.create)}</Text>
-          </Button>
-        </Link>
-      </div>
-    </div>
+    <Column gap="6" padding="6" borderSize="1" borderRadius="3" justifyContent="space-between">
+      <Row gap="3" alignItems="center">
+        <Icon size="md">{icon}</Icon>
+        <Text size="5" weight="bold">
+          {title}
+        </Text>
+      </Row>
+      <Text>{description}</Text>
+      <Row justifyContent="flex-end">
+        <LinkButton href={url} variant="primary">
+          <Icon fillColor="currentColor">
+            <Icons.Plus />
+          </Icon>
+          <Text>{formatMessage(labels.create)}</Text>
+        </LinkButton>
+      </Row>
+    </Column>
   );
 }

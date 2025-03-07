@@ -1,4 +1,4 @@
-import { Button, Icon, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
+import { Button, Icon, Modal, DialogTrigger, Dialog, Text, useToast } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { useMessages, useModified } from '@/components/hooks';
 import { TeamAddForm } from './TeamAddForm';
@@ -6,26 +6,28 @@ import { messages } from '@/components/messages';
 
 export function TeamsAddButton({ onSave }: { onSave?: () => void }) {
   const { formatMessage, labels } = useMessages();
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = async () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    toast(formatMessage(messages.saved));
     touch('teams');
     onSave?.();
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button variant="primary">
         <Icon>
           <Icons.Plus />
         </Icon>
         <Text>{formatMessage(labels.createTeam)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.createTeam)}>
-        {(close: () => void) => <TeamAddForm onSave={handleSave} onClose={close} />}
+      <Modal>
+        <Dialog title={formatMessage(labels.createTeam)}>
+          {({ close }) => <TeamAddForm onSave={handleSave} onClose={close} />}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

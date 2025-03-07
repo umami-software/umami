@@ -1,5 +1,15 @@
-import { useState } from 'react';
-import { Icon, Modal, Dropdown, Item, Text, Flexbox } from 'react-basics';
+import { useState, Key } from 'react';
+import {
+  Icon,
+  Modal,
+  Select,
+  Text,
+  Block,
+  Row,
+  ListItem,
+  ListSeparator,
+  Dialog,
+} from '@umami/react-zen';
 import { endOfYear, isSameDay } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
@@ -39,19 +49,19 @@ export function DateFilter({
       label: formatMessage(labels.lastHours, { x: 24 }),
       value: '24hour',
     },
+    { divider: true },
     {
       label: formatMessage(labels.thisWeek),
       value: '0week',
-      divider: true,
     },
     {
       label: formatMessage(labels.lastDays, { x: 7 }),
       value: '7day',
     },
+    { divider: true },
     {
       label: formatMessage(labels.thisMonth),
       value: '0month',
-      divider: true,
     },
     {
       label: formatMessage(labels.lastDays, { x: 30 }),
@@ -61,7 +71,8 @@ export function DateFilter({
       label: formatMessage(labels.lastDays, { x: 90 }),
       value: '90day',
     },
-    { label: formatMessage(labels.thisYear), value: '0year', divider: true },
+    { divider: true },
+    { label: formatMessage(labels.thisYear), value: '0year' },
     {
       label: formatMessage(labels.lastMonths, { x: 6 }),
       value: '6month',
@@ -70,29 +81,31 @@ export function DateFilter({
       label: formatMessage(labels.lastMonths, { x: 12 }),
       value: '12month',
     },
+    { divider: true },
     showAllTime && {
       label: formatMessage(labels.allTime),
       value: 'all',
-      divider: true,
     },
+    { divider: true },
     {
       label: formatMessage(labels.customRange),
       value: 'custom',
-      divider: true,
     },
-  ].filter(n => n);
+  ]
+    .filter(n => n)
+    .map((a, id) => ({ ...a, id }));
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: Key) => {
     if (value === 'custom') {
       setShowPicker(true);
       return;
     }
-    onChange(value);
+    onChange(value.toString());
   };
 
   const handlePickerChange = (value: string) => {
     setShowPicker(false);
-    onChange(value);
+    onChange(value.toString());
   };
 
   const handleClose = () => setShowPicker(false);
@@ -122,33 +135,37 @@ export function DateFilter({
     return options.find(e => e.value === value)?.label;
   };
 
+  console.log({ showPicker });
+
   return (
     <>
-      <Dropdown
+      <Select
         className={classNames(className, styles.dropdown)}
         items={options}
-        renderValue={renderValue}
         value={value}
-        alignment={alignment}
         placeholder={formatMessage(labels.selectDate)}
-        onChange={key => handleChange(key as any)}
+        onSelectionChange={handleChange}
       >
-        {({ label, value, divider }) => (
-          <Item key={value} divider={divider}>
-            {label}
-          </Item>
-        )}
-      </Dropdown>
+        {({ label, value, divider }: any) => {
+          if (divider) {
+            return <ListSeparator />;
+          }
+
+          return <ListItem id={value}>{label}</ListItem>;
+        }}
+      </Select>
       {showPicker && (
-        <Modal onClose={handleClose}>
-          <DatePickerForm
-            startDate={startDate}
-            endDate={endDate}
-            minDate={new Date(2000, 0, 1)}
-            maxDate={endOfYear(new Date())}
-            onChange={handlePickerChange}
-            onClose={() => setShowPicker(false)}
-          />
+        <Modal isOpen={true}>
+          <Dialog>
+            <DatePickerForm
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date(2000, 0, 1)}
+              maxDate={endOfYear(new Date())}
+              onChange={handlePickerChange}
+              onClose={() => setShowPicker(false)}
+            />
+          </Dialog>
         </Modal>
       )}
     </>
@@ -167,8 +184,8 @@ const CustomRange = ({ startDate, endDate, unit, onClick }) => {
   }
 
   return (
-    <Flexbox gap={10} alignItems="center" wrap="nowrap">
-      <Icon className="mr-2" onClick={handleClick}>
+    <Row gap="3" alignItems="center" wrap="nowrap">
+      <Icon onClick={handleClick}>
         <Icons.Calendar />
       </Icon>
       <Text>
@@ -181,6 +198,6 @@ const CustomRange = ({ startDate, endDate, unit, onClick }) => {
           </>
         )}
       </Text>
-    </Flexbox>
+    </Row>
   );
 };

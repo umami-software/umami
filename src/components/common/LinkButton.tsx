@@ -1,29 +1,29 @@
 import { ReactNode } from 'react';
-import classNames from 'classnames';
 import Link from 'next/link';
+import { Button } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
-// eslint-disable-next-line css-modules/no-unused-class
-import styles from './LinkButton.module.css';
 
 export interface LinkButtonProps {
   href: string;
-  className?: string;
-  variant?: string;
   scroll?: boolean;
+  variant?: any;
   children?: ReactNode;
 }
 
-export function LinkButton({ href, className, variant, scroll = true, children }: LinkButtonProps) {
+export function LinkButton({
+  href,
+  variant = 'quiet',
+  scroll = true,
+  children,
+  ...props
+}: LinkButtonProps) {
   const { dir } = useLocale();
 
   return (
-    <Link
-      className={classNames(styles.button, className, { [styles[variant]]: true })}
-      href={href}
-      dir={dir}
-      scroll={scroll}
-    >
-      {children}
-    </Link>
+    <Button {...props} variant={variant} asChild>
+      <Link href={href} dir={dir} scroll={scroll}>
+        {children}
+      </Link>
+    </Button>
   );
 }

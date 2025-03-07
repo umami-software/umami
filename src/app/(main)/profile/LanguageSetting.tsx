@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Dropdown, Item, Flexbox } from 'react-basics';
+import { Button, Dropdown, Item, Flexbox } from '@umami/react-zen';
 import { useLocale, useMessages } from '@/components/hooks';
 import { DEFAULT_LOCALE } from '@/lib/constants';
 import { languages } from '@/lib/lang';

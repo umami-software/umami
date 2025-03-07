@@ -1,5 +1,5 @@
 'use client';
-import { Icon, Icons, Loading, Text } from 'react-basics';
+import { Icon, Icons, Loading, Text } from '@umami/react-zen';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Pager } from '@/components/common/Pager';
 import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';

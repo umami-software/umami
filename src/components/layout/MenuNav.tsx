@@ -1,29 +1,37 @@
-import { List, ListItem, Text } from '@umami/react-zen';
-import { usePathname } from 'next/navigation';
+import { Column, Button, Text, List, ListItem } from '@umami/react-zen';
 import Link from 'next/link';
 
-export interface SideNavProps {
+export interface MenuNavProps {
   items: any[];
-  shallow?: boolean;
-  scroll?: boolean;
+  selectedKey?: string;
 }
 
-export function MenuNav({ items, shallow = true, scroll = false }: SideNavProps) {
-  const pathname = usePathname();
-
+export function MenuNav({ items, selectedKey }: MenuNavProps) {
   return (
     <List>
       {items.map(({ key, label, url }) => {
-        const isSelected = pathname.startsWith(url);
-
         return (
-          <ListItem key={key}>
-            <Link href={url} shallow={shallow} scroll={scroll}>
-              <Text weight={isSelected ? 'bold' : 'regular'}>{label}</Text>
-            </Link>
+          <ListItem key={key} href={url}>
+            <Text weight={key === selectedKey ? 'bold' : 'regular'}>{label}</Text>
           </ListItem>
         );
       })}
     </List>
+  );
+}
+
+export function MenuNav2({ items, selectedKey }: MenuNavProps) {
+  return (
+    <Column gap="3" alignItems="flex-start" justifyContent="stretch">
+      {items.map(({ key, label, url }) => {
+        return (
+          <Button key={key} style={{ width: '100%' }} asChild>
+            <Link href={url}>
+              <Text weight={key === selectedKey ? 'bold' : 'regular'}>{label}</Text>
+            </Link>
+          </Button>
+        );
+      })}
+    </Column>
   );
 }

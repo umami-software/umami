@@ -1,4 +1,4 @@
-import { Form, FormRow, Menu, Item } from 'react-basics';
+import { Form, FormRow, Menu, Item } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 
 export function FieldAggregateForm({

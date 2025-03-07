@@ -1,20 +1,18 @@
 import {
-  SubmitButton,
   Form,
-  FormInput,
-  FormRow,
+  FormField,
   FormButtons,
+  FormSubmitButton,
   TextField,
   Button,
-  Flexbox,
-  useToasts,
-} from 'react-basics';
+  useToast,
+} from '@umami/react-zen';
 import { getRandomChars } from '@/lib/crypto';
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 
-const generateId = () => getRandomChars(16);
+const generateId = () => `team_${getRandomChars(16)}`;
 
 export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?: boolean }) {
   const team = useContext(TeamContext);
@@ -23,57 +21,48 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/teams/${teamId}`, data),
   });
-  const ref = useRef(null);
   const [accessCode, setAccessCode] = useState(team.accessCode);
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { touch } = useModified();
   const cloudMode = !!process.env.cloudMode;
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
       onSuccess: async () => {
-        ref.current.reset(data);
         touch('teams');
-        showToast({ message: formatMessage(messages.saved), variant: 'success' });
+        toast(formatMessage(messages.saved));
       },
     });
   };
 
   const handleRegenerate = () => {
-    const code = generateId();
-    ref.current.setValue('accessCode', code, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setAccessCode(code);
+    setAccessCode(generateId());
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error} values={team}>
-      <FormRow label={formatMessage(labels.teamId)}>
-        <TextField value={teamId} readOnly allowCopy />
-      </FormRow>
-      <FormRow label={formatMessage(labels.name)}>
-        {allowEdit && (
-          <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
-            <TextField />
-          </FormInput>
-        )}
+    <Form onSubmit={handleSubmit} error={error} values={{ ...team, accessCode }}>
+      <FormField name="id" label={formatMessage(labels.teamId)}>
+        <TextField isReadOnly allowCopy />
+      </FormField>
+      <FormField
+        name="name"
+        label={formatMessage(labels.name)}
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        {allowEdit && <TextField />}
         {!allowEdit && team.name}
-      </FormRow>
+      </FormField>
       {!cloudMode && allowEdit && (
-        <FormRow label={formatMessage(labels.accessCode)}>
-          <Flexbox gap={10}>
-            <TextField value={accessCode} readOnly allowCopy />
-            {allowEdit && (
-              <Button onClick={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
-            )}
-          </Flexbox>
-        </FormRow>
+        <FormField name="accessCode" label={formatMessage(labels.accessCode)}>
+          <TextField isReadOnly allowCopy />
+        </FormField>
       )}
       {allowEdit && (
-        <FormButtons>
-          <SubmitButton variant="primary">{formatMessage(labels.save)}</SubmitButton>
+        <FormButtons justifyContent="space-between">
+          {allowEdit && (
+            <Button onPress={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
+          )}
+          <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
         </FormButtons>
       )}
     </Form>

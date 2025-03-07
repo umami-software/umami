@@ -9,7 +9,7 @@ import {
   Item,
   SubmitButton,
   TextField,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 

@@ -1,4 +1,4 @@
-import { TextArea } from 'react-basics';
+import { TextArea } from '@umami/react-zen';
 import { useMessages, useConfig } from '@/components/hooks';
 
 const SCRIPT_NAME = 'script.js';

@@ -1,4 +1,4 @@
-import { GridTable, GridColumn, Icon } from 'react-basics';
+import { GridTable, GridColumn, Icon } from '@umami/react-zen';
 import { useMessages, useTeamUrl, useTimezone } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';

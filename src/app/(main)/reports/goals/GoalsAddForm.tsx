@@ -1,6 +1,6 @@
 import { useMessages } from '@/components/hooks';
 import { useState } from 'react';
-import { Button, Dropdown, Flexbox, FormRow, Item, TextField } from 'react-basics';
+import { Button, Dropdown, Flexbox, FormRow, Item, TextField } from '@umami/react-zen';
 import styles from './GoalsAddForm.module.css';
 
 export function GoalsAddForm({

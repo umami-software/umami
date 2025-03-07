@@ -1,5 +1,5 @@
 import { isSameDay } from 'date-fns';
-import { Loading, Icon, StatusLight } from 'react-basics';
+import { Loading, Icon, StatusLight } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { useSessionActivity, useTimezone } from '@/components/hooks';
 import styles from './SessionActivity.module.css';

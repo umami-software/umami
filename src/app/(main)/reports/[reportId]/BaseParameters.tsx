@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { FormRow } from 'react-basics';
+import { Column, Label } from '@umami/react-zen';
 import { parseDateRange } from '@/lib/date';
 import { DateFilter } from '@/components/input/DateFilter';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
@@ -40,16 +40,18 @@ export function BaseParameters({
   return (
     <>
       {showWebsiteSelect && (
-        <FormRow label={formatMessage(labels.website)}>
+        <Column>
+          <Label>{formatMessage(labels.website)}</Label>
           {allowWebsiteSelect ? (
             <WebsiteSelect teamId={teamId} websiteId={websiteId} onSelect={handleWebsiteSelect} />
           ) : (
             name
           )}
-        </FormRow>
+        </Column>
       )}
       {showDateSelect && (
-        <FormRow label={formatMessage(labels.dateRange)} className={styles.dropdown}>
+        <Column className={styles.dropdown}>
+          <Label>{formatMessage(labels.dateRange)}</Label>
           {allowDateSelect && (
             <DateFilter
               value={value}
@@ -58,7 +60,7 @@ export function BaseParameters({
               onChange={handleDateChange}
             />
           )}
-        </FormRow>
+        </Column>
       )}
     </>
   );

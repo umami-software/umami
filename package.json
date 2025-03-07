@@ -10,7 +10,7 @@
     "url": "https://github.com/umami-software/umami.git"
   },
   "scripts": {
-    "dev": "next dev -p 3000 --turbo",
+    "dev": "next dev -p 3000",
     "build": "npm-run-all check-env build-db check-db build-tracker build-geo build-app",
     "start": "next start",
     "build-docker": "npm-run-all build-db build-tracker build-geo build-app",
@@ -71,12 +71,13 @@
     "@dicebear/core": "^9.2.2",
     "@fontsource/inter": "^4.5.15",
     "@hello-pangea/dnd": "^17.0.0",
-    "@prisma/client": "6.1.0",
+    "@internationalized/date": "^3.7.0",
+    "@prisma/client": "6.4.1",
     "@prisma/extension-read-replicas": "^0.4.0",
     "@react-spring/web": "^9.7.5",
     "@tanstack/react-query": "^5.66.11",
     "@umami/prisma-client": "^0.14.0",
-    "@umami/react-zen": "^0.62.0",
+    "@umami/react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen",
     "@umami/redis-client": "^0.26.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
@@ -105,10 +106,10 @@
     "lucide-react": "^0.475.0",
     "maxmind": "^4.3.24",
     "md5": "^2.3.0",
-    "next": "15.2.0",
+    "next": "15.2.1",
     "node-fetch": "^3.3.2",
     "npm-run-all": "^4.1.5",
-    "prisma": "6.1.0",
+    "prisma": "6.4.1",
     "pure-rand": "^6.1.0",
     "react": "^19.0.0",
     "react-aria-components": "^1.6.0",
@@ -119,7 +120,6 @@
     "react-simple-maps": "^2.3.0",
     "react-use-measure": "^2.1.7",
     "react-window": "^1.8.11",
-    "react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen",
     "request-ip": "^3.3.0",
     "semver": "^7.7.1",
     "serialize-error": "^12.0.0",
@@ -196,7 +196,7 @@
       "sharp"
     ],
     "overrides": {
-      "react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
+      "@umami/react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
     }
   }
 }

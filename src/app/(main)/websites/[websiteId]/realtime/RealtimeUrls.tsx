@@ -1,5 +1,5 @@
 import { Key, useContext, useState } from 'react';
-import { ButtonGroup, Button, Flexbox } from 'react-basics';
+import { ButtonGroup, Button, Flexbox } from '@umami/react-zen';
 import thenby from 'thenby';
 import { percentFilter } from '@/lib/filters';
 import { ListTable } from '@/components/metrics/ListTable';

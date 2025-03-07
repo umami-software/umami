@@ -1,6 +1,6 @@
 import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { Icon, CopyIcon } from 'react-basics';
+import { Icon, CopyIcon } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import styles from './SessionInfo.module.css';
 

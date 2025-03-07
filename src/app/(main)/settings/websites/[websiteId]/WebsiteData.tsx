@@ -1,9 +1,10 @@
-import { Button, Modal, ModalTrigger, ActionForm } from 'react-basics';
+import { Button, Modal, DialogTrigger, Dialog, Column } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useLogin, useMessages, useModified, useTeams, useTeamUrl } from '@/components/hooks';
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
 import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
+import { ActionForm } from '@/components/layout/ActionForm';
 import { ROLES } from '@/lib/constants';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
@@ -39,50 +40,58 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   };
 
   return (
-    <>
+    <Column gap="6">
       <ActionForm
         label={formatMessage(labels.transferWebsite)}
         description={formatMessage(messages.transferWebsite)}
       >
-        <ModalTrigger disabled={!canTransferWebsite}>
-          <Button variant="secondary" disabled={!canTransferWebsite}>
+        <DialogTrigger>
+          <Button variant="secondary" isDisabled={!canTransferWebsite}>
             {formatMessage(labels.transfer)}
           </Button>
-          <Modal title={formatMessage(labels.transferWebsite)}>
-            {(close: () => void) => (
-              <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-            )}
+          <Modal>
+            <Dialog title={formatMessage(labels.transferWebsite)}>
+              {({ close }) => (
+                <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+              )}
+            </Dialog>
           </Modal>
-        </ModalTrigger>
+        </DialogTrigger>
       </ActionForm>
+
       <ActionForm
         label={formatMessage(labels.resetWebsite)}
         description={formatMessage(messages.resetWebsiteWarning)}
       >
-        <ModalTrigger>
+        <DialogTrigger>
           <Button variant="secondary">{formatMessage(labels.reset)}</Button>
-          <Modal title={formatMessage(labels.resetWebsite)}>
-            {(close: () => void) => (
-              <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
-            )}
+          <Modal>
+            <Dialog title={formatMessage(labels.resetWebsite)}>
+              {({ close }) => (
+                <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
+              )}
+            </Dialog>
           </Modal>
-        </ModalTrigger>
+        </DialogTrigger>
       </ActionForm>
+
       <ActionForm
         label={formatMessage(labels.deleteWebsite)}
         description={formatMessage(messages.deleteWebsiteWarning)}
       >
-        <ModalTrigger>
+        <DialogTrigger>
           <Button data-test="button-delete" variant="danger">
             {formatMessage(labels.delete)}
           </Button>
-          <Modal title={formatMessage(labels.deleteWebsite)}>
-            {(close: () => void) => (
-              <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-            )}
+          <Modal>
+            <Dialog title={formatMessage(labels.deleteWebsite)}>
+              {({ close }) => (
+                <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
+              )}
+            </Dialog>
           </Modal>
-        </ModalTrigger>
+        </DialogTrigger>
       </ActionForm>
-    </>
+    </Column>
   );
 }
