@@ -1,8 +1,7 @@
 import { useState, Key } from 'react';
-import { Dropdown, Item } from '@umami/react-zen';
+import { Select, ListItem } from '@umami/react-zen';
 import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
-import styles from './WebsiteSelect.module.css';
 
 export function WebsiteSelect({
   websiteId,
@@ -21,10 +20,6 @@ export function WebsiteSelect({
 
   const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
 
-  const renderValue = () => {
-    return website?.name;
-  };
-
   const renderEmpty = () => {
     return <Empty message={formatMessage(messages.noResultsFound)} />;
   };
@@ -39,20 +34,16 @@ export function WebsiteSelect({
   };
 
   return (
-    <Dropdown
-      menuProps={{ className: styles.dropdown }}
+    <Select
       items={queryResult?.result?.data as any[]}
       value={selectedId as string}
-      renderValue={renderValue}
-      renderEmpty={renderEmpty}
       onChange={handleSelect}
-      alignment="end"
       placeholder={formatMessage(labels.selectWebsite)}
       allowSearch={true}
       onSearch={handleSearch}
       isLoading={queryResult.query.isLoading}
     >
-      {({ id, name }) => <Item key={id}>{name}</Item>}
-    </Dropdown>
+      {({ id, name }: any) => <ListItem key={id}>{name}</ListItem>}
+    </Select>
   );
 }

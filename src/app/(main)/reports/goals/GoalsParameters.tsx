@@ -4,18 +4,17 @@ import { formatNumber } from '@/lib/format';
 import { useContext } from 'react';
 import {
   Button,
-  Flexbox,
   Form,
   FormButtons,
-  FormRow,
+  FormField,
   Icon,
-  Popup,
-  PopupTrigger,
-  SubmitButton,
+  Popover,
+  MenuTrigger,
+  FormSubmitButton,
+  Column,
 } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { PopupForm } from '../[reportId]/PopupForm';
 import { ReportContext } from '../[reportId]/Report';
 import { GoalsAddForm } from './GoalsAddForm';
 import styles from './GoalsParameters.module.css';
@@ -60,25 +59,24 @@ export function GoalsParameters() {
 
   const AddGoalsButton = () => {
     return (
-      <PopupTrigger>
+      <MenuTrigger>
         <Button>
           <Icon>
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popup alignment="start">
-          <PopupForm>
-            <GoalsAddForm onChange={handleAddGoals} />
-          </PopupForm>
-        </Popup>
-      </PopupTrigger>
+        <Popover placement="start">
+          <GoalsAddForm onChange={handleAddGoals} />
+        </Popover>
+      </MenuTrigger>
     );
   };
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters allowWebsiteSelect={!id} />
-      <FormRow label={formatMessage(labels.goals)} action={<AddGoalsButton />}>
+      <AddGoalsButton />
+      <FormField label={formatMessage(labels.goals)}>
         <ParameterList>
           {goals.map(
             (
@@ -92,12 +90,12 @@ export function GoalsParameters() {
               index: number,
             ) => {
               return (
-                <PopupTrigger key={index}>
+                <MenuTrigger key={index}>
                   <ParameterList.Item
                     icon={goal.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
                     onRemove={() => handleRemoveGoals(index)}
                   >
-                    <Flexbox direction="column" gap={5}>
+                    <Column>
                       <div className={styles.value}>{goal.value}</div>
                       {goal.type === 'event-data' && (
                         <div className={styles.eventData}>
@@ -107,32 +105,28 @@ export function GoalsParameters() {
                       <div className={styles.goal}>
                         {formatMessage(labels.goal)}: {formatNumber(goal.goal)}
                       </div>
-                    </Flexbox>
+                    </Column>
                   </ParameterList.Item>
-                  <Popup alignment="start">
-                    {(close: () => void) => (
-                      <PopupForm>
-                        <GoalsAddForm
-                          type={goal.type}
-                          value={goal.value}
-                          goal={goal.goal}
-                          operator={goal.operator}
-                          property={goal.property}
-                          onChange={handleUpdateGoals.bind(null, close, index)}
-                        />
-                      </PopupForm>
-                    )}
-                  </Popup>
-                </PopupTrigger>
+                  <Popover placement="start">
+                    <GoalsAddForm
+                      type={goal.type}
+                      value={goal.value}
+                      goal={goal.goal}
+                      operator={goal.operator}
+                      property={goal.property}
+                      onChange={handleUpdateGoals.bind(null, () => {}, index)}
+                    />
+                  </Popover>
+                </MenuTrigger>
               );
             },
           )}
         </ParameterList>
-      </FormRow>
+      </FormField>
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

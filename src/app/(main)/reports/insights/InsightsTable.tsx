@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { GridTable, GridColumn } from '@umami/react-zen';
+import { DataTable, DataColumn } from '@umami/react-zen';
 import { useFormat, useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
@@ -24,50 +24,35 @@ export function InsightsTable() {
   }
 
   return (
-    <GridTable data={report?.data || []}>
+    <DataTable data={report?.data || []}>
       {fields.map(({ name, label }) => {
         return (
-          <GridColumn key={name} name={name} label={label}>
+          <DataColumn key={name} id={name} label={label}>
             {row => formatValue(row[name], name)}
-          </GridColumn>
+          </DataColumn>
         );
       })}
-      <GridColumn name="views" label={formatMessage(labels.views)} width="100px" alignment="end">
-        {row => row?.views?.toLocaleString()}
-      </GridColumn>
-      <GridColumn name="visits" label={formatMessage(labels.visits)} width="100px" alignment="end">
-        {row => row?.visits?.toLocaleString()}
-      </GridColumn>
-      <GridColumn
-        name="visitors"
-        label={formatMessage(labels.visitors)}
-        width="100px"
-        alignment="end"
-      >
-        {row => row?.visitors?.toLocaleString()}
-      </GridColumn>
-      <GridColumn
-        name="bounceRate"
-        label={formatMessage(labels.bounceRate)}
-        width="100px"
-        alignment="end"
-      >
-        {row => {
+      <DataColumn id="views" label={formatMessage(labels.views)} align="end">
+        {(row: any) => row?.views?.toLocaleString()}
+      </DataColumn>
+      <DataColumn id="visits" label={formatMessage(labels.visits)} align="end">
+        {(row: any) => row?.visits?.toLocaleString()}
+      </DataColumn>
+      <DataColumn id="visitors" label={formatMessage(labels.visitors)} align="end">
+        {(row: any) => row?.visitors?.toLocaleString()}
+      </DataColumn>
+      <DataColumn id="bounceRate" label={formatMessage(labels.bounceRate)} align="end">
+        {(row: any) => {
           const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
           return Math.round(+n) + '%';
         }}
-      </GridColumn>
-      <GridColumn
-        name="visitDuration"
-        label={formatMessage(labels.visitDuration)}
-        width="100px"
-        alignment="end"
-      >
-        {row => {
+      </DataColumn>
+      <DataColumn id="visitDuration" label={formatMessage(labels.visitDuration)} align="end">
+        {(row: any) => {
           const n = row?.totaltime / row?.visits;
           return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
         }}
-      </GridColumn>
-    </GridTable>
+      </DataColumn>
+    </DataTable>
   );
 }

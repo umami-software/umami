@@ -1,15 +1,7 @@
 import { useMessages } from '@/components/hooks';
 import { useRevenueValues } from '@/components/hooks/queries/useRevenueValues';
 import { useContext } from 'react';
-import {
-  Dropdown,
-  Form,
-  FormButtons,
-  FormInput,
-  FormRow,
-  Item,
-  SubmitButton,
-} from '@umami/react-zen';
+import { Select, Form, FormButtons, FormField, ListItem, FormSubmitButton } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ReportContext } from '../[reportId]/Report';
 
@@ -35,17 +27,20 @@ export function RevenueParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={true} allowWebsiteSelect={!id} />
-      <FormRow label={formatMessage(labels.currency)}>
-        <FormInput name="currency" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown items={values.map(item => item.currency)}>
-            {item => <Item key={item}>{item}</Item>}
-          </Dropdown>
-        </FormInput>
-      </FormRow>
+
+      <FormField
+        label={formatMessage(labels.currency)}
+        name="currency"
+        rules={{ required: formatMessage(labels.required) }}
+      >
+        <Select items={values.map(item => item.currency)}>
+          {item => <ListItem key={item}>{item}</ListItem>}
+        </Select>
+      </FormField>
       <FormButtons>
-        <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

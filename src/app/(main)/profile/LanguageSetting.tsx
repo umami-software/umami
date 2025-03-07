@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Dropdown, Item, Flexbox } from '@umami/react-zen';
+import { Button, Select, ListItem, Flexbox } from '@umami/react-zen';
 import { useLocale, useMessages } from '@/components/hooks';
 import { DEFAULT_LOCALE } from '@/lib/constants';
 import { languages } from '@/lib/lang';
@@ -20,22 +20,19 @@ export function LanguageSetting() {
 
   const handleReset = () => saveLocale(DEFAULT_LOCALE);
 
-  const renderValue = (value: string | number) => languages?.[value]?.label;
-
   return (
     <Flexbox gap={10}>
-      <Dropdown
+      <Select
         items={options}
         value={locale}
-        renderValue={renderValue}
         onChange={val => saveLocale(val as string)}
         allowSearch={true}
         onSearch={setSearch}
         menuProps={{ className: styles.menu }}
       >
-        {item => <Item key={item}>{languages[item].label}</Item>}
-      </Dropdown>
-      <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
+        {item => <ListItem key={item}>{languages[item].label}</ListItem>}
+      </Select>
+      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );
 }

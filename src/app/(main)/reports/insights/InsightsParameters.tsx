@@ -1,6 +1,6 @@
 import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
-import { Form, FormButtons, SubmitButton } from '@umami/react-zen';
+import { Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ReportContext } from '../[reportId]/Report';
 import { FieldParameters } from '../[reportId]/FieldParameters';
@@ -25,9 +25,9 @@ export function InsightsParameters() {
       {parametersSelected && <FieldParameters />}
       {parametersSelected && <FilterParameters />}
       <FormButtons>
-        <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useMessages, useFormat, useFilters, useFields } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { Button, FormRow, Icon, Popup, PopupTrigger } from '@umami/react-zen';
+import { Button, Text, Row, Label, Icon, Popover, MenuTrigger } from '@umami/react-zen';
 import { FilterSelectForm } from '../[reportId]/FilterSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
 import { PopupForm } from '../[reportId]/PopupForm';
@@ -44,13 +44,13 @@ export function FilterParameters() {
 
   const AddButton = () => {
     return (
-      <PopupTrigger>
+      <MenuTrigger>
         <Button size="sm">
           <Icon>
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popup position="bottom" alignment="start">
+        <Popover placement="bottom start">
           <PopupForm>
             <FilterSelectForm
               websiteId={websiteId}
@@ -60,13 +60,17 @@ export function FilterParameters() {
               onChange={handleAdd}
             />
           </PopupForm>
-        </Popup>
-      </PopupTrigger>
+        </Popover>
+      </MenuTrigger>
     );
   };
 
   return (
-    <FormRow label={formatMessage(labels.filters)} action={<AddButton />}>
+    <>
+      <Row justifyContent="space-between">
+        <Label>{formatMessage(labels.filters)}</Label>
+        <AddButton />
+      </Row>
       <ParameterList>
         {filters.map(
           ({ name, operator, value }: { name: string; operator: string; value: string }) => {
@@ -90,7 +94,7 @@ export function FilterParameters() {
           },
         )}
       </ParameterList>
-    </FormRow>
+    </>
   );
 }
 
@@ -108,29 +112,27 @@ const FilterParameter = ({
   const { operatorLabels } = useFilters();
 
   return (
-    <PopupTrigger>
+    <MenuTrigger>
       <div className={styles.item}>
         <div className={styles.label}>{label}</div>
         <div className={styles.op}>{operatorLabels[operator]}</div>
         <div className={styles.value}>{value}</div>
       </div>
-      <Popup className={styles.edit} alignment="start">
+      <Popover className={styles.edit} placement="right top">
         {(close: any) => (
-          <PopupForm>
-            <FieldFilterEditForm
-              websiteId={websiteId}
-              name={name}
-              label={label}
-              type={type}
-              startDate={startDate}
-              endDate={endDate}
-              operator={operator}
-              defaultValue={value}
-              onChange={onChange.bind(null, close)}
-            />
-          </PopupForm>
+          <FieldFilterEditForm
+            websiteId={websiteId}
+            name={name}
+            label={label}
+            type={type}
+            startDate={startDate}
+            endDate={endDate}
+            operator={operator}
+            defaultValue={value}
+            onChange={onChange.bind(null, close)}
+          />
         )}
-      </Popup>
-    </PopupTrigger>
+      </Popover>
+    </MenuTrigger>
   );
 };

@@ -11,7 +11,6 @@ export function RetentionParameters() {
 
   const { id, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
-  const { startDate } = dateRange || {};
   const queryDisabled = !websiteId || !dateRange;
 
   const handleSubmit = (data: any, e: any) => {
