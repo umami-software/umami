@@ -9,8 +9,8 @@ export async function POST(request: Request) {
   const schema = z.object({
     ...reportParms,
     steps: z.coerce.number().min(3).max(7),
-    startStep: z.string(),
-    endStep: z.string(),
+    startStep: z.string().optional(),
+    endStep: z.string().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
