@@ -15,7 +15,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
 
   return (
     <ModalTrigger>
-      <Button variant="primary">
+      <Button data-test="button-create-user" variant="primary">
         <Icon>
           <Icons.Plus />
         </Icon>

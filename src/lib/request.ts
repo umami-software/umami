@@ -1,4 +1,4 @@
-import { ZodSchema } from 'zod';
+import { z, ZodSchema } from 'zod';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import { badRequest, unauthorized } from '@/lib/response';
 import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
@@ -24,12 +24,21 @@ export async function parseRequest(
   let error: () => void | undefined;
   let auth = null;
 
+  const getErrorMessages = (error: z.ZodError) => {
+    return Object.entries(error.format())
+      .map(([key, value]) => {
+        const messages = (value as any)._errors;
+        return messages ? `${key}: ${messages.join(', ')}` : null;
+      })
+      .filter(Boolean);
+  };
+
   if (schema) {
     const isGet = request.method === 'GET';
     const result = schema.safeParse(isGet ? query : body);
 
     if (!result.success) {
-      error = () => badRequest(result.error);
+      error = () => badRequest(getErrorMessages(result.error));
     } else if (isGet) {
       query = result.data;
     } else {
