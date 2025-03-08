@@ -1,0 +1,17 @@
+{
+  "userGet": {
+    "name": "cypress",
+    "email": "password",
+    "role": "User"
+  },
+  "userPost": {
+    "username": "cypress1",
+    "password": "password",
+    "role": "User"
+  },
+  "userDelete": {
+    "name": "Charlie",
+    "email": "charlie@example.com",
+    "age": 35
+  }
+}
