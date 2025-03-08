@@ -7,7 +7,7 @@ import { BROWSERS, OS_NAMES } from '@/lib/constants';
 import { stringToColor } from '@/lib/format';
 import { RealtimeData } from '@/lib/types';
 import { useContext, useMemo, useState } from 'react';
-import { Icon, SearchField, StatusLight, Text } from 'react-basics';
+import { Icon, SearchField, StatusLight, Text } from '@umami/react-zen';
 import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';

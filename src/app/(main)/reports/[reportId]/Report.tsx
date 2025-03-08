@@ -1,5 +1,5 @@
 import { createContext, ReactNode } from 'react';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 import classNames from 'classnames';
 import { useReport } from '@/components/hooks';
 import styles from './Report.module.css';

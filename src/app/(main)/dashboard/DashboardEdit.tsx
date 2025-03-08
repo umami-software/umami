@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import classNames from 'classnames';
-import { Button, Loading, Toggle, SearchField } from 'react-basics';
+import { Button, Loading, Toggle, SearchField } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import { useDashboard, saveDashboard } from '@/store/dashboard';
 import { useMessages, useWebsites } from '@/components/hooks';

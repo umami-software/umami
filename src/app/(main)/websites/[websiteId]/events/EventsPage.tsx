@@ -6,7 +6,7 @@ import { EventsChart } from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/layout/Grid';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
-import { Item, Tabs } from 'react-basics';
+import { Item, Tabs } from '@umami/react-zen';
 import { useState } from 'react';
 import { EventProperties } from './EventProperties';
 

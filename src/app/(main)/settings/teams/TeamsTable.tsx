@@ -1,4 +1,4 @@
-import { GridColumn, GridTable, Icon, Text } from 'react-basics';
+import { DataColumn, DataTable, Icon, Text } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { ROLES } from '@/lib/constants';
@@ -15,33 +15,33 @@ export function TeamsTable({
   const { formatMessage, labels } = useMessages();
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="name" label={formatMessage(labels.name)} />
-      <GridColumn name="owner" label={formatMessage(labels.owner)}>
-        {row => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
-      </GridColumn>
-      <GridColumn name="websites" label={formatMessage(labels.websites)}>
-        {row => row._count.website}
-      </GridColumn>
-      <GridColumn name="members" label={formatMessage(labels.members)}>
-        {row => row._count.teamUser}
-      </GridColumn>
+    <DataTable data={data}>
+      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="owner" label={formatMessage(labels.owner)}>
+        {(row: any) => row.teamUser.find(({ role }) => role === ROLES.teamOwner)?.user?.username}
+      </DataColumn>
+      <DataColumn id="websites" label={formatMessage(labels.websites)}>
+        {(row: any) => row._count.website}
+      </DataColumn>
+      <DataColumn id="members" label={formatMessage(labels.members)}>
+        {(row: any) => row._count.teamUser}
+      </DataColumn>
       {showActions && (
-        <GridColumn name="action" label=" " alignment="end">
-          {row => {
+        <DataColumn id="action" label=" " align="end">
+          {(row: any) => {
             const { id } = row;
 
             return (
               <LinkButton href={`/teams/${id}/settings`}>
                 <Icon>
-                  <Icons.ArrowRight />
+                  <Icons.Arrow />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </LinkButton>
             );
           }}
-        </GridColumn>
+        </DataColumn>
       )}
-    </GridTable>
+    </DataTable>
   );
 }

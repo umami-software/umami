@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useMessages } from '@/components/hooks';
-import { Form, FormButtons, SubmitButton } from 'react-basics';
+import { Form, FormButtons, SubmitButton } from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 

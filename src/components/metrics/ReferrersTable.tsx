@@ -5,7 +5,7 @@ import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { FilterButtons } from '@/components/common/FilterButtons';
 import thenby from 'thenby';
 import { GROUPED_DOMAINS } from '@/lib/constants';
-import { Flexbox } from 'react-basics';
+import { Flexbox } from '@umami/react-zen';
 
 export interface ReferrersTableProps extends MetricsTableProps {
   allowFilter?: boolean;
@@ -69,11 +69,10 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
           if (!groups[domain]) {
             groups[domain] = 0;
           }
-          groups[domain] += y;
-        } else {
-          groups._other += y;
+          groups[domain] += +y;
         }
       }
+      groups._other += +y;
     }
 
     return Object.keys(groups)

@@ -1,13 +1,14 @@
 import {
   Form,
-  FormRow,
+  FormField,
   FormButtons,
-  Flexbox,
   TextField,
   Button,
-  Toggle,
-  LoadingButton,
-} from 'react-basics';
+  Switch,
+  FormSubmitButton,
+  Box,
+  useToast,
+} from '@umami/react-zen';
 import { useContext, useState } from 'react';
 import { getRandomChars } from '@/lib/crypto';
 import { useApi, useMessages, useModified } from '@/components/hooks';
@@ -25,6 +26,7 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
     mutationFn: (data: any) => post(`/websites/${website.id}`, data),
   });
   const { touch } = useModified();
+  const { toast } = useToast();
 
   const url = `${hostUrl || window?.location.origin || ''}${
     process.env.basePath || ''
@@ -34,7 +36,8 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
     setId(generateId());
   };
 
-  const handleCheck = (checked: boolean) => {
+  const handleSwitch = (checked: boolean) => {
+    console.log({ checked });
     const data = {
       name: website.name,
       domain: website.domain,
@@ -42,6 +45,7 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
     };
     mutate(data, {
       onSuccess: async () => {
+        toast(formatMessage(messages.saved));
         touch(`website:${website.id}`);
         onSave?.();
       },
@@ -54,6 +58,7 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
       { name: website.name, domain: website.domain, shareId: id },
       {
         onSuccess: async () => {
+          toast(formatMessage(messages.saved));
           touch(`website:${website.id}`);
           onSave?.();
         },
@@ -63,27 +68,21 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
 
   return (
     <>
-      <Toggle checked={Boolean(id)} onChecked={handleCheck} style={{ marginBottom: 30 }}>
-        {formatMessage(labels.enableShareUrl)}
-      </Toggle>
+      <Box marginBottom="6">
+        <Switch defaultSelected={!!id} isSelected={!!id} onChange={handleSwitch}>
+          {formatMessage(labels.enableShareUrl)}
+        </Switch>
+      </Box>
       {id && (
-        <Form error={error}>
-          <FormRow>
-            <p>{formatMessage(messages.shareUrl)}</p>
-            <Flexbox gap={10}>
-              <TextField value={url} readOnly allowCopy />
-              <Button onClick={handleGenerate}>{formatMessage(labels.regenerate)}</Button>
-            </Flexbox>
-          </FormRow>
-          <FormButtons>
-            <LoadingButton
-              variant="primary"
-              disabled={id === shareId}
-              isLoading={isPending}
-              onClick={handleSave}
-            >
+        <Form onSubmit={handleSave} error={error} values={{ id, url }}>
+          <FormField label={formatMessage(messages.shareUrl)} name="url">
+            <TextField isReadOnly allowCopy />
+          </FormField>
+          <FormButtons justifyContent="space-between">
+            <Button onPress={handleGenerate}>{formatMessage(labels.regenerate)}</Button>
+            <FormSubmitButton variant="primary" isDisabled={id === shareId} isLoading={isPending}>
               {formatMessage(labels.save)}
-            </LoadingButton>
+            </FormSubmitButton>
           </FormButtons>
         </Form>
       )}

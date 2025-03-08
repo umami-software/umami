@@ -5,7 +5,7 @@ import { SessionsMetricsBar } from './SessionsMetricsBar';
 import { SessionProperties } from './SessionProperties';
 import { WorldMap } from '@/components/metrics/WorldMap';
 import { GridRow } from '@/components/layout/Grid';
-import { Item, Tabs } from 'react-basics';
+import { Item, Tabs } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
 import { SessionsWeekly } from './SessionsWeekly';

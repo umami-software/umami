@@ -1,4 +1,4 @@
-import { Icon, Icons, Text } from 'react-basics';
+import { Icon, Icons, Text } from '@umami/react-zen';
 import styles from './ErrorMessage.module.css';
 import { useMessages } from '@/components/hooks';
 

@@ -1,4 +1,4 @@
-import { GridColumn, GridTable, Icon, Icons, Text } from 'react-basics';
+import { Icon, Icons, Text, DataTable, DataColumn, Row } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useLogin, useTeamUrl } from '@/components/hooks';
 import { REPORT_TYPES } from '@/lib/constants';
@@ -10,39 +10,39 @@ export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomai
   const { renderTeamUrl } = useTeamUrl();
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="name" label={formatMessage(labels.name)} />
-      <GridColumn name="description" label={formatMessage(labels.description)} />
-      <GridColumn name="type" label={formatMessage(labels.type)}>
-        {row => {
+    <DataTable data={data}>
+      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="description" label={formatMessage(labels.description)} />
+      <DataColumn id="type" label={formatMessage(labels.type)}>
+        {(row: any) => {
           return formatMessage(
             labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === row.type)],
           );
         }}
-      </GridColumn>
+      </DataColumn>
       {showDomain && (
-        <GridColumn name="domain" label={formatMessage(labels.domain)}>
-          {row => row?.website?.domain}
-        </GridColumn>
+        <DataColumn id="domain" label={formatMessage(labels.domain)}>
+          {(row: any) => row?.website?.domain}
+        </DataColumn>
       )}
-      <GridColumn name="action" label="" alignment="end">
-        {row => {
+      <DataColumn id="action" label="" align="end">
+        {(row: any) => {
           const { id, name, userId, website } = row;
           return (
-            <>
+            <Row gap="3">
               {(user.id === userId || user.id === website?.userId) && (
                 <ReportDeleteButton reportId={id} reportName={name} />
               )}
               <LinkButton href={renderTeamUrl(`/reports/${id}`)}>
                 <Icon>
-                  <Icons.ArrowRight />
+                  <Icons.Arrow />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </LinkButton>
-            </>
+            </Row>
           );
         }}
-      </GridColumn>
-    </GridTable>
+      </DataColumn>
+    </DataTable>
   );
 }

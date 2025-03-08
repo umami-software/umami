@@ -1,4 +1,4 @@
-import { Icons as ReactBasicsIcons } from 'react-basics';
+import { Icons as ReactBasicsIcons } from '@umami/react-zen';
 import * as lucide from 'lucide-react';
 import * as LocalIcons from '@/components/svg';
 

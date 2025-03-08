@@ -10,6 +10,7 @@ import { createToken, parseToken } from '@/lib/jwt';
 import { secret, uuid, hash } from '@/lib/crypto';
 import { COLLECTION_TYPE } from '@/lib/constants';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
+import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
 
 const schema = z.object({
@@ -168,12 +169,12 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         visitId,
-        urlPath,
+        urlPath: safeDecodeURI(urlPath),
         urlQuery,
-        referrerPath,
+        referrerPath: safeDecodeURI(referrerPath),
         referrerQuery,
         referrerDomain,
-        pageTitle: title,
+        pageTitle: safeDecodeURIComponent(title),
         eventName: name,
         eventData: data,
         hostname: hostname || urlDomain,

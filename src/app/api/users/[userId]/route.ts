@@ -4,6 +4,7 @@ import { getUser, getUserByUsername, updateUser, deleteUser } from '@/queries';
 import { json, unauthorized, badRequest, ok } from '@/lib/response';
 import { hashPassword } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
+import { userRoleParam } from '@/lib/schema';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -26,8 +27,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ user
 export async function POST(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   const schema = z.object({
     username: z.string().max(255),
-    password: z.string().max(255),
-    role: z.enum(['admin', 'user', 'view-only']),
+    password: z.string().max(255).optional(),
+    role: userRoleParam,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

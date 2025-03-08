@@ -11,7 +11,7 @@ import {
   SubmitButton,
   TextField,
   Button,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { FunnelStepAddForm } from './FunnelStepAddForm';
 import { ReportContext } from '../[reportId]/Report';

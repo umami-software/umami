@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from 'react-basics';
+import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {

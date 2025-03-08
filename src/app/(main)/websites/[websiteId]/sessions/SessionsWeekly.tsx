@@ -4,7 +4,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
-import { TooltipPopup } from 'react-basics';
+import { TooltipPopup } from '@umami/react-zen';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
   const { data, ...props } = useWebsiteSessionsWeekly(websiteId);

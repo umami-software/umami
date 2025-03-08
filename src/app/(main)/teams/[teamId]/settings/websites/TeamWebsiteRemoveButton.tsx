@@ -1,5 +1,5 @@
 import { useApi, useMessages } from '@/components/hooks';
-import { Icon, Icons, LoadingButton, Text } from 'react-basics';
+import { Icon, Icons, LoadingButton, Text } from '@umami/react-zen';
 
 export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   const { formatMessage, labels } = useMessages();

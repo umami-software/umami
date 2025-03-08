@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { GridColumn, GridTable } from 'react-basics';
+import { GridColumn, GridTable } from '@umami/react-zen';
 import { useFormat, useMessages, useTimezone } from '@/components/hooks';
 import { Avatar } from '@/components/common/Avatar';
 import styles from './SessionsTable.module.css';

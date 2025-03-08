@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { ROLES } from '@/lib/constants';
 import { useMessages, useLocale } from '@/components/hooks';
-import { UserDeleteButton } from './UserDeleteButton';
+import UserDeleteButton from './UserDeleteButton';
+import LinkButton from '@/components/common/LinkButton';
 
 export function UsersTable({
   data = [],
@@ -44,7 +45,7 @@ export function UsersTable({
               <Row gap="3">
                 <UserDeleteButton userId={id} username={username} />
                 <Button asChild>
-                  <Link href={`/settings/users/${id}`}>
+                  <Link href={`/settings/users/${id}`} data-test="link-button-edit">
                     <Icon>
                       <Icons.Edit />
                     </Icon>

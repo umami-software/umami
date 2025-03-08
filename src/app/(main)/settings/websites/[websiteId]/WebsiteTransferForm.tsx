@@ -3,13 +3,13 @@ import {
   Button,
   Form,
   FormButtons,
-  FormRow,
-  LoadingButton,
+  FormField,
+  FormSubmitButton,
   Loading,
-  Dropdown,
-  Item,
-  Flexbox,
-} from 'react-basics';
+  Select,
+  ListItem,
+  Text,
+} from '@umami/react-zen';
 import { useApi, useLogin, useMessages, useTeams } from '@/components/hooks';
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { ROLES } from '@/lib/constants';
@@ -28,11 +28,18 @@ export function WebsiteTransferForm({
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages } = useMessages();
   const { post, useMutation } = useApi();
-  const { mutate, isPending, error } = useMutation({
+  const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/websites/${websiteId}/transfer`, data),
   });
   const { result, query } = useTeams(user.id);
   const isTeamWebsite = !!website?.teamId;
+
+  const items = result.data.filter(({ teamUser }) =>
+    teamUser.find(
+      ({ role, userId }) =>
+        [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
+    ),
+  );
 
   const handleSubmit = async () => {
     mutate(
@@ -53,45 +60,35 @@ export function WebsiteTransferForm({
     setTeamId(key as string);
   };
 
-  const renderValue = (teamId: string) => result?.data?.find(({ id }) => id === teamId)?.name;
-
   if (query.isLoading) {
     return <Loading icon="dots" position="center" />;
   }
 
   return (
-    <Form error={error}>
-      <FormRow>
-        <Flexbox direction="column" gap={20}>
-          {formatMessage(
-            isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam,
-          )}
-          {!isTeamWebsite && (
-            <Dropdown onChange={handleChange} value={teamId} renderValue={renderValue}>
-              {result.data
-                .filter(({ teamUser }) =>
-                  teamUser.find(
-                    ({ role, userId }) =>
-                      [ROLES.teamOwner, ROLES.teamManager].includes(role) && userId === user.id,
-                  ),
-                )
-                .map(({ id, name }) => {
-                  return <Item key={id}>{name}</Item>;
-                })}
-            </Dropdown>
-          )}
-        </Flexbox>
-      </FormRow>
-      <FormButtons flex>
-        <LoadingButton
-          variant="primary"
-          isLoading={isPending}
-          disabled={!isTeamWebsite && !teamId}
-          onClick={handleSubmit}
-        >
+    <Form onSubmit={handleSubmit} error={error} values={{ teamId }}>
+      <Text>
+        {formatMessage(
+          isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam,
+        )}
+      </Text>
+      <FormField name="teamId">
+        {!isTeamWebsite && (
+          <Select onSelectionChange={handleChange} value={teamId}>
+            {items.map(({ id, name }) => {
+              return (
+                <ListItem key={id} id={id}>
+                  {name}
+                </ListItem>
+              );
+            })}
+          </Select>
+        )}
+      </FormField>
+      <FormButtons>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <FormSubmitButton variant="primary" isDisabled={!isTeamWebsite && !teamId}>
           {formatMessage(labels.transfer)}
-        </LoadingButton>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

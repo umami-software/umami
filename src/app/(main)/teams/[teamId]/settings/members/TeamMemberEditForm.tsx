@@ -2,14 +2,13 @@ import { useApi, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import {
   Button,
-  Dropdown,
+  Select,
   Form,
   FormButtons,
-  FormInput,
-  FormRow,
-  Item,
-  SubmitButton,
-} from 'react-basics';
+  FormField,
+  ListItem,
+  FormSubmitButton,
+} from '@umami/react-zen';
 
 export function TeamMemberEditForm({
   teamId,
@@ -39,39 +38,25 @@ export function TeamMemberEditForm({
     });
   };
 
-  const renderValue = (value: string) => {
-    if (value === ROLES.teamManager) {
-      return formatMessage(labels.manager);
-    }
-    if (value === ROLES.teamMember) {
-      return formatMessage(labels.member);
-    }
-    if (value === ROLES.teamViewOnly) {
-      return formatMessage(labels.viewOnly);
-    }
-  };
-
   return (
     <Form onSubmit={handleSubmit} error={error} values={{ role }}>
-      <FormRow label={formatMessage(labels.role)}>
-        <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown
-            renderValue={renderValue}
-            style={{
-              minWidth: '250px',
-            }}
-          >
-            <Item key={ROLES.teamManager}>{formatMessage(labels.manager)}</Item>
-            <Item key={ROLES.teamMember}>{formatMessage(labels.member)}</Item>
-            <Item key={ROLES.teamViewOnly}>{formatMessage(labels.viewOnly)}</Item>
-          </Dropdown>
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton variant="primary" disabled={false}>
+      <FormField
+        name="role"
+        rules={{ required: formatMessage(labels.required) }}
+        label={formatMessage(labels.role)}
+      >
+        <Select>
+          <ListItem id={ROLES.teamManager}>{formatMessage(labels.manager)}</ListItem>
+          <ListItem id={ROLES.teamMember}>{formatMessage(labels.member)}</ListItem>
+          <ListItem id={ROLES.teamViewOnly}>{formatMessage(labels.viewOnly)}</ListItem>
+        </Select>
+      </FormField>
+
+      <FormButtons>
+        <FormSubmitButton variant="primary" disabled={false}>
           {formatMessage(labels.save)}
-        </SubmitButton>
-        <Button disabled={isPending} onClick={onClose}>
+        </FormSubmitButton>
+        <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
       </FormButtons>

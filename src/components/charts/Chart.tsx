@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 import classNames from 'classnames';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import { HoverTooltip } from '@/components/common/HoverTooltip';

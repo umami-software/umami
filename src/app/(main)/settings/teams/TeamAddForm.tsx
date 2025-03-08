@@ -3,11 +3,10 @@ import {
   Button,
   Form,
   FormButtons,
-  FormInput,
-  FormRow,
-  SubmitButton,
+  FormField,
+  FormSubmitButton,
   TextField,
-} from 'react-basics';
+} from '@umami/react-zen';
 
 export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: () => void }) {
   const { formatMessage, labels } = useMessages();
@@ -27,16 +26,14 @@ export function TeamAddForm({ onSave, onClose }: { onSave: () => void; onClose: 
 
   return (
     <Form onSubmit={handleSubmit} error={error}>
-      <FormRow label={formatMessage(labels.name)}>
-        <FormInput name="name" rules={{ required: formatMessage(labels.required) }}>
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <SubmitButton variant="primary" disabled={isPending}>
+      <FormField name="name" label={formatMessage(labels.name)}>
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormButtons>
+        <FormSubmitButton variant="primary" disabled={isPending}>
           {formatMessage(labels.save)}
-        </SubmitButton>
-        <Button disabled={isPending} onClick={onClose}>
+        </FormSubmitButton>
+        <Button isDisabled={isPending} onPress={onClose}>
           {formatMessage(labels.cancel)}
         </Button>
       </FormButtons>

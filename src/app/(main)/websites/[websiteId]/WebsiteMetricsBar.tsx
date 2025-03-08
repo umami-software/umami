@@ -1,4 +1,4 @@
-import { Dropdown, Item } from 'react-basics';
+import { Select, ListItem } from '@umami/react-zen';
 import classNames from 'classnames';
 import { useDateRange, useMessages, useSticky } from '@/components/hooks';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
@@ -114,18 +114,16 @@ export function WebsiteMetricsBar({
         {compareMode && (
           <div className={styles.vs}>
             <b>VS</b>
-            <Dropdown
+            <Select
               className={styles.dropdown}
               items={items}
               value={dateCompare || 'prev'}
-              renderValue={value => items.find(i => i.value === value)?.label}
-              alignment="end"
               onChange={(value: any) => setWebsiteDateCompare(websiteId, value)}
             >
               {items.map(({ label, value }) => (
-                <Item key={value}>{label}</Item>
+                <ListItem key={value}>{label}</ListItem>
               ))}
-            </Dropdown>
+            </Select>
           </div>
         )}
       </div>

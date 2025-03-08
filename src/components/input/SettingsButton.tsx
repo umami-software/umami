@@ -1,4 +1,4 @@
-import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from 'react-basics';
+import { Button, Icon, PopupTrigger, Popup, Form, FormRow } from '@umami/react-zen';
 import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
 import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
 import { Icons } from '@/components/icons';

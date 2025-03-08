@@ -1,4 +1,4 @@
-import { Button, Icon, Icons, Popup, PopupTrigger, Text } from 'react-basics';
+import { Button, Icon, Icons, Box, MenuTrigger, Popover, Text } from '@umami/react-zen';
 import { PopupForm } from '@/app/(main)/reports/[reportId]/PopupForm';
 import { FilterSelectForm } from '@/app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
@@ -7,13 +7,9 @@ import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
   websiteId,
-  className,
-  position = 'bottom',
-  alignment = 'end',
   showText = true,
 }: {
   websiteId: string;
-  className?: string;
   position?: 'bottom' | 'top' | 'left' | 'right';
   alignment?: 'end' | 'center' | 'start';
   showText?: boolean;
@@ -32,17 +28,17 @@ export function WebsiteFilterButton({
   };
 
   return (
-    <PopupTrigger className={className}>
+    <MenuTrigger>
       <Button className={styles.button} variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>
         {showText && <Text>{formatMessage(labels.filter)}</Text>}
       </Button>
-      <Popup position={position} alignment={alignment}>
-        {(close: () => void) => {
+      <Popover placement="bottom end">
+        {({ close }: any) => {
           return (
-            <PopupForm>
+            <Box padding="3" backgroundColor="1">
               <FilterSelectForm
                 websiteId={websiteId}
                 fields={fields}
@@ -53,10 +49,10 @@ export function WebsiteFilterButton({
                   close();
                 }}
               />
-            </PopupForm>
+            </Box>
           );
         }}
-      </Popup>
-    </PopupTrigger>
+      </Popover>
+    </MenuTrigger>
   );
 }

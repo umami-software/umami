@@ -1,6 +1,15 @@
 import { useMessages } from '@/components/hooks';
 import { useState } from 'react';
-import { Button, Dropdown, Flexbox, FormRow, Item, TextField } from 'react-basics';
+import {
+  Button,
+  Row,
+  Column,
+  Select,
+  Label,
+  ListItem,
+  TextField,
+  FormButtons,
+} from '@umami/react-zen';
 import styles from './GoalsAddForm.module.css';
 
 export function GoalsAddForm({
@@ -71,44 +80,43 @@ export function GoalsAddForm({
   };
 
   return (
-    <Flexbox direction="column" gap={10}>
-      <FormRow label={formatMessage(defaultValue ? labels.update : labels.add)}>
-        <Flexbox gap={10}>
-          <Dropdown
-            className={styles.dropdown}
-            items={items}
-            value={type}
-            renderValue={renderTypeValue}
-            onChange={(value: any) => setType(value)}
-          >
-            {({ value, label }) => {
-              return <Item key={value}>{label}</Item>;
-            }}
-          </Dropdown>
-          <TextField
-            className={styles.input}
-            value={value}
-            onChange={e => handleChange(e, setValue)}
-            autoFocus={true}
-            autoComplete="off"
-            onKeyDown={handleKeyDown}
-          />
-        </Flexbox>
-      </FormRow>
+    <Column gap="3">
+      <Label>{formatMessage(defaultValue ? labels.update : labels.add)}</Label>
+      <Row gap="3">
+        <Select
+          className={styles.dropdown}
+          items={items}
+          value={type}
+          renderValue={renderTypeValue}
+          onChange={(value: any) => setType(value)}
+        >
+          {({ value, label }: any) => {
+            return <ListItem key={value}>{label}</ListItem>;
+          }}
+        </Select>
+        <TextField
+          className={styles.input}
+          value={value}
+          onChange={e => handleChange(e, setValue)}
+          autoFocus={true}
+          autoComplete="off"
+          onKeyDown={handleKeyDown}
+        />
+      </Row>
       {type === 'event-data' && (
-        <FormRow label={formatMessage(labels.property)}>
-          <Flexbox gap={10}>
-            <Dropdown
+        <Column>
+          <Label>label={formatMessage(labels.property)}</Label>
+          <Row gap="3">
+            <Select
               className={styles.dropdown}
               items={operators}
               value={operator}
-              renderValue={renderoperatorValue}
               onChange={(value: any) => setOperator(value)}
             >
-              {({ value, label }) => {
-                return <Item key={value}>{label}</Item>;
+              {({ value, label }: any) => {
+                return <ListItem key={value}>{label}</ListItem>;
               }}
-            </Dropdown>
+            </Select>
             <TextField
               className={styles.input}
               value={property}
@@ -117,11 +125,12 @@ export function GoalsAddForm({
               autoComplete="off"
               onKeyDown={handleKeyDown}
             />
-          </Flexbox>
-        </FormRow>
+          </Row>
+        </Column>
       )}
-      <FormRow label={formatMessage(labels.goal)}>
-        <Flexbox gap={10}>
+      <Column>
+        <Label>{formatMessage(labels.goal)}</Label>
+        <Row gap="3">
           <TextField
             className={styles.input}
             value={goal?.toString()}
@@ -129,13 +138,13 @@ export function GoalsAddForm({
             autoComplete="off"
             onKeyDown={handleKeyDown}
           />
-        </Flexbox>
-      </FormRow>
-      <FormRow>
-        <Button variant="primary" onClick={handleSave} disabled={isDisabled}>
+        </Row>
+      </Column>
+      <FormButtons>
+        <Button variant="primary" onPress={handleSave} isDisabled={isDisabled}>
           {formatMessage(defaultValue ? labels.update : labels.add)}
         </Button>
-      </FormRow>
-    </Flexbox>
+      </FormButtons>
+    </Column>
   );
 }

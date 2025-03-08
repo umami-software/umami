@@ -28,7 +28,7 @@ export function ConfirmationForm({
       <Row marginY="4">{message}</Row>
       <FormButtons>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
-        <FormSubmitButton isLoading={isLoading} variant={buttonVariant}>
+        <FormSubmitButton data-test="button-confirm" isLoading={isLoading} variant={buttonVariant}>
           {buttonLabel || formatMessage(labels.ok)}
         </FormSubmitButton>
       </FormButtons>

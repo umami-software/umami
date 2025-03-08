@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { GridTable, GridColumn } from 'react-basics';
+import { GridTable, GridColumn } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { ReportContext } from '../[reportId]/Report';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dropdown, Item, Button, Flexbox } from 'react-basics';
+import { Row, Select, ListItem, Button } from '@umami/react-zen';
 import { useTimezone, useMessages } from '@/components/hooks';
 import { getTimezone } from '@/lib/date';
 import styles from './TimezoneSetting.module.css';
@@ -17,19 +17,22 @@ export function TimezoneSetting() {
   const handleReset = () => saveTimezone(getTimezone());
 
   return (
-    <Flexbox gap={10}>
-      <Dropdown
+    <Row gap="3">
+      <Select
         className={styles.dropdown}
         items={options}
         value={timezone}
         onChange={(value: any) => saveTimezone(value)}
-        menuProps={{ className: styles.menu }}
         allowSearch={true}
         onSearch={setSearch}
       >
-        {item => <Item key={item}>{item}</Item>}
-      </Dropdown>
-      <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
-    </Flexbox>
+        {item => (
+          <ListItem key={item} id={item}>
+            {item}
+          </ListItem>
+        )}
+      </Select>
+      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
+    </Row>
   );
 }

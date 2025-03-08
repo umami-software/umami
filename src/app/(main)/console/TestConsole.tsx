@@ -1,4 +1,4 @@
-import { Button } from 'react-basics';
+import { Button } from '@umami/react-zen';
 import Link from 'next/link';
 import Script from 'next/script';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';

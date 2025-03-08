@@ -1,5 +1,5 @@
 import { Key } from 'react';
-import { ButtonGroup, Button, Flexbox } from 'react-basics';
+import { Row, Button, Flexbox } from '@umami/react-zen';
 
 export interface FilterButtonsProps {
   items: any[];
@@ -10,9 +10,11 @@ export interface FilterButtonsProps {
 export function FilterButtons({ items, selectedKey, onSelect }: FilterButtonsProps) {
   return (
     <Flexbox justifyContent="center">
-      <ButtonGroup items={items} selectedKey={selectedKey as any} onSelect={onSelect}>
-        {({ key, label }) => <Button key={key}>{label}</Button>}
-      </ButtonGroup>
+      <Row>
+        {items.map(({ key, label }) => (
+          <Button key={key}>{label}</Button>
+        ))}
+      </Row>
     </Flexbox>
   );
 }

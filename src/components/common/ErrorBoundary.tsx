@@ -1,6 +1,6 @@
 import { ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary as Boundary } from 'react-error-boundary';
-import { Button } from 'react-basics';
+import { Button } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import styles from './ErrorBoundary.module.css';
 

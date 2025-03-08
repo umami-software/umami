@@ -4,19 +4,21 @@ import { OPERATORS } from '@/lib/constants';
 import { isEqualsOperator } from '@/lib/params';
 import {
   Button,
-  Dropdown,
+  Column,
+  Row,
+  Select,
   Flexbox,
-  Form,
-  FormRow,
   Icon,
   Icons,
-  Item,
   Loading,
   Menu,
+  MenuItem,
+  ListItem,
   SearchField,
   Text,
   TextField,
-} from 'react-basics';
+  Label,
+} from '@umami/react-zen';
 import styles from './FieldFilterEditForm.module.css';
 
 export interface FieldFilterFormProps {
@@ -94,10 +96,6 @@ export function FieldFilterEditForm({
       : values;
   }, [value, formattedValues]);
 
-  const renderFilterValue = (value: any) => {
-    return filters.find((filter: { value: any }) => filter.value === value)?.label;
-  };
-
   const handleAdd = () => {
     onChange({ name, type, operator, value: isEquals ? selected : value });
   };
@@ -133,21 +131,21 @@ export function FieldFilterEditForm({
   };
 
   return (
-    <Form>
-      <FormRow label={label} className={styles.filter}>
+    <Column>
+      <Row className={styles.filter}>
+        <Label>{label}</Label>
         <Flexbox gap={10}>
           {allowFilterSelect && (
-            <Dropdown
+            <Select
               className={styles.dropdown}
               items={filterDropdownItems(name)}
               value={operator}
-              renderValue={renderFilterValue}
               onChange={handleOperatorChange}
             >
-              {({ value, label }) => {
-                return <Item key={value}>{label}</Item>;
+              {({ value, label }: any) => {
+                return <ListItem key={value}>{label}</ListItem>;
               }}
-            </Dropdown>
+            </Select>
           )}
           {selected && isEquals && (
             <div className={styles.selected} onClick={handleReset}>
@@ -163,7 +161,6 @@ export function FieldFilterEditForm({
                 className={styles.text}
                 value={value}
                 placeholder={formatMessage(labels.enter)}
-                onChange={e => setValue(e.target.value)}
                 onSearch={handleSearch}
                 delay={500}
                 onFocus={() => setShowMenu(true)}
@@ -187,11 +184,11 @@ export function FieldFilterEditForm({
             />
           )}
         </Flexbox>
-        <Button variant="primary" onClick={handleAdd} disabled={isDisabled}>
+        <Button variant="primary" onPress={handleAdd} isDisabled={isDisabled}>
           {formatMessage(isNew ? labels.add : labels.update)}
         </Button>
-      </FormRow>
-    </Form>
+      </Row>
+    </Column>
   );
 }
 
@@ -199,10 +196,10 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
   const { formatValue } = useFormat();
   if (isLoading) {
     return (
-      <Menu className={styles.menu} variant="popup">
-        <Item>
+      <Menu className={styles.menu}>
+        <MenuItem>
           <Loading icon="dots" position="center" />
-        </Item>
+        </MenuItem>
       </Menu>
     );
   }
@@ -212,9 +209,9 @@ const ResultsMenu = ({ values, type, isLoading, onSelect }) => {
   }
 
   return (
-    <Menu className={styles.menu} variant="popup" onSelect={onSelect}>
+    <Menu className={styles.menu} onSelectionChange={onSelect}>
       {values?.map(({ value }) => {
-        return <Item key={value}>{formatValue(value, type)}</Item>;
+        return <MenuItem key={value}>{formatValue(value, type)}</MenuItem>;
       })}
     </Menu>
   );

@@ -1,6 +1,7 @@
 import { useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
-import { ActionForm, Button, Modal, ModalTrigger } from 'react-basics';
+import { Button, Modal, DialogTrigger, Dialog } from '@umami/react-zen';
+import { ActionForm } from '@/components/layout/ActionForm';
 import { TeamDeleteForm } from './TeamDeleteForm';
 
 export function TeamManage({ teamId }: { teamId: string }) {
@@ -18,14 +19,14 @@ export function TeamManage({ teamId }: { teamId: string }) {
       label={formatMessage(labels.deleteTeam)}
       description={formatMessage(messages.deleteTeamWarning)}
     >
-      <ModalTrigger>
+      <DialogTrigger>
         <Button variant="danger">{formatMessage(labels.delete)}</Button>
-        <Modal title={formatMessage(labels.deleteTeam)}>
-          {(close: () => void) => (
-            <TeamDeleteForm teamId={teamId} onSave={handleLeave} onClose={close} />
-          )}
+        <Modal>
+          <Dialog title={formatMessage(labels.deleteTeam)}>
+            {({ close }) => <TeamDeleteForm teamId={teamId} onSave={handleLeave} onClose={close} />}
+          </Dialog>
         </Modal>
-      </ModalTrigger>
+      </DialogTrigger>
     </ActionForm>
   );
 }

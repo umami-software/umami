@@ -47,7 +47,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   return (
     <Form onSubmit={handleSubmit} error={getMessage(error)} values={user} style={{ width: 300 }}>
       <FormField name="username" label={formatMessage(labels.username)}>
-        <TextField />
+        <TextField data-test="input-username" />
       </FormField>
       <FormField
         name="password"
@@ -56,7 +56,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
           minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
         }}
       >
-        <PasswordField autoComplete="new-password" />
+        <PasswordField autoComplete="new-password" data-test="input-password" />
       </FormField>
 
       {user.id !== login.id && (
@@ -66,14 +66,14 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
           rules={{ required: formatMessage(labels.required) }}
         >
           <Select defaultSelectedKey={user.role}>
-            <ListItem id={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</ListItem>
-            <ListItem id={ROLES.user}>{formatMessage(labels.user)}</ListItem>
-            <ListItem id={ROLES.admin}>{formatMessage(labels.admin)}</ListItem>
+            <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">{formatMessage(labels.viewOnly)}</ListItem>
+            <ListItem id={ROLES.user} data-test="dropdown-item-user">{formatMessage(labels.user)}</ListItem>
+            <ListItem id={ROLES.admin} data-test="dropdown-item-admin">{formatMessage(labels.admin)}</ListItem>
           </Select>
         </FormField>
       )}
       <FormButtons>
-        <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
+        <FormSubmitButton data-test="button-submit" variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

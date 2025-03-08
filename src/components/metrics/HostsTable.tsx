@@ -1,7 +1,7 @@
 import { MetricsTable, MetricsTableProps } from './MetricsTable';
 import { FilterLink } from '@/components/common/FilterLink';
 import { useMessages } from '@/components/hooks';
-import { Flexbox } from 'react-basics';
+import { Flexbox } from '@umami/react-zen';
 
 export function HostsTable(props: MetricsTableProps) {
   const { formatMessage, labels } = useMessages();

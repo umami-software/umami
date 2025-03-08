@@ -1,6 +1,6 @@
-import { Dropdown, Icon, Icons, Item, Text } from 'react-basics';
+import { Select, Icon, Icons, ListItem, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
-import { useLocale, useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuNav } from '@/components/layout/MenuNav';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
@@ -17,7 +17,7 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import styles from './WebsiteExpandedView.module.css';
+import Link from 'next/link';
 
 const views = {
   url: PagesTable,
@@ -48,7 +48,6 @@ export function WebsiteExpandedView({
   websiteId: string;
   domainName?: string;
 }) {
-  const { dir } = useLocale();
   const { formatMessage, labels } = useMessages();
   const {
     router,
@@ -136,39 +135,25 @@ export function WebsiteExpandedView({
 
   const DetailsComponent = views[view] || (() => null);
 
+  /*
   const handleChange = (view: any) => {
     router.push(renderUrl({ view }));
   };
 
   const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
-
+*/
   return (
-    <div className={styles.layout}>
-      <div className={styles.menu}>
-        <LinkButton
-          href={renderUrl({ view: undefined })}
-          className={styles.back}
-          variant="quiet"
-          scroll={false}
-        >
-          <Icon rotate={dir === 'rtl' ? 0 : 180}>
-            <Icons.ArrowRight />
+    <Grid columns="auto 1fr" gap="6">
+      <Column gap="6" width="200px">
+        <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
+          <Icon rotate={180}>
+            <Icons.Arrow />
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <MenuNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
-        <Dropdown
-          className={styles.dropdown}
-          items={items}
-          value={view}
-          renderValue={renderValue}
-          onChange={handleChange}
-          alignment="end"
-        >
-          {({ key, label }) => <Item key={key}>{label}</Item>}
-        </Dropdown>
-      </div>
-      <div className={styles.content}>
+        <MenuNav items={items} selectedKey={view} />
+      </Column>
+      <Column>
         <DetailsComponent
           websiteId={websiteId}
           domainName={domainName}
@@ -178,7 +163,7 @@ export function WebsiteExpandedView({
           allowFilter={true}
           allowSearch={true}
         />
-      </div>
-    </div>
+      </Column>
+    </Grid>
   );
 }

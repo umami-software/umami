@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { Loading, cloneChildren } from 'react-basics';
+import { Loading, Row } from '@umami/react-zen';
+import { cloneChildren } from '@/lib/react';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { formatLongNumber } from '@/lib/format';
-import styles from './MetricsBar.module.css';
 
 export interface MetricsBarProps {
   isLoading?: boolean;
@@ -15,15 +15,15 @@ export function MetricsBar({ children, isLoading, isFetched, error }: MetricsBar
   const formatFunc = n => (n >= 0 ? formatLongNumber(n) : `-${formatLongNumber(Math.abs(n))}`);
 
   return (
-    <div className={styles.bar}>
+    <Row>
       {isLoading && !isFetched && <Loading icon="dots" />}
       {error && <ErrorMessage />}
       {!isLoading &&
         !error &&
         isFetched &&
         cloneChildren(children, child => {
-          return { format: child.props.format || formatFunc };
+          return { format: child.props['format'] || formatFunc };
         })}
-    </div>
+    </Row>
   );
 }

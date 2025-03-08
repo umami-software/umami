@@ -1,7 +1,7 @@
-import { useReports } from '@/components/hooks';
-import { ReportsTable } from './ReportsTable';
-import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
+import { useReports } from '@/components/hooks';
+import { DataGrid } from '@/components/common/DataGrid';
+import { ReportsTable } from './ReportsTable';
 
 export function ReportsDataTable({
   websiteId,

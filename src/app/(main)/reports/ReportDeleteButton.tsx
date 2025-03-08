@@ -1,4 +1,4 @@
-import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
+import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 
@@ -29,25 +29,29 @@ export function ReportDeleteButton({
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button>
         <Icon>
           <Icons.Trash />
         </Icon>
         <Text>{formatMessage(labels.delete)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.deleteReport)}>
-        {(close: () => void) => (
-          <ConfirmationForm
-            message={formatMessage(messages.confirmDelete, { target: <b>{reportName}</b> })}
-            isLoading={isPending}
-            error={error}
-            onConfirm={handleConfirm.bind(null, close)}
-            onClose={close}
-            buttonLabel={formatMessage(labels.delete)}
-          />
-        )}
+      <Modal>
+        <Dialog title={formatMessage(labels.deleteReport)}>
+          {({ close }) => (
+            <ConfirmationForm
+              message={formatMessage(messages.confirmDelete, {
+                target: <b key={messages.confirmDelete.id}>{reportName}</b>,
+              })}
+              isLoading={isPending}
+              error={error}
+              onConfirm={handleConfirm.bind(null, close)}
+              onClose={close}
+              buttonLabel={formatMessage(labels.delete)}
+            />
+          )}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

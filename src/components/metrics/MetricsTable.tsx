@@ -1,17 +1,11 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Loading, Icon, Text, SearchField } from 'react-basics';
+import { Loading, Icon, Text, SearchField } from '@umami/react-zen';
 import classNames from 'classnames';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
-import {
-  useNavigation,
-  useWebsiteMetrics,
-  useMessages,
-  useLocale,
-  useFormat,
-} from '@/components/hooks';
+import { useNavigation, useWebsiteMetrics, useMessages, useFormat } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { ListTable, ListTableProps } from './ListTable';
 import styles from './MetricsTable.module.css';
@@ -51,7 +45,6 @@ export function MetricsTable({
   const { formatValue } = useFormat();
   const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
-  const { dir } = useLocale();
 
   const { data, isLoading, isFetched, error } = useWebsiteMetrics(
     websiteId,
@@ -114,8 +107,8 @@ export function MetricsTable({
         {showMore && data && !error && limit && (
           <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
-            <Icon size="sm" rotate={dir === 'rtl' ? 180 : 0}>
-              <Icons.ArrowRight />
+            <Icon size="sm">
+              <Icons.Arrow />
             </Icon>
           </LinkButton>
         )}

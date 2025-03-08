@@ -1,4 +1,4 @@
-import { Button, Icon, Icons, TooltipPopup } from 'react-basics';
+import { Button, Icon, Icons, TooltipPopup } from '@umami/react-zen';
 import Link from 'next/link';
 import { useMessages } from '@/components/hooks';
 

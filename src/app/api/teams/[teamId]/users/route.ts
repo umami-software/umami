@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { unauthorized, json, badRequest } from '@/lib/response';
 import { canAddUserToTeam, canViewTeam } from '@/lib/auth';
 import { parseRequest } from '@/lib/request';
-import { pagingParams, roleParam } from '@/lib/schema';
+import { pagingParams, teamRoleParam } from '@/lib/schema';
 import { createTeamUser, getTeamUser, getTeamUsers } from '@/queries';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
@@ -48,7 +48,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
 export async function POST(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
   const schema = z.object({
     userId: z.string().uuid(),
-    role: roleParam,
+    role: teamRoleParam,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);

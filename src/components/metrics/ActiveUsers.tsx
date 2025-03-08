@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { StatusLight } from 'react-basics';
+import { StatusLight } from '@umami/react-zen';
 import { useApi } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
 import styles from './ActiveUsers.module.css';

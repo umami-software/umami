@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react';
-import { TextOverflow, TooltipPopup } from 'react-basics';
+import { TextOverflow, TooltipPopup } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages } from '@/components/hooks';

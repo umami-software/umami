@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Icon, Text, Flexbox } from 'react-basics';
+import { Icon, Text, Flexbox } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 
 export interface EmptyPlaceholderProps {

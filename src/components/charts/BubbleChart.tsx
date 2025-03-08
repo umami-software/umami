@@ -1,6 +1,6 @@
 import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useState } from 'react';
-import { StatusLight } from 'react-basics';
+import { StatusLight } from '@umami/react-zen';
 import { formatLongNumber } from '@/lib/format';
 
 export interface BubbleChartProps extends ChartProps {

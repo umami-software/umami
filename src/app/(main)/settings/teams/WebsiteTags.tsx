@@ -1,4 +1,4 @@
-import { Button, Icon, Icons, Text } from 'react-basics';
+import { Button, Icon, Icons, Text } from '@umami/react-zen';
 import styles from './WebsiteTags.module.css';
 
 export function WebsiteTags({
@@ -21,7 +21,7 @@ export function WebsiteTags({
 
         return (
           <div key={websiteId} className={styles.tag}>
-            <Button onClick={() => onClick(websiteId)} variant="primary" size="sm">
+            <Button onPress={() => onClick(websiteId)} variant="primary" size="sm">
               <Text>
                 <b>{`${website.name}`}</b>
               </Text>

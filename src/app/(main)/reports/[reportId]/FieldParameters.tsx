@@ -1,7 +1,7 @@
 import { useFields, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { useContext } from 'react';
-import { Button, FormRow, Icon, Popup, PopupTrigger } from 'react-basics';
+import { Button, Row, Label, Icon, Popover, MenuTrigger } from '@umami/react-zen';
 import { FieldSelectForm } from '../[reportId]/FieldSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
 import { PopupForm } from '../[reportId]/PopupForm';
@@ -26,27 +26,26 @@ export function FieldParameters() {
 
   const AddButton = () => {
     return (
-      <PopupTrigger>
+      <MenuTrigger>
         <Button size="sm">
           <Icon>
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popup position="bottom" alignment="start">
-          <PopupForm>
-            <FieldSelectForm
-              fields={fieldOptions.filter(({ name }) => !fields.find(f => f.name === name))}
-              onSelect={handleAdd}
-              showType={false}
-            />
-          </PopupForm>
-        </Popup>
-      </PopupTrigger>
+        <Popover placement="start">
+          <FieldSelectForm
+            fields={fieldOptions.filter(({ name }) => !fields.find(f => f.name === name))}
+            onSelect={handleAdd}
+            showType={false}
+          />
+        </Popover>
+      </MenuTrigger>
     );
   };
 
   return (
-    <FormRow label={formatMessage(labels.fields)} action={<AddButton />}>
+    <Row>
+      <Label>{formatMessage(labels.fields)}</Label>
       <ParameterList>
         {fields.map(({ name }) => {
           return (
@@ -56,6 +55,7 @@ export function FieldParameters() {
           );
         })}
       </ParameterList>
-    </FormRow>
+      <AddButton />
+    </Row>
   );
 }

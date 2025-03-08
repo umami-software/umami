@@ -1,15 +1,14 @@
 import { useContext } from 'react';
 import { useMessages } from '@/components/hooks';
 import {
-  Dropdown,
+  Select,
   Form,
   FormButtons,
-  FormInput,
-  FormRow,
-  Item,
-  SubmitButton,
+  FormField,
+  ListItem,
+  FormSubmitButton,
   TextField,
-} from 'react-basics';
+} from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 
@@ -33,28 +32,29 @@ export function JourneyParameters() {
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={true} allowWebsiteSelect={!id} />
-      <FormRow label={formatMessage(labels.steps)}>
-        <FormInput
-          name="steps"
-          rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/, min: 3, max: 7 }}
-        >
-          <Dropdown items={[3, 4, 5, 6, 7]}>{item => <Item key={item}>{item}</Item>}</Dropdown>
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.startStep)}>
-        <FormInput name="startStep">
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.endStep)}>
-        <FormInput name="endStep">
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
+      <FormField
+        label={formatMessage(labels.steps)}
+        name="steps"
+        rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/, min: 3, max: 7 }}
+      >
+        <Select items={[3, 4, 5, 6, 7]}>
+          {(item: any) => (
+            <ListItem key={item.toString()} id={item.toString()}>
+              {item}
+            </ListItem>
+          )}
+        </Select>
+      </FormField>
+      <FormField label={formatMessage(labels.startStep)} name="startStep">
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormField label={formatMessage(labels.endStep)} name="endStep">
+        <TextField autoComplete="off" />
+      </FormField>
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

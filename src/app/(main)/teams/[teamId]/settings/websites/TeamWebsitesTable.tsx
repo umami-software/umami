@@ -1,4 +1,4 @@
-import { GridColumn, GridTable, Icon, Text } from 'react-basics';
+import { DataColumn, DataTable, Icon, Text } from '@umami/react-zen';
 import { useLogin, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { LinkButton } from '@/components/common/LinkButton';
@@ -16,14 +16,14 @@ export function TeamWebsitesTable({
   const { formatMessage, labels } = useMessages();
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="name" label={formatMessage(labels.name)} />
-      <GridColumn name="domain" label={formatMessage(labels.domain)} />
-      <GridColumn name="createdBy" label={formatMessage(labels.createdBy)}>
-        {row => row?.createUser?.username}
-      </GridColumn>
-      <GridColumn name="action" label=" " alignment="end">
-        {row => {
+    <DataTable data={data}>
+      <DataColumn id="name" label={formatMessage(labels.name)} />
+      <DataColumn id="domain" label={formatMessage(labels.domain)} />
+      <DataColumn id="createdBy" label={formatMessage(labels.createdBy)}>
+        {(row: any) => row?.createUser?.username}
+      </DataColumn>
+      <DataColumn id="action" label=" " align="end">
+        {(row: any) => {
           const { id: websiteId } = row;
           return (
             <>
@@ -37,14 +37,14 @@ export function TeamWebsitesTable({
               )}
               <LinkButton href={`/teams/${teamId}/websites/${websiteId}`}>
                 <Icon>
-                  <Icons.ArrowRight />
+                  <Icons.Arrow />
                 </Icon>
                 <Text>{formatMessage(labels.view)}</Text>
               </LinkButton>
             </>
           );
         }}
-      </GridColumn>
-    </GridTable>
+      </DataColumn>
+    </DataTable>
   );
 }

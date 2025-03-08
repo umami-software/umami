@@ -1,4 +1,4 @@
-import { TooltipPopup, Icon, Text, Flexbox, Button } from 'react-basics';
+import { Row, TooltipTrigger, Tooltip, Icon, Text, Button } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { saveDashboard } from '@/store/dashboard';
 import { useMessages } from '@/components/hooks';
@@ -15,20 +15,21 @@ export function DashboardSettingsButton() {
   };
 
   return (
-    <Flexbox gap={10}>
-      <TooltipPopup label={formatMessage(labels.toggleCharts)} position="bottom">
-        <Button onClick={handleToggleCharts}>
+    <Row gap="3">
+      <TooltipTrigger>
+        <Button onPress={handleToggleCharts}>
           <Icon>
             <Icons.BarChart />
           </Icon>
         </Button>
-      </TooltipPopup>
-      <Button onClick={handleEdit}>
+        <Tooltip placement="bottom">{formatMessage(labels.toggleCharts)}</Tooltip>
+      </TooltipTrigger>
+      <Button onPress={handleEdit}>
         <Icon>
           <Icons.Edit />
         </Icon>
         <Text>{formatMessage(labels.edit)}</Text>
       </Button>
-    </Flexbox>
+    </Row>
   );
 }

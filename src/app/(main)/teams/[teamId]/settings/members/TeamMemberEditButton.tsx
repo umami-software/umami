@@ -1,5 +1,14 @@
 import { useMessages, useModified } from '@/components/hooks';
-import { Button, Icon, Icons, Modal, ModalTrigger, Text, useToasts } from 'react-basics';
+import {
+  Button,
+  Icon,
+  Icons,
+  Modal,
+  DialogTrigger,
+  Dialog,
+  Text,
+  useToast,
+} from '@umami/react-zen';
 import { TeamMemberEditForm } from './TeamMemberEditForm';
 
 export function TeamMemberEditButton({
@@ -14,34 +23,36 @@ export function TeamMemberEditButton({
   onSave?: () => void;
 }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { showToast } = useToasts();
+  const { toast } = useToast();
   const { touch } = useModified();
 
   const handleSave = () => {
-    showToast({ message: formatMessage(messages.saved), variant: 'success' });
+    toast(formatMessage(messages.saved));
     touch('teams:members');
     onSave?.();
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button>
         <Icon>
           <Icons.Edit />
         </Icon>
         <Text>{formatMessage(labels.edit)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.editMember)}>
-        {(close: () => void) => (
-          <TeamMemberEditForm
-            teamId={teamId}
-            userId={userId}
-            role={role}
-            onSave={handleSave}
-            onClose={close}
-          />
-        )}
+      <Modal>
+        <Dialog title={formatMessage(labels.editMember)}>
+          {({ close }) => (
+            <TeamMemberEditForm
+              teamId={teamId}
+              userId={userId}
+              role={role}
+              onSave={handleSave}
+              onClose={close}
+            />
+          )}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

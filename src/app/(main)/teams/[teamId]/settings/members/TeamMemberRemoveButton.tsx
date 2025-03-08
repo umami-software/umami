@@ -1,7 +1,7 @@
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { messages } from '@/components/messages';
-import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
+import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -33,25 +33,29 @@ export function TeamMemberRemoveButton({
   };
 
   return (
-    <ModalTrigger>
+    <DialogTrigger>
       <Button>
         <Icon>
           <Icons.Close />
         </Icon>
         <Text>{formatMessage(labels.remove)}</Text>
       </Button>
-      <Modal title={formatMessage(labels.removeMember)}>
-        {(close: () => void) => (
-          <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, { target: <b>{userName}</b> })}
-            isLoading={isPending}
-            error={error}
-            onConfirm={handleConfirm.bind(null, close)}
-            onClose={close}
-            buttonLabel={formatMessage(labels.remove)}
-          />
-        )}
+      <Modal>
+        <Dialog title={formatMessage(labels.removeMember)}>
+          {({ close }) => (
+            <ConfirmationForm
+              message={formatMessage(messages.confirmRemove, {
+                target: <b key={messages.confirmRemove.id}>{userName}</b>,
+              })}
+              isLoading={isPending}
+              error={error}
+              onConfirm={handleConfirm.bind(null, close)}
+              onClose={close}
+              buttonLabel={formatMessage(labels.remove)}
+            />
+          )}
+        </Dialog>
       </Modal>
-    </ModalTrigger>
+    </DialogTrigger>
   );
 }

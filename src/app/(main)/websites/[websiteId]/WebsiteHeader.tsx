@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { Button, Icon, Text } from 'react-basics';
+import { Button, Icon, Text } from '@umami/react-zen';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';

@@ -1,4 +1,4 @@
-import { TextOverflow } from 'react-basics';
+import { TextOverflow } from '@umami/react-zen';
 import { useMessages, useSessionData } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DATA_TYPES } from '@/lib/constants';

@@ -16,7 +16,7 @@ export function UserDeleteButton({
 
   return (
     <DialogTrigger>
-      <Button isDisabled={userId === user?.id}>
+      <Button isDisabled={userId === user?.id} data-test="button-delete">
         <Icon size="sm">
           <Icons.Trash />
         </Icon>

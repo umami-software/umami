@@ -4,7 +4,7 @@ import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useContext, useState } from 'react';
-import { Flexbox, Item, Tabs } from 'react-basics';
+import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
@@ -26,16 +26,22 @@ export function TeamDetails({ teamId }: { teamId: string }) {
     ) && user.role !== ROLES.viewOnly;
 
   return (
-    <Flexbox direction="column">
+    <Column>
       <PageHeader title={team?.name} icon={<Icons.Users />}>
         {!isTeamOwner && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
-      <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
-        <Item key="details">{formatMessage(labels.details)}</Item>
-        {isTeamOwner && <Item key="manage">{formatMessage(labels.manage)}</Item>}
+      <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
+        <TabList>
+          <Tab id="details">{formatMessage(labels.details)}</Tab>
+          {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
+        </TabList>
+        <TabPanel id="details">
+          <TeamEditForm teamId={teamId} allowEdit={canEdit} />
+        </TabPanel>
+        <TabPanel id="manage">
+          <TeamManage teamId={teamId} />
+        </TabPanel>
       </Tabs>
-      {tab === 'details' && <TeamEditForm teamId={teamId} allowEdit={canEdit} />}
-      {tab === 'manage' && <TeamManage teamId={teamId} />}
-    </Flexbox>
+    </Column>
   );
 }

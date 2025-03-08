@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
+import { Icon, Icons } from '@umami/react-zen';
+import classNames from 'classnames';
 import { ReportContext } from './Report';
 import styles from './ReportMenu.module.css';
-import { Icon, Icons } from 'react-basics';
-import classNames from 'classnames';
 
 export function ReportMenu({ children }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -16,7 +16,7 @@ export function ReportMenu({ children }) {
     <div className={classNames(styles.menu, collapsed && styles.collapsed)}>
       <div className={styles.button} onClick={() => setCollapsed(!collapsed)}>
         <Icon rotate={collapsed ? -90 : 90}>
-          <Icons.ChevronDown />
+          <Icons.Chevron />
         </Icon>
       </div>
       {!collapsed && children}

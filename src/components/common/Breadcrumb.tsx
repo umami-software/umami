@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Flexbox, Icon, Icons, Text } from 'react-basics';
+import { Flexbox, Icon, Icons, Text } from '@umami/react-zen';
 import styles from './Breadcrumb.module.css';
 import { Fragment } from 'react';
 
@@ -25,7 +25,7 @@ export function Breadcrumb({ data }: BreadcrumbProps) {
             )}
             {i !== data.length - 1 ? (
               <Icon rotate={270}>
-                <Icons.ChevronDown />
+                <Icons.Chevron />
               </Icon>
             ) : null}
           </Fragment>

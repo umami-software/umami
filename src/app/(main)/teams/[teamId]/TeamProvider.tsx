@@ -1,7 +1,7 @@
 'use client';
 import { createContext, ReactNode, useEffect } from 'react';
 import { useTeam, useModified } from '@/components/hooks';
-import { Loading } from 'react-basics';
+import { Loading } from '@umami/react-zen';
 
 export const TeamContext = createContext(null);
 
