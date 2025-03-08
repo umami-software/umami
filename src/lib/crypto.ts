@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import { startOfHour, startOfMonth } from 'date-fns';
 import prand from 'pure-rand';
 import { v4, v5 } from 'uuid';
 
@@ -77,20 +76,8 @@ export function secret() {
   return hash(process.env.APP_SECRET || process.env.DATABASE_URL);
 }
 
-export function salt() {
-  const ROTATING_SALT = hash(startOfMonth(new Date()).toUTCString());
-
-  return hash(secret(), ROTATING_SALT);
-}
-
-export function visitSalt() {
-  const ROTATING_SALT = hash(startOfHour(new Date()).toUTCString());
-
-  return hash(secret(), ROTATING_SALT);
-}
-
 export function uuid(...args: any) {
   if (!args.length) return v4();
 
-  return v5(hash(...args, salt()), v5.DNS);
+  return v5(hash(...args, secret()), v5.DNS);
 }
