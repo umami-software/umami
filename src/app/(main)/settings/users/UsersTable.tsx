@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { formatDistance } from 'date-fns';
 import { ROLES } from '@/lib/constants';
 import { useMessages, useLocale } from '@/components/hooks';
-import UserDeleteButton from './UserDeleteButton';
-import LinkButton from '@/components/common/LinkButton';
+import { UserDeleteButton } from './UserDeleteButton';
 
 export function UsersTable({
   data = [],

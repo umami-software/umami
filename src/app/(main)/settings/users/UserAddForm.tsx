@@ -11,7 +11,6 @@ import {
 } from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
-import { messages } from '@/components/messages';
 
 export function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
@@ -51,9 +50,15 @@ export function UserAddForm({ onSave, onClose }) {
         rules={{ required: formatMessage(labels.required) }}
       >
         <Select>
-          <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">{formatMessage(labels.viewOnly)}</ListItem>
-          <ListItem id={ROLES.user} data-test="dropdown-item-user">{formatMessage(labels.user)}</ListItem>
-          <ListItem id={ROLES.admin} data-test="dropdown-item-admin">{formatMessage(labels.admin)}</ListItem>
+          <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
+            {formatMessage(labels.viewOnly)}
+          </ListItem>
+          <ListItem id={ROLES.user} data-test="dropdown-item-user">
+            {formatMessage(labels.user)}
+          </ListItem>
+          <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
+            {formatMessage(labels.admin)}
+          </ListItem>
         </Select>
       </FormField>
       <FormButtons>

@@ -1,20 +1,10 @@
 import { useState, Key } from 'react';
-import {
-  Icon,
-  Modal,
-  Select,
-  Text,
-  Block,
-  Row,
-  ListItem,
-  ListSeparator,
-  Dialog,
-} from '@umami/react-zen';
+import { Icon, Modal, Select, Text, Row, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
 import { endOfYear, isSameDay } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { formatDate, parseDateValue } from '@/lib/date';
+import { formatDate } from '@/lib/date';
 import styles from './DateFilter.module.css';
 import classNames from 'classnames';
 
@@ -41,7 +31,6 @@ export function DateFilter({
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
-  const { locale } = useLocale();
 
   const options = [
     { label: formatMessage(labels.today), value: '0day' },
@@ -108,6 +97,7 @@ export function DateFilter({
     onChange(value.toString());
   };
 
+  /*
   const handleClose = () => setShowPicker(false);
 
   const renderValue = (value: string) => {
@@ -133,9 +123,7 @@ export function DateFilter({
     }
 
     return options.find(e => e.value === value)?.label;
-  };
-
-  console.log({ showPicker });
+  };*/
 
   return (
     <>

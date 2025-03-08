@@ -19,7 +19,7 @@ export function DatePickerForm({
   );
   const [singleDate, setSingleDate] = useState(defaultStartDate || new Date());
   const [startDate, setStartDate] = useState(defaultStartDate || new Date());
-  const [endDate, setEndDate] = useState(defaultEndDate || new Date());
+  const [endDate] = useState(defaultEndDate || new Date());
   const { formatMessage, labels } = useMessages();
 
   const disabled =
@@ -34,8 +34,6 @@ export function DatePickerForm({
       onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`);
     }
   };
-
-  console.log({ minDate, maxDate, singleDate, startDate, endDate, disabled });
 
   return (
     <div className={styles.container}>

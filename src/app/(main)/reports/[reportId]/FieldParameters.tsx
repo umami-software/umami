@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { Button, Row, Label, Icon, Popover, MenuTrigger } from '@umami/react-zen';
 import { FieldSelectForm } from '../[reportId]/FieldSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { PopupForm } from '../[reportId]/PopupForm';
 import { ReportContext } from './Report';
 
 export function FieldParameters() {

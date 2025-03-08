@@ -1,4 +1,4 @@
-import { Select, Icon, Icons, ListItem, Text, Grid, Column } from '@umami/react-zen';
+import { Icon, Icons, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuNav } from '@/components/layout/MenuNav';
@@ -17,7 +17,6 @@ import { RegionsTable } from '@/components/metrics/RegionsTable';
 import { ScreenTable } from '@/components/metrics/ScreenTable';
 import { TagsTable } from '@/components/metrics/TagsTable';
 import { ChannelsTable } from '@/components/metrics/ChannelsTable';
-import Link from 'next/link';
 
 const views = {
   url: PagesTable,
@@ -50,7 +49,6 @@ export function WebsiteExpandedView({
 }) {
   const { formatMessage, labels } = useMessages();
   const {
-    router,
     renderUrl,
     query: { view },
   } = useNavigation();

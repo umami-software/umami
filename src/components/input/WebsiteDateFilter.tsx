@@ -1,4 +1,4 @@
-import { useDateRange, useLocale } from '@/components/hooks';
+import { useDateRange } from '@/components/hooks';
 import { isAfter } from 'date-fns';
 import { getOffsetDateRange } from '@/lib/date';
 import { Button, Icon, Icons } from '@umami/react-zen';
@@ -13,7 +13,6 @@ export function WebsiteDateFilter({
   websiteId: string;
   showAllTime?: boolean;
 }) {
-  const { dir } = useLocale();
   const { dateRange, saveDateRange } = useDateRange(websiteId);
   const { value, startDate, endDate, offset } = dateRange;
   const disableForward =

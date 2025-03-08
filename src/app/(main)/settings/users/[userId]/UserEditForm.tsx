@@ -66,14 +66,22 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
           rules={{ required: formatMessage(labels.required) }}
         >
           <Select defaultSelectedKey={user.role}>
-            <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">{formatMessage(labels.viewOnly)}</ListItem>
-            <ListItem id={ROLES.user} data-test="dropdown-item-user">{formatMessage(labels.user)}</ListItem>
-            <ListItem id={ROLES.admin} data-test="dropdown-item-admin">{formatMessage(labels.admin)}</ListItem>
+            <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
+              {formatMessage(labels.viewOnly)}
+            </ListItem>
+            <ListItem id={ROLES.user} data-test="dropdown-item-user">
+              {formatMessage(labels.user)}
+            </ListItem>
+            <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
+              {formatMessage(labels.admin)}
+            </ListItem>
           </Select>
         </FormField>
       )}
       <FormButtons>
-        <FormSubmitButton data-test="button-submit" variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
+        <FormSubmitButton data-test="button-submit" variant="primary">
+          {formatMessage(labels.save)}
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

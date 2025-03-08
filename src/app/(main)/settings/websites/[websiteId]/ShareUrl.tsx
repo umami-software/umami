@@ -37,7 +37,6 @@ export function ShareUrl({ hostUrl, onSave }: { hostUrl?: string; onSave?: () =>
   };
 
   const handleSwitch = (checked: boolean) => {
-    console.log({ checked });
     const data = {
       name: website.name,
       domain: website.domain,

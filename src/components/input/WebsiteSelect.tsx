@@ -1,7 +1,6 @@
 import { useState, Key } from 'react';
 import { Select, ListItem } from '@umami/react-zen';
-import { useWebsite, useWebsites, useMessages } from '@/components/hooks';
-import { Empty } from '@/components/common/Empty';
+import { useWebsites, useMessages } from '@/components/hooks';
 
 export function WebsiteSelect({
   websiteId,
@@ -12,17 +11,11 @@ export function WebsiteSelect({
   teamId?: string;
   onSelect?: (key: any) => void;
 }) {
-  const { formatMessage, labels, messages } = useMessages();
+  const { formatMessage, labels } = useMessages();
   const [search, setSearch] = useState('');
   const [selectedId, setSelectedId] = useState<Key>(websiteId);
 
-  const { data: website } = useWebsite(selectedId as string);
-
   const queryResult = useWebsites({ teamId }, { search, pageSize: 5 });
-
-  const renderEmpty = () => {
-    return <Empty message={formatMessage(messages.noResultsFound)} />;
-  };
 
   const handleSelect = (value: any) => {
     setSelectedId(value);

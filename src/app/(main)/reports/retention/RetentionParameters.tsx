@@ -22,10 +22,6 @@ export function RetentionParameters() {
     }
   };
 
-  const handleDateChange = value => {
-    updateReport({ parameters: { dateRange: { ...parseDateRange(value) } } });
-  };
-
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={false} allowWebsiteSelect={!id} />

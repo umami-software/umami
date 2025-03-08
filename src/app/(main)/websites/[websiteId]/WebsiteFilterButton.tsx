@@ -1,5 +1,4 @@
 import { Button, Icon, Icons, Box, MenuTrigger, Popover, Text } from '@umami/react-zen';
-import { PopupForm } from '@/app/(main)/reports/[reportId]/PopupForm';
 import { FilterSelectForm } from '@/app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
 import { OPERATOR_PREFIXES } from '@/lib/constants';

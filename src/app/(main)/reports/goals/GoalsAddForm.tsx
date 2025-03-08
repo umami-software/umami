@@ -71,14 +71,6 @@ export function GoalsAddForm({
     }
   };
 
-  const renderTypeValue = (value: any) => {
-    return items.find(item => item.value === value)?.label;
-  };
-
-  const renderoperatorValue = (value: any) => {
-    return operators.find(item => item.value === value)?.label;
-  };
-
   return (
     <Column gap="3">
       <Label>{formatMessage(defaultValue ? labels.update : labels.add)}</Label>
@@ -87,7 +79,6 @@ export function GoalsAddForm({
           className={styles.dropdown}
           items={items}
           value={type}
-          renderValue={renderTypeValue}
           onChange={(value: any) => setType(value)}
         >
           {({ value, label }: any) => {
