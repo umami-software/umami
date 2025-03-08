@@ -1,16 +1,14 @@
 import { Metadata } from 'next';
 import Providers from './Providers';
-import '@fontsource/inter/300.css';
-import '@fontsource/inter/400.css';
-import '@fontsource/inter/500.css';
-import '@fontsource/inter/700.css';
+// eslint-disable-next-line import/no-unresolved
+import { GeistSans } from 'geist/font/sans';
 import 'react-basics/dist/styles.css';
 import '@/styles/index.css';
 import '@/styles/variables.css';
 
 export default function ({ children }) {
   return (
-    <html lang="en" data-scroll="0">
+    <html lang="en" data-scroll="0" className={GeistSans.className}>
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
