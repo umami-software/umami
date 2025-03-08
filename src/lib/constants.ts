@@ -397,6 +397,14 @@ export const PAID_AD_PARAMS = [
   'epik=',
   'ttclid=',
   'scid=',
+  'aid=',
+  'pc_id=',
+  'ad_id=',
+  'rdt_cid=',
+  'ob_click_id=',
+  'utm_medium=cpc',
+  'utm_medium=paid',
+  'utm_medium=paid_social',
 ];
 
 export const GROUPED_DOMAINS = [

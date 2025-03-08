@@ -24,7 +24,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
 
   return (
     <DialogTrigger>
-      <Button variant="primary">
+      <Button variant="primary" data-test="button-create-user">
         <Icon>
           <Icons.Plus />
         </Icon>

@@ -41,7 +41,7 @@ export function ReportDeleteButton({
           {({ close }) => (
             <ConfirmationForm
               message={formatMessage(messages.confirmDelete, {
-                target: <b key="report-name">{reportName}</b>,
+                target: <b key={messages.confirmDelete.id}>{reportName}</b>,
               })}
               isLoading={isPending}
               error={error}

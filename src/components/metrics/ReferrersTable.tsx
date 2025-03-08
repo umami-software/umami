@@ -69,11 +69,10 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
           if (!groups[domain]) {
             groups[domain] = 0;
           }
-          groups[domain] += y;
-        } else {
-          groups._other += y;
+          groups[domain] += +y;
         }
       }
+      groups._other += +y;
     }
 
     return Object.keys(groups)

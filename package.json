@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "2.16.1",
+  "version": "2.17.0",
   "description": "A simple, fast, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -120,6 +120,7 @@
     "react-simple-maps": "^2.3.0",
     "react-use-measure": "^2.1.7",
     "react-window": "^1.8.11",
+    "react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen",
     "request-ip": "^3.3.0",
     "semver": "^7.7.1",
     "serialize-error": "^12.0.0",
@@ -196,7 +197,7 @@
       "sharp"
     ],
     "overrides": {
-      "@umami/react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
+      "react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
     }
   }
 }

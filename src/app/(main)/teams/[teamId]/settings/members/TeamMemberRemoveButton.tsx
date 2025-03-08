@@ -45,7 +45,7 @@ export function TeamMemberRemoveButton({
           {({ close }) => (
             <ConfirmationForm
               message={formatMessage(messages.confirmRemove, {
-                target: <b key="username">{userName}</b>,
+                target: <b key={messages.confirmRemove.id}>{userName}</b>,
               })}
               isLoading={isPending}
               error={error}
