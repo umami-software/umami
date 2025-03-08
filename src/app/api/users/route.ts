@@ -8,9 +8,9 @@ import { createUser, getUserByUsername } from '@/queries';
 
 export async function POST(request: Request) {
   const schema = z.object({
+    id: z.string().uuid().optional(),
     username: z.string().max(255),
     password: z.string(),
-    id: z.string().uuid(),
     role: z.string().regex(/admin|user|view-only/i),
   });
 
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const { username, password, role, id } = body;
+  const { id, username, password, role } = body;
 
   const existingUser = await getUserByUsername(username, { showDeleted: true });
 

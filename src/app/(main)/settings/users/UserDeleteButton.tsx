@@ -16,7 +16,7 @@ export function UserDeleteButton({
 
   return (
     <ModalTrigger disabled={userId === user?.id}>
-      <Button disabled={userId === user?.id} variant="quiet">
+      <Button data-test="button-delete" disabled={userId === user?.id} variant="quiet">
         <Icon>
           <Icons.Trash />
         </Icon>

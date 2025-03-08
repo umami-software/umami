@@ -15,7 +15,7 @@ export async function saveEventData(data: {
   urlPath?: string;
   eventName?: string;
   eventData: DynamicData;
-  createdAt?: string;
+  createdAt?: Date;
 }) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
@@ -27,8 +27,9 @@ async function relationalQuery(data: {
   websiteId: string;
   eventId: string;
   eventData: DynamicData;
+  createdAt?: Date;
 }): Promise<Prisma.BatchPayload> {
-  const { websiteId, eventId, eventData } = data;
+  const { websiteId, eventId, eventData, createdAt } = data;
 
   const jsonKeys = flattenJSON(eventData);
 
@@ -42,6 +43,7 @@ async function relationalQuery(data: {
     numberValue: a.dataType === DATA_TYPE.number ? a.value : null,
     dateValue: a.dataType === DATA_TYPE.date ? new Date(a.value) : null,
     dataType: a.dataType,
+    createdAt,
   }));
 
   return prisma.client.eventData.createMany({
@@ -56,7 +58,7 @@ async function clickhouseQuery(data: {
   urlPath?: string;
   eventName?: string;
   eventData: DynamicData;
-  createdAt?: string;
+  createdAt?: Date;
 }) {
   const { websiteId, sessionId, eventId, urlPath, eventName, eventData, createdAt } = data;
 
@@ -77,7 +79,7 @@ async function clickhouseQuery(data: {
       string_value: getStringValue(value, dataType),
       number_value: dataType === DATA_TYPE.number ? value : null,
       date_value: dataType === DATA_TYPE.date ? getUTCString(value) : null,
-      created_at: createdAt,
+      created_at: getUTCString(createdAt),
     };
   });
 

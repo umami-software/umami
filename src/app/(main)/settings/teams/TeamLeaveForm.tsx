@@ -34,7 +34,9 @@ export function TeamLeaveForm({
   return (
     <ConfirmationForm
       buttonLabel={formatMessage(labels.leave)}
-      message={formatMessage(messages.confirmLeave, { target: <b>{teamName}</b> })}
+      message={formatMessage(messages.confirmLeave, {
+        target: <b key={messages.confirmLeave.id}>{teamName}</b>,
+      })}
       onConfirm={handleConfirm}
       onClose={onClose}
       isLoading={isPending}

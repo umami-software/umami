@@ -43,7 +43,9 @@ export function TeamMemberRemoveButton({
       <Modal title={formatMessage(labels.removeMember)}>
         {(close: () => void) => (
           <ConfirmationForm
-            message={formatMessage(messages.confirmRemove, { target: <b>{userName}</b> })}
+            message={formatMessage(messages.confirmRemove, {
+              target: <b key={messages.confirmRemove.id}>{userName}</b>,
+            })}
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}
