@@ -148,7 +148,7 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
   const ip = payload?.ip || getIpAddress(request.headers);
   const location = await getLocation(ip, request.headers, !!payload?.ip);
-  const country = payload?.userAgent || location?.country;
+  const country = location?.country;
   const subdivision1 = location?.subdivision1;
   const subdivision2 = location?.subdivision2;
   const city = location?.city;

@@ -44,7 +44,7 @@ export function UsersTable({
               <>
                 <UserDeleteButton userId={id} username={username} />
                 <LinkButton href={`/settings/users/${id}`}>
-                  <Icon>
+                  <Icon data-test="link-button-edit">
                     <Icons.Edit />
                   </Icon>
                   <Text>{formatMessage(labels.edit)}</Text>

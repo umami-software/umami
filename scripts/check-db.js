@@ -82,9 +82,11 @@ async function checkV1Tables() {
 }
 
 async function applyMigration() {
-  console.log(execSync('prisma migrate deploy').toString());
+  if (!process.env.SKIP_DB_MIGRATION) {
+    console.log(execSync('prisma migrate deploy').toString());
 
-  success('Database is up to date.');
+    success('Database is up to date.');
+  }
 }
 
 (async () => {

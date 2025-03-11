@@ -26,7 +26,7 @@ export async function POST(request: Request) {
   const user = await getUserByUsername(username, { includePassword: true });
 
   if (!user || !checkPassword(password, user.password)) {
-    return unauthorized();
+    return unauthorized('message.incorrect-username-password');
   }
 
   const { id, role, createdAt } = user;

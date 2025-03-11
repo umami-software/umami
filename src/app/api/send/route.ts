@@ -1,31 +1,34 @@
 import { z } from 'zod';
 import { isbot } from 'isbot';
-import { createToken, parseToken } from '@/lib/jwt';
+import { startOfHour, startOfMonth } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, forbidden, serverError } from '@/lib/response';
 import { fetchSession, fetchWebsite } from '@/lib/load';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
-import { secret, uuid, visitSalt } from '@/lib/crypto';
-import { COLLECTION_TYPE, DOMAIN_REGEX } from '@/lib/constants';
+import { createToken, parseToken } from '@/lib/jwt';
+import { secret, uuid, hash } from '@/lib/crypto';
+import { COLLECTION_TYPE } from '@/lib/constants';
+import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
+import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import { createSession, saveEvent, saveSessionData } from '@/queries';
-import { urlOrPathParam } from '@/lib/schema';
 
 const schema = z.object({
   type: z.enum(['event', 'identify']),
   payload: z.object({
     website: z.string().uuid(),
-    data: z.object({}).passthrough().optional(),
-    hostname: z.string().regex(DOMAIN_REGEX).max(100).optional(),
+    data: anyObjectParam.optional(),
+    hostname: z.string().max(100).optional(),
     language: z.string().max(35).optional(),
     referrer: urlOrPathParam.optional(),
     screen: z.string().max(11).optional(),
     title: z.string().optional(),
-    url: urlOrPathParam,
+    url: urlOrPathParam.optional(),
     name: z.string().max(50).optional(),
     tag: z.string().max(50).optional(),
     ip: z.string().ip().optional(),
     userAgent: z.string().optional(),
+    timestamp: z.coerce.number().int().optional(),
   }),
 });
 
@@ -55,6 +58,7 @@ export async function POST(request: Request) {
       data,
       title,
       tag,
+      timestamp,
     } = payload;
 
     // Cache check
@@ -87,7 +91,13 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
-    const sessionId = uuid(websiteId, ip, userAgent);
+    const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
+    const now = Math.floor(new Date().getTime() / 1000);
+
+    const sessionSalt = hash(startOfMonth(createdAt).toUTCString());
+    const visitSalt = hash(startOfHour(createdAt).toUTCString());
+
+    const sessionId = uuid(websiteId, ip, userAgent, sessionSalt);
 
     // Find session
     if (!clickhouse.enabled && !cache?.sessionId) {
@@ -119,13 +129,12 @@ export async function POST(request: Request) {
     }
 
     // Visit info
-    const now = Math.floor(new Date().getTime() / 1000);
-    let visitId = cache?.visitId || uuid(sessionId, visitSalt());
+    let visitId = cache?.visitId || uuid(sessionId, visitSalt);
     let iat = cache?.iat || now;
 
     // Expire visit after 30 minutes
-    if (now - iat > 1800) {
-      visitId = uuid(sessionId, visitSalt());
+    if (!timestamp && now - iat > 1800) {
+      visitId = uuid(sessionId, visitSalt);
       iat = now;
     }
 
@@ -160,12 +169,12 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         visitId,
-        urlPath,
+        urlPath: safeDecodeURI(urlPath),
         urlQuery,
-        referrerPath,
+        referrerPath: safeDecodeURI(referrerPath),
         referrerQuery,
         referrerDomain,
-        pageTitle: title,
+        pageTitle: safeDecodeURIComponent(title),
         eventName: name,
         eventData: data,
         hostname: hostname || urlDomain,
@@ -179,6 +188,7 @@ export async function POST(request: Request) {
         subdivision2,
         city,
         tag,
+        createdAt,
       });
     }
 
@@ -191,12 +201,13 @@ export async function POST(request: Request) {
         websiteId,
         sessionId,
         sessionData: data,
+        createdAt,
       });
     }
 
     const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
 
-    return json({ cache: token });
+    return json({ cache: token, sessionId, visitId });
   } catch (e) {
     return serverError(e);
   }
