@@ -60,19 +60,24 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
     );
   };
 
+  const getDomain = (x: string) => {
+    for (const { domain, match } of GROUPED_DOMAINS) {
+      if (Array.isArray(match) ? match.some(str => x.includes(str)) : x.includes(match)) {
+        return domain;
+      }
+    }
+    return '_other';
+  };
+
   const groupedFilter = (data: any[]) => {
     const groups = { _other: 0 };
 
     for (const { x, y } of data) {
-      for (const { domain, match } of GROUPED_DOMAINS) {
-        if (Array.isArray(match) ? match.some(str => x.includes(str)) : x.includes(match)) {
-          if (!groups[domain]) {
-            groups[domain] = 0;
-          }
-          groups[domain] += +y;
-        }
+      const domain = getDomain(x);
+      if (!groups[domain]) {
+        groups[domain] = 0;
       }
-      groups._other += +y;
+      groups[domain] += +y;
     }
 
     return Object.keys(groups)
