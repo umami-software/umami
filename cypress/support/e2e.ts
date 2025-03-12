@@ -61,3 +61,63 @@ Cypress.Commands.add('deleteWebsite', (websiteId: string) => {
     expect(response.status).to.eq(200);
   });
 });
+
+Cypress.Commands.add('addUser', (username: string, password: string, role: string) => {
+  cy.request({
+    method: 'POST',
+    url: '/api/users',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Cypress.env('authorization'),
+    },
+    body: {
+      username: username,
+      password: password,
+      role: role,
+    },
+  }).then(response => {
+    expect(response.status).to.eq(200);
+  });
+});
+
+Cypress.Commands.add('deleteUser', (userId: string) => {
+  cy.request({
+    method: 'DELETE',
+    url: `/api/users/${userId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Cypress.env('authorization'),
+    },
+  }).then(response => {
+    expect(response.status).to.eq(200);
+  });
+});
+
+Cypress.Commands.add('addTeam', (name: string) => {
+  cy.request({
+    method: 'POST',
+    url: '/api/teams',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Cypress.env('authorization'),
+    },
+    body: {
+      name: name,
+    },
+  }).then(response => {
+    expect(response.status).to.eq(200);
+  });
+});
+
+Cypress.Commands.add('deleteTeam', (teamId: string) => {
+  cy.request({
+    method: 'DELETE',
+    url: `/api/teams/${teamId}`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Cypress.env('authorization'),
+    },
+  }).then(response => {
+    expect(response.status).to.eq(200);
+  });
+});
