@@ -1,9 +1,9 @@
-import { Icons as ReactBasicsIcons } from '@umami/react-zen';
+import { Icons as ZenIcons } from '@umami/react-zen';
 import * as lucide from 'lucide-react';
 import * as LocalIcons from '@/components/svg';
 
 const icons = {
-  ...ReactBasicsIcons,
+  ...ZenIcons,
   ...LocalIcons,
 };
 
