@@ -1,4 +1,4 @@
-import { useLocale, useLogin, useMessages, useModified } from '@/components/hooks';
+import { useLogin, useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
 import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { TeamLeaveForm } from './TeamLeaveForm';
@@ -6,7 +6,6 @@ import { TeamLeaveForm } from './TeamLeaveForm';
 export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName: string }) {
   const { formatMessage, labels } = useMessages();
   const router = useRouter();
-  const { dir } = useLocale();
   const { user } = useLogin();
   const { touch } = useModified();
 
@@ -18,7 +17,7 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
   return (
     <DialogTrigger>
       <Button variant="secondary">
-        <Icon rotate={dir === 'rtl' ? 180 : 0}>
+        <Icon>
           <Icons.Logout />
         </Icon>
         <Text>{formatMessage(labels.leave)}</Text>

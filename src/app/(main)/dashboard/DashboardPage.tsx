@@ -6,7 +6,7 @@ import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';
 import { DashboardSettingsButton } from '@/app/(main)/dashboard/DashboardSettingsButton';
 import { DashboardEdit } from '@/app/(main)/dashboard/DashboardEdit';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
-import { useMessages, useLocale, useTeamUrl, useWebsites } from '@/components/hooks';
+import { useMessages, useTeamUrl, useWebsites } from '@/components/hooks';
 import { useDashboard } from '@/store/dashboard';
 import { LinkButton } from '@/components/common/LinkButton';
 
@@ -14,7 +14,6 @@ export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
   const { teamId, renderTeamUrl } = useTeamUrl();
   const { showCharts, editing, isEdited } = useDashboard();
-  const { dir } = useLocale();
   const pageSize = isEdited ? 200 : 10;
 
   const { result, query, params, setParams } = useWebsites({ teamId }, { pageSize });
@@ -37,8 +36,8 @@ export function DashboardPage() {
       {!hasData && (
         <EmptyPlaceholder message={formatMessage(messages.noWebsitesConfigured)}>
           <LinkButton href={renderTeamUrl('/settings')}>
-            <Icon rotate={dir === 'rtl' ? 180 : 0}>
-              <Icons.ArrowRight />
+            <Icon>
+              <Icons.Arrow />
             </Icon>
             <Text>{formatMessage(messages.goToSettings)}</Text>
           </LinkButton>

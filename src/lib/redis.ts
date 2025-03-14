@@ -1,5 +1,6 @@
-import { REDIS, UmamiRedisClient } from '@umami/redis-client';
+import { UmamiRedisClient } from '@umami/redis-client';
 
+const REDIS = 'redis';
 const enabled = !!process.env.REDIS_URL;
 
 function getClient() {

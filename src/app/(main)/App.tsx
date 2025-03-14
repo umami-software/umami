@@ -32,7 +32,7 @@ export function App({ children }) {
   return (
     <Grid height="100vh" width="100%" columns="auto 1fr">
       <Nav />
-      <Grid rows="auto 1fr">
+      <Grid rows="auto 1fr" overflow="auto">
         <NavBar />
         <Page>
           <UpdateNotice user={user} config={config} />

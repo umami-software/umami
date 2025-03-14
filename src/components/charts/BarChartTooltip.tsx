@@ -1,7 +1,7 @@
 import { useLocale } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import { Column, Row, StatusLight, FloatingTooltip, TooltipBubble } from '@umami/react-zen';
+import { Column, Row, StatusLight, FloatingTooltip } from '@umami/react-zen';
 
 const formats = {
   millisecond: 'T',
@@ -21,24 +21,18 @@ export function BarChartTooltip({ tooltip, unit, currency }) {
 
   return (
     <FloatingTooltip>
-      <TooltipBubble>
-        <Column gap="3" fontSize="1">
-          <Row alignItems="center">
-            {formatDate(
-              new Date(dataPoints[0].raw.d || dataPoints[0].raw.x),
-              formats[unit],
-              locale,
-            )}
-          </Row>
-          <Row alignItems="center">
-            <StatusLight color={labelColors?.[0]?.backgroundColor}>
-              {currency
-                ? formatLongCurrency(dataPoints[0].raw.y, currency)
-                : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`}
-            </StatusLight>
-          </Row>
-        </Column>
-      </TooltipBubble>
+      <Column gap="3" fontSize="1">
+        <Row alignItems="center">
+          {formatDate(new Date(dataPoints[0].raw.d || dataPoints[0].raw.x), formats[unit], locale)}
+        </Row>
+        <Row alignItems="center">
+          <StatusLight color={labelColors?.[0]?.backgroundColor}>
+            {currency
+              ? formatLongCurrency(dataPoints[0].raw.y, currency)
+              : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`}
+          </StatusLight>
+        </Row>
+      </Column>
     </FloatingTooltip>
   );
 }
