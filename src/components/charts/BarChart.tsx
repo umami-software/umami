@@ -1,8 +1,8 @@
+import { useMemo, useState } from 'react';
 import { BarChartTooltip } from '@/components/charts/BarChartTooltip';
 import { Chart, ChartProps } from '@/components/charts/Chart';
 import { useTheme } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
-import { useMemo, useState } from 'react';
 
 export interface BarChartProps extends ChartProps {
   unit: string;

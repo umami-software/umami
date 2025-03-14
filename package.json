@@ -195,6 +195,8 @@
       "prisma",
       "sharp"
     ],
-    "overrides": {}
+    "overrides": {
+      "@umami/react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
+    }
   }
 }

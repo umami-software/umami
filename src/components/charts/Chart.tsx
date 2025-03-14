@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
 import { Loading } from '@umami/react-zen';
 import classNames from 'classnames';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
-import { HoverTooltip } from '@/components/common/HoverTooltip';
 import { Legend } from '@/components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import styles from './Chart.module.css';
@@ -34,7 +33,7 @@ export function Chart({
   className,
   chartOptions,
 }: ChartProps) {
-  const canvas = useRef();
+  const canvas = useRef(null);
   const chart = useRef(null);
   const [legendItems, setLegendItems] = useState([]);
 
@@ -143,11 +142,7 @@ export function Chart({
         <canvas ref={canvas} />
       </div>
       <Legend items={legendItems} onClick={handleLegendClick} />
-      {tooltip && (
-        <HoverTooltip>
-          <div className={styles.tooltip}>{tooltip}</div>
-        </HoverTooltip>
-      )}
+      {tooltip}
     </>
   );
 }
