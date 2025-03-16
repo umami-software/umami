@@ -20,17 +20,16 @@ export function LanguageSetting() {
 
   const handleReset = () => saveLocale(DEFAULT_LOCALE);
 
+  console.log({ options });
+
   return (
     <Flexbox gap={10}>
-      <Select
-        items={options}
-        value={locale}
-        onChange={val => saveLocale(val as string)}
-        allowSearch={true}
-        onSearch={setSearch}
-        menuProps={{ className: styles.menu }}
-      >
-        {item => <ListItem key={item}>{languages[item].label}</ListItem>}
+      <Select value={locale} onChange={val => saveLocale(val as string)}>
+        {options.map(item => (
+          <ListItem key={item} id={item}>
+            {languages[item].label}
+          </ListItem>
+        ))}
       </Select>
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>

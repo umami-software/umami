@@ -23,7 +23,7 @@ export function DataGrid({
   searchDelay = 600,
   allowSearch = true,
   allowPaging = true,
-  autoFocus = true,
+  autoFocus,
   renderEmpty,
   children,
 }: DataTableProps) {

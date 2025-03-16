@@ -1,4 +1,4 @@
-import { Form, FormRow } from '@umami/react-zen';
+import { Form, FormField, Column, Label } from '@umami/react-zen';
 import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
 import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
 import { LanguageSetting } from '@/app/(main)/profile/LanguageSetting';
@@ -33,26 +33,43 @@ export function ProfileSettings() {
   };
 
   return (
-    <Form>
-      <FormRow label={formatMessage(labels.username)}>{username}</FormRow>
-      <FormRow label={formatMessage(labels.role)}>{renderRole(role)}</FormRow>
+    <Column gap="6">
+      <Column>
+        <Label>{formatMessage(labels.username)}</Label>
+        {username}
+      </Column>
+
+      <Column>
+        <Label>{formatMessage(labels.role)}</Label>
+        {renderRole(role)}
+      </Column>
+
       {!cloudMode && (
-        <FormRow label={formatMessage(labels.password)}>
+        <Column>
+          <Label>{formatMessage(labels.password)}</Label>
           <PasswordChangeButton />
-        </FormRow>
+        </Column>
       )}
-      <FormRow label={formatMessage(labels.defaultDateRange)}>
+
+      <Column>
+        <Label>{formatMessage(labels.defaultDateRange)}</Label>
         <DateRangeSetting />
-      </FormRow>
-      <FormRow label={formatMessage(labels.language)}>
+      </Column>
+
+      <Column>
+        <Label>{formatMessage(labels.language)}</Label>
         <LanguageSetting />
-      </FormRow>
-      <FormRow label={formatMessage(labels.timezone)}>
+      </Column>
+
+      <Column>
+        <Label>{formatMessage(labels.timezone)}</Label>
         <TimezoneSetting />
-      </FormRow>
-      <FormRow label={formatMessage(labels.theme)}>
+      </Column>
+
+      <Column>
+        <Label>{formatMessage(labels.theme)}</Label>
         <ThemeSetting />
-      </FormRow>
-    </Form>
+      </Column>
+    </Column>
   );
 }

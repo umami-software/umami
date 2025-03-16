@@ -1,5 +1,5 @@
-import { BoardsPage } from './BoardsPage';
 import { Metadata } from 'next';
+import { BoardsPage } from './BoardsPage';
 
 export default function () {
   return <BoardsPage />;

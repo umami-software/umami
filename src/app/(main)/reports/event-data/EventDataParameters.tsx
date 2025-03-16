@@ -1,12 +1,12 @@
 import { useContext } from 'react';
 import {
   Form,
-  FormRow,
+  FormField,
   FormButtons,
-  SubmitButton,
-  PopupTrigger,
+  FormSubmitButton,
+  DialogTrigger,
   Icon,
-  Popup,
+  Popover,
 } from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
 import { Icons } from '@/components/icons';
@@ -75,12 +75,12 @@ export function EventDataParameters() {
 
   const AddButton = ({ group, onAdd }) => {
     return (
-      <PopupTrigger>
+      <DialogTrigger>
         <Icon>
           <Icons.Plus />
         </Icon>
-        <Popup position="bottom" alignment="start">
-          {(close: () => void) => {
+        <Popover placement="bottom start">
+          {({ close }: any) => {
             return (
               <FieldAddForm
                 fields={data.map(({ dataKey, eventDataType }) => ({
@@ -93,8 +93,8 @@ export function EventDataParameters() {
               />
             );
           }}
-        </Popup>
-      </PopupTrigger>
+        </Popover>
+      </DialogTrigger>
     );
   };
 
@@ -106,11 +106,7 @@ export function EventDataParameters() {
         hasData &&
         parameterGroups.map(({ label, group }) => {
           return (
-            <FormRow
-              key={label}
-              label={label}
-              action={<AddButton group={group} onAdd={handleAdd} />}
-            >
+            <FormField name={label} key={label} label={label}>
               <ParameterList>
                 {parameterData[group].map(({ name, value }) => {
                   return (
@@ -134,13 +130,14 @@ export function EventDataParameters() {
                   );
                 })}
               </ParameterList>
-            </FormRow>
+              <AddButton group={group} onAdd={handleAdd} />
+            </FormField>
           );
         })}
       <FormButtons>
-        <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

@@ -27,7 +27,7 @@ export function RetentionParameters() {
       <BaseParameters showDateSelect={false} allowWebsiteSelect={!id} />
 
       <FormButtons>
-        <FormSubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
         </FormSubmitButton>
       </FormButtons>

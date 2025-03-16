@@ -22,7 +22,7 @@ export function DateRangeSetting() {
         endDate={dateRange.endDate}
         onChange={handleChange}
       />
-      <Button onClick={handleReset}>{formatMessage(labels.reset)}</Button>
+      <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Flexbox>
   );
 }

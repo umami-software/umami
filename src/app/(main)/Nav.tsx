@@ -46,9 +46,9 @@ export function Nav() {
   ].filter(n => n);
 
   return (
-    <SideNav isCollapsed={isCollapsed}>
+    <SideNav isCollapsed={isCollapsed} variant="3">
       <SideNavSection>
-        <SideNavHeader name="umami" icon={<Icons.Logo />} />
+        <SideNavHeader label="umami" icon={<Icons.Logo />} />
       </SideNavSection>
       <SideNavSection>
         {links.map(({ href, label, icon }) => {

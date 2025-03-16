@@ -55,7 +55,7 @@ export function WebsiteAddForm({
             {formatMessage(labels.cancel)}
           </Button>
         )}
-        <FormSubmitButton data-test="button-submit" disabled={false}>
+        <FormSubmitButton data-test="button-submit" isDisabled={false}>
           {formatMessage(labels.save)}
         </FormSubmitButton>
       </Row>

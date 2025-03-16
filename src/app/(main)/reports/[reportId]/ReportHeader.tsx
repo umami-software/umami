@@ -93,7 +93,7 @@ export function ReportHeader({ icon }) {
         <LoadingButton
           variant="primary"
           isLoading={isCreating || isUpdating}
-          disabled={!websiteId || !dateRange?.value || !name}
+          isDisabled={!websiteId || !dateRange?.value || !name}
           onPress={handleSave}
         >
           {formatMessage(labels.save)}

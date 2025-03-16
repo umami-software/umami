@@ -4,11 +4,10 @@ import {
   Icon,
   Form,
   FormButtons,
-  FormInput,
-  FormRow,
-  PopupTrigger,
-  Popup,
-  SubmitButton,
+  FormField,
+  DialogTrigger,
+  Popover,
+  FormSubmitButton,
   TextField,
   Button,
 } from '@umami/react-zen';
@@ -60,37 +59,36 @@ export function FunnelParameters() {
 
   const AddStepButton = () => {
     return (
-      <PopupTrigger>
+      <DialogTrigger>
         <Button>
           <Icon>
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popup alignment="start">
+        <Popover placement="start">
           <PopupForm>
             <FunnelStepAddForm onChange={handleAddStep} />
           </PopupForm>
-        </Popup>
-      </PopupTrigger>
+        </Popover>
+      </DialogTrigger>
     );
   };
 
   return (
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters allowWebsiteSelect={!id} />
-      <FormRow label={formatMessage(labels.window)}>
-        <FormInput
-          name="window"
-          rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/ }}
-        >
-          <TextField autoComplete="off" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.steps)} action={<AddStepButton />}>
+      <FormField
+        label={formatMessage(labels.window)}
+        name="window"
+        rules={{ required: formatMessage(labels.required), pattern: /[0-9]+/ }}
+      >
+        <TextField autoComplete="off" />
+      </FormField>
+      <FormField name="steps" label={formatMessage(labels.steps)}>
         <ParameterList>
           {steps.map((step: { type: string; value: string }, index: number) => {
             return (
-              <PopupTrigger key={index}>
+              <DialogTrigger key={index}>
                 <ParameterList.Item
                   className={styles.item}
                   icon={step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
@@ -100,8 +98,8 @@ export function FunnelParameters() {
                     <div>{step.value}</div>
                   </div>
                 </ParameterList.Item>
-                <Popup alignment="start">
-                  {(close: () => void) => (
+                <Popover placement="start">
+                  {({ close }: any) => (
                     <PopupForm>
                       <FunnelStepAddForm
                         type={step.type}
@@ -110,16 +108,17 @@ export function FunnelParameters() {
                       />
                     </PopupForm>
                   )}
-                </Popup>
-              </PopupTrigger>
+                </Popover>
+              </DialogTrigger>
             );
           })}
         </ParameterList>
-      </FormRow>
+        <AddStepButton />
+      </FormField>
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

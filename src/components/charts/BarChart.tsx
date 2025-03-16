@@ -92,6 +92,7 @@ export function BarChart(props: BarChartProps) {
       chartOptions={options}
       tooltip={tooltip}
       onTooltip={handleTooltip}
+      style={{ height: 400 }}
     />
   );
 }

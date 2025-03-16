@@ -8,7 +8,7 @@ import {
   useToast,
 } from '@umami/react-zen';
 import { getRandomChars } from '@/lib/crypto';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 
@@ -21,7 +21,6 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/teams/${teamId}`, data),
   });
-  const [accessCode, setAccessCode] = useState(team.accessCode);
   const { toast } = useToast();
   const { touch } = useModified();
   const cloudMode = !!process.env.cloudMode;
@@ -35,36 +34,42 @@ export function TeamEditForm({ teamId, allowEdit }: { teamId: string; allowEdit?
     });
   };
 
-  const handleRegenerate = () => {
-    setAccessCode(generateId());
-  };
-
   return (
-    <Form onSubmit={handleSubmit} error={error} values={{ ...team, accessCode }}>
-      <FormField name="id" label={formatMessage(labels.teamId)}>
-        <TextField isReadOnly allowCopy />
-      </FormField>
-      <FormField
-        name="name"
-        label={formatMessage(labels.name)}
-        rules={{ required: formatMessage(labels.required) }}
-      >
-        {allowEdit && <TextField />}
-        {!allowEdit && team.name}
-      </FormField>
-      {!cloudMode && allowEdit && (
-        <FormField name="accessCode" label={formatMessage(labels.accessCode)}>
-          <TextField isReadOnly allowCopy />
-        </FormField>
-      )}
-      {allowEdit && (
-        <FormButtons justifyContent="space-between">
-          {allowEdit && (
-            <Button onPress={handleRegenerate}>{formatMessage(labels.regenerate)}</Button>
-          )}
-          <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
-        </FormButtons>
-      )}
+    <Form onSubmit={handleSubmit} error={error} defaultValues={{ ...team }}>
+      {({ setValue }) => {
+        return (
+          <>
+            <FormField name="id" label={formatMessage(labels.teamId)}>
+              <TextField isReadOnly allowCopy />
+            </FormField>
+            <FormField
+              name="name"
+              label={formatMessage(labels.name)}
+              rules={{ required: formatMessage(labels.required) }}
+            >
+              {allowEdit && <TextField />}
+              {!allowEdit && team.name}
+            </FormField>
+            {!cloudMode && allowEdit && (
+              <FormField name="accessCode" label={formatMessage(labels.accessCode)}>
+                <TextField isReadOnly allowCopy />
+              </FormField>
+            )}
+            {allowEdit && (
+              <FormButtons justifyContent="space-between">
+                {allowEdit && (
+                  <Button
+                    onPress={() => setValue('accessCode', generateId(), { shouldDirty: true })}
+                  >
+                    {formatMessage(labels.regenerate)}
+                  </Button>
+                )}
+                <FormSubmitButton variant="primary">{formatMessage(labels.save)}</FormSubmitButton>
+              </FormButtons>
+            )}
+          </>
+        );
+      }}
     </Form>
   );
 }

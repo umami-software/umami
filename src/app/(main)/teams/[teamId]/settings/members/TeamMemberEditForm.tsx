@@ -53,7 +53,7 @@ export function TeamMemberEditForm({
       </FormField>
 
       <FormButtons>
-        <FormSubmitButton variant="primary" disabled={false}>
+        <FormSubmitButton variant="primary" isDisabled={false}>
           {formatMessage(labels.save)}
         </FormSubmitButton>
         <Button isDisabled={isPending} onPress={onClose}>

@@ -61,7 +61,7 @@ export function LoginForm() {
           <FormSubmitButton
             data-test="button-submit"
             variant="primary"
-            disabled={isPending}
+            isDisabled={isPending}
             style={{ flex: 1 }}
           >
             {formatMessage(labels.login)}

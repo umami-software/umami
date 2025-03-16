@@ -1,12 +1,10 @@
-import { useState, useRef, useEffect, useMemo, ReactNode } from 'react';
+import { useState, useRef, useEffect, useMemo, ReactNode, HTMLAttributes } from 'react';
 import { Loading } from '@umami/react-zen';
-import classNames from 'classnames';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import { Legend } from '@/components/metrics/Legend';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
-import styles from './Chart.module.css';
 
-export interface ChartProps {
+export interface ChartProps extends HTMLAttributes<HTMLDivElement> {
   type?: 'bar' | 'bubble' | 'doughnut' | 'pie' | 'line' | 'polarArea' | 'radar' | 'scatter';
   data?: object;
   isLoading?: boolean;
@@ -15,7 +13,6 @@ export interface ChartProps {
   onCreate?: (chart: any) => void;
   onUpdate?: (chart: any) => void;
   onTooltip?: (model: any) => void;
-  className?: string;
   chartOptions?: ChartOptions;
   tooltip?: ReactNode;
 }
@@ -25,13 +22,14 @@ export function Chart({
   data,
   isLoading = false,
   animationDuration = DEFAULT_ANIMATION_DURATION,
-  tooltip,
   updateMode,
   onCreate,
   onUpdate,
   onTooltip,
   className,
   chartOptions,
+  tooltip,
+  ...props
 }: ChartProps) {
   const canvas = useRef(null);
   const chart = useRef(null);
@@ -137,7 +135,7 @@ export function Chart({
 
   return (
     <>
-      <div className={classNames(styles.chart, className)}>
+      <div {...props}>
         {isLoading && <Loading position="page" icon="dots" />}
         <canvas ref={canvas} />
       </div>

@@ -3,10 +3,10 @@ import { Grid, Loading } from '@umami/react-zen';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
+import { Nav } from '@/app/(main)/Nav';
 import { NavBar } from '@/app/(main)/NavBar';
 import { Page } from '@/components/layout/Page';
 import { useLogin, useConfig } from '@/components/hooks';
-import { Nav } from '@/app/(main)/Nav';
 
 export function App({ children }) {
   const { user, isLoading, error } = useLogin();

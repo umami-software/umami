@@ -1,5 +1,4 @@
-import { useRef } from 'react';
-import { Form, FormRow, FormInput, FormButtons, PasswordField, Button } from '@umami/react-zen';
+import { Form, FormField, FormButtons, PasswordField, Button } from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
@@ -8,7 +7,6 @@ export function PasswordEditForm({ onSave, onClose }) {
   const { mutate, error, isPending } = useMutation({
     mutationFn: (data: any) => post('/me/password', data),
   });
-  const ref = useRef(null);
 
   const handleSubmit = async (data: any) => {
     mutate(data, {
@@ -19,48 +17,48 @@ export function PasswordEditForm({ onSave, onClose }) {
     });
   };
 
-  const samePassword = (value: string) => {
-    if (value !== ref?.current?.getValues('newPassword')) {
+  const samePassword = (value: string, values: { [key: string]: any }) => {
+    if (value !== values.newPassword) {
       return formatMessage(messages.noMatchPassword);
     }
     return true;
   };
 
   return (
-    <Form ref={ref} onSubmit={handleSubmit} error={error}>
-      <FormRow label={formatMessage(labels.currentPassword)}>
-        <FormInput name="currentPassword" rules={{ required: 'Required' }}>
-          <PasswordField autoComplete="current-password" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.newPassword)}>
-        <FormInput
-          name="newPassword"
-          rules={{
-            required: 'Required',
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
-          }}
-        >
-          <PasswordField autoComplete="new-password" />
-        </FormInput>
-      </FormRow>
-      <FormRow label={formatMessage(labels.confirmPassword)}>
-        <FormInput
-          name="confirmPassword"
-          rules={{
-            required: formatMessage(labels.required),
-            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
-            validate: samePassword,
-          }}
-        >
-          <PasswordField autoComplete="confirm-password" />
-        </FormInput>
-      </FormRow>
-      <FormButtons flex>
-        <Button type="submit" variant="primary" disabled={isPending}>
+    <Form onSubmit={handleSubmit} error={error}>
+      <FormField
+        label={formatMessage(labels.currentPassword)}
+        name="currentPassword"
+        rules={{ required: 'Required' }}
+      >
+        <PasswordField autoComplete="current-password" />
+      </FormField>
+      <FormField
+        name="newPassword"
+        label={formatMessage(labels.newPassword)}
+        rules={{
+          required: 'Required',
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+        }}
+      >
+        <PasswordField autoComplete="new-password" />
+      </FormField>
+      <FormField
+        name="confirmPassword"
+        label={formatMessage(labels.confirmPassword)}
+        rules={{
+          required: formatMessage(labels.required),
+          minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+          validate: samePassword,
+        }}
+      >
+        <PasswordField autoComplete="confirm-password" />
+      </FormField>
+      <FormButtons>
+        <Button type="submit" variant="primary" isDisabled={isPending}>
           {formatMessage(labels.save)}
         </Button>
-        <Button onClick={onClose}>{formatMessage(labels.cancel)}</Button>
+        <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
       </FormButtons>
     </Form>
   );

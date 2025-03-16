@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useMessages } from '@/components/hooks';
-import { Form, FormButtons, SubmitButton } from '@umami/react-zen';
+import { Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 
@@ -25,9 +25,9 @@ export function UTMParameters() {
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters showDateSelect={true} allowWebsiteSelect={!id} />
       <FormButtons>
-        <SubmitButton variant="primary" disabled={queryDisabled} isLoading={isRunning}>
+        <FormSubmitButton variant="primary" isDisabled={queryDisabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}
-        </SubmitButton>
+        </FormSubmitButton>
       </FormButtons>
     </Form>
   );

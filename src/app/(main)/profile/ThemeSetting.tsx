@@ -11,7 +11,7 @@ export function ThemeSetting() {
     <div className={styles.buttons}>
       <Button
         className={classNames({ [styles.active]: theme === 'light' })}
-        onClick={() => saveTheme('light')}
+        onPress={() => saveTheme('light')}
       >
         <Icon>
           <Icons.Sun />
@@ -19,7 +19,7 @@ export function ThemeSetting() {
       </Button>
       <Button
         className={classNames({ [styles.active]: theme === 'dark' })}
-        onClick={() => saveTheme('dark')}
+        onPress={() => saveTheme('dark')}
       >
         <Icon>
           <Icons.Moon />

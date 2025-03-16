@@ -194,7 +194,7 @@ export function JourneyView() {
                           <div className={styles.name} title={name}>
                             <TextOverflow> {name}</TextOverflow>
                           </div>
-                          <TooltipPopup label={dropOffPercent} disabled={!selected}>
+                          <TooltipPopup label={dropOffPercent} isDisabled={!selected}>
                             <div className={styles.count} title={nodeCount}>
                               {formatLongNumber(nodeCount)}
                             </div>

@@ -10,7 +10,7 @@ export function TimezoneSetting() {
   const [search, setSearch] = useState('');
   const { formatMessage, labels } = useMessages();
   const { timezone, saveTimezone } = useTimezone();
-  const options = search
+  const items = search
     ? timezones.filter(n => n.toLowerCase().includes(search.toLowerCase()))
     : timezones;
 
@@ -20,13 +20,13 @@ export function TimezoneSetting() {
     <Row gap="3">
       <Select
         className={styles.dropdown}
-        items={options}
+        items={items}
         value={timezone}
         onChange={(value: any) => saveTimezone(value)}
         allowSearch={true}
         onSearch={setSearch}
       >
-        {item => (
+        {(item: any) => (
           <ListItem key={item} id={item}>
             {item}
           </ListItem>
