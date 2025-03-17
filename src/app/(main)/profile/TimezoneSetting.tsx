@@ -16,21 +16,29 @@ export function TimezoneSetting() {
 
   const handleReset = () => saveTimezone(getTimezone());
 
+  const handleOpen = isOpen => {
+    if (isOpen) {
+      setSearch('');
+    }
+  };
+
   return (
     <Row gap="3">
       <Select
         className={styles.dropdown}
-        items={items}
         value={timezone}
         onChange={(value: any) => saveTimezone(value)}
         allowSearch={true}
         onSearch={setSearch}
+        onOpenChange={handleOpen}
+        listProps={{ style: { maxHeight: '300px' } }}
       >
-        {(item: any) => (
+        {items.map((item: any) => (
           <ListItem key={item} id={item}>
             {item}
           </ListItem>
-        )}
+        ))}
+        {!items.length && <ListItem></ListItem>}
       </Select>
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
     </Row>

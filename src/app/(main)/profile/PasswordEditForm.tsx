@@ -1,4 +1,11 @@
-import { Form, FormField, FormButtons, PasswordField, Button } from '@umami/react-zen';
+import {
+  Form,
+  FormField,
+  FormButtons,
+  PasswordField,
+  Button,
+  FormSubmitButton,
+} from '@umami/react-zen';
 import { useApi, useMessages } from '@/components/hooks';
 
 export function PasswordEditForm({ onSave, onClose }) {
@@ -55,10 +62,8 @@ export function PasswordEditForm({ onSave, onClose }) {
         <PasswordField autoComplete="confirm-password" />
       </FormField>
       <FormButtons>
-        <Button type="submit" variant="primary" isDisabled={isPending}>
-          {formatMessage(labels.save)}
-        </Button>
         <Button onPress={onClose}>{formatMessage(labels.cancel)}</Button>
+        <FormSubmitButton isDisabled={isPending}>{formatMessage(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

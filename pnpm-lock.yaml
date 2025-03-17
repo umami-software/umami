@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@umami/react-zen': link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
+  '@umami/react-zen': link:../../../Library/pnpm/global/5/node_modules/@umami/react-zen
 
 importers:
 
@@ -48,8 +48,8 @@ importers:
         specifier: ^0.16.0
         version: 0.16.0(@prisma/client@6.5.0(prisma@6.5.0(typescript@5.8.2))(typescript@5.8.2))(@prisma/extension-read-replicas@0.4.0(@prisma/client@6.5.0(prisma@6.5.0(typescript@5.8.2))(typescript@5.8.2)))
       '@umami/react-zen':
-        specifier: link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
-        version: link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
+        specifier: link:../../../Library/pnpm/global/5/node_modules/@umami/react-zen
+        version: link:../../../Library/pnpm/global/5/node_modules/@umami/react-zen
       '@umami/redis-client':
         specifier: ^0.27.0
         version: 0.27.0
