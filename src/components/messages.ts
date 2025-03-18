@@ -163,7 +163,13 @@ export const labels = defineMessages({
     id: 'label.revenue-description',
     defaultMessage: 'Look into your revenue data and how users are spending.',
   },
+  attribution: { id: 'label.attribution', defaultMessage: 'Attribution' },
+  attributionDescription: {
+    id: 'label.attribution-description',
+    defaultMessage: 'See how users engage with your marketing and what drives conversions.',
+  },
   currency: { id: 'label.currency', defaultMessage: 'Currency' },
+  model: { id: 'label.model', defaultMessage: 'Model' },
   url: { id: 'label.url', defaultMessage: 'URL' },
   urls: { id: 'label.urls', defaultMessage: 'URLs' },
   path: { id: 'label.path', defaultMessage: 'Path' },
