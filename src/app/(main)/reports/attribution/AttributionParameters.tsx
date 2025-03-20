@@ -1,69 +1,91 @@
 import { useMessages } from '@/components/hooks';
+import Icons from '@/components/icons';
 import { useContext, useState } from 'react';
-import { Dropdown, Form, FormButtons, FormInput, FormRow, Item, SubmitButton } from 'react-basics';
+import {
+  Button,
+  Dropdown,
+  Form,
+  FormButtons,
+  FormInput,
+  FormRow,
+  Icon,
+  Item,
+  Popup,
+  PopupTrigger,
+  SubmitButton,
+} from 'react-basics';
 import BaseParameters from '../[reportId]/BaseParameters';
+import ParameterList from '../[reportId]/ParameterList';
+import PopupForm from '../[reportId]/PopupForm';
 import { ReportContext } from '../[reportId]/Report';
+import FunnelStepAddForm from '../funnel/FunnelStepAddForm';
+import styles from './AttributionParameters.module.css';
+import AttributionStepAddForm from './AttributionStepAddForm';
 
 export function AttributionParameters() {
-  const [model, setModel] = useState('firstClick');
-  const { report, runReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
   const { id, parameters } = report || {};
-  const { websiteId, dateRange } = parameters || {};
-  const queryEnabled = websiteId && dateRange;
+  const { websiteId, dateRange, steps } = parameters || {};
+  const queryEnabled = websiteId && dateRange && steps.length > 0;
+  const [model, setModel] = useState('');
 
   const handleSubmit = (data: any, e: any) => {
     e.stopPropagation();
     e.preventDefault();
-
     runReport(data);
   };
 
-  // const handleAddStep = (step: { type: string; value: string }) => {
-  //   updateReport({ parameters: { steps: parameters.steps.concat(step) } });
-  // };
+  const handleAddStep = (step: { type: string; value: string }) => {
+    updateReport({ parameters: { steps: parameters.steps.concat(step) } });
+  };
 
-  // const handleUpdateStep = (
-  //   close: () => void,
-  //   index: number,
-  //   step: { type: string; value: string },
-  // ) => {
-  //   const steps = [...parameters.steps];
-  //   steps[index] = step;
-  //   updateReport({ parameters: { steps } });
-  //   close();
-  // };
+  const handleUpdateStep = (
+    close: () => void,
+    index: number,
+    step: { type: string; value: string },
+  ) => {
+    const steps = [...parameters.steps];
+    steps[index] = step;
+    updateReport({ parameters: { steps } });
+    close();
+  };
 
-  // const handleRemoveStep = (index: number) => {
-  //   const steps = [...parameters.steps];
-  //   delete steps[index];
-  //   updateReport({ parameters: { steps: steps.filter(n => n) } });
-  // };
+  const handleRemoveStep = (index: number) => {
+    const steps = [...parameters.steps];
+    delete steps[index];
+    updateReport({ parameters: { steps: steps.filter(n => n) } });
+  };
 
-  // const AddStepButton = () => {
-  //   return (
-  //     <PopupTrigger>
-  //       <Button>
-  //         <Icon>
-  //           <Icons.Plus />
-  //         </Icon>
-  //       </Button>
-  //       <Popup alignment="start">
-  //         <PopupForm>
-  //           <FunnelStepAddForm onChange={handleAddStep} />
-  //         </PopupForm>
-  //       </Popup>
-  //     </PopupTrigger>
-  //   );
-  // };
+  const AddStepButton = () => {
+    return (
+      <PopupTrigger disabled={steps.length > 0}>
+        <Button disabled={steps.length > 0}>
+          <Icon>
+            <Icons.Plus />
+          </Icon>
+        </Button>
+        <Popup alignment="start">
+          <PopupForm>
+            <FunnelStepAddForm onChange={handleAddStep} />
+          </PopupForm>
+        </Popup>
+      </PopupTrigger>
+    );
+  };
 
-  const attributionModel = [
+  const items = [
     { label: 'First-Click', value: 'firstClick' },
     { label: 'Last-Click', value: 'lastClick' },
   ];
 
   const renderModelValue = (value: any) => {
-    return attributionModel.find(item => item.value === value)?.label;
+    return items.find(item => item.value === value)?.label;
+  };
+
+  const onModelChange = (value: any) => {
+    setModel(value);
+    updateReport({ parameters: { model } });
   };
 
   return (
@@ -72,10 +94,10 @@ export function AttributionParameters() {
       <FormRow label={formatMessage(labels.model)}>
         <FormInput name="model" rules={{ required: formatMessage(labels.required) }}>
           <Dropdown
+            items={items}
             value={model}
             renderValue={renderModelValue}
-            onChange={(value: any) => setModel(value)}
-            items={attributionModel}
+            onChange={onModelChange}
           >
             {({ value, label }) => {
               return <Item key={value}>{label}</Item>;
@@ -83,7 +105,7 @@ export function AttributionParameters() {
           </Dropdown>
         </FormInput>
       </FormRow>
-      {/* <FormRow label={formatMessage(labels.steps)} action={<AddStepButton />}>
+      <FormRow label={formatMessage(labels.conversionStep)} action={<AddStepButton />}>
         <ParameterList>
           {steps.map((step: { type: string; value: string }, index: number) => {
             return (
@@ -100,7 +122,7 @@ export function AttributionParameters() {
                 <Popup alignment="start">
                   {(close: () => void) => (
                     <PopupForm>
-                      <FunnelStepAddForm
+                      <AttributionStepAddForm
                         type={step.type}
                         value={step.value}
                         onChange={handleUpdateStep.bind(null, close, index)}
@@ -112,7 +134,7 @@ export function AttributionParameters() {
             );
           })}
         </ParameterList>
-      </FormRow> */}
+      </FormRow>
       <FormButtons>
         <SubmitButton variant="primary" disabled={!queryEnabled} isLoading={isRunning}>
           {formatMessage(labels.runQuery)}

@@ -263,6 +263,7 @@ export const labels = defineMessages({
     id: 'label.utm-description',
     defaultMessage: 'Track your campaigns through UTM parameters.',
   },
+  conversionStep: { id: 'label.conversion-step', defaultMessage: 'Conversion Step' },
   steps: { id: 'label.steps', defaultMessage: 'Steps' },
   startStep: { id: 'label.start-step', defaultMessage: 'Start Step' },
   endStep: { id: 'label.end-step', defaultMessage: 'End Step' },

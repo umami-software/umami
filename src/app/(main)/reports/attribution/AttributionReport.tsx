@@ -9,7 +9,7 @@ import AttributionView from './AttributionView';
 
 const defaultParameters = {
   type: REPORT_TYPES.attribution,
-  parameters: {},
+  parameters: { model: 'firstClick', steps: [] },
 };
 
 export default function AttributionReport({ reportId }: { reportId?: string }) {
