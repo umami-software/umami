@@ -1,17 +1,11 @@
 {
-  "userGet": {
-    "name": "cypress",
-    "email": "password",
-    "role": "User"
-  },
-  "userPost": {
+  "userCreate": {
     "username": "cypress1",
     "password": "password",
-    "role": "User"
+    "role": "user"
   },
-  "userDelete": {
-    "name": "Charlie",
-    "email": "charlie@example.com",
-    "age": 35
+  "userUpdate": {
+    "username": "cypress1",
+    "role": "view-only"
   }
 }
