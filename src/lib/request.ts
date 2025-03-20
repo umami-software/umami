@@ -5,14 +5,6 @@ import { getAllowedUnits, getMinimumUnit } from '@/lib/date';
 import { checkAuth } from '@/lib/auth';
 import { getWebsiteDateRange } from '@/queries';
 
-export async function getJsonBody(request: Request) {
-  try {
-    return await request.clone().json();
-  } catch {
-    return undefined;
-  }
-}
-
 export async function parseRequest(
   request: Request,
   schema?: ZodSchema,
@@ -23,15 +15,6 @@ export async function parseRequest(
   let body = await getJsonBody(request);
   let error: () => void | undefined;
   let auth = null;
-
-  const getErrorMessages = (error: z.ZodError) => {
-    return Object.entries(error.format())
-      .map(([key, value]) => {
-        const messages = (value as any)._errors;
-        return messages ? `${key}: ${messages.join(', ')}` : null;
-      })
-      .filter(Boolean);
-  };
 
   if (schema) {
     const isGet = request.method === 'GET';
@@ -55,6 +38,14 @@ export async function parseRequest(
   }
 
   return { url, query, body, auth, error };
+}
+
+export async function getJsonBody(request: Request) {
+  try {
+    return await request.clone().json();
+  } catch {
+    return undefined;
+  }
 }
 
 export async function getRequestDateRange(query: Record<string, any>) {
@@ -95,4 +86,14 @@ export function getRequestFilters(query: Record<string, any>) {
 
     return obj;
   }, {});
+}
+
+export function getErrorMessages(error: z.ZodError) {
+  return Object.entries(error.format())
+    .flatMap(([key, value]) => {
+      if (key === '_errors') {
+        return value;
+      }
+    })
+    .filter(Boolean);
 }
