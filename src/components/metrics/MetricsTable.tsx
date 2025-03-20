@@ -85,7 +85,15 @@ export function MetricsTable({
   }, [data, dataFilter, search, limit, formatValue, type]);
 
   return (
-    <div className={classNames(styles.container, className)}>
+    <div
+      className={classNames(styles.container, className)}
+      style={{
+        background: 'var(--background-color)',
+        border: '1px solid var(--border-color)',
+        borderRadius: 'var(--border-radius)',
+        padding: '10px',
+      }}
+    >
       {error && <ErrorMessage />}
       <div className={styles.actions}>
         {allowSearch && (

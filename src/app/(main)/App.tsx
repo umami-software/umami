@@ -1,5 +1,5 @@
 'use client';
-import { Grid, Loading } from '@umami/react-zen';
+import { Grid, Loading, Column } from '@umami/react-zen';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { UpdateNotice } from './UpdateNotice';
@@ -30,10 +30,17 @@ export function App({ children }) {
   }
 
   return (
-    <Grid height="100vh" width="100%" columns="auto 1fr">
-      <Nav />
-      <Grid rows="auto 1fr" overflow="auto">
-        <NavBar />
+    <Grid
+      height="100vh"
+      width="100%"
+      columns="auto 1fr"
+      rows="auto 1fr"
+      overflow="hidden"
+      backgroundColor="2"
+    >
+      <Nav gridColumn="1 / 2" gridRow="1 / 3" />
+      <NavBar gridColumn="2 / 3" gridRow="1 / 2" />
+      <Column alignItems="center" overflow="scroll">
         <Page>
           <UpdateNotice user={user} config={config} />
           {children}
@@ -41,7 +48,7 @@ export function App({ children }) {
             <Script src={`${process.env.basePath || ''}/telemetry.js`} />
           )}
         </Page>
-      </Grid>
+      </Column>
     </Grid>
   );
 }

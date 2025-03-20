@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { Selection } from 'react-aria-components';
 import { useRouter } from 'next/navigation';
 import {
   Text,
@@ -31,7 +30,7 @@ export function TeamsButton({
   const { teamId } = useTeamUrl();
   const router = useRouter();
   const team = result?.data?.find(({ id }) => id === teamId);
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([teamId || user.id]));
+  const [selectedKeys, setSelectedKeys] = useState<any>(new Set([teamId || user.id]));
 
   const handleSelect = (keys: Set<string>) => {
     if (keys.size > 0) {
@@ -58,7 +57,7 @@ export function TeamsButton({
           </Icon>
         </Row>
       </Button>
-      <Popover placement="bottom end">
+      <Popover placement="bottom start">
         <Box minWidth={300}>
           <Menu
             selectionMode="single"

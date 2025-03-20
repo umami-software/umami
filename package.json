@@ -112,7 +112,6 @@
     "prisma": "6.5.0",
     "pure-rand": "^6.1.0",
     "react": "^19.0.0",
-    "react-aria-components": "^1.6.0",
     "react-basics": "^0.126.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
@@ -196,7 +195,7 @@
       "sharp"
     ],
     "overrides": {
-      "@umami/react-zen": "link:../../../Library/pnpm/global/5/node_modules/@umami/react-zen"
+      "@umami/react-zen": "link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen"
     }
   }
 }

@@ -2,7 +2,7 @@ export function ok() {
   return Response.json({ ok: true });
 }
 
-export function json(data: any) {
+export function json(data: any = {}) {
   return Response.json(data);
 }
 

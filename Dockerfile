@@ -13,7 +13,7 @@ FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY docker/middleware.js ./src
+COPY docker/middleware.ts ./src
 
 ARG DATABASE_TYPE
 ARG BASE_PATH

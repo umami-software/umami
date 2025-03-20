@@ -1,15 +1,13 @@
 'use client';
 import { ReactNode } from 'react';
-import classNames from 'classnames';
-import { AlertBanner, Loading } from '@umami/react-zen';
+import { AlertBanner, Loading, Column } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import styles from './Page.module.css';
 
 export function Page({
-  className,
   error,
   isLoading,
   children,
+  ...props
 }: {
   className?: string;
   error?: unknown;
@@ -26,5 +24,25 @@ export function Page({
     return <Loading position="page" />;
   }
 
-  return <div className={classNames(styles.page, className)}>{children}</div>;
+  return (
+    <Column
+      {...props}
+      gridColumn="2 / 3"
+      gridRow="2 / 3"
+      marginRight="6"
+      marginBottom="6"
+      width="100%"
+      maxWidth="1320px"
+      minHeight="600px"
+      margin="auto"
+      backgroundColor="1"
+      overflow="auto"
+      borderRadius="3"
+      borderSize="1"
+      paddingX="8"
+      paddingY="4"
+    >
+      {children}
+    </Column>
+  );
 }

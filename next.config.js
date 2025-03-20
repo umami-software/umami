@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports */
 require('dotenv').config();
 const pkg = require('./package.json');
 
@@ -182,7 +182,6 @@ const config = {
     basePath,
     cloudMode,
     cloudUrl,
-    configUrl: '/config',
     currentVersion: pkg.version,
     defaultLocale,
     disableLogin,
@@ -191,9 +190,6 @@ const config = {
   },
   basePath,
   output: 'standalone',
-  devIndicators: {
-    appIsrStatus: false,
-  },
   eslint: {
     ignoreDuringBuilds: true,
   },
