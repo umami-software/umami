@@ -35,12 +35,6 @@ export function Page({
       maxWidth="1320px"
       minHeight="600px"
       margin="auto"
-      backgroundColor="1"
-      overflow="auto"
-      borderRadius="3"
-      borderSize="1"
-      paddingX="8"
-      paddingY="4"
     >
       {children}
     </Column>

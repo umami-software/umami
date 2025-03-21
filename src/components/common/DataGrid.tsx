@@ -3,6 +3,7 @@ import { Loading, SearchField, Row, Column } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Pager } from '@/components/common/Pager';
+import { Panel } from '@/components/layout/Panel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PagedQueryResult } from '@/lib/types';
 
@@ -59,12 +60,14 @@ export function DataGrid({
         </Row>
       )}
       <LoadingPanel data={data} isLoading={isLoading} isFetched={isFetched} error={error}>
-        <Column>
-          {hasData ? (typeof children === 'function' ? children(result) : children) : null}
-          {isLoading && <Loading position="page" />}
-          {!isLoading && !hasData && !search && (renderEmpty ? renderEmpty() : <Empty />)}
-          {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
-        </Column>
+        <Panel>
+          <Column>
+            {hasData ? (typeof children === 'function' ? children(result) : children) : null}
+            {isLoading && <Loading position="page" />}
+            {!isLoading && !hasData && !search && (renderEmpty ? renderEmpty() : <Empty />)}
+            {!isLoading && noResults && <Empty message={formatMessage(messages.noResultsFound)} />}
+          </Column>
+        </Panel>
         {allowPaging && hasData && (
           <Row marginTop="6">
             <Pager page={page} pageSize={pageSize} count={count} onPageChange={handlePageChange} />

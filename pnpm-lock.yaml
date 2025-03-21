@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  react-zen: link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
   '@umami/react-zen': link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
 
 importers:
@@ -174,9 +173,6 @@ importers:
       react-window:
         specifier: ^1.8.11
         version: 1.8.11(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      react-zen:
-        specifier: link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
-        version: link:C:/Users/mike/AppData/Local/pnpm/global/5/node_modules/@umami/react-zen
       request-ip:
         specifier: ^3.3.0
         version: 3.3.0

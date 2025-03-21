@@ -3,9 +3,10 @@ body {
   font-family: var(--font-family), sans-serif;
   color: var(--font-color);
   font-size: var(--font-size);
-  background-color: var(--base-color-1);
+  background-color: var(--base-color-2);
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 a,

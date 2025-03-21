@@ -30,25 +30,18 @@ export function App({ children }) {
   }
 
   return (
-    <Grid
-      height="100vh"
-      width="100%"
-      columns="auto 1fr"
-      rows="auto 1fr"
-      overflow="hidden"
-      backgroundColor="2"
-    >
+    <Grid height="100vh" width="100%" columns="auto 1fr" rows="auto 1fr" overflow="hidden">
       <Nav gridColumn="1 / 2" gridRow="1 / 3" />
       <NavBar gridColumn="2 / 3" gridRow="1 / 2" />
-      <Column alignItems="center" overflow="scroll">
+      <Column gridColumn="2 / 3" gridRow="2 / 3" alignItems="center" overflow="auto">
         <Page>
-          <UpdateNotice user={user} config={config} />
           {children}
           {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
             <Script src={`${process.env.basePath || ''}/telemetry.js`} />
           )}
         </Page>
       </Column>
+      <UpdateNotice user={user} config={config} />
     </Grid>
   );
 }

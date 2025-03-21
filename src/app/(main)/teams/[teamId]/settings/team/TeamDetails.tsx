@@ -8,6 +8,7 @@ import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
+import { Panel } from '@/components/layout/Panel';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
@@ -30,18 +31,20 @@ export function TeamDetails({ teamId }: { teamId: string }) {
       <PageHeader title={team?.name} icon={<Icons.Users />}>
         {!isTeamOwner && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
-      <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
-        <TabList>
-          <Tab id="details">{formatMessage(labels.details)}</Tab>
-          {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
-        </TabList>
-        <TabPanel id="details">
-          <TeamEditForm teamId={teamId} allowEdit={canEdit} />
-        </TabPanel>
-        <TabPanel id="manage">
-          <TeamManage teamId={teamId} />
-        </TabPanel>
-      </Tabs>
+      <Panel>
+        <Tabs selectedKey={tab} onSelectionChange={(value: any) => setTab(value)}>
+          <TabList>
+            <Tab id="details">{formatMessage(labels.details)}</Tab>
+            {isTeamOwner && <Tab id="manage">{formatMessage(labels.manage)}</Tab>}
+          </TabList>
+          <TabPanel id="details">
+            <TeamEditForm teamId={teamId} allowEdit={canEdit} />
+          </TabPanel>
+          <TabPanel id="manage">
+            <TeamManage teamId={teamId} />
+          </TabPanel>
+        </Tabs>
+      </Panel>
     </Column>
   );
 }

@@ -11,11 +11,10 @@ import {
 } from '@umami/react-zen';
 import { Lucide, Icons } from '@/components/icons';
 import { useMessages, useTeamUrl } from '@/components/hooks';
-import type { SideNavProps } from '@umami/react-zen/SideNav';
 
-export function Nav(props: SideNavProps) {
+export function Nav(props: any) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl, pathname } = useTeamUrl();
   const [isCollapsed, setCollapsed] = useState(false);
 
   const links = [
@@ -47,7 +46,7 @@ export function Nav(props: SideNavProps) {
   ].filter(n => n);
 
   return (
-    <SideNav {...props} isCollapsed={isCollapsed} variant="3" showBorder={false}>
+    <SideNav {...props} isCollapsed={isCollapsed} variant="3" showBorder={true}>
       <SideNavSection>
         <SideNavHeader label="umami" icon={<Icons.Logo />} />
       </SideNavSection>
@@ -55,7 +54,7 @@ export function Nav(props: SideNavProps) {
         {links.map(({ href, label, icon }) => {
           return (
             <Link key={href} href={href}>
-              <SideNavItem label={label} icon={icon} />
+              <SideNavItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
             </Link>
           );
         })}

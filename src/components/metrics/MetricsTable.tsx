@@ -91,7 +91,7 @@ export function MetricsTable({
         background: 'var(--background-color)',
         border: '1px solid var(--border-color)',
         borderRadius: 'var(--border-radius)',
-        padding: '10px',
+        padding: '16px',
       }}
     >
       {error && <ErrorMessage />}
