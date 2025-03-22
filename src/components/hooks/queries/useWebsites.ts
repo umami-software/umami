@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
-import { useLogin } from './useLogin';
+import { useLoginQuery } from './useLoginQuery';
 import { useModified } from '../useModified';
 
 export function useWebsites(
@@ -8,7 +8,7 @@ export function useWebsites(
   params?: { [key: string]: string | number },
 ) {
   const { get } = useApi();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { modified } = useModified(`websites`);
 
   return usePagedQuery({

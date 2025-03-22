@@ -1,5 +1,5 @@
 import { useContext, useMemo, useState } from 'react';
-import { TextOverflow, TooltipPopup } from '@umami/react-zen';
+import { TooltipTrigger, Tooltip, Focusable } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
 import { useEscapeKey, useMessages } from '@/components/hooks';
@@ -192,13 +192,18 @@ export function JourneyView() {
                           onClick={() => handleClick(name, columnIndex, paths)}
                         >
                           <div className={styles.name} title={name}>
-                            <TextOverflow> {name}</TextOverflow>
+                            {name}
                           </div>
-                          <TooltipPopup label={dropOffPercent} isDisabled={!selected}>
-                            <div className={styles.count} title={nodeCount}>
-                              {formatLongNumber(nodeCount)}
-                            </div>
-                          </TooltipPopup>
+                          <TooltipTrigger isDisabled={!selected}>
+                            <Focusable>
+                              <div>{dropOffPercent}</div>
+                            </Focusable>
+                            <Tooltip>
+                              <div className={styles.count} title={nodeCount}>
+                                {formatLongNumber(nodeCount)}
+                              </div>
+                            </Tooltip>
+                          </TooltipTrigger>
                           {columnIndex < columns.length &&
                             lines.map(([fromIndex, nodeIndex], i) => {
                               const height =

@@ -1,12 +1,12 @@
 import { createContext, ReactNode, useEffect } from 'react';
 import { Loading } from '@umami/react-zen';
-import { useModified, useUser } from '@/components/hooks';
+import { useModified, useUserQuery } from '@/components/hooks';
 
 export const UserContext = createContext(null);
 
 export function UserProvider({ userId, children }: { userId: string; children: ReactNode }) {
   const { modified } = useModified(`user:${userId}`);
-  const { data: user, isFetching, isLoading, refetch } = useUser(userId);
+  const { data: user, isFetching, isLoading, refetch } = useUserQuery(userId);
 
   useEffect(() => {
     if (modified) {

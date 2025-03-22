@@ -1,7 +1,7 @@
 import { createContext, ReactNode } from 'react';
 import { Loading } from '@umami/react-zen';
 import classNames from 'classnames';
-import { useReport } from '@/components/hooks';
+import { useReportQuery } from '@/components/hooks';
 import styles from './Report.module.css';
 
 export const ReportContext = createContext(null);
@@ -17,7 +17,7 @@ export function Report({
   children: ReactNode;
   className?: string;
 }) {
-  const report = useReport(reportId, defaultParameters);
+  const report = useReportQuery(reportId, defaultParameters);
 
   if (!report) {
     return reportId ? <Loading position="page" /> : null;

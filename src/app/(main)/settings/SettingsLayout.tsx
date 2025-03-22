@@ -1,10 +1,10 @@
 'use client';
 import { ReactNode } from 'react';
-import { useLogin, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { MenuLayout } from '@/components/layout/MenuLayout';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
 
   const items = [

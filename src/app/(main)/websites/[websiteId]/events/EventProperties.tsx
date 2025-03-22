@@ -1,5 +1,9 @@
-import { GridColumn, GridTable } from '@umami/react-zen';
-import { useEventDataProperties, useEventDataValues, useMessages } from '@/components/hooks';
+import { DataColumn, DataTable } from '@umami/react-zen';
+import {
+  useEventDataPropertiesQuery,
+  useEventDataValuesQuery,
+  useMessages,
+} from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PieChart } from '@/components/charts/PieChart';
 import { useState } from 'react';
@@ -10,8 +14,8 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const [eventName, setEventName] = useState('');
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useEventDataProperties(websiteId);
-  const { data: values } = useEventDataValues(websiteId, eventName, propertyName);
+  const { data, isLoading, isFetched, error } = useEventDataPropertiesQuery(websiteId);
+  const { data: values } = useEventDataValuesQuery(websiteId, eventName, propertyName);
   const chartData =
     propertyName && values
       ? {
@@ -34,23 +38,23 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
   return (
     <LoadingPanel isLoading={isLoading} isFetched={isFetched} data={data} error={error}>
       <div className={styles.container}>
-        <GridTable data={data} cardMode={false} className={styles.table}>
-          <GridColumn name="eventName" label={formatMessage(labels.name)}>
+        <DataTable data={data} cardMode={false} className={styles.table}>
+          <DataColumn name="eventName" label={formatMessage(labels.name)}>
             {row => (
               <div className={styles.link} onClick={() => handleRowClick(row)}>
                 {row.eventName}
               </div>
             )}
-          </GridColumn>
-          <GridColumn name="propertyName" label={formatMessage(labels.property)}>
+          </DataColumn>
+          <DataColumn name="propertyName" label={formatMessage(labels.property)}>
             {row => (
               <div className={styles.link} onClick={() => handleRowClick(row)}>
                 {row.propertyName}
               </div>
             )}
-          </GridColumn>
-          <GridColumn name="total" label={formatMessage(labels.count)} alignment="end" />
-        </GridTable>
+          </DataColumn>
+          <DataColumn name="total" label={formatMessage(labels.count)} alignment="end" />
+        </DataTable>
         {propertyName && (
           <div className={styles.chart}>
             <div className={styles.title}>{propertyName}</div>

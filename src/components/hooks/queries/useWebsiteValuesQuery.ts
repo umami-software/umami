@@ -3,7 +3,7 @@ import { useCountryNames } from '@/components/hooks/useCountryNames';
 import { useRegionNames } from '@/components/hooks/useRegionNames';
 import { useLocale } from '../useLocale';
 
-export function useWebsiteValues({
+export function useWebsiteValuesQuery({
   websiteId,
   type,
   startDate,

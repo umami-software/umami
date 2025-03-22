@@ -1,14 +1,14 @@
-import { Form, FormField, Column, Label } from '@umami/react-zen';
+import { Column, Label } from '@umami/react-zen';
 import { TimezoneSetting } from '@/app/(main)/profile/TimezoneSetting';
 import { DateRangeSetting } from '@/app/(main)/profile/DateRangeSetting';
 import { LanguageSetting } from '@/app/(main)/profile/LanguageSetting';
 import { ThemeSetting } from '@/app/(main)/profile/ThemeSetting';
 import { PasswordChangeButton } from './PasswordChangeButton';
-import { useLogin, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
 export function ProfileSettings() {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
   const cloudMode = !!process.env.cloudMode;
 

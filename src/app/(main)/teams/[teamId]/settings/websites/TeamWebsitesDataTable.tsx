@@ -1,5 +1,5 @@
 import { DataGrid } from '@/components/common/DataGrid';
-import { useTeamWebsites } from '@/components/hooks';
+import { useTeamWebsitesQuery } from '@/components/hooks';
 import { TeamWebsitesTable } from './TeamWebsitesTable';
 
 export function TeamWebsitesDataTable({
@@ -9,7 +9,7 @@ export function TeamWebsitesDataTable({
   teamId: string;
   allowEdit?: boolean;
 }) {
-  const queryResult = useTeamWebsites(teamId);
+  const queryResult = useTeamWebsitesQuery(teamId);
 
   return (
     <DataGrid queryResult={queryResult}>

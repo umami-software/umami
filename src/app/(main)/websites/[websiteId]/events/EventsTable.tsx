@@ -1,5 +1,5 @@
-import { GridTable, GridColumn, Icon } from '@umami/react-zen';
-import { useMessages, useTeamUrl, useTimezone } from '@/components/hooks';
+import { DataTable, DataColumn, Icon } from '@umami/react-zen';
+import { useMessages, useNavigation, useTimezone } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { Avatar } from '@/components/common/Avatar';
 import Link from 'next/link';
@@ -8,23 +8,23 @@ import { Icons } from '@/components/icons';
 export function EventsTable({ data = [] }) {
   const { formatTimezoneDate } = useTimezone();
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl } = useNavigation();
 
   if (data.length === 0) {
     return <Empty />;
   }
 
   return (
-    <GridTable data={data}>
-      <GridColumn name="session" label={formatMessage(labels.session)} width={'100px'}>
-        {row => (
+    <DataTable data={data}>
+      <DataColumn id="session" label={formatMessage(labels.session)}>
+        {(row: any) => (
           <Link href={renderTeamUrl(`/websites/${row.websiteId}/sessions/${row.sessionId}`)}>
             <Avatar seed={row.sessionId} size={64} />
           </Link>
         )}
-      </GridColumn>
-      <GridColumn name="event" label={formatMessage(labels.event)}>
-        {row => {
+      </DataColumn>
+      <DataColumn id="event" label={formatMessage(labels.event)}>
+        {(row: any) => {
           return (
             <>
               <Icon>{row.eventName ? <Icons.Bolt /> : <Icons.Eye />}</Icon>
@@ -33,10 +33,10 @@ export function EventsTable({ data = [] }) {
             </>
           );
         }}
-      </GridColumn>
-      <GridColumn name="created" label={formatMessage(labels.created)} width={'300px'}>
-        {row => formatTimezoneDate(row.createdAt, 'PPPpp')}
-      </GridColumn>
-    </GridTable>
+      </DataColumn>
+      <DataColumn id="created" label={formatMessage(labels.created)}>
+        {(row: any) => formatTimezoneDate(row.createdAt, 'PPPpp')}
+      </DataColumn>
+    </DataTable>
   );
 }

@@ -5,7 +5,7 @@ import { useTimezone } from '../useTimezone';
 import { useMessages } from '../useMessages';
 import { parseDateRange } from '@/lib/date';
 
-export function useReport(
+export function useReportQuery(
   reportId: string,
   defaultParameters?: { type: string; parameters: { [key: string]: any } },
 ) {

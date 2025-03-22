@@ -10,7 +10,7 @@ import {
   ListItem,
   Text,
 } from '@umami/react-zen';
-import { useApi, useLogin, useMessages, useTeams } from '@/components/hooks';
+import { useApi, useLoginQuery, useMessages, useTeamsQuery } from '@/components/hooks';
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { ROLES } from '@/lib/constants';
 
@@ -23,7 +23,7 @@ export function WebsiteTransferForm({
   onSave?: () => void;
   onClose?: () => void;
 }) {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const website = useContext(WebsiteContext);
   const [teamId, setTeamId] = useState<string>(null);
   const { formatMessage, labels, messages } = useMessages();
@@ -31,7 +31,7 @@ export function WebsiteTransferForm({
   const { mutate, error } = useMutation({
     mutationFn: (data: any) => post(`/websites/${websiteId}/transfer`, data),
   });
-  const { result, query } = useTeams(user.id);
+  const { result, query } = useTeamsQuery(user.id);
   const isTeamWebsite = !!website?.teamId;
 
   const items = result.data.filter(({ teamUser }) =>

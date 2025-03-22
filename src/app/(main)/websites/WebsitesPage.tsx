@@ -1,10 +1,10 @@
 'use client';
 import { WebsitesHeader } from '@/app/(main)/settings/websites/WebsitesHeader';
 import { WebsitesDataTable } from '@/app/(main)/settings/websites/WebsitesDataTable';
-import { useTeamUrl } from '@/components/hooks';
+import { useNavigation } from '@/components/hooks';
 
 export function WebsitesPage() {
-  const { teamId } = useTeamUrl();
+  const { teamId } = useNavigation();
 
   return (
     <>

@@ -1,5 +1,9 @@
-import { GridColumn, GridTable } from '@umami/react-zen';
-import { useSessionDataProperties, useSessionDataValues, useMessages } from '@/components/hooks';
+import { DataColumn, DataTable } from '@umami/react-zen';
+import {
+  useSessionDataPropertiesQuery,
+  useSessionDataValuesQuery,
+  useMessages,
+} from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { PieChart } from '@/components/charts/PieChart';
 import { useState } from 'react';
@@ -9,8 +13,8 @@ import styles from './SessionProperties.module.css';
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useSessionDataProperties(websiteId);
-  const { data: values } = useSessionDataValues(websiteId, propertyName);
+  const { data, isLoading, isFetched, error } = useSessionDataPropertiesQuery(websiteId);
+  const { data: values } = useSessionDataValuesQuery(websiteId, propertyName);
   const chartData =
     propertyName && values
       ? {
@@ -28,16 +32,16 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
   return (
     <LoadingPanel isLoading={isLoading} isFetched={isFetched} data={data} error={error}>
       <div className={styles.container}>
-        <GridTable data={data} cardMode={false} className={styles.table}>
-          <GridColumn name="propertyName" label={formatMessage(labels.property)}>
-            {row => (
+        <DataTable data={data} className={styles.table}>
+          <DataColumn id="propertyName" label={formatMessage(labels.property)}>
+            {(row: any) => (
               <div className={styles.link} onClick={() => setPropertyName(row.propertyName)}>
                 {row.propertyName}
               </div>
             )}
-          </GridColumn>
-          <GridColumn name="total" label={formatMessage(labels.count)} alignment="end" />
-        </GridTable>
+          </DataColumn>
+          <DataColumn id="total" label={formatMessage(labels.count)} align="end" />
+        </DataTable>
         {propertyName && (
           <div className={styles.chart}>
             <div className={styles.title}>{propertyName}</div>

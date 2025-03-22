@@ -6,13 +6,13 @@ import { WebsiteChartList } from '../websites/[websiteId]/WebsiteChartList';
 import { DashboardSettingsButton } from '@/app/(main)/dashboard/DashboardSettingsButton';
 import { DashboardEdit } from '@/app/(main)/dashboard/DashboardEdit';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
-import { useMessages, useTeamUrl, useWebsites } from '@/components/hooks';
+import { useMessages, useNavigation, useWebsites } from '@/components/hooks';
 import { useDashboard } from '@/store/dashboard';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
-  const { teamId, renderTeamUrl } = useTeamUrl();
+  const { teamId, renderTeamUrl } = useNavigation();
   const { showCharts, editing, isEdited } = useDashboard();
   const pageSize = isEdited ? 200 : 10;
 

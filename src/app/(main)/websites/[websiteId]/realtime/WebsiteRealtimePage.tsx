@@ -4,7 +4,7 @@ import { Grid, GridRow } from '@/components/layout/Grid';
 import { Page } from '@/components/layout/Page';
 import { RealtimeChart } from '@/components/metrics/RealtimeChart';
 import { WorldMap } from '@/components/metrics/WorldMap';
-import { useRealtime } from '@/components/hooks';
+import { useRealtimeQuery } from '@/components/hooks';
 import { RealtimeLog } from './RealtimeLog';
 import { RealtimeHeader } from './RealtimeHeader';
 import { RealtimeUrls } from './RealtimeUrls';
@@ -13,7 +13,7 @@ import { WebsiteHeader } from '../WebsiteHeader';
 import { percentFilter } from '@/lib/filters';
 
 export function WebsiteRealtimePage({ websiteId }) {
-  const { data, isLoading, error } = useRealtime(websiteId);
+  const { data, isLoading, error } = useRealtimeQuery(websiteId);
 
   if (isLoading || error) {
     return <Page isLoading={isLoading} error={error} />;

@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 
-export function useSessionActivity(
+export function useSessionActivityQuery(
   websiteId: string,
   sessionId: string,
   startDate: Date,

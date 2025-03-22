@@ -1,5 +1,5 @@
 import { useMessages } from '@/components/hooks';
-import { useWebsiteSessionStats } from '@/components/hooks/queries/useWebsiteSessionStats';
+import { useWebsiteSessionStatsQuery } from '@/components/hooks/queries/useWebsiteSessionStatsQuery';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
@@ -8,7 +8,7 @@ import { Flexbox } from '@umami/react-zen';
 
 export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { data, isLoading, isFetched, error } = useWebsiteSessionStats(websiteId);
+  const { data, isLoading, isFetched, error } = useWebsiteSessionStatsQuery(websiteId);
 
   return (
     <Flexbox direction="row" justifyContent="space-between" style={{ minHeight: 120 }}>

@@ -17,6 +17,7 @@ export function MenuBar(props: RowProps) {
       paddingY="3"
       paddingX="3"
       paddingRight="5"
+      backgroundColor="1"
     >
       <Row>
         <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">

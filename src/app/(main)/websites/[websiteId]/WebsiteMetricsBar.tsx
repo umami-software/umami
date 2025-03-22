@@ -5,7 +5,7 @@ import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatShortTime, formatLongNumber } from '@/lib/format';
-import { useWebsiteStats } from '@/components/hooks/queries/useWebsiteStats';
+import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { useWebsites, setWebsiteDateCompare } from '@/store/websites';
 import { WebsiteFilterButton } from './WebsiteFilterButton';
 import styles from './WebsiteMetricsBar.module.css';
@@ -26,8 +26,8 @@ export function WebsiteMetricsBar({
   const { dateRange } = useDateRange(websiteId);
   const { formatMessage, labels } = useMessages();
   const dateCompare = useWebsites(state => state[websiteId]?.dateCompare);
-  const { ref, isSticky } = useSticky({ enabled: sticky });
-  const { data, isLoading, isFetched, error } = useWebsiteStats(
+  const { ref } = useSticky({ enabled: sticky });
+  const { data, isLoading, isFetched, error } = useWebsiteStatsQuery(
     websiteId,
     compareMode && dateCompare,
   );
@@ -82,13 +82,7 @@ export function WebsiteMetricsBar({
   ];
 
   return (
-    <div
-      ref={ref}
-      className={classNames(styles.container, {
-        [styles.sticky]: sticky,
-        [styles.isSticky]: sticky && isSticky,
-      })}
-    >
+    <div ref={ref} className={classNames(styles.container)}>
       <div>
         <MetricsBar isLoading={isLoading} isFetched={isFetched} error={error}>
           {metrics.map(({ label, value, prev, change, formatValue, reverseColors }) => {

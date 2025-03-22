@@ -1,5 +1,5 @@
 'use client';
-import { useReport } from '@/components/hooks';
+import { useReportQuery } from '@/components/hooks';
 import { EventDataReport } from '../event-data/EventDataReport';
 import { FunnelReport } from '../funnel/FunnelReport';
 import { GoalsReport } from '../goals/GoalsReport';
@@ -21,7 +21,7 @@ const reports = {
 };
 
 export function ReportPage({ reportId }: { reportId: string }) {
-  const { report } = useReport(reportId);
+  const { report } = useReportQuery(reportId);
 
   if (!report) {
     return null;

@@ -3,7 +3,7 @@ import { Column, Label } from '@umami/react-zen';
 import { parseDateRange } from '@/lib/date';
 import { DateFilter } from '@/components/input/DateFilter';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
-import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
+import { useMessages, useNavigation, useWebsiteQuery } from '@/components/hooks';
 import { ReportContext } from './Report';
 import styles from './BaseParameters.module.css';
 
@@ -22,11 +22,11 @@ export function BaseParameters({
 }: BaseParametersProps) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels } = useMessages();
-  const { teamId } = useTeamUrl();
+  const { teamId } = useNavigation();
   const { parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
   const { value, startDate, endDate } = dateRange || {};
-  const { data: website } = useWebsite(websiteId);
+  const { data: website } = useWebsiteQuery(websiteId);
   const { name } = website || {};
 
   const handleWebsiteSelect = (websiteId: string) => {

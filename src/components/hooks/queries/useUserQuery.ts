@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 
-export function useUser(userId: string, options?: { [key: string]: any }) {
+export function useUserQuery(userId: string, options?: { [key: string]: any }) {
   const { get, useQuery } = useApi();
   return useQuery({
     queryKey: ['users', userId],

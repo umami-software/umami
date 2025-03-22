@@ -1,5 +1,5 @@
 import { TextOverflow } from '@umami/react-zen';
-import { useMessages, useSessionData } from '@/components/hooks';
+import { useMessages, useSessionDataQuery } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DATA_TYPES } from '@/lib/constants';
 import styles from './SessionData.module.css';
@@ -7,7 +7,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 
 export function SessionData({ websiteId, sessionId }: { websiteId: string; sessionId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { data, ...query } = useSessionData(websiteId, sessionId);
+  const { data, ...query } = useSessionDataQuery(websiteId, sessionId);
 
   return (
     <>

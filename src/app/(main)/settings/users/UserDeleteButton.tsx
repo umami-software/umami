@@ -1,5 +1,5 @@
 import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
-import { useMessages, useLogin } from '@/components/hooks';
+import { useMessages, useLoginQuery } from '@/components/hooks';
 import { UserDeleteForm } from './UserDeleteForm';
 
 export function UserDeleteButton({
@@ -12,7 +12,7 @@ export function UserDeleteButton({
   onDelete?: () => void;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
 
   return (
     <DialogTrigger>

@@ -3,7 +3,7 @@ import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 import { useSearchParams } from 'next/navigation';
 
-export function useWebsiteMetrics(
+export function useWebsiteMetricsQuery(
   websiteId: string,
   queryParams: { type: string; limit?: number; search?: string; startAt?: number; endAt?: number },
   options?: Omit<UseQueryOptions & { onDataLoad?: (data: any) => void }, 'queryKey' | 'queryFn'>,

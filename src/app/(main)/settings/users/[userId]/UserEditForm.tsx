@@ -9,7 +9,7 @@ import {
   PasswordField,
   useToast,
 } from '@umami/react-zen';
-import { useApi, useLogin, useMessages, useModified } from '@/components/hooks';
+import { useApi, useLoginQuery, useMessages, useModified } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { useContext } from 'react';
 import { UserContext } from './UserProvider';
@@ -18,7 +18,7 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   const { formatMessage, labels, messages, getMessage } = useMessages();
   const { post, useMutation } = useApi();
   const user = useContext(UserContext);
-  const { user: login } = useLogin();
+  const { user: login } = useLoginQuery();
   const { toast } = useToast();
   const { touch } = useModified();
 

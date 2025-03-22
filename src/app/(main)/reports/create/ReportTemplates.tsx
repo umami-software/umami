@@ -1,12 +1,12 @@
 import { Icon, Text, Row, Column, Grid } from '@umami/react-zen';
-import { useMessages, useTeamUrl } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl } = useNavigation();
 
   const reports = [
     {

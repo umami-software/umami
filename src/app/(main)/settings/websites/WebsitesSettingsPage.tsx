@@ -1,11 +1,11 @@
 'use client';
-import { useLogin } from '@/components/hooks';
+import { useLoginQuery } from '@/components/hooks';
 import { WebsitesDataTable } from './WebsitesDataTable';
 import { WebsitesHeader } from './WebsitesHeader';
 import { ROLES } from '@/lib/constants';
 
 export function WebsitesSettingsPage({ teamId }: { teamId: string }) {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const canCreate = user.role !== ROLES.viewOnly;
 
   return (

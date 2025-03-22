@@ -1,13 +1,13 @@
 import { Icon, Icons, Text, DataTable, DataColumn, Row } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
-import { useMessages, useLogin, useTeamUrl } from '@/components/hooks';
+import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
 import { REPORT_TYPES } from '@/lib/constants';
 import { ReportDeleteButton } from './ReportDeleteButton';
 
 export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
-  const { renderTeamUrl } = useTeamUrl();
+  const { user } = useLoginQuery();
+  const { renderTeamUrl } = useNavigation();
 
   return (
     <DataTable data={data}>

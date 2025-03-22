@@ -6,10 +6,10 @@ import { UpdateNotice } from './UpdateNotice';
 import { Nav } from '@/app/(main)/Nav';
 import { MenuBar } from '@/app/(main)/MenuBar';
 import { Page } from '@/components/layout/Page';
-import { useLogin, useConfig } from '@/components/hooks';
+import { useLoginQuery, useConfig } from '@/components/hooks';
 
 export function App({ children }) {
-  const { user, isLoading, error } = useLogin();
+  const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
   const pathname = usePathname();
 

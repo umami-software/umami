@@ -1,11 +1,11 @@
 'use client';
 import { ReactNode } from 'react';
-import { useMessages, useTeamUrl } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { MenuLayout } from '@/components/layout/MenuLayout';
 
 export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
-  const { teamId } = useTeamUrl();
+  const { teamId } = useNavigation();
 
   const items = [
     {

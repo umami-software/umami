@@ -5,7 +5,7 @@ import { SessionsMetricsBar } from './SessionsMetricsBar';
 import { SessionProperties } from './SessionProperties';
 import { WorldMap } from '@/components/metrics/WorldMap';
 import { GridRow } from '@/components/layout/Grid';
-import { Item, Tabs } from '@umami/react-zen';
+import { TabList, Tab, Tabs } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
 import { SessionsWeekly } from './SessionsWeekly';
@@ -22,9 +22,15 @@ export function SessionsPage({ websiteId }) {
         <WorldMap websiteId={websiteId} />
         <SessionsWeekly websiteId={websiteId} />
       </GridRow>
-      <Tabs selectedKey={tab} onSelect={(value: any) => setTab(value)} style={{ marginBottom: 30 }}>
-        <Item key="activity">{formatMessage(labels.activity)}</Item>
-        <Item key="properties">{formatMessage(labels.properties)}</Item>
+      <Tabs
+        selectedKey={tab}
+        onSelectionChange={(value: any) => setTab(value)}
+        style={{ marginBottom: 30 }}
+      >
+        <TabList>
+          <Tab key="activity">{formatMessage(labels.activity)}</Tab>
+          <Tab key="properties">{formatMessage(labels.properties)}</Tab>
+        </TabList>
       </Tabs>
       {tab === 'activity' && <SessionsDataTable websiteId={websiteId} />}
       {tab === 'properties' && <SessionProperties websiteId={websiteId} />}

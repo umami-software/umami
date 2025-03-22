@@ -4,7 +4,7 @@ import { useApi } from '../useApi';
 
 const selector = (state: { user: any }) => state.user;
 
-export function useLogin(): {
+export function useLoginQuery(): {
   user: any;
   setUser: (data: any) => void;
 } & UseQueryResult {

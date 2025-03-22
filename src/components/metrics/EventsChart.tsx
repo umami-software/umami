@@ -1,6 +1,6 @@
 import { colord } from 'colord';
 import { BarChart } from '@/components/charts/BarChart';
-import { useDateRange, useLocale, useWebsiteEventsSeries } from '@/components/hooks';
+import { useDateRange, useLocale, useWebsiteEventsSeriesQuery } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { useMemo } from 'react';
@@ -15,7 +15,7 @@ export function EventsChart({ websiteId, className }: EventsChartProps) {
     dateRange: { startDate, endDate, unit, value },
   } = useDateRange(websiteId);
   const { locale } = useLocale();
-  const { data, isLoading } = useWebsiteEventsSeries(websiteId);
+  const { data, isLoading } = useWebsiteEventsSeriesQuery(websiteId);
 
   const chartData = useMemo(() => {
     if (!data) return [];

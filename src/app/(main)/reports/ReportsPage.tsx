@@ -2,10 +2,10 @@
 import { Metadata } from 'next';
 import { ReportsHeader } from './ReportsHeader';
 import { ReportsDataTable } from './ReportsDataTable';
-import { useTeamUrl } from '@/components/hooks';
+import { useNavigation } from '@/components/hooks';
 
 export function ReportsPage() {
-  const { teamId } = useTeamUrl();
+  const { teamId } = useNavigation();
 
   return (
     <>

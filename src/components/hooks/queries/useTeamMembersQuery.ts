@@ -2,7 +2,7 @@ import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
 import { useModified } from '../useModified';
 
-export function useTeamMembers(teamId: string) {
+export function useTeamMembersQuery(teamId: string) {
   const { get } = useApi();
   const { modified } = useModified(`teams:members`);
 

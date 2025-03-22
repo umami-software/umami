@@ -1,13 +1,13 @@
 import { format, startOfDay, addHours } from 'date-fns';
-import { useLocale, useMessages, useWebsiteSessionsWeekly } from '@/components/hooks';
+import { useLocale, useMessages, useWebsiteSessionsWeeklyQuery } from '@/components/hooks';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
-import { TooltipPopup } from '@umami/react-zen';
+import { Tooltip, TooltipTrigger } from '@umami/react-zen';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
-  const { data, ...props } = useWebsiteSessionsWeekly(websiteId);
+  const { data, ...props } = useWebsiteSessionsWeeklyQuery(websiteId);
   const { dateLocale } = useLocale();
   const { labels, formatMessage } = useMessages();
   const { weekStartsOn } = dateLocale.options;
@@ -67,15 +67,13 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                   return (
                     <div key={j} className={classNames(styles.cell)}>
                       {hour > 0 && (
-                        <TooltipPopup
-                          label={`${formatMessage(labels.visitors)}: ${hour}`}
-                          position="right"
-                        >
+                        <TooltipTrigger>
                           <div
                             className={styles.block}
                             style={{ opacity: pct, transform: `scale(${pct})` }}
                           />
-                        </TooltipPopup>
+                          <Tooltip>{`${formatMessage(labels.visitors)}: ${hour}`}</Tooltip>
+                        </TooltipTrigger>
                       )}
                     </div>
                   );

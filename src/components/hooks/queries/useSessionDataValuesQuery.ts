@@ -1,10 +1,9 @@
-import { UseQueryOptions } from '@tanstack/react-query';
 import { useApi } from '../useApi';
+import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
 
-export function useEventDataValues(
+export function useSessionDataValuesQuery(
   websiteId: string,
-  eventName: string,
   propertyName: string,
   options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
 ) {
@@ -12,9 +11,8 @@ export function useEventDataValues(
   const params = useFilterParams(websiteId);
 
   return useQuery<any>({
-    queryKey: ['websites:event-data:values', { websiteId, eventName, propertyName, ...params }],
-    queryFn: () =>
-      get(`/websites/${websiteId}/event-data/values`, { ...params, eventName, propertyName }),
+    queryKey: ['websites:session-data:values', { websiteId, propertyName, ...params }],
+    queryFn: () => get(`/websites/${websiteId}/session-data/values`, { ...params, propertyName }),
     enabled: !!(websiteId && propertyName),
     ...options,
   });

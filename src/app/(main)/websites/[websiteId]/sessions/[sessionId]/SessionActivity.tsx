@@ -1,7 +1,7 @@
 import { isSameDay } from 'date-fns';
 import { Loading, Icon, StatusLight } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
-import { useSessionActivity, useTimezone } from '@/components/hooks';
+import { useSessionActivityQuery, useTimezone } from '@/components/hooks';
 import styles from './SessionActivity.module.css';
 import { Fragment } from 'react';
 
@@ -17,7 +17,7 @@ export function SessionActivity({
   endDate: Date;
 }) {
   const { formatTimezoneDate } = useTimezone();
-  const { data, isLoading } = useSessionActivity(websiteId, sessionId, startDate, endDate);
+  const { data, isLoading } = useSessionActivityQuery(websiteId, sessionId, startDate, endDate);
 
   if (isLoading) {
     return <Loading position="page" />;

@@ -1,13 +1,13 @@
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Icon, Icons, Text } from '@umami/react-zen';
-import { useLogin, useMessages, useTeamUrl } from '@/components/hooks';
+import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 import { ROLES } from '@/lib/constants';
 
 export function ReportsHeader() {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
-  const { user } = useLogin();
+  const { renderTeamUrl } = useNavigation();
+  const { user } = useLoginQuery();
   const canEdit = user.role !== ROLES.viewOnly;
 
   return (

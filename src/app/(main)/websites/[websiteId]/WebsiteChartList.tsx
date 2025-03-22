@@ -5,7 +5,7 @@ import { WebsiteChart } from './WebsiteChart';
 import { useDashboard } from '@/store/dashboard';
 import { WebsiteHeader } from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useTeamUrl } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function WebsiteChartList({
@@ -19,7 +19,7 @@ export function WebsiteChartList({
 }) {
   const { formatMessage, labels } = useMessages();
   const { websiteOrder, websiteActive } = useDashboard();
-  const { renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl } = useNavigation();
 
   const ordered = useMemo(() => {
     return websites

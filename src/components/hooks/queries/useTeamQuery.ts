@@ -1,6 +1,6 @@
 import { useApi } from '../useApi';
 
-export function useTeam(teamId: string) {
+export function useTeamQuery(teamId: string) {
   const { get, useQuery } = useApi();
   return useQuery({
     queryKey: ['teams', teamId],

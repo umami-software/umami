@@ -1,5 +1,5 @@
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
-import { useLogin, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
@@ -13,7 +13,7 @@ import { Panel } from '@/components/layout/Panel';
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const [tab, setTab] = useState('details');
 
   const isTeamOwner =

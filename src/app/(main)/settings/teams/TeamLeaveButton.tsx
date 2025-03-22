@@ -1,4 +1,4 @@
-import { useLogin, useMessages, useModified } from '@/components/hooks';
+import { useLoginQuery, useMessages, useModified } from '@/components/hooks';
 import { useRouter } from 'next/navigation';
 import { Button, Icon, Icons, Modal, DialogTrigger, Dialog, Text } from '@umami/react-zen';
 import { TeamLeaveForm } from './TeamLeaveForm';
@@ -6,7 +6,7 @@ import { TeamLeaveForm } from './TeamLeaveForm';
 export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName: string }) {
   const { formatMessage, labels } = useMessages();
   const router = useRouter();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { touch } = useModified();
 
   const handleLeave = async () => {

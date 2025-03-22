@@ -1,5 +1,4 @@
 import { Key, useContext, useState } from 'react';
-import { ButtonGroup, Button, Flexbox } from '@umami/react-zen';
 import thenby from 'thenby';
 import { percentFilter } from '@/lib/filters';
 import { ListTable } from '@/components/metrics/ListTable';
@@ -7,6 +6,7 @@ import { FILTER_PAGES, FILTER_REFERRERS } from '@/lib/constants';
 import { useMessages } from '@/components/hooks';
 import { RealtimeData } from '@/lib/types';
 import { WebsiteContext } from '../WebsiteProvider';
+import { FilterButtons } from '@/components/common/FilterButtons';
 
 export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
@@ -17,10 +17,12 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
 
   const buttons = [
     {
+      id: 1,
       label: formatMessage(labels.referrers),
       key: FILTER_REFERRERS,
     },
     {
+      id: 2,
       label: formatMessage(labels.pages),
       key: FILTER_PAGES,
     },
@@ -61,11 +63,7 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
 
   return (
     <>
-      <Flexbox justifyContent="center">
-        <ButtonGroup items={buttons} selectedKey={filter} onSelect={setFilter}>
-          {({ key, label }) => <Button key={key}>{label}</Button>}
-        </ButtonGroup>
-      </Flexbox>
+      <FilterButtons items={buttons} onSelect={setFilter} />
       {filter === FILTER_REFERRERS && (
         <ListTable
           title={formatMessage(labels.referrers)}

@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 import classNames from 'classnames';
 import { colord } from 'colord';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
-import { useDateRange, useTheme, useWebsiteMetrics } from '@/components/hooks';
+import { useDateRange, useTheme, useWebsiteMetricsQuery } from '@/components/hooks';
 import { useCountryNames } from '@/components/hooks';
 import { useLocale } from '@/components/hooks';
 import { useMessages } from '@/components/hooks';
@@ -32,7 +32,7 @@ export function WorldMap({
   const {
     dateRange: { startDate, endDate },
   } = useDateRange(websiteId);
-  const { data: mapData } = useWebsiteMetrics(websiteId, {
+  const { data: mapData } = useWebsiteMetricsQuery(websiteId, {
     type: 'country',
     startAt: +startDate,
     endAt: +endDate,

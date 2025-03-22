@@ -1,7 +1,7 @@
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages } from '@/components/hooks';
 import { useContext } from 'react';
-import { GridColumn, GridTable } from '@umami/react-zen';
+import { DataColumn, DataTable } from '@umami/react-zen';
 import { ReportContext } from '../[reportId]/Report';
 import { formatLongCurrency } from '@/lib/format';
 
@@ -15,22 +15,22 @@ export function RevenueTable() {
   }
 
   return (
-    <GridTable data={data.table || []}>
-      <GridColumn name="currency" label={formatMessage(labels.currency)} alignment="end">
-        {row => row.currency}
-      </GridColumn>
-      <GridColumn name="currency" label={formatMessage(labels.total)} width="300px" alignment="end">
-        {row => formatLongCurrency(row.sum, row.currency)}
-      </GridColumn>
-      <GridColumn name="currency" label={formatMessage(labels.average)} alignment="end">
-        {row => formatLongCurrency(row.count ? row.sum / row.count : 0, row.currency)}
-      </GridColumn>
-      <GridColumn name="currency" label={formatMessage(labels.transactions)} alignment="end">
-        {row => row.count}
-      </GridColumn>
-      <GridColumn name="currency" label={formatMessage(labels.uniqueCustomers)} alignment="end">
-        {row => row.unique_count}
-      </GridColumn>
-    </GridTable>
+    <DataTable data={data.table || []}>
+      <DataColumn id="currency" label={formatMessage(labels.currency)} align="end">
+        {(row: any) => row.currency}
+      </DataColumn>
+      <DataColumn id="currency" label={formatMessage(labels.total)} align="end">
+        {(row: any) => formatLongCurrency(row.sum, row.currency)}
+      </DataColumn>
+      <DataColumn id="currency" label={formatMessage(labels.average)} align="end">
+        {(row: any) => formatLongCurrency(row.count ? row.sum / row.count : 0, row.currency)}
+      </DataColumn>
+      <DataColumn id="currency" label={formatMessage(labels.transactions)} align="end">
+        {(row: any) => row.count}
+      </DataColumn>
+      <DataColumn id="currency" label={formatMessage(labels.uniqueCustomers)} align="end">
+        {(row: any) => row.unique_count}
+      </DataColumn>
+    </DataTable>
   );
 }

@@ -1,5 +1,5 @@
 import { useMessages } from '@/components/hooks';
-import { useRevenueValues } from '@/components/hooks/queries/useRevenueValues';
+import { useRevenueValuesQuery } from '@/components/hooks/queries/useRevenueValuesQuery';
 import { useContext } from 'react';
 import { Select, Form, FormButtons, FormField, ListItem, FormSubmitButton } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
@@ -11,7 +11,7 @@ export function RevenueParameters() {
   const { id, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};
   const queryEnabled = websiteId && dateRange;
-  const { data: values = [] } = useRevenueValues(
+  const { data: values = [] } = useRevenueValuesQuery(
     websiteId,
     dateRange?.startDate,
     dateRange?.endDate,
@@ -34,7 +34,7 @@ export function RevenueParameters() {
         rules={{ required: formatMessage(labels.required) }}
       >
         <Select items={values.map(item => item.currency)}>
-          {item => <ListItem key={item}>{item}</ListItem>}
+          {(item: any) => <ListItem key={item}>{item}</ListItem>}
         </Select>
       </FormField>
       <FormButtons>

@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { SideNav, SideNavHeader, SideNavSection, SideNavItem } from '@umami/react-zen';
 import { Lucide, Icons } from '@/components/icons';
-import { useMessages, useTeamUrl } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 import useGlobalState from '@/components/hooks/useGlobalState';
 
 export function Nav(props: any) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl, pathname } = useTeamUrl();
+  const { renderTeamUrl, pathname } = useNavigation();
   const [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const links = [

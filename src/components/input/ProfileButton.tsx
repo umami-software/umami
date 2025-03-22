@@ -12,11 +12,11 @@ import {
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { User, LogOut, CircleUserRound } from 'lucide-react';
-import { useMessages, useLogin } from '@/components/hooks';
+import { useMessages, useLoginQuery } from '@/components/hooks';
 
 export function ProfileButton() {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const router = useRouter();
   const cloudMode = !!process.env.cloudMode;
 

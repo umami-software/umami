@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useFilters, useFormat, useMessages, useWebsiteValues } from '@/components/hooks';
+import { useFilters, useFormat, useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 import { OPERATORS } from '@/lib/constants';
 import { isEqualsOperator } from '@/lib/params';
 import {
@@ -62,7 +62,7 @@ export function FieldFilterEditForm({
     data: values = [],
     isLoading,
     refetch,
-  } = useWebsiteValues({
+  } = useWebsiteValuesQuery({
     websiteId,
     type: name,
     startDate,

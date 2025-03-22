@@ -1,4 +1,4 @@
-import { useWebsiteEvents } from '@/components/hooks';
+import { useWebsiteEventsQuery } from '@/components/hooks';
 import { EventsTable } from './EventsTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
@@ -10,7 +10,7 @@ export function EventsDataTable({
   teamId?: string;
   children?: ReactNode;
 }) {
-  const queryResult = useWebsiteEvents(websiteId);
+  const queryResult = useWebsiteEventsQuery(websiteId);
 
   return (
     <DataGrid queryResult={queryResult} allowSearch={true} autoFocus={false}>

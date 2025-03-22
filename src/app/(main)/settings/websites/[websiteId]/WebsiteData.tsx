@@ -1,6 +1,12 @@
 import { Button, Modal, DialogTrigger, Dialog, Column } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useLogin, useMessages, useModified, useTeams, useTeamUrl } from '@/components/hooks';
+import {
+  useLoginQuery,
+  useMessages,
+  useModified,
+  useTeamsQuery,
+  useNavigation,
+} from '@/components/hooks';
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
 import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
@@ -9,11 +15,11 @@ import { ROLES } from '@/lib/constants';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {
   const { formatMessage, labels, messages } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { touch } = useModified();
-  const { teamId, renderTeamUrl } = useTeamUrl();
+  const { teamId, renderTeamUrl } = useNavigation();
   const router = useRouter();
-  const { result } = useTeams(user.id);
+  const { result } = useTeamsQuery(user.id);
   const canTransferWebsite =
     (
       !teamId &&

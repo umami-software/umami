@@ -22,7 +22,7 @@ export function MetricsBar({ children, isLoading, isFetched, error }: MetricsBar
         !error &&
         isFetched &&
         cloneChildren(children, child => {
-          return { format: child.props['format'] || formatFunc };
+          return { format: child?.props['format'] || formatFunc };
         })}
     </Row>
   );

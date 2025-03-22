@@ -3,7 +3,7 @@ import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
 import { usePagedQuery } from '../usePagedQuery';
 
-export function useWebsiteEvents(
+export function useWebsiteEventsQuery(
   websiteId: string,
   options?: Omit<UseQueryOptions, 'queryKey' | 'queryFn'>,
 ) {

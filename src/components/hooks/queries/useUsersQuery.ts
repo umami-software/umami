@@ -2,14 +2,16 @@ import { useApi } from '../useApi';
 import { usePagedQuery } from '../usePagedQuery';
 import { useModified } from '../useModified';
 
-export function useTeamWebsites(teamId: string) {
+export function useUsersQuery() {
   const { get } = useApi();
-  const { modified } = useModified(`websites`);
+  const { modified } = useModified(`users`);
 
   return usePagedQuery({
-    queryKey: ['teams:websites', { teamId, modified }],
+    queryKey: ['users', { modified }],
     queryFn: (params: any) => {
-      return get(`/teams/${teamId}/websites`, params);
+      return get('/admin/users', {
+        ...params,
+      });
     },
   });
 }

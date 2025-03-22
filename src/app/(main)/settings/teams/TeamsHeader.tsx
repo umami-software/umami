@@ -1,13 +1,13 @@
 import { Row } from '@umami/react-zen';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ROLES } from '@/lib/constants';
-import { useLogin, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { TeamsJoinButton } from './TeamsJoinButton';
 import { TeamsAddButton } from './TeamsAddButton';
 
 export function TeamsHeader({ allowCreate = true }: { allowCreate?: boolean }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const cloudMode = !!process.env.cloudMode;
 
   return (

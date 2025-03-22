@@ -1,4 +1,4 @@
-import { useWebsiteSessions } from '@/components/hooks';
+import { useWebsiteSessionsQuery } from '@/components/hooks';
 import { SessionsTable } from './SessionsTable';
 import { DataGrid } from '@/components/common/DataGrid';
 import { ReactNode } from 'react';
@@ -11,7 +11,7 @@ export function SessionsDataTable({
   teamId?: string;
   children?: ReactNode;
 }) {
-  const queryResult = useWebsiteSessions(websiteId);
+  const queryResult = useWebsiteSessionsQuery(websiteId);
 
   return (
     <DataGrid queryResult={queryResult} allowSearch={false} renderEmpty={() => children}>

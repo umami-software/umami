@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { useReports } from '@/components/hooks';
+import { useReportsQuery } from '@/components/hooks';
 import { DataGrid } from '@/components/common/DataGrid';
 import { ReportsTable } from './ReportsTable';
 
@@ -12,7 +12,7 @@ export function ReportsDataTable({
   teamId?: string;
   children?: ReactNode;
 }) {
-  const queryResult = useReports({ websiteId, teamId });
+  const queryResult = useReportsQuery({ websiteId, teamId });
 
   return (
     <DataGrid queryResult={queryResult} renderEmpty={() => children}>

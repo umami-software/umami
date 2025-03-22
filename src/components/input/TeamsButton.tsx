@@ -15,7 +15,7 @@ import {
   Icons,
 } from '@umami/react-zen';
 import { User, Users } from 'lucide-react';
-import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
+import { useLoginQuery, useMessages, useTeamsQuery, useNavigation } from '@/components/hooks';
 
 export function TeamsButton({
   className,
@@ -24,10 +24,10 @@ export function TeamsButton({
   className?: string;
   showText?: boolean;
 }) {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
-  const { result } = useTeams(user.id);
-  const { teamId } = useTeamUrl();
+  const { result } = useTeamsQuery(user.id);
+  const { teamId } = useNavigation();
   const router = useRouter();
   const team = result?.data?.find(({ id }) => id === teamId);
   const [selectedKeys, setSelectedKeys] = useState<any>(new Set([teamId || user.id]));

@@ -1,5 +1,5 @@
 import { DataColumn, DataTable } from '@umami/react-zen';
-import { useMessages, useLogin } from '@/components/hooks';
+import { useMessages, useLoginQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { TeamMemberRemoveButton } from './TeamMemberRemoveButton';
 import { TeamMemberEditButton } from './TeamMemberEditButton';
@@ -14,7 +14,7 @@ export function TeamMembersTable({
   allowEdit: boolean;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
 
   const roles = {
     [ROLES.teamOwner]: formatMessage(labels.teamOwner),

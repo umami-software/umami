@@ -1,7 +1,7 @@
 'use client';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useWebsiteSession } from '@/components/hooks';
+import { useWebsiteSessionQuery } from '@/components/hooks';
 import { WebsiteHeader } from '../../WebsiteHeader';
 import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
@@ -16,7 +16,7 @@ export function SessionDetailsPage({
   websiteId: string;
   sessionId: string;
 }) {
-  const { data, ...query } = useWebsiteSession(websiteId, sessionId);
+  const { data, ...query } = useWebsiteSessionQuery(websiteId, sessionId);
 
   return (
     <LoadingPanel {...query} loadingIcon="spinner" data={data}>

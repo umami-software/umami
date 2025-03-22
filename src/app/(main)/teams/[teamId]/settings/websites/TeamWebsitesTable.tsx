@@ -1,5 +1,5 @@
 import { DataColumn, DataTable, Icon, Text } from '@umami/react-zen';
-import { useLogin, useMessages } from '@/components/hooks';
+import { useLoginQuery, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { LinkButton } from '@/components/common/LinkButton';
 
@@ -12,7 +12,7 @@ export function TeamWebsitesTable({
   data: any[];
   allowEdit?: boolean;
 }) {
-  const { user } = useLogin();
+  const { user } = useLoginQuery();
   const { formatMessage, labels } = useMessages();
 
   return (

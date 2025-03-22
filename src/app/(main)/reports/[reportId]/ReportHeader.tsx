@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { Icon, LoadingButton, InlineEditField, useToast } from '@umami/react-zen';
-import { useMessages, useApi, useNavigation, useTeamUrl } from '@/components/hooks';
+import { useMessages, useApi, useNavigation } from '@/components/hooks';
 import { ReportContext } from './Report';
 import styles from './ReportHeader.module.css';
 import { REPORT_TYPES } from '@/lib/constants';
@@ -10,8 +10,7 @@ export function ReportHeader({ icon }) {
   const { report, updateReport } = useContext(ReportContext);
   const { formatMessage, labels, messages } = useMessages();
   const { toast } = useToast();
-  const { router } = useNavigation();
-  const { renderTeamUrl } = useTeamUrl();
+  const { router, renderTeamUrl } = useNavigation();
 
   const { post, useMutation } = useApi();
   const { mutate: create, isPending: isCreating } = useMutation({

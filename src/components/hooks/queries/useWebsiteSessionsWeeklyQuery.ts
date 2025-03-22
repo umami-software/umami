@@ -1,21 +1,21 @@
 import { useApi } from '../useApi';
-import { usePagedQuery } from '../usePagedQuery';
 import { useModified } from '../useModified';
 import { useFilterParams } from '@/components/hooks/useFilterParams';
 
-export function useWebsiteSessions(websiteId: string, params?: { [key: string]: string | number }) {
-  const { get } = useApi();
+export function useWebsiteSessionsWeeklyQuery(
+  websiteId: string,
+  params?: { [key: string]: string | number },
+) {
+  const { get, useQuery } = useApi();
   const { modified } = useModified(`sessions`);
   const filters = useFilterParams(websiteId);
 
-  return usePagedQuery({
+  return useQuery({
     queryKey: ['sessions', { websiteId, modified, ...params, ...filters }],
-    queryFn: (data: any) => {
-      return get(`/websites/${websiteId}/sessions`, {
-        ...data,
+    queryFn: () => {
+      return get(`/websites/${websiteId}/sessions/weekly`, {
         ...params,
         ...filters,
-        pageSize: 20,
       });
     },
   });

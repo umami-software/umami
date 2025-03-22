@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Row, Text, Icon, Icons, DataTable, DataColumn, Button } from '@umami/react-zen';
 import Link from 'next/link';
-import { useMessages, useTeamUrl } from '@/components/hooks';
+import { useMessages, useNavigation } from '@/components/hooks';
 
 export interface WebsitesTableProps {
   data: any[];
@@ -20,7 +20,7 @@ export function WebsitesTable({
   children,
 }: WebsitesTableProps) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useTeamUrl();
+  const { renderTeamUrl } = useNavigation();
 
   if (!data?.length) {
     return children;

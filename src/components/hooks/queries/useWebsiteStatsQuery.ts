@@ -1,7 +1,7 @@
 import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 
-export function useWebsiteStats(
+export function useWebsiteStatsQuery(
   websiteId: string,
   compare?: string,
   options?: { [key: string]: string },

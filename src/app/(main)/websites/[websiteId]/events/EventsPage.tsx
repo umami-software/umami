@@ -6,7 +6,7 @@ import { EventsChart } from '@/components/metrics/EventsChart';
 import { GridRow } from '@/components/layout/Grid';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
-import { Item, Tabs } from '@umami/react-zen';
+import { TabList, Tab, Tabs } from '@umami/react-zen';
 import { useState } from 'react';
 import { EventProperties } from './EventProperties';
 
@@ -30,11 +30,13 @@ export function EventsPage({ websiteId }) {
       <div>
         <Tabs
           selectedKey={tab}
-          onSelect={(value: any) => setTab(value)}
+          onSelectionChange={(value: any) => setTab(value)}
           style={{ marginBottom: 30 }}
         >
-          <Item key="activity">{formatMessage(labels.activity)}</Item>
-          <Item key="properties">{formatMessage(labels.properties)}</Item>
+          <TabList>
+            <Tab key="activity">{formatMessage(labels.activity)}</Tab>
+            <Tab key="properties">{formatMessage(labels.properties)}</Tab>
+          </TabList>
         </Tabs>
         {tab === 'activity' && <EventsDataTable websiteId={websiteId} />}
         {tab === 'properties' && <EventProperties websiteId={websiteId} />}

@@ -1,14 +1,14 @@
 import { ReactNode, useMemo, useState } from 'react';
-import { Loading, Icon, Text, SearchField } from '@umami/react-zen';
-import classNames from 'classnames';
+import { Loading, Icon, Text, SearchField, Row } from '@umami/react-zen';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { LinkButton } from '@/components/common/LinkButton';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 import { percentFilter } from '@/lib/filters';
-import { useNavigation, useWebsiteMetrics, useMessages, useFormat } from '@/components/hooks';
+import { useNavigation, useWebsiteMetricsQuery, useMessages, useFormat } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { ListTable, ListTableProps } from './ListTable';
 import styles from './MetricsTable.module.css';
+import { Panel } from '@/components/layout/Panel';
 
 export interface MetricsTableProps extends ListTableProps {
   websiteId: string;
@@ -46,7 +46,7 @@ export function MetricsTable({
   const { renderUrl } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
-  const { data, isLoading, isFetched, error } = useWebsiteMetrics(
+  const { data, isLoading, isFetched, error } = useWebsiteMetricsQuery(
     websiteId,
     { type, limit, search: searchFormattedValues ? undefined : search, ...params },
     {
@@ -85,15 +85,7 @@ export function MetricsTable({
   }, [data, dataFilter, search, limit, formatValue, type]);
 
   return (
-    <div
-      className={classNames(styles.container, className)}
-      style={{
-        background: 'var(--background-color)',
-        border: '1px solid var(--border-color)',
-        borderRadius: 'var(--border-radius)',
-        padding: '16px',
-      }}
-    >
+    <Panel>
       {error && <ErrorMessage />}
       <div className={styles.actions}>
         {allowSearch && (
@@ -111,7 +103,7 @@ export function MetricsTable({
         <ListTable {...(props as ListTableProps)} data={filteredData} className={className} />
       )}
       {!data && isLoading && !isFetched && <Loading icon="dots" />}
-      <div className={styles.footer}>
+      <Row justifyContent="center">
         {showMore && data && !error && limit && (
           <LinkButton href={renderUrl({ view: type })} variant="quiet">
             <Text>{formatMessage(labels.more)}</Text>
@@ -120,7 +112,7 @@ export function MetricsTable({
             </Icon>
           </LinkButton>
         )}
-      </div>
-    </div>
+      </Row>
+    </Panel>
   );
 }

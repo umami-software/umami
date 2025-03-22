@@ -1,6 +1,6 @@
 'use client';
 import { createContext, ReactNode, useEffect } from 'react';
-import { useModified, useWebsite } from '@/components/hooks';
+import { useModified, useWebsiteQuery } from '@/components/hooks';
 import { Loading } from '@umami/react-zen';
 
 export const WebsiteContext = createContext(null);
@@ -13,7 +13,7 @@ export function WebsiteProvider({
   children: ReactNode;
 }) {
   const { modified } = useModified(`website:${websiteId}`);
-  const { data: website, isFetching, isLoading, refetch } = useWebsite(websiteId);
+  const { data: website, isFetching, isLoading, refetch } = useWebsiteQuery(websiteId);
 
   useEffect(() => {
     if (modified) {
