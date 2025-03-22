@@ -1,21 +1,13 @@
-import { useState } from 'react';
 import Link from 'next/link';
-import {
-  SideNav,
-  SideNavHeader,
-  SideNavSection,
-  SideNavItem,
-  Button,
-  Icon,
-  Row,
-} from '@umami/react-zen';
+import { SideNav, SideNavHeader, SideNavSection, SideNavItem } from '@umami/react-zen';
 import { Lucide, Icons } from '@/components/icons';
 import { useMessages, useTeamUrl } from '@/components/hooks';
+import useGlobalState from '@/components/hooks/useGlobalState';
 
 export function Nav(props: any) {
   const { formatMessage, labels } = useMessages();
   const { renderTeamUrl, pathname } = useTeamUrl();
-  const [isCollapsed, setCollapsed] = useState(false);
+  const [isCollapsed] = useGlobalState('sidenav-collapsed');
 
   const links = [
     {
@@ -46,7 +38,7 @@ export function Nav(props: any) {
   ].filter(n => n);
 
   return (
-    <SideNav {...props} isCollapsed={isCollapsed} variant="3" showBorder={true}>
+    <SideNav {...props} isCollapsed={isCollapsed} variant="2" showBorder={true}>
       <SideNavSection>
         <SideNavHeader label="umami" icon={<Icons.Logo />} />
       </SideNavSection>
@@ -59,15 +51,7 @@ export function Nav(props: any) {
           );
         })}
       </SideNavSection>
-      <SideNavSection alignSelf="end">
-        <Row justifyContent="flex-start">
-          <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
-            <Icon>
-              <Lucide.PanelLeft />
-            </Icon>
-          </Button>
-        </Row>
-      </SideNavSection>
+      <SideNavSection alignSelf="end"></SideNavSection>
     </SideNav>
   );
 }

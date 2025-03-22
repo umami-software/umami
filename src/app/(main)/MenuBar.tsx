@@ -1,10 +1,14 @@
-import { ThemeButton, Row } from '@umami/react-zen';
+import { ThemeButton, Row, Button, Icon } from '@umami/react-zen';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { ProfileButton } from '@/components/input/ProfileButton';
 import { TeamsButton } from '@/components/input/TeamsButton';
 import type { RowProps } from '@umami/react-zen/Row';
+import useGlobalState from '@/components/hooks/useGlobalState';
+import { Lucide } from '@/components/icons';
 
-export function NavBar(props: RowProps) {
+export function MenuBar(props: RowProps) {
+  const [isCollapsed, setCollapsed] = useGlobalState('sidenav-collapsed');
+
   return (
     <Row
       {...props}
@@ -14,7 +18,14 @@ export function NavBar(props: RowProps) {
       paddingX="3"
       paddingRight="5"
     >
-      <TeamsButton />
+      <Row>
+        <Button onPress={() => setCollapsed(!isCollapsed)} variant="quiet">
+          <Icon>
+            <Lucide.PanelLeft />
+          </Icon>
+        </Button>
+        <TeamsButton />
+      </Row>
       <Row justifyContent="flex-end">
         <ThemeButton />
         <LanguageButton />
