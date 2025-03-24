@@ -62,10 +62,10 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                 <div className={styles.header}>
                   {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
                 </div>
-                {day?.map((hour: number) => {
+                {day?.map((hour: number, j) => {
                   const pct = hour / max;
                   return (
-                    <div key={hour} className={classNames(styles.cell)}>
+                    <div key={j} className={classNames(styles.cell)}>
                       {hour > 0 && (
                         <TooltipPopup
                           label={`${formatMessage(labels.visitors)}: ${hour}`}

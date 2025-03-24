@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+/* global JQuery */
 
 declare namespace Cypress {
   interface Chainable {
@@ -7,6 +8,11 @@ declare namespace Cypress {
      * @example cy.getDataTest('greeting')
      */
     getDataTest(value: string): Chainable<JQuery<HTMLElement>>;
+    /**
+     * Custom command to logout through UI.
+     * @example cy.logout()
+     */
+    logout(): Chainable<JQuery<HTMLElement>>;
     /**
      * Custom command to login user into the app.
      * @example cy.login('admin', 'password)

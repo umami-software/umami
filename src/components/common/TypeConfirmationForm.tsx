@@ -35,7 +35,9 @@ export function TypeConfirmationForm({
   return (
     <Form onSubmit={onConfirm} error={error}>
       <p>
-        {formatMessage(messages.actionConfirmation, { confirmation: <b>{confirmationValue}</b> })}
+        {formatMessage(messages.actionConfirmation, {
+          confirmation: <b key={messages.actionConfirmation.id}>{confirmationValue}</b>,
+        })}
       </p>
       <FormRow label={formatMessage(labels.confirm)}>
         <FormInput name="confirm" rules={{ validate: value => value === confirmationValue }}>
