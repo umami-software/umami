@@ -10,8 +10,9 @@ import {
   SubmitButton,
   Button,
 } from 'react-basics';
-import { useApi, useMessages } from 'components/hooks';
-import { ROLES } from 'lib/constants';
+import { useApi, useMessages } from '@/components/hooks';
+import { ROLES } from '@/lib/constants';
+import { messages } from '@/components/messages';
 
 export function UserAddForm({ onSave, onClose }) {
   const { post, useMutation } = useApi();
@@ -44,26 +45,43 @@ export function UserAddForm({ onSave, onClose }) {
   return (
     <Form onSubmit={handleSubmit} error={error}>
       <FormRow label={formatMessage(labels.username)}>
-        <FormInput name="username" rules={{ required: formatMessage(labels.required) }}>
+        <FormInput
+          data-test="input-username"
+          name="username"
+          rules={{ required: formatMessage(labels.required) }}
+        >
           <TextField autoComplete="new-username" />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.password)}>
-        <FormInput name="password" rules={{ required: formatMessage(labels.required) }}>
+        <FormInput
+          data-test="input-password"
+          name="password"
+          rules={{
+            required: formatMessage(labels.required),
+            minLength: { value: 8, message: formatMessage(messages.minPasswordLength, { n: 8 }) },
+          }}
+        >
           <PasswordField autoComplete="new-password" />
         </FormInput>
       </FormRow>
       <FormRow label={formatMessage(labels.role)}>
         <FormInput name="role" rules={{ required: formatMessage(labels.required) }}>
-          <Dropdown renderValue={renderValue}>
-            <Item key={ROLES.viewOnly}>{formatMessage(labels.viewOnly)}</Item>
-            <Item key={ROLES.user}>{formatMessage(labels.user)}</Item>
-            <Item key={ROLES.admin}>{formatMessage(labels.admin)}</Item>
+          <Dropdown data-test="dropdown-role" renderValue={renderValue}>
+            <Item data-test="dropdown-item-viewOnly" key={ROLES.viewOnly}>
+              {formatMessage(labels.viewOnly)}
+            </Item>
+            <Item data-test="dropdown-item-user" key={ROLES.user}>
+              {formatMessage(labels.user)}
+            </Item>
+            <Item data-test="dropdown-item-admin" key={ROLES.admin}>
+              {formatMessage(labels.admin)}
+            </Item>
           </Dropdown>
         </FormInput>
       </FormRow>
       <FormButtons flex>
-        <SubmitButton variant="primary" disabled={false}>
+        <SubmitButton data-test="button-submit" variant="primary" disabled={false}>
           {formatMessage(labels.save)}
         </SubmitButton>
         <Button disabled={isPending} onClick={onClose}>

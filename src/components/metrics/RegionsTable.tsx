@@ -1,8 +1,8 @@
-import FilterLink from 'components/common/FilterLink';
-import { emptyFilter } from 'lib/filters';
-import { useMessages, useLocale, useRegionNames } from 'components/hooks';
+import FilterLink from '@/components/common/FilterLink';
+import { emptyFilter } from '@/lib/filters';
+import { useMessages, useLocale, useRegionNames } from '@/components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import TypeIcon from 'components/common/TypeIcon';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function RegionsTable(props: MetricsTableProps) {
   const { locale } = useLocale();
@@ -11,7 +11,7 @@ export function RegionsTable(props: MetricsTableProps) {
 
   const renderLink = ({ x: code, country }) => {
     return (
-      <FilterLink id="region" className={locale} value={code} label={getRegionName(code, country)}>
+      <FilterLink id="region" value={code} label={getRegionName(code, country)}>
         <TypeIcon type="country" value={country?.toLowerCase()} />
       </FilterLink>
     );
@@ -25,6 +25,7 @@ export function RegionsTable(props: MetricsTableProps) {
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }

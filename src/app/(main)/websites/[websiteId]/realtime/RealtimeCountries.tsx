@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
-import ListTable from 'components/metrics/ListTable';
-import { useLocale, useCountryNames, useMessages } from 'components/hooks';
+import ListTable from '@/components/metrics/ListTable';
+import { useLocale, useCountryNames, useMessages } from '@/components/hooks';
 import classNames from 'classnames';
 import styles from './RealtimeCountries.module.css';
-import TypeIcon from 'components/common/TypeIcon';
+import TypeIcon from '@/components/common/TypeIcon';
 
 export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();
@@ -12,7 +12,7 @@ export function RealtimeCountries({ data }) {
 
   const renderCountryName = useCallback(
     ({ x: code }) => (
-      <span className={classNames(locale, styles.row)}>
+      <span className={classNames(styles.row)}>
         <TypeIcon type="country" value={code?.toLowerCase()} />
         {countryNames[code]}
       </span>

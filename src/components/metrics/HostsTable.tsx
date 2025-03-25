@@ -1,6 +1,6 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import FilterLink from 'components/common/FilterLink';
-import { useMessages } from 'components/hooks';
+import FilterLink from '@/components/common/FilterLink';
+import { useMessages } from '@/components/hooks';
 import { Flexbox } from 'react-basics';
 
 export function HostsTable(props: MetricsTableProps) {
@@ -25,7 +25,7 @@ export function HostsTable(props: MetricsTableProps) {
         {...props}
         title={formatMessage(labels.hosts)}
         type="host"
-        metric={formatMessage(labels.views)}
+        metric={formatMessage(labels.visitors)}
         renderLabel={renderLink}
       />
     </>

@@ -1,7 +1,15 @@
 import { Metadata } from 'next';
 import WebsiteProvider from './WebsiteProvider';
 
-export default function ({ children, params: { websiteId } }) {
+export default async function ({
+  children,
+  params,
+}: {
+  children: any;
+  params: Promise<{ websiteId: string }>;
+}) {
+  const { websiteId } = await params;
+
   return <WebsiteProvider websiteId={websiteId}>{children}</WebsiteProvider>;
 }
 

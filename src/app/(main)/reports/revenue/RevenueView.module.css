@@ -1,0 +1,11 @@
+.container {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

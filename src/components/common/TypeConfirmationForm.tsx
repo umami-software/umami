@@ -7,7 +7,7 @@ import {
   TextField,
   SubmitButton,
 } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 
 export function TypeConfirmationForm({
   confirmationValue,
@@ -26,7 +26,7 @@ export function TypeConfirmationForm({
   onConfirm?: () => void;
   onClose?: () => void;
 }) {
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
 
   if (!confirmationValue) {
     return null;
@@ -35,10 +35,9 @@ export function TypeConfirmationForm({
   return (
     <Form onSubmit={onConfirm} error={error}>
       <p>
-        <FormattedMessage
-          {...messages.actionConfirmation}
-          values={{ confirmation: <b>{confirmationValue}</b> }}
-        />
+        {formatMessage(messages.actionConfirmation, {
+          confirmation: <b key={messages.actionConfirmation.id}>{confirmationValue}</b>,
+        })}
       </p>
       <FormRow label={formatMessage(labels.confirm)}>
         <FormInput name="confirm" rules={{ validate: value => value === confirmationValue }}>

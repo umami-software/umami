@@ -33,7 +33,7 @@ export const FILTER_REFERRERS = 'filter-referrers';
 export const FILTER_PAGES = 'filter-pages';
 
 export const UNIT_TYPES = ['year', 'month', 'hour', 'day', 'minute'];
-export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event'];
+export const EVENT_COLUMNS = ['url', 'entry', 'exit', 'referrer', 'title', 'query', 'event', 'tag'];
 
 export const SESSION_COLUMNS = [
   'browser',
@@ -63,6 +63,7 @@ export const FILTER_COLUMNS = {
   city: 'city',
   language: 'language',
   event: 'event_name',
+  tag: 'tag',
 };
 
 export const COLLECTION_TYPE = {
@@ -238,14 +239,8 @@ export const CHART_COLORS = [
 ];
 
 export const DOMAIN_REGEX =
-  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-]{1,63}\.)(xn--)?[a-z0-9-]+(-[a-z0-9-]+)*\.)+(xn--)?[a-z0-9-]{2,63})$/;
+  /^(localhost(:[1-9]\d{0,4})?|((?=[a-z0-9-_]{1,63}\.)(xn--)?[a-z0-9-_]+(-[a-z0-9-_]+)*\.)+(xn--)?[a-z0-9-_]{2,63})$/;
 export const SHARE_ID_REGEX = /^[a-zA-Z0-9]{8,16}$/;
-export const UUID_REGEX =
-  /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/;
-export const HOSTNAME_REGEX =
-  /^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9-]*[A-Za-z0-9])$/;
-export const IP_REGEX =
-  /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^(?:(?:[0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,7}:|(?:[0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|(?:[0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|(?:[0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|(?:[0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|(?:[0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:(?:(:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]+|::(ffff(:0{1,4})?:)?((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1?[0-9])?[0-9])\.){3}(25[0-5]|(2[0-4]|1?[0-9])?[0-9]))$/;
 export const DATETIME_REGEX =
   /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3}(Z|\+[0-9]{2}:[0-9]{2})?)?$/;
 
@@ -322,6 +317,112 @@ export const BROWSERS = {
   searchbot: 'Searchbot',
   yandexbrowser: 'Yandex',
 };
+
+export const IP_ADDRESS_HEADERS = [
+  'cf-connecting-ip',
+  'x-client-ip',
+  'x-forwarded-for',
+  'do-connecting-ip',
+  'fastly-client-ip',
+  'true-client-ip',
+  'x-real-ip',
+  'x-cluster-client-ip',
+  'x-forwarded',
+  'forwarded',
+  'x-appengine-user-ip',
+];
+
+export const SOCIAL_DOMAINS = [
+  'facebook.com',
+  'fb.com',
+  'instagram.com',
+  'ig.com',
+  'twitter.com',
+  't.co',
+  'x.com',
+  'linkedin.',
+  'tiktok.',
+  'reddit.',
+  'threads.net',
+  'bsky.app',
+  'news.ycombinator.com',
+  'snapchat.',
+  'pinterest.',
+];
+
+export const SEARCH_DOMAINS = [
+  'google.',
+  'bing.com',
+  'msn.com',
+  'duckduckgo.com',
+  'search.brave.com',
+  'yandex.',
+  'baidu.com',
+  'ecosia.org',
+  'chatgpt.com',
+  'perplexity.ai',
+];
+
+export const SHOPPING_DOMAINS = [
+  'amazon.',
+  'ebay.com',
+  'walmart.com',
+  'alibab.com',
+  'aliexpress.com',
+  'etsy.com',
+  'bestbuy.com',
+  'target.com',
+  'newegg.com',
+];
+
+export const EMAIL_DOMAINS = [
+  'gmail.',
+  'mail.yahoo.',
+  'outlook.',
+  'hotmail.',
+  'protonmail.',
+  'proton.me',
+];
+
+export const VIDEO_DOMAINS = ['youtube.', 'twitch.'];
+
+export const PAID_AD_PARAMS = [
+  'utm_source=google',
+  'gclid=',
+  'fbclid=',
+  'msclkid=',
+  'dclid=',
+  'twclid=',
+  'li_fat_id=',
+  'epik=',
+  'ttclid=',
+  'scid=',
+  'aid=',
+  'pc_id=',
+  'ad_id=',
+  'rdt_cid=',
+  'ob_click_id=',
+  'utm_medium=cpc',
+  'utm_medium=paid',
+  'utm_medium=paid_social',
+];
+
+export const GROUPED_DOMAINS = [
+  { name: 'Google', domain: 'google.com', match: 'google.' },
+  { name: 'Facebook', domain: 'facebook.com', match: 'facebook.' },
+  { name: 'Reddit', domain: 'reddit.com', match: 'reddit.' },
+  { name: 'LinkedIn', domain: 'linkedin.com', match: 'linkedin.' },
+  { name: 'GitHub', domain: 'github.com', match: 'github.' },
+  { name: 'Hacker News', domain: 'news.ycombinator.com', match: 'news.ycombinator.com' },
+  { name: 'Bing', domain: 'bing.com', match: 'bing.' },
+  { name: 'Brave', domain: 'brave.com', match: 'brave.' },
+  { name: 'DuckDuckGo', domain: 'duckduckgo.com', match: 'duckduckgo.' },
+  { name: 'Twitter', domain: 'twitter.com', match: ['twitter.', 't.co', 'x.com'] },
+  { name: 'Instagram', domain: 'instagram.com', match: ['instagram.', 'ig.com'] },
+  { name: 'Snapchat', domain: 'snapchat.com', match: 'snapchat.' },
+  { name: 'Pinterest', domain: 'pinterest.com', match: 'pinterest.' },
+  { name: 'ChatGPT', domain: 'chatgpt.com', match: 'chatgpt.' },
+];
 
 export const MAP_FILE = '/datamaps.world.json';
 

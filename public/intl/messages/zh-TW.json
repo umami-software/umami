@@ -8,13 +8,13 @@
   "label.actions": [
     {
       "type": 0,
-      "value": "行動"
+      "value": "行為"
     }
   ],
   "label.activity": [
     {
       "type": 0,
-      "value": "活動日誌"
+      "value": "活動紀錄"
     }
   ],
   "label.add": [
@@ -32,13 +32,13 @@
   "label.add-member": [
     {
       "type": 0,
-      "value": "Add member"
+      "value": "新增成員"
     }
   ],
   "label.add-step": [
     {
       "type": 0,
-      "value": "Add step"
+      "value": "新增步驟"
     }
   ],
   "label.add-website": [
@@ -104,7 +104,7 @@
   "label.breakdown": [
     {
       "type": 0,
-      "value": "分解"
+      "value": "細項分析"
     }
   ],
   "label.browser": [
@@ -152,7 +152,7 @@
   "label.compare": [
     {
       "type": 0,
-      "value": "Compare"
+      "value": "比較"
     }
   ],
   "label.confirm": [
@@ -182,7 +182,7 @@
   "label.count": [
     {
       "type": 0,
-      "value": "Count"
+      "value": "數量"
     }
   ],
   "label.countries": [
@@ -206,7 +206,7 @@
   "label.create-report": [
     {
       "type": 0,
-      "value": "建立報告"
+      "value": "建立報表"
     }
   ],
   "label.create-team": [
@@ -230,13 +230,13 @@
   "label.created-by": [
     {
       "type": 0,
-      "value": "Created By"
+      "value": "建立者"
     }
   ],
   "label.current": [
     {
       "type": 0,
-      "value": "Current"
+      "value": "目前"
     }
   ],
   "label.current-password": [
@@ -296,7 +296,7 @@
   "label.delete-report": [
     {
       "type": 0,
-      "value": "Delete report"
+      "value": "刪除報表"
     }
   ],
   "label.delete-team": [
@@ -368,7 +368,7 @@
   "label.dropoff": [
     {
       "type": 0,
-      "value": "退出"
+      "value": "離開"
     }
   ],
   "label.edit": [
@@ -386,25 +386,25 @@
   "label.edit-member": [
     {
       "type": 0,
-      "value": "Edit member"
+      "value": "編輯成員"
     }
   ],
   "label.enable-share-url": [
     {
       "type": 0,
-      "value": "啟用分享網址"
+      "value": "啟用分享連結"
     }
   ],
   "label.end-step": [
     {
       "type": 0,
-      "value": "End Step"
+      "value": "結束步驟"
     }
   ],
   "label.entry": [
     {
       "type": 0,
-      "value": "Entry URL"
+      "value": "進入網址"
     }
   ],
   "label.event": [
@@ -428,7 +428,7 @@
   "label.exit": [
     {
       "type": 0,
-      "value": "Exit URL"
+      "value": "離開網址"
     }
   ],
   "label.false": [
@@ -470,43 +470,43 @@
   "label.filters": [
     {
       "type": 0,
-      "value": "篩選器"
+      "value": "篩選條件"
     }
   ],
   "label.first-seen": [
     {
       "type": 0,
-      "value": "First seen"
+      "value": "首次造訪"
     }
   ],
   "label.funnel": [
     {
       "type": 0,
-      "value": "漏斗"
+      "value": "漏斗分析"
     }
   ],
   "label.funnel-description": [
     {
       "type": 0,
-      "value": "瞭解使用者的轉換率和退出率"
+      "value": "瞭解使用者的轉換率與流失率。"
     }
   ],
   "label.goal": [
     {
       "type": 0,
-      "value": "Goal"
+      "value": "目標"
     }
   ],
   "label.goals": [
     {
       "type": 0,
-      "value": "Goals"
+      "value": "目標"
     }
   ],
   "label.goals-description": [
     {
       "type": 0,
-      "value": "Track your goals for pageviews and events."
+      "value": "追蹤網頁瀏覽和事件的目標。"
     }
   ],
   "label.greater-than": [
@@ -524,13 +524,13 @@
   "label.host": [
     {
       "type": 0,
-      "value": "Host"
+      "value": "主機名稱"
     }
   ],
   "label.hosts": [
     {
       "type": 0,
-      "value": "Hosts"
+      "value": "主機名稱"
     }
   ],
   "label.insights": [
@@ -542,7 +542,7 @@
   "label.insights-description": [
     {
       "type": 0,
-      "value": "透過使用區段和篩選器來深入探索你的數據"
+      "value": "使用區段和篩選器來深入分析您的資料。"
     }
   ],
   "label.is": [
@@ -584,13 +584,13 @@
   "label.journey": [
     {
       "type": 0,
-      "value": "Journey"
+      "value": "使用者旅程"
     }
   ],
   "label.journey-description": [
     {
       "type": 0,
-      "value": "Understand how users navigate through your website."
+      "value": "瞭解使用者如何瀏覽您的網站。"
     }
   ],
   "label.language": [
@@ -642,7 +642,7 @@
   "label.last-months": [
     {
       "type": 0,
-      "value": "Last "
+      "value": "最近 "
     },
     {
       "type": 1,
@@ -650,13 +650,13 @@
     },
     {
       "type": 0,
-      "value": " months"
+      "value": " 個月"
     }
   ],
   "label.last-seen": [
     {
       "type": 0,
-      "value": "Last seen"
+      "value": "最後造訪"
     }
   ],
   "label.leave": [
@@ -698,25 +698,25 @@
   "label.manage": [
     {
       "type": 0,
-      "value": "Manage"
+      "value": "管理"
     }
   ],
   "label.manager": [
     {
       "type": 0,
-      "value": "Manager"
+      "value": "管理者"
     }
   ],
   "label.max": [
     {
       "type": 0,
-      "value": "最大"
+      "value": "最大值"
     }
   ],
   "label.member": [
     {
       "type": 0,
-      "value": "Member"
+      "value": "成員"
     }
   ],
   "label.members": [
@@ -728,7 +728,7 @@
   "label.min": [
     {
       "type": 0,
-      "value": "最小"
+      "value": "最小值"
     }
   ],
   "label.mobile": [
@@ -746,7 +746,7 @@
   "label.my-account": [
     {
       "type": 0,
-      "value": "My account"
+      "value": "我的帳號"
     }
   ],
   "label.my-websites": [
@@ -780,31 +780,7 @@
     },
     {
       "type": 0,
-      "value": " "
-    },
-    {
-      "offset": 0,
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "record"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "records"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "x"
+      "value": " 筆紀錄"
     }
   ],
   "label.ok": [
@@ -822,7 +798,7 @@
   "label.overview": [
     {
       "type": 0,
-      "value": "概覽"
+      "value": "總覽"
     }
   ],
   "label.owner": [
@@ -834,7 +810,7 @@
   "label.page-of": [
     {
       "type": 0,
-      "value": "頁面 "
+      "value": "第 "
     },
     {
       "type": 1,
@@ -842,29 +818,33 @@
     },
     {
       "type": 0,
-      "value": " / "
+      "value": " 頁，共 "
     },
     {
       "type": 1,
       "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " 頁"
     }
   ],
   "label.page-views": [
     {
       "type": 0,
-      "value": "頁面瀏覽"
+      "value": "網頁瀏覽次數"
     }
   ],
   "label.pageTitle": [
     {
       "type": 0,
-      "value": "頁面標題"
+      "value": "網頁標題"
     }
   ],
   "label.pages": [
     {
       "type": 0,
-      "value": "頁面"
+      "value": "網頁"
     }
   ],
   "label.password": [
@@ -876,13 +856,13 @@
   "label.path": [
     {
       "type": 0,
-      "value": "Path"
+      "value": "路徑"
     }
   ],
   "label.paths": [
     {
       "type": 0,
-      "value": "Paths"
+      "value": "路徑"
     }
   ],
   "label.powered-by": [
@@ -896,43 +876,43 @@
     },
     {
       "type": 0,
-      "value": " 提供"
+      "value": " 提供技術支援"
     }
   ],
   "label.previous": [
     {
       "type": 0,
-      "value": "Previous"
+      "value": "上一個"
     }
   ],
   "label.previous-period": [
     {
       "type": 0,
-      "value": "Previous period"
+      "value": "上一期間"
     }
   ],
   "label.previous-year": [
     {
       "type": 0,
-      "value": "Previous year"
+      "value": "去年"
     }
   ],
   "label.profile": [
     {
       "type": 0,
-      "value": "個人資料"
+      "value": "個人檔案"
     }
   ],
   "label.properties": [
     {
       "type": 0,
-      "value": "Properties"
+      "value": "屬性"
     }
   ],
   "label.property": [
     {
       "type": 0,
-      "value": "Property"
+      "value": "屬性"
     }
   ],
   "label.queries": [
@@ -986,13 +966,13 @@
   "label.region": [
     {
       "type": 0,
-      "value": "區域"
+      "value": "地區"
     }
   ],
   "label.regions": [
     {
       "type": 0,
-      "value": "區域"
+      "value": "地區"
     }
   ],
   "label.remove": [
@@ -1004,13 +984,13 @@
   "label.remove-member": [
     {
       "type": 0,
-      "value": "Remove member"
+      "value": "移除成員"
     }
   ],
   "label.reports": [
     {
       "type": 0,
-      "value": "報告"
+      "value": "報表"
     }
   ],
   "label.required": [
@@ -1028,13 +1008,13 @@
   "label.reset-website": [
     {
       "type": 0,
-      "value": "重設網站"
+      "value": "重設網站統計資料"
     }
   ],
   "label.retention": [
     {
       "type": 0,
-      "value": "保留"
+      "value": "留存率"
     }
   ],
   "label.retention-description": [
@@ -1046,19 +1026,19 @@
   "label.revenue": [
     {
       "type": 0,
-      "value": "Revenue"
+      "value": "營收"
     }
   ],
   "label.revenue-description": [
     {
       "type": 0,
-      "value": "Look into your revenue across time."
+      "value": "查看您的營收趨勢。"
     }
   ],
   "label.revenue-property": [
     {
       "type": 0,
-      "value": "Revenue Property"
+      "value": "營收屬性"
     }
   ],
   "label.role": [
@@ -1088,37 +1068,37 @@
   "label.search": [
     {
       "type": 0,
-      "value": "Search"
+      "value": "搜尋"
     }
   ],
   "label.select": [
     {
       "type": 0,
-      "value": "Select"
+      "value": "選取"
     }
   ],
   "label.select-date": [
     {
       "type": 0,
-      "value": "選擇日期"
+      "value": "選取日期"
     }
   ],
   "label.select-role": [
     {
       "type": 0,
-      "value": "Select role"
+      "value": "選取角色"
     }
   ],
   "label.select-website": [
     {
       "type": 0,
-      "value": "選擇網站"
+      "value": "選取網站"
     }
   ],
   "label.session": [
     {
       "type": 0,
-      "value": "Session"
+      "value": "工作階段"
     }
   ],
   "label.sessions": [
@@ -1136,7 +1116,7 @@
   "label.share-url": [
     {
       "type": 0,
-      "value": "分享網址"
+      "value": "分享連結"
     }
   ],
   "label.single-day": [
@@ -1148,13 +1128,13 @@
   "label.start-step": [
     {
       "type": 0,
-      "value": "Start Step"
+      "value": "起始步驟"
     }
   ],
   "label.steps": [
     {
       "type": 0,
-      "value": "Steps"
+      "value": "步驟"
     }
   ],
   "label.sum": [
@@ -1184,7 +1164,7 @@
   "label.team-manager": [
     {
       "type": 0,
-      "value": "Team manager"
+      "value": "團隊管理者"
     }
   ],
   "label.team-member": [
@@ -1208,7 +1188,7 @@
   "label.team-view-only": [
     {
       "type": 0,
-      "value": "Team view only"
+      "value": "團隊僅供檢視"
     }
   ],
   "label.team-websites": [
@@ -1280,7 +1260,7 @@
   "label.total-records": [
     {
       "type": 0,
-      "value": "總記錄"
+      "value": "紀錄總數"
     }
   ],
   "label.tracking-code": [
@@ -1292,19 +1272,19 @@
   "label.transactions": [
     {
       "type": 0,
-      "value": "Transactions"
+      "value": "交易"
     }
   ],
   "label.transfer": [
     {
       "type": 0,
-      "value": "Transfer"
+      "value": "轉移"
     }
   ],
   "label.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website"
+      "value": "轉移網站"
     }
   ],
   "label.true": [
@@ -1322,19 +1302,19 @@
   "label.unique": [
     {
       "type": 0,
-      "value": "獨立"
+      "value": "不重複"
     }
   ],
   "label.unique-visitors": [
     {
       "type": 0,
-      "value": "獨立訪客"
+      "value": "不重複訪客"
     }
   ],
   "label.uniqueCustomers": [
     {
       "type": 0,
-      "value": "Unique Customers"
+      "value": "不重複客戶"
     }
   ],
   "label.unknown": [
@@ -1346,13 +1326,13 @@
   "label.untitled": [
     {
       "type": 0,
-      "value": "無標題"
+      "value": "未命名"
     }
   ],
   "label.update": [
     {
       "type": 0,
-      "value": "Update"
+      "value": "更新"
     }
   ],
   "label.url": [
@@ -1376,7 +1356,7 @@
   "label.user-property": [
     {
       "type": 0,
-      "value": "User Property"
+      "value": "使用者屬性"
     }
   ],
   "label.username": [
@@ -1400,7 +1380,7 @@
   "label.utm-description": [
     {
       "type": 0,
-      "value": "Track your campaigns through UTM parameters."
+      "value": "透過 UTM 參數追蹤您的行銷活動。"
     }
   ],
   "label.value": [
@@ -1430,19 +1410,19 @@
   "label.views": [
     {
       "type": 0,
-      "value": "檢視"
+      "value": "瀏覽次數"
     }
   ],
   "label.views-per-visit": [
     {
       "type": 0,
-      "value": "Views per visit"
+      "value": "每次造訪的瀏覽次數"
     }
   ],
   "label.visit-duration": [
     {
       "type": 0,
-      "value": "平均造訪時間"
+      "value": "造訪時間"
     }
   ],
   "label.visitors": [
@@ -1454,7 +1434,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "Visits"
+      "value": "造訪次數"
     }
   ],
   "label.website": [
@@ -1490,7 +1470,7 @@
   "message.action-confirmation": [
     {
       "type": 0,
-      "value": "Type "
+      "value": "請在下方欄位輸入 "
     },
     {
       "type": 1,
@@ -1498,7 +1478,7 @@
     },
     {
       "type": 0,
-      "value": " in the box below to confirm."
+      "value": " 以確認。"
     }
   ],
   "message.active-users": [
@@ -1512,13 +1492,13 @@
     },
     {
       "type": 0,
-      "value": " 個活躍的訪客"
+      "value": " 位訪客"
     }
   ],
   "message.collected-data": [
     {
       "type": 0,
-      "value": "Collected data"
+      "value": "已蒐集的資料"
     }
   ],
   "message.confirm-delete": [
@@ -1552,7 +1532,7 @@
   "message.confirm-remove": [
     {
       "type": 0,
-      "value": "Are you sure you want to remove "
+      "value": "您確定要移除 "
     },
     {
       "type": 1,
@@ -1560,7 +1540,7 @@
     },
     {
       "type": 0,
-      "value": "?"
+      "value": " 嗎？"
     }
   ],
   "message.confirm-reset": [
@@ -1574,19 +1554,19 @@
     },
     {
       "type": 0,
-      "value": " 嗎？"
+      "value": " 的統計資料嗎？"
     }
   ],
   "message.delete-team-warning": [
     {
       "type": 0,
-      "value": "Deleting a team will also delete all team websites."
+      "value": "刪除團隊的同時也會刪除所有團隊的網站。"
     }
   ],
   "message.delete-website-warning": [
     {
       "type": 0,
-      "value": "所有網站資料將被刪除。"
+      "value": "所有網站資料都將被刪除。"
     }
   ],
   "message.error": [
@@ -1597,16 +1577,20 @@
   ],
   "message.event-log": [
     {
-      "type": 1,
-      "value": "event"
-    },
-    {
       "type": 0,
-      "value": " 在 "
+      "value": "在 "
     },
     {
       "type": 1,
       "value": "url"
+    },
+    {
+      "type": 0,
+      "value": " 上的 "
+    },
+    {
+      "type": 1,
+      "value": "event"
     }
   ],
   "message.go-to-settings": [
@@ -1618,19 +1602,19 @@
   "message.incorrect-username-password": [
     {
       "type": 0,
-      "value": "使用者名稱和/或密碼不正確。"
+      "value": "使用者名稱或密碼不正確。"
     }
   ],
   "message.invalid-domain": [
     {
       "type": 0,
-      "value": "無效的網域。請不要包含 http/https。"
+      "value": "無效的網域。請勿包含 http/https。"
     }
   ],
   "message.min-password-length": [
     {
       "type": 0,
-      "value": "最少需要 "
+      "value": "密碼長度至少需 "
     },
     {
       "type": 1,
@@ -1652,7 +1636,7 @@
     },
     {
       "type": 0,
-      "value": " 的新版本已經可以使用！"
+      "value": " 的新版本已推出！"
     }
   ],
   "message.no-data-available": [
@@ -1694,7 +1678,7 @@
   "message.no-users": [
     {
       "type": 0,
-      "value": "沒有使用者。"
+      "value": "沒有任何使用者。"
     }
   ],
   "message.no-websites-configured": [
@@ -1706,13 +1690,13 @@
   "message.page-not-found": [
     {
       "type": 0,
-      "value": "找不到頁面"
+      "value": "找不到網頁"
     }
   ],
   "message.reset-website": [
     {
       "type": 0,
-      "value": "要重設此網站，請在下方的方框中輸入 "
+      "value": "要重設此網站的統計資料，請在下方欄位輸入 "
     },
     {
       "type": 1,
@@ -1726,7 +1710,7 @@
   "message.reset-website-warning": [
     {
       "type": 0,
-      "value": "此網站的所有統計將被刪除，但您的設定將保持不變。"
+      "value": "此網站的所有統計資料都將被刪除，但您的設定將保持不變。"
     }
   ],
   "message.saved": [
@@ -1738,13 +1722,13 @@
   "message.share-url": [
     {
       "type": 0,
-      "value": "您的網站統計資料可以在以下網址公開檢視："
+      "value": "您的網站統計資料可在以下網址公開檢視："
     }
   ],
   "message.team-already-member": [
     {
       "type": 0,
-      "value": "您已經是團隊的成員。"
+      "value": "您已是該團隊的成員。"
     }
   ],
   "message.team-not-found": [
@@ -1756,13 +1740,13 @@
   "message.team-websites-info": [
     {
       "type": 0,
-      "value": "團隊的任何成員都可以檢視網站。"
+      "value": "團隊中的所有成員都可以檢視網站。"
     }
   ],
   "message.tracking-code": [
     {
       "type": 0,
-      "value": "要追蹤此網站的統計，請將以下代碼放在您的 HTML 的 "
+      "value": "要追蹤此網站的統計資料，請將以下程式碼放在您 HTML 的 "
     },
     {
       "children": [
@@ -1782,25 +1766,25 @@
   "message.transfer-team-website-to-user": [
     {
       "type": 0,
-      "value": "Transfer this website to your account?"
+      "value": "要將此網站轉移至您的帳號嗎？"
     }
   ],
   "message.transfer-user-website-to-team": [
     {
       "type": 0,
-      "value": "Select the team to transfer this website to."
+      "value": "請選擇要轉移此網站的團隊。"
     }
   ],
   "message.transfer-website": [
     {
       "type": 0,
-      "value": "Transfer website ownership to your account or another team."
+      "value": "將網站所有權轉移至您的帳號或其他團隊。"
     }
   ],
   "message.triggered-event": [
     {
       "type": 0,
-      "value": "Triggered event"
+      "value": "已觸發的事件"
     }
   ],
   "message.user-deleted": [
@@ -1812,7 +1796,7 @@
   "message.viewed-page": [
     {
       "type": 0,
-      "value": "Viewed page"
+      "value": "已瀏覽的網頁"
     }
   ],
   "message.visitor-log": [
@@ -1856,7 +1840,7 @@
   "message.visitors-dropped-off": [
     {
       "type": 0,
-      "value": "Visitors dropped off"
+      "value": "訪客已離開"
     }
   ]
 }

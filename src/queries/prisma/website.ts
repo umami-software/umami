@@ -1,9 +1,9 @@
 import { Prisma, Website } from '@prisma/client';
-import redis from '@umami/redis-client';
-import prisma from 'lib/prisma';
-import { PageResult, PageParams } from 'lib/types';
+import redis from '@/lib/redis';
+import prisma from '@/lib/prisma';
+import { PageResult, PageParams } from '@/lib/types';
 import WebsiteFindManyArgs = Prisma.WebsiteFindManyArgs;
-import { ROLES } from 'lib/constants';
+import { ROLES } from '@/lib/constants';
 
 async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs): Promise<Website> {
   return prisma.client.website.findUnique(criteria);
@@ -21,6 +21,7 @@ export async function getSharedWebsite(shareId: string) {
   return findWebsite({
     where: {
       shareId,
+      deletedAt: null,
     },
   });
 }
@@ -29,11 +30,11 @@ export async function getWebsites(
   criteria: WebsiteFindManyArgs,
   pageParams: PageParams,
 ): Promise<PageResult<Website[]>> {
-  const { query } = pageParams;
+  const { search } = pageParams;
 
   const where: Prisma.WebsiteWhereInput = {
     ...criteria.where,
-    ...prisma.getSearchParameters(query, [
+    ...prisma.getSearchParameters(search, [
       {
         name: 'contains',
       },
@@ -164,6 +165,9 @@ export async function resetWebsite(
     client.eventData.deleteMany({
       where: { websiteId },
     }),
+    client.sessionData.deleteMany({
+      where: { websiteId },
+    }),
     client.websiteEvent.deleteMany({
       where: { websiteId },
     }),
@@ -193,6 +197,9 @@ export async function deleteWebsite(
 
   return transaction([
     client.eventData.deleteMany({
+      where: { websiteId },
+    }),
+    client.sessionData.deleteMany({
       where: { websiteId },
     }),
     client.websiteEvent.deleteMany({

@@ -1,6 +1,6 @@
-import { getWebsiteSession, getWebsite } from 'queries';
 import { Website, Session } from '@prisma/client';
-import redis from '@umami/redis-client';
+import redis from '@/lib/redis';
+import { getWebsiteSession, getWebsite } from '@/queries';
 
 export async function fetchWebsite(websiteId: string): Promise<Website> {
   let website = null;

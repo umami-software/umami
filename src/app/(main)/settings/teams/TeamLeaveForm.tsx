@@ -1,5 +1,5 @@
-import { useApi, useMessages, useModified } from 'components/hooks';
-import ConfirmationForm from 'components/common/ConfirmationForm';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import ConfirmationForm from '@/components/common/ConfirmationForm';
 
 export function TeamLeaveForm({
   teamId,
@@ -14,7 +14,7 @@ export function TeamLeaveForm({
   onSave: () => void;
   onClose: () => void;
 }) {
-  const { formatMessage, labels, messages, FormattedMessage } = useMessages();
+  const { formatMessage, labels, messages } = useMessages();
   const { del, useMutation } = useApi();
   const { mutate, error, isPending } = useMutation({
     mutationFn: () => del(`/teams/${teamId}/users/${userId}`),
@@ -34,9 +34,9 @@ export function TeamLeaveForm({
   return (
     <ConfirmationForm
       buttonLabel={formatMessage(labels.leave)}
-      message={
-        <FormattedMessage {...messages.confirmLeave} values={{ target: <b>{teamName}</b> }} />
-      }
+      message={formatMessage(messages.confirmLeave, {
+        target: <b key={messages.confirmLeave.id}>{teamName}</b>,
+      })}
       onConfirm={handleConfirm}
       onClose={onClose}
       isLoading={isPending}

@@ -1,5 +1,5 @@
-import DataTable from 'components/common/DataTable';
-import { useUsers } from 'components/hooks';
+import DataTable from '@/components/common/DataTable';
+import { useUsers } from '@/components/hooks';
 import UsersTable from './UsersTable';
 import { ReactNode } from 'react';
 

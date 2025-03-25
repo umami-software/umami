@@ -1450,7 +1450,7 @@
   "label.visits": [
     {
       "type": 0,
-      "value": "訪問者数"
+      "value": "訪問数"
     }
   ],
   "label.website": [

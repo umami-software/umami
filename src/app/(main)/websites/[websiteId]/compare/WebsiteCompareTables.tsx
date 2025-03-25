@@ -1,24 +1,25 @@
+import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
+import { Grid, GridRow } from '@/components/layout/Grid';
+import SideNav from '@/components/layout/SideNav';
+import BrowsersTable from '@/components/metrics/BrowsersTable';
+import ChangeLabel from '@/components/metrics/ChangeLabel';
+import CitiesTable from '@/components/metrics/CitiesTable';
+import CountriesTable from '@/components/metrics/CountriesTable';
+import DevicesTable from '@/components/metrics/DevicesTable';
+import EventsTable from '@/components/metrics/EventsTable';
+import LanguagesTable from '@/components/metrics/LanguagesTable';
+import MetricsTable from '@/components/metrics/MetricsTable';
+import OSTable from '@/components/metrics/OSTable';
+import PagesTable from '@/components/metrics/PagesTable';
+import QueryParametersTable from '@/components/metrics/QueryParametersTable';
+import ReferrersTable from '@/components/metrics/ReferrersTable';
+import RegionsTable from '@/components/metrics/RegionsTable';
+import ScreenTable from '@/components/metrics/ScreenTable';
+import TagsTable from '@/components/metrics/TagsTable';
+import { getCompareDate } from '@/lib/date';
+import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
-import SideNav from 'components/layout/SideNav';
-import { useDateRange, useMessages, useNavigation } from 'components/hooks';
-import PagesTable from 'components/metrics/PagesTable';
-import ReferrersTable from 'components/metrics/ReferrersTable';
-import BrowsersTable from 'components/metrics/BrowsersTable';
-import OSTable from 'components/metrics/OSTable';
-import DevicesTable from 'components/metrics/DevicesTable';
-import ScreenTable from 'components/metrics/ScreenTable';
-import CountriesTable from 'components/metrics/CountriesTable';
-import RegionsTable from 'components/metrics/RegionsTable';
-import CitiesTable from 'components/metrics/CitiesTable';
-import LanguagesTable from 'components/metrics/LanguagesTable';
-import EventsTable from 'components/metrics/EventsTable';
-import QueryParametersTable from 'components/metrics/QueryParametersTable';
-import { Grid, GridRow } from 'components/layout/Grid';
-import MetricsTable from 'components/metrics/MetricsTable';
-import useStore from 'store/websites';
-import { getCompareDate } from 'lib/date';
-import { formatNumber } from 'lib/format';
-import ChangeLabel from 'components/metrics/ChangeLabel';
+import useStore from '@/store/websites';
 import styles from './WebsiteCompareTables.module.css';
 
 const views = {
@@ -35,6 +36,7 @@ const views = {
   language: LanguagesTable,
   event: EventsTable,
   query: QueryParametersTable,
+  tag: TagsTable,
 };
 
 export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
@@ -108,6 +110,16 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
       key: 'query',
       label: formatMessage(labels.queryParameters),
       url: renderUrl({ view: 'query' }),
+    },
+    {
+      key: 'host',
+      label: formatMessage(labels.hosts),
+      url: renderUrl({ view: 'host' }),
+    },
+    {
+      key: 'tag',
+      label: formatMessage(labels.tags),
+      url: renderUrl({ view: 'tag' }),
     },
   ];
 

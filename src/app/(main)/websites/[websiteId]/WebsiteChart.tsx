@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
-import PageviewsChart from 'components/metrics/PageviewsChart';
-import useWebsitePageviews from 'components/hooks/queries/useWebsitePageviews';
-import { useDateRange } from 'components/hooks';
+import PageviewsChart from '@/components/metrics/PageviewsChart';
+import useWebsitePageviews from '@/components/hooks/queries/useWebsitePageviews';
+import { useDateRange } from '@/components/hooks';
 
 export function WebsiteChart({
   websiteId,
@@ -11,7 +11,7 @@ export function WebsiteChart({
   compareMode?: boolean;
 }) {
   const { dateRange, dateCompare } = useDateRange(websiteId);
-  const { startDate, endDate, unit } = dateRange;
+  const { startDate, endDate, unit, value } = dateRange;
   const { data, isLoading } = useWebsitePageviews(websiteId, compareMode ? dateCompare : undefined);
   const { pageviews, sessions, compare } = (data || {}) as any;
 
@@ -49,6 +49,7 @@ export function WebsiteChart({
       maxDate={endDate.toISOString()}
       unit={unit}
       isLoading={isLoading}
+      isAllTime={value === 'all'}
     />
   );
 }

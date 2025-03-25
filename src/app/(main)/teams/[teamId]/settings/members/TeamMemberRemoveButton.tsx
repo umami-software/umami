@@ -1,8 +1,7 @@
-import ConfirmationForm from 'components/common/ConfirmationForm';
-import { useApi, useMessages, useModified } from 'components/hooks';
-import { messages } from 'components/messages';
+import ConfirmationForm from '@/components/common/ConfirmationForm';
+import { useApi, useMessages, useModified } from '@/components/hooks';
+import { messages } from '@/components/messages';
 import { Button, Icon, Icons, Modal, ModalTrigger, Text } from 'react-basics';
-import { FormattedMessage } from 'react-intl';
 
 export function TeamMemberRemoveButton({
   teamId,
@@ -44,12 +43,9 @@ export function TeamMemberRemoveButton({
       <Modal title={formatMessage(labels.removeMember)}>
         {(close: () => void) => (
           <ConfirmationForm
-            message={
-              <FormattedMessage
-                {...messages.confirmRemove}
-                values={{ target: <b>{userName}</b> }}
-              />
-            }
+            message={formatMessage(messages.confirmRemove, {
+              target: <b key={messages.confirmRemove.id}>{userName}</b>,
+            })}
             isLoading={isPending}
             error={error}
             onConfirm={handleConfirm.bind(null, close)}

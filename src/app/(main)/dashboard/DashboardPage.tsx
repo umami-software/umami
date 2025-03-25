@@ -1,21 +1,21 @@
 'use client';
 import { Icon, Icons, Loading, Text } from 'react-basics';
-import PageHeader from 'components/layout/PageHeader';
-import Pager from 'components/common/Pager';
+import PageHeader from '@/components/layout/PageHeader';
+import Pager from '@/components/common/Pager';
 import WebsiteChartList from '../websites/[websiteId]/WebsiteChartList';
-import DashboardSettingsButton from 'app/(main)/dashboard/DashboardSettingsButton';
-import DashboardEdit from 'app/(main)/dashboard/DashboardEdit';
-import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
-import { useMessages, useLocale, useTeamUrl, useWebsites } from 'components/hooks';
-import useDashboard from 'store/dashboard';
-import LinkButton from 'components/common/LinkButton';
+import DashboardSettingsButton from '@/app/(main)/dashboard/DashboardSettingsButton';
+import DashboardEdit from '@/app/(main)/dashboard/DashboardEdit';
+import EmptyPlaceholder from '@/components/common/EmptyPlaceholder';
+import { useMessages, useLocale, useTeamUrl, useWebsites } from '@/components/hooks';
+import useDashboard from '@/store/dashboard';
+import LinkButton from '@/components/common/LinkButton';
 
 export function DashboardPage() {
   const { formatMessage, labels, messages } = useMessages();
   const { teamId, renderTeamUrl } = useTeamUrl();
-  const { showCharts, editing } = useDashboard();
+  const { showCharts, editing, isEdited } = useDashboard();
   const { dir } = useLocale();
-  const pageSize = 10;
+  const pageSize = isEdited ? 200 : 10;
 
   const { result, query, params, setParams } = useWebsites({ teamId }, { pageSize });
   const { page } = params;

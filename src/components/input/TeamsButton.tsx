@@ -1,8 +1,8 @@
 import { Key } from 'react';
 import { Text, Icon, Button, Popup, Menu, Item, PopupTrigger, Flexbox } from 'react-basics';
 import classNames from 'classnames';
-import Icons from 'components/icons';
-import { useLogin, useMessages, useTeams, useTeamUrl } from 'components/hooks';
+import Icons from '@/components/icons';
+import { useLogin, useMessages, useTeams, useTeamUrl } from '@/components/hooks';
 import styles from './TeamsButton.module.css';
 
 export function TeamsButton({
@@ -16,7 +16,7 @@ export function TeamsButton({
 }) {
   const { user } = useLogin();
   const { formatMessage, labels } = useMessages();
-  const { result } = useTeams(user?.id);
+  const { result } = useTeams(user.id);
   const { teamId } = useTeamUrl();
   const team = result?.data?.find(({ id }) => id === teamId);
 

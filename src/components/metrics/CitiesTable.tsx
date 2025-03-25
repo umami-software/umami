@@ -1,25 +1,24 @@
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
-import { emptyFilter } from 'lib/filters';
-import FilterLink from 'components/common/FilterLink';
-import TypeIcon from 'components/common/TypeIcon';
-import { useLocale } from 'components/hooks';
-import { useMessages } from 'components/hooks';
-import { useCountryNames } from 'components/hooks';
+import { emptyFilter } from '@/lib/filters';
+import FilterLink from '@/components/common/FilterLink';
+import { useMessages } from '@/components/hooks';
+import { useFormat } from '@/components/hooks';
 
 export function CitiesTable(props: MetricsTableProps) {
-  const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
-  const { countryNames } = useCountryNames(locale);
-
-  const renderLabel = (city: string, country: string) => {
-    const countryName = countryNames[country];
-    return countryName ? `${city}, ${countryName}` : city;
-  };
+  const { formatCity } = useFormat();
 
   const renderLink = ({ x: city, country }) => {
     return (
-      <FilterLink id="city" value={city} label={renderLabel(city, country)}>
-        {country && <TypeIcon type="country" value={country} />}
+      <FilterLink id="city" value={city} label={formatCity(city, country)}>
+        {country && (
+          <img
+            src={`${process.env.basePath || ''}/images/country/${
+              country?.toLowerCase() || 'xx'
+            }.png`}
+            alt={country}
+          />
+        )}
       </FilterLink>
     );
   };
@@ -32,6 +31,7 @@ export function CitiesTable(props: MetricsTableProps) {
       metric={formatMessage(labels.visitors)}
       dataFilter={emptyFilter}
       renderLabel={renderLink}
+      searchFormattedValues={true}
     />
   );
 }

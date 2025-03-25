@@ -1,7 +1,7 @@
 import { ErrorInfo, ReactNode } from 'react';
 import { ErrorBoundary as Boundary } from 'react-error-boundary';
 import { Button } from 'react-basics';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import styles from './ErrorBoundary.module.css';
 
 const logError = (error: Error, info: ErrorInfo) => {

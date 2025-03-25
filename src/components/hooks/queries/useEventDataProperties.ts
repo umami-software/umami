@@ -1,5 +1,5 @@
-import useApi from './useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
+import { useApi } from '../useApi';
 import { useFilterParams } from '../useFilterParams';
 
 export function useEventDataProperties(

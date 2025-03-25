@@ -1,12 +1,53 @@
-import FilterLink from 'components/common/FilterLink';
-import Favicon from 'components/common/Favicon';
-import { useMessages } from 'components/hooks';
+import FilterLink from '@/components/common/FilterLink';
+import Favicon from '@/components/common/Favicon';
+import { useMessages, useNavigation } from '@/components/hooks';
 import MetricsTable, { MetricsTableProps } from './MetricsTable';
+import FilterButtons from '@/components/common/FilterButtons';
+import thenby from 'thenby';
+import { GROUPED_DOMAINS } from '@/lib/constants';
+import { Flexbox } from 'react-basics';
 
-export function ReferrersTable(props: MetricsTableProps) {
+export interface ReferrersTableProps extends MetricsTableProps {
+  allowFilter?: boolean;
+}
+
+export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
+  const {
+    router,
+    renderUrl,
+    query: { view = 'referrer' },
+  } = useNavigation();
   const { formatMessage, labels } = useMessages();
 
+  const handleSelect = (key: any) => {
+    router.push(renderUrl({ view: key }), { scroll: false });
+  };
+
+  const buttons = [
+    {
+      label: formatMessage(labels.domain),
+      key: 'referrer',
+    },
+    {
+      label: formatMessage(labels.grouped),
+      key: 'grouped',
+    },
+  ];
+
   const renderLink = ({ x: referrer }) => {
+    if (view === 'grouped') {
+      if (referrer === '_other') {
+        return `(${formatMessage(labels.other)})`;
+      } else {
+        return (
+          <Flexbox alignItems="center" gap={10}>
+            <Favicon domain={referrer} />
+            {GROUPED_DOMAINS.find(({ domain }) => domain === referrer)?.name}
+          </Flexbox>
+        );
+      }
+    }
+
     return (
       <FilterLink
         id="referrer"
@@ -19,15 +60,40 @@ export function ReferrersTable(props: MetricsTableProps) {
     );
   };
 
+  const groupedFilter = (data: any[]) => {
+    const groups = { _other: 0 };
+
+    for (const { x, y } of data) {
+      for (const { domain, match } of GROUPED_DOMAINS) {
+        if (Array.isArray(match) ? match.some(str => x.includes(str)) : x.includes(match)) {
+          if (!groups[domain]) {
+            groups[domain] = 0;
+          }
+          groups[domain] += +y;
+        }
+      }
+      groups._other += +y;
+    }
+
+    return Object.keys(groups)
+      .map((key: any) => ({ x: key, y: groups[key] }))
+      .sort(thenby.firstBy('y', -1));
+  };
+
   return (
     <>
       <MetricsTable
         {...props}
         title={formatMessage(labels.referrers)}
         type="referrer"
-        metric={formatMessage(labels.views)}
+        metric={formatMessage(labels.visitors)}
+        dataFilter={view === 'grouped' ? groupedFilter : undefined}
         renderLabel={renderLink}
-      />
+      >
+        {allowFilter && (
+          <FilterButtons items={buttons} selectedKey={view} onSelect={handleSelect} />
+        )}
+      </MetricsTable>
     </>
   );
 }

@@ -1,4 +1,4 @@
-import useApi from './useApi';
+import { useApi } from '../useApi';
 
 export function useWebsite(websiteId: string, options?: { [key: string]: any }) {
   const { get, useQuery } = useApi();

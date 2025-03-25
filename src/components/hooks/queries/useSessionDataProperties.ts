@@ -1,4 +1,4 @@
-import useApi from './useApi';
+import { useApi } from '../useApi';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { useFilterParams } from '../useFilterParams';
 
@@ -10,7 +10,7 @@ export function useSessionDataProperties(
   const params = useFilterParams(websiteId);
 
   return useQuery<any>({
-    queryKey: ['websites:event-data:properties', { websiteId, ...params }],
+    queryKey: ['websites:session-data:properties', { websiteId, ...params }],
     queryFn: () => get(`/websites/${websiteId}/session-data/properties`, { ...params }),
     enabled: !!websiteId,
     ...options,

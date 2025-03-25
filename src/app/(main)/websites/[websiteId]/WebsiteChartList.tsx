@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { firstBy } from 'thenby';
 import Link from 'next/link';
 import WebsiteChart from './WebsiteChart';
-import useDashboard from 'store/dashboard';
+import useDashboard from '@/store/dashboard';
 import WebsiteHeader from './WebsiteHeader';
 import { WebsiteMetricsBar } from './WebsiteMetricsBar';
-import { useMessages, useLocale, useTeamUrl } from 'components/hooks';
+import { useMessages, useLocale, useTeamUrl } from '@/components/hooks';
 
 export default function WebsiteChartList({
   websites,
@@ -18,17 +18,16 @@ export default function WebsiteChartList({
   limit?: number;
 }) {
   const { formatMessage, labels } = useMessages();
-  const { websiteOrder } = useDashboard();
+  const { websiteOrder, websiteActive } = useDashboard();
   const { renderTeamUrl } = useTeamUrl();
   const { dir } = useLocale();
 
-  const ordered = useMemo(
-    () =>
-      websites
-        .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
-        .sort(firstBy('order')),
-    [websites, websiteOrder],
-  );
+  const ordered = useMemo(() => {
+    return websites
+      .filter(website => (websiteActive.length ? websiteActive.includes(website.id) : true))
+      .map(website => ({ ...website, order: websiteOrder.indexOf(website.id) || 0 }))
+      .sort(firstBy('order'));
+  }, [websites, websiteOrder, websiteActive]);
 
   return (
     <div>

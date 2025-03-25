@@ -1,8 +1,8 @@
-import { Icon, Button, PopupTrigger, Popup, Text } from 'react-basics';
+import { Icon, Button, PopupTrigger, Popup } from 'react-basics';
 import classNames from 'classnames';
-import { languages } from 'lib/lang';
-import { useLocale } from 'components/hooks';
-import Icons from 'components/icons';
+import { languages } from '@/lib/lang';
+import { useLocale } from '@/components/hooks';
+import Icons from '@/components/icons';
 import styles from './LanguageButton.module.css';
 
 export function LanguageButton() {
@@ -33,7 +33,7 @@ export function LanguageButton() {
                     className={classNames(styles.item, { [styles.selected]: value === locale })}
                     onClick={(e: any) => handleSelect(value, close, e)}
                   >
-                    <Text>{label}</Text>
+                    <span lang={value}>{label}</span>
                     {value === locale && (
                       <Icon className={styles.icon}>
                         <Icons.Check />

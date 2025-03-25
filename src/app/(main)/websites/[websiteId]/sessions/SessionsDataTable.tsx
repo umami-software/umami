@@ -1,6 +1,6 @@
-import { useWebsiteSessions } from 'components/hooks';
+import { useWebsiteSessions } from '@/components/hooks';
 import SessionsTable from './SessionsTable';
-import DataTable from 'components/common/DataTable';
+import DataTable from '@/components/common/DataTable';
 import { ReactNode } from 'react';
 
 export default function SessionsDataTable({

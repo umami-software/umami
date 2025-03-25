@@ -3,6 +3,7 @@
     "browser": true,
     "es2020": true,
     "node": true,
+    "jquery": true,
     "jest": true
   },
   "parser": "@typescript-eslint/parser",
@@ -13,14 +14,8 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["node_modules", "src/"]
-      }
-    }
-  },
   "extends": [
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "eslint:recommended",
     "plugin:prettier/recommended",
@@ -40,12 +35,14 @@
     "react/prop-types": "off",
     "import/no-anonymous-default-export": "off",
     "import/no-named-as-default": "off",
+    "css-modules/no-unused-class": "off",
     "@next/next/no-img-element": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
+    "@typescript-eslint/no-namespace": ["error", { "allowDeclarations": true }]
   },
   "globals": {
     "React": "writable"

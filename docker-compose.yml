@@ -1,5 +1,4 @@
 ---
-version: '3'
 services:
   umami:
     image: ghcr.io/umami-software/umami:postgresql-latest
@@ -12,6 +11,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    init: true
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:3000/api/heartbeat"]

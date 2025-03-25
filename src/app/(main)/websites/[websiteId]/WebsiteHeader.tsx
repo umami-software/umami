@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import Favicon from 'components/common/Favicon';
-import { useMessages, useTeamUrl, useWebsite } from 'components/hooks';
-import Icons from 'components/icons';
-import ActiveUsers from 'components/metrics/ActiveUsers';
+import Favicon from '@/components/common/Favicon';
+import { useMessages, useTeamUrl, useWebsite } from '@/components/hooks';
+import Icons from '@/components/icons';
+import ActiveUsers from '@/components/metrics/ActiveUsers';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 import { Button, Icon, Text } from 'react-basics';
-import Lightning from 'assets/lightning.svg';
+import Lightning from '@/assets/lightning.svg';
 import styles from './WebsiteHeader.module.css';
 
 export function WebsiteHeader({

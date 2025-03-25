@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useMessages } from 'components/hooks';
+import { useMessages } from '@/components/hooks';
 import {
   Icon,
   Form,
@@ -12,7 +12,7 @@ import {
   TextField,
   Button,
 } from 'react-basics';
-import Icons from 'components/icons';
+import Icons from '@/components/icons';
 import FunnelStepAddForm from './FunnelStepAddForm';
 import { ReportContext } from '../[reportId]/Report';
 import BaseParameters from '../[reportId]/BaseParameters';

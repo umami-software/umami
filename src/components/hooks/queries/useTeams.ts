@@ -1,5 +1,5 @@
-import useApi from './useApi';
-import usePagedQuery from './usePagedQuery';
+import { useApi } from '../useApi';
+import { usePagedQuery } from '../usePagedQuery';
 import useModified from '../useModified';
 
 export function useTeams(userId: string) {
@@ -11,6 +11,7 @@ export function useTeams(userId: string) {
     queryFn: (params: any) => {
       return get(`/users/${userId}/teams`, params);
     },
+    enabled: !!userId,
   });
 }
 

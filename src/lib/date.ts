@@ -1,4 +1,3 @@
-import moment from 'moment-timezone';
 import {
   addMinutes,
   addHours,
@@ -36,8 +35,8 @@ import {
   endOfMinute,
   isSameDay,
 } from 'date-fns';
-import { getDateLocale } from 'lib/lang';
-import { DateRange } from 'lib/types';
+import { getDateLocale } from '@/lib/lang';
+import { DateRange } from '@/lib/types';
 
 export const TIME_UNIT = {
   minute: 'minute',
@@ -105,8 +104,17 @@ const DATE_FUNCTIONS = {
   },
 };
 
+export function isValidTimezone(timezone: string) {
+  try {
+    Intl.DateTimeFormat(undefined, { timeZone: timezone });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 export function getTimezone() {
-  return moment.tz.guess();
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 
 export function parseDateValue(value: string) {
