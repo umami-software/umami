@@ -1,6 +1,6 @@
+import { Grid, Heading, Column } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { Grid, GridRow } from '@/components/layout/Grid';
-import { MenuNav } from '@/components/layout/MenuNav';
+import { SideBar } from '@/components/layout/SideBar';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
@@ -20,7 +20,6 @@ import { getCompareDate } from '@/lib/date';
 import { formatNumber } from '@/lib/format';
 import { useState } from 'react';
 import { useWebsites } from '@/store/websites';
-import styles from './WebsiteCompareTables.module.css';
 
 const views = {
   url: PagesTable,
@@ -143,29 +142,22 @@ export function WebsiteCompareTables({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <Grid className={styles.container}>
-      <GridRow columns="compare">
-        <MenuNav className={styles.nav} items={items} selectedKey={view} shallow={true} />
-        <div>
-          <div className={styles.title}>{formatMessage(labels.previous)}</div>
-          <Component
-            websiteId={websiteId}
-            limit={20}
-            showMore={false}
-            onDataLoad={setData}
-            params={params}
-          />
-        </div>
-        <div>
-          <div className={styles.title}> {formatMessage(labels.current)}</div>
-          <Component
-            websiteId={websiteId}
-            limit={20}
-            showMore={false}
-            renderChange={renderChange}
-          />
-        </div>
-      </GridRow>
+    <Grid columns="300px 1fr 1fr" gap="3">
+      <SideBar items={items} selectedKey={view} />
+      <Column>
+        <Heading>{formatMessage(labels.previous)}</Heading>
+        <Component
+          websiteId={websiteId}
+          limit={20}
+          showMore={false}
+          onDataLoad={setData}
+          params={params}
+        />
+      </Column>
+      <Column>
+        <Heading> {formatMessage(labels.current)}</Heading>
+        <Component websiteId={websiteId} limit={20} showMore={false} renderChange={renderChange} />
+      </Column>
     </Grid>
   );
 }

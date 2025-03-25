@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { BarChart, BarChartProps } from '@/components/charts/BarChart';
 import { useLocale, useTheme, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
-import { Panel } from '@/components/layout/Panel';
 
 export interface PageviewsChartProps extends BarChartProps {
   data: {
@@ -77,15 +76,13 @@ export function PageviewsChart({
   }, [data, locale]);
 
   return (
-    <Panel>
-      <BarChart
-        {...props}
-        data={chartData}
-        unit={unit}
-        isLoading={isLoading}
-        isAllTime={isAllTime}
-        renderXLabel={renderDateLabels(unit, locale)}
-      />
-    </Panel>
+    <BarChart
+      {...props}
+      data={chartData}
+      unit={unit}
+      isLoading={isLoading}
+      isAllTime={isAllTime}
+      renderXLabel={renderDateLabels(unit, locale)}
+    />
   );
 }

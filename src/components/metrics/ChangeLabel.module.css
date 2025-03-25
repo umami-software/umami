@@ -2,8 +2,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 12px;
   padding: 0.1em 0.5em;
   border-radius: 5px;
   color: var(--base500);
@@ -11,16 +10,16 @@
 }
 
 .positive {
-  color: var(--green700);
-  background: var(--green100);
+  color: var(--success-color);
+  background: color-mix(in srgb, var(--success-color), var(--background-color) 85%);
 }
 
 .negative {
-  color: var(--red700);
-  background: var(--red100);
+  color: var(--danger-color);
+  background: color-mix(in srgb, var(--danger-color), var(--background-color) 85%);
 }
 
 .neutral {
-  color: var(--base700);
-  background: var(--base100);
+  color: var(--font-color-muted);
+  background: var(--base-color-2);
 }

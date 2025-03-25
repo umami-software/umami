@@ -1,4 +1,6 @@
 'use client';
+import { Grid } from '@umami/react-zen';
+import { Panel } from '@/components/layout/Panel';
 import { WebsiteHeader } from '../WebsiteHeader';
 import { WebsiteMetricsBar } from '../WebsiteMetricsBar';
 import { FilterTags } from '@/components/metrics/FilterTags';
@@ -18,12 +20,16 @@ export function WebsiteComparePage({ websiteId }) {
   }, {});
 
   return (
-    <>
+    <Grid gap="3">
       <WebsiteHeader websiteId={websiteId} />
       <FilterTags websiteId={websiteId} params={params} />
       <WebsiteMetricsBar websiteId={websiteId} compareMode={true} showFilter={true} />
-      <WebsiteChart websiteId={websiteId} compareMode={true} />
-      <WebsiteCompareTables websiteId={websiteId} />
-    </>
+      <Panel>
+        <WebsiteChart websiteId={websiteId} compareMode={true} />
+      </Panel>
+      <Panel>
+        <WebsiteCompareTables websiteId={websiteId} />
+      </Panel>
+    </Grid>
   );
 }

@@ -134,7 +134,7 @@ export function FieldFilterEditForm({
     <Column>
       <Row className={styles.filter}>
         <Label>{label}</Label>
-        <Flexbox gap={10}>
+        <Flexbox gap="3">
           {allowFilterSelect && (
             <Select
               className={styles.dropdown}

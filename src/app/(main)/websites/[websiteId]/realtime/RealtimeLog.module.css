@@ -59,7 +59,7 @@
 }
 
 .row .link:hover {
-  color: var(--primary400);
+  color: var(--primary-color);
 }
 
 .search {

@@ -1,7 +1,8 @@
 'use client';
 import { ReactNode } from 'react';
+import { Grid, Column } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { MenuLayout } from '@/components/layout/MenuLayout';
+import { SideBar } from '@/components/layout/SideBar';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { user } = useLoginQuery();
@@ -21,5 +22,10 @@ export function SettingsLayout({ children }: { children: ReactNode }) {
     },
   ].filter(n => n);
 
-  return <MenuLayout items={items}>{children}</MenuLayout>;
+  return (
+    <Grid>
+      <SideBar items={items} />
+      <Column>{children}</Column>
+    </Grid>
+  );
 }

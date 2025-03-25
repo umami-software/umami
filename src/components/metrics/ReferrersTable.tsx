@@ -40,7 +40,7 @@ export function ReferrersTable({ allowFilter, ...props }: ReferrersTableProps) {
         return `(${formatMessage(labels.other)})`;
       } else {
         return (
-          <Flexbox alignItems="center" gap={10}>
+          <Flexbox alignItems="center" gap="3">
             <Favicon domain={referrer} />
             {GROUPED_DOMAINS.find(({ domain }) => domain === referrer)?.name}
           </Flexbox>

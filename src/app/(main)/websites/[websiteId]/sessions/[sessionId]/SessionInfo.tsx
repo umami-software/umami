@@ -1,8 +1,7 @@
+import { Icon, TextField, Column, Row, Label, Box, Text } from '@umami/react-zen';
 import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { Icon, CopyIcon } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
-import styles from './SessionInfo.module.css';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
@@ -12,59 +11,73 @@ export function SessionInfo({ data }) {
   const { getRegionName } = useRegionNames(locale);
 
   return (
-    <div className={styles.info}>
-      <dl>
-        <dt>ID</dt>
-        <dd>
-          {data?.id} <CopyIcon value={data?.id} />
-        </dd>
+    <Column gap="6">
+      <Box>
+        <Label>ID</Label>
+        <TextField value={data?.id} allowCopy />
+      </Box>
 
-        <dt>{formatMessage(labels.lastSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</dd>
+      <Box>
+        <Label>{formatMessage(labels.lastSeen)}</Label>
+        <Row>{formatTimezoneDate(data?.lastAt, 'PPPPpp')}</Row>
+      </Box>
 
-        <dt>{formatMessage(labels.firstSeen)}</dt>
-        <dd>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</dd>
+      <Box>
+        <Label>{formatMessage(labels.firstSeen)}</Label>
+        <Row>{formatTimezoneDate(data?.firstAt, 'PPPPpp')}</Row>
+      </Box>
 
-        <dt>{formatMessage(labels.country)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.country)}</Label>
+        <Row gap="3">
           <TypeIcon type="country" value={data?.country} />
-          {formatValue(data?.country, 'country')}
-        </dd>
+          <Text>{formatValue(data?.country, 'country')}</Text>
+        </Row>
+      </Box>
 
-        <dt>{formatMessage(labels.region)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.region)}</Label>
+        <Row gap="3">
           <Icon>
             <Icons.Location />
           </Icon>
-          {getRegionName(data?.subdivision1)}
-        </dd>
+          <Text>{getRegionName(data?.subdivision1)}</Text>
+        </Row>
+      </Box>
 
-        <dt>{formatMessage(labels.city)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.city)}</Label>
+        <Row gap="3">
           <Icon>
             <Icons.Location />
           </Icon>
-          {data?.city}
-        </dd>
+          <Text>{data?.city}</Text>
+        </Row>
+      </Box>
 
-        <dt>{formatMessage(labels.os)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.os)}</Label>
+        <Row gap="3">
           <TypeIcon type="os" value={data?.os?.toLowerCase()?.replaceAll(/\W/g, '-')} />
-          {formatValue(data?.os, 'os')}
-        </dd>
+          <Text>{formatValue(data?.os, 'os')}</Text>
+        </Row>
+      </Box>
 
-        <dt>{formatMessage(labels.device)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.device)}</Label>
+        <Row gap="3">
           <TypeIcon type="device" value={data?.device} />
-          {formatValue(data?.device, 'device')}
-        </dd>
+          <Text>{formatValue(data?.device, 'device')}</Text>
+        </Row>
+      </Box>
 
-        <dt>{formatMessage(labels.browser)}</dt>
-        <dd>
+      <Box>
+        <Label>{formatMessage(labels.browser)}</Label>
+        <Row gap="3">
           <TypeIcon type="browser" value={data?.browser} />
-          {formatValue(data?.browser, 'browser')}
-        </dd>
-      </dl>
-    </div>
+          <Text>{formatValue(data?.browser, 'browser')}</Text>
+        </Row>
+      </Box>
+    </Column>
   );
 }

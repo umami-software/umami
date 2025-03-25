@@ -14,7 +14,7 @@ export function DateRangeSetting() {
   const handleReset = () => saveDateRange(DEFAULT_DATE_RANGE);
 
   return (
-    <Flexbox gap={10} width={300}>
+    <Flexbox gap="3" width="300px">
       <DateFilter
         className={styles.field}
         value={value}

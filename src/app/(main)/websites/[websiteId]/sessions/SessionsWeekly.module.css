@@ -21,7 +21,7 @@
 
 .cell {
   display: flex;
-  background-color: var(--base75);
+  background-color: var(--base-color-2);
   width: 20px;
   height: 20px;
   margin: auto;
@@ -31,12 +31,12 @@
 
 .hour {
   font-weight: 700;
-  color: var(--font-color300);
+  color: var(--font-color);
   height: 20px;
 }
 
 .block {
-  background-color: var(--primary400);
+  background-color: var(--primary-color);
   width: 20px;
   height: 20px;
   border-radius: 100%;

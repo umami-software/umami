@@ -1,7 +1,8 @@
 'use client';
 import { ReactNode } from 'react';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { MenuLayout } from '@/components/layout/MenuLayout';
+import { Grid, Column } from '@umami/react-zen';
+import { SideBar } from '@/components/layout/SideBar';
 
 export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();
@@ -25,5 +26,10 @@ export function TeamSettingsLayout({ children }: { children: ReactNode }) {
     },
   ].filter(n => n);
 
-  return <MenuLayout items={items}>{children}</MenuLayout>;
+  return (
+    <Grid>
+      <SideBar items={items} />
+      <Column>{children}</Column>
+    </Grid>
+  );
 }

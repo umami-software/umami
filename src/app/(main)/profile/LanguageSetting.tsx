@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Select, ListItem, Flexbox } from '@umami/react-zen';
+import { Button, Select, ListItem, Row } from '@umami/react-zen';
 import { useLocale, useMessages } from '@/components/hooks';
 import { DEFAULT_LOCALE } from '@/lib/constants';
 import { languages } from '@/lib/lang';
@@ -26,7 +26,7 @@ export function LanguageSetting() {
   };
 
   return (
-    <Flexbox gap={10}>
+    <Row gap="3">
       <Select
         value={locale}
         onChange={val => saveLocale(val as string)}
@@ -43,6 +43,6 @@ export function LanguageSetting() {
         {!items.length && <ListItem></ListItem>}
       </Select>
       <Button onPress={handleReset}>{formatMessage(labels.reset)}</Button>
-    </Flexbox>
+    </Row>
   );
 }

@@ -16,12 +16,6 @@ a:hover {
   text-decoration: none;
 }
 
-svg {
-  width: 16px;
-  height: 16px;
-  shape-rendering: geometricPrecision;
-}
-
 ::-webkit-scrollbar {
   width: 15px;
   background: transparent;

@@ -8,7 +8,7 @@ export function useNavigation() {
   const params = useSearchParams();
   const [, teamId] = pathname.match(/^\/teams\/([a-f0-9-]+)/) || [];
 
-  const query = useMemo(() => {
+  const query = useMemo<{ [key: string]: any }>(() => {
     const obj = {};
 
     for (const [key, value] of params.entries()) {

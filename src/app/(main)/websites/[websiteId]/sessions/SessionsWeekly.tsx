@@ -4,7 +4,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import styles from './SessionsWeekly.module.css';
 import classNames from 'classnames';
-import { Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Focusable, Tooltip, TooltipTrigger } from '@umami/react-zen';
 
 export function SessionsWeekly({ websiteId }: { websiteId: string }) {
   const { data, ...props } = useWebsiteSessionsWeeklyQuery(websiteId);
@@ -67,12 +67,16 @@ export function SessionsWeekly({ websiteId }: { websiteId: string }) {
                   return (
                     <div key={j} className={classNames(styles.cell)}>
                       {hour > 0 && (
-                        <TooltipTrigger>
-                          <div
-                            className={styles.block}
-                            style={{ opacity: pct, transform: `scale(${pct})` }}
-                          />
-                          <Tooltip>{`${formatMessage(labels.visitors)}: ${hour}`}</Tooltip>
+                        <TooltipTrigger delay={0}>
+                          <Focusable>
+                            <div
+                              className={styles.block}
+                              style={{ opacity: pct, transform: `scale(${pct})` }}
+                            />
+                          </Focusable>
+                          <Tooltip placement="right">{`${formatMessage(
+                            labels.visitors,
+                          )}: ${hour}`}</Tooltip>
                         </TooltipTrigger>
                       )}
                     </div>

@@ -25,17 +25,7 @@ export function Page({
   }
 
   return (
-    <Column
-      {...props}
-      gridColumn="2 / 3"
-      gridRow="2 / 3"
-      marginRight="6"
-      marginBottom="6"
-      width="100%"
-      maxWidth="1320px"
-      minHeight="600px"
-      margin="auto"
-    >
+    <Column {...props} width="100%" maxWidth="1320px" margin="auto" paddingBottom="9">
       {children}
     </Column>
   );

@@ -4,47 +4,57 @@ import { useMessages, useNavigation } from '@/components/hooks';
 
 export function WebsiteTabs({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
-  const { renderTeamUrl } = useNavigation();
+  const { pathname, renderTeamUrl } = useNavigation();
 
   const links = [
     {
+      id: 'overview',
       label: formatMessage(labels.overview),
       icon: <Icons.Overview />,
       path: '',
     },
     {
+      id: 'events',
       label: formatMessage(labels.events),
       icon: <Icons.Lightning />,
       path: '/events',
     },
     {
+      id: 'sessions',
       label: formatMessage(labels.sessions),
       icon: <Icons.User />,
       path: '/sessions',
     },
     {
+      id: 'realtime',
       label: formatMessage(labels.realtime),
       icon: <Icons.Clock />,
       path: '/realtime',
     },
     {
+      id: 'compare',
       label: formatMessage(labels.compare),
       icon: <Icons.Compare />,
       path: '/compare',
     },
     {
+      id: 'reports',
       label: formatMessage(labels.reports),
       icon: <Icons.Reports />,
       path: '/reports',
     },
-  ].map((link, index) => ({ ...link, id: index }));
+  ];
+
+  const selectedKey = links
+    ? links.find(({ path }) => path && pathname.endsWith(path))?.id
+    : 'overview';
 
   return (
-    <Tabs>
+    <Tabs selectedKey={selectedKey}>
       <TabList items={links}>
-        {({ label, icon, path }) => {
+        {({ id, label, icon, path }) => {
           return (
-            <Tab key={path} href={renderTeamUrl(`/websites/${websiteId}/${path}`)}>
+            <Tab id={id} href={renderTeamUrl(`/websites/${websiteId}/${path}`)}>
               <Row gap="3" alignItems="center">
                 <Icon fillColor="currentColor">{icon}</Icon>
                 <Text>{label}</Text>

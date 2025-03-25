@@ -4,7 +4,7 @@ import { BarChart } from '@/components/charts/BarChart';
 import { PieChart } from '@/components/charts/PieChart';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useCountryNames, useLocale, useMessages } from '@/components/hooks';
-import { GridRow } from '@/components/layout/Grid';
+import { GridRow } from '@/components/layout/GridRow';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
@@ -133,7 +133,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
               renderXLabel={renderDateLabels(dateRange?.unit, locale)}
               isLoading={isLoading}
             />
-            <GridRow columns="two">
+            <GridRow layout="two">
               <ListTable
                 metric={formatMessage(labels.country)}
                 data={data?.country.map(({ name, value }) => ({

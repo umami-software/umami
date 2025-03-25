@@ -5,8 +5,6 @@ import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { useLocale, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { formatDate } from '@/lib/date';
-import styles from './DateFilter.module.css';
-import classNames from 'classnames';
 
 export interface DateFilterProps {
   value: string;
@@ -23,11 +21,8 @@ export function DateFilter({
   startDate,
   endDate,
   value,
-  offset = 0,
-  className,
   onChange,
   showAllTime = false,
-  alignment = 'end',
 }: DateFilterProps) {
   const { formatMessage, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
@@ -38,19 +33,19 @@ export function DateFilter({
       label: formatMessage(labels.lastHours, { x: 24 }),
       value: '24hour',
     },
-    { divider: true },
     {
       label: formatMessage(labels.thisWeek),
       value: '0week',
+      divider: true,
     },
     {
       label: formatMessage(labels.lastDays, { x: 7 }),
       value: '7day',
     },
-    { divider: true },
     {
       label: formatMessage(labels.thisMonth),
       value: '0month',
+      divider: true,
     },
     {
       label: formatMessage(labels.lastDays, { x: 30 }),
@@ -60,25 +55,25 @@ export function DateFilter({
       label: formatMessage(labels.lastDays, { x: 90 }),
       value: '90day',
     },
-    { divider: true },
     { label: formatMessage(labels.thisYear), value: '0year' },
     {
       label: formatMessage(labels.lastMonths, { x: 6 }),
       value: '6month',
+      divider: true,
     },
     {
       label: formatMessage(labels.lastMonths, { x: 12 }),
       value: '12month',
     },
-    { divider: true },
     showAllTime && {
       label: formatMessage(labels.allTime),
       value: 'all',
+      divider: true,
     },
-    { divider: true },
     {
       label: formatMessage(labels.customRange),
       value: 'custom',
+      divider: true,
     },
   ]
     .filter(n => n)
@@ -97,50 +92,21 @@ export function DateFilter({
     onChange(value.toString());
   };
 
-  /*
-  const handleClose = () => setShowPicker(false);
-
-  const renderValue = (value: string) => {
-    const { unit } = parseDateValue(value) || {};
-
-    if (offset && unit === 'year') {
-      return formatDate(startDate, 'yyyy', locale);
-    }
-
-    if (offset && unit === 'month') {
-      return formatDate(startDate, 'MMMM yyyy', locale);
-    }
-
-    if (value.startsWith('range') || offset) {
-      return (
-        <CustomRange
-          startDate={startDate}
-          endDate={endDate}
-          unit={unit}
-          onClick={() => handleChange('custom')}
-        />
-      );
-    }
-
-    return options.find(e => e.value === value)?.label;
-  };*/
-
   return (
     <>
       <Select
-        className={classNames(className, styles.dropdown)}
-        items={options}
         value={value}
         placeholder={formatMessage(labels.selectDate)}
         onSelectionChange={handleChange}
       >
-        {({ label, value, divider }: any) => {
-          if (divider) {
-            return <ListSeparator />;
-          }
-
-          return <ListItem id={value}>{label}</ListItem>;
-        }}
+        {options.map(({ label, value, divider }: any) => {
+          return (
+            <>
+              {divider && <ListSeparator />}
+              <ListItem id={value}>{label}</ListItem>
+            </>
+          );
+        })}
       </Select>
       {showPicker && (
         <Modal isOpen={true}>
@@ -160,7 +126,7 @@ export function DateFilter({
   );
 }
 
-const CustomRange = ({ startDate, endDate, unit, onClick }) => {
+export const CustomRange = ({ startDate, endDate, unit, onClick }) => {
   const { locale } = useLocale();
 
   const monthFormat = unit === 'month';

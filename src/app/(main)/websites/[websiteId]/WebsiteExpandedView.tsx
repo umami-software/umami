@@ -1,7 +1,7 @@
 import { Icon, Icons, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { MenuNav } from '@/components/layout/MenuNav';
+import { SideBar } from '@/components/layout/SideBar';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';
@@ -133,15 +133,8 @@ export function WebsiteExpandedView({
 
   const DetailsComponent = views[view] || (() => null);
 
-  /*
-  const handleChange = (view: any) => {
-    router.push(renderUrl({ view }));
-  };
-
-  const renderValue = (value: string) => items.find(({ key }) => key === value)?.label;
-*/
   return (
-    <Grid columns="auto 1fr" gap="6">
+    <Grid columns="auto 1fr" gap="6" marginTop="6">
       <Column gap="6" width="200px">
         <LinkButton href={renderUrl({ view: undefined })} variant="quiet" scroll={false}>
           <Icon rotate={180}>
@@ -149,7 +142,7 @@ export function WebsiteExpandedView({
           </Icon>
           <Text>{formatMessage(labels.back)}</Text>
         </LinkButton>
-        <MenuNav items={items} selectedKey={view} />
+        <SideBar items={items} selectedKey={view} />
       </Column>
       <Column>
         <DetailsComponent

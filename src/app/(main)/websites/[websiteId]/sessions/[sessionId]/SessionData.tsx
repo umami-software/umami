@@ -1,4 +1,4 @@
-import { TextOverflow } from '@umami/react-zen';
+import { Text } from '@umami/react-zen';
 import { useMessages, useSessionDataQuery } from '@/components/hooks';
 import { Empty } from '@/components/common/Empty';
 import { DATA_TYPES } from '@/lib/constants';
@@ -19,7 +19,7 @@ export function SessionData({ websiteId, sessionId }: { websiteId: string; sessi
             <div key={dataKey}>
               <div className={styles.label}>
                 <div className={styles.name}>
-                  <TextOverflow>{dataKey}</TextOverflow>
+                  <Text>{dataKey}</Text>
                 </div>
                 <div className={styles.type}>{DATA_TYPES[dataType]}</div>
               </div>

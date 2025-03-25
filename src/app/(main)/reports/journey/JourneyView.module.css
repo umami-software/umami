@@ -4,7 +4,7 @@
   position: relative;
 
   --journey-line-color: var(--base600);
-  --journey-active-color: var(--primary400);
+  --journey-active-color: var(--primary-color);
   --journey-faded-color: var(--base300);
 }
 
@@ -108,7 +108,7 @@
 
 .node.active {
   color: var(--light50);
-  background: var(--primary400);
+  background: var(--primary-color);
 }
 
 .node.selected .count {

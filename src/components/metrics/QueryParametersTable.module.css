@@ -6,7 +6,7 @@
 
 .param {
   padding: 0 8px;
-  color: var(--primary400);
+  color: var(--primary-color);
   background: var(--blue100);
   border-radius: 4px;
 }

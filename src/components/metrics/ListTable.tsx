@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { FixedSizeList } from 'react-window';
 import { useSpring, config } from '@react-spring/web';
 import classNames from 'classnames';
@@ -6,7 +7,6 @@ import { Empty } from '@/components/common/Empty';
 import { formatLongNumber } from '@/lib/format';
 import { useMessages } from '@/components/hooks';
 import styles from './ListTable.module.css';
-import { ReactNode } from 'react';
 
 const ITEM_SIZE = 30;
 

@@ -43,7 +43,7 @@
 }
 
 .row:hover {
-  background-color: var(--base75);
+  background-color: var(--base-color-2);
 }
 
 .label {
@@ -60,7 +60,7 @@
 }
 
 .label a:hover {
-  color: var(--primary400);
+  color: var(--primary-color);
 }
 
 .label:empty {
@@ -83,8 +83,8 @@
 .percent {
   position: relative;
   width: 50px;
-  color: var(--base600);
-  border-inline-start: 1px solid var(--base600);
+  color: var(--base-color-9);
+  border-inline-start: 1px solid var(--base-color-9);
   padding-inline-start: 10px;
   z-index: 1;
 }
@@ -95,7 +95,7 @@
   left: 0;
   height: 30px;
   opacity: 0.1;
-  background: var(--primary400);
+  background: var(--primary-color);
   z-index: -1;
 }
 

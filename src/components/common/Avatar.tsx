@@ -17,5 +17,5 @@ export function Avatar({ seed, size = 128, ...props }: { seed: string; size?: nu
     }).toDataUri();
   }, []);
 
-  return <img src={avatar} alt="Avatar" style={{ borderRadius: '100%' }} />;
+  return <img src={avatar} alt="Avatar" style={{ borderRadius: '100%', width: size }} />;
 }

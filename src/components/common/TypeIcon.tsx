@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Row } from '@umami/react-zen';
 
 export function TypeIcon({
   type,
@@ -10,7 +11,7 @@ export function TypeIcon({
   children?: ReactNode;
 }) {
   return (
-    <>
+    <Row gap="3" alignItems="center">
       <img
         src={`${process.env.basePath || ''}/images/${type}/${value
           ?.replaceAll(' ', '-')
@@ -23,6 +24,6 @@ export function TypeIcon({
         height={type === 'country' ? undefined : 16}
       />
       {children}
-    </>
+    </Row>
   );
 }

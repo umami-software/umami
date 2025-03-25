@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { Row, Heading } from '@umami/react-zen';
 import { Favicon } from '@/components/common/Favicon';
-import { useWebsiteQuery } from '@/components/hooks';
 import { ActiveUsers } from '@/components/metrics/ActiveUsers';
 import { WebsiteTabs } from '@/app/(main)/websites/[websiteId]/WebsiteTabs';
+import { useWebsite } from '@/components/hooks/useWebsite';
 
 export function WebsiteHeader({
   websiteId,
@@ -12,7 +12,7 @@ export function WebsiteHeader({
   websiteId: string;
   children?: ReactNode;
 }) {
-  const { data: website } = useWebsiteQuery(websiteId);
+  const website = useWebsite();
   const { name, domain } = website || {};
 
   return (

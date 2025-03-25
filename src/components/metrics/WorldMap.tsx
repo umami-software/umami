@@ -1,16 +1,20 @@
+import { FloatingTooltip, Column } from '@umami/react-zen';
 import { useState, useMemo, HTMLAttributes } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
 import { colord } from 'colord';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
-import { useDateRange, useTheme, useWebsiteMetricsQuery } from '@/components/hooks';
-import { useCountryNames } from '@/components/hooks';
-import { useLocale } from '@/components/hooks';
-import { useMessages } from '@/components/hooks';
+import {
+  useDateRange,
+  useTheme,
+  useWebsiteMetricsQuery,
+  useCountryNames,
+  useLocale,
+  useMessages,
+} from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import { percentFilter } from '@/lib/filters';
 import styles from './WorldMap.module.css';
-import { FloatingTooltip } from '@umami/react-zen';
 
 export function WorldMap({
   websiteId,
@@ -70,7 +74,7 @@ export function WorldMap({
   };
 
   return (
-    <div
+    <Column
       {...props}
       className={classNames(styles.container, className)}
       data-tip=""
@@ -105,6 +109,6 @@ export function WorldMap({
         </ZoomableGroup>
       </ComposableMap>
       {tooltip && <FloatingTooltip>{tooltip}</FloatingTooltip>}
-    </div>
+    </Column>
   );
 }

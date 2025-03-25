@@ -12,7 +12,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <Row justifyContent="space-between" alignItems="center" paddingBottom="6">
+    <Row justifyContent="space-between" alignItems="center">
       <Row gap="3">
         {icon && <Icon size="lg">{icon}</Icon>}
         {title && <Heading>{title}</Heading>}

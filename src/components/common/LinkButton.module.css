@@ -36,7 +36,7 @@
 
 .button.primary {
   color: var(--light50);
-  background: var(--primary400);
+  background: var(--primary-color);
 }
 
 .button.primary:hover {

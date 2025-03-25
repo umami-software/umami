@@ -1,4 +1,5 @@
-import { Grid, GridRow } from '@/components/layout/Grid';
+import { Grid } from '@umami/react-zen';
+import { Panel } from '@/components/layout/Panel';
 import { PagesTable } from '@/components/metrics/PagesTable';
 import { ReferrersTable } from '@/components/metrics/ReferrersTable';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
@@ -19,25 +20,43 @@ export function WebsiteTableView({ websiteId }: { websiteId: string }) {
   const isSharePage = pathname.includes('/share/');
 
   return (
-    <Grid>
-      <GridRow columns="two">
-        <PagesTable {...tableProps} />
-        <ReferrersTable {...tableProps} />
-      </GridRow>
-      <GridRow columns="three">
-        <BrowsersTable {...tableProps} />
-        <OSTable {...tableProps} />
-        <DevicesTable {...tableProps} />
-      </GridRow>
-      <GridRow columns="two-one">
-        <WorldMap websiteId={websiteId} />
-        <CountriesTable {...tableProps} />
-      </GridRow>
+    <Grid gap="3">
+      <Grid gap="3" columns="repeat(auto-fill, minmax(500px, 1fr))">
+        <Panel>
+          <PagesTable {...tableProps} />
+        </Panel>
+        <Panel>
+          <ReferrersTable {...tableProps} />
+        </Panel>
+      </Grid>
+      <Grid gap="3" columns="repeat(auto-fill, minmax(400px, 1fr))">
+        <Panel>
+          <BrowsersTable {...tableProps} />
+        </Panel>
+        <Panel>
+          <OSTable {...tableProps} />
+        </Panel>
+        <Panel>
+          <DevicesTable {...tableProps} />
+        </Panel>
+      </Grid>
+      <Grid gap="3" columns="2fr 1fr">
+        <Panel padding="0">
+          <WorldMap websiteId={websiteId} />
+        </Panel>
+        <Panel>
+          <CountriesTable {...tableProps} />
+        </Panel>
+      </Grid>
       {isSharePage && (
-        <GridRow columns="one-two">
-          <EventsTable {...tableProps} />
-          <EventsChart websiteId={websiteId} />
-        </GridRow>
+        <Grid gap="3">
+          <Panel>
+            <EventsTable {...tableProps} />
+          </Panel>
+          <Panel>
+            <EventsChart websiteId={websiteId} />
+          </Panel>
+        </Grid>
       )}
     </Grid>
   );
