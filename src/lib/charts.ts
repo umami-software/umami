@@ -19,7 +19,7 @@ export function renderDateLabels(unit: string, locale: string) {
       case 'month':
         return formatDate(d, 'MMM', locale);
       case 'year':
-        return formatDate(d, 'YYY', locale);
+        return formatDate(d, 'yyyy', locale);
       default:
         return label;
     }

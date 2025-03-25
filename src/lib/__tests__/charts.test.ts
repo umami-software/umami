@@ -41,19 +41,23 @@ describe('renderNumberLabels', () => {
   });
 });
 
-// test for renderDateLabels
-
-jest.spyOn(require('lib/date'), 'formatDate'); // Spy on formatDate but use real implementation
-
 describe('renderDateLabels', () => {
   const mockValues = [{ value: '2024-03-23T10:00:00Z' }, { value: '2024-03-24T15:30:00Z' }];
+
+  beforeEach(() => {
+    jest.spyOn(require('lib/date'), 'formatDate');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks(); // Reset spy to prevent interference
+  });
 
   test.each([
     ['minute', 'h:mm', 'en-US'],
     ['hour', 'p', 'en-US'],
     ['day', 'MMM d', 'en-US'],
     ['month', 'MMM', 'en-US'],
-    ['year', 'YYY', 'en-US'],
+    ['year', 'yyyy', 'en-US'],
   ])('formats date correctly for unit: %s', (unit, expectedFormat, locale) => {
     const formatLabel = renderDateLabels(unit, locale);
     const formatted = formatLabel('label', 0, mockValues);
@@ -67,7 +71,7 @@ describe('renderDateLabels', () => {
     expect(formatLabel('original-label', 0, mockValues)).toBe('original-label');
   });
 
-  test('handles invalid date gracefully', () => {
+  test('throws error for invalid date input', () => {
     const invalidValues = [{ value: 'invalid-date' }];
     const formatLabel = renderDateLabels('day', 'en-US');
 
