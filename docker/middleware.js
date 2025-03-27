@@ -3,6 +3,24 @@ import { NextResponse } from 'next/server';
 export const config = {
   matcher: '/:path*',
 };
+const apiHeaders = [
+  {
+    key: 'Access-Control-Allow-Origin',
+    value: '*',
+  },
+  {
+    key: 'Access-Control-Allow-Headers',
+    value: '*',
+  },
+  {
+    key: 'Access-Control-Allow-Methods',
+    value: 'GET, DELETE, POST, PUT',
+  },
+  {
+    key: 'Access-Control-Max-Age',
+    value: process.env.CORS_MAX_AGE || '86400',
+  },
+];
 
 function customCollectEndpoint(req) {
   const collectEndpoint = process.env.COLLECT_API_ENDPOINT;
@@ -13,7 +31,9 @@ function customCollectEndpoint(req) {
 
     if (pathname.endsWith(collectEndpoint)) {
       url.pathname = '/api/send';
-      return NextResponse.rewrite(url);
+      const resp = NextResponse.rewrite(url);
+      apiHeaders.forEach(({ key, value }) => resp.headers.append(key, value));
+      return resp;
     }
   }
 }
