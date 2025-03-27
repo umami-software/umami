@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import { Grid, Column } from '@umami/react-zen';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { SideBar } from '@/components/layout/SideBar';
+import { SideBar } from '@/components/common/SideBar';
 
 export function SettingsLayout({ children }: { children: ReactNode }) {
   const { user } = useLoginQuery();

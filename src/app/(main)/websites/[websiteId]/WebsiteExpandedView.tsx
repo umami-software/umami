@@ -1,7 +1,7 @@
 import { Icon, Icons, Text, Grid, Column } from '@umami/react-zen';
 import { LinkButton } from '@/components/common/LinkButton';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { SideBar } from '@/components/layout/SideBar';
+import { SideBar } from '@/components/common/SideBar';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { CitiesTable } from '@/components/metrics/CitiesTable';
 import { CountriesTable } from '@/components/metrics/CountriesTable';

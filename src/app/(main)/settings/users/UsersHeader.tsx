@@ -1,4 +1,4 @@
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages } from '@/components/hooks';
 import { UserAddButton } from './UserAddButton';
 

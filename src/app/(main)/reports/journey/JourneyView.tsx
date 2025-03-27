@@ -1,10 +1,9 @@
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { TooltipTrigger, Tooltip, Focusable } from '@umami/react-zen';
 import { firstBy } from 'thenby';
 import classNames from 'classnames';
-import { useEscapeKey, useMessages } from '@/components/hooks';
+import { useEscapeKey, useMessages, useReport } from '@/components/hooks';
 import { objectToArray } from '@/lib/data';
-import { ReportContext } from '../[reportId]/Report';
 import styles from './JourneyView.module.css';
 import { formatLongNumber } from '@/lib/format';
 
@@ -15,7 +14,7 @@ const LINE_WIDTH = 3;
 export function JourneyView() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { data, parameters } = report || {};
   const { formatMessage, labels } = useMessages();
 

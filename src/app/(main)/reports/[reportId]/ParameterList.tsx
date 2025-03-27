@@ -1,10 +1,8 @@
 import { ReactNode } from 'react';
-import { Icon } from '@umami/react-zen';
+import { Icon, Row, Text, Button, Column } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { Empty } from '@/components/common/Empty';
 import { useMessages } from '@/components/hooks';
-import styles from './ParameterList.module.css';
-import classNames from 'classnames';
 
 export interface ParameterListProps {
   children?: ReactNode;
@@ -14,34 +12,43 @@ export function ParameterList({ children }: ParameterListProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <div className={styles.list}>
+    <Column>
       {!children && <Empty message={formatMessage(labels.none)} />}
       {children}
-    </div>
+    </Column>
   );
 }
 
 const Item = ({
-  children,
-  className,
   icon,
   onClick,
   onRemove,
+  children,
 }: {
-  children?: ReactNode;
-  className?: string;
   icon?: ReactNode;
   onClick?: () => void;
   onRemove?: () => void;
+  children?: ReactNode;
 }) => {
   return (
-    <div className={classNames(styles.item, className)} onClick={onClick}>
-      {icon && <Icon className={styles.icon}>{icon}</Icon>}
-      <div className={styles.value}>{children}</div>
-      <Icon className={styles.close} onClick={onRemove}>
-        <Icons.Close />
-      </Icon>
-    </div>
+    <Row
+      gap="3"
+      alignItems="center"
+      justifyContent="space-between"
+      onClick={onClick}
+      backgroundColor="2"
+      border
+      borderRadius="2"
+      paddingLeft="3"
+    >
+      {icon && <Icon>{icon}</Icon>}
+      <Text>{children}</Text>
+      <Button onPress={onRemove} variant="quiet">
+        <Icon>
+          <Icons.Close />
+        </Icon>
+      </Button>
+    </Row>
   );
 };
 

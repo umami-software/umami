@@ -1,5 +1,5 @@
 import { Row } from '@umami/react-zen';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { TeamsJoinButton } from './TeamsJoinButton';

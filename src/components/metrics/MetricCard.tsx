@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { Text, Column } from '@umami/react-zen';
 import { useSpring } from '@react-spring/web';
 import { formatNumber } from '@/lib/format';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
@@ -15,7 +15,6 @@ export interface MetricCardProps {
   showLabel?: boolean;
   showChange?: boolean;
   showPrevious?: boolean;
-  className?: string;
 }
 
 export const MetricCard = ({
@@ -27,7 +26,6 @@ export const MetricCard = ({
   showLabel = true,
   showChange = false,
   showPrevious = false,
-  className,
 }: MetricCardProps) => {
   const diff = value - change;
   const pct = ((value - diff) / diff) * 100;
@@ -36,26 +34,19 @@ export const MetricCard = ({
   const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
 
   return (
-    <div className={classNames(styles.card, className, showPrevious && styles.compare)}>
-      {showLabel && <div className={styles.label}>{label}</div>}
-      <AnimatedDiv className={styles.value} title={value?.toString()}>
-        {props?.x?.to(x => formatValue(x))}
-      </AnimatedDiv>
+    <Column className={styles.card} justifyContent="center">
+      {showLabel && <Text weight="bold">{label}</Text>}
+      <Text size="8" weight="bold" wrap="nowrap">
+        <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
+      </Text>
       {showChange && (
-        <ChangeLabel
-          className={styles.change}
-          value={change}
-          title={formatValue(change)}
-          reverseColors={reverseColors}
-        >
+        <ChangeLabel value={change} title={formatValue(change)} reverseColors={reverseColors}>
           <AnimatedDiv>{changeProps?.x?.to(x => `${Math.abs(~~x)}%`)}</AnimatedDiv>
         </ChangeLabel>
       )}
       {showPrevious && (
-        <AnimatedDiv className={classNames(styles.value, styles.prev)} title={diff.toString()}>
-          {prevProps?.x?.to(x => formatValue(x))}
-        </AnimatedDiv>
+        <AnimatedDiv title={diff.toString()}>{prevProps?.x?.to(x => formatValue(x))}</AnimatedDiv>
       )}
-    </div>
+    </Column>
   );
 };

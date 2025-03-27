@@ -4,7 +4,7 @@ import { useMessages, useLoginQuery, useNavigation } from '@/components/hooks';
 import { REPORT_TYPES } from '@/lib/constants';
 import { ReportDeleteButton } from './ReportDeleteButton';
 
-export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomain?: boolean }) {
+export function ReportsTable({ data = [] }: { data: any[]; showDomain?: boolean }) {
   const { formatMessage, labels } = useMessages();
   const { user } = useLoginQuery();
   const { renderTeamUrl } = useNavigation();
@@ -20,11 +20,6 @@ export function ReportsTable({ data = [], showDomain }: { data: any[]; showDomai
           );
         }}
       </DataColumn>
-      {showDomain && (
-        <DataColumn id="domain" label={formatMessage(labels.domain)}>
-          {(row: any) => row?.website?.domain}
-        </DataColumn>
-      )}
       <DataColumn id="action" label="" align="end">
         {(row: any) => {
           const { id, name, userId, website } = row;

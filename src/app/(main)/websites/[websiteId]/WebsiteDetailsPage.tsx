@@ -1,9 +1,7 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import { Panel } from '@/components/layout/Panel';
-import { FilterTags } from '@/components/metrics/FilterTags';
+import { Panel } from '@/components/common/Panel';
 import { useNavigation } from '@/components/hooks';
-import { FILTER_COLUMNS } from '@/lib/constants';
 import { WebsiteChart } from './WebsiteChart';
 import { WebsiteExpandedView } from './WebsiteExpandedView';
 import { WebsiteHeader } from './WebsiteHeader';
@@ -11,21 +9,16 @@ import { WebsiteMetricsBar } from './WebsiteMetricsBar';
 import { WebsiteTableView } from './WebsiteTableView';
 
 export function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
-  const { query } = useNavigation();
-  const { view } = query;
-
-  const params = Object.keys(query).reduce((obj, key) => {
-    if (FILTER_COLUMNS[key]) {
-      obj[key] = query[key];
-    }
-    return obj;
-  }, {});
+  const {
+    query: { view },
+  } = useNavigation();
 
   return (
     <Column gap="3">
       <WebsiteHeader websiteId={websiteId} />
-      <FilterTags websiteId={websiteId} params={params} />
-      <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
+      <Panel>
+        <WebsiteMetricsBar websiteId={websiteId} showFilter={true} showChange={true} />
+      </Panel>
       <Panel>
         <WebsiteChart websiteId={websiteId} />
       </Panel>

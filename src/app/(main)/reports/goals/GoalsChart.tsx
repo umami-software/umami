@@ -1,12 +1,10 @@
-import { useContext } from 'react';
 import classNames from 'classnames';
-import { useMessages } from '@/components/hooks';
-import { ReportContext } from '../[reportId]/Report';
+import { useMessages, useReport } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import styles from './GoalsChart.module.css';
 
 export function GoalsChart({ className }: { className?: string; isLoading?: boolean }) {
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { formatMessage, labels } = useMessages();
 
   const { data } = report || {};

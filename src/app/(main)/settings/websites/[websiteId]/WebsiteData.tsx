@@ -10,7 +10,7 @@ import {
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
 import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
-import { ActionForm } from '@/components/layout/ActionForm';
+import { ActionForm } from '@/components/common/ActionForm';
 import { ROLES } from '@/lib/constants';
 
 export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?: () => void }) {

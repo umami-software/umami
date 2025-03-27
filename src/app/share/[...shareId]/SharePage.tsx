@@ -1,7 +1,7 @@
 'use client';
 import { WebsiteDetailsPage } from '../../(main)/websites/[websiteId]/WebsiteDetailsPage';
 import { useShareTokenQuery } from '@/components/hooks';
-import { Page } from '@/components/layout/Page';
+import { Page } from '@/components/common/Page';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import styles from './SharePage.module.css';

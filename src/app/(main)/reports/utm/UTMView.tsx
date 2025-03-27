@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { firstBy } from 'thenby';
-import { ReportContext } from '../[reportId]/Report';
 import { CHART_COLORS, UTM_PARAMS } from '@/lib/constants';
+import { useReport } from '@/components/hooks';
 import { PieChart } from '@/components/charts/PieChart';
 import { ListTable } from '@/components/metrics/ListTable';
 import styles from './UTMView.module.css';
@@ -17,7 +16,7 @@ function toArray(data: { [key: string]: number } = {}) {
 
 export function UTMView() {
   const { formatMessage, labels } = useMessages();
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { data } = report || {};
 
   if (!data) {

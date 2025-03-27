@@ -1,13 +1,11 @@
-import { useFields, useMessages } from '@/components/hooks';
+import { useFields, useMessages, useReport } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { useContext } from 'react';
-import { Button, Row, Label, Icon, Popover, MenuTrigger } from '@umami/react-zen';
+import { Button, Row, Label, Icon, Popover, MenuTrigger, Column } from '@umami/react-zen';
 import { FieldSelectForm } from '../[reportId]/FieldSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { ReportContext } from './Report';
 
 export function FieldParameters() {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useReport();
   const { formatMessage, labels } = useMessages();
   const { parameters } = report || {};
   const { fields } = parameters || {};
@@ -26,12 +24,12 @@ export function FieldParameters() {
   const AddButton = () => {
     return (
       <MenuTrigger>
-        <Button size="sm">
-          <Icon>
+        <Button variant="quiet">
+          <Icon size="sm">
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popover placement="start">
+        <Popover placement="right top">
           <FieldSelectForm
             fields={fieldOptions.filter(({ name }) => !fields.find(f => f.name === name))}
             onSelect={handleAdd}
@@ -43,8 +41,11 @@ export function FieldParameters() {
   };
 
   return (
-    <Row>
-      <Label>{formatMessage(labels.fields)}</Label>
+    <Column gap="3">
+      <Row justifyContent="space-between">
+        <Label>{formatMessage(labels.fields)}</Label>
+        <AddButton />
+      </Row>
       <ParameterList>
         {fields.map(({ name }) => {
           return (
@@ -54,7 +55,6 @@ export function FieldParameters() {
           );
         })}
       </ParameterList>
-      <AddButton />
-    </Row>
+    </Column>
   );
 }

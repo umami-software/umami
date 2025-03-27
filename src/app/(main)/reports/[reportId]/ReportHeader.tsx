@@ -1,13 +1,18 @@
-import { useContext } from 'react';
-import { Icon, LoadingButton, InlineEditField, useToast } from '@umami/react-zen';
-import { useMessages, useApi, useNavigation } from '@/components/hooks';
-import { ReportContext } from './Report';
-import styles from './ReportHeader.module.css';
+import {
+  Row,
+  Column,
+  Text,
+  Heading,
+  Icon,
+  LoadingButton,
+  InlineEditField,
+  useToast,
+} from '@umami/react-zen';
+import { useMessages, useApi, useNavigation, useReport } from '@/components/hooks';
 import { REPORT_TYPES } from '@/lib/constants';
-import { Breadcrumb } from '@/components/common/Breadcrumb';
 
 export function ReportHeader({ icon }) {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useReport();
   const { formatMessage, labels, messages } = useMessages();
   const { toast } = useToast();
   const { router, renderTeamUrl } = useNavigation();
@@ -54,41 +59,33 @@ export function ReportHeader({ icon }) {
   }
 
   return (
-    <div className={styles.header}>
-      <div>
-        <div className={styles.type}>
-          <Breadcrumb
-            data={[
-              { label: formatMessage(labels.reports), url: renderTeamUrl('/reports') },
-              {
-                label: formatMessage(
-                  labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
-                ),
-              },
-            ]}
-          />
-        </div>
-        <div className={styles.title}>
-          <Icon size="lg">{icon}</Icon>
-          <InlineEditField
-            key={name}
-            name="name"
-            value={name}
-            placeholder={defaultName}
-            onCommit={handleNameChange}
-          />
-        </div>
-        <div className={styles.description}>
-          <InlineEditField
-            key={description}
-            name="description"
-            value={description}
-            placeholder={`+ ${formatMessage(labels.addDescription)}`}
-            onCommit={handleDescriptionChange}
-          />
-        </div>
-      </div>
-      <div className={styles.actions}>
+    <Column marginY="6" gap="3" gridColumn="1 / 3">
+      <Row gap="3" alignItems="center">
+        <Icon size="sm">{icon}</Icon>
+        <Text transform="uppercase" weight="bold">
+          {formatMessage(
+            labels[Object.keys(REPORT_TYPES).find(key => REPORT_TYPES[key] === report?.type)],
+          )}
+        </Text>
+      </Row>
+      <Row justifyContent="space-between" alignItems="center">
+        <Row gap="6">
+          <Column gap="3">
+            <Row gap="3" alignItems="center">
+              <InlineEditField key={name} name="name" value={name} onCommit={handleNameChange}>
+                <Heading>{name}</Heading>
+              </InlineEditField>
+            </Row>
+            <InlineEditField
+              key={description}
+              name="description"
+              value={description}
+              onCommit={handleDescriptionChange}
+            >
+              <Text>{description || `+ ${formatMessage(labels.addDescription)}`}</Text>
+            </InlineEditField>
+          </Column>
+        </Row>
         <LoadingButton
           variant="primary"
           isLoading={isCreating || isUpdating}
@@ -97,7 +94,7 @@ export function ReportHeader({ icon }) {
         >
           {formatMessage(labels.save)}
         </LoadingButton>
-      </div>
-    </div>
+      </Row>
+    </Column>
   );
 }

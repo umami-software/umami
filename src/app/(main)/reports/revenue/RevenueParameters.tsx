@@ -1,12 +1,10 @@
-import { useMessages } from '@/components/hooks';
+import { useMessages, useReport } from '@/components/hooks';
 import { useRevenueValuesQuery } from '@/components/hooks/queries/useRevenueValuesQuery';
-import { useContext } from 'react';
 import { Select, Form, FormButtons, FormField, ListItem, FormSubmitButton } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
-import { ReportContext } from '../[reportId]/Report';
 
 export function RevenueParameters() {
-  const { report, runReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, isRunning } = useReport();
   const { formatMessage, labels } = useMessages();
   const { id, parameters } = report || {};
   const { websiteId, dateRange } = parameters || {};

@@ -1,6 +1,6 @@
 import { Grid, Heading, Column } from '@umami/react-zen';
 import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
-import { SideBar } from '@/components/layout/SideBar';
+import { SideBar } from '@/components/common/SideBar';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { CitiesTable } from '@/components/metrics/CitiesTable';

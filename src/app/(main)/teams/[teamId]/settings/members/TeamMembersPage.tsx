@@ -1,7 +1,7 @@
 'use client';
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { useContext } from 'react';

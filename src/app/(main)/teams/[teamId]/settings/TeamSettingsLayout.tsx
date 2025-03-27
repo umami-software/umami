@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Grid, Column } from '@umami/react-zen';
-import { SideBar } from '@/components/layout/SideBar';
+import { SideBar } from '@/components/common/SideBar';
 
 export function TeamSettingsLayout({ children }: { children: ReactNode }) {
   const { formatMessage, labels } = useMessages();

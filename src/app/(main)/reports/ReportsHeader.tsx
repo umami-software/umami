@@ -1,4 +1,4 @@
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { Icon, Icons, Text } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import { LinkButton } from '@/components/common/LinkButton';

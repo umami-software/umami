@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Tabs, Tab, TabList, TabPanel } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { UserEditForm } from './UserEditForm';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages } from '@/components/hooks';
 import { UserWebsites } from './UserWebsites';
 import { UserContext } from './UserProvider';

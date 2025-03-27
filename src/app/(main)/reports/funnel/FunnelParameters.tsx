@@ -1,5 +1,4 @@
-import { useContext } from 'react';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useReport } from '@/components/hooks';
 import {
   Icon,
   Form,
@@ -13,14 +12,12 @@ import {
 } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import { FunnelStepAddForm } from './FunnelStepAddForm';
-import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { PopupForm } from '../[reportId]/PopupForm';
 import styles from './FunnelParameters.module.css';
 
 export function FunnelParameters() {
-  const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, updateReport, isRunning } = useReport();
   const { formatMessage, labels } = useMessages();
 
   const { id, parameters } = report || {};
@@ -66,9 +63,7 @@ export function FunnelParameters() {
           </Icon>
         </Button>
         <Popover placement="start">
-          <PopupForm>
-            <FunnelStepAddForm onChange={handleAddStep} />
-          </PopupForm>
+          <FunnelStepAddForm onChange={handleAddStep} />
         </Popover>
       </DialogTrigger>
     );
@@ -90,7 +85,6 @@ export function FunnelParameters() {
             return (
               <DialogTrigger key={index}>
                 <ParameterList.Item
-                  className={styles.item}
                   icon={step.type === 'url' ? <Icons.Eye /> : <Icons.Bolt />}
                   onRemove={() => handleRemoveStep(index)}
                 >
@@ -100,13 +94,11 @@ export function FunnelParameters() {
                 </ParameterList.Item>
                 <Popover placement="start">
                   {({ close }: any) => (
-                    <PopupForm>
-                      <FunnelStepAddForm
-                        type={step.type}
-                        value={step.value}
-                        onChange={handleUpdateStep.bind(null, close, index)}
-                      />
-                    </PopupForm>
+                    <FunnelStepAddForm
+                      type={step.type}
+                      value={step.value}
+                      onChange={handleUpdateStep.bind(null, close, index)}
+                    />
                   )}
                 </Popover>
               </DialogTrigger>

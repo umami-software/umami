@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { REPORT_PARAMETERS } from '@/lib/constants';
-import { PopupForm } from './PopupForm';
 import { FieldSelectForm } from './FieldSelectForm';
 
 export function FieldAddForm({
@@ -39,9 +38,7 @@ export function FieldAddForm({
   };
 
   return createPortal(
-    <PopupForm>
-      {!selected && <FieldSelectForm fields={fields} onSelect={handleSelect} />}
-    </PopupForm>,
+    !selected && <FieldSelectForm fields={fields} onSelect={handleSelect} />,
     document.body,
   );
 }

@@ -1,7 +1,6 @@
-import { useMessages } from '@/components/hooks';
+import { useMessages, useReport } from '@/components/hooks';
 import { Icons } from '@/components/icons';
 import { formatNumber } from '@/lib/format';
-import { useContext } from 'react';
 import {
   Button,
   Form,
@@ -15,12 +14,11 @@ import {
 } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { ReportContext } from '../[reportId]/Report';
 import { GoalsAddForm } from './GoalsAddForm';
 import styles from './GoalsParameters.module.css';
 
 export function GoalsParameters() {
-  const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, updateReport, isRunning } = useReport();
   const { formatMessage, labels } = useMessages();
 
   const { id, parameters } = report || {};
@@ -76,7 +74,7 @@ export function GoalsParameters() {
     <Form values={parameters} onSubmit={handleSubmit} preventSubmit={true}>
       <BaseParameters allowWebsiteSelect={!id} />
       <AddGoalsButton />
-      <FormField label={formatMessage(labels.goals)}>
+      <FormField name="goal" label={formatMessage(labels.goals)}>
         <ParameterList>
           {goals.map(
             (

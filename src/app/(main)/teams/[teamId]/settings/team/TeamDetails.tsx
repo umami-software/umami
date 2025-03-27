@@ -1,14 +1,14 @@
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { ROLES } from '@/lib/constants';
 import { useContext, useState } from 'react';
 import { Column, Tabs, TabList, Tab, TabPanel } from '@umami/react-zen';
 import { TeamLeaveButton } from '@/app/(main)/settings/teams/TeamLeaveButton';
 import { TeamManage } from './TeamManage';
 import { TeamEditForm } from './TeamEditForm';
-import { Panel } from '@/components/layout/Panel';
+import { Panel } from '@/components/common/Panel';
 
 export function TeamDetails({ teamId }: { teamId: string }) {
   const team = useContext(TeamContext);

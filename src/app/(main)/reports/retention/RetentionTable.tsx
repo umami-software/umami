@@ -1,8 +1,6 @@
-import { useContext } from 'react';
 import classNames from 'classnames';
-import { ReportContext } from '../[reportId]/Report';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
-import { useMessages, useLocale } from '@/components/hooks';
+import { useMessages, useLocale, useReport } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import styles from './RetentionTable.module.css';
 
@@ -11,7 +9,7 @@ const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
 export function RetentionTable({ days = DAYS }) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { data } = report || {};
 
   if (!data) {

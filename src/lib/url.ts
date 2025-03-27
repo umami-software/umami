@@ -22,7 +22,7 @@ export function safeDecodeURI(s: string | undefined | null): string | undefined 
 
   try {
     return decodeURI(s);
-  } catch (e) {
+  } catch {
     return s;
   }
 }
@@ -34,7 +34,7 @@ export function safeDecodeURIComponent(s: string | undefined | null): string | u
 
   try {
     return decodeURIComponent(s);
-  } catch (e) {
+  } catch {
     return s;
   }
 }

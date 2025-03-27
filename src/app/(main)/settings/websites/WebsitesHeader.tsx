@@ -1,5 +1,5 @@
 import { useMessages, useNavigation } from '@/components/hooks';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { WebsiteAddButton } from './WebsiteAddButton';
 
 export interface WebsitesHeaderProps {

@@ -1,7 +1,9 @@
 import { Column } from '@umami/react-zen';
 
-export interface BoardProps {}
+export interface BoardProps {
+  children?: React.ReactNode;
+}
 
-export function Board(props: BoardProps) {
-  return <Column>{}</Column>;
+export function Board({ children }: BoardProps) {
+  return <Column>{children}</Column>;
 }

@@ -3,16 +3,15 @@ import { colord } from 'colord';
 import { BarChart } from '@/components/charts/BarChart';
 import { PieChart } from '@/components/charts/PieChart';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { useCountryNames, useLocale, useMessages } from '@/components/hooks';
-import { GridRow } from '@/components/layout/GridRow';
+import { useCountryNames, useLocale, useMessages, useReport } from '@/components/hooks';
+import { GridRow } from '@/components/common/GridRow';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
-import { useCallback, useContext, useMemo } from 'react';
-import { ReportContext } from '../[reportId]/Report';
+import { useCallback, useMemo } from 'react';
 import { RevenueTable } from './RevenueTable';
 import styles from './RevenueView.module.css';
 
@@ -24,7 +23,7 @@ export function RevenueView({ isLoading }: RevenueViewProps) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const {
     data,
     parameters: { dateRange, currency },

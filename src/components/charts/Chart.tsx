@@ -26,7 +26,6 @@ export function Chart({
   onCreate,
   onUpdate,
   onTooltip,
-  className,
   chartOptions,
   tooltip,
   ...props

@@ -52,7 +52,6 @@ export * from '@/components/common/Favicon';
 export * from '@/components/common/FilterButtons';
 export * from '@/components/common/FilterLink';
 export * from '@/components/common/HamburgerButton';
-export * from '@/components/common/HoverTooltip';
 export * from '@/components/common/LinkButton';
 export * from '@/components/common/MobileMenu';
 export * from '@/components/common/Pager';

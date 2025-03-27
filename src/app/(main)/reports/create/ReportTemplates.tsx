@@ -1,7 +1,7 @@
 import { Icon, Text, Row, Column, Grid } from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { LinkButton } from '@/components/common/LinkButton';
 
 export function ReportTemplates({ showHeader = true }: { showHeader?: boolean }) {
@@ -71,7 +71,7 @@ function ReportItem({ title, description, url, icon }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column gap="6" padding="6" borderSize="1" borderRadius="3" justifyContent="space-between">
+    <Column gap="6" padding="6" border borderRadius="3" justifyContent="space-between">
       <Row gap="3" alignItems="center">
         <Icon size="md">{icon}</Icon>
         <Text size="5" weight="bold">

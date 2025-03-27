@@ -1,8 +1,6 @@
 import { createContext, ReactNode } from 'react';
-import { Loading } from '@umami/react-zen';
-import classNames from 'classnames';
+import { Loading, Grid } from '@umami/react-zen';
 import { useReportQuery } from '@/components/hooks';
-import styles from './Report.module.css';
 
 export const ReportContext = createContext(null);
 
@@ -10,12 +8,10 @@ export function Report({
   reportId,
   defaultParameters,
   children,
-  className,
 }: {
   reportId: string;
   defaultParameters: { type: string; parameters: { [key: string]: any } };
   children: ReactNode;
-  className?: string;
 }) {
   const report = useReportQuery(reportId, defaultParameters);
 
@@ -25,7 +21,9 @@ export function Report({
 
   return (
     <ReportContext.Provider value={report}>
-      <div className={classNames(styles.container, className)}>{children}</div>
+      <Grid rows="auto 1fr" columns="auto 1fr" gap="6">
+        {children}
+      </Grid>
     </ReportContext.Provider>
   );
 }

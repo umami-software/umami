@@ -9,18 +9,12 @@ import {
   useFilters,
 } from '@/components/hooks';
 import { FieldFilterEditForm } from '@/app/(main)/reports/[reportId]/FieldFilterEditForm';
-import { OPERATOR_PREFIXES } from '@/lib/constants';
+import { FILTER_COLUMNS, OPERATOR_PREFIXES } from '@/lib/constants';
 import { isSearchOperator, parseParameterValue } from '@/lib/params';
 import styles from './FilterTags.module.css';
 import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFilterButton';
 
-export function FilterTags({
-  websiteId,
-  params,
-}: {
-  websiteId: string;
-  params: { [key: string]: string };
-}) {
+export function FilterTags({ websiteId }: { websiteId: string }) {
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { dateRange } = useDateRange(websiteId);
@@ -32,6 +26,14 @@ export function FilterTags({
   const { fields } = useFields();
   const { operatorLabels } = useFilters();
   const { startDate, endDate } = dateRange;
+  const { query } = useNavigation();
+
+  const params = Object.keys(query).reduce((obj, key) => {
+    if (FILTER_COLUMNS[key]) {
+      obj[key] = query[key];
+    }
+    return obj;
+  }, {});
 
   if (Object.keys(params).filter(key => params[key]).length === 0) {
     return null;
@@ -60,13 +62,13 @@ export function FilterTags({
   return (
     <Row
       gap="3"
-      backgroundColor="1"
+      backgroundColor="2"
       alignItems="center"
-      paddingX="3"
-      paddingY="2"
+      paddingX="5"
+      paddingY="3"
+      border
       borderRadius="2"
-      borderSize="1"
-      marginBottom="6"
+      wrap="wrap"
     >
       <Text weight="bold">{formatMessage(labels.filters)}</Text>
       {Object.keys(params).map(key => {

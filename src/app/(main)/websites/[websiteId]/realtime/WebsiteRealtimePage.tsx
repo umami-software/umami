@@ -1,9 +1,9 @@
 'use client';
 import { firstBy } from 'thenby';
 import { Grid } from '@umami/react-zen';
-import { GridRow } from '@/components/layout/GridRow';
-import { Page } from '@/components/layout/Page';
-import { Panel } from '@/components/layout/Panel';
+import { GridRow } from '@/components/common/GridRow';
+import { Page } from '@/components/common/Page';
+import { Panel } from '@/components/common/Panel';
 import { RealtimeChart } from '@/components/metrics/RealtimeChart';
 import { WorldMap } from '@/components/metrics/WorldMap';
 import { useRealtimeQuery } from '@/components/hooks';
@@ -30,7 +30,9 @@ export function WebsiteRealtimePage({ websiteId }) {
   return (
     <Grid gap="3">
       <WebsiteHeader websiteId={websiteId} />
-      <RealtimeHeader data={data} />
+      <Panel>
+        <RealtimeHeader data={data} />
+      </Panel>
       <Panel>
         <RealtimeChart data={data} unit="minute" />
       </Panel>

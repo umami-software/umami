@@ -2,7 +2,7 @@
 import { TeamContext } from '@/app/(main)/teams/[teamId]/TeamProvider';
 import { WebsiteAddButton } from '@/app/(main)/settings/websites/WebsiteAddButton';
 import { useLoginQuery, useMessages } from '@/components/hooks';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { TeamWebsitesDataTable } from './TeamWebsitesDataTable';
 import { ROLES } from '@/lib/constants';
 import { useContext } from 'react';

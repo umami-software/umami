@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Page } from '@/components/layout/Page';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { Page } from '@/components/common/Page';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useApi, useMessages } from '@/components/hooks';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 

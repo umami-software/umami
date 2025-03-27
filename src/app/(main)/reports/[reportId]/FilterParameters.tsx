@@ -1,17 +1,23 @@
-import { useContext } from 'react';
-import { useMessages, useFormat, useFilters, useFields } from '@/components/hooks';
+import { useMessages, useFormat, useFilters, useFields, useReport } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { Button, Row, Label, Icon, Popover, MenuTrigger } from '@umami/react-zen';
+import {
+  Button,
+  Row,
+  Column,
+  Label,
+  Icon,
+  Popover,
+  MenuTrigger,
+  Focusable,
+  Text,
+} from '@umami/react-zen';
 import { FilterSelectForm } from '../[reportId]/FilterSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
-import { PopupForm } from '../[reportId]/PopupForm';
-import { ReportContext } from './Report';
 import { FieldFilterEditForm } from '../[reportId]/FieldFilterEditForm';
 import { isSearchOperator } from '@/lib/params';
-import styles from './FilterParameters.module.css';
 
 export function FilterParameters() {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useReport();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
   const { parameters } = report || {};
@@ -45,28 +51,26 @@ export function FilterParameters() {
   const AddButton = () => {
     return (
       <MenuTrigger>
-        <Button size="sm">
-          <Icon>
+        <Button variant="quiet">
+          <Icon size="sm">
             <Icons.Plus />
           </Icon>
         </Button>
-        <Popover placement="bottom start">
-          <PopupForm>
-            <FilterSelectForm
-              websiteId={websiteId}
-              fields={fields.filter(({ name }) => !filters.find(f => f.name === name))}
-              startDate={dateRange?.startDate}
-              endDate={dateRange?.endDate}
-              onChange={handleAdd}
-            />
-          </PopupForm>
+        <Popover placement="right top">
+          <FilterSelectForm
+            websiteId={websiteId}
+            fields={fields.filter(({ name }) => !filters.find(f => f.name === name))}
+            startDate={dateRange?.startDate}
+            endDate={dateRange?.endDate}
+            onChange={handleAdd}
+          />
         </Popover>
       </MenuTrigger>
     );
   };
 
   return (
-    <>
+    <Column gap="3">
       <Row justifyContent="space-between">
         <Label>{formatMessage(labels.filters)}</Label>
         <AddButton />
@@ -94,7 +98,7 @@ export function FilterParameters() {
           },
         )}
       </ParameterList>
-    </>
+    </Column>
   );
 }
 
@@ -113,12 +117,16 @@ const FilterParameter = ({
 
   return (
     <MenuTrigger>
-      <div className={styles.item}>
-        <div className={styles.label}>{label}</div>
-        <div className={styles.op}>{operatorLabels[operator]}</div>
-        <div className={styles.value}>{value}</div>
-      </div>
-      <Popover className={styles.edit} placement="right top">
+      <Focusable>
+        <Row gap="3" alignItems="center">
+          <Text>{label}</Text>
+          <Text size="2" transform="uppercase">
+            {operatorLabels[operator]}
+          </Text>
+          <Text weight="bold">{value}</Text>
+        </Row>
+      </Focusable>
+      <Popover placement="right top">
         {(close: any) => (
           <FieldFilterEditForm
             websiteId={websiteId}

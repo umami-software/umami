@@ -1,11 +1,9 @@
-import { useContext } from 'react';
-import { useMessages } from '@/components/hooks';
+import { useMessages, useReport } from '@/components/hooks';
 import { Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
-import { ReportContext } from '../[reportId]/Report';
 import { BaseParameters } from '../[reportId]/BaseParameters';
 
 export function UTMParameters() {
-  const { report, runReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, isRunning } = useReport();
   const { formatMessage, labels } = useMessages();
 
   const { id, parameters } = report || {};

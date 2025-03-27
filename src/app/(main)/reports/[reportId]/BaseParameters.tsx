@@ -1,11 +1,9 @@
-import { useContext } from 'react';
 import { Column, Label } from '@umami/react-zen';
+import { useReport } from '@/components/hooks';
 import { parseDateRange } from '@/lib/date';
 import { DateFilter } from '@/components/input/DateFilter';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
 import { useMessages, useNavigation, useWebsiteQuery } from '@/components/hooks';
-import { ReportContext } from './Report';
-import styles from './BaseParameters.module.css';
 
 export interface BaseParametersProps {
   showWebsiteSelect?: boolean;
@@ -20,7 +18,7 @@ export function BaseParameters({
   showDateSelect = true,
   allowDateSelect = true,
 }: BaseParametersProps) {
-  const { report, updateReport } = useContext(ReportContext);
+  const { report, updateReport } = useReport();
   const { formatMessage, labels } = useMessages();
   const { teamId } = useNavigation();
   const { parameters } = report || {};
@@ -50,7 +48,7 @@ export function BaseParameters({
         </Column>
       )}
       {showDateSelect && (
-        <Column className={styles.dropdown}>
+        <Column>
           <Label>{formatMessage(labels.dateRange)}</Label>
           {allowDateSelect && (
             <DateFilter

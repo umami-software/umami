@@ -1,10 +1,8 @@
-import { useContext } from 'react';
 import { DataTable, DataColumn } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
-import { ReportContext } from '../[reportId]/Report';
+import { useMessages, useReport } from '@/components/hooks';
 
 export function EventDataTable() {
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { formatMessage, labels } = useMessages();
 
   return (

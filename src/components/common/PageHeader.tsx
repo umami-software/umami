@@ -1,21 +1,25 @@
 import { ReactNode } from 'react';
-import { Heading, Icon, Row } from '@umami/react-zen';
+import { Heading, Icon, Row, Text } from '@umami/react-zen';
 
 export function PageHeader({
   title,
+  description,
   icon,
   children,
 }: {
-  title?: ReactNode;
+  title: string;
+  description?: string;
   icon?: ReactNode;
+  allowEdit?: boolean;
   className?: string;
   children?: ReactNode;
 }) {
   return (
-    <Row justifyContent="space-between" alignItems="center">
+    <Row justifyContent="space-between" alignItems="center" marginY="6">
       <Row gap="3">
         {icon && <Icon size="lg">{icon}</Icon>}
-        {title && <Heading>{title}</Heading>}
+        {title && <Heading size="2">{title}</Heading>}
+        {description && <Text color="muted">{description}</Text>}
       </Row>
       <Row justifyContent="flex-end">{children}</Row>
     </Row>

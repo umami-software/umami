@@ -103,7 +103,9 @@ export function DateFilter({
           return (
             <>
               {divider && <ListSeparator />}
-              <ListItem id={value}>{label}</ListItem>
+              <ListItem key={value} id={value}>
+                {label}
+              </ListItem>
             </>
           );
         })}

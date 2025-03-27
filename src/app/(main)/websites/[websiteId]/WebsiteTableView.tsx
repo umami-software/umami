@@ -1,5 +1,5 @@
 import { Grid } from '@umami/react-zen';
-import { Panel } from '@/components/layout/Panel';
+import { Panel } from '@/components/common/Panel';
 import { PagesTable } from '@/components/metrics/PagesTable';
 import { ReferrersTable } from '@/components/metrics/ReferrersTable';
 import { BrowsersTable } from '@/components/metrics/BrowsersTable';

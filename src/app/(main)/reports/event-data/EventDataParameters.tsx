@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   Form,
   FormField,
@@ -10,9 +9,8 @@ import {
 } from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
 import { Icons } from '@/components/icons';
-import { useApi, useMessages } from '@/components/hooks';
+import { useApi, useMessages, useReport } from '@/components/hooks';
 import { DATA_TYPES, REPORT_PARAMETERS } from '@/lib/constants';
-import { ReportContext } from '../[reportId]/Report';
 import { FieldAddForm } from '../[reportId]/FieldAddForm';
 import { ParameterList } from '../[reportId]/ParameterList';
 import { BaseParameters } from '../[reportId]/BaseParameters';
@@ -35,7 +33,7 @@ function useFields(websiteId, startDate, endDate) {
 }
 
 export function EventDataParameters() {
-  const { report, runReport, updateReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, updateReport, isRunning } = useReport();
   const { formatMessage, labels, messages } = useMessages();
   const { id, parameters } = report || {};
   const { websiteId, dateRange, fields, filters, groups } = parameters || {};

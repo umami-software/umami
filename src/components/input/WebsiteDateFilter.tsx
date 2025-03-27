@@ -1,9 +1,8 @@
 import { useDateRange } from '@/components/hooks';
 import { isAfter } from 'date-fns';
 import { getOffsetDateRange } from '@/lib/date';
-import { Button, Icon, Icons } from '@umami/react-zen';
+import { Button, Icon, Icons, Row } from '@umami/react-zen';
 import { DateFilter } from './DateFilter';
-import styles from './WebsiteDateFilter.module.css';
 import { DateRange } from '@/lib/types';
 
 export function WebsiteDateFilter({
@@ -27,9 +26,22 @@ export function WebsiteDateFilter({
   };
 
   return (
-    <div className={styles.container}>
+    <Row gap="3">
+      {value !== 'all' && !value.startsWith('range') && (
+        <Row gap="1">
+          <Button onPress={() => handleIncrement(-1)} variant="quiet">
+            <Icon size="xs" rotate={180}>
+              <Icons.Chevron />
+            </Icon>
+          </Button>
+          <Button onPress={() => handleIncrement(1)} variant="quiet" isDisabled={disableForward}>
+            <Icon size="xs">
+              <Icons.Chevron />
+            </Icon>
+          </Button>
+        </Row>
+      )}
       <DateFilter
-        className={styles.dropdown}
         value={value}
         startDate={startDate}
         endDate={endDate}
@@ -37,20 +49,6 @@ export function WebsiteDateFilter({
         onChange={handleChange}
         showAllTime={showAllTime}
       />
-      {value !== 'all' && !value.startsWith('range') && (
-        <div className={styles.buttons}>
-          <Button onPress={() => handleIncrement(-1)}>
-            <Icon size="sm" rotate={180}>
-              <Icons.Chevron />
-            </Icon>
-          </Button>
-          <Button onPress={() => handleIncrement(1)} isDisabled={disableForward}>
-            <Icon size="sm">
-              <Icons.Chevron />
-            </Icon>
-          </Button>
-        </div>
-      )}
-    </div>
+    </Row>
   );
 }

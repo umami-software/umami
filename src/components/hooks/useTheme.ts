@@ -8,6 +8,7 @@ const selector = (state: { theme: string }) => state.theme;
 
 export function useTheme() {
   const theme = useApp(selector) || getItem(THEME_CONFIG) || DEFAULT_THEME;
+  const { primary, text, line, fill } = THEME_COLORS[theme];
   const primaryColor = colord(THEME_COLORS[theme].primary);
 
   const colors = useMemo(() => {
@@ -16,8 +17,8 @@ export function useTheme() {
         ...THEME_COLORS[theme],
       },
       chart: {
-        text: THEME_COLORS[theme].gray700,
-        line: THEME_COLORS[theme].gray200,
+        text,
+        line,
         views: {
           hoverBackgroundColor: primaryColor.alpha(0.7).toRgbString(),
           backgroundColor: primaryColor.alpha(0.4).toRgbString(),
@@ -32,10 +33,10 @@ export function useTheme() {
         },
       },
       map: {
-        baseColor: THEME_COLORS[theme].primary,
-        fillColor: THEME_COLORS[theme].gray100,
-        strokeColor: THEME_COLORS[theme].primary,
-        hoverColor: THEME_COLORS[theme].primary,
+        baseColor: primary,
+        fillColor: fill,
+        strokeColor: primary,
+        hoverColor: primary,
       },
     };
   }, [theme]);

@@ -1,12 +1,12 @@
 'use client';
-import { TabList, Tab, Tabs, TabPanel, Grid } from '@umami/react-zen';
+import { TabList, Tab, Tabs, TabPanel, Column } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteHeader } from '../WebsiteHeader';
 import { EventsDataTable } from './EventsDataTable';
 import { EventsMetricsBar } from './EventsMetricsBar';
-import { Panel } from '@/components/layout/Panel';
+import { Panel } from '@/components/common/Panel';
 import { EventsChart } from '@/components/metrics/EventsChart';
-import { GridRow } from '@/components/layout/GridRow';
+import { GridRow } from '@/components/common/GridRow';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { useMessages } from '@/components/hooks';
 import { EventProperties } from './EventProperties';
@@ -16,9 +16,11 @@ export function EventsPage({ websiteId }) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Grid gap="3">
+    <Column gap="3">
       <WebsiteHeader websiteId={websiteId} />
-      <EventsMetricsBar websiteId={websiteId} />
+      <Panel>
+        <EventsMetricsBar websiteId={websiteId} />
+      </Panel>
       <GridRow layout="two-one">
         <Panel>
           <EventsChart websiteId={websiteId} />
@@ -46,6 +48,6 @@ export function EventsPage({ websiteId }) {
           </TabPanel>
         </Tabs>
       </Panel>
-    </Grid>
+    </Column>
   );
 }

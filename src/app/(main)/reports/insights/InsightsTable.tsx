@@ -1,13 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataTable, DataColumn } from '@umami/react-zen';
-import { useFormat, useMessages } from '@/components/hooks';
-import { ReportContext } from '../[reportId]/Report';
+import { useFormat, useMessages, useReport } from '@/components/hooks';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { formatShortTime } from '@/lib/format';
 
 export function InsightsTable() {
   const [fields, setFields] = useState([]);
-  const { report } = useContext(ReportContext);
+  const { report } = useReport();
   const { formatMessage, labels } = useMessages();
   const { formatValue } = useFormat();
 

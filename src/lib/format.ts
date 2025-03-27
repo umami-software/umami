@@ -90,7 +90,7 @@ export function formatCurrency(value: number, currency: string, locale = 'en-US'
       style: 'currency',
       currency: currency,
     });
-  } catch (error) {
+  } catch {
     // Fallback to default currency format if an error occurs
     formattedValue = new Intl.NumberFormat(locale, {
       style: 'currency',

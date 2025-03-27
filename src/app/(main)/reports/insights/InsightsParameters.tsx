@@ -1,13 +1,11 @@
-import { useMessages } from '@/components/hooks';
-import { useContext } from 'react';
+import { useMessages, useReport } from '@/components/hooks';
 import { Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
 import { BaseParameters } from '../[reportId]/BaseParameters';
-import { ReportContext } from '../[reportId]/Report';
 import { FieldParameters } from '../[reportId]/FieldParameters';
 import { FilterParameters } from '../[reportId]/FilterParameters';
 
 export function InsightsParameters() {
-  const { report, runReport, isRunning } = useContext(ReportContext);
+  const { report, runReport, isRunning } = useReport();
   const { formatMessage, labels } = useMessages();
   const { id, parameters } = report || {};
   const { websiteId, dateRange, fields, filters } = parameters || {};
@@ -20,7 +18,7 @@ export function InsightsParameters() {
   };
 
   return (
-    <Form values={parameters} onSubmit={handleSubmit}>
+    <Form values={parameters} onSubmit={handleSubmit} gap="6">
       <BaseParameters allowWebsiteSelect={!id} />
       {parametersSelected && <FieldParameters />}
       {parametersSelected && <FilterParameters />}

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvider';
 import { useMessages } from '@/components/hooks';
 import { Icons } from '@/components/icons';
-import { PageHeader } from '@/components/layout/PageHeader';
+import { PageHeader } from '@/components/common/PageHeader';
 import { ShareUrl } from './ShareUrl';
 import { TrackingCode } from './TrackingCode';
 import { WebsiteData } from './WebsiteData';
