@@ -45,13 +45,13 @@ export function Nav(props: any) {
       <SideNavSection>
         {links.map(({ href, label, icon }) => {
           return (
-            <Link key={href} href={href}>
+            <Link key={href} href={href} role="button">
               <SideNavItem label={label} icon={icon} isSelected={pathname.startsWith(href)} />
             </Link>
           );
         })}
       </SideNavSection>
-      <SideNavSection alignSelf="end"></SideNavSection>
+      <SideNavSection alignSelf="end">{``}</SideNavSection>
     </SideNav>
   );
 }

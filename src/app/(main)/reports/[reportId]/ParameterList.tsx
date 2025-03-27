@@ -12,7 +12,7 @@ export function ParameterList({ children }: ParameterListProps) {
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Column>
+    <Column gap="3">
       {!children && <Empty message={formatMessage(labels.none)} />}
       {children}
     </Column>
@@ -40,6 +40,7 @@ const Item = ({
       border
       borderRadius="2"
       paddingLeft="3"
+      shadow="2"
     >
       {icon && <Icon>{icon}</Icon>}
       <Text>{children}</Text>

@@ -11,9 +11,10 @@ export function FieldParameters() {
   const { fields } = parameters || {};
   const { fields: fieldOptions } = useFields();
 
-  const handleAdd = (value: { name: any }) => {
-    if (!fields.find(({ name }) => name === value.name)) {
-      updateReport({ parameters: { fields: fields.concat(value) } });
+  const handleAdd = (value: string) => {
+    if (!fields.find(({ name }) => name === value)) {
+      const field = fieldOptions.find(({ name }) => name === value);
+      updateReport({ parameters: { fields: fields.concat(field) } });
     }
   };
 
@@ -21,30 +22,24 @@ export function FieldParameters() {
     updateReport({ parameters: { fields: fields.filter(f => f.name !== name) } });
   };
 
-  const AddButton = () => {
-    return (
-      <MenuTrigger>
-        <Button variant="quiet">
-          <Icon size="sm">
-            <Icons.Plus />
-          </Icon>
-        </Button>
-        <Popover placement="right top">
-          <FieldSelectForm
-            fields={fieldOptions.filter(({ name }) => !fields.find(f => f.name === name))}
-            onSelect={handleAdd}
-            showType={false}
-          />
-        </Popover>
-      </MenuTrigger>
-    );
-  };
-
   return (
     <Column gap="3">
       <Row justifyContent="space-between">
         <Label>{formatMessage(labels.fields)}</Label>
-        <AddButton />
+        <MenuTrigger>
+          <Button variant="quiet">
+            <Icon size="sm">
+              <Icons.Plus />
+            </Icon>
+          </Button>
+          <Popover placement="right top">
+            <FieldSelectForm
+              fields={fieldOptions.filter(({ name }) => !fields.find(f => f.name === name))}
+              onSelect={handleAdd}
+              showType={false}
+            />
+          </Popover>
+        </MenuTrigger>
       </Row>
       <ParameterList>
         {fields.map(({ name }) => {

@@ -34,8 +34,12 @@ export const MetricCard = ({
   const prevProps = useSpring({ x: Number(diff) || 0, from: { x: 0 } });
 
   return (
-    <Column className={styles.card} justifyContent="center">
-      {showLabel && <Text weight="bold">{label}</Text>}
+    <Column className={styles.card} justifyContent="center" paddingX="8">
+      {showLabel && (
+        <Text weight="bold" wrap="nowrap">
+          {label}
+        </Text>
+      )}
       <Text size="8" weight="bold" wrap="nowrap">
         <AnimatedDiv title={value?.toString()}>{props?.x?.to(x => formatValue(x))}</AnimatedDiv>
       </Text>

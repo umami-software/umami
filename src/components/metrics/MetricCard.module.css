@@ -1,6 +1,5 @@
 .card {
   border-right: 1px solid var(--border-color);
-  padding: 0 50px;
 }
 
 .card:last-child {

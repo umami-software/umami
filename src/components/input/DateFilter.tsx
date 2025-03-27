@@ -1,4 +1,4 @@
-import { useState, Key } from 'react';
+import { useState, Key, Fragment } from 'react';
 import { Icon, Modal, Select, Text, Row, ListItem, ListSeparator, Dialog } from '@umami/react-zen';
 import { endOfYear, isSameDay } from 'date-fns';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
@@ -101,12 +101,12 @@ export function DateFilter({
       >
         {options.map(({ label, value, divider }: any) => {
           return (
-            <>
+            <Fragment key={label}>
               {divider && <ListSeparator />}
-              <ListItem key={value} id={value}>
+              <ListItem key={label} id={value}>
                 {label}
               </ListItem>
-            </>
+            </Fragment>
           );
         })}
       </Select>

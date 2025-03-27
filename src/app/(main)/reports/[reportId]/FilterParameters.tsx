@@ -8,8 +8,8 @@ import {
   Icon,
   Popover,
   MenuTrigger,
-  Focusable,
   Text,
+  Pressable,
 } from '@umami/react-zen';
 import { FilterSelectForm } from '../[reportId]/FilterSelectForm';
 import { ParameterList } from '../[reportId]/ParameterList';
@@ -48,32 +48,26 @@ export function FilterParameters() {
     close();
   };
 
-  const AddButton = () => {
-    return (
-      <MenuTrigger>
-        <Button variant="quiet">
-          <Icon size="sm">
-            <Icons.Plus />
-          </Icon>
-        </Button>
-        <Popover placement="right top">
-          <FilterSelectForm
-            websiteId={websiteId}
-            fields={fields.filter(({ name }) => !filters.find(f => f.name === name))}
-            startDate={dateRange?.startDate}
-            endDate={dateRange?.endDate}
-            onChange={handleAdd}
-          />
-        </Popover>
-      </MenuTrigger>
-    );
-  };
-
   return (
     <Column gap="3">
       <Row justifyContent="space-between">
         <Label>{formatMessage(labels.filters)}</Label>
-        <AddButton />
+        <MenuTrigger>
+          <Button variant="quiet">
+            <Icon size="sm">
+              <Icons.Plus />
+            </Icon>
+          </Button>
+          <Popover placement="right top">
+            <FilterSelectForm
+              websiteId={websiteId}
+              fields={fields.filter(({ name }) => !filters.find(f => f.name === name))}
+              startDate={dateRange?.startDate}
+              endDate={dateRange?.endDate}
+              onChange={handleAdd}
+            />
+          </Popover>
+        </MenuTrigger>
       </Row>
       <ParameterList>
         {filters.map(
@@ -117,15 +111,15 @@ const FilterParameter = ({
 
   return (
     <MenuTrigger>
-      <Focusable>
-        <Row gap="3" alignItems="center">
+      <Pressable>
+        <Row role="button" gap="3" alignItems="center">
           <Text>{label}</Text>
           <Text size="2" transform="uppercase">
             {operatorLabels[operator]}
           </Text>
           <Text weight="bold">{value}</Text>
         </Row>
-      </Focusable>
+      </Pressable>
       <Popover placement="right top">
         {(close: any) => (
           <FieldFilterEditForm

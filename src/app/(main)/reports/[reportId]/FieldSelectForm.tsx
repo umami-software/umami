@@ -1,10 +1,9 @@
-import { Menu, MenuItem, Text, MenuSection } from '@umami/react-zen';
+import { Menu, MenuItem, Text, MenuSection, Row } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
-import { Key } from 'react';
 
 export interface FieldSelectFormProps {
   fields?: any[];
-  onSelect?: (key: any) => void;
+  onSelect?: (value: any) => void;
   showType?: boolean;
 }
 
@@ -12,13 +11,15 @@ export function FieldSelectForm({ fields = [], onSelect, showType = true }: Fiel
   const { formatMessage, labels } = useMessages();
 
   return (
-    <Menu onSelectionChange={key => onSelect(fields[key as any])}>
+    <Menu>
       <MenuSection title={formatMessage(labels.fields)}>
-        {fields.map(({ name, label, type }: any, index: Key) => {
+        {fields.map(({ name, label, type }) => {
           return (
-            <MenuItem key={index}>
-              <Text>{label || name}</Text>
-              {showType && type && <Text color="muted">{type}</Text>}
+            <MenuItem key={name} id={name} onAction={() => onSelect(name)}>
+              <Row alignItems="center" justifyContent="space-between">
+                <Text>{label || name}</Text>
+                {showType && type && <Text color="muted">{type}</Text>}
+              </Row>
             </MenuItem>
           );
         })}
