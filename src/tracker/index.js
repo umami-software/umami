@@ -233,21 +233,28 @@
   };
 
   const track = (obj, data) => {
+    const identity = JSON.parse(localStorage.getItem('umami.identity'));
     if (typeof obj === 'string') {
       return send({
         ...getPayload(),
         name: obj,
         data: typeof data === 'object' ? data : undefined,
+        identity: identity !== null ? identity : undefined,
       });
     } else if (typeof obj === 'object') {
-      return send(obj);
+      return send({ ...obj, identity: identity !== null ? identity : undefined });
     } else if (typeof obj === 'function') {
-      return send(obj(getPayload()));
+      return send({ ...obj(getPayload()), identity: identity !== null ? identity : undefined });
     }
-    return send(getPayload());
+    return send({ ...getPayload(), identity: identity !== null ? identity : undefined });
   };
 
-  const identify = data => send({ ...getPayload(), data }, 'identify');
+  const identify = data => {
+    localStorage.setItem('umami.identity', JSON.stringify(data));
+    /* Clear cache since this will result in another session */
+    cache = '';
+    send({ ...getPayload(), data, identity: data }, 'identify');
+  };
 
   /* Start */
 
