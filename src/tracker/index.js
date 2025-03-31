@@ -233,7 +233,12 @@
   };
 
   const track = (obj, data) => {
-    const identity = JSON.parse(localStorage.getItem('umami.identity'));
+    let identity;
+    try {
+      identity = JSON.parse(localStorage.getItem('umami.identity'));
+    } catch (error) {
+      identity = null;
+    }
     if (typeof obj === 'string') {
       return send({
         ...getPayload(),
