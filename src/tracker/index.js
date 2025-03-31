@@ -235,23 +235,24 @@
   const track = (obj, data) => {
     let identity;
     try {
-      identity = JSON.parse(localStorage.getItem('umami.identity'));
+      const parsedIdentity = JSON.parse(localStorage.getItem('umami.identity'));
+      identity = parsedIdentity !== null ? parsedIdentity : undefined;
     } catch (error) {
-      identity = null;
+      identity = undefined;
     }
     if (typeof obj === 'string') {
       return send({
         ...getPayload(),
         name: obj,
         data: typeof data === 'object' ? data : undefined,
-        identity: identity !== null ? identity : undefined,
+        identity,
       });
     } else if (typeof obj === 'object') {
-      return send({ ...obj, identity: identity !== null ? identity : undefined });
+      return send({ ...obj, identity });
     } else if (typeof obj === 'function') {
-      return send({ ...obj(getPayload()), identity: identity !== null ? identity : undefined });
+      return send({ ...obj(getPayload()), identity });
     }
-    return send({ ...getPayload(), identity: identity !== null ? identity : undefined });
+    return send({ ...getPayload(), identity });
   };
 
   const identify = data => {
