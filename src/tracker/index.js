@@ -46,6 +46,7 @@
     url: currentUrl,
     referrer: currentRef,
     tag: tag ? tag : undefined,
+    id: identity ? identity : undefined,
   });
 
   const hasDoNotTrack = () => {
@@ -233,33 +234,27 @@
   };
 
   const track = (obj, data) => {
-    let identity;
-    try {
-      const parsedIdentity = JSON.parse(localStorage.getItem('umami.identity'));
-      identity = parsedIdentity !== null ? parsedIdentity : undefined;
-    } catch (error) {
-      identity = undefined;
-    }
     if (typeof obj === 'string') {
       return send({
         ...getPayload(),
         name: obj,
         data: typeof data === 'object' ? data : undefined,
-        identity,
       });
     } else if (typeof obj === 'object') {
-      return send({ ...obj, identity });
+      return send({ ...obj, ...getPayload().id });
     } else if (typeof obj === 'function') {
-      return send({ ...obj(getPayload()), identity });
+      return send(obj(getPayload()));
     }
-    return send({ ...getPayload(), identity });
+    return send(getPayload());
   };
 
-  const identify = data => {
-    localStorage.setItem('umami.identity', JSON.stringify(data));
+  const identify = (data, id = undefined) => {
+    if (id) {
+      identity = id;
+    }
     /* Clear cache since this will result in another session */
     cache = '';
-    send({ ...getPayload(), data, identity: data }, 'identify');
+    send({ ...getPayload(), data }, 'identify');
   };
 
   /* Start */
@@ -277,6 +272,7 @@
   let cache;
   let initialized;
   let disabled = false;
+  let identity;
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {
