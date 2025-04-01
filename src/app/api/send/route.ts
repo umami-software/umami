@@ -34,11 +34,6 @@ const schema = z.object({
 
 export async function POST(request: Request) {
   try {
-    // Bot check
-    if (!process.env.DISABLE_BOT_CHECK && isbot(request.headers.get('user-agent'))) {
-      return json({ beep: 'boop' });
-    }
-
     const { body, error } = await parseRequest(request, schema, { skipAuth: true });
 
     if (error) {
@@ -85,6 +80,11 @@ export async function POST(request: Request) {
     // Client info
     const { ip, userAgent, device, browser, os, country, subdivision1, subdivision2, city } =
       await getClientInfo(request, payload);
+
+    // Bot check
+    if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
+      return json({ beep: 'boop' });
+    }
 
     // IP block
     if (hasBlockedIp(ip)) {
