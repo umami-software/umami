@@ -249,7 +249,7 @@
   };
 
   const identify = (data, id = undefined) => {
-    if (id) {
+    if (id && typeof id === 'string') {
       identity = id;
     }
     /* Clear cache since this will result in another session */
