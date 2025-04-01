@@ -1,5 +1,5 @@
-import { renderNumberLabels, renderDateLabels } from 'lib/charts';
-import { formatDate } from 'lib/date';
+import { renderNumberLabels, renderDateLabels } from '../charts';
+import { formatDate } from '../date';
 
 // test for renderNumberLabels
 
@@ -45,7 +45,8 @@ describe('renderDateLabels', () => {
   const mockValues = [{ value: '2024-03-23T10:00:00Z' }, { value: '2024-03-24T15:30:00Z' }];
 
   beforeEach(() => {
-    jest.spyOn(require('lib/date'), 'formatDate');
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    jest.spyOn(require('@/lib/date'), 'formatDate');
   });
 
   afterEach(() => {

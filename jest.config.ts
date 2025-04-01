@@ -5,12 +5,6 @@ export default {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
   moduleNameMapper: {
-    '^assets/(.*)$': '<rootDir>/src/assets/$1',
-    '^components/(.*)$': '<rootDir>/src/components/$1',
-    '^lib/(.*)$': '<rootDir>/src/lib/$1',
-    '^pages/(.*)$': '<rootDir>/src/pages/$1',
-    '^queries/(.*)$': '<rootDir>/src/queries/$1',
-    '^store/(.*)$': '<rootDir>/src/store/$1',
-    '^styles/(.*)$': '<rootDir>/src/styles/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
 };
