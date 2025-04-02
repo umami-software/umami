@@ -44,5 +44,4 @@ export * from './useRegionNames';
 export * from './useReport';
 export * from './useSticky';
 export * from './useNavigation';
-export * from './useTheme';
 export * from './useTimezone';

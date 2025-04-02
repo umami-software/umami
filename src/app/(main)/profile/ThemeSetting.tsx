@@ -1,17 +1,16 @@
 import classNames from 'classnames';
-import { Button, Icon } from '@umami/react-zen';
-import { useTheme } from '@/components/hooks';
+import { Button, Icon, useTheme } from '@umami/react-zen';
 import { Icons } from '@/components/icons';
 import styles from './ThemeSetting.module.css';
 
 export function ThemeSetting() {
-  const { theme, saveTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   return (
     <div className={styles.buttons}>
       <Button
         className={classNames({ [styles.active]: theme === 'light' })}
-        onPress={() => saveTheme('light')}
+        onPress={() => setTheme('light')}
       >
         <Icon>
           <Icons.Sun />
@@ -19,7 +18,7 @@ export function ThemeSetting() {
       </Button>
       <Button
         className={classNames({ [styles.active]: theme === 'dark' })}
-        onPress={() => saveTheme('dark')}
+        onPress={() => setTheme('dark')}
       >
         <Icon>
           <Icons.Moon />

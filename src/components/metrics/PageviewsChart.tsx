@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
+import { useTheme } from '@umami/react-zen';
 import { BarChart, BarChartProps } from '@/components/charts/BarChart';
-import { useLocale, useTheme, useMessages } from '@/components/hooks';
+import { useLocale, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
+import { getThemeColors } from '@/lib/colors';
 
 export interface PageviewsChartProps extends BarChartProps {
   data: {
@@ -25,7 +27,8 @@ export function PageviewsChart({
   ...props
 }: PageviewsChartProps) {
   const { formatMessage, labels } = useMessages();
-  const { colors } = useTheme();
+  const { theme } = useTheme();
+  const { colors } = getThemeColors(theme);
   const { locale } = useLocale();
 
   const chartData = useMemo(() => {

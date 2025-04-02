@@ -1,4 +1,4 @@
-import { FloatingTooltip, Column } from '@umami/react-zen';
+import { FloatingTooltip, Column, useTheme } from '@umami/react-zen';
 import { useState, useMemo, HTMLAttributes } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import classNames from 'classnames';
@@ -6,7 +6,6 @@ import { colord } from 'colord';
 import { ISO_COUNTRIES, MAP_FILE } from '@/lib/constants';
 import {
   useDateRange,
-  useTheme,
   useWebsiteMetricsQuery,
   useCountryNames,
   useLocale,
@@ -15,6 +14,7 @@ import {
 import { formatLongNumber } from '@/lib/format';
 import { percentFilter } from '@/lib/filters';
 import styles from './WorldMap.module.css';
+import { getThemeColors } from '@/lib/colors';
 
 export function WorldMap({
   websiteId,
@@ -27,7 +27,8 @@ export function WorldMap({
   className?: string;
 } & HTMLAttributes<HTMLDivElement>) {
   const [tooltip, setTooltipPopup] = useState();
-  const { theme, colors } = useTheme();
+  const { theme } = useTheme();
+  const { colors } = getThemeColors(theme);
   const { locale } = useLocale();
   const { formatMessage, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);

@@ -31,10 +31,6 @@ const initialState = {
 
 const store = create(() => ({ ...initialState }));
 
-export function setTheme(theme: string) {
-  store.setState({ theme });
-}
-
 export function setTimezone(timezone: string) {
   store.setState({ timezone });
 }

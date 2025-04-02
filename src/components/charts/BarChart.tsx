@@ -1,8 +1,9 @@
 import { useMemo, useState } from 'react';
+import { useTheme } from '@umami/react-zen';
 import { BarChartTooltip } from '@/components/charts/BarChartTooltip';
 import { Chart, ChartProps } from '@/components/charts/Chart';
-import { useTheme } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
+import { getThemeColors } from '@/lib/colors';
 
 export interface BarChartProps extends ChartProps {
   unit: string;
@@ -19,7 +20,8 @@ export interface BarChartProps extends ChartProps {
 
 export function BarChart(props: BarChartProps) {
   const [tooltip, setTooltip] = useState(null);
-  const { colors } = useTheme();
+  const { theme } = useTheme();
+  const { colors } = getThemeColors(theme);
   const {
     renderXLabel,
     renderYLabel,

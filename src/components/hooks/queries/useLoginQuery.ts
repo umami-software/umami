@@ -8,13 +8,13 @@ export function useLoginQuery(): {
   user: any;
   setUser: (data: any) => void;
 } & UseQueryResult {
-  const { get, useQuery } = useApi();
+  const { post, useQuery } = useApi();
   const user = useApp(selector);
 
   const query = useQuery({
     queryKey: ['login'],
     queryFn: async () => {
-      const data = await get('/auth/verify');
+      const data = await post('/auth/verify');
 
       setUser(data);
 
