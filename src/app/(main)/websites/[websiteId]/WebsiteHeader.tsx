@@ -17,7 +17,7 @@ import { WebsiteTabs } from '@/app/(main)/websites/[websiteId]/WebsiteTabs';
 import { useWebsite } from '@/components/hooks/useWebsite';
 import { WebsiteFilterButton } from '@/app/(main)/websites/[websiteId]/WebsiteFilterButton';
 import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
-import { FilterTags } from '@/components/metrics/FilterTags';
+import { FilterBar } from '@/components/metrics/FilterBar';
 import { useMessages } from '@/components/hooks';
 
 export function WebsiteHeader({
@@ -73,7 +73,7 @@ export function WebsiteHeader({
         </Row>
       </Row>
       {compareMode && items.map(item => <div key={item.value}>{item.label}</div>)}
-      <FilterTags websiteId={websiteId} />
+      <FilterBar websiteId={websiteId} />
       <WebsiteTabs websiteId={websiteId} />
     </Column>
   );

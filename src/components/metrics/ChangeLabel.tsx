@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Icon, Icons } from '@umami/react-zen';
+import { Icon, Icons, Text } from '@umami/react-zen';
 import { ReactNode } from 'react';
 import styles from './ChangeLabel.module.css';
 
@@ -38,7 +38,7 @@ export function ChangeLabel({
           <Icons.Arrow />
         </Icon>
       )}
-      {children || value}
+      <Text>{children || value}</Text>
     </div>
   );
 }

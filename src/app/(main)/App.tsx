@@ -38,7 +38,7 @@ export function App({ children }) {
         gridRow="2 / 3"
         alignItems="center"
         overflow="auto"
-        backgroundColor="1"
+        backgroundColor="0"
       >
         <Page>
           {children}

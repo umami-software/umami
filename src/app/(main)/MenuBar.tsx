@@ -17,7 +17,7 @@ export function MenuBar(props: RowProps) {
       paddingY="3"
       paddingX="3"
       paddingRight="5"
-      backgroundColor="1"
+      backgroundColor="0"
       style={{ borderBottom: '1px solid var(--border-color)' }}
     >
       <Row>
