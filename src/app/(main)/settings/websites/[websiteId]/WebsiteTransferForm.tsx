@@ -57,6 +57,7 @@ export function WebsiteTransferForm({
   };
 
   const handleChange = (key: Key) => {
+    console.log('KEY', key);
     setTeamId(key as string);
   };
 
@@ -73,10 +74,10 @@ export function WebsiteTransferForm({
       </Text>
       <FormField name="teamId">
         {!isTeamWebsite && (
-          <Select onSelectionChange={handleChange} value={teamId}>
+          <Select onSelectionChange={handleChange} selectedKey={teamId}>
             {items.map(({ id, name }) => {
               return (
-                <ListItem key={id} id={id}>
+                <ListItem key={`${id}!!!!`} id={`${id}????`}>
                   {name}
                 </ListItem>
               );

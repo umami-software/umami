@@ -1,3 +1,4 @@
+export * from './queries/useActiveUsersQuery';
 export * from './queries/useEventDataEventsQuery';
 export * from './queries/useEventDataPropertiesQuery';
 export * from './queries/useEventDataValuesQuery';

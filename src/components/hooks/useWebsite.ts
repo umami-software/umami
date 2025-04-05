@@ -2,7 +2,5 @@ import { WebsiteContext } from '@/app/(main)/websites/[websiteId]/WebsiteProvide
 import { useContext } from 'react';
 
 export function useWebsite() {
-  const website = useContext(WebsiteContext);
-
-  return website;
+  return useContext(WebsiteContext);
 }

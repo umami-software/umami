@@ -95,7 +95,7 @@ export function DateFilter({
   return (
     <>
       <Select
-        value={value}
+        selectedKey={value}
         placeholder={formatMessage(labels.selectDate)}
         onSelectionChange={handleChange}
       >
@@ -103,9 +103,7 @@ export function DateFilter({
           return (
             <Fragment key={label}>
               {divider && <ListSeparator />}
-              <ListItem key={label} id={value}>
-                {label}
-              </ListItem>
+              <ListItem id={value}>{label}</ListItem>
             </Fragment>
           );
         })}

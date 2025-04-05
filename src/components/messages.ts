@@ -51,6 +51,7 @@ export const labels = defineMessages({
   data: { id: 'label.data', defaultMessage: 'Data' },
   trackingCode: { id: 'label.tracking-code', defaultMessage: 'Tracking code' },
   shareUrl: { id: 'label.share-url', defaultMessage: 'Share URL' },
+  share: { id: 'label.share', defaultMessage: 'Share' },
   actions: { id: 'label.actions', defaultMessage: 'Actions' },
   domain: { id: 'label.domain', defaultMessage: 'Domain' },
   websiteId: { id: 'label.website-id', defaultMessage: 'Website ID' },

@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
-import { StatusLight } from '@umami/react-zen';
-import { useApi } from '@/components/hooks';
-import { useMessages } from '@/components/hooks';
-import styles from './ActiveUsers.module.css';
+import { Text, StatusLight } from '@umami/react-zen';
+import { useMessages, useActyiveUsersQuery } from '@/components/hooks';
 
 export function ActiveUsers({
   websiteId,
@@ -14,13 +12,7 @@ export function ActiveUsers({
   refetchInterval?: number;
 }) {
   const { formatMessage, messages } = useMessages();
-  const { get, useQuery } = useApi();
-  const { data } = useQuery({
-    queryKey: ['websites:active', websiteId],
-    queryFn: () => get(`/websites/${websiteId}/active`),
-    enabled: !!websiteId,
-    refetchInterval,
-  });
+  const { data } = useActyiveUsersQuery(websiteId, { refetchInterval });
 
   const count = useMemo(() => {
     if (websiteId) {
@@ -35,8 +27,8 @@ export function ActiveUsers({
   }
 
   return (
-    <StatusLight className={styles.container} variant="success">
-      <div className={styles.text}>{formatMessage(messages.activeUsers, { x: count })}</div>
+    <StatusLight variant="success">
+      <Text size="2">{formatMessage(messages.activeUsers, { x: count })}</Text>
     </StatusLight>
   );
 }

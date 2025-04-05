@@ -2,7 +2,6 @@ import { Button, Icon, Icons, MenuTrigger, Popover, Text } from '@umami/react-ze
 import { FilterSelectForm } from '@/app/(main)/reports/[reportId]/FilterSelectForm';
 import { useFields, useMessages, useNavigation, useDateRange } from '@/components/hooks';
 import { OPERATOR_PREFIXES } from '@/lib/constants';
-import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -28,7 +27,7 @@ export function WebsiteFilterButton({
 
   return (
     <MenuTrigger>
-      <Button className={styles.button} variant="quiet">
+      <Button variant="quiet">
         <Icon>
           <Icons.Plus />
         </Icon>

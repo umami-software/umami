@@ -7,12 +7,7 @@ import { DateRange } from '@/lib/types';
 import { useLocale } from './useLocale';
 import { useApi } from './useApi';
 
-export function useDateRange(websiteId?: string): {
-  dateRange: DateRange;
-  saveDateRange: (value: string | DateRange) => void;
-  dateCompare: string;
-  saveDateCompare: (value: string) => void;
-} {
+export function useDateRange(websiteId?: string) {
   const { get } = useApi();
   const { locale } = useLocale();
   const websiteConfig = useWebsites(state => state[websiteId]?.dateRange);
