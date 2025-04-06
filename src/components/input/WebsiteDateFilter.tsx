@@ -18,15 +18,12 @@ export function WebsiteDateFilter({
     value === 'all' || isAfter(getOffsetDateRange(dateRange, 1).startDate, new Date());
 
   const handleChange = (value: string | DateRange) => {
-    console.log('WebsiteDateFilter', value);
     saveDateRange(value);
   };
 
   const handleIncrement = (increment: number) => {
     saveDateRange(getOffsetDateRange(dateRange, increment));
   };
-
-  console.log({ dateRange, disableForward });
 
   return (
     <Row gap="3">
