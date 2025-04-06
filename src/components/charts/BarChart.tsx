@@ -82,19 +82,19 @@ export function BarChart(props: BarChartProps) {
   const handleTooltip = ({ tooltip }: { tooltip: any }) => {
     const { opacity } = tooltip;
 
-    setTooltip(
-      opacity ? <BarChartTooltip tooltip={tooltip} unit={unit} currency={currency} /> : null,
-    );
+    setTooltip(opacity ? tooltip : null);
   };
 
   return (
-    <Chart
-      {...props}
-      type="bar"
-      chartOptions={options}
-      tooltip={tooltip}
-      onTooltip={handleTooltip}
-      style={{ height: 400 }}
-    />
+    <>
+      <Chart
+        {...props}
+        type="bar"
+        chartOptions={options}
+        onTooltip={handleTooltip}
+        style={{ height: 400 }}
+      />
+      {tooltip && <BarChartTooltip tooltip={tooltip} unit={unit} currency={currency} />}
+    </>
   );
 }

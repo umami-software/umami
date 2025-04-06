@@ -2,10 +2,20 @@ import { Grid } from '@umami/react-zen';
 
 const LAYOUTS = {
   one: { columns: '1fr' },
-  two: { columns: { xs: '1fr', sm: '1fr', md: '1fr 1fr', lg: '1fr 1fr' } },
-  three: { columns: { xs: '1fr', sm: '1fr', md: '1fr 1fr 1fr', lg: '1fr 2fr' } },
-  'one-two': { columns: { xs: '1fr', sm: '1fr', md: '1fr 2fr', lg: '1fr 2fr' } },
-  'two-one': { columns: { xs: '1fr', sm: '1fr', md: '2fr 1fr', lg: '2fr 1fr', xl: '2fr 1fr' } },
+  two: {
+    columns: {
+      xs: '1fr',
+      md: 'repeat(auto-fill, minmax(600px, 1fr))',
+    },
+  },
+  three: {
+    columns: {
+      xs: '1fr',
+      md: 'repeat(auto-fill, minmax(400px, 1fr))',
+    },
+  },
+  'one-two': { columns: { xs: '1fr', lg: 'repeat(3, 1fr)' } },
+  'two-one': { columns: { xs: '1fr', lg: 'repeat(3, 1fr)' } },
 };
 
 export function GridRow(props: {

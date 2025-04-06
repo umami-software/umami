@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useMemo, ReactNode, HTMLAttributes } from 'react';
+import { useState, useRef, useEffect, useMemo, HTMLAttributes } from 'react';
 import { Loading } from '@umami/react-zen';
 import ChartJS, { LegendItem, ChartOptions } from 'chart.js/auto';
 import { Legend } from '@/components/metrics/Legend';
@@ -14,7 +14,6 @@ export interface ChartProps extends HTMLAttributes<HTMLDivElement> {
   onUpdate?: (chart: any) => void;
   onTooltip?: (model: any) => void;
   chartOptions?: ChartOptions;
-  tooltip?: ReactNode;
 }
 
 export function Chart({
@@ -27,7 +26,6 @@ export function Chart({
   onUpdate,
   onTooltip,
   chartOptions,
-  tooltip,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
@@ -53,6 +51,7 @@ export function Chart({
         },
         tooltip: {
           enabled: false,
+          intersect: true,
           external: onTooltip,
         },
       },
@@ -139,7 +138,6 @@ export function Chart({
         <canvas ref={canvas} />
       </div>
       <Legend items={legendItems} onClick={handleLegendClick} />
-      {tooltip}
     </>
   );
 }

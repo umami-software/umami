@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Key } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Text,
@@ -30,16 +30,10 @@ export function TeamsButton({
   const { teamId } = useNavigation();
   const router = useRouter();
   const team = result?.data?.find(({ id }) => id === teamId);
-  const [selectedKeys, setSelectedKeys] = useState<any>(new Set([teamId || user.id]));
+  const selectedKeys = new Set([teamId || user.id]);
 
-  const handleSelect = (keys: Set<string>) => {
-    if (keys.size > 0) {
-      const [id] = [...keys];
-
-      router.push(id === user.id ? '/dashboard' : `/teams/${id}/dashboard`);
-
-      setSelectedKeys(keys);
-    }
+  const handleSelect = (id: Key) => {
+    router.push(id === user.id ? '/dashboard' : `/teams/${id}/dashboard`);
   };
 
   if (!result?.count) {
@@ -63,7 +57,7 @@ export function TeamsButton({
             selectionMode="single"
             selectedKeys={selectedKeys}
             autoFocus="last"
-            onSelectionChange={keys => handleSelect(keys as Set<string>)}
+            onAction={handleSelect}
           >
             <MenuSection title={formatMessage(labels.myAccount)}>
               <MenuItem id={user.id}>

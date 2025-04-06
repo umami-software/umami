@@ -10,15 +10,17 @@ import { WebsiteMenu } from '@/app/(main)/websites/[websiteId]/WebsiteMenu';
 import { WebsiteCompareBar } from '@/app/(main)/websites/[websiteId]/WebsiteCompareBar';
 
 export function WebsiteHeader({
+  websiteId,
   showFilter = true,
   allowEdit = true,
 }: {
+  websiteId: string;
   showFilter?: boolean;
   allowEdit?: boolean;
   compareMode?: boolean;
 }) {
   const website = useWebsite();
-  const { id: websiteId, name, domain } = website || {};
+  const { name, domain } = website || {};
 
   return (
     <Column marginY="6" gap="6">
