@@ -43,6 +43,7 @@ CREATE TABLE event_data
 (
     website_id UUID,
     session_id UUID,
+    visit_id UUID,
     event_id UUID,
     url_path String,
     event_name String,
@@ -121,6 +122,7 @@ CREATE TABLE event_data_blob
     double19 Nullable(Decimal64(4)),
     double20 Nullable(Decimal64(4)),
     created_at DateTime('UTC'),
+    event_name Nullable(String),
     job_id Nullable(UUID)
 )
     engine = MergeTree
